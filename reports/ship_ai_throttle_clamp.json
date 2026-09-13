@@ -1,0 +1,1019 @@
+{
+  "packet": "orch6_throttle_clamp_p",
+  "base_commit": "69782503",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "Read-only formal BSP CLI; each analysis/export/bytes batch verifies configured project and program.",
+  "source": "src/ship_ai_throttle_ring.cpp",
+  "header": "include/bsp/ship_ai_throttle_ring.hpp",
+  "doc": "docs/SHIP_AI_THROTTLE_CLAMP.md",
+  "routines": [
+    {
+      "address": "00415620",
+      "native": "00415620",
+      "name": "clamp_float_by_ref_00415620",
+      "body": "00415620..0041565E",
+      "coverage": "complete selection rule in existing semantic value interface",
+      "abi": "ECX=value pointer, EDX=low pointer, stack high pointer; ST0 float result; RET 4 at 00415654/0041565C",
+      "abi_compatible": false,
+      "direct_calls": 0
+    },
+    {
+      "address": "00811D80",
+      "native": "00811D80",
+      "name": "unit_ai_order_turn_limit_at_00811d80",
+      "body": "00811D80..00811E7C",
+      "coverage": "complete existing reader control flow; unordered upper-bound correction; limited numerical parity below",
+      "abi": "ECX=record, one stack XZ pointer; ST0 result; RET 4 at 00811E5F/00811E7A",
+      "abi_compatible": false,
+      "direct_calls": 4
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Public clamp returned high when value <= high was false, including unordered.",
+      "is": "Return high only for ordered value > high; otherwise retain value after the low test.",
+      "evidence": "00415635 FCOMI low,value / JA; 0041564B FCOMI value,high / JBE; 00415657 FSTP ST1 retains value on unordered."
+    },
+    {
+      "was": "Both reader arms used upper >= 0, sending unordered upper bounds to swapped bounds/FCHS.",
+      "is": "Ordinary arm uses !(0 > upper), matching COMISS 0,upper / JBE; only ordered negative upper swaps/negates.",
+      "evidence": "00811DD9/00811DE0 and 00811E3C/00811E43; original reader cases2/4 return40000000, old sourceBF800000."
+    },
+    {
+      "was": "Sub_b FCHS was documented at00811E5B.",
+      "is": "FCHS is00811E50;00811E5B isPOP ESI.",
+      "evidence": "Complete live00811D80 assembly and original bytes."
+    },
+    {
+      "was": "Header said all three native pointed-to operands are read; older name evidence ended the body at0041565C.",
+      "is": "High is fetched only after the ordered low-winning branch fails; final RET4 begins0041565C and occupies3bytes through0041565E.",
+      "evidence": "00415637 JA00415657 precedes00415639/0041563F high pointer/value loads; RET4 opcodeC20400."
+    }
+  ],
+  "producer_evidence": [
+    {
+      "routine": "00815F30",
+      "coverage": "external producer inspected; not edited or revalidated as a whole",
+      "writes": "00815FD9 live sub_a flag;00815FDD..00815FE5 XZ;00815FF9/00815FFE bounds;00815F83..00815FB5 copies sub_a to sub_b",
+      "layout": "Existing UnitAiOrderSubRecord1Ch, bases+08/+24; existing UnitAiOrderRecord represented size50h, native stride54h.",
+      "sanitization": "No NaN repair on the cited bound/position stores."
+    },
+    {
+      "routine": "0080E000",
+      "coverage": "external producer inspected; not edited or revalidated as a whole",
+      "writes": "record+00 blend maintained from sub_a+00; timer expiration resets both bound/live groups at0080E033..0080E064."
+    }
+  ],
+  "register_provenance": "00811D8C saves originalECX toESI; entire reader listing has no ECX reassignment before either sub_a call; sub_b explicitlyMOVECX,ESI at00811E49/00811E66. EDI retains query pointer. Clamp has no calls and no input/record writes.",
+  "calls": [
+    {
+      "address": "0064E39A",
+      "native": "00415620",
+      "function": "0064DD30",
+      "evidence_path": "local/clamp_call_0064E39A.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007C81D1",
+      "native": "00415620",
+      "function": "007C7A40",
+      "evidence_path": "local/clamp_call_007C81D1.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007C82A1",
+      "native": "00415620",
+      "function": "007C7A40",
+      "evidence_path": "local/clamp_call_007C82A1.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007C73FE",
+      "native": "00415620",
+      "function": "007C71E0",
+      "evidence_path": "local/clamp_call_007C73FE.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007DC099",
+      "native": "00415620",
+      "function": "007DB680",
+      "evidence_path": "local/clamp_call_007DC099.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007DC2D9",
+      "native": "00415620",
+      "function": "007DB680",
+      "evidence_path": "local/clamp_call_007DC2D9.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007DC3D3",
+      "native": "00415620",
+      "function": "007DB680",
+      "evidence_path": "local/clamp_call_007DC3D3.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007DC564",
+      "native": "00415620",
+      "function": "007DB680",
+      "evidence_path": "local/clamp_call_007DC564.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007DFB27",
+      "native": "00415620",
+      "function": "007DF4F0",
+      "evidence_path": "local/clamp_call_007DFB27.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007E0265",
+      "native": "00415620",
+      "function": "007DF4F0",
+      "evidence_path": "local/clamp_call_007E0265.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "00811DE6",
+      "native": "00415620",
+      "function": "00811D80",
+      "evidence_path": "local/clamp_call_00811DE6.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "00811DF3",
+      "native": "00415620",
+      "function": "00811D80",
+      "evidence_path": "local/clamp_call_00811DF3.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "00811E4B",
+      "native": "00415620",
+      "function": "00811D80",
+      "evidence_path": "local/clamp_call_00811E4B.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "00811E68",
+      "native": "00415620",
+      "function": "00811D80",
+      "evidence_path": "local/clamp_call_00811E68.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009FD4CD",
+      "native": "00415620",
+      "function": "009FD0E0",
+      "evidence_path": "local/clamp_call_009FD4CD.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "0099E199",
+      "native": "00415620",
+      "function": "0099D300",
+      "evidence_path": "local/clamp_call_0099E199.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "0099E98D",
+      "native": "00415620",
+      "function": "0099D300",
+      "evidence_path": "local/clamp_call_0099E98D.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009BF24A",
+      "native": "00415620",
+      "function": "009BEE30",
+      "evidence_path": "local/clamp_call_009BF24A.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009BF28A",
+      "native": "00415620",
+      "function": "009BEE30",
+      "evidence_path": "local/clamp_call_009BF28A.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009DE8CD",
+      "native": "00415620",
+      "function": "009DE5B0",
+      "evidence_path": "local/clamp_call_009DE8CD.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009E6DBF",
+      "native": "00415620",
+      "function": "009E6A90",
+      "evidence_path": "local/clamp_call_009E6DBF.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009E6E2A",
+      "native": "00415620",
+      "function": "009E6A90",
+      "evidence_path": "local/clamp_call_009E6E2A.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EB444",
+      "native": "00415620",
+      "function": "009EAFC0",
+      "evidence_path": "local/clamp_call_009EB444.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "007D1899",
+      "native": "00415620",
+      "function": "007D1360",
+      "evidence_path": "local/clamp_call_007D1899.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EDBCC",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EDBCC.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE196",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE196.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE209",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE209.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE2C2",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE2C2.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE40E",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE40E.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE453",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE453.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE52B",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE52B.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE574",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE574.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EE895",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EE895.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009EED4B",
+      "native": "00415620",
+      "function": "009ED6B0",
+      "evidence_path": "local/clamp_call_009EED4B.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009F4F83",
+      "native": "00415620",
+      "function": "009F4DA0",
+      "evidence_path": "local/clamp_call_009F4F83.asm.txt",
+      "scope": "callee pointer/return contract inventory; containing caller is not reconstructed by packet P"
+    },
+    {
+      "address": "009E3DCD",
+      "native": "00811D80",
+      "function": "009E3C00",
+      "evidence_path": "local/path_reader_consumer.asm.txt",
+      "scope": "actual published-slot reader caller; return contributes to XZ at 009E3DE2..009E3E03; not executed in this probe"
+    }
+  ],
+  "call_inventory": {
+    "clamp_xrefs": 35,
+    "containing_functions": 15,
+    "owned_reader_calls": 4,
+    "comment": "All direct clamp xref setup windows inspected. Only00415620 and00811D80 are reconstructed/annotated in P; other caller bodies retain external status."
+  },
+  "runtime_consumers": [
+    {
+      "source": "src/game_hosts_ship_ai.cpp",
+      "method": "PathFollowerBinding::order_turn_limit_at_00811d80",
+      "effect": "Already calls corrected reader on represented published slot; native009E3DCD return becomes lateral XZ displacement.",
+      "validation": "static binding evidence only; no mission NaN occurrence or gameplay proof"
+    },
+    {
+      "source": "src/ship_ai_approach_update.cpp",
+      "sites": [
+        "009E6DBF",
+        "009E6E2A"
+      ],
+      "effect": "Existing public clamp callers inherit corrected operand selection; surrounding min/limit logic not changed or proven here."
+    },
+    {
+      "source": "src/ship_ai_arm_final_step.cpp",
+      "sites": [
+        "009DE8CD"
+      ],
+      "effect": "Escape turn stores returned clamp value; surrounding direction/strength producers remain external to P."
+    },
+    {
+      "source": "src/ship_ai_navigation_arm_tail.cpp",
+      "sites": [
+        "009EED4B"
+      ],
+      "effect": "Approach ceiling directly returns the corrected clamped stopping-distance ratio; its arithmetic is not independently fixture-tested here."
+    }
+  ],
+  "native_fixture": {
+    "status": "passed",
+    "source": "local/throttle_clamp_probe.cpp",
+    "prepare": "local/prepare_throttle_clamp_probe.py",
+    "build": "local/build_throttle_clamp_probe.cmd",
+    "baseline_build": "local/build_throttle_clamp_baseline.cmd",
+    "native_manifest": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00415620",
+          "end_inclusive": "0041565E",
+          "offset": 0,
+          "bytes": 63,
+          "instructions": 23,
+          "sha256": "8dab6ef63469410ee1f880e5fdbea7b7e3006e10cc7b2568297fa74f3098383e"
+        },
+        {
+          "address": "00811D80",
+          "end_inclusive": "00811E7C",
+          "offset": 64,
+          "bytes": 253,
+          "instructions": 85,
+          "sha256": "0fe4b91f69c0b184e72b99c70a1235d91a5fa08f376ec5ce054a1acf74eed002"
+        }
+      ],
+      "live_equals_installed": true,
+      "image_sha256": "859b88da5c0747850c6153c12c18e8df8724f07eaacaca679834ad7e8c36599f",
+      "data_patches": [
+        {
+          "address": "00811D83",
+          "offset": 71,
+          "native_data": "00E0E304",
+          "data_offset": 328
+        },
+        {
+          "address": "00811DCA",
+          "offset": 140,
+          "native_data": "00CE3D90",
+          "data_offset": 320
+        },
+        {
+          "address": "00811E2D",
+          "offset": 239,
+          "native_data": "00CE3D90",
+          "data_offset": 320
+        }
+      ],
+      "calls": [
+        {
+          "address": "00811DE6",
+          "function": "00811D80",
+          "native": "00415620",
+          "offset": 167
+        },
+        {
+          "address": "00811DF3",
+          "function": "00811D80",
+          "native": "00415620",
+          "offset": 180
+        },
+        {
+          "address": "00811E4B",
+          "function": "00811D80",
+          "native": "00415620",
+          "offset": 268
+        },
+        {
+          "address": "00811E68",
+          "function": "00811D80",
+          "native": "00415620",
+          "offset": 297
+        }
+      ],
+      "constants": [
+        {
+          "address": "00CE3D90",
+          "bytes": 8,
+          "offset": 320
+        },
+        {
+          "address": "00E0E304",
+          "bytes": 4,
+          "offset": 328
+        }
+      ],
+      "boundary": "Complete original clamp and turn-limit reader; all four calls map to the original clamp; no library or owner callbacks substituted."
+    },
+    "invocation_pairs": 18,
+    "result_and_preservation_bytes": 2136,
+    "precisions": [
+      "masked x87PC24, round-to-nearest",
+      "masked x87PC53, round-to-nearest"
+    ],
+    "clamp_cases": [
+      "quietNaNvalue",
+      "quietNaNlow",
+      "quietNaNhigh"
+    ],
+    "reader_cases": [
+      "ordinary finite sub_a",
+      "NaNblend ordinary sub_a",
+      "NaNupper sub_a",
+      "NaNblend negative sub_b early return after sub_a",
+      "negative sub_a then NaNupper ordinary sub_b wins",
+      "NaNquery rejects both live slots"
+    ],
+    "comparison": "Exactfloat32 return bits plus explicit expected native words; all54hnative record bytes and50hsource record bytes preserve original backing;8querybytes preserved; x87TOPbalanced. No library/owner callback substituted; real original four calls.",
+    "cleanup": "Restores FP control mask/precision/rounding, clears probe status, frees executable allocation.",
+    "baseline_failures": 12,
+    "baseline_differences": [
+      {
+        "kind": "clamp",
+        "precision": 131072,
+        "case": 0,
+        "native": 2143363909,
+        "source": 1082130432
+      },
+      {
+        "kind": "clamp",
+        "precision": 131072,
+        "case": 2,
+        "native": 1073741824,
+        "source": 2143503719
+      },
+      {
+        "kind": "reader",
+        "precision": 131072,
+        "case": 1,
+        "native": 2143363909,
+        "source": 1082130432
+      },
+      {
+        "kind": "reader",
+        "precision": 131072,
+        "case": 2,
+        "native": 1073741824,
+        "source": 3212836864
+      },
+      {
+        "kind": "reader",
+        "precision": 131072,
+        "case": 3,
+        "native": 4290847557,
+        "source": 1082130432
+      },
+      {
+        "kind": "reader",
+        "precision": 131072,
+        "case": 4,
+        "native": 1073741824,
+        "source": 3212836864
+      },
+      {
+        "kind": "clamp",
+        "precision": 65536,
+        "case": 0,
+        "native": 2143363909,
+        "source": 1082130432
+      },
+      {
+        "kind": "clamp",
+        "precision": 65536,
+        "case": 2,
+        "native": 1073741824,
+        "source": 2143503719
+      },
+      {
+        "kind": "reader",
+        "precision": 65536,
+        "case": 1,
+        "native": 2143363909,
+        "source": 1082130432
+      },
+      {
+        "kind": "reader",
+        "precision": 65536,
+        "case": 2,
+        "native": 1073741824,
+        "source": 3212836864
+      },
+      {
+        "kind": "reader",
+        "precision": 65536,
+        "case": 3,
+        "native": 4290847557,
+        "source": 1082130432
+      },
+      {
+        "kind": "reader",
+        "precision": 65536,
+        "case": 4,
+        "native": 1073741824,
+        "source": 3212836864
+      }
+    ],
+    "logs": [
+      "local/throttle_clamp_baseline.log",
+      "local/throttle_clamp_baseline_records.jsonl",
+      "local/throttle_clamp_probe.log",
+      "local/throttle_clamp_probe_records.jsonl"
+    ],
+    "dependencies": "This worktree build/win32/Release/bsp_core.lib, MSVCx86, Pythonpefile/capstone, installed binary and verified live BSP bytes; no O-worktree path dependency."
+  },
+  "validation": {
+    "win32_release": "passed",
+    "ctest": "2/2 existing tests passed; no tracked tests added",
+    "build_log": "local/build.log",
+    "seed_log": "local/seed_verification.log",
+    "report_call_gate": "local/call_gate.log",
+    "report_call_gate_result": "40 rows checked, 0 failed; 36 unique sites, with 4 reader calls repeated in native relocation manifest"
+  },
+  "no_ghidra_function": [],
+  "orphan_call_sites": [],
+  "false_free_flow_gaps": [],
+  "limits": [
+    "Existing C++ value interface is not original pointer ABI/access order; high pointer is conditionally read natively.",
+    "Selected masked quiet-NaN cases only; no signaling-NaN/unmasked-exception/status-flag equivalence claim.",
+    "Reader squared-distance expression remains existing C++; all-input x87 intermediate rounding and radius-boundary parity are not established.",
+    "Native caller009E3C00 and other public helper consumers were inspected, not executed; no game runtime/NaN occurrence/gameplay validation.",
+    "Producer routines, unrelated math consumers, other throttle-ring routines, GameHosts and O box module remain unchanged."
+  ],
+  "artifacts": [
+    {
+      "path": "local/baseline_build.log",
+      "bytes": 52,
+      "sha256": "b045f8b5bc8a3a86b26e19bb96d9dc90f91673cc8894559759f07dd3d451562b"
+    },
+    {
+      "path": "local/bsp_index.sqlite",
+      "bytes": 24141824,
+      "sha256": "2fb8306c383a6a55444963ea64c1c0524aa7fe160d96f2d76f57a31a4ca352fc"
+    },
+    {
+      "path": "local/build.log",
+      "bytes": 40339,
+      "sha256": "5985ff4a0fbb9f4fc1591085d9257c19b9152104127f92ba6a2f9289adb382ff"
+    },
+    {
+      "path": "local/build_throttle_clamp_baseline.cmd",
+      "bytes": 555,
+      "sha256": "b2eabe906a3e05f470cd68f00a99c2ad694a22b18b1fd8491d846f7176a4bfa2"
+    },
+    {
+      "path": "local/build_throttle_clamp_probe.cmd",
+      "bytes": 348,
+      "sha256": "05b4c3a45a7f2af35757ac598bc105f18d20ae94515df8f8aac22011be9e7800"
+    },
+    {
+      "path": "local/call_gate.log",
+      "bytes": 69,
+      "sha256": "219b2258dd3cb7023165f631d9d0874549110768e57159d274259e3e1de2396a"
+    },
+    {
+      "path": "local/capture_calls.log",
+      "bytes": 68,
+      "sha256": "ebdbccb4479d64f45b0a2eac43798300a93ac05b8e6205891314ffb5cd1c3046"
+    },
+    {
+      "path": "local/capture_clamp_call_sites.py",
+      "bytes": 1747,
+      "sha256": "a11a1a8559deeaece5c262faf2986f79417e5ff066528af9c94ef21e053bd45b"
+    },
+    {
+      "path": "local/clamp_00415620.asm.txt",
+      "bytes": 654,
+      "sha256": "b80d98c2b4f2f88ef41e04a9da1ac8ad4fcefe7ae50cbdb87fa0f5f9988b75c9"
+    },
+    {
+      "path": "local/clamp_all_call_sites.json",
+      "bytes": 9210,
+      "sha256": "de7d40c1d0634a7ecf4407a380af9a0408d29741e6259c61990d855f04fd1eda"
+    },
+    {
+      "path": "local/clamp_call_0064E39A.asm.txt",
+      "bytes": 645,
+      "sha256": "b1410252a9fd8f542a42f8b0994f94130ad1bddfecfb761628af3ae299b85b28"
+    },
+    {
+      "path": "local/clamp_call_007C73FE.asm.txt",
+      "bytes": 618,
+      "sha256": "e89bb6980c333806fb1e94d190873c806d24a0baef3340087b92de7f68325515"
+    },
+    {
+      "path": "local/clamp_call_007C81D1.asm.txt",
+      "bytes": 529,
+      "sha256": "be2b01477486e8b3f4f33dd5eba8225e9f67bbbf45589c496ad2bac303537cf4"
+    },
+    {
+      "path": "local/clamp_call_007C82A1.asm.txt",
+      "bytes": 514,
+      "sha256": "6cf7d85ab1d3022cbd8d645890a60e9bb78f143063a487fb772602d535c5b9d3"
+    },
+    {
+      "path": "local/clamp_call_007D1899.asm.txt",
+      "bytes": 635,
+      "sha256": "ca90de1098cdbbfb83ed1f5424dfb7fe47e2633966f74086e95c20d3ce697820"
+    },
+    {
+      "path": "local/clamp_call_007DC099.asm.txt",
+      "bytes": 602,
+      "sha256": "715b12286263978120166cda5f5d26bfb0ad9cb0b17048e8c2367e24273eb6a7"
+    },
+    {
+      "path": "local/clamp_call_007DC2D9.asm.txt",
+      "bytes": 549,
+      "sha256": "2ced22147094970dfb3b41adfc1711dcef913be3afde126fadfaa22bd3955389"
+    },
+    {
+      "path": "local/clamp_call_007DC3D3.asm.txt",
+      "bytes": 614,
+      "sha256": "0d8f037403762773082437afe19318a4ae92a5645adac029e0f5fd71011b98ea"
+    },
+    {
+      "path": "local/clamp_call_007DC564.asm.txt",
+      "bytes": 595,
+      "sha256": "3b82bf84547963044e70c9ae8d6dfed859e7c00852f4f0f919cb3ae271e89ce8"
+    },
+    {
+      "path": "local/clamp_call_007DFB27.asm.txt",
+      "bytes": 646,
+      "sha256": "a5cbd2f951e17a0268974fcb61f9d8850f827c905f0b5259eaedb48866d45678"
+    },
+    {
+      "path": "local/clamp_call_007E0265.asm.txt",
+      "bytes": 685,
+      "sha256": "fd7b11f5199789e18c11d6137f8e923633f9a74dc16cb4c006d9591a1aac2174"
+    },
+    {
+      "path": "local/clamp_call_00811DE6.asm.txt",
+      "bytes": 528,
+      "sha256": "26e99eb392d4ff7002cb97ed175ecb433fe42851a3a27676a2f4ba63b7b1686d"
+    },
+    {
+      "path": "local/clamp_call_00811DF3.asm.txt",
+      "bytes": 528,
+      "sha256": "0b16a3f0db81ce4046ad79c8e913a6bedcec0459b4ebcc7cb579dc1b9d107238"
+    },
+    {
+      "path": "local/clamp_call_00811E4B.asm.txt",
+      "bytes": 524,
+      "sha256": "4dcd640f457234912ca4a45232d366e6a08a3466fb14e474c44f1955a3d69049"
+    },
+    {
+      "path": "local/clamp_call_00811E68.asm.txt",
+      "bytes": 485,
+      "sha256": "31b989e1855adfdb20f11f1d94c4be055b101beb00e404f141c75e9158191aaf"
+    },
+    {
+      "path": "local/clamp_call_0099E199.asm.txt",
+      "bytes": 609,
+      "sha256": "e9611423e3b6138ae7c54fa8b7016edb5a354ee3f78bf5fab228aa5fe18217d8"
+    },
+    {
+      "path": "local/clamp_call_0099E98D.asm.txt",
+      "bytes": 649,
+      "sha256": "2fa6bc1d8aa11447a953ffb1077e4dab142616c80dd0c3debd01fbb1fa4ea6e0"
+    },
+    {
+      "path": "local/clamp_call_009BF24A.asm.txt",
+      "bytes": 659,
+      "sha256": "ae2402d68bb43e564f5a5ea23a17fb2dd0c121718ed9f1db9ccd985ebccd5c5a"
+    },
+    {
+      "path": "local/clamp_call_009BF28A.asm.txt",
+      "bytes": 656,
+      "sha256": "48f13527d393b6f0d365e4fdd92707d85b97a339fccc51a4fdd0644eb8af49b8"
+    },
+    {
+      "path": "local/clamp_call_009DE8CD.asm.txt",
+      "bytes": 649,
+      "sha256": "a2a4260b3a70c2f8596271fdc3256e558dd16bf064dc4a0e9fd3abe5f59a5f83"
+    },
+    {
+      "path": "local/clamp_call_009E6DBF.asm.txt",
+      "bytes": 640,
+      "sha256": "fe28f19db744354729ca3331ce6de7bbcb859bb7cdd990f59cff0e91a308a880"
+    },
+    {
+      "path": "local/clamp_call_009E6E2A.asm.txt",
+      "bytes": 610,
+      "sha256": "f632f7e7d889986181e64dc24427d3ba36007772e3ca0864b4369ae4239f8d36"
+    },
+    {
+      "path": "local/clamp_call_009EB444.asm.txt",
+      "bytes": 608,
+      "sha256": "dea0eefd89a0b1d48f6e03142b9957c15e546a92a6b5cac965dcec2fb4337b7a"
+    },
+    {
+      "path": "local/clamp_call_009EDBCC.asm.txt",
+      "bytes": 676,
+      "sha256": "06f77fb25fe0798492045cd16d556a79e790d8e6eaf8a5e2f8cd2474220aa3d7"
+    },
+    {
+      "path": "local/clamp_call_009EE196.asm.txt",
+      "bytes": 576,
+      "sha256": "29ddc8421d96038d063ffcad4f5befc6e139f815efb9d793dc2ca77c40e8efed"
+    },
+    {
+      "path": "local/clamp_call_009EE209.asm.txt",
+      "bytes": 643,
+      "sha256": "0e08423e954c95dceb35d7ff26af81bef0a79e4deebb08432a2e93a862fef310"
+    },
+    {
+      "path": "local/clamp_call_009EE2C2.asm.txt",
+      "bytes": 541,
+      "sha256": "05dba9a0d1092175fec6a94ffa46d19748e1f3ca5e3f0237aed01d95096b5158"
+    },
+    {
+      "path": "local/clamp_call_009EE40E.asm.txt",
+      "bytes": 541,
+      "sha256": "d640d5c38df8ca9f79b280cedaedf3ac964937cd35399d333203a8c188800a67"
+    },
+    {
+      "path": "local/clamp_call_009EE453.asm.txt",
+      "bytes": 655,
+      "sha256": "05c16c5b1666b089bccb4f4528fa4e1d8983d032dcfb67f112a91c0d524587b9"
+    },
+    {
+      "path": "local/clamp_call_009EE52B.asm.txt",
+      "bytes": 576,
+      "sha256": "c19b6d41ac3f668e3b3d1d0291f5eb242670dcdf84ba360f8566c4be343ec512"
+    },
+    {
+      "path": "local/clamp_call_009EE574.asm.txt",
+      "bytes": 607,
+      "sha256": "b83b028390b27af06982414e57336cb07e9637ef435654ee4176128d60492e20"
+    },
+    {
+      "path": "local/clamp_call_009EE895.asm.txt",
+      "bytes": 586,
+      "sha256": "92db99c7b9728baa0c3537317f86e9fbcce7c5c5284208fab7e83e5b705fc980"
+    },
+    {
+      "path": "local/clamp_call_009EED4B.asm.txt",
+      "bytes": 642,
+      "sha256": "8d4dccb1d2b39bed17f671da4db217a714094ba9533f70402acad7772d3a15ba"
+    },
+    {
+      "path": "local/clamp_call_009F4F83.asm.txt",
+      "bytes": 599,
+      "sha256": "da89532504507e52ea1f341ece3da05299079f85b9d90c6fdf3077d98c05af21"
+    },
+    {
+      "path": "local/clamp_call_009FD4CD.asm.txt",
+      "bytes": 599,
+      "sha256": "7af8707803282c3ed3f7d92c750526ed1868ec276d28be55840794206edcf85a"
+    },
+    {
+      "path": "local/clamp_callers.txt",
+      "bytes": 529,
+      "sha256": "efa320b883918cc6ba34c4a6a87b9da5b3981972849392a0ce48793fa910ea0f"
+    },
+    {
+      "path": "local/clamp_ledger.json",
+      "bytes": 648,
+      "sha256": "1c7b6b97d60508a70089bc3a53d6cbc0fa808f8a1b251d888cd9b5aeb1f1fb02"
+    },
+    {
+      "path": "local/clamp_xrefs.txt",
+      "bytes": 2184,
+      "sha256": "dacd7bc0faecb94761c872b9beafaaf480a109a6010457a36e2434da36678c87"
+    },
+    {
+      "path": "local/commit-msg.txt",
+      "bytes": 600,
+      "sha256": "c45a4057d386de8dceb9c6f66bf93ea49a2be4818380b9c6ae8d25e273c66663"
+    },
+    {
+      "path": "local/exports.log",
+      "bytes": 227,
+      "sha256": "4e38e1f53f5cf641907a773da5a0c2eae0938a726cdf2d382baca11cb8ce3d0d"
+    },
+    {
+      "path": "local/path_reader_consumer.asm.txt",
+      "bytes": 933,
+      "sha256": "a85032bec27cb33d3a6450adc1e25a4f76294a7b4b388f741c5a8adf154cd0fe"
+    },
+    {
+      "path": "local/prepare_probe.log",
+      "bytes": 58,
+      "sha256": "1fb9ae29b3f1c3b026444eb4f55876d6d8e7f757ecb16a404a74a36e05c551ed"
+    },
+    {
+      "path": "local/prepare_throttle_clamp_probe.py",
+      "bytes": 4351,
+      "sha256": "1191c7c811edc3a8f1a5bed17871b79cc63584dbf627f2c0950a126947a05e23"
+    },
+    {
+      "path": "local/probe_build.log",
+      "bytes": 26,
+      "sha256": "a7180b46081165f279adaeca5552b3a5fea4f5faddd35c5662d4462276609afa"
+    },
+    {
+      "path": "local/producer_0080e000.asm.txt",
+      "bytes": 2323,
+      "sha256": "4882ade110a127211a221f8e03ba04ca382b248b1b944949fb8c75df752c0e00"
+    },
+    {
+      "path": "local/producer_00815f30.asm.txt",
+      "bytes": 3706,
+      "sha256": "1258cd1dafd054ae8e9af6018d8cd0646446087a56764bf73089af5622dce627"
+    },
+    {
+      "path": "local/reader_00811d80.asm.txt",
+      "bytes": 2588,
+      "sha256": "51b357d7deb42ccb7141481a9dc635b33cd1b994013018d99148b1fd384c84bf"
+    },
+    {
+      "path": "local/reader_ledger.json",
+      "bytes": 700,
+      "sha256": "311d1921cde1c127478331fc0c65bd4a64fb78cdbfa46e5228778e90cb32348b"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/seed_verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/throttle_clamp_baseline.exe",
+      "bytes": 30208,
+      "sha256": "17d66e72c7579a74946808d98f1e43fdea784cd8a7a8da6357061fd95c8ebc4c"
+    },
+    {
+      "path": "local/throttle_clamp_baseline.log",
+      "bytes": 491,
+      "sha256": "db0b2a7cb9c7a83c5e8978c172e4865538fbd494a1e20d846494c543203a2430"
+    },
+    {
+      "path": "local/throttle_clamp_baseline.obj",
+      "bytes": 126785,
+      "sha256": "d231be618d70c50693530de43b3f0f2ca9d9b9a7892fb2bb450e90365428c5f1"
+    },
+    {
+      "path": "local/throttle_clamp_baseline_records.jsonl",
+      "bytes": 2295,
+      "sha256": "1588e474f849936da413ca59f6419dbcf154cd95ee7ab87b706e93b1ba1e8f66"
+    },
+    {
+      "path": "local/throttle_clamp_bytes_00415620.txt",
+      "bytes": 304,
+      "sha256": "a9540c18a64cabacabbb9d932f8d77f1ab16687eff2a04fe647a13fa1df88c21"
+    },
+    {
+      "path": "local/throttle_clamp_bytes_00811D80.txt",
+      "bytes": 1220,
+      "sha256": "7e0ee9259b8a077445f18bb78467adf4abe8d8b19c8333b0a914639e3f75d493"
+    },
+    {
+      "path": "local/throttle_clamp_bytes_00CE3D90.txt",
+      "bytes": 45,
+      "sha256": "3ec0828fbc1b9291a6fbb1438c9141df903334aba5ab42f0830ace6f0c3f851f"
+    },
+    {
+      "path": "local/throttle_clamp_bytes_00E0E304.txt",
+      "bytes": 29,
+      "sha256": "492ef1445f086bcd1a8fee7e6721fca8698ab8333acaa472fff22ab10871a2a6"
+    },
+    {
+      "path": "local/throttle_clamp_native_image.bin",
+      "bytes": 336,
+      "sha256": "859b88da5c0747850c6153c12c18e8df8724f07eaacaca679834ad7e8c36599f"
+    },
+    {
+      "path": "local/throttle_clamp_native_manifest.json",
+      "bytes": 2074,
+      "sha256": "e38385efdc96968007fe4e2a159abe258978f39edaabe1bbc9366ff407e74e1d"
+    },
+    {
+      "path": "local/throttle_clamp_original_00415620.bin",
+      "bytes": 63,
+      "sha256": "8dab6ef63469410ee1f880e5fdbea7b7e3006e10cc7b2568297fa74f3098383e"
+    },
+    {
+      "path": "local/throttle_clamp_original_00811D80.bin",
+      "bytes": 253,
+      "sha256": "0fe4b91f69c0b184e72b99c70a1235d91a5fa08f376ec5ce054a1acf74eed002"
+    },
+    {
+      "path": "local/throttle_clamp_probe.cpp",
+      "bytes": 7243,
+      "sha256": "4b0fbb01da9325250b0c3666f7254fdf1b21b4d4cd30f873d13cc0f6b0185a63"
+    },
+    {
+      "path": "local/throttle_clamp_probe.exe",
+      "bytes": 30208,
+      "sha256": "6c622119ba6e18c1e0a3874e0d347fb777dce59a5eccfda89e113b00e7d5ab67"
+    },
+    {
+      "path": "local/throttle_clamp_probe.log",
+      "bytes": 86,
+      "sha256": "1eacb34f0ca1594af192cb3eb30f8a6cec8c0d91f33c5e8cf704760fb696c385"
+    },
+    {
+      "path": "local/throttle_clamp_probe.obj",
+      "bytes": 126781,
+      "sha256": "8942b8cb357392b9a05f3cf9e5f9aa01c8c75288ee1109ce24844b2ff7be3f96"
+    },
+    {
+      "path": "local/throttle_clamp_probe_patches.hpp",
+      "bytes": 310,
+      "sha256": "cd32775569b23c30ccf19459f4b7090a01fad13c1500bcc61a8925e128220ec1"
+    },
+    {
+      "path": "local/throttle_clamp_probe_records.jsonl",
+      "bytes": 2295,
+      "sha256": "1f5d8fca71ecc1bc057f2671a5b08793deaac6a8a87a6e280955647a1d403c71"
+    },
+    {
+      "path": "local/throttle_ring_before.cpp",
+      "bytes": 22498,
+      "sha256": "ae17a81fc0b484f6ed2cc50143d5df563db868f5c2552ad566f8c750b0631e05"
+    },
+    {
+      "path": "local/throttle_ring_before.hpp",
+      "bytes": 18264,
+      "sha256": "fc5cf26a94065927a5fe6366a8aac7e3214bd6013010fd7b03642e85b41605e0"
+    },
+    {
+      "path": "local/throttle_ring_before.obj",
+      "bytes": 13319,
+      "sha256": "28753daf49facba67802b5f01924e07a1e0286fd5171bf77c459e767e79092a9"
+    },
+    {
+      "path": "local/turn_limit_callees.txt",
+      "bytes": 37,
+      "sha256": "e68022a6106f34aab1c07225623f2de7ef3ece45acd004bc6cb47c76435369ff"
+    },
+    {
+      "path": "local/write_throttle_clamp_report.py",
+      "bytes": 9417,
+      "sha256": "8992bfeae70cdaf470dc396736129380b582f482dfb95643b539806230aeb295"
+    },
+    {
+      "path": "src/ship_ai_throttle_ring.cpp",
+      "bytes": 22602,
+      "sha256": "cb0ddd9e5f4442344717d5a2e3f1b117e329bfbe7a00fcb5799cc823f6d0369f"
+    },
+    {
+      "path": "include/bsp/ship_ai_throttle_ring.hpp",
+      "bytes": 18657,
+      "sha256": "95fe3ecfd1c05328926a313ddf27edf3ca8ae5fc47804fc4b2c07f19856092d9"
+    },
+    {
+      "path": "docs/SHIP_AI_THROTTLE_CLAMP.md",
+      "bytes": 9082,
+      "sha256": "5c1724e1d46971ab3194366e78bc337a40ab2252b082f12134ec70959db9cb38"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 54230830,
+      "sha256": "83a5342736953018383eaba058429dfccf1d56626b86b0e9b9d9915c3a086e31"
+    }
+  ]
+}

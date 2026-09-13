@@ -1,0 +1,483 @@
+{
+  "schema": "bsp-native-az-promotion-review-v1",
+  "packet": "orch2_native_az_promotion_review",
+  "status": "static_gate_review_accepted_final_combined_attempt_pending",
+  "reviewer_branch": "agent/orch2-az-promotion-review",
+  "ghidra_mutations": false,
+  "helper_reads": [
+    {
+      "family": "enumeration",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\replay_native_az_enumeration.py",
+      "sha256": "65f3c8b195eb24d4634bc6fa188add8e50935ef0b1835fdad4b64df587c2c6de"
+    },
+    {
+      "family": "raw",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\local\\raw_inflate_az\\replay.py",
+      "sha256": "d40e428b0f76d2c4fe980e666a440650e1d1582d745adb1ff50e4e0937a979b7"
+    },
+    {
+      "family": "compressed",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\local\\compressed_entry_az\\replay.py",
+      "sha256": "dc508f552cf3b2cad0c9a2d94abd4a06aa132ae405ea972458367ec3f4d0fde4"
+    },
+    {
+      "family": "runtime",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-enumeration-az\\local\\replay_mpak_runtime.py",
+      "sha256": "ec8a72d4c30ee276d4541a222a3e81896b97a84e1d0cdb3e075446c47b878c85"
+    },
+    {
+      "family": "device",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\tools\\native_vfs_device_fixture.py",
+      "sha256": "f8f021840f7c302dece1a6946c1963ff51f37cefef17db7e6b507cba59b16ecc"
+    },
+    {
+      "family": "strict_build",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\native-ay-validator\\build_proof.py",
+      "sha256": "55cada2b403cca91b59457fe0d8adff780ab52f0e46ec189086e247293ef8503"
+    }
+  ],
+  "development_attempt_audits": [
+    {
+      "family": "enumeration",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\native-az-replay-development\\enumeration02\\manifest.json",
+      "manifest_sha256": "f9988b9fccce3526b8a87cc975609269ee3a329e1e8094d1650968f2ea1c4ec9",
+      "status": "passed",
+      "candidate_head": "529025f3fd6bd28f55c7ac69d5a5c4826b9b62d0",
+      "inputs": 383,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 382,
+      "result": {
+        "enumeration": [
+          {
+            "flags": 0,
+            "names": [
+              "foo/a.lua"
+            ]
+          },
+          {
+            "flags": 1,
+            "names": [
+              "foo/a.lua",
+              "foobar/b.lua",
+              "foo/deep/c.lua"
+            ]
+          },
+          {
+            "flags": 256,
+            "names": [
+              "foo/a.lua"
+            ]
+          }
+        ],
+        "selection": "match,miss,self-output and publish-before-copy agree",
+        "filter": "empty prefix and no-slash agree",
+        "leaves": "all four agree; output tail preserved",
+        "allocations": 48,
+        "releases": 48,
+        "passed": true
+      },
+      "boundary": "Unchanged original/source fixture; shared source string/vector/allocation adapters are explicit dependencies, not independently compared original library bodies.",
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    },
+    {
+      "family": "raw",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\local\\raw_inflate_replay02\\manifest.json",
+      "manifest_sha256": "674917cf5d334246d9ad9f938fc34021938a4e136b785bee433cc55c6393234c",
+      "status": "passed",
+      "candidate_head": "364e66568404430ccd372a53163e9e3f7830552b",
+      "inputs": 231,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 231,
+      "result": {
+        "passed": true,
+        "checks": 1305,
+        "state_words": 365,
+        "source_trace_words": 854,
+        "free_events": 12,
+        "compared_output_bytes": 70087,
+        "payload_bytes": 150123,
+        "compressed_bytes": 82120
+      },
+      "boundary": "Ten original game methods plus original constructor compared with selected built source objects. Shared stock zlib and successful test allocator support remain explicit. /Zs observes current source includes; primary strict build establishes built-object freshness.",
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    },
+    {
+      "family": "compressed",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\local\\compressed_entry_replay01\\manifest.json",
+      "manifest_sha256": "38b94e6b4945ee99a8b77c0eab013c183cae6b9bad2693600c409c5c5639064b",
+      "status": "passed",
+      "candidate_head": "364e66568404430ccd372a53163e9e3f7830552b",
+      "inputs": 255,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 255,
+      "result": {
+        "passed": true,
+        "checks": 1468,
+        "entry_pairs": 3,
+        "state_words": 33,
+        "source_trace_words": 1023,
+        "compared_output_bytes": 450369,
+        "payload_bytes": 150123,
+        "compressed_bytes": 82120,
+        "final_memory_objects": 0,
+        "final_memory_bytes": 0
+      },
+      "boundary": "Original415-byte MPAK caller compared with actual source caller over shared actual constructor/conversion/raw-destruction bodies, source allocator and stock zlib. Original descriptor profile unchanged; private BD30E0 support trampoline invokes actual source deletion. /Zs observes current source includes; primary strict build establishes built-object freshness.",
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    },
+    {
+      "family": "runtime",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-enumeration-az\\local\\mpak-runtime-replay\\attempt04\\result.json",
+      "manifest_sha256": "27f89fe01b2ccc4fa959b7907a6c25272421e6950842b3bf5392322ad1068a4f",
+      "status": "passed",
+      "candidate_head": "2783bdda17365b7af85bb44495814578e3cb059b",
+      "inputs": 199,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 199,
+      "result": {
+        "passed": true,
+        "decoded_bytes": 32,
+        "payload_match": true,
+        "position_native_comparisons": 2,
+        "nested_context_restore": true,
+        "raw_write_actual_preserved": true,
+        "memory_objects": 0,
+        "memory_requested_bytes": 0
+      },
+      "boundary": "Current linked libraries and matching archive/current object bytes plus sources are pinned; this helper does not rebuild those libraries or prove their prior compiler provenance.",
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    },
+    {
+      "family": "device_historical_source_compilation",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\replay04\\replay.json",
+      "manifest_sha256": "8460661f80fedd7dafa7964651741001a156a2ebf15d7225ad8b6d4c9a6db4be",
+      "status": "passed",
+      "candidate_head": "42d7a7be912fb079c61babd43810496353d4aa39",
+      "inputs": 44,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 44,
+      "result": {
+        "variants": 8,
+        "original_routines": 4,
+        "original_code_bytes": 793,
+        "outcomes": [
+          {
+            "case": 0,
+            "device": 8738,
+            "raw": 128,
+            "name_hex": "62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "15888824216423691130",
+            "pool_hash": "11755291532822771200"
+          },
+          {
+            "case": 1,
+            "device": 8738,
+            "raw": 128,
+            "name_hex": "6d2f62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "7783367479192978648",
+            "pool_hash": "17188325442296228045"
+          },
+          {
+            "case": 2,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "6d2f",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "15487385592734304157",
+            "pool_hash": "390128256289666750"
+          },
+          {
+            "case": 3,
+            "device": 8738,
+            "raw": 109,
+            "name_hex": "6d2f",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "1855607322225705347",
+            "pool_hash": "3803747050096087338"
+          },
+          {
+            "case": 4,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "002f62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "16495232833934361230",
+            "pool_hash": "15486736994867797638"
+          },
+          {
+            "case": 5,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "6f6c64",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "2664534450222472234",
+            "pool_hash": "11669744671332186237"
+          },
+          {
+            "case": 6,
+            "device": 8738,
+            "raw": 1,
+            "name_hex": "",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "4810163264465236811",
+            "pool_hash": "14093165133926753868"
+          },
+          {
+            "case": 7,
+            "device": 4294967295,
+            "raw": 0,
+            "name_hex": "",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "4810163264465236811",
+            "pool_hash": "7348328383892545567"
+          }
+        ]
+      },
+      "boundary": null,
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    },
+    {
+      "family": "device_exact_objects",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\exact-object-replay07\\replay.json",
+      "manifest_sha256": "1a80f5d9cabc210d9b99ed7c8940dac830447cd9c426bb0c69f0c3355d3fbd03",
+      "status": "passed",
+      "candidate_head": "42d7a7be912fb079c61babd43810496353d4aa39",
+      "inputs": 22,
+      "frozen_missing": [],
+      "frozen_hash_mismatch": [],
+      "frozen_writable_count": 22,
+      "result": {
+        "variants": 8,
+        "original_routines": 4,
+        "original_code_bytes": 793,
+        "outcomes": [
+          {
+            "case": 0,
+            "device": 8738,
+            "raw": 128,
+            "name_hex": "62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "15888824216423691130",
+            "pool_hash": "11755291532822771200"
+          },
+          {
+            "case": 1,
+            "device": 8738,
+            "raw": 128,
+            "name_hex": "6d2f62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "7783367479192978648",
+            "pool_hash": "17188325442296228045"
+          },
+          {
+            "case": 2,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "6d2f",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "15487385592734304157",
+            "pool_hash": "390128256289666750"
+          },
+          {
+            "case": 3,
+            "device": 8738,
+            "raw": 109,
+            "name_hex": "6d2f",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "1855607322225705347",
+            "pool_hash": "3803747050096087338"
+          },
+          {
+            "case": 4,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "002f62",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "16495232833934361230",
+            "pool_hash": "15486736994867797638"
+          },
+          {
+            "case": 5,
+            "device": 13107,
+            "raw": 0,
+            "name_hex": "6f6c64",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "2664534450222472234",
+            "pool_hash": "11669744671332186237"
+          },
+          {
+            "case": 6,
+            "device": 8738,
+            "raw": 1,
+            "name_hex": "",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "4810163264465236811",
+            "pool_hash": "14093165133926753868"
+          },
+          {
+            "case": 7,
+            "device": 4294967295,
+            "raw": 0,
+            "name_hex": "",
+            "seen": "file",
+            "visits": 1,
+            "arena_hash": "4810163264465236811",
+            "pool_hash": "7348328383892545567"
+          }
+        ]
+      },
+      "boundary": null,
+      "executable_sha256_verified": true,
+      "link_map_sha256_verified": true
+    }
+  ],
+  "negative_checks": [
+    {
+      "check": "immutable_build_helper_wrong_head",
+      "rejected": true,
+      "reason": "Current HEAD differs from expected HEAD"
+    },
+    {
+      "name": "changed_current_source",
+      "rejected": true,
+      "type": "RuntimeError",
+      "message": "Current or captured input changed: J:\\PROG\\battlestations-pacific-decompile-orch2-az-promotion-review\\local\\gate-boundaries01\\current.cpp"
+    },
+    {
+      "name": "stale_direct_object",
+      "rejected": true,
+      "type": "RuntimeError",
+      "message": "Direct/linked object differs from unique strict library member: bsp_core:native_raw_inflate_stream.obj"
+    },
+    {
+      "name": "changed_captured_expected_bytes",
+      "rejected": true,
+      "message": "Anchored input changed: J:\\PROG\\battlestations-pacific-decompile-orch2-az-promotion-review\\local\\anchor-mutation01\\fixed_expected.json",
+      "gate_sha256": "0532bb0fdd010f35f82c3cdb2bd6bae01d57c2abf7629df7967da7527a187a00",
+      "scope": "isolated synthetic anchor; no candidate or real fixture modified"
+    }
+  ],
+  "findings": [
+    {
+      "id": "AZ-R1",
+      "severity": "promotion_gate_required",
+      "topic": "direct_object_freshness",
+      "finding": "Raw replay standalone objects are absent from build proof artifacts and lack archive-member equality.",
+      "required_control": "Require unique equality to strict-proof-pinned core library members for all directly linked current game objects.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    },
+    {
+      "id": "AZ-R2",
+      "severity": "promotion_gate_required",
+      "topic": "head_and_header_stability",
+      "finding": "Raw and compressed helpers record final HEAD only and do not seal observed headers before and after compilation.",
+      "required_control": "Pin clean full HEAD and current dependency bytes before the build, then recheck before and after each replay.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    },
+    {
+      "id": "AZ-R3",
+      "severity": "scope_and_gate_required",
+      "topic": "linked_source_closure",
+      "finding": "Runtime only observes probe repository headers; compressed excludes extra archive support from explicit object list.",
+      "required_control": "Map all linked BSP archive members through actual project sources and pin their current dependencies; retain honest source-only/shared-support limits.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    },
+    {
+      "id": "AZ-R4",
+      "severity": "promotion_gate_required",
+      "topic": "captured_expectation_anchor",
+      "finding": "Raw, compressed and runtime basis manifests and expected results are writable in the worker delivery.",
+      "required_control": "Retain a reviewed read-only fixture/helper anchor independently of candidate outputs and reject any later byte change.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    },
+    {
+      "id": "AZ-R5",
+      "severity": "scope_and_gate_required",
+      "topic": "device_source_compilation",
+      "finding": "Device targets are freshly compiled copied candidate sources, and the fixture baseline argument is optional.",
+      "required_control": "Require fixed original input/outcome baseline, source copy equality and fresh compile evidence; separate target compilation from archived shared support.",
+      "resolution": "Worker revised helper now requires baseline and links exact copied candidate objects; only probe is compiled. Gate unique archive-member verification applies.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    },
+    {
+      "id": "AZ-R6",
+      "severity": "promotion_gate_required",
+      "topic": "attempt_retention",
+      "finding": "All five reviewed development attempts include writable retained inputs and use differing HEADs.",
+      "required_control": "Perform all final replays at one clean HEAD, then seal the complete physical file set read-only.",
+      "disposition": "controlled_by_reviewed_gate_and_required_final_run"
+    }
+  ],
+  "final_gate_review": {
+    "status": "accepted_static_review",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\validate_native_az_promotion.py",
+    "sha256": "32f424e2815e4dc7adebb6b37cf8778a57ca7d09fd31b41975e2fdce96edd5c2",
+    "requires_prior_read_only_fixture_anchor": true,
+    "full_head_clean_before_after_and_post_seal": true,
+    "strict_build_proof_reused_without_modification": true,
+    "prebuild_compiler_recorded_files_include_external_dependencies": true,
+    "all_current_linked_and_direct_objects_require_unique_archive_member_equality": true,
+    "expected_results_never_derived_from_candidate_output": true,
+    "gate_anchor_and_imported_helper_sources_retained": true,
+    "physical_file_set_and_hashes_sealed_read_only": true,
+    "final_acceptance": "Separate immutable -receipt.json after post-seal validation; payload validation.json alone is not final acceptance.",
+    "post_seal_failure": "External -rejected.json; sealed payload unchanged.",
+    "initial_finalization_defect": {
+      "reproduced_gate_sha256": "0532bb0fdd010f35f82c3cdb2bd6bae01d57c2abf7629df7967da7527a187a00",
+      "result": {
+        "name": "second_seal_after_failure",
+        "rejected": true,
+        "type": "FileExistsError",
+        "message": "[Errno 17] File exists: 'J:\\\\PROG\\\\battlestations-pacific-decompile-orch2-az-promotion-review\\\\local\\\\gate-boundaries01\\\\seal-retry\\\\sealed-files.json'"
+      },
+      "disposition": "fixed_in_reviewed_gate"
+    },
+    "finalization_check": {
+      "gate_sha256": "32f424e2815e4dc7adebb6b37cf8778a57ca7d09fd31b41975e2fdce96edd5c2",
+      "repeat_unchanged_seal": "passed",
+      "original_files_read_only": true,
+      "extra_physical_file": "rejected",
+      "message": "Existing seal has missing or extra physical files",
+      "scope": "isolated scratch seal; no candidate or final promotion attempt modified"
+    },
+    "remaining_static_blockers": []
+  },
+  "final_attempt_review": {
+    "status": "pending_integrator_final_candidate_build_and_five_replays",
+    "reason": "Static review commit must be integrated before selecting final HEAD.",
+    "future_evidence_location": "ignored local review artifact and immutable promotion receipt"
+  },
+  "limits": [
+    "No original FH3/SEH validation",
+    "No installed or gameplay execution",
+    "Source-only runtime conversion and shared support are not additional original-body comparisons",
+    "Development evidence is not an exact-HEAD final promotion"
+  ]
+}

@@ -18,7 +18,9 @@ struct NativeStoredStreamConversionContext {
     // The original D691B0 table bytes must remain readable and unchanged.
     NativePhysicalStreamOpenContext* physical = nullptr;
     const volatile std::uint32_t* actual_physical_type_ids_0109dc30 = nullptr;
-    // Required together for numeric D68DB0 adopted-source streams. The shared
+    // Required together for numeric D68DB0 adopted-source and D64400 raw
+    // inflater streams. Both use the same original file type query BB8B80.
+    // The shared
     // file descriptor has two IDs; its third DWORD is a name address.
     NativeAdoptedSubstreamDispatch* adopted_substreams = nullptr;
     const volatile std::uint32_t* actual_file_type_ids_0109db58 = nullptr;
@@ -56,6 +58,9 @@ void dispatch_native_memory_stream_seek(void* actual_stream,
 // rewritten. Physical conversion uses current type/seek/cached-size/read slots,
 // ignores seek/read status and leaves the source cursor changed. Other numeric
 // D68DB0 owners use the explicit adopted-source dispatch and current file IDs.
+// D64400 owners use that same borrowed dispatch/IDs and the reconstructed raw
+// inflater seek/length/read methods. Numeric D64400 never enters callable-code
+// fallback; unbound dispatch/IDs or changed numeric slots are source errors.
 // Other numeric owner classes require their own concrete binding.
 void* convert_native_stored_stream_00bef750(void* actual_source,
     NativeStoredStreamConversionContext&);

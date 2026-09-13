@@ -1,29 +1,172 @@
 {
   "packet": "orch6_world_registration_live_n",
-  "status": "runtime implementation awaiting N dependency integration and combined validation",
+  "status": "integrated_build_and_process_tested_normal_registration_binding",
   "source": "src/game_hosts_units.cpp",
   "header": "include/bsp/game_hosts_units.hpp",
   "calls": [
-    {"address":"00484546","native":"00BF681B","function":"00484540","binding":"normal12-byte node allocation; native null-return and EH behavior not emulated"},
-    {"address":"004CB076","native":"00BF7CD1","function":"004CB030","binding":"native vector constructor evidence for97 triples, constructor004B7EC0"},
-    {"address":"009288F1","native":"unit+vtable130","function":"00928860","kind":"indirect","binding":"21 actual descriptor creators map to constructor-proven primary tables and registrars; tables checked in N report"}
+    {
+      "address": "00484546",
+      "native": "00BF681B",
+      "function": "00484540",
+      "binding": "normal12-byte node allocation; native null-return and EH behavior not emulated"
+    },
+    {
+      "address": "004CB076",
+      "native": "00BF7CD1",
+      "function": "004CB030",
+      "binding": "native vector constructor evidence for97 triples, constructor004B7EC0"
+    },
+    {
+      "address": "009288F1",
+      "native": "unit+vtable130",
+      "function": "00928860",
+      "kind": "indirect",
+      "binding": "21 actual descriptor creators map to constructor-proven primary tables and registrars; tables checked in N report"
+    }
   ],
   "producer_evidence": {
-    "parent_store":"00925906 copies native world argument into unit+30h",
-    "triple_constructor":"004B7EC0..004B7ECC clears count/head/tail",
-    "constructor_argument":"004CB065 PUSH004B7EC0",
-    "destructor_argument":"004CB060 PUSH004C2D30",
-    "node_sequence":"00484554..00484594 preserves payload,prev,next,head,tail,count order"
+    "parent_store": "00925906 copies native world argument into unit+30h",
+    "triple_constructor": "004B7EC0..004B7ECC clears count/head/tail",
+    "constructor_argument": "004CB065 PUSH004B7EC0",
+    "destructor_argument": "004CB060 PUSH004C2D30",
+    "node_sequence": "00484554..00484594 preserves payload,prev,next,head,tail,count order"
   },
-  "dependencies":["reports/unit_world_registration.json"],
-  "no_ghidra_function":[],
-  "abi_compatible":false,
-  "game_validated":false,
-  "limits":[
+  "dependencies": [
+    "reports/unit_world_registration.json"
+  ],
+  "no_ghidra_function": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
     "The runtime registry is a semantic mission owner, not a raw4BCh native world.",
     "Full placement, parent locking, activation/hierarchy links and scene-node construction remain separate.",
     "Native allocator null-return behavior, EH unwind and world/observer teardown are not claimed.",
     "Candidate collection, RNG/timer/lock and complete observer ownership are not enabled by this binding.",
     "Original-byte registrar fixtures and actual runtime list audits establish separate scopes."
-  ]
+  ],
+  "validation": {
+    "compiled_commit": "6978250300d3dbcb59ca24c4ac631f6291ff8f7e",
+    "exe_sha256": "c9fa74b9bd9bcde831e7c50448da557db94e96c04182c4db34f1fdb3728fdb3d",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2 existing tests passed",
+    "process_run": {
+      "compiled_commit": "6978250300d3dbcb59ca24c4ac631f6291ff8f7e",
+      "run_commit": "6978250300d3dbcb59ca24c4ac631f6291ff8f7e",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_69782503.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_n.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_n.csv"
+      ],
+      "exe_sha256": "c9fa74b9bd9bcde831e7c50448da557db94e96c04182c4db34f1fdb3728fdb3d",
+      "preserved_executable": "local\\orch6_combined_69782503.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "68261da96ddb13ad78764ea022c8a4f9a48997f840d9a83cf464865b17ce3f0f",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.900736808776855,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "scope": "Original-byte worker fixtures and the combined reconstructed process establish separate scopes; neither proves original-game visual/gameplay equivalence."
+  }
 }

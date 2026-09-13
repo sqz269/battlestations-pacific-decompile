@@ -13,12 +13,14 @@ struct NativeRetainedMemoryOwnerContext;
 struct NativePhysicalProviderContext;
 struct NativeFileAccessLogLifetimeBindings;
 struct NativeMpkgProviderContext;
+struct NativeMpakRuntimeContext;
 // Concrete source dispatch for verified native manager/provider/stream methods.
 // Owners retain their original numeric vtable words. The corresponding native
 // table bytes must be readable at those addresses, as required by the existing
 // physical and mount-lookup consumers; no original code is called through them.
 // Supports D685B4/D68D04 managers, D69168 physical and D689E8 FileStore providers,
-// D691B0 physical, D642C0 memory and D68DB0 adopted-source streams. Other profiles/slots are
+// D641F8 MPAK providers, and D691B0 physical, D642C0 memory, D68DB0 adopted-source
+// and D64400 raw inflater streams. Other profiles/slots are
 // explicit source boundaries. Factory creation and manager destruction reuse
 // the actual provider owners. The optional borrowed contexts are required for
 // physical factory/deletion and logger deletion respectively. No private pool,
@@ -53,9 +55,13 @@ public:
     void* open_manager_entry(std::uintptr_t entry,void* manager,
         const void* actual_name,std::uint32_t flags);
     std::uint64_t stream_length_entry(std::uintptr_t entry,void* stream);
+    std::uint64_t stream_position_entry(std::uintptr_t entry,void* stream);
     // Explicit borrowed connection permits constructing the actual recursive
     // manager/archive service graph. Return the previous binding for disposal.
     NativeMpkgProviderContext* bind_mpkg_provider(NativeMpkgProviderContext*) noexcept;
+    NativeMpakRuntimeContext* bind_mpak_provider(NativeMpakRuntimeContext*) noexcept;
+    void restore_mpak_provider(NativeMpakRuntimeContext* installed,
+        NativeMpakRuntimeContext* previous) noexcept;
     std::uint32_t stream_size_low(void* stream,std::uint32_t argument);
     void log_open(void* manager,const void* name,void* stream,std::uint32_t mount_byte);
     void* factory_create(std::uintptr_t captured_entry, void* actual_factory,
@@ -74,6 +80,7 @@ private:
     NativePhysicalProviderContext* provider_;
     NativeFileAccessLogLifetimeBindings* log_lifetime_;
     NativeMpkgProviderContext* mpkg_{};
+    NativeMpakRuntimeContext* mpak_{};
     NativeVfsRuntimeBindings* previous_;
     NativeAdoptedSubstreamDispatch* previous_substreams_;
 };

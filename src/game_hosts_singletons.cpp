@@ -31,6 +31,9 @@ void GameSingletonHost::bind_input_backend(NativeInputBackendOwnerContext* conte
 void GameSingletonHost::bind_input_actions(NativeInputActionOwnerContext* context) noexcept {
     deletion_bindings_.input_actions = context;
 }
+void GameSingletonHost::bind_observer_lifetime(NativeObserverLifetime* lifetime) noexcept {
+    deletion_bindings_.observer_lifetime = lifetime;
+}
 
 void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     void* const owner = get_native_gameplay_effect_manager_004c1650(

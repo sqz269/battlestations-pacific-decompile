@@ -199,3 +199,13 @@ the derivation, the writer scan and the neighbouring fields.
 | start | end (inclusive) | evidence |
 | --- | --- | --- |
 | none | | Every routine this packet reconstructed has a Ghidra function whose body range the bridge reports: `009F3F80-009F4D06`, `0080E170-0080E18A`, `0080E190-0080E1AA`, `009DA250-009DA3A4`, `00415620-0041565E`, `006BC0C0-006BC111`. The one address in the brief that lies outside any function, `009EA839`, is a correction above and nothing here depends on it; no boundary is claimed for it |
+
+## Correction from docs/SHIP_AI_THROTTLE_CLAMP.md
+
+The public00415620 clamp retains an unordered value. In00811D80 an unordered
+upper bound takes the ordinary clamp arm; only an ordered negative bound
+swaps bounds and negates the result. The corrected source preserves these
+branches without changing the existing distance expression or API. Eighteen
+selected original-byte comparisons at PC24/PC53 pass; the prior source fails
+twelve of them. This is bounded masked-NaN evidence, not every-input floating
+point, native pointer-read ordering, unmasked exceptions or gameplay parity.

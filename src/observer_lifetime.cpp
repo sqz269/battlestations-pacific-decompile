@@ -1,5 +1,7 @@
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_edges.hpp"
+#include "bsp/native_renderer_worker_lifetime.hpp"
+#include "bsp/native_tracked_critical_section_release.hpp"
 #include <algorithm>
 #include <cstring>
 #include <new>
@@ -17,23 +19,6 @@ template<class T> T** offset(T** p, std::uint32_t count) noexcept {
     return reinterpret_cast<T**>(address(p) + count * 4u);
 }
 
-class ManagerGuard final {
-public:
-    explicit ManagerGuard(SystemSingletonCriticalSection* section) : section_(section) {
-        if (section_) {
-            singleton_enter_critical_section(*section_);
-            ++section_->recursion_18;
-        }
-    }
-    ~ManagerGuard() {
-        if (section_) {
-            --section_->recursion_18;
-            singleton_leave_critical_section(*section_);
-        }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
 class ObserverGuard final {
 public:
     explicit ObserverGuard(TrackedCriticalSection* section) : section_(section) {
@@ -140,7 +125,7 @@ void erase_observer_edge_00694f60(
     slots.count_04 = count;
 }
 
-NativeObserverLifetime::NativeObserverLifetime(SingletonLifetimeDomain& domain,
+NativeObserverLifetime::NativeObserverLifetime(SoundLifetimeAccess domain,
     NativeObserverLockOwner* volatile& lock,
     NativeObserverDispatchStorage* volatile& dispatch,
     ObserverLifetimeServices& services) noexcept
@@ -151,7 +136,7 @@ NativeObserverLockOwner* NativeObserverLifetime::initialize_lock_owner_00694200(
     auto* owner = ::new (storage) NativeObserverLockOwner;
     owner->native_vtable_00 = lock_table;
     try {
-        owner->section_04 = critical_section_create_00bd1860();
+        owner->section_04 = create_native_tracked_critical_section_00bd1860();
     } catch (...) {
         // 00C7E910 jumps to the actual base cleanup at 00693C50.
         unwind_lock_owner_00693c50(*owner);
@@ -166,7 +151,7 @@ void NativeObserverLifetime::unwind_lock_owner_00693c50(NativeObserverLockOwner&
 NativeObserverLockOwner* NativeObserverLifetime::delete_lock_owner_00694ea0(
     NativeObserverLockOwner* owner, std::uint32_t flags) {
     owner->native_vtable_00 = lock_table;
-    critical_section_destroy_owned_0041cc80(owner->section_04);
+    release_native_tracked_critical_section_0041cc80(&owner->section_04);
     global_00e198e0_ = nullptr;
     owner->native_vtable_00 = simple_owner_table;
     if (flags & 1u) singleton_lifetime_free(owner);
@@ -175,7 +160,7 @@ NativeObserverLockOwner* NativeObserverLifetime::delete_lock_owner_00694ea0(
 NativeObserverLockOwner* NativeObserverLifetime::lock_owner_00694280() {
     if (auto* current = global_00e198e0_) return current;
     {
-        ManagerGuard guard(domain_.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection guard(domain_);
         if (!global_00e198e0_) {
             void* storage = singleton_lifetime_allocate({
                 SingletonAllocationKind::object, 8, sizeof(NativeObserverLockOwner)});
@@ -187,7 +172,7 @@ NativeObserverLockOwner* NativeObserverLifetime::lock_owner_00694280() {
                 throw;
             }
             global_00e198e0_ = owner;
-            auto* manager = domain_.get_manager_00415350();
+            auto manager = domain_.get_manager_00415350();
             manager->register_object(global_00e198e0_);
         }
     }

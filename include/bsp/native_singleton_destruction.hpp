@@ -13,13 +13,14 @@ struct NativeVfsManagerLifetimeContext;
 struct NativeFileStoreFactoryContext;
 struct NativeMpakFactoryContext;
 struct NativePakRegistryContext;
+class NativeObserverLifetime;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C or D6418C. D0DA64
+// D688B0, CFEA1C, D6418C or CF7E70. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -51,8 +52,12 @@ struct NativeSingletonDeletionBindings {
     NativeMpakFactoryContext* mpak_factory{};
     // D6418C is the registered PAK registry+8;BB4FF0 adjusts -8.
     NativePakRegistryContext* pak_registry{};
+    // CF7E70 deletes the observer lock through00694EA0. This lifetime borrows
+    // the same application manager and actualE198E0 publication as construction
+    // and must remain alive through drain; the popped owner is passed directly.
+    NativeObserverLifetime* observer_lifetime{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 52);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 56);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/observer_lifetime.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_backend_owner.hpp"
@@ -139,6 +140,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.mpak_factory != nullptr) {
             delete_native_mpak_factory_secondary_00735d30(owner, flags,
                 *bindings.mpak_factory);
+            return;
+        }
+        break;
+    case 0x00cf7e70:
+        if (bindings.observer_lifetime != nullptr) {
+            bindings.observer_lifetime->delete_lock_owner_00694ea0(
+                static_cast<NativeObserverLockOwner*>(owner), flags);
             return;
         }
         break;

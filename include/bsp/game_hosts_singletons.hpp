@@ -26,6 +26,9 @@ public:
     void bind_xlive_owner(XLiveOwnerAllocation*) noexcept;
     void bind_input_backend(NativeInputBackendOwnerContext*) noexcept;
     void bind_input_actions(NativeInputActionOwnerContext*) noexcept;
+    // Borrow the observer lifetime before its lock registers. It must use this
+    // host's actual publication access and remain alive until shutdown returns.
+    void bind_observer_lifetime(NativeObserverLifetime*) noexcept;
     // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
     // then clear its actual publication, while all bindings remain alive.
     void shutdown();
