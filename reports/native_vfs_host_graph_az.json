@@ -1,0 +1,23 @@
+{
+  "packet": "orch4_raw_vfs_host_graph_az",
+  "revision": "320f7031",
+  "status": "read-only-source-dependency-audit",
+  "native_address_ownership": [],
+  "source_modifications": [],
+  "report": "docs/NATIVE_VFS_HOST_GRAPH_AZ.md",
+  "observed_executable": "GameVfsHost constructs a projected VfsProviderManager and factory tokens; no raw 0109CEEC owner or NativeVfsRuntimeBindings composition is wired there.",
+  "required_edges": [
+    "Actual 01090AA0 singleton domain, 01090AA8 pool and 01090AA4 gate, actual string storage and canonicalizer",
+    "Actual 0109CEEC manager, 0109CEE8 log, raw A0h owner, physical/FileStore/MPKG/MPAK factories and deletion bindings",
+    "Retained open/lookup/physical/conversion/logging/memory contexts and NativeVfsRuntimeBindings",
+    "Exact readable original numeric vtable data for each reached profile and slot",
+    "Concrete MPAK container, open and directory-search libraries for valid MPAK behavior"
+  ],
+  "next_packets": [
+    "Disjoint raw table-data and owner-composition source packet after byte/address proof",
+    "Disjoint missing MPAK library and any reached unsupported method packets under new native leases",
+    "Game-host Phase 2/6 raw manager and input Lua wiring after dependency-complete graph"
+  ],
+  "calls": [],
+  "validation": "Source-only inspection at 320f7031; no build, game run, or runtime claim."
+}
