@@ -125,3 +125,15 @@ The immutable checkpoint is `local/checkpoints/6fbdee9e/compiler-leaves-default/
 declarations continue in separate leased worktrees. These integrated helpers do
 not install the full native source generator or a successful B3B3C0 continuation;
 native FH3, full material compilation, rendering parity and gameplay remain unproven.
+
+## Validation after concurrent string-storage integration
+
+The later shared checked-string/input-settings code was merged before another
+default build and a fresh run of all 15 focused fixture programs. Both CTests and
+all 15 fixtures passed at `fa6211f1`. The final validated revision is
+`fa6211f1`; all seven accepted component source/header/report hashes remain
+unchanged. No result from the earlier library was substituted for this fresh run.
+The immutable final checkpoint is `local/checkpoints/fa6211f1/compiler-leaves-final/validation.json` (174 artifacts), including
+the changed shared storage sources. The earlier 167-artifact checkpoint remains
+preserved. This refresh changes neither the reconstruction scope nor the stated
+native ABI, FH3, full compiler and gameplay limits.

@@ -1,33 +1,26 @@
 {
   "scope": "Actual compiler fields, interpolators, registry, reflection, constant headers, vertex compilation and cube/volume loading",
-  "validated_code_commit": "6fbdee9ea9a9d33062e7976f230280592079ac16",
+  "validated_code_commit": "fa6211f1cf1c0b36138b4f706ad9ba7c280f4fc5",
   "default_registration": true,
   "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
   "checkpoint": {
+    "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
+    "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
+    "artifacts": 174
+  },
+  "previous_default_checkpoint": {
     "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
     "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
     "artifacts": 167
   },
-  "previous_default_checkpoint": {
-    "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
-    "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
-    "artifacts": 146
-  },
   "fixture_programs": 15,
-  "fixture_origin_commit": "44d9fdfd9231af0db8606a8d04a739fcc2c9442b",
+  "fixture_origin_commit": "fa6211f1cf1c0b36138b4f706ad9ba7c280f4fc5",
   "fixture_equivalence_after_metadata_merge": {
-    "metadata_only_changed_paths": [
-      "docs/ORCH6_RECONSTRUCTION_S.md",
-      "reports/game_hud_world_detach.json",
-      "reports/game_pending_entity_binding.json",
-      "reports/orch6_reconstruction_s.json",
-      "reports/pending_entity_lock_flow_repair.json",
-      "reports/pending_entity_lock_function_definitions.json"
-    ],
+    "metadata_only_changed_paths": [],
     "all_three_library_hashes_unchanged": true,
     "all_40_runner_and_fixture_input_hashes_unchanged": true
   },
-  "registered_library_sha256": "0235492086855d44de1e6cc6e8fdb97ad05254f85229576f0b0288d083295ec5",
+  "registered_library_sha256": "3fbd3ce7391b6555b4efb3bbf01fd1664b1c771b720eb1d9ce63ad9096a41513",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -183,5 +176,17 @@
     "Actual B61280 pixel compilation and usage parsing in agent/orch5-native-pixel-compile.",
     "Actual B34F20/B35030/B385B0/B38B50 line and struct declarations in agent/orch5-native-struct-declarations.",
     "Native B39110/B39880 source generation and full B3B3C0 continuation still require composition."
+  ],
+  "previous_default_checkpoints": [
+    {
+      "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
+      "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
+      "artifacts": 146
+    },
+    {
+      "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
+      "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
+      "artifacts": 167
+    }
   ]
 }
