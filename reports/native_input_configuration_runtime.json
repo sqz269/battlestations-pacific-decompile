@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_configuration_complete_ar",
-  "status": "complete_normal_raw_input_loader_component_validated_integration_pending",
+  "status": "complete_normal_raw_input_loader_strict_win32_native_composition_fixture_passed_application_providers_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -1527,5 +1527,33 @@
       3,
       -1
     ]
-  }
+  },
+  "final_validation": {
+    "utc": "2026-09-13T08:11:16.892080+00:00",
+    "source_revision": "f7bf03b1e92f9ec331e8b27022f3152f322eac40",
+    "merged_main_revision": "c9eb467adba6d598e6a9b9cbaf07e765b25f6363",
+    "code_files": 2303,
+    "code_manifest": "local\\input_configuration_runtime_ar_source_manifest.json",
+    "code_manifest_sha256": "72a2a87edd0d770c6147c55cba90bd88de0a0d9d7952b1fcd1d0786326acddd3",
+    "core_archive_sha256": "80666ce4bf7a4daaea2b3efa6ed082011d265c02af1db81d1ba00382488fcc21",
+    "game_executable_sha256": "0c045dbd1be32012f4c6a4a1a5969ada6c6aa4d6ace361a8fde1221c12294570",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_configuration_runtime_ar_combined_build.log",
+    "build_log_sha256": "973533b7732242c705697d957173fc0f7b5cb1ea48243afe79c9cde21a76c846",
+    "fixture_log": "local\\input_configuration_runtime_ar_combined_probe.log",
+    "fixture_log_sha256": "5b8583a3a4c739792b7d7ac89cc98026ce9149f653d084280c04ff4cb8a0896f",
+    "native_source_words_equal": 106214,
+    "calls_checked": 183,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "source_raw_manager_settings_drain_passed": true,
+    "post_tick_live_flag_and_source_failure_passed": true,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "fixture_settings_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+  "fixture_runner_sha256": "ca3bf315d5472602b65aa8226ff455d4991e673534d7831991e0b0cf46caf592"
 }
