@@ -1,0 +1,31 @@
+{
+  "packet": "orch4_mpak_lookup_storage_az",
+  "status": "bounded-source-implementation",
+  "revision": "320f7031",
+  "source": "src/native_mpak_lookup_storage.cpp",
+  "header": "include/bsp/native_mpak_lookup_storage.hpp",
+  "documentation": "docs/NATIVE_MPAK_LOOKUP_STORAGE_AZ.md",
+  "roots": [
+    {"address":"00bb4140","abi":"ECX vector, stack DWORD index, EAX record pointer, RET4","coverage":"full normal body and returning invalid-parameter continuation"},
+    {"address":"00bb4f40","abi":"ECX first row, EDX captured end, stack key, EAX row/end, RET4","coverage":"full normal body"},
+    {"address":"005efba0","abi":"ECX member vector, stack name key, EAX signed index/-1, RET4","coverage":"full normal body over actual 8h entries"}
+  ],
+  "calls": [
+    {"function":"00bb4140","address":"00bb4169","native":"00bf6713"},
+    {"function":"00bb5330","address":"00bb533c","native":"00bb4f40"},
+    {"function":"00bb5bb0","address":"00bb5c93","native":"00bb4140"},
+    {"function":"00bb4f40","address":"00bb4f54","native":"005efba0"},
+    {"function":"00bb68f0","address":"00bb696f","native":"00bb4f40"},
+    {"function":"00be84a0","address":"00be84c4","native":"005efba0"},
+    {"function":"00be9060","address":"00be90b3","native":"005efba0"},
+    {"function":"005f42d0","address":"005f4375","native":"005efba0"},
+    {"function":"005f42d0","address":"005f43b2","native":"005efba0"},
+    {"function":"005efba0","address":"005efbe5","native":"00bf7fbf"}
+  ],
+  "uncertainty": [
+    "Returning validation without repairing the file vector retains native invalid-access behavior.",
+    "Generic 005EFBA0 has non-MPAK callers; only its MPAK use is integrated here.",
+    "No NativeMpakContainerLibrary, raw host, archive execution, or game behavior is supplied."
+  ],
+  "validation": "MSVC Win32 Release ./scripts/build.ps1 passed; existing reconstructed_math CTest 1/1 passed. CALL verifier 10/10 passed. No archive or game execution."
+}
