@@ -1,0 +1,12 @@
+{
+  "packet": "orch6_volatile_reference_adoption_w",
+  "address": "0054D510",
+  "source": "src/sound_retained_factory.cpp",
+  "header": "include/bsp/sound_retained_factory.hpp",
+  "documentation": "docs/VOLATILE_REFERENCE_ADOPTION.md",
+  "change": "Preserve actual volatile pointer-slot qualification through a new canonical overload; existing unqualified interface delegates with qualification added.",
+  "behavior": "One old-slot read, required old reference release, callback-following clear, then no-retain replacement; no same-pointer shortcut.",
+  "native_reuse": "00484620 full body and InterlockedDecrement/virtual0 graph proof belongs to the active X provider packet; not claimed by this source-only interface change.",
+  "validation": "Pending combined W Win32 build and existing CTests. X original-byte adapter fixture remains separate.",
+  "limits": ["No new ownership, synchronization or release implementation.", "Existing VoiceReferenceHost contract remains required.", "Native EH, stack aliases and concurrent access remain unproved."]
+}
