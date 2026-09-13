@@ -2,6 +2,7 @@
 #include "bsp/native_node_pool_owner.hpp"
 
 #include <cstdlib>
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native model-base bootstrap requires MSVC Win32.
@@ -38,6 +39,12 @@ AllocatorListDomain* actual_model_base_list;
 
 void bind_static_model_base_node_pool_0109008c(void* pool,
     AllocatorListDomain& list) {
+    if (!pool) throw std::invalid_argument("model-base pool storage is null");
+    if (actual_model_base_pool) {
+        if (actual_model_base_pool != pool || actual_model_base_list != &list)
+            throw std::logic_error("model-base pool binding cannot change");
+        return;
+    }
     list.bind_virtual0(*static_cast<AllocatorListElement*>(pool),
         {pool_profile, 0x00b6ea60u, pool, &invoke_trim});
     actual_model_base_pool = pool;

@@ -24,9 +24,10 @@ D62C78/B6EA60 trim dispatch before list publication. CD7F20 initializes
 through B6E980, then registers CE0E60 with `std::atexit`; failure returns the
 actual registration status and leaves the pool initialized. CE0E60 destroys
 that same owner through B6E3D0 and removes its host trim binding. The raw owner
-and allocator domain must remain alive until this callback runs. Binding and
-startup are single process-lifetime operations; rebinding a live owner is not
-covered. The 0108FF58 plain-node pool binding is separate.
+and allocator domain must remain alive until this callback runs. Binding
+rejects null and any later change of pool or list identity. Native startup and
+registered exit are a single lifecycle; manually destroying a registered pool
+would leave an invalid callback. The 0108FF58 plain-node binding is separate.
 
 Numeric edges: CD7ECF→B6F110, CD7EEA→006FAC20, CD7F25→B6E980,
 CD7F2F→BF6FF5, CE0E65→B6E3D0. CRT cells CE356C and CE3574 establish table

@@ -32,7 +32,9 @@ private:
 
 // Host binding for the separate actual38h pool at0109008C. Raw storage and the
 // SAME E188B4 domain must survive registration and its process-exit callback.
-// Bind before startup; this does not construct or publish the pool.
+// Bind once before startup; identity is fixed through process exit. Null or
+// different storage/domain is rejected; rebinding the same pair is a no-op.
+// This does not construct or publish the pool.
 void bind_static_model_base_node_pool_0109008c(void* actual_pool,
     AllocatorListDomain& actual_list);
 
