@@ -48,3 +48,5 @@ relocations. Exact inputs, outputs, source, tools, headers, libraries and object
 are retained under `local/` with hashes; build and call checks are in the report.
 The fixture uses recording providers and does not execute their native bodies.
 Native exceptions, actual scene binding and gameplay equivalence remain unproved.
+
+Correction from `docs/NATIVE_UNIT_KILLED_BASE.md`: the complete base handler evaluates the trace arguments, but its `004254B0` target is a literal one-byte RET and emits no log. The older semantic implementation's `log_entity_killed` call is not evidence of native logging. The required base contract remains the complete native Lua/state/detach sequence; the earlier table's "Lua/log/detach" wording is superseded by this correction.

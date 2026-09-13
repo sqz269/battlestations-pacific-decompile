@@ -45,7 +45,8 @@ struct NativeUnitKilledTailHost {
     virtual void mark_recon_slot_dirty_00803ba0(std::int32_t index) = 0;
 
     // 00779B58 JMP 00928C80, ECX=the original unit. Requires the COMPLETE base
-    // Lua/log/detach handler. mission_entity_on_killed_00928c80 is only partial
+    // Lua/state/detach handler. Native004254B0 is a literal RET, not a logger.
+    // mission_entity_on_killed_00928c80 is only partial
     // and cannot supply this contract alone. No work follows this delegation.
     virtual void on_killed_00928c80(void* canonical_unit) = 0;
 };
