@@ -38,6 +38,7 @@
 #include "bsp/unit_instance.hpp"
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_kind_query.hpp"
+#include "bsp/unit_world_registration.hpp"
 #include "bsp/unit_generic_input_phase.hpp"
 #include "bsp/tick_element_overrides.hpp"
 #include "bsp/unit_order_record.hpp"
@@ -46,6 +47,7 @@
 #include "bsp/unit_state_message.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/world_ocean.hpp"
+#include "bsp/world_construct.hpp"
 
 #include <cfloat>
 #include <cmath>
@@ -168,6 +170,42 @@ bool parse_order_position(const std::string& text, float& x, float& z) {
 // the comparison use the same number.
 constexpr int kBuoyancyElementCount = 8;
 
+struct GameUnitSlot;
+
+// Persistent list/node storage for the existing mission world registry.
+// These triples reproduce the fields consumed by00484540 and009F1877;
+// the enclosing C++ owner is not a raw4BCh native world object.
+struct GameUnitWorldNode {
+    GameUnitWorldNode* previous{};
+    GameUnitWorldNode* next{};
+    GameUnitSlot* unit{};
+};
+struct GameUnitWorldList {
+    std::uint32_t count{}; //004B7EC0 clears all three words
+    GameUnitWorldNode* head{};
+    GameUnitWorldNode* tail{};
+};
+static_assert(sizeof(GameUnitWorldNode) == 0x0c);
+static_assert(offsetof(GameUnitWorldNode, unit) == 8);
+static_assert(sizeof(GameUnitWorldList) == 0x0c);
+struct GameUnitWorldLists {
+    GameUnitWorldList entries[bsp::kWorldSlotCount];
+    GameUnitWorldLists() = default;
+    GameUnitWorldLists(const GameUnitWorldLists&) = delete;
+    GameUnitWorldLists& operator=(const GameUnitWorldLists&) = delete;
+    // Process resource cleanup. This does not claim native world teardown,
+    // observer notification or entity detach callback ordering.
+    ~GameUnitWorldLists() {
+        for (GameUnitWorldList& list : entries) {
+            while (list.head != nullptr) {
+                GameUnitWorldNode* node = list.head;
+                list.head = node->next;
+                delete node;
+            }
+        }
+    }
+};
+
 struct GameUnitSlot {
     GameUnitSlot() {
         //00928713..00928748: current assignments, not the +188h policy table.
@@ -176,6 +214,8 @@ struct GameUnitSlot {
 
     GameUnitRow row;
     UnitMotionDispatch motion_dispatch;
+    GameUnitWorldLists* world_parent_0030{};
+    std::size_t process_index{}; // metadata, not a native unit field
     // This unit owns the canonical current roles for every process consumer.
     // Actual 4Bh receive-side assignment and its side effects remain pending.
     std::int32_t current_roles_01ac[bsp::kUnitRoleTableEntries];
@@ -311,40 +351,83 @@ struct GameUnitsHost::Impl {
     // Milestone 2s: the world registry's per-class unit lists, the 97 triples
     // at [[00E188A8]+19CCh] + 18h + id*0Ch that 004CB076's vector-constructor
     // iterator builds inside 004CB030 BSP_World_Construct. Each triple is
-    // {count, head, tail} and 00484540 BSP_UnitList_PushBack appends to it, so
-    // the vector of indices below is that list in its own insertion order.
+    // {count, head, tail};00484540 appends stable nodes holding direct unit
+    // identities. The registry remains the same mission-owned object.
     // Only the ids a unit's +130h override joins are ever non-empty here.
-    static constexpr int kWorldListCount = 97;  // PUSH 0x61 at 004CB076
-    std::vector<std::size_t> world_lists[kWorldListCount];
+    static constexpr int kWorldListCount = static_cast<int>(bsp::kWorldSlotCount);
+    GameUnitWorldLists world_lists;
 
     // 00484540, __thiscall void(list, void* value), RET 4. The node is
     // {prev, next, value}; the empty branch at 00484586 writes the head and the
     // other at 00484572 chains from the tail, and both set the tail and
-    // ADD dword ptr [ESI],1. Nothing here needs the node identity, so the list
-    // is its values in order.
-    void world_list_push_back_00484540(int class_id, std::size_t unit_index) {
-        if (class_id < 0 || class_id >= kWorldListCount) return;
-        world_lists[class_id].push_back(unit_index);
+    // ADD dword ptr [ESI],1. Consumers can retain a node and reload its next
+    // link after a callback, as the native candidate loop does.
+    void world_list_push_back_00484540(GameUnitWorldLists& parent,
+        std::uint32_t offset, GameUnitSlot& unit) {
+        if (offset < bsp::kWorldSlotArrayOffset
+            || (offset - bsp::kWorldSlotArrayOffset) % bsp::kWorldSlotStride != 0
+            || (offset - bsp::kWorldSlotArrayOffset) / bsp::kWorldSlotStride
+                >= bsp::kWorldSlotCount) {
+            throw std::logic_error("invalid recovered world list offset");
+        }
+        GameUnitWorldList& list = parent.entries[
+            (offset - bsp::kWorldSlotArrayOffset) / bsp::kWorldSlotStride];
+        //00484546 allocates12;54..59 zero words,66 payload,6C previous;
+        //75 old-tail next or86 head, then tail/next/count stores.
+        auto* node = new GameUnitWorldNode{};
+        node->unit = &unit;
+        node->previous = list.tail;
+        if (list.count != 0) list.tail->next = node;
+        else list.head = node;
+        list.tail = node;
+        node->next = nullptr;
+        ++list.count;
         ++summary.world_list_pushes;
         done("UnitList::push_back", 0x00484540u);
     }
 
-    // 006FE620 BSP_UnitInstance_RegisterInWorldLists, the unit class's
-    // implementation of entity virtual slot +130h (00CFC3D0+130h == 00CFC500,
-    // the only reference to 006FE620 in the image). Its body is six pushes: the
-    // call of 00928560 at 006FE623, whose own body is
-    // `MOV ECX,[ECX+30h]; ADD ECX,24h; CALL 00484540`, so it joins id 1; then
-    // ids 2, 4, 5, 6 and 7.
-    void register_in_world_lists_006fe620(std::size_t unit_index) {
-        done("UnitInstance::register_in_world_lists", 0x006fe620u);
-        done("GameEntity::register_in_parent_entity_list", 0x00928560u);
-        world_list_push_back_00484540(1, unit_index);   // 00928564, ADD ECX,0x24
-        world_list_push_back_00484540(2, unit_index);   // 006FE62C, ADD ECX,0x30
-        world_list_push_back_00484540(4, unit_index);   // 006FE638, ADD ECX,0x48
-        world_list_push_back_00484540(5, unit_index);   // 006FE644, ADD ECX,0x54
-        world_list_push_back_00484540(6, unit_index);   // 006FE650, ADD ECX,0x60
-        world_list_push_back_00484540(7, unit_index);   // 006FE65C, ADD ECX,0x6C
-        ++summary.world_registrations;
+    //009288F1 dispatches the actual leaf+130h registrar after placement.
+    // All21 recovered creators first join parent list1 through00928560;
+    // their remaining lists differ. Reload the actual parent at every push.
+    void register_in_world_lists(GameUnitSlot& unit) {
+        const auto* dispatch = bsp::unit_world_registration_for_creator(
+            unit.motion_dispatch.creator);
+        if (dispatch == nullptr) {
+            ++summary.world_registration_unavailable;
+            record_slot("UnitInstance::unresolved_world_registration", "unit/vtable+130h");
+            return;
+        }
+        class Calls final : public bsp::UnitWorldRegistrationHost {
+        public:
+            explicit Calls(Impl& owner) : owner_(owner) {}
+            void* parent_0030(void* value) override {
+                return static_cast<GameUnitSlot*>(value)->world_parent_0030;
+            }
+            void push_back_00484540(void* parent, std::uint32_t offset,
+                void* value) override {
+                if (parent == nullptr) throw std::logic_error("unplaced unit registration");
+                owner_.world_list_push_back_00484540(
+                    *static_cast<GameUnitWorldLists*>(parent), offset,
+                    *static_cast<GameUnitSlot*>(value));
+            }
+        private:
+            Impl& owner_;
+        } calls(*this);
+        if (bsp::register_unit_world_lists_for_creator(calls,
+                unit.motion_dispatch.creator, &unit)) {
+            ++summary.world_registrations;
+            done("GameEntity::register_in_parent_entity_list", 0x00928560u);
+            // Keep the actual registrar in the method key: logging otherwise
+            // groups all derived routines under the first routine's address.
+            char name[72];
+            std::snprintf(name, sizeof(name), "UnitInstance::world_registration_%08lx",
+                static_cast<unsigned long>(dispatch->native_entry));
+            done(name, dispatch->native_entry);
+            log.notef("unit world registration: unit=%s creator=%08lx primary=%08lx entry=%08lx lists=%zu",
+                unit.row.name.c_str(), static_cast<unsigned long>(dispatch->creator),
+                static_cast<unsigned long>(dispatch->primary_vtable),
+                static_cast<unsigned long>(dispatch->native_entry), dispatch->list_count);
+        }
     }
     bool logged_gate{false};
     bool logged_precision{false};
@@ -1455,15 +1538,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->state->simulate = false;   // +5Dh; the list filter requires it clear
         slot->state->has_scene_node = false;  // +4A4h, 00928860 is a 2h record
         slot->state->part_count = 0;     // +A18h, the instance has no parts here
-        // Milestone 2s: the unit joins the world's per-class lists the way its
-        // own +130h override does. The dispatch site itself was not located: a
-        // byte scan of `.text` for `call dword ptr [reg + 130h]`
-        // (`ff ?? 30 01 00 00`) finds nothing, and neither do the neighbouring
-        // slots 12Ch and 134h, so the slot is cited as data rather than as a
-        // call site. The implementation body is read, and it is the evidence.
-        host.register_in_world_lists_006fe620(host.slots.size());
-        host.record_slot("UnitInstance::register_in_world_lists_dispatch",
-            "00cfc3d0+vtable130");
+        // The actual descriptor creator selects the native+130h override;
+        //009288F1 is the recovered dispatch site, not a missing caller.
+        slot->process_index = host.slots.size();
+        //00925906 stores the actual world/list owner at unit+30h. This
+        // process already owns that registry; full placement/locking and
+        // hierarchy attachment remain separate unreconstructed runtime work.
+        slot->world_parent_0030 = &host.world_lists;
+        host.register_in_world_lists(*slot);
         Impl::publish_pose(*slot);
         host.slots.push_back(std::move(slot));
     }
@@ -2196,14 +2278,29 @@ void GameUnitsHost::unit_position_00fc(std::size_t index, float& x, float& y,
 
 std::size_t GameUnitsHost::world_list_size(int class_id) const noexcept {
     if (class_id < 0 || class_id >= Impl::kWorldListCount) return 0;
-    return impl_->world_lists[class_id].size();
+    return impl_->world_lists.entries[class_id].count;
 }
 
 std::size_t GameUnitsHost::world_list_entry(int class_id, std::size_t position) const noexcept {
     if (class_id < 0 || class_id >= Impl::kWorldListCount) return impl_->slots.size();
-    const std::vector<std::size_t>& list = impl_->world_lists[class_id];
-    if (position >= list.size()) return impl_->slots.size();
-    return list[position];
+    const GameUnitWorldList& list = impl_->world_lists.entries[class_id];
+    if (position >= list.count) return impl_->slots.size();
+    const GameUnitWorldNode* node = list.head;
+    while (position-- != 0) node = node->next;
+    return node->unit->process_index;
+}
+
+const void* GameUnitsHost::world_list_head(int class_id) const noexcept {
+    if (class_id < 0 || class_id >= Impl::kWorldListCount) return nullptr;
+    return impl_->world_lists.entries[class_id].head;
+}
+
+const void* GameUnitsHost::world_list_node_unit(const void* node) noexcept {
+    return static_cast<const GameUnitWorldNode*>(node)->unit;
+}
+
+const void* GameUnitsHost::world_list_node_next(const void* node) noexcept {
+    return static_cast<const GameUnitWorldNode*>(node)->next;
 }
 
 std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); }
@@ -2554,23 +2651,44 @@ void GameUnitsHost::report() {
             static_cast<double>(row.trajectory_speed),
             static_cast<double>(row.hydro_force[1]));
     }
-    host.summary.world_class_6_list = host.world_lists[6].size();
+    host.summary.world_class_6_list = host.world_lists.entries[6].count;
     {
         // The ids a unit's +130h override joins, and how long each list is.
-        char ids[128];
+        char ids[512];
         int written = 0;
         for (int id = 0; id < Impl::kWorldListCount; ++id) {
-            if (host.world_lists[id].empty()) continue;
+            if (host.world_lists.entries[id].count == 0) continue;
             written += std::snprintf(ids + written,
                 sizeof(ids) - static_cast<std::size_t>(written), "%s%d=%zu",
-                written == 0 ? "" : " ", id, host.world_lists[id].size());
+                written == 0 ? "" : " ", id,
+                static_cast<std::size_t>(host.world_lists.entries[id].count));
             if (written >= static_cast<int>(sizeof(ids)) - 1) break;
         }
         host.log.notef("summary mission world lists registrations=%llu pushes=%llu "
-            "lists{%s} (006fe620 through 00484540; id 6 is the one 009f1877 walks for "
+            "lists{%s} (actual leaf+130h through 00484540; id 6 is the one 009f1877 walks for "
             "ship AI neighbour candidates, and nothing walks it yet)",
             host.summary.world_registrations, host.summary.world_list_pushes, ids);
     }
+    std::size_t nodes = 0;
+    std::size_t invalid_lists = 0;
+    for (const GameUnitWorldList& list : host.world_lists.entries) {
+        const GameUnitWorldNode* previous = nullptr;
+        const GameUnitWorldNode* node = list.head;
+        std::uint32_t visited = 0;
+        bool valid = true;
+        for (; node != nullptr && visited < list.count; ++visited) {
+            if (node->previous != previous || node->unit == nullptr
+                || node->unit->world_parent_0030 != &host.world_lists) valid = false;
+            previous = node;
+            node = node->next;
+        }
+        nodes += visited;
+        if (!valid || node != nullptr || visited != list.count || previous != list.tail)
+            ++invalid_lists;
+    }
+    host.log.notef("world registration owner audit: unavailable=%llu nodes=%zu invalid_lists=%zu ships=%u planes=%u",
+        host.summary.world_registration_unavailable, nodes, invalid_lists,
+        host.world_lists.entries[6].count, host.world_lists.entries[15].count);
     host.log.notef("summary mission hydrodynamics calls=%llu element_steps=%llu "
         "submerged_steps=%llu add_force=%llu add_torque=%llu gravity_y=%.1f "
         "elements_per_hull=%d (009329c0 from 00937440 at 00937622, its last call)",

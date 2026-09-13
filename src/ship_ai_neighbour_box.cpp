@@ -1,5 +1,7 @@
 // 009EAE20 and 009EAFC0, the two neighbour-node box refreshes 009F0EA0 runs.
 // Evidence, ABI and uncertainty: docs/SHIP_AI_NEIGHBOUR_BOX.md.
+// Unordered-branch corrections and bounded original-byte evidence:
+// docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md (009EAFC0 and its009EB4D1 arc arm only).
 //
 // Semantic projections for MSVC Win32, not binary replacements. Written
 // operation for operation from the listing: where the native leaves a value on
@@ -25,17 +27,31 @@ float max_by_ref_00415550(float a, float b) noexcept
 // 009EB296, 009EB329.
 float min_by_ref_00415510(float a, float b) noexcept
 {
-    return (b <= a) ? b : a;
+    return (b > a) ? a : b; // JBE also selects b for unordered operands
 }
 
-// 00415620 BSP_Math_ClampFloatByRef, RET 4: the low bound wins an unordered
-// compare, then the high bound. 009EB444.
+// 00415620 BSP_Math_ClampFloatByRef, RET 4: low wins only on ordered JA;
+// the second JBE retains value on unordered comparison. 009EB444.
 float clamp_by_ref_00415620(float value, float low, float high) noexcept
 {
     if (low > value) {
         return low;
     }
-    return (value <= high) ? value : high;
+    return (value > high) ? high : value;
+}
+
+// 009EB594..009EB5A0 / 009EB5D2..009EB5DE. The original retains radius
+// in x87, multiplies by each projected axis and spills before the center add
+// or subtract. x87's two-NaN selection differs from SSE MULSS here.
+float projected_offset_product_009eb596(float radius, float axis) noexcept
+{
+    float result;
+    __asm {
+        fld radius
+        fmul axis
+        fstp result
+    }
+    return result;
 }
 
 // 009EAE60..009EAE7A, the same fold 006BC0C0 does at 006BC0C5..006BC0E3:
@@ -169,8 +185,8 @@ float ship_ai_neighbour_closing_speed_009eb14d(const std::array<float, 2>& relat
     float closing = static_cast<float>(static_cast<double>(dot) +
                                        static_cast<double>(go_away_spd_add_1d0));
     // 009EB172 FLD1; 009EB174 FCOMIP 1.0,closing; 009EB178 JBE. An unordered
-    // compare takes the floor.
-    if (!(kShipAiNeighbourBoxMinClosingSpeed <= closing)) {
+    // compare skips the floor and preserves closing.
+    if (kShipAiNeighbourBoxMinClosingSpeed > closing) {
         closing = kShipAiNeighbourBoxMinClosingSpeed; // 009EB17A
     }
     return closing;
@@ -187,19 +203,38 @@ float ship_ai_neighbour_extent_shrink_009eb277(float body_axis_speed,
                                                float est_pos_size_dec_min_1c4) noexcept
 {
     // 009EB246 FMUL double 0.05; 009EB255 FSTP float.
-    const float reference = static_cast<float>(static_cast<double>(reference_speed_0080fc30) *
-                                               kShipAiNeighbourBoxReferenceSpeedFraction);
+    float reference;
+    const double* reference_fraction = &kShipAiNeighbourBoxReferenceSpeedFraction;
+    __asm {
+        fld reference_speed_0080fc30
+        mov eax, reference_fraction
+        fmul qword ptr [eax]
+        fstp reference
+    }
     // 009EB269 AND 7FFFFFFFh on the second 0092D730 result.
     const float speed_magnitude = std::fabs(body_axis_speed);
     // 009EB27F max; 009EB284 FDIV [ESP+38h]; 009EB28F FMUL [EDI+40h];
-    // 009EB292 FSTP float -- one rounding for the whole chain.
-    const float rate = static_cast<float>(
-        static_cast<double>(max_by_ref_00415550(speed_magnitude, reference)) /
-        static_cast<double>(near_half_length_38) * static_cast<double>(est_pos_size_dec_mul_1c0));
+    // 009EB292 FSTP float. Preserve both the sole binary32 spill and the
+    // caller's x87 precision for intermediate divide/multiply operations.
+    const float maximum = max_by_ref_00415550(speed_magnitude, reference);
+    float rate;
+    __asm {
+        fld maximum
+        fdiv near_half_length_38
+        fmul est_pos_size_dec_mul_1c0
+        fstp rate
+    }
     // 009EB296 min; 009EB29B FMUL excess; 009EB2A7 FLD1; 009EB2A9 FSUBRP.
     const float capped = min_by_ref_00415510(est_pos_size_dec_min_1c4, rate);
-    return static_cast<float>(1.0 - static_cast<double>(capped) *
-                                        static_cast<double>(projection_time));
+    float shrink;
+    __asm {
+        fld capped
+        fmul projection_time
+        fld1
+        fsubrp st(1), st(0)
+        fstp shrink
+    }
+    return shrink;
 }
 
 // ---------------------------------------------------------------------------
@@ -367,8 +402,9 @@ ShipAiNeighbourAvoidArm ship_ai_neighbour_avoid_box_refresh_009eafc0(
         settings.est_pos_size_dec_mul_1c0,
         settings.est_pos_size_dec_min_1c4);
 
-    // 009EB2B5 FCOMIP 0.0,shrink; 009EB2B7 JC continues only when 0 < shrink.
-    if (!(shrink > 0.0f)) {
+    // 009EB2B5 FCOMIP 0.0,shrink; 009EB2B7 JC continues for positive OR
+    // unordered shrink. Only ordered zero/negative takes the collapse/copy arm.
+    if (shrink <= 0.0f) {
         // 009EB2BB and 009EB2C0 write 1.0f into both extents and the copy tail
         // immediately overwrites them; only the byte survives.
         node.avoid_half_length = kShipAiNeighbourBoxCollapsedExtent;
@@ -457,13 +493,17 @@ ShipAiNeighbourAvoidArm ship_ai_neighbour_avoid_box_refresh_009eafc0(
     if (centre_on_beam_side) {
         centre_x = offset_x + centre_x; // 009EB580
         centre_z = offset_z + centre_z; // 009EB58C
-        node.avoid_box_x = centre_x - radius * node.corner_forward_x; // 009EB599, 009EB5A8
-        node.avoid_box_z = centre_z - radius * node.corner_forward_z; // 009EB5A0, 009EB5B4
+        const float projected_x = projected_offset_product_009eb596(radius, node.corner_forward_x);
+        const float projected_z = projected_offset_product_009eb596(radius, node.corner_forward_z);
+        node.avoid_box_x = centre_x - projected_x; // 009EB599, 009EB5A8
+        node.avoid_box_z = centre_z - projected_z; // 009EB5A0, 009EB5B4
     } else {
         centre_x = centre_x - offset_x; // 009EB5BE
         centre_z = centre_z - offset_z; // 009EB5CA
-        node.avoid_box_x = radius * node.corner_forward_x + centre_x; // 009EB5D7, 009EB5E6
-        node.avoid_box_z = radius * node.corner_forward_z + centre_z; // 009EB5DE, 009EB5F2
+        const float projected_x = projected_offset_product_009eb596(radius, node.corner_forward_x);
+        const float projected_z = projected_offset_product_009eb596(radius, node.corner_forward_z);
+        node.avoid_box_x = projected_x + centre_x; // 009EB5D7, 009EB5E6
+        node.avoid_box_z = projected_z + centre_z; // 009EB5DE, 009EB5F2
     }
     return ShipAiNeighbourAvoidArm::arc;
 }

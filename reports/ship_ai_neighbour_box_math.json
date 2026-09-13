@@ -1,0 +1,766 @@
+{
+  "packet": "orch6_neighbour_box_math_o",
+  "base": "fc5d50d9",
+  "branch": "agent/orch6-neighbour-box-math-o",
+  "status": "corrected bounded avoid-box unordered and x87 behavior; existing normal semantic control flow retained with explicit external limits",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_neighbour_box.cpp",
+  "header": "include/bsp/ship_ai_neighbour_box.hpp",
+  "documentation": "docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009EAFC0",
+      "native": "009EAFC0",
+      "end_inclusive": "009EB651",
+      "name": "BSP_ShipAi_NeighbourAvoidBoxRefresh",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "bsp::ship_ai_neighbour_avoid_box_refresh_009eafc0",
+      "original_abi": "ECXnode,nine stackdwords,RET24h at009EAFE5/009EB305/009EB4CE/009EB60E/009EB64F; new typedreturnarm",
+      "coverage": "existing complete normal semantic controlflow, with listed FP corrections; containingenvelope1682bytes/468instructions includes separatelyindexed320byte93instructionarc; no all-input FP or rawABI claim"
+    },
+    {
+      "address": "009EB4D1",
+      "native": "009EB4D1",
+      "end_inclusive": "009EB610",
+      "kind": "fragment",
+      "name": "BSP_ShipAi_NeighbourAvoidBoxArcArm",
+      "cpp_symbol": "bsp::ship_ai_neighbour_avoid_box_refresh_009eafc0 (arc arm)",
+      "original_abi": "not a callable routine: JBE009EB470 enters with parentstack,ESI=node,EDI=settings+180,EBX=observedunit,ST0=turn; returns through parentRET24h",
+      "coverage": "existing complete normal arcprojection, final radius/axis productx87 spills corrected; bounded fixturechecks finite/reverse/NaN arcs"
+    }
+  ],
+  "calls": [
+    {
+      "address": "009EB009",
+      "native": "0098A8E0",
+      "function": "009EAFC0",
+      "binding": "existing host copies actual model cached bounds; fixture executes original0098A8E0"
+    },
+    {
+      "address": "009EB05F",
+      "native": "00424C40",
+      "function": "009EAFC0",
+      "binding": "existing actual settings singleton service; typed host returns value snapshot; mutation equivalence excluded"
+    },
+    {
+      "address": "009EB09C",
+      "native": "00414C60",
+      "function": "009EAFC0",
+      "binding": "existing length_2d_00414c60; original helper in oracle, shared actual hostCRT _CIsqrt boundary"
+    },
+    {
+      "address": "009EB0ED",
+      "native": "00419260",
+      "function": "009EAFC0",
+      "binding": "existing reciprocal host; fixture calls original mapped00419260 for both sides"
+    },
+    {
+      "address": "009EB144",
+      "native": "00414C60",
+      "function": "009EAFC0",
+      "binding": "existing length_2d on SELF velocity pair, ECX from009EB11D"
+    },
+    {
+      "address": "009EB19B",
+      "native": "00415550",
+      "function": "009EAFC0",
+      "binding": "max(arrival_time_floor,arrival_distance/closing) in existing local helper"
+    },
+    {
+      "address": "009EB1FE",
+      "native": "0092D730",
+      "function": "009EAFC0",
+      "binding": "observed signed body-axis speed from actual controller+1018; fixture-owned scalar boundary"
+    },
+    {
+      "address": "009EB241",
+      "native": "0080FC30",
+      "function": "009EAFC0",
+      "binding": "actual observed unit reference-speed service; native modifier policy external"
+    },
+    {
+      "address": "009EB259",
+      "native": "0092D730",
+      "function": "009EAFC0",
+      "binding": "second observed body-axis speed result spilled then sign-bit cleared"
+    },
+    {
+      "address": "009EB27F",
+      "native": "00415550",
+      "function": "009EAFC0",
+      "binding": "max(abs(body_speed),reference_scaled), second operand on unordered"
+    },
+    {
+      "address": "009EB296",
+      "native": "00415510",
+      "function": "009EAFC0",
+      "binding": "corrected local min(settings+1C4,rate), second operand on unordered"
+    },
+    {
+      "address": "009EB329",
+      "native": "00415510",
+      "function": "009EAFC0",
+      "binding": "corrected local min(1,shrink_times6), second operand on unordered"
+    },
+    {
+      "address": "009EB34B",
+      "native": "00415550",
+      "function": "009EAFC0",
+      "binding": "local max(observed_full_length,settings_min_length)"
+    },
+    {
+      "address": "009EB428",
+      "native": "00811940",
+      "function": "009EAFC0",
+      "binding": "actual observed unit commanded yaw-rate service; fixture-owned scalar boundary"
+    },
+    {
+      "address": "009EB444",
+      "native": "00415620",
+      "function": "009EAFC0",
+      "binding": "corrected local clamp preserves unordered value"
+    },
+    {
+      "address": "009EB4DE",
+      "native": "00438AA0",
+      "function": "009EB4D1",
+      "binding": "existing wrapped_angle_add_00438aa0; original mapped helper in oracle"
+    },
+    {
+      "address": "009EB4F6",
+      "native": "006BC0C0",
+      "function": "009EB4D1",
+      "binding": "existing heading host; fixture executes original mapped006BC0C0 on both sides"
+    },
+    {
+      "address": "00414C80",
+      "native": "00BF7030",
+      "function": "00414C60",
+      "binding": "original sqrt service boundary binds same genuine hostCRT _CIsqrt as existing vector_helpers"
+    },
+    {
+      "address": "00419296",
+      "native": "00BF7030",
+      "function": "00419260",
+      "binding": "original sqrt service boundary binds same genuine hostCRT _CIsqrt; no independent VS2005 library parity"
+    },
+    {
+      "address": "009EAFED",
+      "native": "006D1E30",
+      "function": "009EAFC0",
+      "kind": "indirect",
+      "binding": "actual receiver virtual20/model or34/velocity; concrete00CFC3D0 table bytes checked; fixture dispatch is explicit owner boundary"
+    },
+    {
+      "address": "009EB005",
+      "native": "006D1E30",
+      "function": "009EAFC0",
+      "kind": "indirect",
+      "binding": "actual receiver virtual20/model or34/velocity; concrete00CFC3D0 table bytes checked; fixture dispatch is explicit owner boundary"
+    },
+    {
+      "address": "009EB119",
+      "native": "00812090",
+      "function": "009EAFC0",
+      "kind": "indirect",
+      "binding": "actual receiver virtual20/model or34/velocity; concrete00CFC3D0 table bytes checked; fixture dispatch is explicit owner boundary"
+    }
+  ],
+  "context_calls": [
+    {
+      "address": "009F10FF",
+      "native": "009EAFC0",
+      "function": "009F0EA0",
+      "contract": "sole native caller; all nine argument stores009F10A0..FA checked"
+    },
+    {
+      "address": "0092D73A",
+      "native": "00C32000",
+      "function": "0092D730",
+      "contract": "body-axis-speed callee dependency; existing physics owner external"
+    },
+    {
+      "address": "0092D749",
+      "native": "00C31F40",
+      "function": "0092D730",
+      "contract": "body-axis-speed callee dependency; existing physics owner external"
+    },
+    {
+      "address": "0080FC4F",
+      "native": "008E6430",
+      "function": "0080FC30",
+      "contract": "reference-speed conditional modifier call; manager/lifetime external"
+    },
+    {
+      "address": "00811953",
+      "native": "00811890",
+      "function": "00811940",
+      "contract": "current commanded yaw-rate delegates actual rudder curve service"
+    },
+    {
+      "address": "0081209A",
+      "native": "0092D730",
+      "function": "00812090",
+      "contract": "concrete virtual34 scales actual body axis by returned signed speed"
+    }
+  ],
+  "branch_entries": [
+    {
+      "branch_site": "009EB470",
+      "target": "009EB4D1",
+      "instruction": "JBE",
+      "status": "shared-frame arc edge; not a CALL"
+    }
+  ],
+  "no_ghidra_function": [],
+  "orphan_call_sites": [],
+  "flow": {
+    "avoid_envelope_instructions": 468,
+    "arc_instructions": 93,
+    "avoid_gaps": 0,
+    "arc_gaps": 0
+  },
+  "corrections": [
+    {
+      "was": "!(shrink>0) collapses unordered",
+      "evidence": "009EB2B5 FCOMIP0,shrink and009EB2B7 JC; cases3/10",
+      "is": "shrink<=0 collapses only ordered zero/negative"
+    },
+    {
+      "was": "local min picks first on unordered",
+      "evidence": "00415525 FCOMIP second,first and00415529 JBE; calls009EB296/329; cases3/4",
+      "is": "local min picks second on unordered/equality"
+    },
+    {
+      "was": "closing NaN floored to1",
+      "evidence": "009EB174 FCOMIP1,closing;009EB178 JBE; case5",
+      "is": "ordered1>closing alone floors; NaN retained"
+    },
+    {
+      "was": "clamp NaN value selects high",
+      "evidence": "00415635 FCOMIlow,value JA;0041564B FCOMIvalue,high JBE; case6",
+      "is": "ordered low bound then value retained on unordered high comparison"
+    },
+    {
+      "was": "shrink arithmetic double chains ignore PC24 intermediate precision",
+      "evidence": "009EB246..009EB2AB; case13 PC24 extent40A3D71A becomes native40A3D718; PC53 alreadymatched",
+      "is": "actual x87 reference multiply,divide/multiply rate,and1-minus-product with original floatspills"
+    },
+    {
+      "was": "final arc radius/axis products use SSE NaN selection",
+      "evidence": "009EB594..5A0/009EB5D2..5DE; case6 center words negativeNaN become originalpositiveNaN",
+      "is": "x87 multiply and spill precede final center add/subtract"
+    },
+    {
+      "was": "ArcThreshold0.052359877559829890",
+      "evidence": "00D1A8A0 bits3FAACEEA00000000; no branchchange for adjacentfloatturnvalues",
+      "is": "ArcThreshold0.052359879016876220703125, exactwidenedfloat"
+    }
+  ],
+  "retained_contracts": {
+    "node": "existing semanticShipAiObstacleNode and Motion; actual raw90h fields covered by nativeproof except pointeridentity; no observerconstructor/lifetime",
+    "settings": "existing ShipAiNeighbourAvoidSettings values and actual native offsets; byvaluehost snapshot limitscallbackmutationequivalence",
+    "inputs": "existingnine typedarguments; nativearg5unread and lowbytearg8tested; no M frameexecution in thisproof",
+    "callbacks": "model presence/velocity/controllerbody speed/reference/yaw are explicit owner services; existing publicinterfaces unchanged",
+    "libraries": "original bounds,reciprocal,heading code shared in fixture; original othermathhelpers execute independently against source; actual hostCRT_CIsqrt externalboundary"
+  },
+  "validation": {
+    "native_fixture": {
+      "cases": 14,
+      "precision_modes": [
+        "PC24",
+        "PC53"
+      ],
+      "invocations": 28,
+      "canonical_words": 1188,
+      "passed": true,
+      "baseline_failures": 11,
+      "baseline_records": "local/neighbour_box_baseline_final_inputs_records.jsonl",
+      "final_records": "local/neighbour_box_final_records.jsonl",
+      "native_spans": 9,
+      "native_bytes": 2307,
+      "native_manifest": "local/neighbour_box_native_manifest.json",
+      "call_relocations": 19,
+      "data_operand_relocations": 25,
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "comparison": "all nodebytes except ownerpointer14,plus ownercallbacktrace; initialunrepresented/padding sentinels preserved",
+      "floating_environment": "nearest,all exceptionsmasked; source/native x87TOPbalanced; no unmaskedstatusflagclaim",
+      "cleanup": "VirtualFree originalcode mapping; fixturestorage automatic; executableMANIFEST:EMBED"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed Win32Release and2existingCTests",
+      "log": "local/neighbour_box_final_build.log",
+      "seed_verification": "local/box_seed_verification.log"
+    },
+    "call_gate": {
+      "command": "python tools/verify_report_calls.py reports/ship_ai_neighbour_box_math.json",
+      "status": "passed",
+      "call_rows_checked": 28,
+      "direct_rows": 25,
+      "resolved_virtual_rows_not_mechanically_verifiable": 3,
+      "failures": 0,
+      "log": "local/neighbour_box_call_gate.log"
+    }
+  },
+  "reproducibility": {
+    "prepare": "python local/prepare_neighbour_box_probe.py",
+    "build": "cmd /c local\\build_neighbour_box_probe.cmd",
+    "run": "local\\neighbour_box_probe.exe",
+    "baseline_build": "cmd /c local\\build_neighbour_box_baseline.cmd",
+    "baseline_run": "local\\neighbour_box_baseline.exe; expectednonzero",
+    "dependencies": [
+      "MSVCWin32 andbuiltcorelibrary",
+      "Pythonpefile/capstone",
+      "installedPE plus configuredverifiedGhidra",
+      "preservedbefore.cpp/header forbaseline; no retiredworkerpath"
+    ]
+  },
+  "limits": [
+    "bounded numerical/branchproof, not everyinput FPparity",
+    "otherexistingdoubleexpressions unchanged except evidenced shrinkproducer",
+    "independent hostCRT vsoriginalVS2005 sqrt parityexcluded",
+    "native exceptional/unmaskedFP/statusflags notvalidated",
+    "actualphysics/observer/globalowner and callbackmutationequivalence external",
+    "sourcefixture usesoriginalreciprocal/heading/bounds; no independent hostprojectionparitythere",
+    "full009F0EA0 frameand009EAE20 nearproducer notexecuted; incomingnear/self inputs explicit",
+    "unrelated publicclamp/min/max projections unchanged",
+    "no newtrackedtests,noGameHosts/sector/frameedits,noGhidrawrites,no gameplayclaims"
+  ],
+  "checklist": {
+    "1": "owned/neededcallee bodies and fullmin/max/clamp/length/arc assembly readbeforelocalchanges",
+    "2": "body/callsite ownership verified; separatelyindexedarc callsattributed009EB4D1; no orphan rows",
+    "3": "sole009EAFC0 caller and onlyconditionalarc entry checked; all ownedfunction callsread",
+    "4": "existingnode/motion/settings fields reused; nativecachedboundswriter and allshrink producers checked; no default/globalowner invented",
+    "5": "whole normal semantic caller/arc retained; numericalproof bounded; rawABI and explicit owner/library limits preserved",
+    "6": "no runtime hostintegration or gameplayclaims; rootowns actual world/controller binding",
+    "7": "native9stackdwords RET24h verified; mathmin/max RET0,clampRET4,angleRET8,headingRET4,boundsRET8",
+    "8": "wholelisting ESI/EDI/EBX and ECXprovenance checked; x87spill/comparison/arcturnentry inspected",
+    "9": "only009EAFC0 andarc009EB4D1 leased/ledgerupdated; othercalleecontracts retained",
+    "10": "allcallrows address/native/function, correctionswas/is/evidence, empty nofunction/orphan arrays justified"
+  },
+  "tracked_hashes": [
+    {
+      "path": "src/ship_ai_neighbour_box.cpp",
+      "sha256": "5eccbac6505048690f5ccb6f30aa3a92cf204141dac0232d04b0ef753c11b810"
+    },
+    {
+      "path": "include/bsp/ship_ai_neighbour_box.hpp",
+      "sha256": "bbeffca39ff179fbff3f72ed936205072c4f9ff72a98e18de05bade6486b3a8f"
+    },
+    {
+      "path": "src/vector_helpers.cpp",
+      "sha256": "f70f6b390de89876064627b4d6fadae49244cf1c4bd9878612505208e2ed0312"
+    },
+    {
+      "path": "src/unit_rudder.cpp",
+      "sha256": "fa78aa7f6055b145d0283bd7d0d09d5aeec2d82bbb3b5ab9a18f3b4119d52303"
+    },
+    {
+      "path": "docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md",
+      "sha256": "e06e915d5899c2230f6cd8fabfd0203d44296fa78f43a773e146aa6d3d11c2a9"
+    }
+  ],
+  "ignored_artifacts": [
+    {
+      "path": "local/avoid_arc_asm.txt",
+      "bytes": 3232,
+      "sha256": "7aa8861991c12f1464ec65a8e66ea040a7c84d742308c1fcf2462c9213cb492f"
+    },
+    {
+      "path": "local/avoid_arc_callers.txt",
+      "bytes": 37,
+      "sha256": "5e7dc1e664996c8dcb87c5750a3def40076e77bc358cbe73adc6278c3b23c1d2"
+    },
+    {
+      "path": "local/avoid_arc_decompile.txt",
+      "bytes": 2412,
+      "sha256": "ddc3e4fc3becc6587431b6d4c620ec4b03e612071ff3eef72ab1e0eded8d06f1"
+    },
+    {
+      "path": "local/avoid_arc_flow.txt",
+      "bytes": 128,
+      "sha256": "94d78758f806c276efb3363154f58b3804598b90f51df32975e52daac714f4b4"
+    },
+    {
+      "path": "local/avoid_box_asm.txt",
+      "bytes": 16126,
+      "sha256": "b0011754cd887c33c178d5948c37492908807e9ee0433e81587fd99917d29bac"
+    },
+    {
+      "path": "local/avoid_box_caller_args.txt",
+      "bytes": 1531,
+      "sha256": "cbba362db83afcdf4a267dbf24a9239977e7eec260e574beb5643b98e9503f88"
+    },
+    {
+      "path": "local/avoid_box_callers.txt",
+      "bytes": 44,
+      "sha256": "e25a954cde6fb1493bceee782f7b5a96988804c0de2a86d557dbdce6f572fd1f"
+    },
+    {
+      "path": "local/avoid_box_decompile.txt",
+      "bytes": 10045,
+      "sha256": "85190293c0871b83afe799d44c019ece2c4b97f6742f4fafc8a7d53d05cd3193"
+    },
+    {
+      "path": "local/avoid_box_export.log",
+      "bytes": 227,
+      "sha256": "66c860aafd3ae4b4331be6e78b3600efb9e0ec87933cd0a3fe36014435ad502f"
+    },
+    {
+      "path": "local/avoid_box_flow.txt",
+      "bytes": 129,
+      "sha256": "7e817aafcbfbea3bc16c9936a09405d6da7ca81b5b46ee4f4ff9e848ede15447"
+    },
+    {
+      "path": "local/baseline_include/bsp/ship_ai_neighbour_box.hpp",
+      "bytes": 17922,
+      "sha256": "6aec4f9574e27bc1461857877a5f5c5e633d4f2498bc6a87480c9b63061fe9f5"
+    },
+    {
+      "path": "local/box_baseline_build.log",
+      "bytes": 40334,
+      "sha256": "6a3efc204f28b698a18036e7e76c4d61e53ff0e0632ec8fadc30ebf6241d8315"
+    },
+    {
+      "path": "local/box_seed_verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/build_neighbour_box_baseline.cmd",
+      "bytes": 381,
+      "sha256": "33ec2ea96b2911d523bedb6acd4059e33f53b848d436eca01f6f1475f4e93427"
+    },
+    {
+      "path": "local/build_neighbour_box_probe.cmd",
+      "bytes": 345,
+      "sha256": "2fa7c04e5e901be1b8b1c5724ccb21fb31e8cae10f6aa63247ac3cfffa870b57"
+    },
+    {
+      "path": "local/finalize_neighbour_box_report.py",
+      "bytes": 3976,
+      "sha256": "cd43bec5770a715fe4bbaea1fce5b7d3f99f1089774365ae9b1c9d311e44f64b"
+    },
+    {
+      "path": "local/neighbour_box_after_gates.log",
+      "bytes": 381,
+      "sha256": "5259be4c5ab54790f0bc0f9725f4e404e6945af324984d4c617c74ec8b97c505"
+    },
+    {
+      "path": "local/neighbour_box_after_gates_records.jsonl",
+      "bytes": 22338,
+      "sha256": "8fc7aefac2939f5a722ae1b7b32d94536d077634e3792b8db98239902cf8138e"
+    },
+    {
+      "path": "local/neighbour_box_baseline.exe",
+      "bytes": 37888,
+      "sha256": "643a10386b5996abe84f4e658ccb0b096778fbe5c7a6815395bf55a0fe67e96d"
+    },
+    {
+      "path": "local/neighbour_box_baseline.log",
+      "bytes": 7344,
+      "sha256": "03327e5b5dde638d2babf11474e3d80729bcf17c596111f0c6ffefdb4d1cf96a"
+    },
+    {
+      "path": "local/neighbour_box_baseline_build.log",
+      "bytes": 71,
+      "sha256": "e09b140403220c6188a26558d0e2404dc9cba1b862119acb2172745cf0b3dfb9"
+    },
+    {
+      "path": "local/neighbour_box_baseline_final_inputs.log",
+      "bytes": 7429,
+      "sha256": "5a7471c914d2e2f76bad9c98da58633709abb35a6f2cbc683d0330f402f82c5e"
+    },
+    {
+      "path": "local/neighbour_box_baseline_final_inputs_records.jsonl",
+      "bytes": 22422,
+      "sha256": "80cedbe5a81b702afdf26bbc6c81e7cec8887143d3c5e64693b0171d2dc6221e"
+    },
+    {
+      "path": "local/neighbour_box_baseline_records.jsonl",
+      "bytes": 22342,
+      "sha256": "05bf003bc462e371dc6cbe80f3fb74ef054de191ac07ba59d83637b399af9468"
+    },
+    {
+      "path": "local/neighbour_box_before.cpp",
+      "bytes": 25560,
+      "sha256": "12e73160f2fb1376edc36628a2b322da3291e0d96a114d7aac9d4143ff39c26c"
+    },
+    {
+      "path": "local/neighbour_box_before.hpp",
+      "bytes": 17922,
+      "sha256": "6aec4f9574e27bc1461857877a5f5c5e633d4f2498bc6a87480c9b63061fe9f5"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00414C60.txt",
+      "bytes": 329,
+      "sha256": "6bfc3d21d463eb4d824bcd0c19417b09b947f19d19573d7a142cda03bf7f18a9"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00415510.txt",
+      "bytes": 300,
+      "sha256": "a7ab3b396b38ef3870c5fe3a4c3cce0e3747e2197db566d723dd36fa04b0c776"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00415550.txt",
+      "bytes": 300,
+      "sha256": "c602fbcd18ee9b69efe3c895d98a766696ab1ea8e680acb97a8b6f5414c5080e"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00415620.txt",
+      "bytes": 304,
+      "sha256": "a9540c18a64cabacabbb9d932f8d77f1ab16687eff2a04fe647a13fa1df88c21"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00419260.txt",
+      "bytes": 572,
+      "sha256": "58606b76c2c150c5e477de5c08594568f03a5c3de963ffe483207a77e9626a22"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00438AA0.txt",
+      "bytes": 531,
+      "sha256": "47f0e65af6de3da6062114ddefbe28918594f697716997b7034f4494eacf4703"
+    },
+    {
+      "path": "local/neighbour_box_bytes_006BC0C0.txt",
+      "bytes": 406,
+      "sha256": "6b829e99372c8a7f0b2a251257d9f72a30adee2c6e91390080e423ffe00751eb"
+    },
+    {
+      "path": "local/neighbour_box_bytes_0098A8E0.txt",
+      "bytes": 304,
+      "sha256": "d70256ba9da54a14f825b0719bf2f0612a03faf75a8591d79fcb41ff0b117f2a"
+    },
+    {
+      "path": "local/neighbour_box_bytes_009EAFC0.txt",
+      "bytes": 8106,
+      "sha256": "c44dd256c939c01570f561538aee476ecaa1e3e6c5c33f68731672a640737e87"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3820.txt",
+      "bytes": 45,
+      "sha256": "03cab64e28e0c5352ebc32f16a3f741366b2d8d6a34df1e894fa8ee1f1092a68"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3828.txt",
+      "bytes": 45,
+      "sha256": "6412a9bedf51ffb020711ab065b3ec4221b218aa6b1c71d444afbc525a3e12b4"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3830.txt",
+      "bytes": 45,
+      "sha256": "856ef4168f0c84093f2754962e1fd691b8b50d18c4a533f26999fd57de5716a6"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3C64.txt",
+      "bytes": 29,
+      "sha256": "accc0998273ed7528dcf55835ec9efb9884f38632d5f5952e8cdd6bea27cafa4"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3CCC.txt",
+      "bytes": 29,
+      "sha256": "e8c1a35faa917e0c2ee100b66741c8f8b5e1ec0ce8c50cb2b3a6f239f9c428ca"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3D18.txt",
+      "bytes": 45,
+      "sha256": "97325172ab1b19f241ae64c8007e1d81824fd763f009cf9ea9addcdbb03fa0e1"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE3D28.txt",
+      "bytes": 45,
+      "sha256": "37fe7e3eddd211da7181fe5e66bcf0335568270692aba53d0ace9e0d2ab58dde"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00CE6628.txt",
+      "bytes": 45,
+      "sha256": "2bdc7c578962e883cde7cf43294e3b0d45048db3d569b53de3c7776316a88ac8"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D1A8A0.txt",
+      "bytes": 45,
+      "sha256": "d1369e0e9557ecc45109f53cffd9ee69fbf4e16a0c4430115a33d0fa403fef6d"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A208.txt",
+      "bytes": 29,
+      "sha256": "ba68cff97bdc11933009685d62b197e076c39e448f996361833d006885827a9d"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A210.txt",
+      "bytes": 45,
+      "sha256": "2762ea904237422e0d9673bf57a9fd21aa447100d47ab465a6879853df675d6e"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A218.txt",
+      "bytes": 29,
+      "sha256": "e2f92f42a0222c41577147b1b01c7a810a0c26f6c916fcd8af2cec58e1a72780"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A240.txt",
+      "bytes": 29,
+      "sha256": "14523c89c8b97ae0d41a578d83a490a71bc4d3c64ab768786177f84c151999dc"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A24C.txt",
+      "bytes": 29,
+      "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A270.txt",
+      "bytes": 45,
+      "sha256": "711712920f565cd4c4869188eb5d9f87a9cfe2d24061a94078907e02415833c7"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A280.txt",
+      "bytes": 45,
+      "sha256": "81fea576b44cac3a69373898ff463326bafee9c1c5551e0a5b946fd7c530e90f"
+    },
+    {
+      "path": "local/neighbour_box_bytes_00D7A3A0.txt",
+      "bytes": 45,
+      "sha256": "ba3d518a29c9636197f67b06894056584b52e092b3edf372f3a64a004dd0e578"
+    },
+    {
+      "path": "local/neighbour_box_call_gate.log",
+      "bytes": 508,
+      "sha256": "8bf582f7fd3a55df254eaf8fed044c22365dd1ab6aa3d70f94b88e1d35603a5b"
+    },
+    {
+      "path": "local/neighbour_box_final_build.log",
+      "bytes": 2764,
+      "sha256": "97847c012b10f7720fbdffb6c94e6b05209864f34b116afcdec716e12757019d"
+    },
+    {
+      "path": "local/neighbour_box_final_records.jsonl",
+      "bytes": 22418,
+      "sha256": "057730280ef87863667b6f0c489473da73e834a9a11859835162f0eb6fc3bc9c"
+    },
+    {
+      "path": "local/neighbour_box_fixed_build.log",
+      "bytes": 4396,
+      "sha256": "2623d9c698f31d0440b18f3b1b40db6deb255f87c198d4d2281de01102a43f23"
+    },
+    {
+      "path": "local/neighbour_box_native_image.bin",
+      "bytes": 2536,
+      "sha256": "dd112b7af9829ac84bc6e5f82e98bd7bde8e54e5ff788993edbcfc5a2682dd04"
+    },
+    {
+      "path": "local/neighbour_box_native_manifest.json",
+      "bytes": 9259,
+      "sha256": "150bc87cd8fbb5b518bdf739459883841a8a8360d93d02cf8765d8b3547366fb"
+    },
+    {
+      "path": "local/neighbour_box_original_00414C60.bin",
+      "bytes": 66,
+      "sha256": "33ae787db85eab686aa928ac0452c6ad396e4947e4a7bf14be49bd3bb3158181"
+    },
+    {
+      "path": "local/neighbour_box_original_00415510.bin",
+      "bytes": 62,
+      "sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af"
+    },
+    {
+      "path": "local/neighbour_box_original_00415550.bin",
+      "bytes": 62,
+      "sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22"
+    },
+    {
+      "path": "local/neighbour_box_original_00415620.bin",
+      "bytes": 63,
+      "sha256": "8dab6ef63469410ee1f880e5fdbea7b7e3006e10cc7b2568297fa74f3098383e"
+    },
+    {
+      "path": "local/neighbour_box_original_00419260.bin",
+      "bytes": 117,
+      "sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba"
+    },
+    {
+      "path": "local/neighbour_box_original_00438AA0.bin",
+      "bytes": 110,
+      "sha256": "366372c0137d0cfa4b711b4e15d4adc779303b3446435026d69edcbbb70f5102"
+    },
+    {
+      "path": "local/neighbour_box_original_006BC0C0.bin",
+      "bytes": 82,
+      "sha256": "ec849f981c3be41a95964dfb0937b69ea7e5cbd35b6faa7c24ea4aeb3e2ddbb4"
+    },
+    {
+      "path": "local/neighbour_box_original_0098A8E0.bin",
+      "bytes": 63,
+      "sha256": "9158350bccba65db38de6c88f24f14248cecd55d385cc5e78c961163004d724b"
+    },
+    {
+      "path": "local/neighbour_box_original_009EAFC0.bin",
+      "bytes": 1682,
+      "sha256": "6a15997578354c27a01449f0fdca0711819828f7331a6334b88ae8a0e786d9f7"
+    },
+    {
+      "path": "local/neighbour_box_prepare.log",
+      "bytes": 77,
+      "sha256": "435d957a0f2b179ba4ca0a0aa2f639cc3d6eac73960016f793d82083b35b8825"
+    },
+    {
+      "path": "local/neighbour_box_previous_ledger.txt",
+      "bytes": 1238,
+      "sha256": "5fb11d46b6659072edb2d55dbbfa78bfc595dd01d8af699f1a6eff0f7f5dd302"
+    },
+    {
+      "path": "local/neighbour_box_probe.cpp",
+      "bytes": 12446,
+      "sha256": "9b25bdb332e69c47bfe5488c5ad686d1bac5e185a30b4f5d9531fdc69005c4ce"
+    },
+    {
+      "path": "local/neighbour_box_probe.exe",
+      "bytes": 37888,
+      "sha256": "9e39408283e0d7984018b5496d4f8d35581e71240d7e02932c9e91d62ad93c1f"
+    },
+    {
+      "path": "local/neighbour_box_probe.log",
+      "bytes": 138,
+      "sha256": "7ae5ebf0391ae13aac3ba736836abebf2819795fb87cbad12fc14c7baee0d108"
+    },
+    {
+      "path": "local/neighbour_box_probe_build.log",
+      "bytes": 25,
+      "sha256": "f5197bbe26f9f45968e2efbca6592c84202a068a2625c70d7745088335b0b773"
+    },
+    {
+      "path": "local/neighbour_box_probe_patches.hpp",
+      "bytes": 954,
+      "sha256": "bb8896fd2c8a5433b4d1210dd0999bea1852e1eaeae0c58c92141761a163956d"
+    },
+    {
+      "path": "local/neighbour_box_probe_records.jsonl",
+      "bytes": 22418,
+      "sha256": "057730280ef87863667b6f0c489473da73e834a9a11859835162f0eb6fc3bc9c"
+    },
+    {
+      "path": "local/prepare_neighbour_box_probe.py",
+      "bytes": 4204,
+      "sha256": "967b1e76e3784170ed1125cb5b708e2bc04f6aedaba6bcbfb3c6aaee5b299635"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/write_neighbour_box_report.py",
+      "bytes": 9692,
+      "sha256": "50d3f51552095144d1c98d72247d69d6ee20a439b76baf6d7a6ba559ff43a22a"
+    }
+  ],
+  "evidence_versions": {
+    "authoritative_baseline": "neighbour_box_baseline_final_inputs.log and correspondingrecords/exe use final14-caseinputs and preservedoriginalsource/header",
+    "authoritative_final": "neighbour_box_probe.log and neighbour_box_final_records.jsonl; finalfixedsource",
+    "earlier_exploratory": "neighbour_box_baseline.log/records and after_gates.log/records used earliercommensuratefinitecase13; retainedhistorically, not finalcomparison",
+    "source_before": "neighbour_box_before.cpp and neighbour_box_before.hpp; baseline_include copy identical"
+  }
+}
