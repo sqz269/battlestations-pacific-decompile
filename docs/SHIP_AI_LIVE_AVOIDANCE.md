@@ -30,10 +30,13 @@ director introduced in [GAME_DIRECTOR_AVOIDANCE.md](GAME_DIRECTOR_AVOIDANCE.md).
 
 ## Current verification and remaining connections
 
-The working Win32 build and both existing tests passed. An ignored probe links
-the actual game-host objects and passes 47 checks covering registered Lua
+The pre-cruise combined Win32 build and both existing tests passed. An ignored probe links
+the actual game-host objects and passes 56 checks covering registered Lua
 truthiness, error replay, stored settings reaching the prepass, actual director
 message receipt, four live director reads and three cache-disable transitions.
+It also checks persistent tuning capture, later Lua mutation and retention after
+a protected failed reload. This is the process loader's atomic projection; it
+does not claim the native private loader's partial-store error ordering.
 The storage and geometry workers retain separate original-byte evidence.
 
 Mission query refresh at 009DA6E0 now borrows the controller's actual cache/list
@@ -41,12 +44,21 @@ views and world geometry. Its inputs come from the existing hull, look-ahead and
 class projections. The five stored tuning fields are captured during the
 represented settings load and feed sector and clearance consumers.
 
-The cruise request overload still requires the live role-owner connection.
-The native bot at unit+740 has an attached
+The cruise request overload now consumes the canonical unit role getter and
+the borrowed session participant owner. The native bot at unit+740 has an attached
 entity owner at bot+50; that is not a formation-group object. Role slots and
 participant AI-held bytes cannot be inferred from Party or selected-unit state.
-The new query and tuning bindings have not yet been exercised in the combined
+Role1=8 skips its participant lookup; the helm arm skips the player byte and
+role0, and the player arm skips role0. Required unavailable reads preserve the
+input output and record a partial state step. The constructor-owned role table
+remains unassigned until the actual role-assignment receiver is connected.
+The borrowed participant object must outlive the ship AI host. Its mission
+publication is tracked in the separate session-owner packet.
+
+The new cruise connection has not yet been built or exercised in the combined
 mission. No active mission avoidance or gameplay validation is claimed at this
-checkpoint. The remaining state/request writers are separate work.
+checkpoint. The remaining state/request writers and obstacle refresh producer
+are separate work; recovered point predicates are not yet bound to unproduced
+geometry.
 
 See `reports/ship_ai_live_avoidance.json` for the checkpoint evidence paths.

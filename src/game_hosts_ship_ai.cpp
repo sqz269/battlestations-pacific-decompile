@@ -14,6 +14,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
+#include "bsp/session_participant_pools.hpp"
 
 #include <array>
 #include <cmath>
@@ -223,8 +224,42 @@ struct GameShipAiHost::Impl {
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     const bsp::SessionParticipantPools* session_participants{};
+    bool cruise_avoidance_inputs(std::size_t index,
+        bsp::ShipAiCruiseAvoidanceInputs& output) const {
+        bsp::ShipAiCruiseAvoidanceInputs inputs;
+        std::int32_t role;
+        // 008FBC95 attaches this same ship at bot+50. The role table belongs
+        // to that entity, independently of its formation or Party number.
+        if (!units.unit_current_role_slot(index, 1, role)) return false;
+        inputs.group_slot_unassigned = role == 8;
+        if (!inputs.group_slot_unassigned) {
+            std::uint8_t ai;
+            if (!session_participants || !session_participants->try_ai_held_00927f10(role, ai))
+                return false;
+            inputs.group_slot_ai_held = ai != 0;
+            if (!inputs.group_slot_ai_held) {
+                output = inputs; // Helm arm never reads unit+184 or role zero.
+                return true;
+            }
+        }
+        inputs.unit_player_controlled = units.unit_player_controlled_0184(index);
+        if (!inputs.unit_player_controlled) {
+            if (!units.unit_current_role_slot(index, 0, role)) return false;
+            inputs.own_slot_unassigned = role == 8;
+            if (!inputs.own_slot_unassigned) {
+                std::uint8_t ai;
+                if (!session_participants || !session_participants->try_ai_held_00927f10(role, ai))
+                    return false;
+                inputs.own_slot_ai_held = ai != 0;
+            }
+        }
+        // Unread Boolean members remain irrelevant to the selected arm.
+        output = inputs;
+        return true;
+    }
     unsigned long long hull_geometry_updates{};
     unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
+    unsigned long long avoidance_role_reads{}, avoidance_role_unavailable{};
     std::int32_t session_mode{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
@@ -3119,17 +3154,27 @@ public:
         const StateDescriptor* state = state_for_ai_offset(ctl_.active_state_ai_offset);
         if (state != nullptr && state->step_concrete) {
             SetterBinding setters(owner_);
-            if (owner_.units.run_cruise_state_step_009e1170(index_, ctl_.blk, setters)) {
+            bsp::ShipAiCruiseAvoidanceInputs inputs;
+            if (!owner_.cruise_avoidance_inputs(index_, inputs)) {
+                ++owner_.avoidance_role_unavailable;
+                owner_.record("ShipAiCruise::unavailable_owner_roles", 0x009e119fu);
+                ++owner_.summary.state_steps_recorded;
+                return;
+            }
+            ++owner_.avoidance_role_reads;
+            const bool drove = owner_.units.run_cruise_state_step_009e1170(
+                index_, ctl_.blk, setters, ctl_.avoidance, inputs);
+            row_.avoidance_enabled = ctl_.avoidance.enable_3f4;
+            row_.avoidance_side = ctl_.avoidance.side_filter_3f8;
+            if (drove) {
                 ++owner_.summary.state_steps_concrete;
                 ++row_.state_step_real;
                 ++owner_.summary.state_steps_real;
                 apply_ai_drive();
                 return;
             }
-            // 009E1170 ran and took its 009E11E8 player arm, which is not
-            // projected; GameCommandsHost has already recorded that arm with its
-            // own address. Recording the step again here would put one method
-            // name on both dispositions, and the log keeps the first.
+            // Request fields are shared even when the selected player/helm
+            // drive remainder is still partial. Commands records that boundary.
             ++owner_.summary.state_steps_recorded;
             return;
         }
@@ -4380,6 +4425,8 @@ void GameShipAiHost::report() {
     if (host.rows.empty()) return;
     host.log.notef("ship avoidance search: queries=%llu refills=%llu clears=%llu",
         host.avoidance_queries, host.avoidance_refills, host.avoidance_clears);
+    host.log.notef("ship avoidance cruise owners: reads=%llu unavailable=%llu",
+        host.avoidance_role_reads, host.avoidance_role_unavailable);
     host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
         "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",
         host.hull_geometry_updates);
