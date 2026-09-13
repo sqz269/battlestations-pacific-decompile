@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_native_render_service_vector_cleanup_ba",
-  "status": "complete_raw_source_worker_strict_compile_baseline_build_and_bounded_fixture_passed",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
   "base_commit": "d6d7ff627dd4ec5087c52fa217d8d501d3820d04",
   "files": [
     "include/bsp/native_render_service_vector_cleanup.hpp",
@@ -335,11 +335,20 @@
     "includes": "All loose fixture code/bytes/state/event/log evidence, native listings/readiness/repair captures, source/header/build-input snapshots and the three exact libraries. Archive report snapshot precedes adding this final archive hash to the tracked report."
   },
   "integration_ba_review": {
-    "combined_validation": "pending current combined build and applicable current-library replay",
+    "combined_validation": "passed exact merged Win32 build and applicable validation in reports/native_lighting_service_ba_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_render_service_vector_cleanup.json: 7 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 16
+  },
+  "worker_capture_status": "complete_raw_source_worker_strict_compile_baseline_build_and_bounded_fixture_passed",
+  "final_merged_validation_ba": {
+    "report": "reports/native_lighting_service_ba_validation.json",
+    "tested_commit": "b852ae06a7fdd93c799cdacc015a1a5a96adf9f1",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 4,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
   }
 }

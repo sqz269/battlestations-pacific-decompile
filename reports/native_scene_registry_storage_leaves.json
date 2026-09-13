@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_native_scene_registry_storage_leaves_ba",
-  "status": "complete_native_leaf_bodies_strict_source_compile_original_byte_fixture_passed_pending_library_integration",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
   "utc": "2026-09-13T16:08:47.637474+00:00",
   "normal_body_count": 3,
   "native_body_bytes": 121,
@@ -305,11 +305,20 @@
     "includes": "15 live/disk spans, full native/caller/provider listings, 3 libraries, own and provider sources, all header pins, probe, inc, recipe, logs, objects and executable"
   },
   "integration_ba_review": {
-    "combined_validation": "pending current combined build and applicable current-library replay",
+    "combined_validation": "passed exact merged Win32 build and applicable validation in reports/native_lighting_service_ba_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_scene_registry_storage_leaves.json: 8 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 16
+  },
+  "worker_capture_status": "complete_native_leaf_bodies_strict_source_compile_original_byte_fixture_passed_pending_library_integration",
+  "final_merged_validation_ba": {
+    "report": "reports/native_lighting_service_ba_validation.json",
+    "tested_commit": "b852ae06a7fdd93c799cdacc015a1a5a96adf9f1",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 4,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
   }
 }
