@@ -30,6 +30,11 @@
 
 #include "bsp/game_hosts_scene_contents.hpp"
 
+namespace bsp {
+class SessionParticipantPools;
+struct SceneRecord;
+}
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -55,6 +60,10 @@ struct GameMissionLoadRunSummary {
     bool engine_movie_arm{false};     // 004e0a50
     std::size_t locale_tables{0};     // names split off record+980h
     std::size_t slots_reset{0};       // the eight records at game+1008h
+    bool participant_scene_present{false};
+    bool participant_count_available{false};
+    std::int32_t participant_scene_slots{0}; // actual record+988h, only when available
+    bool participant_local_claimed{false};  // current[0] selects player record 0
     // Milestone 2m: the function-valued Lua globals 004d30f0 recorded into the
     // set at game+1930h, the baseline teardown nils the mission's own additions
     // against.
@@ -65,6 +74,9 @@ struct GameMissionLoadRunSummary {
 // The 0Ch handler and the entry itself.
 struct GameMissionEntrySummary {
     bool device_wait_ran{false};
+    bool participant_view_available{false};
+    bool player_count_arm{false};
+    std::size_t unbound_player_slots{0}; // meaningful only when view is available
     bool entered{false};             // 004da6c0 wrote 0Dh
     std::uint32_t state{0};          // game+5D4h afterwards
     std::size_t dynamics_released{0};// 00447060
@@ -113,7 +125,8 @@ struct GameMissionFrameRunSummary {
 class GameMissionFrameHost {
 public:
     GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs, GameMissionLuaHost& lua,
-        GameFrameProfiler* profiler, std::string language, GameHudHost* hud = nullptr);
+        bsp::SessionParticipantPools& participants, GameFrameProfiler* profiler,
+        std::string language, GameHudHost* hud = nullptr);
     ~GameMissionFrameHost();
     GameMissionFrameHost(const GameMissionFrameHost&) = delete;
     GameMissionFrameHost& operator=(const GameMissionFrameHost&) = delete;
@@ -122,9 +135,15 @@ public:
     // path's request 0Ah dispatches, performing every step whose owner area has
     // a reconstruction this process can drive and recording the rest.
     // `scene_path` is the record's +90Ch, `script_name` the record's +928h entry
-    // and `locale_tables` the comma separated list at +980h.
+    // and `locale_tables` the comma separated list at +980h. `scene_record`
+    // supplies actual presence. `participant_count` is the separately parsed
+    // +988h scalar for that record's path; null means unavailable. A present
+    // scene requires that scalar (the still-unfilled side_blocks vector does
+    // not establish zero). The
+    // borrowed pools supplied to the constructor must outlive this host/ShipAI.
     void run_scene_load_004dfb70(const std::string& scene_path, const std::string& script_name,
-        const std::string& locale_tables, std::int32_t mission_id);
+        const std::string& locale_tables, std::int32_t mission_id,
+        const bsp::SceneRecord* scene_record, const std::int32_t* participant_count);
 
     // 004db920 for game state 0Ch, which tails into 004da6c0.
     bool enter_mission_state_004da6c0();

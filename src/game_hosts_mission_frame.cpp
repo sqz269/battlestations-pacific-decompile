@@ -50,6 +50,7 @@
 #include "bsp/mission_state_frame.hpp"
 #include "bsp/render_tail.hpp"
 #include "bsp/session_polls.hpp"
+#include "bsp/session_participant_pools.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/world_ocean.hpp"
@@ -94,8 +95,9 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
+        bsp::SessionParticipantPools& participants_in,
         GameFrameProfiler* profiler_in, std::string language_in)
-        : log(log_in), vfs(vfs_in), lua(lua_in), profiler(profiler_in),
+        : log(log_in), vfs(vfs_in), lua(lua_in), participants(participants_in), profiler(profiler_in),
           language(std::move(language_in)) {
         // Both take references to members declared below, which are already
         // default constructed when this body runs.
@@ -109,6 +111,7 @@ struct GameMissionFrameHost::Impl {
     GameHostLog& log;
     GameVfsHost& vfs;
     GameMissionLuaHost& lua;
+    bsp::SessionParticipantPools& participants; // persistent GameMissionHost owner
     GameFrameProfiler* profiler{};
     std::string language;
 
@@ -129,8 +132,6 @@ struct GameMissionFrameHost::Impl {
     bsp::ParticleClock particle_clock{};
     bsp::MissionCounterState mission_counters{};
     bsp::AudioSettings audio{};
-    bsp::SceneSlotRecord slots[bsp::kSceneSlotRecordCount]{};
-    bsp::MissionEntryPlayerSlot entry_slots[bsp::kLocalPlayerSlotCount]{};
     bsp::InputBindingDeviceGroups device_groups{};
     std::vector<bsp::HintCooldown> hint_cooldowns{};
     bool main_menu_manager_released{false};   // 00e198ac
@@ -450,13 +451,14 @@ public:
     explicit InMissionTickBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
 
     void step_fixed_simulation_00875bb0(float scaled_delta) override {
-        // The four-test gate at 00875bb1..00875c02. The load's own
-        // 004bb160/004bb440 step claimed slot 0 and the entry's 004da71e wrote
-        // its +10h ready word, so the gate opens on the values this process
-        // actually holds rather than on invented ones.
+        // The four-test gate at 00875bb1..00875c02.
+        // Read the selected identity from the same pool as the entry and AI.
+        // The existing +10h entry-ready projection remains outside that
+        // pool's three-byte scope; it is not device ownership at +0Eh.
         bsp::FixedStepGate gate{};
         gate.game_present = true;
-        gate.local_player_slot_present = owner_.slots[0].in_use;
+        bsp::ParticipantRecordId local_record;
+        gate.local_player_slot_present = owner_.participants.active_record(0, local_record);
         gate.slot_ready_10h = static_cast<std::int16_t>(bsp::kLocalSlotReadyValue);
         gate.view_mode_1fe4 = owner_.scene_state.session_mode;
         gate.session_count_9c = 0;
@@ -552,7 +554,14 @@ public:
     void copy_local_player_slots(bsp::LocalPlayerSlot (&slots)[bsp::kLocalPlayerSlotCount])
         override {
         for (std::size_t i = 0; i < bsp::kLocalPlayerSlotCount; ++i) {
-            slots[i] = bsp::LocalPlayerSlot{};
+            bsp::ParticipantRecordId record;
+            bsp::ParticipantRecordBytes bytes;
+            if (!owner_.participants.active_record(i, record)
+                || !owner_.participants.read_record_bytes(record, bytes)
+                || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
+                throw std::logic_error("Frame participant +8/+9 view is unavailable");
+            }
+            slots[i] = {true, bytes.claimed_08.value != 0, bytes.ai_held_09.value != 0};
         }
     }
     float mission_time_filter_007713a0(float delta) override { return delta; }
@@ -1132,9 +1141,10 @@ void report_scene_markers(GameHostLog& log,
 // ---------------------------------------------------------------------------
 
 GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
-    GameMissionLuaHost& lua, GameFrameProfiler* profiler, std::string language,
+    GameMissionLuaHost& lua, bsp::SessionParticipantPools& participants,
+    GameFrameProfiler* profiler, std::string language,
     GameHudHost* hud)
-    : impl_(std::make_unique<Impl>(log, vfs, lua, profiler, std::move(language))) {
+    : impl_(std::make_unique<Impl>(log, vfs, lua, participants, profiler, std::move(language))) {
     impl_->hud = hud;
 }
 
@@ -1157,8 +1167,16 @@ const GameSceneContentsSummary* GameMissionFrameHost::scene_contents_summary()
 
 void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path,
     const std::string& script_name, const std::string& locale_tables,
-    std::int32_t mission_id) {
+    std::int32_t mission_id, const bsp::SceneRecord* scene_record,
+    const std::int32_t* participant_count) {
     Impl& host = *impl_;
+    if (scene_record && !participant_count) {
+        throw std::logic_error("Scene participant count is unavailable from its header properties");
+    }
+    const std::int32_t scene_slot_count = participant_count ? *participant_count : 0;
+    if (scene_record && scene_slot_count > static_cast<std::int32_t>(bsp::kSceneSlotRecordCount)) {
+        throw std::invalid_argument("Scene participant count exceeds the native eight-record pool");
+    }
     host.load.ran = true;
     host.load.short_name = bsp::derive_scene_short_name(scene_path);
     host.load.script_name = script_name;
@@ -1169,7 +1187,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
     host.scene_state.script_name = script_name;
     host.scene_state.locale_table_list = locale_tables;
     host.scene_state.mission_id = mission_id;
-    host.scene_state.have_scene_record = true;
+    host.scene_state.have_scene_record = scene_record != nullptr;
+    host.load.participant_scene_present = scene_record != nullptr;
+    host.load.participant_count_available = participant_count != nullptr;
+    host.load.participant_scene_slots = scene_slot_count;
 
     // 004e087b picks the script slot; single player always resolves to 8, and
     // 004e0a50 reads the raw slot to choose the arm.
@@ -1264,19 +1285,22 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
         if (method == "reset_single_player_slots") {
-            // 004bb160 points game+18CCh at the eight 118h records based at
-            // game+1008h; 004bb440 then claims one for the local player and
-            // writes its +0Eh device byte, which is what the state 0Ch handler
-            // counts.
-            for (std::size_t slot = 0; slot < bsp::kSceneSlotRecordCount; ++slot) {
-                host.slots[slot] = bsp::SceneSlotRecord{};
+            // 004DFD18 -> 004DFD57 -> 004DFD5C: reset both pools, claim the
+            // first player record, then publish current[0]. Neither service
+            // writes +0E. The later 004E0851 store is skipped in mode 0.
+            bsp::ParticipantRecordId claimed;
+            const auto result = host.participants.reset_and_claim_local_flags(
+                host.scene_state.have_scene_record,
+                scene_slot_count, claimed);
+            if (result != bsp::ParticipantClaimResult::Claimed) {
+                throw std::logic_error("Local participant reset/claim is unavailable");
             }
-            host.slots[0].in_use = true;
+            host.load.participant_local_claimed = true;
             host.load.slots_reset = bsp::kSceneSlotRecordCount;
-            for (std::size_t slot = 0; slot < bsp::kLocalPlayerSlotCount; ++slot) {
-                host.entry_slots[slot] = bsp::MissionEntryPlayerSlot{};
-                host.entry_slots[slot].device_bound = true;
-            }
+            host.log.notef("participant pools: scene_present=%d scene_slots=%d "
+                "current[0]=player[%zu] remaining=mission[1..7] device_bytes=retained "
+                "mode=%d", host.scene_state.have_scene_record ? 1 : 0,
+                scene_slot_count, claimed.index, host.scene_state.session_mode);
             host.done(label, step.address);
             ++host.load.concrete;
             continue;
@@ -1399,6 +1423,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
+            host.ship_ai->bind_session_participants(host.participants);
             host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());
             // Milestone 2m: row 16 of the fan-out walks the entity chain this
@@ -1554,7 +1579,21 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
     inputs.local_view_mode = host.scene_state.session_mode;
     inputs.session_flag_29c = false;
     inputs.game_field_624 = 0;
-    inputs.unbound_player_slots = bsp::count_unbound_player_slots(host.entry_slots);
+    bsp::MissionEntryPlayerSlot current_slots[bsp::kLocalPlayerSlotCount];
+    host.entry.participant_view_available = host.participants.try_entry_slots(current_slots);
+    host.entry.player_count_arm = bsp::mission_entry_uses_player_count_arm(
+        inputs.local_view_mode, inputs.session_flag_29c);
+    if (host.entry.participant_view_available) {
+        inputs.unbound_player_slots = bsp::count_unbound_player_slots(current_slots);
+        host.entry.unbound_player_slots = inputs.unbound_player_slots;
+    } else if (host.entry.player_count_arm && inputs.local_view_mode == 1) {
+        host.log.note("state 0Ch participant +9/+0E view is unavailable for the count arm");
+        return false;
+    }
+    host.log.notef("mission participant entry: view_available=%d unbound=%zu "
+        "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
+        host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
+        inputs.local_view_mode);
 
     bool entered = false;
     DeviceWaitBinding device_wait(host, entered);

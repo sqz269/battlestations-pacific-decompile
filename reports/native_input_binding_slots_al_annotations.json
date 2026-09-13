@@ -1,0 +1,88 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "00a92790",
+      "before": "Function: FUN_00a92790 at 00a92790\nSignature: undefined FUN_00a92790(void)\nEntry: 00a92790\nBody: 00a92790 - 00a92819",
+      "before_comment": {
+        "address": "00a92790",
+        "function_name": "FUN_00a92790"
+      },
+      "proposed": "void __fastcall BSP_InputManager_ReadBindingDescriptor(void* self, void* unused_edx, uint action, int slot, void* descriptor, float* scale)",
+      "apply": "Successfully set prototype for function at 00a92790 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_ReadBindingDescriptor at 00a92790\nSignature: void __fastcall BSP_InputManager_ReadBindingDescriptor(void * self, void * unused_edx, uint action, int slot, void * descriptor, float * scale)\nEntry: 00a92790\nBody: 00a92790 - 00a92819",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92820",
+      "before": "Function: FUN_00a92820 at 00a92820\nSignature: undefined FUN_00a92820(void)\nEntry: 00a92820\nBody: 00a92820 - 00a92833",
+      "before_comment": {
+        "address": "00a92820",
+        "function_name": "FUN_00a92820"
+      },
+      "proposed": "int __fastcall BSP_InputManager_CountBindings(void* self, void* unused_edx, uint action)",
+      "apply": "Successfully set prototype for function at 00a92820 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_CountBindings at 00a92820\nSignature: int __fastcall BSP_InputManager_CountBindings(void * self, void * unused_edx, uint action)\nEntry: 00a92820\nBody: 00a92820 - 00a92833",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93750",
+      "before": "Function: BSP_InputManager_InstallActionBinding at 00a93750\nSignature: undefined BSP_InputManager_InstallActionBinding(void)\nEntry: 00a93750\nBody: 00a93750 - 00a937c1",
+      "before_comment": {
+        "address": "00a93750",
+        "function_name": "BSP_InputManager_InstallActionBinding",
+        "comment": "[BSP reconstruction 00a93750]\nProvisional hypothesis, not recovered symbol. docs/INPUT_BINDING_INSTALL.md. ECX=input manager; stack=action,slot,five source dwords,float scale; RET20h. source field copy, class==2 response, low-byte flag semantics, grow defaults, preserved modifiers, whole-action existing rebind. New value projection, not native layout or ABI; unused padding is unmodelled. Ghidra project bsp /battlestationspacific.exe verified; 00a93220/00a93500 free continuations restored by integrator under lock."
+      },
+      "proposed": "void __fastcall BSP_InputManager_InstallActionBinding(void* self, void* unused_edx, uint action, int slot, uint device_class, uint device_index, uint cached_device, uint input_code, uint flag_word, float scale)",
+      "apply": "Successfully set prototype for function at 00a93750 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_InstallActionBinding at 00a93750\nSignature: void __fastcall BSP_InputManager_InstallActionBinding(void * self, void * unused_edx, uint action, int slot, uint device_class, uint device_index, uint cached_device, uint input_code, uint flag_word, float scale)\nEntry: 00a93750\nBody: 00a93750 - 00a937c1",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92790",
+        "prototype": "void __fastcall BSP_InputManager_ReadBindingDescriptor(void* self, void* unused_edx, uint action, int slot, void* descriptor, float* scale)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92790 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92820",
+        "prototype": "int __fastcall BSP_InputManager_CountBindings(void* self, void* unused_edx, uint action)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92820 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93750",
+        "prototype": "void __fastcall BSP_InputManager_InstallActionBinding(void* self, void* unused_edx, uint action, int slot, uint device_class, uint device_index, uint cached_device, uint input_code, uint flag_word, float scale)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93750 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {}
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save_errors": [
+    "save_program {}: {'error': 'Unable to lock due to active transaction'}"
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

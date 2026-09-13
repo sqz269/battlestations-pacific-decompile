@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006d1f20",
+    "end_address": "006d1f23"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006d1f20",
+    "end_address": "006d1f22",
+    "bytes_disassembled": 3,
+    "message": "Successfully disassembled 3 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006d1f20",
+    "disassemble_first": false,
+    "name": "BSP_UnitTick_NoOpFloat"
+   },
+   "result": {
+    "success": true,
+    "address": "006d1f20",
+    "function_name": "BSP_UnitTick_NoOpFloat",
+    "entry_point": "006d1f20",
+    "body_size": 3,
+    "message": "Function created successfully at 006d1f20",
+    "warnings": [
+     "Function name 'BSP_UnitTick_NoOpFloat' \u2014 main part 'UnitTick_NoOpFloat' is not PascalCase. Expected: UnittickNoopfloat",
+     "Function name 'BSP_UnitTick_NoOpFloat' \u2014 main part 'UnitTick_NoOpFloat' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_UnitTick_NoOpFloat' does not start with a recognized verb. First word 'Unit' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006d1f20",
+   "end": "006d1f23",
+   "name": "BSP_UnitTick_NoOpFloat",
+   "after": "Function: BSP_UnitTick_NoOpFloat at 006d1f20\nSignature: undefined BSP_UnitTick_NoOpFloat(void)\nEntry: 006d1f20\nBody: 006d1f20 - 006d1f22"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

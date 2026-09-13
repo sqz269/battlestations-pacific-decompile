@@ -1,0 +1,1264 @@
+{
+  "packet": "orch3_cache_clear_av",
+  "source_base": "4c97c137",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "ghidra_readonly": true,
+  "routines": [
+    {
+      "address": 11682240,
+      "native": 11682240,
+      "function": 11682240,
+      "end_inclusive": 11682903,
+      "bytes": 664,
+      "coverage": "complete normal body",
+      "source": "clear_native_renderer_binding_cache_00b241c0",
+      "original_abi": "ECX renderer+34; no stack args; RET; no semantic result",
+      "uncertainty": "new C++ ABI; current ten-profile domain; nested inherited logical+4C producer remains unknown"
+    },
+    {
+      "address": 11696896,
+      "native": 11696896,
+      "function": 11696896,
+      "end_inclusive": 11697025,
+      "bytes": 130,
+      "coverage": "complete raw body",
+      "source": "bind_native_renderer_material_third_states_00b27b00",
+      "original_abi": "ECX renderer; stack owner; RET4; no semantic result",
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "uncertainty": "no saved callers/profile mapping into renderer+38; extra EDX context in new source ABI",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": 11682264,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "cache+00",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682291,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "cache+04",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682319,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "cache+08",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682380,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "cache+1780",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682414,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "cache+1784",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682467,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "four stream cells",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682594,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "sixteen texture cells",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682676,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11682240,
+      "iat_slot": 13509152,
+      "role": "frame cell",
+      "abi": "stdcall LONG* actual owner+04, RET4",
+      "evidence": "complete saved assembly; actual import, first five calls use captured EBP"
+    },
+    {
+      "address": 11682276,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682303,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682331,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682392,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682426,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682483,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682610,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682692,
+      "native": 12398816,
+      "function": 11682240,
+      "kind": "indirect",
+      "abi": "ECX captured owner, no stack args, RET",
+      "contract": "current slot0 then full invoker current-profile reload/slot4/flag1; profile domain listed below"
+    },
+    {
+      "address": 11682346,
+      "native": 12548592,
+      "function": 11682240,
+      "abi": "cdecl memset(cache+0C,0,D2); B24241 ADD ESP,0C",
+      "contract": "real CRT memset"
+    },
+    {
+      "address": 11696928,
+      "native": "kernel32!InterlockedIncrement",
+      "function": 11696896,
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "abi": "stdcall actual owner+04; RET4",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    },
+    {
+      "address": 11696942,
+      "native": "kernel32!InterlockedDecrement",
+      "function": 11696896,
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "abi": "stdcall actual owner+04; RET4",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    },
+    {
+      "address": 11696958,
+      "native": "owner+vtable00",
+      "function": 11696896,
+      "resolved_native": 12398816,
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "abi": "ECX captured old owner; RET",
+      "contract": "current three-profile material terminal with throwing raw deleting provider",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    },
+    {
+      "address": 11696996,
+      "native": 11683088,
+      "function": 11696896,
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "abi": "ECX renderer; stage/state/value stack words; B245FE RET0C",
+      "contract": "complete actual texture-stage state setter",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    }
+  ],
+  "current_profiles": [
+    {
+      "profile": 14031404,
+      "zero": 12398816,
+      "deleting": 11805424,
+      "source": "native_material_pass_states",
+      "usual_cell": "cache+00",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14031420,
+      "zero": 12398816,
+      "deleting": 11805488,
+      "source": "native_material_pass_states",
+      "usual_cell": "cache+04 conditional application profile",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14031412,
+      "zero": 12398816,
+      "deleting": 11805456,
+      "source": "native_material_pass_states",
+      "usual_cell": "cache+08",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14035700,
+      "zero": 12398816,
+      "deleting": 11929456,
+      "source": "native_hardware_layout_owner",
+      "usual_cell": "cache+1780",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14032352,
+      "zero": 12398816,
+      "deleting": 11846128,
+      "source": "native_logical_index_owner",
+      "usual_cell": "cache+1784",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14032236,
+      "zero": 12398816,
+      "deleting": 11845392,
+      "source": "native_logical_vertex_owner",
+      "usual_cell": "four cache+1740+i*10",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14031176,
+      "zero": 12398816,
+      "deleting": 11793808,
+      "source": "native_texture_2d_owner",
+      "usual_cell": "texture cells",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14030960,
+      "zero": 12398816,
+      "deleting": 11793424,
+      "source": "native_cube_texture_owner",
+      "usual_cell": "texture cells",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14031024,
+      "zero": 12398816,
+      "deleting": 11793456,
+      "source": "native_volume_texture_owner",
+      "usual_cell": "texture cells",
+      "coverage": "complete existing raw deleting implementation"
+    },
+    {
+      "profile": 14018048,
+      "zero": 12398816,
+      "deleting": 11664624,
+      "source": "native_frame_target_owner",
+      "usual_cell": "cache+18D4",
+      "coverage": "complete existing raw deleting implementation"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": 11691104,
+      "native": 11682240,
+      "function": 11690688,
+      "abi": "B2645D LEA ECX,[ESI+34]"
+    },
+    {
+      "address": 11703724,
+      "native": 11682240,
+      "function": 11703344,
+      "abi": "B295A2 MOV ECX,ESI where ESI is cache receiver"
+    },
+    {
+      "address": 11692426,
+      "native": 11682240,
+      "function": 11692320,
+      "abi": "B26987 LEA ECX,[ESI+34]"
+    },
+    {
+      "address": 11741642,
+      "native": 11682240,
+      "function": 11741472,
+      "abi": "B329C7 LEA ECX,[ESI+34]"
+    },
+    {
+      "address": 11721419,
+      "native": 11682240,
+      "function": 11720928,
+      "abi": "B2DAC8 LEA ECX,[ESI+34]"
+    }
+  ],
+  "producers": [
+    {
+      "address": 11925494,
+      "function": 11925280,
+      "profile": 14031420,
+      "publication_address": 11925522,
+      "field": "pass+1C",
+      "evidence": "actual14h owner profile and zero rows; whole listing EBX0 EDI1"
+    },
+    {
+      "address": 11818743,
+      "function": 11818432,
+      "profile": 14031420,
+      "publication_address": 11818762,
+      "field": "destination pass+1C",
+      "evidence": "actual14h owner; then source+04 copied and B41CE0 rows copy"
+    }
+  ],
+  "provenance_limit": "D61A3C production proved at pass+1C; no current runtime caller carrying it to renderer+38. B27B00 has no saved xrefs and DWORD address scan no matches; no exhaustive reachability claim.",
+  "corrections": [
+    {
+      "was": "NATIVE_RENDERER_RESET_READINESS_5 describes B241C0 and logical vertex lifetime as incomplete",
+      "evidence": "current source pins, full664byte body and complete raw deleting provider APIs",
+      "is": "complete B241C0 current-profile raw composition; full existing logical vertex raw lifetime is consumed"
+    },
+    {
+      "was": "Prior owner module deliberately leaves third-row interpretation unresolved",
+      "evidence": "B27B50..B27B72 raw tuple loop and positive pass+1C producers without transport caller",
+      "is": "B27B00 input rows are stage/state/value, but mapping every D61A3C instance to this binder remains conditional"
+    }
+  ],
+  "storage_schedule": {
+    "owner_count": 26,
+    "texture_owners_visited": 16,
+    "sampler_valid_banks": 20,
+    "stream_records": 4,
+    "untouched": "extra4texture owners, gamma cache+1938, planes, sparse gaps",
+    "failure": "captured owner release before CURRENT-cell clear; no parent cleanup or rollback; later cells/fields untouched after throw"
+  },
+  "evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00b241c0",
+        "end_inclusive": "00b24457",
+        "length": 664,
+        "role": "complete cache clear",
+        "live_matches_installed": true,
+        "sha256": "7e2cd8817943cddb628ec0e38b6e5747cf5f238f2556f06844f5c950d8e92f65"
+      },
+      {
+        "address": "00b27b00",
+        "end_inclusive": "00b27b81",
+        "length": 130,
+        "role": "complete raw third binder no_ghidra_function",
+        "live_matches_installed": true,
+        "sha256": "910f722862a6acb252559d61b693c0593e447bc8b162b5eec3f56f1fe8e33052"
+      },
+      {
+        "address": "00bd30e0",
+        "end_inclusive": "00bd30ed",
+        "length": 14,
+        "role": "complete current invoker",
+        "live_matches_installed": true,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "address": "00b24510",
+        "end_inclusive": "00b24600",
+        "length": 241,
+        "role": "complete consumed stage setter",
+        "live_matches_installed": true,
+        "sha256": "5f522e797ec988deab2bc9cf2f7709b759d64060e655e5425450e774d0c2f14d"
+      },
+      {
+        "address": "00d61a2c",
+        "end_inclusive": "00d61a43",
+        "length": 24,
+        "role": "three material profiles",
+        "live_matches_installed": true,
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813"
+      },
+      {
+        "address": "00d62af4",
+        "end_inclusive": "00d62afb",
+        "length": 8,
+        "role": "layout profile",
+        "live_matches_installed": true,
+        "sha256": "22b7c729f31369c6714abc3492f15e0c4a38dfebf2876592c310c8d2d2f26a94"
+      },
+      {
+        "address": "00d61de0",
+        "end_inclusive": "00d61de7",
+        "length": 8,
+        "role": "index profile",
+        "live_matches_installed": true,
+        "sha256": "94ccd80872ab98db0a021c0bf609780fee6daf715d82ef0557fecf2f88b2352c"
+      },
+      {
+        "address": "00d61d6c",
+        "end_inclusive": "00d61d73",
+        "length": 8,
+        "role": "vertex profile",
+        "live_matches_installed": true,
+        "sha256": "0ff32d5c6515055196e4c89d3d8e68bb2aa756070e991e08610b5f42db6381d7"
+      },
+      {
+        "address": "00d61948",
+        "end_inclusive": "00d6194f",
+        "length": 8,
+        "role": "2d profile",
+        "live_matches_installed": true,
+        "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c"
+      },
+      {
+        "address": "00d61870",
+        "end_inclusive": "00d61877",
+        "length": 8,
+        "role": "cube profile",
+        "live_matches_installed": true,
+        "sha256": "930f024c1a3a6280d5bef743f72841863f1bdd5ff7c68ea02d37965d1a0bf623"
+      },
+      {
+        "address": "00d618b0",
+        "end_inclusive": "00d618b7",
+        "length": 8,
+        "role": "volume profile",
+        "live_matches_installed": true,
+        "sha256": "d426b2edd7208a74b3fa5b21fe9c5a26afd19f8cd4cdc5f7f3f4c422053d44fe"
+      },
+      {
+        "address": "00d5e600",
+        "end_inclusive": "00d5e607",
+        "length": 8,
+        "role": "frame profile",
+        "live_matches_installed": true,
+        "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b"
+      },
+      {
+        "address": "00b5f7ed",
+        "end_inclusive": "00b5f814",
+        "length": 40,
+        "role": "third owner constructor production and pass publication",
+        "live_matches_installed": true,
+        "sha256": "cc4ffcc499805f894c23661c20dbe7ddaa35ce53802ffbc0c456e22b2b352e3a"
+      },
+      {
+        "address": "00b456ea",
+        "end_inclusive": "00b45721",
+        "length": 56,
+        "role": "third owner copy production and pass publication",
+        "live_matches_installed": true,
+        "sha256": "362eab91594b3c0a097d23a87da0c1f37c26c6290f633760ca8bc3fb768808d2"
+      }
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_renderer_cache_clear.hpp",
+      "sha256": "0e87883af4e036df2ee1d0c927e620e4a4518b94941a0b52aa782511835a3ee6"
+    },
+    {
+      "path": "src/native_renderer_cache_clear.cpp",
+      "sha256": "8dd73d58ba377bf82c74eef612b7f02d54dbf0788303bf3f8c95ae1ed8251a7d"
+    },
+    {
+      "path": "include/bsp/native_renderer_material_state_binding.hpp",
+      "sha256": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2"
+    },
+    {
+      "path": "src/native_renderer_material_state_binding.cpp",
+      "sha256": "de595df8962dcab7cf5c38afd4113f67cfe57c43e02b601e5ec15b4ec39a18aa"
+    },
+    {
+      "path": "include/bsp/native_material_pass_states.hpp",
+      "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+    },
+    {
+      "path": "src/native_material_pass_states.cpp",
+      "sha256": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c"
+    },
+    {
+      "path": "include/bsp/native_renderer_vertex_binding.hpp",
+      "sha256": "b24ad3f9666a0bc4cb70dbf086522d942110a3619f706a48a07817f498218ccc"
+    },
+    {
+      "path": "src/native_renderer_vertex_binding.cpp",
+      "sha256": "99485b40c4cf8c704a0c810bb38722c14aa09b0a673c887ae1b92b235f6a6e7b"
+    },
+    {
+      "path": "include/bsp/native_renderer_vertex_layout_binding.hpp",
+      "sha256": "ebf9d62dea25edfdeb5703b110533afd1ab9d71f975fb313f847701e48169939"
+    },
+    {
+      "path": "src/native_renderer_vertex_layout_binding.cpp",
+      "sha256": "c016e2d22c0d1ff84f2ff1aebcd79a2b50c865619f8683fe1bceb6dcad69c78e"
+    },
+    {
+      "path": "include/bsp/native_renderer_index_binding.hpp",
+      "sha256": "86aa477085b1dce3d029177714ac26a752199e6300dc979331810a8a97563135"
+    },
+    {
+      "path": "src/native_renderer_index_binding.cpp",
+      "sha256": "3d1ac30f49516977dfae1452d4d69a94c85086f1d87dc6ac9a73877897f6d2c0"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_binding.hpp",
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762"
+    },
+    {
+      "path": "src/native_renderer_texture_binding.cpp",
+      "sha256": "426edcb14ec67173d50e5b103d2e3b392d76e5aeb7c1ad76548ef69d9b00f179"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_stage_state.hpp",
+      "sha256": "e2cd6dc34e77959d83e8d3ab28d0f6f64019874c4cbc0924043b3f7a3c7249a4"
+    },
+    {
+      "path": "src/native_renderer_texture_stage_state.cpp",
+      "sha256": "b304f58b02865f7274cb23eeca287cc9a76bea05dc1acdf6c8eb95948eda1703"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "c542dbc6a596ac44e0d422fb4b4ba8382ff2c663e874fcbb48d3d896ebb3e89e"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51"
+    },
+    {
+      "path": "include/bsp/native_logical_index_owner.hpp",
+      "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+    },
+    {
+      "path": "src/native_logical_index_owner.cpp",
+      "sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "sha256": "f17e5c2634b9ef4d53cedcd1f0868bf1befe71ab79aca01c5d8b1496a7f2e29f"
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8"
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+    }
+  ],
+  "verification": {
+    "strict_compile": "MSVC Win32 /std:c++17 /MD /W4 /WX /O2 /fp:strict passed",
+    "build": "scripts/build.ps1 after verify-seeds: 2/2 existing CTests passed; shared CMake deliberately not edited",
+    "fixture": {
+      "directory": "C:/Users/sqz269/bsp-av-cache-clear",
+      "run": "run.ps1 -Root <repo>",
+      "current_library_only": "run.ps1 -Root <integrated repo> -CurrentLibrary; probe.cpp only + bsp_core/bsp_lua511/bsp_zlib121.lib; no reconstructed cpp/obj",
+      "comparisons": 7,
+      "postimage_bytes": 54704,
+      "original_executed": [
+        "B241C0 full664",
+        "B27B00 full130",
+        "BD30E0 full14"
+      ],
+      "dependency_bridges": [
+        "B422F0",
+        "B42310",
+        "B42330",
+        "B3F410",
+        "B1FCF0",
+        "B24510",
+        "BF79F0 real CRT memset",
+        "CE221C/CE2220 real Win32 atomics"
+      ],
+      "coverage": [
+        "all26 nonnull actual retained counts",
+        "nonempty three material states and scalar deletion",
+        "sixteen actual cube terminals and pool return",
+        "actual frame target terminal and COM release",
+        "current next-cell reload with alias",
+        "current-cell clear after mutation",
+        "cube throw73 prevents current clear/later writes",
+        "third current row pointer/count reload",
+        "third throw91 prevents binder counter",
+        "identity null/context bypass",
+        "unchanged loaded full parent/invoker/profile postimages"
+      ],
+      "limits": [
+        "logical/layout/index/2D/volume final-zero source-reviewed/build-tested but not independently exercised in this fixture",
+        "nested dependency bodies use current production library through explicit ABI jump-only bridges",
+        "fake COM is observation, not GPU/game runtime",
+        "only pre-execution fixed-page collision77 retried up to8",
+        "intentionally displaced/failing fixture objects retained until subprocess exit"
+      ]
+    },
+    "worker_capture_report_call_check": {
+      "checked": 15,
+      "failed": 1,
+      "sole_failure": "00B27B64 -> 00B24510: call site is in no Ghidra function",
+      "analysis_status": "no_ghidra_function for full raw B27B00 body; root defines under separate lease/write lock and reruns",
+      "indirect_numeric_rows": 8,
+      "log": "report_calls.log"
+    }
+  },
+  "limitations": [
+    "full new C++ source interface, not original caller ABI or SEH registration parity",
+    "inherited nested logical owner canonical terminal domain at+68/+4C, no new noexcept bridge",
+    "nonnull+4C runtime producer/type remains unresolved",
+    "no new pool/cache/refcount/registry/destructor callback",
+    "no original installed-game modification or gameplay proof"
+  ],
+  "functions": [
+    {
+      "address": "00b241c0",
+      "native": 11682240,
+      "function": 11682240,
+      "end_inclusive": "00b24457",
+      "bytes": 664,
+      "coverage": "complete normal body",
+      "source": "src/native_renderer_cache_clear.cpp",
+      "original_abi": "ECX renderer+34; no stack args; RET; no semantic result",
+      "uncertainty": "new C++ ABI; current ten-profile domain; nested inherited logical+4C producer remains unknown",
+      "end_exclusive": "00b24458",
+      "cpp_symbol": "clear_native_renderer_binding_cache_00b241c0",
+      "header": "include/bsp/native_renderer_cache_clear.hpp",
+      "module": "native_renderer_cache_clear",
+      "ghidra_name": "BSP_D3D9Renderer_ClearBindingCache",
+      "native_prototype": "void BSP_D3D9Renderer_ClearBindingCache(void)",
+      "native_calling_convention": "__thiscall",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDERER_CACHE_CLEAR.md; reports/native_renderer_cache_clear.json."
+    },
+    {
+      "address": "00b27b00",
+      "native": 11696896,
+      "function": 11696896,
+      "end_inclusive": "00b27b81",
+      "bytes": 130,
+      "coverage": "complete raw body",
+      "source": "src/native_renderer_cache_clear.cpp",
+      "original_abi": "ECX renderer; stack owner; RET4; no semantic result",
+      "analysis_status": "full_function_defined_saved_and_read_back_by_integrator",
+      "uncertainty": "no saved callers/profile mapping into renderer+38; extra EDX context in new source ABI",
+      "end_exclusive": "00b27b82",
+      "cpp_symbol": "bind_native_renderer_material_third_states_00b27b00",
+      "header": "include/bsp/native_renderer_cache_clear.hpp",
+      "module": "native_renderer_cache_clear",
+      "ghidra_name": "BSP_BindNativeRendererMaterialThirdStates",
+      "native_prototype": "void BSP_BindNativeRendererMaterialThirdStates(void *owner)",
+      "native_calling_convention": "__thiscall",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_RENDERER_CACHE_CLEAR.md; reports/native_renderer_cache_clear.json.",
+      "worker_capture_analysis_status": "no_ghidra_function"
+    }
+  ],
+  "integration_av_review": {
+    "combined_validation": "passed exact merged Win32 build and six current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 15,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f170": "00b1f170 BSP_RenderCommand_Construct  undefined BSP_RenderCommand_Construct(void)  body 00b1f170 - 00b1f1ef",
+      "00b1f1f0": "00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  undefined BSP_RenderCommand_ConstructWithSeparateOwner(void)  body 00b1f1f0 - 00b1f273",
+      "00b1edc0": "00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  undefined BSP_RenderCommand_InitializeContextAndBatches(void)  body 00b1edc0 - 00b1ef56",
+      "00b1ddd0": "00b1ddd0 BSP_RenderCommand_Destroy  undefined BSP_RenderCommand_Destroy(void)  body 00b1ddd0 - 00b1dfec",
+      "00b1e6b0": "00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  undefined BSP_RenderCommand_ScalarDeletingDestructor(void)  body 00b1e6b0 - 00b1e6cd",
+      "00b262c0": "00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  undefined BSP_D3D9Renderer_ReleaseResourcesForReset(void)  body 00b262c0 - 00b26493",
+      "00b241c0": "00b241c0 BSP_D3D9Renderer_ClearBindingCache  undefined BSP_D3D9Renderer_ClearBindingCache(void)  body 00b241c0 - 00b24457",
+      "00b27b00": "00b27b00 FUN_00b27b00  undefined FUN_00b27b00(void)  body 00b27b00 - 00b27b81",
+      "00b71360": "00b71360 BSP_Camera_ExecuteFrameCommand  undefined BSP_Camera_ExecuteFrameCommand(void)  body 00b71360 - 00b713c5",
+      "00b1e990": "00b1e990 BSP_InstanceGroups_UploadAndQueue  undefined BSP_InstanceGroups_UploadAndQueue(void)  body 00b1e990 - 00b1eb7d",
+      "00b556f0": "00b556f0 FUN_00b556f0  undefined FUN_00b556f0(void)  body 00b556f0 - 00b55777",
+      "00b55780": "00b55780 BSP_BuildingInstanceGenerator_WriteRecord  undefined BSP_BuildingInstanceGenerator_WriteRecord(void)  body 00b55780 - 00b55b16",
+      "00b6dc50": "00b6dc50 BSP_Node_GetPointLights  undefined BSP_Node_GetPointLights(void)  body 00b6dc50 - 00b6dc56",
+      "00b72110": "00b72110 BSP_Scene_GetLightingOwner  undefined BSP_Scene_GetLightingOwner(void)  body 00b72110 - 00b72113",
+      "00b85590": "00b85590 BSP_DrawSection_SetInstanceCount  undefined BSP_DrawSection_SetInstanceCount(void)  body 00b85590 - 00b85599"
+    },
+    "original_signature_readback": "00b1f170 BSP_RenderCommand_Construct  void * __thiscall BSP_RenderCommand_Construct(void * this, void * scene, void * camera, void * target)  body 00b1f170 - 00b1f1ef\n00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  void * __thiscall BSP_RenderCommand_ConstructWithSeparateOwner(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1f1f0 - 00b1f273\n00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  void __thiscall BSP_RenderCommand_InitializeContextAndBatches(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1edc0 - 00b1ef56\n00b1ddd0 BSP_RenderCommand_Destroy  void __thiscall BSP_RenderCommand_Destroy(void * this)  body 00b1ddd0 - 00b1dfec\n00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  void * __thiscall BSP_RenderCommand_ScalarDeletingDestructor(void * this, uint flags)  body 00b1e6b0 - 00b1e6cd\n00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  void __thiscall BSP_D3D9Renderer_ReleaseResourcesForReset(void * this)  body 00b262c0 - 00b26493\n00b241c0 BSP_D3D9Renderer_ClearBindingCache  void __thiscall BSP_D3D9Renderer_ClearBindingCache(void * this)  body 00b241c0 - 00b24457\n00b27b00 BSP_BindNativeRendererMaterialThirdStates  void __thiscall BSP_BindNativeRendererMaterialThirdStates(void * this, void * owner)  body 00b27b00 - 00b27b81\n00b71360 BSP_Camera_ExecuteFrameCommand  void __thiscall BSP_Camera_ExecuteFrameCommand(void * this)  body 00b71360 - 00b713c5\n00b1e990 BSP_InstanceGroups_UploadAndQueue  void __thiscall BSP_InstanceGroups_UploadAndQueue(void * this)  body 00b1e990 - 00b1eb7d\n00b556f0 BSP_WriteNativeGenericInstance  void __thiscall BSP_WriteNativeGenericInstance(void * this, void * entry, void * output)  body 00b556f0 - 00b55777\n00b55780 BSP_BuildingInstanceGenerator_WriteRecord  void __thiscall BSP_BuildingInstanceGenerator_WriteRecord(void * this, void * entry, void * output)  body 00b55780 - 00b55b16\n00b6dc50 BSP_Node_GetPointLights  void * __thiscall BSP_Node_GetPointLights(void * this)  body 00b6dc50 - 00b6dc56\n00b72110 BSP_Scene_GetLightingOwner  void * __thiscall BSP_Scene_GetLightingOwner(void * this)  body 00b72110 - 00b72113\n00b85590 BSP_DrawSection_SetInstanceCount  void __thiscall BSP_DrawSection_SetInstanceCount(void * this, uint count)  body 00b85590 - 00b85599\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b27b00",
+              "end_address": "00b27b82"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b27b00",
+              "end_address": "00b27b81",
+              "bytes_disassembled": 130,
+              "message": "Successfully disassembled 130 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b27b00",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b27b00",
+              "function_name": "FUN_00b27b00",
+              "entry_point": "00b27b00",
+              "body_size": 130,
+              "message": "Function created successfully at 00b27b00"
+            }
+          },
+          {
+            "defined": "00b27b00",
+            "end": "00b27b82",
+            "name": null,
+            "after": "Function: FUN_00b27b00 at 00b27b00\nSignature: undefined FUN_00b27b00(void)\nEntry: 00b27b00\nBody: 00b27b00 - 00b27b81"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b556f0",
+              "end_address": "00b55778"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b556f0",
+              "end_address": "00b55777",
+              "bytes_disassembled": 136,
+              "message": "Successfully disassembled 136 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b556f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b556f0",
+              "function_name": "FUN_00b556f0",
+              "entry_point": "00b556f0",
+              "body_size": 136,
+              "message": "Function created successfully at 00b556f0"
+            }
+          },
+          {
+            "defined": "00b556f0",
+            "end": "00b55778",
+            "name": null,
+            "after": "Function: FUN_00b556f0 at 00b556f0\nSignature: undefined FUN_00b556f0(void)\nEntry: 00b556f0\nBody: 00b556f0 - 00b55777"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent reviews checked complete cache/deleting dispatch and row/count reloads, command string allocation/publication and cleanup scopes, full parent resource traversal/guard order, both instance writers and parent x87 argument schedule. The parent upload float helper was replaced with the exact native argument schedule; the original/source x87 stack-pressure case passed. Root preserved the resource guard DWORD access width.",
+    "current_report_call_check": "reports/native_renderer_cache_clear.json: 15 call rows checked, 0 failed"
+  },
+  "final_merged_validation_av": {
+    "tested_commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
+    "reviewed_source_commit": "f66b1f18ac44801765897540f916327935d84d64",
+    "build": "Strict MSVC Win32 passed; local/av-final-combined-build.log",
+    "existing_ctests_passed": 2,
+    "source_header_hashes": {
+      "src/native_render_command_owner.cpp": "5d97fb0c22f2f6d79062bb4a8a6fee5ad897e41f6c96988c63e439a3c080298d",
+      "include/bsp/native_render_command_owner.hpp": "a4c5397ff2764c14dfa1890ad68530046ecbb0b4b3789be97c677e30cdc59c30",
+      "src/native_renderer_resource_release.cpp": "c2afc920bcccfcac41120ca589a7fdb5d475a43bd63f8f7206a65213558ed359",
+      "include/bsp/native_renderer_resource_release.hpp": "809ac960625203986aa35240da5ce75301a3bd59fbc19d00f8197ab03983caa0",
+      "src/native_renderer_cache_clear.cpp": "8dd73d58ba377bf82c74eef612b7f02d54dbf0788303bf3f8c95ae1ed8251a7d",
+      "include/bsp/native_renderer_cache_clear.hpp": "f4da4a96a07b5dfb72fae59a7159520e996154350ffe8fe3fd01b4e5f67d2748",
+      "src/native_camera_frame_command.cpp": "9b88d61f567a3228ee519772b369d8c86fc21968eb10308da94f202f2f0ee269",
+      "include/bsp/native_camera_frame_command.hpp": "842e2795af3798d18f6be7d2d2b4217446a4a44b177d089d8c625c083d42097b",
+      "src/native_instance_group_upload.cpp": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+      "include/bsp/native_instance_group_upload.hpp": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99"
+    },
+    "library_sha256": {
+      "bsp_core.lib": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": {
+      "commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
+      "passed": true,
+      "libraries": {
+        "bsp_core.lib": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+      },
+      "results": [
+        {
+          "key": "command_actual",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp",
+          "source_sha256": "378b876726b347e8e5a793b5995014f80625d4bb5181c868962308896bcc3c88",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-command/av_command_actual_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_actual.log",
+          "log_sha256": "b01661d43b6c2798d01f7362da4cbf4f585b06106d77e8d39d6c10b06ede68d9",
+          "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.exe",
+          "executable_sha256": "c8f36585a35e5d570c1aad82e3b0aa6c43d7620eddd7bd9fe514175a76322b7f",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS full3/4arg native command constructors and populated teardown, 1459 normalized words; SAME actual string publication/ring for diagnostics and small/large group names, held actual model/context/batch, scalar flags2, pool reuse and shutdown. Original command EH and callback-mutated indexed end not executed here."
+          ]
+        },
+        {
+          "key": "command_old",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp",
+          "source_sha256": "d2e660101cf190783144cff49f4c1cfc91247dafced797467947caa521ab8723",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-command/av_command_old_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_old.log",
+          "log_sha256": "7d97a926615aed132657abd65a0bfe4829c6ce30f0b93493f49fd134cff544a4",
+          "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.exe",
+          "executable_sha256": "d9bc0b29eab2d46847904bccdcf8250bd607edebbee838d20bb4efa05d9110b5",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS full3/4arg native command constructors and populated teardown, 1451 normalized words; live group-end reload, held actual model/context/batch, scalar flags2, pool reuse and shutdown."
+          ]
+        },
+        {
+          "key": "camera",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp",
+          "source_sha256": "473d73a23a422a2e3aee849f1ab70fa3a6fe937b95d588001a0c2fa7a3018e2b",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-orch3-av\\camera/av_camera_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-camera.log",
+          "log_sha256": "476c2cdc8e5242e688c491852c381e0a21c351de42c457f79ab00767c08e291e",
+          "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.exe",
+          "executable_sha256": "057e229285a41048d02bbbbeaf9c4f1fd1f4b87dee70feec99094a2162bbb91a",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS scenario=0 cw=007F mxcsr_in=1F80 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=007F mxcsr_in=1F80 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=027F mxcsr_in=9FC0 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=027F mxcsr_in=9FC0 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=067F mxcsr_in=1F80 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=067F mxcsr_in=1F80 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=0E7F mxcsr_in=9FC0 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=0E7F mxcsr_in=9FC0 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=007F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=007F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=027F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=027F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=067F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=067F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=0E7F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=0E7F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=007F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=007F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=027F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=027F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=067F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=067F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=0E7F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=0E7F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=3 cw=007F mxcsr_in=1F80 source=0 words=11536 state=0 viewport=0 clear=0 sw=3800 mxcsr_out=1F80 fault=00000000 caught=00000000",
+            "PASS scenario=3 cw=007F mxcsr_in=1F80 source=1 words=11536 state=0 viewport=0 clear=0 sw=3800 mxcsr_out=1F80 fault=00000000 caught=00000000",
+            "PASS scenario=4 cw=027E mxcsr_in=1F80 source=0 words=46134 state=2 viewport=1 clear=0 sw=0000 mxcsr_out=0000 fault=C0000090 caught=00000000",
+            "PASS scenario=4 cw=027E mxcsr_in=1F80 source=1 words=46134 state=2 viewport=1 clear=0 sw=0000 mxcsr_out=0000 fault=C0000090 caught=00000000",
+            "PASS scenario=5 cw=007F mxcsr_in=1F80 source=0 words=57665 state=2 viewport=1 clear=1 sw=0000 mxcsr_out=0000 fault=00000000 caught=C0DE0005",
+            "PASS scenario=5 cw=007F mxcsr_in=1F80 source=1 words=57665 state=2 viewport=1 clear=1 sw=0000 mxcsr_out=0000 fault=00000000 caught=C0DE0005",
+            "PASS 15 original/full-library pairs; real HAL readback, live renderer dispatch, FP and exception boundaries"
+          ]
+        },
+        {
+          "key": "upload",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp",
+          "source_sha256": "c674a0dfc32c9098daa6f2e7398671e8e80355d7322c3b04a003d8dfdddd7862",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "gdi32.lib",
+            "winmm.lib",
+            "ole32.lib",
+            "shlwapi.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/MAP:C:\\Users\\sqz269\\bsp-orch3-av\\upload/av_upload_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-upload.log",
+          "log_sha256": "ddc5908c43bad7cb011171fed3e6f61250a9d402ff363bb58849cd3768f8b37e",
+          "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.exe",
+          "executable_sha256": "459caaa4d5f09197a865402c4e9775868e84bb8c2b016cef5c574a99a190c764",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS generator bodies: nine focused rows, 600 DWORDs, signed clamp/unsigned conversion and forward aliases",
+            "PASS actual compiled argument adapter: seven incoming x87 slots, native/source status=0841, visibility=ffc00000",
+            "PASS composed 48-byte generator, two real generated models, 44 raw sources, ninther/tie sort, real D3D9 writes, two actual output entries and batch routing",
+            "PASS actual compiled argument adapter: seven incoming x87 slots, native/source status=0841, visibility=ffc00000",
+            "PASS composed 144-byte generator, two real generated models, 44 raw sources, ninther/tie sort, real D3D9 writes, two actual output entries and batch routing",
+            "PASS full B1E990 normal composition: 2266 normalized/output DWORDs; actual map/unmap counters and canonical finalization; no gameplay or hardware-SEH claim."
+          ]
+        },
+        {
+          "key": "resource",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp",
+          "source_sha256": "67101a328e3630c8e5c69271dc8979cecb1706ec2d4b303344e5ade2c6df5d53",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x10000000",
+            "/DYNAMICBASE",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release/av_resource_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-resource.log",
+          "log_sha256": "e45eab31a60a64677eeaa7fea69e7349350be2a67981d65a9bfb25b6aa819ec2",
+          "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.exe",
+          "executable_sha256": "439ca6f45e73115d90246f471bd385fb23048bec830cfa85ea73473d2a070fac",
+          "attempts": 3,
+          "retry_policy": "only pre-execution address-occupied exit77, up to8",
+          "pass_lines": [
+            "PASS B262C0 full-parent 4 comparisons 43840 bytes; ready0/1,20 textures,four stream0 calls,actual counts/current query rows/current texture+surface cursor ends,callback-free records,full B241C0,original FH3 throw99 cleanup. Exactly3 global DWORD relocations and1 EH-registration DWORD to jump-only host trampoline; concrete dependency bridges; no gameplay/ABI claim."
+          ]
+        },
+        {
+          "key": "cache",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp",
+          "source_sha256": "bf9582e1e6c1fb49ca4daec14924055522427b566a04d8e001792ef4fdec2c69",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x10000000",
+            "/DYNAMICBASE",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear/av_cache_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-cache.log",
+          "log_sha256": "5ca2c14d53ad8dcc13afd41d60b5b190512544b9a537be0ffb3730139ef7d650",
+          "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.exe",
+          "executable_sha256": "0460e356cc94d7f59ed3fb519c6dec4d2b68507b865d24b7278d536fd50eee5b",
+          "attempts": 1,
+          "retry_policy": "only pre-execution address-occupied exit77, up to8",
+          "pass_lines": [
+            "PASS 7 original-parent/source comparisons, 54704 postimage bytes; actual material/cube/frame terminals; all26 retained; current owner/row reloads and throws73/91; original bytes and dependency bridges explicit."
+          ]
+        }
+      ]
+    },
+    "implemented_native_normal_bodies": 10,
+    "extended_existing_command_lifetime_bodies": 5,
+    "saved_function_names_and_original_signatures": 15,
+    "defined_full_functions": [
+      "00b27b00..00b27b81",
+      "00b556f0..00b55777"
+    ],
+    "full_stored_function_body_readback_passed": true,
+    "checked_numeric_report_call_rows": 69,
+    "failed_call_rows": 0,
+    "indirect_targets": "See individual current-profile/assembly/fixture evidence; indirect targets are not mechanically proven by numeric call-row checks.",
+    "game_validated": false,
+    "complete_native_fh3_compatibility_validated": false,
+    "remaining_boundaries": [
+      "Current actual owner/service/publication domains are required. Source interfaces are not drop-in native ABI replacements.",
+      "Renderer B29670 device recreation and retained logical vertex base+4C runtime producer identity remain application dependencies.",
+      "No visible scene, whole game render submission or gameplay validation.",
+      "Original-byte parent fixtures compose with concrete current-source descendants; they do not independently validate all original descendant bodies.",
+      "Selected FP/exception paths are bounded evidence; complete original FH3/SEH/concurrency behavior remains unvalidated."
+    ],
+    "cache_preexecution_mapping_limitation": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-cache-mapping-collision.log",
+      "sha256": "f0d2d93d78a0c1138da784cf22cc11a209bc97962fa476a8a30eb7cd932d6209",
+      "observation": "One cache replay launch batch exhausted8 pre-execution original-page-occupied exit77 attempts; focused relaunch passed. No native routine ran on rejected mappings and no behavioral failure was retried."
+    }
+  },
+  "worker_capture_status": "complete_with_explicit_current_profile_domain"
+}
