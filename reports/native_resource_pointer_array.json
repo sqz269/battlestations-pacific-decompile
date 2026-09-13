@@ -1,0 +1,436 @@
+{
+  "packet": "native_resource_pointer_array_bd",
+  "status": "complete_actual_raw_backing_arrays_resource_teardown_still_incomplete",
+  "created_utc": "2026-09-13T17:12:31.731643+00:00",
+  "development_base_head": "077e33ecae038c5020122e3be89b82e39dba68a9",
+  "identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every current live bytes/proto CLI question verified configured bsp project and game program. No Ghidra writes.",
+  "complete_body_count": 6,
+  "complete_body_bytes": 396,
+  "functions": [
+    {
+      "address": "00b872f0",
+      "end": "00b8734e",
+      "byte_count": 95,
+      "sha256": "76180e1051df9b62de759494d0d12ded965bc790f0573d507bdbc52132d71c3d",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b8734e",
+      "instruction_count": 38,
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b872f0",
+          "address": "00b87310",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b872f0",
+          "address": "00b8733c",
+          "native": "00bf6989"
+        }
+      ],
+      "live_callers_text": "BSP_Resource_AppendRawItem @ 00b87aa0\nFUN_00b873c0 @ 00b873c0\nFUN_00b87710 @ 00b87710",
+      "name": "reserve_native_resource_item_pointers_00b872f0",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; signed requested capacity stack; RET4; no meaningful result.",
+      "behavior": [
+        "Capture signed requested capacity; clamp below16 to16. Compare CURRENT signed capacity+8 and return when sufficient.",
+        "Allocate requested*4 moduloDWORD through BF55BE; no size-overflow or count/capacity consistency guard. Allocation occurs before reading the loop count.",
+        "Copy forward by signed index from0 while index<CURRENT count+4. Destination cursor starts at captured allocation and advances4 moduloDWORD. Skip a copy only when that computed destination cursor is null; reload CURRENT old data+0 for each performed copy.",
+        "Read CURRENT old data after copying and free it through BF6989; only after free write captured new allocation to+0 and clamped capacity to+8. Do not snapshot count or old data before allocation, use bulk memcpy/memmove, clear unused slots, or touch pointee ownership.",
+        "No local FH3 frame/catch or cleanup rollback. Returning allocation is the source CRT boundary; do not add a whole-loop null-allocation recovery path."
+      ],
+      "provisional_ghidra_name": "BSP_ResourceItemArray_ReserveRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b87350",
+      "end": "00b873ae",
+      "byte_count": 95,
+      "sha256": "2094be1846eb1b8954d1a6770f7af04ca1e724af3621a9647ca268d84bf7cca2",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b873ae",
+      "instruction_count": 38,
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b87350",
+          "address": "00b87370",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b87350",
+          "address": "00b8739c",
+          "native": "00bf6989"
+        }
+      ],
+      "live_callers_text": "BSP_Resource_AppendHierarchyItem @ 00b87ae0\nFUN_00b87410 @ 00b87410\nFUN_00b87750 @ 00b87750",
+      "name": "reserve_native_hierarchy_item_pointers_00b87350",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; signed requested capacity stack; RET4; no meaningful result.",
+      "behavior": [
+        "Capture signed requested capacity; clamp below16 to16. Compare CURRENT signed capacity+8 and return when sufficient.",
+        "Allocate requested*4 moduloDWORD through BF55BE; no size-overflow or count/capacity consistency guard. Allocation occurs before reading the loop count.",
+        "Copy forward by signed index from0 while index<CURRENT count+4. Destination cursor starts at captured allocation and advances4 moduloDWORD. Skip a copy only when that computed destination cursor is null; reload CURRENT old data+0 for each performed copy.",
+        "Read CURRENT old data after copying and free it through BF6989; only after free write captured new allocation to+0 and clamped capacity to+8. Do not snapshot count or old data before allocation, use bulk memcpy/memmove, clear unused slots, or touch pointee ownership.",
+        "No local FH3 frame/catch or cleanup rollback. Returning allocation is the source CRT boundary; do not add a whole-loop null-allocation recovery path."
+      ],
+      "provisional_ghidra_name": "BSP_HierarchyItemArray_ReserveRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b873c0",
+      "end": "00b8740f",
+      "byte_count": 80,
+      "sha256": "db1367caa3c603d1b5754b004026d8dd72b4f298dd51f523e22e0598482e96b7",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b8740f",
+      "instruction_count": 31,
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b873c0",
+          "address": "00b873ce",
+          "native": "00b872f0"
+        }
+      ],
+      "live_callers_text": "FUN_00b87b20 @ 00b87b20",
+      "name": "resize_native_resource_item_pointers_00b873c0",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; signed requested count stack; RET4; no meaningful result.",
+      "behavior": [
+        "Capture requested signed count. If request>CURRENT signed capacity+8, call the corresponding reserve with that request; reserve alone applies minimum16.",
+        "Read CURRENT count+4 after reserve. Grow with a captured loop index while signed index<requested; reread data+0 every iteration and zero computed data+index*4 only when that computed address is nonnull. Header aliasing can affect later iterations.",
+        "After growth, compare request with CURRENT count again. While current signed count>request, decrement the actual count word by1 moduloDWORD and reread it. Finally store the captured request to count unconditionally.",
+        "Shrink does not zero removed slots or invoke pointee destructors. Negative initial count is not clamped; it can address negative slots in the growth phase. Preserve valid-memory-domain behavior and native32-bit arithmetic without adding validation or sanitization.",
+        "No local FH3 frame, catch or rollback. Allocation exceptions from reserve propagate."
+      ],
+      "provisional_ghidra_name": "BSP_ResourceItemArray_ResizeRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b87410",
+      "end": "00b8745f",
+      "byte_count": 80,
+      "sha256": "510399514c15ad99fa99dcc30694b6b64d0b225aa29ee4feb778345e2e9b7e15",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b8745f",
+      "instruction_count": 31,
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b87410",
+          "address": "00b8741e",
+          "native": "00b87350"
+        }
+      ],
+      "live_callers_text": "FUN_00b87b40 @ 00b87b40",
+      "name": "resize_native_hierarchy_item_pointers_00b87410",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; signed requested count stack; RET4; no meaningful result.",
+      "behavior": [
+        "Capture requested signed count. If request>CURRENT signed capacity+8, call the corresponding reserve with that request; reserve alone applies minimum16.",
+        "Read CURRENT count+4 after reserve. Grow with a captured loop index while signed index<requested; reread data+0 every iteration and zero computed data+index*4 only when that computed address is nonnull. Header aliasing can affect later iterations.",
+        "After growth, compare request with CURRENT count again. While current signed count>request, decrement the actual count word by1 moduloDWORD and reread it. Finally store the captured request to count unconditionally.",
+        "Shrink does not zero removed slots or invoke pointee destructors. Negative initial count is not clamped; it can address negative slots in the growth phase. Preserve valid-memory-domain behavior and native32-bit arithmetic without adding validation or sanitization.",
+        "No local FH3 frame, catch or rollback. Allocation exceptions from reserve propagate."
+      ],
+      "provisional_ghidra_name": "BSP_HierarchyItemArray_ResizeRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b87b20",
+      "end": "00b87b36",
+      "byte_count": 23,
+      "sha256": "a88935dad73891d318eaae104e800fc3b6365077bae26e7525c4d69e7f67d82e",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b87b31",
+      "instruction_count": 10,
+      "missing_listing_instruction_addresses": [
+        "00b87b32",
+        "00b87b35",
+        "00b87b36"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b87b20",
+          "address": "00b87b25",
+          "native": "00b873c0"
+        },
+        {
+          "function": "00b87b20",
+          "address": "00b87b2d",
+          "native": "00bf6989"
+        }
+      ],
+      "live_callers_text": "Unwind@00cc25e3 @ 00cc25e3",
+      "name": "destroy_native_resource_item_pointers_00b87b20",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; no stack arguments; RET; no meaningful result.",
+      "behavior": [
+        "Capture ECX raw array, call corresponding resize(0), then reread CURRENT data+0 and free it through BF6989.",
+        "Return normally after ADD ESP,4;POP ESI;RET. Current Ghidra body stops at the returning free call; five live/PE-matched tail bytes are omitted.",
+        "Count becomes0 through resize; data/capacity are not cleared after free. There is no pointee release/destruction. The native return register is not a meaningful source result.",
+        "With negative signed capacity, resize(0) calls reserve(0), which clamps to16 and can allocate64 bytes before final free. No noexcept, empty fast path, or normalize-to-empty replacement may suppress that behavior."
+      ],
+      "provisional_ghidra_name": "BSP_ResourceItemArray_DestroyRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    },
+    {
+      "address": "00b87b40",
+      "end": "00b87b56",
+      "byte_count": 23,
+      "sha256": "4ae3aca82491c36333995ba13a20e5df2ab7009cce27ec88dd71244371736d90",
+      "live_equals_pe": true,
+      "ghidra_body_end": "00b87b51",
+      "instruction_count": 10,
+      "missing_listing_instruction_addresses": [
+        "00b87b52",
+        "00b87b55",
+        "00b87b56"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b87b40",
+          "address": "00b87b45",
+          "native": "00b87410"
+        },
+        {
+          "function": "00b87b40",
+          "address": "00b87b4d",
+          "native": "00bf6989"
+        }
+      ],
+      "live_callers_text": "Unwind@00cc25ee @ 00cc25ee",
+      "name": "destroy_native_hierarchy_item_pointers_00b87b40",
+      "status": "complete_actual_raw_storage_strict_win32_focused_original_normal_body_fixture_passed",
+      "storage": "Exactly0Ch header: dataDWORD+0, signed countDWORD+4, signed capacityDWORD+8; one4-byte pointer word per element.",
+      "original_abi": "ECX raw0Ch array header; no stack arguments; RET; no meaningful result.",
+      "behavior": [
+        "Capture ECX raw array, call corresponding resize(0), then reread CURRENT data+0 and free it through BF6989.",
+        "Return normally after ADD ESP,4;POP ESI;RET. Current Ghidra body stops at the returning free call; five live/PE-matched tail bytes are omitted.",
+        "Count becomes0 through resize; data/capacity are not cleared after free. There is no pointee release/destruction. The native return register is not a meaningful source result.",
+        "With negative signed capacity, resize(0) calls reserve(0), which clamps to16 and can allocate64 bytes before final free. No noexcept, empty fast path, or normalize-to-empty replacement may suppress that behavior."
+      ],
+      "provisional_ghidra_name": "BSP_HierarchyItemArray_DestroyRawPointers",
+      "source": "src/native_resource_pointer_array.cpp",
+      "header": "include/bsp/native_resource_pointer_array.hpp",
+      "abi_compatible": false
+    }
+  ],
+  "parent_unwind_action_edges": [
+    {
+      "function": "00cc25e3",
+      "address": "00cc25e9",
+      "native": "00b87b20",
+      "kind": "tail_jump",
+      "object_adjustment": "resource+10h"
+    },
+    {
+      "function": "00cc25ee",
+      "address": "00cc25f4",
+      "native": "00b87b40",
+      "kind": "tail_jump",
+      "object_adjustment": "resource+1Ch"
+    }
+  ],
+  "pending_root_ghidra_repairs": [
+    {
+      "function": "00b87b20",
+      "returning_call": "00b87b2d",
+      "target": "00bf6989",
+      "old_body_end": "00b87b31",
+      "verified_end": "00b87b36",
+      "missing_bytes": "83 c4 04 5e c3",
+      "missing_instructions": [
+        "ADD ESP,4",
+        "POP ESI",
+        "RET"
+      ]
+    },
+    {
+      "function": "00b87b40",
+      "returning_call": "00b87b4d",
+      "target": "00bf6989",
+      "old_body_end": "00b87b51",
+      "verified_end": "00b87b56",
+      "missing_bytes": "83 c4 04 5e c3",
+      "missing_instructions": [
+        "ADD ESP,4",
+        "POP ESI",
+        "RET"
+      ]
+    }
+  ],
+  "source_pins": {
+    "src/native_resource_pointer_array.cpp": "327175a7ca484d03e0b3103ab812f37235ed81c1acdfc4b8c1dbc969fda02ca0",
+    "include/bsp/native_resource_pointer_array.hpp": "65ceb3cd095bb1cb7ed2353154ce768e9a77b245ade379c0bef041156b41a16b",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "include/bsp/native_render_pointer_arrays.hpp": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+    "src/native_render_pointer_arrays.cpp": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c"
+  },
+  "concrete_services": [
+    {
+      "contract": "BF55BE/BF681B allocation and BF6989/BF65AC free",
+      "source": "src/singleton_lifetime.cpp",
+      "disposition": "Existing concrete CRT service; exact native byte count and allocation-before-copy/free-before-publication order. No CRT port or new callback layer."
+    }
+  ],
+  "helper_reuse": "Borrow raw address of existing NativeRenderPointerArrayStorage physical 0Ch layout. Existing renderer reserve/resize algorithms differ at minimum capacity and negative count; reuse concrete allocation/free services only. No new storage type or provider.",
+  "completed_adjacent_work": [
+    {
+      "contract": "BD30F0 ref-counted base cleanup",
+      "source": "src/native_ref_counted.cpp",
+      "disposition": "Complete seven-byte actual profile stamp; already usable by resource construction and future final base cleanup."
+    },
+    {
+      "contract": "41DD20 and41DD40 with actual raw pool context",
+      "source": "src/native_string.cpp",
+      "disposition": "Existing complete raw string bodies; actual pool/publication/manager composition exists. The hierarchy-record pool is a distinct allocation family and is not this pool."
+    },
+    {
+      "contract": "B88260/71B810/71B870/B88340 construction",
+      "source": "src/native_resource_construction.cpp",
+      "disposition": "Complete worker construction commit34c512e4; prior1062-file validation delivery preserved. Successful lifetime not inferred."
+    },
+    {
+      "contract": "B7F290 cache pair",
+      "source": "src/native_resource_cache_pair.cpp in parent integration",
+      "disposition": "Complete independent packet, not a missing dependency or worker-owned address. Raw cache-tree find/erase/manager composition remains separate."
+    }
+  ],
+  "remaining_resource_teardown_contracts": [
+    {
+      "group": "Actual cache erase",
+      "addresses": [
+        "004c1400",
+        "00b801c0",
+        "00b7e7b0",
+        "00b7fa60"
+      ],
+      "required_behavior": "Use actual manager and name tree; erase by supplied name alone, preserving checked iterator behavior, key cleanup and the exact cache operation even for an empty resource. Existing complete B7F290 pair is not this service.",
+      "boundary": "B7FA60 is a checked tree/library boundary. Do not port an STL erase/rebalance algorithm or substitute GameResourceManager semantic storage."
+    },
+    {
+      "group": "Hierarchy record fields and actual pool slot",
+      "addresses": [
+        "00b88180",
+        "00b7d7d0",
+        "00b7d640"
+      ],
+      "storage": [
+        "01090238 section",
+        "01090250 recursion",
+        "01090254 page table",
+        "01090260 minimum page hint",
+        "record+84 page index",
+        "page+4400 WORD free indices",
+        "page+4500 WORD count"
+      ],
+      "required_behavior": "Destroy record fields before returning its88h pool slot; enter/increment, signed slot arithmetic, WORD index/count writes, unsigned page-hint update, decrement/leave. Do not use the string pool as an interchangeable allocator."
+    },
+    {
+      "group": "Finite actual item deletion profiles",
+      "addresses": [
+        "00bd30e0",
+        "00b86990",
+        "00718c20",
+        "00b88760"
+      ],
+      "required_behavior": "B88430 decrements each nonnull-contract item+4 and dispatches slot0 only at zero. BD30E0 then invokes slot4 with flags1. D631C0 data proves fallback slot4=B86990; actual raw fallback destructor is named but not implemented in this worker tree. Game/base resource profiles similarly need their actual scalar/field chains.",
+      "boundary": "Existing finite input/shader/text NativeRefCountedDeleteCalls providers do not cover arbitrary resource items. Registered typed Mesh/Note/GroupParams payloads do not prove native result pointers or ownership. Do not install an accept-all profile callback or a no-op release."
+    }
+  ],
+  "existing_typed_work": "StructuredReader, registered Mesh/Note/GroupParams decoding and StructuredModel remain implemented semantic/retained paths. Their vectors/shared pointers are not raw resource, native cache or hierarchy pool storage.",
+  "validation": {
+    "development_state": "Uncommitted implementation overlay at development_base_head; not exact-commit validation.",
+    "strict_win32_build": "passed",
+    "existing_ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "build_log": {
+      "path": "local/resource-pointer-array-development-build.log",
+      "sha256": "56a57701f3ccfb8e707e6c791b9b158d7a9f5db2219dfdbb6b474a970a569fcf"
+    },
+    "current_live_pe": {
+      "path": "local/pointer-array-evidence/current/receipt.json",
+      "sha256": "cdbdfcb017e353aebad3d62a4ac9f4ab9634fa4fe0791125dc20137b4de3a44d",
+      "body_count": 6,
+      "byte_count": 396,
+      "all_equal": true
+    },
+    "focused_capsule": {
+      "path": "local/pointer-array-attempts/attempt02-source/result.json",
+      "sha256": "58d24468eb7e52b214b6bd67e40309d737cbe533f87c5665d0a71daa7e74214f",
+      "status": "passed",
+      "normal_observations": 6,
+      "source_only_exception_observations": 1,
+      "original_reference_frozen_before_source": true,
+      "expected_sha256": "309b079acdb9ec358b2d7ea93b642291c04894c7fd52764cc8a86ccfe8ddb8d3",
+      "fixed_inputs_anchor": "local/pointer-array-fixture/fixed-inputs.json",
+      "fixed_inputs_anchor_sha256": "436100b4d3c222bf7eabc310d04dfefe9c761a225ee4250a87d165201dd35182",
+      "current_archive_members": [
+        {
+          "object": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-pointer-array-bd\\build\\win32\\bsp_core.dir\\Release\\native_resource_pointer_array.obj",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-pointer-array-bd\\src\\native_resource_pointer_array.cpp",
+          "sha256": "088594e0d1d2ee152ae36399aa2a9872ea518256cd557054fde81d4c7d45f326",
+          "source_sha256": "327175a7ca484d03e0b3103ab812f37235ed81c1acdfc4b8c1dbc969fda02ca0",
+          "occurrences": 1
+        }
+      ],
+      "boundary": "Current pointer-array production object; shared test-only allocation/free adapters expose reentry, overlapping header storage and allocation-null branches; original normal bodies only, no original exception unwind, actual allocator runtime, pointee/resource destruction or gameplay proof"
+    },
+    "call_rows": 10,
+    "parent_unwind_edges": 2,
+    "call_audit": {
+      "path": "local/pointer-array-evidence/current/call-audit.txt",
+      "sha256": "9da9a8c7b14a8006a3d84a3fb053e07d1f2d0f3c2e42445a1d138467918905a5",
+      "checked": 12,
+      "failed": 0
+    },
+    "exact_commit_followup": "Repeat existing build/2 CTests and unchanged frozen capsule after commit; retain clean HEAD before/after and exact production archive provenance externally at local/pointer-array-final/receipt.json.",
+    "new_permanent_tests": 0,
+    "ghidra_writes": false,
+    "game_runs": 0
+  },
+  "uncertainty": [
+    "Descriptive names are hypotheses. Public C++ ABI is not original thiscall/RET ABI.",
+    "Raw memory contract preserves signed comparisons, wrapping DWORD arithmetic and current-header observations within valid native 32-bit addresses; no bounds validation or corrupt-header repair.",
+    "Source allocator is the existing throwing concrete CRT service. Test-only adapters deliberately expose header reentry, overlap and null-return branches; no production allocator runtime or original exception-unwind proof.",
+    "Raw backing-array cleanup invokes no pointee methods and does not complete successful resource, cache, hierarchy-pool or item lifetime."
+  ],
+  "discovery": {
+    "commit": "704ec61d0edc8d741b7e64fe1550edbcbe45cb1d",
+    "doc": "docs/NATIVE_RESOURCE_TEARDOWN_FRONTIER_BD.md",
+    "copied_evidence": "local/pointer-array-evidence",
+    "integration_note": "Discovery doc retained on prior worker branch until root integration; prior construction worktree/delivery untouched."
+  }
+}
