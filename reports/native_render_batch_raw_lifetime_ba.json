@@ -9,27 +9,116 @@
   "source_abi": "NativeRenderBatchLifetime(SoundLifetimeAccess, borrowed volatile pool and lock publications, verified D5E5AC table)",
   "uncertainty": "Existing TrackedCriticalSection source representation is retained; raw identity for all lock creator/consumers is not established. Primary owns deletion-profile dispatch binding.",
   "functions": [
-    {"address":"00b1e870","end_exclusive":"00b1e922","length":178,"installed_sha256":"af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6","native_abi":"no input; EAX pool; RET","coverage":"complete saved body; direct and indirect CALLs below","cpp":"NativeRenderBatchLifetime::pool_00b1e870"},
-    {"address":"00b1cd90","end_exclusive":"00b1ce4d","length":189,"installed_sha256":"b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c","native_abi":"no input; EAX lock owner; RET","coverage":"complete saved body; direct and indirect CALLs below","cpp":"NativeRenderBatchLifetime::lock_owner_00b1cd90"},
-    {"address":"00b1e930","end_exclusive":"00b1e961","length":49,"installed_sha256":"889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3","native_abi":"ECX pool; stack flags; EAX original; RET4","coverage":"complete byte envelope, including ADD ESP,4 at E958","cpp":"NativeRenderBatchLifetime::delete_pool_00b1e930"},
-    {"address":"00b1d530","end_exclusive":"00b1d567","length":55,"installed_sha256":"27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1","native_abi":"ECX lock owner; stack flags; EAX original; RET4","coverage":"complete byte envelope, including ADD ESP,4 at D55E","cpp":"NativeRenderBatchLifetime::delete_lock_owner_00b1d530"}
+    {
+      "address": "00b1e870",
+      "end_exclusive": "00b1e922",
+      "length": 178,
+      "installed_sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+      "native_abi": "no input; EAX pool; RET",
+      "coverage": "complete saved body; direct and indirect CALLs below",
+      "cpp": "NativeRenderBatchLifetime::pool_00b1e870"
+    },
+    {
+      "address": "00b1cd90",
+      "end_exclusive": "00b1ce4d",
+      "length": 189,
+      "installed_sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+      "native_abi": "no input; EAX lock owner; RET",
+      "coverage": "complete saved body; direct and indirect CALLs below",
+      "cpp": "NativeRenderBatchLifetime::lock_owner_00b1cd90"
+    },
+    {
+      "address": "00b1e930",
+      "end_exclusive": "00b1e961",
+      "length": 49,
+      "installed_sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "native_abi": "ECX pool; stack flags; EAX original; RET4",
+      "coverage": "complete byte envelope, including ADD ESP,4 at E958",
+      "cpp": "NativeRenderBatchLifetime::delete_pool_00b1e930"
+    },
+    {
+      "address": "00b1d530",
+      "end_exclusive": "00b1d567",
+      "length": 55,
+      "installed_sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "native_abi": "ECX lock owner; stack flags; EAX original; RET4",
+      "coverage": "complete byte envelope, including ADD ESP,4 at D55E",
+      "cpp": "NativeRenderBatchLifetime::delete_lock_owner_00b1d530"
+    }
   ],
   "calls": [
-    {"function":"00b1e870","address":"00b1e895","native":"00415350"},
-    {"function":"00b1e870","address":"00b1e8c6","native":"00bf681b"},
-    {"function":"00b1e870","address":"00b1e8ea","native":"00415350"},
-    {"function":"00b1e870","address":"00b1e8f8","native":"00bd0c30"},
-    {"function":"00b1cd90","address":"00b1cdb6","native":"00415350"},
-    {"function":"00b1cd90","address":"00b1cdec","native":"00bf681b"},
-    {"function":"00b1cd90","address":"00b1ce03","native":"00b1c9d0"},
-    {"function":"00b1cd90","address":"00b1ce16","native":"00415350"},
-    {"function":"00b1cd90","address":"00b1ce24","native":"00bd0c30"},
-    {"function":"00b1e930","address":"00b1e946","native":"00b1d8a0"},
-    {"function":"00b1e930","address":"00b1e953","native":"00bf65ac"},
-    {"function":"00b1d530","address":"00b1d53c","native":"0041cc80"},
-    {"function":"00b1d530","address":"00b1d559","native":"00bf65ac"}
+    {
+      "function": "00b1e870",
+      "address": "00b1e895",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8c6",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8ea",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8f8",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1cdb6",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1cdec",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce03",
+      "native": "00b1c9d0"
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce16",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce24",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00b1e930",
+      "address": "00b1e946",
+      "native": "00b1d8a0"
+    },
+    {
+      "function": "00b1e930",
+      "address": "00b1e953",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b1d530",
+      "address": "00b1d53c",
+      "native": "0041cc80"
+    },
+    {
+      "function": "00b1d530",
+      "address": "00b1d559",
+      "native": "00bf65ac"
+    }
   ],
-  "indirect_calls_excluded": ["00b1e8ae -> [00ce2218] EnterCriticalSection", "00b1e906 -> [00ce2210] LeaveCriticalSection", "00b1cdcf -> [00ce2218] EnterCriticalSection", "00b1ce32 -> [00ce2210] LeaveCriticalSection"],
+  "indirect_calls_excluded": [
+    "00b1e8ae -> [00ce2218] EnterCriticalSection",
+    "00b1e906 -> [00ce2210] LeaveCriticalSection",
+    "00b1cdcf -> [00ce2218] EnterCriticalSection",
+    "00b1ce32 -> [00ce2210] LeaveCriticalSection"
+  ],
   "validation": {
     "build": "Full strict MSVC Win32 build and reconstructed_math CTest passed before and after merge of coordinated deletion binding 2af0063b.",
     "fixture": "Ignored local/render_batch_raw_ba_probe.cpp and runner link actual integrated bsp_core.lib; two owners register, fast getters preserve identities, raw manager drain invokes both registered deleting profiles and clears both publications.",
@@ -40,5 +129,12 @@
     "fixture_exe_sha256": "689d03e0001847fe07aa0da6934189f27eece38120fa36147ea4ea4e10ad5607",
     "fixture_manifest": "MSVC /MANIFEST:EMBED, ignored local executable; no permanent test"
   },
-  "validation_limits": "Source fixture only; no original game process or native ABI call to these four roots. Existing TrackedCriticalSection source representation has not been proved binary-identical across all consumers."
+  "validation_limits": "Source fixture only; no original game process or native ABI call to these four roots. Existing TrackedCriticalSection source representation has not been proved binary-identical across all consumers.",
+  "primary_integration": {
+    "report": "reports/raw_vfs_lifetime_ba_validation.json",
+    "status": "bounded_raw_lifetime_and_mpak_container_source_integrated_exact_combined_build_and_fixtures_passed",
+    "source_revision": "9000ae48a7f7548a297f69d5465567ebb92b057e",
+    "saved_ownership_correction": "Earlier missing-owner statements and batch byte-versus-owner ambiguity are superseded by the primary repair receipts and full12-root audit.",
+    "game_validated": false
+  }
 }

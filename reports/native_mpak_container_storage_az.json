@@ -495,5 +495,12 @@
   "exception_coverage": {
     "supported": "BB6D2B/BB6F5B destroy completed fill prefix; BB73EF/BB77EE destroy fresh growth prefix and free backing; alias temporary constructed before length check and released on source C++ failure",
     "unresolved": "exact nested FH3 rethrow/partial-element failure and simultaneous cleanup failure; BB749A/BB7899 general middle-insert catches excluded"
+  },
+  "primary_integration": {
+    "report": "reports/raw_vfs_lifetime_ba_validation.json",
+    "status": "bounded_raw_lifetime_and_mpak_container_source_integrated_exact_combined_build_and_fixtures_passed",
+    "source_revision": "9000ae48a7f7548a297f69d5465567ebb92b057e",
+    "saved_ownership_correction": "Earlier missing-owner statements and batch byte-versus-owner ambiguity are superseded by the primary repair receipts and full12-root audit.",
+    "game_validated": false
   }
 }
