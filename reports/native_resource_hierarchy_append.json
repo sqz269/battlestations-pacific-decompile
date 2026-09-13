@@ -1,0 +1,61 @@
+{
+  "packet": "orch2_resource_hierarchy_append_bg",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "ghidra_url": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "00b87ae0",
+      "end": "00b87b1a",
+      "byte_count": 59,
+      "sha256": "19a37acb3de69e759305a422242e3cb3e12eb8d506d701215a24b1736c62b6a5",
+      "live_equals_pe": true,
+      "coverage": "complete",
+      "original_abi": "ECX resource; one raw pointer word on stack; RET4",
+      "source": "src/native_resource_hierarchy_append.cpp",
+      "header": "include/bsp/native_resource_hierarchy_append.hpp",
+      "abi_compatible": false,
+      "direct_calls": [
+        {
+          "function": "00b87ae0",
+          "address": "00b87afc",
+          "native": "00b87350"
+        }
+      ],
+      "callers": [
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee78",
+          "native": "00b87ae0"
+        }
+      ]
+    }
+  ],
+  "validation": "Strict MSVC Win32 ./scripts/build.ps1 exit0; script ran reconstructed_math CTest 1/1 pass. verify_report_calls: 2 rows, 0 failed. No original-body fixture or gameplay run.",
+  "artifacts": {
+    "src/native_resource_hierarchy_append.cpp": {
+      "bytes": 1304,
+      "sha256": "f251dcc1c0dc66b173f3953f97fe6133670a89f9ad39b5aa152ef11aba63e838"
+    },
+    "include/bsp/native_resource_hierarchy_append.hpp": {
+      "bytes": 308,
+      "sha256": "bd2a3715ec37201a9ebc28c987e11bc7954f011edad7becfea3f7f6b48ec54d1"
+    },
+    "cmake/startup.cmake": {
+      "bytes": 108555,
+      "sha256": "4164c85cf23ad5141abf181ddb0740e160989d53c68824d9647d1e683e746519"
+    },
+    "build/win32/bsp_core.dir/Release/native_resource_hierarchy_append.obj": {
+      "bytes": 1340,
+      "sha256": "2e414151f68cf59d4e2c61dcf1eca952f69df69e45bd9ec4bfdd9571d7341991"
+    },
+    "build/win32/Release/bsp_core.lib": {
+      "bytes": 56390800,
+      "sha256": "b74ca11f32dd9306720661a2c627546312e0fc9afc546fc5e6fbb27eeffb1910"
+    }
+  },
+  "compiler_input": "build/win32/bsp_core.vcxproj contains exactly one native_resource_hierarchy_append.cpp source item; compiled object is a single member of current bsp_core.lib (lib.exe /LIST). Exactly one bsp_core.lib exists under build/. No copied archive exists.",
+  "ghidra_writes": false
+}
