@@ -138,6 +138,9 @@ public:
     // radii come out of. Called once, on the load's own load_scene_contents row
     // after the instantiate pass created the units and 004c0890 bound one.
     void attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua);
+    // Source owner cleanup before replacing/destroying the borrowed units/Lua.
+    // Releases world-facing child bindings; this is not native HUD teardown.
+    void detach_world_2k() noexcept;
     // 004cc460(20h, controlled unit). Milestone 2h applied the request Init
     // pushes, which carries a **null** payload, and the 20h arm's null path
     // publishes `29h, 49h, 44h, 35h`. With a payload the same arm is a unit-kind

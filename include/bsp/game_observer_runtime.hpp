@@ -19,6 +19,8 @@ public:
     // Invoke once in the represented CRT sequence, before CD2D80 settings.
     // Actual table slots CE2BAC/CE3054 establish this relative order.
     void initialize_dispatch_00ccd6a0();
+    // Native teardown clears the owner cell but deliberately retains its alias.
+    bool has_live_dispatch_owner() const noexcept { return owner_00e198dc_ != nullptr; }
     NativeObserverLifetime& lifetime() noexcept { return lifetime_; }
     NativeObserverDispatchStorage* volatile& dispatch_publication() noexcept {
         return dispatch_00e198e4_;

@@ -10,6 +10,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_pending_entity_runtime.hpp"
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/spatial_index.hpp"
 
@@ -223,18 +224,28 @@ private:
 // ---------------------------------------------------------------------------
 class PendingQueueBinding final : public bsp::PendingEntityQueueHost {
 public:
-    PendingQueueBinding(GameHostLog& log, GameUnitsHost* units) : log_(log), units_(units) {}
+    PendingQueueBinding(GameHostLog& log, GameUnitsHost* units)
+        : log_(log), units_(units), owners_(game_pending_entity_owners()) {}
 
-    // Population/delivery of the native pending owners remains unavailable.
-    // These existing inactive counts do not establish native empty queues.
-    // The flag hooks below are real retained storage if a valid unit arrives.
-    std::size_t pending_destroy_count() override { return 0; }
-    std::size_t pending_kill_count() override { return 0; }
+    // Borrow the same process owners that startup initialized. Source bindings
+    // require initialized rings; zero-filled storage does not establish them.
+    std::size_t pending_destroy_count() override {
+        if (owners_.destroy_00f899a8.head_04 == nullptr)
+            throw std::logic_error("pending destroy owner is not initialized");
+        return owners_.destroy_00f899a8.count_08;
+    }
+    std::size_t pending_kill_count() override {
+        if (owners_.kill_00f899b4.head_04 == nullptr)
+            throw std::logic_error("pending kill owner is not initialized");
+        return owners_.kill_00f899b4.count_08;
+    }
     void copy_pending_lists_00926fa0() override {
-        log_.implemented("EntityQueues::copy_pending_lists", "00926fa0");
+        log_.unimplemented("EntityQueues::copy_pending_lists", "00926fa0");
+        throw std::logic_error("native pending entity list copy binding is unavailable");
     }
     void clear_pending_lists() override {
-        log_.implemented("EntityQueues::clear_pending_lists", "009273d1");
+        log_.unimplemented("EntityQueues::clear_pending_lists", "009273d1");
+        throw std::logic_error("native pending entity list clear binding is unavailable");
     }
     std::size_t destroy_copy_count() override { return 0; }
     void* destroy_copy_at(std::size_t index) override {
@@ -287,6 +298,7 @@ public:
 private:
     GameHostLog& log_;
     GameUnitsHost* units_;
+    bsp::NativePendingEntityOwners& owners_;
 };
 
 // ---------------------------------------------------------------------------
@@ -555,6 +567,13 @@ void GameStepSubsystemsHost::report() {
         summary_.think_passes, summary_.thinks_run,
         summary_.pending_queue_passes,
         summary_.expiry_passes, summary_.expiry_entities, summary_.expiry_released);
+    const auto& pending = game_pending_entity_owners();
+    log_.notef("pending entity owner audit: destroy=%s kill=%s counts=%u/%u "
+        "frame_passes=%llu storage=process_raw24h",
+        pending.destroy_00f899a8.head_04 != nullptr ? "present" : "null",
+        pending.kill_00f899b4.head_04 != nullptr ? "present" : "null",
+        pending.destroy_00f899a8.count_08, pending.kill_00f899b4.count_08,
+        summary_.pending_queue_passes);
 }
 
 // ---------------------------------------------------------------------------
