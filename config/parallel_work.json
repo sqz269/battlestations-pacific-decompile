@@ -11207,8 +11207,8 @@
     {
       "id": "orch4_mpak_container_storage_az",
       "worker": "orch4-mpak-containers-az",
-      "done": false,
-      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
       "function_addresses": [
         "00bb7a20",
         "00bb7ba0",
@@ -11232,13 +11232,14 @@
       "dependencies": [
         "reports/input_lua_vfs_services_az_validation.json"
       ],
-      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
     },
     {
       "id": "orch4_physical_stream_lifetime_ba",
       "worker": "orch4-physical-lifetime-ba",
-      "done": false,
-      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
       "function_addresses": [
         "00bf42a0",
         "00bf4370"
@@ -11262,13 +11263,14 @@
       "dependencies": [
         "reports/input_lua_vfs_services_az_validation.json"
       ],
-      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
     },
     {
       "id": "orch4_render_batch_lifetime_ba",
       "worker": "orch4-batch-lifetime-ba",
-      "done": false,
-      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
       "function_addresses": [
         "00b1e870",
         "00b1cd90",
@@ -11290,13 +11292,14 @@
       "dependencies": [
         "reports/input_lua_vfs_services_az_validation.json"
       ],
-      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
     },
     {
       "id": "orch4_type_counter_raw_lifetime_bb",
       "worker": "orch4-type-counter-bb",
       "done": false,
-      "state": "dispatched_bounded_source_composition",
+      "state": "worker_committed_build_passed_primary_review_pending",
       "function_addresses": [
         "006fac20",
         "006fad40"
@@ -11330,7 +11333,7 @@
       "id": "orch4_mpak_storage_composition_bb",
       "worker": "orch4-mpak-storage-bb",
       "done": false,
-      "state": "dispatched_bounded_source_composition",
+      "state": "worker_committed_build_passed_primary_review_pending",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/native_mpak_storage_services.hpp",

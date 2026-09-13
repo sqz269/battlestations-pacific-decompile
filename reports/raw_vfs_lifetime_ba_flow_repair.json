@@ -1,0 +1,187 @@
+{
+  "reason": "Restore physical pool scalar destructor saved instruction ownership; verify complete bytes and preserve existing names, comments, labels and callee flags.",
+  "entries": [
+    {
+      "address": "00bf4370",
+      "end_exclusive": "00bf43a1",
+      "bytes": 49,
+      "sha256": "25367142788dac71aa3c1c4c92e3c356c0fc7c8a7d4261115362255291604ad9",
+      "before": "Function: BSP_PhysicalStreamPool_DeletingDestructor at 00bf4370\nSignature: undefined BSP_PhysicalStreamPool_DeletingDestructor(void)\nEntry: 00bf4370\nBody: 00bf4370 - 00bf43a0",
+      "before_documentation": {
+        "hash": "3d9d72fb96d238b8a7a2c7119c13dd0feb4e51bcd830f71641380289152325a8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf4370",
+        "function_name": "BSP_PhysicalStreamPool_DeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf4370]\nDescriptive hypothesis; complete actual-storage body 00bf4370..00bf43a0 (49 bytes). ECX pool, stack flags, EAX original pool, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 43,
+            "name": "LAB_00bf439b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00bf4370",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4371",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4373",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf437d",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4380",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4386",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf438b",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4390",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4392",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4393",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf4398",
+          "owner": null
+        },
+        {
+          "address": "00bf439b",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf439d",
+          "owner": "00bf4370"
+        },
+        {
+          "address": "00bf439e",
+          "owner": "00bf4370"
+        }
+      ],
+      "after": "Function: BSP_PhysicalStreamPool_DeletingDestructor at 00bf4370\nSignature: void * __fastcall BSP_PhysicalStreamPool_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00bf4370\nBody: 00bf4370 - 00bf43a0",
+      "after_documentation": {
+        "hash": "3a124d71c9e2ece1686fc833155cfaeed85cb147ae910101084fa6e1bb47c865",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf4370",
+        "function_name": "BSP_PhysicalStreamPool_DeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bf4370]\nDescriptive hypothesis; complete actual-storage body 00bf4370..00bf43a0 (49 bytes). ECX pool, stack flags, EAX original pool, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 43,
+            "name": "LAB_00bf439b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 14
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bf4393"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bf4393 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bf4370"
+      },
+      "result": "{\"success\": true, \"address\": \"00bf4370\", \"deleted_function\": \"BSP_PhysicalStreamPool_DeletingDestructor\", \"body_size\": 46, \"message\": \"Function 'BSP_PhysicalStreamPool_DeletingDestructor' deleted at 00bf4370\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bf4370",
+        "end_address": "00bf43a1"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bf4370\", \"end_address\": \"00bf43a0\", \"bytes_disassembled\": 49, \"message\": \"Successfully disassembled 49 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bf4370",
+        "name": "BSP_PhysicalStreamPool_DeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bf4370\", \"function_name\": \"BSP_PhysicalStreamPool_DeletingDestructor\", \"entry_point\": \"00bf4370\", \"body_size\": 49, \"message\": \"Function created successfully at 00bf4370\", \"warnings\": [\"Function name 'BSP_PhysicalStreamPool_DeletingDestructor' \\u2014 main part 'PhysicalStreamPool_DeletingDestructor' is not PascalCase. Expected: PhysicalstreampoolDeletingdestructor\", \"Function name 'BSP_PhysicalStreamPool_DeletingDestructor' \\u2014 main part 'PhysicalStreamPool_DeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_PhysicalStreamPool_DeletingDestructor' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf4370",
+        "prototype": "void* __fastcall BSP_PhysicalStreamPool_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf4370 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bf4370",
+        "comment": "[BSP reconstruction 00bf4370]\nDescriptive hypothesis; complete actual-storage body 00bf4370..00bf43a0 (49 bytes). ECX pool, stack flags, EAX original pool, RET4. Actual physical pool/open/read ownership; current numeric profiles retained. docs/NATIVE_PHYSICAL_STREAM_OPEN.md; reports/native_physical_stream_open.json. Strict Win32 build and focused original-instruction fixture pass; no binary ABI or game validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bf4370\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "00bf4370"
+  ]
+}

@@ -1,0 +1,654 @@
+{
+  "packet": "orch4_raw_vfs_storage_ba_integration",
+  "status": "bounded_raw_lifetime_and_mpak_container_source_integrated_exact_combined_build_and_fixtures_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/RAW_VFS_LIFETIME_BA_INTEGRATION.md",
+  "worker_reports": [
+    "reports/native_mpak_container_storage_az.json",
+    "reports/native_physical_stream_raw_lifetime_ba.json",
+    "reports/native_render_batch_raw_lifetime_ba.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "00bf42a0",
+      "bytes": 178,
+      "end_inclusive": "00bf4351",
+      "sha256": "f95ac7971b5be29b1272c83639e4d3ce315576d8e09b8f1499907c5b911156e8",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_PhysicalStreamPool_GetSingleton at 00bf42a0\nSignature: undefined BSP_PhysicalStreamPool_GetSingleton(void)\nEntry: 00bf42a0\nBody: 00bf42a0 - 00bf4351",
+      "instructions": 53,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bf4351",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bf4370",
+      "bytes": 49,
+      "end_inclusive": "00bf43a0",
+      "sha256": "25367142788dac71aa3c1c4c92e3c356c0fc7c8a7d4261115362255291604ad9",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_PhysicalStreamPool_DeletingDestructor at 00bf4370\nSignature: void * __fastcall BSP_PhysicalStreamPool_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00bf4370\nBody: 00bf4370 - 00bf43a0",
+      "instructions": 14,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bf439e",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b1e870",
+      "bytes": 178,
+      "end_inclusive": "00b1e921",
+      "sha256": "af579cdc1da7fda7fc927dfacbe48246537156ae20b5c322d78226325f1c3af6",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_RenderBatchPool_GetSingleton at 00b1e870\nSignature: undefined BSP_RenderBatchPool_GetSingleton(void)\nEntry: 00b1e870\nBody: 00b1e870 - 00b1e921",
+      "instructions": 53,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00b1e921",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b1cd90",
+      "bytes": 189,
+      "end_inclusive": "00b1ce4c",
+      "sha256": "b9ee2734e4ccce2d2aaed45b84cb9050b04e3606008f2d7d1a432c64c0068a6c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_RenderBatchLock_GetSingleton at 00b1cd90\nSignature: undefined BSP_RenderBatchLock_GetSingleton(void)\nEntry: 00b1cd90\nBody: 00b1cd90 - 00b1ce4c",
+      "instructions": 51,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00b1ce4c",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b1e930",
+      "bytes": 49,
+      "end_inclusive": "00b1e960",
+      "sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_RenderBatchPool_DeletingDestructor at 00b1e930\nSignature: void * __fastcall BSP_RenderBatchPool_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00b1e930\nBody: 00b1e930 - 00b1e960",
+      "instructions": 14,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00b1e95e",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b1d530",
+      "bytes": 55,
+      "end_inclusive": "00b1d566",
+      "sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_RenderBatchLock_DeletingDestructor at 00b1d530\nSignature: void * __fastcall BSP_RenderBatchLock_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00b1d530\nBody: 00b1d530 - 00b1d566",
+      "instructions": 15,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00b1d564",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb7a20",
+      "bytes": 161,
+      "end_inclusive": "00bb7ac0",
+      "sha256": "400cb98518a1274537f87b3bd11d886e02c45f8dce2a43948417937df1528055",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb7a20 at 00bb7a20\nSignature: undefined FUN_00bb7a20(void)\nEntry: 00bb7a20\nBody: 00bb7a20 - 00bb7ac0",
+      "instructions": 65,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb7a95",
+          "operand": "4"
+        },
+        {
+          "site": "00bb7abe",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb7ba0",
+      "bytes": 161,
+      "end_inclusive": "00bb7c40",
+      "sha256": "a6e805183b7b239f62a0e419b14036ae379492ab261e356e988794d928d10573",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb7ba0 at 00bb7ba0\nSignature: undefined FUN_00bb7ba0(void)\nEntry: 00bb7ba0\nBody: 00bb7ba0 - 00bb7c40",
+      "instructions": 65,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb7c15",
+          "operand": "4"
+        },
+        {
+          "site": "00bb7c3e",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00a40d60",
+      "bytes": 137,
+      "end_inclusive": "00a40de8",
+      "sha256": "107b811a33a930d7d59f0aeb196081597e0f8efd98a2696cfedb238f26acec72",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_StlVectorInt_Insert at 00a40d60\nSignature: undefined BSP_StlVectorInt_Insert(void)\nEntry: 00a40d60\nBody: 00a40d60 - 00a40de8",
+      "instructions": 56,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00a40de6",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00bb6220",
+      "bytes": 85,
+      "end_inclusive": "00bb6274",
+      "sha256": "19ba3a36f61750d342eaab71c3a6d2e05810dca52707b609c491ce766e3a4146",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb6220 at 00bb6220\nSignature: void __fastcall FUN_00bb6220(void * first, void * end, void * opaque_1, void * opaque_2)\nEntry: 00bb6220\nBody: 00bb6220 - 00bb6274",
+      "instructions": 39,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb6272",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00bb6e60",
+      "bytes": 61,
+      "end_inclusive": "00bb6e9c",
+      "sha256": "c5b97452695152b1e34e891a4d95c193eb82791b26e5df93d8a7d62b88eb8679",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb6e60 at 00bb6e60\nSignature: void __fastcall FUN_00bb6e60(void * vector)\nEntry: 00bb6e60\nBody: 00bb6e60 - 00bb6e9c",
+      "instructions": 21,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb6e9c",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bb71f0",
+      "bytes": 70,
+      "end_inclusive": "00bb7235",
+      "sha256": "67b64ee41b05b78b1c3d71b704d1b9c46b87f8f1b8653c58b56314b2737043f4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb71f0 at 00bb71f0\nSignature: void __fastcall FUN_00bb71f0(void * vector)\nEntry: 00bb71f0\nBody: 00bb71f0 - 00bb7235",
+      "instructions": 26,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb7235",
+          "operand": ""
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "00bf42a0",
+      "address": "00bf42c5",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bf42a0",
+      "address": "00bf42f6",
+      "native": "00bf681b",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bf42a0",
+      "address": "00bf431a",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bf42a0",
+      "address": "00bf4328",
+      "native": "00bd0c30",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bf4370",
+      "address": "00bf4386",
+      "native": "00bf3930",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bf4370",
+      "address": "00bf4393",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e895",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8c6",
+      "native": "00bf681b",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8ea",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e870",
+      "address": "00b1e8f8",
+      "native": "00bd0c30",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1cdb6",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1cdec",
+      "native": "00bf681b",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce03",
+      "native": "00b1c9d0",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce16",
+      "native": "00415350",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1cd90",
+      "address": "00b1ce24",
+      "native": "00bd0c30",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e930",
+      "address": "00b1e946",
+      "native": "00b1d8a0",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1e930",
+      "address": "00b1e953",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1d530",
+      "address": "00b1d53c",
+      "native": "0041cc80",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00b1d530",
+      "address": "00b1d559",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7a20",
+      "address": "00bb7a85",
+      "native": "00bb6cd0",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7a20",
+      "address": "00bb7aa0",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7a20",
+      "address": "00bb7ab3",
+      "native": "00bb7590",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c05",
+      "native": "00bb6f00",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c20",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c33",
+      "native": "00bb7ad0",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40d86",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40d93",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40db0",
+      "native": "00a40b90",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40dbd",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40dd3",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb6220",
+      "address": "00bb6238",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb6220",
+      "address": "00bb6258",
+      "native": "00419cc0",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb6220",
+      "address": "00bb625f",
+      "native": "00bd1510",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb6e60",
+      "address": "00bb6e74",
+      "native": "00bb6220",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb6e60",
+      "address": "00bb6e7d",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb71f0",
+      "address": "00bb7205",
+      "native": "00bb6500",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    },
+    {
+      "function": "00bb71f0",
+      "address": "00bb7215",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL in complete live/disk root envelope; saved owner independently checked."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00bf42a0",
+      "call_site": "00bf42de",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "00bf42a0",
+      "call_site": "00bf4336",
+      "operand": "dword ptr [0xce2210]"
+    },
+    {
+      "function": "00b1e870",
+      "call_site": "00b1e8ae",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "00b1e870",
+      "call_site": "00b1e906",
+      "operand": "dword ptr [0xce2210]"
+    },
+    {
+      "function": "00b1cd90",
+      "call_site": "00b1cdcf",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "00b1cd90",
+      "call_site": "00b1ce32",
+      "operand": "dword ptr [0xce2210]"
+    }
+  ],
+  "instruction_ownership_failures": [],
+  "table_data_spans": [
+    {
+      "address": "00d68ec0",
+      "bytes": 4,
+      "hex": "7043bf00",
+      "sha256": "22451a030ad1640a9e99dd9450350168c28220b0f17b5d6e482972fac3a5d958",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5e5dc",
+      "bytes": 4,
+      "hex": "30e9b100",
+      "sha256": "270557a3e5a0bbd6aa1e7ed474bb3feed52aa1634e304a75ff30303e06cfb607",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5e5d4",
+      "bytes": 4,
+      "hex": "30d5b100",
+      "sha256": "9a20ff64fc0a50f3f9c0e2d3f0c816ce2d0533c5a1151e67f1d57ab42772e192",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5e5ac",
+      "bytes": 16,
+      "hex": "8056b50030c6b1005055b500f01db500",
+      "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+      "live_disk_equal": true
+    }
+  ],
+  "body_repairs": [
+    "reports/raw_vfs_lifetime_ba_flow_repair.json",
+    "reports/native_mpak_container_storage_az_flow_repair.json",
+    "reports/native_mpak_container_storage_az_body_repair.json",
+    "reports/raw_vfs_render_batch_ba_body_repair.json"
+  ],
+  "annotations": "reports/raw_vfs_storage_ba_annotations.json",
+  "final_validation": {
+    "utc": "2026-09-13T23:46:58.504191+00:00",
+    "source_revision": "9000ae48a7f7548a297f69d5465567ebb92b057e",
+    "merged_main_revision": "cd0b0f18cdc45a92b0936cc69ce6781120d5a875",
+    "code_files": 2459,
+    "code_manifest": "local/raw_vfs_storage_ba_source_manifest.json",
+    "code_manifest_sha256": "d3b43f202a12020c77ecf9cd50dee050b2aa708c53203d4c9c1ab506ae012283",
+    "core_archive_sha256": "579b215a82392ac813ace69d02f0c881f48860d31ac78fc6bb9b2816a499f05b",
+    "game_executable_sha256": "8e493b646c8d90972e6040c6205c4eb05584df3d918e0bda5cc439fbd2b79104",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local/raw_vfs_storage_ba_combined_build.log",
+    "build_log_sha256": "af6739ac8dc3ea9b76f4e52a350fec3b3a940905c2050b141f60eb5cc322c777",
+    "fixtures": [
+      {
+        "name": "container_source",
+        "source": "local/native_mpak_container_storage_az_fixture.cpp",
+        "runner": "local/run_native_mpak_container_storage_az_fixture.ps1",
+        "executable": "local/native_mpak_container_storage_az_fixture.exe",
+        "log": "local/raw_vfs_storage_ba_combined_container_source_probe.log",
+        "source_sha256": "b4ce6d29898a084897cab070b3de1d9b4340123e0b236de9f66f04901eb9a994",
+        "runner_sha256": "83601aede480ffdce0389f7256985251a0ad8401f136bbc27cedad2ad97099ea",
+        "executable_sha256": "0b334ffadc938ac350c44bb18be159b9239b0ef969be0b05494ff38fe80ac64b",
+        "log_sha256": "7d8bc6112fe885cb5b14b8dfa90cb0d026a658f100d990da7f9251ef1fb87e4b"
+      },
+      {
+        "name": "container_native",
+        "source": "local/native_mpak_container_storage_az_native_compare.cpp",
+        "runner": "local/run_native_mpak_container_storage_az_native_compare.ps1",
+        "executable": "local/native_mpak_container_storage_az_native_compare.exe",
+        "log": "local/raw_vfs_storage_ba_combined_container_native_probe.log",
+        "source_sha256": "3f61125db561b92ec5a86bfb11abf27e2eba4a1d62ad8afee12d68adca7953f7",
+        "runner_sha256": "055a5073655ca7310c2dcec6650890117c368c0c529b843be1f03ad0660a9f54",
+        "executable_sha256": "86fd6b01f1c83df791a8573799915cc45846dfe231899902c6391b77d8789b0e",
+        "log_sha256": "378aec281a604a20c9dcd46f2a7d47a30d193f1b1b142656042c1b75b39b4ba4"
+      },
+      {
+        "name": "batch",
+        "source": "local/render_batch_raw_ba_probe.cpp",
+        "runner": "local/run_render_batch_raw_ba_probe.ps1",
+        "executable": "local/render_batch_raw_ba_probe.exe",
+        "log": "local/raw_vfs_storage_ba_combined_batch_probe.log",
+        "source_sha256": "52049b1e0f5f73a66049ddf15d243d9c3e206621a6c1633d3e520c5b4aea501c",
+        "runner_sha256": "d107f920db22f6b39d538695ba10f337e2641944397174cf479131657f9bf10c",
+        "executable_sha256": "98152e858286027be6dcc733965fbe404cee0a5c8c9e3e4f69e85af383879102",
+        "log_sha256": "5c69633d93987ce2a22f2e2387b2afbb60c786adf52943433e1b89f40b37eca0"
+      },
+      {
+        "name": "lua",
+        "source": "local/native_lua_service_bindings_az_composition.cpp",
+        "runner": "local/run_native_lua_service_bindings_az_composition.ps1",
+        "executable": "local/native_lua_service_bindings_az_composition.exe",
+        "log": "local/raw_vfs_storage_ba_combined_lua_probe.log",
+        "source_sha256": "4eb206627becdd5e4e85e765c23b556747498437840d8fe240ff8dfa1947b9c6",
+        "runner_sha256": "f6514f25d55cd178680dafb2b2000e0e15fc005154de933f132417cde846fe28",
+        "executable_sha256": "e6a1feca77eacf7297e37ccb26cc18c934c82586422163d4dbd18f1fa6ea0b5c",
+        "log_sha256": "f2f9ee775e4935d8eb87187226f9ff20cbd4359e35226e2c74b516465995d7c4"
+      },
+      {
+        "name": "data",
+        "source": "local/game_native_readonly_data_az_probe.cpp",
+        "runner": "local/run_game_native_readonly_data_az_probe.ps1",
+        "executable": "local/game_native_readonly_data_az_probe.exe",
+        "log": "local/raw_vfs_storage_ba_combined_data_probe.log",
+        "source_sha256": "566697ed084b4bd8538de8d5f5417cac522206e1f6092906353529a30fbead94",
+        "runner_sha256": "1137264c75c129cc197e5e7fc1a7864f6e66b4e51ff443527dcf23f0fcac6ff0",
+        "executable_sha256": "66959278a10191e7f37dcf34d174a3438c9f8737fe506b7358afb99f2834dc18",
+        "log_sha256": "99b5f6aca09ce6890c8e1b8a045b03af6319c90db532a745768e8e8d7a68dfa5"
+      }
+    ],
+    "support_hashes": {
+      "local/mpak_container_az_native_bytes.hpp": "8266c89676d6f02fcf2ce0ea4602c7a11d9ae18d3de5ce1fbfc9ab5311f4208f",
+      "local/make_mpak_container_az_native_bytes.py": "059079520afbcdfc5329f9592dec561544fdca0142ca2c9a308de6021e0856f1",
+      "local/make_game_native_readonly_data_az_probe.py": "28bca6476863d51d05825db6f12af3f2d20f7e2510dfa29202e919fd7d27ec77",
+      "local/adapt_native_data_az_span_probe.py": "507290f167638cd8f5e8365e4c9e3a7447067ab2c66063eca7f849bc1dd34705",
+      "local/prepare_raw_vfs_storage_body_repairs_ba.py": "e66e2c2b914adf150659e5d9171417932c246bf01f5fc0b6ea41d4f423a4a21a",
+      "local/repair_physical_pool_body_ba.py": "67fc5de854ea17b593e709427112644d2cdd177321b5203b2a65100a2db254e3",
+      "local/repair_render_batch_body_ba.py": "f591cd7c2f60c9fc4dfa12e01ba88f429f9b80c4c1252c793d5019d25262372b",
+      "local/repair_mpak_container_body_ba.py": "822e2da1be4a0a4af2f37f0b353d44322868e5e229d99c422b513ae6b6d7fb2a",
+      "local/audit_raw_vfs_storage_ba.py": "795ff62a5f137feefaacf2588ef8bb0325b5e33745e8a6f5a8a897ca23eed829",
+      "local/annotate_raw_vfs_storage_ba.py": "4cc30f43a651821f049156702162945c622f2bf57db29a6b9bd699a8be3311d1",
+      "local/raw_vfs_storage_ba_calls.log": "18f67b9caeedf38d50aee7db5aaf71640fd876b598c15f7349b315f159b203da",
+      "local/raw_vfs_storage_ba_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/raw_vfs_storage_ba_pre_batch_repair_audit.json": "a8a040f83e88694410cd2f29ed090683d282eba2bbec5cba0423dd73ed111749"
+    },
+    "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "unique_owned_direct_call_sites": 97,
+    "call_report_rows": 134,
+    "call_rows_failed": 0,
+    "live_disk_function_envelopes": 12,
+    "saved_annotations_readback": 12,
+    "repaired_instruction_ownership": [
+      "00bf4398",
+      "00bb623d",
+      "00bb6e82",
+      "00bb721a",
+      "00bb721d",
+      "00b1e958",
+      "00b1d55e"
+    ],
+    "disk_live_seed_spans_equal": 8,
+    "annotation_receipt_sha256": "b88ca3ab007c77f2a18d3a5b6f622bf6f807569a8a11d54ea6f39401940ae920",
+    "body_repair_receipt_hashes": {
+      "reports/raw_vfs_lifetime_ba_flow_repair.json": "b405e25dbea98dff5b243933cd2801bd97852b9ae32a2864bdff1370715feec0",
+      "reports/native_mpak_container_storage_az_flow_repair.json": "a4ea86c80ad3e3bec15a87eecb190a36696361ef6be673f410e036993c1f30d2",
+      "reports/native_mpak_container_storage_az_body_repair.json": "ebdaa3a86a55669b15c1871a1f4a5f680f541bbc60db5c8c9638fbba03415963",
+      "reports/raw_vfs_render_batch_ba_body_repair.json": "cfbd6f9b15415a41d1908ca231fcb0837e4f1fd55c227ebdb883a7973b7c3ca9"
+    },
+    "copied_native_regions": [
+      {
+        "address": "00bb4000",
+        "bytes": 16384,
+        "sha256": "3b8cb970fe2a96c2dc2d376ab3f314b74e7f1be5e1f79d481b45363f7f244ab9",
+        "header_equals_disk": true
+      },
+      {
+        "address": "00a3e000",
+        "bytes": 8192,
+        "sha256": "ecb48a3eb3d5e0a2c68c41ef787299bba4b5cececf2d3acbd2c468d4f1af41c5",
+        "header_equals_disk": true
+      },
+      {
+        "address": "00a40000",
+        "bytes": 4096,
+        "sha256": "32926e26eb45e2da2a991c80ed190d80bf427c631acdb294c431b408db6c977a",
+        "header_equals_disk": true
+      }
+    ],
+    "original_abi_compatible": false,
+    "original_fh3_executed": false,
+    "production_host_reachable": false,
+    "game_validated": false
+  },
+  "limits": [
+    "General MPAK helper middle insertion, invalid iterator/alias timing and original FH3/CRT exception identities remain incomplete.",
+    "Copied-native container comparison uses source lower-level record copy, allocator/free/move bridges and empty names; nonempty names are exercised by the populated source fixture.",
+    "Raw fixture drains render-batch owners only. VFS/Lua fixtures retain their existing semantic domain and seeded records; no production raw provider graph or real archive-loading validation.",
+    "TrackedCriticalSection remains an explicit source ABI representation. No original game or gameplay validation."
+  ],
+  "pending_followups": [
+    "orch4_type_counter_raw_lifetime_bb",
+    "orch4_vfs_raw_ownership_composition_bb",
+    "orch4_mpak_storage_composition_bb"
+  ]
+}

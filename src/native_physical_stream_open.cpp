@@ -6,6 +6,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
+#include <new>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -79,11 +80,12 @@ void* construct_native_physical_stream_00bf50d0(void* stream) noexcept {
 
 void* native_physical_stream_pool_00bf42a0(NativePhysicalStreamOpenContext& context) {
     if (auto* current = context.pool_0109dc28) return current;
-    auto* section = context.lifetime.get_manager_00415350()->system_owner().section_10;
-    if (section) {
-        singleton_enter_critical_section(*section);
-        ++section->recursion_18;
-    }
+    // The native EH frame releases the first manager's captured section on
+    // normal or abnormal exit. Construct in raw stack storage so __finally
+    // owns exactly one release in this source exception domain.
+    alignas(CapturedSoundLifetimeSection) unsigned char captured_storage[
+        sizeof(CapturedSoundLifetimeSection)];
+    auto* captured = ::new (captured_storage) CapturedSoundLifetimeSection(context.lifetime);
     __try {
         if (!context.pool_0109dc28) {
             auto* owner = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x10, 0x10});
@@ -94,14 +96,11 @@ void* native_physical_stream_pool_00bf42a0(NativePhysicalStreamOpenContext& cont
                 put(owner, 0, 0x00d68ec0);
             }
             context.pool_0109dc28 = owner;
-            auto* manager = context.lifetime.get_manager_00415350();
+            auto manager = context.lifetime.get_manager_00415350();
             manager->register_object(context.pool_0109dc28);
         }
     } __finally {
-        if (section) {
-            --section->recursion_18;
-            singleton_leave_critical_section(*section);
-        }
+        captured->~CapturedSoundLifetimeSection();
     }
     return context.pool_0109dc28; // After captured lock release.
 }

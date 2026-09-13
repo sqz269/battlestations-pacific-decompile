@@ -17,7 +17,8 @@
   Spawn on `gpt-6-astra` instead when the packet's evidence is x87 arithmetic, register-ABI recovery,
   control-flow or listing repair, or a body too large to decompile. A full-history fork inherits the
   parent's model and cannot override it, so `fork_turns` must be `"none"` or a positive integer string
-  whenever `model` is set. Leave `reasoning_effort` unset so it follows the profile.
+  whenever `model` is set. Set `reasoning_effort` to `"xhigh"` on every spawn that sets `model`: the
+  parent's effort is not inherited and `gpt-5.6-sol` falls back to `low`.
 
 - Use the existing `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
   Verify project and program before every analysis/export batch. Do not re-import into `wows`.
