@@ -1,0 +1,636 @@
+{
+  "schema": "bsp-native-debug-feature-validation-v1",
+  "packet": "orch2_native_debug_feature_validation_ba",
+  "utc": "2026-09-13T07:32:01.193858+00:00",
+  "status": "eight_original_normal_paths_match_current_source_development_replay_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every bsp.py ghidra invocation constructs Client and verifies project, program path, language and image base before reading. All 8 proposed complete body byte spans match disk and live Ghidra. No Ghidra mutation or shared export refresh."
+  },
+  "tested_source_commit": "a40b6a636aeb5be2d5d84a5815f6be74852552f1",
+  "tested_candidate_head": "c0dc16473e39e095233a2cbedb14e1c362ca7af2",
+  "new_reconstructed_functions": 0,
+  "new_reconstructed_bytes": 0,
+  "original_body_count": 8,
+  "original_body_bytes": 964,
+  "original_spans": [
+    {
+      "address": "0051f460",
+      "bytes": 189,
+      "sha256": "417ade7da7db89cbc1be7c479fc8aa42b6b38e51e14fc31765cedfeef4ab6602",
+      "instructions": 51
+    },
+    {
+      "address": "00be94f0",
+      "bytes": 109,
+      "sha256": "d557dd6a93aa41066908f197b2457d537dfa37cb6b629844a6367dc2db034c54",
+      "instructions": 34
+    },
+    {
+      "address": "00be8210",
+      "bytes": 17,
+      "sha256": "d27ad78f493a9b3f47b0a091aef94a46384766054669e0e3ed8b6b8fc682c318",
+      "instructions": 3
+    },
+    {
+      "address": "00be8350",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instructions": 1
+    },
+    {
+      "address": "00be9560",
+      "bytes": 156,
+      "sha256": "c8712a76a7d55280eef319dc813a64862a1deb65c5d8a948c6f78c08ba2f2779",
+      "instructions": 48
+    },
+    {
+      "address": "00be9600",
+      "bytes": 30,
+      "sha256": "7651c11217c03847a4666ae1ee5039cb35c34674662255f7552ee5ea33f88700",
+      "instructions": 11
+    },
+    {
+      "address": "00be8df0",
+      "bytes": 308,
+      "sha256": "41ea90561ac2c92b5e66dcb1cc1afa5130907123e8842ba16e00b15907a93c85",
+      "instructions": 105
+    },
+    {
+      "address": "00be8f30",
+      "bytes": 154,
+      "sha256": "dcf1cd012c3ae621231adab55b1a6ac74ef18748f208f648ad6e34fb211fd7dc",
+      "instructions": 57
+    }
+  ],
+  "relocations": [
+    {
+      "owner": "0051f460",
+      "offset": 22,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 39,
+      "target": "00415350",
+      "relative": true
+    },
+    {
+      "owner": "0051f460",
+      "offset": 65,
+      "target": "00ce2218",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 83,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 93,
+      "target": "00bf681b",
+      "relative": true
+    },
+    {
+      "owner": "0051f460",
+      "offset": 116,
+      "target": "00be94f0",
+      "relative": true
+    },
+    {
+      "owner": "0051f460",
+      "offset": 130,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 135,
+      "target": "00415350",
+      "relative": true
+    },
+    {
+      "owner": "0051f460",
+      "offset": 141,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 149,
+      "target": "00bd0c30",
+      "relative": true
+    },
+    {
+      "owner": "0051f460",
+      "offset": 164,
+      "target": "00ce2210",
+      "relative": false
+    },
+    {
+      "owner": "0051f460",
+      "offset": 169,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "00be94f0",
+      "offset": 52,
+      "target": "00ce3a0c",
+      "relative": false
+    },
+    {
+      "owner": "00be94f0",
+      "offset": 65,
+      "target": "0041e870",
+      "relative": true
+    },
+    {
+      "owner": "00be8210",
+      "offset": 2,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "00be9560",
+      "offset": 46,
+      "target": "00be8f30",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 54,
+      "target": "00bf6989",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 84,
+      "target": "00419cc0",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 91,
+      "target": "00bd1510",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 108,
+      "target": "00427110",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 116,
+      "target": "00bf6989",
+      "relative": true
+    },
+    {
+      "owner": "00be9560",
+      "offset": 129,
+      "target": "0109db70",
+      "relative": false
+    },
+    {
+      "owner": "00be9600",
+      "offset": 4,
+      "target": "00be9560",
+      "relative": true
+    },
+    {
+      "owner": "00be9600",
+      "offset": 17,
+      "target": "00bf65ac",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 66,
+      "target": "00bf55be",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 146,
+      "target": "0041dd40",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 167,
+      "target": "00bf7680",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 238,
+      "target": "00419cc0",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 245,
+      "target": "00bd1510",
+      "relative": true
+    },
+    {
+      "owner": "00be8df0",
+      "offset": 267,
+      "target": "00bf6989",
+      "relative": true
+    },
+    {
+      "owner": "00be8f30",
+      "offset": 16,
+      "target": "00be8df0",
+      "relative": true
+    },
+    {
+      "owner": "00be8f30",
+      "offset": 71,
+      "target": "00bf79f0",
+      "relative": true
+    },
+    {
+      "owner": "00be8f30",
+      "offset": 129,
+      "target": "00419cc0",
+      "relative": true
+    },
+    {
+      "owner": "00be8f30",
+      "offset": 136,
+      "target": "00bd1510",
+      "relative": true
+    }
+  ],
+  "call_sites": [
+    {
+      "site": "0051f486",
+      "operand": "0x415350",
+      "kind": "direct",
+      "address": "0051f486",
+      "function": "0051f460",
+      "native": "00415350",
+      "source_binding": "get_native_singleton_manager_00415350 using borrowed actual01090AA0 publication",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "0051f49f",
+      "operand": "dword ptr [0xce2218]",
+      "kind": "indirect_import",
+      "address": "0051f49f",
+      "function": "0051f460",
+      "native": "00ce2218+import:EnterCriticalSection",
+      "import_boundary": "Current Win32 EnterCriticalSection",
+      "source_binding": "Current Win32 EnterCriticalSection",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "0051f4bc",
+      "operand": "0xbf681b",
+      "kind": "direct",
+      "address": "0051f4bc",
+      "function": "0051f460",
+      "native": "00bf681b",
+      "source_binding": "singleton_lifetime_allocate, existing source CRT new-handler allocation boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "0051f4d3",
+      "operand": "0xbe94f0",
+      "kind": "direct",
+      "address": "0051f4d3",
+      "function": "0051f460",
+      "native": "00be94f0",
+      "source_binding": "construct_native_debug_feature_owner_00be94f0",
+      "fixture_binding": "Internal transfer remains within the eight copied original bodies"
+    },
+    {
+      "site": "0051f4e6",
+      "operand": "0x415350",
+      "kind": "direct",
+      "address": "0051f4e6",
+      "function": "0051f460",
+      "native": "00415350",
+      "source_binding": "get_native_singleton_manager_00415350 using borrowed actual01090AA0 publication",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "0051f4f4",
+      "operand": "0xbd0c30",
+      "kind": "direct",
+      "address": "0051f4f4",
+      "function": "0051f460",
+      "native": "00bd0c30",
+      "source_binding": "register_native_singleton_object_00bd0c30 using current manager and owner reload",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "0051f502",
+      "operand": "dword ptr [0xce2210]",
+      "kind": "indirect_import",
+      "address": "0051f502",
+      "function": "0051f460",
+      "native": "00ce2210+import:LeaveCriticalSection",
+      "import_boundary": "Current Win32 LeaveCriticalSection",
+      "source_binding": "Current Win32 LeaveCriticalSection",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be9530",
+      "operand": "0x41e870",
+      "kind": "direct",
+      "address": "00be9530",
+      "function": "00be94f0",
+      "native": "0041e870",
+      "source_binding": "construct_native_string_cstring_0041e870, existing actual string header and empty literal",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be958d",
+      "operand": "0xbe8f30",
+      "kind": "direct",
+      "address": "00be958d",
+      "function": "00be9560",
+      "native": "00be8f30",
+      "source_binding": "resize_native_debug_feature_records_00be8f30",
+      "fixture_binding": "Internal transfer remains within the eight copied original bodies"
+    },
+    {
+      "site": "00be9595",
+      "operand": "0xbf6989",
+      "kind": "direct",
+      "address": "00be9595",
+      "function": "00be9560",
+      "native": "00bf6989",
+      "source_binding": "singleton_lifetime_free, existing source CRT free boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be95b3",
+      "operand": "0x419cc0",
+      "kind": "direct",
+      "address": "00be95b3",
+      "function": "00be9560",
+      "native": "00419cc0",
+      "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be95ba",
+      "operand": "0xbd1510",
+      "kind": "direct",
+      "address": "00be95ba",
+      "function": "00be9560",
+      "native": "00bd1510",
+      "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be95cb",
+      "operand": "0x427110",
+      "kind": "direct",
+      "address": "00be95cb",
+      "function": "00be9560",
+      "native": "00427110",
+      "source_binding": "resize_native_string_vector_00427110, existing complete actual string-array resize",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be95d3",
+      "operand": "0xbf6989",
+      "kind": "direct",
+      "address": "00be95d3",
+      "function": "00be9560",
+      "native": "00bf6989",
+      "source_binding": "singleton_lifetime_free, existing source CRT free boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be9603",
+      "operand": "0xbe9560",
+      "kind": "direct",
+      "address": "00be9603",
+      "function": "00be9600",
+      "native": "00be9560",
+      "source_binding": "destroy_native_debug_feature_owner_00be9560",
+      "fixture_binding": "Internal transfer remains within the eight copied original bodies"
+    },
+    {
+      "site": "00be9610",
+      "operand": "0xbf65ac",
+      "kind": "direct",
+      "address": "00be9610",
+      "function": "00be9600",
+      "native": "00bf65ac",
+      "source_binding": "singleton_lifetime_free, existing source CRT scalar-delete boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8e31",
+      "operand": "0xbf55be",
+      "kind": "direct",
+      "address": "00be8e31",
+      "function": "00be8df0",
+      "native": "00bf55be",
+      "source_binding": "singleton_lifetime_allocate, existing source CRT array allocation boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8e81",
+      "operand": "0x41dd40",
+      "kind": "direct",
+      "address": "00be8e81",
+      "function": "00be8df0",
+      "native": "0041dd40",
+      "source_binding": "resize_native_string_header_0041dd40, current actual headers and borrowed string storage",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8e96",
+      "operand": "0xbf7680",
+      "kind": "direct",
+      "address": "00be8e96",
+      "function": "00be8df0",
+      "native": "00bf7680",
+      "source_binding": "std::memmove source CRT boundary; BF7680 supports backward overlap",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8edd",
+      "operand": "0x419cc0",
+      "kind": "direct",
+      "address": "00be8edd",
+      "function": "00be8df0",
+      "native": "00419cc0",
+      "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8ee4",
+      "operand": "0xbd1510",
+      "kind": "direct",
+      "address": "00be8ee4",
+      "function": "00be8df0",
+      "native": "00bd1510",
+      "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8efa",
+      "operand": "0xbf6989",
+      "kind": "direct",
+      "address": "00be8efa",
+      "function": "00be8df0",
+      "native": "00bf6989",
+      "source_binding": "singleton_lifetime_free, existing source CRT free boundary",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8f3f",
+      "operand": "0xbe8df0",
+      "kind": "direct",
+      "address": "00be8f3f",
+      "function": "00be8f30",
+      "native": "00be8df0",
+      "source_binding": "reserve_native_debug_feature_records_00be8df0",
+      "fixture_binding": "Internal transfer remains within the eight copied original bodies"
+    },
+    {
+      "site": "00be8f76",
+      "operand": "0xbf79f0",
+      "kind": "direct",
+      "address": "00be8f76",
+      "function": "00be8f30",
+      "native": "00bf79f0",
+      "source_binding": "std::memset source CRT boundary, exactly80h record flag bytes",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8fb0",
+      "operand": "0x419cc0",
+      "kind": "direct",
+      "address": "00be8fb0",
+      "function": "00be8f30",
+      "native": "00419cc0",
+      "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    },
+    {
+      "site": "00be8fb7",
+      "operand": "0xbd1510",
+      "kind": "direct",
+      "address": "00be8fb7",
+      "function": "00be8f30",
+      "native": "00bd1510",
+      "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1",
+      "fixture_binding": "Explicit shared source or CRT/Win32 support adapter; dependency is not independently compared"
+    }
+  ],
+  "comparison": {
+    "normal_path_observations": 49,
+    "compared_normalized_words": 2449,
+    "string_allocations": 16,
+    "string_releases": 16,
+    "final_outstanding_strings": 0,
+    "expected_sha256": "1cfa80f1b83e0f739a003bbe36983369c5f42b073ccb3f1f39ec4d8186106fd5",
+    "original_output_sha256": "1cfa80f1b83e0f739a003bbe36983369c5f42b073ccb3f1f39ec4d8186106fd5",
+    "source_output_sha256": "1cfa80f1b83e0f739a003bbe36983369c5f42b073ccb3f1f39ec4d8186106fd5",
+    "expected_capture": "attempt01/original-stdout.json, frozen before the first source-mode run in attempt02",
+    "fixture_manifest_sha256": "77436112070b74a5954462a1f6bfe9ee692cab1b9cdfdfe20749a11f2c0d4789",
+    "fixture_source_sha256": "8d3d5322b30059ae19d9ee0dfa4ce41ed0d773d518b524c7741b31f576bfe0c1",
+    "native_header_sha256": "f7e68a16d59058ee615dc45075a23e73ba39e7e0f222febd6cc3dff3ab2dd03a"
+  },
+  "covered": [
+    "BE94F0 constructs 34h over A5/6D/B3 patterns, preserving +25..27 and +2D..2F padding; returns owner.",
+    "BE8350 no-effect hook and BE8210 clear an unrelated nonzero publication and stamp CE3818.",
+    "BE8DF0 reserves three populated 88h records to capacity five: deep strings, all 80h payload bytes, forward old-string release; negative request clamps and leaves sufficient capacity unchanged.",
+    "BE8F30 shrinks backward after decrementing visible live count, grows within retained capacity with zero headers/payloads, and empties the vector.",
+    "BE9560 drains two feature strings, owner string, then two names in native order and clears publication/stamps base after release callbacks.",
+    "BE9600 flags zero returns the captured owner and leaves stack storage readable after full destruction.",
+    "51F460 fast path avoids an absent manager. Slow path constructs, publishes and registers once in an existing raw manager, balances a real Win32 section with captured depth seven, then takes the fast path on a second call."
+  ],
+  "normalization": [
+    "String pointers are normalized to monotonic allocation identities and their length/content/terminator are compared.",
+    "Owner/vector backing pointers are normalized to null/non-null because the unchanged source allocator uses the current CRT.",
+    "All 52 owner bytes are compared in patterned ctor/destructor cases after pointer normalization. Only the six unwritten malloc padding bytes are excluded for slow-getter storage.",
+    "String-release trace records allocation identity, size, observed feature/name counts, owner profile and publication presence."
+  ],
+  "boundaries": [
+    "No original FH3/SEH exception path, failing allocation/registration, reentrant publication changes, hardware faults, or native register-level no-op EAX identity is exercised.",
+    "Raw manager getter/registration, source string/string-vector helpers, allocation/free/memmove/memset and Win32 imports are shared explicit support, not original dependencies independently compared.",
+    "The fixture supplies NativeStringStorage allocation/release observation; it does not compare the actual game pool implementation.",
+    "Payload arrays are disjoint; REP MOVSD forward-overlap behavior remains assembly evidence, not a runtime overlap result.",
+    "Flags-one owner free, heap backing-free identity/order, and central D68B94 mixed-owner drain binding are outside these assertions.",
+    "This is a bounded source-interface fixture, not drop-in ABI compatibility, original complete startup, or game validation."
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "head": "c0dc16473e39e095233a2cbedb14e1c362ca7af2",
+    "log": "local/debug_feature_validation/build-with-native-seeds.log",
+    "sha256": "7731239845aca77b836f9ccb178cd232a0e31111fb053f5eb4a41e41b486c048",
+    "strict_msvc_win32": true,
+    "existing_ctests": {
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "seed_verification": "Eight ranges verified disk/live; local/seed_reference.hpp enabled existing native CTest on the second configure.",
+    "initial_build": "build.log passed with one existing CTest before the local seed header was generated; not reported as two tests."
+  },
+  "development_replay": {
+    "path": "local/debug_feature_validation/attempt02/manifest.json",
+    "sha256": "bec08cba69f5fbb70e4325625e87788fe348756f27cf08f4b16dc1094334f7f2",
+    "status": "passed",
+    "linked_objects": 15,
+    "headers": 318,
+    "compiler_dependencies_checked": 2589,
+    "input_pins": 351,
+    "executable_sha256": "1a16ca1f75416ff4d0d601e3c722bebec45895b83d19eec69db1e34d0b0c64a4",
+    "link_map_sha256": "c0148b1a9532dc0f2f7824fe06cce9fd631adf23f5d87b1981979e8078e300d6"
+  },
+  "portable_replay": {
+    "directory": "local/debug_feature_validation",
+    "helper": "replay.py",
+    "helper_sha256": "3bf37e6899e45318cae8209e485235dd62d69d8be67be4f05c5f325e14ea4759",
+    "command": "python <preserved-bundle>/replay.py --repo <built-candidate> --output <new-directory>",
+    "result_file": "manifest.json",
+    "fixed_expected": "basis/original-expected.json",
+    "candidate_contract": "Link exact current native_debug_feature_owner.obj and current core/support libraries; unique archive-member equality for all 15 map-selected objects; /showIncludes + /Zs linked source closure; pre-link and post-run compiler TLog content checks; fixed readonly original data and HEAD/content checks. The primary exact-candidate build proves freshness.",
+    "copies_required": [
+      "replay.py",
+      "basis/ (all 21 files including immutable manifest)"
+    ],
+    "final_delivery_replay": "A fresh final replay is retained beside the delivery at the report commit. Its exact HEAD remains in the ignored manifest, avoiding a self-referential tracked commit."
+  },
+  "attempts": [
+    {
+      "path": "compile00",
+      "status": "probe-only compile passed; object, source, byte header, manifest and compiler log retained; no native/source execution."
+    },
+    {
+      "path": "attempt01",
+      "status": "original-only capture succeeded; deliberate missing-expectation guard stopped before source mode; inputs/executable/map/output retained."
+    },
+    {
+      "path": "attempt02",
+      "status": "original and source outputs match the previously frozen expected result; candidate/hash checks passed."
+    }
+  ],
+  "ghidra_mutations": false,
+  "permanent_tests_added": false
+}
