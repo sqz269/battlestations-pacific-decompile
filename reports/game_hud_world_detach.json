@@ -1,7 +1,10 @@
 {
   "packet": "orch6_hud_world_detach_t",
   "coverage": "source owner cleanup support; no native body reconstruction",
-  "files": ["include/bsp/game_hosts_hud.hpp", "src/game_hosts_hud.cpp"],
+  "files": [
+    "include/bsp/game_hosts_hud.hpp",
+    "src/game_hosts_hud.cpp"
+  ],
   "behavior": "Clear borrowed units and unit-interface request state, then release marker/minimap source child owners before their unit/Lua providers are destroyed.",
   "source_evidence": [
     "GameHudHost::attach_world_2k borrows units and binds minimap to units/Lua and markers to units.",
@@ -13,5 +16,5 @@
     "No original native HUD teardown semantics are claimed.",
     "Call-site integration and repeated-load verification remain in continuing T unit binding."
   ],
-  "validation": "pending combined S Win32 build and existing tests; API not yet called by the application"
+  "validation": "Compiled with combined S Win32 build and2existingCTests at 99f106416ececc23fc9c19b30e1065616771404b; API invocation remains in T."
 }

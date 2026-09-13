@@ -1,4 +1,5 @@
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/global_config.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include <cstring>
 
@@ -57,7 +58,7 @@ struct Members {
             switch (offset) {
             case 0x40: c.call_0069eea0(begin,end,header,opaque); break;
             case 0x30: c.call_006a6ee0(begin,end,header,opaque); break;
-            case 0x14: c.call_00432050(begin,end,header,opaque); break;
+            case 0x14: destroy_global_config_name_range_00432050(begin,end,context.tables.scripts.strings); break;
             }
             singleton_lifetime_free(read<void*>(header,4));
         }

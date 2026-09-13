@@ -1,4 +1,5 @@
 #include "bsp/native_input_settings_tables.hpp"
+#include "bsp/native_checked_string_storage.hpp"
 #include "bsp/native_input_configuration_modifiers.hpp"
 #include "bsp/native_input_deadline_map_lookup_adapter.hpp"
 #include <cstdlib>
@@ -150,23 +151,23 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
     const auto begin = read(order,4);
     if (begin > read(order,8)) _invalid_parameter_noinfo();
     NativeKeyboardTreeIterator erased;
-    c.call_004954f0(order,&erased,{order,pointer(begin)},{order,pointer(end)});
+    erase_checked_native_string_storage(order,&erased,order,pointer(begin),order,pointer(end),s.scripts.strings);
     f.globals(Globals,lua); f.named(Keyboard,Globals,"KeyboardSetup"); f.close(Globals);
     for (Word device_index = 1; f.present(Keyboard,device_index); ++device_index) {
         f.index(Device,Keyboard,device_index); f.named(NameValue,Device,"Name");
         f.make(DeviceName,native_lua_string_00b662b0(f.obj(NameValue))); f.close(NameValue);
         void* device = trees.device_0055c110(at(settings,8),f.str(DeviceName));
-        c.call_00450540(at(settings,0x14),f.str(DeviceName));
+        append_checked_native_string_storage(at(settings,0x14),f.str(DeviceName),s.scripts.strings);
         f.named(Section,Device,"Inputs");
         for (Word i = 1; f.present(Section,i); ++i) {
             f.index(Element,Section,i);
             if (native_lua_is_string_00b660a0(f.obj(Element))) {
                 f.make(BareName,native_lua_string_00b662b0(f.obj(Element)));
-                c.call_00450540(at(device,0x30),f.str(BareName)); f.close(BareName); f.close(Element); continue;
+                append_checked_native_string_storage(at(device,0x30),f.str(BareName),s.scripts.strings); f.close(BareName); f.close(Element); continue;
             }
             f.index(Scratch,Element,1); f.make(InputName,native_lua_string_00b662b0(f.obj(Scratch))); f.close(Scratch);
             void* input = trees.input_codes_006a44b0(device,f.str(InputName));
-            c.call_00450540(at(device,0x30),f.str(InputName));
+            append_checked_native_string_storage(at(device,0x30),f.str(InputName),s.scripts.strings);
             void* bindings = trees.bindings_006a45c0(at(device,0xc),f.str(InputName));
             c.call_006a0db0(bindings,2,{0xffffffffu,0,0,0,s.descriptor_flag_stack_preimage & 0xffffff00u});
             void* reverse = trees.reverse_006a4ca0(at(device,0x6c),f.str(InputName)); c.call_0049df50(reverse,2,0);
@@ -177,7 +178,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
             f.index(Number,Section,i); f.index(Scratch,Number,1);
             f.make(SensitivityName,native_lua_string_00b662b0(f.obj(Scratch))); f.close(Scratch);
             void* sensitivity = c.call_0055a9a0(at(device,0x18),f.str(SensitivityName));
-            c.call_00450540(at(device,0x40),f.str(SensitivityName));
+            append_checked_native_string_storage(at(device,0x40),f.str(SensitivityName),s.scripts.strings);
             f.index(Element,Number,2); write(sensitivity,0,static_cast<Word>(integer(f,Element,s))); f.close(Element);
             f.index(Probe,Number,3); codes(f,Probe,Element,at(sensitivity,4),s);
             void* multiplier = trees.multiplier_00444be0(at(device,0x24),f.str(SensitivityName));
@@ -199,9 +200,9 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
             f.index(Probe,Section,i); void* pairs = at(device,0x5c);
             c.call_006a6350(pairs,i,{s.vector_opaque_stack_preimage,0,0,0}); void* row = last_row(pairs);
             f.index(Scratch,Probe,1); f.make(FirstAxisName,native_lua_string_00b662b0(f.obj(Scratch)));
-            c.call_00450540(row,f.str(FirstAxisName)); f.close(FirstAxisName); f.close(Scratch);
+            append_checked_native_string_storage(row,f.str(FirstAxisName),s.scripts.strings); f.close(FirstAxisName); f.close(Scratch);
             f.index(Scratch,Probe,2); f.make(SharedName,native_lua_string_00b662b0(f.obj(Scratch)));
-            c.call_00450540(row,f.str(SharedName)); f.close(SharedName); f.close(Scratch); f.close(Probe);
+            append_checked_native_string_storage(row,f.str(SharedName),s.scripts.strings); f.close(SharedName); f.close(Scratch); f.close(Probe);
         }
         f.section("Min1SensHacks");
         if (!native_lua_is_nil_00b65fb0(f.obj(Section))) {

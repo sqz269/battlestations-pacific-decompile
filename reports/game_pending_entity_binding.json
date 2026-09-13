@@ -56,9 +56,29 @@
   ],
   "observer_liveness_support": "GameObserverRuntime::has_live_dispatch_owner reads the actual owner cell, because the native owner+4 alias is intentionally retained after shutdown. This supports the continuing T unit binding.",
   "validation": {
-    "build": "pending combined S MSVC Win32 build and existing tests",
-    "process": "pending combined S120-frame run",
-    "component_fixture": "S actual-library fixture verifies three observations through real CRT process exit; this is source composition, not native CRT execution."
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "compiled_commit": "99f106416ececc23fc9c19b30e1065616771404b",
+    "exe_sha256": "68171cfe1cce642eece4f471e2be3fcf480a6c5c52c3c4b60c720fc01b65b9d7",
+    "process_run": {
+      "initial_counts": [
+        0,
+        0
+      ],
+      "atexit_status": [
+        0,
+        0
+      ],
+      "final_counts": [
+        0,
+        0
+      ],
+      "frame_passes": 240,
+      "storage": "same process raw24h owner pair",
+      "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+    },
+    "process_exit": 0,
+    "runtime_artifact": "local/orch6_combined_99f10641.json",
+    "component_fixture": "S actual-library fixture verifies3 observations through real CRT process exit; not native CRT execution."
   },
   "limits": [
     "The application executes one represented startup per process; no repeated-startup guard or second native owner is provided.",
