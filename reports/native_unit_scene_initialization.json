@@ -1,0 +1,366 @@
+{
+  "packet": "orch6_native_unit_scene_initialization_y",
+  "base_commit": "edb89b5564064f8918cc645a3f0fda1b6805939e",
+  "status": "reconstructed_complete_normal_caller_required_providers_native_byte_fixture_tested",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "mode": "strict read-only verified tools/bsp.py CLI",
+    "mutations": [],
+    "prior_metadata": "local/unit_scene_initialization_00955420_proto.txt and _comments.txt",
+    "annotation_owner": "primary integrator"
+  },
+  "routines": [
+    {
+      "address": "00955420",
+      "name": "initialize_native_unit_scene_00955420",
+      "coverage": "complete normal caller 00955420..0095559E (383 bytes)",
+      "source": "src/native_unit_scene_initialization.cpp",
+      "abi": "ECX=unit; ESI captures receiver; EBX zero from95542F; saves/restores EBX/ESI; bare RET",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00955424",
+      "native": "0087bcc0",
+      "function": "00955420",
+      "contract": "Whole health/parts/numbering initializer; required provider, no hit-path projection substitute."
+    },
+    {
+      "address": "00955452",
+      "native": "00414db0",
+      "function": "00955420",
+      "contract": "Canonical actual PoseRefreshView recursion and current parent/matrix refresh; bare RET."
+    },
+    {
+      "address": "00955469",
+      "native": "node+vtable30",
+      "function": "00955420",
+      "contract": "Current actual node virtual+30 selected before pushing live unit+FC position; checked D62DE8 maps B6DAE0, tail current+34 with world matrix."
+    },
+    {
+      "address": "0095547d",
+      "native": "00b6d890",
+      "function": "00955420",
+      "contract": "Canonical actual node-root propagation and full child/attachment operations; requested root stack argument, RET4."
+    },
+    {
+      "address": "00955489",
+      "native": "unit+vtable10",
+      "function": "00955420",
+      "contract": "Current primary+10 result before current descriptor538+70; checked CFC3D0/D0BF80 target42E950 is a raw16-byte name/fallback getter."
+    },
+    {
+      "address": "00955498",
+      "native": "009292b0",
+      "function": "00955420",
+      "contract": "Whole native Lua self ClassID/Class binding, B66790 call, native string and Lua temporary lifetime; class index then primary result, RET8."
+    },
+    {
+      "address": "009554a3",
+      "native": "00740fe0",
+      "function": "00955420",
+      "contract": "Allocate/initialize 14h counted registration object and append/grow actual manager array; return object, bare RET."
+    },
+    {
+      "address": "009554c8",
+      "native": "008f2260",
+      "function": "00955420",
+      "contract": "Complete current bag/path lookup, actual property record or null; key stack argument, RET4."
+    },
+    {
+      "address": "009554da",
+      "native": "008f41f0",
+      "function": "00955420",
+      "contract": "Clone complete CURRENT 114h bag and all property records using native map/allocator; bare RET."
+    },
+    {
+      "address": "00955507",
+      "native": "008f2260",
+      "function": "00955420",
+      "contract": "Complete current bag/path lookup, actual property record or null; key stack argument, RET4."
+    },
+    {
+      "address": "0095551e",
+      "native": "008f2260",
+      "function": "00955420",
+      "contract": "Complete current bag/path lookup, actual property record or null; key stack argument, RET4."
+    },
+    {
+      "address": "00955530",
+      "native": "00728340",
+      "function": "00955420",
+      "contract": "Capture child before clearing node+48 mask; recurse current children/siblings; mask2, RET4. Required full provider."
+    },
+    {
+      "address": "00955537",
+      "native": "00475e60",
+      "function": "00955420",
+      "contract": "Capture child before setting node+48 mask; recurse current children/siblings; mask2, RET4. Required full provider."
+    },
+    {
+      "address": "0095554a",
+      "native": "008f2260",
+      "function": "00955420",
+      "contract": "Complete current bag/path lookup, actual property record or null; key stack argument, RET4."
+    },
+    {
+      "address": "00955561",
+      "native": "008f2260",
+      "function": "00955420",
+      "contract": "Complete current bag/path lookup, actual property record or null; key stack argument, RET4."
+    },
+    {
+      "address": "00955591",
+      "native": "00747560",
+      "function": "00955420",
+      "contract": "Whole recursive generated-model material traversal/cShadowFactor pointer registration and x87 diffuse alpha store; ECX node, EDX actual52C pointer, bare RET."
+    }
+  ],
+  "native_order": [
+    "Call87BCC0 first, read actual360->160, capture C8 flag before inner+0C load and existing955448 publication; initial null360 arm still dereferences zero+0C.",
+    "Optional canonical414DB0 precedes node+30 with live unit+FC (worldCC[12..14]); reload4A4 after pose and again after virtual before root call.",
+    "Load current E188A8+19EC after node position. Capture primary10 result before descriptor538+70; load current E1AEA0 after Lua provider; store allocator result168.",
+    "Gate current C0 kind04==1; find MinLevel, reload holder/bag and clone whole bag; re-gate holder after clone.",
+    "Repeat Ocean lookup using current holder after first success; read only payload byte0; reload4A4 and call clear/set mask2.",
+    "Reload current holder/bag after flags, without re-gating kind. Repeat shadow lookup; type1 bit-preserving load, other types signed CVTSI2SS using current MXCSR.",
+    "Capture current model360 before MOVSS to actual52C, then resolve captured model160->0C, passing EDX=&52C to747560; only afterwards clear62C."
+  ],
+  "field_provenance": [
+    {
+      "field": "unit+360 / part instance+160 / part set+0C",
+      "evidence": "87BEA4 publishes7135C0 result;713604 stores selected part set into160;955429..955445 load chain. Existing unit_parts.hpp; no new part-set layout or source owner."
+    },
+    {
+      "field": "unit+C0 holder kind04 and payload08",
+      "evidence": "922E20 writes1 and cloned bag;774DC0 writes2;922DE0 copies kind and clones only kind1, special kind3. CRUISE_SPEED_SETTING correction supersedes older refs comment."
+    },
+    {
+      "field": "property+04 / +0C",
+      "evidence": "Existing ScenePropertyType and scene_property_bag.hpp record offsets. Separate from holder kind; caller uses low payload byte for reflection and complete DWORD for numeric branches."
+    },
+    {
+      "field": "unit+4A4",
+      "evidence": "Existing NativeUnitSceneHandleView and partial955448 provider, now reused inside complete caller."
+    },
+    {
+      "field": "unit+FC / C8 / 52C / 168 / 724 / 62C",
+      "evidence": "Existing PoseRefreshView actual worldCC row3 and validC8; complete caller is producer of168,724,52C,62C. Actual raw/source field bindings required, no native-unit cast."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Older scene_entity_create.hpp calls holder+04 an intrusive reference count",
+      "is": "Borrowed kind_04 discriminator; exact gate remains ==1",
+      "evidence": "Native922DE0 copy/kind1 clone/kind3 arm;922E20 writes1;774DC0 writes2;CRUISE_SPEED_SETTING.md correction. Shared header left for integrator."
+    },
+    {
+      "was": "Ghidra pseudocode stores (int)fVar3 into unit+52C",
+      "is": "Float payload bit store via MOVSS; other kinds use signed CVTSI2SS, no float-to-int conversion",
+      "evidence": "95556C/955573/955584 full listing and compiled source MOVD/CVTSI2SS/MOVSS. Four paired native-byte cases."
+    }
+  ],
+  "supporting_no_ghidra_function": [
+    {
+      "entry": "0042e950",
+      "status": "no_ghidra_function",
+      "coverage": "supporting complete16-byte raw getter only; not reconstructed or annotated here",
+      "evidence": "Live16bytes match installedPE; formal disasm-raw; tableCFC3D0/D0BF80+10 target. Current native name158 or E1767D fallback, RET."
+    }
+  ],
+  "provider_reuse": {
+    "canonical": [
+      "publish_native_unit_scene_handle_00955448",
+      "refresh_pose_00414db0",
+      "propagate_native_node_root_00b6d890"
+    ],
+    "required": [
+      "0087BCC0",
+      "dynamic node+30",
+      "dynamic unit+10",
+      "009292B0",
+      "00740FE0",
+      "008F2260",
+      "008F41F0",
+      "00728340",
+      "00475E60",
+      "00747560",
+      "actual identity/field accessors"
+    ],
+    "reviewed_not_substituted": [
+      "unit_hit_path arithmetic is partial87BCC0",
+      "mission_entity_lua_attach lacks complete9292B0 and native temporary ownership",
+      "semantic ScenePropertyValue is not actual raw record or native map storage",
+      "CameraPoseAccess supports42/B6 dispatch only with actual owner/access bindings; no arbitrary CameraState wrapper added"
+    ],
+    "field_accessor_contract": "Pure exact live borrowed field/identity access, no callbacks/caching/allocations/FP-environment changes; required invalid identities have no fabricated fallback."
+  },
+  "validation": {
+    "strict_msvc_win32": "PASS scripts/build.ps1 final log, exit0",
+    "existing_ctests": "PASS2/2 reconstructed_math and native_math_differential",
+    "seeds": "PASS8/8 live reference bytes match installedPE",
+    "fixture": "PASS4 paired cases, complete383-byte caller, canonical actual pose/root providers, explicit other provider boundaries",
+    "fixture_cases": [
+      {
+        "case": 0,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "trace": [
+          1,
+          0,
+          2,
+          0,
+          20,
+          1091829760,
+          21,
+          1092616192,
+          22,
+          1093402624,
+          3,
+          0,
+          4,
+          0,
+          5,
+          12,
+          6,
+          0
+        ]
+      },
+      {
+        "case": 1,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "trace": [
+          1,
+          0,
+          2,
+          0,
+          20,
+          3237478400,
+          21,
+          3238395904,
+          22,
+          3239051264,
+          3,
+          0,
+          4,
+          0,
+          5,
+          12,
+          6,
+          0
+        ]
+      },
+      {
+        "case": 2,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "trace": [
+          1,
+          0,
+          2,
+          0,
+          20,
+          3237478400,
+          21,
+          3238395904,
+          22,
+          3239051264,
+          3,
+          0,
+          4,
+          0,
+          5,
+          12,
+          6,
+          0,
+          7,
+          0,
+          8,
+          0,
+          7,
+          12,
+          7,
+          13,
+          9,
+          1,
+          7,
+          24,
+          7,
+          21,
+          10,
+          1266679809
+        ]
+      },
+      {
+        "case": 3,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "trace": [
+          1,
+          0,
+          2,
+          0,
+          20,
+          3237478400,
+          21,
+          3238395904,
+          22,
+          3239051264,
+          3,
+          0,
+          4,
+          0,
+          5,
+          12,
+          6,
+          0,
+          7,
+          0,
+          8,
+          0,
+          7,
+          12,
+          7,
+          13,
+          9,
+          0,
+          7,
+          24,
+          7,
+          21,
+          10,
+          2141266757
+        ]
+      }
+    ],
+    "mechanical_call_checks": "PASS14 direct call rows,0failed;2indirect slots explicitly skipped and retained table/listing evidence supplied",
+    "source_object_assembly": "local/unit_scene_initialization_source_disasm.txt confirms signedCVTSI2SS and modelcapture before MOVSS store",
+    "native_evidence": {
+      "spans": 23,
+      "bytes": 3608,
+      "caller_sha256": "ef8b9d998d3136acce90f66be37d59c134fef7f38da83f2672b6620ac1647d33",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "relocations": 21,
+      "all_live_matches_disk": true
+    },
+    "fixture_manifest": "local/unit_scene_initialization_probe_manifest.json",
+    "review_manifest": "local/unit_scene_initialization_review_manifest.json",
+    "fixture_hashes": 482,
+    "post_fixture_source_tool_object_library_output_drift": false
+  },
+  "limits": [
+    "Complete normal caller with required providers; no complete available scene construction pipeline.",
+    "No native-unit reinterpretation, shadow model/node/scene owner, guessed identity matrix/null fallback or library/STL/Lua port.",
+    "Fixture provider probes model explicit boundary effects only; they do not implement missing health/Lua/allocation/property/render/material providers.",
+    "Canonical414DB0 andB6D890 execute over actual available backing; full native callee bodies are retained but not executed.",
+    "No native ABI replacement, native FH3/SEH parity, real runtime scene binding or gameplay validation.",
+    "Only owned00955420 metadata; root handles Ghidra annotation and shared stale comment."
+  ]
+}
