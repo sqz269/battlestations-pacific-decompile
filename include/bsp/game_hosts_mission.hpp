@@ -49,6 +49,7 @@ class GameFrontendHost;
 class GameFrameProfiler;
 class GameMissionLuaHost;
 class GameMissionFrameHost;
+class GameObserverRuntime;
 class GameHudHost;
 
 // One class token of the selected mission's `.scn`, as the reconstructed
@@ -189,6 +190,9 @@ public:
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;
+
+    // Borrow the startup-owned runtime through frame/unit destruction.
+    void bind_observer_runtime(GameObserverRuntime&);
 
     // Milestone 2n, --order-unit <name>: the created instance the command form
     // of --order is issued to, instead of the controlled unit.
