@@ -1,0 +1,291 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_ambient_construction_ba",
+  "utc": "2026-09-13T16:02:16.950676+00:00",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
+  "normal_body_count": 1,
+  "new_native_body_count": 0,
+  "existing_typed_body_extension_count": 1,
+  "native_body_bytes": 393,
+  "native_instruction_count": 90,
+  "files": [
+    "include/bsp/native_ambient_construction.hpp",
+    "src/native_ambient_construction.cpp",
+    "docs/NATIVE_AMBIENT_CONSTRUCTION.md",
+    "reports/native_ambient_construction.json"
+  ],
+  "functions": [
+    {
+      "address": "00b7c290",
+      "end_inclusive": "00b7c418",
+      "end_exclusive": "00b7c419",
+      "bytes": 393,
+      "instructions": 90,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "construct_native_ambient_00b7c290",
+      "proposed_ghidra_name": "BSP_AmbientLight_Construct",
+      "old_ghidra_name": "BSP_AmbientLight_Construct",
+      "old_ghidra_prototype": "undefined BSP_AmbientLight_Construct(void)",
+      "name_status": "existing_descriptive_hypothesis_not_recovered_symbol",
+      "original_abi": "ECX actual98h allocation; zero stack argument slots; EAX same owner; plain RET at00b7c418",
+      "source": "src/native_ambient_construction.cpp",
+      "header": "include/bsp/native_ambient_construction.hpp",
+      "module": "native_ambient_construction",
+      "new_native_body": false,
+      "existing_body_extension": true,
+      "existing_typed_source": "src/system_lighting_owners.cpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b7c290..00b7c418 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_AMBIENT_CONSTRUCTION.md; reports/native_ambient_construction.json.",
+      "ledger_record_name": "construct_system_ambient_00b7c290",
+      "ghidra_name": "BSP_AmbientLight_Construct",
+      "existing_body_raw_extension": true,
+      "native_prototype": "void * BSP_AmbientLight_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete live native body/current constant/all3 caller preparations reviewed; actual raw98h owner, captured current D7A24C, exact MOVSS/DWORD spill/store order and untouched28..37. Existing typed-body evidence extension; new C++ interface, not original-caller ABI or gameplay proof."
+    }
+  ],
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b7c290",
+        "end_inclusive": "00b7c418",
+        "bytes": 393,
+        "bytes_hex": "83ec100f57c08bc1f30f100d4ca2d70033c9c70030b1ce00c7400401000000c7003c2fd60089480889480c894810f30f114814f30f114018f30f11401cf30f114020f30f114824f30f1104248b0c24894838f30f114424048b54240489503cf30f114424088b4c2408894840f30f114c240c8b54240c895044f30f1104248b0c24894848f30f114424048b54240489504cf30f114424088b4c2408894850f30f114c240c8b54240c895054f30f1104248b0c24894858f30f114424048b54240489505cf30f114424088b4c2408894860f30f114c240c8b54240c895064f30f1104248b0c24894868f30f114424048b54240489506cf30f114424088b4c2408894870f30f114c240c8b54240cf30f1104248b0c24894878895074f30f114424048b542404f30f114424088b4c240889507cf30f114c240c8b54240c898880000000f30f1104248b0c24899084000000f30f11442404f30f11442408f30f114c240c8988880000008b5424048b4c240889908c0000008b54240c89889000000089909400000083c410c3",
+        "sha256": "760245ab8ef27c6289a59605c81505c40f9b39a6cc31328a9b1e665ad73d6020",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d7a24c",
+        "end_inclusive": "00d7a24f",
+        "bytes": 4,
+        "bytes_hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "fresh_live_PE_match": true
+      }
+    ],
+    "instructions": 90
+  },
+  "calls": [
+    {
+      "function": "00b83c50",
+      "address": "00b83cf2",
+      "native": "00bf681b",
+      "contract": "cdecl operator new(98h); ADD ESP4",
+      "callee_start_and_containment_checked": true
+    },
+    {
+      "function": "00b83c50",
+      "address": "00b83d09",
+      "native": "00b7c290",
+      "contract": "ECX nonnull actual98h allocation; zero stack arguments; EAX owner; RET",
+      "callee_start_and_containment_checked": true
+    },
+    {
+      "function": "004c9ec0",
+      "address": "004c9fa0",
+      "native": "00bf681b",
+      "contract": "cdecl operator new(98h); ADD ESP4",
+      "callee_start_and_containment_checked": true
+    },
+    {
+      "function": "004c9ec0",
+      "address": "004c9fba",
+      "native": "00b7c290",
+      "contract": "ECX nonnull actual98h allocation; zero stack arguments; EAX owner; RET",
+      "callee_start_and_containment_checked": true
+    },
+    {
+      "function": "0093ccc0",
+      "address": "0093cf8c",
+      "native": "00bf681b",
+      "contract": "cdecl operator new(98h); ADD ESP4",
+      "callee_start_and_containment_checked": true
+    },
+    {
+      "function": "0093ccc0",
+      "address": "0093cfa9",
+      "native": "00b7c290",
+      "contract": "ECX nonnull actual98h allocation; zero stack arguments; EAX owner; RET",
+      "callee_start_and_containment_checked": true
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_ambient_construction.hpp": "d6b8a16987e63393dcea801c624330723e460863b21189c442904aecd76d85b1",
+    "src/native_ambient_construction.cpp": "fc161f8279872e552f4fc96b4952684f578f185051f177230314cfa9217a2de4"
+  },
+  "checks": {
+    "ghidra_read_only": true,
+    "live_and_disk_spans_match": true,
+    "verify_seeds_passed": true,
+    "strict_source_compile": "PASS MSVC Win32 /O2 /W4 /WX /fp:strict",
+    "source_instruction_order": {
+      "pass_exact_sequence": true,
+      "compared_instructions": 88,
+      "transformations": [
+        "new ABI owner input",
+        "borrowed current constant address",
+        "private native ESP spill replaced by C++ local spill",
+        "native frame SUB/ADD/RET handled by C++ ABI"
+      ]
+    },
+    "baseline_build": {
+      "result": "PASS",
+      "commit": "e109c2182d6e59aa1d5a4206fa756afbf9af534c",
+      "existing_ctests_passed": 2,
+      "excludes_unregistered_source": true,
+      "log": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\baseline-build.log"
+    },
+    "fixture": {
+      "result": "PASS",
+      "utc": "2026-09-13T16:02:16.950676+00:00",
+      "baseline_commit": "e109c2182d6e59aa1d5a4206fa756afbf9af534c",
+      "baseline_tests": 2,
+      "native_seeds": 8,
+      "baseline_excludes_unregistered_source": true,
+      "comparisons": 948,
+      "compared_arena_bytes": 61390848,
+      "normal_full_body_count": 1,
+      "native_body_bytes": 393,
+      "native_byte_patches": 0,
+      "source_recompiled": true,
+      "current_library_only": false,
+      "call_rows": 6,
+      "call_failures": 0,
+      "source_instruction_order": {
+        "pass_exact_sequence": true,
+        "compared_instructions": 88,
+        "transformations": [
+          "new ABI owner input",
+          "borrowed current constant address",
+          "private native ESP spill replaced by C++ local spill",
+          "native frame SUB/ADD/RET handled by C++ ABI"
+        ]
+      },
+      "fixture_input_pins": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-ambient-construction-ba\\src\\native_ambient_construction.cpp",
+          "Hash": "FC161F8279872E552F4FC96B4952684F578F185051F177230314CFA9217A2DE4"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-ambient-construction-ba\\include\\bsp\\native_ambient_construction.hpp",
+          "Hash": "D6B8A16987E63393DCEA801C624330723E460863B21189C442904AECD76D85B1"
+        },
+        {
+          "Path": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\probe.cpp",
+          "Hash": "2EF76F6DBF81B706D26D9FC999E9DE105457B3511782C97DF6C9FF337AF71384"
+        },
+        {
+          "Path": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\native_bytes.inc",
+          "Hash": "EA1DBA908CC8E14EABCF9DC99FC5A799483295A13F2A29E1E5009D96342CA392"
+        },
+        {
+          "Path": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\run.ps1",
+          "Hash": "D10C0BA97BC0A3561104C6475DEA94D6CAE99AC81C74689F355AC06A20910656"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-ambient-construction-ba\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "C5BC27999F6F7ED0F3A02E5492EBC4F83E155020FCD9DEAF38DEE612D9CBF57C"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-ambient-construction-ba\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "E64ACDBA620F4745D37187112B087E6315B61028241D4D8E1D46732FA0C81687"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-ambient-construction-ba\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "EA053FCF50C755C0BE630036C69FEDB2F825223974BB6FD5F73D8A25E5598F5C"
+        }
+      ],
+      "current_library_replay": "run.ps1 -Repo <integrated root>; no WorkerSource switch",
+      "original_abi_compatible": false,
+      "game_validated": false
+    },
+    "no_repo_tests_added": true,
+    "cmake_registration": "root integrator required",
+    "ledger_changes": "none by worker",
+    "verify_seeds": {
+      "result": "PASS",
+      "matched": 8,
+      "log": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\verify-seeds.log"
+    },
+    "numeric_calls": {
+      "result": "PASS",
+      "rows": 6,
+      "failures": 0,
+      "log": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\report-call-check.log"
+    }
+  },
+  "fixture_domains": [
+    "8 constant bit patterns",
+    "3 MXCSR modes",
+    "all38 owner-word constant aliases plus separate constant",
+    "full borrowed preimages and return identity",
+    "11 guarded write frontiers including78-before74 ordering",
+    "inaccessible constant faults before any owner store",
+    "bounded SEH access-fault code and partial-memory comparison"
+  ],
+  "capture_archive": {
+    "archive": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\worker_capture.zip",
+    "archive_sha256": "a3762788b02ab56d7b70839ed4f54745c63737ce7667a6f825e22ba93768a326",
+    "files": 47,
+    "uncompressed_bytes": 56093788,
+    "verified_all_members": true,
+    "manifest": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\worker_capture_manifest.json"
+  },
+  "replay": "run.ps1 -Repo <integrated root>; default compiles only external probe.cpp against current bsp_core/bsp_lua511/bsp_zlib121; WorkerSource only initial unregistered stage",
+  "limitations": [
+    "new C++ interface, original caller ABI unproved",
+    "baseline excludes this unregistered source",
+    "private stack/local aliases and native instruction pointers excluded",
+    "native EH/SEH unwind identity and concurrency unproved",
+    "constructor only: raw ambient destruction/backlinks and inner scene construction remain separate",
+    "not game-validated"
+  ],
+  "fixture_rebuild": {
+    "directory": "C:\\Users\\sqz269\\bsp-ba-ambient-construction",
+    "recipe": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\run.ps1",
+    "command": "powershell -File run.ps1 -Repo <integrated root>",
+    "default_source_inputs": [
+      "probe.cpp"
+    ],
+    "default_libraries": [
+      "<Repo>/build/win32/Release/bsp_core.lib",
+      "<Repo>/build/win32/Release/bsp_lua511.lib",
+      "<Repo>/build/win32/Release/bsp_zlib121.lib"
+    ],
+    "initial_unregistered_only_switch": "-WorkerSource",
+    "manifest_embedded": true,
+    "probe_image_base": "50000000",
+    "fixed_data_mapping": "00d70000..00d7ffff",
+    "original_body_allocation": "arbitrary private executable allocation; unchanged absolute constant operand",
+    "current_library_replay_pending_integration": true
+  },
+  "integration_ba_review": {
+    "combined_validation": "passed exact merged Win32 build and applicable validation in reports/native_lighting_service_ba_validation.json",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_ambient_construction.json: 6 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 16
+  },
+  "worker_capture_status": "complete_raw_storage_worker_verified_awaiting_integration",
+  "final_merged_validation_ba": {
+    "report": "reports/native_lighting_service_ba_validation.json",
+    "tested_commit": "b768339463e7017192a26a08d4d7d689321982b3",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 4,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
+  }
+}

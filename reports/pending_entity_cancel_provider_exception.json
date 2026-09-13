@@ -5,6 +5,16 @@
   "native_evidence": "00925A06 getter call precedes00925A0B section capture and00925A15 entry. Complete138-byte routine has no EH frame. Source already uses explicit enter/leave and adds no automatic release if a later provider throws.",
   "worker_evidence_scope": "reports/native_pending_entity_cancel.json retains the worker commit's original normal-path build and8native/source comparisons; root correction is validated separately.",
   "fixture": "local/pending_cancel_exception_probe.cpp",
-  "validation": "Pending combined U rebuild and focused source-only pre-entry getter bad_alloc propagation check.",
-  "limits": ["No native FH3/SEH exception execution claim.", "No new catch, rollback or synthetic lock cleanup."]
+  "validation": {
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "compiled_commit": "9fe1057ebb0a5b24dedd4d4b260981784b1bcd57",
+    "result": "PASS source-only pre-entry getter bad_alloc propagation; flags/lists untouched and later providers uncalled",
+    "manifest": "local\\pending_cancel_exception_proof\\manifest.json",
+    "sha256": "62f954b057a3905670bac7e7e148f2c21d3af6809ed83ed907959be4d7732861",
+    "artifacts": 39
+  },
+  "limits": [
+    "No native FH3/SEH exception execution claim.",
+    "No new catch, rollback or synthetic lock cleanup."
+  ]
 }
