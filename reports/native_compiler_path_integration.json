@@ -1,26 +1,31 @@
 {
-  "scope": "Actual compiler fields, interpolators, registry, reflection, constant headers, vertex compilation and cube/volume loading",
-  "validated_code_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
+  "scope": "Actual native compiler dependencies including field/struct declarations and pixel compilation",
+  "validated_code_commit": "0114668b09061708731a14ef8aa7db8bd63107fb",
   "default_registration": true,
   "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
   "checkpoint": {
+    "path": "local/checkpoints/0114668b/native-source-default/validation.json",
+    "sha256": "cce98866c83daa6757a00f4c4b605915b5281de0e0c7200d6e860472a8edadcd",
+    "artifacts": 213
+  },
+  "previous_default_checkpoint": {
     "path": "local/checkpoints/7a060521/compiler-leaves-final/validation.json",
     "sha256": "707219dfea615b3574c7c6dea3fbb052a6f57019f7e207ee81e40c959c319463",
     "artifacts": 184
   },
-  "previous_default_checkpoint": {
-    "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
-    "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
-    "artifacts": 174
-  },
-  "fixture_programs": 15,
-  "fixture_origin_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
+  "fixture_programs": 17,
+  "fixture_origin_commit": "a3c7f7f739a88901bbc73f3bdb93ecc3f0482c4c",
   "fixture_equivalence_after_metadata_merge": {
-    "metadata_only_changed_paths": [],
+    "metadata_only_changed_paths": [
+      "docs/ORCH6_RECONSTRUCTION_T.md",
+      "reports/game_observer_mission_binding.json",
+      "reports/orch6_reconstruction_t.json",
+      "reports/pending_entity_lock_binding.json"
+    ],
     "all_three_library_hashes_unchanged": true,
-    "all_40_runner_and_fixture_input_hashes_unchanged": true
+    "all_45_runner_and_fixture_input_hashes_unchanged": true
   },
-  "registered_library_sha256": "05dd48f0e3f8d932a3e14992d08c51ad9b3321eb75707d7927e4f34706be03ce",
+  "registered_library_sha256": "6d163c61daf76baff346cca72b6105ad536e7436f5a8f63fada543bbfd6eea79",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -56,9 +61,19 @@
       "report": "reports/native_shader_constant_header.json",
       "checked": 70,
       "failed": 0
+    },
+    {
+      "report": "reports/native_shader_struct_declarations.json",
+      "checked": 94,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_pixel_shader_compilation.json",
+      "checked": 66,
+      "failed": 0
     }
   ],
-  "numeric_checked_rows": 936,
+  "numeric_checked_rows": 1096,
   "resolved_indirect_included": 4,
   "worker_archives": {
     "system-fields": {
@@ -102,9 +117,32 @@
       "manifest": "local/compiler-path-workers/constant-header/manifest.json",
       "sha256": "b91e3c7173f6ab12ac71721ef81868dc21daa8400eb15b070d318478debb0826",
       "artifacts": 31
+    },
+    "struct": {
+      "commit": "7e07306ecda08bfffe428e9cf62fd63fbf7d018a",
+      "manifest": "local/compiler-path-workers/struct/manifest.json",
+      "sha256": "16d3dc524b4a5d441bc1620f0853fb8fd9178c0a4fb9bb2f4deaf81864da2a1a",
+      "artifacts": 97
+    },
+    "pixel": {
+      "commit": "57b67bfc0be2034af0d75f6b5cdfea58e5ebc4cc",
+      "manifest": "local/compiler-path-workers/pixel/manifest.json",
+      "sha256": "ffb48fe25f30593c5281e737b5bf33e52f1a2b05bc784bc393e85aa93faa1fda",
+      "artifacts": 53
     }
   },
   "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_readback_exported_addresses": [
+      "00b34f20",
+      "00b35030",
+      "00b385b0",
+      "00b38b50",
+      "00b61280"
+    ]
+  },
+  "previous_ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "saved_readback_exported_addresses": [
@@ -121,35 +159,6 @@
       "00b5b890"
     ]
   },
-  "previous_ghidra": {
-    "project": "C:/Users/sqz269/bsp.gpr",
-    "program": "/battlestationspacific.exe",
-    "saved_readback_exported_addresses": [
-      "00b35be0",
-      "00b372d0",
-      "00b34e20",
-      "00b3aea0",
-      "00b3a750",
-      "00b5bc60",
-      "00b5b830",
-      "00b5b960",
-      "00b2c2d0",
-      "00b3f2d0",
-      "00b5bf70",
-      "00b5b9e0",
-      "00b5bbc0",
-      "00b5bed0",
-      "00b5bd10",
-      "00b5be10",
-      "00b5df70",
-      "00b5bb20",
-      "00b5df00",
-      "00b5ba80",
-      "00b36800",
-      "00b34aa0",
-      "00b346e0"
-    ]
-  },
   "repairs": [
     "B5BD10/B5DF70/B5BB20 post-free flow; B5DF00 full99-byte destructor restored",
     "B346E0 post-free nine-byte publication tail",
@@ -159,7 +168,9 @@
   "composition": [
     "Actual B5BF70 52-row producer feeds original/source B3AEA0 through SAME live0108FE94 and shared singleton/string lifetime; normal and retained-failure fixture pass",
     "Actual52-row registry and same pooled-string domain feed original/source B38FF0/B38C60/helper declarations with matching exact text/allocation traces.",
-    "B60F60 uses real installed D3DX9_40, actual HAL shader creation and actual physical VFS .vsa writes; original/source shader function bytes and158-byte diagnostics match before retained allocation-failure validation."
+    "B60F60 uses real installed D3DX9_40, actual HAL shader creation and actual physical VFS .vsa writes; original/source shader function bytes and158-byte diagnostics match before retained allocation-failure validation.",
+    "Actual B34E20 fields and B354D0 builder feed original/source B34F20/B35030/B385B0/B38B50 with exact text and pooled allocation/release traces.",
+    "Original/source B61280 executes real installed D3DX/HAL/VFS: six fixture cases compare shader bytes, 312-byte diagnostics, caller masks and allocation traces; normal/failure and guard behavior remain bounded."
   ],
   "limits": [
     "New host Win32 interfaces are not native binary replacements.",
@@ -170,28 +181,18 @@
     "Full B3B3C0 native compiler continuation, rendering parity and rebuilt gameplay remain unverified.",
     "Constant-header mutation fixture covers registry publication/count/row/limit changes; array-base replacement and scratch overwrite during allocation are assembly-reviewed, not fixture-exercised.",
     "Vertex fixture relocates copied native bodies and rebinds audited dependency CALLs/tables; synthetic HLSL and shared existing string/VFS bridges do not prove fixed-address replacement or full installed material compilation.",
-    "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external."
+    "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external.",
+    "Constant-header mutation fixture covers registry publication/count/row/limit changes; array-base replacement and scratch overwrite during allocation are assembly-reviewed, not fixture-exercised.",
+    "Vertex fixture relocates copied native bodies and rebinds audited dependency CALLs/tables; synthetic HLSL and shared existing string/VFS bridges do not prove fixed-address replacement or full installed material compilation.",
+    "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external.",
+    "Pixel newline searches reload current full-string data after strstr, while declaration searches subtract captured bases; these exact CRT-adjacent reloads are assembly-reviewed, not mutated by the real-CRT fixture.",
+    "Struct formatting reuses existing 4261A0/711370 helper cleanup; entered-but-not-returned headers can be stale and are not proof of owned buffers.",
+    "Pixel fixture uses synthetic HLSL, relocated instruction bodies and existing string/VFS bridges; it does not execute native FH3, a full installed material or shader rendering."
   ],
   "pending_packets": [
-    "Actual B61280 pixel compilation and usage parsing in agent/orch5-native-pixel-compile.",
-    "Actual B34F20/B35030/B385B0/B38B50 line and struct declarations in agent/orch5-native-struct-declarations.",
-    "Native B39110/B39880 source generation and full B3B3C0 continuation still require composition."
-  ],
-  "previous_default_checkpoints": [
-    {
-      "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
-      "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
-      "artifacts": 146
-    },
-    {
-      "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
-      "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
-      "artifacts": 167
-    },
-    {
-      "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
-      "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
-      "artifacts": 174
-    }
+    "Actual pixel/vertex sampler declarations B37EF0/B38080 in agent/orch5-native-sampler-declarations.",
+    "Actual field initialization/input decode B357D0/B35820/B34E90 in agent/orch5-native-field-initialization.",
+    "Actual interpolator source pack/struct/unpack B35540/B36E30/B37000 in agent/orch5-native-interpolator-source.",
+    "Native shadow helpers, B39110/B39880 source generators and full B3B3C0 continuation remain outstanding."
   ]
 }

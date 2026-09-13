@@ -11,16 +11,9 @@ namespace bsp {
 struct NativeInputSettingsTableCalls {
     virtual ~NativeInputSettingsTableCalls() = default;
     virtual void call_006a7540(void* tree, void* subtree) = 0;
-    virtual void call_006a0db0(void* header, std::uint32_t count, std::array<std::uint32_t,5> value) = 0;
-    virtual void call_0049df50(void* header, std::uint32_t count, std::uint32_t value) = 0;
     virtual void* call_0055a9a0(void* tree, const NativeString* key) = 0;
-    virtual void call_006a6350(void* header, std::uint32_t count, std::array<std::uint32_t,4> value) = 0;
     virtual void* call_0069fa40(void* tree, void* output, const std::int32_t* key) = 0;
     virtual void* call_006a1e70(void* tree, const NativeString* key) = 0;
-    virtual void call_006a79a0(void* header, std::uint32_t count, std::array<std::uint32_t,4> value) = 0;
-    virtual void call_0049e050(void* header, std::uint32_t count, std::array<std::uint32_t,2> value) = 0;
-    virtual void call_006a4710(void* header, std::uint32_t count, std::array<std::uint32_t,4> value) = 0;
-    virtual void call_00492210(void* header, std::uint32_t count, std::uint32_t value) = 0;
     virtual void* call_006a6900(void* tree, const NativeString* key) = 0;
     virtual void* call_006a1f80(void* tree, const std::int32_t* key) = 0;
 };

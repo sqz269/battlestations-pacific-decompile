@@ -1,5 +1,6 @@
 #include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/global_config.hpp"
+#include "bsp/native_input_settings_vector_storage.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include <cstring>
 
@@ -49,15 +50,14 @@ struct Members {
         singleton_lifetime_free(read<void*>(header,4));
         write(header,4,0u); write(header,8,0u);
     }
-    void vector(Word offset, void* opaque) {
+    void vector(Word offset, void* /*native_opaque_stack_word*/) {
         void* header = at(settings,offset);
         void* const begin = read<void*>(header,4);
         if (begin) {
             void* const end = read<void*>(header,8);
-            auto& c = context.containers;
             switch (offset) {
-            case 0x40: c.call_0069eea0(begin,end,header,opaque); break;
-            case 0x30: c.call_006a6ee0(begin,end,header,opaque); break;
+            case 0x40: destroy_native_input_settings_conflict_pair_range_0069eea0(begin,end); break;
+            case 0x30: destroy_native_input_settings_group_range_006a6ee0(begin,end,context.tables.scripts.strings); break;
             case 0x14: destroy_global_config_name_range_00432050(begin,end,context.tables.scripts.strings); break;
             }
             singleton_lifetime_free(read<void*>(header,4));
