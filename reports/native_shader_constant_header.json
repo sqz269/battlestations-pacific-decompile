@@ -1,0 +1,752 @@
+{
+  "packet": "orch5_native_constant_header",
+  "base_commit": "1ce1c1282c6aa851abf2eac2bdb2a95321247173",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_constant_header.cpp",
+  "header": "include/bsp/native_shader_constant_header.hpp",
+  "documentation": "docs/NATIVE_SHADER_CONSTANT_HEADER.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b38ff0",
+      "end_inclusive": "00b39062",
+      "bytes": 115,
+      "sha256": "acbbd205ac2b227f54ceb46039b0ebcdfa075209aa7fdb3e4a526083ab6b593d",
+      "direct_calls": 4,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "a339a414855dd5157a61257b78e6da16fb042c57518032675a5dba1a64b0f436",
+      "instructions": 46,
+      "name": "BSP_ShaderBuilder_AppendSystemConstantHeader",
+      "cpp_symbol": "append_native_system_constant_header_00b38ff0",
+      "original_abi": "ECX actualB0h builder; stack flag low byte; RET4 at B39060"
+    },
+    {
+      "address": "00b38c60",
+      "end_inclusive": "00b38fe1",
+      "bytes": 898,
+      "sha256": "bc25afdea3a2ce82f10792821b49f81fd82c5370776269e14eff54472c2795b5",
+      "direct_calls": 43,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "7b91ce3a52366b8ed91d593b0fe353f9172ace63bd3b2498e7f6b964f062d5e1",
+      "instructions": 300,
+      "name": "BSP_ShaderBuilder_AppendSystemConstant",
+      "cpp_symbol": "append_native_system_constant_00b38c60",
+      "original_abi": "ECX actualB0h builder; stack actual20h record/register DWORD; RET8 at B38FDF"
+    },
+    {
+      "address": "00b35110",
+      "end_inclusive": "00b35267",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+      "direct_calls": 13,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b",
+      "instructions": 120,
+      "name": "BSP_ShaderSource_AppendFormattedLine",
+      "cpp_symbol": "append_native_shader_line_00b35110",
+      "original_abi": "cdecl destination/format/variadic values; caller cleanup; RET at B35267"
+    },
+    {
+      "address": "005f1840",
+      "end_inclusive": "005f1924",
+      "bytes": 229,
+      "sha256": "38ff06385d0e4ade8e1015705487d84912d248e5bbd864be56ada8816d3310f9",
+      "direct_calls": 7,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "c19e07c741ca2c01f327bf7bfcf49c31970227fd83f2c5af8237dd1dec97addf",
+      "instructions": 82,
+      "name": "BSP_NativeString_ConstructSignedDecimal",
+      "cpp_symbol": "construct_native_shader_decimal_005f1840",
+      "original_abi": "ECX fresh8h string; stack signed DWORD; EAX this; RET4 at 5F1922"
+    },
+    {
+      "address": "00b5b840",
+      "end_inclusive": "00b5b843",
+      "bytes": 4,
+      "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689",
+      "direct_calls": 0,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "0dd50d70c4fc7508b1df87d83e49b7c5794448c717b3e1d63f4f25a5d4c7a347",
+      "instructions": 2,
+      "name": "BSP_ShaderConstant_GetSecondDimension",
+      "cpp_symbol": "native_system_constant_second_dimension_00b5b840",
+      "original_abi": "ECX actual20h; EAX current DWORD+08; RET"
+    },
+    {
+      "address": "00b5b850",
+      "end_inclusive": "00b5b853",
+      "bytes": 4,
+      "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff",
+      "direct_calls": 0,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "6ab74f4540d52e0a6d53c8104e5d8a9ab9246025c769d3d67960ddc25e4fd746",
+      "instructions": 2,
+      "name": "BSP_ShaderConstant_GetFirstDimension",
+      "cpp_symbol": "native_system_constant_first_dimension_00b5b850",
+      "original_abi": "ECX actual20h; EAX current DWORD+0C; RET"
+    },
+    {
+      "address": "00b5b860",
+      "end_inclusive": "00b5b863",
+      "bytes": 4,
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "direct_calls": 0,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "9eb3eb403e3491d3636a3e0e9f98197b25fee5583b06d8ce89a1f277979c15cc",
+      "instructions": 2,
+      "name": "BSP_ShaderConstant_GetArrayCount",
+      "cpp_symbol": "native_system_constant_array_count_00b5b860",
+      "original_abi": "ECX actual20h; EAX current DWORD+10; RET"
+    },
+    {
+      "address": "00b5b890",
+      "end_inclusive": "00b5b893",
+      "bytes": 4,
+      "sha256": "4181cb1fec090d6487f323c8ce84a17ff37429613d7843b4f5f40f5eae266b77",
+      "direct_calls": 0,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "b990f6aecf218ac0f24deeb82517803ad1577fb0e87b69d19430b956ff246aed",
+      "instructions": 2,
+      "name": "BSP_SystemConstantRegistry_GetListHeader",
+      "cpp_symbol": "native_system_constant_list_00b5b890",
+      "original_abi": "ECX actual10h registry; EAX same actual owner+04; RET"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b5b820",
+      "end_inclusive": "00b5b823",
+      "bytes": 4,
+      "sha256": "dd9fb9b70598fa70d2f544d70e0faf8ff028fc6b8fcb88f35c9d2eaf38d86e7d",
+      "direct_calls": 0,
+      "coverage": "existing complete getter reused unchanged",
+      "export_assembly_sha256": "13f05e054e5e01e5cd69c3f65b923af0e48da5459ad7fab3025e78652029fb3b",
+      "instructions": 2,
+      "source": "src/native_material_parameters.cpp",
+      "cpp_symbol": "native_shader_constant_name_00b5b820"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b38ffe",
+      "native": "00b5b890",
+      "function": "00b38ff0",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b39032",
+      "native": "00b38c60",
+      "function": "00b38ff0",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b39039",
+      "native": "00b5b840",
+      "function": "00b38ff0",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b39042",
+      "native": "00b5b860",
+      "function": "00b38ff0",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38ca5",
+      "native": "0041e870",
+      "function": "00b38c60",
+      "contract": "Existing actual-header C-string constructor, resets header and copies NUL."
+    },
+    {
+      "address": "00b38cc2",
+      "native": "0041dd40",
+      "function": "00b38c60",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b38cda",
+      "native": "00bf7680",
+      "function": "00b38c60",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b38cfa",
+      "native": "00419cc0",
+      "function": "00b38c60",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38d01",
+      "native": "00bd1510",
+      "function": "00b38c60",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b38d0b",
+      "native": "005f1840",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38d2d",
+      "native": "0041dd40",
+      "function": "00b38c60",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b38d3f",
+      "native": "00bf7680",
+      "function": "00b38c60",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b38d5f",
+      "native": "00419cc0",
+      "function": "00b38c60",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38d66",
+      "native": "00bd1510",
+      "function": "00b38c60",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b38d74",
+      "native": "0041e870",
+      "function": "00b38c60",
+      "contract": "Existing actual-header C-string constructor, resets header and copies NUL."
+    },
+    {
+      "address": "00b38d95",
+      "native": "0041dd40",
+      "function": "00b38c60",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b38da7",
+      "native": "00bf7680",
+      "function": "00b38c60",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b38dc7",
+      "native": "00419cc0",
+      "function": "00b38c60",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38dce",
+      "native": "00bd1510",
+      "function": "00b38c60",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b38ddd",
+      "native": "00b5b840",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38ded",
+      "native": "00b5b860",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e04",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38e1a",
+      "native": "00b5b860",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e23",
+      "native": "00b5b840",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e2b",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e3e",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e58",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38e6d",
+      "native": "00b5b840",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e75",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e84",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38e91",
+      "native": "00b5b860",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38ea1",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38eb8",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38ece",
+      "native": "00b5b860",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38ed7",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38eea",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f02",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38f18",
+      "native": "00b5b860",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f2c",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f36",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f4d",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38f62",
+      "native": "00b5b850",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f71",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38f86",
+      "native": "00b5b820",
+      "function": "00b38c60",
+      "contract": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+    },
+    {
+      "address": "00b38fa2",
+      "native": "00b35110",
+      "function": "00b38c60",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b38fc1",
+      "native": "00419cc0",
+      "function": "00b38c60",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b38fc8",
+      "native": "00bd1510",
+      "function": "00b38c60",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b3513b",
+      "native": "00c03cee",
+      "function": "00b35110",
+      "contract": "Correct library vsprintf; host CRT variadic formatting into SAME supplied0108D6F8 buffer."
+    },
+    {
+      "address": "00b35167",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b35182",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b351a0",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b351ad",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b351ca",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b351d1",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b351e6",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b35201",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b3521f",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "00b3522c",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "00b35249",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "00b35250",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "005f1874",
+      "native": "00bf7a6a",
+      "function": "005f1840",
+      "contract": "Correct library sprintf; host CRT signed decimal formatting boundary."
+    },
+    {
+      "address": "005f18a2",
+      "native": "0041dd40",
+      "function": "005f1840",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "005f18bd",
+      "native": "00bf7680",
+      "function": "005f1840",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "005f18d6",
+      "native": "0041dd40",
+      "function": "005f1840",
+      "contract": "Existing actual-header resize, current header reloads and allocation/release schedule."
+    },
+    {
+      "address": "005f18e7",
+      "native": "00bf7680",
+      "function": "005f1840",
+      "contract": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies."
+    },
+    {
+      "address": "005f1902",
+      "native": "00419cc0",
+      "function": "005f1840",
+      "contract": "Established actual string-pool singleton getter via supplied NativeStringStorage."
+    },
+    {
+      "address": "005f1909",
+      "native": "00bd1510",
+      "function": "005f1840",
+      "contract": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary."
+    },
+    {
+      "address": "00b391b8",
+      "native": "00b38ff0",
+      "function": "00b39110",
+      "argument": "flag1",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "00b3992b",
+      "native": "00b38ff0",
+      "function": "00b39880",
+      "argument": "flag1",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    },
+    {
+      "address": "005f6c46",
+      "native": "005f1840",
+      "function": "005f65c0",
+      "argument": "current global00F88994",
+      "contract": "Implemented normal body in this packet; original ABI recorded by routine."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Semantic vector/string constant-header projection in shader_source.cpp only.",
+      "is": "ActualB0h builder4C, SAME registry/20h entries, native pooled temporary schedule and per-row live reads.",
+      "evidence": "B38FF0/B38C60/B35110/5F1840 complete assembly and exact text/allocation trace fixture."
+    },
+    {
+      "was": "A local draft duplicated already reconstructed B5B820 under another name.",
+      "is": "Draft duplicate removed; use existing native_shader_constant_name_00b5b820 from native_material_parameters.cpp; no replacement name/ledger.",
+      "evidence": "Current local source/ledger and same20h producer B5BBC0."
+    }
+  ],
+  "source_hashes": {
+    "src/native_shader_constant_header.cpp": "36fa31e975b743e0d0fa9279b9d906f779f29b3ad481e2ba7f001b6752cda5eb",
+    "include/bsp/native_shader_constant_header.hpp": "e78747a36047f4527a16b939db7bd3113132e03713df065d7515c6161bac8ac1"
+  },
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "default_registration": "cmake/startup.cmake appends native_shader_constant_header.cpp after unleased transaction check",
+      "log": "local/constant-header-build.log",
+      "existing_ctest": "reconstructed_math and native_math_differential, both passed after verify-seeds"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_constant_header_probe.ps1",
+      "linkage": "fixture-only translation unit against default-registered bsp_core.lib; no copied production source compiled into probe",
+      "original_bodies": 9,
+      "original_bytes": 1606,
+      "direct_calls_in_original_bodies": 67,
+      "counted_call_rows_with_callers": 70,
+      "scope": "Actual52-row production registry and actual string-pool domain. Exact output and allocation/release traces, builder preimages, low-byte flag, six shape branches, signed dimensions/arrays/decimal, wrapped cursor, live list/global mutation, retained allocation failure/replay rejection and failed frame retirement exit77.",
+      "original_execution_boundaries": {
+        "00419cc0": "Established actual string-pool singleton getter via supplied NativeStringStorage.",
+        "00bd1510": "Established actual sized block return via supplied NativeStringStorage; noexcept release boundary.",
+        "0041dd40": "Existing actual-header resize, current header reloads and allocation/release schedule.",
+        "0041e870": "Existing actual-header C-string constructor, resets header and copies NUL.",
+        "00bf7680": "Correct CRT memcpy symbol has overlap branch; host memmove used for nonzero copies.",
+        "00bf7a6a": "Correct library sprintf; host CRT signed decimal formatting boundary.",
+        "00c03cee": "Correct library vsprintf; host CRT variadic formatting into SAME supplied0108D6F8 buffer.",
+        "00b5b820": "Existing native_material_parameters.cpp name-header getter reused; no duplicate implementation."
+      },
+      "log": "local/native_constant_header_probe.log",
+      "guard_log": "local/native_constant_header_guard_probe.log"
+    }
+  },
+  "limits": [
+    "New C++ interfaces are not drop-in original ABI replacements.",
+    "Original private FH3 handlers and unwind are not emitted or invoked by failing probes.",
+    "Caller must exclude raw owner/input/domain destruction while operation is running or failed; only frame destruction and replay are enforced here.",
+    "Host CRT format/copy behavior and established NativeStringStorage noexcept release are explicit runtime boundaries.",
+    "Shared scratch must be sufficiently sized and obey native reentry/concurrency restriction; pointer-range changes must leave the native cursor/end traversal readable.",
+    "Complete vertex/pixel generation, shader compilation, bytecode identity, shader execution, rendering and gameplay are unproven."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_constant_header.cpp",
+      "bytes": 11990,
+      "sha256": "36fa31e975b743e0d0fa9279b9d906f779f29b3ad481e2ba7f001b6752cda5eb"
+    },
+    {
+      "path": "include/bsp/native_shader_constant_header.hpp",
+      "bytes": 5015,
+      "sha256": "e78747a36047f4527a16b939db7bd3113132e03713df065d7515c6161bac8ac1"
+    },
+    {
+      "path": "local/header_original.hpp",
+      "bytes": 10022,
+      "sha256": "6c9b896d11246eaf5abe70d23f6b3d0cd0540e7cb7a197785432ed78b13c55d3"
+    },
+    {
+      "path": "local/header_original_manifest.json",
+      "bytes": 10524,
+      "sha256": "8474580945ae73cff1019bb28afb2dbce3d0b8b8d3d051e3aec4696cc0b257de"
+    },
+    {
+      "path": "local/pin_header_original.py",
+      "bytes": 2581,
+      "sha256": "4078116aadfd48c57aaf3929703c5a6eb54a3e94c7c8db6cdb6db8219192dd94"
+    },
+    {
+      "path": "local/native_constant_header_probe.cpp",
+      "bytes": 11808,
+      "sha256": "c7c9ab760fae214c52395dad3dd77bdde97be8eaf24fd5b3c5f197d287256d45"
+    },
+    {
+      "path": "local/run_native_constant_header_probe.ps1",
+      "bytes": 1677,
+      "sha256": "2e52d2b7c6bac84c05553959362c662f31d362877050135e4a685e3de78c8edb"
+    },
+    {
+      "path": "local/register_constant_header.py",
+      "bytes": 717,
+      "sha256": "5cfdf36ec96894947c25a38086d85065a9b2173d5c753b413424f31b1dbc918b"
+    },
+    {
+      "path": "local/constant-header-build.log",
+      "bytes": 4371,
+      "sha256": "9c972d0c1439b19478d2b63e7bd1872a1de456b2078bbbdafdfebdedc12f79cc"
+    },
+    {
+      "path": "local/native_constant_header_probe_compile.log",
+      "bytes": 34,
+      "sha256": "6eda701eb9b0d67a967089d0a99724c0fc38be3d5eea98d31ea2127084f41596"
+    },
+    {
+      "path": "local/native_constant_header_probe.log",
+      "bytes": 666,
+      "sha256": "49073d71b9b336fb0cce25ca7c9e00d9002ecf075f5bfce1d91611ef27440ec4"
+    },
+    {
+      "path": "local/native_constant_header_guard_probe.log",
+      "bytes": 456,
+      "sha256": "c31b5bdf77577c7c9772212aae3946585700af1490c76654476973bc596df1c1"
+    },
+    {
+      "path": "local/native_constant_header_probe.exe",
+      "bytes": 80384,
+      "sha256": "c4efa7640d511f01f8f3f90cb0d51cd12bcbab3030a9be4010e99d22f29aeb4a"
+    },
+    {
+      "path": "local/header-call-verification.log",
+      "bytes": 76,
+      "sha256": "74d324719e74306ed4b1ea7feb228f371100caf5a80d6d51638fe7b8b1745352"
+    },
+    {
+      "path": "local/header-seed-verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55407084,
+      "sha256": "16a67b387941a2f6b2a3eab8deef6cb7133bb5bc96a2a6832ec43ef06c36a11b"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455656,
+      "sha256": "32496b2618a4a3f2d7e60cd6e10e22f80d169032a160359f98cc20025521a73d"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72046,
+      "sha256": "2960ad079ae7dd7e29096b663b235622ad061ef10818def4414c6dca2c5ae746"
+    },
+    {
+      "path": "local/header_005f1840_bytes.txt",
+      "bytes": 1111,
+      "sha256": "c645af96180bff1ff8f88a552a7325191ccbb3ad0db4a4f92a1e869c23a629f6"
+    },
+    {
+      "path": "local/header_00b35110_bytes.txt",
+      "bytes": 1662,
+      "sha256": "c4cd5da4be13577473a8c4a48bafb326a21f4e1185cd8f9ca1e885597bc820c6"
+    },
+    {
+      "path": "local/header_00b38c60_bytes.txt",
+      "bytes": 4333,
+      "sha256": "7c02e8368224c575a514f38c915ae8dd1a988cb5097254dc8f8a610a89345125"
+    },
+    {
+      "path": "local/header_00b38ff0_bytes.txt",
+      "bytes": 564,
+      "sha256": "293a87eb175e37a4f2d8d0dd762e676c8a92ebb1f5120d4a78e1ecc7fb0d7a22"
+    },
+    {
+      "path": "local/header_00b5b820_bytes.txt",
+      "bytes": 29,
+      "sha256": "a84c81ea68ac4784cd0a01d8ed2ce06da3058c27a886401f991d379a6a1b1583"
+    },
+    {
+      "path": "local/header_00b5b840_bytes.txt",
+      "bytes": 29,
+      "sha256": "3beac8a293b5069329680480fbab1c5f725453ea67129290ee73d9a0215f5731"
+    },
+    {
+      "path": "local/header_00b5b850_bytes.txt",
+      "bytes": 29,
+      "sha256": "1adef6ea67c613cafaf737358497ad295ede7ceec27070ed217b59c98df3cbc0"
+    },
+    {
+      "path": "local/header_00b5b860_bytes.txt",
+      "bytes": 29,
+      "sha256": "07ee1c34ca65d8c6c57ced1cc625665747dbe2ea93ed2a0c6a391e95900384a8"
+    },
+    {
+      "path": "local/header_00b5b890_bytes.txt",
+      "bytes": 29,
+      "sha256": "3da05d7407b63be4e69a9e78a3d8035597d9d6b012b6c7220a7618c4d8caa036"
+    }
+  ]
+}
