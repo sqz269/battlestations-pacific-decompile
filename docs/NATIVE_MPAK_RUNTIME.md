@@ -44,6 +44,13 @@ the enclosing graph, VFS and borrowed inputs must outlive their borrowers. No
 native publication, cache, stream or reference count is changed by binding or
 unbinding alone.
 
+Arbitrary out-of-order destruction is unsupported. Two live graphs borrowing
+the same VFS install the same `conversion.adopted_substreams` pointer, so that
+pointer equality cannot identify which graph installed it last. The predecessor
+graph must outlive its successor, which must be disposed first. The conditional
+pointer checks preserve distinct replacements; they are not an ownership-token
+scheme for graph disposal in arbitrary order.
+
 ## Numeric raw inflater and memory conversion
 
 The live original D64400 profile was read through the verified BSP CLI:
