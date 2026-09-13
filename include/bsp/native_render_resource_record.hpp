@@ -55,6 +55,9 @@ NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(
     NativeRenderResourceRecord& destination,
     const NativeRenderResourceRecord& source, SizedStoragePool& actual_string_pool,
     const SingletonLifetimeCallbacks&);
+NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(
+    NativeRenderResourceRecord&, const NativeRenderResourceRecord&,
+    ActualNativeStringPoolStorage&, const SingletonLifetimeCallbacks&);
 
 // Complete 00B2F990..00B2FA07, including the tail hidden by false _free
 // no-return analysis. Native ABI: ECX actual record, RET0, no semantic return.
@@ -69,5 +72,8 @@ NativeRenderResourceRecord& assign_native_render_resource_record_00b30510(
 // does not reproduce native SEH registration or binary exception ABI.
 void destroy_native_render_resource_record_00b2f990(
     NativeRenderResourceRecord&, SizedStoragePool& actual_string_pool);
+// Same native body through current actual 419CC0/BD1510 publication.
+void destroy_native_render_resource_record_00b2f990(
+    NativeRenderResourceRecord&, ActualNativeStringPoolStorage&);
 
 }
