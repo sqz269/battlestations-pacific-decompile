@@ -1,0 +1,110 @@
+{
+  "packet": "orch3_cockpit_fixture_bg",
+  "status": "focused_worker_source_differential_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read only guarded bridge8089; no annotation, definition, write or save",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b3c5c0",
+      "end": "00b3c649",
+      "bytes": 138,
+      "coverage": "complete original body loaded; executed normal camera-nonnull +08-zero +18-zero path only"
+    },
+    {
+      "address": "00b3c6c0",
+      "end": "00b3c6dd",
+      "bytes": 30,
+      "coverage": "complete original body loaded; flags1 terminal path executed including repaired ADD ESP,4"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b3c5f2",
+      "native": "00b6dfa0",
+      "function": "00b3c5c0",
+      "preparation": "ECX current helper+0C; no stack arguments; member cleared after return"
+    },
+    {
+      "address": "00b3c633",
+      "native": "00bd30f0",
+      "function": "00b3c5c0",
+      "preparation": "ECX helper; state -1; stamp base profile"
+    },
+    {
+      "address": "00b3c6c3",
+      "native": "00b3c5c0",
+      "function": "00b3c6c0",
+      "preparation": "ESI captures incoming ECX; no stack arguments"
+    },
+    {
+      "address": "00b3c6d0",
+      "native": "00bf65ac",
+      "function": "00b3c6c0",
+      "preparation": "PUSH captured helper ESI; ADD ESP,4 at B3C6D5"
+    }
+  ],
+  "indirect_transfers": [
+    {
+      "address": "00bd30eb",
+      "target": "current D61854+04 = B3C6C0",
+      "preparation": "ECX actual helper after actual+04 decrement to zero; PUSH1; scalar RET4"
+    },
+    {
+      "address": "00b6e007",
+      "target": "current camera profile+18 = B6F310",
+      "preparation": "ECX actual canonical camera; tail jump"
+    },
+    {
+      "address": "00b6f3a7",
+      "target": "current CE2220 InterlockedDecrement",
+      "preparation": "PUSH actual camera+04; stdcall; 1 to 0"
+    },
+    {
+      "address": "00b6f3ba",
+      "target": "current camera slot0 = BD30E0",
+      "preparation": "current profile loaded after zero; ECX actual camera; tail jump"
+    }
+  ],
+  "measured": {
+    "pairs": 1,
+    "cw": "027f",
+    "camera_checkpoints_per_path": 15,
+    "camera_bytes_per_path": 16740,
+    "helper_pre_free_bytes": 36,
+    "mapped_code_bytes_immutable": 8880,
+    "actual_helper_frees_per_path": 1,
+    "actual_camera_pool_returns_per_path": 1,
+    "raw_camera_name_returns_per_path": 1,
+    "helper_members_08_18": 0,
+    "helper_count_transition": "1 to 0",
+    "camera_count_transition": "1 to 0",
+    "source_companion_retirement": "camera dead before helper free; callback deletes helper reference and owner after native helper free; only external flags inspected afterward"
+  },
+  "build": {
+    "flags": "MSVC Win32 /std:c++17 /EHsc /O2 /Oy- /MD /fp:strict /W4 /WX /MANIFEST:EMBED",
+    "mode": "explicit WorkerSource compiles worker helper TU using only selected root pinned include path and selected root three current libraries",
+    "default_mode": "only fixture plus selected root three current libraries; final default replay requires central helper registration",
+    "input_pins": "SHA256 selected src/include, fixture, recipe, header, worker helper files and three libraries unchanged before/after successful run"
+  },
+  "capture": {
+    "directory": "C:/Users/sqz269/bsp-bg-cockpit-lifetime",
+    "archive": "worker_capture_v2.zip",
+    "sha256": "6d6967c7840648ead7a68b609472969470efdddeb26132853d17edef84a276f1",
+    "manifest": "archive_manifest.json",
+    "replay": "pwsh -NoProfile -File C:/Users/sqz269/bsp-bg-cockpit-lifetime/run.ps1 -Repo J:/PROG/battlestations-pacific-decompile-orch3-20260910 -WorkerSource -WorkerRepo J:/PROG/battlestations-pacific-decompile-orch3-cockpit-fixture-bg",
+    "initial_archive": "worker_capture.zip, SHA256 26202022b3b3f8bb97ecfc479a82dc078c5d9f9344d675bfb27a592c96817ba7; initial ordering-only control with worker include precedence"
+  },
+  "limits": [
+    "One focused pair, not the 104-checkpoint suite",
+    "Already-constructed helper setup; no B3C800 execution or construction claim",
+    "Actual camera field never replaced with a synthetic model node",
+    "Helper +08/+18 zero; no nonzero retained18 producer claimed",
+    "No original FH3/SEH exception execution; source exception branch reviewed only",
+    "Allocator observation uses existing fixture BF681B/free hooks; production allocator unchanged",
+    "Existing renderer/provider bindings reused; no dummy pools or fallback dimensions",
+    "Callback deletes both helper companions; no access to actual allocation after free or host companions after deletion",
+    "Not a drop-in caller-ABI replacement or game validation"
+  ]
+}
