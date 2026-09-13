@@ -137,3 +137,15 @@ The immutable final checkpoint is `local/checkpoints/fa6211f1/compiler-leaves-fi
 the changed shared storage sources. The earlier 167-artifact checkpoint remains
 preserved. This refresh changes neither the reconstruction scope nor the stated
 native ABI, FH3, full compiler and gameplay limits.
+
+## Validation after concurrent shared-source integration
+
+The later shared source code was merged before another
+default build and a fresh run of all 15 focused fixture programs. Both CTests and
+all 15 fixtures passed at `7a060521`. The final validated revision is
+`7a060521`; all seven accepted component source/header/report hashes remain
+unchanged. No result from the earlier library was substituted for this fresh run.
+The immutable final checkpoint is `local/checkpoints/7a060521/compiler-leaves-final/validation.json` (184 artifacts), including
+the changed shared storage sources. The earlier 167-artifact checkpoint remains
+preserved. This refresh changes neither the reconstruction scope nor the stated
+native ABI, FH3, full compiler and gameplay limits.

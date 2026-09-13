@@ -1,26 +1,26 @@
 {
   "scope": "Actual compiler fields, interpolators, registry, reflection, constant headers, vertex compilation and cube/volume loading",
-  "validated_code_commit": "fa6211f1cf1c0b36138b4f706ad9ba7c280f4fc5",
+  "validated_code_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
   "default_registration": true,
   "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
   "checkpoint": {
+    "path": "local/checkpoints/7a060521/compiler-leaves-final/validation.json",
+    "sha256": "707219dfea615b3574c7c6dea3fbb052a6f57019f7e207ee81e40c959c319463",
+    "artifacts": 184
+  },
+  "previous_default_checkpoint": {
     "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
     "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
     "artifacts": 174
   },
-  "previous_default_checkpoint": {
-    "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
-    "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
-    "artifacts": 167
-  },
   "fixture_programs": 15,
-  "fixture_origin_commit": "fa6211f1cf1c0b36138b4f706ad9ba7c280f4fc5",
+  "fixture_origin_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
   "fixture_equivalence_after_metadata_merge": {
     "metadata_only_changed_paths": [],
     "all_three_library_hashes_unchanged": true,
     "all_40_runner_and_fixture_input_hashes_unchanged": true
   },
-  "registered_library_sha256": "3fbd3ce7391b6555b4efb3bbf01fd1664b1c771b720eb1d9ce63ad9096a41513",
+  "registered_library_sha256": "05dd48f0e3f8d932a3e14992d08c51ad9b3321eb75707d7927e4f34706be03ce",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -187,6 +187,11 @@
       "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
       "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
       "artifacts": 167
+    },
+    {
+      "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
+      "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
+      "artifacts": 174
     }
   ]
 }
