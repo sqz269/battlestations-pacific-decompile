@@ -10146,6 +10146,88 @@
       "evidence": "reports/native_instance_group_upload.json",
       "new_native_bodies": 6,
       "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_texture_2d_retained_recreation_aw",
+      "packet": "orch3_native_texture_2d_retained_recreation_aw",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b3d7b0",
+        "00b3e190"
+      ],
+      "code_ownership": [
+        "include/bsp/native_texture_2d_retained_recreation.hpp",
+        "src/native_texture_2d_retained_recreation.cpp",
+        "docs/NATIVE_TEXTURE_2D_RETAINED_RECREATION.md",
+        "reports/native_texture_2d_retained_recreation.json"
+      ],
+      "evidence": "reports/native_texture_2d_retained_recreation.json",
+      "new_native_bodies": 2,
+      "boundary": "Actual owner/service domains and bounded parent/leaf fixture coverage; whole Reset/startup/render/gameplay unverified; see reports/native_renderer_device_recreation_aw_validation.json"
+    },
+    {
+      "id": "orch3_native_cube_volume_retained_recreation_aw",
+      "packet": "orch3_native_cube_volume_retained_recreation_aw",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b3d7c0",
+        "00b3d800",
+        "00b3e1f0",
+        "00b3e230"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_volume_retained_recreation.hpp",
+        "src/native_cube_volume_retained_recreation.cpp",
+        "docs/NATIVE_CUBE_VOLUME_RETAINED_RECREATION.md",
+        "reports/native_cube_volume_retained_recreation.json"
+      ],
+      "evidence": "reports/native_cube_volume_retained_recreation.json",
+      "new_native_bodies": 4,
+      "boundary": "Actual owner/service domains and bounded parent/leaf fixture coverage; whole Reset/startup/render/gameplay unverified; see reports/native_renderer_device_recreation_aw_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_stop_pipeline_aw",
+      "packet": "orch3_native_renderer_stop_pipeline_aw",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b28a90",
+        "00b26920",
+        "00b33bf0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_stop_pipeline.hpp",
+        "src/native_renderer_stop_pipeline.cpp",
+        "docs/NATIVE_RENDERER_STOP_PIPELINE.md",
+        "reports/native_renderer_stop_pipeline.json"
+      ],
+      "evidence": "reports/native_renderer_stop_pipeline.json",
+      "new_native_bodies": 3,
+      "boundary": "Actual owner/service domains and bounded parent/leaf fixture coverage; whole Reset/startup/render/gameplay unverified; see reports/native_renderer_device_recreation_aw_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_device_recreation_actual_aw",
+      "packet": "orch3_native_renderer_device_recreation_actual_aw",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b29670"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_device_recreation_actual.hpp",
+        "src/native_renderer_device_recreation_actual.cpp",
+        "docs/NATIVE_RENDERER_DEVICE_RECREATION_ACTUAL.md",
+        "reports/native_renderer_device_recreation_actual.json"
+      ],
+      "evidence": "reports/native_renderer_device_recreation_actual.json",
+      "new_native_bodies": 1,
+      "boundary": "Actual owner/service domains and bounded parent/leaf fixture coverage; whole Reset/startup/render/gameplay unverified; see reports/native_renderer_device_recreation_aw_validation.json"
     }
   ],
   "snapshot_after_analysis": {

@@ -1,6 +1,6 @@
 {
   "packet": "orch3_renderer_stop_aw",
-  "status": "complete_actual_storage_strict_Win32_and_bounded_original_parent_actual_event_fixture_passed",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
   "source_base": "e9b644130839f0ac03b78aac45e100178d55477b",
   "owned_addresses": [
     "00b28a90",
@@ -565,7 +565,7 @@
     "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
   "integration_aw_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_function_names_and_original_signatures": 10,
     "signature_readback_passed": true,
@@ -726,5 +726,13 @@
       "length": 10,
       "role": "Read-only EH dependency; MOV EAX,DF5874; JMP BF6B43; integrator may define centrally. Not a new reconstructed function claim."
     }
-  ]
+  ],
+  "final_merged_validation_aw": {
+    "report": "reports/native_renderer_device_recreation_aw_validation.json",
+    "tested_commit": "fbab26c3d07fb40315b087b48c75a15f6bfae7d1",
+    "existing_ctests_passed": 2,
+    "four_current_library_only_replays_passed": true,
+    "game_validated": false
+  },
+  "worker_capture_status": "complete_actual_storage_strict_Win32_and_bounded_original_parent_actual_event_fixture_passed"
 }

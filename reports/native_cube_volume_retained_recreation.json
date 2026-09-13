@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "orch3_texture_cube_volume_aw",
   "generated_utc": "2026-09-13T05:42:56.213869+00:00",
-  "status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture_pending_integrator_library_registration",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
   "base_commit": "e9b644130839f0ac03b78aac45e100178d55477b",
   "owned_addresses": [
     "00b3d7c0",
@@ -605,7 +605,7 @@
     }
   ],
   "integration_aw_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_function_names_and_original_signatures": 10,
     "signature_readback_passed": true,
@@ -759,5 +759,13 @@
     "cross_review": "Independent complete-listing reviews checked retained 2D signatures, successful loader-to-record provenance and null-record boundary, optional-guard EH and lifecycle scope, full old-device/current-output access order, caps flags, x87 gamma outgoing slot, physical-buffer publication order and unsigned/tree/record traversal. The publication cell qualifier boundary was explicitly cast and strict compilation passed.",
     "current_report_call_check": "reports/native_cube_volume_retained_recreation.json: 8 call rows checked, 0 failed"
   },
-  "worker_capture_no_ghidra_function": []
+  "worker_capture_no_ghidra_function": [],
+  "final_merged_validation_aw": {
+    "report": "reports/native_renderer_device_recreation_aw_validation.json",
+    "tested_commit": "fbab26c3d07fb40315b087b48c75a15f6bfae7d1",
+    "existing_ctests_passed": 2,
+    "four_current_library_only_replays_passed": true,
+    "game_validated": false
+  },
+  "worker_capture_status": "complete_actual_storage_strict_Win32_worker_source_native_byte_real_D3DX_D3D9_fixture_pending_integrator_library_registration"
 }

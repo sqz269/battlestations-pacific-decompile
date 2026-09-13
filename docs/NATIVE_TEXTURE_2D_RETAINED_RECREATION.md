@@ -145,3 +145,12 @@ owned leases and the Ghidra write lock. Missing-function observations above
 describe the earlier worker capture. EH definitions are analysis metadata,
 not additional reconstructed normal-body claims. Combined final-commit
 validation remains separate from the worker fixture evidence.
+
+## AW exact merged validation
+
+The exact combined source commit `fbab26c3d07fb40315b087b48c75a15f6bfae7d1` passed the Win32 build,
+both existing tests and four current-library-only original-byte fixtures.
+Full counts, original-byte relocation, exception branches and parent coverage
+are recorded in `reports/native_renderer_device_recreation_aw_validation.json`.
+The earlier pending statements describe initial capture stages. This does not
+establish whole-game rendering, native ABI identity or general concurrency.
