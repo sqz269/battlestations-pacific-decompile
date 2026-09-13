@@ -919,3 +919,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_readon
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_cockpit_helper_lifetime.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_model_base_bootstrap.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_container_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_storage_services.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_services.cpp)
