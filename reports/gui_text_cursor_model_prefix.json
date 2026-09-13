@@ -678,5 +678,32 @@
     "src/gui_widget_owner.cpp": "22f3a326b20aa1da707b3d6b263bef1529fdd358ec13f87adcfb9b6dd88ba917",
     "build/win32/Release/bsp_core.lib": "fffd668cb65dacb80f30d84714e9899febf12ea3e134d3bc52d5fa4d6922e5eb",
     "build/win32/Release/bsp_lua511.lib": "b356600d18055504b0037228bcb995b14cb11ca68123a8c1e6ba27661e8772c5"
+  },
+  "integrated_validation": {
+    "commit": "f999c89ad8e6fa2992f4e3d2971a8c31cfd8ee88",
+    "batch": "reports/native_material_effect_integration.json",
+    "win32_build": true,
+    "ctest_passed": 2,
+    "full_cold_effect_load": false,
+    "complete_text": false,
+    "gameplay": false,
+    "prefix_fixtures": [
+      {
+        "name": "cursor_prefix",
+        "exit_code": 0,
+        "source": "local/effect-native-workers/cursor/local/cursor_model_prefix_probe.cpp",
+        "source_sha256": "D8D6DFC2510F2BF057B5A38E323734455D25F9CF64CB22E2FE7BB4466893B149",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\cursor_prefix-run.log",
+        "log_sha256": "8AE483B5E297A41308F1BEDCBC209E6AEEE1E66CBA31788771B5DF8071AE71C1"
+      },
+      {
+        "name": "shadow_prefix",
+        "exit_code": 0,
+        "source": "local/effect-native-workers/cursor/local/text_sections_model_prefix_probe.cpp",
+        "source_sha256": "66E0F122755D129DA454A16EFFD6B06168F91F10C9A90C53B31B6389B3CC15C0",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\shadow_prefix-run.log",
+        "log_sha256": "DBED9D34D0073EBF79C7F2EA75ED440ABF3500641CA886C9BEEC8BFD1E72DD66"
+      }
+    ]
   }
 }

@@ -658,5 +658,22 @@
     "game_validated": false,
     "successful_descriptor_or_compiler_executed": false,
     "successful_effect_program_load_executed": false
+  },
+  "integrated_validation": {
+    "commit": "f999c89ad8e6fa2992f4e3d2971a8c31cfd8ee88",
+    "batch": "reports/native_material_effect_integration.json",
+    "win32_build": true,
+    "ctest_passed": 2,
+    "full_cold_effect_load": false,
+    "complete_text": false,
+    "gameplay": false,
+    "pruning_fixture": {
+      "name": "program_pruning",
+      "exit_code": 0,
+      "source": "local/effect-native-workers/programs/local/native_effect_program_probe.cpp",
+      "source_sha256": "4039EB99FB9979B0B9B5623022123EF6C1118743AB4C0CCB47E09B7E59AFAACF",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\effect-native-validation\\program_pruning-run.log",
+      "log_sha256": "5F7C49C581FCF0E802E9CD30B947195AC620370D796AC4EAE597322A7147D393"
+    }
   }
 }
