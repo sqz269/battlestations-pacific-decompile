@@ -221,6 +221,12 @@ public:
     // Returns true when the global is a table afterwards.
     bool load_ship_globals_0083b6e6();
 
+    // Stored settings+4 projection: loader store 0083BCD5, mutable mission
+    // binding store 008D0852. False means no producer has established it and
+    // leaves output unchanged. This is not a per-frame ShipGlobals lookup.
+    bool read_avoid_all_ship_collision(bool& value) const noexcept;
+    void set_avoid_all_ship_collision_008d0852(bool value);
+
     // 0083ce56..0083d10d of 0083b5e0, driven by the reconstruction in
     // bsp/unit_rudder_curve.hpp over the live `ShipGlobals["Navigator"]` table.
     // `found` is false when the machine or either table is missing, and the
@@ -427,6 +433,8 @@ private:
     std::map<std::string, int> scene_entity_ids_;
     GameScriptOrdersHost* script_orders_{nullptr};
     bool error_replay_{false};
+    bool avoid_all_ship_collision_{};
+    bool avoid_all_ship_collision_loaded_{};
     GameMissionLuaSummary summary_;
 };
 

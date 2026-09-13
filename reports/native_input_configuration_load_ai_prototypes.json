@@ -1,0 +1,59 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "006974f0",
+      "before": "Function: FUN_006974f0 at 006974f0\nSignature: undefined FUN_006974f0(void)\nEntry: 006974f0\nBody: 006974f0 - 00697705",
+      "before_comment": {
+        "address": "006974f0",
+        "function_name": "FUN_006974f0"
+      },
+      "proposed": "void* __fastcall BSP_InputConfiguration_DecodeDescriptor(void* self, void* unused_edx, void* output, void* table, byte swap)",
+      "apply": "Successfully set prototype for function at 006974f0 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_DecodeDescriptor at 006974f0\nSignature: void * __fastcall BSP_InputConfiguration_DecodeDescriptor(void * self, void * unused_edx, void * output, void * table, byte swap)\nEntry: 006974f0\nBody: 006974f0 - 00697705",
+      "readback_verified": true
+    },
+    {
+      "address": "00698a10",
+      "before": "Function: FUN_00698a10 at 00698a10\nSignature: undefined FUN_00698a10(void)\nEntry: 00698a10\nBody: 00698a10 - 00699b7d",
+      "before_comment": {
+        "address": "00698a10",
+        "function_name": "FUN_00698a10"
+      },
+      "proposed": "void __fastcall BSP_InputConfiguration_Load(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00698a10 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_Load at 00698a10\nSignature: void __fastcall BSP_InputConfiguration_Load(void * self, void * unused_edx)\nEntry: 00698a10\nBody: 00698a10 - 00699b7d",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006974f0",
+        "prototype": "void* __fastcall BSP_InputConfiguration_DecodeDescriptor(void* self, void* unused_edx, void* output, void* table, byte swap)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006974f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00698a10",
+        "prototype": "void __fastcall BSP_InputConfiguration_Load(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00698a10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

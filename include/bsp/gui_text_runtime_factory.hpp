@@ -3,6 +3,10 @@
 #include "bsp/gui_text_type_dispatch.hpp"
 #include "bsp/gui_text_properties.hpp"
 #include "bsp/gui_text_clip_refresh.hpp"
+#include "bsp/gui_text_copy.hpp"
+#include "bsp/gui_widget_copy.hpp"
+#include <exception>
+#include <optional>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -35,12 +39,14 @@ public:
     using std::logic_error::logic_error;
 };
 class GuiTextRuntimeFactory;
+class GuiTextRuntimeCopyOperation;
+class GuiWidgetCopySourceBorrow;
 
 // One implementation and one GuiTextLifetime on the existing widget owner.
 // No raw Text slot is cast to a C++ object, no duplicate hierarchy is created.
-// Original D5C6C8 ABI, native strings/SEH and copy construction ABB2C0 remain
-// outside this new interface. Ordinary successful constructor/current74 and
-// supported completed property/content domains are executable compositions.
+// Original D5C6C8 ABI and native strings/SEH remain outside this interface.
+// The copied factory operation below adopts one copied lifetime and preserves
+// its constructor continuation, using required actual clone/retention services.
 class GuiTextRuntimeImplementation final : public GuiWidgetTypeImplementation {
 public:
     ~GuiTextRuntimeImplementation() noexcept override;
@@ -74,6 +80,7 @@ public:
     void rebuild_content_00abb1d0();
 
     bool has_pending_operation() const noexcept;
+    bool has_active_operation() const noexcept override;
     GuiTextRuntimeContentContinuation* pending_content() noexcept;
     const GuiTextClipRefreshContinuation* pending_clip() const noexcept;
     // These consume only the continuation AFTER its exact required child
@@ -83,9 +90,17 @@ public:
     void resume_clip_after_child70();
 private:
     friend class GuiTextRuntimeFactory;
+    friend class GuiTextRuntimeCopyOperation;
+    struct CopiedAdmission {};
     GuiTextRuntimeImplementation(GuiTextRuntimeFactory&, GuiWidgetOwner&);
+    // Empty host shell only. initialize_copy installs the ONE copied lifetime
+    // while this shell is already retained by its factory operation.
+    GuiTextRuntimeImplementation(GuiTextRuntimeFactory&, GuiWidgetOwner&, CopiedAdmission);
+    void initialize_copy(const GuiTextLifetime&, GuiTextCursorServices&);
+    GuiTextCopyPhase run_copy();
     void require_owner(GuiWidgetOwner&) const;
     void require_idle() const;
+    void require_constructor_read_or_idle() const;
     void retain_submission(GuiTextSubmitResult);
     void continue_clip();
     GuiTextRuntimeFactory& factory_;
@@ -94,6 +109,75 @@ private:
     std::unique_ptr<GuiTextPropertiesContinuation> properties_;
     std::unique_ptr<GuiTextSubmitContinuation> submission_;
     std::optional<GuiTextClipRefreshContinuation> clip_;
+    std::optional<GuiTextCopyServices> copy_services_;
+    // In-place construction cannot allocate after publishing the lifetime.
+    // References stay valid when the implementation's unique_ptr transfers.
+    std::optional<GuiTextCopyContinuation> copy_;
+    bool copied_admission_{};
+    bool copy_runtime_admitted_{};
+    bool copy_dispatch_active_{};
+    bool source_copy_borrowed_{}; // host mutation guard, not another refcount
+    GuiTextRuntimeCopyOperation* copy_operation_{}; // same retained caller until admission
+};
+
+struct GuiTextRuntimeCopyServices {
+    const GuiWidgetCopyServices& base;
+    GuiTextCursorServices& cursor;
+};
+enum class GuiTextRuntimeCopyPhase {
+    ready, running, pending_content, complete, null_allocation, failed
+};
+
+// Retained AA1380 nonnull-source caller. This owns the sole destination
+// layout and, until admission, its concrete implementation. The implementation
+// owns one copied GuiTextLifetime plus its exact derived/content frame. Base
+// acquired creators and opaque Text allocation remain visible on failure.
+// Source borrow prevents retirement across allocation/construction/pending;
+// it is released immediately on completion or the native null-allocation arm.
+// All services/factory/owner domains outlive this operation and created Text.
+// No destructor discards a started pending/failed native operation or retries
+// it. Such frames must stay alive for explicit inspection/native intervention.
+class GuiTextRuntimeCopyOperation final {
+public:
+    ~GuiTextRuntimeCopyOperation() noexcept;
+    GuiTextRuntimeCopyOperation(const GuiTextRuntimeCopyOperation&) = delete;
+    GuiTextRuntimeCopyOperation& operator=(const GuiTextRuntimeCopyOperation&) = delete;
+    GuiTextRuntimeCopyPhase run_00aa1380();
+    // ONLY after the actual saved glyph-child operation completed. Generic
+    // Text resume routes through this SAME caller and completes admission;
+    // no native constructor prefix or after-child continuation is replayed.
+    GuiTextRuntimeCopyPhase resume_after_glyph_child();
+    GuiTextRuntimeCopyPhase phase() const noexcept { return phase_; }
+    GuiTextRuntimeImplementation& implementation();
+    GuiTextRuntimeContentContinuation* pending_content() noexcept;
+    NativeGuiTextModelCloneAcquired& base_acquired() noexcept { return base_acquired_; }
+    GuiTextCursorAcquired& cursor_acquired();
+    // Allocation transport ONLY, never a constructed raw Text/refcount object.
+    void* opaque_allocation_slot() const noexcept { return raw_slot_; }
+    const std::exception_ptr& failure() const noexcept { return failure_; }
+    // Complete transfers the same layout/registered owner. Native allocation
+    // null returns nullptr; no unconstructed layout is reported as a clone.
+    std::unique_ptr<GuiLayoutWidget> take_completed_layout();
+private:
+    friend class GuiTextRuntimeFactory;
+    GuiTextRuntimeCopyOperation(GuiTextRuntimeFactory&, GuiWidgetOwner&,
+        GuiTextRuntimeImplementation&, std::unique_ptr<GuiLayoutWidget>&,
+        const GuiWidgetBaseCopyPreimage&, GuiTextRuntimeCopyServices);
+    void finish_admission();
+    void release_source_borrow() noexcept;
+    GuiTextRuntimeFactory& factory_;
+    GuiWidgetOwner& source_;
+    GuiTextRuntimeImplementation& source_implementation_;
+    std::unique_ptr<GuiLayoutWidget> destination_;
+    GuiWidgetBaseCopyPreimage preimage_;
+    GuiTextRuntimeCopyServices services_;
+    std::unique_ptr<GuiWidgetCopySourceBorrow> source_borrow_;
+    NativeGuiTextModelCloneAcquired base_acquired_;
+    std::unique_ptr<GuiWidgetTypeImplementation> implementation_;
+    GuiTextRuntimeImplementation* copied_implementation_{}; // borrowed, same object
+    GuiTextRuntimeCopyPhase phase_{GuiTextRuntimeCopyPhase::ready};
+    void* raw_slot_{};
+    std::exception_ptr failure_;
 };
 
 // Opaque raw-allocation transport only; the owner runtime retains the one type
@@ -108,6 +192,15 @@ public:
     GuiTextRuntimeFactory(const GuiTextRuntimeFactory&) = delete;
     GuiTextRuntimeFactory& operator=(const GuiTextRuntimeFactory&) = delete;
     std::unique_ptr<GuiWidgetTypeImplementation> make_type(GuiWidgetOwner&);
+    // Prepare a stable nonnull-source AA1380 caller before native allocation.
+    // Source must be this factory's existing live Text implementation. The
+    // explicit fresh destination preserves its authored_x/visible preimages;
+    // base preimage supplies AA9520's other represented unwritten fields.
+    // No default lifetime construction, fallback Model26 clone or null/no-op
+    // Text-retention provider substitutes for the required actual dependencies.
+    std::unique_ptr<GuiTextRuntimeCopyOperation> begin_copy_00aa1380(
+        GuiWidgetOwner& source, std::unique_ptr<GuiLayoutWidget>& destination,
+        const GuiWidgetBaseCopyPreimage&, GuiTextRuntimeCopyServices);
     // AB9D38/4F prerequisite ONLY: construct primary-null default Text in the
     // SAME runtime. Does not append+198, clone/bind a model, run74/78 or claim
     // the AB98F0 child tail completed. Caller transports the sole allocation.
@@ -118,6 +211,7 @@ public:
     std::size_t retained_allocation_count() const noexcept { return allocations_.size(); }
 private:
     friend class GuiTextRuntimeImplementation;
+    friend class GuiTextRuntimeCopyOperation;
     struct Allocation { void* raw_slot; bool completed_flags0; };
     void implementation_destroyed(GuiLayoutWidget&, bool completed_flags0) noexcept;
     GuiTextRuntimeFactoryServices services_;

@@ -1,0 +1,327 @@
+{
+  "packet": "orch6_zone_clearance_i",
+  "status": "complete native instruction schedule; Win32 Release and bounded original-byte differential passed; existing CRT and runtime boundaries explicit",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_clearance_distance.cpp",
+  "header": "include/bsp/avoid_zone_clearance_distance.hpp",
+  "documentation": "docs/AVOID_ZONE_CLEARANCE_DISTANCE.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00415D70",
+      "native": "00415D70",
+      "end_inclusive": "0041626A",
+      "name": "BSP_AvoidZone_SelectedEndpointClearance_00415D70",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "avoid_zone_selected_segments_clearance_00415d70",
+      "original_abi": "ECX=&selected_head; six stack slots center,radius,normal_a,normal_b,unused_from,unused_to_pointer; ST0 return; RET18h at00416268; trailing two slots never read",
+      "coverage": "complete native354-instruction schedule through existing recovered ST0 sqrt"
+    }
+  ],
+  "calls": [
+    {
+      "address": "004161F2",
+      "native": "00BF7030",
+      "function": "00415D70",
+      "binding": "existing native_crt_sqrt_st0_00bf7030 with borrowed actual CRT state and handler; no additional operand spill"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "009EFD4A",
+      "native": "00415D70",
+      "function": "009EF910",
+      "body": "009EF910..009F00F3",
+      "arguments": "ECX=EDI=&blk+0A3C; six stack slots at009EFD20..009EFD47; ST0 float stored toblk+37C by009EFD4F"
+    }
+  ],
+  "context_calls": [
+    {
+      "address": "009EFD00",
+      "native": "009D57E0",
+      "function": "009EF910",
+      "contract": "enabled-byte wrapper calls arc helper; clearance is reached only when wrapper reports false"
+    },
+    {
+      "address": "009D5809",
+      "native": "00415970",
+      "function": "009D57E0",
+      "body": "009D57E0..009D5816",
+      "contract": "ECX +=18h, four stack args, normalize returned pointer tobool, RET10h; this is not a nested helper of00415D70"
+    }
+  ],
+  "producer_and_layout": {
+    "type": "existing AvoidZoneSelectedSegment",
+    "producer": "00415190 constructor and00417630/00417A40 linking; docs/AVOID_ZONE_CLEARANCE.md",
+    "bytes": 32,
+    "fields": "start00,end08,next10,previous14,next_run18,close byte1C,padding1D..1F; no duplicated layout"
+  },
+  "native_behavior": [
+    "Square radius and spill before the empty-head branch; initial ordered minimum is exact7F7FFFFF from00D7A248.",
+    "For each normal, at least one endpoint projection must be ordered strictly greater than1.0. Only then clip a negative endpoint toprojection0, preserving original float spills.",
+    "First normal and initial center coordinates captured before traversal; center-y and second-normal reloads retain original ordering.",
+    "After both clips, require either endpoint squared distance ordered strictly greater than radius squared.",
+    "Select the second squared endpoint distance unless it is ordered greater than the first; preserve unordered asymmetry. No segment-interior closest projection.",
+    "sqrt result spills float, subtract original signed radius, spill float, update only on ordered strict improvement. Negative result remains negative; NaN cannot improve.",
+    "Use next when close byte equals0 and next is nonnull, otherwise next_run. All endpoints,links,padding and input pairs remain untouched."
+  ],
+  "abi_adaptations": [
+    "Private fastcall adds explicit CRT inEDX and pushes it before originalC4h scratch frame. Five original argument references move+4; all local offsets remain unchanged.",
+    "Modified argument reads are00415D76,00415D9C,00415DA7,00415DAF,00416202. Saved CRT at full frameESP+D0 is bound intoECX before004161F2,ST0 unspilled.",
+    "Public source omits the two unread trailing native arguments; private sourceRET10h replaces originalRET18h after popping added CRT slot."
+  ],
+  "constant_evidence": [
+    {
+      "address": "00D7A248",
+      "hex": "ffff7f7f",
+      "float": 3.4028234663852886e+38
+    },
+    {
+      "address": "00D7A24C",
+      "hex": "0000803f",
+      "float": 1.0
+    }
+  ],
+  "flow_verification": [
+    {
+      "address": "00415D70",
+      "instructions": 354,
+      "gaps": 0
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "corrections": [
+    {
+      "was": "static selected segments described as a tree",
+      "is": "actual20h contiguous edge runs",
+      "evidence": "existing00415190/00417630 producers and0041623D..00416251 traversal"
+    },
+    {
+      "was": "generic minimum distance of wedge survivors",
+      "is": "nearer clipped endpoint distance with either-outside radius gate; may be negative",
+      "evidence": "00416185..00416225 and original-byte fixture cases2,3"
+    },
+    {
+      "was": "ordinary nonnegative half-plane acceptance implied",
+      "is": "strict projection>1 gate followed by clipping atprojection0",
+      "evidence": "00415E75..00415F9F and00416019..00416138"
+    }
+  ],
+  "native_reference": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_base": "30000000",
+    "spans": [
+      {
+        "address": "00415D70",
+        "end_inclusive": "0041626A",
+        "length": 1275,
+        "live_matches_installed": true,
+        "sha256": "cf606b34bdaca7c707574eb1d6f66c66cc8d6c32eb62af98c98060fd3fa80586",
+        "relocations": [
+          {
+            "instruction": "00415D7D",
+            "operand": "00415D81",
+            "old": "00D7A248",
+            "new": "3097A248",
+            "text": "movss xmm0, dword ptr [0xd7a248]"
+          },
+          {
+            "instruction": "00415DE8",
+            "operand": "00415DEC",
+            "old": "00D7A24C",
+            "new": "3097A24C",
+            "text": "movss xmm2, dword ptr [0xd7a24c]"
+          }
+        ]
+      }
+    ],
+    "image_sha256": "b518c400ca6695765423250532680da1ab197365344576c6433d147f8cbbcbf5",
+    "constants": [
+      {
+        "address": "00D7A248",
+        "hex": "ffff7f7f",
+        "float": 3.4028234663852886e+38
+      },
+      {
+        "address": "00D7A24C",
+        "hex": "0000803f",
+        "float": 1.0
+      }
+    ]
+  },
+  "validation": {
+    "build": "./scripts/build.ps1:Win32 Release; reconstructed_math and native_math_differential2/2 passed",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds:passed",
+    "fixture_prepare": "python local/prepare_clearance_probe.py; Python pefile/capstone, installed config/target.json binary and live verified Ghidra bytes",
+    "fixture_build": "cmd /c local\\build_clearance_native_probe.cmd; MSVC Win32 /O2 /fp:strict /W4 /WX; /MANIFEST:EMBED; link current build/win32/Release/bsp_core.lib",
+    "fixture_run": "local\\clearance_native_probe.exe; original1275-byte body at30000000, source in ordinary build library",
+    "original_byte_execution": true,
+    "cases": 32,
+    "failures": 0,
+    "canonical_words": 32,
+    "records_equal": true,
+    "record_sha256": "9e8498891ddec7210989eec6eabd658d36eb6d7597124398c8241e318b0f12c0",
+    "comparison": "exact returned float bits; x87 TOP before/after calls; selected node/link/padding bytes unchanged; borrowed inputs may alias node endpoints; native trailing unused args tested with distinct invalid bit patterns",
+    "fp_environment": "masked exceptions,53-bit precision,round-to-nearest; _controlfp_s0009001F; sqrt bypass1 and aborting unexpected exception handler",
+    "library_exclusions": "native BF7030 hook and source both call existing recovered ST0 sqrt; no independent original CRT diagnostics/error-dispatch comparison",
+    "call_verification": "4 direct rows checked,0 failed"
+  },
+  "limits": [
+    "Reconstruction covers complete native geometry through existing CRT binding; no new CRT implementation or fake handler supplied to production.",
+    "Focused proof does not claim all FP control modes, original CRT exceptional behavior, hardware faults, malformed/corrupt links, concurrent mutations or mission/gameplay parity.",
+    "Runtime callback/cache/list ownership remains root-owned. No runtime source changed; typed ABI is not binary-compatible with original six-slot method."
+  ],
+  "artifact_hash_scope": "SHA256 of tested raw worktree bytes; Git may normalize text line endings",
+  "artifacts": [
+    {
+      "path": "src/avoid_zone_clearance_distance.cpp",
+      "sha256": "a2535875ac8a1fdd5957631c03aba02af317e1037b1982b08ead2d3cefad6a3a",
+      "bytes": 16513
+    },
+    {
+      "path": "include/bsp/avoid_zone_clearance_distance.hpp",
+      "sha256": "27ec77fa89e1356c3f82200fb32300b4ecf516410acce72e7a007627a82008d9",
+      "bytes": 1324
+    },
+    {
+      "path": "docs/AVOID_ZONE_CLEARANCE_DISTANCE.md",
+      "sha256": "d2dda4225ba8622e3ae845c61ac039ea3ffa9a36d3f9e33a6264e2d219e7da93",
+      "bytes": 8533
+    },
+    {
+      "path": "local/clearance_00415d70.asm",
+      "sha256": "4b9b6d4eaa2b8ffbb8c3d515e26485a250ba8c3d219bf04731fac3eeffc81c8f",
+      "bytes": 11134
+    },
+    {
+      "path": "local/clearance_arc_wrapper_009d57e0.asm",
+      "sha256": "c7e439abf2f303ec79f2211985d038cab733e252af052b2e4f8518655b28f9bc",
+      "bytes": 543
+    },
+    {
+      "path": "local/clearance_boundaries.txt",
+      "sha256": "a2903a14699828227c67f6d07d94bfb7a84c702232f25c315e5fbbf6068b7ed7",
+      "bytes": 275
+    },
+    {
+      "path": "local/clearance_build.log",
+      "sha256": "2c1ff648161e13cde9d0d677f828ec49c80d19dd7ef3f6a943c1503219523d65",
+      "bytes": 38932
+    },
+    {
+      "path": "local/clearance_bytes_00415D70.txt",
+      "sha256": "c16f56c020a48ce0ae17a98c06c64ed79ee3fb759c7b79067f3baec105f98071",
+      "bytes": 6140
+    },
+    {
+      "path": "local/clearance_caller_009ef910.asm",
+      "sha256": "ac65c40c090e77e91a098915db62eed01a559ad693bbf0382ddc7ee8739829bd",
+      "bytes": 17044
+    },
+    {
+      "path": "local/clearance_calls.json",
+      "sha256": "e27b7bf15bc05f53523e1b34b66dcb33730ef9241c926b6e09fc8ca2bc20bf8e",
+      "bytes": 320
+    },
+    {
+      "path": "local/clearance_capstone.asm",
+      "sha256": "79e9b5b69ae7c33b081fdb75f07c14398e6db8a86098b6b46549a9c6ce97ceeb",
+      "bytes": 13875
+    },
+    {
+      "path": "local/clearance_flow.log",
+      "sha256": "82eea8329c3a4effc213148df8bb3cc2b7e5d8686f78d7d2495b413c186e18d6",
+      "bytes": 129
+    },
+    {
+      "path": "local/clearance_native_image.bin",
+      "sha256": "b518c400ca6695765423250532680da1ab197365344576c6433d147f8cbbcbf5",
+      "bytes": 14872576
+    },
+    {
+      "path": "local/clearance_native_manifest.json",
+      "sha256": "9ff0ba4aa01e32faacba4488475ecc42f920e2cda1899c466a22d0bdaf3a4598",
+      "bytes": 1234
+    },
+    {
+      "path": "local/clearance_native_probe.cpp",
+      "sha256": "9b2ea3cbe541a2c76275e0fa364a9b1d4fd2813c429bcb4d6b46a36ceb3002d2",
+      "bytes": 7633
+    },
+    {
+      "path": "local/clearance_native_probe.exe",
+      "sha256": "404f64584d2437e462d9e1fa4e34aa466f0f372361d68f0c90c7b13a2df8800b",
+      "bytes": 40960
+    },
+    {
+      "path": "local/clearance_native_records.bin",
+      "sha256": "9e8498891ddec7210989eec6eabd658d36eb6d7597124398c8241e318b0f12c0",
+      "bytes": 128
+    },
+    {
+      "path": "local/clearance_original_00415D70.bin",
+      "sha256": "cf606b34bdaca7c707574eb1d6f66c66cc8d6c32eb62af98c98060fd3fa80586",
+      "bytes": 1275
+    },
+    {
+      "path": "local/clearance_preliminary_calls.log",
+      "sha256": "6ec29fbb9986d6f856d6ffad87ce49ec5a1fa48cf1c0ed7d056e0207f499cf9c",
+      "bytes": 59
+    },
+    {
+      "path": "local/clearance_prepare.log",
+      "sha256": "e27abc1f0362b63b73c570a3569336f564bc87c9ac247d3f4b99dfca2d4a5dd9",
+      "bytes": 132
+    },
+    {
+      "path": "local/clearance_probe.log",
+      "sha256": "e7ecfd9540009acd3c3daac7367b594cb38a29e59acb1ee764c8e36fbf780d62",
+      "bytes": 2728
+    },
+    {
+      "path": "local/clearance_probe_compile.log",
+      "sha256": "b4b79fd512bcd6f034db75187370b2b10ed95f8c6044f3f1bd5eda79e5cd75ce",
+      "bytes": 28
+    },
+    {
+      "path": "local/clearance_report_calls.log",
+      "sha256": "b9f150c12e8aea303e1717b96e23a9d1c4327ec2e2e2c33433a4a7eb1112e9bd",
+      "bytes": 75
+    },
+    {
+      "path": "local/clearance_source_records.bin",
+      "sha256": "9e8498891ddec7210989eec6eabd658d36eb6d7597124398c8241e318b0f12c0",
+      "bytes": 128
+    },
+    {
+      "path": "local/clearance_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/prepare_clearance_probe.py",
+      "sha256": "98f0893705de16759469d5b7f5a252d7dac642b0431503388ec87ad9043a904d",
+      "bytes": 2758
+    },
+    {
+      "path": "local/build_clearance_native_probe.cmd",
+      "sha256": "d480dace599b4e8978137830fd63392d1734f3e658cd8840b4489012a8194819",
+      "bytes": 387
+    },
+    {
+      "path": "local/write_clearance_schedule.py",
+      "sha256": "4fe997c66e92488a7f049d11e0c481540835174a022b31db27bdf6839b35c69c",
+      "bytes": 3049
+    },
+    {
+      "path": "local/record_clearance_report.py",
+      "sha256": "13a879bb68eb9953b9bc7b633304acb22e089ac5adb434b2a2d81f64d3014b36",
+      "bytes": 9428
+    }
+  ]
+}

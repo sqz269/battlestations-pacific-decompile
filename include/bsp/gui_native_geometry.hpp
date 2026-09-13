@@ -36,9 +36,11 @@ public:
     NativeMeshStorage* create_mesh();
     NativeMeshSectionStorage* create_section();
 
-    // B742A0 -> B73F50, fixed Text flags26h. Source is a registered actual
+    // B742A0 -> B73F50, Text flags26h or exactly3E when streams is supplied.
+    // Source is a registered actual
     // D62D60 mesh. Explicit actual current table has at least five DWORDs;
-    // its +10 must be B742A0. Allocate a distinct mesh; share actual streams;
+    // its +10 must be B742A0. Allocate a distinct mesh; share actual streams
+    // for26, clone actual streams for3E;
     // copy sections, clone their materials, copy LOD/optional fields/names.
     // Return ONE registered creator reference in this SAME owner domain.
     // Material access/profile survive every resulting material's final release.
@@ -49,7 +51,16 @@ public:
         const volatile std::uint32_t* current_vtable_00d62d60,
         NativeMaterialDestructionAccess&,
         const volatile std::uint32_t* current_vtable_00d5e520,
-        NativeMeshCloneAcquired& acquired);
+        NativeMeshCloneAcquired& acquired, NativeStreamCloneServices* flags3e_streams = nullptr);
+
+    // Host registration ONLY after a real stream factory completes. Borrow its
+    // actual+04 through the corresponding native logical reference; no new count,
+    // native object, retain or renderer registration. On metadata/bind failure,
+    // the acquired raw creator and any companion remain published for diagnosis.
+    // A noncanonical companion may be released directly after maps/caller effects
+    // are resolved. A raw creator without companion still needs its real terminal
+    // context. Never drop or retry the interrupted clone to perform cleanup.
+    void register_stream_clone_creator(NativeStreamCloneAcquired&, NativeStreamCloneServices&);
 
     // Actual copied creators used by B73F50. Each result is canonically
     // registered with +04=1; caller transfers/releases that creator reference.

@@ -84,8 +84,9 @@ int binding_trampoline(lua_State* state) {
     const bsp::MissionLuaBinding& dispatch_row =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
     GameScriptOrdersHost* orders = host->script_orders();
-    const bool handled = orders != nullptr
-        && GameScriptOrdersHost::handles(dispatch_row.name);
+    const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
+    const bool handled = avoidance_setting || (orders != nullptr
+        && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
@@ -124,6 +125,16 @@ int binding_trampoline(lua_State* state) {
     // value is different from one that returns none, and the shipped scripts
     // assign from these.
     const bsp::MissionLuaBinding& binding = dispatch_row;
+    if (avoidance_setting) {
+        // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
+        // gate. Native argument zero is this C callback's stack slot one;
+        // absent/nil/false are false, numeric zero and strings are true.
+        // Only the proven value store is projected; no private Lua owner,
+        // diagnostic string or native SEH construction is claimed here.
+        if (!host->error_replay())
+            host->set_avoid_all_ship_collision_008d0852(lua_toboolean(state, 1) != 0);
+        return 0;
+    }
     if (handled && !host->error_replay()) {
         return orders->dispatch(state, binding.name, argc);
     }
@@ -339,10 +350,29 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
     const bool table = lua_type(state_, -1) == LUA_TTABLE;
     ::lua_settop(state_, top);
     log_.implemented("GameSettings::get_ship_globals_table", "00b67800");
+    if (table) {
+        // Literal store in the native settings load, not a Lua key/default
+        // inferred from the mission. The explicit process reload replays it.
+        avoid_all_ship_collision_ = kAvoidAllShipCollisionLoaderDefault;
+        avoid_all_ship_collision_loaded_ = true;
+        log_.implemented("GameSettings::load_avoid_all_ship_collision", "0083bcd5");
+    }
     log_.notef("gameplay settings: %s run through 00885110 (the owner's own runner 00b69d40 "
         "at 0083b6e6 is a record), chunk ok=%d, `%s` is %s", kShipGlobalsScriptPath,
         ok ? 1 : 0, kShipGlobalsGlobal, table ? "a table" : "absent");
     return table;
+}
+
+bool GameMissionLuaHost::read_avoid_all_ship_collision(bool& value) const noexcept {
+    if (!avoid_all_ship_collision_loaded_) return false;
+    value = avoid_all_ship_collision_;
+    return true;
+}
+
+void GameMissionLuaHost::set_avoid_all_ship_collision_008d0852(bool value) {
+    avoid_all_ship_collision_ = value;
+    avoid_all_ship_collision_loaded_ = true;
+    log_.implemented("GameSettings::set_avoid_all_ship_collision", "008d0852");
 }
 
 bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,

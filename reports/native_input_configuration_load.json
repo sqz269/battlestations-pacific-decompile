@@ -1,0 +1,609 @@
+{
+  "packet": "orch4_input_configuration_load_ai",
+  "status": "descriptor_and_script_prefix_reconstructed_strict_win32_native_component_fixture_passed_full_parser_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "sources": [
+    "include/bsp/native_input_configuration_load.hpp",
+    "src/native_input_configuration_load.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_CONFIGURATION_LOAD.md",
+  "functions": [
+    {
+      "address": "006974f0",
+      "end_exclusive": "00697706",
+      "bytes": 534,
+      "sha256": "65ac8517931476ea709aac836403397622beb75da5cb12499b01b3909042d5d3",
+      "disk_live_equal": true,
+      "coverage": "complete"
+    },
+    {
+      "address": "00698a10",
+      "end_exclusive": "00698b5f",
+      "bytes": 335,
+      "sha256": "e209309e5efe8fb6483577058d696bac52ad2dfa9109b653c87c16ebbc0ed524",
+      "disk_live_equal": true,
+      "coverage": "prefix only; stops before globals call698B5F; not a complete698A10 entry"
+    }
+  ],
+  "calls": [
+    {
+      "function": "006974f0",
+      "address": "0069751b",
+      "native": "00b67720",
+      "evidence": "Native call 0xb67720; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697528",
+      "native": "00b66290",
+      "evidence": "Native call 0xb66290; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069753c",
+      "native": "00b67700",
+      "evidence": "Native call 0xb67700; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069754a",
+      "native": "00b67720",
+      "evidence": "Native call 0xb67720; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697559",
+      "native": "00b66290",
+      "evidence": "Native call 0xb66290; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069756a",
+      "native": "00b67700",
+      "evidence": "Native call 0xb67700; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069757c",
+      "native": "00b67720",
+      "evidence": "Native call 0xb67720; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069758b",
+      "native": "00b65fb0",
+      "evidence": "Native call 0xb65fb0; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069759d",
+      "native": "00b67700",
+      "evidence": "Native call 0xb67700; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975af",
+      "native": "00b67720",
+      "evidence": "Native call 0xb67720; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975be",
+      "native": "00b66290",
+      "evidence": "Native call 0xb66290; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975cd",
+      "native": "00b67700",
+      "evidence": "Native call 0xb67700; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697617",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697628",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697631",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": true
+    },
+    {
+      "function": "006974f0",
+      "address": "00697643",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697659",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069767a",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069768c",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006976a7",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006976c4",
+      "native": "00bf6713",
+      "evidence": "Native call 0xbf6713; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a2f",
+      "native": "00698730",
+      "evidence": "Native call 0x698730; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a43",
+      "native": "00b6a020",
+      "evidence": "Native call 0xb6a020; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a5c",
+      "native": "0041e870",
+      "evidence": "Native call 0x41e870; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a6f",
+      "native": "00b66c60",
+      "evidence": "Native call 0xb66c60; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a98",
+      "native": "0041e870",
+      "evidence": "Native call 0x41e870; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aaf",
+      "native": "00b66c60",
+      "evidence": "Native call 0xb66c60; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad1",
+      "native": "00419cc0",
+      "evidence": "Native call 0x419cc0; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad8",
+      "native": "00bd1510",
+      "evidence": "Native call 0xbd1510; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aed",
+      "native": "0041dd40",
+      "evidence": "Native call 0x41dd40; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b08",
+      "native": "00bf7680",
+      "evidence": "Native call 0xbf7680; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b23",
+      "native": "00b69d40",
+      "evidence": "Native call 0xb69d40; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b42",
+      "native": "00419cc0",
+      "evidence": "Native call 0x419cc0; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b49",
+      "native": "00bd1510",
+      "evidence": "Native call 0xbd1510; argument/register schedule reviewed in the bounded listing.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069941a",
+      "native": "006974f0",
+      "evidence": "ECX retained configuration; stack output14h, current Lua object and low-byte flag. RET0Ch. Complete containing body verified."
+    },
+    {
+      "function": "00698a10",
+      "address": "006994d6",
+      "native": "006974f0",
+      "evidence": "ECX retained configuration; stack output14h, current Lua object and low-byte flag. RET0Ch. Complete containing body verified."
+    },
+    {
+      "function": "00698a10",
+      "address": "006995f7",
+      "native": "006974f0",
+      "evidence": "ECX retained configuration; stack output14h, current Lua object and low-byte flag. RET0Ch. Complete containing body verified."
+    },
+    {
+      "function": "004dd5b0",
+      "address": "004dd745",
+      "native": "00698a10",
+      "setup": [
+        "004dd70a: CALL 0x00aab5e0 ",
+        "004dd70f: CALL 0x004c12b0 ",
+        "004dd714: MOV dword ptr [EAX + 0x4],0x696590 ",
+        "004dd71b: MOV dword ptr [0x00f8bbfc],0x6965a0 ",
+        "004dd725: CALL 0x004c12b0 ",
+        "004dd72a: MOVZX EDX,byte ptr [0x00f88a31] ",
+        "004dd731: PUSH EDX ",
+        "004dd732: MOV ECX,EAX ",
+        "004dd734: CALL 0x00aa2110 ",
+        "004dd739: CMP byte ptr [ESI + 0x55c],0x0 ",
+        "004dd740: JNZ 0x004dd74a ",
+        "004dd742: LEA ECX,[ESI + 0x3c] ",
+        "004dd745: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "00699b80",
+      "address": "00699bde",
+      "native": "00698a10",
+      "setup": [
+        "00699baa: JNZ 0x00699bb4 ",
+        "00699bac: CMP byte ptr [ESI + 0x4cc],CL ",
+        "00699bb2: JZ 0x00699be3 ",
+        "00699bb4: CMP byte ptr [ESI + 0x520],0x0 ",
+        "00699bbb: MOV byte ptr [ESI + 0x4c9],AL ",
+        "00699bc1: MOV byte ptr [ESI + 0x4ca],BL ",
+        "00699bc7: MOV byte ptr [ESI + 0x4cb],DL ",
+        "00699bcd: MOV byte ptr [ESI + 0x4cc],CL ",
+        "00699bd3: JZ 0x00699be3 ",
+        "00699bd5: MOV ECX,ESI ",
+        "00699bd7: CALL 0x00698730 ",
+        "00699bdc: MOV ECX,ESI ",
+        "00699bde: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "0055fca0",
+      "address": "0055fdb2",
+      "native": "00698a10",
+      "setup": [
+        "0055fd89: MOV EAX,dword ptr [ESP + 0x10] ",
+        "0055fd8d: PUSH 0x1 ",
+        "0055fd8f: ADD EAX,0x1 ",
+        "0055fd92: PUSH EAX ",
+        "0055fd93: PUSH ECX ",
+        "0055fd94: CALL 0x00419cc0 ",
+        "0055fd99: MOV ECX,EAX ",
+        "0055fd9b: CALL 0x00bd1510 ",
+        "0055fda0: CMP byte ptr [0x00f88a30],0x0 ",
+        "0055fda7: JNZ 0x0055fdb7 ",
+        "0055fda9: MOV ECX,dword ptr [0x00e188a8] ",
+        "0055fdaf: ADD ECX,0x3c ",
+        "0055fdb2: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "0055fca0",
+      "address": "0055fe80",
+      "native": "00698a10",
+      "setup": [
+        "0055fe53: SAR EDI,0x3 ",
+        "0055fe56: ADD EDI,0x3 ",
+        "0055fe59: CMP ECX,EDI ",
+        "0055fe5b: JNZ 0x0055feba ",
+        "0055fe5d: MOV ECX,dword ptr [0x00e198b8] ",
+        "0055fe63: PUSH EBX ",
+        "0055fe64: PUSH 0xc ",
+        "0055fe66: CALL 0x004cc460 ",
+        "0055fe6b: CMP byte ptr [0x00f88a30],BL ",
+        "0055fe71: JNZ 0x0055fdb7 ",
+        "0055fe77: MOV ECX,dword ptr [0x00e188a8] ",
+        "0055fe7d: ADD ECX,0x3c ",
+        "0055fe80: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "00560430",
+      "address": "0056074b",
+      "native": "00698a10",
+      "setup": [
+        "0056071d: CALL 0x004d92b0 ",
+        "00560722: TEST AL,AL ",
+        "00560724: PUSH EBX ",
+        "00560725: JZ 0x00560773 ",
+        "00560727: MOV ECX,dword ptr [0x00e198b8] ",
+        "0056072d: PUSH 0xc ",
+        "0056072f: MOV dword ptr [0x00e19650],EBX ",
+        "00560735: CALL 0x004cc460 ",
+        "0056073a: CMP byte ptr [0x00f88a30],BL ",
+        "00560740: JNZ 0x00560750 ",
+        "00560742: MOV ECX,dword ptr [0x00e188a8] ",
+        "00560748: ADD ECX,0x3c ",
+        "0056074b: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "005f65c0",
+      "address": "005f6637",
+      "native": "00698a10",
+      "setup": [
+        "005f6606: MOVZX EAX,byte ptr [EBP + 0x188] ",
+        "005f660d: SETNZ BL ",
+        "005f6610: CMP byte ptr [0x00f88a30],AL ",
+        "005f6616: JZ 0x005f6623 ",
+        "005f6618: PUSH EAX ",
+        "005f6619: MOV ECX,0xf88980 ",
+        "005f661e: CALL 0x008d44c0 ",
+        "005f6623: PUSH ESI ",
+        "005f6624: MOV ECX,0xf88980 ",
+        "005f6629: CALL 0x005f52c0 ",
+        "005f662e: MOV ECX,dword ptr [0x00e188a8] ",
+        "005f6634: ADD ECX,0x3c ",
+        "005f6637: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "0067cc60",
+      "address": "0067ceb9",
+      "native": "00698a10",
+      "setup": [
+        "0067ce91: PUSH EAX ",
+        "0067ce92: CALL 0x008d44c0 ",
+        "0067ce97: PUSH EBX ",
+        "0067ce98: PUSH 0x67ca40 ",
+        "0067ce9d: LEA EAX,[ESP + 0x18] ",
+        "0067cea1: PUSH EAX ",
+        "0067cea2: MOV ECX,ESI ",
+        "0067cea4: CALL 0x007fa710 ",
+        "0067cea9: MOV ECX,ESI ",
+        "0067ceab: CALL 0x007fae70 ",
+        "0067ceb0: MOV ECX,dword ptr [0x00e188a8] ",
+        "0067ceb6: ADD ECX,0x3c ",
+        "0067ceb9: CALL 0x00698a10 "
+      ]
+    },
+    {
+      "function": "0067cfb0",
+      "address": "0067d50f",
+      "native": "00698a10",
+      "setup": [
+        "0067d4e7: MOV EAX,dword ptr [ECX] ",
+        "0067d4e9: MOV EDX,dword ptr [EAX + 0xc] ",
+        "0067d4ec: CALL EDX ",
+        "0067d4ee: MOV ECX,dword ptr [0x00f8bbf4] ",
+        "0067d4f4: MOV EAX,dword ptr [ECX] ",
+        "0067d4f6: MOV EDX,dword ptr [EAX + 0x8] ",
+        "0067d4f9: CALL EDX ",
+        "0067d4fb: MOV ECX,0xf88980 ",
+        "0067d500: PUSH EAX ",
+        "0067d501: CALL 0x008d44c0 ",
+        "0067d506: MOV ECX,dword ptr [0x00e188a8] ",
+        "0067d50c: ADD ECX,0x3c ",
+        "0067d50f: CALL 0x00698a10 "
+      ]
+    }
+  ],
+  "native_abi": {
+    "006974f0": "ECX actual configuration; stack output14h, Lua object pointer, low-byte swap; EAX output; RET0Ch",
+    "00698a10": "ECX actual configuration; no stack inputs; RET. Only initial335 bytes reconstructed, no complete source entry."
+  },
+  "source_layout": "698680 constructs same-base4C8h Lua owner and checked10h headers at4D0/4E0/4F0/500/510. Descriptor output is14h with padding11..13 preserved.",
+  "exception_evidence": {
+    "descriptor": {
+      "handler": "00c7eb90",
+      "func_info": "00dab8a8",
+      "unwind_map": "00dab888",
+      "states": 4,
+      "cleanup": "states0/1/2 unwind temporary at EBP-34 viaC7EB70/78/80; state3 EBP-20 viaC7EB88; each callsB67700 after native state resets on normal release."
+    },
+    "loader_prefix": {
+      "handler": "00c7ee45",
+      "func_info": "00dabb8c",
+      "full_function_states": 35,
+      "prefix_states": [
+        0,
+        1,
+        2
+      ],
+      "cleanup": "All three prefix states unwind string at EBP-14C viaC7ECD0/DB/E6 to41DD20. Ownership begins after construction/copy; normal release resets state first."
+    }
+  },
+  "no_ghidra_function": [
+    {
+      "address": "00c7eb90",
+      "end_inclusive": "00c7eb99",
+      "end_exclusive": "00c7eb9a",
+      "last_instruction_length": 5,
+      "kind": "compiler handler, not reconstructed library code",
+      "defined_by_integrator": true
+    },
+    {
+      "address": "00c7ee45",
+      "end_inclusive": "00c7ee4e",
+      "end_exclusive": "00c7ee4f",
+      "last_instruction_length": 5,
+      "kind": "compiler handler, not reconstructed library code",
+      "defined_by_integrator": true
+    }
+  ],
+  "fixture_plan": {
+    "one_ignored_fixture": true,
+    "native_descriptor_bytes": 534,
+    "native_prefix_bytes": 335,
+    "prefix_fixture_return_tail_hex": "83c4045e5b8b8c24600100005f5d64890d0000000081c464010000c3",
+    "direct_relocations": 34,
+    "absolute_relocations": 5,
+    "same_real_lua_storage_cleanup_and_file_services": true,
+    "limits": "Original prefix stops at698B5F with explicit synthetic return tail; no parser/tick/hardware/game execution. Original EH is analyzed, not executed."
+  },
+  "limitations": [
+    "Complete698A10 parser, nested append providers and application first-time action population remain.",
+    "Source APIs are not original ABI/SEH replacements. Valid storage and bounded string allocations required.",
+    "Fixture stream provider is external; installed script execution does not prove native physical/archive VFS routing."
+  ],
+  "unassigned_transfers": [
+    {
+      "transfer_site": "0055fa79",
+      "target": "00698a10",
+      "native_kind": "JMP",
+      "setup_start": "0055fa6f",
+      "bytes": "8b0da888e10083c13c5ee9928f1300",
+      "disk_live_equal": true,
+      "evidence": "MOV ECX,[E188A8]; ADD ECX,3C; POP ESI; tail JMP698A10. No containing Ghidra function inferred.",
+      "xref_correction": "Ghidra xref classifies both as UNCONDITIONAL_CALL; first is native opcodeE9, a tail JMP. Raw bytes govern the contract."
+    },
+    {
+      "transfer_site": "00560e1c",
+      "target": "00698a10",
+      "native_kind": "CALL",
+      "setup_start": "00560e13",
+      "bytes": "8b0da888e10083c13ce8ef7b1300",
+      "disk_live_equal": true,
+      "evidence": "MOV ECX,[E188A8]; ADD ECX,3C; CALL698A10. No containing Ghidra function inferred.",
+      "xref_correction": "Ghidra xref classifies both as UNCONDITIONAL_CALL; first is native opcodeE9, a tail JMP. Raw bytes govern the contract."
+    }
+  ],
+  "previous_goal_turn": "progress: published9cd28c57 input components; full rebuild remains incomplete",
+  "validation": {
+    "utc": "2026-09-13T03:34:04.027976+00:00",
+    "build": "local/input_configuration_load_ai_build.log",
+    "ctests_passed": 2,
+    "build_sha256": "f42a81018aa8f3489d816bca751b227ea94ac6924f478e8f09e0261c9425a214",
+    "seed_log": "local/input_load_ai_seeds.log",
+    "seeds_matched": 8,
+    "seed_log_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "fixture": "local/input_load_ai_probe.log",
+    "fixture_sha256": "70cbd55ae4f920c6104854b717f6a50ef339d929e944655bc853f538d57d0213",
+    "fixture_source_sha256": "5b97e80bb2589521f2f6d0a0e0e929771b219b4792b7c6578e22b8b30bf53728",
+    "fixture_runner_sha256": "66ed03cb9047d5661f1b73040d23267b6a80d71e1d6f1c5f916cc13c6e8b5694",
+    "core_archive_sha256": "8a9f45151c88b8ab252846d9f8dad8408d60e2fdc740f5d761d4f424309237ae",
+    "observations": {
+      "native_source_equal_words": 56,
+      "prefix_calls_per_run": 2,
+      "bootstrap_calls_per_run": 1,
+      "installed_Inputs_reexecuted": true,
+      "descriptor_phases": 5,
+      "returning_crt_repairs_per_run": 2,
+      "streams_opened_closed_per_run": [
+        2,
+        2
+      ],
+      "live_string_buffers_after": 0,
+      "Lua_object_registrations_after": 0
+    },
+    "source_hashes": {
+      "include/bsp/native_input_configuration_load.hpp": "8d266b47c5764606c25df71d773875f64525c4598b19fc7f2d5f479818530c4c",
+      "src/native_input_configuration_load.cpp": "313cd7b68e8d12e587b9a87c4a75412e2603a132596b8ef113d37efadaabfc3d"
+    },
+    "code_revision": "d2fa9e6ad49aaf705b4780fa546677be2a17d325",
+    "native_abi_compatible": false,
+    "native_EH_executed": false,
+    "physical_archive_vfs_route_validated": false,
+    "game_validated": false,
+    "new_tracked_tests": 0,
+    "sdk_calls": 0,
+    "game_launches": 0,
+    "single_instance_bypass": false,
+    "fixture_output": [
+      "PASS native/source words=56 descriptor534_prefix335=1 prefix_calls=2 bootstrap_once=1 installed_Inputs_reexecuted=1 X360_runtime_override=1 action_unregister=1 real_Lua_temp_cleanup=1 descriptor_phases=5 duplicate_third_lookup=1 live4CC_gate=1 padding_preserved=1 returning_CRT=2 streams=2/2 string_buffers=0",
+      "BOUNDARY original descriptor and prefix instructions with source Lua/storage/file leaves; prefix has explicit fixture return tail; installed bytes through external fixture streams, no complete parser/native VFS route/FH3 exception/hardware/game validation",
+      "CoreArchiveSHA256=8A9F45151C88B8AB252846D9F8DAD8408D60E2FDC740F5D761D4F424309237AE"
+    ],
+    "call_rows": 45,
+    "call_failures": 0
+  },
+  "installed_assets": {
+    "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+    "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+  },
+  "metadata": {
+    "prototypes": "reports/native_input_configuration_load_ai_prototypes.json",
+    "definitions": "reports/native_input_configuration_load_ai_definitions.json",
+    "saved_readback_exported": true
+  },
+  "final_validation": {
+    "utc": "2026-09-13T03:50:58.125370+00:00",
+    "source_revision": "a8cbcf8470309e82515a7db1b216fe39365018a2",
+    "merged_main_revision": "dce662686b007bd89e74fd3f5257cb3bc12b831c",
+    "code_manifest": "local\\input_load_ai_source_manifest.json",
+    "code_manifest_sha256": "0d5ac81ea3fb5a89e3cf79fa062ed499dd1d05932f6f5bbb63987272d4a46c46",
+    "code_files": 2159,
+    "core_archive_sha256": "53da8992c587217d492b3710bb955c83585948035618040072f88e9c3ed0ec2c",
+    "game_executable_sha256": "d10dcf21f8e3870a1e9150c1c4d0b182d3c35011ded6a5ea64693bdb8776cbb9",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_load_ai_combined_build.log",
+    "build_log_sha256": "c3c92fa516970f54de2bb7e692140726fd40412b701f4a74fc7585b3dd82b3c2",
+    "fixture_log": "local\\input_load_ai_combined_probe.log",
+    "fixture_log_sha256": "81b2cc0bc1a2eeadecf04519e8c42addd5f477935e11f63236f180895b5aa0b9",
+    "fixture_passed": true,
+    "same_source_hashes_as_native_byte_component_comparison": true,
+    "native_descriptor_and_prefix_same_archive": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  }
+}

@@ -499,7 +499,7 @@ std::uint8_t native_renderer_secondary_stream_registration_00b1fe50(const void* 
 }
 void* create_native_registered_vertex_stream_00b287c0(void* renderer,
     std::uint32_t count, std::uint32_t flags, void* declaration,
-    NativeLogicalVertexOwnerContext& context) {
+    NativeLogicalVertexOwnerContext& context, void** acquired_before_registration) {
     void* const allocation = allocate_native_logical_vertex_stream_00b4b370(
         context.actual_logical_vertex_pool_0108fe18);
     void* owner = nullptr;
@@ -512,6 +512,7 @@ void* create_native_registered_vertex_stream_00b287c0(void* renderer,
         unwind_allocation(allocation, context);
         throw;
     }
+    if (acquired_before_registration) *acquired_before_registration = owner;
     append_renderer_pointer(at(renderer, 0x1aac), owner);
     const auto renderer_token = word(renderer);
     __assume(renderer_token == 0x00d5f0a8u);

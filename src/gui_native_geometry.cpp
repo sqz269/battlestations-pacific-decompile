@@ -36,6 +36,20 @@ struct GuiNativeGeometryOwners::Impl {
         std::unique_ptr<NativeMaterialReference> reference;
         bool registered{};
     };
+    struct VertexEntry {
+        explicit VertexEntry(Impl& owner) noexcept : domain(owner) {}
+        Impl& domain;
+        void* raw{};
+        std::unique_ptr<NativeLogicalVertexReference> reference;
+        bool registered{};
+    };
+    struct IndexEntry {
+        explicit IndexEntry(Impl& owner) noexcept : domain(owner) {}
+        Impl& domain;
+        void* raw{};
+        std::unique_ptr<NativeLogicalIndexReference> reference;
+        bool registered{};
+    };
     NativeMeshEnvironment& meshes;
     NativeMeshConstants constants;
     NativeMeshSectionEnvironment& sections;
@@ -43,6 +57,8 @@ struct GuiNativeGeometryOwners::Impl {
     std::list<MeshEntry> mesh_entries;
     std::list<SectionEntry> section_entries;
     std::list<MaterialEntry> material_entries;
+    std::list<VertexEntry> vertex_entries;
+    std::list<IndexEntry> index_entries;
 
     Impl(NativeMeshEnvironment& mesh_environment, NativeMeshConstants supplied,
         NativeMeshSectionEnvironment& section_environment, GuiNativeGeometryRegistration registry)
@@ -55,7 +71,8 @@ struct GuiNativeGeometryOwners::Impl {
             "GUI native mesh and section must use the same actual owner domain");
     }
     ~Impl() {
-        if (!mesh_entries.empty() || !section_entries.empty() || !material_entries.empty())
+        if (!mesh_entries.empty() || !section_entries.empty() || !material_entries.empty() ||
+            !vertex_entries.empty() || !index_entries.empty())
             std::terminate();
     }
     static void retire_mesh(void* context, NativeMeshReference& reference) noexcept {
@@ -87,6 +104,48 @@ struct GuiNativeGeometryOwners::Impl {
             if (&*it == &entry) { self.material_entries.erase(it); return; }
         }
         std::terminate();
+    }
+    static void retire_vertex(void* context, NativeLogicalVertexReference& reference) noexcept {
+        auto& entry = *static_cast<VertexEntry*>(context);
+        auto& self = entry.domain;
+        if (entry.registered) self.registration.unbind(self.registration.context, entry.raw, reference);
+        for (auto it = self.vertex_entries.begin(); it != self.vertex_entries.end(); ++it)
+            if (&*it == &entry) { self.vertex_entries.erase(it); return; }
+        std::terminate();
+    }
+    static void retire_index(void* context, NativeLogicalIndexReference& reference) noexcept {
+        auto& entry = *static_cast<IndexEntry*>(context);
+        auto& self = entry.domain;
+        if (entry.registered) self.registration.unbind(self.registration.context, entry.raw, reference);
+        for (auto it = self.index_entries.begin(); it != self.index_entries.end(); ++it)
+            if (&*it == &entry) { self.index_entries.erase(it); return; }
+        std::terminate();
+    }
+    void register_stream(NativeStreamCloneAcquired& acquired, NativeStreamCloneServices& services) {
+        require(acquired.creator && !acquired.companion && !acquired.canonical_registration,
+            "stream registration requires one unbound actual creator");
+        if (acquired.vertex) {
+            auto it = vertex_entries.emplace(vertex_entries.end(), *this);
+            it->raw = acquired.creator;
+            try {
+                it->reference = std::make_unique<NativeLogicalVertexReference>(it->raw, services.vertices,
+                    NativeLogicalVertexCompanionDisposal{&*it, retire_vertex});
+            } catch (...) { vertex_entries.erase(it); throw; } // No native effect or creator release.
+            acquired.companion = it->reference.get();
+            registration.bind(registration.context, it->raw, *it->reference);
+            it->registered = true;
+        } else {
+            auto it = index_entries.emplace(index_entries.end(), *this);
+            it->raw = acquired.creator;
+            try {
+                it->reference = std::make_unique<NativeLogicalIndexReference>(it->raw, services.indices,
+                    NativeLogicalIndexCompanionDisposal{&*it, retire_index});
+            } catch (...) { index_entries.erase(it); throw; }
+            acquired.companion = it->reference.get();
+            registration.bind(registration.context, it->raw, *it->reference);
+            it->registered = true;
+        }
+        acquired.canonical_registration = true;
     }
     NativeMeshStorage* create_mesh() {
         auto it = mesh_entries.emplace(mesh_entries.end(), *this);
@@ -224,8 +283,11 @@ NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return imp
 NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,
     NativeMaterialDestructionAccess& materials,
-    const volatile std::uint32_t* material_profile, NativeMeshCloneAcquired& acquired) {
-    require(!acquired.mesh && !acquired.section && !acquired.material,
+    const volatile std::uint32_t* material_profile, NativeMeshCloneAcquired& acquired,
+    NativeStreamCloneServices* streams) {
+    require(!acquired.mesh && !acquired.section && !acquired.material && !acquired.stream.creator &&
+        !acquired.stream.companion && (acquired.stream.phase == NativeStreamClonePhase::empty ||
+        acquired.stream.phase == NativeStreamClonePhase::consumed),
         "GUI Text mesh clone requires empty acquired creator storage");
     auto* const source_reference = dynamic_cast<NativeMeshReference*>(
         &actual_owners().resolve_actual(&source));
@@ -235,9 +297,20 @@ NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     require(mesh_profile && mesh_profile[4] == 0x00b742a0,
         "GUI Text mesh has no implementation for its current clone virtual slot");
     acquired.mesh = create_mesh();
-    copy_native_mesh_for_text_00b73f50(*acquired.mesh, source, *this,
-        impl_->meshes.strings, materials, material_profile, acquired);
+    if (streams) {
+        copy_native_mesh_for_text_00b73f50_flags3e(*acquired.mesh, source, *this,
+            impl_->meshes.strings, materials, material_profile, acquired, *streams);
+    } else {
+        copy_native_mesh_for_text_00b73f50(*acquired.mesh, source, *this,
+            impl_->meshes.strings, materials, material_profile, acquired);
+    }
     return acquired.mesh;
+}
+void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcquired& acquired,
+    NativeStreamCloneServices& services) {
+    require(&services.geometry == this && &services.vertices.actual_owners == &impl_->registration.owners,
+        "stream companion registration must use the same canonical owner domain");
+    impl_->register_stream(acquired, services);
 }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::clone_section_00b85ef0(
     const NativeMeshSectionStorage& source) { return impl_->clone_section(source); }
