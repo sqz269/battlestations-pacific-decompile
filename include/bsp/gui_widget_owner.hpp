@@ -19,6 +19,8 @@ struct GuiWidgetClipRefreshServices;
 struct GuiWidgetBaseCopyPreimage;
 struct GuiWidgetCopyServices;
 struct GuiTextSectionOperation;
+struct GuiTextCursorAcquired;
+struct GuiTextAuxiliaryModelAcquired;
 struct NativeGuiTextModelCloneAcquired;
 
 // Derived companions operate on the owner's SAME layout/transform. Factory
@@ -230,6 +232,11 @@ public:
     // in this runtime and frame; it never rolls back a published +188 Model.
     void create_auxiliary_model_00ab8530_fragment(NativeNodeBinding*& publication,
         NativeStringStorage& temporary_strings, GuiTextSectionOperation&);
+    // AB8947..AB89B2: SAME Model pool/map, Cursor's own name and FH3 sites.
+    // Host registration failure after native construction retains the live
+    // Model/name in the caller frame. Normal +184 publication precedes cleanup.
+    void create_auxiliary_model_00ab8910_fragment(NativeNodeBinding*& publication,
+        NativeStringStorage& temporary_strings, GuiTextCursorAcquired&);
     // B752D1..B7530A: allocate from the SAME Model pool, then construct from
     // the source's CURRENT actual name header. No temporary name or source
     // snapshot. Register the created owner/reference in this runtime's one
@@ -275,6 +282,8 @@ private:
     void require_model_copy_reference(NativeModelReference&) const;
     NativeNodeBinding* create_model(const std::string&,
         NativeNodeBinding** publication_before_name_release = nullptr);
+    void create_tracked_auxiliary_model(NativeNodeBinding*&, NativeStringStorage&,
+        GuiTextAuxiliaryModelAcquired&, bool cursor_prefix);
     void stamp_visibility(NativeNodeBinding&, float, bool);
     void propagate_visibility(GuiWidgetOwner&, const GuiWidgetVisibilityArgs&);
     void erase_tree(GuiLayoutWidget&);
