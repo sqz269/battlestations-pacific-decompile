@@ -1053,11 +1053,21 @@
     }
   ],
   "integration_bd_review": {
-    "combined_validation": "pending current combined build and applicable current-library validation",
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_node_lifetime_bd_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_node_raw_construction.json: 28 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 2
+  },
+  "worker_capture_status": null,
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
+  "final_merged_validation_bd": {
+    "report": "reports/native_node_lifetime_bd_validation.json",
+    "tested_commit": "4548c163d4f97d227fdd7a2e411df1f9fd81ded7",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 2,
+    "own_module_validation": "bounded_original_parent_pair_and_source_failure",
+    "game_validated": false
   }
 }

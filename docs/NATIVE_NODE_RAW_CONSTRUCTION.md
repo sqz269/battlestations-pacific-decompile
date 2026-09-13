@@ -194,3 +194,15 @@ evidence, saved its original analysis signature and full stored range in the
 existing BSP project, and registered the source where needed. Exact combined
 validation follows separately from worker checks. No original binary entry,
 unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.
+
+## BD exact merged validation
+
+Exact combined source `4548c163d4f97d227fdd7a2e411df1f9fd81ded7` passed the strict Win32 build and both
+existing CTests. Both probes compile only external probe.cpp against the three
+current libraries. Constructor includes one original/source pair plus a separate
+source-only throw; destructor checks current providers on a source exception path.
+The final constructor object is checked inside the built library for its three
+materialization stores and immediate reference-count restoration. See `reports/native_node_lifetime_bd_validation.json`
+for immutable captures, hashes and explicit limits. Earlier pending statements
+describe worker stages. Raw-only runtime construction, camera context forwarding,
+native FH3/ABI compatibility and gameplay remain open.
