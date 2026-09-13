@@ -138,3 +138,13 @@ belongs to the integrator; the worker's existing project build alone does not
 prove linkage of this new file. No repository test or test framework was added.
 Fixture agreement is not original-caller ABI compatibility, counter-producing
 gameplay, complete renderer construction, complete EndFrame or game validation.
+
+## AY integration analysis refresh
+
+The integrator saved all sixteen AY original signatures and reviewed names,
+verified full stored bodies and refreshed exports. CBBC8E, CBD436 and C64F13
+are ten-byte analysis-only EH handlers defined under leases and the write lock.
+Earlier missing-function observations are retained as worker capture history.
+Two existing raw string bodies were extended separately; neither those
+extensions nor the EH definitions add to the sixteen normal-body count.
+Exact combined validation follows separately from worker fixture evidence.

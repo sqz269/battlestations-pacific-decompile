@@ -25,8 +25,10 @@
       "native_prototype": "void * BSP_RenderCommandQueue_GetSingleton(void)",
       "ledger_kind": "function",
       "new_native_body": true,
-      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
-      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 004c11f0..004c12ac normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md and reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved.",
+      "module": "native_render_batch_preparation_actual",
+      "worker_evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json."
     },
     {
       "address": "00b51df0",
@@ -43,11 +45,13 @@
       "name_is_hypothesis": true,
       "original_abi": "ECX actual 18h batch; one DWORD stack slot; RET4 at 00b51f09. Original slot captured in EDI at B51DF5; B1CB30 writes through the original incoming slot address. No semantic return value.",
       "native_calling_convention": "__thiscall",
-      "native_prototype": "void BSP_RenderBatch_PrepareSort(unsigned int argument_slot)",
+      "native_prototype": "void BSP_RenderBatch_PrepareSort(unsigned int index_slot)",
       "ledger_kind": "function",
       "new_native_body": true,
-      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
-      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b51df0..00b51f0b normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md and reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved.",
+      "module": "native_render_batch_preparation_actual",
+      "worker_evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json."
     },
     {
       "address": "00b1bf70",
@@ -67,8 +71,10 @@
       "native_prototype": "void BSP_RenderBatchPreparationJob_Invoke(void * batch)",
       "ledger_kind": "function",
       "new_native_body": true,
-      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
-      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b1bf70..00b1bf81 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md and reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved.",
+      "module": "native_render_batch_preparation_actual",
+      "worker_evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json."
     }
   ],
   "owned_files": [
@@ -184,7 +190,6 @@
       "kind": "tail_jump"
     }
   ],
-  "no_ghidra_function": [],
   "existing_names": "All three proposed descriptive names already exist; preserve prior name evidence and correct library names. Add complete function records without removing B51DF0 key-only/typed fragment records.",
   "storage_producers": [
     {
@@ -494,5 +499,213 @@
   "follow_up_packets": [
     "Full B1EBE0/B1D950 queue execution still depends on complete actual B46A70 system-constant upload and B55550 material/resource/compiler chain; named or typed projections do not close these paths.",
     "Root: register only through cmake/startup.cmake, merge three function records without deleting fragments, preserve names/comments, annotate original signatures, refresh exports, run exact combined build and default current-library-only fixture replay."
-  ]
+  ],
+  "integration_ay_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 16,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "previous_signatures": {
+      "00b0cc10": "00b0cc10 FUN_00b0cc10  undefined FUN_00b0cc10(void)  body 00b0cc10 - 00b0cca1",
+      "00b0ccb0": "00b0ccb0 FUN_00b0ccb0  undefined FUN_00b0ccb0(void)  body 00b0ccb0 - 00b0cccb",
+      "00b0cce0": "00b0cce0 FUN_00b0cce0  undefined FUN_00b0cce0(void)  body 00b0cce0 - 00b0cd50",
+      "00b2b200": "00b2b200 BSP_D3D9Renderer_BeginFrame  undefined BSP_D3D9Renderer_BeginFrame(void)  body 00b2b200 - 00b2b263",
+      "00b15090": "00b15090 STL_inst_00b15090  undefined STL_inst_00b15090(void)  body 00b15090 - 00b150cc",
+      "00b14480": "00b14480 FUN_00b14480  undefined FUN_00b14480(void)  body 00b14480 - 00b144fd",
+      "00b13630": "00b13630 FUN_00b13630  undefined FUN_00b13630(void)  body 00b13630 - 00b13687",
+      "00b13280": "00b13280 FUN_00b13280  undefined FUN_00b13280(void)  body 00b13280 - 00b132b7",
+      "00b13180": "00b13180 FUN_00b13180  undefined FUN_00b13180(void)  body 00b13180 - 00b1327d",
+      "00b10740": "00b10740 FUN_00b10740  undefined FUN_00b10740(void)  body 00b10740 - 00b107c2",
+      "00b2aeb0": "00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, void * window, bool fullscreen, uint width, uint height, int backbuffer_format, uint backbuffer_count, int multisample, int depth_format, uint presentation_sync, uint fullscreen_refresh_rate)  body 00b2aeb0 - 00b2b1f1",
+      "00b49940": "00b49940 FUN_00b49940  undefined FUN_00b49940(void)  body 00b49940 - 00b4994b",
+      "00b49950": "00b49950 FUN_00b49950  undefined FUN_00b49950(void)  body 00b49950 - 00b4995b",
+      "004c11f0": "004c11f0 BSP_RenderCommandQueue_GetSingleton  undefined BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac",
+      "00b51df0": "00b51df0 BSP_RenderBatch_PrepareSort  undefined BSP_RenderBatch_PrepareSort(void)  body 00b51df0 - 00b51f0b",
+      "00b1bf70": "00b1bf70 BSP_RenderBatchPreparationJob_Invoke  undefined BSP_RenderBatchPreparationJob_Invoke(void)  body 00b1bf70 - 00b1bf81"
+    },
+    "original_signature_readback": "00b0cc10 BSP_RenderFrameCounters_ClearBank  void __thiscall BSP_RenderFrameCounters_ClearBank(void * this)  body 00b0cc10 - 00b0cca1\n00b0ccb0 BSP_RenderFrameCounters_PublishAndClear  void __thiscall BSP_RenderFrameCounters_PublishAndClear(void * this)  body 00b0ccb0 - 00b0cccb\n00b0cce0 BSP_RenderFrameCounters_Construct  void * __thiscall BSP_RenderFrameCounters_Construct(void * this)  body 00b0cce0 - 00b0cd50\n00b2b200 BSP_D3D9Renderer_BeginFrame  uchar __thiscall BSP_D3D9Renderer_BeginFrame(void * this)  body 00b2b200 - 00b2b263\n00b15090 BSP_RendererRecords_Clear  void __thiscall BSP_RendererRecords_Clear(void * this)  body 00b15090 - 00b150cc\n00b14480 BSP_RendererRecords_Erase  void * __thiscall BSP_RendererRecords_Erase(void * this, void * output, void * first_owner, void * first_record, void * last_owner, void * last_record)  body 00b14480 - 00b144fd\n00b13630 BSP_RendererRecords_CopyTail  void * __cdecl BSP_RendererRecords_CopyTail(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13630 - 00b13687\n00b13280 BSP_RendererRecords_CopyForward  void * __cdecl BSP_RendererRecords_CopyForward(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13280 - 00b132b7\n00b13180 BSP_RendererRecord_Assign  void * __thiscall BSP_RendererRecord_Assign(void * this, void * source)  body 00b13180 - 00b1327d\n00b10740 BSP_RendererRecord_Destroy  void __thiscall BSP_RendererRecord_Destroy(void * this)  body 00b10740 - 00b107c2\n00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, uint window, uint fullscreen_slot, uint width, uint height, uint format, uint count, uint multisample, uint depth_format, uint sync_slot, uint refresh)  body 00b2aeb0 - 00b2b1f1\n00b49940 BSP_NativePhysicalIndexPool_ReturnSlot  void __thiscall BSP_NativePhysicalIndexPool_ReturnSlot(void * this)  body 00b49940 - 00b4994b\n00b49950 BSP_NativePhysicalVertexPool_ReturnSlot  void __thiscall BSP_NativePhysicalVertexPool_ReturnSlot(void * this)  body 00b49950 - 00b4995b\n004c11f0 BSP_RenderCommandQueue_GetSingleton  void * __cdecl BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac\n00b51df0 BSP_RenderBatch_PrepareSort  void __thiscall BSP_RenderBatch_PrepareSort(void * this, uint index_slot)  body 00b51df0 - 00b51f0b\n00b1bf70 BSP_RenderBatchPreparationJob_Invoke  void __thiscall BSP_RenderBatchPreparationJob_Invoke(void * this, void * batch)  body 00b1bf70 - 00b1bf81\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc98"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc97",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbbc8e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbbc8e",
+            "function_name": "FUN_00cbbc8e",
+            "entry_point": "00cbbc8e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbbc8e"
+          }
+        },
+        {
+          "defined": "00cbbc8e",
+          "end": "00cbbc98",
+          "name": null,
+          "after": "Function: FUN_00cbbc8e at 00cbbc8e\nSignature: undefined FUN_00cbbc8e(void)\nEntry: 00cbbc8e\nBody: 00cbbc8e - 00cbbc97"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd436",
+            "end_address": "00cbd440"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd436",
+            "end_address": "00cbd43f",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd436",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd436",
+            "function_name": "FUN_00cbd436",
+            "entry_point": "00cbd436",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd436"
+          }
+        },
+        {
+          "defined": "00cbd436",
+          "end": "00cbd440",
+          "name": null,
+          "after": "Function: FUN_00cbd436 at 00cbd436\nSignature: undefined FUN_00cbd436(void)\nEntry: 00cbd436\nBody: 00cbd436 - 00cbd43f"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00c64f13",
+            "end_address": "00c64f1d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00c64f13",
+            "end_address": "00c64f1c",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00c64f13",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00c64f13",
+            "function_name": "FUN_00c64f13",
+            "entry_point": "00c64f13",
+            "body_size": 10,
+            "message": "Function created successfully at 00c64f13"
+          }
+        },
+        {
+          "defined": "00c64f13",
+          "end": "00c64f1d",
+          "name": null,
+          "after": "Function: FUN_00c64f13 at 00c64f13\nSignature: undefined FUN_00c64f13(void)\nEntry: 00c64f13\nBody: 00c64f13 - 00c64f1c"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cleanup_flow": {
+      "repairs": [
+        {
+          "function": "00c64f08",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T07:48:14Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00c64f0c",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00c64f11",
+              "gap_end_exclusive": "00c64f13",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00c64f0c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c64f11",
+                "gap_end_exclusive": "00c64f13",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00c64f0c (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00c64f0c",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00c64f0c (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00c64f13",
+          "explicit_body_sha256": "aa1668d6ed4bcdc142812fc048a1abb2835721628ec5a87e4aafbbcae28f32b9",
+          "body_before": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "cleanup_flow_limit": "C64F08 free-return tail C64F11 POP ECX/C64F12 RET decoded; stored EH body still ends C64F10. Analysis-only tail metadata remains incomplete.",
+    "cross_review": "Root reviewed complete statistics and BeginFrame listings, source read/write/call order and batch getter/preparation/job bodies. Independent startup review checked all 225 startup instructions, both pool-return thunks, x87/gamma, COM outputs, EH metadata and all nine saved state/event pairs. Batch trivial storage lifetime begins without initialization, retaining native preexisting control bytes. Existing raw string overloads were independently compared with full listings and exercised by BeginFrame raw-manager exception cases. Original ABI, general EH/SEH/concurrency and gameplay remain separate.",
+    "current_report_call_check": "reports/native_render_batch_preparation_actual.json: 14 call rows checked, 0 failed"
+  },
+  "worker_capture_no_ghidra_function": []
 }

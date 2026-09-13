@@ -162,3 +162,13 @@ exports and validates the exact combined tree with current-library-only replay.
 Full B1EBE0/B1D950 queue execution still requires complete actual B46A70 system
 constants and B55550's material/resource/compiler chain. Named or typed fragments
 do not prove those dependencies complete.
+
+## AY integration analysis refresh
+
+The integrator saved all sixteen AY original signatures and reviewed names,
+verified full stored bodies and refreshed exports. CBBC8E, CBD436 and C64F13
+are ten-byte analysis-only EH handlers defined under leases and the write lock.
+Earlier missing-function observations are retained as worker capture history.
+Two existing raw string bodies were extended separately; neither those
+extensions nor the EH definitions add to the sixteen normal-body count.
+Exact combined validation follows separately from worker fixture evidence.

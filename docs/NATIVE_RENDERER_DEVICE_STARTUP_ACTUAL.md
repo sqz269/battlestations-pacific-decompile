@@ -159,3 +159,13 @@ surface/pool/owner/attachment/Reset providers, not semantic startup hosts.
 `verified-8case.zip` preserves the earlier eight-case evidence independently.
 `verified-replay.json`, `verified-replay.log`, `live_spans.json`, `native_pins.json`
 and the final capture record exact inputs, hashes, operand edits and observations.
+
+## AY integration analysis refresh
+
+The integrator saved all sixteen AY original signatures and reviewed names,
+verified full stored bodies and refreshed exports. CBBC8E, CBD436 and C64F13
+are ten-byte analysis-only EH handlers defined under leases and the write lock.
+Earlier missing-function observations are retained as worker capture history.
+Two existing raw string bodies were extended separately; neither those
+extensions nor the EH definitions add to the sixteen normal-body count.
+Exact combined validation follows separately from worker fixture evidence.
