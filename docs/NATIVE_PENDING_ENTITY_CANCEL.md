@@ -57,3 +57,18 @@ Exact source, inputs, original bytes, relocations, objects, toolchain/libraries,
 embedded asInvoker manifest and output remain in `local/native_pending_entity_cancel_*`
 and its SHA-256 manifest. Build/CTest and call-site results are recorded in
 `reports/native_pending_entity_cancel.json`.
+
+## Integration correction: provider exceptions
+
+The original worker API marked provider pointers `noexcept` as a fixture-domain
+restriction. Native evidence does not require termination: `00925A06` calls the
+actual allocating lock getter before `00925A0B` captures its section and
+`00925A15` enters it. The integrated API permits an exception from that getter
+to propagate. Existing nonthrowing providers remain compatible.
+
+The body has no EH frame and uses explicit section entry/exit. No automatic
+section release or state rollback is introduced if a later provider throws.
+A focused source-only pre-entry getter failure check is recorded in
+`reports/pending_entity_cancel_provider_exception.json`; it is separate from
+the worker's eight original-byte normal-path comparisons and does not establish
+native exception transport equivalence.

@@ -24,8 +24,8 @@ struct NativePendingEntityCancelProviders {
     void* context;
     // Actual 009248D0 owner (same raw8 layout as NativeObserverLockOwner).
     // Its section_04 is captured once and used for both entry and exit.
-    NativeObserverLockOwner* (*lock_owner_009248d0)(void*) noexcept;
-    NativePendingEntityCancelView (*resolve_entity)(void*, void* identity) noexcept;
+    NativeObserverLockOwner* (*lock_owner_009248d0)(void*);
+    NativePendingEntityCancelView (*resolve_entity)(void*, void* identity);
     // Actual 00781260: ECX=list, stack=&entity, RET4. Capture *value once,
     // scan the entire ring, unlink/free EVERY matching node, decrement actual
     // count for each; retain sentinel, other nodes, payloads and allocator word.
@@ -33,7 +33,7 @@ struct NativePendingEntityCancelProviders {
     // layout, remove-first, private list, or ignored call does not satisfy it.
     // No canonical source provider has been proved; this component supplies none.
     void (*remove_all_matching_00781260)(void*, NativePendingEntityListStorage&,
-        void* const* value) noexcept;
+        void* const* value);
 };
 
 // Complete normal-path 00925A00[138]: native ECX=entity, bare RET. Gate on
@@ -46,7 +46,9 @@ struct NativePendingEntityCancelProviders {
 void cancel_native_pending_entity_00925a00(void* actual_entity,
     NativePendingEntityOwners&, const NativePendingEntityCancelProviders&);
 
-// New source C++ ABI; not a binary replacement. Providers have a nonthrowing
-// normal-path contract. No native C++ exception/FH3/SEH, corruption recovery,
-// asynchronous-fault or concurrent entity-destruction equivalence is claimed.
+// New source C++ ABI; not a binary replacement. The real getter can throw
+// before section capture/entry, and that exception propagates. This routine
+// has no native EH frame: no automatic section release or flag/list rollback
+// is added if a later provider throws. Native exception transport, corruption
+// recovery, asynchronous faults and concurrent destruction remain unproved.
 } // namespace bsp
