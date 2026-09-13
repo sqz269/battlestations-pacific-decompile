@@ -176,6 +176,22 @@ public:
     // transition, which bsp::register_pending_think_entity_0088a240 carries.
     void entity_set_think_script_name_0088a330(void* entity, const std::string& name);
 
+    // Packet cc_lua_find_entity: the small bsp::LuaBindingCoreHost adapter in the
+    // .cpp reports the SetParty virtuals through this rather than growing its own
+    // reference to the log.
+    void record_unimplemented(const char* method, const char* address);
+
+    // Packet cc_lua_find_entity: a scene entity that is not a unit but that
+    // BSP_SEntity_InitAll 00925F20 still hands to entity virtual slot 39 at
+    // 0092604E, so it carries a `thisTable` slot and answers `FindEntity`. The
+    // pose is the entity's own world matrix translation at +0FCh, which for a
+    // `FixedInstance` marker class is the `localframe` the scene authored and
+    // which nothing in the mission moves; that is the value `GetPosition`
+    // 008A7B00 reads at 008A7C3C. `id` is this process's entity number, the
+    // same substitution for the u16 at +174h that the unit rows already make.
+    void register_scene_marker(int id, const std::string& name,
+        const float world_position[3]);
+
     void report();
     const GameScriptOrdersSummary& summary() const noexcept { return summary_; }
     const std::vector<GameScriptOrderRow>& rows() const noexcept { return rows_; }
@@ -292,8 +308,17 @@ private:
     void call_script_global(const GameScriptEntity& entity, const std::string& name,
         int stack_first, int stack_last);
 
+    // Packet cc_lua_find_entity.
+    struct SceneMarker {
+        int id{0};
+        std::string name;
+        float position[3]{0.0f, 0.0f, 0.0f};
+    };
+    const SceneMarker* marker_for_id(int id) const noexcept;
+
     GameHostLog& log_;
     GameUnitsHost& units_;
+    std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
     // call the think globals on it. The native reaches the same machine through

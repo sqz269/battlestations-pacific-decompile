@@ -320,12 +320,40 @@ public:
     // `Type` keys carry ("Cruiser", "Destroyer", "Fighter", ...) and also read
     // `.Class.Length`, `.Class.Name`, `.Class.Height` and `.Class.Width`, all
     // top-level keys of the same rows. The setter itself stays a record.
+    // Packet cc_lua_find_entity: `findable` separates the two questions the
+    // milestone 2l code ran together. Having a `thisTable` slot is decided by
+    // entity virtual slot 39, which BSP_SEntity_InitAll 00925F20 calls on every
+    // pending entity at 0092604E with no class filter; being answerable by
+    // `FindEntity` is decided by 0088B1B0, which walks 14 of the 97 world
+    // buckets (docs/LUA_BINDING_ENTITY_LOOKUP.md). `MovieCamPos` and
+    // `MovieCamLookat` get a slot and are not findable, so the name index and
+    // the slot table are built from different sets.
     struct SceneEntity {
         std::string name;
         int id{0};
         int class_index{-1};
+        bool findable{true};
     };
     std::size_t attach_scene_entities_00928a00(const std::vector<SceneEntity>& entities);
+
+    // Packet cc_lua_find_entity: the `recon` shell, through the already
+    // reconstructed bsp::install_recon_values_00803a40. 004E0305 sets the global
+    // to nil on the mission-load pass, and on that path the native's route back
+    // to a table is 00806B10, whose 006B8190 / 00803750 / 008037D0 descent
+    // recreates whatever is nil before 00805D90 fills the nineteen category maps
+    // (docs/RECON_SLOT_LISTS.md section 4). 00806B10 is driven by the recon slot
+    // lists, which this process does not build, so it stays a record: what the
+    // executable supplies is the empty shell 00803A40 builds, and every category
+    // map is empty because no unit was ever detected. Without it the shipped
+    // `luaGetOwnUnits` (commandhelpers.lua:12343) raises on the first index of
+    // `recon`, which is what ended the run's mission-complete path.
+    void install_recon_tables_00803a40();
+
+    // Packet cc_lua_find_entity: where the mission's own script ended up, read
+    // off its `Mission` table at the end of the run. Nothing in the executable
+    // writes that table; it is the shipped script's own state, which is why it
+    // is the honest measure of how far the run carried the mission.
+    void report_mission_script_state();
 
     // Milestone 2l: the script objects the mission's own stage init created.
     // The `CreateScript` binding body 00898750 is a record, so the trampoline

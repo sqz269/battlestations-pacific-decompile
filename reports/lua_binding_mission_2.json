@@ -1,0 +1,312 @@
+{
+  "packet": "cc_lua_find_entity",
+  "doc": "docs/LUA_BINDING_MISSION_2.md",
+  "owner": "agent/cc-lua-find-entity",
+  "summary": "Why FindEntity 00898E30 answered nil for all 38 of usn_2_java's calls even though both halves of the binding were already complete: the thisTable slot it pushes is built by entity virtual slot 39, the only caller of that slot is BSP_SEntity_InitAll 00925F20 at 0092604E, and that pass runs for every pending entity rather than only for units. Wiring it, plus two corrections (GetMeasure pushes the text key, and a slot's `ID` is a string), carries the mission script from a raise at usn_2_java.lua:563 to 2500 frames of phase 2 with no script failure at all.",
+  "coverage": [
+    {
+      "routine": "sentity_init_all_00925f20",
+      "native": "00925f20",
+      "address": "00925f20",
+      "coverage": "complete",
+      "note": "Five passes over the pending list at [00F899D0] plus the tail, 00925F20..0092638A. The SEH frame and the one-time NativeString label init at 00925F5F..00925F99 are not modelled; the progress arithmetic, the three vtable passes, pass C's start-enabled branch, pass D's session gate and pass E's descriptor release are."
+    },
+    {
+      "routine": "scene_class_lua_identity_table",
+      "native": "004f2800",
+      "coverage": "partial: 11 of 26 scene classes",
+      "note": "The eleven classes whose creator stores a vtable with an attach at +9Ch, read from the shipped image. The fifteen UnitClassFactory and TypedResource creators install their vtable deeper than a one-call-deep immediate scan reaches and have no row; they are the unit classes the executable's unit host already owns. world_kind is unread for LandingPoint, SimpleEffect and PeriodicEffect."
+    },
+    {
+      "routine": "loading_progress_report_0057c1a0",
+      "native": "0057c1a0",
+      "address": "0057c1a0",
+      "coverage": "complete",
+      "note": "__fastcall(ECX = phase, float fraction), RET 4. Forwards to 0057BF10 on the singleton at [00E194B4] when that is non-null. 0057BF10 itself is read only far enough to establish that phase selects a weighted band of the bar (weights at 00E08764) and fraction the position inside it."
+    },
+    {
+      "routine": "lua_binding_get_measure",
+      "native": "0088d8e0",
+      "address": "0088d8e0",
+      "coverage": "complete",
+      "note": "Both arms. Contract corrected: the binding pushes the text key itself."
+    },
+    {
+      "routine": "push_string_00b672b0",
+      "native": "00b672b0",
+      "address": "00b672b0",
+      "coverage": "complete",
+      "note": "00B672B0..00B672E2, two callees only."
+    },
+    {
+      "routine": "lua_binding_find_entity",
+      "native": "00898e30",
+      "address": "00898e30",
+      "coverage": "unchanged",
+      "note": "Not re-reconstructed. docs/LUA_BINDING_ENTITY_LOOKUP.md's reading holds; this packet supplies the thisTable slot it reads."
+    },
+    {
+      "routine": "session_register_0077f090",
+      "native": "0077f090",
+      "coverage": "contract: unread",
+      "note": "Named by address. One callee, 0077EB50. Pass D of 00925F20 calls it for every entity whose [vt+5Ch](2) answered true."
+    },
+    {
+      "routine": "entity_init_second_vcall_a0 / entity_init_third_vcall_a4",
+      "coverage": "contract: unread",
+      "note": "Named by slot. The two virtuals passes B and C call after the attach; no concrete body was read for either."
+    },
+    {
+      "routine": "lua_binding_set_party",
+      "native": "008a8930",
+      "address": "008a8930",
+      "coverage": "unchanged",
+      "note": "Wired, not re-read. src/lua_binding_core.cpp already carried it. The two entity virtuals it dispatches through (+5Ch at 008A8A83, +2Ch at 008A8AE3) still have no resolved concrete vtable and stay contract: unread; the executable reports both and takes the no-session-message arm by choice."
+    },
+    {
+      "routine": "install_recon_values_00803a40",
+      "native": "00803a40",
+      "address": "00803a40",
+      "coverage": "unchanged",
+      "note": "Wired, not re-read. src/recon_values.cpp already carried it."
+    },
+    {
+      "routine": "recon_publish_slot_table_00806b10",
+      "native": "00806b10",
+      "coverage": "record",
+      "note": "The nineteen category maps stay empty. Filling them needs the recon slot lists of docs/RECON_SLOT_LISTS.md."
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "method": "SEntityInitAllHost::entity_name_vcall_10",
+      "address": "00925ffb",
+      "native": "00ce8550+10",
+      "function": "00925f20",
+      "note": "Indirect through the entity vtable. The result is discarded at this site and at 009260D3, 0092616D and 0092629C."
+    },
+    {
+      "step": 2,
+      "method": "SEntityInitAllHost::loading_progress_report_0057c1a0",
+      "address": "00926019",
+      "native": "0057c1a0",
+      "function": "00925f20",
+      "note": "Phase 3, fraction step/(count*3). Also at 009260F1 and 0092618D."
+    },
+    {
+      "step": 3,
+      "method": "SEntityInitAllHost::entity_attach_lua_self_vcall_9c",
+      "address": "0092604e",
+      "native": "00ce8550+9c",
+      "function": "00925f20",
+      "note": "The whole packet. Indirect through entity vtable slot 39; for a NavPoint (vtable 00CE8550) the dword at 00CE85EC is 00928A00, the base attach. The only [reg+9Ch] virtual call in the image."
+    },
+    {
+      "step": 4,
+      "method": "SEntityInitAllHost::log_enum_count_004b8490",
+      "address": "00926089",
+      "native": "004b8490",
+      "function": "00925f20",
+      "note": "Formats \"INIT,ENUM:%d\" (00D19234) with the pending count into a stack buffer."
+    },
+    {
+      "step": 5,
+      "method": "SEntityInitAllHost::entity_init_second_vcall_a0",
+      "address": "0092610a",
+      "native": "00ce8550+a0",
+      "function": "00925f20",
+      "note": "Pass B. Body unread."
+    },
+    {
+      "step": 6,
+      "method": "SEntityInitAllHost::entity_init_third_vcall_a4",
+      "address": "00926194",
+      "native": "00ce8550+a4",
+      "function": "00925f20",
+      "note": "Pass C. Body unread."
+    },
+    {
+      "step": 7,
+      "method": "SEntityInitAllHost::scene_node_enable_00922f30",
+      "address": "009261e4",
+      "native": "00922f30",
+      "function": "00925f20",
+      "note": "The +48h/+44h child chain, when the spawn descriptor's start-enabled byte is set."
+    },
+    {
+      "step": 8,
+      "method": "SEntityInitAllHost::scene_node_disable_00922f80",
+      "address": "00926218",
+      "native": "00922f80",
+      "function": "00925f20",
+      "note": "The same chain on the clear arm."
+    },
+    {
+      "step": 9,
+      "method": "SEntityInitAllHost::session_register_0077f090",
+      "address": "009262ae",
+      "native": "0077f090",
+      "function": "00925f20",
+      "note": "Pass D, gated by [vt+5Ch](2) at 00926287. Contract unread."
+    },
+    {
+      "step": 10,
+      "method": "SEntityInitAllHost::recon_force_refresh_00807a50",
+      "address": "00926370",
+      "native": "00807a50",
+      "function": "00925f20",
+      "note": "The tail, reached only when the char argument was non-zero. 00875EA0 XOR CL,CL means the fixed-step caller passes false."
+    },
+    {
+      "step": 11,
+      "method": "GameMissionLuaHost::attach_scene_entities_00928a00 seeds `ID`",
+      "address": "00928ba5",
+      "native": "00b67630",
+      "function": "00928a00",
+      "note": "The key literal is \"ID\" at 00CE59B4 and the value is the NativeString the decimal key was formatted into, so `ID` is a string."
+    },
+    {
+      "step": 12,
+      "method": "the value push inside 00B67630",
+      "address": "00b6766a",
+      "native": "00a67a10",
+      "function": "00b67630",
+      "note": "lua_pushlstring. This is the instruction that settles the string reading; 00B6764B pushes the key through 00A67A50 lua_pushstring."
+    },
+    {
+      "step": 13,
+      "method": "bsp::lua_binding_find_entity, the lookup",
+      "address": "00898f8b",
+      "native": "0088b1b0",
+      "function": "00898e30",
+      "note": "Unchanged from docs/LUA_BINDING_ENTITY_LOOKUP.md; listed because it is the call whose result this packet made resolvable."
+    },
+    {
+      "step": 14,
+      "method": "bsp::lua_binding_find_entity, thisTable[key]",
+      "address": "00898fda",
+      "native": "00b678e0",
+      "function": "00898e30",
+      "note": "The read that answered nil before this packet and answers the entity's slot after it."
+    },
+    {
+      "step": 15,
+      "method": "GameScriptOrdersHost::measure_is_imperial_0088d9bd, the metric arm's literal",
+      "address": "0088da0d",
+      "native": "0041e870",
+      "function": "0088d8e0",
+      "note": "Assigns \"globals.kilometer\" (00CF5900) to a NativeString. The imperial arm's twin is 0088D9D8 with 00CF5914."
+    },
+    {
+      "step": 16,
+      "method": "GameScriptOrdersHost::push_global_path_value_00b672b0",
+      "address": "0088da1f",
+      "native": "00b672b0",
+      "function": "0088d8e0",
+      "note": "The push. Imperial twin at 0088D9EA."
+    },
+    {
+      "step": 17,
+      "method": "00B672B0's own push",
+      "address": "00b672dc",
+      "native": "00a67a10",
+      "function": "00b672b0",
+      "note": "lua_pushlstring of the caller's NativeString. With 00B672BD (lua_checkstack) these are the routine's only two calls, which is why it cannot be a table walk."
+    },
+    {
+      "step": 18,
+      "method": "bsp::lua_binding_set_party, the entity argument",
+      "address": "008a8a33",
+      "native": "00888aa0",
+      "function": "008a8930",
+      "note": "Cited from docs/LUA_BINDING_CORE.md's reading, not re-read here; listed so the row is checkable."
+    },
+    {
+      "step": 19,
+      "method": "bsp::lua_binding_set_party, the party argument",
+      "address": "008a8a64",
+      "native": "00b66290",
+      "function": "008a8930",
+      "note": "The integer the binding pushes back and usn_2_java.lua:54 stores in Mission.Party."
+    }
+  ],
+  "undefined_call_sites": [],
+  "run_time_evidence": {
+    "command": "build/win32/Release/bsp_game.exe --frames 2700 --press-start-frame 30 --menu-select USN02 --mission-frames 2500 --mission-frame-seconds 0.05 --log local/find_entity_r7.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "lines": [
+      "  scene marker DRGoTo         class=NavPoint id=33 findable=1 attach=00928a00 pos=(250.0,0.0,9000.0)",
+      "  scene marker EscapePoint    class=NavPoint id=34 findable=1 attach=00928a00 pos=(0.0,0.0,-7500.0)",
+      "thisTable: 34 per-entity slot(s) built for the created scene instances",
+      "recon shell built by 00803a40: three party indices, each with enemy, neutral, unknown and own, each of those with the nineteen category maps of 00E0B590",
+      "summary mission script timers created=32 think_registrations=32 waits=31 clears=0 deletes=30 passes=2500 fires=71 failures=0",
+      "summary mission script state: MissionPhase=2 EndMission=nil Party=0 Distance=3.22 Measure=globals.kilometer MissionCompleteRan=nil MissionFailedRan=nil entity_resolves=38 self_table_entities=34 recon_own_categories=19",
+      "host methods 636 concrete, 483 unimplemented"
+    ],
+    "before": "The same command before this packet: 29 x \"script call luaTimetable failed: usn_2_java.lua:563: ***ERROR: luaGetDistance's second param is a non-table parameter\", Mission.EscapePoint nil, FindEntity 00898e30 UNIMPLEMENTED calls=38.",
+    "intermediate": [
+      "markers wired, GetMeasure still wrong: 29 x usn_2_java.lua:565 \"bad argument #2 to 'format' (number expected, got nil)\", because luaMetric compares GetMeasure() against the key literals.",
+      "GetMeasure fixed, ID still a number: 29 x commandhelpers.lua:12343 \"attempt to index global 'recon' (a nil value)\", traceback luaGetOwnUnits <- luaInitMissionEnd <- luaMissionCompletedNew <- luaMissionComplete (usn_2_java.lua:817) <- usn_2_java.lua:593. luaMissionComplete ran at mission frame 793 on a false zero distance: thisTable[Obj.ID] missed with a number key, so GetPosition answered the origin for both arguments."
+    ],
+    "long_run": "--frames 12300 --mission-frames 12000 (600 simulated seconds) reaches the same state with no failure and Mission.Distance 8.77 km: Houston keeps its authored Cruise command and sails away from EscapePoint, so the phase-2 completion test is gated on whatever drives the controlled unit, not on the Lua layer."
+  },
+  "corrections": [
+    {
+      "was": "include/bsp/lua_binding_mission.hpp: GetMeasure's two arms \"push the value at a dotted globals path, through 00B672B0, so the binding answers the localised unit name the globals table carries, not a literal of its own\".",
+      "is": "00B672B0 pushes the string it is given. Its only callees are 00A672F0 lua_checkstack and 00A67A10 lua_pushlstring; the empty literal at 0108FF2C stands in for a null data pointer at 00B672CD. GetMeasure answers the text key \"globals.kilometer\" or \"globals.mile\".",
+      "evidence": "00B672B0..00B672E2 in full, and usn_2_java.lua:923 luaMetric comparing GetMeasure() against those two literals. With the old contract luaMetric returned nil and the run raised at usn_2_java.lua:565."
+    },
+    {
+      "was": "src/game_hosts_lua.cpp milestone 2l: a thisTable slot's `ID` is lua_pushnumber(entity id).",
+      "is": "`ID` is the key text. 00928BA5 hands 00B67630 the NativeString the decimal key was formatted into, and 00B67630's value push at 00B6766A is lua_pushlstring.",
+      "evidence": "00928B9B..00928BA5 and 00B67630..00B67677. docs/MISSION_LUA_SELF_TABLE.md line 93 already recorded it. The consequence was silent: every shipped helper indexes thisTable[Obj.ID], a number key never matched the string key, luaGetDistance3D compared two all-zero positions, and the 2500-frame run before the fix reported luaMissionComplete at mission frame 793 on a distance of zero."
+    },
+    {
+      "was": "src/game_hosts_lua.cpp milestone 2l: one scene-entity list feeds both the thisTable slots and the FindEntity name index.",
+      "is": "They are different sets. Slot 39 is called on every pending entity, with no class filter, and 0088B1B0 walks 14 of 97 world buckets, so MovieCamPos and MovieCamLookat have a slot and are not findable by name.",
+      "evidence": "0092604E has no preceding class test in 00925F20's first pass; the bucket table of docs/LUA_BINDING_ENTITY_LOOKUP.md."
+    },
+    {
+      "was": "src/game_hosts_script_orders.cpp: SetParty 008A8930 is a record, so it returns nothing.",
+      "is": "It returns the party number it was given, and usn_2_java.lua:54 stores that in Mission.Party, which no shipped script assigns anywhere else. The already reconstructed bsp::lua_binding_set_party is now routed the row.",
+      "evidence": "008A8AE9 pushes on both arms after the branch rejoins (docs/LUA_BINDING_CORE.md). Run: Party=0, and recon[Mission.Party].own then resolves to the nineteen category maps (recon_own_categories=19). With Party nil the recon shell alone would not have closed the mission-end gate."
+    },
+    {
+      "was": "config/names for 00928A00: \"sole caller 0077E830\".",
+      "is": "That is the direct-call graph. 00928A00 is also entered as entity virtual slot 39 from 0092604E, which is the only route for the classes that install the base implementation unchanged.",
+      "evidence": "0092604E MOV EAX,[EDX+0x9c] / 00926054 CALL EAX in 00925F20, and the dword at 00CE85EC. The ledger evidence is appended, not replaced."
+    }
+  ],
+  "follow_ups": [
+    {
+      "packet": "recon_slot_publication",
+      "addresses": ["00806b10", "00805d90", "008073c0"],
+      "why": "The nineteen category maps of the recon shell are empty. Filling them needs the recon slot lists, a subsystem this packet did not enter; until then a script that asks which units it can see gets an empty list, which is a wrong answer rather than an error."
+    },
+    {
+      "packet": "sentity_init_slots_a0_a4",
+      "addresses": ["0092610a", "00926194", "0077f090"],
+      "why": "The two entity virtuals passes B and C call after the attach, and the session registration pass D makes. All three are named by slot or address with no body read."
+    },
+    {
+      "packet": "mission_player_control",
+      "addresses": ["008ab260", "004c0890"],
+      "why": "usn_2_java's phase-2 primary objective completes when Houston comes within 500 m of EscapePoint, and Houston is the unit SetSelectedUnit hands the player. Headless it keeps its authored Cruise command and the distance grows. No Lua-layer gate remains."
+    },
+    {
+      "packet": "unit_health_accessor",
+      "addresses": ["00923be0", "00923bf1"],
+      "why": "Still open from docs/LUA_BINDING_MISSION.md. GetHpPercentage answers 0, so phase 1 closes on a false positive. 00923BF1 is the one virtual call site of the unit vtable +110h in the whole image."
+    },
+    {
+      "packet": "lua_binding_entity_party_vtable",
+      "addresses": ["008a8a83", "008a8ae3"],
+      "why": "Already follow-up of docs/LUA_BINDING_CORE.md and now on a path the executable runs: SetParty's two entity virtuals have no resolved concrete vtable, so the executable reports both and no party is written to any entity."
+    },
+    {
+      "packet": "landing_point_effect_buckets",
+      "addresses": ["00ce90e0", "00ce8bd0", "00ce8d68"],
+      "why": "LandingPoint, SimpleEffect and PeriodicEffect carry an attach at +9Ch and their world bucket was not read, so whether FindEntity can name one is open."
+    }
+  ]
+}

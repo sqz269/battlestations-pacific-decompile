@@ -42,6 +42,7 @@
 #include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/input_tick.hpp"
+#include "bsp/lua_binding_mission_2.hpp"
 #include "bsp/mission_load_path.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -54,9 +55,11 @@
 #include "bsp/world_ocean.hpp"
 
 #include <cmath>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include <vector>
 
 namespace bsp::game {
 namespace {
@@ -1054,6 +1057,74 @@ private:
     MenuServicerBinding servicer_;
 };
 
+// Packet cc_lua_find_entity. Not a native structure: this is the executable's
+// carrier for the two facts a non-unit scene entity contributes, the `thisTable`
+// slot and the authored pose `GetPosition` answers with.
+struct GameSceneMarkerSeed {
+    int id{0};
+    std::string name;
+    std::string class_name;
+    int class_id{-1};
+    bool findable{false};
+    std::uint32_t attach{0};
+    float position[3]{0.0f, 0.0f, 0.0f};
+};
+
+// Packet cc_lua_find_entity: the scene entities that are not units but that
+// BSP_SEntity_InitAll still hands to entity virtual slot 39. The class filter is
+// bsp::find_scene_class_lua_identity, whose rows carry the vtable and the
+// function at its +9Ch as read from the shipped image; a class with no row is
+// one whose creator installs its vtable through a factory the scan does not
+// follow, and those are the unit classes the unit host already owns.
+std::vector<GameSceneMarkerSeed> collect_scene_markers(
+    const std::vector<GameSceneEntityRecord>& entities, int first_id) {
+    std::vector<GameSceneMarkerSeed> markers;
+    int next = first_id;
+    for (const GameSceneEntityRecord& entity : entities) {
+        if (entity.name.empty()) continue;
+        // `created` is false for these: their creators are records, so the
+        // instance was never built. `generated` is the gate's own answer that
+        // the instantiate pass takes the entity, which is what puts it on the
+        // pending list InitAll walks.
+        if (!entity.generated || entity.created) continue;
+        const bsp::SceneClassLuaIdentityRow* row
+            = bsp::find_scene_class_lua_identity(entity.class_id);
+        if (row == nullptr) continue;
+        GameSceneMarkerSeed seed;
+        seed.id = next++;
+        seed.name = entity.name;
+        seed.class_name = entity.class_name;
+        seed.class_id = entity.class_id;
+        seed.findable = row->findable_by_name;
+        seed.attach = row->attach;
+        // 008A7C3C reads the world matrix translation row at entity+0FCh.
+        seed.position[0] = entity.world[12];
+        seed.position[1] = entity.world[13];
+        seed.position[2] = entity.world[14];
+        markers.push_back(seed);
+    }
+    return markers;
+}
+
+void report_scene_markers(GameHostLog& log,
+    const std::vector<GameSceneMarkerSeed>& markers) {
+    log.notef("scene markers: %zu non-unit scene entit%s reach entity virtual slot 39 "
+        "through 00925f20's first pass at 0092604e, so each carries a `thisTable` slot "
+        "and, when its world bucket is one of the fourteen 0088b1b0 walks, answers "
+        "FindEntity. The creators themselves (004e99b0 for NavPoint) stay records: what "
+        "the executable supplies is the slot and the authored pose, not the instance",
+        markers.size(), markers.size() == 1 ? "y" : "ies");
+    for (const GameSceneMarkerSeed& marker : markers) {
+        log.notef("  scene marker %-20s class=%-16s id=%d findable=%d attach=%08lx "
+            "pos=(%.1f,%.1f,%.1f)", marker.name.c_str(), marker.class_name.c_str(),
+            marker.id, marker.findable ? 1 : 0,
+            static_cast<unsigned long>(marker.attach),
+            static_cast<double>(marker.position[0]),
+            static_cast<double>(marker.position[1]),
+            static_cast<double>(marker.position[2]));
+    }
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -1288,6 +1359,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // what 00928a00 builds for an entity and what the entity tail at
             // 0089903c pushes. Without it the mission's own script resolves
             // every FindEntity to nil and its order loops run over empty tables.
+            std::vector<GameSceneMarkerSeed> markers;
             {
                 std::vector<GameMissionLuaHost::SceneEntity> entities;
                 entities.reserve(host.units->count());
@@ -1295,15 +1367,32 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     const GameUnitRow* row = host.units->unit_row(unit);
                     if (row == nullptr || row->name.empty()) continue;
                     entities.push_back(GameMissionLuaHost::SceneEntity{row->name,
-                        static_cast<int>(unit) + 1, row->type_id});
+                        static_cast<int>(unit) + 1, row->type_id, true});
+                }
+                // Packet cc_lua_find_entity: the pending-entity pass 00925F20
+                // calls entity virtual slot 39 on every node at 0092604E, not
+                // only on units, so a scene entity of any class whose vtable
+                // carries an attach there has a `thisTable` slot too. Without
+                // these rows `FindEntity("EscapePoint")` resolved the name to
+                // nothing and usn_2_java's phase-2 distance test raised.
+                markers = collect_scene_markers(host.scene_contents->entities(),
+                    static_cast<int>(host.units->count()) + 1);
+                for (const GameSceneMarkerSeed& marker : markers) {
+                    entities.push_back(GameMissionLuaHost::SceneEntity{marker.name,
+                        marker.id, -1, marker.findable});
                 }
                 host.lua.attach_scene_entities_00928a00(entities);
+                if (!markers.empty()) report_scene_markers(host.log, markers);
             }
             // Milestone 2m: with the slots built, the eight binding bodies
             // src/lua_binding_navigator.cpp reconstructs can run over the
             // created instances instead of being counted as records.
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
+            for (const GameSceneMarkerSeed& marker : markers) {
+                host.script_orders->register_scene_marker(marker.id, marker.name,
+                    marker.position);
+            }
             host.lua.attach_script_orders(host.script_orders.get());
             // Milestone 2n: the ship AI controller family at 00d21598 over the
             // same created units. 009f50e0's three gates read unit+5Ch, +5Dh and
@@ -1372,6 +1461,12 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // (docs/MISSION_LUA_SELF_TABLE.md). The inventory has no row of its
             // own for it, so it runs here, where the listing runs it.
             host.lua.create_self_table_004e0305();
+            // Packet cc_lua_find_entity: 004E0305 nils `recon`, and on this path
+            // the native gets a table back through 00806B10's 006B8190 descent.
+            // That routine runs off the recon slot lists, which this process does
+            // not build, so the executable installs the shell 00803A40 builds and
+            // says the publication is the record.
+            host.lua.install_recon_tables_00803a40();
             ++host.load.concrete;
             continue;
         }
@@ -1778,6 +1873,9 @@ void GameMissionFrameHost::report(long requested_frames) {
     if (host.hud != nullptr) host.hud->report();
     if (host.world_host != nullptr) host.world_host->report();
     if (host.script_orders != nullptr) host.script_orders->report();
+    // Packet cc_lua_find_entity: the shipped script's own `Mission` table, which
+    // is how far the run carried the mission rather than how far the host ran.
+    host.lua.report_mission_script_state();
     if (host.ship_ai != nullptr) host.ship_ai->report();
     if (host.units != nullptr) host.units->report();
     if (!host.trajectory_csv_path.empty()) {
