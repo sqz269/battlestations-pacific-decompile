@@ -1,0 +1,1246 @@
+{
+  "packet": "orch2_resource_hierarchy_frontier_be",
+  "status": "read_only_frontier_complete",
+  "candidate_head": "dfb034a219cf7525d9b9849e403b601c58a76708",
+  "identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live query used bsp.py ghidra, whose client verifies configured project/program. No Ghidra mutation, exports, new source, build, tests, network, UI or game work. PE SHA256 checked once; full code/data spans matched live Ghidra image bytes to installed PE.",
+  "next_ready_packet": {
+    "addresses": [
+      "00b7d640",
+      "00b7d7d0",
+      "00b88180"
+    ],
+    "original_body_bytes": 290,
+    "suggested_files": [
+      "include/bsp/native_resource_hierarchy_fields.hpp",
+      "src/native_resource_hierarchy_fields.cpp",
+      "docs/NATIVE_RESOURCE_HIERARCHY_FIELDS.md",
+      "reports/native_resource_hierarchy_fields.json"
+    ],
+    "dependencies_complete": [
+      "existing BF55BE/BF681B allocation and BF6989/BF65AC returning-free services",
+      "NativeStringRawPoolContext + completed raw41DD20,419CC0,BD1510 providers"
+    ],
+    "exclusions": [
+      "six pointer-array helpers owned by sibling",
+      "cache/manager and B88430 implementation",
+      "existing material pool algorithms",
+      "arbitrary primary-item virtual dispatch"
+    ],
+    "repair_required_for_annotation": "Root-owned read-only-confirmed B7D68C returning-free override/gap; core behavior already fully decoded."
+  },
+  "functions": [
+    {
+      "address": "00b7d640",
+      "end": "00b7d69e",
+      "byte_count": 95,
+      "sha256": "187139a5c3029c2e23e569f9b9babdbd7b10d4801348a4699b5faad7c2343689",
+      "live_equals_pe": true,
+      "instruction_count": 38,
+      "decoded_to_end": true,
+      "name": "Numeric-reference array reserve (provisional)",
+      "original_abi": "ECX actual 0Ch data/count/capacity header; stack signed capacity; RET4; no meaningful result.",
+      "status": "ready_missing_source",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [
+        "00b7d691",
+        "00b7d694",
+        "00b7d696",
+        "00b7d699"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b7d640",
+          "address": "00b7d660",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b7d640",
+          "address": "00b7d68c",
+          "native": "00bf6989"
+        }
+      ],
+      "live_xrefs_text": "From 00b7d7de in FUN_00b7d7d0 [UNCONDITIONAL_CALL]\nFrom 00b7eccb in BSP_StructuredResource_ParseHierarchyItem [UNCONDITIONAL_CALL]\nFrom 00b7d9e9 in FUN_00b7d9d0 [UNCONDITIONAL_CALL]",
+      "behavior": [
+        "Capture requested signed capacity in EDI; clamp below8 to8; return if CURRENT signed capacity+8 suffices.",
+        "BF55BE receives exactly one DWORD byte count (capacity*4 moduloDWORD), caller ADD ESP,4 at B7D669. It jumps to existing BF681B allocation service.",
+        "Capture new data in EBX; read CURRENT count after allocation. For signed index from0, skip only a null computed destination, otherwise reload CURRENT old data and copy one DWORD; reread CURRENT count on every loop test.",
+        "Free CURRENT old data through BF6989 at B7D68C. Missing fallthrough is ADD ESP,4; MOV [ESI],EBX; MOV [ESI+8],EDI; POP EBX at B7D691..699. Publish data/capacity only after free; count remains unchanged.",
+        "No pointee work, unused-slot clearing, overflow check, rollback or null-allocation recovery. Preserve original valid-memory domain and current-header reloads. No local EH frame."
+      ]
+    },
+    {
+      "address": "00b7d7d0",
+      "end": "00b7d81f",
+      "byte_count": 80,
+      "sha256": "aec8299aa9ddf8f6b0a37e7e76645b6b38edde5c1f24ea866ee14fa9cd977756",
+      "live_equals_pe": true,
+      "instruction_count": 31,
+      "decoded_to_end": true,
+      "name": "Numeric-reference array resize (provisional)",
+      "original_abi": "ECX actual 0Ch data/count/capacity header; stack signed count; RET4; no meaningful result.",
+      "status": "ready_missing_source",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b7d7d0",
+          "address": "00b7d7de",
+          "native": "00b7d640"
+        }
+      ],
+      "live_xrefs_text": "From 00b881ad in BSP_HierarchyItem_DestroyFields [UNCONDITIONAL_CALL]",
+      "behavior": [
+        "Capture signed requested count in EDI; call B7D640(request) only when it exceeds CURRENT signed capacity+8.",
+        "Read CURRENT count after reserve; zero each computed added slot if nonnull, reloading data each iteration. Do not retain or release values.",
+        "Then compare request against CURRENT count again; decrement actual count repeatedly while greater than request, then store request unconditionally. Negative counts/capacities are not clamped. No local EH frame."
+      ]
+    },
+    {
+      "address": "00b88180",
+      "end": "00b881f2",
+      "byte_count": 115,
+      "sha256": "132032b08d4c4332642609822f1cf277aa0947b4e361841691e8cdd324a47dc6",
+      "live_equals_pe": true,
+      "instruction_count": 37,
+      "decoded_to_end": true,
+      "name": "BSP_HierarchyItem_DestroyFields",
+      "original_abi": "ECX actual hierarchy record; no stack arguments; RET; local FH3 state0 cleans name.",
+      "status": "ready_missing_source",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b88180",
+          "address": "00b881ad",
+          "native": "00b7d7d0"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881b5",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881d6",
+          "native": "00419cc0"
+        },
+        {
+          "function": "00b88180",
+          "address": "00b881dd",
+          "native": "00bd1510"
+        }
+      ],
+      "live_xrefs_text": "From 00b884bc in BSP_Resource_Destroy [UNCONDITIONAL_CALL]\nFrom 00b88323 in FUN_00b88320 [UNCONDITIONAL_CALL]",
+      "behavior": [
+        "Capture record ESI and header address EDI=record+4C; arm name unwind state0 before B7D7D0(header,0) at B881AD.",
+        "Reload CURRENT data from header after resize; BF6989(data) at B881B5, ADD ESP,4 at B881BD. Array count is zero, but data/capacity remain stale. If capacity was negative, resize0 can allocate32 bytes before this free.",
+        "Load CURRENT name data from record+8 after free. Set unwind state-1 at B881C2 before the pointer test branch/name release. Nonnull data then reads CURRENT length+4, captures length+1, and prepares three stack words for BD1510.",
+        "B881D6 calls 419CC0 with NO native arguments; its plain RET leaves the prepared pointer,size,flag1 stack words for B881DD BD1510. ECX for BD1510 is returned actual pool; RET0C consumes all three words. Use the completed NativeStringRawPoolContext overload so getter exceptions can escape.",
+        "Name and array headers are not cleared. No virtual call, primary-item decrement, record-slot return, hierarchy traversal or payload-field cleanup occurs here.",
+        "If resize/free escapes before state-1, FH3 map DFB9C0 state0 -> CC2570 ->41DD20(record+4). It does not free the numeric backing array or return the88h pool slot as an added unwind action."
+      ]
+    }
+  ],
+  "ready_followup_functions": [
+    {
+      "address": "00b17af0",
+      "end": "00b17b57",
+      "byte_count": 104,
+      "sha256": "bc9e39170df0e708bff6012fa99bb3638b975255dd40052302a02fd62cae2d31",
+      "live_equals_pe": true,
+      "instruction_count": 33,
+      "decoded_to_end": true,
+      "name": "Standalone 88h pool slot return (provisional)",
+      "original_abi": "ECX actual initialized38h pool; stack actual88h slot; RET4; no meaningful result.",
+      "status": "mechanics_already_in_parameter_return_fragment_missing_standalone_entry",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b17af0",
+          "address": "00b17af9",
+          "native": "00ce2218+iat",
+          "operand": "dword ptr [0xce2218]",
+          "import": "KERNEL32.dll!EnterCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b17af0",
+          "address": "00b17b4c",
+          "native": "00ce2210+iat",
+          "operand": "dword ptr [0xce2210]",
+          "import": "KERNEL32.dll!LeaveCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        }
+      ],
+      "live_xrefs_text": "From 00b19299 in BSP_Material_SetShaderAndClearParameters [UNCONDITIONAL_CALL]\nFrom 00b191fc in FUN_00b191d0 [UNCONDITIONAL_CALL]\nFrom 00b88335 in FUN_00b88320 [UNCONDITIONAL_CALL]",
+      "behavior": "Enter actual pool+0C, increment+24, then load slot+84 slab ID; index actual table+28; signed32 byte delta /88h via IMUL78787879,SAR6,SHR31 correction; push uint16 physical slot index at slab+4400+freeCount*2, increment CURRENT uint16+4500; unsigned-lower firstFree+34; decrement+24 and leave same CS. No checks, slab reclamation or payload cleanup. All3 callers pass either F8D3E4(material) or109022C(hierarchy)."
+    },
+    {
+      "address": "00b87a90",
+      "end": "00b87a99",
+      "byte_count": 10,
+      "sha256": "a65a3c5e528b0859e98acedf6f1d206efc1275ffd26edd6497033527d994a5ed",
+      "live_equals_pe": true,
+      "instruction_count": 2,
+      "decoded_to_end": true,
+      "name": "Hierarchy static-pool allocation wrapper (provisional)",
+      "original_abi": "Incoming ECX allocation size ignored; overwrite with109022C; tail JMP B185A0; no native stack args; EAX slot.",
+      "status": "ready_binding_wrapper_existing_allocator",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b87a90",
+          "address": "00b87a95",
+          "native": "00b185a0",
+          "kind": "tail_jump"
+        }
+      ],
+      "live_xrefs_text": "From 00b7ebb4 in BSP_StructuredResource_ParseHierarchyItem [UNCONDITIONAL_CALL]",
+      "behavior": "B87A90 replaces ECX=84 supplied at B7EBB4 with the distinct actual owner109022C. B185A0 does no payload initialization; it returns a metadata-initialized slot."
+    },
+    {
+      "address": "00ce0ed0",
+      "end": "00ce0ed9",
+      "byte_count": 10,
+      "sha256": "49114224b429e5ed79a054561bab842953ed53b9bf860f515ab6c19a3d4ba546",
+      "live_equals_pe": true,
+      "instruction_count": 2,
+      "decoded_to_end": true,
+      "name": "Hierarchy static-pool destruction wrapper (provisional)",
+      "original_abi": "No inputs; ECX=109022C; tail JMP B18470; no meaningful result.",
+      "status": "ready_binding_wrapper_existing_pool_destructor",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00ce0ed0",
+          "address": "00ce0ed5",
+          "native": "00b18470",
+          "kind": "tail_jump"
+        }
+      ],
+      "live_xrefs_text": "From 00cd82da [DATA]",
+      "behavior": "B18470 stamps D5E51C, frees slabs/table, drains positive recursion, deletes real CS and unlinks SAME allocator-list element; requires payloads already destroyed. Actual hierarchy owner is distinct from material F8D3E4."
+    },
+    {
+      "address": "00b88320",
+      "end": "00b8833f",
+      "byte_count": 32,
+      "sha256": "d6c6affc39d19bffa017270fa7fa7124455eb4502a718bb277ed3334a009d605",
+      "live_equals_pe": true,
+      "instruction_count": 11,
+      "decoded_to_end": true,
+      "name": "Hierarchy flags cleanup wrapper (provisional)",
+      "original_abi": "ECX hierarchy record; one DWORD flags stack slot (low byte bit0 tested); RET4; EAX original record.",
+      "status": "depends_on_field_cleanup_and_actual_pool_binding",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b88320",
+          "address": "00b88323",
+          "native": "00b88180"
+        },
+        {
+          "function": "00b88320",
+          "address": "00b88335",
+          "native": "00b17af0"
+        }
+      ],
+      "live_xrefs_text": "No references found to address: 00b88320 FUN_00b88320",
+      "behavior": "Preserve original ECX in ESI; call B88180; if low flags bit0 set, B17AF0(owner109022C,record); return original record. No local FH3 frame. An exception from fields does not reach pool return. Live xrefs report none; producer+0 is Parent, so no hierarchy vtable dispatch is established."
+    },
+    {
+      "address": "00b7d9d0",
+      "end": "00b7da09",
+      "byte_count": 58,
+      "sha256": "016ef2712bc9c72542d57d1dbad941da48b45dec467c2b1d42d9c5765dd68917",
+      "live_equals_pe": true,
+      "instruction_count": 22,
+      "decoded_to_end": true,
+      "name": "Numeric-reference array append helper (provisional)",
+      "original_abi": "ECX0Ch numeric header; stack address of DWORD value; RET4; no meaningful result.",
+      "status": "optional_producer_helper_not_needed_by_B88430",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b7d9d0",
+          "address": "00b7d9e9",
+          "native": "00b7d640"
+        }
+      ],
+      "live_xrefs_text": "No references found to address: 00b7d9d0 FUN_00b7d9d0",
+      "behavior": "If count==capacity, request max(capacity+4,8), signed wrapping arithmetic, from B7D640. Read argument DWORD only after growth and only if computed destination is nonnull; store and increment CURRENT count. No live xrefs. Parser inlines a similar append with an already captured integer."
+    }
+  ],
+  "existing_pool_dependencies": [
+    {
+      "address": "00b17510",
+      "end": "00b17555",
+      "byte_count": 70,
+      "sha256": "4cb8c344e80ca65475e9d09c41e5b7749000c81728bc68fe9bbb264506f09912",
+      "live_equals_pe": true,
+      "instruction_count": 22,
+      "decoded_to_end": true,
+      "name": "Existing88h slab initializer",
+      "original_abi": "ECX actual4504h slab; stack slab ID; RET4; EAX same slab.",
+      "status": "existing_source_reuse_body_rechecked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [],
+      "live_xrefs_text": "From 00b185dd in BSP_NativeMaterialParameterPool_AllocateSlot [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b18340",
+      "end": "00b18412",
+      "byte_count": 211,
+      "sha256": "450022fb29cd66982a74bf51048bdf810ce52ad6fee241b98796c3e38ad26ba5",
+      "live_equals_pe": true,
+      "instruction_count": 68,
+      "decoded_to_end": true,
+      "name": "Existing38h pool constructor",
+      "original_abi": "ECX actual38h pool; RET; EAX same pool; local FH3 state0..2.",
+      "status": "existing_source_reuse_body_rechecked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b18340",
+          "address": "00b18392",
+          "native": "00ce220c+iat",
+          "operand": "dword ptr [0xce220c]",
+          "import": "KERNEL32.dll!InitializeCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b18340",
+          "address": "00b183c2",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b18340",
+          "address": "00b183f4",
+          "native": "00bf6989"
+        }
+      ],
+      "live_xrefs_text": "From 00cd78f5 in BSP_NativeMaterialParameterPool_InitializeStatic [UNCONDITIONAL_CALL]\nFrom 00cd82d5 [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b185a0",
+      "end": "00b186db",
+      "byte_count": 316,
+      "sha256": "6be2a69b256217a2fa96b16229495ad2a3dddf4a00de758c3460fc18c7b316fc",
+      "live_equals_pe": true,
+      "instruction_count": 110,
+      "decoded_to_end": true,
+      "name": "Existing88h slot allocator",
+      "original_abi": "ECX initialized38h pool; RET; EAX slot.",
+      "status": "existing_source_reuse_body_rechecked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [
+        "00b18699"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b185a0",
+          "address": "00b185aa",
+          "native": "00ce2218+iat",
+          "operand": "dword ptr [0xce2218]",
+          "import": "KERNEL32.dll!EnterCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b185cb",
+          "native": "00bf681b"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b185dd",
+          "native": "00b17510"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b185ff",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b18631",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b186bb",
+          "native": "00ce2210+iat",
+          "operand": "dword ptr [0xce2210]",
+          "import": "KERNEL32.dll!LeaveCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b185a0",
+          "address": "00b186cf",
+          "native": "00ce2210+iat",
+          "operand": "dword ptr [0xce2210]",
+          "import": "KERNEL32.dll!LeaveCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        }
+      ],
+      "live_xrefs_text": "From 00b87a95 in CG_static_dtor_stub_00b87a90 [UNCONDITIONAL_CALL]\nFrom 00b18795 in BSP_MaterialParameter_Allocate [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b18470",
+      "end": "00b184f9",
+      "byte_count": 138,
+      "sha256": "2a64e77252208ba7c8e1b1b73e0cdf14ac3c073192fd282079b3ab2cc02a2bfb",
+      "live_equals_pe": true,
+      "instruction_count": 51,
+      "decoded_to_end": true,
+      "name": "Existing38h pool destructor",
+      "original_abi": "ECX pool; RET; no meaningful result.",
+      "status": "existing_source_reuse_body_rechecked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b18470",
+          "address": "00b18488",
+          "native": "00bf65ac"
+        },
+        {
+          "function": "00b18470",
+          "address": "00b184a0",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b18470",
+          "address": "00b184bd",
+          "native": "00b18470+indirect",
+          "operand": "ebx",
+          "import": null,
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b18470",
+          "address": "00b184c7",
+          "native": "00ce2214+iat",
+          "operand": "dword ptr [0xce2214]",
+          "import": "KERNEL32.dll!DeleteCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        }
+      ],
+      "live_xrefs_text": "From 00ce0ed5 in CG_static_init_00ce0ed0 [UNCONDITIONAL_CALL]\nFrom 00ce0c05 in BSP_NativeMaterialParameterPool_DestroyStatic [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b18500",
+      "end": "00b1859f",
+      "byte_count": 160,
+      "sha256": "1bce71bf04b8631474f8bfc23a43726084d1317f70840afd55204c28b27c172e",
+      "live_equals_pe": true,
+      "instruction_count": 55,
+      "decoded_to_end": true,
+      "name": "Existing88h pool trim",
+      "original_abi": "ECX pool; RET; no meaningful result. No lock.",
+      "status": "existing_source_reuse_body_rechecked",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [
+        "00b1850d"
+      ],
+      "direct_calls": [
+        {
+          "function": "00b18500",
+          "address": "00b18522",
+          "native": "00bf65ac"
+        }
+      ],
+      "live_xrefs_text": "From 00d5e51c [DATA]"
+    }
+  ],
+  "evidence_only_support_functions": [
+    {
+      "address": "00b7eb90",
+      "end": "00b7ee90",
+      "byte_count": 769,
+      "sha256": "3d29d9f744a2052f8886ff8e64278ee79670a6fa6faf90500b51c2165be3b5c4",
+      "live_equals_pe": true,
+      "instruction_count": 232,
+      "decoded_to_end": true,
+      "name": "Hierarchy record producer",
+      "original_abi": "ECX manager; stack reader-wrapper pointer; RET4.",
+      "status": "typed_parser_exists_native_lifetime_plumbing_incomplete",
+      "coverage": "partial semantic audit: layout/array/name/ownership/EH; other field helper internals remain external",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b7eb90",
+          "address": "00b7ebb4",
+          "native": "00b87a90"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ec2b",
+          "native": "00715bf0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ec47",
+          "native": "00bea680"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ec61",
+          "native": "00bf7fbf"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ec76",
+          "native": "00be9a00"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ec94",
+          "native": "00bf7fbf"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7eca9",
+          "native": "00be9a00"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7eccb",
+          "native": "00b7d640"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ecf8",
+          "native": "00bf7fbf"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed10",
+          "native": "00b936e0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed2f",
+          "native": "00bf7fbf"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed49",
+          "native": "00bea010"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed63",
+          "native": "0041dd40"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed77",
+          "native": "00bf7680"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ed9a",
+          "native": "00419cc0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7eda1",
+          "native": "00bd1510"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7edb7",
+          "native": "00425850"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7edc4",
+          "native": "00be9a00"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7edda",
+          "native": "00425850"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7edec",
+          "native": "00b932e0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7edf6",
+          "native": "00b7d220"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee2f",
+          "native": "00425850"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee3f",
+          "native": "00b93310"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee46",
+          "native": "00be9c40"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee57",
+          "native": "00be9ed0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee62",
+          "native": "00715bf0"
+        },
+        {
+          "function": "00b7eb90",
+          "address": "00b7ee78",
+          "native": "00b87ae0"
+        }
+      ],
+      "live_xrefs_text": "From 00b7f165 in BSP_StructuredResource_ParseHierarchy [UNCONDITIONAL_CALL]"
+    },
+    {
+      "address": "00b88430",
+      "end": "00b886ab",
+      "byte_count": 636,
+      "sha256": "8cc36729f1cf5c5d0c7aa421a2833e5ff2589e55a9d5ad1d32c5f544e9d52158",
+      "live_equals_pe": true,
+      "instruction_count": 202,
+      "decoded_to_end": true,
+      "name": "Resource base destructor",
+      "original_abi": "ECX resource; no stack args; RET; local FH3.",
+      "status": "external_integrator_implementation",
+      "coverage": "partial semantic audit: hierarchy cleanup/return and finite item boundary; cache and other implementation external",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00b88430",
+          "address": "00b8847a",
+          "native": "00b88430+indirect",
+          "operand": "ebx",
+          "import": null,
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88487",
+          "native": "00b88430+indirect",
+          "operand": "eax",
+          "import": null,
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88495",
+          "native": "004c1400"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b8849c",
+          "native": "00b801c0"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b884bc",
+          "native": "00b88180"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b884c6",
+          "native": "00ce2218+iat",
+          "operand": "dword ptr [0xce2218]",
+          "import": "KERNEL32.dll!EnterCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b8852c",
+          "native": "00ce2210+iat",
+          "operand": "dword ptr [0xce2210]",
+          "import": "KERNEL32.dll!LeaveCriticalSection",
+          "mechanical_verification": "indirect; exact operand retained, PE import name when available"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88555",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88583",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b885d4",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b885ee",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b8861c",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88664",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88682",
+          "native": "00419cc0"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88689",
+          "native": "00bd1510"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88694",
+          "native": "00bd30f0"
+        }
+      ],
+      "live_xrefs_text": "From 00c84f73 in Unwind@00c84f70 [UNCONDITIONAL_CALL]\nFrom 00b88763 in BSP_Resource_ScalarDeletingDestructor [UNCONDITIONAL_CALL]\nFrom 0071886b in BSP_GameResource_Destroy [UNCONDITIONAL_CALL]"
+    }
+  ],
+  "unwind_functions": [
+    {
+      "address": "00cc2570",
+      "end": "00cc257a",
+      "byte_count": 11,
+      "sha256": "7aadb0fce5caaff895bf4802694272e05e91d0a634418622d776dae3aab1860f",
+      "live_equals_pe": true,
+      "instruction_count": 3,
+      "decoded_to_end": true,
+      "name": "Hierarchy name unwind",
+      "original_abi": "FH3 funclet; EBP parent frame; load record [EBP-10], add4; tail JMP41DD20.",
+      "status": "existing_unwind_leaf_consumed",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00cc2570",
+          "address": "00cc2576",
+          "native": "0041dd20",
+          "kind": "tail_jump"
+        }
+      ],
+      "live_xrefs_text": "From 00dfb9c4 [DATA]"
+    },
+    {
+      "address": "00cc1ff0",
+      "end": "00cc1ff7",
+      "byte_count": 8,
+      "sha256": "fd82b8f9f0bed39207eda343dba0ef04964de85e6584ede4a5fbe98c15d6bdbe",
+      "live_equals_pe": true,
+      "instruction_count": 2,
+      "decoded_to_end": true,
+      "name": "Producer child-wrapper unwind",
+      "original_abi": "FH3 funclet; EBP parent frame; ECX=&[EBP-34]; tail JMP BE9ED0.",
+      "status": "existing_unwind_leaf_consumed",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00cc1ff0",
+          "address": "00cc1ff3",
+          "native": "00be9ed0",
+          "kind": "tail_jump"
+        }
+      ],
+      "live_xrefs_text": "From 00dfb15c [DATA]"
+    },
+    {
+      "address": "00cc1ff8",
+      "end": "00cc1fff",
+      "byte_count": 8,
+      "sha256": "5f5eb1be5fb010768af25f0bc87d1bef9f9f51eb4dad859ec71504bba6be06bb",
+      "live_equals_pe": true,
+      "instruction_count": 2,
+      "decoded_to_end": true,
+      "name": "Producer temporary-name unwind",
+      "original_abi": "FH3 funclet; EBP parent frame; ECX=&[EBP-2C]; tail JMP41DD20.",
+      "status": "existing_unwind_leaf_consumed",
+      "coverage": "complete",
+      "missing_listing_instruction_addresses": [],
+      "direct_calls": [
+        {
+          "function": "00cc1ff8",
+          "address": "00cc1ffb",
+          "native": "0041dd20",
+          "kind": "tail_jump"
+        }
+      ],
+      "live_xrefs_text": "From 00dfb164 [DATA]"
+    }
+  ],
+  "raw_startup": {
+    "address": "00cd82d0",
+    "end": "00cd82e5",
+    "byte_count": 22,
+    "sha256": "f841dadfaba4737c074bde9e2b8ff208fc69946aeb3bddd00db3e49c5c3748cb",
+    "live_equals_pe": true,
+    "instruction_count": 6,
+    "decoded_to_end": true,
+    "coverage": "complete raw code, no Ghidra function",
+    "original_abi": "No inputs; CALL B18340(ECX109022C); cdecl BF6FF5(CE0ED0); POP ECX consumes4 bytes; RET returns atexit status in EAX.",
+    "status": "ready_after_integrator_defines_function_and_adds_binding_wrapper",
+    "raw_instruction_transfers": [
+      {
+        "call_address": "00cd82d5",
+        "target": "00b18340"
+      },
+      {
+        "call_address": "00cd82df",
+        "target": "00bf6ff5"
+      }
+    ],
+    "mechanical_call_verification": "not possible: live proto reports no containing function; raw instructions and complete bytes are preserved; integrator must define22-byte CD82D0..CD82E5 then add/check address/native rows before implementation integration"
+  },
+  "all_incoming_core_and_return_calls": [
+    {
+      "function": "00b7d7d0",
+      "address": "00b7d7de",
+      "native": "00b7d640",
+      "arguments": "ECX unchanged header; stack requested count EDI; RET4."
+    },
+    {
+      "function": "00b7eb90",
+      "address": "00b7eccb",
+      "native": "00b7d640",
+      "arguments": "ECX=record+4C; stack max(capacity+4,8) signed; EDI captures BE9A00 scalar result before reserve; EBX zero throughout producer."
+    },
+    {
+      "function": "00b7d9d0",
+      "address": "00b7d9e9",
+      "native": "00b7d640",
+      "arguments": "ECX original header unchanged; stack max(capacity+4,8); RET4."
+    },
+    {
+      "function": "00b88180",
+      "address": "00b881ad",
+      "native": "00b7d7d0",
+      "arguments": "ECX=record+4C; stack0; RET4."
+    },
+    {
+      "function": "00b88430",
+      "address": "00b884bc",
+      "native": "00b88180",
+      "arguments": "ECX nonnull CURRENT hierarchy pointer EDI; no stack args. Resource kept in ESI; array index EBX."
+    },
+    {
+      "function": "00b88320",
+      "address": "00b88323",
+      "native": "00b88180",
+      "arguments": "ECX original record; no stack args; ESI retains it for conditional pool return."
+    },
+    {
+      "function": "00b191d0",
+      "address": "00b191fc",
+      "native": "00b17af0",
+      "arguments": "ECX F8D3E4; stack parameter ESI; name release already occurred; low caller flags bit0 gates return; RET4."
+    },
+    {
+      "function": "00b19210",
+      "address": "00b19299",
+      "native": "00b17af0",
+      "arguments": "ECX F8D3E4; stack parameter ESI; name release already occurred; nonnull pointer gate; RET4."
+    },
+    {
+      "function": "00b88320",
+      "address": "00b88335",
+      "native": "00b17af0",
+      "arguments": "ECX109022C; stack hierarchy ESI; B88180 already returned; flags bit0 gate; RET4."
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00dfb9c0",
+      "end": "00dfb9eb",
+      "byte_count": 44,
+      "sha256": "8036a57a4cc8e430fe033f8a8f022ecfacf886c1b848fcf9814386bb966914cb",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00dfb158",
+      "end": "00dfb18b",
+      "byte_count": 52,
+      "sha256": "933684815a68a5d993c549f9608b7f45ff240aa421a69888a9da9b14d631a3ee",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00df4774",
+      "end": "00df47af",
+      "byte_count": 60,
+      "sha256": "d45d0e2ae97ad3aea6d1e5d0451492a236a94df088c1aca5f5881ab604a45c04",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d5e51c",
+      "end": "00d5e51f",
+      "byte_count": 4,
+      "sha256": "f3732df59581d5817c2835772b7a26e4125c214133f0f3032ea47bd24268b93e",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d631c0",
+      "end": "00d631c7",
+      "byte_count": 8,
+      "sha256": "466385ba2fdcb1e8ceada8b290c77c5642ad088949c516eb1f6c104bb030b372",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00ce35b0",
+      "end": "00ce35b3",
+      "byte_count": 4,
+      "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093",
+      "live_equals_pe": true
+    }
+  ],
+  "unwind_maps": [
+    {
+      "function": "00b88180",
+      "handler": "00cc257b",
+      "handler_span": {
+        "address": "00cc257b",
+        "end": "00cc2584",
+        "byte_count": 10,
+        "sha256": "095880e65053270076600f4662b24b7ba164863ac29a89cb0c99d1bed88b7ca3",
+        "live_equals_pe": true,
+        "instruction_count": 2,
+        "decoded_to_end": true
+      },
+      "info": "00dfb9c8",
+      "magic": "19930522",
+      "max_state": 1,
+      "map": "00dfb9c0",
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cc2570",
+          "meaning": "name header at current parent record+4"
+        }
+      ],
+      "no_record_slot_return": true,
+      "no_array_cleanup_action": true
+    },
+    {
+      "function": "00b7eb90",
+      "handler": "00cc2000",
+      "handler_span": {
+        "address": "00cc2000",
+        "end": "00cc2009",
+        "byte_count": 10,
+        "sha256": "1f5cff4276dc9dbb65ee9fcf24d31efe1be04c81f0cda6d6eef0252477eca76a",
+        "live_equals_pe": true,
+        "instruction_count": 2,
+        "decoded_to_end": true
+      },
+      "info": "00dfb168",
+      "magic": "19930522",
+      "max_state": 2,
+      "map": "00dfb158",
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cc1ff0",
+          "meaning": "current child reader wrapper"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00cc1ff8",
+          "meaning": "temporary returned name header"
+        }
+      ],
+      "no_record_cleanup_or_pool_return": true
+    },
+    {
+      "function": "00b18340",
+      "handler": "00cbc51e",
+      "info": "00df478c",
+      "map": "00df4774",
+      "max_state": 3,
+      "states": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cbc500",
+          "meaning": "existing base allocator-list cleanup"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00cbc508",
+          "meaning": "existing CS cleanup"
+        },
+        {
+          "state": 2,
+          "to_state": 1,
+          "action": "00cbc513",
+          "meaning": "existing table cleanup"
+        }
+      ],
+      "coverage": "existing implemented EH contract consumed; map bytes rechecked; no new EH implementation claimed"
+    }
+  ],
+  "actual_owner": {
+    "base": "0109022c",
+    "size": 56,
+    "profile": "00d5e51c",
+    "virtual0": "00b18500",
+    "allocator_list": "00e188b4",
+    "fields": [
+      {
+        "offset": "00",
+        "address": "0109022c",
+        "meaning": "allocator vtable"
+      },
+      {
+        "offset": "04",
+        "address": "01090230",
+        "meaning": "allocator previous"
+      },
+      {
+        "offset": "08",
+        "address": "01090234",
+        "meaning": "allocator next"
+      },
+      {
+        "offset": "0c",
+        "address": "01090238",
+        "meaning": "actual24-byte CRITICAL_SECTION"
+      },
+      {
+        "offset": "24",
+        "address": "01090250",
+        "meaning": "signed recursion/depth DWORD"
+      },
+      {
+        "offset": "28",
+        "address": "01090254",
+        "meaning": "slab table pointer"
+      },
+      {
+        "offset": "2c",
+        "address": "01090258",
+        "meaning": "unsigned slab count"
+      },
+      {
+        "offset": "30",
+        "address": "0109025c",
+        "meaning": "table capacity"
+      },
+      {
+        "offset": "34",
+        "address": "01090260",
+        "meaning": "first nonfull slab, FFFFFFFF sentinel"
+      }
+    ],
+    "slab": {
+      "bytes": 17668,
+      "slots": 128,
+      "slot_stride": 136,
+      "payload": 132,
+      "hidden_slab_id_offset": 132,
+      "free_indices_offset": 17408,
+      "free_count_offset": 17664,
+      "free_count_width": 2,
+      "tail_padding_bytes": 2
+    },
+    "current_runtime_initialization": "unverified: Ghidra/static PE data is not live gameplay state"
+  },
+  "record_producer": {
+    "function": "00b7eb90",
+    "allocation_call": "00b7ebb4",
+    "requested_ecx": "00000084",
+    "allocator_wrapper": "00b87a90",
+    "append_call": "00b7ee78",
+    "append_callee": "00b87ae0",
+    "layout": [
+      {
+        "offset": "00",
+        "meaning": "Parent numeric value",
+        "initial": "FFFFFFFF"
+      },
+      {
+        "offset": "04/08",
+        "meaning": "owned name length/data",
+        "initial": "0/0"
+      },
+      {
+        "offset": "0c..4b",
+        "meaning": "64-byte matrix",
+        "initial": "unwritten; no identity default"
+      },
+      {
+        "offset": "4c/50/54",
+        "meaning": "numeric Resource DWORD values data/count/capacity",
+        "initial": "0/0/0"
+      },
+      {
+        "offset": "58",
+        "meaning": "Flags value; bit meanings unknown",
+        "initial": "0"
+      },
+      {
+        "offset": "5c/60/64/68",
+        "meaning": "sphere center/radius",
+        "initial": "0,0,0,1e10"
+      },
+      {
+        "offset": "6c/70/74",
+        "meaning": "box minimumXYZ",
+        "initial": "-1e10 each"
+      },
+      {
+        "offset": "78/7c/80",
+        "meaning": "box maximumXYZ",
+        "initial": "1e10 each"
+      },
+      {
+        "offset": "84",
+        "meaning": "pool slab ID outside132-byte producer payload",
+        "initial": "B17510 writes same owner slab index in all128 slots"
+      }
+    ],
+    "native_typed_boundary": "Existing structured_hierarchy.cpp implements typed fields/matrix/sphere; native88h slot allocation, raw append lifetime and exceptional ownership remain separate. No hierarchy vtable or parent-pointer tree is established.",
+    "handoff": "Append same raw record after full parse. Parser has no record cleanup/pool-return unwind state. Null allocation can pass through to later null accesses/append; no graceful rejection is introduced."
+  },
+  "reuse_assessment": {
+    "concrete_reusable": [
+      "NativeMaterialParameterPool holds supplied storage_ and AllocatorListDomain; methods use supplied actual storage and D5E51C/B18500 shape constants. native_global=F8D3E4 is not dereferenced in these implementations.",
+      "CD82D0/CE0ED0 prove constructor/destructor reuse at109022C, not merely same layout. B87A90 proves same allocator; B88320/B17AF0 and B88430 inline region prove same return schedule.",
+      "Existing return_slot_00b193fa_fragment shares shape-templated return_slot and requires no material payload/string services. GUI material source already uses it for native B17AF0."
+    ],
+    "missing_binding": "No source occurrence of109022C or hierarchy static pool wrapper exists in this checkout. Add an explicit companion bound to THAT canonical actual storage and SAME allocator-list domain. Never pass the application material companion owning F8D3E4.",
+    "limits": "Reuse supported native valid-storage domain only. Existing companion uses typed fields and placement-new; no all-aliasing/all-null-allocation parity proof follows. No private owner copy, extra free list, implicit initialization, fabricated callback or value-initialized slab.",
+    "string_pool_distinction": "419CC0 uses publication1090AA8, shutdown gate1090AA4, manager1090AA0; its large embedded arena and96h size classes/rings are only for record name data. None owns the88h hierarchy slot or109022C slab table."
+  },
+  "finite_item_dispatch": {
+    "matched_profile": "00d631c0",
+    "virtual0": "00bd30e0",
+    "virtual4": "00b86990",
+    "status": "fallback scalar body named but no reconstruction/source provider found; BD30E0 provider interface exists but requires finite concrete profile implementation",
+    "boundaries": [
+      "B88430 decrements each PRIMARY item+4, calls captured virtual0 only at zero; hierarchy records follow direct B88180 then inline pool return instead.",
+      "B86990 stampsD5C104, calls completedBD30F0, conditionally frees throughBF65AC on low flags bit0 and returns original object; this body remains external to this packet.",
+      "Typed Mesh/Note/GroupParams parser results do not establish native deleting profiles or parser-result reference ownership. B88320 has no live xrefs and cannot be installed as a fabricated hierarchy virtual."
+    ]
+  },
+  "named_but_incomplete": [
+    {
+      "address": "00b801c0",
+      "contract": "actual manager name erase; no reconstruction in current ledger; cache worker/integrator external"
+    },
+    {
+      "address": "00b7e7b0",
+      "contract": "native owner/node checked name-tree find; no reconstruction in current ledger"
+    },
+    {
+      "address": "00b7fa60",
+      "contract": "native checked iterator erase/tree lifetime; no reconstruction in current ledger; no STL port authorized"
+    },
+    {
+      "address": "004c1400",
+      "contract": "actual manager getter/binding external to this packet"
+    },
+    {
+      "address": "00b86990",
+      "contract": "finite fallback scalar delete source/provider missing"
+    },
+    {
+      "address": "00b87ae0",
+      "contract": "raw hierarchy append named; no reconstruction in current ledger; sibling ownsB87350 reserve, not this append"
+    },
+    {
+      "address": "00b7eb90",
+      "contract": "typed fields complete, actual native record allocation/append ownership not complete"
+    },
+    {
+      "address": "0109022c",
+      "contract": "canonical initialized hierarchy pool binding/startup/shutdown wrappers missing"
+    }
+  ],
+  "already_complete_not_reopened": [
+    "B7F290 resource cache pair",
+    "B88260/71B810/71B870/B88340 construction",
+    "B17510/B18340/B185A0/B18470/B18500 concrete pool algorithms",
+    "raw41DD20/419CC0/BD1510 string services",
+    "typed hierarchy fields,16-float matrix and4-float sphere"
+  ],
+  "corrections": [
+    {
+      "was": "B7D640 pseudocode returns immediately after BF6989",
+      "is": "Returning-free fallthrough publishes new pointer/capacity and restoresEBX before normalRET4",
+      "evidence": "9 live/PE-matched bytes B7D691..699:83c404891e897e085b; read-only flow confirms missing instructions"
+    },
+    {
+      "was": "B87A90 is named CG_static_dtor_stub_00b87a90",
+      "is": "Actual hierarchy allocation wrapper selecting109022C then tailB185A0",
+      "evidence": "Complete10-byte live/PE match; B7EBB4 producer inputECX84 is overwritten; no mutation performed"
+    },
+    {
+      "was": "CE0ED0 is named CG_static_init_00ce0ed0",
+      "is": "Actual hierarchy shutdown adapter selecting109022C then tailB18470",
+      "evidence": "Complete10-byte live/PE match; CD82DA passes it toBF6FF5; no mutation performed"
+    },
+    {
+      "was": "Earlier decompiler-based comments present419CC0(pointer,length+1,1)",
+      "is": "419CC0 takes no native arguments and plainRET; the3 prepared stack words belong to BD1510 whichRET0C",
+      "evidence": "B881CF..DD plus complete419CC0/Bd1510 live body register/stack inspection"
+    },
+    {
+      "was": "Hierarchy pool treated as wholly unknown or interchangeable with string pool",
+      "is": "Distinct109022C owner uses the same existing88h material-parameter algorithm/profile; only its canonical binding/wrappers are missing",
+      "evidence": "B87A90/B88320/CD82D0/CE0ED0 concrete owner routing; B17510 metadata; D5E51C word=B18500; supplied-storage source inspected"
+    }
+  ],
+  "tool_limitations": [
+    "bsp show --live prefers an existing export; saved all evidence listings again through bsp ghidra disasm to force live reads.",
+    "B7D640 listing has9-byte post-free gap despite containing body reaching B7D69E. Read-only flow confirms it; no repair attempted.",
+    "CD82D0 and FH3 handler stubs CC257B/CC2000 have no Ghidra function. Their complete matching raw spans are separate from mechanically checkable call rows.",
+    "All xref conclusions are static Ghidra references; no live execution coverage claimed."
+  ],
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-frontier-be\\local\\resource-hierarchy-frontier-be",
+  "validation": {
+    "report_call_verifier": "passed:72 direct call rows,0 failures;12 indirect rows explicitly retained,2 raw startup calls excluded because no Ghidra function exists",
+    "build": "not run: no source change",
+    "tests": "not run: no tests or production change",
+    "game": "not run",
+    "ghidra_mutations": false
+  }
+}
