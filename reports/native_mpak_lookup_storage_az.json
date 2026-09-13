@@ -8,7 +8,7 @@
   "roots": [
     {"address":"00bb4140","abi":"ECX vector, stack DWORD index, EAX record pointer, RET4","coverage":"full normal body and returning invalid-parameter continuation"},
     {"address":"00bb4f40","abi":"ECX first row, EDX captured end, stack key, EAX row/end, RET4","coverage":"full normal body"},
-    {"address":"005efba0","abi":"ECX member vector, stack name key, EAX signed index/-1, RET4","coverage":"full normal body over actual 8h entries"}
+    {"address":"005efba0","abi":"ECX member vector, stack name key, EAX signed index/-1, RET4","coverage":"reused existing full normal-body implementation from native_string_vector_lookup.cpp; not newly supplied here"}
   ],
   "calls": [
     {"function":"00bb4140","address":"00bb4169","native":"00bf6713"},
@@ -22,10 +22,41 @@
     {"function":"005f42d0","address":"005f43b2","native":"005efba0"},
     {"function":"005efba0","address":"005efbe5","native":"00bf7fbf"}
   ],
+  "call_scope": {
+    "within_compared_bodies": 3,
+    "within_newly_supplied_roots": 2,
+    "within_reused_helper": 1,
+    "direct_callers_of_claimed_roots": 7,
+    "total_verified_rows": 10
+  },
+  "comparison": {
+    "fixture": "local/mpak_lookup_az_evidence",
+    "original_source_commit": "de42a18a",
+    "reused_helper_source": "src/native_string_vector_lookup.cpp",
+    "reused_helper_prior_commit": "8cbe0c4b",
+    "candidate_source_sha256": "1d0a80ae30cf34243e9d926601285dfa87fb5cdb3b2f0d6188b060ad19257bbb",
+    "reused_helper_source_sha256": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b",
+    "saved_function_instruction_ownership": {
+      "00bb4140": {"instruction_count": 24, "envelope_bytes": 60, "all_owned": true, "live_equals_disk": true, "sha256": "3a757ccf97cbcdb388a61808269c3b63a65c7021ff26c5d5b8c6cb7e673b6c23"},
+      "00bb4f40": {"instruction_count": 26, "envelope_bytes": 52, "all_owned": true, "live_equals_disk": true, "sha256": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c"},
+      "005efba0": {"instruction_count": 53, "envelope_bytes": 118, "all_owned": true, "live_equals_disk": true, "sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def"}
+    },
+    "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "capture_script_sha256": "0feb468da68061b2f19db4cc6ae765d3f352159df225279fc26b52a1f1f3e4a6",
+    "runner_source_sha256": "ab204b141e73590ed317430686b0edf4b9bed2ffd25ea7f5cf6cfec316195049",
+    "build_script_sha256": "12c7bcacecb55f0b01bf8eeb37907b12d9e639f92dca35c1cd4998642a6a2c3d",
+    "generated_header_sha256": "b9dbfe64b222513386a1972deb3d0400f2af746fce67692a2d7279d20681d592",
+    "manifest_sha256": "9cb4085a200b5c081d44c1891767da583c5e3da6f1ff03cfdb588e419b085138",
+    "result_log_sha256": "f2b957188ca91cff7478275e774a042cda1c3211eefa7bf7f0d29d7f08106645",
+    "probe_executable_sha256": "604c48bc06b67b928d3aa5e768dd7221332eef45237ff484bfb7043c3fcb3233",
+    "evidence_archive_sha256": "0a2f1efd619b9e7407d4ad74db96ce53cd382efd484adefbbd17af9102cc2ad9",
+    "checks_passed": 8,
+    "comparison_limit": "Valid populated and returning-validation cases only; no malformed native dereference, FH3/SEH equivalence, real archive, or game execution."
+  },
   "uncertainty": [
     "Returning validation without repairing the file vector retains native invalid-access behavior.",
     "Generic 005EFBA0 has non-MPAK callers; only its MPAK use is integrated here.",
     "No NativeMpakContainerLibrary, raw host, archive execution, or game behavior is supplied."
   ],
-  "validation": "MSVC Win32 Release ./scripts/build.ps1 passed; existing reconstructed_math CTest 1/1 passed. CALL verifier 10/10 passed. No archive or game execution."
+  "validation": "At de42a18a MSVC Win32 Release ./scripts/build.ps1 and existing reconstructed_math CTest 1/1 passed. After reusing the existing shared helper, incremental Win32 build and CTest 1/1 passed; eight copied-body native/source probe checks and CALL verifier 10/10 passed. No archive or game execution."
 }
