@@ -1,0 +1,393 @@
+{
+  "captured_utc": "2026-09-13T07:51:06.485678+00:00",
+  "head": "18a137b279cd8b8e65c20acbfc02f25a1964c20b",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "spans": [
+    {
+      "entry": "00bb7a20",
+      "end_inclusive": "00bb7ac0",
+      "bytes": 161,
+      "sha256": "400cb98518a1274537f87b3bd11d886e02c45f8dce2a43948417937df1528055",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "00bb7ba0",
+      "end_inclusive": "00bb7c40",
+      "bytes": 161,
+      "sha256": "a6e805183b7b239f62a0e419b14036ae379492ab261e356e988794d928d10573",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "00a40d60",
+      "end_inclusive": "00a40de8",
+      "bytes": 137,
+      "sha256": "107b811a33a930d7d59f0aeb196081597e0f8efd98a2696cfedb238f26acec72",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "00bb6180",
+      "end_inclusive": "00bb6213",
+      "bytes": 148,
+      "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "005efba0",
+      "end_inclusive": "005efc15",
+      "bytes": 118,
+      "sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "00bb4f40",
+      "end_inclusive": "00bb4f73",
+      "bytes": 52,
+      "sha256": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c",
+      "live_equals_installed": true
+    },
+    {
+      "entry": "00bb4140",
+      "end_inclusive": "00bb417b",
+      "bytes": 60,
+      "sha256": "3a757ccf97cbcdb388a61808269c3b63a65c7021ff26c5d5b8c6cb7e673b6c23",
+      "live_equals_installed": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00bb7a85",
+      "native": "00bb6cd0",
+      "function": "00bb7a20"
+    },
+    {
+      "address": "00bb7aa0",
+      "native": "00bf6713",
+      "function": "00bb7a20"
+    },
+    {
+      "address": "00bb7ab3",
+      "native": "00bb7590",
+      "function": "00bb7a20"
+    },
+    {
+      "address": "00bb7c05",
+      "native": "00bb6f00",
+      "function": "00bb7ba0"
+    },
+    {
+      "address": "00bb7c20",
+      "native": "00bf6713",
+      "function": "00bb7ba0"
+    },
+    {
+      "address": "00bb7c33",
+      "native": "00bb7ad0",
+      "function": "00bb7ba0"
+    },
+    {
+      "address": "00a40d86",
+      "native": "00bf6713",
+      "function": "00a40d60"
+    },
+    {
+      "address": "00a40d93",
+      "native": "00bf6713",
+      "function": "00a40d60"
+    },
+    {
+      "address": "00a40db0",
+      "native": "00a40b90",
+      "function": "00a40d60"
+    },
+    {
+      "address": "00a40dbd",
+      "native": "00bf6713",
+      "function": "00a40d60"
+    },
+    {
+      "address": "00a40dd3",
+      "native": "00bf6713",
+      "function": "00a40d60"
+    },
+    {
+      "address": "00bb61b3",
+      "native": "00a40ad0",
+      "function": "00bb6180"
+    },
+    {
+      "address": "00bb61bc",
+      "native": "00a3e910",
+      "function": "00bb6180"
+    },
+    {
+      "address": "00bb61d5",
+      "native": "00bf6713",
+      "function": "00bb6180"
+    },
+    {
+      "address": "00bb61e3",
+      "native": "00bf6713",
+      "function": "00bb6180"
+    },
+    {
+      "address": "00bb6200",
+      "native": "00bf67a7",
+      "function": "00bb6180"
+    },
+    {
+      "address": "005efbe5",
+      "native": "00bf7fbf",
+      "function": "005efba0"
+    },
+    {
+      "address": "00bb4f54",
+      "native": "005efba0",
+      "function": "00bb4f40"
+    },
+    {
+      "address": "00bb4169",
+      "native": "00bf6713",
+      "function": "00bb4140"
+    },
+    {
+      "address": "005f4375",
+      "native": "005efba0",
+      "function": "005f42d0"
+    },
+    {
+      "address": "005f43b2",
+      "native": "005efba0",
+      "function": "005f42d0"
+    },
+    {
+      "address": "00be84c4",
+      "native": "005efba0",
+      "function": "00be84a0"
+    },
+    {
+      "address": "00be90b3",
+      "native": "005efba0",
+      "function": "00be9060"
+    },
+    {
+      "address": "00bb726d",
+      "native": "00bb65a0",
+      "function": "00bb7240",
+      "coverage": "selected growth prefix only"
+    },
+    {
+      "address": "00bb733d",
+      "native": "00bb4400",
+      "function": "00bb7240",
+      "coverage": "selected growth prefix only"
+    },
+    {
+      "address": "00bb7360",
+      "native": "00bb6bd0",
+      "function": "00bb7240",
+      "coverage": "selected growth prefix only"
+    },
+    {
+      "address": "00bb7370",
+      "native": "00bb7020",
+      "function": "00bb7240",
+      "coverage": "selected growth prefix only"
+    },
+    {
+      "address": "00bb738c",
+      "native": "00bb6bd0",
+      "function": "00bb7240",
+      "coverage": "selected growth prefix only"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "include/bsp/native_mpak_runtime.hpp",
+      "sha256": "1c61dd3620f95e637487c492a6e29644ca3414e7b318f74945fae9b44571cca0"
+    },
+    {
+      "path": "src/native_mpak_runtime.cpp",
+      "sha256": "14d8c7958a4df95763863d53b6958b1b4151efb39ca4d82f46445bc5668d7b12"
+    },
+    {
+      "path": "include/bsp/native_mpak_provider.hpp",
+      "sha256": "47bd1d3f32315489d30244a6a797b813fa7a37dabe5cf0645189e3626afd75f6"
+    },
+    {
+      "path": "src/native_mpak_provider.cpp",
+      "sha256": "476b4611bad690d01b7b7903538a8ab2674653d648ce7e69814b3d836d40b43d"
+    },
+    {
+      "path": "include/bsp/native_mpak_record_copy.hpp",
+      "sha256": "34ea9170e943c6916b51a245c2b9717d6566d22c3da51ec047521f0e2965fd5d"
+    },
+    {
+      "path": "src/native_mpak_record_copy.cpp",
+      "sha256": "b73a5faf26984710504602f3b57725c8c5af9db259559c3192f6c1d442a31acc"
+    },
+    {
+      "path": "include/bsp/native_mpak_open.hpp",
+      "sha256": "099a4915b4f2601e25cd14e1853c30af104399d17bda7762e8241931432ead9e"
+    },
+    {
+      "path": "src/native_mpak_open.cpp",
+      "sha256": "c5e49b207b469434b0706417711e070c6f8a67762ec494da1e6e0d6f5a2afb3c"
+    },
+    {
+      "path": "include/bsp/native_mpak_enumeration.hpp",
+      "sha256": "05e721b244747f0b23d1b5b80b4ef4066fdbfd290a3c3cc80033e475bf415fc7"
+    },
+    {
+      "path": "src/native_mpak_enumeration.cpp",
+      "sha256": "3953519e42a1b42f7c56912403e110a6e6c39f375964fdfc44ed1eb906049c7b"
+    },
+    {
+      "path": "src/native_mpak_entry.cpp",
+      "sha256": "5632ab4ce80a066ebcbc48e2e83a83495b9c6308b5769857211cb9baec011e90"
+    },
+    {
+      "path": "src/native_raw_inflate_owner.cpp",
+      "sha256": "cee75de05b43224f6343fe582602ffbe6af6c1d66e0fbfa66ff3a0343b24a086"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "sha256": "75f07ffdc4472b81818c7f62366d49c68498d39e6f6ec1c9509d6560dd017cda"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "sha256": "15adc5e96a9f3abce9955a97cd09879f58837d97ee4378e318896c1a28194d79"
+    },
+    {
+      "path": "src/vfs_provider_manager.cpp",
+      "sha256": "47f88703ba23b2b34563240a1f8f6fc71e2ea91bff4372e47b4cd616cf528641"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "7d4ed7acc3d7de42253fe4cb7b18f255539b3f7fba170a56964fda385d501f43"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "sha256": "6e921699b052a124ed8c7b0232b829910ff74fbd0cb2dafb7f764a0f490e1f45"
+    }
+  ],
+  "scope": "Read-only discovery; no original code execution or production binding implemented.",
+  "packet": "orch2_mpak_binding_frontier_bb",
+  "status": "read_only_discovery_complete",
+  "reconstructed_functions": 0,
+  "reconstructed_bytes": 0,
+  "no_ghidra_function": [],
+  "ghidra_mutations": [],
+  "implementation_files": [],
+  "discovery_doc": "docs/NATIVE_MPAK_BINDING_FRONTIER_BB.md",
+  "library_contracts": [
+    {
+      "address": "00bb7a20",
+      "operation": "append file24h",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb7ba0",
+      "operation": "append directory14h",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00a40d60",
+      "operation": "checked insert DWORD",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bf6713",
+      "operation": "returning invalid parameter",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb6220",
+      "operation": "destroy file range",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb6e60",
+      "operation": "destroy file vector",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb71f0",
+      "operation": "destroy directory vector",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb6180",
+      "operation": "copy construct DWORD vector",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb4140",
+      "operation": "checked file subscript",
+      "classification": "retained external library contract",
+      "bound": false
+    },
+    {
+      "address": "00bb4f40",
+      "operation": "find member directory",
+      "classification": "retained external library contract",
+      "bound": false
+    }
+  ],
+  "candidate_probe": {
+    "path": "local/mpak-binding-frontier-bb-evidence/vector_abi_probe.inputs.json",
+    "sha256": "0517489c2e7fa1574faca243214a9919dc9b23cec3e27888f456dc55e03ce44e",
+    "status": "compiled_and_executed_current_MSVC_only_not_accepted_as_compatible",
+    "result": "msc=1951 iterator_debug_level=0\ndefault_u32 vector=12 iterator=4 data_offset=0 max_size=1073741823 first_word=00874360\ndefault_file vector=12 iterator=4 data_offset=0 max_size=119304647 first_word=0086e900\ndefault_directory vector=12 iterator=4 data_offset=0 max_size=214748364 first_word=00867d80\ntagged_u32 vector=16 iterator=4 data_offset=4 max_size=1073741823 first_word=12345678\ntagged_file vector=16 iterator=4 data_offset=4 max_size=119304647 first_word=12345678\ntagged_directory vector=16 iterator=4 data_offset=4 max_size=214748364 first_word=12345678\n",
+    "ordering_difference": "Original BB726D makes a record temporary before allocation BB733D and copies old prefix BB7360 before insertion BB7370; current std::vector growth allocates then constructs inserted element before old prefix.",
+    "original_code_executed": false
+  },
+  "ready_packet": {
+    "packet": "orch2_native_string_vector_lookup_bb",
+    "entry": "005efba0",
+    "end_inclusive": "005efc15",
+    "bytes": 118,
+    "classification": "shared custom native string vector game helper",
+    "files": [
+      "include/bsp/native_string_vector_lookup.hpp",
+      "src/native_string_vector_lookup.cpp",
+      "docs/NATIVE_STRING_VECTOR_LOOKUP.md",
+      "reports/native_string_vector_lookup.json"
+    ],
+    "dependency": "CRT _stricmp 00bf7fbf retained library",
+    "live_callers": 4,
+    "live_sites": 5,
+    "snapshot_callers": 5,
+    "stale_snapshot_only_caller": "00bb4d60",
+    "lease_check": "unleased during discovery; recheck before implementation",
+    "contract": "Capture wrapping end once; equal current lengths, empty equal, else CRT case-insensitive compare; return wrapping signed cursor-current data difference arithmetic-shift3; no allocation, cleanup or new guards."
+  },
+  "startup_gap": {
+    "source": "src/game_hosts_vfs.cpp",
+    "lines": "110-124",
+    "behavior": "Registered MPAK token creates no provider; comment claiming body is unreconstructed is stale.",
+    "factory_source": "src/vfs_provider_manager.cpp",
+    "factory_behavior": "Physical then FileStore then MPKG; no actual MPAK source-runtime instance found.",
+    "installed_archive_scope": "Case-insensitive loose-extension scan at configured installed path found no MPAK/MPKG files; embedded, renamed or external archives were not ruled out."
+  },
+  "validation": {
+    "strict_production_build": "not run: discovery only",
+    "existing_tests": "not run: discovery only",
+    "abi_probe": "strict Win32 MSVC compile and execution passed; manifest embedded",
+    "native_bytes": "7 spans / 837 bytes match unchanged installed PE",
+    "call_audit": "verify_report_calls.py: 28 direct call rows checked, 0 failed",
+    "production_binding": false,
+    "installed_archive": false,
+    "gameplay": false
+  }
+}
