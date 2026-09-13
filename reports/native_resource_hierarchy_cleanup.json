@@ -1,0 +1,35 @@
+{
+  "packet": "orch2_resource_hierarchy_cleanup_bg",
+  "status": "complete_bounded_source_build_only",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b88320",
+      "end": "00b8833f",
+      "bytes": 32,
+      "coverage": "complete",
+      "original_abi": "ECX hierarchy record; stack DWORD flags; RET4; EAX original record",
+      "name": "cleanup_native_hierarchy_record_00b88320",
+      "source": "src/native_resource_hierarchy_cleanup.cpp",
+      "header": "include/bsp/native_resource_hierarchy_cleanup.hpp",
+      "pe_and_ghidra_bytes_hex": "568bf1e858fefffff644240801740b56b92c020901e8b6f7f8ff8bc65ec20400",
+      "direct_callers": [],
+      "calls": [
+        {"address": "00b88323", "native": "00b88180", "containing_function": "00b88320", "contract": "ECX original record; no stack args; plain RET"},
+        {"address": "00b88335", "native": "00b17af0", "containing_function": "00b88320", "contract": "ECX actual pool 109022C; one pushed record; RET4"}
+      ],
+      "sequence": "Destroy fields unconditionally, return actual hierarchy slab slot only when flags bit0 is set, return original record; no local FH3 or rollback."
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed; MSVC Release; scripts/build.ps1 exit 0",
+    "existing_ctests": "reconstructed_math passed 1/1; native_math_differential was not registered in this clean build",
+    "call_rows": "2 checked, 0 failed",
+    "object_sha256": "6cf535183b74d4970c144f1605b1e64ee9a24186891b7e96120210febc7fe8aa",
+    "unique_copied_archive_member_sha256": "6cf535183b74d4970c144f1605b1e64ee9a24186891b7e96120210febc7fe8aa",
+    "source_sha256": "b079fb176ad2633850e6ba33e0b1aac30aff390d6d379066c317b602284a6e62",
+    "header_sha256": "cfa1e513c9d8501317dca31cce07c9535220d13abb883c22fb0f00813957a097",
+    "evidence_directory": "local/hierarchy-cleanup-bg"
+  },
+  "limitations": ["new C++ source interface, not original register ABI", "no direct callers; dispatch profile unproven", "build-only; no game runtime or native FH3 execution"]
+}
