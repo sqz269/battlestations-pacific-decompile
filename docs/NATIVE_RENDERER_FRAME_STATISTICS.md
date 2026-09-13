@@ -148,3 +148,11 @@ Earlier missing-function observations are retained as worker capture history.
 Two existing raw string bodies were extended separately; neither those
 extensions nor the EH definitions add to the sixteen normal-body count.
 Exact combined validation follows separately from worker fixture evidence.
+
+## AY exact merged validation
+
+The exact combined source commit `71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4` passed the strict Win32
+build, both existing tests and four current-library-only original-byte fixtures.
+See `reports/native_renderer_startup_ay_validation.json` for hashes, preserved
+captures, case coverage and limits. Earlier pending statements describe worker
+capture stages. Whole-game rendering, native ABI and general concurrency remain open.

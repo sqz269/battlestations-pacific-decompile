@@ -49,3 +49,13 @@ The initial combined Win32 build and both existing CTests passed. All nine
 numeric report call rows passed. Both original signatures and complete Ghidra
 bodies were saved and read back, with existing comments preserved. The parent
 exception fixture remains pending and is a separate validation boundary.
+
+## AY parent fixture validation
+
+The exact combined commit `71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4` passes the BeginFrame twenty-pair
+original-byte fixture, including actual raw-pool registration failures, current
+first-header cleanup and already-disarmed first-getter failure. Returning
+validation also mutates source length during resize. These supersede the
+earlier pending status within the bounded cases recorded in
+`reports/native_renderer_startup_ay_validation.json`; the two extensions add
+no native-body count and do not prove unrestricted exception/ABI behavior.

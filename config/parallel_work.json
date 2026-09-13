@@ -10286,6 +10286,94 @@
       "evidence": "reports/native_renderer_reset_process.json",
       "new_native_bodies": 2,
       "boundary": "Actual owner/service domains and bounded original-byte fixtures; whole startup/render/gameplay unverified; see reports/native_renderer_reset_ax_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_frame_statistics_ay",
+      "packet": "orch3_native_renderer_frame_statistics_ay",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b0cc10",
+        "00b0ccb0",
+        "00b0cce0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_frame_statistics.hpp",
+        "src/native_renderer_frame_statistics.cpp",
+        "docs/NATIVE_RENDERER_FRAME_STATISTICS.md",
+        "reports/native_renderer_frame_statistics.json"
+      ],
+      "evidence": "reports/native_renderer_frame_statistics.json",
+      "new_native_bodies": 3,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_renderer_startup_ay_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_begin_frame_ay",
+      "packet": "orch3_native_renderer_begin_frame_ay",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b2b200",
+        "00b15090",
+        "00b14480",
+        "00b13630",
+        "00b13280",
+        "00b13180",
+        "00b10740"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_begin_frame.hpp",
+        "src/native_renderer_begin_frame.cpp",
+        "docs/NATIVE_RENDERER_BEGIN_FRAME.md",
+        "reports/native_renderer_begin_frame.json"
+      ],
+      "evidence": "reports/native_renderer_begin_frame.json",
+      "new_native_bodies": 7,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_renderer_startup_ay_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_device_startup_actual_ay",
+      "packet": "orch3_native_renderer_device_startup_actual_ay",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b2aeb0",
+        "00b49940",
+        "00b49950"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_device_startup_actual.hpp",
+        "src/native_renderer_device_startup_actual.cpp",
+        "docs/NATIVE_RENDERER_DEVICE_STARTUP_ACTUAL.md",
+        "reports/native_renderer_device_startup_actual.json"
+      ],
+      "evidence": "reports/native_renderer_device_startup_actual.json",
+      "new_native_bodies": 3,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_renderer_startup_ay_validation.json"
+    },
+    {
+      "id": "orch3_native_render_batch_preparation_actual_ay",
+      "packet": "orch3_native_render_batch_preparation_actual_ay",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "004c11f0",
+        "00b51df0",
+        "00b1bf70"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_batch_preparation_actual.hpp",
+        "src/native_render_batch_preparation_actual.cpp",
+        "docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md",
+        "reports/native_render_batch_preparation_actual.json"
+      ],
+      "evidence": "reports/native_render_batch_preparation_actual.json",
+      "new_native_bodies": 3,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_renderer_startup_ay_validation.json"
     }
   ],
   "snapshot_after_analysis": {

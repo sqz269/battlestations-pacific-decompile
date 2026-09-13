@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_renderer_frame_statistics_ay",
-  "status": "complete_raw_storage_strict_win32_original_byte_fixture_and_existing_build_checked",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
   "utc": "2026-09-13T07:20:24.068178+00:00",
   "normal_body_count": 3,
   "native_body_bytes": 287,
@@ -463,7 +463,7 @@
     "game_validated": false
   },
   "integration_ay_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_function_names_and_original_signatures": 16,
     "signature_readback_passed": true,
@@ -668,5 +668,13 @@
     "cleanup_flow_limit": "C64F08 free-return tail C64F11 POP ECX/C64F12 RET decoded; stored EH body still ends C64F10. Analysis-only tail metadata remains incomplete.",
     "cross_review": "Root reviewed complete statistics and BeginFrame listings, source read/write/call order and batch getter/preparation/job bodies. Independent startup review checked all 225 startup instructions, both pool-return thunks, x87/gamma, COM outputs, EH metadata and all nine saved state/event pairs. Batch trivial storage lifetime begins without initialization, retaining native preexisting control bytes. Existing raw string overloads were independently compared with full listings and exercised by BeginFrame raw-manager exception cases. Original ABI, general EH/SEH/concurrency and gameplay remain separate.",
     "current_report_call_check": "reports/native_renderer_frame_statistics.json: 5 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "complete_raw_storage_strict_win32_original_byte_fixture_and_existing_build_checked",
+  "final_merged_validation_ay": {
+    "report": "reports/native_renderer_startup_ay_validation.json",
+    "tested_commit": "71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4",
+    "existing_ctests_passed": 2,
+    "four_current_library_only_replays_passed": true,
+    "game_validated": false
   }
 }

@@ -4,7 +4,7 @@
   "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "packet": "orch3_string_raw_pool_context_ay",
-  "status": "concrete_raw_context_extension_source_reviewed_strict_win32_build_passed_parent_fixture_pending",
+  "status": "concrete_raw_context_extension_exact_build_and_bounded_parent_fixture_passed",
   "implemented_new_native_bodies": 0,
   "functions": [
     {
@@ -138,7 +138,7 @@
     "Source C++ contexts and exception propagation do not establish original caller ABI, full FH3/SEH or concurrency.",
     "Existing host storage release remains noexcept; only new raw context removes that intervening exception boundary.",
     "Zero-byte native copy remains omitted; valid pointer ranges required.",
-    "Parent BeginFrame original-byte exception fixture remains pending; no gameplay claim."
+    "BeginFrame does not prove native argument/EH spill aliases, invalid ranges, arbitrary wrapped counts, double exceptions or unrestricted concurrency."
   ],
   "game_validated": false,
   "validation": {
@@ -180,7 +180,13 @@
       "readback_passed": true,
       "stored_body_limits": {}
     },
-    "parent_fixture": "BeginFrame worker preparing original-byte nonempty-record and concrete raw-manager exception fixture; no pass claim yet",
+    "parent_fixture": {
+      "report": "reports/native_renderer_startup_ay_validation.json",
+      "tested_commit": "71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4",
+      "coverage": "20 original/source pairs,167745 normalized state bytes and1829 event DWORDs. Full BeginFrame/record operations, actual raw pool/manager, nonempty clear/middle erase, scalar overlap, returning CRT validation, second-getter throw with first-header cleanup and first-getter throw after cleanup disarm.",
+      "new_native_bodies": 0
+    },
     "new_native_bodies": 0
-  }
+  },
+  "worker_capture_status": "concrete_raw_context_extension_source_reviewed_strict_win32_build_passed_parent_fixture_pending"
 }
