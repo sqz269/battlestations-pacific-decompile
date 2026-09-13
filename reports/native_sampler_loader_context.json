@@ -1,0 +1,271 @@
+{
+  "packet": "orch5_native_sampler_loader_context",
+  "base_commit": "2d5ec4529fc6b7fdca3d937087441984a6c4a904",
+  "source": "src/native_sampler_loader_context.cpp",
+  "source_sha256": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb",
+  "header": "include/bsp/native_sampler_loader_context.hpp",
+  "header_sha256": "1597437df568ec3a493a8cd4029fbd15b28bae6ef896450bf7f1925cbd10bb42",
+  "documentation": "docs/NATIVE_SAMPLER_LOADER_CONTEXT.md",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "004de4b0",
+      "bytes": 199,
+      "end_inclusive": "004de576",
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+      "kind": "implemented",
+      "assembly_sha256": "9e611b9884b5fc9fe64bae62a5408ebf00dc17b8209d959063932612763744d5",
+      "coverage": "complete normal body",
+      "original_abi": "No consumed inputs; EAX actual1Ch owner; plainRET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b1b810",
+      "bytes": 20,
+      "end_inclusive": "00b1b823",
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+      "kind": "implemented",
+      "assembly_sha256": "4f9979d5139fd7bbc9fe40251445c59daae5425bc71982fb7bde5314c440fc6d",
+      "coverage": "complete normal body",
+      "original_abi": "Incoming ECX and second stacked options unused; first stacked name; EAX creator result; RET8",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "analyzed_only_dependencies": [
+    {
+      "entry": "00b1b4d0",
+      "end_inclusive": "00b1b5e7",
+      "coverage": "unimplemented in this module; copied/lowercased name and suffix route into B1A4F0",
+      "handoff": "address released atomically to independent cache-operation audit"
+    },
+    {
+      "entry": "00b1a4f0",
+      "end_inclusive": "00b1aa29",
+      "coverage": "unimplemented in this module; full actual cache operation and platform service contract remain separate",
+      "readiness": "B1A518 calls BECCD0 through BECB20; no projected pump or D5F088 renderer-cache substitution",
+      "handoff": "address released atomically to independent cache-operation audit"
+    },
+    {
+      "entry": "00b3b280",
+      "coverage": "unimplemented in this module; no full descriptor-sampler closure claimed"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004de4d9",
+      "native": "00415350",
+      "function": "004de4b0"
+    },
+    {
+      "address": "004de50a",
+      "native": "00bf681b",
+      "function": "004de4b0"
+    },
+    {
+      "address": "004de53f",
+      "native": "00415350",
+      "function": "004de4b0"
+    },
+    {
+      "address": "004de54d",
+      "native": "00bd0c30",
+      "function": "004de4b0"
+    },
+    {
+      "address": "00b1b810",
+      "native": "00b1b730",
+      "function": "00b1b810"
+    },
+    {
+      "address": "00b1b81c",
+      "native": "00b19e90",
+      "function": "00b1b810"
+    },
+    {
+      "address": "004deed5",
+      "native": "004de4b0",
+      "function": "004de610"
+    },
+    {
+      "address": "004df2c4",
+      "native": "004de4b0",
+      "function": "004de610"
+    },
+    {
+      "address": "00b46cc2",
+      "native": "004de4b0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b3b2ba",
+      "native": "004de4b0",
+      "function": "00b3b280"
+    },
+    {
+      "address": "00b33a13",
+      "native": "004de4b0",
+      "function": "00b33a10"
+    },
+    {
+      "address": "004e53a6",
+      "native": "004de4b0",
+      "function": "004e4a40"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "004de4f2",
+      "iat": "00ce2218",
+      "contract": "real Win32 EnterCriticalSection, captured first-manager section"
+    },
+    {
+      "site": "004de55b",
+      "iat": "00ce2210",
+      "contract": "real Win32 LeaveCriticalSection, captured section after raw depth decrement"
+    }
+  ],
+  "profile_evidence": {
+    "spans": [
+      {
+        "address": "00ce7d08",
+        "bytes": 52,
+        "end_inclusive": "00ce7d3b",
+        "sha256": "8ffbbbe3799d5540498ed1e3713c21e2b4545bb520c83b70839a1cca978de34f",
+        "kind": "owner_profiles"
+      },
+      {
+        "address": "00d64470",
+        "bytes": 8,
+        "end_inclusive": "00d64477",
+        "sha256": "858b4a794e745f933967b3efc26c0825c1183be90d9f5224b24191f1f43c933e",
+        "kind": "factory_profile"
+      },
+      {
+        "address": "00d644ac",
+        "bytes": 8,
+        "end_inclusive": "00d644b3",
+        "sha256": "667131abd52b9a79518ec858a3216b550299afd892756544c5316360dd5f85d4",
+        "kind": "factory_profile"
+      },
+      {
+        "address": "00d644e8",
+        "bytes": 16,
+        "end_inclusive": "00d644f7",
+        "sha256": "54147319170bff1bcfe88d692bca0992f61bb7361a5dc2bf7a38f1ee87ea9ebc",
+        "kind": "factory_profiles"
+      }
+    ],
+    "ce7d24_slots": [
+      "004de360",
+      "00b19e40",
+      "00b1b810",
+      "004ddb20",
+      "004ddb40"
+    ],
+    "ce7d38_slot0": "004de340",
+    "b1b810_xrefs": [
+      "00ce7d2c data"
+    ],
+    "interpretation": "actual raw singleton owner and procedural resource factory cache, distinct from renderer D5F088"
+  },
+  "producer_evidence": {
+    "owner": "4DE4B0 actual1Ch allocation; CE7D08 temporary at04, CE7D38 at00, CE7D24 at04; zero08/0C/10/14; untouched18",
+    "record_header": "existing NativeResourceRecordVectorStorage reused at08; existing NativeRenderResourceRecord 2Ch identity",
+    "time18": "B19A10 writes MOVSS float18 before walking owner08/count0C/stride2C",
+    "factory": "existing B1B730 registry and B19E90 lookup; actual readonly D64470/D644AC/D644E8/D644F0 profiles; qualified current BBC6F0/BBC810 creators; source boundaries unchanged"
+  },
+  "guard_evidence": {
+    "spans": [
+      {
+        "address": "00c66fa0",
+        "bytes": 18,
+        "end_inclusive": "00c66fb1",
+        "sha256": "7004f7179681e88611c12406a5b3070d5b05664aea85aaa2c8329b29ae6bf3a4",
+        "kind": "guard_unwind_code"
+      },
+      {
+        "address": "00d8fcd8",
+        "bytes": 44,
+        "end_inclusive": "00d8fd03",
+        "sha256": "8881979326ff8f7e0490d040c4b9653710f8c6ff4a3f27d4049e5291d04420ed",
+        "kind": "guard_unwind_metadata"
+      }
+    ],
+    "state0": "armed after Enter and raw depth increment; D8FCE0 function info, D8FCD8 one unwind entry prev=-1/action=C66FA0; LEA ECX,[EBP-14h], JMP411EE0",
+    "existing_unwind_function": {
+      "start": "00c66fa0",
+      "end_inclusive": "00c66fa7",
+      "name": "Unwind@00c66fa0",
+      "final_instruction": "JMP00411EE0 atC66FA3, length5"
+    },
+    "no_ghidra_function": [
+      {
+        "start": "00c66fa8",
+        "end_inclusive": "00c66fb1",
+        "final_instruction": "JMP native exception-handler route atC66FAD, length5"
+      }
+    ],
+    "native_fh3_reproduced": false
+  },
+  "flow": {
+    "004de4b0": {
+      "instructions": 56,
+      "gaps": 0
+    },
+    "00b1b810": {
+      "instructions": 6,
+      "gaps": 0
+    },
+    "owned_call_return_gaps": []
+  },
+  "operation_contract": {
+    "one_shot": true,
+    "retains_failure": true,
+    "registration_failure": "already-published allocation retained; actual guard cleanup; no rollback",
+    "borrowed_storage": "actual manager/owner/registry cells and canonical existing contexts; exclude retirement and frame mutation while running/failed",
+    "retirement_guard": "failed/running destructor terminates; diagnostic acknowledgement frees/unregisters nothing"
+  },
+  "validation": {
+    "strict_default_win32_build": "passed /W4 /WX; scripts/build.ps1",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seed_verification": "passed",
+    "fixture_runner": "local/run_native_sampler_loader_probe.ps1",
+    "library_root_argument": true,
+    "fixture_trace_words": 84,
+    "normal_original_source": "four actual getter schedules and forwarder creator/miss; six direct child edges rebind existing actual library providers, Enter/Leave invoke real Win32",
+    "preimages": "singleton28-byte and fresh factory52-byte allocations filledA5 for both legs; untouched bytes compared",
+    "source_only_failures": [
+      "allocation before publication",
+      "actual returning-CRT registration failure after publication",
+      "actual411EE0 guard cleanup",
+      "failed-frame replay rejection"
+    ],
+    "failed_frame_guard_exit": 77,
+    "fixture_cleanup": "empty singleton and fresh resource diagnostic teardown; raw manager and actual tracked section use existing native construction/cleanup",
+    "fixture_registry": "producer-layout actual raw node/tree fixture and readonly actual profiles; registry constructor not executed",
+    "original_child_bodies_executed": false,
+    "original_eh_executed": false,
+    "game_validated": false
+  },
+  "evidence_totals": {
+    "implemented_code_bytes": 219,
+    "profile_bytes": 84,
+    "guard_code_metadata_bytes": 62
+  },
+  "limitations": [
+    "new explicit C++ ABI, not original binary calling convention or native FH3/hardware-fault identity",
+    "actual CE7D38/CE7D24 terminal lifetime dispatch not added",
+    "existing finite registry profile/creator qualifications retained",
+    "no complete B1A4F0/B1B4D0/B3B280 implementation claimed",
+    "no multithreaded race or game runtime validation"
+  ],
+  "artifact_manifest": "local/native-sampler-loader-final-manifest.json"
+}
