@@ -29,5 +29,12 @@ The source uses the existing raw hierarchy-pointer reserve; numeric-reference
 array helpers have different capacity and element contracts.
 
 This is a complete source reconstruction of this one body with a new C++
-interface. It is not a native ABI replacement. Build and existing CTests check
-source integration only; no original-body fixture or gameplay path was run.
+interface. It is not a native ABI replacement. After `verify-seeds`, the strict
+Win32 build passed both existing CTests (`reconstructed_math` and
+`native_math_differential`). The generated project lists this source once;
+source-specific compiler command/read/write records are retained under
+`local/resource-hierarchy-append-bg/compiler-evidence/`. The 1,340-byte object
+matches the unique member extracted from the current and copied `bsp_core.lib`
+archives (SHA-256 `2e414151f68cf59d4e2c61dcf1eca952f69df69e45bd9ec4bfdd9571d7341991`).
+These checks establish source integration only; no original-body fixture or
+gameplay path was run.

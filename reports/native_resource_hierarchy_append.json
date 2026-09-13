@@ -33,7 +33,7 @@
       ]
     }
   ],
-  "validation": "Strict MSVC Win32 ./scripts/build.ps1 exit0; script ran reconstructed_math CTest 1/1 pass. verify_report_calls: 2 rows, 0 failed. No original-body fixture or gameplay run.",
+  "validation": "Initial strict MSVC Win32 build exit0 with reconstructed_math 1/1 pass. After verify-seeds exit0, fresh strict build exit0 with reconstructed_math and native_math_differential 2/2 pass. verify_report_calls: 2 rows, 0 failed. No original-body fixture or gameplay run.",
   "artifacts": {
     "src/native_resource_hierarchy_append.cpp": {
       "bytes": 1304,
@@ -56,6 +56,9 @@
       "sha256": "b74ca11f32dd9306720661a2c627546312e0fc9afc546fc5e6fbb27eeffb1910"
     }
   },
-  "compiler_input": "build/win32/bsp_core.vcxproj contains exactly one native_resource_hierarchy_append.cpp source item; compiled object is a single member of current bsp_core.lib (lib.exe /LIST). Exactly one bsp_core.lib exists under build/. No copied archive exists.",
-  "ghidra_writes": false
+  "compiler_input": "Generated build/win32/bsp_core.vcxproj lists source once. Source-specific CL.command, CL.read, CL.write and Cl.items evidence retained under local/resource-hierarchy-append-bg/compiler-evidence/. Current object matches the unique extracted member from both current and copied bsp_core.lib archives.",
+  "ghidra_writes": false,
+  "retained_evidence": "local/resource-hierarchy-append-bg/; original inventory.json and nine matching first-build copies preserved; fresh build transcript, compiler records, current source/header/project/object, copied archive and two extracted members retained.",
+  "archive_member_sha256": "2e414151f68cf59d4e2c61dcf1eca952f69df69e45bd9ec4bfdd9571d7341991",
+  "current_and_copied_archive_sha256": "b74ca11f32dd9306720661a2c627546312e0fc9afc546fc5e6fbb27eeffb1910"
 }
