@@ -1,0 +1,145 @@
+{
+  "scope": "Actual compiler fields, interpolators, system registry, reflection and cube/volume loading",
+  "validated_code_commit": "82a2179ede0f57aa671d561f83af0072c51a6648",
+  "default_registration": true,
+  "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
+  "checkpoint": {
+    "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
+    "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
+    "artifacts": 146
+  },
+  "fixture_programs": 13,
+  "fixture_origin_commit": "a52a7891089f26bf0de63f8ae06b0b56096500b0",
+  "fixture_equivalence_after_metadata_merge": {
+    "metadata_only_changed_paths": [
+      "config/names/00420000.jsonl",
+      "config/names/00520000.jsonl",
+      "config/names/00690000.jsonl",
+      "config/names/006a0000.jsonl",
+      "config/names/00920000.jsonl",
+      "config/names/00cd0000.jsonl",
+      "docs/NATIVE_INPUT_CONFIGURATION_RUNTIME.md",
+      "docs/NATIVE_INPUT_SETTINGS_LIFETIME.md",
+      "docs/NATIVE_PENDING_ENTITY_OWNERS.md",
+      "docs/OBSERVER_DISPATCH_BINDING.md",
+      "docs/ORCH6_RECONSTRUCTION_R.md",
+      "reports/native_input_settings_lifetime.json",
+      "reports/native_input_settings_lifetime_as_body_repair.json",
+      "reports/observed_endpoint_flow_repair.json",
+      "reports/observer_endpoint_function_definitions.json",
+      "reports/orch6_reconstruction_r.json"
+    ],
+    "all_three_library_hashes_unchanged": true,
+    "all_runner_and_fixture_input_hashes_unchanged": true
+  },
+  "registered_library_sha256": "95b1d87f7cea0f89ada89d8b22cb430b914a22ff881b5cb8dc63a473cc6436ec",
+  "call_checks": [
+    {
+      "report": "reports/native_shader_system_fields.json",
+      "checked": 197,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_compiled_shader_reflection.json",
+      "checked": 35,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_texture_loading_cache.json",
+      "checked": 145,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_system_constant_registry.json",
+      "checked": 443,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_shader_interpolators.json",
+      "checked": 27,
+      "failed": 0
+    }
+  ],
+  "numeric_checked_rows": 847,
+  "resolved_indirect_included": 4,
+  "worker_archives": {
+    "system-fields": {
+      "commit": "006672b71c3c3f279c8c8c7bc275fda4b6ae2f7b",
+      "manifest": "local/compiler-path-workers/system-fields/manifest.json",
+      "sha256": "996866f8241974f8805e5f687016473729a6d7f57dd056c369b333f2e2b711af",
+      "artifacts": 34
+    },
+    "reflection": {
+      "commit": "c23ab65cec4a01d418238fc5c0d96c41984e1689",
+      "manifest": "local/compiler-path-workers/reflection/manifest.json",
+      "sha256": "ebf264f262ab040b7651f2524e8f0016e7eae8266074dde8867e1cb9fb498592",
+      "artifacts": 42
+    },
+    "special-loading": {
+      "commit": "6ba1b7cc9557599e7861fe8fb7447f151a6a78f3",
+      "manifest": "local/compiler-path-workers/special-loading/manifest.json",
+      "sha256": "7d30cb56dc573682235dcc46c6ab98d61aad679e997b8e096aa0caf991687dd1",
+      "artifacts": 27
+    },
+    "system-registry": {
+      "commit": "c8e5459220c2b459e8f63ee69683826262214ebb",
+      "manifest": "local/compiler-path-workers/system-registry/manifest.json",
+      "sha256": "2b57736bd2e578b37d34cb921abd915c5681b03fa21dd93fa4f4d93dc4d7da91",
+      "artifacts": 37
+    },
+    "interpolators": {
+      "commit": "8ac49e4205ab5035ef41a67da6fc0654c9a1c189",
+      "manifest": "local/compiler-path-workers/interpolators/manifest.json",
+      "sha256": "d6ea055bf5c47a9f8ed625eb30fb943bed38c18cb255777fcd493b13ee5669f4",
+      "artifacts": 42
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_readback_exported_addresses": [
+      "00b35be0",
+      "00b372d0",
+      "00b34e20",
+      "00b3aea0",
+      "00b3a750",
+      "00b5bc60",
+      "00b5b830",
+      "00b5b960",
+      "00b2c2d0",
+      "00b3f2d0",
+      "00b5bf70",
+      "00b5b9e0",
+      "00b5bbc0",
+      "00b5bed0",
+      "00b5bd10",
+      "00b5be10",
+      "00b5df70",
+      "00b5bb20",
+      "00b5df00",
+      "00b5ba80",
+      "00b36800",
+      "00b34aa0",
+      "00b346e0"
+    ]
+  },
+  "repairs": [
+    "B5BD10/B5DF70/B5BB20 post-free flow; B5DF00 full99-byte destructor restored",
+    "B346E0 post-free nine-byte publication tail",
+    "B3B3C0 six post-free CALL gaps repaired; JMP padding retained",
+    "BE4430/BF4F50 definitions prepared for the separate vertex compiler worker"
+  ],
+  "composition": "Actual B5BF70 52-row producer feeds original/source B3AEA0 through SAME live0108FE94 and shared singleton/string lifetime; normal and retained-failure fixture pass",
+  "limits": [
+    "New host Win32 interfaces are not native binary replacements.",
+    "Native private FH3 unwind is not reproduced; retained failure frames require the documented caller lifetime obligations.",
+    "Registry binding admits one unfinished registry operation.",
+    "Reflection excludes failed/unpopulated COM outputs and out-of-range semantic IDs.",
+    "Texture fixture excludes retry execution, enabled-guard reentry, cache bootstrap and complete original-loader equivalence.",
+    "Full B3B3C0 native compiler continuation, rendering parity and rebuilt gameplay remain unverified."
+  ],
+  "pending_packets": [
+    "Vertex compiler46be664b has worker build/fixture evidence; primary review/integration pending.",
+    "Actual constant-header generation remains active in a separate worker worktree."
+  ]
+}

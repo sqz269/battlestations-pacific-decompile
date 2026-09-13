@@ -1,0 +1,385 @@
+{
+  "packet": "orch5_native_compiled_shader_reflection",
+  "source": "src/native_compiled_shader_reflection.cpp",
+  "header": "include/bsp/native_compiled_shader_reflection.hpp",
+  "documentation": "docs/NATIVE_COMPILED_SHADER_REFLECTION.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_bsp_wrappers",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00b3aea0",
+      "end": "00b3b13a",
+      "symbol": "reflect_native_compiled_shader_00b3aea0",
+      "original_abi": "ECX unused; stack actual bytecode then raw88h metadata; RET8",
+      "coverage": "complete_normal_populated_COM_output_domain",
+      "native_bytes": 667,
+      "sha256": "92686a091b1848526ff214ef27bd9c565b6de1144922de9a9779f817bc70a7bb"
+    },
+    {
+      "address": "00b3a750",
+      "end": "00b3a7dd",
+      "symbol": "append_native_shader_material_constant_00b3a750",
+      "original_abi": "ECX owner; stack register index/count/actual name/rows/columns/elements; RET18",
+      "coverage": "complete_normal_body_retained_host_failure",
+      "native_bytes": 142,
+      "sha256": "6ac2a5a56c8136255216012d192ca59a5312375d22f869eb6f95eb906eed23e0"
+    },
+    {
+      "address": "00b5bc60",
+      "end": "00b5bd01",
+      "symbol": "initialize_native_shader_constant_00b5bc60",
+      "original_abi": "ECX raw20h record; stack index/count/actual name/semantic/rows/columns/elements; EAX same; RET1C",
+      "coverage": "complete_normal_body",
+      "native_bytes": 162,
+      "sha256": "30a8a7f7ae8d7a95d9b487a585c64fdc277a99f4855ed07ab3f06d8e6765c5f4"
+    },
+    {
+      "address": "00b5b960",
+      "end": "00b5b9d3",
+      "symbol": "find_native_shader_constant_00b5b960",
+      "original_abi": "ECX actual registry; stack actual8h name; EAX current20h record or0; RET4",
+      "coverage": "complete_normal_readable_domain",
+      "native_bytes": 116,
+      "sha256": "62a5331ac4bd038ce68f6aab73816dbb3a38975288d49017ee7ed91fb2a724ad"
+    },
+    {
+      "address": "00b5b830",
+      "end": "00b5b833",
+      "symbol": "native_shader_constant_semantic_00b5b830",
+      "original_abi": "ECX actual20h record; EAX current word1C; RET",
+      "coverage": "complete",
+      "native_bytes": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3aeba",
+      "native": "00bf9410",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3aecf",
+      "native": "00c2dff2",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3af72",
+      "native": "0041dd40",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3af89",
+      "native": "00bf7680",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3afa3",
+      "native": "00b5b960",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3afc4",
+      "native": "00419cc0",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3afcb",
+      "native": "00bd1510",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3afd6",
+      "native": "00b5b830",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3aff4",
+      "native": "00b5b830",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3b04a",
+      "native": "0041dd40",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3b061",
+      "native": "00bf7680",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3b094",
+      "native": "00b3a750",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3b0b7",
+      "native": "00419cc0",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3b0be",
+      "native": "00bd1510",
+      "caller": "00b3aea0"
+    },
+    {
+      "address": "00b3a78f",
+      "native": "00b5bc60",
+      "caller": "00b3a750"
+    },
+    {
+      "address": "00b3a7a0",
+      "native": "00b3a660",
+      "caller": "00b3a750"
+    },
+    {
+      "address": "00b3a7c1",
+      "native": "00419cc0",
+      "caller": "00b3a750"
+    },
+    {
+      "address": "00b3a7c8",
+      "native": "00bd1510",
+      "caller": "00b3a750"
+    },
+    {
+      "address": "00b5bcb3",
+      "native": "0041dd40",
+      "caller": "00b5bc60"
+    },
+    {
+      "address": "00b5bcc8",
+      "native": "00bf7680",
+      "caller": "00b5bc60"
+    },
+    {
+      "address": "00b5b9a0",
+      "native": "00bf7fbf",
+      "caller": "00b5b960"
+    },
+    {
+      "address": "00b3aee3",
+      "native": "ID3DXConstantTable+14",
+      "caller": "00b3aea0",
+      "arguments": "stdcall current table, actual0Ch GetDesc output; callee cleanup8"
+    },
+    {
+      "address": "00b3af1c",
+      "native": "ID3DXConstantTable+20",
+      "caller": "00b3aea0",
+      "arguments": "stdcall current table, null parent, ordinal; callee cleanup0C"
+    },
+    {
+      "address": "00b3af3b",
+      "native": "ID3DXConstantTable+18",
+      "caller": "00b3aea0",
+      "arguments": "stdcall current table, actual handle, actual3000h descriptors, in/out count256; callee cleanup10"
+    },
+    {
+      "address": "00b3b11f",
+      "native": "ID3DXConstantTable+08",
+      "caller": "00b3aea0",
+      "arguments": "stdcall current actual table Release, after end74/mask84 writes; callee cleanup4"
+    },
+    {
+      "address": "00b3b854",
+      "native": "00b3aea0",
+      "caller": "00b3b3c0",
+      "arguments": "push pass+70 then bytecode from EBX+08; ECX EDI ignored; RET8"
+    },
+    {
+      "address": "00b3bb69",
+      "native": "00b3aea0",
+      "caller": "00b3b3c0",
+      "arguments": "push pass+70 then ESI actual bytecode; ECX EDI ignored; RET8"
+    },
+    {
+      "address": "00b3bdbf",
+      "native": "00b3aea0",
+      "caller": "00b3b3c0",
+      "arguments": "push pass+74 then bytecode from EBX+08; ECX EDI ignored; RET8"
+    },
+    {
+      "address": "00b3be7f",
+      "native": "00b3aea0",
+      "caller": "00b3b3c0",
+      "arguments": "push pass+74 then ESI actual bytecode; ECX EDI ignored; RET8"
+    },
+    {
+      "address": "00b5a07a",
+      "native": "00b5b960",
+      "caller": "00b59e70",
+      "arguments": "ECX current0108FE94, actual temporary8h header; RET4"
+    }
+  ],
+  "reused_fixture_steps": [
+    {
+      "address": "00b3a695",
+      "native": "00b38390",
+      "caller": "00b3a660"
+    },
+    {
+      "address": "00b3a6b5",
+      "native": "00b38310",
+      "caller": "00b3a660"
+    },
+    {
+      "address": "00b383d0",
+      "native": "00bf55be",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b3840d",
+      "native": "00b38310",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b38447",
+      "native": "00419cc0",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b3844e",
+      "native": "00bd1510",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b38461",
+      "native": "00bf6989",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b38355",
+      "native": "0041dd40",
+      "caller": "00b38310"
+    },
+    {
+      "address": "00b3836b",
+      "native": "00bf7680",
+      "caller": "00b38310"
+    }
+  ],
+  "no_ghidra_function_ranges": [],
+  "import": {
+    "thunk": "00c2dff2",
+    "iat": "00ce23f8",
+    "dll": "d3dx9_40.dll",
+    "export": "D3DXGetShaderConstantTable",
+    "evidence": "C2DFF2 actual JMP throughCE23F8; original PE import-table entry independently checked; concrete GetProcAddress on caller actual module"
+  },
+  "sdk_layouts": {
+    "D3DXCONSTANTTABLE_DESC": "0Ch; Creator00,Version04,Constants08",
+    "D3DXCONSTANT_DESC": "30h; Name00,RegisterSet04,RegisterIndex08,RegisterCount0C,Class10,Type14,Rows18,Columns1C,Elements20,StructMembers24,Bytes28,DefaultValue2C",
+    "buffer": "256 actual30h descriptors =3000h; only descriptor0 consumed; no zero-fill"
+  },
+  "corrections": [
+    {
+      "was": "B3AEA0 saved decompiler aliases table pointer, highest values and owner and exposes one apparent argument",
+      "is": "Two stack arguments, bytecode then metadata; owner captured in EBP; ECX is not this",
+      "evidence": "B3AEBF reads bytecodeESP+3048; B3AEE5 reads ownerESP+3058 after three saves; RET8 atB3B138; four actual callers"
+    },
+    {
+      "was": "Semantic map populated a host vector and count array with atomic commit behavior",
+      "is": "Actual raw owner stores are incremental, count3E before register08, actual20h records append, end74/mask84 before table Release",
+      "evidence": "B3AFFD/B3B001, B3B094, B3B102/B3B113/B3B11F"
+    },
+    {
+      "was": "Native ownership and unknown FLOAT record lifecycle unported in earlier semantic evidence",
+      "is": "Normal raw B3A750/B5BC60/B5B960/B5B830 and actual table lifetime now execute; private SEH replaced only by explicit retained failure frames",
+      "evidence": "new production sources and original/source real-D3DX fixture"
+    }
+  ],
+  "ownership": {
+    "target": "caller SAME canonical NativeCompiledShaderStorage, never semantic conversion; reflection does not change raw+04",
+    "registry": "borrow caller live actual0108FE94; no registry producer/type replacement; reads existing+04/+08 prefix",
+    "strings": "caller SAME actual NativeStringStorage pool/publication/lifetime domain",
+    "table": "real D3DX output captured in retained operation before subsequent calls; normal Release exactly once after final writes",
+    "retained_failure": "stable table, descriptor buffer, lookup/material name headers, actual20h append temporary, SAME array operation/current source; operation destructors reject running/failed",
+    "caller_obligation": "retain bytecode, owner, context, actual registry/publication and actual D3DX module; block target owner retirement while running/failed"
+  },
+  "validity_limits": [
+    "Native ignores HRESULT/returned count; source requires successful populated COM outputs before reading outputs. No zero descriptor or success stand-in.",
+    "System semantic IDs outside0..53 are rejected; native out-of-bounds behavior is not reproduced.",
+    "Native private SEH and cleanup-on-unwind are not emitted; already acquired native state remains in caller-retained frames.",
+    "Host CRT _stricmp used for valid strings; locale/error-runtime identity beyond the fixture ASCII domain not proven."
+  ],
+  "validation": {
+    "build": "Final scripts/build.ps1 baseline Win32 build passed; CTest 1/1. On resume, the same build script with ONLY the local startup include substituted built the actual bsp_core with both owner and reflection sources under the production target options; CTest 1/1 passed. Default source registration is still pending because cmake/startup.cmake was leased by another worker.",
+    "exact_source": "Final production owner/reflection hashes remained unchanged. Both were compiled into bsp_core using local/reflection-combined-validation.cmake. The existing strict MSVC Win32 original/source fixture was then linked against that bsp_core only, without compiling either production cpp again; normal and retained-failure modes passed.",
+    "fixture": "Final normal original/source fixture and retained real-failure child passed; child reached expected terminate exit77",
+    "call_verifier": "35 numeric direct call rows checked,0 failed; four runtime COM slots explicitly indirect and not verified as numeric program callees",
+    "registration": "Not default-registered in this worker baseline. local/reflection-combined-validation.cmake includes the unchanged real registry and adds ONLY src/native_compiled_shader_owner.cpp and src/native_compiled_shader_reflection.cpp. Primary must register any missing source after the shared registry is writable.",
+    "source_sha256": "d31e54a05e4994e17b1e6c36d2eed6e5f36c6bd5663fcf0bafa972350c7c8944",
+    "header_sha256": "8e08b8b09281b5464d940bcc49215c7802d40e1e0271518b0cfd1bf98a171de7",
+    "resumed_review": "Independently checked B3AEA0 complete assembly, B3A750, B5BC60 and B5B960 against final source. Rechecked saved program/body identity using BSP wrappers, and reran the 35-direct-call verifier with zero failures. No Ghidra writes.",
+    "combined_library_sha256": "6ef2af72fa21d263d54538d3f8ee1f1aec7f42040bb0e345d97292c6ab78871a",
+    "worker_base": "f862463677a079b9ad0977e6d54ab6e268cb4e8a"
+  },
+  "fixture": {
+    "runner": "local/run_native_shader_reflection_probe.ps1",
+    "source": "local/native_shader_reflection_probe.cpp",
+    "bytes_manifest": "local/reflection_original_manifest.json",
+    "artifact_manifest": "local/native_shader_reflection_artifacts.json",
+    "native_bytes": 1607,
+    "instructions": 538,
+    "ranges": 9,
+    "input": "real D3DXCompileShader ps_3_0 bytecode for fixture HLSL; raw10h registry prefix and actual20h record are explicitly fixture input, not B5BF70 reconstruction",
+    "normal_evidence": [
+      "case-insensitive current actual registry lookup",
+      "system arrays count/register bytes and untouched preimages",
+      "unknown FLOAT raw20h record contents and deep names",
+      "native temporary string-return order",
+      "repeated reflection appends unknowns while preserving system bindings",
+      "empty real table clears only end74/mask84",
+      "SAME raw+04 canonical target teardown with real string pool"
+    ],
+    "failure_evidence": "Injected actual string allocation failure inside accepted B3A660 preserves real constant table, temporary20h/source name, current actual array row and live canonical target; destructor reject observed via expected child terminate exit77",
+    "not_proven": "No native SEH execution/cleanup, real system-registry producer, full native compiler-pass success, game or rendering parity",
+    "combined_runner": "local/run_native_shader_reflection_combined.ps1",
+    "combined_build_runner": "local/build_reflection_combined.ps1",
+    "combined_include": "local/reflection-combined-validation.cmake",
+    "combined_pin": "local/reflection-combined-validation-pin.json"
+  },
+  "remaining": [
+    "Actual B5BF70/D62A3C system-registry producer and singleton lifetime must be integrated separately by primary.",
+    "Actual B3B3C0 compiler tail must supply and retain real bytecode and SAME canonical reflection targets; no success inferred from fixture compilation.",
+    "Separate COM shader wrappers are outside this reflection-table lifetime packet."
+  ],
+  "reused_contracts": [
+    {
+      "native": "00bf9410",
+      "contract": "Original CRT EAX3038h stack probe; production uses retained heap descriptor frame. Original helper bytes execute only in fixture."
+    },
+    {
+      "native": "0041dd40",
+      "contract": "actual8h header resize, stack length/preserve, RET8"
+    },
+    {
+      "native": "00419cc0",
+      "contract": "actual string pool getter, no arguments; caller pushes three pending BD1510 arguments first"
+    },
+    {
+      "native": "00bd1510",
+      "contract": "actual pool return, stack block/size/unused, RET0C"
+    },
+    {
+      "native": "00bf7680",
+      "contract": "memcpy, caller ADD ESP0C"
+    },
+    {
+      "native": "00bf7fbf",
+      "contract": "valid-string CRT _stricmp, caller ADD ESP8; host CRT boundary"
+    },
+    {
+      "native": "00b3a660",
+      "contract": "accepted actual20h append with caller-retained array operation/source identity; no second owner"
+    }
+  ]
+}
