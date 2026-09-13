@@ -1,0 +1,27 @@
+{
+  "packet": "orch4_mpak_storage_composition_bb",
+  "kind": "source composition; no newly reconstructed native body",
+  "source_files": [
+    "include/bsp/native_mpak_storage_services.hpp",
+    "src/native_mpak_storage_services.cpp"
+  ],
+  "native_addresses_owned": [],
+  "native_calls_owned": [],
+  "contracts": {
+    "lookup": "NativeMpakLookupStorage supplies NativeMpakOpenLibrary and NativeMpakDirectorySearchLibrary using one borrowed invalid-parameter callback",
+    "offsets": "NativeMpakOffsetCopyStorage is retained and shared with NativeMpakContainerStorage",
+    "containers": "NativeMpakContainerStorage borrows the actual string pool, VFS substream dispatch, scratch allocator and retained offset copier",
+    "runtime": "runtime_inputs forwards existing non-storage owners and binds all three storage interfaces without constructing provider or manager state"
+  },
+  "validation": {
+    "win32_build": "./scripts/build.ps1 passed with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=2",
+    "existing_ctest": "reconstructed_math passed 1/1",
+    "call_report": "tools/verify_report_calls.py passed; zero new native CALL rows",
+    "composition_fixture": "Not added: constructor and runtime-input wiring have no independent behavioral branch; AZ focused native/source fixtures cover the concrete storage methods."
+  },
+  "limitations": [
+    "No new original ABI is inferred by this source bundle.",
+    "Prior AZ reports define each concrete method's native coverage and remaining body ownership gaps.",
+    "Game startup reachability and provider drain under a composed live owner remain unverified."
+  ]
+}
