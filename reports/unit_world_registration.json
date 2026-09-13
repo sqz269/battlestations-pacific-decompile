@@ -1,0 +1,2310 @@
+{
+  "packet": "orch6_unit_world_registration_n",
+  "owner": "agent/orch6-unit-world-registration-n",
+  "base_commit": "bc9aef8837ba2577a26c3168a09d1b2c8e09d3bf",
+  "doc": "docs/UNIT_WORLD_REGISTRATION.md",
+  "sources": [
+    "include/bsp/unit_world_registration.hpp",
+    "src/unit_world_registration.cpp"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only BSP wrappers; verification before each batch"
+  },
+  "coverage": "complete registration bodies of21 creator-selected +130h targets and00928560; explicit external list/placement/allocator contracts",
+  "abi_compatible": false,
+  "native_abi": "ECX=unit, zero stack arguments, plain RET; leaf ESI preserved. Append00484540 takesECX=list, one stack unit andRET4; allocator00BF681B iscdecl size withcallerADD ESP4.",
+  "dispatch_rows": [
+    {
+      "type": "Destroyer",
+      "class_name": "MDestroyer",
+      "descriptor": "0x00d1acf8",
+      "creator": "0x006fe590",
+      "constructor_candidate": "006fe460",
+      "primary_vtable_candidate": "00cfc3d0",
+      "slot_address": "00cfc500",
+      "slot_bytes": "20e66f00",
+      "registration_candidate": "006fe620",
+      "primary_stores": [
+        "006fe46d: MOV dword ptr [ESI],0xcfc3d0 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        108
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "end_inclusive": "006fe665",
+      "descriptor_creator_slot": "00d1ad20",
+      "descriptor_creator_bytes": "90e56f00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "BSP_UnitInstance_RegisterInWorldLists",
+      "proposed_name": "BSP_UnitInstance_RegisterInWorldLists",
+      "receiver_writes": [
+        "006fe466: MOV ESI,ECX ",
+        "006fe4bf: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006fe5d4: JZ 0x006fe5e6 ",
+        "006fe5d6: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006fe5da: PUSH EAX ",
+        "006fe5db: MOV ECX,ESI ",
+        "006fe5dd: CALL 0x006fe460 ",
+        "006fe5e2: MOV ESI,EAX ",
+        "006fe5e4: JMP 0x006fe5e8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "373ecec117db5e2f8be7edc61a0c62394bb9b836292c0109ee3f9ef563b743cc",
+      "last_instruction": {
+        "address": "006fe665",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006fe4c0: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006fe610: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Cruiser",
+      "class_name": "MCruiser",
+      "descriptor": "0x00d1ad38",
+      "creator": "0x006fb430",
+      "constructor_candidate": "006fb300",
+      "primary_vtable_candidate": "00cfb738",
+      "slot_address": "00cfb868",
+      "slot_bytes": "c0b46f00",
+      "registration_candidate": "006fb4c0",
+      "primary_stores": [
+        "006fb30d: MOV dword ptr [ESI],0xcfb738 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        144
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        10
+      ],
+      "end_inclusive": "006fb508",
+      "descriptor_creator_slot": "00d1ad60",
+      "descriptor_creator_bytes": "30b46f00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006fb4c0",
+      "proposed_name": "BSP_Cruiser_RegisterInWorldLists",
+      "receiver_writes": [
+        "006fb306: MOV ESI,ECX ",
+        "006fb35f: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006fb474: JZ 0x006fb486 ",
+        "006fb476: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006fb47a: PUSH EAX ",
+        "006fb47b: MOV ECX,ESI ",
+        "006fb47d: CALL 0x006fb300 ",
+        "006fb482: MOV ESI,EAX ",
+        "006fb484: JMP 0x006fb488 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "d2033e044876c99994c34bc1c48537aba74b54df64bb1eb96b19020cbf3cfc56",
+      "last_instruction": {
+        "address": "006fb508",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006fb360: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006fb4b0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "LandingShip",
+      "class_name": "MLandingShip",
+      "descriptor": "0x00d1ad78",
+      "creator": "0x0074be00",
+      "constructor_candidate": "0074bb00",
+      "primary_vtable_candidate": "00cffa30",
+      "slot_address": "00cffb60",
+      "slot_bytes": "d0bc7400",
+      "registration_candidate": "0074bcd0",
+      "primary_stores": [
+        "0074bb2c: MOV dword ptr [ESI],0xcffa30 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        168
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        12
+      ],
+      "end_inclusive": "0074bd18",
+      "descriptor_creator_slot": "00d1ada0",
+      "descriptor_creator_bytes": "00be7400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_0074bcd0",
+      "proposed_name": "BSP_LandingShip_RegisterInWorldLists",
+      "receiver_writes": [
+        "0074bb1c: MOV ESI,ECX ",
+        "0074bbaa: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "0074be44: JZ 0x0074be56 ",
+        "0074be46: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0074be4a: PUSH EAX ",
+        "0074be4b: MOV ECX,ESI ",
+        "0074be4d: CALL 0x0074bb00 ",
+        "0074be52: MOV ESI,EAX ",
+        "0074be54: JMP 0x0074be58 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "a71d3ccba68b87beebe4b42a9fd48ddc9a699b8b7aeb5a1230a71c0ff3a00b83",
+      "last_instruction": {
+        "address": "0074bd18",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "0074bbb5: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "0074be80: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Cargo",
+      "class_name": "MCargo",
+      "descriptor": "0x00d1adbc",
+      "creator": "0x006eb290",
+      "constructor_candidate": "006eb160",
+      "primary_vtable_candidate": "00cfa778",
+      "slot_address": "00cfa8a8",
+      "slot_bytes": "10b46e00",
+      "registration_candidate": "006eb410",
+      "primary_stores": [
+        "006eb170: MOV dword ptr [ESI],0xcfa778 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        156
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        11
+      ],
+      "end_inclusive": "006eb458",
+      "descriptor_creator_slot": "00d1ade4",
+      "descriptor_creator_bytes": "90b26e00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006eb410",
+      "proposed_name": "BSP_Cargo_RegisterInWorldLists",
+      "receiver_writes": [
+        "006eb166: MOV ESI,ECX ",
+        "006eb1ca: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006eb2d4: JZ 0x006eb2e6 ",
+        "006eb2d6: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006eb2da: PUSH EAX ",
+        "006eb2db: MOV ECX,ESI ",
+        "006eb2dd: CALL 0x006eb160 ",
+        "006eb2e2: MOV ESI,EAX ",
+        "006eb2e4: JMP 0x006eb2e8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "045311fa749dbfbfd938d328c38bad3f490534b25d0d2e77f3b896caccb466a8",
+      "last_instruction": {
+        "address": "006eb458",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006eb1cb: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006eb310: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "BattleShip",
+      "class_name": "MBattleship",
+      "descriptor": "0x00d1adf8",
+      "creator": "0x006dfef0",
+      "constructor_candidate": "006dfc90",
+      "primary_vtable_candidate": "00cf90b0",
+      "slot_address": "00cf91e0",
+      "slot_bytes": "10006e00",
+      "registration_candidate": "006e0010",
+      "primary_stores": [
+        "006dfc9d: MOV dword ptr [ESI],0xcf90b0 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        180
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        13
+      ],
+      "end_inclusive": "006e0058",
+      "descriptor_creator_slot": "00d1ae20",
+      "descriptor_creator_bytes": "f0fe6d00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006e0010",
+      "proposed_name": "BSP_Battleship_RegisterInWorldLists",
+      "receiver_writes": [
+        "006dfc96: MOV ESI,ECX ",
+        "006dfcef: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006dff34: JZ 0x006dff46 ",
+        "006dff36: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006dff3a: PUSH EAX ",
+        "006dff3b: MOV ECX,ESI ",
+        "006dff3d: CALL 0x006dfc90 ",
+        "006dff42: MOV ESI,EAX ",
+        "006dff44: JMP 0x006dff48 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "b6443989e2591ff47e756881679179389a777e8bde1ddc3dfa4b3b8b550d6b93",
+      "last_instruction": {
+        "address": "006e0058",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006dfcf0: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006dff70: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Submarine",
+      "class_name": "MSubmarine",
+      "descriptor": "0x00d1ae38",
+      "creator": "0x008531a0",
+      "constructor_candidate": "00852f10",
+      "primary_vtable_candidate": "00d0bf80",
+      "slot_address": "00d0c0b0",
+      "slot_bytes": "90308500",
+      "registration_candidate": "00853090",
+      "primary_stores": [
+        "00852f27: MOV dword ptr [ESI],0xd0bf80 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        120
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        8
+      ],
+      "end_inclusive": "008530d5",
+      "descriptor_creator_slot": "00d1ae60",
+      "descriptor_creator_bytes": "a0318500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "BSP_SubmarineUnit_RegisterInWorldLists",
+      "proposed_name": "BSP_SubmarineUnit_RegisterInWorldLists",
+      "receiver_writes": [
+        "00852f16: MOV ESI,ECX ",
+        "00852faa: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "008531e4: JZ 0x008531f6 ",
+        "008531e6: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "008531ea: PUSH EAX ",
+        "008531eb: MOV ECX,ESI ",
+        "008531ed: CALL 0x00852f10 ",
+        "008531f2: MOV ESI,EAX ",
+        "008531f4: JMP 0x008531f8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "afd9a457f752f5a417444b9745323715265b58e6617ae9a26ccdd3c0e70cc571",
+      "last_instruction": {
+        "address": "008530d5",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00852fab: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00853220: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "TorpedoBoat",
+      "class_name": "MTorpedoBoat",
+      "descriptor": "0x00d1ae78",
+      "creator": "0x00857e20",
+      "constructor_candidate": "00857cd0",
+      "primary_vtable_candidate": "00d0c648",
+      "slot_address": "00d0c778",
+      "slot_bytes": "b07e8500",
+      "registration_candidate": "00857eb0",
+      "primary_stores": [
+        "00857cdd: MOV dword ptr [ESI],0xd0c648 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        192
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        14
+      ],
+      "end_inclusive": "00857ef8",
+      "descriptor_creator_slot": "00d1aea0",
+      "descriptor_creator_bytes": "207e8500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_00857eb0",
+      "proposed_name": "BSP_TorpedoBoat_RegisterInWorldLists",
+      "receiver_writes": [
+        "00857cd6: MOV ESI,ECX ",
+        "00857d2f: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00857e64: JZ 0x00857e76 ",
+        "00857e66: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "00857e6a: PUSH EAX ",
+        "00857e6b: MOV ECX,ESI ",
+        "00857e6d: CALL 0x00857cd0 ",
+        "00857e72: MOV ESI,EAX ",
+        "00857e74: JMP 0x00857e78 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "4fc0517e55e8c5174baa8807444d3a93fd4f4121f7cf2b73cf00c270fa4e9394",
+      "last_instruction": {
+        "address": "00857ef8",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00857d30: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00857ea0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "MotherShip",
+      "class_name": "MMothership",
+      "descriptor": "0x00d1aebc",
+      "creator": "0x00758d30",
+      "constructor_candidate": "00758550",
+      "primary_vtable_candidate": "00d01630",
+      "slot_address": "00d01760",
+      "slot_bytes": "908f7500",
+      "registration_candidate": "00758f90",
+      "primary_stores": [
+        "00758598: MOV dword ptr [ESI],0xd01630 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        96,
+        132
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        9
+      ],
+      "end_inclusive": "00758fd8",
+      "descriptor_creator_slot": "00d1aee4",
+      "descriptor_creator_bytes": "308d7500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_00758f90",
+      "proposed_name": "BSP_Mothership_RegisterInWorldLists",
+      "receiver_writes": [
+        "0075856c: MOV ESI,ECX ",
+        "007585f5: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00758d74: JZ 0x00758d86 ",
+        "00758d76: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "00758d7a: PUSH EAX ",
+        "00758d7b: MOV ECX,ESI ",
+        "00758d7d: CALL 0x00758550 ",
+        "00758d82: MOV ESI,EAX ",
+        "00758d84: JMP 0x00758d88 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "cb586f1479090d399d6c38256e85e0cd33f857a4d216a5e5a8266936de3c1353",
+      "last_instruction": {
+        "address": "00758fd8",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00758600: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00758db0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "ReconPlane",
+      "class_name": "MReconPlane",
+      "descriptor": "0x00d19bf4",
+      "creator": "0x008091d0",
+      "constructor_candidate": "0074e0f0",
+      "primary_vtable_candidate": "00d00070",
+      "slot_address": "00d001a0",
+      "slot_bytes": "70e67400",
+      "registration_candidate": "0074e670",
+      "primary_stores": [
+        "0074e0ff: MOV dword ptr [ESI],0xd00070 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        264
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        20
+      ],
+      "end_inclusive": "0074e6bb",
+      "descriptor_creator_slot": "00d19c1c",
+      "descriptor_creator_bytes": "d0918000",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_0074e670",
+      "proposed_name": "BSP_ReconPlane_RegisterInWorldLists",
+      "receiver_writes": [
+        "0074e0f8: MOV ESI,ECX ",
+        "0074e15b: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00809214: JZ 0x00809226 ",
+        "00809216: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0080921a: PUSH EAX ",
+        "0080921b: MOV ECX,ESI ",
+        "0080921d: CALL 0x0074e0f0 ",
+        "00809222: MOV ESI,EAX ",
+        "00809224: JMP 0x00809228 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "24a3274422705eb69a81285977c82032ddcbf6e67d46e04a379721bf5fad181e",
+      "last_instruction": {
+        "address": "0074e6bb",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "0074e15c: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00809250: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "SmallReconPlane",
+      "class_name": "MSmallReconPlane",
+      "descriptor": "0x00d1a5a8",
+      "creator": "0x0084ca50",
+      "constructor_candidate": "0084c920",
+      "primary_vtable_candidate": "00d0ba80",
+      "slot_address": "00d0bbb0",
+      "slot_bytes": "e0ca8400",
+      "registration_candidate": "0084cae0",
+      "primary_stores": [
+        "0084c92d: MOV dword ptr [ESI],0xd0ba80 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        276
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        21
+      ],
+      "end_inclusive": "0084cb2b",
+      "descriptor_creator_slot": "00d1a5d0",
+      "descriptor_creator_bytes": "50ca8400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_0084cae0",
+      "proposed_name": "BSP_SmallReconPlane_RegisterInWorldLists",
+      "receiver_writes": [
+        "0084c926: MOV ESI,ECX ",
+        "0084c989: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "0084ca94: JZ 0x0084caa6 ",
+        "0084ca96: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0084ca9a: PUSH EAX ",
+        "0084ca9b: MOV ECX,ESI ",
+        "0084ca9d: CALL 0x0084c920 ",
+        "0084caa2: MOV ESI,EAX ",
+        "0084caa4: JMP 0x0084caa8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "fe91ad9d6a63d07bbec59264727a5cdc4f3ddb9c942b2e2f24029742ec714ffa",
+      "last_instruction": {
+        "address": "0084cb2b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "0084c98a: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "0084cad0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "LargeReconPlane",
+      "class_name": "MLargeReconPlane",
+      "descriptor": "0x00d1a5ec",
+      "creator": "0x0074e540",
+      "constructor_candidate": "0074e2d0",
+      "primary_vtable_candidate": "00d00308",
+      "slot_address": "00d00438",
+      "slot_bytes": "00e77400",
+      "registration_candidate": "0074e700",
+      "primary_stores": [
+        "0074e2dd: MOV dword ptr [ESI],0xd00308 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        288
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        22
+      ],
+      "end_inclusive": "0074e74b",
+      "descriptor_creator_slot": "00d1a614",
+      "descriptor_creator_bytes": "40e57400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_0074e700",
+      "proposed_name": "BSP_LargeReconPlane_RegisterInWorldLists",
+      "receiver_writes": [
+        "0074e2d6: MOV ESI,ECX ",
+        "0074e339: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "0074e584: JZ 0x0074e596 ",
+        "0074e586: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0074e58a: PUSH EAX ",
+        "0074e58b: MOV ECX,ESI ",
+        "0074e58d: CALL 0x0074e2d0 ",
+        "0074e592: MOV ESI,EAX ",
+        "0074e594: JMP 0x0074e598 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "12dd13f68a80bb09c069b10a1f838c74ea289970f5a1649ed2a86199b8ca095a",
+      "last_instruction": {
+        "address": "0074e74b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "0074e33a: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "0074e5c0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Fighter",
+      "class_name": "MPlaneFighter",
+      "descriptor": "0x00d19c30",
+      "creator": "0x007ddae0",
+      "constructor_candidate": "007dd9b0",
+      "primary_vtable_candidate": "00d06920",
+      "slot_address": "00d06a50",
+      "slot_bytes": "70db7d00",
+      "registration_candidate": "007ddb70",
+      "primary_stores": [
+        "007dd9bf: MOV dword ptr [ESI],0xd06920 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        252
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        19
+      ],
+      "end_inclusive": "007ddbbb",
+      "descriptor_creator_slot": "00d19c58",
+      "descriptor_creator_bytes": "e0da7d00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_007ddb70",
+      "proposed_name": "BSP_PlaneFighter_RegisterInWorldLists",
+      "receiver_writes": [
+        "007dd9b8: MOV ESI,ECX ",
+        "007dda1b: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "007ddb24: JZ 0x007ddb36 ",
+        "007ddb26: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "007ddb2a: PUSH EAX ",
+        "007ddb2b: MOV ECX,ESI ",
+        "007ddb2d: CALL 0x007dd9b0 ",
+        "007ddb32: MOV ESI,EAX ",
+        "007ddb34: JMP 0x007ddb38 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "4a3d55fd2ff84aecdc171665606f69099a1c4e99500d1f1dea890ad55a00188d",
+      "last_instruction": {
+        "address": "007ddbbb",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "007dda1c: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "007ddb60: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "DiveBomber",
+      "class_name": "MPlaneDiveBomber",
+      "descriptor": "0x00d19c70",
+      "creator": "0x00956390",
+      "constructor_candidate": "00951b60",
+      "primary_vtable_candidate": "00d19d28",
+      "slot_address": "00d19e58",
+      "slot_bytes": "00639500",
+      "registration_candidate": "00956300",
+      "primary_stores": [
+        "00951b6f: MOV dword ptr [ESI],0xd19d28 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        240
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        18
+      ],
+      "end_inclusive": "0095634b",
+      "descriptor_creator_slot": "00d19c98",
+      "descriptor_creator_bytes": "90639500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_00956300",
+      "proposed_name": "BSP_PlaneDiveBomber_RegisterInWorldLists",
+      "receiver_writes": [
+        "00951b68: MOV ESI,ECX ",
+        "00951bcb: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "009563d5: JZ 0x009563e7 ",
+        "009563d7: MOV EAX,dword ptr [ESP + 0x20] ",
+        "009563db: PUSH EAX ",
+        "009563dc: MOV ECX,ESI ",
+        "009563de: CALL 0x00951b60 ",
+        "009563e3: MOV ESI,EAX ",
+        "009563e5: JMP 0x009563e9 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "0401519be8b20c4cf4b4a14efa8c0724ff5e90f080a2a4f526fdf404345a6e6b",
+      "last_instruction": {
+        "address": "0095634b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00951bcc: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00956442: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "TorpedoBomber",
+      "class_name": "MPlaneTorpedoBomber",
+      "descriptor": "0x00d19f4c",
+      "creator": "0x009564e0",
+      "constructor_candidate": "00951c40",
+      "primary_vtable_candidate": "00d1a000",
+      "slot_address": "00d1a130",
+      "slot_bytes": "50649500",
+      "registration_candidate": "00956450",
+      "primary_stores": [
+        "00951c4f: MOV dword ptr [ESI],0xd1a000 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        228
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        17
+      ],
+      "end_inclusive": "0095649b",
+      "descriptor_creator_slot": "00d19f74",
+      "descriptor_creator_bytes": "e0649500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_00956450",
+      "proposed_name": "BSP_PlaneTorpedoBomber_RegisterInWorldLists",
+      "receiver_writes": [
+        "00951c48: MOV ESI,ECX ",
+        "00951cab: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00956525: JZ 0x00956537 ",
+        "00956527: MOV EAX,dword ptr [ESP + 0x20] ",
+        "0095652b: PUSH EAX ",
+        "0095652c: MOV ECX,ESI ",
+        "0095652e: CALL 0x00951c40 ",
+        "00956533: MOV ESI,EAX ",
+        "00956535: JMP 0x00956539 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "e2b8a1ad14484c59a219232588dd590d06de295a310ea22237d5d15dd634e37a",
+      "last_instruction": {
+        "address": "0095649b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00951cac: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00956592: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Kamikaze",
+      "class_name": "MPlaneKamikaze",
+      "descriptor": "0x00d1a224",
+      "creator": "0x00956240",
+      "constructor_candidate": "00951d20",
+      "primary_vtable_candidate": "00d1a2d8",
+      "slot_address": "00d1a408",
+      "slot_bytes": "b0619500",
+      "registration_candidate": "009561b0",
+      "primary_stores": [
+        "00951d2f: MOV dword ptr [ESI],0xd1a2d8 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        300
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        23
+      ],
+      "end_inclusive": "009561fb",
+      "descriptor_creator_slot": "00d1a24c",
+      "descriptor_creator_bytes": "40629500",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_009561b0",
+      "proposed_name": "BSP_PlaneKamikaze_RegisterInWorldLists",
+      "receiver_writes": [
+        "00951d28: MOV ESI,ECX ",
+        "00951d8b: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00956285: JZ 0x00956297 ",
+        "00956287: MOV EAX,dword ptr [ESP + 0x20] ",
+        "0095628b: PUSH EAX ",
+        "0095628c: MOV ECX,ESI ",
+        "0095628e: CALL 0x00951d20 ",
+        "00956293: MOV ESI,EAX ",
+        "00956295: JMP 0x00956299 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "552f08f8b5aea60b469f82e70fbd9c4842d59630f2fad69793be54b774bf9515",
+      "last_instruction": {
+        "address": "009561fb",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00951d8c: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "009562f2: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "LevelBomber",
+      "class_name": "MPlaneBomber",
+      "descriptor": "0x00d1a4f8",
+      "creator": "0x007d7850",
+      "constructor_candidate": "007d7720",
+      "primary_vtable_candidate": "00d06638",
+      "slot_address": "00d06768",
+      "slot_bytes": "e0787d00",
+      "registration_candidate": "007d78e0",
+      "primary_stores": [
+        "007d772f: MOV dword ptr [ESI],0xd06638 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        204,
+        216
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        15,
+        16
+      ],
+      "end_inclusive": "007d792b",
+      "descriptor_creator_slot": "00d1a520",
+      "descriptor_creator_bytes": "50787d00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_007d78e0",
+      "proposed_name": "BSP_PlaneBomber_RegisterInWorldLists",
+      "receiver_writes": [
+        "007d7728: MOV ESI,ECX ",
+        "007d778b: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "007d7894: JZ 0x007d78a6 ",
+        "007d7896: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "007d789a: PUSH EAX ",
+        "007d789b: MOV ECX,ESI ",
+        "007d789d: CALL 0x007d7720 ",
+        "007d78a2: MOV ESI,EAX ",
+        "007d78a4: JMP 0x007d78a8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "9f093503cf5523a274fd78ca8c599d02091785da19f97f2a79a4b52ee4596ee2",
+      "last_instruction": {
+        "address": "007d792b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "007d778c: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "007d78d0: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "AirField",
+      "class_name": "MAirfield",
+      "descriptor": "0x00d1a9a0",
+      "creator": "0x006d3110",
+      "constructor_candidate": "006d1c20",
+      "primary_vtable_candidate": "00cf8c08",
+      "slot_address": "00cf8d38",
+      "slot_bytes": "d0366d00",
+      "registration_candidate": "006d36d0",
+      "primary_stores": [
+        "006d1c68: MOV dword ptr [ESI],0xcf8c08 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        852
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        69
+      ],
+      "end_inclusive": "006d370c",
+      "descriptor_creator_slot": "00d1a9c8",
+      "descriptor_creator_bytes": "10316d00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006d36d0",
+      "proposed_name": "BSP_Airfield_RegisterInWorldLists",
+      "receiver_writes": [
+        "006d1c40: MOV ESI,ECX ",
+        "006d1d10: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006d3154: JZ 0x006d3166 ",
+        "006d3156: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006d315a: PUSH EAX ",
+        "006d315b: MOV ECX,ESI ",
+        "006d315d: CALL 0x006d1c20 ",
+        "006d3162: MOV ESI,EAX ",
+        "006d3164: JMP 0x006d3168 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "13ef42dafd2a0157e8b8ded2bf0ff7579b83f24ba53f2cea157fdce00bfb0a56",
+      "last_instruction": {
+        "address": "006d370c",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006d1d1c: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006d3190: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "Shipyard",
+      "class_name": "MShipyard",
+      "descriptor": "0x00d1a9dc",
+      "creator": "0x00848380",
+      "constructor_candidate": "00848080",
+      "primary_vtable_candidate": "00d0b770",
+      "slot_address": "00d0b8a0",
+      "slot_bytes": "f06c8400",
+      "registration_candidate": "00846cf0",
+      "primary_stores": [
+        "008480b1: MOV dword ptr [ESI],0xd0b770 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        864
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        70
+      ],
+      "end_inclusive": "00846d2c",
+      "descriptor_creator_slot": "00d1aa04",
+      "descriptor_creator_bytes": "80838400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_00846cf0",
+      "proposed_name": "BSP_Shipyard_RegisterInWorldLists",
+      "receiver_writes": [
+        "008480a0: MOV ESI,ECX ",
+        "0084813e: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "008483c4: JZ 0x008483d6 ",
+        "008483c6: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "008483ca: PUSH EAX ",
+        "008483cb: MOV ECX,ESI ",
+        "008483cd: CALL 0x00848080 ",
+        "008483d2: MOV ESI,EAX ",
+        "008483d4: JMP 0x008483d8 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "f62986d6f771bb1ad5e82588862b180117412553a84281b6cefbc27687686cdc",
+      "last_instruction": {
+        "address": "00846d2c",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00848149: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00848400: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "LandVehicle",
+      "class_name": "MLandVehicle",
+      "descriptor": "0x00d1aa18",
+      "creator": "0x0074df10",
+      "constructor_candidate": "0074dcc0",
+      "primary_vtable_candidate": "00cffde0",
+      "slot_address": "00cfff10",
+      "slot_bytes": "10de7400",
+      "registration_candidate": "0074de10",
+      "primary_stores": [
+        "0074dccf: MOV dword ptr [ESI],0xcffde0 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        324
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        25
+      ],
+      "end_inclusive": "0074de4c",
+      "descriptor_creator_slot": "00d1aa40",
+      "descriptor_creator_bytes": "10df7400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_0074de10",
+      "proposed_name": "BSP_LandVehicle_RegisterInWorldLists",
+      "receiver_writes": [
+        "0074dcc8: MOV ESI,ECX ",
+        "0074dd35: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "0074df54: JZ 0x0074df66 ",
+        "0074df56: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0074df5a: PUSH EAX ",
+        "0074df5b: MOV ECX,ESI ",
+        "0074df5d: CALL 0x0074dcc0 ",
+        "0074df62: MOV ESI,EAX ",
+        "0074df64: JMP 0x0074df68 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "dee0481efb4890f365bd38fc6dfcf93eaadfca3adcb9a00cf5e3790b7f268cd7",
+      "last_instruction": {
+        "address": "0074de4c",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "0074dd36: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "0074df90: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "LandFort",
+      "class_name": "MLandFort",
+      "descriptor": "0x00cff790",
+      "creator": "0x00747000",
+      "constructor_candidate": "00745940",
+      "primary_vtable_candidate": "00cff3f8",
+      "slot_address": "00cff528",
+      "slot_bytes": "b0596f00",
+      "registration_candidate": "006f59b0",
+      "primary_stores": [
+        "0074597d: MOV dword ptr [ESI],0xcff3f8 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        348
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        27
+      ],
+      "end_inclusive": "006f59ec",
+      "descriptor_creator_slot": "00cff7b8",
+      "descriptor_creator_bytes": "00707400",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006f59b0",
+      "proposed_name": "BSP_LandFort_RegisterInWorldLists",
+      "receiver_writes": [
+        "00745960: MOV ESI,ECX ",
+        "00745a24: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "00747044: JZ 0x00747056 ",
+        "00747046: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "0074704a: PUSH EAX ",
+        "0074704b: MOV ECX,ESI ",
+        "0074704d: CALL 0x00745940 ",
+        "00747052: MOV ESI,EAX ",
+        "00747054: JMP 0x00747058 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "e1238951d33104eaaec5e594accc98c0bd8ec8d1289489dcc6f3f491cde3b915",
+      "last_instruction": {
+        "address": "006f59ec",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "00745a30: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "00747080: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    },
+    {
+      "type": "CommandBuilding",
+      "class_name": "MCommandBuilding",
+      "descriptor": "0x00d1a538",
+      "creator": "0x006f5c10",
+      "constructor_candidate": "006f5610",
+      "primary_vtable_candidate": "00cfb028",
+      "slot_address": "00cfb158",
+      "slot_bytes": "505a6f00",
+      "registration_candidate": "006f5a50",
+      "primary_stores": [
+        "006f564e: MOV dword ptr [ESI],0xcfb028 "
+      ],
+      "list_offsets": [
+        36,
+        48,
+        72,
+        84,
+        348,
+        360
+      ],
+      "list_ids": [
+        1,
+        2,
+        4,
+        5,
+        27,
+        28
+      ],
+      "end_inclusive": "006f5a9b",
+      "descriptor_creator_slot": "00d1a560",
+      "descriptor_creator_bytes": "105c6f00",
+      "coverage": "complete registration body; constructor/allocator read as identity evidence only",
+      "native_name": "FUN_006f5a50",
+      "proposed_name": "BSP_CommandBuilding_RegisterInWorldLists",
+      "receiver_writes": [
+        "006f562e: MOV ESI,ECX ",
+        "006f5773: POP ESI "
+      ],
+      "creator_constructor_setup": [
+        "006f5c54: JZ 0x006f5c66 ",
+        "006f5c56: MOV EAX,dword ptr [ESP + 0x1c] ",
+        "006f5c5a: PUSH EAX ",
+        "006f5c5b: MOV ECX,ESI ",
+        "006f5c5d: CALL 0x006f5610 ",
+        "006f5c62: MOV ESI,EAX ",
+        "006f5c64: JMP 0x006f5c68 "
+      ],
+      "live_slot_verified": true,
+      "native_body_sha256": "95f7f48191d7f6b14d9526bf99053d53230445ab0fa78b6fec17dae8ce744598",
+      "last_instruction": {
+        "address": "006f5a9b",
+        "mnemonic": "RET",
+        "length": 1
+      },
+      "constructor_cleanup": "006f5780: RET 0x4 (3-byte instruction)",
+      "creator_cleanup": "006f5c90: RET 0x4 (3-byte instruction)",
+      "constructor_abi": "ECX=allocated unit, one forwarded4-byte creator argument, RET4; constructor calls and primary stores are identity evidence, not a new whole-constructor implementation.",
+      "creator_abi": "ECX=descriptor, one4-byte argument forwarded to the unit constructor, RET4; existing creator contract retained."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006fe623",
+      "native": "00928560",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fe62f",
+      "native": "00484540",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fe63b",
+      "native": "00484540",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fe647",
+      "native": "00484540",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fe653",
+      "native": "00484540",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fe65f",
+      "native": "00484540",
+      "function": "006fe620"
+    },
+    {
+      "address": "006fb4c3",
+      "native": "00928560",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "006fb4cf",
+      "native": "00484540",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "006fb4db",
+      "native": "00484540",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "006fb4e7",
+      "native": "00484540",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "006fb4f3",
+      "native": "00484540",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "006fb502",
+      "native": "00484540",
+      "function": "006fb4c0"
+    },
+    {
+      "address": "0074bcd3",
+      "native": "00928560",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "0074bcdf",
+      "native": "00484540",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "0074bceb",
+      "native": "00484540",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "0074bcf7",
+      "native": "00484540",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "0074bd03",
+      "native": "00484540",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "0074bd12",
+      "native": "00484540",
+      "function": "0074bcd0"
+    },
+    {
+      "address": "006eb413",
+      "native": "00928560",
+      "function": "006eb410"
+    },
+    {
+      "address": "006eb41f",
+      "native": "00484540",
+      "function": "006eb410"
+    },
+    {
+      "address": "006eb42b",
+      "native": "00484540",
+      "function": "006eb410"
+    },
+    {
+      "address": "006eb437",
+      "native": "00484540",
+      "function": "006eb410"
+    },
+    {
+      "address": "006eb443",
+      "native": "00484540",
+      "function": "006eb410"
+    },
+    {
+      "address": "006eb452",
+      "native": "00484540",
+      "function": "006eb410"
+    },
+    {
+      "address": "006e0013",
+      "native": "00928560",
+      "function": "006e0010"
+    },
+    {
+      "address": "006e001f",
+      "native": "00484540",
+      "function": "006e0010"
+    },
+    {
+      "address": "006e002b",
+      "native": "00484540",
+      "function": "006e0010"
+    },
+    {
+      "address": "006e0037",
+      "native": "00484540",
+      "function": "006e0010"
+    },
+    {
+      "address": "006e0043",
+      "native": "00484540",
+      "function": "006e0010"
+    },
+    {
+      "address": "006e0052",
+      "native": "00484540",
+      "function": "006e0010"
+    },
+    {
+      "address": "00853093",
+      "native": "00928560",
+      "function": "00853090"
+    },
+    {
+      "address": "0085309f",
+      "native": "00484540",
+      "function": "00853090"
+    },
+    {
+      "address": "008530ab",
+      "native": "00484540",
+      "function": "00853090"
+    },
+    {
+      "address": "008530b7",
+      "native": "00484540",
+      "function": "00853090"
+    },
+    {
+      "address": "008530c3",
+      "native": "00484540",
+      "function": "00853090"
+    },
+    {
+      "address": "008530cf",
+      "native": "00484540",
+      "function": "00853090"
+    },
+    {
+      "address": "00857eb3",
+      "native": "00928560",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00857ebf",
+      "native": "00484540",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00857ecb",
+      "native": "00484540",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00857ed7",
+      "native": "00484540",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00857ee3",
+      "native": "00484540",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00857ef2",
+      "native": "00484540",
+      "function": "00857eb0"
+    },
+    {
+      "address": "00758f93",
+      "native": "00928560",
+      "function": "00758f90"
+    },
+    {
+      "address": "00758f9f",
+      "native": "00484540",
+      "function": "00758f90"
+    },
+    {
+      "address": "00758fab",
+      "native": "00484540",
+      "function": "00758f90"
+    },
+    {
+      "address": "00758fb7",
+      "native": "00484540",
+      "function": "00758f90"
+    },
+    {
+      "address": "00758fc3",
+      "native": "00484540",
+      "function": "00758f90"
+    },
+    {
+      "address": "00758fd2",
+      "native": "00484540",
+      "function": "00758f90"
+    },
+    {
+      "address": "0074e673",
+      "native": "00928560",
+      "function": "0074e670"
+    },
+    {
+      "address": "0074e67f",
+      "native": "00484540",
+      "function": "0074e670"
+    },
+    {
+      "address": "0074e68b",
+      "native": "00484540",
+      "function": "0074e670"
+    },
+    {
+      "address": "0074e697",
+      "native": "00484540",
+      "function": "0074e670"
+    },
+    {
+      "address": "0074e6a6",
+      "native": "00484540",
+      "function": "0074e670"
+    },
+    {
+      "address": "0074e6b5",
+      "native": "00484540",
+      "function": "0074e670"
+    },
+    {
+      "address": "0084cae3",
+      "native": "00928560",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0084caef",
+      "native": "00484540",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0084cafb",
+      "native": "00484540",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0084cb07",
+      "native": "00484540",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0084cb16",
+      "native": "00484540",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0084cb25",
+      "native": "00484540",
+      "function": "0084cae0"
+    },
+    {
+      "address": "0074e703",
+      "native": "00928560",
+      "function": "0074e700"
+    },
+    {
+      "address": "0074e70f",
+      "native": "00484540",
+      "function": "0074e700"
+    },
+    {
+      "address": "0074e71b",
+      "native": "00484540",
+      "function": "0074e700"
+    },
+    {
+      "address": "0074e727",
+      "native": "00484540",
+      "function": "0074e700"
+    },
+    {
+      "address": "0074e736",
+      "native": "00484540",
+      "function": "0074e700"
+    },
+    {
+      "address": "0074e745",
+      "native": "00484540",
+      "function": "0074e700"
+    },
+    {
+      "address": "007ddb73",
+      "native": "00928560",
+      "function": "007ddb70"
+    },
+    {
+      "address": "007ddb7f",
+      "native": "00484540",
+      "function": "007ddb70"
+    },
+    {
+      "address": "007ddb8b",
+      "native": "00484540",
+      "function": "007ddb70"
+    },
+    {
+      "address": "007ddb97",
+      "native": "00484540",
+      "function": "007ddb70"
+    },
+    {
+      "address": "007ddba6",
+      "native": "00484540",
+      "function": "007ddb70"
+    },
+    {
+      "address": "007ddbb5",
+      "native": "00484540",
+      "function": "007ddb70"
+    },
+    {
+      "address": "00956303",
+      "native": "00928560",
+      "function": "00956300"
+    },
+    {
+      "address": "0095630f",
+      "native": "00484540",
+      "function": "00956300"
+    },
+    {
+      "address": "0095631b",
+      "native": "00484540",
+      "function": "00956300"
+    },
+    {
+      "address": "00956327",
+      "native": "00484540",
+      "function": "00956300"
+    },
+    {
+      "address": "00956336",
+      "native": "00484540",
+      "function": "00956300"
+    },
+    {
+      "address": "00956345",
+      "native": "00484540",
+      "function": "00956300"
+    },
+    {
+      "address": "00956453",
+      "native": "00928560",
+      "function": "00956450"
+    },
+    {
+      "address": "0095645f",
+      "native": "00484540",
+      "function": "00956450"
+    },
+    {
+      "address": "0095646b",
+      "native": "00484540",
+      "function": "00956450"
+    },
+    {
+      "address": "00956477",
+      "native": "00484540",
+      "function": "00956450"
+    },
+    {
+      "address": "00956486",
+      "native": "00484540",
+      "function": "00956450"
+    },
+    {
+      "address": "00956495",
+      "native": "00484540",
+      "function": "00956450"
+    },
+    {
+      "address": "009561b3",
+      "native": "00928560",
+      "function": "009561b0"
+    },
+    {
+      "address": "009561bf",
+      "native": "00484540",
+      "function": "009561b0"
+    },
+    {
+      "address": "009561cb",
+      "native": "00484540",
+      "function": "009561b0"
+    },
+    {
+      "address": "009561d7",
+      "native": "00484540",
+      "function": "009561b0"
+    },
+    {
+      "address": "009561e6",
+      "native": "00484540",
+      "function": "009561b0"
+    },
+    {
+      "address": "009561f5",
+      "native": "00484540",
+      "function": "009561b0"
+    },
+    {
+      "address": "007d78e3",
+      "native": "00928560",
+      "function": "007d78e0"
+    },
+    {
+      "address": "007d78ef",
+      "native": "00484540",
+      "function": "007d78e0"
+    },
+    {
+      "address": "007d78fb",
+      "native": "00484540",
+      "function": "007d78e0"
+    },
+    {
+      "address": "007d7907",
+      "native": "00484540",
+      "function": "007d78e0"
+    },
+    {
+      "address": "007d7916",
+      "native": "00484540",
+      "function": "007d78e0"
+    },
+    {
+      "address": "007d7925",
+      "native": "00484540",
+      "function": "007d78e0"
+    },
+    {
+      "address": "006d36d3",
+      "native": "00928560",
+      "function": "006d36d0"
+    },
+    {
+      "address": "006d36df",
+      "native": "00484540",
+      "function": "006d36d0"
+    },
+    {
+      "address": "006d36eb",
+      "native": "00484540",
+      "function": "006d36d0"
+    },
+    {
+      "address": "006d36f7",
+      "native": "00484540",
+      "function": "006d36d0"
+    },
+    {
+      "address": "006d3706",
+      "native": "00484540",
+      "function": "006d36d0"
+    },
+    {
+      "address": "00846cf3",
+      "native": "00928560",
+      "function": "00846cf0"
+    },
+    {
+      "address": "00846cff",
+      "native": "00484540",
+      "function": "00846cf0"
+    },
+    {
+      "address": "00846d0b",
+      "native": "00484540",
+      "function": "00846cf0"
+    },
+    {
+      "address": "00846d17",
+      "native": "00484540",
+      "function": "00846cf0"
+    },
+    {
+      "address": "00846d26",
+      "native": "00484540",
+      "function": "00846cf0"
+    },
+    {
+      "address": "0074de13",
+      "native": "00928560",
+      "function": "0074de10"
+    },
+    {
+      "address": "0074de1f",
+      "native": "00484540",
+      "function": "0074de10"
+    },
+    {
+      "address": "0074de2b",
+      "native": "00484540",
+      "function": "0074de10"
+    },
+    {
+      "address": "0074de37",
+      "native": "00484540",
+      "function": "0074de10"
+    },
+    {
+      "address": "0074de46",
+      "native": "00484540",
+      "function": "0074de10"
+    },
+    {
+      "address": "006f59b3",
+      "native": "00928560",
+      "function": "006f59b0"
+    },
+    {
+      "address": "006f59bf",
+      "native": "00484540",
+      "function": "006f59b0"
+    },
+    {
+      "address": "006f59cb",
+      "native": "00484540",
+      "function": "006f59b0"
+    },
+    {
+      "address": "006f59d7",
+      "native": "00484540",
+      "function": "006f59b0"
+    },
+    {
+      "address": "006f59e6",
+      "native": "00484540",
+      "function": "006f59b0"
+    },
+    {
+      "address": "006f5a53",
+      "native": "00928560",
+      "function": "006f5a50"
+    },
+    {
+      "address": "006f5a5f",
+      "native": "00484540",
+      "function": "006f5a50"
+    },
+    {
+      "address": "006f5a6b",
+      "native": "00484540",
+      "function": "006f5a50"
+    },
+    {
+      "address": "006f5a77",
+      "native": "00484540",
+      "function": "006f5a50"
+    },
+    {
+      "address": "006f5a86",
+      "native": "00484540",
+      "function": "006f5a50"
+    },
+    {
+      "address": "006f5a95",
+      "native": "00484540",
+      "function": "006f5a50"
+    },
+    {
+      "address": "00928567",
+      "native": "00484540",
+      "function": "00928560"
+    },
+    {
+      "address": "00484546",
+      "native": "00bf681b",
+      "function": "00484540"
+    },
+    {
+      "address": "00487213",
+      "native": "00928560",
+      "function": "00487210"
+    },
+    {
+      "address": "004e78d3",
+      "native": "00928560",
+      "function": "004e78d0"
+    },
+    {
+      "address": "004e7933",
+      "native": "00928560",
+      "function": "004e7930"
+    },
+    {
+      "address": "004e7993",
+      "native": "00928560",
+      "function": "004e7990"
+    },
+    {
+      "address": "004e7e93",
+      "native": "00928560",
+      "function": "004e7e90"
+    },
+    {
+      "address": "004e9673",
+      "native": "00928560",
+      "function": "004e9670"
+    },
+    {
+      "address": "004f1403",
+      "native": "00928560",
+      "function": "004f1400"
+    },
+    {
+      "address": "004f1873",
+      "native": "00928560",
+      "function": "004f1870"
+    },
+    {
+      "address": "004f1913",
+      "native": "00928560",
+      "function": "004f1910"
+    },
+    {
+      "address": "004f25d3",
+      "native": "00928560",
+      "function": "004f25d0"
+    },
+    {
+      "address": "006d35f3",
+      "native": "00928560",
+      "function": "006d35f0"
+    },
+    {
+      "address": "006d3673",
+      "native": "00928560",
+      "function": "006d3670"
+    },
+    {
+      "address": "006dff83",
+      "native": "00928560",
+      "function": "006dff80"
+    },
+    {
+      "address": "006e2993",
+      "native": "00928560",
+      "function": "006e2990"
+    },
+    {
+      "address": "006fd193",
+      "native": "00928560",
+      "function": "006fd190"
+    },
+    {
+      "address": "006fea83",
+      "native": "00928560",
+      "function": "006fea80"
+    },
+    {
+      "address": "006feb33",
+      "native": "00928560",
+      "function": "006feb30"
+    },
+    {
+      "address": "006ff973",
+      "native": "00928560",
+      "function": "006ff970"
+    },
+    {
+      "address": "00700983",
+      "native": "00928560",
+      "function": "00700980"
+    },
+    {
+      "address": "00700b13",
+      "native": "00928560",
+      "function": "00700b10"
+    },
+    {
+      "address": "0074e5d3",
+      "native": "00928560",
+      "function": "0074e5d0"
+    },
+    {
+      "address": "007811d3",
+      "native": "00928560",
+      "function": "007811d0"
+    },
+    {
+      "address": "007abab3",
+      "native": "00928560",
+      "function": "007abab0"
+    },
+    {
+      "address": "007b3373",
+      "native": "00928560",
+      "function": "007b3370"
+    },
+    {
+      "address": "007f10b3",
+      "native": "00928560",
+      "function": "007f10b0"
+    },
+    {
+      "address": "0080ad43",
+      "native": "00928560",
+      "function": "0080ad40"
+    },
+    {
+      "address": "00856363",
+      "native": "00928560",
+      "function": "00856360"
+    },
+    {
+      "address": "0085f273",
+      "native": "00928560",
+      "function": "0085f270"
+    },
+    {
+      "address": "006fe5dd",
+      "native": "006fe460",
+      "function": "006fe590"
+    },
+    {
+      "address": "006fb47d",
+      "native": "006fb300",
+      "function": "006fb430"
+    },
+    {
+      "address": "0074be4d",
+      "native": "0074bb00",
+      "function": "0074be00"
+    },
+    {
+      "address": "006eb2dd",
+      "native": "006eb160",
+      "function": "006eb290"
+    },
+    {
+      "address": "006dff3d",
+      "native": "006dfc90",
+      "function": "006dfef0"
+    },
+    {
+      "address": "008531ed",
+      "native": "00852f10",
+      "function": "008531a0"
+    },
+    {
+      "address": "00857e6d",
+      "native": "00857cd0",
+      "function": "00857e20"
+    },
+    {
+      "address": "00758d7d",
+      "native": "00758550",
+      "function": "00758d30"
+    },
+    {
+      "address": "0080921d",
+      "native": "0074e0f0",
+      "function": "008091d0"
+    },
+    {
+      "address": "0084ca9d",
+      "native": "0084c920",
+      "function": "0084ca50"
+    },
+    {
+      "address": "0074e58d",
+      "native": "0074e2d0",
+      "function": "0074e540"
+    },
+    {
+      "address": "007ddb2d",
+      "native": "007dd9b0",
+      "function": "007ddae0"
+    },
+    {
+      "address": "009563de",
+      "native": "00951b60",
+      "function": "00956390"
+    },
+    {
+      "address": "0095652e",
+      "native": "00951c40",
+      "function": "009564e0"
+    },
+    {
+      "address": "0095628e",
+      "native": "00951d20",
+      "function": "00956240"
+    },
+    {
+      "address": "007d789d",
+      "native": "007d7720",
+      "function": "007d7850"
+    },
+    {
+      "address": "006d315d",
+      "native": "006d1c20",
+      "function": "006d3110"
+    },
+    {
+      "address": "008483cd",
+      "native": "00848080",
+      "function": "00848380"
+    },
+    {
+      "address": "0074df5d",
+      "native": "0074dcc0",
+      "function": "0074df10"
+    },
+    {
+      "address": "0074704d",
+      "native": "00745940",
+      "function": "00747000"
+    },
+    {
+      "address": "006f5c5d",
+      "native": "006f5610",
+      "function": "006f5c10"
+    },
+    {
+      "address": "009288d6",
+      "native": "009258f0",
+      "function": "00928860"
+    },
+    {
+      "address": "009288f1",
+      "native": "00cfc3d0+vtable130",
+      "function": "00928860",
+      "contract": "ECX=unit; actual table is installed primary_vtable from the resolved row; CFC3D0 is the destroyer exemplar"
+    },
+    {
+      "address": "004cb076",
+      "native": "00bf7cd1",
+      "function": "004cb030"
+    },
+    {
+      "address": "00bf7cf5",
+      "native": "004b7ec0",
+      "function": "00bf7cd1",
+      "contract": "indirect callback for the004CB076 world-list-head construction invocation"
+    }
+  ],
+  "parent_helper": {
+    "entry": "00928560",
+    "body_inclusive": [
+      "00928560",
+      "0092856c"
+    ],
+    "coverage": "complete",
+    "list_offset": "24",
+    "list_id": 1,
+    "direct_callers_checked": 49,
+    "caller_schedule": "PUSH ESI; MOV ESI,ECX; CALL00928560 for every direct caller",
+    "data_references": [
+      "00ce8d00",
+      "00ce8e98",
+      "00d11268",
+      "00d19410"
+    ],
+    "last_instruction_length": 1
+  },
+  "contracts": [
+    {
+      "entry": "00484540",
+      "body_inclusive": [
+        "00484540",
+        "00484596"
+      ],
+      "coverage": "existing append service; complete original body used by fixture, no tracked reimplementation",
+      "receiver": "ECX=parent+offset",
+      "argument": "direct unit pointer",
+      "cleanup": "RET4 at00484583 and00484594, each3bytes"
+    },
+    {
+      "entry": "00bf681b",
+      "coverage": "existing CRT allocation service, no new implementation",
+      "argument": "size0Ch",
+      "cleanup": "cdecl; ADD ESP4 at0048454D",
+      "fixture": "bounded node arena replaces allocation only"
+    },
+    {
+      "entry": "009258f0",
+      "coverage": "existing attachment contract",
+      "producer": "00925902 reads stackworldNode,00925906 writesunit30;00925935 writes separatehierarchy parent3C",
+      "cleanup": "RET0Ch"
+    },
+    {
+      "entry": "00928860",
+      "body_inclusive": [
+        "00928860",
+        "00928914"
+      ],
+      "coverage": "existing placement contract",
+      "dispatch": "009288F1 CALL EAX aftervptr130load009288E9, ECX=ESI; old/new parent changed and currentunit30nonzero; placement owns lock"
+    },
+    {
+      "entry": "004cb030",
+      "coverage": "existing world owner construction evidence",
+      "list_array": "97 heads at+18 stride0C via004CB076;004B7EC0 zeroshead3dwords; iterator00BF7CD1RET14h"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "GameUnitsHost calls006FE620 for every created unit.",
+      "is": "Use descriptor allocator and verified primary-table130 dispatch; unsupported remains unknown.",
+      "evidence": "21 creator/table/store/slot rows and complete registrar byte ranges."
+    },
+    {
+      "was": "Runtime comment says primary+130 dispatch site was not located.",
+      "is": "009288F1 is CALL EAX after the separate vtable+130 target load.",
+      "evidence": "009288E7..009288F1 inbody00928860..00928914."
+    },
+    {
+      "was": "Destroyer leaf lists2/4/5/6/7 could be read as complete registration.",
+      "is": "Shared00928560 first pushes parent list1; total six.",
+      "evidence": "006FE623->00928560;00928567->00484540 withparent+24."
+    },
+    {
+      "was": "Player registry wrapper+4 field may be misapplied to world-list values.",
+      "is": "World append stores original unit receiver directly.",
+      "evidence": "006FE64F PUSH ESI,006FE653 CALL00484540,00484566 stores argument atnode8."
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "fixture": {
+    "source": "local/registration_probe.cpp",
+    "preparer": "local/prepare_registration_probe.py",
+    "builder": "local/build_registration_probe.ps1",
+    "binary": "local/registration_probe.exe",
+    "log": "local/registration_probe.log",
+    "trace": "local/registration_probe_trace.csv",
+    "result": "PASS",
+    "complete_original_bodies": 23,
+    "creator_pairs": 21,
+    "scenarios": 42,
+    "ordered_pushes_per_side": 488,
+    "unsupported_inputs": 3,
+    "original_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_inputs": "local/registration_native_inputs.json",
+    "boundaries": "list CALL trace bridge invokes full original00484540, and allocator returns12-byte nodes from actual bounded arena; original parent registrar and internal branches retained",
+    "compared": [
+      "ordered parent/offset/direct-unit trace",
+      "all194 head lists across2parents",
+      "count/head/tail andprev-next links",
+      "unit values",
+      "one parent reload per reconstructed append"
+    ],
+    "not_compared": [
+      "complete ABI/register/flags state",
+      "FP environment",
+      "constructor execution",
+      "placement/locking",
+      "allocationfailure/exceptionunwind",
+      "mission runtime"
+    ],
+    "tracked_tests_added": 0
+  },
+  "compiled_source_sha256": {
+    "include/bsp/unit_world_registration.hpp": "7918bbd17113709ef266f932939e077bf19b62dffd2952cf75c657b08c0fbca5",
+    "src/unit_world_registration.cpp": "f56902555dafeacba8555204908bdb6ed296ef16473d22a7feecdc5a762c3395"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32",
+    "log": "local/registration_build.log",
+    "result": "PASS:Win32 and2/2 CTest",
+    "initial_configure": "Initial fresh build compiled and passed its sole configured test; verify-seeds enabled native_math_differential, then the final incremental build passed both existing tests."
+  },
+  "call_check": {
+    "command": "python tools/verify_report_calls.py reports/unit_world_registration.json",
+    "log": "local/registration_call_check.log",
+    "result": "PASS:176 tool-checked rows,0 failed",
+    "reported_rows": 177,
+    "direct_calls_verified": 175,
+    "indirect_rows": 2,
+    "indirect_scope": "009288F1 target resolved via installed primary+130 slots;00BF7CF5 callback resolved by004CB076 constructor arguments. Tool reports both indirect boundaries explicitly."
+  },
+  "artifact_manifest": "local/registration_manifest.json",
+  "runtime": {
+    "executed": false,
+    "scope": "core and evidence only; GameHosts binding remains primary owned"
+  },
+  "limits": [
+    "Only the21 current instance creator identities are supported.",
+    "Native invalid/unplaced parent input is a caller precondition, not a fallback.",
+    "Existing fixed-parent destroyer API remains unchanged; new host reloads actualparent.",
+    "Read-only lookup/fixture evidence does not claim full creators, placement, CRT, or runtime reconstruction."
+  ],
+  "source_registration": "One appended src/unit_world_registration.cpp line in cmake/startup.cmake; no CMakeLists or GameHosts edits."
+}

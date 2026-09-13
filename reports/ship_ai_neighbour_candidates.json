@@ -1,0 +1,340 @@
+{
+  "packet": "orch6_neighbour_candidates_n",
+  "status": "partial_projection_build_fixture_tested",
+  "base_commit": "88dc00d4297c983a4bf10b4b6a34c37533dda8c6",
+  "source": "src/ship_ai_neighbour_candidates.cpp",
+  "header": "include/bsp/ship_ai_neighbour_candidates.hpp",
+  "containing_function": {
+    "entry": "009F1420",
+    "name": "BSP_ShipAi_BrainPrePass",
+    "end_inclusive": "009F1BBA",
+    "abi": "thiscall brain, float step, RET4 at009F1BB8",
+    "coverage": "partial; no complete pre-pass claim"
+  },
+  "fragments": [
+    {
+      "entry": "009F15CC",
+      "cpp": "ship_ai_neighbour_timer_due_009f15cc",
+      "ranges_inclusive": [
+        [
+          "009F15CC",
+          "009F15F5"
+        ],
+        [
+          "009F15F8",
+          "009F15FD"
+        ]
+      ],
+      "coverage": "complete second-timer floating state/due-byte operations; partial parent, excludes TEST BL of independent first timer at15F6",
+      "input": "Actual countdownB50/periodB4C and step; native enters with step on x87 ST0",
+      "output": "CountdownB50 plus bool due corresponding to local byteESP+17; no constructor defaults/RNG draw"
+    },
+    {
+      "entry": "009F1856",
+      "cpp": "ship_ai_walk_neighbour_candidates_009f1856",
+      "end_inclusive": "009F1A43",
+      "bytes": 494,
+      "coverage": "complete gated list6 walk through actual pose/settings/admission boundaries; partial parent, new C++ ABI",
+      "input": "Original scan-due byte and existing caller lock/lifetime domain, borrowed live unit/class/list identities and fields"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "009F1872",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Refresh captured initial self if its actual C8 byte is zero; ECX unit, no stack input, plain RET."
+    },
+    {
+      "address": "009F18D2",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Refresh captured candidate if dirty."
+    },
+    {
+      "address": "009F18E8",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Refresh reloaded current self if dirty; altitude uses this captured self afterwards."
+    },
+    {
+      "address": "009F1944",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Recheck and possibly refresh candidate after the self refresh."
+    },
+    {
+      "address": "009F199D",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "No-argument singleton getter; read captured class fields after return, then settings+19C."
+    },
+    {
+      "address": "009F19B8",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Second getter, read/spill this settings return+198."
+    },
+    {
+      "address": "009F1A25",
+      "native": "009F0D20",
+      "function": "009F1420",
+      "contract": "ECX=brain+8/nav, one unchanged candidate pointer on stack, RET4, return ignored."
+    }
+  ],
+  "field_lookup_contract": "Pure identity/field lookup only; no default fields, allocation, pose refresh, state mutation, fallback candidate or whole-list snapshot.",
+  "list_contract": {
+    "header": "[[E188A8]+19CC]+60 signed count, +64 head; head/count from same captured list header",
+    "node": "0Ch node, +0 prev/+4 next/+8 direct registered unit payload",
+    "order": "00484540 appends at tail in registration order",
+    "bound": "Capture signed count once; <=0 skips after initial self pose and origin reads; positive count decremented locally to0",
+    "reload": "Current node+4 read after callbacks, including last iteration; mutations of next affect traversal; header count/head changes do not change captured bound",
+    "filters": "Only current-self pointer equality precedes pose and geometry; no null/active/party/class/faction/id filter"
+  },
+  "capture_contract": {
+    "origin": "Initial self captured before its optional refresh; fixed X/Z captured once for whole list",
+    "altitude": "Candidate retained; self reloaded after candidate refresh, then captured across its refresh",
+    "radius": "Candidate C8 rechecked; candidate X spilled; current self reloaded; self/candidate classes captured before getter; +9C8 fields form hull term",
+    "class_fields": "Read captured class+500 values after first settings getter, so mutations to those objects are visible without recapturing unit class pointers",
+    "admission": "Preserve candidate identity and host-bound existing nav owner; standalone admission implemented by polygon worker"
+  },
+  "arithmetic": {
+    "timer": "Ordered step>=countdown -> countdown+(period-step), otherwise including unordered -> countdown-step; one period, x87 schedule/spills preserved",
+    "altitude": "candidateY-selfY spilled; positive retained else SSE -0.0f-delta; require magnitude<15 double",
+    "hull": "x87(self full_length9C8 + candidate full_length9C8)*0.5 double, binary32 spill",
+    "closing": "x87(candidate class500 + captured self class500)*settings19C, binary32 spill",
+    "reach": "After second getter and x87 spill, minimum198 selected only if strictly greater than closing; unordered selects closing",
+    "distance": "Spill planar deltas, retain native extended product/sum order, spill distance\u00b2; spill radius then squared radius; strictly radius\u00b2>distance\u00b2"
+  },
+  "producer_steps": [
+    {
+      "address": "006FE653",
+      "native": "00484540",
+      "function": "006FE620",
+      "contract": "PUSH ESI unit at006FE64F; list receiver unit+30 pointer then+60; push-back stores argument directly at node+8"
+    },
+    {
+      "address": "009F1351",
+      "native": "00BD2F10",
+      "function": "009F1160",
+      "contract": "ECX1, float bounds0/1, RET8, ST0 result; FCHS then storeB50 at009F1360"
+    },
+    {
+      "address": "009F13C4",
+      "native": "00424C40",
+      "function": "009F1160",
+      "contract": "First returned settings capturedEDI; +194 supplies maximum"
+    },
+    {
+      "address": "009F13CB",
+      "native": "00424C40",
+      "function": "009F1160",
+      "contract": "Second return+190 supplies minimum"
+    },
+    {
+      "address": "009F13EB",
+      "native": "00BD2F10",
+      "function": "009F1160",
+      "contract": "ECX1, ordered min/max bounds; ST0 stored toB4C at009F13F0"
+    },
+    {
+      "address": "009F13F6",
+      "native": "00BD1860",
+      "function": "009F1160",
+      "contract": "Actual tracked critical-section creator, no arguments, EAX storedbrain+4 at009F13FF"
+    }
+  ],
+  "parent_lock": {
+    "entry": "009F160A..009F1628",
+    "exit": "009F1B3F..009F1B56",
+    "contract": "Optional actual brain+4 CRITICAL_SECTION; Enter and increment+18 before scans, decrement/Leave after F89AD8 pass. Caller supplies this existing scope; fragment does not replace it."
+  },
+  "other_producer_evidence": {
+    "pose": "Existing00414DB0 complete parent/local/world producer and PoseRefreshView; consumer uses C8 and translation FC/100/104",
+    "dimension": "0081106E stores full hull length+9C8, descriptor+A0 on fallback; existing GameUnitsHost getter documents it",
+    "class": "Existing ship_class_fields MaxSpeed read/store00831903/0083191A -> class+500",
+    "settings": "Existing GameplayTuningSettings ShipAvoidance.CollectDist+198 and CollectHitTime+19C",
+    "timer": "B4C initially1 at009F1346, later randomized as above; B50 starts negative actual stream1 draw. No constructor adaptation provided."
+  },
+  "corrections": [
+    {
+      "was": "Existing sector_scan header says distance\u00b2<=radius\u00b2.",
+      "is": "Native009F1A1F JBE rejects equality; require distance\u00b2<radius\u00b2.",
+      "evidence": "Full instruction listing and exact boundary fixture."
+    },
+    {
+      "was": "Existing radius helper uses C++ float sum/product and (minimum<=closing)?closing:minimum.",
+      "is": "Retain native x87 spill order; native unordered reach comparison chooses closing. Complete walk uses its own exact arithmetic schedule.",
+      "evidence": "009F19A2..19B4 and009F19C7..19DD; NaN minimum fixture accepts via finite closing range."
+    },
+    {
+      "was": "Existing radius helper labels+9C8 half-length.",
+      "is": "It is full hull length; only the native0.5 factor is applied to the sum.",
+      "evidence": "Existing canonical getter and0081106E producer."
+    },
+    {
+      "was": "A broad older local-player list header says world-list payloads wrap unit at+4.",
+      "is": "This list6 producer/consumer uses direct unit pointer at node+8.",
+      "evidence": "006FE64F PUSH ESI ->006FE653 CALL00484540 ->00484566 node+8=arg;009F18B8 direct payload."
+    }
+  ],
+  "unimplemented_parent_ranges": [
+    "009F1420..009F1589 existing separate goal fragment",
+    "009F158A..009F15CB independent first timer",
+    "009F15F6..009F15F7 first timer TEST BL and009F15FE..009F1855 lock/first threat walk",
+    "009F1A44..009F1BBA special entity chain, parent unlock and final housekeeping"
+  ],
+  "runtime_limits": [
+    "No full pre-pass, constructor/RNG adaptation, native lock owner, candidate owner or game binding",
+    "Required nodes and unit/class/pose/settings owners remain live through callbacks and final next read",
+    "No null/active/missing-owner default or count-to-null traversal replacement",
+    "Root separately audits actual leaf registration and process world-list binding",
+    "Admission filters, capacity, allocations, native node constructor and duplicate lifetime updates remain separate callee implementation"
+  ],
+  "proof": {
+    "byte_evidence": {
+      "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "live_equals_disk": true,
+      "pieces": [
+        {
+          "name": "Walk",
+          "entry": "009F1856",
+          "size": 494,
+          "instructions": 115,
+          "sha256": "96bd1e4e206456470eb92799796cf6917f35a0424a548e2b87e204c362e10bd3"
+        },
+        {
+          "name": "Timer",
+          "entry": "009F15CC",
+          "size": 50,
+          "instructions": 14,
+          "sha256": "b50294ae5b35c6cc7a5e6e668e16db77f363d772abbdf914396c64bfad23ca1b"
+        }
+      ],
+      "absolute": [
+        {
+          "piece": "Walk",
+          "site": "009F1877",
+          "offset": 34,
+          "target": 14780584
+        },
+        {
+          "piece": "Walk",
+          "site": "009F1911",
+          "offset": 191,
+          "target": 14131720
+        },
+        {
+          "piece": "Walk",
+          "site": "009F1929",
+          "offset": 213,
+          "target": 13582112
+        },
+        {
+          "piece": "Walk",
+          "site": "009F1993",
+          "offset": 319,
+          "target": 14131840
+        }
+      ],
+      "calls": [
+        {
+          "piece": "Walk",
+          "site": "009F1872",
+          "offset": 29,
+          "target": 4279728
+        },
+        {
+          "piece": "Walk",
+          "site": "009F18D2",
+          "offset": 125,
+          "target": 4279728
+        },
+        {
+          "piece": "Walk",
+          "site": "009F18E8",
+          "offset": 147,
+          "target": 4279728
+        },
+        {
+          "piece": "Walk",
+          "site": "009F1944",
+          "offset": 239,
+          "target": 4279728
+        },
+        {
+          "piece": "Walk",
+          "site": "009F199D",
+          "offset": 328,
+          "target": 4344896
+        },
+        {
+          "piece": "Walk",
+          "site": "009F19B8",
+          "offset": 355,
+          "target": 4344896
+        },
+        {
+          "piece": "Walk",
+          "site": "009F1A25",
+          "offset": 464,
+          "target": 10423584
+        }
+      ],
+      "exits": [
+        {
+          "piece": "Walk",
+          "site": "009F185B",
+          "offset": 7,
+          "target": 10427199
+        },
+        {
+          "piece": "Walk",
+          "site": "009F18AA",
+          "offset": 86,
+          "target": 10426948
+        }
+      ]
+    },
+    "result": {
+      "walk_cases": 27,
+      "timer_cases": 15,
+      "original_bytes": 544,
+      "events_per_side": 153,
+      "mismatches": 0,
+      "x87_status_matches": true,
+      "walk_mxcsr_matches": true
+    },
+    "exit_code": 0,
+    "compiled": "Ignored probe directly compiles actual new source with MSVC Win32/O2/fp:strict/W4/WX and MANIFEST:EMBED; separate full CMake build passed",
+    "bridge": "Synthetic original-fragment entry only: EDI brain, required private stack cells, timer ST0 step; two external walk exits target one appended RET. No original whole-function SEH/lock/prologue/epilogue execution.",
+    "calls": "Seven original CALL sites retained with relative targets changed to pose/settings/admission fixture providers; actual callee bodies not executed",
+    "compared": "All sevenA00h unit buffers, B60h brain, seven0Ch nodes and6Ch world header for27 walk cases; B60h brain/due for15 timer cases. No masks/normalization. Full x87 status; walk MXCSR;153 callback events per side.",
+    "cases": "9 walk and5 timer inputs each at x87 precision24/53/64; strict altitude/radius boundaries, quiet/signaling NaNs, repeated dirty-pose calls, count/head capture, live self changes and node-next callback rewiring",
+    "excluded": "Class/settings/game publication buffers not fully compared; fixture raw layouts are explicit inputs, not native constructors. No actual pose/admission internals, locks, parent scans, concurrency, traps/unwinds, arbitrary floating environments or game validation.",
+    "build": "scripts/build.ps1 Win32 Release; reconstructed_math and native_math_differential passed",
+    "new_tracked_tests": 0,
+    "artifact_manifest": "local/neighbour_candidate_artifact_manifest.json"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "containing_function_instructions": 494,
+    "gaps": 0
+  },
+  "no_ghidra_function": [],
+  "false_free_call_gaps": [],
+  "compiled_source_hashes": {
+    "include/bsp/ship_ai_neighbour_candidates.hpp": "68f1b6217e9d6d623c296b34f15bc16ba038e141db6f87594db8132e000c48c4",
+    "src/ship_ai_neighbour_candidates.cpp": "43101c4f92492aa2deb39008c20359988fad82eccbe43b5ca043a49fd299743f",
+    "local/neighbour_candidate_probe.cpp": "18d71fc95c3367601b9feb3d34ee5a512d0bf78c464f3aac4c5da19112430780",
+    "build/win32/Release/bsp_core.lib": "4947bb2d4590b039971f8ee52993309f3266d40a6bd922ab9d0587738aeb92cd"
+  },
+  "verification_call_gate": {
+    "command": "python tools/verify_report_calls.py reports/ship_ai_neighbour_candidates.json",
+    "checked_rows": 13,
+    "failed_rows": 0,
+    "log": "local/neighbour_candidate_call_gate.txt"
+  }
+}

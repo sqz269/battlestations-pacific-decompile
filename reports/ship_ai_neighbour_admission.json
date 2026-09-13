@@ -1,0 +1,624 @@
+{
+  "packet": "orch6_neighbour_admission_n",
+  "base": "e9b64413",
+  "branch": "agent/orch6-neighbour-admission-n",
+  "status": "complete normal admission/class predicate with explicit external allocation/complete constructor/virtual and unresolved input owner boundaries",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_neighbour_admission.cpp",
+  "header": "include/bsp/ship_ai_neighbour_admission.hpp",
+  "documentation": "docs/SHIP_AI_NEIGHBOUR_ADMISSION.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009F0D20",
+      "end_inclusive": "009F0E83",
+      "bytes": 356,
+      "instructions": 109,
+      "original_sha256": "ba164244173e61c5e257cc6fa5e3b36ed0006e71d9bf1010720231ee1d4a8cc9",
+      "native": "009F0D20",
+      "cpp_symbol": "ship_ai_neighbour_admit_009f0d20",
+      "name": "BSP_ShipAi_NeighbourListAdd",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX controller, sole stack candidate, RET4 at009F0E81; no meaningful return",
+      "coverage": "complete normal semantic caller over actual borrowed views and external services; raw ABI/EH not supplied",
+      "old_ghidra_name": "BSP_ShipAi_NeighbourListAdd"
+    },
+    {
+      "address": "00827F70",
+      "end_inclusive": "00827FA3",
+      "bytes": 52,
+      "instructions": 26,
+      "original_sha256": "9c0952d50397423bac714776f89d9a8af92309ddc2e7ba95e122f2b6c602cd36",
+      "native": "00827F70",
+      "cpp_symbol": "ship_ai_class_small_surface_00827f70",
+      "name": "BSP_VehicleClass_IsTorpedoBoatOrSmallLandingShip",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX descriptor; AL Boolean; plain RET at00827F83,00827F9F,00827FA3",
+      "coverage": "complete normal semantic caller over actual borrowed views and external services; raw ABI/EH not supplied",
+      "old_ghidra_name": "FUN_00827f70"
+    }
+  ],
+  "calls": [
+    {
+      "address": "009F0D82",
+      "native": "00827F70",
+      "function": "009F0D20",
+      "contract": "direct new class predicate on captured current self+538"
+    },
+    {
+      "address": "009F0DC8",
+      "native": "00424C40",
+      "function": "009F0D20",
+      "contract": "actual singleton service then retained+194 float; no live Lua read"
+    },
+    {
+      "address": "009F0E2F",
+      "native": "00BF681B",
+      "function": "009F0D20",
+      "contract": "cdecl size90h; ADDESP4 at009F0E34; external original allocation/throw policy"
+    },
+    {
+      "address": "009F0E53",
+      "native": "009E52E0",
+      "function": "009F0D20",
+      "contract": "ECX allocation; stack candidate/controller/lifetime; calleeRET0Ch; complete external constructor, existing L projection insufficient alone"
+    },
+    {
+      "address": "009F0D6C",
+      "native": "candidate+vtable5C",
+      "function": "009F0D20",
+      "contract": "actual candidate unit query8, first gate; only local null guard"
+    },
+    {
+      "address": "009F0D98",
+      "native": "self+vtable5C",
+      "function": "009F0D20",
+      "contract": "reloaded current self unit query8"
+    },
+    {
+      "address": "009F0DBB",
+      "native": "candidate+vtable5C",
+      "function": "009F0D20",
+      "contract": "actual candidate unit query8, differing party gate; no cache of first result"
+    },
+    {
+      "address": "00827F7A",
+      "native": "descriptor+vtable18",
+      "function": "00827F70",
+      "contract": "captured descriptor query14, short circuit"
+    },
+    {
+      "address": "00827F8D",
+      "native": "descriptor+vtable18",
+      "function": "00827F70",
+      "contract": "same captured descriptor query12, then conditional raw BigLandingShip808 byte"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "009F1A25",
+      "native": "009F0D20",
+      "function": "009F1420",
+      "body": "009F1420..009F1BBA",
+      "arguments": "PUSH ESI at009F1A21; LEA ECX,[EDI+8] at009F1A22; ignored return"
+    },
+    {
+      "address": "007EEB74",
+      "native": "00827F70",
+      "function": "007EE8F0",
+      "arguments": "ECX=[EDI+538]; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "0081639D",
+      "native": "00827F70",
+      "function": "008162B0",
+      "arguments": "ECX=[ESI+538]; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009E6F11",
+      "native": "00827F70",
+      "function": "009E6E80",
+      "arguments": "ECX=[[ESI]+AAC]; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009F1F76",
+      "native": "00827F70",
+      "function": "009F1BC0",
+      "arguments": "ECX=[[EBP]+AAC]; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "00A0360B",
+      "native": "00827F70",
+      "function": "00A03510",
+      "arguments": "ECX=[ESI+538]; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE2D4",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE345",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE3B6",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE42B",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE4B2",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE582",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE5F3",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    },
+    {
+      "address": "009FE67C",
+      "native": "00827F70",
+      "function": "009FE270",
+      "arguments": "ECX=ESI descriptor captured from stack+10 after three pushes at009FE273; no stack arguments; caller consumes AL"
+    }
+  ],
+  "producer_calls": [
+    {
+      "address": "0074C66A",
+      "native": "00B67800",
+      "function": "0074C630",
+      "contract": "fetch BigLandingShip reference"
+    },
+    {
+      "address": "0074C67B",
+      "native": "00B662F0",
+      "function": "0074C630",
+      "contract": "Boolean reader, default byte0; store AL at0074C687 to808"
+    },
+    {
+      "address": "0074C694",
+      "native": "00B67700",
+      "function": "0074C630",
+      "contract": "destroy temporary Lua reference"
+    },
+    {
+      "address": "009E532D",
+      "native": "00694A60",
+      "function": "009E52E0",
+      "contract": "actual constructor observer registration; external to admission; L initializer does not implement it"
+    }
+  ],
+  "orphan_call_sites": [
+    {
+      "call_site": "0096ACB4",
+      "native": "00827F70",
+      "containing_function": null,
+      "status": "no containing Ghidra function verified; intentionally outside ordinary call gate",
+      "argument_setup": "byte-verified0096ACAE MOV ECX,[ESI+538]; CALL0096ACB4; no whole caller entry/boundary claimed",
+      "verified_bytes_start": "0096AC90",
+      "verified_bytes_length": 56
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00963C80",
+      "native": "00963C80",
+      "end_inclusive": "00963CA4",
+      "final_instruction": "00963CA2",
+      "final_instruction_length": 3,
+      "bytes": 37,
+      "status": "no_ghidra_function at worker inspection; root definition requested",
+      "vtable_word": "00D1AD90",
+      "accepts": [
+        12,
+        6,
+        5,
+        4
+      ],
+      "original_abi": "stack query; RET4; no receiver fields read",
+      "coverage": "read-only whole original byte-body evidence; virtual binding remains external"
+    },
+    {
+      "address": "00963E90",
+      "native": "00963E90",
+      "end_inclusive": "00963EB4",
+      "final_instruction": "00963EB2",
+      "final_instruction_length": 3,
+      "bytes": 37,
+      "status": "no_ghidra_function at worker inspection; root definition requested",
+      "vtable_word": "00D1AE90",
+      "accepts": [
+        14,
+        6,
+        5,
+        4
+      ],
+      "original_abi": "stack query; RET4; no receiver fields read",
+      "coverage": "read-only whole original byte-body evidence; virtual binding remains external"
+    }
+  ],
+  "flow": {
+    "009F0D20": {
+      "instructions": 109,
+      "gaps": 0
+    },
+    "00827F70": {
+      "instructions": 26,
+      "gaps": 0
+    }
+  },
+  "register_provenance": [
+    "009F0D37 ESI=initial ECX controller, retained until POP009F0E76",
+    "009F0D58 EBP=candidate fromstack+1C after conditional EBP push; unchanged through POP009F0E71",
+    "009F0DC6 BL=1, cleared only at each owner match009F0E0F; callee-saved EBX",
+    "009F0DD9 EDX=0; ADD009F0E11; EDI=controller+608 at009F0DF2; ADD4 at009F0E14",
+    "00827F71 ESI=captured descriptor; both virtual receivers sameESI even if callbacks mutate current self"
+  ],
+  "storage_and_producers": {
+    "unit_54": "borrowed actual party; existing entity identity domain",
+    "unit_538": "borrowed actual VehicleClass descriptor produced by existing class owner",
+    "unit_6b8": "raw signed input; own producer/meaning unresolved here, no value/default invented; unrelated descriptor DamageThreshold must not be substituted",
+    "class_808": "existing BigLandingShip producer0074C67B BooleanOr(default0), store0074C687; raw byte consumed only after descriptor query12",
+    "node": "existing ShipAiObstacleNode semantic record, not raw90h layout; fullconstructor external and L field initializer explicitlypartial",
+    "list": "existing capacity128; stable inline native slots608..807 with signedcount604; caller reloads count after callbacks",
+    "lifetime": "00424C40 return+194 float plus existing exact widened1.2f double3FF3333340000000, x87 spillfloat before comparisons/constructor"
+  },
+  "corrections": [
+    {
+      "was": "existing sector_scan admission helper covers capacity/list only",
+      "evidence": "009F0D20..009F0E83 and unchanged existing header",
+      "is": "new separate entry covers all normal caller gates/refresh/allocation/publication; old helper remainspartial"
+    },
+    {
+      "was": "00827F70 historical allows-close or rejection naming",
+      "evidence": "00827F70..00827FA3, descriptor tables and producer0074C687",
+      "is": "exact predicate is descriptor kind14 OR(kind12 AND rawBigLandingShip808==0); true bypasses second admission rejection"
+    },
+    {
+      "was": "possible assumption that full list refreshes duplicates or null allocation aborts append",
+      "evidence": "009F0D39..43 and009F0E45..69",
+      "is": "signed capacity gate precedes duplicates; null allocation skips ctor but appendsnull/increments"
+    }
+  ],
+  "validation": {
+    "native_fixture": {
+      "cases": 23,
+      "canonical_words": 3532,
+      "passed": true,
+      "native_bytes": 408,
+      "native_instructions": 135,
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "native_manifest": "local/neighbour_admission_native_manifest.json",
+      "records": "local/neighbour_admission_probe_records.jsonl",
+      "source_only_allocator_throw": "passed: exception propagates beforeappend; not nativeEHproof",
+      "x87": "masked exceptions,53-bit precision,nearest rounding; TOP balanced source/native; nativeFSheadrestored",
+      "shared_services": [
+        "actual receiver virtual-query fixture callbacks",
+        "settings retainedfloat fixture",
+        "malloc/null allocator fixture",
+        "fixture constructor reusing existing partial L fields"
+      ],
+      "exclusions": [
+        "independent actual virtual implementations",
+        "native009E52E0/observer registration/destruction",
+        "original CRT allocator/new-handler/OOM behavior",
+        "native exceptional unwind/unmaskedx87",
+        "raw90h vssemanticlayout equivalence",
+        "runtime world-list membership/gameplay"
+      ],
+      "cleanup": "all fixturemallocbuffers freed; VirtualFree executableimage; embeddedmanifest"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed Win32 Release and both existing CTests",
+      "log": "local/neighbour_admission_build_with_seeds.log",
+      "initial_build": "local/neighbour_admission_build.log; one existing test before ignored native seed header generation",
+      "seed_verification": "local/neighbour_admission_seed_verification.log; installed/Ghidra bytes matched; generated ignored seed_reference.hpp"
+    },
+    "call_gate": {
+      "command": "python tools/verify_report_calls.py reports/ship_ai_neighbour_admission.json",
+      "status": "passed",
+      "orphan_site_separate": true,
+      "direct_call_rows": 22,
+      "failures": 0,
+      "indirect_rows_not_mechanically_checked": 5,
+      "log": "local/neighbour_admission_call_gate.log"
+    }
+  },
+  "reproducibility": {
+    "prepare": "python local/prepare_neighbour_admission_probe.py",
+    "build": "cmd /c local\\build_neighbour_admission_probe.cmd",
+    "run": "local\\neighbour_admission_probe.exe",
+    "dependencies": [
+      "MSVC x86 vcvars32; /O2 /fp:strict /EHsc /MD /W4 /WX /MANIFEST:EMBED",
+      "Python pefile and capstone",
+      "configured installed PE plus verified saved Ghidra project",
+      "tracked source admission and L initializer; no other worker path or prebuiltlibrary"
+    ]
+  },
+  "limits": [
+    "typed normal callerprojection, not rawABI replacement",
+    "complete constructor observer owner external; L partial initializer is not promoted",
+    "unit6B8 producer unresolved, exactborrowedinput required",
+    "no runtime hosts edited or gameplayclaims",
+    "orphan caller and initially missing descriptor leaf functions separatelyrecorded"
+  ],
+  "checklist": {
+    "1": "callee bodies/assembly read before contracts; virtual dispatch remains actual-receiver external",
+    "2": "owned body ranges and all checked caller sites verified; orphan isolated",
+    "3": "all15 known class-predicate sites inspected:14 defined,1 orphan; one admission caller",
+    "4": "existing unit/node/class/settings declarations reused; BigLandingShip writer checked; unit6B8 producer unresolved and explicitly raw",
+    "5": "new normal caller complete; existing partial admission and L initializer remainpartial; wholeconstructor external",
+    "6": "no runtime integration or gameplay claim; root owns live binding",
+    "7": "nativeRET4 admission, RET0 predicate, virtualRET4, allocationADDESP4,constructorRET0Ch verified",
+    "8": "whole owned listings checked for ESI/EBP/EDI/EDX/BL writes and x87 schedules",
+    "9": "only009F0D20/00827F70 leased/annotated; externalcallee missing-definitionrequests explicit",
+    "10": "every direct/indirect host call has address/native/function; orphan call uses call_site and is excluded explicitly from normalgate"
+  },
+  "tracked_hashes": [
+    {
+      "path": "src/ship_ai_neighbour_admission.cpp",
+      "sha256": "9cf1fdc121a5a53b607ea86f0db3e865f37b00954377fd8fc423c283091f4988"
+    },
+    {
+      "path": "include/bsp/ship_ai_neighbour_admission.hpp",
+      "sha256": "1bb9cfc9eadee6ee94ab4109d65f11f87f4dc86e407b99d6bf8af63e250828f5"
+    },
+    {
+      "path": "src/ship_ai_obstacle_owner.cpp",
+      "sha256": "5c6fd48bd4d8821281a8dbff3092354eb625252eb1fcf1e1826b6faefce00f50"
+    },
+    {
+      "path": "include/bsp/ship_ai_obstacle_owner.hpp",
+      "sha256": "1792d9f8f38bd42959fc0ae394b1d30c86bd00b44bfb4f6b6564dde6f2200244"
+    },
+    {
+      "path": "docs/SHIP_AI_NEIGHBOUR_ADMISSION.md",
+      "sha256": "797d336fa4cc9055411398fe156479472fa00d54f10150753e1ccb3ae13ca52b"
+    }
+  ],
+  "ignored_artifacts": [
+    {
+      "path": "local/admission_asm.txt",
+      "bytes": 3270,
+      "sha256": "9b9c8c24c1b8379af97767d1ece7e48f8d5bb50623de339678028693d3f1b39f"
+    },
+    {
+      "path": "local/admission_decompile.txt",
+      "bytes": 3167,
+      "sha256": "7cfb424dea3a858d083af39c8f032b0d284d2bb450e6ce5c777ba9310489b0bb"
+    },
+    {
+      "path": "local/admission_flow.txt",
+      "bytes": 129,
+      "sha256": "5f3e3014c07bbbce0f7833dd95275cc45c01faab9d9bf45fab4da2571b7bb3f9"
+    },
+    {
+      "path": "local/build_neighbour_admission_probe.cmd",
+      "bytes": 368,
+      "sha256": "b09943459788cdfc9a095394393cd955686d35cbeebee3fafd3026fe4387ff07"
+    },
+    {
+      "path": "local/caller_007ee8f0.txt",
+      "bytes": 7397,
+      "sha256": "888b0d2e2306af4881ba7221c0ce2981229fdad5bbe682c38297b6991b9485d8"
+    },
+    {
+      "path": "local/caller_008162b0.txt",
+      "bytes": 3517,
+      "sha256": "7ae7d16a984594442b9da048322e26ae8b79c720980b2bdd70549d4c331fe72d"
+    },
+    {
+      "path": "local/caller_009e6e80.txt",
+      "bytes": 5248,
+      "sha256": "83f2b75e04dfc30afc13a3a4160ca8307c13b88854bcde75c481dd85199eefa7"
+    },
+    {
+      "path": "local/caller_009f1420.txt",
+      "bytes": 16553,
+      "sha256": "903aee2c19fc6d6983086ff6a60a7ef986a0f73dffe52ba3df2419da54ebdcf7"
+    },
+    {
+      "path": "local/caller_009f1bc0.txt",
+      "bytes": 18560,
+      "sha256": "2ff67a4d627835b08b70afcd1a77c35e2b045098d2c1047c017e2f38594fc6f0"
+    },
+    {
+      "path": "local/caller_009fe270.txt",
+      "bytes": 11138,
+      "sha256": "9dba55b5d86630105ef9d6f30fa9783656b282555559e9c4b91238c0190ffc72"
+    },
+    {
+      "path": "local/caller_00a03510.txt",
+      "bytes": 3978,
+      "sha256": "8e2d984e329dc81a5a62d296b191cc6cf6a73109870b03a5335a09c91a5a44a8"
+    },
+    {
+      "path": "local/class_query_00963c80.txt",
+      "bytes": 187,
+      "sha256": "31af7f066176f2f78ca03bf77e31b44234630132313ff8a8ed5ec2354da0a265"
+    },
+    {
+      "path": "local/class_query_00963e90.txt",
+      "bytes": 187,
+      "sha256": "37f5f9c061e77b43e97a11d4e6529b81ffd0b199e26b4fafde04ecefa225424f"
+    },
+    {
+      "path": "local/export.log",
+      "bytes": 250,
+      "sha256": "27fc0f904d6a65b344f66cc197fd2d37c60fcc9fb7e9651850c0bc98626a75a4"
+    },
+    {
+      "path": "local/finalize_admission_report.py",
+      "bytes": 3914,
+      "sha256": "5ebdf4a31a29ee9d37da5e3d037dc922194b14e6dfcfb1fc729b39a61ff7259f"
+    },
+    {
+      "path": "local/neighbour_admission_build.log",
+      "bytes": 39858,
+      "sha256": "5ac3ac249787da67f4a9d7e7b9d84636f2b8930f20871b6fdfa86bbc55b5d8fe"
+    },
+    {
+      "path": "local/neighbour_admission_build_with_seeds.log",
+      "bytes": 4340,
+      "sha256": "ac0b9924c73b0251b9fa6ec25f7e7ef2991ddd6d193507e7ad653d6c898f7d19"
+    },
+    {
+      "path": "local/neighbour_admission_bytes_00827F70.txt",
+      "bytes": 260,
+      "sha256": "a9c72c2da908cef7a7767040be4bac60c0242359e5b1791066f9e593763403d0"
+    },
+    {
+      "path": "local/neighbour_admission_bytes_009F0D20.txt",
+      "bytes": 1723,
+      "sha256": "f9302c16bf97e0c44ad36b9f61adc15c1dc012f276faf735ac4326b080925b89"
+    },
+    {
+      "path": "local/neighbour_admission_bytes_00CEC160.txt",
+      "bytes": 45,
+      "sha256": "b534af77fba137bade7210e766fbb6fbf8a9365c7e1720c03c0fdcc3c7ce1c35"
+    },
+    {
+      "path": "local/neighbour_admission_call_gate.log",
+      "bytes": 431,
+      "sha256": "86b419fc2ce7ee98df9d971070f57ac796f10cfa3c66588fca6ba11e09aed20c"
+    },
+    {
+      "path": "local/neighbour_admission_capstone_00827F70.asm",
+      "bytes": 761,
+      "sha256": "f5aa57828b1833b043cc439425e7b8c90bf98b75f344d53ef49e4dd571f45cba"
+    },
+    {
+      "path": "local/neighbour_admission_capstone_009F0D20.asm",
+      "bytes": 3976,
+      "sha256": "a9eeec0f4dcd12b765b3f0a572141c8de8e38e34447f76dfab9aeda46d709e19"
+    },
+    {
+      "path": "local/neighbour_admission_native_image.bin",
+      "bytes": 768,
+      "sha256": "af5e760d617c12bf52883adc76ef0e6755c9b94942b230cfe6c789b6b60e9da7"
+    },
+    {
+      "path": "local/neighbour_admission_native_manifest.json",
+      "bytes": 1501,
+      "sha256": "b3987c4a16a172619883c6ef44256ecfdc09a1279b35aa0f1c6c1e16436ede39"
+    },
+    {
+      "path": "local/neighbour_admission_original_00827F70.bin",
+      "bytes": 52,
+      "sha256": "9c0952d50397423bac714776f89d9a8af92309ddc2e7ba95e122f2b6c602cd36"
+    },
+    {
+      "path": "local/neighbour_admission_original_009F0D20.bin",
+      "bytes": 356,
+      "sha256": "ba164244173e61c5e257cc6fa5e3b36ed0006e71d9bf1010720231ee1d4a8cc9"
+    },
+    {
+      "path": "local/neighbour_admission_prepare.log",
+      "bytes": 103,
+      "sha256": "7d4e296411bedf09223906624c3534cfe3daf19169db23bd933b78addaafa5e7"
+    },
+    {
+      "path": "local/neighbour_admission_probe.cpp",
+      "bytes": 12213,
+      "sha256": "b0cb1629a807f4b7e6b7e3e6a59e7632db835b3427c6c8c06251d9420613eb95"
+    },
+    {
+      "path": "local/neighbour_admission_probe.exe",
+      "bytes": 36864,
+      "sha256": "f9db5265a8c781889d9561d2e2e96d7ffa1c27a6ae9d7a8ae429e7b3b089fd3c"
+    },
+    {
+      "path": "local/neighbour_admission_probe.log",
+      "bytes": 137,
+      "sha256": "f496f61dbdf9c248416386d8f4f890b55c42f76d180d459534afabf146581527"
+    },
+    {
+      "path": "local/neighbour_admission_probe.obj",
+      "bytes": 185167,
+      "sha256": "36ac7212b7ec41118c162a13d349b7ad1cee6435af079a8b52e80ce89706cf91"
+    },
+    {
+      "path": "local/neighbour_admission_probe_build.log",
+      "bytes": 112,
+      "sha256": "4cdbf86667a0b4d59cba0f6a2a810a1f04d57b96ff37baf3aa7d875c26aea3c5"
+    },
+    {
+      "path": "local/neighbour_admission_probe_patches.hpp",
+      "bytes": 210,
+      "sha256": "f1d42abae54aa5445833812299d26af80a86472ad2a5cc81efa7c5d6e33d1a35"
+    },
+    {
+      "path": "local/neighbour_admission_probe_records.jsonl",
+      "bytes": 17729,
+      "sha256": "a455583dd1b709aa037e71db1394287b61e42b48e022abd27b0f5308b89aa385"
+    },
+    {
+      "path": "local/neighbour_admission_seed_verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/orphan_0096acb4.txt",
+      "bytes": 276,
+      "sha256": "22539ed108b8f5a4da29fac925c1362a41a9cbd1747153ca4e4f03e93f10d186"
+    },
+    {
+      "path": "local/prepare_neighbour_admission_probe.py",
+      "bytes": 3612,
+      "sha256": "8730d9a070d33260eccac8dd5ab81a2d605bd3d5d0a75cff9dec27706da812c2"
+    },
+    {
+      "path": "local/rejection_asm.txt",
+      "bytes": 648,
+      "sha256": "e1139022867ad89a1728a56ac95b4edc39bf79a9f336d303450d1beb4c4ae94a"
+    },
+    {
+      "path": "local/rejection_decompile.txt",
+      "bytes": 306,
+      "sha256": "7a3dc586f676e6c0354e379ec1f29036ba2ed90af9ce755aa4263eefb1396b19"
+    },
+    {
+      "path": "local/rejection_flow.txt",
+      "bytes": 128,
+      "sha256": "9230737dfc9650d41eb48da2fbc1cfced2e9568d1f12140ccc61c554748eb54d"
+    },
+    {
+      "path": "local/rejection_xrefs.txt",
+      "bytes": 867,
+      "sha256": "c9dd05acd3338f725e577b1d2e4a0511e1f895d6bb01254ffb35d9f990de4b4d"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/write_admission_report.py",
+      "bytes": 9243,
+      "sha256": "12aa5d3c6e0d5be3f20a78c57bfa8f90aff502d45d180015f08a9c55574306b8"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "packet": "orch6_reconstruction_o",
+  "status": "Two completed O packets integrated, native fixtures reviewed and combined process checked; unit-neighbour-fields O remains separate ongoing work",
+  "packets": [
+    {
+      "packet": "brain-producers-o",
+      "commit": "b1661786557d7f34002ca93f70d8e6f30d4d1ef2",
+      "report": "reports/ship_ai_brain_producers.json",
+      "call_rows_checked": 15,
+      "coverage": "Complete normal producer tail009F126B..009F1401; constructor prefix and parent EH excluded.",
+      "fixture": "9 paired cases,407 original bytes,36 settings snapshots per side,7 draws per case,18 actual locks created/exercised/released; full x87 status matched."
+    },
+    {
+      "packet": "neighbour-box-math-o",
+      "commit": "78fab618c423aff52d795b8d13b5a88a5c16931e",
+      "report": "reports/ship_ai_neighbour_box_math.json",
+      "call_rows_checked": 28,
+      "coverage": "Existing avoid/arc projection corrected for four unordered branches, x87 shrink and final arc product spills, and actual widened-float threshold.",
+      "fixture": "14 cases at PC24/PC53,28 original-byte invocations and1188 canonical words matched. Preserved prior source fails11 invocations. Nine original spans total2307 bytes.",
+      "indirect_resolution_limit": "Three numeric indirect call rows require separately inspected concrete vtable words; the mechanical checker alone cannot prove them."
+    }
+  ],
+  "validation": {
+    "compiled_commit": "3e29fad155f6fd49ee66b19053eadfa1c4c8e38b",
+    "exe_sha256": "6d570ed782edeb720e52fd172627dc7aad737566b520161776a1e08aa9acf04e",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "Both existing CTests passed",
+    "process_run": {
+      "compiled_commit": "3e29fad155f6fd49ee66b19053eadfa1c4c8e38b",
+      "run_commit": "3e29fad155f6fd49ee66b19053eadfa1c4c8e38b",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_3e29fad1.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_o.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_o.csv"
+      ],
+      "exe_sha256": "6d570ed782edeb720e52fd172627dc7aad737566b520161776a1e08aa9acf04e",
+      "preserved_executable": "local\\orch6_combined_3e29fad1.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "68261da96ddb13ad78764ea022c8a4f9a48997f840d9a83cf464865b17ce3f0f",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.7304048538208,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "scope": "The process regression check does not establish that the new producer or avoid-box branches executed. Their behavioral evidence is the bounded original-byte fixtures."
+  },
+  "evidence_archive": {
+    "index": "local/orch6_worker_archive_o.json",
+    "artifacts": 106,
+    "worktree_counts": {
+      "battlestations-pacific-decompile-orch6-brain-producers-o": 28,
+      "battlestations-pacific-decompile-orch6-neighbour-box-math-o": 78
+    },
+    "scope": "Ignored hashed artifacts are retained locally; tracked source and reports remain in the worker commits."
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "follow_up": [
+    "Active P pre-pass packet owns009F1420 and complete post-goal normal sequencing; active O unit field packet owns dummy-binding writers and actual flag transitions.",
+    "Active P throttle-clamp packet handles the separate public helper and direct caller; box O did not alter it.",
+    "Full native brain prefix, navigation construction and preceding RNG draw are prerequisites before binding the O producer tail.",
+    "Actual GameSingletonHost uses raw01090AA0 publication and fixed deleting profiles; NativeObserverLifetime currently requires SingletonLifetimeDomain. Reuse the same application publication through a verified access boundary; do not introduce another runtime domain.",
+    "Complete009E52E0 requires actual observer prefix and pair registration plus controller+1C. Existing ShipAiObstacleNode projection and partial owner field initializer do not establish raw90h construction.",
+    "Actual unit destroyed-byte ownership must persist through pending-queue writes; fresh flags or discarded stores do not establish lifetime correctness."
+  ],
+  "limits": [
+    "No all-input floating-point equivalence, hardware-fault/SEH, independent CRT math, concurrent owner mutation or original-game visual/gameplay proof.",
+    "Brain producer uses the existing RNG and native lock helpers as shared verified callee boundaries; fixture setup is not the enclosing native constructor.",
+    "Neighbour admission/candidate walk remains unbound to the game until complete owners and lifecycle are available."
+  ]
+}
