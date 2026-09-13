@@ -1,0 +1,498 @@
+{
+  "packet": "orch3_native_render_batch_preparation_ay",
+  "status": "complete_source_strict_win32_build_and_bounded_original_byte_fixture_passed_worker_unregistered",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "port": 8089,
+  "Ghidra_mutations": "none by worker; root owns names, prototypes, ledger, analysis repairs and saves",
+  "live_verification": "bsp.py ghidra verifies expected project/program for every live query. Full three owned listings reviewed. Fresh 16 live byte spans equal installed PE, 968 bytes including 491 owned body bytes.",
+  "functions": [
+    {
+      "address": "004c11f0",
+      "end_inclusive": "004c12ac",
+      "end_exclusive": "004c12ad",
+      "length": 189,
+      "coverage": "complete",
+      "cpp_symbol": "get_native_render_command_queue_004c11f0",
+      "source": "src/native_render_batch_preparation_actual.cpp",
+      "header": "include/bsp/native_render_batch_preparation_actual.hpp",
+      "old_name": "BSP_RenderCommandQueue_GetSingleton",
+      "ghidra_name": "BSP_RenderCommandQueue_GetSingleton",
+      "suggested_name": "BSP_RenderCommandQueue_GetSingleton",
+      "name_is_hypothesis": true,
+      "original_abi": "cdecl no arguments; EAX current queue; plain RET at 004c12ac. ECX is not an input. Native FH3 guard/allocation states are separate from the new source context ABI.",
+      "native_calling_convention": "__cdecl",
+      "native_prototype": "void * BSP_RenderCommandQueue_GetSingleton(void)",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+    },
+    {
+      "address": "00b51df0",
+      "end_inclusive": "00b51f0b",
+      "end_exclusive": "00b51f0c",
+      "length": 284,
+      "coverage": "complete",
+      "cpp_symbol": "prepare_native_render_batch_actual_00b51df0",
+      "source": "src/native_render_batch_preparation_actual.cpp",
+      "header": "include/bsp/native_render_batch_preparation_actual.hpp",
+      "old_name": "BSP_RenderBatch_PrepareSort",
+      "ghidra_name": "BSP_RenderBatch_PrepareSort",
+      "suggested_name": "BSP_RenderBatch_PrepareSort",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX actual 18h batch; one DWORD stack slot; RET4 at 00b51f09. Original slot captured in EDI at B51DF5; B1CB30 writes through the original incoming slot address. No semantic return value.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderBatch_PrepareSort(unsigned int argument_slot)",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+    },
+    {
+      "address": "00b1bf70",
+      "end_inclusive": "00b1bf81",
+      "end_exclusive": "00b1bf82",
+      "length": 18,
+      "coverage": "complete",
+      "cpp_symbol": "execute_native_render_preparation_job_00b1bf70",
+      "source": "src/native_render_batch_preparation_actual.cpp",
+      "header": "include/bsp/native_render_batch_preparation_actual.hpp",
+      "old_name": "BSP_RenderBatchPreparationJob_Invoke",
+      "ghidra_name": "BSP_RenderBatchPreparationJob_Invoke",
+      "suggested_name": "BSP_RenderBatchPreparationJob_Invoke",
+      "name_is_hypothesis": true,
+      "original_abi": "Original job ECX is unused; stack DWORD is the batch pointer. ECX becomes batch at B1BF70; capture profile, mode, profile+0C, overwrite stack argument with mode, tail JMP EAX at B1BF80. Established target B51DF0 returns RET4; no semantic result.",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderBatchPreparationJob_Invoke(void * batch)",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "evidence": "Descriptive name retained, not a recovered symbol. Complete native body and current actual-storage providers, original ABI and ordered reads reviewed from full live listing; 16 live/installed spans match. Strict source compile and 11 bounded original/source comparisons passed. docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md; reports/native_render_batch_preparation_actual.json.",
+      "uncertainty": "New explicit source context ABI. Same current storage/profile/allocator domains and valid native storage required. Native incoming-stack/EH-spill aliasing, arbitrary concurrency, general SEH, allocation or constructor failure, old-control20==2 getter branch, complete queue execution/destruction and gameplay are unproved."
+    }
+  ],
+  "owned_files": [
+    "include/bsp/native_render_batch_preparation_actual.hpp",
+    "src/native_render_batch_preparation_actual.cpp",
+    "docs/NATIVE_RENDER_BATCH_PREPARATION_ACTUAL.md",
+    "reports/native_render_batch_preparation_actual.json"
+  ],
+  "host_steps": [
+    {
+      "address": "004c1216",
+      "native": "00415350",
+      "function": "004c11f0",
+      "contract": "No arguments, EAX actual manager, RET. Read manager+10 once, capture native section for both lock and unlock."
+    },
+    {
+      "address": "004c122f",
+      "native": "00ce2218+IAT",
+      "function": "004c11f0",
+      "contract": "EnterCriticalSection(stdcall one captured section pointer, RET4); increment actual DWORD section+18 only after return. Guard state0 arms afterward."
+    },
+    {
+      "address": "004c124c",
+      "native": "00bf681b",
+      "function": "004c11f0",
+      "contract": "cdecl allocation size34h; ADD ESP,4 at 4C1251. Existing concrete malloc/new-handler loop. Save original allocation before state1; no value initialization."
+    },
+    {
+      "address": "004c1263",
+      "native": "00b1f280",
+      "function": "004c11f0",
+      "contract": "ECX raw34h allocation; EAX same storage, no stack args, RET. Full existing constructor; source placement-new begins trivial C++17 lifetime without initializing bytes before this call."
+    },
+    {
+      "address": "004c1276",
+      "native": "00415350",
+      "function": "004c11f0",
+      "contract": "No arguments, EAX fresh manager. State0 restored before publication at 4C1271; registration uses this manager and publication freshly read after this getter returns."
+    },
+    {
+      "address": "004c1284",
+      "native": "00bd0c30",
+      "function": "004c11f0",
+      "contract": "ECX fresh manager; one current queue pointer argument, RET4. Actual validation-before-null registration; no AddRef/duplicate check. Registration failure retains published allocation and unwinds guard only."
+    },
+    {
+      "address": "004c1292",
+      "native": "00ce2210+IAT",
+      "function": "004c11f0",
+      "contract": "LeaveCriticalSection(stdcall one captured section, RET4); decrement actual DWORD+18 before call; return freshly read F8D440 after unlock."
+    },
+    {
+      "address": "00b51e0f",
+      "native": "004c11f0",
+      "function": "00b51df0",
+      "contract": "Unconditional no-argument getter after EDI original-index capture and local enabled-byte zeroing, even when configuration disables sorting."
+    },
+    {
+      "address": "00b51e16",
+      "native": "00b1cb30",
+      "function": "00b51df0",
+      "contract": "ECX returned actual queue; three DWORD slots original index, enabled-byte output, ORIGINAL incoming-argument-slot output; RET0Ch. Byte first then fresh DWORD; latter never selects comparator."
+    },
+    {
+      "address": "00b51e8e",
+      "native": "00bf7df0",
+      "function": "00b51df0",
+      "contract": "__allmul two64-bit arguments (four DWORD slots), RET10h; first packed material/texture prefix multiplied by100h. Existing full key fragment preserves schedule."
+    },
+    {
+      "address": "00b51ea5",
+      "native": "00bf7df0",
+      "function": "00b51df0",
+      "contract": "__allmul four DWORD slots, RET10h; prefix plus current effect byte multiplied by 0x2000000000."
+    },
+    {
+      "address": "00b51eb1",
+      "native": "00bf7456",
+      "function": "00b51df0",
+      "contract": "x87 ST0 loaded from actual entry+14 binary32 at B51EAC. Plain RET; consume native EAX result and zero EDX before packed 64-bit addition; no invented finite-value guard."
+    },
+    {
+      "address": "00b51eff",
+      "native": "00b1dce0",
+      "function": "00b51df0",
+      "contract": "ECX actual first four-byte pointer slot, EDX one-past-last; stack signed32 wrapped byte difference SAR2, comparator; RET8. Captured original index0 chooses B51B00; nonzero chooses B51AB0."
+    },
+    {
+      "address": "00b1bf80",
+      "native": "00d5e5ac+0C / 00d62064+0C",
+      "function": "00b1bf70",
+      "contract": "Current captured batch profile slot+0C is B51DF0 in both verified tables. ECX actual batch; overwrite existing stack batch argument with captured batch+08 mode before tail dispatch, RET4.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c64f03",
+      "native": "00411ee0",
+      "function": "00c64f00",
+      "contract": "EH state0 action: ECX native guard EBP-14; tail JMP; actual guard captures section+4, writes profile CE37FC, decrements current actual depth, leaves section.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c64f0c",
+      "native": "00bf65ac",
+      "function": "00c64f08",
+      "contract": "EH state1 action: cdecl free saved allocation [EBP-18]; POP ECX at C64F11 cleans one argument; RET at C64F12. Stored function initially stops at CALL, actual live/disk continuation is reviewed."
+    },
+    {
+      "address": "00c64f18",
+      "native": "00bf6b43",
+      "function": "00c64f13",
+      "contract": "Raw handler loads EAX D8D524 and tail jumps to native FH3; handler ten bytes. Source uses C++ cleanup scopes, not this native frame ABI.",
+      "kind": "tail_jump"
+    }
+  ],
+  "no_ghidra_function": [],
+  "existing_names": "All three proposed descriptive names already exist; preserve prior name evidence and correct library names. Add complete function records without removing B51DF0 key-only/typed fragment records.",
+  "storage_producers": [
+    {
+      "kind": "queue",
+      "producer": "004c11f0 -> 00b1f280",
+      "allocation_bytes": 52,
+      "declaration": "NativeRenderCommandQueueStorage in native_render_queue_access.hpp; existing exact34h and trivial-default-construction assertions",
+      "lifetime": "Placement ::new (allocation) NativeRenderCommandQueueStorage without ()/{}; no store before full constructor, so old control20 is preserved."
+    },
+    {
+      "kind": "batch",
+      "producer": "00b51d20 base initializer and existing native_render_batch_lifetime.cpp pooled producer",
+      "declaration": "Reuse NativeRenderBatchStorage actual18h; existing mode08, entries0C, signed count10, capacity14. No new semantic entry/material overlay.",
+      "profiles": {
+        "00d5e5ac+0c": "00b51df0",
+        "00d62064+0c": "00b51df0"
+      }
+    },
+    {
+      "kind": "preparation_job",
+      "producer": "Existing NativeFrameJobExecution actual enqueue/dispatch composition",
+      "profile": "00d5e160+00 -> 00b1bf70",
+      "adapter": "NativeRenderPreparationJobDispatch checks current owner/profile on every call; other owners go to required remaining dispatcher. Changed or unknown preparation profiles throw instead of becoming no-op or an absolute native call."
+    }
+  ],
+  "native_EH_dependencies": [
+    {
+      "entry": "00c64f13",
+      "end_inclusive": "00c64f1c",
+      "length": 10,
+      "status": "root defined; live proto verified current FUN_00c64f13 body C64F13..C64F1C",
+      "func_info": "00d8d524..00d8d547",
+      "unwind_map": "00d8d514..00d8d523",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c64f00..00c64f07"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00c64f08..00c64f12"
+        }
+      ],
+      "normal_state_order": "-1 before Enter/depth;0 after Enter/depth;1 after successful allocation;0 before publication; registration failure guard only.",
+      "exception_boundary": "Native FH3 registration exception exercised through copied parent/EH bytes and host FH3; source cleanup terminates on escaping MSVC C++ cleanup exceptions. Constructor/allocation failure, double exceptions, hardware SEH and exact native frame identity untested."
+    }
+  ],
+  "analysis_followups": [
+    {
+      "function": "00c64f08",
+      "was": "Stored Ghidra body ends C64F10 after CALL _free; no following instructions in stored body.",
+      "is_expected": "Actual live/disk bytes C64F11=59 POP ECX; C64F12=C3 RET; complete action span C64F08..C64F12 (11 bytes).",
+      "evidence": "Fresh 00c64f00.bin span29 contains full action; bsp.py disasm-raw C64F11 --length2. Root subsequently repaired under its write lock: CALL_RETURN override cleared, POP ECX/RET decoded, export refreshed, but stored function body still ends C64F10. Root reports/native_renderer_ay_cleanup_flow_repair.json records remaining tail ownership metadata limitation; no worker mutation. Separate from three complete normal bodies and fixture execution."
+    }
+  ],
+  "installed_image": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "mutated": false
+  },
+  "live_disk_spans": [
+    {
+      "address": "0x4c11f0",
+      "length": 189,
+      "sha256": "e5a79fe265e15ba3285d2a4b6944100bd038fb08567592f2c72f6f3f05c597a5",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xb51df0",
+      "length": 284,
+      "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xb1bf70",
+      "length": 18,
+      "sha256": "e7e02ce675d5d6606f1282bdeae9c7b8161022789ca7d9052614d413fff6a113",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xc64f00",
+      "length": 29,
+      "sha256": "098f2389b48718e4fdeaf31203026c0550f57a39b9ce15f03111b7c5ab4506f1",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd8d514",
+      "length": 52,
+      "sha256": "7efb1491001e87a9fffdeecd9fbcdfc2c361529e49bd1047d16f820738639c69",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd5e5ac",
+      "length": 16,
+      "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd62064",
+      "length": 16,
+      "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd5e160",
+      "length": 4,
+      "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xb1cb30",
+      "length": 31,
+      "sha256": "5f7382acdc77434bbf706c53e44671981d88a9ade9e5859171a8db390dc011bd",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xb51b00",
+      "length": 27,
+      "sha256": "084fb8170aabc99ecc8a6c435dc47dd3d942c76632cbd3781c5ac9902195c5c8",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xb51ab0",
+      "length": 69,
+      "sha256": "de7b6fe4974c5fad7b7b22baeb6c6e8b8268ddcfc81ea32d09c4082b945db353",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xbf7df0",
+      "length": 52,
+      "sha256": "3d0898d998acc8af3ea17032ff56fd1b963c685b072f669c52d4b8267f9d0a78",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xbf7456",
+      "length": 117,
+      "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xce7554",
+      "length": 24,
+      "sha256": "2ebb201dffb89306044fd85b738ae180eb54dd22f5e16ac2b121a451a21cd93f",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd68650",
+      "length": 24,
+      "sha256": "64cf20c66e4f8dc86a6020c0fc38300574a22f76f96edcb1e27051df60812a64",
+      "live_matches_installed": true
+    },
+    {
+      "address": "0xd6821c",
+      "length": 16,
+      "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+      "live_matches_installed": true
+    }
+  ],
+  "checks": {
+    "strict_compile": "PASS current owned source /MD /EHsc /std:c++17 /W4 /WX /O2 /fp:strict; strict_resumed.log",
+    "standard_build": "PASS ./scripts/build.ps1 after verify-seeds; reconstructed_math and native_math_differential 2/2. Shared CMake remains root-owned: this build excludes unregistered owned source, which is separately strictly compiled and explicitly included in worker fixture.",
+    "seed_verification": "Eight original/live seed ranges matched; native_math_differential enabled afterward. Earlier resumed baseline had only one CTest and is not the final two-test result.",
+    "report_calls": "PASS python tools/verify_report_calls.py reports/native_render_batch_preparation_actual.json; 14 numeric call rows checked,0 failed. Two imported OS calls and one current-table tail dispatch are explicit indirect rows, grounded separately by listings/table bytes.",
+    "new_repository_tests": 0
+  },
+  "source_validation": {
+    "base_commit": "ed5dab9bd4506d1c1b7032afa8c89033695ac3ca",
+    "source_hashes": {
+      "src/native_render_batch_preparation_actual.cpp": "fa948f79b8a0dc1cdbc01f6b5a802515e3629ae4db088174b51d30ea3abe81aa",
+      "include/bsp/native_render_batch_preparation_actual.hpp": "2101510ff44c4e47bb6fc3fb179239647b9dfb63758fa01fae66ffe651162c5a"
+    },
+    "library_hashes": {
+      "bsp_core.lib": "592fea552765cb816a8343dc4335194b73c2f1f3ab7eb8022eef73331608ef6c",
+      "bsp_lua511.lib": "bf6bce2d1cfc1bdc599baabaa7aeec4a9e215b14faa475bd35f24c778c7661ff",
+      "bsp_zlib121.lib": "8a69da4e601b4b3cd1f96b4dbcf651454ea1d2c8e98ac3cce85616975f360c1f"
+    },
+    "all_input_pins_stable": true,
+    "full_pins_artifact": "C:/Users/sqz269/bsp-ay-batch-preparation/fixture_report.json",
+    "strict_log_sha256": "11455c4139f64f9330cda3a024cc92f94dadff2e748f9d1882f10dd69d6ffb58",
+    "standard_build_log_sha256": "04cd748340df417cb4b1c7331bff17b61eb321d0474efe5b2972ad100b8164b9"
+  },
+  "fixture": {
+    "status": "passed",
+    "artifact_root": "C:/Users/sqz269/bsp-ay-batch-preparation",
+    "report": "fixture_report.json",
+    "log": "probe_resumed.log",
+    "probe": "probe.cpp",
+    "original_source_pairs": 11,
+    "compared_dwords": 775,
+    "compared_bytes": 3100,
+    "cases": [
+      {
+        "cases": "getter0",
+        "coverage": "Current published queue fast path skips manager."
+      },
+      {
+        "cases": "getter1..2",
+        "coverage": "Lazy actual manager and existing actual manager, real critical section/depth, full current queue constructor and raw registration."
+      },
+      {
+        "cases": "getter3",
+        "coverage": "Actual manager end<begin invokes real CRT invalid handler throwing int73 after publication; copied native FH3 and source unwind both restore real captured lock depth and retain publication/allocation."
+      },
+      {
+        "cases": "getter4",
+        "coverage": "Returning real CRT validation changes actual F8D440 to replacement and repairs raw end; registration appends previously captured allocated queue; getter returns fresh replacement after unlock."
+      },
+      {
+        "cases": "preparation four pairs",
+        "coverage": "Index0/1 times enabled/disabled, 40 actual pointer slots with full key writes/order; config DWORD deliberately opposes original index and overwrites incoming argument slot."
+      },
+      {
+        "cases": "scheduled two pairs",
+        "coverage": "Existing concrete NativeFrameJobExecution enqueue and dispatch, preparation job with both actual batch tables, scope/pending/slot clearing checked."
+      }
+    ],
+    "original_bytes": "All 491 owned body bytes copied. B51DF0 and B1BF70 are unchanged; getter has only one EH immediate and two manager rel32 relocations. Complete29-byte EH span has one guard tail rel32 relocation; 52-byte FuncInfo/map unchanged. verify_bytes checks these exact exceptions after all cases.",
+    "relocations": [
+      {
+        "site": "004c11f8",
+        "operand": "004c11f9..004c11fc",
+        "purpose": "PUSH registered trampoline address, trampoline jumps to copied C64F13"
+      },
+      {
+        "site": "004c1216",
+        "operand": "004c1217..004c121a",
+        "purpose": "CALL full source raw manager provider at host address"
+      },
+      {
+        "site": "004c1276",
+        "operand": "004c1277..004c127a",
+        "purpose": "CALL same full source raw manager provider at host address"
+      },
+      {
+        "site": "00c64f03",
+        "operand": "00c64f04..00c64f07",
+        "purpose": "JMP full source actual guard provider at host address"
+      }
+    ],
+    "shared_provider_bridges": "Both sides share current full source raw manager, allocator/free, queue constructor, registration, guard, raw pointer-slot sorter and scheduler. Original config/comparators/CRT key helpers and owned three parent bodies are copied from verified installed bytes. This checks parent composition and does not independently re-prove every shared provider.",
+    "actual_runtime": "Real CRT malloc/free/invalid-handler, actual raw manager and section, Windows Enter/Leave, native FH3 for selected registration exception; full source keys/sorter and current scheduler. No game window or game process control.",
+    "instrumentation": "Deliberate manager end<begin in two cases; invalid handler either throws int73 or repairs end and changes publication. Reusable allocation seeded with non-control2 preimage; no allocator hook forces old-control20==2. Environment boundaries that are not reached fail.",
+    "limits": "No allocation exhaustion, constructor failure, old-control20==2 getter branch, second cleanup exception, general hardware SEH, argument/EH-spill aliasing, invalid storage, huge wrapped ranges, arbitrary concurrency, complete queue execute/destruct or gameplay claim. No independent-original-byte execution of every shared full source provider.",
+    "image_reservation": {
+      "input_sha256": "c3c4b19db87c044063ba734b2c9f61f1e40f08a9f38d47eb51713885e64bc6f0",
+      "output_sha256": "ec953bb1970f0d492329f8757ace980bd7a3cc6483fc100ae3939d17011c1b27",
+      "image_base": "00400000",
+      "section_name": ".ayprep",
+      "section_rva": "0001b000",
+      "virtual_size": "00c85000",
+      "inclusive_address_range": [
+        "0041b000",
+        "0109ffff"
+      ],
+      "runtime_protected_page_ranges": [
+        "004c0000..004cffff",
+        "00b10000..00b1ffff",
+        "00b50000..00b5ffff",
+        "00bd0000..00bdffff",
+        "00bf0000..00bfffff",
+        "00c60000..00c6ffff",
+        "00ce0000..00ceffff",
+        "00d50000..00d5ffff",
+        "00d60000..00d6ffff",
+        "00d80000..00d8ffff",
+        "00f80000..00f8ffff",
+        "01090000..0109ffff"
+      ],
+      "raw_file_offset": 82944,
+      "raw_size": 512,
+      "characteristics": "c0000040",
+      "existing_section_bytes_unchanged": true,
+      "process_memory_mutation": "none by generator; OS loader maps this fixture-owned image section before startup; probe verifies MEM_IMAGE ownership before protection changes and writing fixture bytes"
+    },
+    "source_and_library_pins_stable": true,
+    "root_replay_command": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/sqz269/bsp-ay-batch-preparation/run.ps1 -Root <integrated-root> -LibraryRoot <integrated-root>",
+    "root_replay_inputs": "Default: only external probe.cpp and the three supplied current bsp_core/bsp_lua511/bsp_zlib121 libraries. Do not pass -WorkerSource after registration. Fixture header includes are hashed including .inc/.inl when present.",
+    "worker_command": [
+      "powershell",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "C:\\Users\\sqz269\\bsp-ay-batch-preparation\\run.ps1",
+      "-Root",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-batch-preparation-ay",
+      "-LibraryRoot",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-batch-preparation-ay",
+      "-WorkerSource"
+    ],
+    "worker_capture": "worker_capture.zip and worker_capture_manifest.json; final exact snapshot includes fixture/code/bytes/logs/source and own three libraries; preserve before root replay. Initial unpinned logs retained as historical and not the authority for final validation."
+  },
+  "corrections": [
+    {
+      "was": "Interrupted source cast malloc bytes directly to a typed reference in C++17.",
+      "is_now": "Explicit placement new without value initialization begins trivial queue lifetime and preserves prior bytes.",
+      "evidence": "Allocator provider src/singleton_lifetime.cpp uses malloc; existing queue type is trivially default constructible. Fresh strict compile and11 original/source pairs pass after change."
+    },
+    {
+      "was": "Fixture reservation generator wrote correct .ayprep section but its report/printer still called it .awslot and listed inherited ranges.",
+      "is_now": "Metadata names .ayprep and lists actual runtime-protected pages; reports generator-only and runtime memory operations separately.",
+      "evidence": "Fresh probe.image_reservation.json; runtime verifies own MEM_IMAGE allocation and bounds before VirtualProtect."
+    }
+  ],
+  "follow_up_packets": [
+    "Full B1EBE0/B1D950 queue execution still depends on complete actual B46A70 system-constant upload and B55550 material/resource/compiler chain; named or typed projections do not close these paths.",
+    "Root: register only through cmake/startup.cmake, merge three function records without deleting fragments, preserve names/comments, annotate original signatures, refresh exports, run exact combined build and default current-library-only fixture replay."
+  ]
+}
