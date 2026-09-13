@@ -6,6 +6,7 @@
 #include <cstdint>
 
 namespace bsp {
+class NativeRenderActualOwners;
 
 inline constexpr std::size_t native_hardware_layout_bytes = 0x44;
 inline constexpr std::size_t native_hardware_layout_slot_bytes = 0x48;
@@ -26,6 +27,10 @@ struct NativeHardwareLayoutOwnerContext {
     const volatile std::uint32_t* actual_type_sizes_00d61cc0;
     void* actual_declaration_pool_0108fd38;
     void* actual_hardware_layout_pool_0108fe9c;
+    // Connected callers use the SAME existing declaration companions when
+    // their actual +04 reaches zero. Null retains the original raw-only
+    // interface; never bind a companion and then bypass its retirement.
+    NativeRenderActualOwners* canonical_declaration_owners{};
 };
 
 // B483F0: native ECX actual 0Ch record, RET. Capture its first-word declaration,

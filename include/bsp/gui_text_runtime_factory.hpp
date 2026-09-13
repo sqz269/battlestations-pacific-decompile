@@ -5,6 +5,7 @@
 #include "bsp/gui_text_clip_refresh.hpp"
 #include "bsp/gui_text_copy.hpp"
 #include "bsp/gui_widget_copy.hpp"
+#include "bsp/native_gui_text_identity.hpp"
 #include <exception>
 #include <optional>
 #include <stdexcept>
@@ -51,6 +52,8 @@ class GuiTextRuntimeImplementation final : public GuiWidgetTypeImplementation {
 public:
     ~GuiTextRuntimeImplementation() noexcept override;
     GuiTextLifetime& lifetime() noexcept { return *lifetime_; }
+    // Same factory allocation's actual prefix/count; never the C++ owner address.
+    NativeGuiTextIdentityReference& native_identity();
     void constructed74(GuiWidgetOwner&) override;
     void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
     void loaded78(GuiWidgetOwner&) override;
@@ -92,11 +95,13 @@ private:
     friend class GuiTextRuntimeFactory;
     friend class GuiTextRuntimeCopyOperation;
     struct CopiedAdmission {};
-    GuiTextRuntimeImplementation(GuiTextRuntimeFactory&, GuiWidgetOwner&);
+    struct DefaultAdmission {};
+    GuiTextRuntimeImplementation(GuiTextRuntimeFactory&, GuiWidgetOwner&, DefaultAdmission);
     // Empty host shell only. initialize_copy installs the ONE copied lifetime
     // while this shell is already retained by its factory operation.
     GuiTextRuntimeImplementation(GuiTextRuntimeFactory&, GuiWidgetOwner&, CopiedAdmission);
     void initialize_copy(const GuiTextLifetime&, GuiTextCursorServices&);
+    void initialize_default();
     GuiTextCopyPhase run_copy();
     void require_owner(GuiWidgetOwner&) const;
     void require_idle() const;
@@ -114,6 +119,8 @@ private:
     // References stay valid when the implementation's unique_ptr transfers.
     std::optional<GuiTextCopyContinuation> copy_;
     bool copied_admission_{};
+    bool default_admission_{}; // retained constructor shell, no extra count
+    bool default_completed_{};
     bool copy_runtime_admitted_{};
     bool copy_dispatch_active_{};
     bool source_copy_borrowed_{}; // host mutation guard, not another refcount
@@ -131,7 +138,7 @@ enum class GuiTextRuntimeCopyPhase {
 // Retained AA1380 nonnull-source caller. This owns the sole destination
 // layout and, until admission, its concrete implementation. The implementation
 // owns one copied GuiTextLifetime plus its exact derived/content frame. Base
-// acquired creators and opaque Text allocation remain visible on failure.
+// acquired creators and the Text allocation/prefix remain visible on failure.
 // Source borrow prevents retirement across allocation/construction/pending;
 // it is released immediately on completion or the native null-allocation arm.
 // All services/factory/owner domains outlive this operation and created Text.
@@ -152,7 +159,8 @@ public:
     GuiTextRuntimeContentContinuation* pending_content() noexcept;
     NativeGuiTextModelCloneAcquired& base_acquired() noexcept { return base_acquired_; }
     GuiTextCursorAcquired& cursor_acquired();
-    // Allocation transport ONLY, never a constructed raw Text/refcount object.
+    // Same allocation: only its actual first eight bytes are constructed.
+    // No native Text body may be accessed through this pointer.
     void* opaque_allocation_slot() const noexcept { return raw_slot_; }
     const std::exception_ptr& failure() const noexcept { return failure_; }
     // Complete transfers the same layout/registered owner. Native allocation
@@ -180,18 +188,30 @@ private:
     std::exception_ptr failure_;
 };
 
-// Opaque raw-allocation transport only; the owner runtime retains the one type
-// implementation. Configure make_type to call this factory for Text and the
+// The same native pool allocation now carries its proven eight-byte identity
+// prefix; the owner runtime retains the one type/body implementation. Configure
+// make_type to call this factory for Text and the
 // existing real factory for other types. Every supplied domain must outlive
 // all live Text and completed flags0 storage. Explicit pool startup/shutdown
 // remains with the host; constructing this class does not initialize F8BDF0.
-class GuiTextRuntimeFactory final {
+class GuiTextRuntimeFactory final : public GuiTextCursorParameterOwnerServices {
 public:
     explicit GuiTextRuntimeFactory(GuiTextRuntimeFactoryServices);
     ~GuiTextRuntimeFactory() noexcept;
     GuiTextRuntimeFactory(const GuiTextRuntimeFactory&) = delete;
     GuiTextRuntimeFactory& operator=(const GuiTextRuntimeFactory&) = delete;
     std::unique_ptr<GuiWidgetTypeImplementation> make_type(GuiWidgetOwner&);
+    // Concrete cursor adapter, bound to this factory's SAME canonical registry.
+    void bind_retained_text_00b18a40(NativeMaterialStorage&, GuiWidgetOwner&,
+        NativeRenderActualOwners&) override;
+    NativeGuiTextIdentityReference& actual_identity(GuiWidgetOwner&);
+    // Material/property readers must resolve to this owner; +08 onward in the
+    // raw slot remains unconstructed. Completed flags0 storage is rejected.
+    GuiWidgetOwner& canonical_owner(void* actual_identity);
+    // Failed native default construction keeps its one implementation/lifetime
+    // on the allocation record and the runtime's constructor borrow. No retry,
+    // rollback or successful factory result is provided by this diagnostic.
+    const std::exception_ptr& construction_failure(GuiLayoutWidget&) const;
     // Prepare a stable nonnull-source AA1380 caller before native allocation.
     // Source must be this factory's existing live Text implementation. The
     // explicit fresh destination preserves its authored_x/visible preimages;
@@ -212,7 +232,18 @@ public:
 private:
     friend class GuiTextRuntimeImplementation;
     friend class GuiTextRuntimeCopyOperation;
-    struct Allocation { void* raw_slot; bool completed_flags0; };
+    struct Allocation {
+        void* raw_slot{};
+        NativeGuiTextIdentityPrefix* prefix{};
+        std::unique_ptr<NativeGuiTextIdentityReference> identity;
+        std::unique_ptr<GuiTextRuntimeImplementation> default_construction;
+        std::unique_ptr<GuiLayoutWidget> failed_default_layout;
+        std::exception_ptr failure;
+        bool registered{};
+        bool completed_flags0{};
+    };
+    void bind_identity(GuiWidgetOwner&);
+    void return_completed_allocation(GuiLayoutWidget&) noexcept;
     void implementation_destroyed(GuiLayoutWidget&, bool completed_flags0) noexcept;
     GuiTextRuntimeFactoryServices services_;
     // Allocation handles only, not Text state, widget ownership or a tree.

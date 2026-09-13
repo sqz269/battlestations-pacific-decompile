@@ -84,6 +84,12 @@ public:
     NativeVertexDeclarationReference(const NativeVertexDeclarationReference&) = delete;
     NativeVertexDeclarationReference& operator=(const NativeVertexDeclarationReference&) = delete;
     void* storage() const noexcept { return storage_; }
+    // Read-only source-domain check when another consumer reuses this ONE
+    // canonical companion. No native state or reference operation is added.
+    bool matches_context(void* pool, const volatile std::uint32_t* type_sizes,
+        const volatile std::uint32_t* vtable) const noexcept {
+        return pool_ == pool && type_sizes_ == type_sizes && vtable_ == vtable;
+    }
     void release_zero_references() noexcept override;
 private:
     enum class Phase { bound, destroying, retired };

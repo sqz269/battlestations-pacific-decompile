@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/gui_text_content.hpp"
 #include "bsp/gui_text_style.hpp"
+#include "bsp/gui_text_sections.hpp"
 
 namespace bsp {
 // C++ diagnostic continuation marker, not an additional native Text field.
@@ -24,6 +25,8 @@ struct GuiTextConstructorConstants {
 // Admission checks canonical base-copy completion, including the actual
 // primary-node virtual10 return. A default-constructed owner is insufficient.
 struct GuiTextAfterBaseCopy00aa9520 final {};
+// The factory retains the sole implementation/lifetime before AB8530 starts.
+struct GuiTextDeferredDefaultAdmission final {};
 
 // Fields absent from the existing Text projection; unwritten words are marked.
 // Address names intentionally avoid assigning an unverified ownership role.
@@ -76,8 +79,9 @@ public:
     // vtable/SEH and byte-for-byte native string/vector allocation are outside
     // this C++ owner. +1D4 is NOT initialized by native; its existing semantic
     // default must not be treated as a native value before font resolution.
-    GuiTextLifetime(GuiWidgetOwner&, GuiTextBufferServices&,
+    GuiTextLifetime(GuiTextDeferredDefaultAdmission, GuiWidgetOwner&, GuiTextBufferServices&,
         GuiTextGlyphChildCalls&, const GuiTextConstructorConstants&);
+    void complete_default_construction_00ab9650();
     // ABB2FD..ABB5F8 only, AFTER the required AA9520 base copy. Copies the
     // source's constructor-written derived values in native order; resets
     // cursor/shadow/glyph/cache fields. Does not call AB8910/AB8530/ABB1D0.
@@ -93,6 +97,12 @@ public:
     GuiTextWidget& text() noexcept { return text_; }
     GuiTextLifetimeFields& fields() noexcept { return fields_; }
     NativeNodeBinding*& shadow_slot_188() noexcept { return shadow_188_; }
+    GuiTextSectionOperation& section_operation() noexcept { return sections_; }
+    GuiTextGlyphBuffersAcquired& glyph_buffer_operation() noexcept { return glyph_buffers_; }
+    bool has_incomplete_native_resources() const noexcept {
+        return sections_.has_incomplete() || glyph_buffers_.phase == GuiTextGlyphBuffersPhase::running ||
+            glyph_buffers_.phase == GuiTextGlyphBuffersPhase::failed;
+    }
     std::vector<GuiLayoutWidget*>& glyph_children_198() noexcept { return glyph_children_198_; }
     // Actual raw shader identity, owning the renderer's returned reference.
     // A producer must use this slot, not the legacy has_cached_shader flag;
@@ -149,5 +159,10 @@ private:
     bool after_base_copy_{}; // C++ admission/one-shot guards, not native fields.
     bool copy_continuation_claimed_{};
     bool copy_continuation_complete_{};
+    // Native local acquisitions retained in their SAME canonical lifetime.
+    // These are diagnostic caller frames, not additional raw Text fields.
+    GuiTextSectionOperation sections_;
+    GuiTextGlyphBuffersAcquired glyph_buffers_;
+    bool default_completion_entered_{};
 };
 } // namespace bsp

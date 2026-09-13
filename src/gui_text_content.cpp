@@ -184,8 +184,12 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
     GuiTextContentBinding& binding, GuiTextContentEnvironment& e,
     std::u16string_view input) {
     require_text_owner(binding, e.buffers.widgets);
+    auto* canonical = binding.widget.text_lifetime();
+    if (!canonical || &canonical->text() != &binding.text ||
+        &canonical->shadow_slot_188() != &binding.shadow_188)
+        throw std::logic_error("Text section operation requires its same canonical lifetime");
     ensure_gui_text_draw_sections_00ab8530(binding.widget, binding.text,
-        binding.shadow_188, e.buffers); //00ABA8EC, even equal-empty
+        binding.shadow_188, e.buffers, canonical->section_operation()); //00ABA8EC, even equal-empty
     require_native_text_domain(input);
     std::u16string copied(input); //004C8DD0 at00ABA8FA, separate owned wrapper
     auto& text = binding.text;
@@ -288,9 +292,11 @@ GuiTextNonemptyContinuation prepare_gui_text_nonempty_00aba8d0_fragment(
     auto& owners = buffers.materials.retained_owners;
     auto& main_mesh = *static_cast<NativeMeshStorage*>(pending.main_mesh);
     auto& main_section = *pending.main_section;
+    auto& acquired = lifetime.glyph_buffer_operation();
+    if (acquired.phase == GuiTextGlyphBuffersPhase::complete) acquired = {};
     create_gui_text_glyph_buffers_00ab8400(
         static_cast<std::uint32_t>(pending.transformed_text.size()), main_mesh,
-        buffers.current_renderer_00f8d394, buffers.strings, owners); //ABA9C3.
+        buffers, acquired); //ABA9C3; failure remains on the SAME lifetime.
     auto& main_material = actual_material(main_section.material_20, owners); //ABA9C8.
     main_section.primitive_08 = 4;
     main_section.range_words_0c[0] = 0;

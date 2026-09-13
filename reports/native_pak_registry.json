@@ -1,0 +1,708 @@
+{
+  "packet": "orch2_native_pak_registry_ay",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "label": "getter",
+      "entry": "00736c30",
+      "end_inclusive": "00736cf6",
+      "bytes": 199,
+      "sha256": "240e5d01083bc6c16d4dba5afcbf10ddc58b8de58a8e26b3e5fbbc84c73e36f8",
+      "live_equal_disk": true,
+      "name": "get_native_pak_registry_00736c30",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistry_GetSingleton",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "cdecl no arguments; EAX captured fast/current slow publication; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "ctor",
+      "entry": "00bb4fb0",
+      "end_inclusive": "00bb4fe5",
+      "bytes": 54,
+      "sha256": "856dd6592ef4b0541afe6b648570523e651803b0040dbbb01d8ae8581d459662",
+      "live_equal_disk": true,
+      "name": "construct_native_pak_registry_00bb4fb0",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistry_Ctor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX raw1Ch owner; EAX captured owner; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "secondary",
+      "entry": "00bb4ff0",
+      "end_inclusive": "00bb4ff7",
+      "bytes": 8,
+      "sha256": "cfbafd601a555e854a3ec2d303c4ca7f1d497f1f2c2a396b1792aae9b112056e",
+      "live_equal_disk": true,
+      "name": "delete_native_pak_registry_secondary_00bb4ff0",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistry_SecondaryDeletingDestructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX actual secondary, SUB8 then JMP BB5410; DWORD flags stack; inherited RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "deleting",
+      "entry": "00bb5410",
+      "end_inclusive": "00bb542d",
+      "bytes": 30,
+      "sha256": "6c6d98e1b2906ab28aa60bef0919b45407adb19b5621b18c4ef8fef46dfa5ae2",
+      "live_equal_disk": true,
+      "name": "delete_native_pak_registry_00bb5410",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistry_ScalarDeletingDestructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX owner; DWORD flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "destroy",
+      "entry": "00bb5000",
+      "end_inclusive": "00bb507f",
+      "bytes": 128,
+      "sha256": "222509b5e818dc4569042f7bd376df52e6412f38a7aa905a2c08bd3d89dc78ce",
+      "live_equal_disk": true,
+      "name": "destroy_native_pak_registry_00bb5000",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistry_Destructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX owner; no stack arguments; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "base_deleting",
+      "entry": "00bb49c0",
+      "end_inclusive": "00bb49e8",
+      "bytes": 41,
+      "sha256": "c178336c6aa7d759fe4f395e5e58441e0efdd1a42401b97d4fe1c2a94f63de8b",
+      "live_equal_disk": true,
+      "name": "delete_native_pak_registry_base_00bb49c0",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistryBase_ScalarDeletingDestructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX genuine base allocation; DWORD flags stack; EAX captured this; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "reserve",
+      "entry": "00bb46f0",
+      "end_inclusive": "00bb474e",
+      "bytes": 95,
+      "sha256": "d9e78f7f710cb6b2292e6b21b9bab5d5d6c0671a17317e0bb14c6ee4c6b451a0",
+      "live_equal_disk": true,
+      "name": "reserve_native_pak_registry_slots_00bb46f0",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistrySlots_Reserve",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX raw0Ch vector; signed capacity stack; RET4; no semantic EAX result",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "resize",
+      "entry": "00bb47a0",
+      "end_inclusive": "00bb47ef",
+      "bytes": 80,
+      "sha256": "a19f3142bccd22eee10c77ba9f227364a5c59d46cce8c83bd233065388818854",
+      "live_equal_disk": true,
+      "name": "resize_native_pak_registry_slots_00bb47a0",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistrySlots_Resize",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX raw0Ch vector; signed count stack; RET4; no semantic EAX result",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "ref_base",
+      "entry": "00bb3f50",
+      "end_inclusive": "00bb3f5a",
+      "bytes": 11,
+      "sha256": "8bea9642f67caad783bf93a358ee2ca06949405b5823fb9bff5b26cf307aab75",
+      "live_equal_disk": true,
+      "name": "destroy_native_pak_registry_reference_base_00bb3f50",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistryReferenceBase_Destructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX raw primary; JMP BD30F0; inherited RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "lifetime_base",
+      "entry": "00bb4610",
+      "end_inclusive": "00bb4620",
+      "bytes": 17,
+      "sha256": "8916fabbaa3b30f46f51721e496ed5c8af1e0dc843d1b224f2483554f3ac11c8",
+      "live_equal_disk": true,
+      "name": "destroy_native_pak_registry_lifetime_base_00bb4610",
+      "ghidra_name_hypothesis": "BSP_PakArchiveRegistryLifetimeBase_Destructor",
+      "source": "src/native_pak_registry.cpp",
+      "coverage": "complete_actual_raw_storage_logical_body",
+      "original_abi": "ECX raw secondary; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "owned_function_count": 10,
+  "owned_native_bytes": 663,
+  "native_calls": [
+    {
+      "address": "00736c56",
+      "native": "00415350",
+      "function": "00736c30",
+      "kind": "direct_call",
+      "contract": "Existing actual raw manager getter; captures returned manager and borrows actual01090AA0 cell"
+    },
+    {
+      "address": "00736c8c",
+      "native": "00bf681b",
+      "function": "00736c30",
+      "kind": "direct_call",
+      "contract": "Correct scalar operator_new; cdecl bytes, caller ADD ESP4; actual shared allocation/new-handler boundary"
+    },
+    {
+      "address": "00736ca3",
+      "native": "00bb4fb0",
+      "function": "00736c30",
+      "kind": "direct_call",
+      "contract": "ECX captured raw allocation; EAX constructor owner; RET"
+    },
+    {
+      "address": "00736cc7",
+      "native": "00415350",
+      "function": "00736c30",
+      "kind": "direct_call",
+      "contract": "Existing actual raw manager getter; captures returned manager and borrows actual01090AA0 cell"
+    },
+    {
+      "address": "00736cce",
+      "native": "00bd0c30",
+      "function": "00736c30",
+      "kind": "direct_call",
+      "contract": "Actual captured secondary stack argument; ECX current second manager; RET4; returning validation retained"
+    },
+    {
+      "address": "00bb4ff3",
+      "native": "00bb5410",
+      "function": "00bb4ff0",
+      "kind": "tail_jump",
+      "contract": "Secondary ECX adjustment completed before inherited flags stack and RET4"
+    },
+    {
+      "address": "00bb5413",
+      "native": "00bb5000",
+      "function": "00bb5410",
+      "kind": "direct_call",
+      "contract": "Complete raw owner destruction; no stack arguments"
+    },
+    {
+      "address": "00bb5420",
+      "native": "00bf65ac",
+      "function": "00bb5410",
+      "kind": "direct_call",
+      "contract": "Correct CRT _free thunk; cdecl captured allocation, caller ADD ESP4"
+    },
+    {
+      "address": "00bb502f",
+      "native": "00bb47a0",
+      "function": "00bb5000",
+      "kind": "direct_call",
+      "contract": "Current vector ECX, stacked signed zero; RET4"
+    },
+    {
+      "address": "00bb5037",
+      "native": "00bf6989",
+      "function": "00bb5000",
+      "kind": "direct_call",
+      "contract": "Correct _free array thunk to BF65AC; cdecl current vector base"
+    },
+    {
+      "address": "00bb506a",
+      "native": "00bd30f0",
+      "function": "00bb5000",
+      "kind": "direct_call",
+      "contract": "Existing raw reference base; ECX owner, stamp CEB130, RET"
+    },
+    {
+      "address": "00bb49db",
+      "native": "00bf65ac",
+      "function": "00bb49c0",
+      "kind": "direct_call",
+      "contract": "Correct CRT _free thunk; cdecl captured allocation, caller ADD ESP4"
+    },
+    {
+      "address": "00bb4710",
+      "native": "00bf55be",
+      "function": "00bb46f0",
+      "kind": "direct_call",
+      "contract": "Correct operator_new array thunk to BF681B; cdecl wrapping capacity*4"
+    },
+    {
+      "address": "00bb473c",
+      "native": "00bf6989",
+      "function": "00bb46f0",
+      "kind": "direct_call",
+      "contract": "Correct _free array thunk to BF65AC; cdecl current vector base"
+    },
+    {
+      "address": "00bb47ae",
+      "native": "00bb46f0",
+      "function": "00bb47a0",
+      "kind": "direct_call",
+      "contract": "ECX current vector, captured signed count/capacity stacked; RET4"
+    },
+    {
+      "address": "00bb3f56",
+      "native": "00bd30f0",
+      "function": "00bb3f50",
+      "kind": "tail_jump",
+      "contract": "Existing raw reference base; ECX owner, stamp CEB130, RET"
+    },
+    {
+      "address": "00c86083",
+      "native": "00411ee0",
+      "function": "00c86080",
+      "kind": "tail_jump",
+      "contract": "Captured raw guard -14h; complete existing guard destructor"
+    },
+    {
+      "address": "00c8608c",
+      "native": "00bf65ac",
+      "function": "00c86088",
+      "kind": "direct_call",
+      "contract": "Captured allocation -18h; free then raw POP ECX/RET continuation"
+    },
+    {
+      "address": "00cc4323",
+      "native": "00bb3f50",
+      "function": "00cc4320",
+      "kind": "tail_jump",
+      "contract": "Captured owner -10h; reference base cleanup"
+    },
+    {
+      "address": "00cc434a",
+      "native": "00bb4610",
+      "function": "00cc4328",
+      "kind": "tail_jump",
+      "contract": "Captured owner plus8/null; secondary base cleanup"
+    },
+    {
+      "address": "0073d968",
+      "native": "00736c30",
+      "function": "0073d410",
+      "kind": "direct_call",
+      "contract": "Application initialization getter call; static caller evidence only"
+    },
+    {
+      "address": "00bb8275",
+      "native": "00736c30",
+      "function": "00bb8240",
+      "kind": "direct_call",
+      "contract": "Provider constructor calls getter then reads returned registry+Ch"
+    },
+    {
+      "address": "00bb4b58",
+      "native": "00bb46f0",
+      "function": "00bb4b40",
+      "kind": "direct_call",
+      "contract": "Pointer append doubles current capacity, clamps to at least1, then reserves"
+    },
+    {
+      "address": "00bb5860",
+      "native": "00bb46f0",
+      "function": "00bb5770",
+      "kind": "direct_call",
+      "contract": "Registry lookup insertion current capacity growth; no ownership inferred from slot payload"
+    },
+    {
+      "address": "00bd0438",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "direct_call",
+      "contract": "Existing original manager pop-span returning validation; fixture uses valid bounds; not owned reconstruction"
+    },
+    {
+      "address": "00bd044e",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "direct_call",
+      "contract": "Existing original manager pop-span returning validation; fixture uses valid bounds; not owned reconstruction"
+    },
+    {
+      "address": "00bd045b",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "direct_call",
+      "contract": "Existing original manager pop-span returning validation; fixture uses valid bounds; not owned reconstruction"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00736c6f",
+      "native": "IAT[00ce2218] EnterCriticalSection",
+      "function": "00736c30",
+      "contract": "Captured actual section stacked; callee stack cleanup4; increment physical+18 after return"
+    },
+    {
+      "address": "00736cdc",
+      "native": "IAT[00ce2210] LeaveCriticalSection",
+      "function": "00736c30",
+      "contract": "Captured actual section stacked after decrement; slow return reloads publication after callback"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00c86091",
+      "end_inclusive": "00c86092",
+      "bytes": 2,
+      "coverage": "Raw POP ECX; RET continuation after stored allocation cleanup C86088..C86090"
+    },
+    {
+      "start": "00c86093",
+      "end_inclusive": "00c8609c",
+      "bytes": 10,
+      "coverage": "Raw FH3 handler MOV EAX,DB5570; JMP BF6B43 at C86098",
+      "tail_target": "00bf6b43",
+      "executed": false
+    },
+    {
+      "start": "00cc434f",
+      "end_inclusive": "00cc4358",
+      "bytes": 10,
+      "coverage": "Raw FH3 handler MOV EAX,DFDC0C; JMP BF6B43 at CC4354",
+      "tail_target": "00bf6b43",
+      "executed": false
+    }
+  ],
+  "layout": {
+    "producer": "00bb4fb0",
+    "bytes": 28,
+    "primary_0": "00d64190",
+    "refs_4": 1,
+    "secondary_8": "00d6418c",
+    "ordinal_c": 100,
+    "vector_base_10": 0,
+    "vector_count_14": 0,
+    "vector_capacity_18": 0,
+    "slots": "Non-owning DWORD values; no pointee release/refcount calls in reserve/resize/destroy",
+    "ordinal_c_meaning": "Raw value100 is copied to provider+18; further semantic meaning remains a hypothesis"
+  },
+  "profiles": {
+    "00d64188": [
+      "00bb49c0"
+    ],
+    "00d6418c": [
+      "00bb4ff0"
+    ],
+    "00d64190": [
+      "00bd30e0",
+      "00bb5410",
+      "00bb5770",
+      "00bb5910"
+    ]
+  },
+  "EH": {
+    "getter": {
+      "func_info": "00db5570",
+      "map": "00db5560",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00c86080",
+          "action": "destroy captured guard via411EE0"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00c86088",
+          "action": "free captured allocation; disarm before publication"
+        }
+      ]
+    },
+    "destructor": {
+      "func_info": "00dfdc0c",
+      "map": "00dfdbfc",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00cc4328",
+          "action": "BB4610 clears publication and stamps captured owner+8 CE3818"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cc4320",
+          "action": "BB3F50 stamps D64178 then actual BD30F0 CEB130"
+        }
+      ],
+      "vector_retry_or_rollback": false
+    }
+  },
+  "support_spans": [
+    {
+      "label": "getter_guard",
+      "entry": "00c86080",
+      "end_inclusive": "00c86087",
+      "bytes": 8,
+      "sha256": "14ed853b20c06d0a6edd12e2f5103bec416103f09e5546b88178ff75396cb2a9",
+      "live_equal_disk": true
+    },
+    {
+      "label": "getter_allocation",
+      "entry": "00c86088",
+      "end_inclusive": "00c86092",
+      "bytes": 11,
+      "sha256": "2d8d6e4ae724d3149e47b814d317f8cf1fadfc6336f714d70accecd83a74f153",
+      "live_equal_disk": true
+    },
+    {
+      "label": "getter_handler",
+      "entry": "00c86093",
+      "end_inclusive": "00c8609c",
+      "bytes": 10,
+      "sha256": "a9e3e09eeae665df73aacb5bd574825c0b4d72617bae9c1aabe25d8adab7d918",
+      "live_equal_disk": true
+    },
+    {
+      "label": "getter_map",
+      "entry": "00db5560",
+      "end_inclusive": "00db556f",
+      "bytes": 16,
+      "sha256": "2dcb73b78b24b18760e7a13926f605617c747ad657e81a25a68a0b96ce0eb876",
+      "live_equal_disk": true
+    },
+    {
+      "label": "getter_info",
+      "entry": "00db5570",
+      "end_inclusive": "00db5593",
+      "bytes": 36,
+      "sha256": "2a3e3cee790e728febfe987f18f72e22fc224c446c1889d698750c34f8647956",
+      "live_equal_disk": true
+    },
+    {
+      "label": "destroy_ref",
+      "entry": "00cc4320",
+      "end_inclusive": "00cc4327",
+      "bytes": 8,
+      "sha256": "1850e580f968a74f74a26410f65f1e0452519ddb83f5cdc5cb70edee59c57fef",
+      "live_equal_disk": true
+    },
+    {
+      "label": "destroy_secondary",
+      "entry": "00cc4328",
+      "end_inclusive": "00cc434e",
+      "bytes": 39,
+      "sha256": "e45f89a01ba56b2b85b82e3aa760304ecbe868984c4326be18aeb37fa400895c",
+      "live_equal_disk": true
+    },
+    {
+      "label": "destroy_handler",
+      "entry": "00cc434f",
+      "end_inclusive": "00cc4358",
+      "bytes": 10,
+      "sha256": "05121fcbfd6139e64fb101fcff758df4e364f34f7bac4407b5c1db74be3d057c",
+      "live_equal_disk": true
+    },
+    {
+      "label": "destroy_map",
+      "entry": "00dfdbfc",
+      "end_inclusive": "00dfdc0b",
+      "bytes": 16,
+      "sha256": "0a3dd9524d841156f8981ebf18158b68dd8a186fecd1d92c2b6c9d8b291c27d3",
+      "live_equal_disk": true
+    },
+    {
+      "label": "destroy_info",
+      "entry": "00dfdc0c",
+      "end_inclusive": "00dfdc2f",
+      "bytes": 36,
+      "sha256": "7f3dd6e3ef891777e71742bf113f5f4f18d552627d3fe437cd9a633646c788c7",
+      "live_equal_disk": true
+    },
+    {
+      "label": "profiles",
+      "entry": "00d64188",
+      "end_inclusive": "00d6419f",
+      "bytes": 24,
+      "sha256": "0db0adbbc3f4841c51936107c257b6cedec97ec7cb264f7fd85e47f0373dc026",
+      "live_equal_disk": true
+    },
+    {
+      "label": "manager_pop",
+      "entry": "00bd0430",
+      "end_inclusive": "00bd047a",
+      "bytes": 75,
+      "sha256": "a7965db56f868481c4d43e946a3d02d93d30d0a051b858d9dc38c479bcd69697",
+      "live_equal_disk": true
+    }
+  ],
+  "flow_repairs": "Primary locked repair, save and force-export: BB49C0..49E8, BB4FF0..4FF7, BB5000..507F, BB46F0..474E, BB5410..542D. No worker Ghidra writes. Primary retains native_ay_flow_repairs/native_ay_function_definitions records.",
+  "validation": {
+    "status": "strict_win32_and_two_ctests_and_frozen_native_source_comparison_passed",
+    "strict_win32": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "build_log": "local/pak_registry_ay/build01.log",
+    "build_log_sha256": "3cc40f2db19a73e0dca4586c0f1ba1f1693141b1caa2b018f9e85c78e4e829e3",
+    "build_core_sha256": "51e74301ce3b90ac13486d4dbc77c17ba7ab1d8e3ec6b36c6e8ef4734442b2fc",
+    "attempt": "local/pak_registry_ay/attempt03",
+    "driver": "local/pak_registry_ay/run_fixture.py --repo BUILT_REPO --attempt FRESH_DIRECTORY --build-log BUILD_LOG",
+    "source_sha256": "24c26d6f1bb6739aa0fb1813e1353e09e5e64b68f02a178ba87882123833b4cf",
+    "header_sha256": "953dc1c0a5d2e8e9812fd54e1d1b0c9951477db4258fb9f8fb238fa4ff8e1943",
+    "native_source_comparisons": 8,
+    "checks": 759,
+    "source_only_checks": 1,
+    "source_only_scope": "Registration-validation exception only: retained publication/allocation, captured real section release; restored fixture bounds and registration only for caller disposal",
+    "frozen_files": 569,
+    "physical_files": 588,
+    "linked_objects": 121,
+    "linked_libraries": {
+      "bsp_core": 93,
+      "bsp_lua511": 28,
+      "bsp_zlib121": 0
+    },
+    "compiler_observed_headers": 217,
+    "before_sha256": "23f9212941c15b45eb94a034cf5a6a4e47c857c18bfcf211b162927ec89dad4c",
+    "after_sha256": "08bef4f351640df86779bed47d00638f93497190009274a70c17174fd76f4658",
+    "exe_sha256": "fb54fb3d583b8791e8fe846258f611f67bd114e0e51eb286521c2f4c0a14741b",
+    "execution_sha256": "6f1b24d2a5c4d8d8fe84fc8183e221c6dd88fc24934ffc8f6bce93b2cd634385",
+    "audit_sha256": "a4da9984febb75153b195d7a9bfe5e18ff088d19c9280aae795ace052ef81f32",
+    "pairs": [
+      {
+        "case": 0,
+        "native": "case_0_native.bin",
+        "source": "case_0_source.bin",
+        "bytes": 104,
+        "sha256": "bd1ae12d2fbcabe812754a0f92b01fe4cb84400b73cfecdd75651f295958342f",
+        "equal": true
+      },
+      {
+        "case": 1,
+        "native": "case_1_native.bin",
+        "source": "case_1_source.bin",
+        "bytes": 80,
+        "sha256": "332eb67c76b53dcd3c6128c50c3c881cb38316204a1317681a92616e218d8ce4",
+        "equal": true
+      },
+      {
+        "case": 2,
+        "native": "case_2_native.bin",
+        "source": "case_2_source.bin",
+        "bytes": 120,
+        "sha256": "8ada2f433dfca2e450747222a208bb2ca9055d7ee4e6ae9f6fcda8ac16ca4974",
+        "equal": true
+      },
+      {
+        "case": 3,
+        "native": "case_3_native.bin",
+        "source": "case_3_source.bin",
+        "bytes": 120,
+        "sha256": "d9d388a822b1747c92dbaf73e92890a24a1903907e7b07da1ab8594a9e1d4780",
+        "equal": true
+      },
+      {
+        "case": 4,
+        "native": "case_4_native.bin",
+        "source": "case_4_source.bin",
+        "bytes": 72,
+        "sha256": "9ee6a41dd0c927da8ad2bc39b8ccd1d4f43f8a507e3ed581009885f44d646960",
+        "equal": true
+      },
+      {
+        "case": 5,
+        "native": "case_5_native.bin",
+        "source": "case_5_source.bin",
+        "bytes": 72,
+        "sha256": "e51b375cc63807aa80e578edf582a399772292d5401cc3a7f215470c6560a44d",
+        "equal": true
+      },
+      {
+        "case": 6,
+        "native": "case_6_native.bin",
+        "source": "case_6_source.bin",
+        "bytes": 60,
+        "sha256": "6ebe96f60ed87a222fbbf237cea3b217b8c6e9262510fb05ce27ca00f732022c",
+        "equal": true
+      },
+      {
+        "case": 7,
+        "native": "case_7_native.bin",
+        "source": "case_7_source.bin",
+        "bytes": 60,
+        "sha256": "709fd756c3634312dc6a3afb1d3486a4f2a7247dc23f60a94f5bbbddf237b9b1",
+        "equal": true
+      }
+    ],
+    "native_FH3_SEH_executed": false,
+    "destructor_exception_injected": false,
+    "game_executed": false,
+    "canonical_PAK_dispatch_executed": false,
+    "original_BD0400_pop_span_executed": true
+  },
+  "limits": [
+    "Source interfaces are not drop-in original thiscall/cdecl/FH3/SEH replacements",
+    "Original hardware faults, mutable stack/EH-spill aliases and CRT/Win32 throw/register identity excluded",
+    "No private lifetime domain/pool, semantic registry substitution, lookup reconstruction or owned pointee disposal",
+    "Canonical PAK D6418C dispatch is primary integration work; focused fixture uses original BD0430..BD047A span and captured secondary target, then existing empty-manager cleanup",
+    "No installed archive, application startup runtime, concurrency, or game execution proof"
+  ],
+  "fixture_scope": {
+    "owned_native_bodies": 10,
+    "owned_native_bytes": 663,
+    "relocated_external_relative_transfers": 16,
+    "rebased_absolute_publication_and_IAT_operands": 10,
+    "unchanged_bytes_except_declared_relocations": true,
+    "manager_pop_inclusive": [
+      "00bd0430",
+      "00bd047a"
+    ],
+    "manager_pop_bytes": 75,
+    "manager_pop_relative_validation_bridges": 3,
+    "manager_pop_harness_return": "Appended MOV EAX,ECX;RET outside original span; original ESI/EBX/scratch preconditions supplied",
+    "captured_secondary_target": "Numeric D6418C resolved through sealed PE table bytes to BB4FF0; explicit fixture binding, not canonical source dispatcher",
+    "canonical_manager_cleanup": "Existing actual BD0400 source invoked only after pop and owner deletion, with empty vector",
+    "imports": "Real source CRT/new-handler/free and Win32 Enter/Leave; observers call real services, no successful stubs",
+    "closed_sdk_boundary": "Compiler/SDK/CRT imports are toolchain dependencies, not reconstructed or attributed to BSP source",
+    "case_scope": [
+      "Complete constructor and both base helpers, surrounding bytes",
+      "Vector clamp/grow/populated copy/shrink/zero extension and untouched slots",
+      "Cold/fast registry getter, captured secondary pop and populated destruction",
+      "Slow return publication reload after actual Leave callback clears cell",
+      "Primary delete flags80000000 with owner retained",
+      "Primary delete flags80000001 with owner freed",
+      "Base-only delete flags0 with actual allocation retained",
+      "Base-only delete flags80000001 with actual allocation freed"
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": "attempt01",
+      "stage": "link_only",
+      "result": "Missing existing Lua and Win32 SDK libraries in initial minimal probe link; no executable/native execution; retained read-only"
+    },
+    {
+      "attempt": "attempt02",
+      "result": "Eight pairs/743 checks plus one source-only registration failure passed; retained immutable"
+    },
+    {
+      "attempt": "attempt03",
+      "result": "Same production/native inputs; strengthened explicit owner-liveness witnesses before flags0 caller cleanup; eight pairs/759 checks passed; final immutable attempt"
+    }
+  ]
+}

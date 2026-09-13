@@ -1,6 +1,6 @@
 {
   "packet": "orch6_live_avoidance_i",
-  "status": "partial process ownership, query, tuning and consumer bindings; cruise role connection pending",
+  "status": "partial process ownership and avoidance execution verified in corrected combined mission",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "documentation": "docs/SHIP_AI_LIVE_AVOIDANCE.md",
@@ -8,10 +8,13 @@
   "game_validated": false,
   "tracked_tests_added": 0,
   "owned_sources": [
-    "include/bsp/game_avoid_zone_runtime.hpp", "src/game_avoid_zone_runtime.cpp",
-    "include/bsp/game_hosts_lua.hpp", "src/game_hosts_lua.cpp",
+    "include/bsp/game_avoid_zone_runtime.hpp",
+    "src/game_avoid_zone_runtime.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_lua.cpp",
     "src/game_hosts_ship_ai.cpp",
-    "include/bsp/ship_ai_avoidance_request.hpp", "src/ship_ai_avoidance_request.cpp"
+    "include/bsp/ship_ai_avoidance_request.hpp",
+    "src/ship_ai_avoidance_request.cpp"
   ],
   "process_bindings": [
     "settings+4 literal loader store0083BCD5 and registered Lua Boolean writer008D0852",
@@ -21,23 +24,113 @@
     "canonical director getters, live request clearance consumers, shared searcher-zero selected list",
     "004158E0 crossing,00415970 arc,00415D70 clearance and009D57E0 enabled gate adapters",
     "009DA6E0 borrows actual cache/list views and world geometry using hull/look-ahead/class projections",
-    "Five avoidance tuning fields captured once during the represented settings load"
+    "Five avoidance tuning fields captured once during the represented settings load",
+    "Cruise overload reads canonical current roles and available participant bytes with native arm short circuits"
   ],
   "calls": [
-    {"address":"009D5809","native":"00415970","function":"009D57E0"},
-    {"address":"008D0849","native":"00B66250","function":"008D0740"}
+    {
+      "address": "009D5809",
+      "native": "00415970",
+      "function": "009D57E0"
+    },
+    {
+      "address": "008D0849",
+      "native": "00B66250",
+      "function": "008D0740"
+    },
+    {
+      "address": "009F51D5",
+      "native": "009DA6E0",
+      "function": "009F50E0"
+    },
+    {
+      "address": "009DA854",
+      "native": "009D7050",
+      "function": "009DA6E0"
+    },
+    {
+      "address": "009E11AD",
+      "native": "00927F10",
+      "function": "009E1170"
+    },
+    {
+      "address": "009E12E4",
+      "native": "00521E70",
+      "function": "009E1170"
+    }
   ],
   "validation": {
-    "working_build":"local/orch6_live_avoidance_i_working_build.log: Win32 Release and2/2 existing tests passed",
-    "working_actual_host_probe":"local/avoidance_owner_probe.log:47 checks passed",
-    "probe_source":"local/avoidance_owner_probe.cpp",
-    "probe_build":"local/build_avoidance_owner_probe.ps1",
-    "probe_objects":"local/avoidance_owner_game_objects.json",
-    "scope":"Actual process Lua/command owners and live cache-disable views; no fabricated runtime query result. Final combined build/run identity will be recorded after the remaining integration."
+    "working_build": "local/orch6_precruise_jk_build.log: Win32 Release and2/2 existing tests passed before cruise connection",
+    "working_actual_host_probe": "local/avoidance_owner_probe.log:56 checks passed including stored tuning capture/retention",
+    "probe_source": "local/avoidance_owner_probe.cpp",
+    "probe_build": "local/build_avoidance_owner_probe.ps1",
+    "probe_objects": "local/avoidance_owner_game_objects.json",
+    "scope": "Actual process Lua/command/storage owners plus corrected120-frame mission execution. No original-game visual, gameplay or allocator-history parity claim.",
+    "final_combined": {
+      "record": "local/orch6_combined_87f9a9e0.json",
+      "compiled_commit": "87f9a9e0290d8470357b50cb26e4b3963ace46e7",
+      "exe_sha256": "095579980d0087862f3c18c383095c3b7fbd4495801198c29ac76a9414eb42b8",
+      "build_log": "local\\orch6_integrate_i_20260912T214219.log",
+      "ctests": "2/2 passed",
+      "trajectory": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "query": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owner_reads": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "actual_host_probe_checks": 56,
+      "participant_reads_in_run": "none required: current roles retain constructor value8"
+    },
+    "publication_after_shared_merge": {
+      "compiled_commit": "130f17ba063dae9d043ec0cc223cbdcf54d57928",
+      "exe_sha256": "77d8ea1ccc73bd8657baa3961771497caf38bf9fd2ac04c9bbe06acb48ce850b",
+      "record": "local/orch6_combined_130f17ba.json",
+      "existing_ctests_passed": 2,
+      "build_log": "local\\orch6_exact_build_130f17ba_20260912T215138.log",
+      "changed_shared_inputs": [
+        "cmake/startup.cmake",
+        "include/bsp/native_mpak_factory.hpp",
+        "include/bsp/native_mpak_provider.hpp",
+        "include/bsp/native_pak_registry.hpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "include/bsp/native_stream_copy_range.hpp",
+        "src/native_mpak_factory.cpp",
+        "src/native_mpak_provider.cpp",
+        "src/native_pak_registry.cpp",
+        "src/native_physical_file_date.cpp",
+        "src/native_singleton_destruction.cpp",
+        "src/native_stream_copy_range.cpp"
+      ],
+      "trajectory": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise": {
+        "reads": 1080,
+        "unavailable": 0
+      }
+    }
   },
   "remaining": [
-    "New query and tuning bindings await combined build and mission verification",
-    "Cruise overload is available in Units/Commands but is not yet selected by the live controller",
+    "Participant owner mission publication and actual role assignment delivery are separate packets",
     "Other state writers, participant AI-held bytes and director message delivery remain bounded or unimplemented",
     "Original private Lua owner, native partial-store/error timing, complete composite constructor/destructor and original allocator history are not reproduced"
   ]
