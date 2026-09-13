@@ -1,0 +1,363 @@
+{
+  "packet": "orch2_native_mpak_entry_az",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "complete_routine_count": 2,
+  "complete_body_bytes": 749,
+  "source": [
+    "src/native_mpak_entry.cpp",
+    "src/native_raw_inflate_owner.cpp"
+  ],
+  "routines": [
+    {
+      "label": "entry",
+      "entry": "00bb5080",
+      "end_inclusive": "00bb521e",
+      "bytes": 415,
+      "sha256": "1a2770cc16843e304ffd2f14a5cf9a0bd88f990744ca63f3a7f9130d1eeee874",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "materialize_native_mpak_entry_00bb5080"
+    },
+    {
+      "label": "ctor",
+      "entry": "00bbc1d0",
+      "end_inclusive": "00bbc31d",
+      "bytes": 334,
+      "sha256": "e452dcd3c3ea85998071d0b82885e92bec5e174c9ad732225e2215355f091e86",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "construct_native_raw_inflate_owner_00bbc1d0"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bb50da",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning file-vector validity handler; reload begin afterward."
+    },
+    {
+      "address": "00bb510f",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning nonempty offset-vector handler; reload begin afterward."
+    },
+    {
+      "address": "00bb5124",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator > current end handler; captured first offset already read."
+    },
+    {
+      "address": "00bb513c",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning begin > captured end handler; keep captured end for equality."
+    },
+    {
+      "address": "00bb5145",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Unreachable handler: CMP ESI,ESI at BB5141 always takes BB5143 JZ."
+    },
+    {
+      "address": "00bb5155",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before offset comparison."
+    },
+    {
+      "address": "00bb5167",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before +4 increment."
+    },
+    {
+      "address": "00bb5176",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before selected-offset dereference."
+    },
+    {
+      "address": "00bb50f5",
+      "native": "captured source current table +0x20",
+      "function": "00bb5080",
+      "contract": "ECX captured provider+14 source; no stack arguments; EDX:EAX position, retain EAX only."
+    },
+    {
+      "address": "00bb519d",
+      "native": "00bf681b",
+      "function": "00bb5080",
+      "contract": "cdecl scalar new34h; ADD ESP,4 at BB51A2; arm allocation cleanup only after return."
+    },
+    {
+      "address": "00bb51c8",
+      "native": "00bbc1d0",
+      "function": "00bb5080",
+      "contract": "ECX raw34h; stacked current source, actual12h descriptor,4000h,10000h; RET10h."
+    },
+    {
+      "address": "00bb51d9",
+      "native": "00bef750",
+      "function": "00bb5080",
+      "contract": "ECX constructed actual inflater; no stack args; state -1 before conversion; capture EAX result."
+    },
+    {
+      "address": "00bb51e4",
+      "native": "IAT 00ce2220 InterlockedDecrement",
+      "function": "00bb5080",
+      "contract": "stdcall actual inflater+4; RET4; only result zero selects current slot0."
+    },
+    {
+      "address": "00bb51f4",
+      "native": "current inflater table +0",
+      "function": "00bb5080",
+      "contract": "ECX inflater; no stacked arguments; current table/slot0 captured after decrement; result wrapper retained."
+    },
+    {
+      "address": "00bb5201",
+      "native": "00bef840",
+      "function": "00bb5080",
+      "contract": "ECX CURRENT provider+14 source; stacked selected offset,0,record+8 decoded length,0; RET10h."
+    },
+    {
+      "address": "00bbc22a",
+      "native": "00bf681b",
+      "function": "00bbc1d0",
+      "contract": "cdecl scalar new10h; ADD ESP,4 follows returned pointer capture."
+    },
+    {
+      "address": "00bbc26c",
+      "native": "00bf681b",
+      "function": "00bbc1d0",
+      "contract": "cdecl scalar new10h; ADD ESP,4 follows returned pointer capture."
+    },
+    {
+      "address": "00bbc2ae",
+      "native": "00bf681b",
+      "function": "00bbc1d0",
+      "contract": "cdecl scalar new38h; ADD ESP,4 follows returned pointer capture."
+    },
+    {
+      "address": "00bbc246",
+      "native": "00bf55be",
+      "function": "00bbc1d0",
+      "contract": "cdecl array new4000h tail to scalar allocation; ADD ESP,4; ignore constructor capacity arguments."
+    },
+    {
+      "address": "00bbc288",
+      "native": "00bf55be",
+      "function": "00bbc1d0",
+      "contract": "cdecl array new10000h tail to scalar allocation; ADD ESP,4; ignore constructor capacity arguments."
+    },
+    {
+      "address": "00bbc2d4",
+      "native": "00bc96a0",
+      "function": "00bbc1d0",
+      "contract": "zlib1.2.1 inflateInit2: ECX raw38h z_stream,EDX -15,stack D643F8 version and38h; RET8; result ignored."
+    },
+    {
+      "address": "00bbc2e3",
+      "native": "IAT 00ce221c InterlockedIncrement",
+      "function": "00bbc1d0",
+      "contract": "stdcall captured CURRENT source+0C plus4 reference address; RET4; decoder publication precedes call."
+    },
+    {
+      "address": "00bbc2f7",
+      "native": "current source table +0x1c",
+      "function": "00bbc1d0",
+      "contract": "ECX reloaded source; stacked CURRENT offset+10,0,0; RET0Ch; result ignored, reload remaining sizes after return."
+    },
+    {
+      "address": "00cc4364",
+      "native": "00bf65ac",
+      "function": "00cc4360",
+      "contract": "cdecl free of captured raw34h allocation from native EBP+4; POP ECX and RET tail at CC4369..CC436A."
+    },
+    {
+      "address": "00cc4ad3",
+      "native": "00bb86e0",
+      "function": "00cc4ad0",
+      "contract": "ECX captured owner from EBP-10h; stream base D5C104 then reference base CEB130.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc4adc",
+      "native": "00bf65ac",
+      "function": "00cc4ad8",
+      "contract": "cdecl free captured raw10h input header from EBP+4; POP ECX/RET at CC4AE1..CC4AE2; next state0."
+    },
+    {
+      "address": "00cc4ae7",
+      "native": "00bf65ac",
+      "function": "00cc4ae3",
+      "contract": "cdecl free captured raw10h output header from EBP+4; POP ECX/RET at CC4AEC..CC4AED; next state0."
+    },
+    {
+      "address": "00bb5cb3",
+      "native": "00bb5080",
+      "function": "00bb5bb0",
+      "contract": "ECX same raw provider; push cached-positive match or signed BB4A60 result; RET4; return materialization result."
+    },
+    {
+      "address": "00bb8c63",
+      "native": "00bbc1d0",
+      "function": "00bb8be0",
+      "contract": "ECX raw34h; source from current state+C; descriptor from entry+10/+18/+1C; capacities4000h/10000h; RET10h."
+    },
+    {
+      "address": "00bba5d4",
+      "native": "00bbc1d0",
+      "function": "00bba500",
+      "contract": "ECX raw34h; source from current owner+14; descriptor record+14/+C/+8; capacities4000h/10000h; RET10h."
+    }
+  ],
+  "producer_evidence": [
+    "include/bsp/native_mpak_provider.hpp",
+    "docs/NATIVE_MPAK_PROVIDER.md",
+    "reports/native_mpak_provider.json"
+  ],
+  "original_abi": {
+    "00bb5080": "ECX actual44h provider, stack signed index, EAX stream, RET4",
+    "00bbc1d0": "ECX actual34h owner, stack source/descriptor12h/two unused capacities, EAX owner, RET10h"
+  },
+  "exception_maps": [
+    {
+      "function": "00bb5080",
+      "func_info": "00dfdc38",
+      "map": "00dfdc30",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc4360",
+          "meaning": "free captured raw34h only; disarmed before conversion"
+        }
+      ]
+    },
+    {
+      "function": "00bbc1d0",
+      "func_info": "00dfe904",
+      "map": "00dfe8ec",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc4ad0",
+          "meaning": "stream/reference base only"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc4ad8",
+          "meaning": "free current input raw10h header only"
+        },
+        {
+          "state": 2,
+          "next": 0,
+          "action": "00cc4ae3",
+          "meaning": "free current output raw10h header only"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [],
+  "gapped_eh_actions": [
+    {
+      "function": "00cc4360",
+      "stored_end": "00cc4368",
+      "missing_start": "00cc4369",
+      "end_inclusive": "00cc436a",
+      "instructions": "POP ECX; RET",
+      "status": "reported to primary; no worker mutations"
+    },
+    {
+      "function": "00cc4ad8",
+      "stored_end": "00cc4ae0",
+      "missing_start": "00cc4ae1",
+      "end_inclusive": "00cc4ae2",
+      "instructions": "POP ECX; RET",
+      "status": "reported to primary; no worker mutations"
+    },
+    {
+      "function": "00cc4ae3",
+      "stored_end": "00cc4aeb",
+      "missing_start": "00cc4aec",
+      "end_inclusive": "00cc4aed",
+      "instructions": "POP ECX; RET",
+      "status": "reported to primary; no worker mutations"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Earlier handoff assumed an actual-storage BBC1D0 source constructor existed.",
+      "evidence": "Current include/src lookup and existing reconstruction fragment ledger; complete334-byte listing.",
+      "is": "Only buffered InflateStream projection existed; this packet adds full actual-storage constructor."
+    }
+  ],
+  "external_contracts": [
+    "NativeMpakContainerLibrary returning CRT invalid_parameter_00bf6713",
+    "singleton_lifetime_allocate/free shared CRT allocator; BF55BE tail-calls BF681B",
+    "Fetched stock zlib1.2.1 inflateInit2_(-15,1.2.1,38h), explicit library dependency",
+    "NativeAdoptedSubstreamDispatch current seek/read/zero-reference, NativeMpakEntryPositionDispatch current slot20",
+    "Existing actual BEF840 and BEF750; numeric D64400 methods/bindings supplied by primary adjacent packet"
+  ],
+  "validation": {
+    "seed_bytes": "all eight verify-seeds spans match disk",
+    "body_bytes": "both complete bodies live equal installed PE",
+    "build": {
+      "status": "passed",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "log": "local/native_mpak_entry_build_verified.log",
+      "environment": "MSBUILDDISABLENODEREUSE=1"
+    },
+    "call_report": {
+      "status": "passed",
+      "direct_rows_checked": 25,
+      "indirect_rows_excluded": 5,
+      "failed": 0
+    },
+    "fixture": {
+      "status": "passed",
+      "passed": true,
+      "checks": 218,
+      "entry_native_source_cases": 7,
+      "constructor_native_source_cases": 1,
+      "source_only_seek_failure_cases": 1,
+      "evidence_root": "local/native_entry_verified",
+      "manifest_sha256": "244b3369631433678b1e3b4bf81e128e7f145e29077d96f66c62d13b34c33ace",
+      "original_entry_scope": "Negative index with null owner; position0/equal/intermediate/exhausted/above32bits; returning file-vector validation repairing begin/end. Raw path only.",
+      "original_constructor_scope": "Actual34h owner, descriptor, fixed header/array sizes despite capacity7/8, untouched padding, stock zlib init, shared source refs/position, seek mutation reload of remaining counts.",
+      "source_only_scope": "Throwing source seek retains source count and all published allocations, restores only base profile; probe cleans retained storage after assertions.",
+      "shared_dependency_boundary": "Original copied bodies call source helpers for BEF840, stock-zlib init, allocator and synthetic source callbacks. These bindings are outside the two compared original game bodies.",
+      "patch_boundary": "Rel32 external calls and ctor version/IAT operands changed only in private VirtualAlloc copies. No installed binary or saved Ghidra mutation.",
+      "limitations": "Native compressed materialization, native EH exceptions and allocation failures not executed; fixture headers are not a complete observed dependency closure."
+    },
+    "ctest": {
+      "status": "passed",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "limitations": [
+    "New C++ interfaces, not drop-in ABI/FH3 implementations.",
+    "Original BB5080 compressed conversion/release path remains outside this packet fixture.",
+    "Original FH3/SEH, allocation failures, null/invalid pointers, simultaneous cleanup failure, arbitrary native stack-spill aliasing, concurrent mutation and installed game behavior are unvalidated.",
+    "No raw zlib/CRT/STL source was reconstructed and no permanent tests were added."
+  ]
+}
