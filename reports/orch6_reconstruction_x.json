@@ -40,29 +40,31 @@
   },
   "mission_lock_route": {
     "report": "reports/native_mission_entity_lock_domain.json",
+    "fixture_compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+    "owned_input_drift": [],
     "coverage": "CE7548 finite deletion dispatch to4C4890 using same processF878FC publication.",
     "fixture": "Actual getter/raw-manager registration/fast reuse; replace publication before manager drain; original popped owner deleted, same cell cleared, replacement untouched."
   },
   "validation": {
-    "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
-    "exe_sha256": "e60deb9311b9528ca3433385617cde3594dc940b874cab109c4d0f23792dbae1",
+    "compiled_commit": "2e86ce362bd58c8881c7dff63607334153f74021",
+    "exe_sha256": "0eb01794997cc96eec6b7771ac1d0873f9f6a1b52aefc45df36c633c5e4573a9",
     "build": "MSVC Win32 Release and2existingCTests passed",
     "build_record": {
-      "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+      "compiled_commit": "2e86ce362bd58c8881c7dff63607334153f74021",
       "command": [
         "pwsh",
         "-NoProfile",
         "-File",
         "scripts/build.ps1"
       ],
-      "log": "local\\orch6_publish_build_x_20260913T110647.log"
+      "log": "local\\orch6_publish_build_x_20260913T110939.log"
     },
     "process_run": {
-      "compiled_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
-      "run_commit": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+      "compiled_commit": "2e86ce362bd58c8881c7dff63607334153f74021",
+      "run_commit": "2e86ce362bd58c8881c7dff63607334153f74021",
       "compiled_input_drift": [],
       "args": [
-        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_d026dc1f.exe",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_2e86ce36.exe",
         "--frames",
         "360",
         "--press-start-frame",
@@ -94,8 +96,8 @@
         "--trajectory-csv",
         "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_x.csv"
       ],
-      "exe_sha256": "e60deb9311b9528ca3433385617cde3594dc940b874cab109c4d0f23792dbae1",
-      "preserved_executable": "local\\orch6_combined_d026dc1f.exe",
+      "exe_sha256": "0eb01794997cc96eec6b7771ac1d0873f9f6a1b52aefc45df36c633c5e4573a9",
+      "preserved_executable": "local\\orch6_combined_2e86ce36.exe",
       "source_sha256": {
         "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
         "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
@@ -116,7 +118,7 @@
       },
       "process_check": "No matching reconstructed game process before launch",
       "exit": 0,
-      "seconds": 11.799511432647705,
+      "seconds": 11.46598482131958,
       "trajectory_audit": {
         "rows": 18557,
         "nonfinite_rows": 0,

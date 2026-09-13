@@ -12,9 +12,11 @@ X supplies the normal renderer-listener and wreck-effect provider sequences requ
 | [Mission lock shutdown](NATIVE_MISSION_ENTITY_LOCK_DOMAIN.md) | Actual process F878FC getter/raw-manager composition checks the CE7548 route, including replaced publication before drain. |
 | [Volatile reference correction](VOLATILE_REFERENCE_ADOPTION.md) | Removes W's extra slot read from discarding a volatile reference result. Corrected overloads generate identical x86 bytes; volatile body remains unchanged. |
 
-MSVC Win32 Release and both existing CTests passed at `d026dc1f5c9a4e120d8d38ba60f1045d7188f583`. Executable SHA256: `e60deb9311b9528ca3433385617cde3594dc940b874cab109c4d0f23792dbae1`. The 120-frame USN01 compatibility run produced 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 1,080 cruise reads, 10,080 generic ticks and 420 valid world nodes. All 77 actual unit observer prefixes were torn down before manager drain while the owner remained live.
+MSVC Win32 Release and both existing CTests passed at `2e86ce362bd58c8881c7dff63607334153f74021`. Executable SHA256: `0eb01794997cc96eec6b7771ac1d0873f9f6a1b52aefc45df36c633c5e4573a9`. The 120-frame USN01 compatibility run produced 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 1,080 cruise reads, 10,080 generic ticks and 420 valid world nodes. All 77 actual unit observer prefixes were torn down before manager drain while the owner remained live.
 
 Pending queues remained empty through 240 passes, so this run does not establish new killed/wreck or renderer gameplay execution. Native/source fixtures and the actual lock-domain composition provide their stated narrower evidence. Full wreck coverage, application routing, native ABI/exceptions/concurrency and visual/gameplay parity remain incomplete.
+
+The focused lock-domain composition was compiled at `d026dc1f5c9a4e120d8d38ba60f1045d7188f583`; its owner and dispatch source/header inputs are unchanged in the final build. Its retained libraries and executable remain tied to that earlier fixture revision.
 
 The archive retains 822 worker artifacts, including compiler/SDK inputs, and 540 root proof artifacts. Two missing mission-lock EH selectors were defined from verified bytes; formal annotations preserve prior values and affected exports were refreshed. Existing functions were not recreated. Unattributed call sites and continuation membership gaps remain recorded.
 
