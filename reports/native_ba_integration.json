@@ -1,0 +1,102 @@
+{
+  "schema": "bsp-native-ba-integration-v1",
+  "status": "combined_build_passed_final_exact_candidate_gate_pending",
+  "worktree": "agent/orch2-20260910",
+  "source_commits": [
+    "a40b6a636aeb5be2d5d84a5815f6be74852552f1",
+    "af07ba391a17723227aba67597fdd8218aaab2d4"
+  ],
+  "new_complete_bodies": 11,
+  "new_original_bytes": 1296,
+  "families": [
+    {
+      "name": "debug-owner",
+      "bodies": 8,
+      "bytes": 964,
+      "report": "reports/native_debug_feature_owner.json"
+    },
+    {
+      "name": "record-copy",
+      "bodies": 3,
+      "bytes": 332,
+      "report": "reports/native_mpak_record_copy.json"
+    }
+  ],
+  "combined_strict_build_and_existing_ctests": {
+    "passed": true,
+    "ctests": 2,
+    "log": {
+      "path": "local/native-ba-combined-prep-build.log",
+      "sha256": "615367efda7b0e15a3f88ad19b2e1aece992f28728c008dd94dd6ee5a6b7c5e9"
+    }
+  },
+  "direct_call_audit": {
+    "per_report": [
+      24,
+      24,
+      20,
+      35
+    ],
+    "failures": 0,
+    "debug_import_boundaries_per_report": 2,
+    "imports_mechanically_checked": false,
+    "log": {
+      "path": "local/native-ba-all-direct-calls.log",
+      "sha256": "c7ff105ce40cb080d7f8d11c619950ece16ca4067edc5eef748837a59b151efa"
+    }
+  },
+  "annotation_history": [
+    {
+      "path": "local/ghidra-annotations-20260913T072404Z.json",
+      "sha256": "1bf26cedc684445801499b1f83eeb4be24bc90bfd9cb79e41afd203d6f242a3f"
+    },
+    {
+      "path": "local/ghidra-annotations-20260913T072742Z.json",
+      "sha256": "e2d410c07ed0bb56dbd0b4f2c1af9c5b04c85bfa054a898599ac8fa201480f6d"
+    }
+  ],
+  "annotation_readback": [
+    {
+      "path": "local/native-ba-debug-annotation-readback.json",
+      "sha256": "b123e1eec92dcfdb7c56214adfee826dca2346ce221d07a76baa1641b908caca"
+    },
+    {
+      "path": "local/native-ba-record-copy-annotation-readback.json",
+      "sha256": "8f59524c2bb7f47f5c62d1056061bda370ae1ecd4cda65fd9752985da5cb6f03"
+    }
+  ],
+  "retained_worker_artifacts": {
+    "path": "local/native-ba-worker-deliveries/manifest.json",
+    "sha256": "a1481e01ad6a156e0e463e082120a140858ab0f0aeeea813b8915cc57305c804"
+  },
+  "final_gate": {
+    "helper": "local/validate_native_ba_promotion.py",
+    "acceptance": "External immutable passed receipt at exact clean candidate HEAD; tracked report is not a receipt."
+  },
+  "remaining": [
+    "D68B94 raw-manager dispatch binding: shared BD0400/header/source leased by agent/orch6-20260912:orch6_observer_raw_lifetime_q at preparation.",
+    "Debug configuration loader BE9100 has no established live caller.",
+    "Original ABI, FH3/SEH, arbitrary virtual dispatch, startup reachability and gameplay validation remain unproved."
+  ],
+  "new_permanent_tests": 0,
+  "independent_source_review": {
+    "review": {
+      "path": "local/native-ba-source-review/review.md",
+      "sha256": "bd8cbf27e4bc11e31f0049299824c4f46db9f354b2973ec9a37f56288757a5ae"
+    },
+    "audit": {
+      "path": "local/native-ba-source-review/evidence-audit.json",
+      "sha256": "9b03b8a402b378d65ff8d2d88401e46b405398e3b3cc808aba79a10211bc237e"
+    }
+  },
+  "debug_fixture_development": {
+    "original_bodies": 8,
+    "observations": 49,
+    "normalized_words": 2449,
+    "allocations": 16,
+    "releases": 16,
+    "output_sha256": "1cfa80f1b83e0f739a003bbe36983369c5f42b073ccb3f1f39ec4d8186106fd5",
+    "report": "reports/native_debug_feature_validation.json",
+    "final_candidate_replay_pending": true
+  }
+}
