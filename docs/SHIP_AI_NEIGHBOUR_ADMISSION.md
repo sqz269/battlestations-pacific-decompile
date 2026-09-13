@@ -170,3 +170,19 @@ project. The tracked report contains hashes of all ignored evidence and sources.
 report records their final result and the live call gate. No tracked test or
 runtime host is added. No gameplay/world-list registration, complete native
 observer ownership, binary ABI compatibility or full engine equivalence is claimed.
+
+## Correction from docs/UNIT_NEIGHBOUR_FIELDS.md and docs/NATIVE_SHIP_AI_OBSTACLE_NODE.md
+
+The previously unresolved unit field+6B8 is DummyObjectID. Packet O establishes
+the actual property and typed-record delivery sites and the complete00953A80
+binding operation. This supersedes the meaning-only uncertainty above; the
+runtime must still provide the actual retained field and delivery owners.
+
+Packet Q now supplies the complete normal raw90h constructor009E52E0,
+common destructor0064A610, scalar wrapper0064B5F0 and callback0064B5C0 through
+the existing actual observer lifetime. It preserves all83 untouched bytes,
+registration-before-tail ordering and controller identity. This raw API is
+separate from the older partial semantic initializer. Admission runtime
+integration still needs actual node allocation, endpoint/controller storage
+and delivery; a compiled complete constructor alone does not bind those owners.
+The native fixture and documented Ghidra body-membership limit remain distinct.

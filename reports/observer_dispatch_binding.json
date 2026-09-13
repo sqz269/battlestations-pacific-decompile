@@ -1,0 +1,65 @@
+{
+  "packet": "orch6_dispatch_owner_binding_q",
+  "status": "concrete_deleting_dispatch_binding_build_and_source_lifecycle_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_singleton_destruction.cpp",
+  "header": "include/bsp/native_singleton_destruction.hpp",
+  "integration_sources": [
+    "src/game_hosts_singletons.cpp",
+    "include/bsp/game_hosts_singletons.hpp"
+  ],
+  "calls": [
+    {
+      "address": "00BD0485",
+      "native": "00695F40",
+      "function": "00BD0400",
+      "contract": "Actual popped owner is passed to its concreteCF7E74 scalar deleting profile with native flags1; no current-publication identity filter."
+    }
+  ],
+  "indirect_resolution": {
+    "table": "00CF7E74",
+    "verified_word_hex": "40 5f 69 00",
+    "target": "00695F40",
+    "proof": "Live Ghidra bytes and produced owner table reviewed separately from mechanical CALL EDX check; owner proof is reports/observer_dispatch_owner.json."
+  },
+  "original_abi": "00BD0400 ECX=raw manager,RET;00695F40 ECX=actual popped owner,stack DWORD flags,EAX=original identity,RET4. Source binding adds explicit stable publication context and is not binary ABI compatible.",
+  "binding": "NativeSingletonDeletionBindings borrows actualE198DC cell; GameSingletonHost installs it before owner registration. Scalar delete receives popped owner even if publication changed, clearsE198DC, and does not touch the separateE198E4 alias.",
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2 of 2 existing tests passed",
+    "fixture": "local/observer_dispatch_binding_probe.exe",
+    "fixture_sha256": "9724633759585ae420e1f35e31809c05074bed83326204b5d406675b0e6fc501",
+    "result": "PASS",
+    "scope": "One focused source lifecycle; no original-byte differential wrapper execution.",
+    "observations": [
+      "ActualCCD6A0 source produces owner+4 alias and registersCF7E74 first in the actual raw manager.",
+      "Observer pair registration lazily createsCF7E70 lock owner; same raw manager has two registrations.",
+      "Duplicate edge reference goes2->1->0; actual canonical edge cleanup finishes while both owners remain live.",
+      "ActualBD0400 source drains both concrete profiles; owner and lock publications clear, registration count reaches zero, retained alias address is unchanged and never dereferenced afterward."
+    ],
+    "fixture_inputs": "Two explicitly prepared empty endpoint edge arrays. Actual dispatch owner construction and lock allocation are executed; no fake dispatch vector owner."
+  },
+  "artifact_manifest": {
+    "path": "local\\observer_dispatch_binding_artifact_manifest.json",
+    "sha256": "7ca6dd3fd0c6dd372dac2ba29e36c14c3ecf567665a224557be954c8f57c0e92",
+    "artifacts": 8
+  },
+  "source_sha256": {
+    "include/bsp/native_singleton_destruction.hpp": "31a6ca3e286659cb094208288fe839f165b7bd730e5028eac3bc50193512eb13",
+    "src/native_singleton_destruction.cpp": "9ccdebf1d2f8bb35a78e92969ceb720513ae9508e9118648618c98b454fe7e32",
+    "include/bsp/game_hosts_singletons.hpp": "c7baf6f7a25783322c5c6bbf291439d48713e77c2e86d5cb8fe51a7d0def85f8",
+    "src/game_hosts_singletons.cpp": "075dbd5221b05df470b46446a2b35a122bc578450fdbd98a990246f29a6c4643",
+    "include/bsp/observer_dispatch_owner.hpp": "df1d3fa1f228d80e2103ef93f86305b2f076e39ba46d8f46e01f5f6649c46eba",
+    "src/observer_dispatch_owner.cpp": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1",
+    "include/bsp/observer_lifetime.hpp": "7621b1bbf7c011da694b58ee4592aa3249167ab70805e2567afdfe639644bd6b",
+    "src/observer_lifetime.cpp": "5d258582be7967e9665411cbe4998edaf2f03dd074838c1e6686fba5bcafab48"
+  },
+  "limits": [
+    "No GameStartup observer owner instantiation yet; startup/shutdown placement remains a separate integration.",
+    "The production runtime must finish all observer dispatch/edge cleanup before singleton drain;E198E4 intentionally remains dangling.",
+    "Unknown deleting profiles still reject missing source contracts; this is a finite concrete profile map, not arbitrary original virtual dispatch.",
+    "No native exceptions,allocation failure,concurrency or original-game gameplay validation.",
+    "Complete verified PE destructor span is separate from existing Ghidra stored body-membership gaps documented by Q."
+  ]
+}
