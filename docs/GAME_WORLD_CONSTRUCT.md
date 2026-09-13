@@ -337,3 +337,8 @@ the record path, and that nothing reports a failure.
 
 Nothing here is fixture-tested, ABI-compatible or game-validated. The reconstruction exposes a new
 C++ interface; it is not a drop-in binary replacement.
+
+## Correction from docs/UNIT_WORLD_REGISTRATION_LIVE.md
+
+The vector callbacks in the world layout table above were reversed. The native call at004CB076 receives constructor004B7EC0 (pushed at004CB065) and destructor004C2D30 (pushed at004CB060). The complete004B7EC0..004B7ECC body zeroes count, head and tail. The count97, stride12 and world+18 destination remain correct. The source header has been corrected; the original table remains as historical evidence.
+
