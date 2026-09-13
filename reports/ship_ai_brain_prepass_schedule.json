@@ -1,0 +1,483 @@
+{
+  "packet": "orch6_brain_prepass_schedule_p",
+  "status": "partial_projection_build_fixture_tested",
+  "base_commit": "e21be33a98db74881482cc33c7b98bb32c0ed7ff",
+  "source": "src/ship_ai_brain_prepass_schedule.cpp",
+  "header": "include/bsp/ship_ai_brain_prepass_schedule.hpp",
+  "routine": {
+    "entry": "009F1420",
+    "name": "BSP_ShipAi_BrainPrePass",
+    "end_inclusive": "009F1BBA",
+    "abi": "thiscall ECX brain, one stack float, RET4 at1BB8",
+    "coverage": "partial: complete normal post-goal158A..1B9F except interleaved earlier-goal15B1..15BD and private FH3 bookkeeping; prefix1420..1589 and epilogue1BA0..1BBA excluded"
+  },
+  "fragment": {
+    "entry": "009F158A",
+    "end_inclusive": "009F1B9F",
+    "cpp": "ship_ai_brain_prepass_after_goal_009f158a",
+    "coverage": "full normal caller schedule through verified borrowed actual service boundaries; no goal prefix/whole-parent claim",
+    "abi_compatible": false
+  },
+  "host_steps": [
+    {
+      "address": "009F1650",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F1747",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F17C1",
+      "native": "00414C60",
+      "function": "009F1420",
+      "contract": "Existing exact vector2 cutoff/length helper on relative velocity, ECX two floats, no stack input/ST0 result/plain RET."
+    },
+    {
+      "address": "009F1808",
+      "native": "009F0AD0",
+      "function": "009F1420",
+      "contract": "ECX brain+8/nav, unchanged torpedo candidate stack pointer, RET4; real128-node admission/duplicate lifetime/68h allocation owner external."
+    },
+    {
+      "address": "009F1839",
+      "native": "009F0AD0",
+      "function": "009F1420",
+      "contract": "ECX brain+8/nav, unchanged torpedo candidate stack pointer, RET4; real128-node admission/duplicate lifetime/68h allocation owner external."
+    },
+    {
+      "address": "009F1872",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F18D2",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F18E8",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F1944",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F199D",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Actual no-argument settings getter/plain RET; retain every fresh call including unused special-chain returns."
+    },
+    {
+      "address": "009F19B8",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Actual no-argument settings getter/plain RET; retain every fresh call including unused special-chain returns."
+    },
+    {
+      "address": "009F1A25",
+      "native": "009F0D20",
+      "function": "009F1420",
+      "contract": "ECX brain+8/nav, unchanged candidate stack pointer, RET4; inherited N admission boundary."
+    },
+    {
+      "address": "009F1A66",
+      "native": "00414DB0",
+      "function": "009F1420",
+      "contract": "Real pose refresh, ECX captured owner, no stack input/plain RET. Host must perform actual refresh."
+    },
+    {
+      "address": "009F1A80",
+      "native": "00413920",
+      "function": "009F1420",
+      "contract": "ECX local matrix, stack scratch output/parent world matrix, RET8, EAX output; existing pose implementation reused."
+    },
+    {
+      "address": "009F1B27",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Actual no-argument settings getter/plain RET; retain every fresh call including unused special-chain returns."
+    },
+    {
+      "address": "009F1B2C",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Actual no-argument settings getter/plain RET; retain every fresh call including unused special-chain returns."
+    },
+    {
+      "address": "009F1B6C",
+      "native": "009DB8F0",
+      "function": "009F1420",
+      "contract": "ECX actual AC4 helper, one float seconds consumed by RET4 but unused in callee; actual submarine state/role/controller effect external."
+    },
+    {
+      "address": "009F1B71",
+      "native": "00424C40",
+      "function": "009F1420",
+      "contract": "Actual no-argument settings getter/plain RET; retain every fresh call including unused special-chain returns."
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "009F1622",
+      "instruction": "CALL [00CE2218]",
+      "resolved": "EnterCriticalSection",
+      "contract": "Capture brain+4 once; actual Win32 section entered before native depth increment."
+    },
+    {
+      "address": "009F1704",
+      "dispatch": "candidate+310 vtable38",
+      "verified_concrete": "008561F0..008561F6",
+      "contract": "MTorpedo constructor installsD0C378; returns byte shot+148/entity458; no stack arguments/plain RET/AL."
+    },
+    {
+      "address": "009F1716",
+      "dispatch": "candidate+310 vtable2C",
+      "verified_concrete": "00855F00..00855F46",
+      "contract": "Actual water query may refresh pose; returns0/1/2 inEAX, no stack input/plain RET; nonzero admitted."
+    },
+    {
+      "address": "009F1788",
+      "dispatch": "current self primary vtable34",
+      "verified_concrete": "00812090..008120D1 for ship examplesCFC3D0/D0BF80",
+      "contract": "Stack vector output, RET4/EAX returned vector; retain returned pointer through next candidate call."
+    },
+    {
+      "address": "009F1798",
+      "dispatch": "candidate primary vtable34",
+      "verified_concrete": "006E2860..006E2880 for MTorpedoD0C3E8",
+      "contract": "Copies318/31C/320 into stack output, RET4/EAX output; relative fields read after this return."
+    },
+    {
+      "address": "009F1B51",
+      "instruction": "CALL [00CE2210]",
+      "resolved": "LeaveCriticalSection",
+      "contract": "Decrement and leave captured section before AC4 helper lookup; never reload brain+4 for release."
+    }
+  ],
+  "native_order": [
+    "Existing prior goal refresh/prefix required; this source starts158A.",
+    "Torpedo B48/B44 then ship B50/B4C timers using existing N floating rule; no callbacks between.",
+    "Neither due: no lock/scan access, continue1B57.",
+    "Either due: capture optional brain+4; Enter then depth increment.",
+    "Torpedo due: actual21C/220 candidate filters/geometry/admission sequence.",
+    "Ship due: existing N list6 walk then F89AD8 chain pose refresh/two settings returns per node/live340 reload.",
+    "Depth decrement and Leave captured lock; then live AC4 helper/seconds call if nonnull.",
+    "Fresh settings return; pure lookup its actual byte4; reuse existing avoidance publication rule."
+  ],
+  "torpedo_contract": {
+    "producer": "008560A2 installs shot tableD0C378 at entity310; tick table is separate+3E4. PrimaryD0C3E8+130 points00856360; call0085638D->00484540 appends direct identity to world21C.",
+    "list": "0Ch node payload8/live next4, captured signed count21C/head220, no null termination/count reload; final next read occurs after callbacks.",
+    "fields": "Reuse N borrowed actual unit C8/world XYZ/full hull9C8. Raw390 selects existing NavigatorBotConfig row; byte5D and pointer4F8 remain opaque gates, not inferred ownership semantics.",
+    "navigator": "Existing producer009D53B0/robot_config maps predict2 at14 and observation2 at20, header0C/stride24/six rows; real configured row required, no default or clamp.",
+    "hull": "binary32(full hull9C8 * borrowed widened0.6f), then squared/spilled.",
+    "horizon": "extended observation2+predict2, plus binary32(periodB44+borrowed3.0), final binary32 spill.",
+    "filters": "shot38 nonzero, shot2C nonzero, byte5D zero, pointer4F8 differs from current self; preserve short circuit and actual query effects.",
+    "capture": "Initial self XYZ origin remains fixed after its optional refresh; reloaded self supplies hull/row and later velocity receiver. Candidate X/Z x87 spilled before velocity calls.",
+    "velocity": "Self primary34 first, candidate second; retain self returned pointer until after candidate call; relative=candidate-self X/Z.",
+    "geometry": "Existing exact vector length, native x87 horizon product/square/distance/dot schedules. Admit strict hull proximity else strict dynamic reach and positive dot; equality/unordered reject each gate.",
+    "admission": "009F0AD0 whole body read; real nav128 pointer owner, duplicate candidate+48 lifetime+14, random/config inputs and68h node constructor remain external; no fabricated callbacks/storage."
+  },
+  "special_chain": {
+    "producer": "00929E50 constructs actual singly walked chain by head-prepending self and linking next340/previous344 at00929FA9..FCE.",
+    "body": "1A44 head capture; each dirty pose is identical to00414DB0 including parent reload and16 x87 stores; existing pose implementation reused; two real settings returns then live next340.",
+    "gate": "Executed only when ship collection due, including when captured list6 count<=0; not executed for torpedo-only due."
+  },
+  "helper": "009DB8F0 whole79-instruction body read.4-byte holder from constructorAC4; checks submarine1268/depth1204/role1B0/controller2264 and writes122C except protected value2. Seconds unused but RET4 retained in contract.",
+  "settings_byte4": "Actual producers0083BCD5 default1 and008D0852 Lua override; named GameplayTuningSettings excludes it, so source pure lookup resolves actual captured owner rather than reading zero gap storage.",
+  "unwind": {
+    "metadata": "CB0B78->DE5E28; state0 mapDE5E10 invokesCB0B70, LEA ECX,[EBP-70], tail JMP00411EE0.",
+    "callee": "00411EE0..00411EF8 reads captured guard+4, decrements section18 and Leave if nonnull.",
+    "normal": "State0 installed after Enter/increment, inactive before normal decrement/Leave.",
+    "source": "Ordinary C++ scan exceptions release captured lock through guard; original FH3 dispatch, hardware/asynchronous faults and frame ABI excluded."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "instructions": 494,
+    "flow_gaps": 0
+  },
+  "false_free_call_gaps": [],
+  "no_ghidra_function": [],
+  "validation": {
+    "result": {
+      "normal_pairs": 18,
+      "original_bytes": 1558,
+      "events_per_side": 225,
+      "mismatches": 0,
+      "full_x87_status_matches": true,
+      "source_scan_exception_released_lock": true
+    },
+    "exit_code": 0,
+    "original_bytes": {
+      "entry": "009F158A",
+      "end_inclusive": "009F1B9F",
+      "bytes": 1558,
+      "instructions": 390,
+      "live_equals_disk": true,
+      "sha256": "21e1b986e318fdd3ff67fbd2daf738495c5278f0f5ae6102c74ce628f1ebe330",
+      "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "absolute": [
+        {
+          "site": "009F1622",
+          "offset": 154,
+          "target": 13509144
+        },
+        {
+          "site": "009F1667",
+          "offset": 223,
+          "target": 13565848
+        },
+        {
+          "site": "009F166D",
+          "offset": 229,
+          "target": 16295560
+        },
+        {
+          "site": "009F16B3",
+          "offset": 298,
+          "target": 14780584
+        },
+        {
+          "site": "009F16C2",
+          "offset": 314,
+          "target": 14131888
+        },
+        {
+          "site": "009F1877",
+          "offset": 750,
+          "target": 14780584
+        },
+        {
+          "site": "009F1911",
+          "offset": 907,
+          "target": 14131720
+        },
+        {
+          "site": "009F1929",
+          "offset": 929,
+          "target": 13582112
+        },
+        {
+          "site": "009F1993",
+          "offset": 1035,
+          "target": 14131840
+        },
+        {
+          "site": "009F1A44",
+          "offset": 1212,
+          "target": 16292568
+        },
+        {
+          "site": "009F1B51",
+          "offset": 1481,
+          "target": 13509136
+        }
+      ],
+      "calls": [
+        {
+          "site": "009F1650",
+          "offset": 199,
+          "target": 4279728
+        },
+        {
+          "site": "009F1747",
+          "offset": 446,
+          "target": 4279728
+        },
+        {
+          "site": "009F17C1",
+          "offset": 568,
+          "target": 4279392
+        },
+        {
+          "site": "009F1808",
+          "offset": 639,
+          "target": 10422992
+        },
+        {
+          "site": "009F1839",
+          "offset": 688,
+          "target": 10422992
+        },
+        {
+          "site": "009F1872",
+          "offset": 745,
+          "target": 4279728
+        },
+        {
+          "site": "009F18D2",
+          "offset": 841,
+          "target": 4279728
+        },
+        {
+          "site": "009F18E8",
+          "offset": 863,
+          "target": 4279728
+        },
+        {
+          "site": "009F1944",
+          "offset": 955,
+          "target": 4279728
+        },
+        {
+          "site": "009F199D",
+          "offset": 1044,
+          "target": 4344896
+        },
+        {
+          "site": "009F19B8",
+          "offset": 1071,
+          "target": 4344896
+        },
+        {
+          "site": "009F1A25",
+          "offset": 1180,
+          "target": 10423584
+        },
+        {
+          "site": "009F1A66",
+          "offset": 1245,
+          "target": 4279728
+        },
+        {
+          "site": "009F1A80",
+          "offset": 1271,
+          "target": 4274464
+        },
+        {
+          "site": "009F1B27",
+          "offset": 1438,
+          "target": 4344896
+        },
+        {
+          "site": "009F1B2C",
+          "offset": 1443,
+          "target": 4344896
+        },
+        {
+          "site": "009F1B6C",
+          "offset": 1507,
+          "target": 10336496
+        },
+        {
+          "site": "009F1B71",
+          "offset": 1512,
+          "target": 4344896
+        }
+      ],
+      "indirect": [
+        {
+          "site": "009F1622",
+          "operand": "dword ptr [0xce2218]"
+        },
+        {
+          "site": "009F1704",
+          "operand": "eax"
+        },
+        {
+          "site": "009F1716",
+          "operand": "eax"
+        },
+        {
+          "site": "009F1788",
+          "operand": "edx"
+        },
+        {
+          "site": "009F1798",
+          "operand": "edx"
+        },
+        {
+          "site": "009F1B51",
+          "operand": "dword ptr [0xce2210]"
+        }
+      ],
+      "unreachable_goal_exit": [
+        {
+          "site": "009F15B9",
+          "offset": 48,
+          "target": 10425641
+        }
+      ]
+    },
+    "build": "Win32 Release scripts/build.ps1; reconstructed_math and native_math_differential passed; no new tracked tests.",
+    "compile": "Ignored fixture MSVCWin32/O2/fp:strict/W4/WX and MANIFEST:EMBED, linked current worktree Release libraries.",
+    "bridge": "Synthetic EDI brain/private stack/seconds;1558 original bytes, appended RET; unreachable goal exit15B9 mapped to UD2. Not whole original parent prologue/SEH/epilogue.",
+    "normal_cases": "Six normal inputs at x87 precision24/53/64: both/neither/torpedo-only/ship-only due; all four shot gates; strict hull/dynamic geometry; live next/count/self/lock mutations; retained velocity-pointer mutation; signaling NaN countdown.",
+    "compared": "Whole B60 brain projection, sevenA00 unit buffers,228-byte world header and225 callback events per side including captured section depth/actual RecursionCount; full x87 status.",
+    "projection": "Only four semantic avoidance fields mapped to original offsets3F4/3F8/3FC/3FD. Same live fixture pointers reused between sides, no pointer normalization or byte masks.",
+    "shared_helpers": "Existing N timer/candidate, length, pose/matrix and avoidance implementations used by source; original call stubs share recovered length/matrix helpers. Pose notifications/virtual results/admissions/settings/helper are explicit observation seams, not original callee executions.",
+    "lock": "Two real raw sections reused across pairs; all normal scans restore both depth and OS RecursionCount to0. Source-only thrown scan checks release; both sections finally destroyed via existing raw owner release.",
+    "excluded": "Node arrays, class/config/settings buffers, scratch/returned velocity buffers and OS-private section bytes are not fully byte-compared; effects are observed through callbacks/geometry. No native constructors, other dynamic identities, parented special-pose path, original unwind execution, admission internals, allocation failure/concurrency/game runtime or independent CRT fidelity.",
+    "artifact_manifest": "local/brain_prepass_artifact_manifest.json"
+  },
+  "compiled_source_hashes": {
+    "include/bsp/ship_ai_brain_prepass_schedule.hpp": "26896942311e926012592a5880a37f8a88d228b6843e6f41a0a4503e11eb961c",
+    "src/ship_ai_brain_prepass_schedule.cpp": "ee84d89f1b9c341cc1d12eb90058e1471418515485ef581f5d51f72b6b25585e",
+    "include/bsp/ship_ai_neighbour_candidates.hpp": "68f1b6217e9d6d623c296b34f15bc16ba038e141db6f87594db8132e000c48c4",
+    "src/ship_ai_neighbour_candidates.cpp": "43101c4f92492aa2deb39008c20359988fad82eccbe43b5ca043a49fd299743f",
+    "src/pose_refresh.cpp": "5a9f5456720db3a58be970c64137d2fd320b49baf01138f2d800531c79cdabb2",
+    "src/camera_multiply.cpp": "46fc6ea58c5cc7fddb30e5dc25c8f9a2d3f311b6d355e4ba7a9787c864cab531",
+    "src/vector_helpers.cpp": "f70f6b390de89876064627b4d6fadae49244cf1c4bd9878612505208e2ed0312",
+    "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+    "local/brain_prepass_probe.cpp": "b3ad3542c9c39eab2e0494ee1a7b0460dcdc04c84d26835aeab725b76ff38580",
+    "build/win32/Release/bsp_core.lib": "b5187c94b935c29b1b77311c5d3b9e57ef1e2564d261ce4733bfb01ea8b952bb",
+    "build/win32/Release/bsp_lua511.lib": "74d4239690817e4069c0570d087e01ded5e531ca16db517b6e4eebbd339dfa71",
+    "build/win32/Release/bsp_zlib121.lib": "098c78a9ff0d45ae644b6a04fb761741d55c0c7adea24df52e8752c2401ec420"
+  },
+  "functions_defined_by_root": {
+    "report": "reports/brain_prepass_function_definitions.json",
+    "final_live_prototypes": "local/brain_prepass_resolved_definitions.txt",
+    "routines": [
+      {
+        "address": "006D1EB0",
+        "end_inclusive": "006D1EBF",
+        "end_exclusive": "006D1EC0",
+        "bytes": 16,
+        "hex": "8b818c0300008b0081c18c030000ffe0",
+        "sha256": "e0fd4d407bbe03e0835e247ff369856c08c12d1a8a1e3098b84ac40992822830",
+        "evidence": "Load embedded subobject vtable from unit+38C, load slot0, adjust ECX to unit+38C, JMP EAX. No separately dereferenced object receiver or local stack cleanup.",
+        "coverage": "Complete read-only adjacent skill-dispatch dependency; not implemented or annotated by this packet."
+      },
+      {
+        "address": "006D1EC0",
+        "end_inclusive": "006D1EC6",
+        "end_exclusive": "006D1EC7",
+        "bytes": 7,
+        "hex": "8b8190030000c3",
+        "sha256": "ec8e1bfd150e8ca6d700195a894ae1ad9d9ed9a6f95d649eb5b221ed6790386f",
+        "evidence": "Getter: EAX=[ECX+390], plain RET.",
+        "coverage": "Complete read-only adjacent skill-dispatch dependency; not implemented or annotated by this packet."
+      },
+      {
+        "address": "0047F2F0",
+        "end_inclusive": "0047F2F2",
+        "end_exclusive": "0047F2F3",
+        "bytes": 3,
+        "hex": "c20400",
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "evidence": "RET4 empty body; actual MTorpedo primary slot128.",
+        "coverage": "Complete read-only adjacent skill-dispatch dependency; not implemented or annotated by this packet."
+      }
+    ],
+    "commit": "522cabd1"
+  },
+  "verification_call_gate": {
+    "checked_rows": 18,
+    "failed_rows": 0,
+    "log": "local/brain_prepass_call_gate.txt",
+    "indirect_rows": "4 virtual and2 Win32 import instructions reviewed separately"
+  }
+}
