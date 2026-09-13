@@ -1,0 +1,353 @@
+{
+  "packet": "orch3_instance_collection_au",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b1dff0",
+      "end_inclusive": "00b1e6a7",
+      "end_exclusive": "00b1e6a8",
+      "cpp_symbol": "collect_native_instance_entry_00b1dff0",
+      "ghidra_name": "BSP_RenderContext_CollectInstanceEntry",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderContext_CollectInstanceEntry(void *entry)",
+      "original_abi": "__thiscall; original stack (void *entry); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 1720,
+      "native_sha256": "df649377f1b426eb5a4c70afd35cce4f6696d7607ab888ccf0bfe8e9b5ebbc40",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    },
+    {
+      "address": "00b172d0",
+      "end_inclusive": "00b172d6",
+      "end_exclusive": "00b172d7",
+      "cpp_symbol": "native_effect_name_00b172d0",
+      "ghidra_name": "BSP_Effect_GetName",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Effect_GetName(void)",
+      "original_abi": "__thiscall; original stack (void); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 7,
+      "native_sha256": "b26137ce17a8386215bb1fde2b53f227d965b04ec16598700dc9cd28de01928f",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    },
+    {
+      "address": "00b17300",
+      "end_inclusive": "00b17306",
+      "end_exclusive": "00b17307",
+      "cpp_symbol": "native_effect_batch_index_00b17300",
+      "ghidra_name": "BSP_Effect_GetBatchIndex",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "unsigned int BSP_Effect_GetBatchIndex(void)",
+      "original_abi": "__thiscall; original stack (void); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 7,
+      "native_sha256": "eab8cac485e65db727b90692b58689cbc6e0afc5fa86e1fffe05b10e54faa89d",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    },
+    {
+      "address": "00b73770",
+      "end_inclusive": "00b737fa",
+      "end_exclusive": "00b737fb",
+      "cpp_symbol": "native_stream_threshold_fade_00b73770",
+      "ghidra_name": "BSP_StreamParameters_ComputeThresholdFade",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float BSP_StreamParameters_ComputeThresholdFade(float leading, float fraction)",
+      "original_abi": "__thiscall; original stack (float leading, float fraction); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 139,
+      "native_sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    },
+    {
+      "address": "00b51cb0",
+      "end_inclusive": "00b51ceb",
+      "end_exclusive": "00b51cec",
+      "cpp_symbol": "append_native_render_batch_entry_00b51cb0",
+      "ghidra_name": "BSP_RenderBatch_AppendEntry",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderBatch_AppendEntry(void *entry)",
+      "original_abi": "__thiscall; original stack (void *entry); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 60,
+      "native_sha256": "7934397a2c8d680f6e37355b0119c240f614c4734aa70ae3d375705fc261d24e",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    },
+    {
+      "address": "0043c130",
+      "end_inclusive": "0043c1b5",
+      "end_exclusive": "0043c1b6",
+      "cpp_symbol": "prefix_native_string_header_0043c130",
+      "ghidra_name": "BSP_NativeString_ConstructPrefixedHeader",
+      "native_calling_convention": "__fastcall",
+      "native_prototype": "void * BSP_NativeString_ConstructPrefixedHeader(void *output, char *prefix, void *right)",
+      "original_abi": "__fastcall; original stack (void *output, char *prefix, void *right); complete native listing and cleanup in docs/NATIVE_INSTANCE_COLLECTION.md.",
+      "source": "src/native_instance_collection.cpp",
+      "header": "include/bsp/native_instance_collection.hpp",
+      "native_byte_count": 134,
+      "native_sha256": "e7c7a3dbf9b0d3917fb4e046611c1b56ca7a97e2056afdc81a857c6424eb0f31",
+      "coverage": "complete normal body over actual producer-created storage and current canonical services",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual visibility, pointer batching, binding-indexed group publication and two generated models. x87/SSE/low-DWORD category semantics and current pointer reloads preserved. Full live/disk bytes and assembly; new source ABI; gameplay unverified. Evidence: docs/NATIVE_INSTANCE_COLLECTION.md; reports/native_instance_collection.json."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b1e03f",
+      "native": "00b6db70",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e07d",
+      "native": "00b6db70",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e0e0",
+      "native": "00419440",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e184",
+      "native": "00b73770",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e216",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e229",
+      "native": "00bf681b",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e241",
+      "native": "00b1d6f0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e25e",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e276",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e28a",
+      "native": "00b1ca50",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e298",
+      "native": "0041e870",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e2bc",
+      "native": "00b172d0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e2c3",
+      "native": "004261a0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e2d6",
+      "native": "00b6d800",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e2e3",
+      "native": "004261a0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e2f1",
+      "native": "00425f40",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e30c",
+      "native": "00419cc0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e313",
+      "native": "00bd1510",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e32f",
+      "native": "00419cc0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e336",
+      "native": "00bd1510",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e355",
+      "native": "00419cc0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e35c",
+      "native": "00bd1510",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e47d",
+      "native": "00b6d800",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e48c",
+      "native": "0043c130",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4a7",
+      "native": "00b4c8d0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4c9",
+      "native": "00419cc0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4d0",
+      "native": "00bd1510",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4de",
+      "native": "00b74640",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4e5",
+      "native": "00b732c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e4f1",
+      "native": "00b179f0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e52a",
+      "native": "00b1c500",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e57d",
+      "native": "00b1c660",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e5b0",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e5ca",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e5e5",
+      "native": "00b1c7c0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e612",
+      "native": "00b1c500",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e637",
+      "native": "00b1c500",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e67c",
+      "native": "00b17300",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b1e68e",
+      "native": "00b51cb0",
+      "function": "00b1dff0"
+    },
+    {
+      "address": "00b51ccd",
+      "native": "00b51b50",
+      "function": "00b51cb0"
+    },
+    {
+      "address": "0043c15c",
+      "native": "0041e870",
+      "function": "0043c130"
+    },
+    {
+      "address": "0043c171",
+      "native": "004261a0",
+      "function": "0043c130"
+    },
+    {
+      "address": "0043c196",
+      "native": "00419cc0",
+      "function": "0043c130"
+    },
+    {
+      "address": "0043c19d",
+      "native": "00bd1510",
+      "function": "0043c130"
+    }
+  ],
+  "no_ghidra_function": [],
+  "verification": {
+    "live_disk_equal": true,
+    "build": "pending",
+    "native_probe": "pending",
+    "game_validated": false,
+    "owned_source_compile": "MSVC Win32 /MD /W4 /WX /fp:strict passed",
+    "direct_call_rows": 44
+  },
+  "initial_probe": {
+    "passed": true,
+    "comparisons": 76,
+    "full_collector_cases": 48,
+    "threshold_cases": 24,
+    "control_words": [
+      "007f",
+      "027f",
+      "037f",
+      "0e7f"
+    ],
+    "cold_collection_executed": false,
+    "input": "C:/Users/sqz269/bsp-au-collection/probe.cpp",
+    "input_sha256": "b21123ce4d3459b27dcf8656a5f70bbf151f19100c4a6f4e85ca5e30b06b5751",
+    "source_sha256": "069a083a942d7b3390b0b9bf1ae7340b92c87e0218650e520215a4acc5c3ec09",
+    "command": "./local/run_collection_au.ps1",
+    "mode": "two new source modules linked to existing library; final probe-only current-library replay pending"
+  }
+}
