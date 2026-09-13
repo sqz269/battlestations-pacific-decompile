@@ -18,4 +18,11 @@ void destroy_native_string_vector_004d0fa0(NativeStringVectorStorage&,NativeStri
 // grows to signed max(2*capacity,1); zero fresh header, deep-copy source,
 // increment live count after copy. Sole native unwind action is bare RET.
 void append_native_string_vector_004cdc20(NativeStringVectorStorage&,const NativeString&,NativeStringStorage&);
+// Full543E50..543E8E[63]: ECX destination, stack source, EAX destination,
+// RET4. Resize destination0, reserve from CURRENT source count, then append
+// while signed index<CURRENT source count, reloading data each iteration.
+// Self-copy clears the source before reserve. No new EH frame or rollback.
+NativeStringVectorStorage& copy_native_string_vector_00543e50(
+    NativeStringVectorStorage& destination,const NativeStringVectorStorage& source,
+    NativeStringStorage&);
 } // namespace bsp
