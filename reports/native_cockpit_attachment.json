@@ -1,0 +1,32 @@
+{
+  "packet": "orch3_cockpit_attachment_be",
+  "program": "battlestationspacific.exe",
+  "status": "evidence_complete_implementation_blocked_provider",
+  "functions": [
+    {
+      "address": "00b3c650",
+      "end": "00b3c6b6",
+      "bytes": 103,
+      "instructions": 43,
+      "coverage": "complete static body; implementation blocked on canonical arbitrary-node owner lookup",
+      "abi": "ECX actual 24h helper; stack raw node pointer; RET4"
+    }
+  ],
+  "native_calls": [
+    {"address": "00b3c663", "native": "00b6da70", "containing_function": "00b3c650", "preparation": "ECX current helper+08; float 0; recurse 0"},
+    {"address": "00b3c6af", "native": "00b6da70", "containing_function": "00b3c650", "preparation": "ECX freshly reloaded helper+08; float 0; recurse 0"},
+    {"address": "007bc677", "native": "00b3c650", "containing_function": "007bc610", "preparation": "ECX service+0C; stack entity+808"}
+  ],
+  "uncontained_candidate": "007bc707: ECX service+0C, stack zero; candidate 007bc690..007bc797 from target bytes only; Ghidra has no containing function",
+  "indirect_transfers": [
+    {"address": "00b3c67e", "target": "InterlockedIncrement IAT 00ce221c", "preparation": "incoming+04 after publish"},
+    {"address": "00b3c68c", "target": "InterlockedDecrement IAT 00ce2220", "preparation": "captured old+04"},
+    {"address": "00b3c69c", "target": "captured old current virtual+00", "condition": "decrement returned zero"}
+  ],
+  "verification": {
+    "ghidra": "target-guarded proto, disasm, xrefs, bytes; no mutations",
+    "build": "not applicable: no C++ implementation",
+    "fixture": "not run: no C++ implementation",
+    "game": "not run"
+  }
+}
