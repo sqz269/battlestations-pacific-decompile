@@ -1,0 +1,48 @@
+{
+  "packet": "orch4_input_composition_ay",
+  "status": "source_composition_component_validated_combined_publication_pending",
+  "documentation": "docs/INPUT_COMPOSITION_AY.md",
+  "worker_reports": [
+    "reports/game_input_settings_runtime_ay.json",
+    "reports/game_input_settings_singleton_ay.json",
+    "reports/game_input_action_contexts_ay.json"
+  ],
+  "raw_fundamentals_report": "reports/native_lua_fundamentals_raw_lifetime_ay.json",
+  "host_fixture_report": "reports/game_input_settings_host_ay_validation.json",
+  "host_gap_report": "reports/native_vfs_host_graph_az.json",
+  "changes": [
+    "Stable GameInputSettingsRuntime owns scripts, concrete keyboard storage, tables and lifetime contexts; it borrows exact publications and explicit stack policy.",
+    "GameSingletonHost owns E198E8, exposes it and its existing actual01090AA0, and binds settings deletion before explicit registration.",
+    "GameInputActions exposes existing binding, configuration and tick contexts without duplicate state.",
+    "Fundamentals uses the existing raw or semantic lifetime adapter; raw D62C18 deletion passes the popped allocation and clears actual0108FF1C unconditionally."
+  ],
+  "native_abi": {
+    "00884770": "No arguments, EAX owner, RET",
+    "00b68340": "ECX actual raw owner, EAX same owner, RET",
+    "00b667d0": "ECX owner, RET",
+    "00b66b80": "ECX owner, stack flags, EAX original address, RET4"
+  },
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lifetime_words_equal": 122545,
+    "tree_range_words_equal": 309711,
+    "tree_insertion_words_equal": 168378,
+    "vector_storage_words_equal": 1448,
+    "checked_string_words_equal": 335,
+    "raw_native_source_getter_executions": 4,
+    "retained_constructor_executions": 10,
+    "semantic_domain_shutdowns": 3,
+    "host_registered_settings_owners": 1,
+    "host_string_allocations": 2763,
+    "host_string_releases": 2763,
+    "host_remaining_strings": 0
+  },
+  "limits": [
+    "This composes source interfaces, not native ABI replacements or original FH3/private stack/hardware exception behavior.",
+    "Installed scripts run in isolated manifested Win32 fixtures with explicit VFS/callback services; no original game, device or window is started.",
+    "GameStartupHost does not yet reach the raw settings getter. Actual VFS graph, Lua activation and configuration timing/owner wiring remain.",
+    "The source host lifetime fixture links actual host singleton and observer objects plus exactly checked GameHostLog methods; it does not execute unrelated startup paths.",
+    "No gameplay validation."
+  ]
+}

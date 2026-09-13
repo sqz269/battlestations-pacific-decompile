@@ -8,6 +8,7 @@ class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
 struct NativeInputSettingsLifetimeContext;
+struct NativeLuaFundamentalsView;
 struct NativeDebugFeatureOwnerContext;
 struct NativeGameResourceFactoryContext;
 struct NativeStringPoolStorage;
@@ -24,7 +25,8 @@ namespace game { class GameSoundRuntime; }
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94 or CFD84C. D0DA64
+// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
+// CFD84C or D62C18. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -81,8 +83,12 @@ struct NativeSingletonDeletionBindings {
     // 00716520 adjusts -4 before00716560 frees the primary8-byte allocation.
     // Its context owns E19B90; the separate WinMain F8D31C alias is untouched.
     NativeGameResourceFactoryContext* game_resource_factory{};
+    // D62C18 deletes the actual0Ch fundamentals cache through00B66B80.
+    // Pass the popped owner and clear this same0108FF1C cell unconditionally,
+    // including when publication changed after registration.
+    NativeLuaFundamentalsView* volatile* actual_lua_fundamentals_publication_0108ff1c{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 72);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 76);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

@@ -1,0 +1,238 @@
+{
+  "packet": "orch4_raw_lua_fundamentals_ay",
+  "status": "raw_and_semantic_lifetime_component_native_comparisons_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "reconstructed": [
+    "00884770",
+    "00b68340",
+    "00b667d0",
+    "00b66b80"
+  ],
+  "documentation": "docs/NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md",
+  "source": [
+    "include/bsp/native_lua_fundamentals.hpp",
+    "src/native_lua_fundamentals.cpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "annotations": "reports/native_lua_fundamentals_raw_lifetime_ay_annotations.json",
+  "byte_spans": [
+    {
+      "address": "00884770",
+      "end_inclusive": "0088482c",
+      "bytes": 189,
+      "sha256": "87c0b25c289f74e8f3b6b4700268b923ea528c9467e9ea468d11e46886ebc913",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_LuaFundamentals_GetSingleton at 00884770\nSignature: undefined BSP_LuaFundamentals_GetSingleton(void)\nEntry: 00884770\nBody: 00884770 - 0088482c",
+      "returns": [
+        {
+          "site": "0088482c",
+          "operand": ""
+        }
+      ],
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b68340",
+      "end_inclusive": "00b68458",
+      "bytes": 281,
+      "sha256": "7a9579485fa41a033d4a6c009b7e7dce11d1df96f36344e1d553fb3abc194180",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_LuaFundamentals_Construct at 00b68340\nSignature: undefined BSP_LuaFundamentals_Construct(void)\nEntry: 00b68340\nBody: 00b68340 - 00b68458",
+      "returns": [
+        {
+          "site": "00b68458",
+          "operand": ""
+        }
+      ],
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b667d0",
+      "end_inclusive": "00b667e0",
+      "bytes": 17,
+      "sha256": "3675bae8456a7279e9f6630ea8734129abbb70f6298b350a620fd5e60a9fd17b",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_LuaFundamentals_DestroySingletonBase at 00b667d0\nSignature: undefined BSP_LuaFundamentals_DestroySingletonBase(void)\nEntry: 00b667d0\nBody: 00b667d0 - 00b667e0",
+      "returns": [
+        {
+          "site": "00b667e0",
+          "operand": ""
+        }
+      ],
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b66b80",
+      "end_inclusive": "00b66bc5",
+      "bytes": 70,
+      "sha256": "df123e73bf8d2dfc1f61577dc2baefe1237502dc0bbc3039608e7f944d769444",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_LuaFundamentals_ScalarDeletingDestructor at 00b66b80\nSignature: void * __fastcall BSP_LuaFundamentals_ScalarDeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00b66b80\nBody: 00b66b80 - 00b66bc5",
+      "returns": [
+        {
+          "site": "00b66bc3",
+          "operand": "4"
+        }
+      ],
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00884770",
+      "address": "00884796",
+      "native": "00415350",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00884770",
+      "address": "008847cc",
+      "native": "00bf681b",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00884770",
+      "address": "008847e3",
+      "native": "00b68340",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00884770",
+      "address": "008847f6",
+      "native": "00415350",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00884770",
+      "address": "00884804",
+      "native": "00bd0c30",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b68340",
+      "address": "00b6837d",
+      "native": "0041dd40",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b68340",
+      "address": "00b68398",
+      "native": "00bf7680",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b68340",
+      "address": "00b683ee",
+      "native": "00bf55be",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b68340",
+      "address": "00b68439",
+      "native": "00419cc0",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b68340",
+      "address": "00b68440",
+      "native": "00bd1510",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b66b80",
+      "address": "00b66b91",
+      "native": "00bf6989",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    },
+    {
+      "function": "00b66b80",
+      "address": "00b66bb8",
+      "native": "00bf65ac",
+      "evidence": "Direct CALL with actual owning saved function and live/disk instruction bytes."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00884770",
+      "call_site": "008847af",
+      "operand": "dword ptr [0xce2218]",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00884770",
+      "call_site": "00884812",
+      "operand": "dword ptr [0xce2210]",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b683b7",
+      "operand": "edx",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b683c2",
+      "operand": "edx",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b683e8",
+      "operand": "edx",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b6840a",
+      "operand": "edx",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b68410",
+      "operand": "dword ptr [0xce2220]",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    },
+    {
+      "function": "00b68340",
+      "call_site": "00b68420",
+      "operand": "eax",
+      "evidence": "Indirect call inventory; ABI/context documented in original fundamentals report and source."
+    }
+  ],
+  "instruction_ownership_failures": [],
+  "limits": [
+    "New source lifetime interfaces, no original exception/CRT ABI or binary-replacement claim.",
+    "Raw actual01090AA0 and semantic fixture lifetimes share existing borrowed access; no new lifetime domain.",
+    "Constructor native read-allocation/stream retention on failure is preserved; fixture explicitly releases the leaked buffer after observing it.",
+    "Caller must bind and retain actual0108FF1C and all raw manager services through drain.",
+    "No production raw VFS owner, executable startup reachability or gameplay claim."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "native_source_raw_getter_executions": 4,
+    "retained_constructor_executions": 10,
+    "paired_constructor_cases": 5,
+    "semantic_domain_shutdowns": 3,
+    "manager_replacement": true,
+    "captured_section_release": true,
+    "changed_publication_raw_drain": true,
+    "source_read_unwind": true,
+    "game_validated": false
+  },
+  "independent_review": "device_index_ax: no source/listing mismatch in getter allocation/lock/publication and D62C18 delete routing; static review only",
+  "deletion_profile": {
+    "address": "00d62c18",
+    "slot0": "00b66b80",
+    "bytes_hex": "806bb600",
+    "live_disk_equal": true
+  },
+  "body_repair": "reports/native_lua_fundamentals_raw_lifetime_ay_body_repair.json",
+  "integration_report": "reports/input_composition_ay_validation.json"
+}

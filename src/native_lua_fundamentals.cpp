@@ -49,14 +49,10 @@ NativeLuaFundamentalsOwner* construct_native_lua_fundamentals_00b68340(
     return owner;
 }
 
-NativeLuaFundamentalsOwner* get_native_lua_fundamentals_00884770(
-    NativeLuaFundamentalsContext& context) {
-    if (auto* const existing = context.publication_0108ff1c) return existing;
-    auto* const captured_section = context.lifetime.get_manager_00415350()->system_owner().section_10;
-    if (captured_section) {
-        singleton_enter_critical_section(*captured_section);
-        ++captured_section->recursion_18;
-    }
+namespace {
+// Keep the native allocation-unwind state in this inner SEH frame. The caller
+// owns the captured lifetime section and releases it before the final reload.
+void construct_and_register_fundamentals(NativeLuaFundamentalsContext& context) {
     void* allocation = nullptr;
     unsigned unwind_state = 0;
     __try {
@@ -68,15 +64,21 @@ NativeLuaFundamentalsOwner* get_native_lua_fundamentals_00884770(
                 ? construct_native_lua_fundamentals_00b68340(allocation, context) : nullptr;
             unwind_state = 0;
             context.publication_0108ff1c = owner;
-            auto* const registration_manager = context.lifetime.get_manager_00415350();
+            auto registration_manager = context.lifetime.get_manager_00415350();
             registration_manager->register_object(context.publication_0108ff1c);
         }
     } __finally {
         if (unwind_state == 1) singleton_lifetime_free(allocation);
-        if (captured_section) {
-            --captured_section->recursion_18;
-            singleton_leave_critical_section(*captured_section);
-        }
+    }
+}
+} // namespace
+
+NativeLuaFundamentalsOwner* get_native_lua_fundamentals_00884770(
+    NativeLuaFundamentalsContext& context) {
+    if (auto* const existing = context.publication_0108ff1c) return existing;
+    {
+        CapturedSoundLifetimeSection captured(context.lifetime);
+        construct_and_register_fundamentals(context);
     }
     return context.publication_0108ff1c;
 }
