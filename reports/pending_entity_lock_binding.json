@@ -7,7 +7,16 @@
   "actual_profile": "00D190C4",
   "native_target": "009256D0",
   "actual_publication": "00F899E8",
-  "validation": "Pending combined T build and focused actual-provider composition probe.",
+  "validation": {
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "compiled_commit": "9fa6cfb89f582f989f5a29a729b745e657bc0928",
+    "fixture": "local/pending_lock_binding_probe.cpp",
+    "result": "PASS actual process getter/registration/reuse/finite-map drain",
+    "manifest": "local/pending_lock_binding_proof/manifest.json",
+    "manifest_sha256": "4cca37d0b9f695890735612e39912ce274519e5d65320b293da3b40793e6bcd1",
+    "artifacts": 43,
+    "runtime_scope": "Source composition probe; mission run retained empty queues and does not prove pending-lock gameplay use."
+  },
   "component_evidence": "reports/native_pending_entity_lock.json",
   "limits": [
     "D190C8 is a separate table; no second slot inferred.",
