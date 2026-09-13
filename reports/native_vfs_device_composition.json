@@ -1,0 +1,433 @@
+{
+  "packet": "orch2_native_vfs_device_fixture_az",
+  "status": "exact_candidate_objects_and_fixed_original_baseline_replay_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "candidate_head": "42d7a7be912fb079c61babd43810496353d4aa39",
+  "functions": [
+    {
+      "address": "00bdd850",
+      "bytes": 305,
+      "sha256": "1f95f2c9ee13aebef5bf7b85d711350a72ab681a4216bd62da7ee04a0fbd7315",
+      "live_matches_disk": true,
+      "coverage": "bounded normal-return native/source fixture; full body copied, no exception-path execution claimed"
+    },
+    {
+      "address": "00bdbc70",
+      "bytes": 396,
+      "sha256": "03f512991938e529b88dc099991ba4c091b835a7d5bd88d75d7c725087b63198",
+      "live_matches_disk": true,
+      "coverage": "bounded normal-return native/source fixture; full body copied, no exception-path execution claimed"
+    },
+    {
+      "address": "00bdb680",
+      "bytes": 88,
+      "sha256": "7e6ef1ffd5ef9be5d5c21c3b91eca027a84b3967cdbecfec333c84be9617e924",
+      "live_matches_disk": true,
+      "coverage": "bounded normal-return native/source fixture; full body copied, no exception-path execution claimed"
+    },
+    {
+      "address": "00bdb670",
+      "bytes": 4,
+      "sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "live_matches_disk": true,
+      "coverage": "bounded normal-return native/source fixture; full body copied, no exception-path execution claimed"
+    }
+  ],
+  "source_helper": "tools/native_vfs_device_fixture.cpp",
+  "runner": "tools/native_vfs_device_fixture.py",
+  "documentation": "docs/NATIVE_VFS_DEVICE_COMPOSITION.md",
+  "coverage": "four original bodies compared in bounded normal-return composition; existing traversal and strings/pool are explicit shared source support",
+  "baseline": {
+    "status": "passed",
+    "variants": 8,
+    "original_routines": 4,
+    "original_code_bytes": 793,
+    "profile_and_literal_bytes": 14,
+    "normalized_arena_bytes_per_variant": 4096,
+    "actual_pool_prefix_bytes_per_variant": 9098372,
+    "current_include_pins": 40,
+    "baseline_replayed": false,
+    "original_source_outcomes_match": true,
+    "input_manifest_sha256": "440075953d132882d41505a121303361dad6037bc090f35e17bb73e290cb8e65",
+    "original_inputs_sha256": "0138c40f4557b40d960179edd94d708b001d4254d7c180243db30fe89e53f44c",
+    "original_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "source_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "installed_or_gameplay_validation": false
+  },
+  "directory_replay": {
+    "status": "passed",
+    "variants": 8,
+    "original_routines": 4,
+    "original_code_bytes": 793,
+    "profile_and_literal_bytes": 14,
+    "normalized_arena_bytes_per_variant": 4096,
+    "actual_pool_prefix_bytes_per_variant": 9098372,
+    "current_include_pins": 40,
+    "baseline_replayed": true,
+    "original_source_outcomes_match": true,
+    "input_manifest_sha256": "fe096439f87d7a019e8b2441226af3160c7d1a04f034a3539281f46f5eff0dae",
+    "original_inputs_sha256": "0138c40f4557b40d960179edd94d708b001d4254d7c180243db30fe89e53f44c",
+    "original_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "source_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "installed_or_gameplay_validation": false
+  },
+  "support_contracts": [
+    "Actual shared resize, cstring construction, concat, normalization, pool getter/return and current host memmove",
+    "BDD850 original calls shared actual BDD0A0 traversal and source BDBC70; BDBC70 original is compared independently",
+    "Instrumented provider+24 returns raw result, optionally writes b, and replaces current payload provider",
+    "No native exception propagation; aliased callback output case does not destroy the externally backed visitor name"
+  ],
+  "fixed_baseline": {
+    "original_inputs_jsonl": "{\"case\":0,\"arena_hash\":\"10135074435661529945\",\"pool_hash\":\"4935936179300394252\"}\r\n{\"case\":1,\"arena_hash\":\"3887146389948710921\",\"pool_hash\":\"4935936179300394252\"}\r\n{\"case\":2,\"arena_hash\":\"3887146389948710921\",\"pool_hash\":\"4935936179300394252\"}\r\n{\"case\":3,\"arena_hash\":\"14835783859452272426\",\"pool_hash\":\"16214639058717542363\"}\r\n{\"case\":4,\"arena_hash\":\"17570017169163723506\",\"pool_hash\":\"16214639058717542363\"}\r\n{\"case\":5,\"arena_hash\":\"10135074435661529945\",\"pool_hash\":\"4935936179300394252\"}\r\n{\"case\":6,\"arena_hash\":\"4705138123200827735\",\"pool_hash\":\"16214639058717542363\"}\r\n{\"case\":7,\"arena_hash\":\"4705138123200827735\",\"pool_hash\":\"16214639058717542363\"}\r\n",
+    "original_outcomes_jsonl": "{\"case\":0,\"device\":8738,\"raw\":128,\"name_hex\":\"62\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"15888824216423691130\",\"pool_hash\":\"11755291532822771200\"}\r\n{\"case\":1,\"device\":8738,\"raw\":128,\"name_hex\":\"6d2f62\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"7783367479192978648\",\"pool_hash\":\"17188325442296228045\"}\r\n{\"case\":2,\"device\":13107,\"raw\":0,\"name_hex\":\"6d2f\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"15487385592734304157\",\"pool_hash\":\"390128256289666750\"}\r\n{\"case\":3,\"device\":8738,\"raw\":109,\"name_hex\":\"6d2f\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"1855607322225705347\",\"pool_hash\":\"3803747050096087338\"}\r\n{\"case\":4,\"device\":13107,\"raw\":0,\"name_hex\":\"002f62\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"16495232833934361230\",\"pool_hash\":\"15486736994867797638\"}\r\n{\"case\":5,\"device\":13107,\"raw\":0,\"name_hex\":\"6f6c64\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"2664534450222472234\",\"pool_hash\":\"11669744671332186237\"}\r\n{\"case\":6,\"device\":8738,\"raw\":1,\"name_hex\":\"\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"4810163264465236811\",\"pool_hash\":\"14093165133926753868\"}\r\n{\"case\":7,\"device\":4294967295,\"raw\":0,\"name_hex\":\"\",\"seen\":\"file\",\"visits\":1,\"arena_hash\":\"4810163264465236811\",\"pool_hash\":\"7348328383892545567\"}\r\n"
+  },
+  "artifacts": {
+    "baseline": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\attempt03",
+    "directory_replay": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\replay04",
+    "report_replay": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\report-replay05",
+    "exact_object_replay": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\local\\native-device-fixture-az\\exact-object-replay07"
+  },
+  "unchanged_reports": [
+    "reports/native_mpak_open.json",
+    "reports/native_vfs_device_route.json"
+  ],
+  "new_runtime_or_gameplay_claim": false,
+  "original_spans": [
+    {
+      "address": "00bdd850",
+      "bytes": 305,
+      "sha256": "1f95f2c9ee13aebef5bf7b85d711350a72ab681a4216bd62da7ee04a0fbd7315",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bdbc70",
+      "bytes": 396,
+      "sha256": "03f512991938e529b88dc099991ba4c091b835a7d5bd88d75d7c725087b63198",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bdb680",
+      "bytes": 88,
+      "sha256": "7e6ef1ffd5ef9be5d5c21c3b91eca027a84b3967cdbecfec333c84be9617e924",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bdb670",
+      "bytes": 4,
+      "sha256": "e0eb8cffec07b89f095aa1e60d89eed1f3338b76216e649ad3aeb3ba92dc7d04",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce7898",
+      "bytes": 2,
+      "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d683f4",
+      "bytes": 12,
+      "sha256": "3977e9aa15617a6daf773b0d3e876966dd87032a6b4deea7d33cb7c712039d04",
+      "live_matches_disk": true
+    }
+  ],
+  "exact_object_replay": {
+    "status": "passed",
+    "variants": 8,
+    "original_routines": 4,
+    "original_code_bytes": 793,
+    "profile_and_literal_bytes": 14,
+    "normalized_arena_bytes_per_variant": 4096,
+    "actual_pool_prefix_bytes_per_variant": 9098372,
+    "current_include_pins": 15,
+    "baseline_replayed": true,
+    "original_source_outcomes_match": true,
+    "exact_candidate_objects_linked": 2,
+    "input_manifest_sha256": "376edbecd4b51146179200b8d375295f2bb409685b44bc3e5818dfc6add3388f",
+    "original_inputs_sha256": "0138c40f4557b40d960179edd94d708b001d4254d7c180243db30fe89e53f44c",
+    "original_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "source_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "installed_or_gameplay_validation": false
+  },
+  "candidate_objects": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\build\\win32\\bsp_core.dir\\Release\\native_vfs_device_route.obj",
+      "frozen": "inputs\\native_vfs_device_route.obj",
+      "sha256": "aa036fe62fb57b0ce9a285afa2670d110c4a9c3559a69b76398ae9dd0e0dd759"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-open-az\\build\\win32\\bsp_core.dir\\Release\\native_vfs_lookup_routes.obj",
+      "frozen": "inputs\\native_vfs_lookup_routes.obj",
+      "sha256": "f1db9d29778f06057ce52b46057dd3c3f8a90cc64914d7db7c66600484c0a719"
+    }
+  ],
+  "compiled_fixture_include_pins": [
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_vfs_device_route.hpp",
+      "sha256": "49a502542511e8e860b8f030baa3aa796131ed9a69d3b892e62f768ed94cd445"
+    },
+    {
+      "path": "include/bsp/native_vfs_lookup_routes.hpp",
+      "sha256": "51821992edd0334d7d3c8b25594f94146860bab11a5327c05743c1a8fa451238"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    }
+  ],
+  "artifact_boundary": "Only the fixture is freshly compiled. Two exact existing candidate build COFF objects are frozen and linked; candidate bsp_core/lua/zlib archives supply explicit shared source support.",
+  "baseline_policy": "Explicit --baseline is mandatory; fixed original input/outcome rows are immutable. Original routine byte counts and hashes must also match the baseline. Output directory must be new.",
+  "initial_attempt_boundary": "The initial baseline, directory replay and report replay compiled target source copies. Their fixed native rows remain unchanged and are also matched by the final exact-object replay.",
+  "report_replay": {
+    "status": "passed",
+    "variants": 8,
+    "original_routines": 4,
+    "original_code_bytes": 793,
+    "profile_and_literal_bytes": 14,
+    "normalized_arena_bytes_per_variant": 4096,
+    "actual_pool_prefix_bytes_per_variant": 9098372,
+    "current_include_pins": 40,
+    "baseline_replayed": true,
+    "original_source_outcomes_match": true,
+    "input_manifest_sha256": "eda3c27100f5a42cf19d91c4afbc95c453f0e84d1c9b92d973365efbbbc9d6c6",
+    "original_inputs_sha256": "0138c40f4557b40d960179edd94d708b001d4254d7c180243db30fe89e53f44c",
+    "original_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "source_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+    "installed_or_gameplay_validation": false
+  },
+  "replay_manifest_sha256": "1a80f5d9cabc210d9b99ed7c8940dac830447cd9c426bb0c69f0c3355d3fbd03",
+  "executable_sha256": "82aa3eda3c8ad13ed46f83b0eb8c20c11acd853f37720a52e64a40741a0472a6",
+  "link_map_sha256": "88795cdf4e73a86635bee0f60e5bfeda108ff3cb9ff5477103c10517d25530d4",
+  "link_log_sha256": "87bb61d1af23272de8675e9cba44089777ac84566289cb741dcb8bbb3ca6354d",
+  "source_pins": [
+    {
+      "path": "tools\\native_vfs_device_fixture.py",
+      "sha256": "f8f021840f7c302dece1a6946c1963ff51f37cefef17db7e6b507cba59b16ecc"
+    },
+    {
+      "path": "tools\\native_vfs_device_fixture.cpp",
+      "sha256": "72f5b53c620138800ee11a5a516c55240d88e3aa772f2c6e7cbe1f7b3224981c"
+    },
+    {
+      "path": "docs\\NATIVE_VFS_DEVICE_COMPOSITION.md",
+      "sha256": "2f37d3da9efba15917714271d4d7b58f284f6922bd5feba5017bef663736668b"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bdd8ac",
+      "native": "0041dd40",
+      "function": "00bdd850",
+      "contract": "Actual copied-name resize from current input length, preserve1; RET8. Visitor already owned; name not yet owned."
+    },
+    {
+      "address": "00bdd8c3",
+      "native": "00bf7680",
+      "function": "00bdd850",
+      "contract": "Inline constructor copy after fresh source guard/current destination count and pointers; ADD ESP,0C; host memmove."
+    },
+    {
+      "address": "00bdd8d4",
+      "native": "00bee690",
+      "function": "00bdd850",
+      "contract": "Normalize copied actual header; original input unchanged; RET."
+    },
+    {
+      "address": "00bdd8e5",
+      "native": "00bdd0a0",
+      "function": "00bdd850",
+      "contract": "Existing actual traversal on captured manager, copied name, actual stack14h visitor; RET8."
+    },
+    {
+      "address": "00bdd90b",
+      "native": "00419cc0",
+      "function": "00bdd850",
+      "contract": "Success: captured copied-name data/current length+1/unused1 prepared for actual pool getter."
+    },
+    {
+      "address": "00bdd912",
+      "native": "00bd1510",
+      "function": "00bdd850",
+      "contract": "Success: return copied-name block via current actual pool; RET0C."
+    },
+    {
+      "address": "00bdd923",
+      "native": "00bdb680",
+      "function": "00bdd850",
+      "contract": "Success: destroy visitor after name cleanup; captured device survives."
+    },
+    {
+      "address": "00bdd94d",
+      "native": "00419cc0",
+      "function": "00bdd850",
+      "contract": "Failure: captured copied-name data/current length+1/unused1 prepared for actual pool getter."
+    },
+    {
+      "address": "00bdd954",
+      "native": "00bd1510",
+      "function": "00bdd850",
+      "contract": "Failure: return copied-name block; RET0C."
+    },
+    {
+      "address": "00bdd965",
+      "native": "00bdb680",
+      "function": "00bdd850",
+      "contract": "Failure: destroy visitor; return -1 without reading device field."
+    },
+    {
+      "address": "00bdbcbc",
+      "native": "provider+vtable24",
+      "function": "00bdbc70",
+      "contract": "CALL EAX; capture current payload+8/provider table+24; suffix and provider-name temporary output; original RET8 contract."
+    },
+    {
+      "address": "00bdbcca",
+      "native": "0041e870",
+      "function": "00bdbc70",
+      "contract": "Construct slash actual header from CE7898; RET4; arm only after return."
+    },
+    {
+      "address": "00bdbce0",
+      "native": "004261a0",
+      "function": "00bdbc70",
+      "contract": "ECX current mount payload; stack prefixed output/slash; RET8."
+    },
+    {
+      "address": "00bdbcf6",
+      "native": "004261a0",
+      "function": "00bdbc70",
+      "contract": "ECX first returned header; stack complete output/provider-name; RET8."
+    },
+    {
+      "address": "00bdbd10",
+      "native": "0041dd40",
+      "function": "00bdbc70",
+      "contract": "Identity-guarded inline visitor-name assignment, current final-name length and preserve1; RET8."
+    },
+    {
+      "address": "00bdbd25",
+      "native": "00bf7680",
+      "function": "00bdbc70",
+      "contract": "Current destination length, destination data, source data; ADD ESP,0C; host memmove preserves overlap."
+    },
+    {
+      "address": "00bdbd47",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for complete name after state3->2."
+    },
+    {
+      "address": "00bdbd4e",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return complete name using current length+1; RET0C."
+    },
+    {
+      "address": "00bdbd6b",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for prefixed mount after state2->1."
+    },
+    {
+      "address": "00bdbd72",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return prefixed mount; RET0C."
+    },
+    {
+      "address": "00bdbd8f",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for slash after state1->0."
+    },
+    {
+      "address": "00bdbd96",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return slash; RET0C."
+    },
+    {
+      "address": "00bdbdb6",
+      "native": "00419cc0",
+      "function": "00bdbc70",
+      "contract": "Actual pool getter for provider name after state0->-1."
+    },
+    {
+      "address": "00bdbdbd",
+      "native": "00bd1510",
+      "function": "00bdbc70",
+      "contract": "Return provider name; RET0C."
+    },
+    {
+      "address": "00bdbdd5",
+      "native": "provider+vtable24",
+      "function": "00bdbc70",
+      "contract": "CALL EDX; empty-mount path captures current provider slot24 with suffix/visitor+8 output; original RET8 contract."
+    },
+    {
+      "address": "00bdb6b6",
+      "native": "00419cc0",
+      "function": "00bdb680",
+      "contract": "Captured current visitor+0C data/current length8+1/unused1 prepared before pool getter."
+    },
+    {
+      "address": "00bdb6bd",
+      "native": "00bd1510",
+      "function": "00bdb680",
+      "contract": "Return name block then write D68380 base identity; RET0C."
+    }
+  ],
+  "map_evidence": [
+    "native_vfs_device_route.obj: BDB680, BDBC70, BDB670, BDD850",
+    "native_vfs_lookup_routes.obj: existing BDD0A0 traversal",
+    "bsp_core:native_string.obj, native_pooled_resource_path.obj, native_string_pool_storage.obj: shared actual support"
+  ]
+}
