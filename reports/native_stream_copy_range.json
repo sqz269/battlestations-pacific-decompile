@@ -1,0 +1,278 @@
+{
+  "packet": "orch2_native_stream_copy_ay",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_stream_copy_range.cpp",
+  "complete_routine_count": 1,
+  "complete_body_bytes": 168,
+  "cleanup_fragment_bytes": 11,
+  "routines": [
+    {
+      "label": "copy",
+      "entry": "00bef840",
+      "end_inclusive": "00bef8e7",
+      "bytes": 168,
+      "sha256": "87cb643f48b4a214ae3c002c0cc2c854a41ca3ca9510cf4555de886564bf88f3",
+      "role": "complete owned body; native/source comparison",
+      "live_equal_disk": true,
+      "source_function": "copy_native_stream_range_00bef840",
+      "coverage": "complete source reconstruction of all native body branches"
+    },
+    {
+      "label": "cleanup",
+      "entry": "00cc7670",
+      "end_inclusive": "00cc767a",
+      "bytes": 11,
+      "sha256": "b09e77f67085fffc7de4e42b64917f23bc31efbba467b52b2499d5479c563eaf",
+      "role": "partial owned EH cleanup; not executed",
+      "live_equal_disk": true,
+      "source_function": "copy_native_stream_range_00bef840 constructor catch",
+      "coverage": "partial EH action only; no complete original FH3/SEH implementation",
+      "stored_body_end_inclusive": "00cc7678"
+    }
+  ],
+  "raw_tails": [
+    {
+      "address": "00cc7679",
+      "end_inclusive": "00cc767a",
+      "bytes": 2,
+      "no_ghidra_function": true,
+      "coverage": "partial cleanup raw tail outside stored Unwind@00cc7670 body",
+      "instructions": "POP ECX; RET"
+    }
+  ],
+  "consumed_evidence": [
+    {
+      "label": "backing",
+      "entry": "008d43c0",
+      "end_inclusive": "008d4436",
+      "bytes": 119,
+      "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a",
+      "role": "consumed actual producer; native comparison",
+      "live_equal_disk": true
+    },
+    {
+      "label": "wrapper",
+      "entry": "00bef6d0",
+      "end_inclusive": "00bef74b",
+      "bytes": 124,
+      "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595",
+      "role": "consumed actual producer; native comparison",
+      "live_equal_disk": true
+    },
+    {
+      "label": "handler",
+      "entry": "00cc767b",
+      "end_inclusive": "00cc7684",
+      "bytes": 10,
+      "sha256": "0dad3a81e6d34d9adde2bd6ed372299322473d1f20eeb1b1aca533faab67dcf6",
+      "role": "consumed EH handler; not executed",
+      "live_equal_disk": true
+    },
+    {
+      "label": "map_info",
+      "entry": "00e0224c",
+      "end_inclusive": "00e02277",
+      "bytes": 44,
+      "sha256": "e0054656ddc46e9f4ca396829fb07d4ccb7015b5e96173c57e2ac249c3c9ecca",
+      "role": "consumed EH map/FuncInfo",
+      "live_equal_disk": true
+    },
+    {
+      "label": "backing_profile",
+      "entry": "00d15ad8",
+      "end_inclusive": "00d15adf",
+      "bytes": 8,
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "role": "actual native profile words",
+      "live_equal_disk": true
+    },
+    {
+      "label": "stream_profile",
+      "entry": "00d642c0",
+      "end_inclusive": "00d642f7",
+      "bytes": 56,
+      "sha256": "19bc6e25d6f70fc4313cf9b27008c556c74bcaadbb64a9b3ee5da5290479e7be",
+      "role": "actual native profile words",
+      "live_equal_disk": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bef86d",
+      "native": "source vtable +0x1c",
+      "function": "00bef840",
+      "contract": "Captured seek target, ECX borrowed source, stack offset low/high/origin0; RET0Ch; result ignored."
+    },
+    {
+      "address": "00bef871",
+      "native": "00bf681b",
+      "function": "00bef840",
+      "contract": "operator_new, cdecl 10h bytes; caller adds ESP4; captured raw allocation later used by the one constructor cleanup state."
+    },
+    {
+      "address": "00bef890",
+      "native": "008d43c0",
+      "function": "00bef840",
+      "contract": "ECX nonnull raw10h allocation, stacked signed low length; RET4; returned actual backing retained in ESI."
+    },
+    {
+      "address": "00bef8b1",
+      "native": "current source table +0x24",
+      "function": "00bef840",
+      "contract": "Reload source table, capture backing data+8, then capture read target from that table; ECX source; stack data/original unsigned low length/null actual; RET0Ch."
+    },
+    {
+      "address": "00bef8b5",
+      "native": "00bef6d0",
+      "function": "00bef840",
+      "contract": "ECX actual backing; actual raw14h stream constructor returns EAX, captured in EDI."
+    },
+    {
+      "address": "00bef8c0",
+      "native": "IAT 00ce2220 InterlockedDecrement",
+      "function": "00bef840",
+      "contract": "stdcall backing+4; RET4; zero result selects the current backing vtable slot-zero call."
+    },
+    {
+      "address": "00bef8d0",
+      "native": "current backing vtable +0",
+      "function": "00bef840",
+      "contract": "Capture current backing table and slot-zero target; ECX backing, no stack argument; RET0; preserve captured result wrapper."
+    },
+    {
+      "address": "00cc7674",
+      "native": "00bf65ac",
+      "function": "00cc7670",
+      "contract": "Partial constructor cleanup: cdecl _free of captured allocation from native [EBP+4]; POP ECX/RET lies outside stored body at CC7679..CC767A."
+    },
+    {
+      "address": "00bb5201",
+      "native": "00bef840",
+      "function": "00bb5080",
+      "contract": "ECX source[EBX+14h]; offset low EDI, high0; length low branch capture from [EBP+8], high0; callee RET10h."
+    },
+    {
+      "address": "00bb8ccd",
+      "native": "00bef840",
+      "function": "00bb8be0",
+      "contract": "ECX source[ESI+Ch]; offset low EBX from BB8A90, high EBP=0; length [EDI+1Ch], high0; callee RET10h."
+    },
+    {
+      "address": "00bba627",
+      "native": "00bef840",
+      "function": "00bba500",
+      "contract": "ECX source[ESI+14h]; offset low record+14h, high0; length low captured record+8, high0; callee RET10h."
+    }
+  ],
+  "abi": {
+    "native": "ECX source; stack offset low, offset high, length low, length high; EAX wrapper; RET10h",
+    "saved_ghidra_prototype": "undefined BSP_Stream_CopyRangeToMemory(void), incomplete; assembly is authoritative for this source interface",
+    "new_source_services": "Borrowed NativeRetainedMemoryOwnerContext and NativeAdoptedSubstreamDispatch are additional source-only service arguments.",
+    "register_provenance": {
+      "00bef855": "EDX offset low from [ESP+10h] after three SEH pushes",
+      "00bef85c": "EDI captures incoming ECX source",
+      "00bef85e": "ECX offset high from [ESP+20h] after saved EBX/ESI/EDI",
+      "00bef87f": "EBX length low from [ESP+24h] after allocation",
+      "length_high": "never read",
+      "00bef8ba": "EDI captures returned wrapper before backing decrement and possible destruction"
+    }
+  },
+  "ordering": [
+    "Capture source seek table/entry, seek full offset with origin0, then allocate backing.",
+    "Use signed low length for established raw backing producer; read uses original unsigned bits; high length is unused.",
+    "After construction, reload source table, capture backing data+8, capture read entry from captured table, invoke once with null actual.",
+    "Capture BEF6D0 result, decrement backing reference, then capture current backing table and current slot-zero target only if zero.",
+    "Source ownership is borrowed throughout; no source reference change or position restoration; no short-read initialization or validation."
+  ],
+  "cleanup": {
+    "state0": "Raw allocation spill [EBP+4] freed on backing construction exception; CC7670..CC767A action and E0224C..E02277 map/FuncInfo inspected.",
+    "state_minus1": "Set before read. Read and wrapper-construction failures have no backing rollback.",
+    "source_boundary": "C++ catch reproduces allocation cleanup and propagates; original FH3/SEH, arbitrary aliases to native argument/spill slots, invalid-pointer behavior and concurrent mutation are not claimed."
+  },
+  "validation": {
+    "strict_build": {
+      "command": "MSBUILDDISABLENODEREUSE=1 scripts/build.ps1",
+      "passed": true,
+      "log": "local/stream_copy_ay/build01.log",
+      "sha256": "3753537c4827c88ab987c7c79afeecacf78af91e7ba061945165fd28701c9eea",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "tests_passed": 2,
+      "verify_seeds": "all eight native seeds matched disk"
+    },
+    "fixture": {
+      "status": "passed",
+      "path": "local/stream_copy_ay/attempt02",
+      "native_source_states": 4,
+      "checks": 122,
+      "source_only_read_failure_cases": 1,
+      "frozen_input_count": 67,
+      "linked_archive_member_count": 4,
+      "before_manifest_sha256": "96cec375226f0137afa030fbc6a3e86b44658ba5cc0095e62f500f954ee917d8",
+      "after_manifest_sha256": "876ceadb82bba282181ecff6a7cc54c882ff8e68eac8383b0c53f1ef2386d2a7",
+      "library_sha256": "a11f757fb7ac48ed69438d81aa4c940cf70bed38a35594bf0cd2728a1f580bf6",
+      "exe_sha256": "221f505adc5039d8634a137c06e1094d219cd7cb2c1d61487d91fd62028a226b",
+      "execution_sha256": "d71bd51ab74bc5ca70c4072c9be3561ae734d5f51a0cc73b421e40641b1b11ec",
+      "all_frozen_inputs_unchanged": true,
+      "current_source_header_object_archive_unchanged": true,
+      "original_FH3_SEH_executed": false,
+      "game_executed": false,
+      "cases": [
+        "full read with nonzero offset high word and ignored length high",
+        "short read preserves this allocation prior tail",
+        "zero low length still invokes one read",
+        "negative signed low length stores zero but forwards and accounts original bits"
+      ],
+      "source_only": "Read callback throws after backing construction; no backing rollback; original FH3/SEH excluded.",
+      "relink": "python local/stream_copy_ay/run_fixture.py --repo <built checkout> --attempt <fresh absolute directory> --build-log <completed selected build log>",
+      "pin_layout": "manifest_before linked_objects_verified_equal_to_current_and_archive_members; current/objects/bsp_core/<object>; current/src/bsp_core/<source>; compiler_dependencies.json records only observed header closure",
+      "runtime_output": "execution01.log; normalized native/source results compared in-process, no binary case outputs"
+    },
+    "preserved_attempts": [
+      "attempt01",
+      "attempt02"
+    ],
+    "failed_attempts": [
+      {
+        "path": "local/stream_copy_ay/attempt01",
+        "stage": "probe compilation before execution",
+        "reason": "MSVC inline-assembly reserved identifiers low/high/length; corrected probe identifiers only and reran in fresh attempt02."
+      }
+    ],
+    "report_calls": {
+      "numeric_rows_checked": 7,
+      "failed": 0,
+      "captured_indirect_sites_manually_checked": 4,
+      "evidence": "local/stream_copy_ay/report_calls01.json"
+    }
+  },
+  "boundaries": [
+    "New source interface, not a drop-in binary ABI replacement.",
+    "Original native copy and both actual memory producers execute only normal fixture paths with host allocation/callback/IAT bindings.",
+    "The terminal zero-reference branch is reconstructed but not reached by the fixture normal producer lifetime.",
+    "Original FH3/SEH, invalid pointers, arbitrary stack aliasing, concurrent mutation and gameplay remain unvalidated."
+  ],
+  "analysis_evidence": "local/stream_copy_ay/evidence01",
+  "annotation": {
+    "names_preserved": [
+      "BSP_Stream_CopyRangeToMemory",
+      "Unwind@00cc7670"
+    ],
+    "method": "ghidra_annotate.py under coordination write lock, target verification before each mutation, prior comments retained, project saved, exports force-refreshed",
+    "applied_record": "local/ghidra-annotations-20260913T034310Z.json",
+    "remaining_body_gap": "CC7679..CC767A raw cleanup tail remains explicitly outside stored body; no flow mutation"
+  }
+}

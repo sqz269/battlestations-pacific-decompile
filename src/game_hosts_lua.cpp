@@ -22,6 +22,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/ship_ai_path_turn_ramp.hpp"
 #include "bsp/ship_ai_settings_block.hpp"
+#include "bsp/game_ship_avoidance_tuning_lua.hpp"
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/lua_numeric.hpp"
@@ -351,6 +352,17 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
     ::lua_settop(state_, top);
     log_.implemented("GameSettings::get_ship_globals_table", "00b67800");
     if (table) {
+        std::array<float, 5> tuning;
+        std::string error;
+        if (!read_ship_avoidance_tuning_lua(*state_, tuning, error)) {
+            log_.notef("ship avoidance settings load failed: %s", error.c_str());
+            return false;
+        }
+        avoidance_tuning_ = tuning;
+        avoidance_tuning_loaded_ = true;
+        log_.implemented("GameSettings::load_avoidance_tuning_projection", "0083b5e0");
+        log_.notef("stored ship avoidance tuning 194=%.9g 1d4=%.9g 1d8=%.9g 214=%.9g 218=%.9g",
+            tuning[0], tuning[1], tuning[2], tuning[3], tuning[4]);
         // Literal store in the native settings load, not a Lua key/default
         // inferred from the mission. The explicit process reload replays it.
         avoid_all_ship_collision_ = kAvoidAllShipCollisionLoaderDefault;
@@ -373,6 +385,12 @@ void GameMissionLuaHost::set_avoid_all_ship_collision_008d0852(bool value) {
     avoid_all_ship_collision_ = value;
     avoid_all_ship_collision_loaded_ = true;
     log_.implemented("GameSettings::set_avoid_all_ship_collision", "008d0852");
+}
+
+bool GameMissionLuaHost::read_avoidance_tuning(std::array<float, 5>& values) const noexcept {
+    if (!avoidance_tuning_loaded_) return false;
+    values = avoidance_tuning_;
+    return true;
 }
 
 bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,

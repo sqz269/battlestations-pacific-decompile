@@ -1,0 +1,611 @@
+{
+  "packet": "orch6_participant_ai_k",
+  "status": "partial_native_owner_core_build_and_fixture_tested",
+  "base_commit": "b1f047dd",
+  "doc": "docs/SESSION_PARTICIPANT_AI_FLAG.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": 0,
+    "verification": "target config checked and bsp wrappers verify every live query"
+  },
+  "owned_files": [
+    "include/bsp/session_participant_pools.hpp",
+    "src/session_participant_pools.cpp",
+    "docs/SESSION_PARTICIPANT_AI_FLAG.md",
+    "reports/session_participant_ai_flag.json"
+  ],
+  "source_registration": "append-only cmake/startup.cmake bsp_core source",
+  "calls": [
+    {
+      "address": "0073e155",
+      "native": "00bf55be",
+      "function": "0073d410",
+      "contract": "Allocation result used by following zeroing; allocator internals not reconstructed"
+    },
+    {
+      "address": "0073e163",
+      "native": "00bf79f0",
+      "function": "0073d410",
+      "contract": "Known memset zero of71A0 bytes; EDI constantzero, ADD ESP10h cleans allocation+three memsetargs"
+    },
+    {
+      "address": "004ddd6c",
+      "native": "00bf7cd1",
+      "function": "004ddb90",
+      "contract": "Existing stdcall five-argument arrayiterator, count8/stride118/playerbase748, elementctor004D6BA0"
+    },
+    {
+      "address": "004ddd8e",
+      "native": "00bf7cd1",
+      "function": "004ddb90",
+      "contract": "Same iterator and elementctor over missionbase1008"
+    },
+    {
+      "address": "004dfd18",
+      "native": "004bb160",
+      "function": "004dfb70",
+      "contract": "Local scene-load reset before claim"
+    },
+    {
+      "address": "004dfd57",
+      "native": "004bb440",
+      "function": "004dfb70",
+      "contract": "Nine stackwords, RET24h; current[0] publication occurs only after return004DFD5C"
+    },
+    {
+      "address": "004e350f",
+      "native": "004bb160",
+      "function": "004e27e0",
+      "contract": "ECX=EBP game; reset API retains actual scene-presence/count input"
+    },
+    {
+      "address": "0076fcb1",
+      "native": "004bb160",
+      "function": "0076fad0",
+      "contract": "Session mode branch reads actual globalgame; no local-only assumption"
+    },
+    {
+      "address": "0076fd50",
+      "native": "004bb160",
+      "function": "0076fad0",
+      "contract": "Second session mode branch reads actual globalgame"
+    },
+    {
+      "address": "007753c3",
+      "native": "004bb440",
+      "function": "007752d0",
+      "contract": "Other native claim caller; player records supplied from same pool, no inferred Party mapping"
+    },
+    {
+      "address": "007754b5",
+      "native": "004bb440",
+      "function": "007752d0",
+      "contract": "Second claim site; full caller behavior outside projection"
+    },
+    {
+      "address": "0076c92c",
+      "native": "004bb630",
+      "function": "0076c840",
+      "contract": "Explicit record and slot reach bind; only active identity store projected"
+    },
+    {
+      "address": "007706d3",
+      "native": "004bb630",
+      "function": "007705a0",
+      "contract": "Second bind caller; no hardcoded player-record-to-slot equality"
+    },
+    {
+      "address": "0076c8b3",
+      "native": "004bb660",
+      "function": "0076c840",
+      "contract": "Restore corresponding mission record, leaving its bytes intact"
+    },
+    {
+      "address": "00770637",
+      "native": "004bb660",
+      "function": "007705a0",
+      "contract": "Restore caller; oldrecord+20 side effect remains outside model"
+    },
+    {
+      "address": "007734bb",
+      "native": "004bb660",
+      "function": "00773420",
+      "contract": "Third restore caller; no byte9 mutation in callee"
+    },
+    {
+      "address": "0077319e",
+      "native": "004bb550",
+      "function": "00773120",
+      "contract": "By-index player fill inspected for negative byte9 writer evidence; not reconstructed"
+    },
+    {
+      "address": "00521e81",
+      "native": "00927f10",
+      "function": "00521e70",
+      "contract": "Caller handles sentinel8; callee itself performs only raw selected-record byte read"
+    },
+    {
+      "address": "009e11ad",
+      "native": "00927f10",
+      "function": "009e1170",
+      "contract": "Attached ship role1 after separate sentinel8 check"
+    },
+    {
+      "address": "00780355",
+      "native": "00927f10",
+      "function": "00780120",
+      "contract": "Role receiver checks assigned current slot AI byte; actual role delivery not implemented here"
+    }
+  ],
+  "routines": [
+    {
+      "entry": "004bb160",
+      "end_inclusive": "004bb3db",
+      "original_abi": "ECXgame, no stackargs, RET at004BB337",
+      "coverage": "partial projection: active identities and+8/+9 writes only; full native body inspected, no callees",
+      "omitted": "names, +0A/+0C/+0D/+10/+18/+1B/+1C/+20/+24/+28/+2C/+34 and game+18C8/+18EC"
+    },
+    {
+      "entry": "004bb440",
+      "end_inclusive": "004bb541",
+      "original_abi": "ECXgame, nine stackwords, RET24h at004BB467/004BB53F",
+      "coverage": "partial: scan004BB440..004BB469 and+8store004BB47D..004BB480",
+      "omitted": "claim fields/names/user callback and remaining success tail"
+    },
+    {
+      "entry": "004bb630",
+      "end_inclusive": "004bb65e",
+      "original_abi": "ECXgame, record then slot stackargs, RET8at004BB65C",
+      "coverage": "partial: current pointer004BB638..004BB63E only; remaining+20/+28/+24 stores omitted"
+    },
+    {
+      "entry": "004bb660",
+      "end_inclusive": "004bb68a",
+      "original_abi": "ECXgame, slot stackarg, RET4at004BB688",
+      "coverage": "partial: current pointer restore with represented oldpointer required; oldrecord+20=-1 omitted"
+    },
+    {
+      "entry": "00927f10",
+      "end_inclusive": "00927f26",
+      "original_abi": "stdcall(slot), rawbyte AL, RET4at00927F24; ECX overwritten internally",
+      "coverage": "complete field-read semantics over represented valid native slot/pointer inputs; typed availability/range extension explicit"
+    },
+    {
+      "entry": "004b5680",
+      "end_inclusive": "004b5689",
+      "original_abi": "ECXrecord, byte stackarg, RET4",
+      "coverage": "body inspected; no xrefs or absolute image occurrences; no new reconstruction/call"
+    },
+    {
+      "entry": "004d6ba0",
+      "end_inclusive": "004d6cd2",
+      "original_abi": "ECXrecord, no stackargs",
+      "coverage": "body inspected for retained+8/+9/+0E only; no full record reconstruction"
+    }
+  ],
+  "storage": {
+    "owner": "SessionParticipantPools",
+    "players": "8 records at nativegame+748 stride118",
+    "mission": "8 records at nativegame+1008 stride118",
+    "active": "8 selected pool/index identities for nativegame+18CC",
+    "fields": [
+      "claimed_08",
+      "ai_held_09",
+      "device_bound_0e"
+    ],
+    "availability": "each byte separately known; null or unrepresented identity is unavailable",
+    "zero_provenance": "explicit ZeroedGameAllocation models0073E163 only; default owner bytes unavailable"
+  },
+  "writers": [
+    {
+      "site": "0073e163",
+      "effect": "whole game allocation zero including both pools and pointers"
+    },
+    {
+      "site": "004bb220",
+      "effect": "populated mission records+9=1"
+    },
+    {
+      "site": "004bb373",
+      "effect": "no-scene all8 mission records+9=1"
+    },
+    {
+      "site": "004bb30e",
+      "effect": "all8 player records+9=0"
+    },
+    {
+      "site": "004b5684",
+      "effect": "out-of-line record+9 setter; no observed references"
+    }
+  ],
+  "retention": {
+    "trailing_mission": "reset only clears+8, preserves+9 byte and availability",
+    "device": "reset retains+0E in both pools",
+    "claim": "retains+9/+0E",
+    "bind_restore": "change identity, do not mutate+8/+9"
+  },
+  "query": {
+    "native_range_checks": false,
+    "native_null_checks": false,
+    "native_claimed_checks": false,
+    "native_sentinel8_handling": false,
+    "typed_supported_indices": "0..7; otherwise unavailable with output untouched",
+    "raw_byte_preserved": true,
+    "caller_enumeration": "36 xrefs retained in local/participant_00927f10_xrefs.txt; relevant role caller setups inspected, no claim all callers guard their inputs"
+  },
+  "api": {
+    "local": "reset_and_claim_local_flags(have_scene,actual_count,out): reset then first-free then active[0]",
+    "query": "try_ai_held_00927f10(int32 slot,uint8_t& out) returns availability",
+    "entry": "try_entry_slots(MissionEntryPlayerSlot (&out)[8]) derives same selected+9/+0E; all-or-unchanged",
+    "device": "write_device_bound(record,value) carries an actual writer; no delivery assumed",
+    "seeding": "adopt_record_bytes accepts explicitly observed bytes and availability"
+  },
+  "host_integration": {
+    "implemented": false,
+    "actual_input": "GameMissionHost::Impl::load.records owns SceneRecord.side_blocks; finish_scene_load has record",
+    "missing_pass": "run_scene_load_004dfb70 currently discards actual side-block count and accepts only path/script/locale/id",
+    "canonical_lifetime": "retain one owner for game/session lifetime; mode changes, joins and restores must use it",
+    "existing_views": "entry_slots.excluded is already byte9 by contract but current host independently defaults it; derive views from this owner",
+    "not_implemented": [
+      "role delivery",
+      "mission-frame ownership",
+      "unit or AI borrowing",
+      "native names/user service/full constructors",
+      "real device-ready writer schedule"
+    ],
+    "forbidden_substitution": "No Party-to-slot mapping or sentinel8 native-query default"
+  },
+  "validation": {
+    "win32_build": "passed",
+    "ctest": "2/2 passed",
+    "new_tracked_tests": 0,
+    "fixture": {
+      "status": "passed",
+      "checks": 326,
+      "failures": 0,
+      "reset_store_cases": 2,
+      "native_scan_cases": 18,
+      "native_query_cases": 20,
+      "initial_bytes": "claimed=index%2; AI=80h+pool*10h+index; device=index%3; unrelatedbufferbytesCDh",
+      "boundaries": "Original memory stores; reset loop schedule in harness. Original scan has synthetic successful return then separate original+8 store. Getter complete/unmodified with explicit globalpage. No complete reset/claim/constructor execution.",
+      "compared": "represented bytes, query AL results, selected pointer/index identities, typed availability/view output",
+      "not_compared": "other recordfields, all registers/flags, FP state, full native control flow or runtime session"
+    },
+    "report_calls": "20 call rows checked, 0 failed",
+    "runtime": "not exercised in game; root owns host integration"
+  },
+  "corrections": [
+    {
+      "was": "004BB220 is the only relevant AI byte writer",
+      "is": "reset has two mission-one stores plus player-zero store; allocation also zeros both pools",
+      "evidence": "004BB220,004BB373,004BB30E,0073E163; interiorcursorrecord+0D explains missedaliases"
+    },
+    {
+      "was": "every active record byte9 is permanently zero",
+      "is": "active pointers can select mission records with byte1; trailing mission bytes retain",
+      "evidence": "004BB160,004BB630,004BB660; native rawbyte fixture"
+    },
+    {
+      "was": "gun_bot_side_enabled_00927f10 provides an actual participant owner",
+      "is": "it only combines sentinel8 with a supplied flag; new core owns pools/current selections",
+      "evidence": "new explicit storage and original00927F10 listing"
+    },
+    {
+      "was": "MissionFrame independent entry defaults supply real participant bytes",
+      "is": "existing view contract names+9/+0E but ownership/producers must be bound",
+      "evidence": "mission_state_entry.hpp and game_hosts_mission_frame.cpp reset"
+    }
+  ],
+  "coverage_limits": [
+    "Identified record lifecycle writers checked; not an exhaustive proof against arbitrary whole-image aliasing writes",
+    "Assigned roles and native role-message routing remain separate from participant ownership",
+    "Counts>8 rejected by typed representation; native would overrun its fixedpool",
+    "No extra source changes are needed for the still-unassigned role8 consumer path"
+  ],
+  "no_ghidra_function": [],
+  "ledger": {
+    "addresses": [
+      "004bb160",
+      "004bb440",
+      "004bb630",
+      "004bb660",
+      "00927f10"
+    ],
+    "proposed_names": [
+      "BSP_Game_BindParticipantRecordToSlot",
+      "BSP_Game_RestoreMissionParticipantRecord"
+    ],
+    "existing_correct_names": "retained for reset,claim andquery; Ghidra not mutated"
+  },
+  "evidence": {
+    "packet": "orch6_participant_ai_k",
+    "sources": [
+      {
+        "path": "include/bsp/session_participant_pools.hpp",
+        "sha256": "f78a4774ff1c00a6b0e455de5547632d2bbbf0e6bb9ff48d0dc5388bbb3150bb"
+      },
+      {
+        "path": "src/session_participant_pools.cpp",
+        "sha256": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "0433e2706d80e5e43a4eab38131d4691969e1a17846eb1e4a31142df84ea8504"
+      },
+      {
+        "path": "include/bsp/mission_load_path.hpp",
+        "sha256": "d839197272c92d3c0cf126af0794470f1908d57ce51108eecc3eee50e7afd31e"
+      },
+      {
+        "path": "include/bsp/mission_state_entry.hpp",
+        "sha256": "ce40214034e94437579f2f594f29fac3f85dcc3427ef178c30ad3ee0be53144c"
+      },
+      {
+        "path": "src/game_hosts_mission.cpp",
+        "sha256": "b0d432f12f20721c8ddf82772d95d09f816c8c1ad5c4ddadb48b59623bb3b66d"
+      },
+      {
+        "path": "src/game_hosts_mission_frame.cpp",
+        "sha256": "a94839473a9367d345083a1580edd1a9cbfb1819a9d98b0fbadc23a5be173f6b"
+      },
+      {
+        "path": "include/bsp/game_hosts_mission_frame.hpp",
+        "sha256": "b2f1132a20639e75dabb6b850ca131d7a5ef8c824029fa1ebf0b7f713d45e456"
+      },
+      {
+        "path": "src/gun_bot_ticks.cpp",
+        "sha256": "8b0e80ad2d61a061d70935e112c6c7971b6d01a814565571c93ef3b532866d64"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/participant_004b5680.asm",
+        "bytes": 100,
+        "sha256": "a2a064172511f46d3890c875a52eea2c4ed333910074c5f4f66fdc81210d8de0"
+      },
+      {
+        "path": "local/participant_004bb160.asm",
+        "bytes": 5710,
+        "sha256": "cd8500179d794c26b3f5b83937c859730d2c1dfd79145a9f6cab639028598b3f"
+      },
+      {
+        "path": "local/participant_004bb440.asm",
+        "bytes": 2613,
+        "sha256": "ed3ada24793e499cc13c3738885c016d560cf1e19ca8fd0f7048d2a0a72daf09"
+      },
+      {
+        "path": "local/participant_004bb630.asm",
+        "bytes": 433,
+        "sha256": "5734cbe22bc83c57e9c4045af4ae5ebafd6ce3d48c432a9ac2e1880435b6a9a7"
+      },
+      {
+        "path": "local/participant_004bb660.asm",
+        "bytes": 322,
+        "sha256": "9adee953d1a0f6c2ad67f692252239ed51bc29920fd2487f7ca915eaefcb0037"
+      },
+      {
+        "path": "local/participant_004d6ba0.asm",
+        "bytes": 2519,
+        "sha256": "00593c8cdd30ec27b41722df0ec206746f72088fb0598acafbca66494dd3b6c7"
+      },
+      {
+        "path": "local/participant_004ddd4f.asm",
+        "bytes": 999,
+        "sha256": "b6587ec4ce9a3d19cbcc1b391cce3ba347034a4d2078aa7d5773e4c1d28f58b2"
+      },
+      {
+        "path": "local/participant_004dfd18.asm",
+        "bytes": 1175,
+        "sha256": "3d1ac1d08b96407b2f98d1fec60a433244cb40317e947eb074b00b0de5eff191"
+      },
+      {
+        "path": "local/participant_004e350d.asm",
+        "bytes": 167,
+        "sha256": "c5132f035cef517bf3e98764a445020871cd39de78a6dff584a98d9250c4a8fb"
+      },
+      {
+        "path": "local/participant_0073d410.asm",
+        "bytes": 34662,
+        "sha256": "ab8d4547d7b05ef33c3e9d1f765016841df5ed77e90815bda0face012ed06845"
+      },
+      {
+        "path": "local/participant_0073e150.asm",
+        "bytes": 442,
+        "sha256": "5bb7d227d05206607f88fee91eae2d3a5f77baabac59dbe67d4dbccbc475f6e7"
+      },
+      {
+        "path": "local/participant_0076fcab.asm",
+        "bytes": 315,
+        "sha256": "4ccc2ac8ed15e909c28bbd8454a53ab90b27de3ecabb786f11606be3a82d0e70"
+      },
+      {
+        "path": "local/participant_0076fd4a.asm",
+        "bytes": 298,
+        "sha256": "7995e43131a6d1a89f71a8c9a84a81c1cd15174c8f2fc76857ee3c8067028ee8"
+      },
+      {
+        "path": "local/participant_004b5680.c",
+        "bytes": 2865,
+        "sha256": "dfcfffc73e9c4da16ce693126dff92966acfa2055aa786653e79778bf083aa5d"
+      },
+      {
+        "path": "local/participant_004bb550.c",
+        "bytes": 1251,
+        "sha256": "d91169e7d4e4aeeccdaefb051c3e9bda8ecee3a741976c710918c48a6127a3f2"
+      },
+      {
+        "path": "local/participant_004bb600.c",
+        "bytes": 318,
+        "sha256": "024f035c5b55ad534951a3963c64bee514f366fefe013c266392d7cbbfddc046"
+      },
+      {
+        "path": "local/participant_004bb690.c",
+        "bytes": 978,
+        "sha256": "7316538fd8007ba4157b9f506eb3d2d2c0edbdc3af44550a68a3d0dead31167f"
+      },
+      {
+        "path": "local/participant_004d6ba0.c",
+        "bytes": 3015,
+        "sha256": "ec4cce3fb7c485a32da0ad2b12cb408e1e8492b1b03c23896dbf733848b52686"
+      },
+      {
+        "path": "local/participant_0076fad0.c",
+        "bytes": 5613,
+        "sha256": "8fa50b571f6de26f8bc6bd1373423cfa09e1ee4dc4f246e0c8bfc8b56a300471"
+      },
+      {
+        "path": "local/participant_00bf7cd1.c",
+        "bytes": 825,
+        "sha256": "cc566299f40ac5f9f6b5176c5bdab27e8c0f2e92efcd54ab6b84a9c5ef158896"
+      },
+      {
+        "path": "local/participant_claim_bytes.txt",
+        "bytes": 29,
+        "sha256": "b2a49bc072eb878cd6eb462912b1b88cdd8308223daf1ccd1a7fd34dd78cef38"
+      },
+      {
+        "path": "local/participant_mission_bytes.txt",
+        "bytes": 45,
+        "sha256": "a3a55b865a6b6ad159b0f5db4b4bcad08a80443c09332325ac2b85a81a65a29b"
+      },
+      {
+        "path": "local/participant_player_bytes.txt",
+        "bytes": 37,
+        "sha256": "75468f8044f66840fd5cbd45a5815b15138027b3e672f25d70d82f6c760bcc63"
+      },
+      {
+        "path": "local/participant_query_bytes.txt",
+        "bytes": 118,
+        "sha256": "206c4da79ac307835451d7d1fa633a0cadf379c763daf2314927d10b2e9dc071"
+      },
+      {
+        "path": "local/participant_scan_bytes.txt",
+        "bytes": 207,
+        "sha256": "26b00a2843c0764aa2d2ca1f86247b414e4f71bdd3746a97e5b3c46b6d05557d"
+      },
+      {
+        "path": "local/participant_select_bytes.txt",
+        "bytes": 41,
+        "sha256": "491d98eef6dbe9cecc187e87735f29481279b7f408c12c7e9a636fde39c31274"
+      },
+      {
+        "path": "local/participant_tail_bytes.txt",
+        "bytes": 21,
+        "sha256": "1d320d368d154b934e5b2e815ff426e8ea891ad0c150de1b6a6d1c23ef9d30e1"
+      },
+      {
+        "path": "local/participant_004bb440_xrefs.txt",
+        "bytes": 169,
+        "sha256": "8a88259628c6987f8d71e1d0df616053f7bb50caa7d476585128f721a1f36910"
+      },
+      {
+        "path": "local/participant_004bb630_xrefs.txt",
+        "bytes": 104,
+        "sha256": "66cf879f2d423520b9ae5b43a03a89824a7779198f87f74495d83e3a36f705d6"
+      },
+      {
+        "path": "local/participant_004bb660_xrefs.txt",
+        "bytes": 156,
+        "sha256": "df957192bb2aeddc941fac0e49f7c7ba6fd1d6e3cf484298d64f63e8be2a49c7"
+      },
+      {
+        "path": "local/participant_00927f10_xrefs.txt",
+        "bytes": 2113,
+        "sha256": "d0b7488cd515cf241732b67f060ec83dedbf3c1418ceee66c953c5f6905f64ed"
+      },
+      {
+        "path": "local/participant_build.log",
+        "bytes": 39162,
+        "sha256": "e1cd347b715a072fb9709317e195fba92213db04206b9d7261aa9ee12b162095"
+      },
+      {
+        "path": "local/participant_probe.log",
+        "bytes": 178,
+        "sha256": "1f7b0d62283bf5b24f08afaeebb3964559d5e98926c4a0787673d234e61180c6"
+      },
+      {
+        "path": "local/participant_report_calls.log",
+        "bytes": 74,
+        "sha256": "de5621fe805033199eafd3f5e7c18003f4a046b14064dbbfd84b879ea8e5afb3"
+      },
+      {
+        "path": "local/participant_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/participant_probe.cpp",
+        "bytes": 8097,
+        "sha256": "124eaf002f98c98c9b1ada25663f8e01f76d7dc8bb14845506d84052bcec40e5"
+      },
+      {
+        "path": "local/participant_probe.exe",
+        "bytes": 18432,
+        "sha256": "b92a1a3406e0abf0b6502e2a4359635d14e37a72e23f733397edcc0c9df40e5a"
+      },
+      {
+        "path": "local/participant_native_bytes.hpp",
+        "bytes": 783,
+        "sha256": "c210ac00ef6f028a9c688e0dd29742b81131be8fd24adcef748b4b258ac428df"
+      },
+      {
+        "path": "local/participant_0073d410_edi.txt",
+        "bytes": 3854,
+        "sha256": "dfde8f46d7f82ba635c38af50078ce1026a48fa726c59573c25271f1e87960e3"
+      },
+      {
+        "path": "local/participant_setter_absolute.txt",
+        "bytes": 12,
+        "sha256": "3b1f679728f8acdb2c0bbcea2ca37a9108993c24fa77700ea877bcdb34adf411"
+      },
+      {
+        "path": "local/slot_004bb160.c",
+        "bytes": 4352,
+        "sha256": "ab888074a9b0c87fd632a15bc85888a22a23efc93bcbc4fe79760a7b022c0f00"
+      },
+      {
+        "path": "local/slot_004bb440.c",
+        "bytes": 2825,
+        "sha256": "4902bb05507b711a99ac26969cc279693e00f2f98befa91cf12fcb5302642c50"
+      },
+      {
+        "path": "local/slot_004bb630.c",
+        "bytes": 368,
+        "sha256": "cc677227fac8f10d4efba7e82b65b721a989a6189f6ec8b0cda3f3c6684ccd34"
+      },
+      {
+        "path": "local/slot_004bb660.c",
+        "bytes": 242,
+        "sha256": "e92bdcc0dc4630325389b96898d5b579cc263bc91966c57b915b4d4c1fb81436"
+      },
+      {
+        "path": "local/slot_00927f10.asm",
+        "bytes": 200,
+        "sha256": "6cb66665d71129acf4744ecda9fed093c428f8b54341faeadad99c8e1f913fc0"
+      },
+      {
+        "path": "local/build_participant_probe.cmd",
+        "bytes": 314,
+        "sha256": "7bc17b0497a3fef95f433312d94f920595ebd07b82a1fe8c5e427665739a8936"
+      },
+      {
+        "path": "local/build_participant_probe.ps1",
+        "bytes": 946,
+        "sha256": "1801532e42495fa72851cc9948d49232e5647169ee095fe8354bc4d363993b8b"
+      },
+      {
+        "path": "local/make_participant_native_bytes.py",
+        "bytes": 680,
+        "sha256": "3c8fe7b6381e8cc6ec601ca9d044643b3921f3a4e80541e6cc9f0048500a2f5f"
+      },
+      {
+        "path": "local/write_participant_report.py",
+        "bytes": 12520,
+        "sha256": "43f7d029efd2c257a6b060d0026ca2d7ed06b1d027a56fdd94240b9820b70383"
+      }
+    ],
+    "native_fixture": "Explicit initial record bytes; original store fragments, original first-free scan with harness success return, full unmodified00927F10. Not full reset or claim routines.",
+    "origin": "Copied prior J listings are now local; no active I/J path dependency."
+  }
+}

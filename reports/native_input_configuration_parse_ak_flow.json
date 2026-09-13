@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "00a93070",
+   "owner": "agent/orch4-20260910",
+   "when": "2026-09-13T04:26:17Z",
+   "decompile_lines_before": 17,
+   "gaps": [
+    {
+     "site": "00a930a5",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00a930aa",
+     "gap_end_exclusive": "00a930dd",
+     "bytes": 51,
+     "after_call": true,
+     "sha256": "1649e9e3acc3e6d42c8cbd88e9e598edd331dd3dbd1eef057c3ade5955b39359"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00a930a5",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00a930aa",
+      "gap_end_exclusive": "00a930dd",
+      "bytes": 51,
+      "after_call": true,
+      "sha256": "1649e9e3acc3e6d42c8cbd88e9e598edd331dd3dbd1eef057c3ade5955b39359"
+     },
+     "clear": "Success: Cleared flow override at 00a930a5 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 51 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00a930a5",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00a930a5 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00a930c4",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00a930c4 (was: CALL_RETURN, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00a930dd",
+   "explicit_body_sha256": "f378564382b980ac8de1d3999d976f1fcf5020429914ce96681b16efcfa04159",
+   "body_before": "Function: FUN_00a93070 at 00a93070\nSignature: undefined FUN_00a93070(void)\nEntry: 00a93070\nBody: 00a93070 - 00a930a9",
+   "decompile_lines_after": 22,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00a93070 at 00a93070\nSignature: undefined FUN_00a93070(void)\nEntry: 00a93070\nBody: 00a93070 - 00a930a9",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

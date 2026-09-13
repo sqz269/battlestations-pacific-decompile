@@ -1,0 +1,256 @@
+{
+  "wave": "AY",
+  "status": "reconstructed_build_and_fixture_tested",
+  "source_build_commit": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+  "isolated_branch": "agent/orch2-20260910",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "complete_bodies": 25,
+  "complete_native_bytes": 3937,
+  "partial_EH_cleanup_bytes": 11,
+  "strengthened_existing_bodies_not_counted_again": [
+    "0041e870",
+    "00bd0400"
+  ],
+  "native_source_comparisons_or_states": 18,
+  "checks": 5399,
+  "source_only_cases": 5,
+  "fixtures": [
+    {
+      "family": "factory",
+      "attempt": "local/native-ay-integrated/factory/attempt01",
+      "manifest_execution_head": null,
+      "source_repo": null,
+      "before_sha256": "e12fe78b9e22f140ecfa02bc7e219b4c318e4072c115be4016f8017c270ef977",
+      "after_sha256": "9dcc055e3666f8affb1ef1b05e97e75289c3b61524de990106180b24fa1cc327",
+      "native_source_comparisons_or_states": 3,
+      "checks": 1034,
+      "source_only_cases": 2,
+      "reconstructed_complete_bodies": 5,
+      "reconstructed_native_bytes": 688,
+      "frozen_inputs": 529,
+      "physical_files": 538,
+      "linked_objects": 124,
+      "binary_pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 16388,
+          "sha256": "7b9131d3df4a1d0fc62da3607832d94f762b6be62576c7569de9a839c3cdf573",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 16388,
+          "sha256": "de9117884a6182acd2219921fbabaf07b6f81f1c0836474fd137f2da0e4b23f9",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 16388,
+          "sha256": "b064dd0ef0a2b352b2d4e61a4aade4ba186d297afc7c40900a8d21e2242d1412",
+          "equal": true
+        }
+      ],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "boundary": "recorded BB8240 construction and BB82F0 replacement call boundaries only; no provider/archive-load proof",
+      "execution_head_note": "Before manifest does not record HEAD/source_repo. Direct GO and pre-execution verification recorded the selected build; qualification uses complete current source/header/member parity."
+    },
+    {
+      "family": "registry",
+      "attempt": "local/native-ay-integrated/registry/attempt01",
+      "manifest_execution_head": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+      "before_sha256": "3596342d6fb31358e441a2c5668a0e6da85e354a86a6cfc7125d19211812fad8",
+      "after_sha256": "0440ac991e6049b21f24b50ad217ae3390f83cd76457819406304f44599bb5d2",
+      "native_source_comparisons_or_states": 8,
+      "checks": 759,
+      "source_only_cases": 1,
+      "reconstructed_complete_bodies": 10,
+      "reconstructed_native_bytes": 663,
+      "frozen_inputs": 572,
+      "physical_files": 591,
+      "linked_objects": 122,
+      "binary_pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 104,
+          "sha256": "bd1ae12d2fbcabe812754a0f92b01fe4cb84400b73cfecdd75651f295958342f",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 80,
+          "sha256": "332eb67c76b53dcd3c6128c50c3c881cb38316204a1317681a92616e218d8ce4",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 120,
+          "sha256": "8ada2f433dfca2e450747222a208bb2ca9055d7ee4e6ae9f6fcda8ac16ca4974",
+          "equal": true
+        },
+        {
+          "case": 3,
+          "native": "case_3_native.bin",
+          "source": "case_3_source.bin",
+          "bytes": 120,
+          "sha256": "d9d388a822b1747c92dbaf73e92890a24a1903907e7b07da1ab8594a9e1d4780",
+          "equal": true
+        },
+        {
+          "case": 4,
+          "native": "case_4_native.bin",
+          "source": "case_4_source.bin",
+          "bytes": 72,
+          "sha256": "9ee6a41dd0c927da8ad2bc39b8ccd1d4f43f8a507e3ed581009885f44d646960",
+          "equal": true
+        },
+        {
+          "case": 5,
+          "native": "case_5_native.bin",
+          "source": "case_5_source.bin",
+          "bytes": 72,
+          "sha256": "e51b375cc63807aa80e578edf582a399772292d5401cc3a7f215470c6560a44d",
+          "equal": true
+        },
+        {
+          "case": 6,
+          "native": "case_6_native.bin",
+          "source": "case_6_source.bin",
+          "bytes": 60,
+          "sha256": "6ebe96f60ed87a222fbbf237cea3b217b8c6e9262510fb05ce27ca00f732022c",
+          "equal": true
+        },
+        {
+          "case": 7,
+          "native": "case_7_native.bin",
+          "source": "case_7_source.bin",
+          "bytes": 60,
+          "sha256": "709fd756c3634312dc6a3afb1d3486a4f2a7247dc23f60a94f5bbbddf237b9b1",
+          "equal": true
+        }
+      ],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "boundary": "Ten registry bodies; original BD0400 pop span and explicit captured-secondary boundary; canonical PAK source drain is covered separately by provider fixture."
+    },
+    {
+      "family": "stream",
+      "attempt": "local/native-ay-integrated/stream/attempt01",
+      "manifest_execution_head": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+      "before_sha256": "f74de1a9e7dc57e37a3ccfdc65cfb4b94f9667df874faa122897d223dcfd12f7",
+      "after_sha256": "6770489fe6bea4b0cadb94d0f627636b74321a3776ecf44fb61a23cc10306eb1",
+      "native_source_comparisons_or_states": 4,
+      "checks": 122,
+      "source_only_cases": 1,
+      "reconstructed_complete_bodies": 1,
+      "reconstructed_native_bytes": 168,
+      "frozen_inputs": 67,
+      "physical_files": 70,
+      "linked_objects": 4,
+      "binary_pairs": [],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "boundary": "Four normalized in-process states; source-only read failure; no independent binary output pairs, terminal zero-reference or original FH3 execution."
+    },
+    {
+      "family": "provider",
+      "attempt": "local/native-ay-integrated/provider/attempt03",
+      "manifest_execution_head": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+      "before_sha256": "026d6998746175f7538acd044048d8f467d4d3fdf9c1bfd6ce4527a7cd090a3d",
+      "after_sha256": "9dc76c318699300b6dcdee0606f9d6c22bbd414889e3c86f2e4ed507cf49025a",
+      "native_source_comparisons_or_states": 3,
+      "checks": 3484,
+      "source_only_cases": 1,
+      "reconstructed_complete_bodies": 9,
+      "reconstructed_native_bytes": 2418,
+      "frozen_inputs": 757,
+      "physical_files": 767,
+      "linked_objects": 125,
+      "binary_pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 1328,
+          "sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "source_sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 1348,
+          "sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "source_sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 148,
+          "sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "source_sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "equal": true
+        }
+      ],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "provider_scope": "nine reconstructed provider/parser/destructor/cache bodies; generated populated archives and actual raw lifetime owners",
+      "source_only_scope": "first-read exception retains held lock and opened stream, releases provider allocation/base",
+      "oracle_scope": "52 original STL or support spans, 6523 bytes, outside reconstructed provider coverage; normal operations called on both sides",
+      "original_STL_or_support_oracle_bodies": 52,
+      "original_STL_or_support_oracle_bytes": 6523,
+      "source_only_output_bytes": 204,
+      "generated_archive": {
+        "files": 3,
+        "offsets": 6,
+        "directories": 2,
+        "members": 5
+      },
+      "failed_attempts_retained": [
+        "local/native-ay-integrated/provider/attempt01",
+        "local/native-ay-integrated/provider/attempt02"
+      ],
+      "failure_correction": "Harness omitted CE2220 InterlockedDecrement binding. AV located at imported thunk 00A056E8; attempt03 binds the verified actual Win32 import. Production source unchanged."
+    }
+  ],
+  "strict_build": {
+    "commit": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+    "log": "local/native-ay-integrated-build02.log",
+    "sha256": "4b13cc0c0eb7f0d93e2aeba0267e82358163b53de4f1b6770dc6a7d70f2c732f",
+    "result": "passed"
+  },
+  "ctest": {
+    "result": "passed",
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "count": 2
+  },
+  "annotation_readback": "reports/native_ay_annotation_readback.json",
+  "promotion_contract": "Exact final HEAD strict Win32 build and both CTests, then all four immutable attempts and complete current source/header/COFF/archive-member parity immediately before ordinary Git fast-forward. Final gate proof is retained under local/native-ay-promotion-checks; no manual dirty-shard ref update.",
+  "limitations": [
+    "Original STL implementations remain explicit contracts, not reconstructed source.",
+    "New C++ interfaces are not drop-in ABI/FH3 replacements.",
+    "No native FH3/SEH, arbitrary stack-spill alias, simultaneous cleanup failure or short-read indeterminate-byte proof.",
+    "No installed archive fixture or gameplay validation.",
+    "BF7680 backward-overlap correction is assembly-reviewed; fixture binds host CRT memmove on both sides and does not independently execute that original library copy.",
+    "Fixtures use generated archives; recorded installation scan found no .mpak/.mpkg/.pak. No runnable-game completion or drop-in ABI claim."
+  ]
+}
