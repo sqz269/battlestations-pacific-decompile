@@ -887,3 +887,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_pending_entity_drain.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_resource_construction.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_scene_handle.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tree_insertion.cpp)
