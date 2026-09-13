@@ -1,0 +1,29 @@
+{
+  "packet": "orch6_world_registration_live_n",
+  "status": "runtime implementation awaiting N dependency integration and combined validation",
+  "source": "src/game_hosts_units.cpp",
+  "header": "include/bsp/game_hosts_units.hpp",
+  "calls": [
+    {"address":"00484546","native":"00BF681B","function":"00484540","binding":"normal12-byte node allocation; native null-return and EH behavior not emulated"},
+    {"address":"004CB076","native":"00BF7CD1","function":"004CB030","binding":"native vector constructor evidence for97 triples, constructor004B7EC0"},
+    {"address":"009288F1","native":"unit+vtable130","function":"00928860","kind":"indirect","binding":"21 actual descriptor creators map to constructor-proven primary tables and registrars; tables checked in N report"}
+  ],
+  "producer_evidence": {
+    "parent_store":"00925906 copies native world argument into unit+30h",
+    "triple_constructor":"004B7EC0..004B7ECC clears count/head/tail",
+    "constructor_argument":"004CB065 PUSH004B7EC0",
+    "destructor_argument":"004CB060 PUSH004C2D30",
+    "node_sequence":"00484554..00484594 preserves payload,prev,next,head,tail,count order"
+  },
+  "dependencies":["reports/unit_world_registration.json"],
+  "no_ghidra_function":[],
+  "abi_compatible":false,
+  "game_validated":false,
+  "limits":[
+    "The runtime registry is a semantic mission owner, not a raw4BCh native world.",
+    "Full placement, parent locking, activation/hierarchy links and scene-node construction remain separate.",
+    "Native allocator null-return behavior, EH unwind and world/observer teardown are not claimed.",
+    "Candidate collection, RNG/timer/lock and complete observer ownership are not enabled by this binding.",
+    "Original-byte registrar fixtures and actual runtime list audits establish separate scopes."
+  ]
+}

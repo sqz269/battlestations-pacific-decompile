@@ -1,0 +1,1106 @@
+{
+  "packet": "orch4_input_keyboard_an",
+  "status": "actual_keyboard_apply_reconstructed_strict_win32_native_fixture_passed_library_and_settings_loader_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_keyboard_apply.hpp",
+    "src/native_input_keyboard_apply.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_KEYBOARD_APPLY.md",
+  "byte_spans": [
+    {
+      "address": "00444be0",
+      "end_exclusive": "00444cd9",
+      "bytes": 249,
+      "instructions": 86,
+      "disk_live_equal": true,
+      "sha256": "da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c",
+      "capture": "local/input_keyboard_an_bytes_00444be0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0048d3b0",
+      "end_exclusive": "0048d47b",
+      "bytes": 203,
+      "instructions": 82,
+      "disk_live_equal": true,
+      "sha256": "9f7b7c43d63b244f3a5f1fe745f41f749e5fd67685760054788bee2465a96286",
+      "capture": "local/input_keyboard_an_bytes_0048d3b0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00546840",
+      "end_exclusive": "005468a9",
+      "bytes": 105,
+      "instructions": 39,
+      "disk_live_equal": true,
+      "sha256": "d5a4629dcc5664e247ad2d32d8a6acc519f6900ffd7f9a875a1f62a571e3edd5",
+      "capture": "local/input_keyboard_an_bytes_00546840.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00552770",
+      "end_exclusive": "005527d3",
+      "bytes": 99,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "5915cc3c0f58f4929a109a3c41434dc3aae481d40b6f0f8135cb283be81d93af",
+      "capture": "local/input_keyboard_an_bytes_00552770.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00552d40",
+      "end_exclusive": "00552da3",
+      "bytes": 99,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "24934612cecf4bbc39d872ba2a46717950bbf7aa9a25ac2a82446cb99d1324b2",
+      "capture": "local/input_keyboard_an_bytes_00552d40.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005540c0",
+      "end_exclusive": "0055413e",
+      "bytes": 126,
+      "instructions": 41,
+      "disk_live_equal": true,
+      "sha256": "69908183431662bf83bcd90ebaafb330530f9fe9d49a5694a29c4d42c98f314c",
+      "capture": "local/input_keyboard_an_bytes_005540c0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055b230",
+      "end_exclusive": "0055b2f9",
+      "bytes": 201,
+      "instructions": 77,
+      "disk_live_equal": true,
+      "sha256": "4ee2732d9efdd6eb19c773fdb7a14386dbfeb05b569fad25be42cb15e71050a8",
+      "capture": "local/input_keyboard_an_bytes_0055b230.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055b400",
+      "end_exclusive": "0055b471",
+      "bytes": 113,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "06236fe90b692373e3e256dfa205b1ee3ee0da8dd17edc32a3d323f6d55ecd90",
+      "capture": "local/input_keyboard_an_bytes_0055b400.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055b490",
+      "end_exclusive": "0055b4c4",
+      "bytes": 52,
+      "instructions": 23,
+      "disk_live_equal": true,
+      "sha256": "774f6ab41ecd733990c8831c62283c8ff468996ae7428dfab3af5d62cf472c67",
+      "capture": "local/input_keyboard_an_bytes_0055b490.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055c110",
+      "end_exclusive": "0055c1f3",
+      "bytes": 227,
+      "instructions": 63,
+      "disk_live_equal": true,
+      "sha256": "f441173adafacf710e98e995714c53afe5a1c068fa11524ce0a47fdfa06a04de",
+      "capture": "local/input_keyboard_an_bytes_0055c110.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00699bf0",
+      "end_exclusive": "00699c11",
+      "bytes": 33,
+      "instructions": 13,
+      "disk_live_equal": true,
+      "sha256": "ccd06403cfb7a7bca1b040ef4729a7d2fa39a1d423d0fd179336a5193b2f7695",
+      "capture": "local/input_keyboard_an_bytes_00699bf0.txt",
+      "role": "engine/predicate"
+    },
+    {
+      "address": "0069dd80",
+      "end_exclusive": "0069ddde",
+      "bytes": 94,
+      "instructions": 40,
+      "disk_live_equal": true,
+      "sha256": "862fddc6cfbbec62ec9512d5d93bad93db6eee5ef300614d63e117629b627f1c",
+      "capture": "local/input_keyboard_an_bytes_0069dd80.txt",
+      "role": "engine/predicate"
+    },
+    {
+      "address": "0069e860",
+      "end_exclusive": "0069e8f6",
+      "bytes": 150,
+      "instructions": 64,
+      "disk_live_equal": true,
+      "sha256": "6506ccacb77eced55ecf4c7539c5f3404cd7f150c6a7275dbc2375585a9bb57d",
+      "capture": "local/input_keyboard_an_bytes_0069e860.txt",
+      "role": "engine/predicate"
+    },
+    {
+      "address": "006a1560",
+      "end_exclusive": "006a15e0",
+      "bytes": 128,
+      "instructions": 50,
+      "disk_live_equal": true,
+      "sha256": "c351998559e7eb69ce18741b9b299a4410bb4f24ddd0003ace74a60b770a8b76",
+      "capture": "local/input_keyboard_an_bytes_006a1560.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a44b0",
+      "end_exclusive": "006a45b2",
+      "bytes": 258,
+      "instructions": 89,
+      "disk_live_equal": true,
+      "sha256": "9c3897c57decbbe69ef617b2ab1d6b2459a15800da61b1b88fe663b9951b62e1",
+      "capture": "local/input_keyboard_an_bytes_006a44b0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a45c0",
+      "end_exclusive": "006a46c2",
+      "bytes": 258,
+      "instructions": 89,
+      "disk_live_equal": true,
+      "sha256": "a967f580387722708f2dccc58e4f312fc714d198b47ecdbc89ae9e3ba0cdc746",
+      "capture": "local/input_keyboard_an_bytes_006a45c0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a4ca0",
+      "end_exclusive": "006a4dba",
+      "bytes": 282,
+      "instructions": 95,
+      "disk_live_equal": true,
+      "sha256": "02e444e5e56d97f83bf31024ecdbf814583ba3d25f0040a8ad2648aef6f734bc",
+      "capture": "local/input_keyboard_an_bytes_006a4ca0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a5aa0",
+      "end_exclusive": "006a5bef",
+      "bytes": 335,
+      "instructions": 113,
+      "disk_live_equal": true,
+      "sha256": "821a3fe9fcb16cd3425ae3b29513a55832aa49b147e34595b420f519e069c077",
+      "capture": "local/input_keyboard_an_bytes_006a5aa0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006aa090",
+      "end_exclusive": "006aa1c0",
+      "bytes": 304,
+      "instructions": 115,
+      "disk_live_equal": true,
+      "sha256": "c779f4241f2c6b26d68fcc3a0951f3dcb16bb0b7d934f6706185e8ea56d63154",
+      "capture": "local/input_keyboard_an_bytes_006aa090.txt",
+      "role": "engine/predicate"
+    },
+    {
+      "address": "006aa640",
+      "end_exclusive": "006aac44",
+      "bytes": 1540,
+      "instructions": 458,
+      "disk_live_equal": true,
+      "sha256": "2ddf5be7c7dbf55a3e46ac136422d934c779e9a18d8684fa19e8480042fb48a4",
+      "capture": "local/input_keyboard_an_bytes_006aa640.txt",
+      "role": "engine/predicate"
+    },
+    {
+      "address": "00a92260",
+      "end_exclusive": "00a92285",
+      "bytes": 37,
+      "instructions": 12,
+      "disk_live_equal": true,
+      "sha256": "359f1689e258c5373dc6ca53c8fae366980d9bc4818de65c7c8ae76589efdf47",
+      "capture": "local/input_keyboard_an_bytes_00a92260.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00a93750",
+      "end_exclusive": "00a937c2",
+      "bytes": 114,
+      "instructions": 39,
+      "disk_live_equal": true,
+      "sha256": "096bceba3e9454bcbf1beb3a216341b368c125250842ad9ed2c5dc7623109978",
+      "capture": "local/input_keyboard_an_bytes_00a93750.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00443d00",
+      "end_exclusive": "00443d51",
+      "bytes": 81,
+      "instructions": 31,
+      "disk_live_equal": true,
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "capture": "local/input_keyboard_an_bytes_00443d00.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00443d60",
+      "end_exclusive": "00443db3",
+      "bytes": 83,
+      "instructions": 36,
+      "disk_live_equal": true,
+      "sha256": "e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e",
+      "capture": "local/input_keyboard_an_bytes_00443d60.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00552e20",
+      "end_exclusive": "00552e83",
+      "bytes": 99,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "4a163eccefe68ea5b4f878d7e33cfba8c34bb489aef7272c88930873adfe254f",
+      "capture": "local/input_keyboard_an_bytes_00552e20.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005548c0",
+      "end_exclusive": "00554913",
+      "bytes": 83,
+      "instructions": 36,
+      "disk_live_equal": true,
+      "sha256": "53aca1e0d43df45bff865c7046f2325d1e3d0c6cd50c352b3099ca6b9b237aa0",
+      "capture": "local/input_keyboard_an_bytes_005548c0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00554980",
+      "end_exclusive": "005549d9",
+      "bytes": 89,
+      "instructions": 36,
+      "disk_live_equal": true,
+      "sha256": "9faef6d4c68bfcfeab1e26dfd17c94086964ff8b6cdff9993fac950266d406c5",
+      "capture": "local/input_keyboard_an_bytes_00554980.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00554cd0",
+      "end_exclusive": "00554d07",
+      "bytes": 55,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "aaa05a69d2e2539e7cf96c963b7b3e54ebd6229d795f4013dce1bb4e73909057",
+      "capture": "local/input_keyboard_an_bytes_00554cd0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00554ec0",
+      "end_exclusive": "00554ef7",
+      "bytes": 55,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "379e128ef5921666afe611547132c8bcc5dda188a24291d4031762f75abbfddc",
+      "capture": "local/input_keyboard_an_bytes_00554ec0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005572f0",
+      "end_exclusive": "005573b9",
+      "bytes": 201,
+      "instructions": 77,
+      "disk_live_equal": true,
+      "sha256": "bc83f356cf7120c50cfa1d68f45c1bc463375287a1490b54c0d0f55d96a6d4a6",
+      "capture": "local/input_keyboard_an_bytes_005572f0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00558570",
+      "end_exclusive": "005585e1",
+      "bytes": 113,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "7adf75fe5d2d305378cad4cf75a6d314aa525e9930c19a62335a1bb4a11dd6c5",
+      "capture": "local/input_keyboard_an_bytes_00558570.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055af60",
+      "end_exclusive": "0055afc6",
+      "bytes": 102,
+      "instructions": 44,
+      "disk_live_equal": true,
+      "sha256": "dbd2cd8b19918916b2d0f42f22c9a108f9434d506680ee53dc96ad98dc938fef",
+      "capture": "local/input_keyboard_an_bytes_0055af60.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055b300",
+      "end_exclusive": "0055b375",
+      "bytes": 117,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "e1cf5c0827a6460d4dff441d9b5f9c32e6b39e3ee4fbc1d79825195c668d2394",
+      "capture": "local/input_keyboard_an_bytes_0055b300.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0069ccf0",
+      "end_exclusive": "0069cd43",
+      "bytes": 83,
+      "instructions": 36,
+      "disk_live_equal": true,
+      "sha256": "823eb41ac6699d92897b433872c82df55e2f5681e9b826b35e3a049a7df8d64c",
+      "capture": "local/input_keyboard_an_bytes_0069ccf0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0069cd50",
+      "end_exclusive": "0069cda3",
+      "bytes": 83,
+      "instructions": 36,
+      "disk_live_equal": true,
+      "sha256": "f7895045e872b51318d145b2567e45dfc082afdb050f838bd26e95b2c618a2bf",
+      "capture": "local/input_keyboard_an_bytes_0069cd50.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a0e90",
+      "end_exclusive": "006a104c",
+      "bytes": 444,
+      "instructions": 183,
+      "disk_live_equal": true,
+      "sha256": "470c6881fd5ad8367b995dd78ea2e7341d6f75ec857c8dbd88eab82250617d3a",
+      "capture": "local/input_keyboard_an_bytes_006a0e90.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00553070",
+      "end_exclusive": "00553099",
+      "bytes": 41,
+      "instructions": 18,
+      "disk_live_equal": true,
+      "sha256": "e17eb01c3f71a1c78f9b330a822fc2751337e6ed342a97e8a8bd9ab354a01353",
+      "capture": "local/input_keyboard_an_bytes_00553070.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005531f0",
+      "end_exclusive": "00553253",
+      "bytes": 99,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "3f1537617bd7c8051983248b67d08c700684f6f2ce6de6c463aa21f10de1847e",
+      "capture": "local/input_keyboard_an_bytes_005531f0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00554f10",
+      "end_exclusive": "00554f45",
+      "bytes": 53,
+      "instructions": 23,
+      "disk_live_equal": true,
+      "sha256": "85fbf2336850f8662639b5d636e08415fed359a1b5c369833fc9c914aba88d76",
+      "capture": "local/input_keyboard_an_bytes_00554f10.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00555b20",
+      "end_exclusive": "00555b95",
+      "bytes": 117,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "a472b23794810ec8682e6ed96545711fe60a3bdbb5e68a8c201bd2b5a1f6b384",
+      "capture": "local/input_keyboard_an_bytes_00555b20.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00556dc0",
+      "end_exclusive": "00557067",
+      "bytes": 679,
+      "instructions": 231,
+      "disk_live_equal": true,
+      "sha256": "d1f14fe4668484a294a62ebe858b855b9f696b20ce6368e491fd32fbd1764eaf",
+      "capture": "local/input_keyboard_an_bytes_00556dc0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055b060",
+      "end_exclusive": "0055b0f2",
+      "bytes": 146,
+      "instructions": 56,
+      "disk_live_equal": true,
+      "sha256": "c111f2774b6fd25edc7093126b55b5608950175626ef018a066b1b38dc8b3a1b",
+      "capture": "local/input_keyboard_an_bytes_0055b060.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0069b190",
+      "end_exclusive": "0069b219",
+      "bytes": 137,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "abfaa04bebf8e0c2df2ff0ce7b64f2fc67078aa8c94da857ecd74982dfce3c38",
+      "capture": "local/input_keyboard_an_bytes_0069b190.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0069f400",
+      "end_exclusive": "0069f5ec",
+      "bytes": 492,
+      "instructions": 167,
+      "disk_live_equal": true,
+      "sha256": "88ea11197d5870ee92355a1ec4b75a861b571b127df3a674a7d45b2e93fd416d",
+      "capture": "local/input_keyboard_an_bytes_0069f400.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "006a01f0",
+      "end_exclusive": "006a02a9",
+      "bytes": 185,
+      "instructions": 73,
+      "disk_live_equal": true,
+      "sha256": "16b1bf796a9512336ae1990e5e17c027fad66e667dc7a6cb41804bf9df31946a",
+      "capture": "local/input_keyboard_an_bytes_006a01f0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00552fb0",
+      "end_exclusive": "00552fcc",
+      "bytes": 28,
+      "instructions": 11,
+      "disk_live_equal": true,
+      "sha256": "65854aed5d5c56d06e58463b6cfd1bb88a1a3af3a69793ccd0a34375ba757d82",
+      "capture": "local/input_keyboard_an_bytes_00552fb0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00552fd0",
+      "end_exclusive": "00552feb",
+      "bytes": 27,
+      "instructions": 10,
+      "disk_live_equal": true,
+      "sha256": "0b30700a1d486d30484ee267091ffd2148ad236d0a1aec287f615c576bb818b8",
+      "capture": "local/input_keyboard_an_bytes_00552fd0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005530d0",
+      "end_exclusive": "0055311e",
+      "bytes": 78,
+      "instructions": 30,
+      "disk_live_equal": true,
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "capture": "local/input_keyboard_an_bytes_005530d0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00553120",
+      "end_exclusive": "00553172",
+      "bytes": 82,
+      "instructions": 30,
+      "disk_live_equal": true,
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "capture": "local/input_keyboard_an_bytes_00553120.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "00554f50",
+      "end_exclusive": "00554f8f",
+      "bytes": 63,
+      "instructions": 20,
+      "disk_live_equal": true,
+      "sha256": "f49e273a44592b4f5090caff74967d8ca6e043957bfb811c38487604105d11f5",
+      "capture": "local/input_keyboard_an_bytes_00554f50.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "005555b0",
+      "end_exclusive": "00555642",
+      "bytes": 146,
+      "instructions": 56,
+      "disk_live_equal": true,
+      "sha256": "ffe920bf0e96e6b5ae4476a8317c5b67e6e17314937bfcca27068573e8852ded",
+      "capture": "local/input_keyboard_an_bytes_005555b0.txt",
+      "role": "native library or existing source boundary fixture"
+    },
+    {
+      "address": "0055a290",
+      "end_exclusive": "0055a316",
+      "bytes": 134,
+      "instructions": 47,
+      "disk_live_equal": true,
+      "sha256": "15b59b50094ff9d7526a72f48b63e1369d76e4ce17ae671bf8943ef0ea9281c4",
+      "capture": "local/input_keyboard_an_bytes_0055a290.txt",
+      "role": "native library or existing source boundary fixture"
+    }
+  ],
+  "calls": [
+    {
+      "function": "0069dd80",
+      "address": "0069dd9b",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "0069dd80",
+      "address": "0069ddb1",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "0069e860",
+      "address": "0069e899",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "0069e860",
+      "address": "0069e8aa",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "0069e860",
+      "address": "0069e8b8",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "0069e860",
+      "address": "0069e8d4",
+      "native": "0069dd80",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa09d",
+      "native": "0055c110",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa0b1",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa0be",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa0c7",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa0d9",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa0f2",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa12b",
+      "native": "00bf7fbf",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa150",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa169",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa178",
+      "native": "006a44b0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa184",
+      "native": "006a44b0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa191",
+      "native": "0069e860",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa090",
+      "address": "006aa19f",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa67f",
+      "native": "004bec00",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa68f",
+      "native": "00a92260",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6be",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6cf",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6d9",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6ea",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6fe",
+      "native": "0055b400",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa72e",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa73f",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa749",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa756",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa75f",
+      "native": "00444be0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7cc",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7e9",
+      "native": "006a5aa0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7f0",
+      "native": "006a1560",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa84c",
+      "native": "00546840",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa85e",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa88c",
+      "native": "00552770",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8be",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8cf",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8d9",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8eb",
+      "native": "006aa090",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa90b",
+      "native": "006a45c0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa935",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa94c",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa971",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa989",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9a2",
+      "native": "006a5aa0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9a9",
+      "native": "006a1560",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9de",
+      "native": "006a4ca0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9f1",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9fa",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa13",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa25",
+      "native": "0048d3b0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa32",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa37",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa45",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa56",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa73",
+      "native": "00bf6713",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaad3",
+      "native": "00a93750",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaaec",
+      "native": "00699bf0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab37",
+      "native": "00a93750",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab87",
+      "native": "00a93750",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aabbf",
+      "native": "00552d40",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aabf8",
+      "native": "0055b230",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aac02",
+      "native": "00bf65ac",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aac18",
+      "native": "005540c0",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "00a93750",
+      "address": "00a93772",
+      "native": "00a93500",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    },
+    {
+      "function": "00a93750",
+      "address": "00a937b7",
+      "native": "00a91e80",
+      "evidence": "Owned engine/predicate or existing actual slot dependency; original receiver, stack schedule and body checked."
+    }
+  ],
+  "library_disk_extensions": [
+    {
+      "address": "0055b490",
+      "stored_end": "0055b4b4",
+      "disk_end": "0055b4c4"
+    },
+    {
+      "address": "00556dc0",
+      "stored_end": "00557031",
+      "disk_end": "00557067"
+    }
+  ],
+  "library_boundaries": [
+    "00408720",
+    "00411700",
+    "00419cc0",
+    "0041dd40",
+    "00444910",
+    "004bec00",
+    "00557060",
+    "0055ac80",
+    "0055b520",
+    "0055b690",
+    "0055b8b0",
+    "0055ba80",
+    "0055bf00",
+    "006a19a0",
+    "006a1a20",
+    "006a20d0",
+    "006a38b0",
+    "006a3ab0",
+    "006a47f0",
+    "006a4dc0",
+    "00a91e80",
+    "00a93500",
+    "00bd1510",
+    "00bf65ac",
+    "00bf6713",
+    "00bf681b",
+    "00bf6885",
+    "00bf6989",
+    "00bf7680",
+    "00bf7fbf"
+  ],
+  "coverage": {
+    "006aa640": "Complete1540-byte engine schedule with required raw library providers and supported source temporary-map unwind.",
+    "006aa090": "Complete304-byte raw axis predicate with required inserting device/description lookup providers.",
+    "00699bf0": "Complete33-byte raw descriptor predicate.",
+    "0069e860": "Complete150-byte checked vector schedule over existing raw ranges.",
+    "0069dd80": "Shared source checked-range adapter; library name retained, no original STL ABI claim."
+  },
+  "limitations": [
+    "Raw settings540h production and concrete complete library binding remain dependencies.",
+    "Original FH3/private native stack aliases, malformed storage and game validation are not supplied."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 372,
+    "calls_checked": 68,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "probe_log": "local/input_keyboard_an_probe.log",
+    "probe_log_sha256": "b1e8443caa9c44198eeebc19694fe6b6452d1bb64dc3dbc21a66ed52ed044827",
+    "fixture_source": "local/input_keyboard_an_probe.cpp",
+    "fixture_source_sha256": "432de2254b8414925a9e0bbc109c1e338e2125c747de3a38ba23f73f736143d7",
+    "fixture_header_sha256": "2f6877796aba670768040d6eff0fd28ef235156aed3b75834ce8bb1374402672",
+    "native_resize_calls": 30,
+    "native_rebind_calls": 30,
+    "loaded_cases": [
+      "finite",
+      "quiet_nan",
+      "unknown_category_after_known_zero_class"
+    ],
+    "temporary_scale_trees_compared_before_erase": true,
+    "original_temporary_allocations_frees_balanced": true,
+    "source_allocation_balance_measured": false,
+    "unspecified_binding_padding_compared": false,
+    "unspecified_suppressed_flag_high24_compared": false,
+    "original_library_fixture_provider": true,
+    "production_library_provider_complete": false,
+    "device_calls": 0,
+    "game_validated": false,
+    "original_abi_compatible": false
+  },
+  "annotations": "reports/native_input_keyboard_apply_an_annotations.json",
+  "native_abi": {
+    "006aa640": "ECX actual settings540h, no stack arguments, RET; full body006AA640..006AAC43.",
+    "006aa090": "ECX actual settings, stack pooled8h device/input string pointers; AL, RET8.",
+    "00699bf0": "ECX actual descriptor14h, canonical EAX0/1, RET.",
+    "0069e860": "ECX/EDX checked16h DWORD-vector headers, canonical EAX0/1, RET.",
+    "0069dd80": "Cdecl: first begin, first end, second owner, second begin, two unused stack words; AL, RET."
+  },
+  "exception_contract": {
+    "native_handler": "00c7f9f8",
+    "func_info": "00dacef8",
+    "unwind_map": "00dacef0",
+    "unwind_action": "00c7f9f0",
+    "states": 1,
+    "state0_cleanup": "0055b490",
+    "source_guard": "Arm after0055B400 returns; disarm before normal0055B230; free reloaded head after normal erase.",
+    "original_fh3_executed": false,
+    "source_unwind_executed": false,
+    "private_stack_aliases_supported": false
+  },
+  "existing_body_ownership_repair": "reports/native_input_settings_defaults_am_definitions.json",
+  "new_body_definitions": [],
+  "functions": [
+    {
+      "address": "006aa640",
+      "source_entry": "apply_native_input_keyboard_bindings_006aa640",
+      "coverage": "Complete1540-byte engine schedule with required raw library providers and supported source temporary-map unwind."
+    },
+    {
+      "address": "006aa090",
+      "source_entry": "use_native_input_alternate_axis_slots_006aa090",
+      "coverage": "Complete304-byte raw axis predicate with required inserting device/description lookup providers."
+    },
+    {
+      "address": "00699bf0",
+      "source_entry": "suppress_native_input_alternate_binding_00699bf0",
+      "coverage": "Complete33-byte raw descriptor predicate."
+    },
+    {
+      "address": "0069e860",
+      "source_entry": "equal_native_input_code_vectors_0069e860",
+      "coverage": "Complete150-byte checked vector schedule over existing raw ranges."
+    },
+    {
+      "address": "0069dd80",
+      "source_entry": "equal_native_input_code_ranges",
+      "coverage": "Shared source checked-range adapter; library name retained, no original STL ABI claim."
+    }
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T06:07:44.093900+00:00",
+    "source_revision": "9318c0992735814e2eab328224820a6d3fdca0bd",
+    "merged_main_revision": "f90ae03944ea47c172071737925e670874921aad",
+    "code_files": 2223,
+    "code_manifest": "local\\input_keyboard_an_source_manifest.json",
+    "code_manifest_sha256": "29b2b546780cf1a1146fa72eff362beb8003d46c8b9eb6852f98c0ba36f91e10",
+    "core_archive_sha256": "e6bda3f4f656dae71145e290fcfd1d340a76c1fbdb403dc1bdecfbef1b66d36d",
+    "game_executable_sha256": "6901938b28bb42e48de06573da7424752e7f2021431ee7f4613a1abd50ddefae",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_keyboard_an_combined_build.log",
+    "build_log_sha256": "e13077a6c8659e41ec4f12d5fbeceaeaf49d3a2c007cb9f89b63c08ee3b45b19",
+    "fixture_log": "local\\input_keyboard_an_combined_probe.log",
+    "fixture_log_sha256": "f61f83f3f23873b876f954de4ba40d072b7c49aaf553d559236bba59f735f5ea",
+    "native_source_words_equal": 372,
+    "calls_checked": 68,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "006a9a40"
+  ]
+}
