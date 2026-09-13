@@ -1,0 +1,200 @@
+{
+  "packet": "orch6_reconstruction_q",
+  "status": "three_workers_and_concrete_dispatch_binding_reviewed_integrated_build_fixture_and_process_checked",
+  "packets": [
+    {
+      "packet": "native-neighbour-node-q",
+      "commit": "98e0a6df547e7c5373ee0406c0e375c78caa8254",
+      "report": "reports/native_ship_ai_obstacle_node.json",
+      "call_rows_checked": 7,
+      "coverage": "Complete normal raw90h node constructor, common destructor, scalar wrapper and owner callback;83 bytes left untouched; actual shared observer lifetime reused.",
+      "fixture": "20 pairs,355 original bytes,17300 canonical bytes per side,zero mismatches;15 registration preimage checks,20 original odd-flag frees,60 event getters.",
+      "limits": "Actual endpoint event production/vtable dispatch remains external. Native FH3/OOM/concurrency/gameplay are not validated. Decoded0064B605..607 remains outside stored Ghidra body set."
+    },
+    {
+      "packet": "observer-dispatch-owner-q",
+      "commit": "547407b54e5dd496c7e776f6572863ea5e9c99d2",
+      "report": "reports/observer_dispatch_owner.json",
+      "call_rows_checked": 26,
+      "coverage": "Actual14h owner E198DC, CRTCCD6A0 owner+4 alias E198E4, getter publication/registration and vector-only scalar destruction. Constructor preserves owner+4; shutdown leaves alias unchanged.",
+      "fixture": "Eight original spans,434 original bytes,41 canonical words; actual raw manager registration and Win32 locks;zero mismatches.",
+      "limits": "Native exceptional paths, complete dispatcher scheduling and gameplay remain separate. Documented Ghidra body holes and allocation-unwind tail remain explicit."
+    },
+    {
+      "packet": "unit-scene-flags-q",
+      "commit": "bf3f921662c3c588fd7645be6efbdc5276a2a2dc",
+      "report": "reports/unit_scene_flags_live.json",
+      "call_rows_checked": 24,
+      "coverage": "Actual stable GameUnitSlot retains missing5E/5F/60 beside existing active5C/simulate5D; queue flag hooks, world filters and visible predicate use that same storage.",
+      "fixture": "One focused249-check fixture compares15 original constructor-store bytes and31-byte activation with actual unit storage, existing production queue hooks, world filters and identity persistence.",
+      "limits": "Represented kind1 initialization projection only; complete constructors, type2/type3 delivery, native pending queue population and destruction callbacks remain unavailable. First ignored fixture incorrectly expected repeated list rebuild; corrected to fresh consumers with persistent Units owner."
+    },
+    {
+      "packet": "dispatch-owner-binding-q",
+      "commit": "b55e37df",
+      "report": "reports/observer_dispatch_binding.json",
+      "call_rows_checked": 1,
+      "coverage": "Actual raw managerCF7E74 profile routes popped owner to00695F40 with actualE198DC cell; existingCF7E70 lock profile retained.",
+      "fixture": "Focused source lifecycle passes with actual CRT dispatch owner then lazy observer lock, shared edge cleanup and mixed profile drain; both owner publications clear and alias remains unchanged.",
+      "limits": "Source composition fixture, not original-byte differential execution. GameStartup observer instantiation remains separate."
+    }
+  ],
+  "validation": {
+    "compiled_commit": "e4030de667bd9cc30cbc69ddc1da005f040a1c3a",
+    "exe_sha256": "e085488bc3499a384105228bb7662adfe72634678c773278826e3e0fec38b987",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2 existing CTests passed",
+    "build_record": {
+      "compiled_commit": "e4030de667bd9cc30cbc69ddc1da005f040a1c3a",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-20260912",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_q_20260913T003302.log"
+    },
+    "process_run": {
+      "compiled_commit": "e4030de667bd9cc30cbc69ddc1da005f040a1c3a",
+      "run_commit": "e4030de667bd9cc30cbc69ddc1da005f040a1c3a",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_e4030de6.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_q.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_q.csv"
+      ],
+      "exe_sha256": "e085488bc3499a384105228bb7662adfe72634678c773278826e3e0fec38b987",
+      "preserved_executable": "local\\orch6_combined_e4030de6.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "f81183a82574f358c01bb6f2decad179932197aeb5fa46d2187981d4f170b7a0",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 13.459380149841309,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    }
+  },
+  "evidence_archive": {
+    "manifest": "local/orch6_worker_archive_q.json",
+    "sha256": "4ed7c287ada192d9ebeef21e1e681ead9c8c0112f618624e8e32f8d084fbb28e",
+    "artifacts": 293,
+    "includes": "Recorded local/build evidence and exact linked libraries"
+  },
+  "analysis_followups": [
+    "Five missing scene/notification bodies formally defined,saved and exported with verified live/disk bytes.",
+    "Three additional R initializer/handler bodies defined and exported; explicit72-byte pending-list destructor flow decoded while its stored Ghidra body remains incomplete. See pending_entity_owner_function_definitions.json,observer_dispatch_handler_function_definitions.json and pending_entity_owner_flow_repair.json.",
+    "00923840/009277E0 behavior reviewed and provisionally named; source uses only evidenced active-store projection.",
+    "006959B0 false-free flow repaired for R;695AB1..AB3 stored-body gap remains explicitly recorded."
+  ],
+  "limits": [
+    "Combined process evidence is limited to the recorded compiled commit and its exercised paths.",
+    "New raw node/observer owner paths are build/fixture checked; the mission run does not establish their execution.",
+    "Native pending queue population/delivery, observer event scheduling and raw-node candidate runtime integration remain incomplete.",
+    "Original-game visual/gameplay parity and drop-in binary ABI compatibility are not established."
+  ],
+  "follow_up": [
+    "R: actual observer first-endpoint notification wrappers and producer-specific getters.",
+    "R: complete dispatcher schedule using existing equivalent vector mechanics and actual alias.",
+    "R: actual pending entity list owners and producer contracts before runtime queue population."
+  ]
+}
