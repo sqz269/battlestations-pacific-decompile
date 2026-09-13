@@ -186,12 +186,21 @@ void ship_ai_refresh_avoid_zone_searchers_009da6e0(
     ShipAiAvoidZoneSearcherSet& searchers, const ShipAiAvoidanceRequest& request,
     const ShipAiAvoidZoneSearcherInputs& inputs, ShipAiAvoidZoneSearcherHost& host)
 {
+    ShipAiAvoidZoneSearcherViews views{};
+    for (std::size_t i = 0; i < views.size(); ++i) views[i] = &searchers.searchers[i];
+    ship_ai_refresh_avoid_zone_searchers_009da6e0(views, request, inputs, host);
+}
+
+void ship_ai_refresh_avoid_zone_searchers_009da6e0(
+    const ShipAiAvoidZoneSearcherViews& searchers, const ShipAiAvoidanceRequest& request,
+    const ShipAiAvoidZoneSearcherInputs& inputs, ShipAiAvoidZoneSearcherHost& host)
+{
     // Three identical blocks at 009DA6E6, 009DA730 and 009DA77D. Each re-reads
     // the request byte and re-asks the director, so the host sees four calls.
     for (std::size_t i = 0; i < kShipAiAvoidZoneSearcherCount; ++i) {
         const bool want =
             request.flag_3fc && host.director_land_avoidance_0080e160_242();
-        ShipAiAvoidZoneSearcher& searcher = searchers.searchers[i];
+        ShipAiAvoidZoneSearcher& searcher = *searchers[i];
         if (searcher.enabled == want) {
             continue; // 009DA719 / 009DA75C / 009DA7A9, the JZ past the whole block
         }

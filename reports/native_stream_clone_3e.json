@@ -1,0 +1,711 @@
+{
+  "packet": "orch5_stream_clone_3e",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mode": "verified BSP read-only wrappers"
+  },
+  "source": "src/native_stream_clone.cpp",
+  "header": "include/bsp/native_stream_clone.hpp",
+  "documentation": "docs/NATIVE_STREAM_CLONE_3E.md",
+  "routines": [
+    {
+      "address": "00b729a0",
+      "name": "clone_native_index_stream_00b729a0",
+      "end_inclusive": "00b72a65",
+      "last_instruction": "00b72a65",
+      "last_instruction_length": 1,
+      "instruction_count": 87,
+      "byte_length": 198,
+      "coverage": "complete normal caller with actual observed providers",
+      "abi": "ECX source; EAX creator; RET",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b72a70",
+      "name": "clone_native_vertex_stream_00b72a70",
+      "end_inclusive": "00b72b19",
+      "last_instruction": "00b72b19",
+      "last_instruction_length": 1,
+      "instruction_count": 80,
+      "byte_length": 170,
+      "coverage": "complete normal caller with actual observed providers",
+      "abi": "ECX source; EAX creator; RET",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b73f50",
+      "name": "copy_native_mesh_for_text_00b73f50_flags3e",
+      "end_inclusive": "00b74270",
+      "last_instruction": "00b7426e",
+      "last_instruction_length": 3,
+      "instruction_count": 237,
+      "byte_length": 801,
+      "coverage": "complete flags26/3E branches; other flags outside interface",
+      "abi": "ECX source; stack destination,flags; RET8",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b742a0",
+      "name": "GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0",
+      "end_inclusive": "00b742f9",
+      "last_instruction": "00b742f7",
+      "last_instruction_length": 3,
+      "instruction_count": 40,
+      "byte_length": 90,
+      "coverage": "allocating flags26/3E branch; flag2-clear branch outside interface",
+      "abi": "ECX source; stack flags,unused; RET8",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b752b0",
+      "name": "clone_native_gui_text_model_00b752b0_flags3e",
+      "end_inclusive": "00b753f1",
+      "last_instruction": "00b753ef",
+      "last_instruction_length": 3,
+      "instruction_count": 112,
+      "byte_length": 322,
+      "coverage": "complete flags26/3E,parent0 provider domain; other flags/parent outside interface",
+      "abi": "ECX source; stack flags,parent; RET8",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b287c0",
+      "name": "create_native_registered_vertex_stream_00b287c0",
+      "end_inclusive": "00b288a9",
+      "last_instruction": "00b288a7",
+      "last_instruction_length": 3,
+      "instruction_count": 77,
+      "byte_length": 234,
+      "coverage": "existing actual factory reused; optional diagnostic creator publication after construction",
+      "abi": "ECX renderer; stack count,flags,declaration; RET0C",
+      "no_ghidra_function": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b729b4",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48da0",
+      "contract": "source current20 format, captured renderer/table already retained"
+    },
+    {
+      "address": "00b729be",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48d80",
+      "contract": "fresh source current18 flags"
+    },
+    {
+      "address": "00b729c8",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48d90",
+      "contract": "fresh source current1C count"
+    },
+    {
+      "address": "00b729d0",
+      "native": "indirect:EAX",
+      "function": "00b729a0",
+      "resolved_native": "00b288b0",
+      "contract": "captured renderer/current60(count,flags,format), RET0C"
+    },
+    {
+      "address": "00b729df",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48d90",
+      "contract": "source count before first map; map table already captured"
+    },
+    {
+      "address": "00b729e7",
+      "native": "indirect:EAX",
+      "function": "00b729a0",
+      "resolved_native": "00b49b60",
+      "contract": "captured source current0C(count,0,0), RET0C"
+    },
+    {
+      "address": "00b729f8",
+      "native": "indirect:EAX",
+      "function": "00b729a0",
+      "resolved_native": "00b48d90",
+      "contract": "fresh source count; destination map table already captured"
+    },
+    {
+      "address": "00b72a00",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b49b60",
+      "contract": "captured destination current0C(new source count,0,0), RET0C"
+    },
+    {
+      "address": "00b72a0b",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48da0",
+      "contract": "fresh source format AFTER both maps;65=2,66=4,other=0"
+    },
+    {
+      "address": "00b72a3a",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b48d90",
+      "contract": "fresh source count AFTER width selection; low DWORD IMUL"
+    },
+    {
+      "address": "00b72a44",
+      "native": "00bf7680",
+      "function": "00b729a0",
+      "contract": "existing CRT _memcpy(destination,source,low DWORD byte product); cdecl ADD ESP,0C"
+    },
+    {
+      "address": "00b72a53",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b49c70",
+      "contract": "fresh source current10 unlock first, RET"
+    },
+    {
+      "address": "00b72a5c",
+      "native": "indirect:EDX",
+      "function": "00b729a0",
+      "resolved_native": "00b49c70",
+      "contract": "fresh destination current10 unlock second, RET"
+    },
+    {
+      "address": "00b72a84",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b48ce0",
+      "contract": "source current24 declaration; renderer/table already captured"
+    },
+    {
+      "address": "00b72a8e",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b48cc0",
+      "contract": "fresh source current1C flags"
+    },
+    {
+      "address": "00b72a98",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b48cd0",
+      "contract": "fresh source current20 count"
+    },
+    {
+      "address": "00b72aa0",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b287c0",
+      "contract": "captured renderer/current5C(count,flags,declaration), RET0C"
+    },
+    {
+      "address": "00b72aaf",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b48cd0",
+      "contract": "source count before first map; source map table already captured"
+    },
+    {
+      "address": "00b72ab7",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b49980",
+      "contract": "captured source current10(count,0,0), RET0C"
+    },
+    {
+      "address": "00b72ac8",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b48cd0",
+      "contract": "fresh source count; destination map table already captured"
+    },
+    {
+      "address": "00b72ad0",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b49980",
+      "contract": "captured destination current10(new source count,0,0), RET0C"
+    },
+    {
+      "address": "00b72adb",
+      "native": "indirect:EDX",
+      "function": "00b72a70",
+      "resolved_native": "00b48ce0",
+      "contract": "fresh source declaration AFTER both maps, read actual+CC stride"
+    },
+    {
+      "address": "00b72aee",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b48cd0",
+      "contract": "fresh source count after stride read, low DWORD IMUL"
+    },
+    {
+      "address": "00b72af8",
+      "native": "00bf7680",
+      "function": "00b72a70",
+      "contract": "existing CRT _memcpy(destination,source,low DWORD byte product); cdecl ADD ESP,0C"
+    },
+    {
+      "address": "00b72b07",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b49a80",
+      "contract": "fresh source current14 unlock first, RET"
+    },
+    {
+      "address": "00b72b10",
+      "native": "indirect:EAX",
+      "function": "00b72a70",
+      "resolved_native": "00b49a80",
+      "contract": "fresh destination current14 unlock second, RET"
+    },
+    {
+      "address": "00b73f7f",
+      "native": "00b72bd0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b73f94",
+      "native": "00b729a0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b73f9e",
+      "native": "00b73b70",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b73fca",
+      "native": "indirect:dword ptr [0x00ce221c]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b73fd8",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b73fe8",
+      "native": "indirect:EAX",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b7400f",
+      "native": "00b72a70",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b7401c",
+      "native": "00b73bb0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b74025",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b74036",
+      "native": "indirect:EAX",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b74082",
+      "native": "00b85ee0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b74098",
+      "native": "00b85ef0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b740b6",
+      "native": "00b18780",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b740ce",
+      "native": "00b18b60",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b740db",
+      "native": "00b73bb0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b740f2",
+      "native": "00b864c0",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b740fb",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b7410b",
+      "native": "indirect:EAX",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b74124",
+      "native": "00b72e10",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b74140",
+      "native": "indirect:dword ptr [0x00ce221c]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b74147",
+      "native": "indirect:dword ptr [0x00ce2220]",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b74157",
+      "native": "indirect:EDX",
+      "function": "00b73f50",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b7421d",
+      "native": "00427110",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b7422b",
+      "native": "00426520",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b7424c",
+      "native": "004cdc20",
+      "function": "00b73f50",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b742b3",
+      "native": "00b73a10",
+      "function": "00b742a0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b742be",
+      "native": "00b73d70",
+      "function": "00b742a0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b742c9",
+      "native": "00b73f50",
+      "function": "00b742a0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b742dc",
+      "native": "00b73f50",
+      "function": "00b742a0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b742ed",
+      "native": "indirect:dword ptr [0x00ce221c]",
+      "function": "00b742a0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b752d1",
+      "native": "00b74d00",
+      "function": "00b752b0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b752ea",
+      "native": "00b6d800",
+      "function": "00b752b0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b752f2",
+      "native": "00b75030",
+      "function": "00b752b0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b75312",
+      "native": "00b6f150",
+      "function": "00b752b0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b7532f",
+      "native": "indirect:EAX",
+      "function": "00b752b0",
+      "resolved_native": "00b742a0",
+      "contract": "current actual geometry10(flags26/3E,0), RET8"
+    },
+    {
+      "address": "00b7534e",
+      "native": "00b75170",
+      "function": "00b752b0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b75357",
+      "native": "indirect:EBP",
+      "function": "00b752b0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b75363",
+      "native": "indirect:EAX",
+      "function": "00b752b0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b75383",
+      "native": "indirect:dword ptr [0x00ce221c]",
+      "function": "00b752b0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b75391",
+      "native": "indirect:EBP",
+      "function": "00b752b0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b7539d",
+      "native": "indirect:EAX",
+      "function": "00b752b0",
+      "contract": "existing actual retain/release or terminal dispatch; exact operand recorded; no callable native-address cast"
+    },
+    {
+      "address": "00b287e0",
+      "native": "00b4b370",
+      "function": "00b287c0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b28804",
+      "native": "00b4bc00",
+      "function": "00b287c0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b28836",
+      "native": "00b22d10",
+      "function": "00b287c0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    },
+    {
+      "address": "00b28854",
+      "native": "indirect:EAX",
+      "function": "00b287c0",
+      "resolved_native": "00b1fe50",
+      "contract": "fresh renderer58 after first registration, compare raw AL1"
+    },
+    {
+      "address": "00b2887d",
+      "native": "00b22d10",
+      "function": "00b287c0",
+      "contract": "existing actual body reused; see routine scope and source call-site composition"
+    }
+  ],
+  "raw_query_leaves": [
+    {
+      "entry": "00b48cc0",
+      "end_inclusive": "00b48cc3",
+      "last_instruction_length": 1,
+      "no_ghidra_function": true,
+      "bytes": "8b4160c3",
+      "coverage": "consumed MOV EAX,[ECX+offset];RET body; not separately reconstructed or annotated"
+    },
+    {
+      "entry": "00b48d80",
+      "end_inclusive": "00b48d83",
+      "last_instruction_length": 1,
+      "no_ghidra_function": true,
+      "bytes": "8b4110c3",
+      "coverage": "consumed MOV EAX,[ECX+offset];RET body; not separately reconstructed or annotated"
+    },
+    {
+      "entry": "00b48d90",
+      "end_inclusive": "00b48d93",
+      "last_instruction_length": 1,
+      "no_ghidra_function": true,
+      "bytes": "8b4114c3",
+      "coverage": "consumed MOV EAX,[ECX+offset];RET body; not separately reconstructed or annotated"
+    },
+    {
+      "entry": "00b48da0",
+      "end_inclusive": "00b48da3",
+      "last_instruction_length": 1,
+      "no_ghidra_function": true,
+      "bytes": "8b4118c3",
+      "coverage": "consumed MOV EAX,[ECX+offset];RET body; not separately reconstructed or annotated"
+    }
+  ],
+  "native_tables": [
+    {
+      "site": "00d5c0c4",
+      "bytes": "3e000000",
+      "meaning": "AA9520 source type3 clone flags3E"
+    },
+    {
+      "site": "00d61d6c",
+      "meaning": "actual logical vertex current10/14 map/unmap, current1C flags,20count,24declaration"
+    },
+    {
+      "site": "00d61de0",
+      "meaning": "actual logical index current0C/10 map/unmap, current18flags,1Ccount,20format"
+    }
+  ],
+  "callee_evidence": [
+    "Full B729A0/B72A70/B73F50/B742A0/B752B0 listings read through return; sole B729A0/B72A70 direct caller B73F50 inspected",
+    "B6F150 full listing rechecked: only bit20 child-skip depends on flags; same base route for26/3E",
+    "Existing raw B49980/B49A80/B49B60/B49C70 source bodies read, preserving actual optional guards and physical profiles",
+    "Actual B48CD0/B48CE0 MOV/RET bodies and four undefined query leaves raw bytes verified",
+    "B287C0 full listing and source read; optional publication corresponds to completed constructor result afterB28809 before first append/reserve",
+    "B288B0/B4BF30/NativeLogicalIndexReference supplied by the independent index-owner packet; actual factories/terminals required, no semantic wrappers",
+    "_memcpy BF7680 retains its library name and three-argument cdecl contract; no CRT port"
+  ],
+  "corrections": [
+    {
+      "was": "flags26 stream sharing could satisfy AA9520 Text copy",
+      "evidence": "AA96EC/FC and liveD5C0C4 bytes;B73F88/3FF5",
+      "is": "Text type3 flags3E includes08/10 and requires distinct copied streams"
+    },
+    {
+      "was": "factory output is available only after renderer registration",
+      "evidence": "B28809 constructor result precedes B28836 reserve and first append",
+      "is": "optional source bookkeeping exposes completed raw creator before registration; not yet canonical"
+    },
+    {
+      "was": "byte length could be captured once before mapping",
+      "evidence": "B72A0B/3A and B72ADB/EE",
+      "is": "source count plus format/declaration width are read again after mapping callbacks"
+    }
+  ],
+  "interruption_contract": [
+    "Creator raw identity is published before renderer-array registration; constructor failure retains native unwind and does not publish",
+    "Canonical metadata-bind failure preserves any companion and raw creator without reporting canonical registration",
+    "Both map/unmap progress states and returned pointers are retained; in-progress means nested effects may have occurred",
+    "No automatic rollback/unlock/retry; entered actual owners/context remain required for diagnosis and cleanup",
+    "Creator cell clears before terminal consumption; complete26 route unchanged"
+  ],
+  "dependencies": [
+    "Real current renderer, logical/physical pools/profiles/COM device and canonical ownership",
+    "Required actual B29670 recreation when factory retries; no success stub",
+    "Existing Model base/light/root/retained-resource domains and actual material/section clone services",
+    "Copied Text runtime adoption and raw Text allocation retention remain separate parent-owned work"
+  ],
+  "verification": {
+    "report_calls": "30 direct numeric call rows verified,0 failures;42 indirect rows separately assembly-reviewed",
+    "win32_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "configuration": "MSVC Win32 Release, strict /W4 /WX /fp:strict",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential",
+      "log": "local/stream_clone_build.log",
+      "dependency_cache": "Only untracked CMake cache override FETCHCONTENT_SOURCE_DIR_DXSDK_D3DX uses the verified primary build/win32/_deps/dxsdk_d3dx-src; no tracked dependency configuration changed"
+    },
+    "fixture": {
+      "result": "passed",
+      "source": "local/stream_clone_probe.cpp",
+      "command": "cmd /c .\\local\\run_stream_clone_probe.cmd",
+      "log": "local/stream_clone_probe.log",
+      "compiler": "MSVC Win32 /W4 /WX /O2 /MD /fp:strict; /link /MANIFEST:EMBED",
+      "actual_device": "Direct3D9 HAL, software vertex processing, hidden STATIC window",
+      "coverage": [
+        "Real native vertex creation and maps: count6, declaration stride12, 72 copied bytes",
+        "Real native index creation and maps: INDEX16 count6 and INDEX32 count3, including index0x10000",
+        "Flags26 mesh clone shares exact source raw stream identities; flags3E owns distinct raw streams",
+        "Copied bytes agree; modifying destination vertex bytes leaves source unchanged",
+        "One transactional host bind failure after completed native factory retains raw creator and unregistered companion; no source/destination map was entered",
+        "Actual terminal release of the interrupted companion and normal mesh streams empties canonical registry, retires9 companions, empties renderer1AB0/1ABC and restores declaration count1"
+      ],
+      "boundaries": [
+        "Raw renderer and declaration storage plus initialized native pools supplied by fixture",
+        "Optional synchronization disabled; required B29670 recreation throws if reached and was not reached",
+        "No positive sections/materials or complete Model/Text adoption fixture in this packet",
+        "No original-byte stream-caller differential, installed Text, rendered output or gameplay validation"
+      ],
+      "archived_setup_source": "C:/Users/sqz269/bsp-orch3-at/stream/local/vertex_owner_at/probe.cpp and profile_cells.hpp, read-only reuse",
+      "sha256": {
+        "local/stream_clone_probe.cpp": "18027dd3e395c758fbebb5da75c54297c09709b94c687821f6e3da69e71751b2",
+        "local/stream_clone_profiles.hpp": "06fb32b9d7169d10808db810bae2c89fab3cae1e4c9b41564948a00d244c7af4",
+        "local/stream_clone_probe.exe": "8b8a65264cf549eb56c3d9bbe7459ba704e9366aa4239e2aba9712021b9851ea"
+      }
+    },
+    "new_permanent_tests": false,
+    "binary_abi_compatible": false,
+    "game_validated": false
+  },
+  "dependency_commit": "c1d5325b5606997b50a3591b362c3cacc789ea63",
+  "integration_analysis": {
+    "consumed_leaf_definitions": "reports/orch5_stream_getter_definitions.json",
+    "now_defined": [
+      "00b48cc0",
+      "00b48d80",
+      "00b48d90",
+      "00b48da0"
+    ],
+    "definition_bounds": "each exact four-byte MOV/RET body; exclusive end=start+4; following CC alignment excluded",
+    "widget_binding": "src/gui_widget_model_copy.cpp",
+    "positive_widget_copy_fixture": {
+      "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+      "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+      "name": "widget_model_copy",
+      "exit_code": 0,
+      "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+    },
+    "original_worker_no_function_entries": "historical worker snapshot; definitions were added and saved by primary under the Ghidra write lock",
+    "primary_validation": {
+      "build": {
+        "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+        "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+        "batch": "reports\\orch5_stream_text_copy_batch.json"
+      },
+      "stream_fixture": {
+        "source_sha256": "18027DD3E395C758FBEBB5DA75C54297C09709B94C687821F6E3DA69E71751B2",
+        "log_sha256": "C51B5E4154EA1C57E9EA821DE52D3E72DD7F62009C4ACA26BD17107E7A214C68",
+        "name": "stream_clone",
+        "exit_code": 0,
+        "source": "local/stream-text-workers/stream/local/stream_clone_probe.cpp",
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\stream_clone-run.log"
+      }
+    }
+  }
+}

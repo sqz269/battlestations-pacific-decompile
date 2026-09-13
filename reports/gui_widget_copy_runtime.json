@@ -1,49 +1,106 @@
 {
   "packet": "orch5_widget_copy",
-  "status": "reconstructed_normal_base_copy_caller_actual_model_clone_required",
+  "status": "normal_base_copy_with_actual_flags3e_model_and_streams_primary_fixture_passed",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
   "source": "src/gui_widget_copy.cpp",
   "header": "include/bsp/gui_widget_copy.hpp",
   "documentation": "docs/GUI_WIDGET_COPY_RUNTIME.md",
-  "functions": [{
-    "address": "00aa9520",
-    "name": "BSP_GuiWidget_CopyConstruct",
-    "original_abi": "ECX destination; stack source pointer; EAX same destination; RET4",
-    "end_inclusive": "00aa9722",
-    "last_instruction": "00aa9720",
-    "last_instruction_length": 3,
-    "byte_length": 515,
-    "instruction_count": 134,
-    "flow_gaps": 0,
-    "coverage": "complete normal caller and canonical base admission; required external actual Model current10; host child collections replace CRT sentinel; no native SEH/ABI replacement"
-  }],
+  "functions": [
+    {
+      "address": "00aa9520",
+      "name": "BSP_GuiWidget_CopyConstruct",
+      "original_abi": "ECX destination; stack source pointer; EAX same destination; RET4",
+      "end_inclusive": "00aa9722",
+      "last_instruction": "00aa9720",
+      "last_instruction_length": 3,
+      "byte_length": 515,
+      "instruction_count": 134,
+      "flow_gaps": 0,
+      "coverage": "complete normal caller and canonical base admission; required external actual Model current10; host child collections replace CRT sentinel; no native SEH/ABI replacement"
+    }
+  ],
   "host_steps": [
-    {"function": "00abb2c0", "address": "00abb2e5", "native": "00aa9520", "binding": "Text copy caller captures source from entry stack in EDI, pushes EDI atABB2E0, ECX remains destination; body range checked first", "coverage": "incoming ABI corroboration only; Text continuation owned by separate packet"},
-    {"function": "00aa9520", "address": "00aa95e3", "native": "00a9b720", "binding": "ECX destination+64; no arguments; RET; body00A9B720..00A9B739 read", "coverage": "fresh empty SAME canonical child collections; no CRT allocator port"},
-    {"function": "00aa9520", "address": "00aa96fc", "native": "source4C+vtable10", "resolved_native": "00b752b0", "binding": "ECX captured actual source Model; flags from current source60 indexed DWORD tableD5C0B8; parent0 pushedAA9640; RET8", "coverage": "mandatory actual canonical Model clone service; full callee body read; Text3E stream-copy frontier explicit"}
+    {
+      "function": "00abb2c0",
+      "address": "00abb2e5",
+      "native": "00aa9520",
+      "binding": "Text copy caller captures source from entry stack in EDI, pushes EDI atABB2E0, ECX remains destination; body range checked first",
+      "coverage": "incoming ABI corroboration only; Text continuation owned by separate packet"
+    },
+    {
+      "function": "00aa9520",
+      "address": "00aa95e3",
+      "native": "00a9b720",
+      "binding": "ECX destination+64; no arguments; RET; body00A9B720..00A9B739 read",
+      "coverage": "fresh empty SAME canonical child collections; no CRT allocator port"
+    },
+    {
+      "function": "00aa9520",
+      "address": "00aa96fc",
+      "native": "source4C+vtable10",
+      "resolved_native": "00b752b0",
+      "binding": "ECX captured actual source Model; flags from current source60 indexed DWORD tableD5C0B8; parent0 pushedAA9640; RET8",
+      "coverage": "mandatory actual canonical Model clone service; full callee body read; Text3E stream-copy frontier explicit"
+    }
   ],
   "supporting_bodies_read": [
-    {"address": "00a9b720", "end_inclusive": "00a9b739", "scope": "full empty-list allocator; not reconstructed"},
-    {"address": "00b752b0", "end_inclusive": "00b753f1", "scope": "full assembly; source current name producer and flags,parent forwarding"},
-    {"address": "00b6f150", "end_inclusive": "00b6f30b", "scope": "full assembly; flags20 skips children for26 and3E"},
-    {"address": "00b742a0", "end_inclusive": "00b742f9", "scope": "full body; flags2 creates new mesh"},
-    {"address": "00b73f50", "end_inclusive": "00b74270", "scope": "full body; flags08/10 stream-copy branches outside existing26-only composition"},
-    {"address": "00b729a0", "end_inclusive": "00b72a65", "scope": "full live decompile and assembly; ECX source,RET; actual factory current60 and source/new mapped stream copy; not implemented"},
-    {"address": "00b72a70", "end_inclusive": "00b72b19", "scope": "full live decompile and assembly; ECX source,RET; actual factory current5C and source/new mapped stream copy; not implemented"}
+    {
+      "address": "00a9b720",
+      "end_inclusive": "00a9b739",
+      "scope": "full empty-list allocator; not reconstructed"
+    },
+    {
+      "address": "00b752b0",
+      "end_inclusive": "00b753f1",
+      "scope": "full assembly; source current name producer and flags,parent forwarding"
+    },
+    {
+      "address": "00b6f150",
+      "end_inclusive": "00b6f30b",
+      "scope": "full assembly; flags20 skips children for26 and3E"
+    },
+    {
+      "address": "00b742a0",
+      "end_inclusive": "00b742f9",
+      "scope": "full body; flags2 creates new mesh"
+    },
+    {
+      "address": "00b73f50",
+      "end_inclusive": "00b74270",
+      "scope": "full body; flags08/10 stream-copy branches outside existing26-only composition"
+    },
+    {
+      "address": "00b729a0",
+      "end_inclusive": "00b72a65",
+      "scope": "full live decompile and assembly; ECX source,RET; actual factory current60 and source/new mapped stream copy; not implemented"
+    },
+    {
+      "address": "00b72a70",
+      "end_inclusive": "00b72b19",
+      "scope": "full live decompile and assembly; ECX source,RET; actual factory current5C and source/new mapped stream copy; not implemented"
+    }
   ],
   "table_evidence": {
     "00d5c0b8": "live76 bytes: DWORD indices0..16=0000003E;17/18=00000026; flags, not names",
     "00d5c0c4": "Text3 flags0000003E",
     "00d62df8": "actual Model D62DE8 current10 word00B752B0"
   },
-  "unwritten_fields": ["08", "7c", "80", "85", "e4", "e8", "unprojected98..A0", "unprojectedC8..D0"],
+  "unwritten_fields": [
+    "08",
+    "7c",
+    "80",
+    "85",
+    "e4",
+    "e8",
+    "unprojected98..A0",
+    "unprojectedC8..D0"
+  ],
   "uncertainty": [
-    "Actual Model3E mesh index/vertex stream copies remain mandatory provider operations; no flags26 substitution",
-    "Copied Text concrete implementation/factory admission remains external; separate Text lifetime continuation required",
-    "Host owner admission/cleanup is not compiler SEH or native allocation-failure reconstruction",
-    "No binary ABI or game execution validation"
+    "Full copied Text requires actual raw Text retained identity and executable cursor/renderer/material/layout providers.",
+    "Host owner admission and cleanup do not reconstruct compiler SEH or native allocation-failure behavior.",
+    "Positive base copy fixture does not exercise sections/materials/lights/children, complete derived Text admission, original entry ABI or game behavior."
   ],
   "validation": {
     "build": {
@@ -55,7 +112,11 @@
       "initial_failure": "reserved x86 asm identifiers in/out; corrected to input_address/output_address before successful build",
       "core_sha256": "B86B0EC02734AD856335B85B89E883C00CA57B0018D7DCAD70DCEDE1AC4A5266"
     },
-    "report_calls": {"direct_checked": 2, "failed": 0, "indirect": "AA96FC manually checked against full listing and live D62DF8=B752B0; checker skips indirect row"},
+    "report_calls": {
+      "direct_checked": 2,
+      "failed": 0,
+      "indirect": "AA96FC manually checked against full listing and live D62DF8=B752B0; checker skips indirect row"
+    },
     "fixture": {
       "outcome": "passed",
       "source": "local/widget_copy_probe.cpp",
@@ -70,8 +131,56 @@
       "copy_object_sha256": "288DE30A6D75BC6FF2CF3A304B8F7218293F36169717B6FA8668CE31BD5D0EFA",
       "owner_object_sha256": "AEBA027513832ADDA7DD2E8B49DD66FE4F52B6E4E3517A70CBD999ACF5844CCB",
       "source_sha256": "607ECA602E0A431212DF3C54095E60E5D63651A97377F91724EC0850FAB7A386",
-      "listings": ["local/widget_copy_object.asm", "local/widget_copy_owner_object.asm"],
+      "listings": [
+        "local/widget_copy_object.asm",
+        "local/widget_copy_owner_object.asm"
+      ],
       "sites": "copy_word+06/+0B MOV/MOV; copy_x87+16/+18 FLD/FSTP; caller+3B6 FLD,+3BE/+3C7/+3D0 clear4C projections,+3D9 FSTP; source profile+547 before flags table+551; bind_scene+09/+12/+19 publications precede+22 actual138 AND FFFFFFFC"
     }
-  }
+  },
+  "constructor_ownership_integration": {
+    "source_borrow": "same admitted owner, matching AA9520 token only; no native retain or second widget",
+    "constructor_dispatch": "borrowed same implementation until successful exact-pointer transfer",
+    "guards": "external owned operations reject source borrow, constructor dispatch and incomplete Text copy",
+    "win32_build": "local/text-copy-owner-borrow-build.log; two CTests passed",
+    "fixture": "local/widget_copy_source_borrow_probe.cpp and .log; same actual-owner prefix plus authorization/post-failure source-retirement checks passed",
+    "borrowed_constructor_fixture": false,
+    "new_permanent_tests": false,
+    "raw_text_identity": "opaque factory allocation still cannot substitute for a constructed actual Text identity and reference count"
+  },
+  "model_copy_integration": {
+    "source": "src/gui_widget_model_copy.cpp",
+    "report": "reports/gui_widget_model_copy.json",
+    "batch": "reports/orch5_stream_text_copy_batch.json",
+    "coverage": "same-domain actual Model flags26/3E provider now implemented; prior provider-boundary fixture and scopes remain historical evidence",
+    "creator_validation": "includes pending stream creator, companion and mapping phase",
+    "text_runtime": "stable copied factory adoption implemented; positive raw Text identity/provider path remains unvalidated",
+    "validation": {
+      "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+      "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+      "batch": "reports\\orch5_stream_text_copy_batch.json"
+    },
+    "fixture": {
+      "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+      "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+      "name": "widget_model_copy",
+      "exit_code": 0,
+      "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+    },
+    "source_borrow_fixture": {
+      "source_sha256": "E8EC2E93A5AFBB67BE8BA55B37F39F4C5BCE48FFA8714E3D3956FF1A326C6EE6",
+      "log_sha256": "FF4BE49853B6DF7FC4BC3D7D8E4918FF2ABC89388A47E8246D2BEC1986B15DE8",
+      "name": "source_borrow",
+      "exit_code": 0,
+      "source": "local/widget_copy_source_borrow_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\source_borrow-run.log"
+    }
+  },
+  "original_scope_uncertainty": [
+    "Actual Model3E mesh index/vertex stream copies remain mandatory provider operations; no flags26 substitution",
+    "Copied Text concrete implementation/factory admission remains external; separate Text lifetime continuation required",
+    "Host owner admission/cleanup is not compiler SEH or native allocation-failure reconstruction",
+    "No binary ABI or game execution validation"
+  ]
 }

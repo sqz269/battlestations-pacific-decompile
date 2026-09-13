@@ -88,7 +88,11 @@ std::uint8_t native_renderer_secondary_stream_registration_00b1fe50(const void*)
 // to actual+19B0. No semantic stream, cache, implicit retain or shadow registry.
 void* create_native_registered_vertex_stream_00b287c0(void* actual_renderer,
     std::uint32_t count, std::uint32_t flags, void* declaration,
-    NativeLogicalVertexOwnerContext&);
+    NativeLogicalVertexOwnerContext&, void** acquired_before_registration = nullptr);
+// Optional source-interface publication receives the completed creator before
+// renderer-array registration. A later exception preserves it; constructor
+// failure still follows native allocation unwind and does not publish. This
+// neither retains the object nor registers a canonical host companion.
 
 class NativeLogicalVertexReference;
 struct NativeLogicalVertexCompanionDisposal {

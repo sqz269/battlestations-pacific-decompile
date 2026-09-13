@@ -1,0 +1,211 @@
+{
+  "packet": "orch5_stream_text_copy_batch",
+  "status": "exact_promoted_win32_build_and_four_scoped_fixtures_passed",
+  "integration_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+  "branch": "agent/orch5-20260911",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "baseline_commit": "2f9da1dd",
+  "owner_hook_commit": "983c1494",
+  "worker_reports": [
+    "reports/native_logical_index_creation.json",
+    "reports/native_stream_clone_3e.json",
+    "reports/gui_text_copy_adoption.json",
+    "reports/gui_widget_model_copy.json"
+  ],
+  "packets": [
+    {
+      "id": "orch5_index_stream_owner",
+      "addresses": [
+        "00b288b0",
+        "00b4bf30",
+        "00b4b380",
+        "00b4b0a0",
+        "00b48f70",
+        "00b22d70"
+      ],
+      "contract": "Actual logical index allocation/constructor/renderer registration and same-counter terminal; real HAL fixture, explicit native global producers."
+    },
+    {
+      "id": "orch5_stream_clone_3e",
+      "addresses": [
+        "00b729a0",
+        "00b72a70",
+        "00b73f50",
+        "00b742a0",
+        "00b752b0",
+        "00b287c0"
+      ],
+      "contract": "Actual index/vertex factory-map-copy-unmap composition and flags3E mesh/Model integration with explicit acquired creator and map phase."
+    },
+    {
+      "id": "orch5_text_copy_adopt",
+      "addresses": [
+        "00aa1380",
+        "00abb2c0"
+      ],
+      "contract": "Stable factory copy operation, source/destination ownership, constructor borrow, in-place continuation and final same-owner adoption; positive Text path unvalidated."
+    },
+    {
+      "id": "orch5_widget_model_copy_binding",
+      "addresses": [
+        "00aa9520"
+      ],
+      "contract": "AA9520 connects live flags26/3E to same canonical Model/mesh/material/stream domains; persistent source and constructor ownership."
+    }
+  ],
+  "analysis": {
+    "flow_repair": "reports/orch5_index_creation_flow_repair.json",
+    "repaired_call_sites": [
+      "00b22dbc",
+      "00b4b131"
+    ],
+    "alignment_unchanged": "00b4b197..00b4b19f",
+    "index_annotation_preimages": "local/ghidra-annotations-20260913T034534Z.json",
+    "consumed_leaf_definitions": "reports/orch5_stream_getter_definitions.json",
+    "defined_leaf_count": 4,
+    "text_and_leaf_annotation_preimages": "local/ghidra-annotations-20260913T035445Z.json",
+    "stream_annotation_preimages": "local/ghidra-annotations-20260913T035918Z.json",
+    "annotated_addresses": 19
+  },
+  "validation": {
+    "combined_build": "exact promoted MSVC Win32 Release /W4 /WX; CTest2/2 passed",
+    "scoped_fixtures": "all four primary-library fixtures passed",
+    "positive_copied_text": "unvalidated; real native Text identity and actual cursor/executable providers required",
+    "calls": {
+      "direct_checked": 63,
+      "failed": 0,
+      "indirect_review": "worker reports preserve separately reviewed indirect/import sites; numeric call checker does not validate those",
+      "log": "local\\stream-text-report-calls.log",
+      "sha256": "e55424bdcd091487205bec00650a47f9338f30ed86169d9dbf5e0b7a740c7885"
+    },
+    "positive_widget_model_copy": {
+      "outcome": "passed",
+      "coverage": "AA9520 with actual Group/Model, positive mesh, real HAL vertex+INDEX16; distinct same-domain copies and independent bytes; final4C/138; canonical Model/mesh/stream retirement",
+      "limits": "explicit renderer/profile/declaration/pool-header inputs; no positive sections/materials/lights/children, copied type admission, Text, native SEH or game rendering"
+    }
+  },
+  "remaining_contracts": [
+    "Actual retained Text identity: AB8BB8 passes raw Text to B18A40, which retains actual+04; semantic widget counter and opaque raw1F4 allocation are not substitutes.",
+    "Concrete cursor renderer38/5C, material/declaration/layout providers and positive copied Text suspension/resume/admission/retirement.",
+    "AB8530 callee-local shadow mesh/section/material creator exception ownership remains outside retained factory base/cursor acquisition state.",
+    "Native renderer/global/pool-header producers, device recreation/failure and optional synchronization branches remain unexercised.",
+    "Original binary ABI, complete executable startup/menu integration and gameplay validation remain incomplete."
+  ],
+  "worker_commits": {
+    "index": "c1d5325b5606997b50a3591b362c3cacc789ea63",
+    "text": "1a41d6199ea8424fa3074a713c1207e61d2fd9f5",
+    "stream": "0441ef73"
+  },
+  "worker_evidence_archives": [
+    "local/stream-text-workers/index-manifest.json",
+    "local/stream-text-workers/model-manifest.json",
+    "local/stream-text-workers/stream-manifest.json",
+    "local/stream-text-workers/text-manifest.json"
+  ],
+  "fixture_runner": "local/run_stream_text_fixtures.ps1",
+  "promotion": {
+    "source_commit": "9bc7ad2f670e2278c0fed4d1de8cda65e91e2ebd",
+    "built_commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+    "exit_code": 0,
+    "promoted_commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+    "main_commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+    "build_log": "local/orch5-stream-text-integration.log",
+    "build_log_sha256": "0dcbb4febe73b95cd1dfc4a33cabfd0fc5b0d05222d378f6dc31dbfd1dc96621",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "fixtures": {
+      "support_files": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-workers\\stream\\local\\stream_clone_profiles.hpp",
+          "Hash": "06FB32B9D7169D10808DB810BAE2C89FAB3CAE1E4C9B41564948A00D244C7AF4"
+        }
+      ],
+      "positive_copied_text_validated": false,
+      "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+      "game_validated": false,
+      "libraries": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "064A57251DBF02856759AFACDDD61BB181258122C9967C34ACD701C9C4DA4B50"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ],
+      "compile_scope": "four fixture translation units only against the same primary production libraries",
+      "fixtures": [
+        {
+          "source_sha256": "E8EC2E93A5AFBB67BE8BA55B37F39F4C5BCE48FFA8714E3D3956FF1A326C6EE6",
+          "log_sha256": "FF4BE49853B6DF7FC4BC3D7D8E4918FF2ABC89388A47E8246D2BEC1986B15DE8",
+          "name": "source_borrow",
+          "exit_code": 0,
+          "source": "local/widget_copy_source_borrow_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\source_borrow-run.log"
+        },
+        {
+          "source_sha256": "39A1CC399315C218E0B70BFA70C4F70734EEA150675B2BCA670AF73F3FDEA485",
+          "log_sha256": "7A46903ADD2C8FBCC06F90DFD8FC919B1951561073DEC405C7721B2B78544E98",
+          "name": "index_creation",
+          "exit_code": 0,
+          "source": "local/stream-text-workers/index/local/index_creation_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\index_creation-run.log"
+        },
+        {
+          "source_sha256": "18027DD3E395C758FBEBB5DA75C54297C09709B94C687821F6E3DA69E71751B2",
+          "log_sha256": "C51B5E4154EA1C57E9EA821DE52D3E72DD7F62009C4ACA26BD17107E7A214C68",
+          "name": "stream_clone",
+          "exit_code": 0,
+          "source": "local/stream-text-workers/stream/local/stream_clone_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\stream_clone-run.log"
+        },
+        {
+          "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+          "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+          "name": "widget_model_copy",
+          "exit_code": 0,
+          "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+        }
+      ]
+    },
+    "fixture_runner": {
+      "path": "local/run_stream_text_fixtures.ps1",
+      "sha256": "80730aaf3afd0b325f4d82d01c8f00edfc6aa473c52c053a6e2d9cfb12d3c6d2"
+    },
+    "fixture_log": {
+      "path": "local/stream-text-promoted-fixtures.log",
+      "sha256": "29d5d0624648a6fd74af6773b6d0d3463b55289785312210b90ccca8e8ba2a4b"
+    },
+    "annotation_preimages": {
+      "path": "local/stream-text-workers/integrator-annotations-20260913T040313Z.json",
+      "sha256": "d4881c8fb2759f4e13d3ceecda78a4a11aaa8832f1274550730eed6cb2a21693",
+      "count": 19
+    },
+    "merged_compiled_inputs": [
+      "cmake/startup.cmake",
+      "include/bsp/avoid_zone_arc.hpp",
+      "include/bsp/avoid_zone_clearance_distance.hpp",
+      "include/bsp/dyn_profile_scopes.hpp",
+      "include/bsp/dyn_world_factory.hpp",
+      "include/bsp/game_hosts_commands.hpp",
+      "include/bsp/game_hosts_units.hpp",
+      "include/bsp/native_input_configuration_load.hpp",
+      "include/bsp/ship_ai_search_storage.hpp",
+      "src/avoid_zone_arc.cpp",
+      "src/avoid_zone_clearance_distance.cpp",
+      "src/dyn_profile_scopes.cpp",
+      "src/dyn_world_factory.cpp",
+      "src/game_hosts_commands.cpp",
+      "src/game_hosts_units.cpp",
+      "src/native_input_configuration_load.cpp",
+      "src/ship_ai_search_storage.cpp"
+    ],
+    "note": "Built and promoted code commit identical. Four fixture translation units rebuilt against that exact primary source and its libraries, with no worker production objects. Final evidence commit changes docs/reports/packet metadata only."
+  }
+}

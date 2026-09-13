@@ -1,0 +1,382 @@
+{
+  "packet": "orch6_role_owners_j",
+  "status": "read_only_producer_assessment_complete",
+  "doc": "docs/SHIP_AI_ROLE_OWNERS.md",
+  "base_commit": "b40c84e6cd311373d7c930d9e0f9407c7bdd2e14",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "target config checked; bsp wrappers verify project/program before live queries",
+    "mutations": 0
+  },
+  "owned_files": [
+    "docs/SHIP_AI_ROLE_OWNERS.md",
+    "reports/ship_ai_role_owners.json"
+  ],
+  "coverage": {
+    "scope": "Constructor current-role stores, attached-owner producer, relevant receive-side writes and session pool selectors",
+    "partial": [
+      "00780120 only relevant4B branch; no complete receiver reconstruction",
+      "Session pool lifecycle inspected only for active-pointer/AI-held prerequisites",
+      "No exhaustive whole-image writer, caller or all-class-vtable closure"
+    ],
+    "new_reconstruction": false,
+    "new_ledger_records": 0,
+    "no_ghidra_function": []
+  },
+  "calls": [
+    {
+      "address": "00810df2",
+      "native": "009f3f20",
+      "function": "00810dd0",
+      "contract": "Owner in ECX; resulting outer bot stored at unit+740 by00810DF7"
+    },
+    {
+      "address": "009f3f59",
+      "native": "009f3ba0",
+      "function": "009f3f20",
+      "contract": "Original owner passed to allocated2268h composite constructor"
+    },
+    {
+      "address": "009f3bc1",
+      "native": "0072bbd0",
+      "function": "009f3ba0",
+      "contract": "Inherited bot base initialized, including null+50"
+    },
+    {
+      "address": "009f3be5",
+      "native": "009f39c0",
+      "function": "009f3ba0",
+      "contract": "Separate ship brain constructed at outer+58 with same owner"
+    },
+    {
+      "address": "009f3c43",
+      "native": "008fbc80",
+      "function": "009f3ba0",
+      "contract": "owner+310 supplied; node+28 payload copied into outer bot+50"
+    },
+    {
+      "address": "008fbc8b",
+      "native": "00876020",
+      "function": "008fbc80",
+      "contract": "Existing tick-node attachment precedes payload load/store"
+    },
+    {
+      "address": "0077f36f",
+      "native": "00927d20",
+      "function": "0077f360",
+      "contract": "Virtual148 wrapper invokes selected writes to policy table+188, not current table+1AC"
+    },
+    {
+      "address": "0077f48f",
+      "native": "009281c0",
+      "function": "0077f480",
+      "contract": "Virtual 154 wrapper invokes current-role writer"
+    },
+    {
+      "address": "009281dd",
+      "native": "00927f60",
+      "function": "009281c0",
+      "contract": "Role0 scoring notification precedes current-role store"
+    },
+    {
+      "address": "00780355",
+      "native": "00927f10",
+      "function": "00780120",
+      "contract": "Kind4B acquire path requires current assignment8 or AI-held"
+    },
+    {
+      "address": "00780387",
+      "native": "0077f480",
+      "function": "00780120",
+      "contract": "Indirect virtual154; target resolved only for inspected ship vtable00CFC3D0"
+    },
+    {
+      "address": "0078038e",
+      "native": "0077c7b0",
+      "function": "00780120",
+      "contract": "Actual receiver relay after virtual154; not replaced by an unconditional local API"
+    },
+    {
+      "address": "009e11ad",
+      "native": "00927f10",
+      "function": "009e1170",
+      "contract": "One stack argument; attached ship role1 after sentinel8 check"
+    },
+    {
+      "address": "009e12e4",
+      "native": "00521e70",
+      "function": "009e1170",
+      "contract": "Owner role0 predicate supplies torpedo request"
+    }
+  ],
+  "producer_chain": {
+    "unit_740": "outer bot returned by009F3F20; retained00810DF7",
+    "outer_bot_50": "009F3C36 owner+310 ->009F3C43 attach ->008FBC90 [node+28] ->008FBC95 [bot+50]",
+    "tick_payload": "008758B7 stores first constructor argument at node+28; unit construction supplies unit",
+    "separate_ship_brain": "outer+58, constructed009F3BE5",
+    "conclusion": "For this attached-ship path [[unit+740]+50] equals ship, not a formation-group object"
+  },
+  "native_contracts": [
+    {
+      "entry": "00928630",
+      "end_inclusive": "0092878f",
+      "abi": "ECX entity; registrySelect and flag stack args; RET8",
+      "scope": "current-role stores00928718..00928748 only; EAX=8 at00928713; preceding virtual148 initializes other policy table"
+    },
+    {
+      "entry": "009281c0",
+      "end_inclusive": "009281fe",
+      "abi": "ECX entity; role and slot stack args; RET8 at009281EC/009281FC",
+      "scope": "body inspected; role0 clears184 when slot8 and notifies scoring before1AC store; other roles directindexed store"
+    },
+    {
+      "entry": "00927f10",
+      "end_inclusive": "00927f26",
+      "abi": "stdcall(slot), RET4; ECX not input; AL output",
+      "scope": "complete five-instruction body: current active slot record byte9"
+    },
+    {
+      "entry": "009f3ba0",
+      "end_inclusive": "009f3c70",
+      "abi": "ECX outer bot; owner stack arg; RET4 at009F3C6E",
+      "scope": "constructor/attach identity inspected; not reconstructed in this packet"
+    }
+  ],
+  "tables": {
+    "current": {
+      "offset": "1ac",
+      "count": 9,
+      "constructor_value": 8,
+      "writer": "009281C0 via shipvirtual154=0077F480"
+    },
+    "policy": {
+      "offset": "188",
+      "count": 9,
+      "constructor_value": 9,
+      "writer": "00927D20 via virtual 148; mask 1FF initializes all"
+    },
+    "single_device": "180 set by 009278A0 before virtual 148, distinct from current roles"
+  },
+  "consumers": {
+    "role0": "unit+1AC ->00521E70(unit,0) at009E12E4 ->request torpedo",
+    "role1": "attached ship+1B0 at009E119F ->00927F10 at009E11AD ->cruise/helm gate"
+  },
+  "receive_writer": {
+    "function": "00780120",
+    "branch": "4B",
+    "acquire_gates": "current 8 or AI-held and policy 9 or requested slot",
+    "release_gate": "current equals requested slot; publishes 8",
+    "virtual_call": "00780387 virtual 154(role,slot)",
+    "additional_effects": "controlled byte, owner/observer, scoring, suppression map, and relay remain part of native contracts"
+  },
+  "session": {
+    "predicate": "[[game+18CC+4*slot]+9]",
+    "mission_pool": "004BB160 initializes pointers into game+1008, stride118, applicable+9=1",
+    "player_pool": "004BB440 claims game+748 pool; local caller replaces active pointer",
+    "install": "004BB630 sets current pointer and copies party data",
+    "restore": "004BB660 restores mission pool pointer",
+    "runtime_gap": "entry_slots/device_bound and slots/in_use do not represent participant pools or active +9"
+  },
+  "runtime_assessment": {
+    "current_role_storage": false,
+    "role_delivery": false,
+    "native_assigned_slot_bytes": false,
+    "source_evidence": [
+      "Units current controlled-owner publication has no roleassignment",
+      "ScriptOrders entity_route_slot reports unimplemented and returns -1",
+      "ScriptOrders role_owner_set_role_available and session_route_role_message remain unimplemented",
+      "MissionFrame slots and entry_slots represent entry gates only"
+    ]
+  },
+  "proposal": {
+    "owner": "one array<int32_t,kUnitRoleTableEntries> in existing GameUnitSlot, initialized once from kUnitRoleTableFill",
+    "read_availability": "absent unit or unrepresented constructor unavailable",
+    "sentinel8": "available predicate true; no session lookup",
+    "assigned0to7": "require actual current participant record byte 9; missing byte unavailable",
+    "invalid": "no fabricated default or silent unassignment",
+    "lifetime": "same array until actual delivered writer; no second ShipAI/Commands cache",
+    "future_delivery": "preserve native gates, role 0 side effects and routing; no always-local sender"
+  },
+  "future_ownership": {
+    "files": [
+      "include/bsp/game_hosts_units.hpp",
+      "src/game_hosts_units.cpp"
+    ],
+    "constraint": "Units motion lease remains owned by dyn_hull_d; no edits here",
+    "candidate_addresses": [
+      "009281c0",
+      "0077f480",
+      "00780120"
+    ],
+    "session_dependencies": [
+      "004bb160",
+      "004bb440",
+      "004bb630",
+      "004bb660"
+    ],
+    "integrator": "old request wording and runtime callsite bindings"
+  },
+  "validation": {
+    "build": "not run: documentation-only",
+    "tests": "not run: no new code",
+    "runtime": "not exercised",
+    "report_calls": "14 rows checked, 0 failed; 13 direct calls, 1 indirect call with independently inspected ship vtable",
+    "hash_manifest": "local/role_manifest.json"
+  },
+  "evidence": {
+    "packet": "orch6_role_owners_j",
+    "base_commit": "b40c84e6cd311373d7c930d9e0f9407c7bdd2e14",
+    "sources": [
+      {
+        "path": "src/game_hosts_units.cpp",
+        "sha256": "ce34a1eea4187442e3e24db2304bc633d51dca584890856bc66138ea67546b16"
+      },
+      {
+        "path": "include/bsp/game_hosts_units.hpp",
+        "sha256": "f040f00bbda03e6521e057477c4dc70ccf7daf77a5cb4133b2a9a0082a8697e1"
+      },
+      {
+        "path": "src/game_hosts_mission_frame.cpp",
+        "sha256": "a94839473a9367d345083a1580edd1a9cbfb1819a9d98b0fbadc23a5be173f6b"
+      },
+      {
+        "path": "src/game_hosts_script_orders.cpp",
+        "sha256": "dd993961da6001bc5ce1cdd1f93301a453e9b322b6a736cb2d45e2a08f705976"
+      },
+      {
+        "path": "src/mission_load_hosts.cpp",
+        "sha256": "84f6735bb01e63e63dabcef07e3c366556e1e6b3236d7f8d9489babfeedcf560"
+      },
+      {
+        "path": "include/bsp/mission_load_hosts.hpp",
+        "sha256": "65e20839a2fa736d2865bf958e68cab0886ceb3c3f1845d32559b418448ea9aa"
+      },
+      {
+        "path": "src/unit_instance_layout.cpp",
+        "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+      },
+      {
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+      },
+      {
+        "path": "src/ship_ai_avoidance_request.cpp",
+        "sha256": "da36efd46843f4f6517acccb30e4339c4211c984333442ce9f458fefb6a7feec"
+      },
+      {
+        "path": "include/bsp/ship_ai_avoidance_request.hpp",
+        "sha256": "b65d2df2e38a746a10848fd40ce9544bb397c474fc9abb2987fa587055d07863"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/slot_004bb160.c",
+        "bytes": 4352,
+        "sha256": "ab888074a9b0c87fd632a15bc85888a22a23efc93bcbc4fe79760a7b022c0f00"
+      },
+      {
+        "path": "local/slot_004bb220.asm",
+        "bytes": 258,
+        "sha256": "90e76d031540c0d81d29c4b41a160e1e6a319d5282d96f6a621368a389493ac3"
+      },
+      {
+        "path": "local/slot_004bb440.c",
+        "bytes": 2825,
+        "sha256": "4902bb05507b711a99ac26969cc279693e00f2f98befa91cf12fcb5302642c50"
+      },
+      {
+        "path": "local/slot_004bb630.c",
+        "bytes": 368,
+        "sha256": "cc677227fac8f10d4efba7e82b65b721a989a6189f6ec8b0cda3f3c6684ccd34"
+      },
+      {
+        "path": "local/slot_004bb660.c",
+        "bytes": 242,
+        "sha256": "e92bdcc0dc4630325389b96898d5b579cc263bc91966c57b915b4d4c1fb81436"
+      },
+      {
+        "path": "local/slot_0077f360.asm",
+        "bytes": 376,
+        "sha256": "26cd2d5068667db544beac644b90c670365674d83a255afa3bd76a1c69703526"
+      },
+      {
+        "path": "local/slot_0077f480.asm",
+        "bytes": 1508,
+        "sha256": "30aec6a5115746e7292276fa501ef37e53efb4b878d575f8a60f3580f5d384e2"
+      },
+      {
+        "path": "local/slot_00780120.c",
+        "bytes": 7472,
+        "sha256": "a901239b7b7d20c005bb8fbf0de4b4711b186f92a7a1c8a68d133873b8d11a44"
+      },
+      {
+        "path": "local/slot_00780170.asm",
+        "bytes": 5334,
+        "sha256": "c6d2cad68521792b0a5fff2a422ad72e7fbca1f181cd05264f3fad0b84c5cd3f"
+      },
+      {
+        "path": "local/slot_00780375.asm",
+        "bytes": 483,
+        "sha256": "47cb405c2f0a566d2cfa00ad2d2d485b1a050af8362c8e1a97acce9add6c9258"
+      },
+      {
+        "path": "local/slot_00875890.asm",
+        "bytes": 1432,
+        "sha256": "014fbdd35de4085ac89fae12ccde559267434a60859abf78360a74245191cd59"
+      },
+      {
+        "path": "local/slot_008fbc80.asm",
+        "bytes": 785,
+        "sha256": "05d5c6587e1781378ad0a734a159cf07a22a8d4020f6e22e90863229730c1670"
+      },
+      {
+        "path": "local/slot_008fbc80.c",
+        "bytes": 1093,
+        "sha256": "82d2b7b0f0cb977e6144b3d64be1dbc0ae5070d76febaf3cc8e473440ca7cdd9"
+      },
+      {
+        "path": "local/slot_00927d20.asm",
+        "bytes": 1363,
+        "sha256": "06f8267dce68a805325fac204d2ade65be1e5efca6a1f548bfdea96d9e7a292b"
+      },
+      {
+        "path": "local/slot_00927f10.asm",
+        "bytes": 200,
+        "sha256": "6cb66665d71129acf4744ecda9fed093c428f8b54341faeadad99c8e1f913fc0"
+      },
+      {
+        "path": "local/slot_009281c0.asm",
+        "bytes": 637,
+        "sha256": "631a7853e40b626c698fe964202cf25dde9a0e4fc7e988860c98a02464133a7d"
+      },
+      {
+        "path": "local/slot_009286f4.asm",
+        "bytes": 1119,
+        "sha256": "e7857877b12036bc527189afa9d2eec6af9784258fd22f63469886ad555138ea"
+      },
+      {
+        "path": "local/slot_009e1170.asm",
+        "bytes": 7519,
+        "sha256": "a286681c180e7ab19695f9ffb4ffe9dbe80200e10b3021f203e8603fa417f7c3"
+      },
+      {
+        "path": "local/slot_009f3ba0.asm",
+        "bytes": 1693,
+        "sha256": "9782166e090e61ee90bf6d34a2fd0b5aa59c9fac54862f217412ebc7afb3b41d"
+      },
+      {
+        "path": "local/write_role_report.py",
+        "bytes": 8888,
+        "sha256": "655fe35adf9347f91c115b13c0c92195b14b9544a0d171ee37670857920a4e96"
+      },
+      {
+        "path": "local/role_report_calls.log",
+        "bytes": 211,
+        "sha256": "99ea570efa15157cf72e428c2c6643f90fd8b5193b8fd6de302d1e18b5c1d85a"
+      }
+    ],
+    "scope": "read-only native producer assessment; no compiled or runtime proof",
+    "origin": "Initial read-only queries from orch6-live-director-i; copied into this worktree before further queries. No active old-path dependency."
+  }
+}

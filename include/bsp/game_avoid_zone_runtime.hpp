@@ -54,6 +54,13 @@ public:
     bool search_segment(const ShipAiAvoidZoneSegmentList&,
         const std::array<float, 2>& from, const std::array<float, 2>& toward,
         std::array<float, 2>& hit) const;
+    bool search_arc(const ShipAiAvoidZoneSegmentList&,
+        const std::array<float, 2>& center, float radius, float start, float& end) const;
+    float search_clearance(const ShipAiAvoidZoneSegmentList&,
+        const std::array<float, 2>& center, float radius,
+        const std::array<float, 2>& normal_a, const std::array<float, 2>& normal_b) const;
+    // Borrow the same allocation/free pair used by selected-list production.
+    const AvoidZoneAllocationAccess& allocation_access() const noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

@@ -1,0 +1,674 @@
+{
+  "packet": "orch6_avoid_tuning_j",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/game_ship_avoidance_tuning_lua.cpp",
+  "header": "include/bsp/game_ship_avoidance_tuning_lua.hpp",
+  "documentation": "docs/SHIP_AI_AVOIDANCE_TUNING.md",
+  "cpp_symbol": "bsp::game::read_ship_avoidance_tuning_lua",
+  "status": "partial_five_field_projection_build_and_installed_lua_fixture_checked",
+  "functions": [
+    {
+      "address": "0083B5E0",
+      "native": "0083B5E0",
+      "end_inclusive": "00842951",
+      "coverage": "partial: selected five field lookups/getters only; no private Lua owner/script runner or other76Ch fields",
+      "selected_store_ranges": [
+        "0083B7DA..0083B838",
+        "0083BBFD..0083BC84",
+        "0083C34D..0083C43A"
+      ]
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "original_byte_execution": false,
+  "fields": [
+    {
+      "output_index": 0,
+      "settings_offset": "194",
+      "lua_path": "ShipGlobals.ShipAvoidance.CollectTimer",
+      "one_based_index": 2,
+      "getter": "00B66270",
+      "fallback_float32": null,
+      "installed_float32": 2,
+      "getter_site": "0083B810",
+      "store_site": "0083B815"
+    },
+    {
+      "output_index": 1,
+      "settings_offset": "1D4",
+      "lua_path": "ShipGlobals.ShipAvoidance.NearbyShip_WayClearCheckTime",
+      "one_based_index": 0,
+      "getter": "00B66330",
+      "fallback_float32": 0.5,
+      "installed_float32": 0.25,
+      "getter_site": "0083BC27",
+      "store_site": "0083BC2C"
+    },
+    {
+      "output_index": 2,
+      "settings_offset": "1D8",
+      "lua_path": "ShipGlobals.ShipAvoidance.HitDetector_LastHitDistAddOn",
+      "one_based_index": 0,
+      "getter": "00B66330",
+      "fallback_float32": 30,
+      "installed_float32": 50,
+      "getter_site": "0083BC6D",
+      "store_site": "0083BC72"
+    },
+    {
+      "output_index": 3,
+      "settings_offset": "214",
+      "lua_path": "ShipGlobals.LandAvoidance.YTurnDirDiff",
+      "one_based_index": 1,
+      "getter": "00B66330",
+      "fallback_float32": 1.7999999523162842,
+      "installed_float32": 1.7999999523162842,
+      "getter_site": "0083C393",
+      "store_site": "0083C398"
+    },
+    {
+      "output_index": 4,
+      "settings_offset": "218",
+      "lua_path": "ShipGlobals.LandAvoidance.YTurnDirDiff",
+      "one_based_index": 2,
+      "getter": "00B66330",
+      "fallback_float32": 2.0999999046325684,
+      "installed_float32": 2.0999999046325684,
+      "getter_site": "0083C40C",
+      "store_site": "0083C411"
+    }
+  ],
+  "calls": [
+    {
+      "address": "0083B7EB",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "named field lookup"
+    },
+    {
+      "address": "0083B801",
+      "native": "00B67720",
+      "function": "0083B5E0",
+      "role": "one-based indexed lookup2"
+    },
+    {
+      "address": "0083B810",
+      "native": "00B66270",
+      "function": "0083B5E0",
+      "role": "typed conversion; immediately followed by selected float store"
+    },
+    {
+      "address": "0083B827",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083B838",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083BC0E",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "named field lookup"
+    },
+    {
+      "address": "0083BC27",
+      "native": "00B66330",
+      "function": "0083B5E0",
+      "role": "typed conversion; immediately followed by selected float store"
+    },
+    {
+      "address": "0083BC3E",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083BC54",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "named field lookup"
+    },
+    {
+      "address": "0083BC6D",
+      "native": "00B66330",
+      "function": "0083B5E0",
+      "role": "typed conversion; immediately followed by selected float store"
+    },
+    {
+      "address": "0083BC84",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083C361",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "named field lookup"
+    },
+    {
+      "address": "0083C37A",
+      "native": "00B67720",
+      "function": "0083B5E0",
+      "role": "one-based indexed lookup1"
+    },
+    {
+      "address": "0083C393",
+      "native": "00B66330",
+      "function": "0083B5E0",
+      "role": "typed conversion; immediately followed by selected float store"
+    },
+    {
+      "address": "0083C3AD",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083C3C1",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083C3DA",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "named field lookup"
+    },
+    {
+      "address": "0083C3F3",
+      "native": "00B67720",
+      "function": "0083B5E0",
+      "role": "one-based indexed lookup2"
+    },
+    {
+      "address": "0083C40C",
+      "native": "00B66330",
+      "function": "0083B5E0",
+      "role": "typed conversion; immediately followed by selected float store"
+    },
+    {
+      "address": "0083C426",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083C43A",
+      "native": "00B67700",
+      "function": "0083B5E0",
+      "role": "release selected field/index wrapper"
+    },
+    {
+      "address": "0083B60E",
+      "native": "00B66BD0",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B625",
+      "native": "00B6A020",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B672",
+      "native": "00B69D40",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B6E6",
+      "native": "00B69D40",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B721",
+      "native": "00B67980",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B73D",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083B76A",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "0083BFEC",
+      "native": "00B67800",
+      "function": "0083B5E0",
+      "role": "native loader context; source borrows existing state and does not run/open scripts"
+    },
+    {
+      "address": "00424BFC",
+      "native": "0083B5E0",
+      "function": "00424A10",
+      "role": "sole direct loader caller"
+    },
+    {
+      "address": "00424CB6",
+      "native": "00424A10",
+      "function": "00424C40",
+      "role": "construct before singleton publication"
+    },
+    {
+      "address": "00B6627B",
+      "native": "00A67770",
+      "function": "00B66270",
+      "role": "bare tonumber"
+    },
+    {
+      "address": "00B66347",
+      "native": "00A675A0",
+      "function": "00B66330",
+      "role": "exact Lua type test"
+    },
+    {
+      "address": "00B66359",
+      "native": "00A67770",
+      "function": "00B66330",
+      "role": "tonumber after exact type test"
+    },
+    {
+      "address": "009EB681",
+      "native": "00424C40",
+      "function": "009EB660",
+      "role": "get stored native settings pointer"
+    },
+    {
+      "address": "009EBEDE",
+      "native": "00424C40",
+      "function": "009EB660",
+      "role": "get stored native settings pointer"
+    },
+    {
+      "address": "009EF943",
+      "native": "00424C40",
+      "function": "009EF910",
+      "role": "get stored native settings pointer"
+    },
+    {
+      "address": "009F0076",
+      "native": "00424C40",
+      "function": "009EF910",
+      "role": "get stored native settings pointer"
+    }
+  ],
+  "reader_contract": {
+    "signature": "bool bsp::game::read_ship_avoidance_tuning_lua(lua_State&,std::array<float,5>&,std::string&)",
+    "output_order": [
+      "194",
+      "1D4",
+      "1D8",
+      "214",
+      "218"
+    ],
+    "metadata": "ship_ai_settings_keys: path,index,getter,loader_default; installed_value is never read by implementation",
+    "state": "borrow already loaded real state; protected C frame with trivial objects; no script execution or state ownership",
+    "success": "selected native lookup/conversion order; publish all five after successful protected call; clear error; restore original caller stack",
+    "failure": "restore original caller stack; preserve entire output; report error; missing parent can fail before leaf fallback",
+    "normal_getter": "existing native_lua_number_00b66270; lua_tonumber then float32 spill/reload; numeric strings accepted, nil/non-numeric normally0",
+    "fallback_getter": "existing native_lua_number_or_00b66330; kind2/exactLUA_TNUMBER required; numeric strings take metadata fallback; numerical NaN/infinity/signed zero do not take fallback",
+    "lookup": "existing native_lua_get_by_name_00b67800 and native_lua_get_by_index_00b67720 use lua_gettable; preserve metamethods and separate YTurnDirDiff lookups"
+  },
+  "native_lifetime": {
+    "loader_only_direct_caller": "00424BFC inside00424A10..00424C15",
+    "singleton": "00424C40..00424CFF; load00F8753C at00424C55; nonnull branch00424C5F->00424CF1 returns without Lua work; constructor00424CB6 then publish00424CC4",
+    "private_loader": "construct local Lua owner0083B60E,open41h0083B625,run luaMW_init0083B672 andShipGlobals0083B6E6,select globals0083B721/ShipGlobals0083B73D,incremental native stores,close state00842937 perexisting loader evidence",
+    "reload": "capture host snapshot once after actual represented settings-script load,retain in settings owner; every ordinary native reader loads stored fields,not mission Lua",
+    "explicit_projection": "reinvoking source reader sees current mission globals; shared mission interpreter is not the original private-loader lifetime; no native automatic per-frame reload established",
+    "error_publication": "native stores are incremental; source output-unchanged-on-error is an explicit typed-interface policy,not native rollback"
+  },
+  "consumer_reads": [
+    {
+      "offset": "1D8",
+      "function": "009EB660",
+      "singleton_call": "009EB681",
+      "read": "009EB686",
+      "meaning": "raw blocked-margin float; consumer chooses its applicability"
+    },
+    {
+      "offset": "194",
+      "function": "009EB660",
+      "singleton_call": "009EBEDE",
+      "read": "009EBEE3",
+      "meaning": "raw neighbor-memory base; consumer adds own native constant before ordered lifetime extension"
+    },
+    {
+      "offset": "1D4",
+      "function": "009EF910",
+      "singleton_call": "009EF943",
+      "read": "009EF948",
+      "meaning": "refresh period stored tobrain+374 at009EF956"
+    },
+    {
+      "offset": "214",
+      "function": "009EF910",
+      "singleton_call": "009F0076",
+      "read": "009F007F",
+      "meaning": "gate chosen for existing nonzeroBL state"
+    },
+    {
+      "offset": "218",
+      "function": "009EF910",
+      "singleton_call": "009F0076",
+      "read": "009F0089",
+      "meaning": "gate chosen for existing zeroBL state"
+    }
+  ],
+  "existing_compiled_code": {
+    "helpers": "native_lua_objects.cpp: native_lua_number,number_or,get_by_name,get_by_index,globals,construct/release/destroy",
+    "metadata": "ship_ai_settings_block.cpp correctly records actual getter order/defaults and consumer offsets",
+    "broader_loader": "gameplay_settings.cpp load_gameplay_tuning_settings is an abstract RowView projection; no live mission RowView implementation found",
+    "adjacent_reader": "game_hosts_lua.cpp read_ship_layer_timing_input_lua handles1F4..208 only; its protected-reader pattern is reused without editing it"
+  },
+  "corrections": [
+    {
+      "was": "numeric strings potentially treated uniformly by Number andFloatOrDefault",
+      "is": "Number accepts numeric strings; FloatOrDefault requires exact Lua number type",
+      "evidence": "00B6627B..00B66283 versus00B66333..00B6636F"
+    },
+    {
+      "was": "gameplay_settings.hpp describes broader source sequence as native loader order",
+      "is": "its ShipAvoidance source puts1D0 before1D4/1D8; native order is1D4,1D8,then1D0; new reader uses correct metadata order",
+      "evidence": "0083BC27/BC2C,0083BC6D/BC72,0083BCB3/BCB8 andsrc/gameplay_settings.cpp"
+    },
+    {
+      "was": "reading live mission Lua per geometry call could stand for native settings reads",
+      "is": "normal native singleton access returns stored state; capture five-field host snapshot after settings load",
+      "evidence": "00424C55..00424CF1 plus sole direct loader call00424BFC"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repairs_requested": [],
+  "inputs": {
+    "installed_files": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\global\\luamw_init.lua",
+        "sha256": "3a807d3cb53d6e753901ab378a3b10311b2aa6dec5e99b05f5d63d4b98ea7533"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\shipglobals.lua",
+        "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ScriptOptions.lua",
+        "sha256": "386ac4dc83a36f2521c5219289b7d16b588a94696af0f1564eefdedbe3f1b7a7"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\unlocks.lua",
+        "sha256": "62fd3055a3449c7112aae59e09b6f48258f9b34843dfb13031dfd08b6468fa6c"
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+        "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+      }
+    ],
+    "bootstrap_excerpt": {
+      "source": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\global\\luamw_init.lua",
+      "first_line": 434,
+      "text_end_marker": "-- unlocks",
+      "output": "local/avoid_tuning_degree.lua"
+    },
+    "native_constants": [
+      {
+        "address": "00CE3800",
+        "hex": "0000003f",
+        "float": 0.5
+      },
+      {
+        "address": "00CE38C8",
+        "hex": "0000f041",
+        "float": 30.0
+      },
+      {
+        "address": "00CF4848",
+        "hex": "6666e63f",
+        "float": 1.7999999523162842
+      },
+      {
+        "address": "00D0B3C8",
+        "hex": "66660640",
+        "float": 2.0999999046325684
+      }
+    ],
+    "native_strings": [
+      {
+        "address": "00D0B3CC",
+        "string": "YTurnDirDiff"
+      },
+      {
+        "address": "00D0B470",
+        "string": "HitDetector_LastHitDistAddOn"
+      },
+      {
+        "address": "00D0B490",
+        "string": "NearbyShip_WayClearCheckTime"
+      },
+      {
+        "address": "00D0B650",
+        "string": "CollectTimer"
+      },
+      {
+        "address": "00D0B660",
+        "string": "ShipAvoidance"
+      },
+      {
+        "address": "00D0B670",
+        "string": "ShipGlobals"
+      }
+    ],
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "Win32Release ./scripts/build.ps1 and2/2 existingCTest passed; verify-seeds passed",
+    "fixture": "compiled core reader:6 focused installed/conversion/error/order cases,0 failures; actual installed input/source proof,not original byte execution",
+    "direct_call_check": "reports/ship_ai_avoidance_tuning.json: 38 call rows checked, 0 failed",
+    "new_tracked_tests": false
+  },
+  "limits": [
+    "Partial native loader projection,not full76Ch singleton/private interpreter/override runner or original ABI.",
+    "Selected normal lookup order preserved; unrelated native reads and full temporary lifetime are omitted. Source error publication is transactional by its interface.",
+    "Installed fixture runs actual loose Lua files with exact bootstrap conversion excerpt in repositoryLua5.1.1; no original-byte execution or native full bootstrap/gameplay parity.",
+    "Root owns GameMissionLuaHost stored snapshot/delegate and all runtime integration; no game_hosts_lua files edited."
+  ],
+  "artifact_hash_scope": "SHA256 of raw tested worktree bytes; Git may normalize text line endings",
+  "artifacts": [
+    {
+      "path": "src/game_ship_avoidance_tuning_lua.cpp",
+      "sha256": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+      "bytes": 4520
+    },
+    {
+      "path": "include/bsp/game_ship_avoidance_tuning_lua.hpp",
+      "sha256": "dfff9e8126dcf0194ab50697ea5e68eb3289bd6e7ea22116ed0e7b7e93d23a68",
+      "bytes": 1037
+    },
+    {
+      "path": "docs/SHIP_AI_AVOIDANCE_TUNING.md",
+      "sha256": "50520f9932e50a73638f809445e7e999f69652ea98d41ed1760972e5420a3376",
+      "bytes": 9601
+    },
+    {
+      "path": "src/native_lua_objects.cpp",
+      "sha256": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+      "bytes": 12954
+    },
+    {
+      "path": "src/ship_ai_settings_block.cpp",
+      "sha256": "4e4c904701b11f5ed5266977615fd3b379e779901c6c5ba9fc827b748d0b0894",
+      "bytes": 14250
+    },
+    {
+      "path": "local/avoid_tuning_00b66270.asm",
+      "sha256": "ef74c4b62297ba66211640ce8d6a8a98ee77ad06f529922621e3c69970f9be21",
+      "bytes": 294
+    },
+    {
+      "path": "local/avoid_tuning_00b66330.asm",
+      "sha256": "d141f6ea5a4cd7abfd86791b83eca8cf671f60b5422c2a5f406cf456f6736a0c",
+      "bytes": 731
+    },
+    {
+      "path": "local/avoid_tuning_boundaries.txt",
+      "sha256": "44d8fc43d377bf631a0b7c80bc42b5c69cc4afd4190cb78f1923613fc1fe68c4",
+      "bytes": 819
+    },
+    {
+      "path": "local/avoid_tuning_build.log",
+      "sha256": "5c20516ac906bacd09f73f24d15d77d996c439ac77af71c02a5a8521c7bacb06",
+      "bytes": 38939
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00CE3800.txt",
+      "sha256": "a83a9c1098467bf8c93a91c60a1f74a0b20fbfea93a5ab30152439fd35fb57f8",
+      "bytes": 29
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00CE38C8.txt",
+      "sha256": "ad9aa107251d0abe3e65dc5c8d81d90016414c59cd45b66a8e06314e3f41f84d",
+      "bytes": 29
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00CF4848.txt",
+      "sha256": "142d090227548a4f40d828bf92d98582f97a5222adb8f4e033caee41e1fd07bb",
+      "bytes": 29
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00D0B3C8.txt",
+      "sha256": "f8ef5ed6711117999e045f3f59508a349b15bd38282c5b8543ddbbe15f0d9b66",
+      "bytes": 770
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00D0B470.txt",
+      "sha256": "0e05d08360163a5771f874fe1b2c22b34f5e0f58fe407eb424e62e0498b097b6",
+      "bytes": 462
+    },
+    {
+      "path": "local/avoid_tuning_bytes_00D0B650.txt",
+      "sha256": "841b35dc83f965df1c984d72223746ba3887b5964354567ef66b7491d0b2192a",
+      "bytes": 308
+    },
+    {
+      "path": "local/avoid_tuning_clearance_gate.asm",
+      "sha256": "7962b2539147d69bba32ee7805a45345935290e5a989192a4b38f2ecce5736e3",
+      "bytes": 872
+    },
+    {
+      "path": "local/avoid_tuning_clearance_timer.asm",
+      "sha256": "86cb466d3a0cb79063a2daf876a05c90354d6a898b4ca97fe24809ade0590471",
+      "bytes": 603
+    },
+    {
+      "path": "local/avoid_tuning_collect.asm",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "role": "abandoned invalid-start query; superseded by avoid_tuning_loader_prefix.asm,not a native flow gap"
+    },
+    {
+      "path": "local/avoid_tuning_ctor.asm",
+      "sha256": "256c30504f6afbb8200eff520a6a7c6b44c5bef9ff8690e012f4a0597b4a4acf",
+      "bytes": 3584
+    },
+    {
+      "path": "local/avoid_tuning_degree.lua",
+      "sha256": "afbaa48208160e477cbc86a6f8db80e4bb6d833f1ee3a9e8edd35a7c37e31542",
+      "bytes": 226
+    },
+    {
+      "path": "local/avoid_tuning_input_manifest.json",
+      "sha256": "b5ccd58f3b27bcd9d36e0f3683bae74393737d63a2547f3cabd7caa35227c5b6",
+      "bytes": 2475
+    },
+    {
+      "path": "local/avoid_tuning_loader_prefix.asm",
+      "sha256": "eb26f8552d42d963a815f6f0d2a0544b49fe43a5d973815c9ee5019562ed87bd",
+      "bytes": 38916
+    },
+    {
+      "path": "local/avoid_tuning_prepare.log",
+      "sha256": "e17a33c230b43ac04ca40624340651b01f4d50ed155191e98abd0e5ccaff4a86",
+      "bytes": 122
+    },
+    {
+      "path": "local/avoid_tuning_probe.cpp",
+      "sha256": "a6fc126e6360309614c426a6c1648288be428685309e98bc21212b0fb8c9d4e6",
+      "bytes": 5661
+    },
+    {
+      "path": "local/avoid_tuning_probe.exe",
+      "sha256": "093479ce9866cb90d439224457f204dcf7bb104654c0d5851b9e0ec91ec2ed7c",
+      "bytes": 128000
+    },
+    {
+      "path": "local/avoid_tuning_probe.log",
+      "sha256": "c786305ab52b203696ff1ff279a3ca1bcfdcaa02ff5a5bba827f921ba23ebebe",
+      "bytes": 691
+    },
+    {
+      "path": "local/avoid_tuning_probe_compile.log",
+      "sha256": "ca0eb813462e25bc9007ef7779d0bba1d5960f812cb8e02e74731bb8408f4eb1",
+      "bytes": 24
+    },
+    {
+      "path": "local/avoid_tuning_report_calls.log",
+      "sha256": "e025ffe0dc72e523f29b635413565fdeef283274cc205d470f2600ecf2e9c5b0",
+      "bytes": 71
+    },
+    {
+      "path": "local/avoid_tuning_sector_margin.asm",
+      "sha256": "313ec7ffc27a348d3b8ad9a5a00c5e5426e1a85418d2cdb95aa12dda878b0aad",
+      "bytes": 817
+    },
+    {
+      "path": "local/avoid_tuning_sector_memory.asm",
+      "sha256": "3fc217bf41aa90e0800df51c2b51a676a6f12e3fe65838a974d679bab826f53e",
+      "bytes": 879
+    },
+    {
+      "path": "local/avoid_tuning_singleton.asm",
+      "sha256": "fcbc98111c47ee0b45e2d37a43549be44ed8f9c82e67876921bf34caa6f5e09b",
+      "bytes": 1558
+    },
+    {
+      "path": "local/avoid_tuning_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/prepare_avoid_tuning_probe.py",
+      "sha256": "a1cbf88132c1592082b6d6cfce18d791d34bbde66012ef5a0be24bab6738b22e",
+      "bytes": 2248
+    },
+    {
+      "path": "local/build_avoid_tuning_probe.cmd",
+      "sha256": "fd4be17f12b2289293989737d9cd8de461a460e9ed6e82752b074b11e6c5fca9",
+      "bytes": 512
+    },
+    {
+      "path": "local/record_avoid_tuning_report.py",
+      "sha256": "b74f8ebb4d8642cac56affa04cbdf1d40102c1466e0c9b91c684113dc01851ff",
+      "bytes": 10743
+    }
+  ]
+}

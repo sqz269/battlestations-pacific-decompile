@@ -112,7 +112,7 @@ void ship_ai_land_step_request_009e1c28(ShipAiAvoidanceRequest& request,
 // The three arms of BSP_ShipAi_CruiseStateStep, 009E1170. Only this step writes
 // blk+3F5h, and only on its first arm.
 enum class ShipAiCruiseAvoidanceArm {
-    HelmHeldByPlayer, // 009E13B4, the group's slot 1 is not AI held
+    HelmHeldByPlayer, // 009E13B4, the bot owner's role-1 slot is not AI held
     UnitPlayerFlag,   // 009E11D6, unit+184h is set
     CruiseRule,       // 009E12EB, the arm that actually cruises
 };
@@ -120,8 +120,11 @@ enum class ShipAiCruiseAvoidanceArm {
 // The five bytes the arm selector reads, each from its own call site.
 struct ShipAiCruiseAvoidanceInputs {
     // 009E119F/009E11A5: `[[unit+740h]+50h]+1B0h`, index 1 of the slot array
-    // 00521E70 indexes. 8 means no slot; the identity of the object holding it
-    // is `contract: unread` and docs/CRUISE_COMMAND.md reads the same arm.
+    // 00521E70 indexes. 8 means no slot. 00810DD0 stores the outer ship bot at
+    // unit+740h; bot+50h is its attached entity owner, not a formation group.
+    // The historical group_* field names remain source-compatible. Actual
+    // owner attachment, role assignment and session AI-held bytes are host
+    // inputs, not derivable from the unit's Party number.
     bool group_slot_unassigned{false};
     // 009E11AD, 00927F10 BSP_PartySlot_IsAiHeld on that slot.
     bool group_slot_ai_held{false};
@@ -230,6 +233,12 @@ struct ShipAiAvoidZoneSearcherSet {
     std::array<ShipAiAvoidZoneSearcher, kShipAiAvoidZoneSearcherCount> searchers{};
 };
 
+// Borrow three live cache prefixes. Native records have a 20h stride because
+// each 18h prefix is followed by its selected-list head/layer. Every pointer
+// must be nonnull and remain valid for the call; no bounds/defaults are copied.
+using ShipAiAvoidZoneSearcherViews =
+    std::array<ShipAiAvoidZoneSearcher*, kShipAiAvoidZoneSearcherCount>;
+
 // The five dwords 009DA6E0 builds on its stack at 009DA81B..009DA850 and hands
 // to 009D7050 by pointer: the hull position, the half extents (the same value
 // twice) and the ship class's avoid-zone layer key.
@@ -281,6 +290,9 @@ float ship_ai_avoid_zone_query_half_extent_009da7eb(float look_ahead) noexcept;
 // never read.
 void ship_ai_refresh_avoid_zone_searchers_009da6e0(
     ShipAiAvoidZoneSearcherSet& searchers, const ShipAiAvoidanceRequest& request,
+    const ShipAiAvoidZoneSearcherInputs& inputs, ShipAiAvoidZoneSearcherHost& host);
+void ship_ai_refresh_avoid_zone_searchers_009da6e0(
+    const ShipAiAvoidZoneSearcherViews& searchers, const ShipAiAvoidanceRequest& request,
     const ShipAiAvoidZoneSearcherInputs& inputs, ShipAiAvoidZoneSearcherHost& host);
 
 } // namespace bsp
