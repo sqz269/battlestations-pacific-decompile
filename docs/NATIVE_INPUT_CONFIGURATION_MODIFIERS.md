@@ -14,7 +14,9 @@ input-manager call at69903A. It must not replace the full native698A10 entry.
 The gate checks the pair vector at configuration+4D0: a nonnull begin and
 nonzero arithmetic `(end-begin)>>4` skip **all five groups**. Otherwise it
 looks up `InputModifiers`, then `SwapStickPairs`, and constructs real Lua key
-and value temporaries. Each iteration appends an empty checked10h row before
+and value temporaries. The preceding698730 cleanup ordinarily empties these
+vectors, so normal prefix invocations rebuild the groups each time. Each
+iteration appends an empty checked10h row before
 reading Lua index1. It converts that value to an integer, captures the current
 outer end, runs the original three returning CRT checks for the last row,
 appends the integer, and destroys the Lua temporary. Index2 repeats that entire

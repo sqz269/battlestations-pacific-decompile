@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_modifiers_aj",
-  "status": "modifier_prefix_reconstructed_native_component_fixture_passed_final_integration_pending",
+  "status": "modifier_prefix_reconstructed_strict_win32_and_native_component_fixture_passed_full_inputs_parser_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -775,5 +775,29 @@
       "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
       "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
     }
+  },
+  "final_validation": {
+    "utc": "2026-09-13T04:17:09.327220+00:00",
+    "source_revision": "6c04a2b4bab90e9651a2e09e21f607b021f62670",
+    "merged_main_revision": "22cecbe8b75bc7e89148c98f12fc256e42ef076f",
+    "code_files": 2167,
+    "code_manifest": "local\\input_modifiers_aj_source_manifest.json",
+    "code_manifest_sha256": "5293b9f79247ac7f71c9b57e15c077753dc9b6715a86285b6440fbc3604a4949",
+    "core_archive_sha256": "e98645b39876db90252cae75e22c765972d807492dd2d4dd941fcde38a8570a9",
+    "game_executable_sha256": "a4a6a2cccdde32be50c54aa898c4c240ae8852ff61dfa4e668f574b80754aeb5",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_modifiers_aj_combined_build.log",
+    "build_log_sha256": "9f76e1fd2e63f8e40d87396bb4dd7b36d382dd9688be2983507a4a7113f9e35e",
+    "fixture_log": "local\\input_modifiers_aj_combined_probe.log",
+    "fixture_log_sha256": "3f03ac6eda1b29f8f003037fa1253d154f6bd1e40f05432fe1a7e271039fee0f",
+    "native_source_words_equal": 1186,
+    "calls_checked": 84,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
   }
 }
