@@ -100,7 +100,7 @@ unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.
 
 ## BC exact merged validation
 
-Exact combined source `d6cd5f085cc8d521c31e5bf327daa10b47710e9a` passed the strict Win32 build
+Exact combined source `175cf8f60ab6b54dbf227b9b645b9734871cde89` passed the strict Win32 build
 and both existing CTests. Camera, CString and texture probes compile only
 external probe.cpp against all three current libraries; depth has a complete
 seven-byte comparison in its exact library member. Coverage is bounded;

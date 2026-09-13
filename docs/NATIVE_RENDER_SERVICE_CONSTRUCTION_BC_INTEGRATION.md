@@ -7,7 +7,7 @@ bodies and four existing raw-context extensions. Prior ledger identities and
 evidence remain. Analysis-only 005CC590 attribution and service EH repairs,
 and separate BD analysis, add no BC reconstruction credit.
 
-Exact combined source `d6cd5f085cc8d521c31e5bf327daa10b47710e9a` passed the strict Win32 build,
+Exact combined source `175cf8f60ab6b54dbf227b9b645b9734871cde89` passed the strict Win32 build,
 both CTests, three current-library-only probes and the depth getter
 complete-library-member byte check. All seven original signatures, calling
 conventions and full stored ranges were saved/read back and exports refreshed;
