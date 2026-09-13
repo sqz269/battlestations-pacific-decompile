@@ -1,4 +1,5 @@
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_text_sections.hpp"
 #include "bsp/gui_widget_copy.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
@@ -100,6 +101,7 @@ GuiWidgetOwner::GuiWidgetOwner(GuiLayoutWidget& layout, GuiWidgetOwnerRuntime& r
 }
 GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
     if (base_copy_constructor_) return *base_copy_constructor_;
+    if (default_constructor_) return *default_constructor_;
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
 }
@@ -146,10 +148,11 @@ void GuiWidgetOwner::require_no_active_owned_operation_impl(
     if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
         base_copy_active_ ||
         (base_copy_source_borrow_ && base_copy_source_borrow_ != authorized_source) ||
-        (!constructor_admission && (base_copy_constructor_ ||
+        (!constructor_admission && (base_copy_constructor_ || default_constructor_ ||
             (text_lifetime_ && text_lifetime_->has_incomplete_copy()))) ||
         (implementation_ && implementation_->has_active_operation()) ||
         (base_copy_constructor_ && base_copy_constructor_->has_active_operation()) ||
+        (default_constructor_ && default_constructor_->has_active_operation()) ||
         (runtime_.frame_runtime_ && runtime_.frame_runtime_->operation_active(*this)) ||
         has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
         throw std::logic_error("widget still owns an active or pending native operation");
@@ -356,6 +359,23 @@ void GuiWidgetOwnerRuntime::unbind_frame_runtime(GuiWidgetFrameRuntime& frame) n
     if (frame_runtime_ != &frame) std::terminate();
     frame_runtime_ = nullptr;
 }
+void GuiWidgetOwnerRuntime::begin_default_type_admission(GuiWidgetOwner& retained,
+    GuiWidgetTypeImplementation& implementation) {
+    if (&retained.runtime_ != this || &owner(retained.layout_) != &retained ||
+        retained.base_copy_untyped_ || retained.implementation_ || retained.base_copy_constructor_ ||
+        retained.default_constructor_ || !retained.layout_.before_destroy)
+        throw std::logic_error("default constructor admission requires its fresh canonical owner");
+    retained.require_no_active_owned_operation();
+    retained.default_constructor_ = &implementation;
+}
+void GuiWidgetOwnerRuntime::finish_default_type_admission(GuiWidgetOwner& retained) {
+    if (&retained.runtime_ != this || &owner(retained.layout_) != &retained ||
+        retained.base_copy_untyped_ || retained.base_copy_constructor_ ||
+        !retained.default_constructor_ || retained.implementation_.get() != retained.default_constructor_)
+        throw std::logic_error("default admission requires the same completed implementation transfer");
+    retained.require_no_active_owned_operation_impl(nullptr, true);
+    retained.default_constructor_ = nullptr;
+}
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
     if (widgets_.count(&layout) || layout.before_destroy)
         throw std::logic_error("GUI layout already has a retained owner");
@@ -366,7 +386,11 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
         layout.before_destroy = [this](GuiLayoutWidget& dying) { retire_tree(dying); };
         result.implementation_ = environment_.make_type(result);
         if (!result.implementation_) throw std::invalid_argument("unsupported GUI widget type");
+        if (result.default_constructor_) finish_default_type_admission(result);
     } catch (...) {
+        // The factory owns an already-published constructor shell/lifetime.
+        // Its failed native operation must retain this SAME canonical owner.
+        if (result.default_constructor_) throw;
         layout.before_destroy = {};
         widgets_.erase(&layout);
         throw;
@@ -432,6 +456,103 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
     if (publication)
         throw std::logic_error("GUI auxiliary model publication must be empty");
     create_model(name, &publication);
+}
+void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
+    NativeNodeBinding*& publication, NativeStringStorage& strings, GuiTextSectionOperation& frame) {
+    if (publication || frame.phase != GuiTextSectionPhase::running ||
+        frame.unconstructed_model_slot || frame.constructed_model_owner || frame.model_creator ||
+        frame.name_live || frame.name_cleanup_armed || frame.temporary_name_storage != &strings)
+        throw std::logic_error("tracked Shadow construction requires its fresh running section frame");
+    auto& environment = environment_.models;
+    if (environment.actual_names && environment.actual_names != &strings)
+        throw std::logic_error("Shadow temporary and Model names require the same actual string domain");
+
+    bool inserted = false;
+    bool native_constructed = false;
+    void* slot = nullptr;
+    try {
+        frame.model_phase = GuiTextSectionModelPhase::metadata;
+        auto record = std::make_unique<ModelRecord>(); // No native acquisition yet.
+        frame.model_phase = GuiTextSectionModelPhase::allocation;
+        frame.native_site = 0x00ab8565;
+        slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
+        frame.unconstructed_model_slot = slot;
+        frame.native_unwind_state = 0;
+        if (!slot) {
+            publication = nullptr; // Native AB85A2/AA; following dereference is outside valid inputs.
+            frame.native_unwind_state = -1;
+            frame.model_phase = GuiTextSectionModelPhase::published;
+            return;
+        }
+        if (models_.count(slot)) {
+            // An occupied allocator result never transferred another ownership.
+            frame.unconstructed_model_slot = nullptr;
+            slot = nullptr;
+            throw std::logic_error("canonical Model pool returned an occupied Shadow slot");
+        }
+        frame.model_phase = GuiTextSectionModelPhase::metadata;
+        models_.emplace(slot, nullptr);
+        inserted = true;
+        record->owner = std::make_unique<NativeModelOwner>(slot, NativeModelPool::slot_bytes, environment);
+        models_.at(slot) = std::move(record);
+        auto& retained = *models_.at(slot);
+        frame.model_phase = GuiTextSectionModelPhase::name;
+        frame.native_site = 0x00ab8581;
+        frame.name_constructing = true;
+        frame.temporary_name.assign_0041e870(strings, "Shadow");
+        frame.name_constructing = false;
+        frame.name_live = true;
+        frame.name_cleanup_armed = true;
+        frame.native_unwind_state = 1;
+        frame.model_phase = GuiTextSectionModelPhase::constructor;
+        frame.native_site = 0x00ab859b;
+        construct_native_model_00b75030(*retained.owner, frame.temporary_name);
+        native_constructed = true;
+        frame.unconstructed_model_slot = nullptr;
+        frame.constructed_model_owner = retained.owner.get();
+        frame.model_phase = GuiTextSectionModelPhase::native_constructed;
+        // Host registration has no native instruction counterpart. A failure
+        // here must keep this live ModelRecord and its creator/name visible.
+        frame.model_phase = GuiTextSectionModelPhase::reference_registration;
+        retained.reference = std::make_unique<NativeModelReference>(*retained.owner,
+            NativeModelCompanionDisposal{this, retire_model});
+        frame.model_creator = retained.reference.get();
+        auto* const created_node = &retained.owner->node;
+        frame.native_site = 0x00ab85aa;
+        publication = created_node;
+        frame.model_creator = nullptr; // SAME creator transferred into actual +188.
+        frame.constructed_model_owner = nullptr;
+        frame.native_unwind_state = -1;
+        frame.name_cleanup_armed = false;
+        frame.model_phase = GuiTextSectionModelPhase::published;
+        frame.name_live = false;
+        frame.native_site = 0x00ab85d0;
+        destroy_native_string_header_0041dd20(&frame.temporary_name, strings);
+        // Release can reenter through publication and retire the record. No
+        // subsequent access to retained/created_node/slot follows this callback.
+    } catch (...) {
+        frame.failure_site = frame.native_site;
+        frame.model_failure_phase = frame.model_phase;
+        frame.model_metadata_failure = frame.model_phase == GuiTextSectionModelPhase::metadata ||
+            frame.model_phase == GuiTextSectionModelPhase::reference_registration;
+        if (native_constructed) throw; // Retained frame + canonical map, no live-owner rollback.
+        if (frame.name_cleanup_armed) {
+            frame.name_cleanup_armed = false; // CB7F34 clears the temporary bit before cleanup.
+            frame.name_live = false;
+            frame.cleanup_site = 0x00cb7f3b;
+            destroy_native_string_header_0041dd20(&frame.temporary_name, strings);
+        }
+        frame.native_unwind_state = -1;
+        if (inserted) models_.erase(slot); // Only prepared/dead host associations remain.
+        if (slot) {
+            frame.unconstructed_model_slot = nullptr;
+            frame.cleanup_site = 0x00cb7f23;
+            try { environment.pool_01090054.return_raw_slot_00b74750(slot); }
+            catch (...) { std::terminate(); } // A second exception during native unwind.
+        }
+        frame.model_phase = GuiTextSectionModelPhase::raw_cleaned;
+        throw;
+    }
 }
 NativeModelReference& GuiWidgetOwnerRuntime::create_model_clone_destination_00b752b0_fragment(
     NativeModelOwner& source) {
