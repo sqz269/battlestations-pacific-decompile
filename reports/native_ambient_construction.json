@@ -35,8 +35,13 @@
       "new_native_body": false,
       "existing_body_extension": true,
       "existing_typed_source": "src/system_lighting_owners.cpp",
-      "evidence": "Complete live native body/current constant/all3 caller preparations reviewed; actual raw98h owner, captured current D7A24C, exact MOVSS/DWORD spill/store order and untouched28..37. Existing typed-body evidence extension; new C++ interface, not original-caller ABI or gameplay proof.",
-      "ledger_record_name": "construct_system_ambient_00b7c290"
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b7c290..00b7c418 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_AMBIENT_CONSTRUCTION.md; reports/native_ambient_construction.json.",
+      "ledger_record_name": "construct_system_ambient_00b7c290",
+      "ghidra_name": "BSP_AmbientLight_Construct",
+      "existing_body_raw_extension": true,
+      "native_prototype": "void * BSP_AmbientLight_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete live native body/current constant/all3 caller preparations reviewed; actual raw98h owner, captured current D7A24C, exact MOVSS/DWORD spill/store order and untouched28..37. Existing typed-body evidence extension; new C++ interface, not original-caller ABI or gameplay proof."
     }
   ],
   "native_evidence": {
@@ -265,5 +270,13 @@
     "fixed_data_mapping": "00d70000..00d7ffff",
     "original_body_allocation": "arbitrary private executable allocation; unchanged absolute constant operand",
     "current_library_replay_pending_integration": true
+  },
+  "integration_ba_review": {
+    "combined_validation": "pending current combined build and applicable current-library replay",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_ambient_construction.json: 6 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 6
   }
 }

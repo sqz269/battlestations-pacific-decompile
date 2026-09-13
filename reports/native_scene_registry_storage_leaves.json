@@ -16,13 +16,22 @@
       "address": "00b82390",
       "end_inclusive": "00b823a9",
       "native_bytes": 26,
-      "cpp_symbol": "bsp::allocate_native_scene_registry_sentinel_00b82390",
+      "cpp_symbol": "allocate_native_scene_registry_sentinel_00b82390",
       "coverage": "complete",
       "source": "src/native_scene_registry_storage_leaves.cpp",
       "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
       "original_abi": "ECX ignored; no stack arguments; EAX pointer; RET",
       "native_prototype_evidence": "void* __thiscall fn(void*)",
-      "evidence": [
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b82390..00b823a9 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json.",
+      "end_exclusive": "00b823aa",
+      "module": "native_scene_registry_storage_leaves",
+      "ghidra_name": "BSP_SceneRegistry_AllocateSentinel",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "allocate_native_scene_registry_sentinel_00b82390",
+      "native_prototype": "void * BSP_SceneRegistry_AllocateSentinel(void)",
+      "native_calling_convention": "__cdecl",
+      "worker_evidence": [
         "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b82390.asm.txt",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
@@ -32,13 +41,22 @@
       "address": "00b823b0",
       "end_inclusive": "00b823e2",
       "native_bytes": 51,
-      "cpp_symbol": "bsp::allocate_native_scene_registry_node_00b823b0",
+      "cpp_symbol": "allocate_native_scene_registry_node_00b823b0",
       "coverage": "complete",
       "source": "src/native_scene_registry_storage_leaves.cpp",
       "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
       "original_abi": "ECX ignored; next/previous/key-source three stack DWORDs; EAX pointer; RET Ch",
       "native_prototype_evidence": "void* __thiscall fn(void*, uint32_t, uint32_t, const void*)",
-      "evidence": [
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b823b0..00b823e2 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json.",
+      "end_exclusive": "00b823e3",
+      "module": "native_scene_registry_storage_leaves",
+      "ghidra_name": "BSP_SceneRegistry_AllocateListNode",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "allocate_native_scene_registry_node_00b823b0",
+      "native_prototype": "void * BSP_SceneRegistry_AllocateListNode(unsigned int next, unsigned int previous, void * key_source)",
+      "native_calling_convention": "__stdcall",
+      "worker_evidence": [
         "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b823b0.asm.txt",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
@@ -48,13 +66,22 @@
       "address": "00b82570",
       "end_inclusive": "00b8259b",
       "native_bytes": 44,
-      "cpp_symbol": "bsp::fill_native_scene_registry_iterators_00b82570",
+      "cpp_symbol": "fill_native_scene_registry_iterators_00b82570",
       "coverage": "complete",
       "source": "src/native_scene_registry_storage_leaves.cpp",
       "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
       "original_abi": "ECX destination; EDX unsigned count; pair-source plus three ignored stack DWORDs; RET 10h; EAX incidental",
       "native_prototype_evidence": "void __fastcall fn(void*, uint32_t, const void*, uint32_t, uint32_t, uint32_t)",
-      "evidence": [
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b82570..00b8259b over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md; reports/native_scene_registry_storage_leaves.json.",
+      "end_exclusive": "00b8259c",
+      "module": "native_scene_registry_storage_leaves",
+      "ghidra_name": "BSP_SceneRegistry_FillIteratorPairs",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "fill_native_scene_registry_iterators_00b82570",
+      "native_prototype": "void BSP_SceneRegistry_FillIteratorPairs(void * destination, unsigned int count, void * pair_source, unsigned int unused2, unsigned int unused3, unsigned int unused4)",
+      "native_calling_convention": "__fastcall",
+      "worker_evidence": [
         "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b82570.asm.txt",
         "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
@@ -274,5 +301,13 @@
     "manifest": "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\worker_capture_manifest.json",
     "verified": true,
     "includes": "15 live/disk spans, full native/caller/provider listings, 3 libraries, own and provider sources, all header pins, probe, inc, recipe, logs, objects and executable"
+  },
+  "integration_ba_review": {
+    "combined_validation": "pending current combined build and applicable current-library replay",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_scene_registry_storage_leaves.json: 8 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 6
   }
 }

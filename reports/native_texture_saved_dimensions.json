@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_texture_saved_dimensions_ba",
+  "status": "complete_raw_leaves_strict_compile_and_instruction_bytes_verified_combined_build_pending",
+  "normal_body_count": 2,
+  "new_native_body_count": 2,
+  "native_body_bytes": 8,
+  "functions": [
+    {
+      "address": "00b3ce70",
+      "end_inclusive": "00b3ce73",
+      "end_exclusive": "00b3ce74",
+      "bytes": 4,
+      "coverage": "complete",
+      "cpp_symbol": "get_native_texture_saved_width_00b3ce70",
+      "proposed_ghidra_name": "BSP_Texture2D_GetSavedWidth",
+      "original_abi": "ECX actual raw 2D texture owner; zero stack arguments; EAX raw DWORD; plain RET",
+      "native_bytes": "8b4134c3",
+      "native_sha256": "3b2eded1bf6b0f7390191ad1371a956a736f9d18c2a7de0db7e90886555b69e1",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b3ce70..00b3ce73 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_TEXTURE_SAVED_DIMENSIONS.md; reports/native_texture_saved_dimensions.json.",
+      "emitted_native_bytes_match": true,
+      "module": "native_texture_saved_dimensions",
+      "source": "src/native_texture_saved_dimensions.cpp",
+      "header": "include/bsp/native_texture_saved_dimensions.hpp",
+      "ghidra_name": "BSP_Texture2D_GetSavedWidth",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "get_native_texture_saved_width_00b3ce70",
+      "native_prototype": "unsigned int BSP_Texture2D_GetSavedWidth(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete MOV EAX,[ECX+offset]/RET; actual D61948 vtable and B3F930 saved-value producers verified. No parent/runtime/ABI replacement claim."
+    },
+    {
+      "address": "00b3ce80",
+      "end_inclusive": "00b3ce83",
+      "end_exclusive": "00b3ce84",
+      "bytes": 4,
+      "coverage": "complete",
+      "cpp_symbol": "get_native_texture_saved_height_00b3ce80",
+      "proposed_ghidra_name": "BSP_Texture2D_GetSavedHeight",
+      "original_abi": "ECX actual raw 2D texture owner; zero stack arguments; EAX raw DWORD; plain RET",
+      "native_bytes": "8b4138c3",
+      "native_sha256": "7e6bda0a031f94dbe8477fe3ce3ba2b7e3d761a050d55625bc7d92212670e60c",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b3ce80..00b3ce83 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_TEXTURE_SAVED_DIMENSIONS.md; reports/native_texture_saved_dimensions.json.",
+      "emitted_native_bytes_match": true,
+      "module": "native_texture_saved_dimensions",
+      "source": "src/native_texture_saved_dimensions.cpp",
+      "header": "include/bsp/native_texture_saved_dimensions.hpp",
+      "ghidra_name": "BSP_Texture2D_GetSavedHeight",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "get_native_texture_saved_height_00b3ce80",
+      "native_prototype": "unsigned int BSP_Texture2D_GetSavedHeight(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete MOV EAX,[ECX+offset]/RET; actual D61948 vtable and B3F930 saved-value producers verified. No parent/runtime/ABI replacement claim."
+    }
+  ],
+  "calls": [],
+  "producer_evidence": {
+    "function": "00b3f930",
+    "source": "src/native_texture_2d_owner.cpp",
+    "width_store": "00b3f9ea",
+    "height_store": "00b3f9f9",
+    "saved_width_offset": "34",
+    "saved_height_offset": "38",
+    "descriptor_dimensions_offsets": [
+      "28",
+      "2c"
+    ],
+    "profile": "00d61948",
+    "slot48_cell": "00d61990",
+    "slot4c_cell": "00d61994"
+  },
+  "validation": {
+    "strict_compile": "PASS",
+    "source_header_sha256": {
+      "src\\native_texture_saved_dimensions.cpp": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "include\\bsp\\native_texture_saved_dimensions.hpp": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890"
+    },
+    "compiler_arguments": [
+      "/nologo",
+      "/c",
+      "/std:c++17",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/O2",
+      "/MD",
+      "/fp:strict",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_texture_saved_dimensions.cpp",
+      "/FoJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ba-saved-dimensions\\saved_dimensions.obj"
+    ],
+    "object_sha256": "c3a5b00cfa45c88a57bdcc94525f23da5f0a506a4bf2437737fc3c6755a5222b",
+    "emitted_listing": "local\\ba-saved-dimensions\\compiled_listing.txt",
+    "emitted_listing_sha256": "31e19459883b5ce46aff7102f672fc1dbdd610ca806b8e08bc6794c3c4a77288",
+    "all_eight_emitted_bytes_match_original": true,
+    "runtime_fixture": "none added; complete instruction comparison only",
+    "combined_build": "pending"
+  },
+  "limitations": [
+    "Actual raw 2D owner storage is borrowed; no COM queries or fabricated owner.",
+    "No whole B52550 constructor, arbitrary profile, original binary replacement, invalid-pointer exception identity or gameplay proof."
+  ],
+  "integration_ba_review": {
+    "combined_validation": "pending current combined build and applicable current-library replay",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_texture_saved_dimensions.json: 0 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 6
+  }
+}

@@ -113,3 +113,11 @@ The numeric eight-row call report verifies both owned allocation calls and all s
 incoming calls. No frame-path/gameplay claim is made: the fixture establishes the
 bounded leaf behavior, not executable reachability, registry construction/growth/
 erasure/teardown, an ABI-compatible game replacement, or a runnable game rebuild.
+
+## BA integration checkpoint
+
+The integrator reviewed the complete native body and actual producer evidence,
+saved its original signature and complete stored range in the existing BSP
+project, and registered the source. Current combined validation follows
+separately from the source or worker checks above. No complete owner lifetime,
+original binary replacement or gameplay claim follows from this checkpoint.

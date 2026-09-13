@@ -113,3 +113,11 @@ All 47 archived members were read back and verified against their hashes.
 These checks do not establish original caller ABI compatibility, native EH/SEH
 unwind identity, races, complete ambient lifetime, parent scene behavior or
 gameplay. No new repository tests, CMake changes or shared-file edits were added.
+
+## BA integration checkpoint
+
+The integrator reviewed the complete native body and actual producer evidence,
+saved its original signature and complete stored range in the existing BSP
+project, and registered the source. Current combined validation follows
+separately from the source or worker checks above. No complete owner lifetime,
+original binary replacement or gameplay claim follows from this checkpoint.
