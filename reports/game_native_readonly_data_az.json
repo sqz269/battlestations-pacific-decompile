@@ -1,0 +1,83 @@
+{
+  "packet": "orch4_readonly_native_data_az",
+  "status": "source_services_integrated_exact_combined_win32_build_and_five_fixtures_passed",
+  "documentation": "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+  "integration_report": "reports/input_lua_vfs_services_az_validation.json",
+  "source": [
+    "include/bsp/game_native_readonly_data.hpp",
+    "src/game_native_readonly_data.cpp"
+  ],
+  "native_body_reconstruction": false,
+  "supported_pe": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752,
+    "machine": "x86",
+    "image_base": "00400000",
+    "section": ".rdata",
+    "rva": "008e2000",
+    "raw_offset": "008e2000",
+    "virtual_size": "00125b24",
+    "raw_size": "00126000",
+    "characteristics": "40000040",
+    "section_sha256": "1965d6b2c0d4cc3675d78c6fa937b0a202d28ea0456b8bef63c4d43b39bcbcc9"
+  },
+  "mapping": {
+    "section_begin": "00ce2000",
+    "section_end_inclusive": "00e07b23",
+    "selection": "union of 64KB bands touched by explicit nonempty GameNativeDataSpan requests, clipped to original section",
+    "required_fixture_bands": [
+      "00d10000",
+      "00d50000",
+      "00d60000"
+    ],
+    "protection": "PAGE_READONLY",
+    "executable": false,
+    "reservation_before_file_buffer": true,
+    "hash_before_commit_and_copy": true,
+    "occupied_required_band_preserved": true,
+    "partial_reservation_failure_rolled_back": true,
+    "unrequested_bands_untouched": true,
+    "destructor_releases_only_owned_reservations": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "every_page_readonly_nonexecutable": true,
+    "changed_image_rejected": true,
+    "occupied_address_unchanged": true,
+    "span_bounds_checked": true,
+    "reservation_freed": true,
+    "populated_vfs_lua_nested_dofile": true,
+    "duplicate_suffix_order": "MCPP",
+    "memory_counters_zero": true,
+    "original_code_called": false,
+    "production_host_reachable": false,
+    "game_validated": false,
+    "all_selected_bytes_equal": true,
+    "bytes_checked": 196608,
+    "pages_checked": 48,
+    "empty_span_rejected": true,
+    "unrequested_span_rejected": true,
+    "partial_failure_rolled_back": true
+  },
+  "independent_review": "scale_maps_ax checked initial PE constants and cleanup; vector_maps_ax reviewed requested-band bounds and ownership, found empty-span accessor gap corrected before final build. Static reviews; final dynamic validation is separately pinned.",
+  "artifacts": {
+    "local/game_native_readonly_data_az_probe.cpp": "566697ed084b4bd8538de8d5f5417cac522206e1f6092906353529a30fbead94",
+    "local/run_game_native_readonly_data_az_probe.ps1": "1137264c75c129cc197e5e7fc1a7864f6e66b4e51ff443527dcf23f0fcac6ff0",
+    "local/game_native_readonly_data_az_probe.exe": "973f8335b2991ca2535dba091912bc032a796e6c18ed1c473e7b1f618596ffe0",
+    "local/input_lua_vfs_services_az_combined_data_probe.log": "1dc4116aad586883d805321222015ac3e5d108a46fd3bc69ea8c4359d2781371",
+    "local/make_game_native_readonly_data_az_probe.py": "28bca6476863d51d05825db6f12af3f2d20f7e2510dfa29202e919fd7d27ec77",
+    "local/adapt_native_data_az_span_probe.py": "507290f167638cd8f5e8365e4c9e3a7447067ab2c66063eca7f849bc1dd34705"
+  },
+  "limits": [
+    "Seeded VFS records and explicit writable type-descriptor fixture pages remain; no production raw VFS graph.",
+    "Physical-stream, render-batch and type-counter services still need canonical raw-manager ownership.",
+    "The map is a source data service, not original ABI/code execution or a general PE loader.",
+    "Required bands can still be occupied in an arbitrary process; early reservation is a startup precondition, with failure instead of replacement."
+  ],
+  "combined_archive_sha256": "f5b77ef60324df5882f2342fe9b093839903d62fd1b67399a4955ea914f2ab12",
+  "primary_integration": {
+    "report": "reports/input_lua_vfs_services_az_validation.json",
+    "source_revision": "754f1a4fe3cae7a1949662b5450381b95e330fb2"
+  }
+}

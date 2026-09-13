@@ -11105,8 +11105,8 @@
     {
       "id": "orch4_native_lua_service_bindings_az",
       "worker": "orch4-lua-bindings-az",
-      "done": false,
-      "state": "source_committed_focused_validation_running",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/native_lua_service_bindings.hpp",
@@ -11123,13 +11123,14 @@
       "dependencies": [
         "reports/input_composition_ay_validation.json"
       ],
-      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
     },
     {
       "id": "orch4_mpak_lookup_storage_az",
       "worker": "orch4-mpak-lookup-az",
-      "done": false,
-      "state": "dispatched_actual_storage_source",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
       "function_addresses": [
         "00bb4140",
         "00bb4f40",
@@ -11150,13 +11151,14 @@
       "dependencies": [
         "reports/input_composition_ay_validation.json"
       ],
-      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
     },
     {
       "id": "orch4_mpak_offset_copy_storage_az",
       "worker": "orch4-mpak-offset-copy-az",
-      "done": false,
-      "state": "dispatched_actual_storage_source",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
       "function_addresses": [
         "00bb6180"
       ],
@@ -11175,7 +11177,171 @@
       "dependencies": [
         "reports/input_composition_ay_validation.json"
       ],
-      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_readonly_native_data_az",
+      "worker": "orch4-20260910",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+        "reports/game_native_readonly_data_az.json"
+      ],
+      "output_files": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+        "reports/game_native_readonly_data_az.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_mpak_container_storage_az",
+      "worker": "orch4-mpak-containers-az",
+      "done": false,
+      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "function_addresses": [
+        "00bb7a20",
+        "00bb7ba0",
+        "00a40d60",
+        "00bb6220",
+        "00bb6e60",
+        "00bb71f0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_container_storage.hpp",
+        "src/native_mpak_container_storage.cpp",
+        "docs/NATIVE_MPAK_CONTAINER_STORAGE_AZ.md",
+        "reports/native_mpak_container_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_container_storage.hpp",
+        "src/native_mpak_container_storage.cpp",
+        "docs/NATIVE_MPAK_CONTAINER_STORAGE_AZ.md",
+        "reports/native_mpak_container_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+    },
+    {
+      "id": "orch4_physical_stream_lifetime_ba",
+      "worker": "orch4-physical-lifetime-ba",
+      "done": false,
+      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "function_addresses": [
+        "00bf42a0",
+        "00bf4370"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_PHYSICAL_STREAM_RAW_LIFETIME_BA.md",
+        "reports/native_physical_stream_raw_lifetime_ba.json"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_PHYSICAL_STREAM_RAW_LIFETIME_BA.md",
+        "reports/native_physical_stream_raw_lifetime_ba.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+    },
+    {
+      "id": "orch4_render_batch_lifetime_ba",
+      "worker": "orch4-batch-lifetime-ba",
+      "done": false,
+      "state": "worker_committed_review_and_saved_body_repair_pending",
+      "function_addresses": [
+        "00b1e870",
+        "00b1cd90",
+        "00b1e930",
+        "00b1d530"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_batch_lifetime.hpp",
+        "src/native_render_batch_lifetime.cpp",
+        "docs/NATIVE_RENDER_BATCH_RAW_LIFETIME_BA.md",
+        "reports/native_render_batch_raw_lifetime_ba.json"
+      ],
+      "output_files": [
+        "include/bsp/native_render_batch_lifetime.hpp",
+        "src/native_render_batch_lifetime.cpp",
+        "docs/NATIVE_RENDER_BATCH_RAW_LIFETIME_BA.md",
+        "reports/native_render_batch_raw_lifetime_ba.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries."
+    },
+    {
+      "id": "orch4_type_counter_raw_lifetime_bb",
+      "worker": "orch4-type-counter-bb",
+      "done": false,
+      "state": "dispatched_bounded_source_composition",
+      "function_addresses": [
+        "006fac20",
+        "006fad40"
+      ],
+      "code_ownership": [
+        "include/bsp/light_type_bootstrap.hpp",
+        "src/light_type_bootstrap.cpp"
+      ],
+      "dependencies": [
+        "orch4_physical_stream_lifetime_ba",
+        "orch4_render_batch_lifetime_ba"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain."
+    },
+    {
+      "id": "orch4_vfs_raw_ownership_composition_bb",
+      "worker": "orch4-vfs-raw-bb",
+      "done": false,
+      "state": "dispatched_bounded_source_composition",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_vfs_owner_services.hpp",
+        "src/native_vfs_owner_services.cpp"
+      ],
+      "dependencies": [
+        "orch4_type_counter_raw_lifetime_bb"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain."
+    },
+    {
+      "id": "orch4_mpak_storage_composition_bb",
+      "worker": "orch4-mpak-storage-bb",
+      "done": false,
+      "state": "dispatched_bounded_source_composition",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_mpak_storage_services.hpp",
+        "src/native_mpak_storage_services.cpp"
+      ],
+      "dependencies": [
+        "orch4_mpak_container_storage_az",
+        "orch4_mpak_lookup_storage_az",
+        "orch4_mpak_offset_copy_storage_az"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain."
     }
   ],
   "snapshot_after_analysis": {
