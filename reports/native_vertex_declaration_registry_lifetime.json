@@ -1,0 +1,598 @@
+{
+  "packet": "orch3_declaration_lifetime_au",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b30270",
+      "end_inclusive": "00b3033b",
+      "end_exclusive": "00b3033c",
+      "native_byte_count": 204,
+      "native_sha256": "35d95c8b5af2e6db42cf7aae7e79790c113c475819c1b28075d0434b607bee5b",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3,
+      "cpp_symbol": "resize_native_declaration_records_00b30270",
+      "ghidra_name": "BSP_NativeDeclarationRecordArray_Resize",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRecordArray_Resize(unsigned int count)",
+      "original_abi": "ECX actual vector; requested DWORD count on stack; RET4",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b31630",
+      "end_inclusive": "00b31698",
+      "end_exclusive": "00b31699",
+      "native_byte_count": 105,
+      "native_sha256": "a03c9f7def8b536ff9e822e8a502aaf6abc264d65c3797d5d496e094009deb7f",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1,
+      "cpp_symbol": "flush_native_declaration_registry_00b31630",
+      "ghidra_name": "BSP_NativeDeclarationRegistry_Flush",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRegistry_Flush(void)",
+      "original_abi": "ECX actual registry; no stack arguments; RET",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b316a0",
+      "end_inclusive": "00b316b6",
+      "end_exclusive": "00b316b7",
+      "native_byte_count": 23,
+      "native_sha256": "4a32e49259309ceb9c5ef91e65b71c871c17214eeece6f0f708dc63587f538bf",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1,
+      "cpp_symbol": "destroy_native_declaration_records_00b316a0",
+      "ghidra_name": "BSP_NativeDeclarationRecordArray_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRecordArray_Destroy(void)",
+      "original_abi": "ECX actual vector; no stack arguments; RET",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b31d40",
+      "end_inclusive": "00b31d5e",
+      "end_exclusive": "00b31d5f",
+      "native_byte_count": 31,
+      "native_sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3,
+      "cpp_symbol": "release_native_cached_declaration_00b31d40",
+      "ghidra_name": "BSP_NativeDeclarationRegistry_Release",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRegistry_Release(void *declaration)",
+      "original_abi": "ECX unused; actual declaration on stack; RET4",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b32030",
+      "end_inclusive": "00b3208e",
+      "end_exclusive": "00b3208f",
+      "native_byte_count": 95,
+      "native_sha256": "be78e023f4bf3b4db0968b8924e23af60726cff37826b8e0152233fbf1ada968",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1,
+      "cpp_symbol": "destroy_native_declaration_registry_00b32030",
+      "ghidra_name": "BSP_NativeDeclarationRegistry_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRegistry_Destroy(void)",
+      "original_abi": "ECX actual registry; no stack arguments; RET",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b32210",
+      "end_inclusive": "00b3222d",
+      "end_exclusive": "00b3222e",
+      "native_byte_count": 30,
+      "native_sha256": "4e3c52aa56b4bb234d8b1bcf186e9979900af2f8d45601be222b9e5b3139ca0e",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3,
+      "cpp_symbol": "delete_native_declaration_registry_00b32210",
+      "ghidra_name": "BSP_NativeDeclarationRegistry_ScalarDelete",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_NativeDeclarationRegistry_ScalarDelete(unsigned int flags)",
+      "original_abi": "ECX actual registry; flags on stack; EAX saved original pointer; RET4",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "function",
+      "coverage": "complete normal body and documented source exception schedule",
+      "evidence": "Complete actual-storage normal body and source exception schedule through existing actual cache/string/owner boundaries. Qualified current D5F024/D5F060 release profile. Descriptive hypothesis, new C++ ABI; native EH/runtime and gameplay limitations in docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md and reports/native_vertex_declaration_registry_lifetime.json.",
+      "no_ghidra_function": false
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00b32534",
+      "end_inclusive": "00b32555",
+      "end_exclusive": "00b32556",
+      "native_byte_count": 34,
+      "native_sha256": "6de1a377da01b40aef8e412cbbd8a822656c3fd7ee261647509243365e0a2d7d",
+      "live_disk_match": true,
+      "final_instruction_bytes": 10,
+      "coverage": "complete five-store placement fragment; partial renderer constructor; all other B32410 ranges excluded",
+      "cpp_symbol": "initialize_native_declaration_registry_00b32534_fragment",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "fragment",
+      "containing_function": "00b32410",
+      "original_abi": "ESI renderer, EBX zero; five stores with no call/return; current interface receives renderer+1A60",
+      "evidence": "B3242D establishes ESI=ECX and B32439 zeroes EBX; whole-listing register filtering finds no later writes before the fragment. Clear registry+4/+8/+C/+10, then publish D5F060. No whole-renderer function rename."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3029a",
+      "native": "00b2fe20",
+      "containing_function": "00b30270",
+      "instruction": "call 0xb2fe20",
+      "function": "00b30270"
+    },
+    {
+      "address": "00b302d0",
+      "native": "004c3020",
+      "containing_function": "00b30270",
+      "instruction": "call 0x4c3020",
+      "function": "00b30270"
+    },
+    {
+      "address": "00b3031c",
+      "native": "00b2f910",
+      "containing_function": "00b30270",
+      "instruction": "call 0xb2f910",
+      "function": "00b30270"
+    },
+    {
+      "address": "00b3167e",
+      "native": "00b2f910",
+      "containing_function": "00b31630",
+      "instruction": "call 0xb2f910",
+      "function": "00b31630"
+    },
+    {
+      "address": "00b31692",
+      "native": "00b30270",
+      "containing_function": "00b31630",
+      "instruction": "call 0xb30270",
+      "function": "00b31630"
+    },
+    {
+      "address": "00b316a5",
+      "native": "00b30270",
+      "containing_function": "00b316a0",
+      "instruction": "call 0xb30270",
+      "function": "00b316a0"
+    },
+    {
+      "address": "00b316ad",
+      "native": "00bf6989",
+      "containing_function": "00b316a0",
+      "instruction": "call 0xbf6989",
+      "function": "00b316a0"
+    },
+    {
+      "address": "00b3205b",
+      "native": "00b31630",
+      "containing_function": "00b32030",
+      "instruction": "call 0xb31630",
+      "function": "00b32030"
+    },
+    {
+      "address": "00b3206f",
+      "native": "00b30270",
+      "containing_function": "00b32030",
+      "instruction": "call 0xb30270",
+      "function": "00b32030"
+    },
+    {
+      "address": "00b32077",
+      "native": "00bf6989",
+      "containing_function": "00b32030",
+      "instruction": "call 0xbf6989",
+      "function": "00b32030"
+    },
+    {
+      "address": "00b32213",
+      "native": "00b32030",
+      "containing_function": "00b32210",
+      "instruction": "call 0xb32030",
+      "function": "00b32210"
+    },
+    {
+      "address": "00b32220",
+      "native": "00bf65ac",
+      "containing_function": "00b32210",
+      "instruction": "call 0xbf65ac",
+      "function": "00b32210"
+    },
+    {
+      "address": "00cbda70",
+      "native": "00401130",
+      "containing_function": "00cbda60",
+      "instruction": "call 0x401130",
+      "function": "00cbda60"
+    },
+    {
+      "address": "00cbda7c",
+      "native": "0041dd20",
+      "containing_function": "00cbda79",
+      "instruction": "jmp 0x41dd20",
+      "function": "00cbda79",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbdc86",
+      "native": "00b316a0",
+      "containing_function": "00cbdc80",
+      "instruction": "jmp 0xb316a0",
+      "function": "00cbdc80",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b31d49",
+      "native": "IAT00ce2220 InterlockedDecrement",
+      "function": "00b31d40",
+      "contract": "stack actual+4, result zero gates virtual0"
+    },
+    {
+      "address": "00b31d59",
+      "native": "actual_declaration+vtable00",
+      "function": "00b31d40",
+      "contract": "current actual native virtual0; canonical same+04 companion only on zero"
+    },
+    {
+      "address": "00b3166b",
+      "native": "D5F024_or_D5F060+vtable10",
+      "function": "00b31630",
+      "contract": "current slot B31D40; actual declaration argument; called after stride subtraction"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B32030 Ghidra body ends at B3207B after free",
+      "is": "Returning continuation through B3208E RET",
+      "evidence": "B3207C MOV ECX,[ESP+C]; B32080 ADD ESP,4; B32083 POP ESI; B32084 restore FS; B3208B ADD ESP,10; B3208E RET; live/disk span matches"
+    },
+    {
+      "was": "B316A0 Ghidra body ends at B316B1 after free",
+      "is": "B316B2 ADD ESP,4; B316B5 POP ESI; B316B6 RET",
+      "evidence": "Full23-byte live/disk span matches"
+    },
+    {
+      "was": "B32225..B32227 gap and pseudocode undefined EAX on free path",
+      "is": "Three-byte ADD ESP,4 before common MOV EAX,ESI at B32228",
+      "evidence": "Full30-byte live/disk span matches; saved original pointer returned even after free"
+    }
+  ],
+  "auxiliary_native_eh_handlers": [
+    {
+      "entry": "00cbda81",
+      "end_inclusive": "00cbda8a",
+      "final_instruction_length": 5,
+      "no_ghidra_function": true,
+      "body": "MOV EAX,DF6370 at CBDA81; tail JMP BF6B43 at CBDA86",
+      "coverage": "read-only fixture EH boundary, not a separately reconstructed source routine"
+    },
+    {
+      "entry": "00cbdc8b",
+      "end_inclusive": "00cbdc94",
+      "final_instruction_length": 5,
+      "no_ghidra_function": true,
+      "body": "MOV EAX,DF6608 at CBDC8B; tail JMP BF6B43 at CBDC90",
+      "coverage": "read-only fixture EH boundary, not a separately reconstructed source routine"
+    }
+  ],
+  "native_byte_verification": [
+    {
+      "address": "00b30270",
+      "end_inclusive": "00b3033b",
+      "end_exclusive": "00b3033c",
+      "native_byte_count": 204,
+      "native_sha256": "35d95c8b5af2e6db42cf7aae7e79790c113c475819c1b28075d0434b607bee5b",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3
+    },
+    {
+      "address": "00b31630",
+      "end_inclusive": "00b31698",
+      "end_exclusive": "00b31699",
+      "native_byte_count": 105,
+      "native_sha256": "a03c9f7def8b536ff9e822e8a502aaf6abc264d65c3797d5d496e094009deb7f",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1
+    },
+    {
+      "address": "00b316a0",
+      "end_inclusive": "00b316b6",
+      "end_exclusive": "00b316b7",
+      "native_byte_count": 23,
+      "native_sha256": "4a32e49259309ceb9c5ef91e65b71c871c17214eeece6f0f708dc63587f538bf",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1
+    },
+    {
+      "address": "00b31d40",
+      "end_inclusive": "00b31d5e",
+      "end_exclusive": "00b31d5f",
+      "native_byte_count": 31,
+      "native_sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3
+    },
+    {
+      "address": "00b32030",
+      "end_inclusive": "00b3208e",
+      "end_exclusive": "00b3208f",
+      "native_byte_count": 95,
+      "native_sha256": "be78e023f4bf3b4db0968b8924e23af60726cff37826b8e0152233fbf1ada968",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1
+    },
+    {
+      "address": "00b32210",
+      "end_inclusive": "00b3222d",
+      "end_exclusive": "00b3222e",
+      "native_byte_count": 30,
+      "native_sha256": "4e3c52aa56b4bb234d8b1bcf186e9979900af2f8d45601be222b9e5b3139ca0e",
+      "live_disk_match": true,
+      "final_instruction_bytes": 3
+    },
+    {
+      "address": "00b32534",
+      "end_inclusive": "00b32555",
+      "end_exclusive": "00b32556",
+      "native_byte_count": 34,
+      "native_sha256": "6de1a377da01b40aef8e412cbbd8a822656c3fd7ee261647509243365e0a2d7d",
+      "live_disk_match": true,
+      "final_instruction_bytes": 10,
+      "coverage": "complete five-store placement fragment; partial renderer constructor; all other B32410 ranges excluded",
+      "cpp_symbol": "initialize_native_declaration_registry_00b32534_fragment",
+      "source": "src/native_vertex_declaration_registry_lifetime.cpp",
+      "header": "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+      "ledger_kind": "fragment",
+      "containing_function": "00b32410",
+      "original_abi": "ESI renderer, EBX zero; five stores with no call/return; current interface receives renderer+1A60",
+      "evidence": "B3242D establishes ESI=ECX and B32439 zeroes EBX; whole-listing register filtering finds no later writes before the fragment. Clear registry+4/+8/+C/+10, then publish D5F060. No whole-renderer function rename."
+    },
+    {
+      "address": "00cbda60",
+      "end_inclusive": "00cbda78",
+      "end_exclusive": "00cbda79",
+      "native_byte_count": 25,
+      "native_sha256": "54e327e27fa14b38c22bf09322bd2f6e09509f0385883f9b15912f41448b6f05",
+      "live_disk_match": true,
+      "final_instruction_bytes": 1
+    },
+    {
+      "address": "00cbda79",
+      "end_inclusive": "00cbda80",
+      "end_exclusive": "00cbda81",
+      "native_byte_count": 8,
+      "native_sha256": "53fa6540fc624db56734ad3515bf456bd2f12e5cdf2604c947f84e5421931f1e",
+      "live_disk_match": true,
+      "final_instruction_bytes": 5
+    },
+    {
+      "address": "00cbda81",
+      "end_inclusive": "00cbda8a",
+      "end_exclusive": "00cbda8b",
+      "native_byte_count": 10,
+      "native_sha256": "0d0d9982ca5c8bc238c1db0c9ab1332ac50ed711f8008c33979e629b4eaaad90",
+      "live_disk_match": true,
+      "final_instruction_bytes": 5
+    },
+    {
+      "address": "00cbdc80",
+      "end_inclusive": "00cbdc8a",
+      "end_exclusive": "00cbdc8b",
+      "native_byte_count": 11,
+      "native_sha256": "4e0fffb457ff6d31792b935b7450b53e062071be0e8882ebfc14a2e85c7b9f3a",
+      "live_disk_match": true,
+      "final_instruction_bytes": 5
+    },
+    {
+      "address": "00cbdc8b",
+      "end_inclusive": "00cbdc94",
+      "end_exclusive": "00cbdc95",
+      "native_byte_count": 10,
+      "native_sha256": "be378350689b84e0b5d981606ad9c8226125c0c4c7b94b8198f5d1a4bf8ea85e",
+      "live_disk_match": true,
+      "final_instruction_bytes": 5
+    },
+    {
+      "address": "00df6360",
+      "end_inclusive": "00df6393",
+      "end_exclusive": "00df6394",
+      "native_byte_count": 52,
+      "native_sha256": "5ea4b4da91844d9d2c7aa406d227d5de7ecf82bf20511b4840c103a07d5fa559",
+      "live_disk_match": true
+    },
+    {
+      "address": "00df6600",
+      "end_inclusive": "00df662b",
+      "end_exclusive": "00df662c",
+      "native_byte_count": 44,
+      "native_sha256": "0aa6585e044917dd1d8b7026b08145713c47f20f5ff56788a4f721879488b580",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d5f024",
+      "end_inclusive": "00d5f037",
+      "end_exclusive": "00d5f038",
+      "native_byte_count": 20,
+      "native_sha256": "62ffb477cee43645e971bc6c428cfcb98569f6dcaaff2a68e7f218937fd12509",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d5f060",
+      "end_inclusive": "00d5f073",
+      "end_exclusive": "00d5f074",
+      "native_byte_count": 20,
+      "native_sha256": "dd1dd7962c61107be4820d2ead6e6933e3d541b4e60e3c1e361e0a80993a8eee",
+      "live_disk_match": true
+    }
+  ],
+  "validation": {
+    "source_compile": "passed MSVC Win32 /MD /O2 /W4 /WX /fp:strict",
+    "full_worktree_build": "passed scripts/build.ps1 and one enabled existing reconstructed_math CTest; owned source compiled explicitly and intentionally not CMake registered until root integration",
+    "native_probe": "PASS13 original/source comparisons; see fixture scenarios",
+    "report_calls": "passed 15 direct/tail call rows, 0 failed; three indirect rows explicit but not mechanically checked",
+    "root_current_library_only_replay": "pending primary CMake integration",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime_build.log",
+    "report_calls_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\report_calls.log"
+  },
+  "fixture": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime",
+    "evidence_command": "python local/declaration_lifetime/evidence.py",
+    "source_probe_command": "cmd /c local\\declaration_lifetime\\run.cmd J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au source J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release",
+    "current_library_only_command": "cmd /c local\\declaration_lifetime\\run.cmd <integrated-checkout> library-only",
+    "expected_library_registration": "src/native_vertex_declaration_registry_lifetime.cpp registered by root before library-only replay",
+    "scenarios": [
+      "Five-store actual registry constructor fragment",
+      "General resize3 then shrink1 then vector destruction",
+      "Array allocation failure before reserve publication",
+      "First default sentinel allocation failure",
+      "Second default sentinel allocation failure, preserving first completed row outside old count",
+      "Reverse flush with3 real declarations, one retained elsewhere, wrapped stride accumulator",
+      "Full registry destructor publishes base profile before flush and frees array",
+      "Scalar destructor flags0 preserves registry allocation and returns original pointer",
+      "Flush canonical lookup failure after decrement uses original native FH3 vector cleanup",
+      "Terminal retirement callback sets current registry count0, skipping record removal",
+      "Scalar destructor flags3 frees registry and returns saved pointer",
+      "Reference1 reaches current virtual0 and actual pool return",
+      "Reference2 becomes1 without canonical lookup or virtual0"
+    ],
+    "allocator": "Deterministic observed arena through existing singleton allocation/free entry boundaries, shared by both sides. Existing already-constructed actual NativeStringPoolStorage publication; no manager creation.",
+    "compared": "Allocator/free/retirement events, explicit count/stride/refcount/scalar-return state and all allocated arena bytes except the 24 Windows-owned bytes of the actual string-pool CRITICAL_SECTION; recursion remains compared.",
+    "original_runtime": "Six owned original entries plus isolated five-store constructor fragment. Original CBDA60/CBDA79/CBDC80 cleanup actions and original FuncInfo/maps entered via registered host trampoline into current CxxFrameHandler3.",
+    "source_callee_boundaries": [
+      "B2FE20 existing actual reserve",
+      "B2F910 existing actual record destruction",
+      "4C3020 existing actual sentinel allocation",
+      "41DD20 existing actual string cleanup",
+      "B31D40 virtual0 bridge enters canonical NativeVertexDeclarationReference and real declaration destruction/pool return"
+    ],
+    "absolute_preimages": [
+      [
+        11731571,
+        13359745
+      ],
+      [
+        11738443,
+        13509152
+      ],
+      [
+        11739187,
+        13360267
+      ],
+      [
+        11739215,
+        14020644
+      ],
+      [
+        11740498,
+        14020704
+      ],
+      [
+        13359746,
+        14639984
+      ],
+      [
+        13360268,
+        14640648
+      ],
+      [
+        14639972,
+        13359712
+      ],
+      [
+        14639980,
+        13359737
+      ],
+      [
+        14639992,
+        14639968
+      ],
+      [
+        14640644,
+        13360256
+      ],
+      [
+        14640656,
+        14640640
+      ]
+    ],
+    "limitations": [
+      "Native vtable identities are relocated for original execution; virtual0 bridge restores D61D1C token for same existing source companion checks.",
+      "Allocator arena is instrumented; native CRT ABI parity not claimed.",
+      "Only specified C++ exceptions use original native FH3 metadata through host runtime; arbitrary native SEH/FH3 compatibility not claimed.",
+      "No actual renderer application lifetime composition, game execution, or gameplay proof."
+    ],
+    "input_hashes": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b30270.bin": "35d95c8b5af2e6db42cf7aae7e79790c113c475819c1b28075d0434b607bee5b",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b31630.bin": "a03c9f7def8b536ff9e822e8a502aaf6abc264d65c3797d5d496e094009deb7f",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b316a0.bin": "4a32e49259309ceb9c5ef91e65b71c871c17214eeece6f0f708dc63587f538bf",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b31d40.bin": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b32030.bin": "be78e023f4bf3b4db0968b8924e23af60726cff37826b8e0152233fbf1ada968",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b32210.bin": "4e3c52aa56b4bb234d8b1bcf186e9979900af2f8d45601be222b9e5b3139ca0e",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00b32534.bin": "6de1a377da01b40aef8e412cbbd8a822656c3fd7ee261647509243365e0a2d7d",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00cbda60.bin": "54e327e27fa14b38c22bf09322bd2f6e09509f0385883f9b15912f41448b6f05",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00cbda79.bin": "53fa6540fc624db56734ad3515bf456bd2f12e5cdf2604c947f84e5421931f1e",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00cbda81.bin": "0d0d9982ca5c8bc238c1db0c9ab1332ac50ed711f8008c33979e629b4eaaad90",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00cbdc80.bin": "4e0fffb457ff6d31792b935b7450b53e062071be0e8882ebfc14a2e85c7b9f3a",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00cbdc8b.bin": "be378350689b84e0b5d981606ad9c8226125c0c4c7b94b8198f5d1a4bf8ea85e",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00d5f024.bin": "62ffb477cee43645e971bc6c428cfcb98569f6dcaaff2a68e7f218937fd12509",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00d5f060.bin": "dd1dd7962c61107be4820d2ead6e6933e3d541b4e60e3c1e361e0a80993a8eee",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00df6360.bin": "5ea4b4da91844d9d2c7aa406d227d5de7ecf82bf20511b4840c103a07d5fa559",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\00df6600.bin": "0aa6585e044917dd1d8b7026b08145713c47f20f5ff56788a4f721879488b580",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\evidence.py": "5d2b5ec0998bb3830e9f1db5c713d564c75ef0e7523dfa48ff5167bceb0e6781",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\probe.cpp": "a62459d91a07da2966901f2bc566701c84372711fdef7b51464a5861d544482b",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\relocations.hpp": "d9ba7af2d0c7df4c53397f9a5bf94d0a4e6abee20226979ebe12eccbbdbfb9ea",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\report.py": "aa69149bf1ec16f9d6b26225b178abea1009277146baaf1cb443626639dabf70",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\run.cmd": "860ae066cdd716fe9e8d2483ad93ffbb73b256dbab2a0a189a5f19c236319d21"
+    },
+    "source_hashes": {
+      "src/native_vertex_declaration_registry_lifetime.cpp": "b57518b3f490aa290b8bc6ca04d0e0a71e384b5bc0f079e39fe840601eba5c0a",
+      "include/bsp/native_vertex_declaration_registry_lifetime.hpp": "190f265244efd897132223edec6194b538c3e0ccbf446c3806802c27e4cbbf39"
+    },
+    "library_hashes": {
+      "bsp_core.lib": "8d8cc528217b1f302815efb6490092a08b4c05222471136d71920c3c7984d215",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "probe_executable_sha256": "83bfc94097ca8bd26de510b040faf5b5442887e5d7e92630e11aec64d0ece6c2",
+    "runtime_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-declaration-lifetime-au\\local\\declaration_lifetime\\probe.log"
+  },
+  "unresolved_contracts": [
+    "Application registration of decoded declaration companions in the SAME canonical owners domain remains caller integration.",
+    "Full actual renderer construction/destruction/device recreation remains outside this fragment and packet.",
+    "Unsupported registry/owner virtual profiles remain explicit source errors.",
+    "Null cached resources retain the native unconditional stride dereference in flush."
+  ],
+  "ghidra_mutation": "none by worker; root owns flow/body repairs, names/evidence comments, ledgers, save and refreshed exports"
+}
