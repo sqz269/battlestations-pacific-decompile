@@ -332,8 +332,8 @@
   "no_ghidra_function": [],
   "verification": {
     "live_disk_equal": true,
-    "build": "pending",
-    "native_probe": "pending",
+    "build": "PASS exact merged Win32 build; see final_merged_validation_au",
+    "native_probe": "PASS current-library collection76 plus cold593 within stated coverage",
     "game_validated": false,
     "owned_source_compile": "MSVC Win32 /MD /W4 /WX /fp:strict passed",
     "direct_call_rows": 44
@@ -366,11 +366,11 @@
       "header": "include/bsp/native_render_group_lifetime.hpp",
       "change": "Existing full destructor/scalar-delete sequence gains ActualNativeStringPoolStorage overload; same allocation/release domain as actual B1DFF0 name; old interface retained without added noexcept behavior.",
       "new_native_body": false,
-      "validation": "Initial cold original/source fixture PASS593 normalized DWORDs, full actual-string group cleanup; final merged current-library replay pending"
+      "validation": "PASS exact merged build and current-library cold593 normalized DWORD comparison, including full actual-string group cleanup"
     }
   ],
   "integration_au_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and five current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_function_names_and_signatures": 21,
     "saved_constructor_fragments": 1,
@@ -541,7 +541,7 @@
     },
     "analysis_limit": "Decoded free continuations are verified, but two stored Ghidra bodies remain short. The bridge refused run_script_inline because script execution is disabled. No full stored-body repair claimed.",
     "cross_review": "Independent full B1DFF0 listing, hidden register inputs, x87 offsets/category and repeated callback reads reviewed; original 43C130 ECX/EDX/RET4 ABI corrected in documentation. Registry six normal bodies and placement fragment independently reviewed against full listings, including current-record reloads and unwind states. No supported normal-path source defect found.",
-    "initial_combined_build": "Strict MSVC Win32 passed; two existing CTests passed; final exact merged source build remains pending",
+    "initial_combined_build": "Initial combined Win32 build passed two existing CTests; final exact merged validation is recorded in final_merged_validation_au",
     "initial_cold_fixture": {
       "status": "PASS initial original/source fixture",
       "normalized_dwords": 593,
@@ -556,5 +556,349 @@
       ],
       "artifact": "C:/Users/sqz269/bsp-orch3-au/geometry/collection_cold.cpp"
     }
+  },
+  "final_merged_validation_au": {
+    "tested_commit": "45d932993a04dd57c70bee2bc33f390d4aebb4b9",
+    "reviewed_source_commit": "b9a72f30b5619b01ee6aa69ea2c85a3e9225a1d6",
+    "build": "Strict MSVC Win32 passed; local/au-final-combined-build.log",
+    "existing_ctests_passed": 2,
+    "source_header_hashes": {
+      "include/bsp/native_render_group_lifetime.hpp": "e6a8b165ee21418c0da2641e9afc09e1eaf4c5ef50c973ce7c81e0e46233b126",
+      "src/native_render_group_lifetime.cpp": "2a994f98c45b5094ae9a7daac58a22b5ce24e57e8ad76ead879f1d8aa57a7bfb",
+      "include/bsp/native_instance_collection.hpp": "3ac226fbdc3f51e073720c23234816ded5d7b10e6a7911243639367a830075e6",
+      "src/native_instance_collection.cpp": "069a083a942d7b3390b0b9bf1ae7340b92c87e0218650e520215a4acc5c3ec09",
+      "include/bsp/native_instance_geometry.hpp": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03",
+      "src/native_instance_geometry.cpp": "afbc9cad4d13e6ef3869384470eb7d259219c7063ffe17d6f8adf00ce50f439a",
+      "include/bsp/native_vertex_declaration_registry_lifetime.hpp": "190f265244efd897132223edec6194b538c3e0ccbf446c3806802c27e4cbbf39",
+      "src/native_vertex_declaration_registry_lifetime.cpp": "b57518b3f490aa290b8bc6ca04d0e0a71e384b5bc0f079e39fe840601eba5c0a",
+      "include/bsp/native_renderer_vertex_binding.hpp": "b24ad3f9666a0bc4cb70dbf086522d942110a3619f706a48a07817f498218ccc",
+      "src/native_renderer_vertex_binding.cpp": "99485b40c4cf8c704a0c810bb38722c14aa09b0a673c887ae1b92b235f6a6e7b"
+    },
+    "library_sha256": {
+      "bsp_core.lib": "fc53eb887fdaa658a8477ada8fcf0001c84fa98d70b004e991757bf7374b513e",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": {
+      "commit": "45d932993a04dd57c70bee2bc33f390d4aebb4b9",
+      "libraries": {
+        "bsp_core.lib": "fc53eb887fdaa658a8477ada8fcf0001c84fa98d70b004e991757bf7374b513e",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+      },
+      "mode": "each probe.cpp or collection_cold.cpp only; no reconstructed source or object inputs",
+      "results": [
+        {
+          "key": "collection",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-au-collection\\probe.cpp",
+          "source_sha256": "b21123ce4d3459b27dcf8656a5f70bbf151f19100c4a6f4e85ca5e30b06b5751",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-au-collection\\probe.cpp"
+          ],
+          "compiler_arguments": [
+            "/nologo",
+            "/std:c++17",
+            "/EHsc",
+            "/W4",
+            "/WX",
+            "/fp:strict",
+            "/O2",
+            "/Oy-",
+            "/MD",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include",
+            "C:\\Users\\sqz269\\bsp-au-collection\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-au\\current-collection/",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-au\\current-collection\\collection_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "user32.lib",
+            "gdi32.lib",
+            "winmm.lib",
+            "advapi32.lib",
+            "ole32.lib",
+            "shell32.lib",
+            "shlwapi.lib",
+            "d3d9.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib"
+          ],
+          "runner": "C:\\Users\\sqz269\\bsp-orch3-au\\current-collection\\run.ps1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\au-current-collection.log",
+          "output": [
+            "PASS 76 original/source comparisons:48 full hot/batch/fade collectors,24 thresholds,actual reserve256,two owning prefix strings,two getter leaves; cold model creation unexecuted"
+          ],
+          "exe_sha256": "e4ebf5f0632816532b70e2ddff8601d3dd294826e31b5821a124437d0c60009b"
+        },
+        {
+          "key": "declaration",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-au\\declaration\\probe.cpp",
+          "source_sha256": "a62459d91a07da2966901f2bc566701c84372711fdef7b51464a5861d544482b",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-au\\declaration\\probe.cpp"
+          ],
+          "compiler_arguments": [
+            "/nologo",
+            "/std:c++20",
+            "/EHsc",
+            "/W4",
+            "/WX",
+            "/fp:strict",
+            "/O2",
+            "/Oy-",
+            "/MD",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include",
+            "C:\\Users\\sqz269\\bsp-orch3-au\\declaration\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-au\\current-declaration/",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-au\\current-declaration\\declaration_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/OPT:REF",
+            "/INCREMENTAL:NO",
+            "user32.lib",
+            "gdi32.lib",
+            "winmm.lib",
+            "advapi32.lib",
+            "ole32.lib",
+            "shell32.lib",
+            "shlwapi.lib",
+            "d3d9.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib"
+          ],
+          "runner": "C:\\Users\\sqz269\\bsp-orch3-au\\current-declaration\\run.ps1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\au-current-declaration.log",
+          "output": [
+            "PASS 13 original/source comparisons: registry constructor/resize/reverse flush/destructor/scalar flags; canonical actual reference and pool return; native FH3 allocation and flush unwind."
+          ],
+          "exe_sha256": "2d387474d958f72382d437d29c5675c5108edfd5d647a446cce4a734dbdbe5ca"
+        },
+        {
+          "key": "geometry",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\probe.cpp",
+          "source_sha256": "a8ea2c671ce7855b0669a8fdd5dff0080cd4624c800799951f50c3cfcb6c4141",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\probe.cpp"
+          ],
+          "compiler_arguments": [
+            "/nologo",
+            "/std:c++17",
+            "/EHsc",
+            "/W4",
+            "/WX",
+            "/fp:strict",
+            "/O2",
+            "/Oy-",
+            "/MD",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include",
+            "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-au\\current-geometry/",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-au\\current-geometry\\geometry_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "/MANIFEST:EMBED",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "user32.lib",
+            "gdi32.lib",
+            "winmm.lib",
+            "advapi32.lib",
+            "ole32.lib",
+            "shell32.lib",
+            "shlwapi.lib",
+            "d3d9.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib"
+          ],
+          "runner": "C:\\Users\\sqz269\\bsp-orch3-au\\current-geometry\\run.ps1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\au-current-geometry.log",
+          "output": [
+            "PASS full507-byte original/source composition; 274 normalized DWORDs, both original getters, actual pools/canonical lifetimes, distinct section stream, material clone, real16MiB D3D9 shared buffer and real combined COM layout. External callees replay current library bodies; FH3/SEH and gameplay not tested."
+          ],
+          "exe_sha256": "60b30a581d1dd126e2d1a3e27f93ea41aeab53c18dfe1b877202a5a22ab0e54d"
+        },
+        {
+          "key": "cold",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\collection_cold.cpp",
+          "source_sha256": "e3348b8f22f27271bbe18974f479a7fbe598cd26c608b7a0838b14879168e53f",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\collection_cold.cpp"
+          ],
+          "compiler_arguments": [
+            "/nologo",
+            "/std:c++17",
+            "/EHsc",
+            "/W4",
+            "/WX",
+            "/fp:strict",
+            "/O2",
+            "/Oy-",
+            "/MD",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include",
+            "C:\\Users\\sqz269\\bsp-orch3-au\\geometry\\collection_cold.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-au\\current-cold/",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-au\\current-cold\\cold_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "/MANIFEST:EMBED",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "user32.lib",
+            "gdi32.lib",
+            "winmm.lib",
+            "advapi32.lib",
+            "ole32.lib",
+            "shell32.lib",
+            "shlwapi.lib",
+            "d3d9.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib"
+          ],
+          "runner": "C:\\Users\\sqz269\\bsp-orch3-au\\current-cold\\run.ps1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\au-current-cold.log",
+          "output": [
+            "PASS cold B1DFF0 original/source 593 normalized DWORDs;two actual pooled Models+generated meshes/materials/streams,real sharedD3D9 backing,same actual strings and full actual group finalizer. Original callees use current-library native bodies; hardware SEH and gameplay unproved."
+          ],
+          "exe_sha256": "9977aea949bd6f873f5a6373fe7d12ee993026f1bd451e7022da764e4fd8d9f4"
+        },
+        {
+          "key": "vertex",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-au\\vertex\\probe.cpp",
+          "source_sha256": "1684a3b1c45711778fbdf903b18651a2bc3809de0b9d5d21b0145f09895623de",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-au\\vertex\\probe.cpp"
+          ],
+          "compiler_arguments": [
+            "/nologo",
+            "/std:c++17",
+            "/EHsc",
+            "/W4",
+            "/WX",
+            "/fp:strict",
+            "/O2",
+            "/Oy-",
+            "/MD",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include",
+            "C:\\Users\\sqz269\\bsp-orch3-au\\vertex\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-au\\current-vertex/",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-au\\current-vertex\\vertex_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "/MANIFEST:EMBED",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/SAFESEH:NO",
+            "user32.lib",
+            "gdi32.lib",
+            "winmm.lib",
+            "advapi32.lib",
+            "ole32.lib",
+            "shell32.lib",
+            "shlwapi.lib",
+            "d3d9.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib"
+          ],
+          "runner": "C:\\Users\\sqz269\\bsp-orch3-au\\current-vertex\\run.ps1",
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\au-current-vertex.log",
+          "output": [
+            "Real HAL adapter: NVIDIA GeForce RTX 5090; driver: nvldumd.dll",
+            "PASS 10 native/source scenarios; 394 compared DWORDs; real HAL COM calls/query; four original EH cleanup states; canonical logical and nonnull base terminal/pool return"
+          ],
+          "exe_sha256": "05facaf8e783127b77b7753b38a50f78266c21f9cdaaf5333f7b9c8e6c2b36e2"
+        }
+      ],
+      "passed": true
+    },
+    "implemented_native_normal_bodies": 19,
+    "placement_fragments": 1,
+    "extended_existing_group_lifetime_bodies": 2,
+    "saved_function_names_and_original_signatures": 21,
+    "saved_constructor_fragment_comments": 1,
+    "checked_numeric_report_call_rows": 111,
+    "failed_call_rows": 0,
+    "indirect_targets": "See individual profile/assembly/fixture evidence; not all mechanically checked rows resolve indirect targets.",
+    "stored_ghidra_body_limits": {
+      "00b316a0": {
+        "readback": "00b316a0 BSP_NativeDeclarationRecordArray_Destroy  void __thiscall BSP_NativeDeclarationRecordArray_Destroy(void * this)  body 00b316a0 - 00b316b1",
+        "full_native_end_inclusive": "00b316b6",
+        "reason": "Decoded returning-free tails remain outside stored function metadata. run_script_inline refused: Script execution disabled. Full native disk/live spans and fixture coverage are separate evidence."
+      },
+      "00b32030": {
+        "readback": "00b32030 BSP_NativeDeclarationRegistry_Destroy  void __thiscall BSP_NativeDeclarationRegistry_Destroy(void * this)  body 00b32030 - 00b3207b",
+        "full_native_end_inclusive": "00b3208e",
+        "reason": "Decoded returning-free tails remain outside stored function metadata. run_script_inline refused: Script execution disabled. Full native disk/live spans and fixture coverage are separate evidence."
+      }
+    },
+    "game_validated": false,
+    "complete_native_fh3_compatibility_validated": false,
+    "coverage": {
+      "collection": "76 comparisons:48 full hot-group/ordinary-batch/fade cases,24 threshold cases, actual minimum256 batch growth, two owning prefix cases and two getters checked together; four x87 modes, raw state/control/status/MXCSR.",
+      "declaration": "13 original/source scenarios: five-store placement, resize allocation failures, reverse flush/current-last-record reload, full destructor/scalar flags0/3 and an original FH3 flush-failure cleanup path, canonical actual+04 retirement and pool return.",
+      "geometry": "274 normalized DWORDs plus two original getter checks. Full507-byte native B4C8D0 entry with actual source callee adapters, real D3D9 HAL16MiB shared VB and combined COM declaration; canonical model/stream final release.",
+      "cold": "593 normalized DWORDs. Original B1DFF0 calls original B4C8D0 twice, with actual source external callee adapters; full actual-string group cleanup. Borrowed effect/binding inputs, disabled visibility, null source index, two normalized pool-slot preimages and effect identity bound this evidence.",
+      "vertex": "10 scenarios/394 DWORD state-event comparisons. Actual device binding/reset, canonical logical-owner and nonnull retained+4C terminal, original FH3 vertex/reset states0/1/2; five temporary actual-device vtable cells restored by fixture."
+    },
+    "remaining_boundaries": [
+      "Actual command lifetime still requires the same actual string domain; remaining actual command upload/execution providers and composed scene/render path are separate work.",
+      "Renderer B29670 device recreation and retained vertex base+4C runtime producer identity remain application dependencies.",
+      "No visible scene, game render submission or gameplay validation; interfaces are not drop-in original ABI replacements.",
+      "Selected original exception paths passed, but complete FH3/SEH/concurrency behavior remains unvalidated; collection math-error callback must not throw.",
+      "Ghidra B316A0 and B32030 stored bodies remain short despite decoded complete native tails; script execution is disabled. B32210 full stored body readback passed."
+    ]
   }
 }
