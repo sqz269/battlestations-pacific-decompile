@@ -1,0 +1,49 @@
+{
+  "packet": "orch5_text_identity_native",
+  "source": "src/native_gui_text_identity.cpp",
+  "header": "include/bsp/native_gui_text_identity.hpp",
+  "document": "docs/NATIVE_GUI_TEXT_IDENTITY.md",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "ghidra_mutation": false},
+  "interface": "Eight-byte actual Text pool prefix plus one non-owning companion for the same canonical GuiWidgetOwner; remaining native payload is unconstructed",
+  "routines": [
+    {"address": "00AA9390", "end": "00AA9513", "coverage": "partial_projection", "implemented": ["00AA93AA", "00AA93B5", "00AA93CB"], "abi": "ECX destination; type DWORD stack; EAX destination; RET4", "remaining": "all fields, child list and exception state outside prefix"},
+    {"address": "00AA9520", "end": "00AA9722", "coverage": "partial_projection", "implemented": ["00AA953B", "00AA9546", "00AA9551"], "abi": "ECX destination; source DWORD stack; EAX destination; RET4", "remaining": "all source body reads, child list, model clone and exception state"},
+    {"address": "00AB9650", "end": "00AB98EE", "coverage": "partial_projection", "implemented": ["00AB9678"], "abi": "ECX Text; no stack arguments; EAX Text; RET", "remaining": "base/body construction and sections are existing integration responsibilities"},
+    {"address": "00ABB2C0", "end": "00ABB623", "coverage": "partial_projection", "implemented": ["00ABB2FD"], "abi": "ECX destination; source DWORD stack; EAX destination; RET4", "remaining": "base/body copy and cursor/sections/content are existing integration responsibilities"},
+    {"address": "00AB8250", "end": "00AB83CF", "coverage": "partial_projection", "implemented": ["00AB826F"], "abi": "ECX Text; RET", "remaining": "existing canonical derived body and native allocation/SEH differences"},
+    {"address": "00AA9730", "end": "00AA99B8", "coverage": "partial_projection", "implemented": ["00AA9752", "00AA999B", "00AA99A1"], "abi": "ECX widget; RET", "remaining": "existing canonical base body and native allocation/SEH differences"},
+    {"address": "00AB8EE0", "end": "00AB8EFF", "coverage": "existing_same_owner_scalar_dispatch_consumed", "abi": "ECX Text; flags DWORD stack; EAX original Text; RET4", "remaining": "factory integration owns the same slot return and lookup retirement"}
+  ],
+  "profile_words": [
+    {"profile": "00D5C6C8", "current0": "00BD30E0", "current4": "00AB8EE0", "bytes": "e0 30 bd 00 e0 8e ab 00"},
+    {"profile": "00D5C130", "current0": "00BD30E0", "current4": "00AA9A90", "bytes": "e0 30 bd 00 90 9a aa 00"},
+    {"profile": "00D5C104", "current0": "00BD30E0", "current4": "00AA6E30", "bytes": "e0 30 bd 00 30 6e aa 00"},
+    {"profile": "00CEB130", "current0": "00BD30E0", "current4": "004F9F40", "bytes": "e0 30 bd 00 40 9f 4f 00"}
+  ],
+  "host_steps": [
+    {"address": "00AB9671", "native": "00AA9390", "function": "00AB9650", "coverage": "consumed producer", "arguments": "ECX same Text; stack type3"},
+    {"address": "00ABB2E5", "native": "00AA9520", "function": "00ABB2C0", "coverage": "consumed producer", "arguments": "ECX same destination; stack source EDI"},
+    {"address": "00AB8BB8", "native": "00B18A40", "function": "00AB8910", "coverage": "existing actual material setter reused", "arguments": "ECX material EBX; stack same Text EDI and flags1; RET8"},
+    {"address": "00BD30EB", "native": "00AB8EE0", "function": "00BD30E0", "coverage": "indirect current04 resolved for current Text D5C6C8", "arguments": "ECX same raw Text; flags1"},
+    {"address": "00AB8EE3", "native": "00AB8250", "function": "00AB8EE0", "coverage": "existing canonical scalar implementation consumed"},
+    {"address": "00AB8EF5", "native": "00AB75A0", "function": "00AB8EE0", "coverage": "factory-owned existing pool return", "arguments": "ECX F8BDF0; stack original Text; iff flags bit0"},
+    {"address": "00AA9760", "native": "00AA8320", "function": "00AA9730", "coverage": "existing canonical base implementation consumed after D5C130 store"},
+    {"address": "00AA99A1", "native": "00BD30F0", "function": "00AA9730", "coverage": "existing complete profile reset reused; no count change"},
+    {"address": "00AB8151", "native": "00AB8EE0", "function": "00AB80C0", "coverage": "audited indirect child scalar dispatch resolved for a current Text child; other dynamic child profiles not claimed", "arguments": "flags1, no preceding child refcount decrement"},
+    {"address": "00AA9797", "native": "00AB8EE0", "function": "00AA9730", "coverage": "audited indirect child scalar dispatch resolved for a current Text child; not the parent's base table", "arguments": "flags1, no preceding child refcount decrement"}
+  ],
+  "ownership": {
+    "counter": "one actual atomic raw+04 initialized fresh1 by default/copy prefix; no source-count copy",
+    "material": "old retained owner release/current0 before clear and incoming publication/retain, including equal identity",
+    "terminal": "current D5C6C8 only; BD30E0 -> same canonical child deletion AB8EE0(flags1); no member access after callback",
+    "explicit_delete": "does not decrement or test Text+04; permits direct teardown starting above1 and pool return with residual creator1",
+    "cycle": "creator1 plus cursor material retain yields2; direct base scene release may release cursor hierarchy/material and return count to1 before pool return; source-derived example",
+    "unsupported": "full raw Text ABI, native unwind, reentrant or base-profile zero terminal, external references surviving direct scalar deletion, absent canonical flags1 storage transport"
+  },
+  "validation": {
+    "call_sites": "tools/verify_report_calls.py passed: 10 rows checked, 0 failed; three indirect targets resolved from Text table bytes, not independently proved by the verifier",
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release W4 WX; existing reconstructed_math passed 1/1; log local/native_gui_text_identity_build.log",
+    "fixture": "none added; integration owns canonical factory/lifetime execution",
+    "game_validated": false
+  }
+}
