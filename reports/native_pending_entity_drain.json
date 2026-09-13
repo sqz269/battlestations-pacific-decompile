@@ -1,0 +1,907 @@
+{
+  "packet": "orch6_native_pending_entity_drain_v",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICTLY READ ONLY; formal verified BSP CLI only, no mutation or save; root applies annotations",
+  "source": "src/native_pending_entity_drain.cpp",
+  "header": "include/bsp/native_pending_entity_drain.hpp",
+  "documentation": "docs/NATIVE_PENDING_ENTITY_DRAIN.md",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "009273a0",
+      "length": 562,
+      "end_exclusive": "009275d2",
+      "hex": "64a1000000006aff68606eca00506489250000000083ec18535556578d64240033db391db099f800750c391dbc99f8000f84e901000068a899f8008d4c2414e8bcfbffff68b499f8008d4c2420895c2434e8aafbffff8b0dac99f8008b0189098b0dac99f8008949043b05ac99f800c644243001891db099f80074198d6424008b3050e884f12c0083c4043b35ac99f8008bc675eb8b0db899f8008b0189098b0db899f8008949043b05b899f800891dbc99f80074158b3050e84ef12c0083c4043b35b899f8008bc675eb8b4424148b303b74241474198b4e088b118b4274ffd03b7424147505e887f22c008b36ebe18b4c24208b293be90f849e0000008b75088b168b42188bceffd085c0741a8b168b42188b3ddc88e1008bceffd03bc7750733c9e8b855b9ff807e5e007555c6465d01c6465e01c6465f01c6465c00e89dcdd6ff8b78043bfb740b57ff151822ce0083471801395e080f97c385ff740b834718ff57ff151022ce0084db74078bcee81beed6ff8b168b82800000008bceffd033db8b4c24203be97509e8e3f12c008b4c24208b6d00e95affffff8b0189098b4c24208949048b4c24203bc1895c242474158b3050e851f02c008b4c242483c4043bf18bc675eb51e83ef02c008b4c2418895c24248b0189098b4c24188949048b4c241883c4043bc1c7442430ffffffff895c241874158b3050e80cf02c008b4c241883c4043bf18bc675eb51e8f9ef2c0083c404895c2414e901feffff8b4c24285f5e5d5b64890d0000000083c424c3",
+      "sha256": "fd3ddbb7121a5dfeef1ec8964ecabcdbbe8d54cfbda552d66d2ba6fe8b95e0af",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00926fa0",
+      "length": 108,
+      "end_exclusive": "0092700c",
+      "hex": "558bec6aff68206eca0064a100000000506489250000000083ec085356578bf18965f08975ece885daffff8b4d088b5d0853894604c74608000000008b51048b3a8b005251575150568bcec745fc00000000e8b9f9ffff8b4df45f8bc65e64890d000000005b8be55dc20400",
+      "sha256": "ed26a7b8b90873fcbb12960da76d944295f57ddb111b3241cc57eaff5e9006f5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009269b0",
+      "length": 276,
+      "end_exclusive": "00926ac4",
+      "hex": "558bec6aff68906dca0064a100000000506489250000000083ec10538b5d0c568b7510578b7d148965f0894dec8975e4897de8c745fc000000008d9b0000000085f674053b75187405e815fd2c003b7d1c0f84aa00000085f67505e803fd2c003b7e047505e8f9fc2c008b4dec8d4708508b43045053e8e5e0ffff8b4dec6a018bf0e8b9fdffff8b55108973048b4e0489313b7a047505e8c7fc2c008b3f8b7510897d14eb9a8d4510508d4de4e87e3de5ff84c074428b75ec8b7d0c8b5d08908d4d08895d08897d0ce832d2ffff8b48048b1051528d4518508bcee8e0a6e5ff8d4de4e87821e5ff8d4d10518d4de4e83c3de5ff84c075c86a006a00e8d4fd2c008b4df45f5e64890d000000005b8be55dc21c00",
+      "sha256": "7f13cc51391ab71006fa931bb9446beebeed927adbec09a9b4895b65ab6ae9d1",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009263c0",
+      "length": 85,
+      "end_exclusive": "00926415",
+      "hex": "568bf18b068b5018ffd285c0741c8b068b5018578b3ddc88e1008bceffd23bc75f750733c9e89666b9ff807e5e007523b0018bce88465d88465e88465fc6465c00e83af8ffff8b068b90800000008bce5effe25ec3",
+      "sha256": "c28662ce5faf52510e9bfedf67aeafe62194f427268e8572c4e1a3740ffca893",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00925c40",
+      "length": 68,
+      "end_exclusive": "00925c84",
+      "hex": "5356578bf9e836e6d6ff8b700485f6740b56ff151822ce0083461801837f08000f97c385f6740b834618ff56ff151022ce0084db740a8bcf5f5e5be9b006d7ff5f5e5bc3",
+      "sha256": "68cac144d4c36ff5a5fedfd8f675a927de64bb68f675016e2caf99358bffebc4",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ca6e50",
+      "length": 8,
+      "end_exclusive": "00ca6e58",
+      "hex": "8d4ddce998e4c7ff",
+      "sha256": "051ec7f5ca8e51c98733ff900ff3c698519f8ee2bcaac4324fbd3e741e887de9",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ca6e58",
+      "length": 8,
+      "end_exclusive": "00ca6e60",
+      "hex": "8d4de8e990e4c7ff",
+      "sha256": "e17906a4ca6d2623ea22687ab21503b4a938099b2db89054de3fd50c1b35501e",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009252f0",
+      "length": 5,
+      "end_exclusive": "009252f5",
+      "hex": "e97bf7ffff",
+      "sha256": "6406b7e37bbf3037dbca7f81aa015cf60db48ff6f69651c9cac18119d8e8ecbb",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00924a70",
+      "length": 72,
+      "end_exclusive": "00924ab8",
+      "hex": "568bf18b4e048b0189098b4e048949043b4604c74608000000007417578d49008b3850e8141b2d0083c4043b7e048bc775ee5f8b460450e8001b2d0083c404c74604000000005ec3",
+      "sha256": "2d4cd955b1688d37f91e34dc0f4423eb0672a25dc30a93383c69f33c0cf193e2",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004c5940",
+      "length": 72,
+      "end_exclusive": "004c5988",
+      "hex": "568bf18b4e048b0189098b4e048949043b4604c74608000000007417578d49008b3850e8440c730083c4043b7e048bc775ee5f8b460450e8300c730083c404c74604000000005ec3",
+      "sha256": "3a405487faef79bf6a501042db1890e5c27fc04f35ff451431be66f73b172442",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ca6e60",
+      "length": 10,
+      "end_exclusive": "00ca6e6a",
+      "hex": "b804a2dd00e9d9fcf4ff",
+      "sha256": "de65a116d2f86a86ec8a7c3b0e7087d85839277e26eab6e5730ed3512a234e51",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00dda1f4",
+      "length": 52,
+      "end_exclusive": "00dda228",
+      "hex": "ffffffff506eca0000000000586eca002205931902000000f4a1dd00000000000000000000000000000000000000000001000000",
+      "sha256": "2e7e0d08ce0c44e02ea847b8ad8e0a656e0f50d67d5d91403fb0ee0f0daf0ae2",
+      "live_disk_equal": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "009273a0",
+      "end_inclusive": "009275d1",
+      "length": 562,
+      "source_symbol": "drain_native_pending_entities_009273a0",
+      "original_abi": "No inputs or stack arguments; EBX/EBP/ESI/EDI preserved; RET at009275D1; original FS/FH3 frame external",
+      "coverage": "complete_normal_actual_owner_source_with_required_external_copy_and_virtual_contracts",
+      "unread_normal_ranges": [],
+      "abi_gaps": [
+        "Original FH3/SEH/hardware faults and stack aliases not implemented or executed"
+      ],
+      "coverage_ranges": [
+        {
+          "start": "009273a0",
+          "end_inclusive": "009273bf",
+          "meaning": "native frame setup, source ABI differs"
+        },
+        {
+          "start": "009273c0",
+          "end_inclusive": "009273f5",
+          "meaning": "outer count gate and destroy/kill copy construction"
+        },
+        {
+          "start": "009273f6",
+          "end_inclusive": "0092746a",
+          "meaning": "both global in-place clears"
+        },
+        {
+          "start": "0092746b",
+          "end_inclusive": "0092748f",
+          "meaning": "destroy FIFO and returning iterator validation"
+        },
+        {
+          "start": "00927490",
+          "end_inclusive": "0092753b",
+          "meaning": "kill FIFO, complete immediate-removal lifecycle and iterator validation"
+        },
+        {
+          "start": "0092753c",
+          "end_inclusive": "009275b9",
+          "meaning": "kill then destroy scratch destruction and sentinel free"
+        },
+        {
+          "start": "009275ba",
+          "end_inclusive": "009275d1",
+          "meaning": "repeat or native frame restore/plain RET"
+        }
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "009273df",
+      "native": "00926fa0",
+      "function": "009273a0",
+      "role": "copy destroy global to scratch",
+      "contract": "required external926FA0 including9269B0; ECX destination/source stack, RET4"
+    },
+    {
+      "address": "009273f1",
+      "native": "00926fa0",
+      "function": "009273a0",
+      "role": "copy kill global to scratch",
+      "contract": "required external926FA0 including9269B0; ECX destination/source stack, RET4"
+    },
+    {
+      "address": "00927423",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free global destroy node",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "verified live containing entry009273A0"
+    },
+    {
+      "address": "00927459",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free global kill node",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "verified live containing entry009273A0"
+    },
+    {
+      "address": "00927556",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free kill scratch node",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "verified live containing entry009273A0"
+    },
+    {
+      "address": "00927569",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free captured kill sentinel",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "verified live containing entry009273A0"
+    },
+    {
+      "address": "0092759b",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free destroy scratch node",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "no_ghidra_function"
+    },
+    {
+      "address": "009275ae",
+      "native": "00bf65ac",
+      "function": "009273a0",
+      "role": "free captured destroy sentinel",
+      "contract": "canonical singleton_lifetime_free; one caller-cleaned DWORD",
+      "membership": "no_ghidra_function"
+    },
+    {
+      "address": "00927487",
+      "native": "00bf6713",
+      "function": "009273a0",
+      "role": "returning iterator validation",
+      "contract": "actual CRT invalid parameter service; no default shim"
+    },
+    {
+      "address": "0092752b",
+      "native": "00bf6713",
+      "function": "009273a0",
+      "role": "returning iterator validation",
+      "contract": "actual CRT invalid parameter service; no default shim"
+    },
+    {
+      "address": "009274c3",
+      "native": "004bca80",
+      "function": "009273a0",
+      "role": "ECX0 detach after captured listener match",
+      "contract": "required external renderer provider via existing lifecycle context"
+    },
+    {
+      "address": "009274de",
+      "native": "00694280",
+      "function": "009273a0",
+      "role": "resolve current actual observer lock owner",
+      "contract": "existing NativeObserverLifetime"
+    },
+    {
+      "address": "00927510",
+      "native": "00696330",
+      "function": "009273a0",
+      "role": "notify04 using saved sampled presence after unlock",
+      "contract": "existing actual observer delivery context"
+    },
+    {
+      "address": "0092747f",
+      "native": "009273a0+vtable74",
+      "function": "009273a0",
+      "role": "destroy visit; current unit table"
+    },
+    {
+      "address": "009274a8",
+      "native": "009273a0+vtable18",
+      "function": "009273a0",
+      "role": "first current render getter"
+    },
+    {
+      "address": "009274bb",
+      "native": "009273a0+vtable18",
+      "function": "009273a0",
+      "role": "reloaded table getter after listener capture"
+    },
+    {
+      "address": "0092751f",
+      "native": "009273a0+vtable80",
+      "function": "009273a0",
+      "role": "current table after callbacks"
+    },
+    {
+      "address": "009274eb",
+      "native": "IAT00CE2218",
+      "function": "009273a0",
+      "role": "EnterCriticalSection; one stdcall pointer argument"
+    },
+    {
+      "address": "00927504",
+      "native": "IAT00CE2210",
+      "function": "009273a0",
+      "role": "LeaveCriticalSection; same captured section"
+    },
+    {
+      "address": "00ca6e53",
+      "native": "009252f0",
+      "function": "00ca6e50",
+      "role": "destroy-scratch frame cleanup thunk",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca6e5b",
+      "native": "009252f0",
+      "function": "00ca6e58",
+      "role": "kill-scratch frame cleanup thunk",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "009252f0",
+      "native": "00924a70",
+      "function": "009252f0",
+      "role": "canonical whole-list destruction thunk",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00926fc6",
+      "native": "00924a50",
+      "function": "00926fa0",
+      "role": "copy helper distinct sentinel allocation"
+    },
+    {
+      "address": "00926ff2",
+      "native": "009269b0",
+      "function": "00926fa0",
+      "role": "required checked library range copy, seven DWORD args; RET1C at926AC1"
+    },
+    {
+      "address": "00874dbe",
+      "native": "009273a0",
+      "function": "00874d00",
+      "role": "fixed-step extra driver, no drain arguments"
+    },
+    {
+      "address": "00875ec9",
+      "native": "009273a0",
+      "function": "00875bb0",
+      "role": "fixed-step driver, no drain arguments"
+    },
+    {
+      "address": "00ca6e65",
+      "native": "00bf6b43",
+      "function": "00ca6e60",
+      "kind": "tail_jump",
+      "role": "original FH3 handler loadsDDA204 then runtime jump; root-defined handler, native EH unexecuted"
+    }
+  ],
+  "metadata_gaps": [
+    {
+      "address": "00927428",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "0092745e",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "0092755b",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "0092756e",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "0092759b",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "009275a0",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "009275ae",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "009275b3",
+      "status": "no_ghidra_function",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration"
+    },
+    {
+      "address": "00ca6e60",
+      "status": "historical_no_ghidra_function_resolved_by_root",
+      "scope": "sampled missing membership point; not a full missing-interval enumeration",
+      "current": "EH_PendingEntity_Drain, body00CA6E60..69",
+      "evidence": "local/drain_handler_root_resolution.txt; root reports/native_pending_entity_drain_function_definitions.json"
+    }
+  ],
+  "normal_path_invariants": [
+    "Read actual destroy count then conditional kill count; repeated outer loop",
+    "Copy destroy and kill before clearing either actual global",
+    "Detach/free original nodes but preserve both global sentinels",
+    "Destroy: current head comparison, current table74, returning validation, saved-node next",
+    "Kill: captured-head comparison, full U lifecycle, current head validation/reload, saved-node next",
+    "Kill teardown starts from final comparison head; free K sentinel, capture D head, clear K head, then D teardown",
+    "Actual aliases and borrowed flag lvalues; no semantic GameUnitSlot cast, private queue or endpoint",
+    "No implicit pending-list synchronization; observer sample lock released before separately locked delivery"
+  ],
+  "kill_reuse_comparison": [
+    {
+      "drain": "9274A1..74AC",
+      "wrapper": "9263C3..63CC",
+      "effect": "current18 call and null branch"
+    },
+    {
+      "drain": "9274AE..74BF",
+      "wrapper": "9263CE..63E1",
+      "effect": "reload18 target; captureE188DC before call; compare saved listener"
+    },
+    {
+      "drain": "9274C1..74C3",
+      "wrapper": "9263E3..63E5",
+      "effect": "literalECX0 external4BCA80"
+    },
+    {
+      "drain": "9274C8..74CC",
+      "wrapper": "9263EA..63EE",
+      "effect": "reload mutated5E and skip"
+    },
+    {
+      "drain": "9274CE..74DA",
+      "wrapper": "9263F4..63FD",
+      "effect": "5D/5E/5F=1 then5C=0"
+    },
+    {
+      "drain": "9274DE..7509",
+      "wrapper": "925C45..5C71",
+      "effect": "capture actual lock, enter/depth++, unsigned count sample, depth--/leave"
+    },
+    {
+      "drain": "92750A..7510",
+      "wrapper": "925C72..5C81",
+      "effect": "saved predicate gates696330 after release"
+    },
+    {
+      "drain": "927515..751F",
+      "wrapper": "926406..6411",
+      "effect": "current profile slot80, same unit; native EAX unused"
+    }
+  ],
+  "register_provenance": {
+    "evidence": "local/drain_listing.txt complete562byte listing",
+    "ebx_writes": [
+      "9273C0 XOR EBX,EBX",
+      "9274F8 SETA BL",
+      "927521 XOR EBX,EBX"
+    ],
+    "conclusion": "All other callees preserve EBX; sampled count and section-null tests see zero as in925C40; complete lifecycle resets before next item and skipped5E path retains zero"
+  },
+  "eh": {
+    "map": "00DDA1F4",
+    "func_info": "00DDA204",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00CA6E50",
+        "scratch": "destroy, EBP-24"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00CA6E58",
+        "scratch": "kill, EBP-18"
+      }
+    ],
+    "handler": {
+      "entry": "00CA6E60",
+      "length": 10,
+      "status": "initial no_ghidra_function; subsequently root defined/saved/exported, worker verified by formal read only",
+      "instructions": "MOV EAX,DDA204; JMP BF6B43"
+    },
+    "canonical_cleanup": "Both funclets LEA/JMP9252F0 ->924A70; all72 bytes equal canonical4C5940 after normalizing two E8 rel32 displacements to their sameBF65AC targets; raw bytes differ only in those operands",
+    "source_cleanup": "Completed scratch guards, reverse order; normal final free is noexcept and disarms guards after explicit teardown",
+    "native_execution": "unproved; fixture handler operand replaced with zero and no exceptions injected"
+  },
+  "required_external_contracts": [
+    {
+      "entry": "00926FA0",
+      "coverage": "body read108bytes, required full copy/partial-construction cleanup; no production default"
+    },
+    {
+      "entry": "009269B0",
+      "coverage": "body read276bytes including rollback, required library contract; no STL port"
+    },
+    {
+      "entry": "00781260",
+      "coverage": "remove library body/xrefs read; no direct drain edge; downstream callers require external implementation"
+    },
+    {
+      "entry": "unit virtual74/18/80 and004BCA80",
+      "coverage": "producer-selected external contracts; fixture-specific implementations do not establish full renderer or base teardown"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Old name evidence says926FA0 holds a lock from924A50",
+      "evidence": "live copy listing926FC6 and926FF2, docs/NATIVE_PENDING_ENTITY_OWNERS.md",
+      "is": "924A50 is sentinel allocation; complete926FA0 has no lock"
+    },
+    {
+      "was": "Cleanup funclets jump directly924A70",
+      "evidence": "Live/disk bytes for all three thunks",
+      "is": "CA6E53/5B jump9252F0, which jumps924A70"
+    },
+    {
+      "was": "Full native linear min/max implies complete Ghidra body",
+      "evidence": "Formal proto snapshots and retained failed report checks",
+      "is": "Final two direct free sites have no containing function despite complete linear bytes"
+    },
+    {
+      "was": "Draft described924A70/4C5940 as byte-identical",
+      "is": "All72 bytes are identical after normalizing two free-call rel32 operands; raw bytes differ at six displacement bytes",
+      "evidence": "local/drain_cleanup_alias.json records exact offsets, absolute callees and normalized SHA256"
+    }
+  ],
+  "validation": {
+    "status": "build and focused native fixture passed; stored-body call verification partial",
+    "native_fixture": {
+      "returncode": 0,
+      "stdout": "case0 SOURCE\nfinal:D0:K0:listener0:depth0\nNATIVE\nfinal:D0:K0:listener0:depth0\ncase1 SOURCE\ncopyD:D2:K2:listener0:depth0\ncopyK:D2:K2:listener0:depth0\nfree Dglobal node1:D0:K2:scratch0 head1 count2:scratch1 head1 count2\nfree Dglobal node2:D0:K2:scratch0 head1 count2:scratch1 head1 count2\nfree Kglobal node2:D0:K0:scratch0 head1 count2:scratch1 head1 count2\nfree Kglobal node3:D0:K0:scratch0 head1 count2:scratch1 head1 count2\nvirtual74:D0:K0:unit1:table0:flags1,0,0,0,0,:listener0:depth0\nobserver08:D0:K0:unit1:table0:flags1,1,0,0,1,:listener0:depth1\nexternal7C:D1:K0:unit1:table2:flags7,0,0,0,1,:listener0:depth0\nvirtual74:D1:K0:unit2:table0:flags1,0,0,0,0,:listener0:depth0\nobserver08:D1:K0:unit2:table0:flags1,1,0,0,1,:listener0:depth1\nexternal7C:D1:K1:unit2:table2:flags7,0,0,0,1,:listener0:depth0\nrenderA:D1:K1:unit2:table2:flags7,0,0,0,1,:listener0:depth0\nrenderB:D1:K1:unit2:table1:flags7,0,0,0,1,:listener4098:depth0\nexternal4BCA80:D1:K1:unit2:table1:flags7,0,0,0,1,:listener0:depth0\nobserver04:D1:K1:unit2:table1:flags0,1,1,1,1,:listener0:depth1\nexternal80:D1:K1:unit2:table2:flags7,0,1,1,1,:listener0:depth0\nrenderA:D1:K1:unit3:table0:flags1,0,0,0,0,:listener0:depth0\nrenderB:D1:K1:unit3:table1:flags1,0,0,0,0,:listener4099:depth0\nexternal4BCA80:D1:K1:unit3:table1:flags1,0,0,0,0,:listener0:depth0\nobserver04:D1:K1:unit3:table1:flags0,1,1,1,0,:listener0:depth1\nexternal80:D1:K1:unit3:table2:flags7,0,1,1,0,:listener0:depth0\nfree Kscratch0 node2:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Kscratch0 node3:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Kscratch0 sentinel:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Dscratch0 node1:D1:K1:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch0 node2:D1:K1:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch0 sentinel:D1:K1:scratch0 head1 count0:scratch1 head0 count0\ncopyD:D1:K1:listener0:depth0\ncopyK:D1:K1:listener0:depth0\nfree Drequeue node3:D0:K1:scratch0 head1 count1:scratch1 head1 count1\nfree Krequeue node1:D0:K0:scratch0 head1 count1:scratch1 head1 count1\nvirtual74:D0:K0:unit3:table2:flags7,0,1,1,0,:listener0:depth0\nobserver08:D0:K0:unit3:table2:flags7,1,1,1,1,:listener0:depth1\nexternal7C:D0:K0:unit3:table2:flags7,0,1,1,1,:listener0:depth0\nrenderA:D0:K0:unit1:table2:flags7,0,0,0,1,:listener0:depth0\nrenderB:D0:K0:unit1:table1:flags7,0,0,0,1,:listener4097:depth0\nexternal4BCA80:D0:K0:unit1:table1:flags7,0,0,0,1,:listener0:depth0\nobserver04:D0:K0:unit1:table1:flags0,1,1,1,1,:listener0:depth1\nexternal80:D0:K0:unit1:table2:flags7,0,1,1,1,:listener0:depth0\nfree Kscratch1 node1:D0:K0:scratch0 head1 count1:scratch1 head1 count0\nfree Kscratch1 sentinel:D0:K0:scratch0 head1 count1:scratch1 head1 count0\nfree Dscratch1 node3:D0:K0:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch1 sentinel:D0:K0:scratch0 head1 count0:scratch1 head0 count0\nfinal:D0:K0:listener0:depth0\nNATIVE\ncopyD:D2:K2:listener0:depth0\ncopyK:D2:K2:listener0:depth0\nfree Dglobal node1:D0:K2:scratch0 head1 count2:scratch1 head1 count2\nfree Dglobal node2:D0:K2:scratch0 head1 count2:scratch1 head1 count2\nfree Kglobal node2:D0:K0:scratch0 head1 count2:scratch1 head1 count2\nfree Kglobal node3:D0:K0:scratch0 head1 count2:scratch1 head1 count2\nvirtual74:D0:K0:unit1:table0:flags1,0,0,0,0,:listener0:depth0\nobserver08:D0:K0:unit1:table0:flags1,1,0,0,1,:listener0:depth1\nexternal7C:D1:K0:unit1:table2:flags7,0,0,0,1,:listener0:depth0\nvirtual74:D1:K0:unit2:table0:flags1,0,0,0,0,:listener0:depth0\nobserver08:D1:K0:unit2:table0:flags1,1,0,0,1,:listener0:depth1\nexternal7C:D1:K1:unit2:table2:flags7,0,0,0,1,:listener0:depth0\nrenderA:D1:K1:unit2:table2:flags7,0,0,0,1,:listener0:depth0\nrenderB:D1:K1:unit2:table1:flags7,0,0,0,1,:listener4098:depth0\nexternal4BCA80:D1:K1:unit2:table1:flags7,0,0,0,1,:listener0:depth0\nobserver04:D1:K1:unit2:table1:flags0,1,1,1,1,:listener0:depth1\nexternal80:D1:K1:unit2:table2:flags7,0,1,1,1,:listener0:depth0\nrenderA:D1:K1:unit3:table0:flags1,0,0,0,0,:listener0:depth0\nrenderB:D1:K1:unit3:table1:flags1,0,0,0,0,:listener4099:depth0\nexternal4BCA80:D1:K1:unit3:table1:flags1,0,0,0,0,:listener0:depth0\nobserver04:D1:K1:unit3:table1:flags0,1,1,1,0,:listener0:depth1\nexternal80:D1:K1:unit3:table2:flags7,0,1,1,0,:listener0:depth0\nfree Kscratch0 node2:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Kscratch0 node3:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Kscratch0 sentinel:D1:K1:scratch0 head1 count2:scratch1 head1 count0\nfree Dscratch0 node1:D1:K1:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch0 node2:D1:K1:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch0 sentinel:D1:K1:scratch0 head1 count0:scratch1 head0 count0\ncopyD:D1:K1:listener0:depth0\ncopyK:D1:K1:listener0:depth0\nfree Drequeue node3:D0:K1:scratch0 head1 count1:scratch1 head1 count1\nfree Krequeue node1:D0:K0:scratch0 head1 count1:scratch1 head1 count1\nvirtual74:D0:K0:unit3:table2:flags7,0,1,1,0,:listener0:depth0\nobserver08:D0:K0:unit3:table2:flags7,1,1,1,1,:listener0:depth1\nexternal7C:D0:K0:unit3:table2:flags7,0,1,1,1,:listener0:depth0\nrenderA:D0:K0:unit1:table2:flags7,0,0,0,1,:listener0:depth0\nrenderB:D0:K0:unit1:table1:flags7,0,0,0,1,:listener4097:depth0\nexternal4BCA80:D0:K0:unit1:table1:flags7,0,0,0,1,:listener0:depth0\nobserver04:D0:K0:unit1:table1:flags0,1,1,1,1,:listener0:depth1\nexternal80:D0:K0:unit1:table2:flags7,0,1,1,1,:listener0:depth0\nfree Kscratch1 node1:D0:K0:scratch0 head1 count1:scratch1 head1 count0\nfree Kscratch1 sentinel:D0:K0:scratch0 head1 count1:scratch1 head1 count0\nfree Dscratch1 node3:D0:K0:scratch0 head1 count0:scratch1 head0 count0\nfree Dscratch1 sentinel:D0:K0:scratch0 head1 count0:scratch1 head0 count0\nfinal:D0:K0:listener0:depth0\nPASS: two paired cases; actual observer providers and raw queues; required valid-copy and virtual contracts; original native EH unproved\n",
+      "stderr": ""
+    },
+    "fixture_external_boundaries": [
+      "required valid-ring copy only; no invalid iterator/allocation rollback",
+      "producer virtual and controlled-listener callbacks"
+    ],
+    "fixture_actual_providers": [
+      "raw global/scratch list storage and canonical allocation/free",
+      "NativeObserverLifetime raw lock owner",
+      "actual observer dispatch owner/publication, edges, sample and delivery",
+      "existing U lifecycle wrappers"
+    ],
+    "free_trace": "Probe IAT free instrumentation observes tracked raw allocations and forwards original real CRT free; it is not a successful free shim",
+    "native_fh3": "unproved",
+    "runtime_binding": "not added",
+    "gameplay": "unproved",
+    "native_relocations": [
+      {
+        "operand_offset": "037",
+        "original": "00f899a8",
+        "target": "actual destroy header"
+      },
+      {
+        "operand_offset": "058",
+        "original": "00f899ac",
+        "target": "actual destroy head cell"
+      },
+      {
+        "operand_offset": "062",
+        "original": "00f899ac",
+        "target": "actual destroy head cell"
+      },
+      {
+        "operand_offset": "06b",
+        "original": "00f899ac",
+        "target": "actual destroy head cell"
+      },
+      {
+        "operand_offset": "08d",
+        "original": "00f899ac",
+        "target": "actual destroy head cell"
+      },
+      {
+        "operand_offset": "024",
+        "original": "00f899b0",
+        "target": "actual destroy count cell"
+      },
+      {
+        "operand_offset": "076",
+        "original": "00f899b0",
+        "target": "actual destroy count cell"
+      },
+      {
+        "operand_offset": "045",
+        "original": "00f899b4",
+        "target": "actual kill header"
+      },
+      {
+        "operand_offset": "097",
+        "original": "00f899b8",
+        "target": "actual kill head cell"
+      },
+      {
+        "operand_offset": "0a1",
+        "original": "00f899b8",
+        "target": "actual kill head cell"
+      },
+      {
+        "operand_offset": "0aa",
+        "original": "00f899b8",
+        "target": "actual kill head cell"
+      },
+      {
+        "operand_offset": "0c3",
+        "original": "00f899b8",
+        "target": "actual kill head cell"
+      },
+      {
+        "operand_offset": "02c",
+        "original": "00f899bc",
+        "target": "actual kill count cell"
+      },
+      {
+        "operand_offset": "0b0",
+        "original": "00f899bc",
+        "target": "actual kill count cell"
+      },
+      {
+        "operand_offset": "115",
+        "original": "00e188dc",
+        "target": "actual fixture controlled cell"
+      },
+      {
+        "operand_offset": "14d",
+        "original": "00ce2218",
+        "target": "actual OS EnterCriticalSection import cell"
+      },
+      {
+        "operand_offset": "166",
+        "original": "00ce2210",
+        "target": "actual OS LeaveCriticalSection import cell"
+      },
+      {
+        "call_site": "009273df",
+        "operand_offset": "040",
+        "original_target": "00926fa0",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "009273f1",
+        "operand_offset": "052",
+        "original_target": "00926fa0",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927423",
+        "operand_offset": "084",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927459",
+        "operand_offset": "0ba",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927556",
+        "operand_offset": "1b7",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927569",
+        "operand_offset": "1ca",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "0092759b",
+        "operand_offset": "1fc",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "009275ae",
+        "operand_offset": "20f",
+        "original_target": "00bf65ac",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927487",
+        "operand_offset": "0e8",
+        "original_target": "00bf6713",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "0092752b",
+        "operand_offset": "18c",
+        "original_target": "00bf6713",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "009274c3",
+        "operand_offset": "124",
+        "original_target": "004bca80",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "009274de",
+        "operand_offset": "13f",
+        "original_target": "00694280",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "call_site": "00927510",
+        "operand_offset": "171",
+        "original_target": "00696330",
+        "target": "fixture ABI bridge or canonical free; exact target in drain_probe.cpp and runtime_relocations.txt"
+      },
+      {
+        "operand_offset": "009",
+        "original": "00ca6e60",
+        "target": "zero; original native FH3 execution disabled, no exception injection"
+      }
+    ],
+    "fixture_failures": [
+      {
+        "stage": "initial probe compile",
+        "error": "C2440 illegal const_cast void* volatile* to void*; C2660 consequence",
+        "resolution": "cast removes volatile at correct void** level, then implicit pointer-to-void conversion",
+        "retained": "local/drain_probe_build_failure01.txt"
+      }
+    ],
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 passed",
+    "direct_call_checks": 21,
+    "failed_call_checks": 2,
+    "indirect_rows": 6,
+    "call_check_result": "partial: required two missing containing-function failures retained; no rows omitted",
+    "ghidra_readonly_proof": "Owned9273A0 full documentation before/after identical; root independently defined unownedCA6E60, retained separate readback",
+    "toolchain": {
+      "platform": "Win32 Release",
+      "generator": "Visual Studio 18 2026",
+      "tools": [
+        {
+          "Name": "cl.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "FileVersion": "19.51.36244.0"
+        },
+        {
+          "Name": "link.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "dumpbin.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\dumpbin.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "mt.exe",
+          "Source": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64\\mt.exe",
+          "FileVersion": "10.0.26100.8249 (WinBuild.160101.0800)"
+        }
+      ],
+      "msvc": "14.51.36231",
+      "windows_sdk": "10.0.26100.0",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP:local/drain_probe.map"
+    },
+    "linked_core_objects": [
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_live_effect_manager.obj",
+      "native_pending_entity_drain.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_scene_lifecycle_notify.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_tracked_critical_section_release.obj",
+      "native_unit_observer_endpoint.obj",
+      "observer_dispatch_owner.obj",
+      "observer_dispatch_schedule.obj",
+      "observer_edges.obj",
+      "observer_event_producer.obj",
+      "observer_lifetime.obj",
+      "singleton_lifetime.obj",
+      "sound_lifetime_access.obj"
+    ],
+    "linked_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+        "bytes": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+        "bytes": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 55454460,
+        "sha256": "bdde14e372e5db6b01208f5ac0e7418b99257d49fe04dbfa9c4dc81f32443a05"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455656,
+        "sha256": "b40a9baf61129b6d56d923e89a6ea3679981c49a8660ff14f645dc0a224e3d85"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72046,
+        "sha256": "7546095f4d63996f7f676fbf203ac195a2e21d6640157725a612b6e8ed976b25"
+      }
+    ],
+    "owned_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\build\\win32\\bsp_core.dir\\Release\\native_pending_entity_drain.obj",
+      "bytes": 4722,
+      "sha256": "f0b04a6810762891628f7b0ad582f04682cda229b1265d14a47c4e0d79790905"
+    },
+    "core_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 55454460,
+      "sha256": "bdde14e372e5db6b01208f5ac0e7418b99257d49fe04dbfa9c4dc81f32443a05"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-drain-v\\local\\drain_manifest.json",
+      "bytes": 41506,
+      "sha256": "8751efff7b8dcde5365e82c219b307c61f560d9ebc48a67cd07cbd0dbd0e1e5b"
+    }
+  },
+  "compiled_schedule_review": {
+    "evidence": "local/drain_object_disasm.txt actual drain body",
+    "destroy_iteration": "head comparison+FC; current table+116 after alias; slot74 provider+122; saved cursor/current head validation+125/+12A then next+12F",
+    "kill_iteration": "captured head+136; loop compare+13B; U lifecycle+171; reload head+176; validation+17C/+180; head reload on returning validation+185; next+188; compare+18A",
+    "scratch": "last comparison head next+18E; kill sentinel free+1BB -> destroy head capture+1C0 -> kill head clear+1C6; destroy sentinel free+1FA then head clear+205",
+    "pure_compare_scheduling": "MSVC captures comparison head before count-zero volatile store but emits pure CMP afterward; no callback/observable storage access intervenes. Source equivalence, not instruction identity."
+  },
+  "canonical_cleanup_proof": {
+    "length": 72,
+    "original_bytes_equal": false,
+    "raw_differing_offsets": [
+      36,
+      37,
+      38,
+      56,
+      57,
+      58
+    ],
+    "normalized_calls": [
+      {
+        "entry": "00924a70",
+        "call_offset": 35,
+        "site": "00924a93",
+        "absolute_target": "00bf65ac"
+      },
+      {
+        "entry": "00924a70",
+        "call_offset": 55,
+        "site": "00924aa7",
+        "absolute_target": "00bf65ac"
+      },
+      {
+        "entry": "004c5940",
+        "call_offset": 35,
+        "site": "004c5963",
+        "absolute_target": "00bf65ac"
+      },
+      {
+        "entry": "004c5940",
+        "call_offset": 55,
+        "site": "004c5977",
+        "absolute_target": "00bf65ac"
+      }
+    ],
+    "normalization": "Replace each E8 rel32 displacement with its resolved absolute target; all other72-byte contents unchanged",
+    "normalized_equal": true,
+    "normalized_sha256": "befde16a56b087b817613762db296d5e4d550baae39ba74e45a170e61650f23f"
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "packet": "orch6_reconstruction_v",
+  "status": "actual_unit_byte_binding_scene_handle_and_pending_drain_integrated_and_checked",
+  "packets": [
+    {
+      "packet": "orch6-unit-scene-flags-v",
+      "commit": "3b64f090010038600252c41e8712da6c0b708148",
+      "report": "reports\\game_unit_scene_lifecycle_view.json",
+      "report_sha256": "b59be7cceb4127c3ca5a2388c94e9131cd552891e7f67e80b8ac3846778c9997",
+      "coverage": "Application binding lends the five existing actual byte cells; activity snapshots refresh at readers.",
+      "validation": "Win32 and2CTests; two actual-host lifecycle cases using registered observer edges and verified42B120/80DFC0 callbacks; same-byte world/motion gates.",
+      "limits": "Source composition only. Explicit null getter input and throwing7C/80 fixture boundaries; borrowed references must be disposed before teardown.",
+      "archived_artifacts": 332
+    },
+    {
+      "packet": "orch6-unit-scene-handle-v",
+      "commit": "a78293c53a5db892d7fb8ba1fea6ffdf996f2e54",
+      "report": "reports\\native_unit_scene_handle.json",
+      "report_sha256": "e022e92c171db303b8c7121d1be34031ced3da207774c015f54f2b6aa1650d1b",
+      "coverage": "Complete7-byte getter and15-byte clear/tail, plus6-byte producer store projection using a borrowed actual cell.",
+      "validation": "Win32 and2CTests; three original-byte/source cases; five live/disk spans128bytes plus captured table cells; three direct tail rows.",
+      "limits": "Actual GameUnitsHost scene pointer is absent. The complete initializer, node reference lifetime and required779AF0 tail remain outside this packet.",
+      "archived_artifacts": 66
+    },
+    {
+      "packet": "orch6-pending-entity-drain-v",
+      "commit": "43715a2ba94f0853660a5ce216933fbdc2d7c3f1",
+      "report": "reports\\native_pending_entity_drain.json",
+      "report_sha256": "356719855926715505513b3c8d515be9b6a9a36666036af2d1107933d3f5dcc1",
+      "coverage": "Complete562-byte normal pending drain over actual owner and scratch list storage. Copies both queues before either clear, preserves native callback and free ordering, and drains requeues.",
+      "validation": "Win32 and2CTests; empty and two-pass requeue original-byte/source cases with real observer dispatch, lock operations and CRT frees; explicit copy and virtual contracts.",
+      "limits": "No application routing or original FH3 execution. Two free call sites remain outside the stored Ghidra function body; complete bytes and failing mechanical checks are retained.",
+      "archived_artifacts": 159
+    }
+  ],
+  "ret4_provider": {
+    "commit": "14ed0b23",
+    "report": "reports/observer_ret4_provider.json",
+    "coverage": "Complete3-byte0042B120;20actual callbackslot08 cells verified; distinct literal provider used in actual-host fixture."
+  },
+  "validation": {
+    "compiled_commit": "ffc6ba2abaef53084954b9f920fe9a6b26a04821",
+    "exe_sha256": "0fcfac99990843e3d6dfbc1e6d074cc72e19aace15f0f890c0e9f04de2e01664",
+    "build": "MSVC Win32 Release and2existingCTests passed",
+    "build_record": {
+      "compiled_commit": "ffc6ba2abaef53084954b9f920fe9a6b26a04821",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-20260912",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_v_20260913T101224.log"
+    },
+    "process_run": {
+      "compiled_commit": "ffc6ba2abaef53084954b9f920fe9a6b26a04821",
+      "run_commit": "ffc6ba2abaef53084954b9f920fe9a6b26a04821",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ffc6ba2a.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_v.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_v.csv"
+      ],
+      "exe_sha256": "0fcfac99990843e3d6dfbc1e6d074cc72e19aace15f0f890c0e9f04de2e01664",
+      "preserved_executable": "local\\orch6_combined_ffc6ba2a.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "d750b3583c921335baf0b2a63e4749d908193cb20703d2273aa4b639cf75075c"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.14460277557373,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "scope": "Mission compatibility regression only. Nonempty pending drain and explicit lifecycle invocation are established by scoped fixtures; the mission queues remain empty."
+  },
+  "evidence_archive": {
+    "worker_manifest": "local\\orch6_worker_archive_v.json",
+    "worker_sha256": "692bd84a3a020ea7d2ef820499b0593119a29e84c8fc4875a689354fc584ea18",
+    "worker_artifacts": 557,
+    "root_manifest": "local\\orch6_root_proof_v.json",
+    "root_sha256": "c899103b184c06c0e0d96677a082fc558c47a734825cea9ba30c5bc633529c9f",
+    "root_artifacts": 60
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "definitions": [
+      "reports/native_unit_scene_handle_function_definitions.json",
+      "reports/native_pending_entity_drain_function_definitions.json"
+    ],
+    "corrections": [
+      "006D1E80 defined and named as scene-handle getter.",
+      "00951FB0 wrong adjustor name corrected; it clears+4A4 and preservesECX before tail779AF0.",
+      "00CA6E60 defined as pending-drain EH selector; static cleanup graph only."
+    ],
+    "preserved_gaps": "009273A0 stored body excludes free call sites0092759B/009275AE. No destructive function recreation or discarded call rows."
+  },
+  "limitations": [
+    "New C++ interfaces are not drop-in native ABI replacements.",
+    "Complete copy/remove providers, actual scene-pointer ownership, renderer and lifecycle tail bindings remain incomplete.",
+    "Native FH3/SEH, concurrent mutation, full constructor/destructor and original-game visual/gameplay parity remain unproved."
+  ],
+  "follow_up": [
+    "W native779AF0 killed-player-unit tail.",
+    "W native824F39..824FE4 ship wreck effect-handle fragment.",
+    "W complete928C80 base-killed sequence."
+  ]
+}

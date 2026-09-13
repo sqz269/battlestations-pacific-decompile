@@ -276,7 +276,13 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "validation": "Verified CLI confirms original3bytes and every listed tablecell match installed PE. Combined V build/fixture pending.",
+  "validation": {
+    "native": "Original3bytes and20listed callbackcells match live Ghidra and installed PE.",
+    "build": "Combined MSVC Win32 and2existingCTests passed",
+    "compiled_commit": "ffc6ba2abaef53084954b9f920fe9a6b26a04821",
+    "fixture": "Actual-host registered slot08 callback selects and invokes exact0042B120 source provider.",
+    "fixture_report": "reports/game_unit_scene_lifecycle_view.json"
+  },
   "limits": [
     "Only invoke when captured actualtable selects0042B120. Never a universalcallback/default.",
     "Separate from0080DFC0 and00952050 even though byte-identical.",

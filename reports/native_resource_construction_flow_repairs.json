@@ -1,0 +1,296 @@
+{
+  "status": "saved_complete_verified_eh_body_repairs",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_packet_commit": "34c512e4c669c73f45206be7b6951848518389e2",
+  "scope": "Analysis metadata only. Two complete 11-byte FH3 free actions; no additional reconstructed C++ body or original FH3 execution claim.",
+  "method": "Under existing write lock and owned leases, clear erroneous call-site overrides, disassemble verified tails, recreate exact stored body ranges with prior names and plate comments. No callee no-return flag changed.",
+  "preserved_annotations": {
+    "00c84fa0": {
+      "address": "00c84fa0",
+      "function_name": "Unwind@00c84fa0"
+    },
+    "00cc25b0": {
+      "address": "00cc25b0",
+      "function_name": "Unwind@00cc25b0"
+    }
+  },
+  "evidence": [
+    {
+      "path": "local/native-resource-construction-flow-c84fa0-applied.json",
+      "sha256": "c4f55b6e89e6f92eb84ddb6b0c4e391f21fca5fdb1ad7aeb0d4137464499becc",
+      "record": {
+        "repairs": [
+          {
+            "function": "00c84fa0",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-13T16:49:31Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00c84fa4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c84fa9",
+                "gap_end_exclusive": "00c84fab",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00c84fa4",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00c84fa9",
+                  "gap_end_exclusive": "00c84fab",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00c84fa4 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00c84fa4",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00c84fa4 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00c84fab",
+            "explicit_body_sha256": "8c72eda093ae5926e038eb97e35baf9a372f3caf68a1e098c2321bbce1008f49",
+            "body_before": "Function: Unwind@00c84fa0 at 00c84fa0\nSignature: undefined Unwind@00c84fa0(void)\nEntry: 00c84fa0\nBody: 00c84fa0 - 00c84fa8",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00c84fa0 at 00c84fa0\nSignature: undefined Unwind@00c84fa0(void)\nEntry: 00c84fa0\nBody: 00c84fa0 - 00c84fa8",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    {
+      "path": "local/native-resource-construction-flow-cc25b0-applied.json",
+      "sha256": "116b503857d9f0d2aba59fe7e545ab3c6af3891102b7ced3c6d4ef826c571597",
+      "record": {
+        "repairs": [
+          {
+            "function": "00cc25b0",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-13T16:49:40Z",
+            "decompile_lines_before": 10,
+            "gaps": [
+              {
+                "site": "00cc25b4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cc25b9",
+                "gap_end_exclusive": "00cc25bb",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00cc25b4",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00cc25b9",
+                  "gap_end_exclusive": "00cc25bb",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00cc25b4 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00cc25b4",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00cc25b4 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00cc25bb",
+            "explicit_body_sha256": "28c564eff130e247b607a352e271b4a9d49081dd836f0031fabfe4cb9f363afe",
+            "body_before": "Function: Unwind@00cc25b0 at 00cc25b0\nSignature: undefined Unwind@00cc25b0(void)\nEntry: 00cc25b0\nBody: 00cc25b0 - 00cc25b8",
+            "decompile_lines_after": 10,
+            "gaps_remaining": 1,
+            "body_after": "Function: Unwind@00cc25b0 at 00cc25b0\nSignature: undefined Unwind@00cc25b0(void)\nEntry: 00cc25b0\nBody: 00cc25b0 - 00cc25b8",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    {
+      "path": "local/native-resource-construction-body-repair.json",
+      "sha256": "9fe8a943caf3f0123eff3ce84b193b90943044f3be776aa34a1b750dc43f660d",
+      "record": {
+        "events": [
+          {
+            "recreate": "00c84fa0",
+            "previous": "Function: Unwind@00c84fa0 at 00c84fa0\nSignature: undefined Unwind@00c84fa0(void)\nEntry: 00c84fa0\nBody: 00c84fa0 - 00c84fa8",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00c84fa0"
+            },
+            "result": {
+              "success": true,
+              "address": "00c84fa0",
+              "deleted_function": "Unwind@00c84fa0",
+              "body_size": 9,
+              "message": "Function 'Unwind@00c84fa0' deleted at 00c84fa0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c84fa0",
+              "end_address": "00c84fab"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c84fa0",
+              "end_address": "00c84faa",
+              "bytes_disassembled": 11,
+              "message": "Successfully disassembled 11 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c84fa0",
+              "disassemble_first": false,
+              "name": "Unwind@00c84fa0"
+            },
+            "result": {
+              "success": true,
+              "address": "00c84fa0",
+              "function_name": "Unwind@00c84fa0",
+              "entry_point": "00c84fa0",
+              "body_size": 11,
+              "message": "Function created successfully at 00c84fa0",
+              "warnings": [
+                "Function name 'Unwind@00c84fa0' \u2014 main part 'Unwind@00c84fa0' is not PascalCase. Expected: Unwind@00c84fa0",
+                "Function name 'Unwind@00c84fa0' does not start with a recognized verb. First word 'Unwind@00c84fa0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+              ]
+            }
+          },
+          {
+            "defined": "00c84fa0",
+            "end": "00c84fab",
+            "name": "Unwind@00c84fa0",
+            "after": "Function: Unwind@00c84fa0 at 00c84fa0\nSignature: undefined Unwind@00c84fa0(void)\nEntry: 00c84fa0\nBody: 00c84fa0 - 00c84faa"
+          },
+          {
+            "recreate": "00cc25b0",
+            "previous": "Function: Unwind@00cc25b0 at 00cc25b0\nSignature: undefined Unwind@00cc25b0(void)\nEntry: 00cc25b0\nBody: 00cc25b0 - 00cc25b8",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00cc25b0"
+            },
+            "result": {
+              "success": true,
+              "address": "00cc25b0",
+              "deleted_function": "Unwind@00cc25b0",
+              "body_size": 9,
+              "message": "Function 'Unwind@00cc25b0' deleted at 00cc25b0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cc25b0",
+              "end_address": "00cc25bb"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cc25b0",
+              "end_address": "00cc25ba",
+              "bytes_disassembled": 11,
+              "message": "Successfully disassembled 11 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cc25b0",
+              "disassemble_first": false,
+              "name": "Unwind@00cc25b0"
+            },
+            "result": {
+              "success": true,
+              "address": "00cc25b0",
+              "function_name": "Unwind@00cc25b0",
+              "entry_point": "00cc25b0",
+              "body_size": 11,
+              "message": "Function created successfully at 00cc25b0",
+              "warnings": [
+                "Function name 'Unwind@00cc25b0' \u2014 main part 'Unwind@00cc25b0' is not PascalCase. Expected: Unwind@00cc25b0",
+                "Function name 'Unwind@00cc25b0' does not start with a recognized verb. First word 'Unwind@00cc25b0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+              ]
+            }
+          },
+          {
+            "defined": "00cc25b0",
+            "end": "00cc25bb",
+            "name": "Unwind@00cc25b0",
+            "after": "Function: Unwind@00cc25b0 at 00cc25b0\nSignature: undefined Unwind@00cc25b0(void)\nEntry: 00cc25b0\nBody: 00cc25b0 - 00cc25ba"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "final_body_records": [
+    {
+      "defined": "00c84fa0",
+      "end": "00c84fab",
+      "name": "Unwind@00c84fa0",
+      "after": "Function: Unwind@00c84fa0 at 00c84fa0\nSignature: undefined Unwind@00c84fa0(void)\nEntry: 00c84fa0\nBody: 00c84fa0 - 00c84faa"
+    },
+    {
+      "defined": "00cc25b0",
+      "end": "00cc25bb",
+      "name": "Unwind@00cc25b0",
+      "after": "Function: Unwind@00cc25b0 at 00cc25b0\nSignature: undefined Unwind@00cc25b0(void)\nEntry: 00cc25b0\nBody: 00cc25b0 - 00cc25ba"
+    }
+  ],
+  "post_repair": {
+    "saved": true,
+    "exports_refreshed": true,
+    "each_listing_instructions": 5,
+    "remaining_call_gaps": 0
+  },
+  "preflight_failure": "Initial local name-preservation wrapper expected a dict from ledger.load_names; it returned a list. Assertion stopped before write lock/mutation. Wrapper was corrected to support either representation."
+}
