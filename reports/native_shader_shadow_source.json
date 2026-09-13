@@ -1,0 +1,503 @@
+{
+  "packet": "orch5_native_shadow_source",
+  "base_commit": "33de8d33822267e3b11dc377fa31820f9cfb2667",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_shadow_source.cpp",
+  "header": "include/bsp/native_shader_shadow_source.hpp",
+  "documentation": "docs/NATIVE_SHADER_SHADOW_SOURCE.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b38230",
+      "bytes": 92,
+      "end_inclusive": "00b3828b",
+      "sha256": "f4f4ac4aa449fe68d4fbd12225880106e1ed83090e17b4203a7a282ba1aff103",
+      "direct_calls": 6,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "78b1dd1dbd40528f4c4ebb127a400ddaa9e0295e53a506211585500142a72ac6",
+      "name": "BSP_ShaderBuilder_AppendShadowHelper",
+      "cpp_symbol": "append_native_shadow_helper_00b38230",
+      "original_abi": "ECX actual B0h builder; no stack arguments; plain RET"
+    },
+    {
+      "address": "00b382b0",
+      "bytes": 92,
+      "end_inclusive": "00b3830b",
+      "sha256": "9398fe1541c850e686e40231011b3ff913866d3fd4bcbd54fe17ea9a53659c67",
+      "direct_calls": 6,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "651fa6bcd1e0ff2b9f81de80293900555b41dbab15b2952ba5729b4b94f44af5",
+      "name": "BSP_ShaderBuilder_AppendMapShadowHelper",
+      "cpp_symbol": "append_native_map_shadow_helper_00b382b0",
+      "original_abi": "ECX actual B0h builder; no stack arguments; plain RET"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b34f20",
+      "bytes": 272,
+      "end_inclusive": "00b3502f",
+      "sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d",
+      "direct_calls": 11,
+      "coverage": "existing complete native line appender reused unchanged",
+      "export_assembly_sha256": "146758e5d64cf91bea46a2f467ec873cb88a946bbd5865c112a5f98d250c728d",
+      "source": "src/native_shader_struct_declarations.cpp",
+      "cpp_symbol": "append_native_shader_cstring_line_00b34f20"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3823e",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b38253",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b3825f",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b3826b",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b38278",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b38284",
+      "native": "00b34f20",
+      "function": "00b38230",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b382be",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b382d3",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b382df",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b382eb",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b382f8",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b38304",
+      "native": "00b34f20",
+      "function": "00b382b0",
+      "contract": "Existing actual8h C-string line appender; ECX source4C, stack literal, RET4; actual pooled text/newline acquisitions."
+    },
+    {
+      "address": "00b34f47",
+      "native": "0041e870",
+      "function": "00b34f20",
+      "contract": "Existing actual C-string constructor; established shared string storage boundary."
+    },
+    {
+      "address": "00b34f68",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual-header resize; live reads/allocation-release order with preserve flag1."
+    },
+    {
+      "address": "00b34f75",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Correct CRT memcpy symbol admits overlap; explicit host memmove boundary."
+    },
+    {
+      "address": "00b34f92",
+      "native": "00419cc0",
+      "function": "00b34f20",
+      "contract": "Established actual pooled-string singleton getter."
+    },
+    {
+      "address": "00b34f99",
+      "native": "00bd1510",
+      "function": "00b34f20",
+      "contract": "Established actual sized-block return; NativeStringStorage release is noexcept."
+    },
+    {
+      "address": "00b34fae",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual-header resize; live reads/allocation-release order with preserve flag1."
+    },
+    {
+      "address": "00b34fc9",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Correct CRT memcpy symbol admits overlap; explicit host memmove boundary."
+    },
+    {
+      "address": "00b34fe7",
+      "native": "0041dd40",
+      "function": "00b34f20",
+      "contract": "Existing actual-header resize; live reads/allocation-release order with preserve flag1."
+    },
+    {
+      "address": "00b34ff4",
+      "native": "00bf7680",
+      "function": "00b34f20",
+      "contract": "Correct CRT memcpy symbol admits overlap; explicit host memmove boundary."
+    },
+    {
+      "address": "00b3500f",
+      "native": "00419cc0",
+      "function": "00b34f20",
+      "contract": "Established actual pooled-string singleton getter."
+    },
+    {
+      "address": "00b35016",
+      "native": "00bd1510",
+      "function": "00b34f20",
+      "contract": "Established actual sized-block return; NativeStringStorage release is noexcept."
+    }
+  ],
+  "callers": [
+    {
+      "address": "00b39a77",
+      "native": "00b38230",
+      "function": "00b39880",
+      "contract": "ECX builder; no stack argument; caller descriptor74 byte15 gates both helpers."
+    },
+    {
+      "address": "00b39a7e",
+      "native": "00b382b0",
+      "function": "00b39880",
+      "contract": "ECX builder; no stack argument; immediately follows GetShadow helper."
+    }
+  ],
+  "literals": [
+    {
+      "name": "shadow_begin",
+      "address": "00d600b0",
+      "bytes_including_nul": 424,
+      "sha256": "0b83e9c38dea0baca6df85ce088855cf4a0a159323895365e5cf2d33e6eaedd9"
+    },
+    {
+      "name": "shadow_projected_position",
+      "address": "00d60060",
+      "bytes_including_nul": 74,
+      "sha256": "657aba8f7f3f9d5caf45339a8e45c7469f401544d10b6190671aaba67d8e962b"
+    },
+    {
+      "name": "shadow_projected_return",
+      "address": "00d60010",
+      "bytes_including_nul": 78,
+      "sha256": "b3d8bd9973b8c06df638c4392e4f8e49b4bee30f8fea9db65b16f0fd7cb2709b"
+    },
+    {
+      "name": "shadow_filtered_body",
+      "address": "00d5fb08",
+      "bytes_including_nul": 1281,
+      "sha256": "fc70e9174e1758d0eb899022a5e69adf690104695f3fc7c955a7c1392fe7305c"
+    },
+    {
+      "name": "map_shadow_begin",
+      "address": "00d60c38",
+      "bytes_including_nul": 123,
+      "sha256": "d39ff7040afe86e5c25da08a4131c2f7ace3b04849190c4d67ca4ed8f196f3eb"
+    },
+    {
+      "name": "map_shadow_projected_return",
+      "address": "00d60c04",
+      "bytes_including_nul": 50,
+      "sha256": "aed3d6b5e021fd9b5bda927c14954094d8a8ed18efbbac574c18597dbdf8f177"
+    },
+    {
+      "name": "map_shadow_filtered_body",
+      "address": "00d606e8",
+      "bytes_including_nul": 1305,
+      "sha256": "607ecf9b8960c0461f9810fbb247162f525d1235e394ac8cf8dee34a2b66742c"
+    },
+    {
+      "name": "closing_brace",
+      "address": "00ce4cd4",
+      "bytes_including_nul": 2,
+      "sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5"
+    }
+  ],
+  "literal_source": "src/shader_shadow_literals.inc",
+  "literal_source_sha256": "42de2ca41e3d09e66f11a187d83ae48f6fce914abde17674676e0fb882bb544a",
+  "producer": {
+    "function": "00b3c3a0",
+    "read_site": "00b3c455",
+    "store_site": "00b3c465",
+    "contract": "CL policy argument; store ESP+BE after two pushes is actual builder+AA (builder starts original ESP+0C). Existing policy_aa schema reused."
+  },
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "default registered MSVC Win32 Release /W4 /WX /fp:strict",
+      "existing_ctest": "reconstructed_math and native_math_differential,2/2 passed after verify-seeds",
+      "log": "local/shadow-build.log"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_shadow_source_probe.ps1",
+      "linkage": "single fixture translation unit linked with default registered bsp_core; no production implementation source copied into fixture",
+      "original_bodies": 3,
+      "owned_bytes": 184,
+      "body_bytes_with_dependency": 456,
+      "nul_literal_bytes": 3337,
+      "direct_calls_with_dependency": 23,
+      "numeric_rows_with_callers": 25,
+      "scope": "Both helpers and both branches, actual initialized B0h builder/canonical string pool, exact text and pooled trace, prefix/untouched fields, AA changed during intro then again during body, retained child failure/replay/retirement77.",
+      "log": "local/shadow-probe.log",
+      "guard_log": "local/shadow-guard-probe.log",
+      "status_log": "local/shadow-probe-status.json"
+    }
+  },
+  "limits": [
+    "Explicit C++ interfaces are not native binary ABI replacements.",
+    "Original private FH3 and rollback are not reproduced; retained child helper cleanup remains its own boundary.",
+    "Caller keeps raw builder/context/string domain alive and excludes retirement while parent/child run or remain failed; no native terminal interception.",
+    "Original fixture relocates copied bodies and redirects audited calls to existing actual C-string/resize/pool/host-copy boundaries.",
+    "Full native generator composition, compilation, shadow pixels, rendering parity and rebuilt gameplay are not proven."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_shadow_source.cpp",
+      "bytes": 2781,
+      "sha256": "55c03a05a14f4e88c7d8518195dac663c5211b3cf00fa7412be36a739e963503"
+    },
+    {
+      "path": "include/bsp/native_shader_shadow_source.hpp",
+      "bytes": 2283,
+      "sha256": "45094ffbe1aca7e24030223cbcd994848edc238e0863d1129c3ad402b77c7d9e"
+    },
+    {
+      "path": "docs/NATIVE_SHADER_SHADOW_SOURCE.md",
+      "bytes": 4955,
+      "sha256": "bdb27a8eeb9030e17b2af203589cc38eab09ecd634a3391191ce4949d1078004"
+    },
+    {
+      "path": "src/shader_shadow_literals.inc",
+      "bytes": 4170,
+      "sha256": "42de2ca41e3d09e66f11a187d83ae48f6fce914abde17674676e0fb882bb544a"
+    },
+    {
+      "path": "local/prepare_shadow_evidence.py",
+      "bytes": 3324,
+      "sha256": "fe6c59eaf11113c128121e90f4ac642d57fc800ebbe6c9619fe4ca72ef2723d5"
+    },
+    {
+      "path": "local/shadow_original.hpp",
+      "bytes": 3024,
+      "sha256": "099d216dba04db2484b8bd3552a4a733f1bd88db1bbb3985878d5ac0fd970e4d"
+    },
+    {
+      "path": "local/shadow_original_manifest.json",
+      "bytes": 5464,
+      "sha256": "94a2c199b01513189f724cce9fbef79896af5189b5be417ed313e083d08d4ad4"
+    },
+    {
+      "path": "local/shadow-original-verification.log",
+      "bytes": 88,
+      "sha256": "00da8918b455b97edd4f75bcbd2bc78fdefd6c2ed80c1bd4b0fe947ac0b5bec4"
+    },
+    {
+      "path": "local/native_shadow_source_probe.cpp",
+      "bytes": 10187,
+      "sha256": "577081ced2169f4196d8a78a015be57e340689a2d34d36156d2974265ffbac5b"
+    },
+    {
+      "path": "local/run_native_shadow_source_probe.ps1",
+      "bytes": 1667,
+      "sha256": "39cb7ede8258be509880556feff49867beb2a6d1061fd31954c26e6a0e0ec8a8"
+    },
+    {
+      "path": "local/register_shadow_source.py",
+      "bytes": 629,
+      "sha256": "b766d138243c80fc700c6dffb387703d3e30a0db18e73e98978cac5349c72a5d"
+    },
+    {
+      "path": "local/write_shadow_report.py",
+      "bytes": 7851,
+      "sha256": "264db9d41f04d7daca3873e1d1d2b8ad6797ddab816279b17072c19f398f2f73"
+    },
+    {
+      "path": "local/shadow-ledger.log",
+      "bytes": 1474,
+      "sha256": "85ac8df5d2c154288bb1e2f352c07f00b06ef70c4c8d219d4ce13d756677c70a"
+    },
+    {
+      "path": "local/shadow-build.log",
+      "bytes": 42811,
+      "sha256": "5b7daf130f5f2782b804066ab4605a2734334a2b7117545a2218eeda85a1ec2c"
+    },
+    {
+      "path": "local/shadow-probe-compile.log",
+      "bytes": 32,
+      "sha256": "87aac54089758f719da92897e9c8ded46806155efdb68c91153506263c4d244d"
+    },
+    {
+      "path": "local/shadow-probe.log",
+      "bytes": 635,
+      "sha256": "337688d68ab77959e99ac2605a037964b1cb9effacddcf334244c7e60cc3a9af"
+    },
+    {
+      "path": "local/shadow-guard-probe.log",
+      "bytes": 405,
+      "sha256": "746dd5bb59f0764fabd14136a2e0854ed26f118cbec1e438528c4d37e614bea5"
+    },
+    {
+      "path": "local/shadow-probe-status.json",
+      "bytes": 151,
+      "sha256": "782056f724834679dc82701849078d0de34216ce60287ab8e53ebc927c889bff"
+    },
+    {
+      "path": "local/native_shadow_source_probe.exe",
+      "bytes": 70144,
+      "sha256": "551a877f7625c4dd2c36769e81fe02403a530c1298dcd4bd9e96f2575e9f3e15"
+    },
+    {
+      "path": "local/shadow-call-verification.log",
+      "bytes": 74,
+      "sha256": "8632a736e4096c9e68ffa7929afd8302b374f551b3e2628ceb485987c70c5ecb"
+    },
+    {
+      "path": "local/shadow-seed-verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55626222,
+      "sha256": "a731f2069117d2e577e55b18ac48ddc5f2a5e31bdf590fbd4fa77e3b536ce219"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455580,
+      "sha256": "134aeb85625c914860ec555119e55d890c3a21548ebc1bcc500e5091c4a4e5bc"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72026,
+      "sha256": "4b9778acc7ef5e7fd4b8df7347c702850aa4bce48e1dbd6794c98762421ac6b8"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 18935,
+      "sha256": "dc9c073bb78ecc226073d9987ffe9d50647a6d5d2fa3ece7fa4238631fca12c1"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 250831,
+      "sha256": "36a97601c4425db92a6fd059b378bef1406b25fd0e0f29da332931a9c03e8036"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 104037,
+      "sha256": "a8ec51fc8ae77ddf452c3d78c6c95fa40fad6f8f4f8303ccd63f8ca6133a3921"
+    },
+    {
+      "path": "local/shadow_00b34f20_bytes.txt",
+      "bytes": 1309,
+      "sha256": "97e680b1a067f3fd7d117faf41dfeae9ff534f4839e5cef84075d657c0746619"
+    },
+    {
+      "path": "local/shadow_00b38230_bytes.txt",
+      "bytes": 446,
+      "sha256": "9d23a871360e364e881ac017a2afe02f4a575209e6f98904c149d7882cb85b92"
+    },
+    {
+      "path": "local/shadow_00b382b0_bytes.txt",
+      "bytes": 446,
+      "sha256": "4843070282bc7cd420394c7083c93538bc971e4dd35ea858bc0e8c137d936d20"
+    },
+    {
+      "path": "local/shadow_00ce4cd4_bytes.txt",
+      "bytes": 21,
+      "sha256": "7e5cd74caaa696c37b38e927edc8efd4a0cbf477e64d69d0d98467212d395662"
+    },
+    {
+      "path": "local/shadow_00d5fb08_bytes.txt",
+      "bytes": 6177,
+      "sha256": "5af71985e36fec6c159e40cc0e8411da8fd56be3888a3b04afe71756c4d9b244"
+    },
+    {
+      "path": "local/shadow_00d60010_bytes.txt",
+      "bytes": 377,
+      "sha256": "d3d9469ba863a8aaf579a916a1f18ce6fa706f29add6f002b434d3ad30c3ea1a"
+    },
+    {
+      "path": "local/shadow_00d60060_bytes.txt",
+      "bytes": 361,
+      "sha256": "1a721f89ade450853b507953404b07566e58e4bbbefce0719419703bb97a4fb8"
+    },
+    {
+      "path": "local/shadow_00d600b0_bytes.txt",
+      "bytes": 2047,
+      "sha256": "08eadf4e17c80e1a3433d5178d73907f8052221145ed6ad260514f05d980700a"
+    },
+    {
+      "path": "local/shadow_00d606e8_bytes.txt",
+      "bytes": 6286,
+      "sha256": "d323b59decaa7547f57f705c580508e9a7adede8e5cd8dc893d60edfc5a8fb79"
+    },
+    {
+      "path": "local/shadow_00d60c04_bytes.txt",
+      "bytes": 252,
+      "sha256": "7c19094404cb97ec1dc07228da6e09aa8319619430e96804789f57b21d29ccbc"
+    },
+    {
+      "path": "local/shadow_00d60c38_bytes.txt",
+      "bytes": 596,
+      "sha256": "6282a9654e8f5dd2663895c1fcf61bcae6fc99258653e1f6248ae8d7ebdc838d"
+    },
+    {
+      "path": "local/shadow_00b34f20_assembly.txt",
+      "bytes": 2534,
+      "sha256": "146758e5d64cf91bea46a2f467ec873cb88a946bbd5865c112a5f98d250c728d"
+    },
+    {
+      "path": "local/shadow_00b38230_assembly.txt",
+      "bytes": 694,
+      "sha256": "78b1dd1dbd40528f4c4ebb127a400ddaa9e0295e53a506211585500142a72ac6"
+    },
+    {
+      "path": "local/shadow_00b382b0_assembly.txt",
+      "bytes": 694,
+      "sha256": "651fa6bcd1e0ff2b9f81de80293900555b41dbab15b2952ba5729b4b94f44af5"
+    }
+  ]
+}
