@@ -1,0 +1,29 @@
+{
+  "packet": "orch5_material_effect_runtime",
+  "coverage": "Host composition of five existing actual native children; required compiler remains external. No new native bodies counted.",
+  "source_sha256": {
+    "include/bsp/native_material_effect_runtime.hpp": "47103ca08b7b991e60a54d9b4addaa1a311827f91c9c51c601385f5e603cae41",
+    "src/native_material_effect_runtime.cpp": "21cbb29850648a0d2e0fc06e0aeb06030797d47d34e8888b13042ee6490c4927"
+  },
+  "native_children": {
+    "00b43b00": "src/native_shader_descriptor_reader.cpp",
+    "00bdf4c0": "src/native_vfs_name_resolution.cpp",
+    "00b26500": "src/native_material_state_cache.cpp",
+    "00b265c0": "src/native_material_state_cache.cpp",
+    "00b26680": "src/native_material_state_cache.cpp"
+  },
+  "required_compiler": "NativeMaterialEffectCompiler::build_program_00b3c3a0; no fallback implementation",
+  "validation": {
+    "build": "Win32 /W4 /WX combined bsp_core target through temporary additive CMAKE_PROJECT_INCLUDE passed",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "default_source_registration": false,
+    "adapter_runtime_fixture": false,
+    "full_cold_effect": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "log": "local/native-loader-combined-build.log",
+    "log_sha256": "d9f6c1d2506d4734d7dd335b007868603adf051b41b62664a41cdadca031ca38"
+  },
+  "pending": "Append native_material_effect_runtime.cpp to cmake/startup.cmake when external lease clears; rerun default build; bind actual compiler."
+}
