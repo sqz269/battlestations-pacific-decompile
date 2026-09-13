@@ -60,11 +60,28 @@ void destroy_reference_base(NativeNodeStorage& node) noexcept {
 NativeNodeDestructionRuntime::NativeNodeDestructionRuntime(SceneAttachmentRuntime& scene_runtime,
     GeneratedModelLifetimeRuntime& actual_attachments, SizedStoragePool& string_pool,
     SceneTypePredicate actual_node_virtual_0c)
-    : scenes(scene_runtime), attachments(actual_attachments), strings(string_pool),
-      node_virtual_0c(actual_node_virtual_0c) {
+    : scenes(scene_runtime), attachments(actual_attachments), node_virtual_0c(actual_node_virtual_0c),
+      semantic_name_pool_(&string_pool), raw_name_pool_(nullptr) {
     if (&attachments.scenes != &scenes || !node_virtual_0c)
         throw std::invalid_argument("native node destruction requires one scene runtime and actual node type predicate");
 }
+NativeNodeDestructionRuntime::NativeNodeDestructionRuntime(SceneAttachmentRuntime& scene_runtime,
+    GeneratedModelLifetimeRuntime& actual_attachments, NativeStringRawPoolContext& string_pool,
+    SceneTypePredicate actual_node_virtual_0c)
+    : scenes(scene_runtime), attachments(actual_attachments), node_virtual_0c(actual_node_virtual_0c),
+      semantic_name_pool_(nullptr), raw_name_pool_(&string_pool) {
+    if (&attachments.scenes != &scenes || !node_virtual_0c)
+        throw std::invalid_argument("native node destruction requires one scene runtime and actual node type predicate");
+}
+SizedStoragePool& NativeNodeDestructionRuntime::require_semantic_name_pool() const {
+    if (!semantic_name_pool_) throw std::logic_error("native node runtime requires semantic name domain");
+    return *semantic_name_pool_;
+}
+NativeStringRawPoolContext& NativeNodeDestructionRuntime::require_raw_name_pool() const {
+    if (!raw_name_pool_) throw std::logic_error("native node runtime requires raw name domain");
+    return *raw_name_pool_;
+}
+bool NativeNodeDestructionRuntime::uses_raw_name_pool() const noexcept { return raw_name_pool_ != nullptr; }
 void NativeNodeDestructionRuntime::bind_retained_owner(NativeNodeRetainedOwnerBinding& owner) {
     if (!owner.identity || !owner.destroy_on_zero ||
         reinterpret_cast<const std::byte*>(&owner.references_04) !=
@@ -267,7 +284,7 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
     NativeStringRawPoolContext& strings) { destroy_node(runtime, binding, strings); }
 
 void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding) {
-    PooledStringStorage strings(runtime.strings);
+    PooledStringStorage strings(runtime.require_semantic_name_pool());
     destroy_native_node_00b6f440(runtime, binding, strings);
 }
 

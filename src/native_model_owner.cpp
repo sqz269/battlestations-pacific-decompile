@@ -167,6 +167,8 @@ NativeModelOwner::~NativeModelOwner() {
 void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeString& name) {
     if (owner.phase != NativeModelOwner::Phase::prepared)
         throw std::logic_error("model constructor requires its unused prepared slot");
+    SizedStoragePool* name_pool = owner.environment.actual_names ? nullptr :
+        &owner.environment.nodes.require_semantic_name_pool();
     owner.phase = NativeModelOwner::Phase::constructing;
     try {
         if (owner.environment.actual_names)
@@ -174,7 +176,7 @@ void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeStrin
                 name, *owner.environment.actual_names);
         else
             construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
-                name, owner.environment.nodes.strings);
+                name, *name_pool);
     } catch (...) {
         end_tail(owner);
         throw;
