@@ -74,3 +74,7 @@ prefix fixture was extended locally to verify token authorization and retained
 source protection after an interrupted Model provider; it passed. Borrowed
 constructor dispatch is build-checked here and requires the separate copied
 Text runtime integration for execution. No permanent test was added.
+
+## Correction from docs/GUI_WIDGET_MODEL_COPY.md
+
+The concrete adapter now supplies the actual Model flags3E/26 composition previously left as a required provider. AA9520 keeps the same final Model ownership transfer, and validates any outstanding stream creator/companion/map phase with the existing acquisitions. `GuiTextRuntimeCopyOperation` uses the retained source and constructor admission hooks above; full positive copied Text remains dependent on its actual retained native identity and cursor/executable providers. Exact integrated build and positive base-copy evidence are recorded in `reports/orch5_stream_text_copy_batch.json`.

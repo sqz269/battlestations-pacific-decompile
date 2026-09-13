@@ -1,6 +1,6 @@
 {
   "packet": "orch5_widget_copy",
-  "status": "reconstructed_normal_base_copy_caller_actual_model_clone_required",
+  "status": "normal_base_copy_composed_with_actual_model_flags26_3e_pending_exact_fixture",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
@@ -148,5 +148,13 @@
     "borrowed_constructor_fixture": false,
     "new_permanent_tests": false,
     "raw_text_identity": "opaque factory allocation still cannot substitute for a constructed actual Text identity and reference count"
+  },
+  "model_copy_integration": {
+    "source": "src/gui_widget_model_copy.cpp",
+    "report": "reports/gui_widget_model_copy.json",
+    "batch": "reports/orch5_stream_text_copy_batch.json",
+    "coverage": "same-domain actual Model flags26/3E provider now implemented; prior provider-boundary fixture and scopes remain historical evidence",
+    "creator_validation": "includes pending stream creator, companion and mapping phase",
+    "text_runtime": "stable copied factory adoption implemented; positive raw Text identity/provider path remains unvalidated"
   }
 }

@@ -52,7 +52,10 @@ struct ActiveCopy {
     ~ActiveCopy() { source = destination = false; }
 };
 bool empty_creators(const NativeGuiTextModelCloneAcquired& acquired) noexcept {
-    return !acquired.model && !acquired.mesh.mesh && !acquired.mesh.section && !acquired.mesh.material;
+    const auto& stream = acquired.mesh.stream;
+    return !acquired.model && !acquired.mesh.mesh && !acquired.mesh.section && !acquired.mesh.material &&
+        !stream.creator && !stream.companion &&
+        (stream.phase == NativeStreamClonePhase::empty || stream.phase == NativeStreamClonePhase::consumed);
 }
 }
 
@@ -159,7 +162,10 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base_copy_00aa9520(
         throw std::logic_error("AA9520 source4C has no canonical Model companion");
     require_model_copy_reference(*source_reference);
     auto* const copied = services.models.clone_current10(source_reference->model_owner(), flags, nullptr, acquired);
-    if (copied != acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material)
+    const auto& stream = acquired.mesh.stream;
+    if (copied != acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material ||
+        stream.creator || stream.companion ||
+        (stream.phase != NativeStreamClonePhase::empty && stream.phase != NativeStreamClonePhase::consumed))
         throw std::logic_error("completed current10 must publish its creator and consume temporary creators");
     if (copied) {
         require_model_copy_reference(*copied);

@@ -148,3 +148,7 @@ optional synchronization disabled. It has no positive section/material or full
 Model/Text adoption case and is not an original-byte differential test. It does
 not exercise B29670/device loss, installed rendering or gameplay. No permanent
 tests were added.
+
+## Integration analysis
+
+The primary defined the four consumed MOV/RET query leaves at B48CC0/B48D80/B48D90/B48DA0 under the write lock after verifying current Ghidra bytes. Each body is exactly4 bytes; following alignment is excluded. See `reports/orch5_stream_getter_definitions.json`. The original worker no-function list is historical. `GuiWidgetModelCopyRuntime` now connects the established AA9520 flags3E/26 call to this same Model/mesh/stream composition; its positive fixture result is reported separately in the batch report.

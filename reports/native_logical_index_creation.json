@@ -253,7 +253,16 @@
     "00d61e10": "private physical9 DWORDs checked; current14=B4C250, terminalBB20",
     "00d5f100": "current58=B1FE50;5C=B287C0;60=B288B0"
   },
-  "consumed_exact_leaf": {"address": "00b1fe50", "no_ghidra_function": true, "end_inclusive": "00b1fe56", "byte_length": 7, "last_instruction": "00b1fe56", "last_instruction_length": 1, "bytes": "8A81AC190000C3", "coverage": "existing vertex-owner implementation reused; live bytes verified"},
+  "consumed_exact_leaf": {
+    "address": "00b1fe50",
+    "no_ghidra_function": true,
+    "end_inclusive": "00b1fe56",
+    "byte_length": 7,
+    "last_instruction": "00b1fe56",
+    "last_instruction_length": 1,
+    "bytes": "8A81AC190000C3",
+    "coverage": "existing vertex-owner implementation reused; live bytes verified"
+  },
   "original_flags_provenance": "entry ESP-34h makes [ESP+40h] original entryESP+0Ch flags. BF92 loads ECX; BFB4 OR ECX10000 never stores to argument. After C175 PUSH byte count, C176 MOV EDX,[ESP+44h] and C17A PUSH EDX supply original flags to C187 Attach. C195 MOV EAX,[ESP+40h]; C19C MOV [EBP+10h],EAX stores original flags.",
   "unwind_evidence": {
     "constructor_FuncInfo": "DF84D0 count2,mapDF84C0: (-1,CBF9C0),(0,CBF9C8)",
@@ -268,9 +277,75 @@
     "Native global/renderer/pool-header constructors and full game adoption are not established by this packet"
   ],
   "validation": {
-    "build": {"outcome": "passed", "command": "./scripts/build.ps1", "configuration": "MSVC Win32 Release /W4 /WX /fp:strict", "ctest": "1/1 passed", "baseline_commit": "2f9da1dd", "log": "local/index_creation_build_final.log", "core_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116"},
-    "fixture": {"outcome": "passed", "source": "local/index_creation_probe.cpp", "script": "local/run_index_creation_probe.ps1", "log": "local/index_creation_probe.log", "production_library_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116", "coverage": "production pool33 allocation/return; one real D3D9 HAL managed INDEX16 stream; both renderer registrations; production map/write/unmap/read; canonical same-counter terminal and slot return", "limitations": "explicit renderer/global/pool-header/profile fixture publications; no native producer or device-recreation/failure/optional-sync/game proof; no relocated-native differential claim", "linkage": "fixture TU only against built production libraries; /MANIFEST:EMBED"},
-    "report_calls": {"direct_checked": 17, "failed": 0, "indirect_or_import": 8, "log": "local/index_creation_calls.log"},
-    "artifacts": {"source_sha256": "D2DE40F465F482DC1AD6511ED2A848E587718279BC47958C07B9763BC788A2A8", "header_sha256": "C0AE53059FBA249F589990B7D41D1986A2134CD86B99CD5D6DB7AB2C849B38CB", "object_sha256": "1AC79C7D80893BF386A90B3DFF81ADE43AED2D228591D11D6279A73677B87995", "object_listing": "local/index_creation_object.asm"}
+    "build": {
+      "outcome": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "ctest": "1/1 passed",
+      "baseline_commit": "2f9da1dd",
+      "log": "local/index_creation_build_final.log",
+      "core_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116"
+    },
+    "fixture": {
+      "outcome": "passed",
+      "source": "local/index_creation_probe.cpp",
+      "script": "local/run_index_creation_probe.ps1",
+      "log": "local/index_creation_probe.log",
+      "production_library_sha256": "871B0B97602E2F3D1BB057109E2EC691900F3495C1BE642D33F545F66D654116",
+      "coverage": "production pool33 allocation/return; one real D3D9 HAL managed INDEX16 stream; both renderer registrations; production map/write/unmap/read; canonical same-counter terminal and slot return",
+      "limitations": "explicit renderer/global/pool-header/profile fixture publications; no native producer or device-recreation/failure/optional-sync/game proof; no relocated-native differential claim",
+      "linkage": "fixture TU only against built production libraries; /MANIFEST:EMBED"
+    },
+    "report_calls": {
+      "direct_checked": 17,
+      "failed": 0,
+      "indirect_or_import": 8,
+      "log": "local/index_creation_calls.log"
+    },
+    "artifacts": {
+      "source_sha256": "D2DE40F465F482DC1AD6511ED2A848E587718279BC47958C07B9763BC788A2A8",
+      "header_sha256": "C0AE53059FBA249F589990B7D41D1986A2134CD86B99CD5D6DB7AB2C849B38CB",
+      "object_sha256": "1AC79C7D80893BF386A90B3DFF81ADE43AED2D228591D11D6279A73677B87995",
+      "object_listing": "local/index_creation_object.asm"
+    }
+  },
+  "integration_analysis": {
+    "flow_repair": "reports/orch5_index_creation_flow_repair.json",
+    "repaired_call_sites": [
+      "00b22dbc",
+      "00b4b131"
+    ],
+    "unreachable_alignment_left_unchanged": "00b4b197..00b4b19f",
+    "already_defined_consumed_leaf": {
+      "address": "00b1fe50",
+      "name": "BSP_Renderer_GetSecondaryStreamRegistrationByte",
+      "body": "00b1fe50..00b1fe56"
+    },
+    "hypothesis_names": [
+      {
+        "address": "00b288b0",
+        "name": "BSP_Renderer_CreateRegisteredIndexStream"
+      },
+      {
+        "address": "00b4bf30",
+        "name": "BSP_D3D9LogicalIndexStream_Construct"
+      },
+      {
+        "address": "00b4b380",
+        "name": "BSP_LogicalIndexPool_AllocateCanonicalSlot"
+      },
+      {
+        "address": "00b4b0a0",
+        "name": "BSP_LogicalIndexPool_AllocateSlot"
+      },
+      {
+        "address": "00b48f70",
+        "name": "BSP_LogicalIndexPool_InitializeSlab"
+      },
+      {
+        "address": "00b22d70",
+        "name": "BSP_Renderer_ReserveIndexPointerArray"
+      }
+    ]
   }
 }

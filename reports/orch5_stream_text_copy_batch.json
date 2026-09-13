@@ -1,0 +1,95 @@
+{
+  "packet": "orch5_stream_text_copy_batch",
+  "status": "integration_and_exact_validation_pending",
+  "integration_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+  "branch": "agent/orch5-20260911",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "baseline_commit": "2f9da1dd",
+  "owner_hook_commit": "983c1494",
+  "worker_reports": [
+    "reports/native_logical_index_creation.json",
+    "reports/native_stream_clone_3e.json",
+    "reports/gui_text_copy_adoption.json",
+    "reports/gui_widget_model_copy.json"
+  ],
+  "packets": [
+    {
+      "id": "orch5_index_stream_owner",
+      "addresses": [
+        "00b288b0",
+        "00b4bf30",
+        "00b4b380",
+        "00b4b0a0",
+        "00b48f70",
+        "00b22d70"
+      ],
+      "contract": "Actual logical index allocation/constructor/renderer registration and same-counter terminal; real HAL fixture, explicit native global producers."
+    },
+    {
+      "id": "orch5_stream_clone_3e",
+      "addresses": [
+        "00b729a0",
+        "00b72a70",
+        "00b73f50",
+        "00b742a0",
+        "00b752b0",
+        "00b287c0"
+      ],
+      "contract": "Actual index/vertex factory-map-copy-unmap composition and flags3E mesh/Model integration with explicit acquired creator and map phase."
+    },
+    {
+      "id": "orch5_text_copy_adopt",
+      "addresses": [
+        "00aa1380",
+        "00abb2c0"
+      ],
+      "contract": "Stable factory copy operation, source/destination ownership, constructor borrow, in-place continuation and final same-owner adoption; positive Text path unvalidated."
+    },
+    {
+      "id": "orch5_widget_model_copy_binding",
+      "addresses": [
+        "00aa9520"
+      ],
+      "contract": "AA9520 connects live flags26/3E to same canonical Model/mesh/material/stream domains; persistent source and constructor ownership."
+    }
+  ],
+  "analysis": {
+    "flow_repair": "reports/orch5_index_creation_flow_repair.json",
+    "repaired_call_sites": [
+      "00b22dbc",
+      "00b4b131"
+    ],
+    "alignment_unchanged": "00b4b197..00b4b19f",
+    "index_annotation_preimages": "local/ghidra-annotations-20260913T034534Z.json",
+    "consumed_leaf_definitions": "reports/orch5_stream_getter_definitions.json",
+    "defined_leaf_count": 4,
+    "text_and_leaf_annotation_preimages": "local/ghidra-annotations-20260913T035445Z.json",
+    "stream_annotation_preimages": "local/ghidra-annotations-20260913T035918Z.json",
+    "annotated_addresses": 19
+  },
+  "validation": {
+    "combined_build": "pending",
+    "scoped_fixtures": "pending",
+    "positive_copied_text": "unvalidated; real native Text identity and actual cursor/executable providers required"
+  },
+  "remaining_contracts": [
+    "Actual retained Text identity: AB8BB8 passes raw Text to B18A40, which retains actual+04; semantic widget counter and opaque raw1F4 allocation are not substitutes.",
+    "Concrete cursor renderer38/5C, material/declaration/layout providers and positive copied Text suspension/resume/admission/retirement.",
+    "AB8530 callee-local shadow mesh/section/material creator exception ownership remains outside retained factory base/cursor acquisition state.",
+    "Native renderer/global/pool-header producers, device recreation/failure and optional synchronization branches remain unexercised.",
+    "Original binary ABI, complete executable startup/menu integration and gameplay validation remain incomplete."
+  ],
+  "worker_commits": {
+    "index": "c1d5325b5606997b50a3591b362c3cacc789ea63",
+    "text": "1a41d6199ea8424fa3074a713c1207e61d2fd9f5",
+    "stream": "0441ef73"
+  },
+  "worker_evidence_archives": [
+    "local/stream-text-workers/index-manifest.json",
+    "local/stream-text-workers/model-manifest.json",
+    "local/stream-text-workers/stream-manifest.json",
+    "local/stream-text-workers/text-manifest.json"
+  ],
+  "fixture_runner": "local/run_stream_text_fixtures.ps1"
+}

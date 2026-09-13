@@ -672,5 +672,18 @@
     "binary_abi_compatible": false,
     "game_validated": false
   },
-  "dependency_commit": "c1d5325b5606997b50a3591b362c3cacc789ea63"
+  "dependency_commit": "c1d5325b5606997b50a3591b362c3cacc789ea63",
+  "integration_analysis": {
+    "consumed_leaf_definitions": "reports/orch5_stream_getter_definitions.json",
+    "now_defined": [
+      "00b48cc0",
+      "00b48d80",
+      "00b48d90",
+      "00b48da0"
+    ],
+    "definition_bounds": "each exact four-byte MOV/RET body; exclusive end=start+4; following CC alignment excluded",
+    "widget_binding": "src/gui_widget_model_copy.cpp",
+    "positive_widget_copy_fixture": "pending exact primary library replay",
+    "original_worker_no_function_entries": "historical worker snapshot; definitions were added and saved by primary under the Ghidra write lock"
+  }
 }
