@@ -1,0 +1,90 @@
+{
+  "packet": "orch3_renderer_begin_frame_ay",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_source_strict_compile_build_existing_ctests_original_byte_fixture_passed",
+  "owned_native_bytes": 816,
+  "source": "src/native_renderer_begin_frame.cpp",
+  "header": "include/bsp/native_renderer_begin_frame.hpp",
+  "documentation": "docs/NATIVE_RENDERER_BEGIN_FRAME.md",
+  "routines": [
+    {"address":"00B2B200","end":"00B2B263","bytes":100,"coverage":"complete","name":"begin_native_renderer_frame_00b2b200","original_abi":"ECX renderer; RET; AL1 only"},
+    {"address":"00B15090","end":"00B150CC","bytes":61,"coverage":"complete","name":"clear_native_renderer_records_00b15090","original_abi":"ECX actual6ACh service; RET; no semantic result"},
+    {"address":"00B14480","end":"00B144FD","bytes":126,"coverage":"complete","name":"erase_native_renderer_records_00b14480","original_abi":"ECX vector; five DWORD slots: out, first.owner, first.record, last.owner, last.record; RET14 at B144FB; EAX out"},
+    {"address":"00B13630","end":"00B13687","bytes":88,"coverage":"complete","name":"copy_native_renderer_record_tail_00b13630","original_abi":"cdecl six DWORD slots, only first/last/output semantic; RET; EAX recomputed output end"},
+    {"address":"00B13280","end":"00B132B7","bytes":56,"coverage":"complete","name":"copy_native_renderer_records_00b13280","original_abi":"cdecl six DWORD slots, only first/last/output semantic; RET; EAX output end"},
+    {"address":"00B13180","end":"00B1327D","bytes":254,"coverage":"complete","name":"assign_native_renderer_record_00b13180","original_abi":"ECX destination; stack source; RET4 at B1327B; EAX destination"},
+    {"address":"00B10740","end":"00B107C2","bytes":131,"coverage":"complete","name":"destroy_native_renderer_record_00b10740","original_abi":"ECX raw12Ch record; RET; no semantic result; FH3 state0 first-header cleanup"}
+  ],
+  "host_steps": [
+    {"function":"00B2B200","address":"00B2B229","native":"00B2ABD0","contract":"Full actual renderer Reset; ECX renderer; RET"},
+    {"function":"00B2B200","address":"00B2B24F","native":"device+vtableA4","contract":"Current device+1A10, current vtable+A4 BeginScene; stdcall device slot; HRESULT ignored"},
+    {"function":"00B2B200","address":"00B2B25B","native":"00B15090","contract":"Fresh nonnull F8D39C actual service; ECX service; RET"},
+    {"function":"00B15090","address":"00B150A4","native":"00BF6713","contract":"Fixed CRT no-info invalid-parameter service, may return; no arguments"},
+    {"function":"00B15090","address":"00B150B1","native":"00BF6713","contract":"Second current bounds check; fixed returning CRT service"},
+    {"function":"00B15090","address":"00B150C1","native":"00B14480","contract":"ECX service+68C; five DWORD slots; RET14"},
+    {"function":"00B14480","address":"00B14492","native":"00BF6713","contract":"First owner must be nonnull/equal last owner, without equality to ECX; returning service"},
+    {"function":"00B14480","address":"00B144BF","native":"00B13630","contract":"Six caller slots; first3 last.record/captured end/first.record; ADD ESP18 at B144C9"},
+    {"function":"00B14480","address":"00B144D4","native":"00B10740","contract":"Ascending destruction from recomputed new end to post-copy current end; ECX record; RET"},
+    {"function":"00B13630","address":"00B1365E","native":"00B13280","contract":"Six cdecl slots; first3 first/last/output; ADD ESP18 at B1367C; returned EAX ignored"},
+    {"function":"00B13280","address":"00B13296","native":"00B13180","contract":"ECX current destination, stack current source; RET4"},
+    {"function":"00B13180","address":"00B13224","native":"0041DD40","contract":"Actual destination+11C, captured source+11C length, preserve1; RET8; concrete raw pool overload"},
+    {"function":"00B13180","address":"00B13239","native":"00BF7680","contract":"Current destination data/current source data/current destination length; ADD ESP0C at B1323E; native overlap behavior"},
+    {"function":"00B13180","address":"00B13258","native":"0041DD40","contract":"Actual destination+124, captured source+124 length, preserve1; RET8; concrete raw pool overload"},
+    {"function":"00B13180","address":"00B1326D","native":"00BF7680","contract":"Current destination data/current source data/current destination length; ADD ESP0C at B13272; native overlap behavior"},
+    {"function":"00B10740","address":"00B1077C","native":"00419CC0","contract":"Fresh actual raw getter before second-string return; no native arguments; exceptions retain state0"},
+    {"function":"00B10740","address":"00B10783","native":"00BD1510","contract":"ECX just-returned pool; captured second data, wrapped size, unused1; RET0C"},
+    {"function":"00B10740","address":"00B107A7","native":"00419CC0","contract":"Fresh actual raw getter before first-string return; no native arguments; state already disarmed"},
+    {"function":"00B10740","address":"00B107AE","native":"00BD1510","contract":"ECX just-returned pool; captured current first data, wrapped size, unused1; RET0C"},
+    {"function":"00CBBC80","address":"00CBBC89","native":"0041DD20","kind":"tail_jump","contract":"Existing native unwind action: saved record from [EBP-10]+11C; current first header; concrete throwing raw pool overload"}
+  ],
+  "producer_evidence": [
+    {"function":"00B14A10","sites":["00B14A31","00B14A36","00B14C35","00B14C3B","00B14C41"],"evidence":"Actual6ACh service calls B0F020, installs D5E480, zeros +690/+694/+698; +68C prefix unused"},
+    {"function":"00B0F020","sites":["00B0F076"],"evidence":"Publishes this exact service into F8D39C"},
+    {"function":"00B13180","sites":["00B1318C","00B131A0","00B131B5","00B131D0","00B131E8","00B13200","00B1320D","00B13241"],"evidence":"One initial DWORD plus five groups of14, total11Ch opaque prefix; actual8h headers11C/124; total stride12Ch"},
+    {"function":"00BF7680","sites":["00BF7694","00BF7696","00BF7698","00BF769A","00BF7844","00BF79E4"],"evidence":"CMP dst/src, JBE forward; CMP dst/(src+count), JC backward; backward path BF7844..BF79E4. Raw final and preserve copies use memmove for positive counts."}
+  ],
+  "eh": {
+    "unwind_action":"00CBBC80..00CBBC8D",
+    "handler":"00CBBC8E..00CBBC97",
+    "handler_definition_at_worker_capture":"missing; root owns definition/annotation",
+    "handler_definition_after_integrator_sync":"Root defined/saved FUN_00cbbc8e, exact CBBC8E..CBBC97; worker live proto verified before commit; root reports/native_renderer_ay_analysis_sync.json",
+    "handler_raw_hex":"b8103fdf00e9abaef3ff",
+    "handler_semantics":"MOV EAX,00DF3F10; JMP 00BF6B43",
+    "unwind_map":"00DF3F08..00DF3F0F: (-1,00CBBC80)",
+    "func_info":"00DF3F10..00DF3F33: 19930522, maxState1, mapDF3F08, no try/IP maps, EHflags1",
+    "state0":"Armed at B10765 before second pointer null branch; covers second getter/return; cleanup reads current first header",
+    "disarmed":"At B10790 after current first pointer load, before first length/getter",
+    "source":"RAII first-header cleanup using throwing raw41DD20; nested C++ cleanup failure terminates; native stack/SEH not claimed"
+  },
+  "corrections": [
+    {"was":"F8D39C can be treated as absent for a full BeginFrame reconstruction","is":"Non-null publication clears the actual embedded vector through all six complete record providers","evidence":"B2B251..B2B25B and B15090..B150CC"},
+    {"was":"NativeStringStorage noexcept release can model the initial lazy getter during destruction","is":"Use current concrete raw getter/return without noexcept; retain state0 cleanup","evidence":"B1077C/B107A7, CBBC80, fixture cases16/17"},
+    {"was":"Opaque11Ch payload may use bulk copy","is":"One plus five groups of14 ordered DWORD load/stores preserve forward overlap cascade","evidence":"B13180..B1320B and fixture case13"},
+    {"was":"BF7680 means a C++ memcpy-only contract","is":"Native routine checks overlap and copies backward; raw positive string copies use memmove","evidence":"BF7694..BF769A and BF7844..BF79E4"},
+    {"was":"B13630 simply returns forward copy output","is":"It ignores returned EAX and recomputes from wrapped signed difference divided by300","evidence":"B13663..B1367F"}
+  ],
+  "validation": {
+    "strict_owned_source_compile":"passed MSVC Win32 /W4 /WX /O2 /EHsc /fp:strict",
+    "repository_build":"passed scripts/build.ps1 Release Win32; local/ay-build.log; owned source compiled explicitly pending root CMake enrollment",
+    "existing_ctests":"passed2/2: reconstructed_math and native_math_differential; no new repository tests",
+    "call_rows":"passed19 direct/tail rows,0 failed;1 explicit indirect current-device+A4 row",
+    "native_seed_verification":"passed all eight existing seeds match saved Ghidra/original PE",
+    "fixture":"C:/Users/sqz269/bsp-ay-begin-frame/fixture_report.json",
+    "fixture_status":"passed20 original/source cases;167745 normalized state bytes;1829 event DWORDs",
+    "pinned_bytes":"816 owned body bytes plus68 EH bytes;9 spans live-Ghidra/original-PE equal",
+    "relocations":"7 exact4-byte operands: F8D39C cell, handler trampoline, two resize CALLs, two getter CALLs, cleanup tail JMP",
+    "branches":["active bypass","inhibit decrement2->1 and1->0","lost gate","null service","nonempty4-record clear","ignored BeginScene failure HRESULT","BeginScene exception preserves records","fresh service after BeginScene","full real hidden HAL Reset success","Reset C++ failure retains active/lost/nonempty records","middle erase with nonempty tail copy","returning invalid owner on empty range","clear first validation changes begin and extends current end","forward scalar cascading overlap","exact self assignment","empty cdecl copy and retained synthetic output","real raw lazy getter registration failure triggers current-first-header original FH3 cleanup","first getter registration failure is disarmed","returning actual manager validation changes source length during resize","disabled small plus large return"],
+    "compared_state":"Opaque record bytes/current headers and small string contents; defined pool arena bytes; complete ring indices/live/peak/normalized queued block order; renderer state/current service and failure flags; recorded actual API event sequence",
+    "fixture_import_domain":"Concrete raw getter/manager/resize/return bridges; current CRT memmove/invalid parameter/FH3; actual existing Reset providers; real private HAL BeginScene/Reset; controlled documented CRT/COM observers",
+    "preservation":"Own PE reservation; /MANIFEST:EMBED; original AX fixture unchanged; foreground/focus preserved and private scenes/windows closed",
+    "combined_library_replay":"pending primary integrator source enrollment and replay"
+  },
+  "limits": [
+    "New C++ contexts are not original thiscall/cdecl/FH3/SEH binary replacements.",
+    "No native argument/EH spill aliasing, all invalid-address paths, huge signed-wrap record range, double-exception, concurrency or gameplay claim.",
+    "Source routine names are descriptive hypotheses. Actual full diagnostic service construction/lifetime is borrowed, not added here.",
+    "Zero-byte library copies omitted after preserving header reads; unused native tag/iterator padding is nonsemantic.",
+    "Root centralizes CMake, ledgers, Ghidra definition/annotation and final combined-library replay."
+  ]
+}
