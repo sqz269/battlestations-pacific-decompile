@@ -8,6 +8,8 @@ class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
 struct NativeInputSettingsLifetimeContext;
+struct NativeDebugFeatureOwnerContext;
+struct NativeGameResourceFactoryContext;
 struct NativeStringPoolStorage;
 struct NativePhysicalFactoryContext;
 struct NativeVfsManagerLifetimeContext;
@@ -22,7 +24,7 @@ namespace game { class GameSoundRuntime; }
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C, D6418C, CF7E70, CF7E74 or CF81CC. D0DA64
+// D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CF81CC, D68B94 or CFD84C. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -66,8 +68,16 @@ struct NativeSingletonDeletionBindings {
     // raw manager/publication and populated-container services as construction.
     // Pass the popped owner even when its current publication differs.
     NativeInputSettingsLifetimeContext* input_settings{};
+    // D68B94 deletes the unadjusted34h debug owner through00BE9600.
+    // Borrow its construction context and the SAME actual raw manager/pool;
+    // member-string releases may create/register the pool during this drain.
+    NativeDebugFeatureOwnerContext* debug_features{};
+    // CFD84C is the registered game-resource factory+4 lifetime subobject.
+    // 00716520 adjusts -4 before00716560 frees the primary8-byte allocation.
+    // Its context owns E19B90; the separate WinMain F8D31C alias is untouched.
+    NativeGameResourceFactoryContext* game_resource_factory{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 64);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 72);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

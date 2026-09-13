@@ -1,0 +1,84 @@
+{
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch2_native_bb_raw_owner_profiles",
+  "address": "00bd0400",
+  "status": "source_profile_extension_development_build_and_source_only_drain_passed_final_gate_separate",
+  "source": "src/native_singleton_destruction.cpp",
+  "header": "include/bsp/native_singleton_destruction.hpp",
+  "doc": "docs/NATIVE_BB_RAW_OWNER_PROFILES.md",
+  "additional_original_bodies": 0,
+  "bindings_size_win32_before": 64,
+  "bindings_size_win32_after": 72,
+  "profiles": [
+    {
+      "profile": "00d68b94",
+      "entry": "00be9600",
+      "pointer": "exact popped debug owner",
+      "binding": "NativeDebugFeatureOwnerContext",
+      "member": "debug_features"
+    },
+    {
+      "profile": "00cfd84c",
+      "entry": "00716520",
+      "pointer": "exact popped factory secondary +4",
+      "adjustment": "callee subtracts four then tails 00716560",
+      "binding": "NativeGameResourceFactoryContext",
+      "member": "game_resource_factory"
+    }
+  ],
+  "unadmitted_factory_profiles": [
+    "00cfd850",
+    "00cfd7f8"
+  ],
+  "original_abi": "BD0400 ECX manager, RET; existing source API additionally borrows explicit bindings.",
+  "uncertainty": "Descriptive source names are hypotheses; no native ABI/FH3/gameplay equivalence claimed.",
+  "source_review": "local/native-bb-source-review/integration-capture.json",
+  "development_build": {
+    "status": "passed",
+    "log": "local/native-bb-owner-profiles-development-build.log",
+    "base_head": "45341ac58785bac2d959a9f9b42ff58e22f75c8c",
+    "tracked_overlay": [
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp"
+    ],
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit_acceptance": false
+  },
+  "development_drain": {
+    "status": "passed_source_only",
+    "manifest": "local/native-bb-raw-drain-attempts/attempt02/manifest.json",
+    "manifest_sha256": "98c9957000b36bc5e4b6ddf9ccef98dcae1177018710cd9575d6279cbb570ebd",
+    "release_sizes": [
+      10,
+      9,
+      6,
+      8,
+      7
+    ],
+    "registered_owners": 3,
+    "pool_recreations": 1,
+    "review_strengthened_fixture_rerun_pending": true,
+    "earlier_dependency_collection_failure": "local/native-bb-raw-drain-attempts/attempt01",
+    "alias_scope": "Caller-local stand-in only; actual process F8D31C is not exercised."
+  },
+  "final_acceptance": "External immutable exact-candidate receipt under local/native-bb-promotion-checks, after strict build and two fixed fixture families.",
+  "application_binding": {
+    "status": "prepared_unapplied_separate_leased_packet",
+    "files": [
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp"
+    ]
+  },
+  "game_validated": false,
+  "binary_abi_compatible": false,
+  "production_sha256": {
+    "include/bsp/native_singleton_destruction.hpp": "16e592ca8394b601502c42992a24ebd4127ab180b6b3f3049c3cc40d350cbcf7",
+    "src/native_singleton_destruction.cpp": "8da220227123377ff9f6ad61f6f7d930758b9a027daff7856647d59411ef8135"
+  }
+}

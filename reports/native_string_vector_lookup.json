@@ -1,0 +1,176 @@
+{
+  "packet": "orch2_native_string_vector_lookup_bb",
+  "status": "complete_actual_storage_strict_win32_build_tested_no_native_fixture",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "reconstructed_functions": 1,
+  "reconstructed_bytes": 118,
+  "functions": [
+    {
+      "address": "005efba0",
+      "name": "find_native_string_vector_005efba0",
+      "provisional_ghidra_name": "BSP_NativeStringVector_FindCaseInsensitive",
+      "source": "src/native_string_vector_lookup.cpp",
+      "header": "include/bsp/native_string_vector_lookup.hpp",
+      "status": "complete_actual_storage_strict_win32_build_tested",
+      "coverage": "complete",
+      "native_end_inclusive": "005efc15",
+      "native_byte_count": 118,
+      "native_sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "original_abi": "ECX actual0Ch vector; stack actual8h key; EAX signed index/-1; RET4. Count then data capture, wrapping unsigned end, equal recorded lengths and retained CRT _stricmp, current-data reload for signed arithmetic-shift index.",
+      "evidence": [
+        "docs/NATIVE_STRING_VECTOR_LOOKUP.md",
+        "reports/native_string_vector_lookup.json"
+      ],
+      "uncertainty": "Descriptive symbol is provisional. New C++ interface; no native x86 ABI replacement or original/source runtime comparison. CRT remains a library dependency; shared callers, STL binding, startup and gameplay remain outside coverage.",
+      "kind": "function"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ghidra_mutations": [],
+  "basis_manifest": "local/mpak-binding-frontier-bb-evidence/manifest.json",
+  "basis_manifest_sha256": "ad29e256ec55d84a4d4711049fe6c2b7cdb643e0443a5e6c4aaf3c4735cc65cc",
+  "native_span": {
+    "entry": "005efba0",
+    "end_inclusive": "005efc15",
+    "bytes": 118,
+    "sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+    "live_equals_installed": true
+  },
+  "flow": {
+    "instructions": 53,
+    "gaps": 0
+  },
+  "call_sites": [
+    {
+      "address": "005efbe5",
+      "native": "00bf7fbf",
+      "function": "005efba0",
+      "operation": "retained CRT _stricmp(row data, key data)"
+    },
+    {
+      "address": "00bb4f54",
+      "native": "005efba0",
+      "function": "00bb4f40",
+      "argument_contract": "ECX row+8; stack captured key"
+    },
+    {
+      "address": "00be84c4",
+      "native": "005efba0",
+      "function": "00be84a0",
+      "argument_contract": "ECX owner+4; stack caller key"
+    },
+    {
+      "address": "00be90b3",
+      "native": "005efba0",
+      "function": "00be9060",
+      "argument_contract": "ECX owner+4; stack caller key"
+    },
+    {
+      "address": "005f4375",
+      "native": "005efba0",
+      "function": "005f42d0",
+      "argument_contract": "ECX owner+17C; stack selected global entry header"
+    },
+    {
+      "address": "005f43b2",
+      "native": "005efba0",
+      "function": "005f42d0",
+      "argument_contract": "ECX captured EBX vector; stack selected8h row from current data"
+    }
+  ],
+  "call_graph": {
+    "live_callers": 4,
+    "live_sites": 5,
+    "snapshot_callers": 5,
+    "snapshot_only_caller": "00bb4d60",
+    "snapshot_only_caller_not_claimed": true
+  },
+  "validation": {
+    "strict_win32_build": "passed: fresh build plus existing seed verification and incremental native-test enablement",
+    "existing_ctests": [
+      "reconstructed_math: passed",
+      "native_math_differential: passed"
+    ],
+    "live_call_audit": "6 direct rows checked, 0 failed",
+    "new_permanent_tests": 0,
+    "new_native_fixtures": 0,
+    "native_source_runtime_comparison": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "build_flags": "MSVC v145 Win32 Release; /W4 /WX /fp:strict",
+    "source_build_head": "39e6daa453d049bdfb72fee1ab98785dbba2e383",
+    "source_build_scope": "Owned uncommitted implementation files are identified by hashes; primary must rebuild its final integrated commit.",
+    "archive_membership": "native_string_vector_lookup.obj appears once in bsp_core.lib member listing; member-content extraction was not compared",
+    "artifacts": [
+      {
+        "path": "src/native_string_vector_lookup.cpp",
+        "sha256": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b",
+        "bytes": 1693
+      },
+      {
+        "path": "include/bsp/native_string_vector_lookup.hpp",
+        "sha256": "632b60ddf13e3d34fe87813b8198a59c5bac686444cb530e627332c93bb5ab23",
+        "bytes": 663
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_vector_lookup.obj",
+        "sha256": "8c1eb70c8c68b57df60a978c94e56f275db30d03aa56304ea02bda6341219c1f",
+        "bytes": 2820
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "7e817860f4e13a3d0dcdfcc6ab6d828a41e2b5a2d6d2c20ed4e8360485e15a9c",
+        "bytes": 55098866
+      },
+      {
+        "path": "local/native-string-vector-lookup-build.log",
+        "sha256": "83cd4e124b9d8e2f0e2f41a0607a5e6d4acc02e95ee179c7dff2202f4ff2558b",
+        "bytes": 41409
+      },
+      {
+        "path": "local/native-string-vector-lookup-build-verified-seeds.log",
+        "sha256": "c0419fbdac54ce8f73acb620ef326241a29c3b4b0cfd1df63101096438d80540",
+        "bytes": 4433
+      },
+      {
+        "path": "local/native-string-vector-lookup-seed-verification.log",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "bytes": 3034
+      },
+      {
+        "path": "local/native-string-vector-lookup-call-audit.log",
+        "sha256": "5ed2fb7a80e1b173eea78b4947e5e732ccbc626d7fe941096f562d13c7a6833c",
+        "bytes": 73
+      },
+      {
+        "path": "local/native-string-vector-lookup-flow.txt",
+        "sha256": "1ac57fd1a593c45ca064dd24cf477350b7f8ab2c831bde281b244dce60fdc82b",
+        "bytes": 128
+      },
+      {
+        "path": "local/native-string-vector-lookup-lib-members.txt",
+        "sha256": "66635506bdd548736fffd86eb68921fc096d2f3050ae0e27e672d21b24c1b2a0",
+        "bytes": 52918
+      }
+    ]
+  },
+  "implementation_hashes": [
+    {
+      "path": "src/native_string_vector_lookup.cpp",
+      "sha256": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b"
+    },
+    {
+      "path": "include/bsp/native_string_vector_lookup.hpp",
+      "sha256": "632b60ddf13e3d34fe87813b8198a59c5bac686444cb530e627332c93bb5ab23"
+    }
+  ],
+  "limits": [
+    "Original CRT _stricmp is retained, not reconstructed.",
+    "Volatile field reads preserve observation points; no concurrent-mutation safety guarantee.",
+    "No checked STL implementation or MPAK runtime/startup binding supplied.",
+    "Existing math tests do not execute this lookup."
+  ]
+}
