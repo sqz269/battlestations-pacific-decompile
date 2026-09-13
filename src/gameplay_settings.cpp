@@ -12,6 +12,34 @@
 
 namespace bsp {
 
+void store_gameplay_artillery_throw_rate_0083da26(float duration, float& rate) noexcept {
+    // 00D7A3A0: 000000A09999B93F; the comparison double is widened0.1f.
+    // 00D7A2F0: CDCCCC3D; replacement is the same float32 value.
+    static constexpr float duration_floor = 0.1f;
+    static constexpr double duration_floor_compare = static_cast<double>(duration_floor);
+    float* destination = &rate;
+    __asm {
+        fld duration
+        fstp duration
+        fld duration
+        fld duration_floor_compare
+        fcomip st(0),st(1)
+        fstp st(0)
+        jbe keep_duration
+        movss xmm0,duration_floor
+        jmp selected_duration
+    keep_duration:
+        movss xmm0,duration
+    selected_duration:
+        movss duration,xmm0
+        fld duration
+        fld1
+        fdivrp st(1),st(0)
+        mov eax,destination
+        fstp dword ptr [eax]
+    }
+}
+
 void apply_constructor_defaults_00424a10(GameplayTuningSettings& out) noexcept {
     // 00424A8D..00424BBA, in store order. The addresses in the comments are the constants.
     out.dofparams_dist = 1.0f;             // 00424AC5, 00D7A24C
@@ -52,9 +80,15 @@ void load_gameplay_tuning_settings(GameplayTuningRowView& rows,
     rows.enter("PlayerArtilleryThrow");
     out.player_artillery_throw_after_shot_fire_time = rows.number_or("AfterShot_FireTime", 3.0f);  // 0083d998
     out.player_artillery_throw_after_shot_wait_time = rows.number_or("AfterShot_WaitTime", 3.0f);  // 0083d9de
-    out.player_artillery_throw_throw_increment_time_has_target = rows.number_or("ThrowIncrementTime_HasTarget", 12.0f);  // 0083da21
-    out.player_artillery_throw_throw_increment_time_no_target = rows.number_or("ThrowIncrementTime_NoTarget", 8.0f);  // 0083da96
-    out.player_artillery_throw_throw_decrement_time = rows.number_or("ThrowDecrementTime", 10.0f);  // 0083db0b
+    store_gameplay_artillery_throw_rate_0083da26(
+        rows.number_or("ThrowIncrementTime_HasTarget", 12.0f),
+        out.player_artillery_throw_throw_increment_time_has_target);  // 0083da64
+    store_gameplay_artillery_throw_rate_0083da26(
+        rows.number_or("ThrowIncrementTime_NoTarget", 8.0f),
+        out.player_artillery_throw_throw_increment_time_no_target);  // 0083dad9
+    store_gameplay_artillery_throw_rate_0083da26(
+        rows.number_or("ThrowDecrementTime", 10.0f),
+        out.player_artillery_throw_throw_decrement_time);  // 0083db4e
     rows.enter("PipeSightParams");
     out.pipe_sight_params_pipesight_enabled = rows.boolean("pipesight_enabled");  // 0083db94
     out.pipe_sight_params_blur_heavy_add = rows.number_or("blur_heavy_add", 0.3f);  // 0083dca5
