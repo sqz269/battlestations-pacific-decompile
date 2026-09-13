@@ -23,3 +23,7 @@ Two secondary-pointer adjustment thunks and two exception-handler entries were d
 ## Follow-up packets
 
 S recovers the actual unit observer prefix stores and stable unit aliases, primary observed-endpoint lifetime, and process storage with real pending-list CRT callbacks. Real unit callback providers and producer/drain bindings remain necessary before runtime event delivery can be claimed.
+
+## Compiler artifact provenance correction from S
+
+R retained Hostx64/x86 compiler/linker binaries, while its fixture command used `vcvars32.bat`. S verifies that this selects Hostx86/x86 and retains those resolved tools and scripts. R lacked hashes for the selected fixture compiler/linker binaries; its immutable manifest is unchanged. This correction does not alter independently retained source, object, library, executable or result hashes. See `reports/game_pending_entity_runtime.json` for paths, hashes and the toolchain log.

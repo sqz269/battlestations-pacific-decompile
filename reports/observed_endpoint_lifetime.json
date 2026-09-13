@@ -1,0 +1,1572 @@
+{
+  "packet": "orch6_observed_endpoint_lifetime_s",
+  "base_commit": "9cc35911",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "ghidra_access": "worker read-only project-verifying BSP CLI; root formal write tools performed repairs",
+  "source": "src/observer_lifetime.cpp",
+  "header": "include/bsp/observer_lifetime.hpp",
+  "doc": "docs/OBSERVED_ENDPOINT_LIFETIME.md",
+  "routines": [
+    {
+      "address": "006953C0",
+      "native": "006953C0",
+      "proposed_name": "BSP_ObservedEndpoint_DetachAll",
+      "previous_name": "FUN_006953c0",
+      "source": "src/observer_lifetime.cpp",
+      "cpp_symbol": "NativeObserverLifetime::detach_observed_006953c0",
+      "native_abi": "ECX=actual observed primary endpoint; no consumed EDX/stack input; RET0",
+      "coverage": "complete normal behavior; new C++ EH/provider boundaries explicit",
+      "last_instruction": "00695525",
+      "last_instruction_length": 1,
+      "original_bytes": {
+        "address": "006953C0",
+        "end_inclusive": "00695525",
+        "offset": 0,
+        "bytes": 358,
+        "instructions": 112,
+        "sha256": "b75ed04ab5c009be175fca81c7911a697e573fa03f1a809541002fba9f6bb106"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00695760",
+      "native": "00695760",
+      "proposed_name": "BSP_ObserverEndpoint_Destruct",
+      "previous_name": "BSP_ObserverEndpoint_Destruct",
+      "source": "src/observer_lifetime.cpp",
+      "cpp_symbol": "NativeObserverLifetime::destroy_observed_owner_00695760",
+      "native_abi": "ECX=actual observed primary endpoint; no consumed EDX/stack input; RET0",
+      "coverage": "complete normal behavior; new C++ EH/provider boundaries explicit",
+      "last_instruction": "00695820",
+      "last_instruction_length": 1,
+      "original_bytes": {
+        "address": "00695760",
+        "end_inclusive": "00695820",
+        "offset": 384,
+        "bytes": 193,
+        "instructions": 61,
+        "sha256": "87223140ff389c4d6c7fac973425d24f8158369cb54d10b8f240c22f31b6b721"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006953DE",
+      "native": "00694280",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing actual NativeObserverLifetime lock-owner getter; shared manager and recursive section"
+    },
+    {
+      "address": "00695423",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "0069543E",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "00695449",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "00695456",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "0069546E",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "0069547D",
+      "native": "00BF6713",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing invalid-parameter service; returning handler keeps captured iterator identities"
+    },
+    {
+      "address": "006954A5",
+      "native": "006944C0",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing actual count/capacity array exchange; retains primary allocation/capacity, sets its count0 and copies captured edges into temporary"
+    },
+    {
+      "address": "006954CD",
+      "native": "00694F60",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing actual endpoint-array removal; first then captured callback owner"
+    },
+    {
+      "address": "006954D7",
+      "native": "00694F60",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing actual endpoint-array removal; first then captured callback owner"
+    },
+    {
+      "address": "006954FA",
+      "native": "00BF6989",
+      "function": "006953C0",
+      "kind": "call",
+      "contract": "existing malloc-paired singleton_lifetime_free; original array-free thunk"
+    },
+    {
+      "address": "00695791",
+      "native": "00694280",
+      "function": "00695760",
+      "kind": "call",
+      "contract": "existing actual NativeObserverLifetime lock-owner getter; shared manager and recursive section"
+    },
+    {
+      "address": "006957BC",
+      "native": "00694280",
+      "function": "00695760",
+      "kind": "call",
+      "contract": "existing actual NativeObserverLifetime lock-owner getter; shared manager and recursive section"
+    },
+    {
+      "address": "006957EA",
+      "native": "006953C0",
+      "function": "00695760",
+      "kind": "call",
+      "contract": "new observed-primary detach; selects edge.first_04"
+    },
+    {
+      "address": "00695806",
+      "native": "00BF6989",
+      "function": "00695760",
+      "kind": "call",
+      "contract": "existing malloc-paired singleton_lifetime_free; original array-free thunk"
+    },
+    {
+      "address": "0092589D",
+      "native": "00695870",
+      "function": "00925780",
+      "contract": "caller destroys actual unit+10h callback-owner base"
+    },
+    {
+      "address": "009258AC",
+      "native": "00695760",
+      "function": "00925780",
+      "contract": "caller then destroys actual unit+0 observed-primary base"
+    },
+    {
+      "address": "006954E4",
+      "native": "00693CA0",
+      "function": "006953C0",
+      "contract": "fresh edge vtable slot0, flag1; CF7E64 resolves to concrete00693CA0, other profiles stay external",
+      "dispatch": "indirect; exact known profile verified by native fixture and CF7E64 bytes"
+    },
+    {
+      "address": "006953FB",
+      "native": "00CE2218+IAT",
+      "function": "006953C0",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    },
+    {
+      "address": "00695511",
+      "native": "00CE2210+IAT",
+      "function": "006953C0",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    },
+    {
+      "address": "006957AF",
+      "native": "00CE2218+IAT",
+      "function": "00695760",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    },
+    {
+      "address": "006957C9",
+      "native": "00CE2218+IAT",
+      "function": "00695760",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    },
+    {
+      "address": "006957DE",
+      "native": "00CE2210+IAT",
+      "function": "00695760",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    },
+    {
+      "address": "006957F8",
+      "native": "00CE2210+IAT",
+      "function": "00695760",
+      "contract": "real Win32 critical-section operation on the captured actual section"
+    }
+  ],
+  "role_difference": {
+    "primary_match": "00695465 CMP [EAX+4],ECX: actual edge.first_04",
+    "callback_match": "006955D5 CMP [EAX+8],ECX: actual edge.callback_owner_08",
+    "source_change": "private invalidation helper adds default-false primary-role selector; existing callback/individual callers retain behavior"
+  },
+  "producer": {
+    "function": "00925CE0",
+    "primary": "00925CFF stampsCECCC8 atunit+0;00925D0A/D0D/D10 clear+4/+8/+C",
+    "callback": "00925D13 stampsCE3CD4 atunit+10h;00925D1A/D1D/D20 clear+14/+18/+1C",
+    "constructor_registers": "ESI=actual unit; EBX=0 from00925CFD",
+    "destructor": "00925780 keepsESI=unit, EDI=unit+10h; callback destroyed at0092589D then primary at009258AC",
+    "layout": "existing16-byte NativeObserverOwnerStorage only; adjacent S unit-prefix packet owns32-byte embedding"
+  },
+  "schedule": [
+    "capture/enter actual shared observer section",
+    "invalidate every copied slot matching edge.first_04, preserve null/other-primary slots",
+    "exchange actual primary array into temporary using canonical game array mechanism",
+    "remove each edge first from primary then callback array; freshly resolve deleting vtable slot0(flag1), ignore reference count",
+    "free temporary allocation then release captured section",
+    "destructor stampsCECCC8, outer+nested count-query lock, detach ifnonempty, unlock then reload/free current backing array; owner/array fields remain"
+  ],
+  "role_equivalence": [
+    {
+      "primary": "006953C0",
+      "callback": "00695530",
+      "bytes": 358,
+      "primary_sha256": "b75ed04ab5c009be175fca81c7911a697e573fa03f1a809541002fba9f6bb106",
+      "callback_sha256": "51965c6226ecc95d3f134add09d65b264e6cb04be1143f433009eee0c99901e7",
+      "normalized_sha256": "00844943ef1968419a1d851dd2d30b3b94c4e757764deaae2a2cff4c4369c74c",
+      "differences": [
+        {
+          "primary_site": "006953C2",
+          "primary_instruction": "push 0xc7ea20",
+          "callback_site": "00695532",
+          "callback_instruction": "push 0xc7ea40",
+          "reason": "role-specific original FH3 handler or base vtable"
+        },
+        {
+          "primary_site": "006953DE",
+          "primary_target": "00694280",
+          "callback_site": "0069554E",
+          "callback_target": "00694280",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "00695423",
+          "primary_target": "00BF6713",
+          "callback_site": "00695593",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "0069543E",
+          "primary_target": "00BF6713",
+          "callback_site": "006955AE",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "00695449",
+          "primary_target": "00BF6713",
+          "callback_site": "006955B9",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "00695456",
+          "primary_target": "00BF6713",
+          "callback_site": "006955C6",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "00695465",
+          "primary_instruction": "cmp dword ptr [eax + 4], ecx",
+          "callback_site": "006955D5",
+          "callback_instruction": "cmp dword ptr [eax + 8], ecx",
+          "reason": "critical endpoint-role selector: edge+4 first versus edge+8 callback owner"
+        },
+        {
+          "primary_site": "0069546E",
+          "primary_target": "00BF6713",
+          "callback_site": "006955DE",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "0069547D",
+          "primary_target": "00BF6713",
+          "callback_site": "006955ED",
+          "callback_target": "00BF6713",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006954A5",
+          "primary_target": "006944C0",
+          "callback_site": "00695615",
+          "callback_target": "006944C0",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006954CD",
+          "primary_target": "00694F60",
+          "callback_site": "0069563D",
+          "callback_target": "00694F60",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006954D7",
+          "primary_target": "00694F60",
+          "callback_site": "00695647",
+          "callback_target": "00694F60",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006954FA",
+          "primary_target": "00BF6989",
+          "callback_site": "0069566A",
+          "callback_target": "00BF6989",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        }
+      ]
+    },
+    {
+      "primary": "00695760",
+      "callback": "00695870",
+      "bytes": 193,
+      "primary_sha256": "87223140ff389c4d6c7fac973425d24f8158369cb54d10b8f240c22f31b6b721",
+      "callback_sha256": "ac2f2126dc573849014eec43e7f052e45ac0e9116643b42cdc8f1d5aab3ff032",
+      "normalized_sha256": "6bb6881a8d77146162242a4f13405ec77ce1a479b9110468ca86a69672b490b8",
+      "differences": [
+        {
+          "primary_site": "00695762",
+          "primary_instruction": "push 0xc7ea83",
+          "callback_site": "00695872",
+          "callback_instruction": "push 0xc7eaa3",
+          "reason": "role-specific original FH3 handler or base vtable"
+        },
+        {
+          "primary_site": "00695782",
+          "primary_instruction": "mov dword ptr [ebp], 0xceccc8",
+          "callback_site": "00695892",
+          "callback_instruction": "mov dword ptr [ebp], 0xce3cd4",
+          "reason": "role-specific original FH3 handler or base vtable"
+        },
+        {
+          "primary_site": "00695791",
+          "primary_target": "00694280",
+          "callback_site": "006958A1",
+          "callback_target": "00694280",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006957BC",
+          "primary_target": "00694280",
+          "callback_site": "006958CC",
+          "callback_target": "00694280",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "006957EA",
+          "primary_target": "006953C0",
+          "callback_site": "006958FA",
+          "callback_target": "00695530",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        },
+        {
+          "primary_site": "00695806",
+          "primary_target": "00BF6989",
+          "callback_site": "00695916",
+          "callback_target": "00BF6989",
+          "reason": "relative call relocation; destructor selects its own role-specific detach"
+        }
+      ]
+    }
+  ],
+  "native_exception_metadata": [
+    {
+      "function": "006953C0",
+      "handler": "00C7EA20..00C7EA29",
+      "descriptor": "00DAB68C",
+      "max_state": 2,
+      "unwind_map": "00DAB67C",
+      "cleanup_order": [
+        "state1 C7EA18 ->42BED0 temporary array",
+        "state0 C7EA10 ->411EE0 captured guard"
+      ]
+    },
+    {
+      "function": "00695760",
+      "handler": "00C7EA83..00C7EA8C",
+      "descriptor": "00DAB720",
+      "max_state": 2,
+      "unwind_map": "00DAB710",
+      "cleanup_order": [
+        "state1 C7EA7B ->411EE0 outer guard",
+        "state0 C7EA70 ->42BED0 current owner+4 array"
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "false-noreturn free left006954FF..00695501 and0069580B..0069580D undecoded",
+      "is": "root restored3bytes each; both sites still have no containing Ghidra function",
+      "evidence": "reports/observed_endpoint_flow_repair.json; local/observed_endpoint_detach_gap.txt and destructor_gap.txt"
+    },
+    {
+      "was": "missing native FH3 handlersC7EA20/C7EA83",
+      "is": "root defined/saved exact10-byte bodies, respectively endingC7EA29/C7EA8C",
+      "evidence": "reports/observer_endpoint_function_definitions.json and local handler proto logs"
+    },
+    {
+      "was": "callback-side detach could be assumed reusable directly",
+      "is": "primary side selects first_04, callback side selects callback_owner_08; direct substitution is wrong",
+      "evidence": "two complete551-byte role-normalized PE/live spans and actual side-specific fixture"
+    }
+  ],
+  "metadata_limits": [
+    "restored free-gap instructions remain outside stored body membership",
+    "skipped padding0069542A..2F deliberately unchanged",
+    "consumed EH-array cleanup0042BED0 has a separate unowned post-free byte0042BEDC; not executed by native normal fixture"
+  ],
+  "native_fixture": {
+    "status": "passed",
+    "native_image": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "live_equals_installed": true,
+      "spans": [
+        {
+          "address": "006953C0",
+          "end_inclusive": "00695525",
+          "offset": 0,
+          "bytes": 358,
+          "instructions": 112,
+          "sha256": "b75ed04ab5c009be175fca81c7911a697e573fa03f1a809541002fba9f6bb106"
+        },
+        {
+          "address": "00695760",
+          "end_inclusive": "00695820",
+          "offset": 384,
+          "bytes": 193,
+          "instructions": 61,
+          "sha256": "87223140ff389c4d6c7fac973425d24f8158369cb54d10b8f240c22f31b6b721"
+        }
+      ],
+      "data_patches": [
+        {
+          "instruction": "006953FB",
+          "native_data": "00CE2218",
+          "offset": 61,
+          "data_offset": 616
+        },
+        {
+          "instruction": "00695407",
+          "native_data": "00E198E4",
+          "offset": 73,
+          "data_offset": 624
+        },
+        {
+          "instruction": "00695430",
+          "native_data": "00E198E4",
+          "offset": 114,
+          "data_offset": 624
+        },
+        {
+          "instruction": "00695511",
+          "native_data": "00CE2210",
+          "offset": 339,
+          "data_offset": 608
+        },
+        {
+          "instruction": "006957AF",
+          "native_data": "00CE2218",
+          "offset": 465,
+          "data_offset": 616
+        },
+        {
+          "instruction": "006957C9",
+          "native_data": "00CE2218",
+          "offset": 491,
+          "data_offset": 616
+        },
+        {
+          "instruction": "006957DE",
+          "native_data": "00CE2210",
+          "offset": 512,
+          "data_offset": 608
+        },
+        {
+          "instruction": "006957F8",
+          "native_data": "00CE2210",
+          "offset": 538,
+          "data_offset": 608
+        }
+      ],
+      "data": [
+        {
+          "address": "00CE2210",
+          "offset": 608,
+          "bytes": 4
+        },
+        {
+          "address": "00CE2218",
+          "offset": 616,
+          "bytes": 4
+        },
+        {
+          "address": "00E198E4",
+          "offset": 624,
+          "bytes": 4
+        }
+      ],
+      "image_sha256": "cb5f810d128d0f4398bb767defb2d04e9746b5b96301df8a16c3383a694f411d"
+    },
+    "spans": 2,
+    "original_bytes": 551,
+    "canonical_words": 44,
+    "records": {
+      "native": [
+        1,
+        13734176,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        3,
+        5,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        2,
+        13552840,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        3,
+        5,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        13552840,
+        0,
+        0,
+        1
+      ],
+      "source": [
+        1,
+        13734176,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        3,
+        5,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        2,
+        13552840,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        3,
+        5,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        13552840,
+        0,
+        0,
+        1
+      ],
+      "failures": 0
+    },
+    "native_actual_edge_deletes": 4,
+    "native_array_frees": 3,
+    "actual_provider_contract": "native CF7E64 scalar-delete slot mapped at actual profile address to existing concrete00693CA0; flags1 and captured real lock depth checked; source devirtualizes same known profile",
+    "scenario": "one paired primary detach/nonempty destructor/empty destructor scenario; two endpoint roles, shared callback peer, duplicate dispatch slots, refs>1, array reuse, unrelated edge preserved",
+    "record_schema": "two20-word records: phase,primary vtable/count/capacity/same-array,threecallback counts,otherprimary count,preserved refs,dispatchsize/capacity,fiveslot booleans,raw/OS depths,fallbackcount; fourempty-destructor fields",
+    "source_only_exception": "throw37 from invalid-parameter service before exchange; destructor propagates after guards reach0 and retains owner fields; original FH3 unexecuted; exceptional free follows compiled source, no allocator-event trace",
+    "teardown": "free actual current endpoint arrays once; destructor-freed fields reset only in fixture; detach remaining peer edges through existing real callback lifetime; unregister/free actual dispatch and lock owners; release both Win32 sections, manager and native mappings",
+    "failures": [
+      {
+        "stage": "original profile mapping before native execution",
+        "exit_code": 4,
+        "artifacts": "local/observed_endpoint_failure_vtable_mapping/",
+        "observation": "actual CF7E64 profile address unavailable"
+      },
+      {
+        "stage": "mapping retried before arbitrary native-image allocation",
+        "exit_code": 4,
+        "artifacts": "local/observed_endpoint_failure_vtable_reserved/",
+        "observation": "VirtualAlloc ERROR_INVALID_ADDRESS487; VirtualQuery allocation00C70000, MEM_RESERVE2000, MEM_PRIVATE20000; exe00510000",
+        "resolution": "isolated probe linked /DYNAMICBASE:NO /BASE:0x00400000 and reserves original profile first; final native/source fixture passes"
+      }
+    ]
+  },
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build": "Win32 Release passed",
+    "seeds": "tools/ghidra_export.py verify-seeds passed before first build",
+    "ctest": "2/2 existing reconstructed_math/native_math_differential passed",
+    "call_gate": "18 call rows checked,0 failed; one known-profile virtual and six IAT rows remain indirect",
+    "tracked_tests_added": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "new class-method ABI, not drop-in binary replacement",
+    "known actualCF7E64 edge profile tested; other native virtual profiles remain existing external service boundary",
+    "no new CRT/STL/array library port; reuse current source allocator/free/array mechanics and their prior limits",
+    "original FH3/SEH/RTTI, asynchronous faults and mutable unwind-stack aliases unproven",
+    "malformed pointer faults and returning invalid-handler mutation arms not independently exercised",
+    "inactive/freed allocation bytes and OS/CRT internals not compared",
+    "no unit-host binding, mixed-profile shutdown or gameplay validation"
+  ],
+  "artifact_manifest": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s",
+    "base_commit": "9cc35911",
+    "scope": "all packet local evidence, final relevant build outputs and linked objects/libraries/transitive source; unrelated files and index cache excluded",
+    "linked_libraries": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Release\\bsp_core.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+    ],
+    "linked_core_objects": [
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_removal_reorder.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_tracked_critical_section_release.obj",
+      "observer_dispatch_owner.obj",
+      "observer_edges.obj",
+      "observer_lifetime.obj",
+      "singleton_lifetime.obj",
+      "sound_lifetime_access.obj"
+    ],
+    "artifacts": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\bsp_core.lastbuildstate",
+        "kind": "compiler/librarian build record",
+        "bytes": 336,
+        "sha256": "92a13cb69eb602c2fa4dfd7cd3870e377d3b5c665310f4a9d64435ee61b4d3a9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 2152426,
+        "sha256": "933e08154eda35429af49a796b99daf0d145db8eb32502f160d4eef07b14d0ee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Cl.items.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 262972,
+        "sha256": "9ecff53e4afdf7462f7e8a136a19edce6f6224d9bda76c7c65c87b71565979b8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 33144362,
+        "sha256": "c2f9d51ecbc6134b56fa3d4239d889b6ec67213967440892792c881a4f266b20"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 525950,
+        "sha256": "92e9cda181a055ee089c55ada841c72751107a3a87cd9773fbffcb073efc4c5a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.command.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 699,
+        "sha256": "53bb9069dbb907affb3dff77b6b830d3bf334f0962c183b3c9f3469356bba927"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.read.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 20785,
+        "sha256": "21075530452ba9f867abd134d2fd8c38ece9642bbf193eeebc7a4f0661cf50d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.write.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 208,
+        "sha256": "88159cb78252339c84e6e82d2f44db50953e69dff5efc78aa56fefe4501c6484"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib-link.read.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 588752,
+        "sha256": "341814f5067893539bdb6c1bb0f053c0d72e03f8f0938c5838b6d9a90e8e65b3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib-link.write.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 293438,
+        "sha256": "051964884b10d30c82f44a794b5324b3e720aa10cbd5a11eed39a57f4d92920c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib.command.1.tlog",
+        "kind": "compiler/librarian build record",
+        "bytes": 398812,
+        "sha256": "214f75dcfc6b1bc3f5904ce4f85be843b169ba7bbca4d4ac36634a0fa5b30326"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+        "kind": "linked core object",
+        "bytes": 7108,
+        "sha256": "c40925f177b9db0a35028e3c4437707186fda5ea29a39212bd8c96b0b782cb08"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_legacy_sbo_string.obj",
+        "kind": "linked core object",
+        "bytes": 18686,
+        "sha256": "b46b35129a00b9cedc69b58e612dc7f83812d3f4d6c194a4d146e30fb7707dc2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_renderer_worker_lifetime.obj",
+        "kind": "linked core object",
+        "bytes": 6121,
+        "sha256": "fd9997cc8fff53d56603137e906a0a187fd259e242673c3a38e5192baa9cda4f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_publication.obj",
+        "kind": "linked core object",
+        "bytes": 5059,
+        "sha256": "f28e889112a24ecbcb72bbf6e8355396284793047a9adae24e40bd6ac1c9a1db"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_removal_reorder.obj",
+        "kind": "linked core object",
+        "bytes": 2591,
+        "sha256": "eba4e1add9e4db43cb0f2302250b8f6671dc60417ce20a9c920a6f3074f4bbdb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+        "kind": "linked core object",
+        "bytes": 10592,
+        "sha256": "a1bb49b393c8fed5280b0e24b93d34180a159f90e228d08c331e21dda24dc546"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_insert_count.obj",
+        "kind": "linked core object",
+        "bytes": 2221,
+        "sha256": "3e994008d1fd2c489374e60a051ccfb4d2686bae8ef0275f9f7988cf93c24e6c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_leaves.obj",
+        "kind": "linked core object",
+        "bytes": 2612,
+        "sha256": "68cd6c532a984cbb8acd76423dfe6b02e059802e2127ba64ab7cfbcdcd043524"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_registration_wrappers.obj",
+        "kind": "linked core object",
+        "bytes": 1886,
+        "sha256": "03c00ed9c92b9e8096d37c4988b6d19ad8f64497734d026a336272322dc965be"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_reserve_construct.obj",
+        "kind": "linked core object",
+        "bytes": 4205,
+        "sha256": "3a3cccf1b8022794869b8886f8a5849a435ca2ef6aa6cf39961a4bddcf15ae68"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\native_tracked_critical_section_release.obj",
+        "kind": "linked core object",
+        "bytes": 1423,
+        "sha256": "6496a3fcb1e30184e6b0b500cd67805e6f9ffaeaa8e7b44140cee6dd349edc69"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\observer_dispatch_owner.obj",
+        "kind": "linked core object",
+        "bytes": 5686,
+        "sha256": "60ec588855e4bd47f45f490710c6ee6501330b907877202e64b5ca4ed7e0f685"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\observer_edges.obj",
+        "kind": "linked core object",
+        "bytes": 6512,
+        "sha256": "c42fa6d12753e750c45cfeb7c7eb5516dc8e6c1fd5e011fa83ba05b46ae6a83b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\observer_lifetime.obj",
+        "kind": "linked core object",
+        "bytes": 25343,
+        "sha256": "d0b11c4c1b24546b70cf64d73ed32aa3784d3c30eaddfd2a2e31c354fac67eaa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "kind": "linked core object",
+        "bytes": 32975,
+        "sha256": "c4d22335cf525a3804c2c402456ff908b24460f000ba7ff28fcab031b9b206cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.dir\\Release\\sound_lifetime_access.obj",
+        "kind": "linked core object",
+        "bytes": 4006,
+        "sha256": "735ff9238e2162103c5e23aa3703743b5d5c0ea2407128d71f1bab9c39d23d4c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\bsp_core.vcxproj",
+        "kind": "final build product/configuration",
+        "bytes": 256031,
+        "sha256": "d72ed8f7e2c342a61581a9d677bc4c16ec0cf0fd7e601ea752104e6c5de71e39"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\CMakeCache.txt",
+        "kind": "final build product/configuration",
+        "bytes": 18999,
+        "sha256": "66d8f2e6080a7705cac187e92a85323b0f96881b0c4f36932b3584563b3eb8cb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Release\\bsp_core.lib",
+        "kind": "exact explicit/default linker input library",
+        "bytes": 55082592,
+        "sha256": "6de3d4631c364fc147434404cb987987ea066eb0c02b02219a1ca670df8ad188"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Release\\bsp_game.exe",
+        "kind": "final build product/configuration",
+        "bytes": 2027008,
+        "sha256": "1641b39e3e6b954690f669312f618e5512805deda4c1e4b45bd26ea89edade6e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Release\\bsp_math_tests.exe",
+        "kind": "final build product/configuration",
+        "bytes": 530944,
+        "sha256": "a588b9c4190c711bef64423e8fdab1252544f9279514f84c93b680764a0f7903"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Release\\bsp_native_math_tests.exe",
+        "kind": "final build product/configuration",
+        "bytes": 18432,
+        "sha256": "6ae8ad402e3ead418e218b349fd8a90f46eac06d59a7cece781637b9ffb1b0d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\build\\win32\\Testing\\Temporary\\LastTest.log",
+        "kind": "final build product/configuration",
+        "bytes": 1793,
+        "sha256": "b94b3a20f04b25bdbbdd7af07df726f2da69f063a338dacc05e96e9446a22a19"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\config\\target.json",
+        "kind": "tracked packet source/config",
+        "bytes": 405,
+        "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\docs\\OBSERVED_ENDPOINT_LIFETIME.md",
+        "kind": "tracked packet source/config",
+        "bytes": 7894,
+        "sha256": "620281da6615b43dbce235a124ffbe9bd0c57d2c84d047d10ee9048f6d78cfa4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\camera_projection.hpp",
+        "kind": "transitive source header",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\camera_transform.hpp",
+        "kind": "transitive source header",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\frame_clock.hpp",
+        "kind": "transitive source header",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\game_entry.hpp",
+        "kind": "transitive source header",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+        "kind": "transitive source header",
+        "bytes": 1471,
+        "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_legacy_exception_owner.hpp",
+        "kind": "transitive source header",
+        "bytes": 3232,
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_legacy_sbo_string.hpp",
+        "kind": "transitive source header",
+        "bytes": 2115,
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_renderer_worker_lifetime.hpp",
+        "kind": "transitive source header",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_resource_registry_construction.hpp",
+        "kind": "transitive source header",
+        "bytes": 2336,
+        "sha256": "50607201a87a306462eaba1a6dc83c733dd7307eb3078cf0966903b349a49cb3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_publication.hpp",
+        "kind": "transitive source header",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_removal_reorder.hpp",
+        "kind": "transitive source header",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_vector_allocation.hpp",
+        "kind": "transitive source header",
+        "bytes": 2149,
+        "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_vector_insert_count.hpp",
+        "kind": "transitive source header",
+        "bytes": 1212,
+        "sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_vector_leaves.hpp",
+        "kind": "transitive source header",
+        "bytes": 3101,
+        "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+        "kind": "transitive source header",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_singleton_vector_reserve_construct.hpp",
+        "kind": "transitive source header",
+        "bytes": 1845,
+        "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_string.hpp",
+        "kind": "transitive source header",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_string_pool_owner.hpp",
+        "kind": "transitive source header",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_string_pool_storage.hpp",
+        "kind": "transitive source header",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\native_tracked_critical_section_release.hpp",
+        "kind": "transitive source header",
+        "bytes": 794,
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\observer_dispatch_owner.hpp",
+        "kind": "transitive source header",
+        "bytes": 4437,
+        "sha256": "df1d3fa1f228d80e2103ef93f86305b2f076e39ba46d8f46e01f5f6649c46eba"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\observer_edges.hpp",
+        "kind": "transitive source header",
+        "bytes": 1700,
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\observer_lifetime.hpp",
+        "kind": "transitive source header",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\random.hpp",
+        "kind": "transitive source header",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\random_threads.hpp",
+        "kind": "transitive source header",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\render_tail.hpp",
+        "kind": "transitive source header",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\singleton_lifetime.hpp",
+        "kind": "transitive source header",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\sound_lifetime_access.hpp",
+        "kind": "transitive source header",
+        "bytes": 2344,
+        "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\storage_pool.hpp",
+        "kind": "transitive source header",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\include\\bsp\\system_time_constants.hpp",
+        "kind": "transitive source header",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\build_observed_endpoint_probe.cmd",
+        "kind": "local probe or evidence",
+        "bytes": 442,
+        "sha256": "498b8d00266af3e6bdca4ad37733c8227b4935482899057c92950860dbcc973d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\finalize_observed_endpoint_report.py",
+        "kind": "local probe or evidence",
+        "bytes": 14260,
+        "sha256": "8973b21d3f3805c9d4c011f56f7343f3c042424c29f6c721ef70294490d76133"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_006953C0.txt",
+        "kind": "local probe or evidence",
+        "bytes": 1731,
+        "sha256": "baa6603567b66005013e78ac390f8bfaa0acdd5f768e77b0a39c622b675af4c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00695530.txt",
+        "kind": "local probe or evidence",
+        "bytes": 1731,
+        "sha256": "129565d59848b771cdd05c24e36eb820dfa6b052309e17ea7f19899f51c25ed7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00695760.txt",
+        "kind": "local probe or evidence",
+        "bytes": 941,
+        "sha256": "88df08ca171628f033aa5f4feaa986580b9ca709dff4da605c7863743c74b693"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00695870.txt",
+        "kind": "local probe or evidence",
+        "bytes": 941,
+        "sha256": "ba226a8281737224df2cff65e76ef48fe101937fdef6bf8ee86da997474952a5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00C7EA10.txt",
+        "kind": "local probe or evidence",
+        "bytes": 130,
+        "sha256": "31e1a8add1929f4e84a2ace5fd80051d26d4899bb6287e69d2b81307a7c9e1ef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00C7EA70.txt",
+        "kind": "local probe or evidence",
+        "bytes": 142,
+        "sha256": "e3f068d404688dde65c474994f70b84ff6d07c172676eac297cdfa7689bd4e4a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00CE2210.txt",
+        "kind": "local probe or evidence",
+        "bytes": 29,
+        "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00CE2218.txt",
+        "kind": "local probe or evidence",
+        "bytes": 29,
+        "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00DAB67C.txt",
+        "kind": "local probe or evidence",
+        "bytes": 260,
+        "sha256": "1facf716bea3faf02bde7c538667446eb37aa29362ad933e666d538ec8b2276a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00DAB710.txt",
+        "kind": "local probe or evidence",
+        "bytes": 260,
+        "sha256": "d62b1af9cc5d32a8444fd6512b9adbcb04e54177bf2de45fea00d915cd01fcf7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_bytes_00E198E4.txt",
+        "kind": "local probe or evidence",
+        "bytes": 29,
+        "sha256": "0c87d9607402bb8e6c71f0e6eafa60de160953b249b08d2c553f2921e945667a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_build.log",
+        "kind": "local probe or evidence",
+        "bytes": 41831,
+        "sha256": "c60078b01288994cae409c086ca2cec00c9875f50f682aaa900297d9f03bff47"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_call_gate.log",
+        "kind": "local probe or evidence",
+        "bytes": 655,
+        "sha256": "e307da71c3fda2e26d32cd2e6acfcf9cb6b6ccc24edb13051e324e341a0ad3cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_commit_message.txt",
+        "kind": "local probe or evidence",
+        "bytes": 571,
+        "sha256": "9b3f711c59fe9781ce2ea52da79a9b3c080f830f900aaf2a20b21c0df3e05986"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_destructor_callers.txt",
+        "kind": "local probe or evidence",
+        "bytes": 409,
+        "sha256": "5108cbceff92447e21ca8a99fb1b806859f5516f19dba0848da28f25c69d2b76"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_destructor_gap.txt",
+        "kind": "local probe or evidence",
+        "bytes": 23,
+        "sha256": "248960b93078d6e615aeb56c6f3d40a4706e40b04aa40403e97028b49f0fd897"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_destructor_handler.txt",
+        "kind": "local probe or evidence",
+        "bytes": 79,
+        "sha256": "e994196e0a08e1c746c2fcd1b32060c39f36be0925abc22de7cf2c1fcc0fdc2b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_detach_callers.txt",
+        "kind": "local probe or evidence",
+        "bytes": 42,
+        "sha256": "640a949a408e4ed12463a229b0c2e5f227787c205ff6c91a4ea1c96c1319137f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_detach_gap.txt",
+        "kind": "local probe or evidence",
+        "bytes": 23,
+        "sha256": "cb5b8faeb748e83db5210907605c199032952d3cef6d4dfdb7a6d9e4c4b27f93"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_detach_handler.txt",
+        "kind": "local probe or evidence",
+        "bytes": 79,
+        "sha256": "da212c0d6f9c2a3e8181dd87fbde2c6d85bdc5fa093f58b19735096d4a61643b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_edge_slot.txt",
+        "kind": "local probe or evidence",
+        "bytes": 29,
+        "sha256": "5f10ddc84c32022bcebe4ab2cc9390d0b5557ad08936ad479ebf3e615dc05cf3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe.cpp",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 13790,
+        "sha256": "55a6413695f267c89d8c6b0152baf937ca7e191dbf9c705f613a18cfc8e20da7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe.exe",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 59392,
+        "sha256": "8b5969cceeae059b1a73b52dec356695f8ab72f487abf71f73d6b26889832272"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe.map",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 106936,
+        "sha256": "9115b512f5965438ed0d1e8d6cfc8cd50cdcd2041421aa29423cf7d377e9ff3b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe.obj",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 171225,
+        "sha256": "5c3fae2a4bacfef82bc1fbba924ae79a23994b585c97d0f737c8188329ccdd2a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe_build.log",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 4573,
+        "sha256": "d624f37c5d5ab7f073ba340dc0be3c4a6833aef5547f6d3be675e00531b38845"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_mapping\\observed_endpoint_probe_run.log",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 42,
+        "sha256": "a72ce549435c665ababa6643339c40bb322b416ba2f5c0107e707e0f6072334e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe.cpp",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 14239,
+        "sha256": "a217278f51c59136b5d4794f82a4e3e3f14581e5a84ddb324b6f58e2982453cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe.exe",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 59392,
+        "sha256": "c0177f21c47ee9637e6f71265fe1227e623f203ece724430d85fafe8ffb9872d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe.map",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 107186,
+        "sha256": "216a85bb32b232d9ec03a8e900f2789d43ae30fc2a843af3443ca04415b86e18"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe.obj",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 171493,
+        "sha256": "071a0ac995061615f69950f343590d49261c9c8847b103fa1bdab434220ccac6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe_build.log",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 4573,
+        "sha256": "d624f37c5d5ab7f073ba340dc0be3c4a6833aef5547f6d3be675e00531b38845"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_failure_vtable_reserved\\observed_endpoint_probe_run.log",
+        "kind": "preserved fixture address-layout failure before native execution",
+        "bytes": 108,
+        "sha256": "dd5776170e406fe618123d134f8da5951bddac09437848a4b8c49935f6344e24"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_index.log",
+        "kind": "local probe or evidence",
+        "bytes": 142,
+        "sha256": "e2adeedba8fa6fa43258be010998de6f9e5a48b4b16bb61dd2328c36130cbf15"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_native_image.bin",
+        "kind": "local probe or evidence",
+        "bytes": 632,
+        "sha256": "cb5f810d128d0f4398bb767defb2d04e9746b5b96301df8a16c3383a694f411d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_native_manifest.json",
+        "kind": "local probe or evidence",
+        "bytes": 4403,
+        "sha256": "23d790ec72c3cd000348cb9a3cc15bebc9d317b8514815e0943bae5efa7419bb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_prepare.log",
+        "kind": "local probe or evidence",
+        "bytes": 89,
+        "sha256": "5597534159a3533bfccc9aeecfc20c1203534970f244c7bc5924409a8a28d0bd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe.cpp",
+        "kind": "local probe or evidence",
+        "bytes": 14239,
+        "sha256": "a217278f51c59136b5d4794f82a4e3e3f14581e5a84ddb324b6f58e2982453cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe.exe",
+        "kind": "local probe or evidence",
+        "bytes": 56832,
+        "sha256": "93358e928d990862186c7d6f2ad0c1392596cdce91454104b8301129cabd9ae7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe.map",
+        "kind": "local probe or evidence",
+        "bytes": 107186,
+        "sha256": "17e4728c023175740802307853b77473778fb8d854155b903ad63f3624af87d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe.obj",
+        "kind": "local probe or evidence",
+        "bytes": 171493,
+        "sha256": "86b2eb04d4fd0c812f947f40e49f1e0f203dc57342bd047625c7e4c790cfc2d2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe_build.log",
+        "kind": "local probe or evidence",
+        "bytes": 4573,
+        "sha256": "d624f37c5d5ab7f073ba340dc0be3c4a6833aef5547f6d3be675e00531b38845"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe_patches.hpp",
+        "kind": "transitive source header",
+        "bytes": 589,
+        "sha256": "26c8ea20686bcba071a4f2fc5724188e557d517060060ce1072ad6941ecde875"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe_records.json",
+        "kind": "local probe or evidence",
+        "bytes": 256,
+        "sha256": "fa11b9bb04c02beb7f0e1a9fe3097f5307fabb5e7c25b7e5d104a11e1118682a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_probe_run.log",
+        "kind": "local probe or evidence",
+        "bytes": 231,
+        "sha256": "685a37c8071c8adf95cd0b6d02b117eafed3faf3a17d24918fe331df6becc5c2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_role_equivalence.json",
+        "kind": "local probe or evidence",
+        "bytes": 5952,
+        "sha256": "22c9393913b3647fdb5a513fd8fa545ebe97e6240649175266f0b5c6575b5990"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_unit_constructor_prefix.txt",
+        "kind": "local probe or evidence",
+        "bytes": 369,
+        "sha256": "f9f6207e871e62644d21ac5f5a9b3bb49efe76464d12b928380ac1b588f4c3d1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_unit_destructor_calls.txt",
+        "kind": "local probe or evidence",
+        "bytes": 449,
+        "sha256": "bad3f23d697f6e5bfcc5262f1f1b89876bb1bc12489d45a978813d7a97460e26"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_unit_destructor_prefix.txt",
+        "kind": "local probe or evidence",
+        "bytes": 937,
+        "sha256": "a6c5c25ccf2b7cfdc7fdb9d2f4fc0914d12bb448d8088a09d7cf7ec2cd3e430e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_endpoint_verify_seeds.log",
+        "kind": "local probe or evidence",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_original_006953C0.bin",
+        "kind": "local probe or evidence",
+        "bytes": 358,
+        "sha256": "b75ed04ab5c009be175fca81c7911a697e573fa03f1a809541002fba9f6bb106"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\observed_original_00695760.bin",
+        "kind": "local probe or evidence",
+        "bytes": 193,
+        "sha256": "87223140ff389c4d6c7fac973425d24f8158369cb54d10b8f240c22f31b6b721"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\local\\prepare_observed_endpoint_probe.py",
+        "kind": "local probe or evidence",
+        "bytes": 6871,
+        "sha256": "f43b07b5169e4ab423df7ae2a532a4aa123cfbe3a1f377c5add104d7fdc8c398"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\scripts\\build.ps1",
+        "kind": "tracked packet source/config",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_legacy_exception_owner.cpp",
+        "kind": "linked canonical source",
+        "bytes": 5121,
+        "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_legacy_sbo_string.cpp",
+        "kind": "linked canonical source",
+        "bytes": 7772,
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_renderer_worker_lifetime.cpp",
+        "kind": "linked canonical source",
+        "bytes": 6911,
+        "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_publication.cpp",
+        "kind": "linked canonical source",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_removal_reorder.cpp",
+        "kind": "linked canonical source",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_vector_allocation.cpp",
+        "kind": "linked canonical source",
+        "bytes": 1966,
+        "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_vector_insert_count.cpp",
+        "kind": "linked canonical source",
+        "bytes": 5712,
+        "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_vector_leaves.cpp",
+        "kind": "linked canonical source",
+        "bytes": 3538,
+        "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_vector_registration_wrappers.cpp",
+        "kind": "linked canonical source",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_singleton_vector_reserve_construct.cpp",
+        "kind": "linked canonical source",
+        "bytes": 3731,
+        "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\native_tracked_critical_section_release.cpp",
+        "kind": "linked canonical source",
+        "bytes": 1637,
+        "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\observer_dispatch_owner.cpp",
+        "kind": "linked canonical source",
+        "bytes": 4287,
+        "sha256": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\observer_edges.cpp",
+        "kind": "linked canonical source",
+        "bytes": 3890,
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\observer_lifetime.cpp",
+        "kind": "linked canonical source",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\singleton_lifetime.cpp",
+        "kind": "linked canonical source",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observed-endpoint-lifetime-s\\src\\sound_lifetime_access.cpp",
+        "kind": "linked canonical source",
+        "bytes": 2380,
+        "sha256": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a"
+      }
+    ]
+  }
+}
