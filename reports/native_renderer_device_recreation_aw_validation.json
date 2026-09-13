@@ -1,5 +1,5 @@
 {
-  "tested_commit": "fbab26c3d07fb40315b087b48c75a15f6bfae7d1",
+  "tested_commit": "e30488f4a1059a41f17cc8836b64fa7c901b95a9",
   "reviewed_source_commit": "287b7d158c919f1ce2f75e0eff2e94786a2fed81",
   "build": "Strict MSVC Win32 passed; local/aw-final-combined-build.log",
   "existing_ctests_passed": 2,
@@ -14,15 +14,15 @@
     "include/bsp/native_renderer_device_recreation_actual.hpp": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7"
   },
   "library_sha256": {
-    "bsp_core.lib": "a813f28320369dec515afa18365d3fdccd10630e539f4e17716a8d2eb111057b",
+    "bsp_core.lib": "64d7abf17695d575186357b19f903d25a77a6cec506783d50d482e1a7b90ab80",
     "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
     "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
   },
   "current_library_replays": {
-    "commit": "fbab26c3d07fb40315b087b48c75a15f6bfae7d1",
+    "commit": "e30488f4a1059a41f17cc8836b64fa7c901b95a9",
     "passed": true,
     "libraries": {
-      "bsp_core.lib": "a813f28320369dec515afa18365d3fdccd10630e539f4e17716a8d2eb111057b",
+      "bsp_core.lib": "64d7abf17695d575186357b19f903d25a77a6cec506783d50d482e1a7b90ab80",
       "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
@@ -73,7 +73,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-current-texture_2d.log",
         "log_sha256": "05a7c6bcf60ab6e69711b828ea84aee9365c952cc2ef6c29fb537864b13094bb",
         "executable": "C:\\Users\\sqz269\\bsp-aw-retained2d\\aw_current_texture_2d_probe.exe",
-        "executable_sha256": "9b27c8a8e40e181667a5900fe171f1972fc2fa9b16ecb5dfe34ecdb33d67e1d3",
+        "executable_sha256": "a0660050e9e3bca5a4cced696e5bf0c7d97abb9ce86959108180b877e0eb4c86",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -128,7 +128,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-current-cube_volume.log",
         "log_sha256": "9c6ec447439085517137e92e6463ca947340c7404eb3717d17475ad97792dc76",
         "executable": "C:\\Users\\sqz269\\bsp-aw-cube-volume-retained\\aw_current_cube_volume_probe.exe",
-        "executable_sha256": "dcde82d4d94605571af05e9450afcb946bfc269098278689862bf12def22aa4f",
+        "executable_sha256": "0e1946d988658932a783db9d88299eafb693d6c8a17498053aa651cfbaaf0582",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -181,10 +181,10 @@
           "/HEAP:65536,4096"
         ],
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-current-stop.log",
-        "log_sha256": "f4322ef96e8cf4786bd0cb5f1dda2919760f4694320acbba2b3a8bdc3904dc77",
+        "log_sha256": "e9e1257b84a71d1fde70a836f5e5989f5b0d4d814efb4d61e36a14bf7983ad86",
         "executable": "C:\\Users\\sqz269\\bsp-aw-renderer-stop\\aw_current_stop_probe.exe",
-        "executable_sha256": "bcfd5f70f75fbfdfacbde7f0c7e42b27c3efd575a7c9f911096006a763d87462",
-        "attempts": 3,
+        "executable_sha256": "cfb6e093f3d94dd01b2899608259b09412b39b56a46a3557d3b7b7de8046bbab",
+        "attempts": 6,
         "retry_policy": "only pre-execution occupied original page exit77, up to12",
         "pass_lines": [
           "PASS six real-event waits: two current ack identities x original/source; controlled block/run-byte/ack; null HANDLE WAIT_FAILED",
@@ -197,10 +197,10 @@
         "key": "device",
         "passed": true,
         "returncode": 0,
-        "source": "C:\\Users\\sqz269\\bsp-aw-device-recreation\\probe.cpp",
-        "source_sha256": "392030705e4a7c48f8a476fd0bf144506b11c8bfe65aa6454c52a9606cde29a1",
+        "source": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp",
+        "source_sha256": "82cc133af916b0849a84344c7e61cf173b66f9cd5c4dc91a523a90dee6af6265",
         "inputs": [
-          "C:\\Users\\sqz269\\bsp-aw-device-recreation\\probe.cpp"
+          "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp"
         ],
         "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
         "compiler_arguments": [
@@ -216,9 +216,9 @@
           "/Gw",
           "/fp:strict",
           "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
-          "C:\\Users\\sqz269\\bsp-aw-device-recreation\\probe.cpp",
-          "/FoC:\\Users\\sqz269\\bsp-aw-device-recreation\\aw_current_device_probe.obj",
-          "/FeC:\\Users\\sqz269\\bsp-aw-device-recreation\\aw_current_device_probe.exe",
+          "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp",
+          "/FoC:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.obj",
+          "/FeC:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.exe",
           "/link",
           "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
           "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
@@ -232,21 +232,54 @@
           "/OPT:REF",
           "/OPT:NOICF",
           "/INCREMENTAL:NO",
-          "/BASE:0x30000000",
-          "/DYNAMICBASE",
+          "/BASE:0x00400000",
+          "/DYNAMICBASE:NO",
+          "/FIXED",
           "/HEAP:65536,4096"
         ],
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-current-device.log",
-        "log_sha256": "9db8be3dbf845c3ae3f134f13efd50d4e8513dab8358a09d36c92a4906251ecb",
-        "executable": "C:\\Users\\sqz269\\bsp-aw-device-recreation\\aw_current_device_probe.exe",
-        "executable_sha256": "0db6a68f85e4eba401085b8a5d44c908bf6293c174f317f501248b1163ae1c45",
+        "log_sha256": "9e1b49dce29a6a49579c64cf32d8d67b61db32eac23c4ce1af9566f815824598",
+        "executable": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.exe",
+        "executable_sha256": "47459dbd0575c50b214ae411fcf44d4a8cb7a4de9e599186e02dd0cfb3906894",
         "attempts": 1,
-        "retry_policy": "only pre-execution occupied original page exit77, up to12",
+        "retry_policy": "none",
         "pass_lines": [
           "PASS full B29670 original/source3 comparisons 24276 bytes 1599 events: actual HAL release/caps/CreateDevice/defaults/equal gamma/resources/dynamic VB+IB/nonempty one-node zero-stream tree/three actual retained2D+cube+volume records; software-cap+ignored-HRESULT variant; original FH3 early throw retains lifecycle lock. Empty logical/shader arrays, online0; no full concurrency/ABI/game claim."
         ],
-        "worker_archive": "C:\\Users\\sqz269\\bsp-aw-device-recreation\\worker_capture.zip",
-        "worker_archive_sha256": "fd06e0f32cbbfb216ed5902a5ea371ff8a7459fdfdc354c76aa364d9a8cec3c4"
+        "worker_archive": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\worker_capture.zip",
+        "worker_archive_sha256": "fb94a5c405d3d707d8f10d9b6545572c3922002cd3b79c53724b6c8fb32f67f5",
+        "fixture_image_reservation": {
+          "generator": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\reserve_image_section.py",
+          "generator_sha256": "afd0708ea1a0b9919d9be00335134010f69a43a905e698eee2bfbb470e6eb8e1",
+          "record": {
+            "input_sha256": "bd4f100eac0d812ab60894512ded938ee4da4156f442f8e9e216f53202935d97",
+            "output_sha256": "47459dbd0575c50b214ae411fcf44d4a8cb7a4de9e599186e02dd0cfb3906894",
+            "image_base": "00400000",
+            "section_name": ".awslot",
+            "section_rva": "00026000",
+            "virtual_size": "009da000",
+            "inclusive_address_range": [
+              "00426000",
+              "00dfffff"
+            ],
+            "native_write_ranges": [
+              "00b20000..00b6ffff",
+              "00bf0000..00bfffff",
+              "00cb0000..00cbffff",
+              "00ce0000..00ceffff",
+              "00d10000..00d1ffff",
+              "00d50000..00d6ffff",
+              "00df0000..00dfffff"
+            ],
+            "raw_file_offset": 145920,
+            "raw_size": 512,
+            "characteristics": "c0000040",
+            "existing_section_bytes_unchanged": true,
+            "parent_native_bytes_unchanged": true,
+            "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+          },
+          "report_sha256": "6cadc1780f4af1c1662de7cf553b39e8bf822575b7902a92c0fa66b8ee670f49"
+        }
       }
     ]
   },
@@ -849,6 +882,702 @@
         "path": "run.ps1",
         "sha256": "6e82346cf75304eaffa582aa905a86abd068d14b70fdec38870605a84ed01cb1",
         "bytes": 1850
+      }
+    ],
+    "capture_role": "Preserved worker fixture generation; integrator_final_replay below is authoritative for the current combined source commit.",
+    "integrator_final_replay": {
+      "commit": "e30488f4a1059a41f17cc8836b64fa7c901b95a9",
+      "libraries": {
+        "bsp_core.lib": "64d7abf17695d575186357b19f903d25a77a6cec506783d50d482e1a7b90ab80",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+      },
+      "result": {
+        "key": "device",
+        "passed": true,
+        "returncode": 0,
+        "source": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp",
+        "source_sha256": "82cc133af916b0849a84344c7e61cf173b66f9cd5c4dc91a523a90dee6af6265",
+        "inputs": [
+          "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp"
+        ],
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "compiler_arguments": [
+          "/nologo",
+          "/EHsc",
+          "/std:c++17",
+          "/W4",
+          "/WX",
+          "/O2",
+          "/Oy-",
+          "/MD",
+          "/Gy",
+          "/Gw",
+          "/fp:strict",
+          "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+          "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.cpp",
+          "/FoC:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.obj",
+          "/FeC:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.exe",
+          "/link",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+          "user32.lib",
+          "d3d9.lib",
+          "advapi32.lib",
+          "shell32.lib",
+          "/MANIFEST:EMBED",
+          "/SAFESEH:NO",
+          "/OPT:REF",
+          "/OPT:NOICF",
+          "/INCREMENTAL:NO",
+          "/BASE:0x00400000",
+          "/DYNAMICBASE:NO",
+          "/FIXED",
+          "/HEAP:65536,4096"
+        ],
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-current-device.log",
+        "log_sha256": "9e1b49dce29a6a49579c64cf32d8d67b61db32eac23c4ce1af9566f815824598",
+        "executable": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\aw_current_device_probe.exe",
+        "executable_sha256": "47459dbd0575c50b214ae411fcf44d4a8cb7a4de9e599186e02dd0cfb3906894",
+        "attempts": 1,
+        "retry_policy": "none",
+        "pass_lines": [
+          "PASS full B29670 original/source3 comparisons 24276 bytes 1599 events: actual HAL release/caps/CreateDevice/defaults/equal gamma/resources/dynamic VB+IB/nonempty one-node zero-stream tree/three actual retained2D+cube+volume records; software-cap+ignored-HRESULT variant; original FH3 early throw retains lifecycle lock. Empty logical/shader arrays, online0; no full concurrency/ABI/game claim."
+        ],
+        "worker_archive": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\worker_capture.zip",
+        "worker_archive_sha256": "fb94a5c405d3d707d8f10d9b6545572c3922002cd3b79c53724b6c8fb32f67f5",
+        "fixture_image_reservation": {
+          "generator": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\reserve_image_section.py",
+          "generator_sha256": "afd0708ea1a0b9919d9be00335134010f69a43a905e698eee2bfbb470e6eb8e1",
+          "record": {
+            "input_sha256": "bd4f100eac0d812ab60894512ded938ee4da4156f442f8e9e216f53202935d97",
+            "output_sha256": "47459dbd0575c50b214ae411fcf44d4a8cb7a4de9e599186e02dd0cfb3906894",
+            "image_base": "00400000",
+            "section_name": ".awslot",
+            "section_rva": "00026000",
+            "virtual_size": "009da000",
+            "inclusive_address_range": [
+              "00426000",
+              "00dfffff"
+            ],
+            "native_write_ranges": [
+              "00b20000..00b6ffff",
+              "00bf0000..00bfffff",
+              "00cb0000..00cbffff",
+              "00ce0000..00ceffff",
+              "00d10000..00d1ffff",
+              "00d50000..00d6ffff",
+              "00df0000..00dfffff"
+            ],
+            "raw_file_offset": 145920,
+            "raw_size": 512,
+            "characteristics": "c0000040",
+            "existing_section_bytes_unchanged": true,
+            "parent_native_bytes_unchanged": true,
+            "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+          },
+          "report_sha256": "6cadc1780f4af1c1662de7cf553b39e8bf822575b7902a92c0fa66b8ee670f49"
+        }
+      }
+    },
+    "image_reservation_validation": {
+      "status": "PASS current-library-only full-parent replay with fixture-owned image-loader reservation",
+      "source_commit": "e30488f4a1059a41f17cc8836b64fa7c901b95a9",
+      "source_checkout": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+      "original_fixture": "C:\\Users\\sqz269\\bsp-aw-device-recreation",
+      "original_fixture_files_unchanged": {
+        "probe.cpp": "392030705e4a7c48f8a476fd0bf144506b11c8bfe65aa6454c52a9606cde29a1",
+        "environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+        "recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+        "run.ps1": "6e82346cf75304eaffa582aa905a86abd068d14b70fdec38870605a84ed01cb1"
+      },
+      "source_diff": "image_reserved_source_diff.txt; universal-newline-normalized source text before and after reserve_original is verified identical",
+      "native_evidence": {
+        "entry": "00b29670",
+        "end_inclusive": "00b29b16",
+        "full_parent_bytes": 1191,
+        "captured_spans": [
+          {
+            "address": "0xb29670",
+            "length": 1191,
+            "sha256": "40bcbd2182d3da8c7ed3b77394c30d595c65a95cfa896432e76cd063afaa65e4",
+            "live_matches_installed": true,
+            "end_inclusive": "00b29b16"
+          },
+          {
+            "address": "0xcbd2f0",
+            "length": 21,
+            "sha256": "ca4ec119e89c59e6c700394f5a9fd5f0854ac20090a102608aa9025e7c891b7f",
+            "live_matches_installed": true,
+            "end_inclusive": "00cbd304"
+          },
+          {
+            "address": "0xdf5ac8",
+            "length": 44,
+            "sha256": "9a252e185bb5635eaa1451cdf67137be7e5bb110923fe2f5d7849537791a3c62",
+            "live_matches_installed": true,
+            "end_inclusive": "00df5af3"
+          },
+          {
+            "address": "0xd5f0a8",
+            "length": 316,
+            "sha256": "bd602fc1258e6ea0848d349d6bc04a86bd86246765fdb62f12b739bf9ac0c92f",
+            "live_matches_installed": true,
+            "end_inclusive": "00d5f1e3"
+          },
+          {
+            "address": "0xd61948",
+            "length": 48,
+            "sha256": "da172f4cfec213fd950f49b8e79547fe13d185cb910bd8c9c04a0225f54a9fdc",
+            "live_matches_installed": true,
+            "end_inclusive": "00d61977"
+          },
+          {
+            "address": "0xd61870",
+            "length": 48,
+            "sha256": "67eb81d8c8d65b457567c8630765cc63bed6ce7ce5ca00b4468dab30cfd312e2",
+            "live_matches_installed": true,
+            "end_inclusive": "00d6189f"
+          },
+          {
+            "address": "0xd618b0",
+            "length": 48,
+            "sha256": "aba2031da698177d20ce472833c85b5a633bd2f517c3cdcfb06e2888459b3632",
+            "live_matches_installed": true,
+            "end_inclusive": "00d618df"
+          },
+          {
+            "address": "0xd619a0",
+            "length": 68,
+            "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+            "live_matches_installed": true,
+            "end_inclusive": "00d619e3"
+          },
+          {
+            "address": "0xd62ad0",
+            "length": 32,
+            "sha256": "a30b2ff83902dc151ecf13b91fde3cc5ea8af297cd98a50488e62891c2ef24ad",
+            "live_matches_installed": true,
+            "end_inclusive": "00d62aef"
+          },
+          {
+            "address": "0xd61e10",
+            "length": 144,
+            "sha256": "6980fa71cea447ce3de5a823a84f0c43489eabe289e20dae98e5142f0f41adfd",
+            "live_matches_installed": true,
+            "end_inclusive": "00d61e9f"
+          },
+          {
+            "address": "0xd61d6c",
+            "length": 48,
+            "sha256": "a805cc75a6a31a849987d7cb0b47d255324d14aecea650897153021d8d00591a",
+            "live_matches_installed": true,
+            "end_inclusive": "00d61d9b"
+          },
+          {
+            "address": "0xd61de0",
+            "length": 44,
+            "sha256": "94759e67f346471cd1dace5cc8e7e77b1d0736d4abc62c6fe220387ac398b8ec",
+            "live_matches_installed": true,
+            "end_inclusive": "00d61e0b"
+          },
+          {
+            "address": "0xd62af4",
+            "length": 12,
+            "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+            "live_matches_installed": true,
+            "end_inclusive": "00d62aff"
+          },
+          {
+            "address": "0xd5e600",
+            "length": 8,
+            "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+            "live_matches_installed": true,
+            "end_inclusive": "00d5e607"
+          },
+          {
+            "address": "0xd642c0",
+            "length": 52,
+            "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+            "live_matches_installed": true,
+            "end_inclusive": "00d642f3"
+          },
+          {
+            "address": "0xd15ad8",
+            "length": 8,
+            "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+            "live_matches_installed": true,
+            "end_inclusive": "00d15adf"
+          }
+        ],
+        "span_count": 16,
+        "original_execution": {
+          "mapped_original": "Complete original B29670 (including alignment gaps), original CBD2F0..CBD2FA unwind, CBD2FB..CBD304 handler, DF5AC8 map/DF5AD0 FuncInfo; saved profiles contain original numeric values.",
+          "operand_relocations": [
+            {
+              "address": 11703935,
+              "expected": 13357819,
+              "instruction": "push 0xcbd2fb"
+            },
+            {
+              "address": 11703955,
+              "expected": 17356508,
+              "instruction": "cmp byte ptr [0x108d6dc], 0"
+            },
+            {
+              "address": 11704052,
+              "expected": 17356084,
+              "instruction": "mov eax, dword ptr [0x108d534]"
+            },
+            {
+              "address": 11704059,
+              "expected": 17356080,
+              "instruction": "mov edi, 0x108d530"
+            },
+            {
+              "address": 11704084,
+              "expected": 17356084,
+              "instruction": "mov ebx, dword ptr [0x108d534]"
+            },
+            {
+              "address": 11704092,
+              "expected": 17356080,
+              "instruction": "cmp edi, 0x108d530"
+            },
+            {
+              "address": 11704402,
+              "expected": 16296936,
+              "instruction": "cmp dword ptr [0xf8abe8], 0"
+            },
+            {
+              "address": 11704679,
+              "expected": 16296936,
+              "instruction": "cmp dword ptr [0xf8abe8], 0"
+            },
+            {
+              "address": 11704697,
+              "expected": 17356084,
+              "instruction": "mov edx, dword ptr [0x108d534]"
+            },
+            {
+              "address": 11704704,
+              "expected": 17356080,
+              "instruction": "mov edi, 0x108d530"
+            },
+            {
+              "address": 11704724,
+              "expected": 17356084,
+              "instruction": "mov ebx, dword ptr [0x108d534]"
+            },
+            {
+              "address": 11704732,
+              "expected": 17356080,
+              "instruction": "cmp edi, 0x108d530"
+            },
+            {
+              "address": 11705061,
+              "expected": 17356508,
+              "instruction": "cmp byte ptr [0x108d6dc], 0"
+            }
+          ],
+          "relocation_count": 13,
+          "relocation_roles": "Two actual mode-byte operands; eight tree-header/head identity operands; two online gate operands; one EH registration to a host-image jump-only trampoline. Each original operand checked before relocation. Parent postimage verified against original bytes plus only these thirteen DWORD changes.",
+          "dependency_bridges": "Native relative/virtual calls enter narrow ABI adapters to COMPLETE CURRENT source providers for frame/binding/dynamic/resource/cache/default-state/gamma/hardware/retained work. No unresolved native call returns success. Import IAT cells hold real EnterCriticalSection/LeaveCriticalSection; host __CxxFrameHandler3 handles the explicitly tested native exception.",
+          "scope": "Parent composition differential, not independent original execution of every provider. General FH3/SEH and native caller ABI equivalence remain unproved."
+        },
+        "copied_recreation_bytes_header_sha256": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533"
+      },
+      "source_pins": [
+        {
+          "path": "src/native_renderer_device_recreation_actual.cpp",
+          "sha256": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473"
+        },
+        {
+          "path": "include/bsp/native_renderer_device_recreation_actual.hpp",
+          "sha256": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7"
+        },
+        {
+          "path": "src/native_renderer_stop_pipeline.cpp",
+          "sha256": "169e182a68df17af62d96c3bd865c4fce49cb8b36c1b95d8e299eb592e713392"
+        },
+        {
+          "path": "include/bsp/native_renderer_stop_pipeline.hpp",
+          "sha256": "2acbc73f5b1885e169110a551754244d8cc1419db4b2e7866405a31ca7a6813b"
+        },
+        {
+          "path": "src/native_texture_2d_retained_recreation.cpp",
+          "sha256": "ad4e3cdf8473d7138698fc0143037e9bfe0c014154ba5c54783f33b53bbad0de"
+        },
+        {
+          "path": "include/bsp/native_texture_2d_retained_recreation.hpp",
+          "sha256": "4c448a59c606b549a5bcd2e807f19c2b5187ca6a3efd553d1d7cc2773cb75a32"
+        },
+        {
+          "path": "src/native_cube_volume_retained_recreation.cpp",
+          "sha256": "3b0cbefbf760396eba20738f3da11325655a617c314b59d5cb84865067a217ab"
+        },
+        {
+          "path": "include/bsp/native_cube_volume_retained_recreation.hpp",
+          "sha256": "99e5f284d55f411ee0318316bab67c80bccc30913b9fe9b67047a1302394e4f1"
+        }
+      ],
+      "libraries": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "sha256": "64d7abf17695d575186357b19f903d25a77a6cec506783d50d482e1a7b90ab80"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        }
+      ],
+      "build": {
+        "source_inputs": [
+          "image_reserved_probe.cpp"
+        ],
+        "header_inputs": [
+          "environment.hpp",
+          "recreation_bytes.hpp",
+          "current root include/bsp"
+        ],
+        "strict_flags": "/EHsc /std:c++17 /W4 /WX /O2 /Oy- /MD /Gy /Gw /fp:strict",
+        "link_libraries": "current bsp_core.lib bsp_lua511.lib bsp_zlib121.lib user32.lib d3d9.lib advapi32.lib shell32.lib",
+        "link_options": "/MANIFEST:EMBED /SAFESEH:NO /OPT:REF /OPT:NOICF /INCREMENTAL:NO /BASE:0x00400000 /DYNAMICBASE:NO /FIXED /HEAP:65536,4096",
+        "PE_generator": "python reserve_image_section.py <absolute-owned-exe-path>",
+        "script": "run_image_reserved.ps1 [-Root current-source-checkout] [-LibraryRoot current-library-checkout]; default links current libraries only; optional -WorkerSource is explicit and was not used",
+        "compiler": "MSVC14.51.36231 Hostx64/x86; SDK10.0.26100.0"
+      },
+      "allocation_diagnosis": {
+        "logs": [
+          "diagnostic.log",
+          "diagnostic-v2.log"
+        ],
+        "observed_before_original_execution": true,
+        "representative_heap_segment": {
+          "page": "00b20000",
+          "allocation_base": "00a60000",
+          "committed_prefix_bytes": 73728,
+          "remaining_reserved_bytes": 974848,
+          "GetProcessHeap": "00a50000",
+          "raw_header_dword_08": "ffeeffee",
+          "raw_header_dword_18": "00a50000",
+          "raw_header_dword_1c": "00a60000",
+          "interpretation": "Heap-segment signature and owner/base fields match the default heap and allocation. Heap handle equality alone misses its secondary segments; this interpretation is based on the captured header, not a documented ownership-query API."
+        },
+        "other_private_reservation": {
+          "allocation_base": "00a00000",
+          "extent_bytes": 2097152,
+          "current_x86_stack_allocation_base_different": true,
+          "owner": "Unresolved; 64-bit pointer-shaped data is insufficient to name its owner."
+        },
+        "anonymous_readonly_mappings": {
+          "examples": [
+            "00bf0000 allocation00bf0000 size16384",
+            "00cb0000 allocation00c90000 size40960"
+          ],
+          "type": "MEM_MAPPED",
+          "GetMappedFileName_result": 0,
+          "module_name": "none",
+          "owner": "Unresolved; no assertion that these are NLS or other specific components."
+        },
+        "limit": "No foreign allocation was unmapped, modified, or reused. All rejected reservation launches exited before original execution."
+      },
+      "image_reservation": {
+        "input_sha256": "bfc201a8494348be90ad24f2a4bf91f4c17b687d72fc44257db49f1f25f91fdb",
+        "output_sha256": "ba5afd2d1baf371631e1945a78bc58a09407d8508dd1735bb7c9f37cc635059c",
+        "image_base": "00400000",
+        "section_name": ".awslot",
+        "section_rva": "00026000",
+        "virtual_size": "009da000",
+        "inclusive_address_range": [
+          "00426000",
+          "00dfffff"
+        ],
+        "native_write_ranges": [
+          "00b20000..00b6ffff",
+          "00bf0000..00bfffff",
+          "00cb0000..00cbffff",
+          "00ce0000..00ceffff",
+          "00d10000..00d1ffff",
+          "00d50000..00d6ffff",
+          "00df0000..00dfffff"
+        ],
+        "raw_file_offset": 145920,
+        "raw_size": 512,
+        "characteristics": "c0000040",
+        "existing_section_bytes_unchanged": true,
+        "parent_native_bytes_unchanged": true,
+        "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+      },
+      "ownership_checks": "Own module at00400000, named .awslot section covering every native page through00dfffff, VirtualQuery State=MEM_COMMIT Type=MEM_IMAGE AllocationBase=own module for each of12 pages. Only then VirtualProtect owned native ranges to executable read/write. No VirtualAlloc retry or foreign-page reuse.",
+      "PE_integrity": "Generator verifies every original section raw byte and all original executable bytes except NumberOfSections, initialized-data size, SizeOfImage, checksum, and the unused new-section header remain unchanged. It appends a marker plus zero-filled fixture-owned section data.",
+      "results": {
+        "comparisons": 3,
+        "postimage_bytes_per_comparison": 8092,
+        "postimage_bytes_total": 24276,
+        "event_words_total": 1599,
+        "scenarios": [
+          {
+            "id": 0,
+            "mode": 0,
+            "event_words": 798,
+            "coverage": "Complete normal parent; real HAL caps choose hardware vertex processing; original GetCaps/CreateDevice HRESULTs; current real device, surface/buffer outputs and texture pixels checked."
+          },
+          {
+            "id": 1,
+            "mode": 1,
+            "event_words": 798,
+            "coverage": "Complete normal parent; actual GetCaps forwarded, controlled DevCaps clears hardware bit; software vertex processing chosen. GetCaps and CreateDevice return injected E_FAIL AFTER real outputs are written; parent ignores HRESULT. Actual optional and lifecycle lock depth returns zero."
+          },
+          {
+            "id": 2,
+            "mode": 1,
+            "event_words": 3,
+            "coverage": "Actual first texture unbind publishes logical null and decrements actual count; current device SetTexture injects throw82. Original FH3 action releases optional guard only; lifecycle lock remains acquired at depth1, later resource/device work never executes."
+          }
+        ],
+        "COM": "Real NVIDIA GeForce RTX5090 HAL. Each old device carries one fixture anchor AddRef, so its hook table can be restored after the renderer releases its own reference. New device is really created using current actual output and D3DPRESENT_PARAMETERS cells. No fake device or successful COM substitute.",
+        "resource_coverage": "Full frame-target bind(null), binding reset, dynamic release, ready resource release/cache clear, device release/caps/create, render state A1 plus19 defaults and140 sampler calls, enabled finite equal-request gamma, default color/depth reacquisition, real pooled dynamic VB/IB recreation.",
+        "tree": "One actual sentinel and one node, actual owner/head identity, value+20 raw44h hardware owner produced by complete B60CB0 with zero input streams. Full release, checked iterator increment, full B60A10 empty-declaration COM attempt and stride recomputation. This is not multi-node/rotation/diagnostic-stream coverage.",
+        "retained_records": "Three actual2Ch records with actual owners at+28:2D D61948, cube D61870, volume D618B0. Full current retained release and recreation providers use real D3DX9_40 and actual BEFA40 retained-memory streams/backings. Actual restored2D/cube/volume pixels are hashed and compared. Original retained object/byte counters return zero after fixture-owned cleanup.",
+        "postimage_normalization": "Renderer device+1A10, dynamic buffer+28 and retained texture+10 pointers normalize only their known COM identities. Hardware+40 normalizes presence. Raw renderer/cache/flags/counters, retained metadata, dynamic fields and guard/lifecycle depth otherwise compare unchanged. Actual COM outputs also checked separately for nonnull/real resource access.",
+        "exception_cleanup": "Fixture snapshots native lifecycle depth1 after catching throw82, then explicitly releases its own lifecycle critical section outside the reconstructed call. Production adds no such cleanup."
+      },
+      "launch_reproducibility": {
+        "initial_successful_launches": 1,
+        "independent_repeated_launches": 12,
+        "repeat_passes": 12,
+        "final_strict_rebuild_and_replay_passes": 1,
+        "unique_scenarios": 3,
+        "not_additional_behavioral_coverage": "All launches execute the same3 bounded cases; counts per launch remain24276 bytes/1599 events."
+      },
+      "limits": [
+        "Logical vertex/index and vertex/pixel shader owner arrays are empty.",
+        "Online publication gate is actual zero; XLive adapter is unconsumed.",
+        "Gamma is enabled and receives the finite value already cached; power dispatch/ramp generation is unconsumed and no monitor gamma is changed.",
+        "Tree covers one zero-stream hardware owner, not nonempty declaration diagnostics or arbitrary tree mutation.",
+        "No full worker/thread lifecycle, general concurrency, original ABI replacement, gameplay or visual parity claim.",
+        "The loader-owned section is a fixture environment change, not a production implementation change or native drop-in ABI claim.",
+        "Initial noncontiguous image was rejected before process creation; see noncontiguous-loader-failure.json.",
+        "Unchanged fixture case code rewrites its existing three inputN.bin artifact files with the same generated bytes in the original fixture directory. Source/header/run files and original worker archive remain untouched."
+      ],
+      "final_executable": {
+        "path": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4\\image_reserved_probe.exe",
+        "sha256": "ba5afd2d1baf371631e1945a78bc58a09407d8508dd1735bb7c9f37cc635059c"
+      },
+      "artifacts": [
+        {
+          "path": "DIAGNOSIS.md",
+          "bytes": 2629,
+          "sha256": "569062750e8da7e3d878c4b28ed3f2a0e2ae2d430861a2c5a9bfd0e3ad86ec00"
+        },
+        {
+          "path": "diagnostic-v2.log",
+          "bytes": 1726,
+          "sha256": "8701fb6f626e0371b681a807c725bd16e5a2e3a184a8d97d7b2888fa431b485d"
+        },
+        {
+          "path": "diagnostic.log",
+          "bytes": 806,
+          "sha256": "559ad67a4fadf425af7c2daeb04567575df20c47669e562f184c70f70a5bc38d"
+        },
+        {
+          "path": "diagnostic_probe.cpp",
+          "bytes": 31032,
+          "sha256": "62ac34f63467bd933d56a37f4fd23f62a3041871598d3cbbc2f386f583d7781a"
+        },
+        {
+          "path": "diagnostic_probe.exe",
+          "bytes": 152064,
+          "sha256": "4599af994d8f1e3c3c5c48b41f07d974aa6b56fd15d655c63f8cce85598d4473"
+        },
+        {
+          "path": "diagnostic_probe.obj",
+          "bytes": 254086,
+          "sha256": "0bee49a0dd736a3d5d333c569858823889e50628e499e12e2f575e31624d3eeb"
+        },
+        {
+          "path": "environment.hpp",
+          "bytes": 5157,
+          "sha256": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb"
+        },
+        {
+          "path": "finalize_diagnostic.py",
+          "bytes": 7285,
+          "sha256": "4b5e63b99477bd7685625c12dab2ce13af1dbf61f1404ab3222c1820ae58bcc9"
+        },
+        {
+          "path": "image-reserved-final.log",
+          "bytes": 743,
+          "sha256": "9e1b49dce29a6a49579c64cf32d8d67b61db32eac23c4ce1af9566f815824598"
+        },
+        {
+          "path": "image-reserved-first.log",
+          "bytes": 77,
+          "sha256": "e3beea403dc98a50e56db9b5bb7842a0d6f2037dd2154423e86ff5d88e60e2f1"
+        },
+        {
+          "path": "image-reserved-repeat-01.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-02.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-03.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-04.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-05.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-06.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-07.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-08.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-09.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-10.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-11.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeat-12.log",
+          "bytes": 678,
+          "sha256": "a27d3f12d8bdee34c806e904da22b8e201ca65307421141e8e69f2142442c475"
+        },
+        {
+          "path": "image-reserved-repeats.json",
+          "bytes": 2058,
+          "sha256": "f9d80184e701b00cfe8978317105342974d044e8ac871683525ef2792fbccacb"
+        },
+        {
+          "path": "image-reserved-second.log",
+          "bytes": 743,
+          "sha256": "9e1b49dce29a6a49579c64cf32d8d67b61db32eac23c4ce1af9566f815824598"
+        },
+        {
+          "path": "image_reserved_probe.cpp",
+          "bytes": 30282,
+          "sha256": "82cc133af916b0849a84344c7e61cf173b66f9cd5c4dc91a523a90dee6af6265"
+        },
+        {
+          "path": "image_reserved_probe.exe",
+          "bytes": 146432,
+          "sha256": "ba5afd2d1baf371631e1945a78bc58a09407d8508dd1735bb7c9f37cc635059c"
+        },
+        {
+          "path": "image_reserved_probe.image_reservation.json",
+          "bytes": 866,
+          "sha256": "2708823fb4232401e7d7d657f4433efa870db821617778a95c02bb99cb3c15f9"
+        },
+        {
+          "path": "image_reserved_probe.obj",
+          "bytes": 252998,
+          "sha256": "132ed05ea2ef14e935e152a8a51015787a02764dc3dfb75c7c82316911214ba1"
+        },
+        {
+          "path": "image_reserved_source_diff.txt",
+          "bytes": 2552,
+          "sha256": "529d8b5dafd7dc297093e275e0d5ff0d5f4fd74fc38b98380c0a4a2ad1b5e4d1"
+        },
+        {
+          "path": "image_reserved_source_proof.json",
+          "bytes": 334,
+          "sha256": "95c7030bda1d5a7578c1b637b20d56e68bcf91a1adf690c937e9966a1e76a1b8"
+        },
+        {
+          "path": "noncontiguous-loader-failure.json",
+          "bytes": 745,
+          "sha256": "5308fa162a312fdff9cd2f3589d42ebc5ed9b5aeb659dd96e38f6752bf311752"
+        },
+        {
+          "path": "original_pins.json",
+          "bytes": 356,
+          "sha256": "b60e4d4804e998cc7289fc2177cafcd3100cc6aa1942e4749f6e6721d7cc168b"
+        },
+        {
+          "path": "prepare.py",
+          "bytes": 3268,
+          "sha256": "888afc830f71b0fece813f5e106ae26e9d2b16466a1f019ec724e3cc814bba59"
+        },
+        {
+          "path": "prepare_image_reserved.py",
+          "bytes": 3425,
+          "sha256": "7e7699b0fe8ff0cbcaad0aa05528411d8c9b0a508e87b62d8a21b96a3624d085"
+        },
+        {
+          "path": "recreation_bytes.hpp",
+          "bytes": 11951,
+          "sha256": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533"
+        },
+        {
+          "path": "reserve_image_section.py",
+          "bytes": 3138,
+          "sha256": "afd0708ea1a0b9919d9be00335134010f69a43a905e698eee2bfbb470e6eb8e1"
+        },
+        {
+          "path": "run_diagnostic.ps1",
+          "bytes": 1951,
+          "sha256": "16090f1686b8462b4613e4ae893d54a379eaa15996a87e36afdb21e2d6ec58fb"
+        },
+        {
+          "path": "run_image_reserved.ps1",
+          "bytes": 2024,
+          "sha256": "bbae630f12b4a8a4d7568ad6c3e215e00eeec267a6d9bc112c2fe01321450947"
+        }
+      ]
+    },
+    "pre_execution_collision_logs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-device-preexecution-collisions-e30488f4.log",
+        "sha256": "6ae192b659358dc302b4cbfdd3d735a27d7971987f1d315bcfd49f43567f3ea8",
+        "original_routine_executed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-device-fixed-preexecution-collisions-e30488f4.log",
+        "sha256": "fbe686c730816c582fb6b20ae34c32a9c9ae21a9f1150f27c5ee0e10c061ae28",
+        "original_routine_executed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\aw-device-pwsh-retry-e30488f4.log",
+        "sha256": "3a79b7eb594f2da5cb22887146472cea536e0f27187093d33b048d9570299afe",
+        "original_routine_executed": false
       }
     ]
   },
