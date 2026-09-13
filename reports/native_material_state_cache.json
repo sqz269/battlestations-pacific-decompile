@@ -234,7 +234,7 @@
     "fixture_sources": {
       "local/native_state_cache_probe.cpp": "a2f5b8e2a8d41b03e6f3d8be1869b9a9c5bf41f0168902c22f8b7ae2b7c38948",
       "local/state_cache_original.hpp": "ae6c8200d6144dcd7c0fc2209bc55ee9c1afdef9a6ed049dd9466c6c7ca236be",
-      "local/run_native_state_cache_probe.ps1": "5bd02d3e8eeca062fbe9163d441f03b577e0852fdc464b5d63f94bcccb8cca71"
+      "local/run_native_state_cache_probe.ps1": "533d41636176f23bf64c14a89248f5c862acbee88d17b90f1b58412c59b26540"
     },
     "native_flow_repair_sha256": "2b1e2b72fff21fe903d04e8d741286cb3849575de2d43cf958aacec52394d88e",
     "abi_compatible": false,
@@ -245,5 +245,11 @@
   "source_sha256": {
     "include/bsp/native_material_state_cache.hpp": "4079a8a77f751e920c616234e4aa8ace10551b1d2afd4c12995d34617ed00c8f",
     "src/native_material_state_cache.cpp": "6d2be9e41ba9876728707cbebcff1d9b642180a02e92e77dc2c5bb15c0ac69ce"
+  },
+  "integrated_checkpoint": {
+    "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report": "reports/native_loader_integration.json",
+    "default_registration_complete": false,
+    "promoted_to_main": false
   }
 }

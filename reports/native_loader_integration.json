@@ -1,0 +1,86 @@
+{
+  "packet": "orch5_loader_integration",
+  "status": "isolated_worktree_checkpoint_default_registration_and_promotion_pending",
+  "branch": "agent/orch5-20260911",
+  "exact_validated_code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+  "main_at_checkpoint": "58715ee89f77b5136085070d7cc4c081b0ff4de2",
+  "promoted_to_main": false,
+  "components": {
+    "surface_string_domain": "41e22da9",
+    "state_caches": "dd837838",
+    "shader_reader": "0ea46a3a",
+    "vfs_name_resolution": "8992dd4b",
+    "five_child_adapter": "c5e1427f"
+  },
+  "reviewed_dependency_commits": [
+    "7f688487",
+    "7cde1c94",
+    "42d7a7be"
+  ],
+  "source_sha256": {
+    "include/bsp/native_surface_owner.hpp": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45",
+    "include/bsp/native_material_state_cache.hpp": "4079a8a77f751e920c616234e4aa8ace10551b1d2afd4c12995d34617ed00c8f",
+    "src/native_material_state_cache.cpp": "6d2be9e41ba9876728707cbebcff1d9b642180a02e92e77dc2c5bb15c0ac69ce",
+    "include/bsp/native_shader_descriptor_reader.hpp": "30d52e53bf0bced56cfced728097595404b2146445569185a393d109c874cf2c",
+    "src/native_shader_descriptor_reader.cpp": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9",
+    "include/bsp/native_vfs_name_resolution.hpp": "149e85bbc3e03e968a28ffad46a23d4afc7e10c3986d30f9591a6894e958378a",
+    "src/native_vfs_name_resolution.cpp": "3518ea9da4307dfe6f646f02ae77690577abf7e38d83811aa498e2cbd48acec5",
+    "include/bsp/native_material_effect_runtime.hpp": "47103ca08b7b991e60a54d9b4addaa1a311827f91c9c51c601385f5e603cae41",
+    "src/native_material_effect_runtime.cpp": "21cbb29850648a0d2e0fc06e0aeb06030797d47d34e8888b13042ee6490c4927"
+  },
+  "validation": {
+    "build": "MSVC Win32 Release /W4 /WX bsp_core and existing targets; temporary additive CMAKE_PROJECT_INCLUDE",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "direct_call_rows_checked": 463,
+    "direct_call_rows_failed": 0,
+    "state_fixture": "All nine original machine bodies, reordered/directional duplicate rows, initial growth, hit transfer, statistic writes and 36 canonical terminals. Hit-time terminal reentry and populated growth not exercised.",
+    "loader_fixture": "Actual BDF4C0 direct physical resolution and gated SRCH builder, then two installed B43B00 shader parses in the same actual VFS/Lua/string domains and canonical shutdown.",
+    "vfs_alternate_candidate_paths_fixture": false,
+    "effect_adapter_runtime_fixture": false,
+    "full_gpu_texture_load": false,
+    "full_cold_effect_load": false,
+    "native_abi_compatible": false,
+    "game_validated": false
+  },
+  "analysis": {
+    "annotations_saved_and_read_back": 19,
+    "state_cache_free_flow_repairs": 3,
+    "lua_tail_repaired": "B69D40..B69DE4; cleared B69DC8 CALL_RETURN and recreated full body preserving prior name/comment; 55 instructions and zero gaps verified.",
+    "exports_refreshed": 19,
+    "artifacts": {
+      "local/native-loader-validation-pin.json": "3ae23e0007276bca0a41730cb503179606fef36e4429345e7f2bcb8c51258357",
+      "local/build_native_loader_validation.ps1": "43f0192c5af9f4b4b5b3b606c14b267dae981f11249b7b357898796343990277",
+      "local/native-loader-validation.cmake": "d3db9e72c5dea6437e6a4e00e61af9102282864ec570535948f720a62a524e1f",
+      "local/native-loader-combined-build.log": "1ada5b723447e18ba6a05897d0708c1f5d54afd21f48a974c1bc1bce24ad117b",
+      "local/native-loader-call-verification.log": "1f411e145a626cf4f37b8417712970e3c675f6dac3d4092edba39df4f54a3b2b",
+      "local/native_loader_shader_probe.cpp": "a453e9878dd4232b24166110d18e40766d55827270570adc7372c95481d7528d",
+      "local/run_native_loader_shader_probe.ps1": "bd9fadcb7c378f652a7a9f96b7189a88c00c514ffc65812529d7c81ce320015c",
+      "local/native-loader-shader-compile.log": "8b83e716dd974530bcca66dd0def97ee6161e48f1f8bc42ec2f9986fb20959b8",
+      "local/native-loader-shader-probe.log": "2eac7161d43d6ca8ee78360a428c937537b24fd614e1bd7f6969a2e1e4f78b72",
+      "local/native_state_cache_probe.cpp": "a2f5b8e2a8d41b03e6f3d8be1869b9a9c5bf41f0168902c22f8b7ae2b7c38948",
+      "local/state_cache_original.hpp": "ae6c8200d6144dcd7c0fc2209bc55ee9c1afdef9a6ed049dd9466c6c7ca236be",
+      "local/run_native_state_cache_probe.ps1": "533d41636176f23bf64c14a89248f5c862acbee88d17b90f1b58412c59b26540",
+      "local/native-state-cache-registered-probe.log": "2050c2fffa15d4ffab78df2a011721a210a017b641ffb4c5a75fd3907f08204a",
+      "local/native-material-state-cache-flow.json": "2b1e2b72fff21fe903d04e8d741286cb3849575de2d43cf958aacec52394d88e",
+      "local/native-shader-reader-tail-flow.json": "5c9ba404ed6fc073625e60c9d9fea7df52f4f3cef31463485f47c571a40eb25c",
+      "local/native-shader-reader-tail-definition.json": "45e2b5293825b0cf96b8245a6930febb3f51c5835a529df697f9dac5864cdb85",
+      "local/ghidra-annotations-20260913T061633Z.json": "726ae1b1c348e3cbe788a42502a729aab89ad4476202784ea83ef6e4ba87a7ce",
+      "local/native-loader-comments.json": "4e6e96b1a64255f2b40e3e9f43c514d0b13a0aa359647f3da7badac0c5aa2506",
+      "local/native-loader-export-refresh.log": "bbc5d175e51fea6dd334420fbfa27e576b4db4cd9354988b37da242a658a363e",
+      "local/loader-native-workers/shader/manifest.json": "d3efe1ce2d9d42f08e07f17cdc51617063c22365214d070cbcfe162d16d97368",
+      "local/loader-native-workers/vfs/manifest.json": "05a73227356fd68514449556e37822e06deb137eac2f3f8168c191507a15b3a7"
+    }
+  },
+  "default_registration_pending": [
+    "src/native_shader_descriptor_reader.cpp",
+    "src/native_vfs_name_resolution.cpp",
+    "src/native_material_effect_runtime.cpp"
+  ],
+  "registry_lease_observation": "cmake/startup.cmake: agent/orch6-unit-neighbour-fields-o:orch6_unit_neighbour_registration_o until 2026-09-13T12:30",
+  "active_work": {
+    "texture": "b699b9a6 not merged; author correcting retained resolver name-header lifetime and per-resolution child ownership after independent review.",
+    "compiler": "Independent orch5-program-compiler packet implementing actual B3C3A0 wrapper/builder/field prefix; required native compiler tail remains explicit."
+  }
+}
