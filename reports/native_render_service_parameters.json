@@ -1,0 +1,969 @@
+{
+  "module": "native_render_service_parameters",
+  "status": "complete_raw_source_strict_win32_compiled_order_baseline_build_and_original_byte_fixture_checked",
+  "provenance": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b0cd80",
+      "end_inclusive": "00b0ceab",
+      "end_exclusive": "00b0ceac",
+      "bytes": 300,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "name": "initialize_native_render_service_parameters_00b0cd80",
+      "cpp_symbol": "initialize_native_render_service_parameters_00b0cd80",
+      "source": "src/native_render_service_parameters.cpp",
+      "header": "include/bsp/native_render_service_parameters.hpp",
+      "proposed_ghidra_name": "BSP_RenderService_InitializeParameters",
+      "old_ghidra_name": "FUN_00b0cd80",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "original_abi": "ECX writable 68h subobject; zero stack argument slots; EAX original receiver; plain RET; no calls/EH",
+      "native_prototype": "void * BSP_RenderService_InitializeParameters(void)",
+      "native_calling_convention": "__thiscall",
+      "new_native_body": true,
+      "evidence": "Complete 49-instruction native body; 23 live/disk spans cover 300 body bytes, 39 caller bytes and 21 actual constant words. Source retains 21 ordered current MOVSS reads and 26 nonascending stores with held-register reuse. Stable borrowed reference bindings are distinct from the current referent words. Parameter meanings are provisional. See docs/NATIVE_RENDER_SERVICE_PARAMETERS.md and reports/native_render_service_parameters.json."
+    }
+  ],
+  "native_structure": {
+    "instruction_count": 49,
+    "basic_blocks": 1,
+    "direct_calls": 0,
+    "indirect_calls": 0,
+    "tail_calls": 0,
+    "eh": false,
+    "no_calls_evidence": "Full 49-line listing has no CALL/JMP/PUSH/POP/FS access; entry begins MOVSS and ends RET. Numeric call-row count 0 is corroborated by the entire listing."
+  },
+  "producer": {
+    "function": "00b14a10",
+    "receiver_formed_at": "00b14bcd",
+    "call_site": "00b14bef",
+    "callee": "00b0cd80",
+    "receiver": "LEA ECX,[ESI+2AC], ESI actual 6ACh render service; three sibling stores intervene before CALL",
+    "owned_destination_range_in_service": "2ac..313",
+    "native_caller_span": "00b14bcd..00b14bf3",
+    "caller_complete": false
+  },
+  "live_disk_spans": [
+    {
+      "start": "00b0cd80",
+      "end_inclusive": "00b0ceab",
+      "length": 300,
+      "sha256": "0fe62ead98d1ed532845c42ba723ec9162ee08835fd5320eac6abfc2df5a35b1",
+      "live_equals_original_pe": true,
+      "file": "original_body.bin"
+    },
+    {
+      "start": "00b14bcd",
+      "end_inclusive": "00b14bf3",
+      "length": 39,
+      "sha256": "42d31e706e20d57f4648d3966b25187d8efd60197995bb6f2c864963aca6d672",
+      "live_equals_original_pe": true,
+      "file": "caller_span.bin"
+    },
+    {
+      "start": "00ce4788",
+      "end_inclusive": "00ce478b",
+      "length": 4,
+      "sha256": "e4d11efbb477a76acb589cc3c6d78f8067d35f26293029ec6dc2bda8df62bff4",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce4788.bin"
+    },
+    {
+      "start": "00d5e138",
+      "end_inclusive": "00d5e13b",
+      "length": 4,
+      "sha256": "4fdaa8b2d80c616918d3322d61756a3e9dad90d5f3d9809df1e0f2ec913b5deb",
+      "live_equals_original_pe": true,
+      "file": "constant_00d5e138.bin"
+    },
+    {
+      "start": "00ce3854",
+      "end_inclusive": "00ce3857",
+      "length": 4,
+      "sha256": "ea2845900b5856c9bf354b1aa9761b5aa6888e5ed61738fe9579ca42bc0f6054",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3854.bin"
+    },
+    {
+      "start": "00d5e134",
+      "end_inclusive": "00d5e137",
+      "length": 4,
+      "sha256": "a60095c850564375438e204f214ba9ce743365ceb84e0fdf2caec984fb94011c",
+      "live_equals_original_pe": true,
+      "file": "constant_00d5e134.bin"
+    },
+    {
+      "start": "00ce3850",
+      "end_inclusive": "00ce3853",
+      "length": 4,
+      "sha256": "fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3850.bin"
+    },
+    {
+      "start": "00ce3958",
+      "end_inclusive": "00ce395b",
+      "length": 4,
+      "sha256": "d88c86f15bbea365d658ad95a81d45367c465f7af6f7264fb077f01747ddc77d",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3958.bin"
+    },
+    {
+      "start": "00cef1b0",
+      "end_inclusive": "00cef1b3",
+      "length": 4,
+      "sha256": "2060717479ac6f067db7c552e2c30159ffaeb0e095ed455ced7e9c76194fb8bc",
+      "live_equals_original_pe": true,
+      "file": "constant_00cef1b0.bin"
+    },
+    {
+      "start": "00ce54a0",
+      "end_inclusive": "00ce54a3",
+      "length": 4,
+      "sha256": "5d96a77c55b4ac1eea2d77815396c4349292b85e3b07beaca6aff933e7ef8752",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce54a0.bin"
+    },
+    {
+      "start": "00ce7804",
+      "end_inclusive": "00ce7807",
+      "length": 4,
+      "sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce7804.bin"
+    },
+    {
+      "start": "00ce69c8",
+      "end_inclusive": "00ce69cb",
+      "length": 4,
+      "sha256": "45a6d738a7607576d3fe0862200bc67b10c12d5ed74167b4d5d5a708974c0f32",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce69c8.bin"
+    },
+    {
+      "start": "00ced318",
+      "end_inclusive": "00ced31b",
+      "length": 4,
+      "sha256": "ab96eeea9a263283efa7793337d5b8a40c2e82ae5ccfa9b09fb2b1c5e656097e",
+      "live_equals_original_pe": true,
+      "file": "constant_00ced318.bin"
+    },
+    {
+      "start": "00cf2548",
+      "end_inclusive": "00cf254b",
+      "length": 4,
+      "sha256": "a5f6cc1ea2cd7a665e0bd95bb1d25619d3a1a9ad0c9ee0ef4fdb7c1194e7fec6",
+      "live_equals_original_pe": true,
+      "file": "constant_00cf2548.bin"
+    },
+    {
+      "start": "00cef0b8",
+      "end_inclusive": "00cef0bb",
+      "length": 4,
+      "sha256": "d4c416901d43509af84d01d9b93a6862c7a404721e2321d442d33ed01594c38f",
+      "live_equals_original_pe": true,
+      "file": "constant_00cef0b8.bin"
+    },
+    {
+      "start": "00d7a2f0",
+      "end_inclusive": "00d7a2f3",
+      "length": 4,
+      "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
+      "live_equals_original_pe": true,
+      "file": "constant_00d7a2f0.bin"
+    },
+    {
+      "start": "00d5e130",
+      "end_inclusive": "00d5e133",
+      "length": 4,
+      "sha256": "5bb0feda72d6a05c3629516fc367fd6bee622110a8b03a29df56cd470c739f05",
+      "live_equals_original_pe": true,
+      "file": "constant_00d5e130.bin"
+    },
+    {
+      "start": "00ce3930",
+      "end_inclusive": "00ce3933",
+      "length": 4,
+      "sha256": "8502957747a29907927566be940a9b39fee0a15dd471ba428eb9eedd15aa80e7",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3930.bin"
+    },
+    {
+      "start": "00d5e12c",
+      "end_inclusive": "00d5e12f",
+      "length": 4,
+      "sha256": "471064aeb2e6c9f868880c228f5ee33eec82b175325d6cf4bb9b5db19b73c568",
+      "live_equals_original_pe": true,
+      "file": "constant_00d5e12c.bin"
+    },
+    {
+      "start": "00ce380c",
+      "end_inclusive": "00ce380f",
+      "length": 4,
+      "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce380c.bin"
+    },
+    {
+      "start": "00ce3800",
+      "end_inclusive": "00ce3803",
+      "length": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3800.bin"
+    },
+    {
+      "start": "00d7a24c",
+      "end_inclusive": "00d7a24f",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_equals_original_pe": true,
+      "file": "constant_00d7a24c.bin"
+    },
+    {
+      "start": "00ce3d34",
+      "end_inclusive": "00ce3d37",
+      "length": 4,
+      "sha256": "4f4b9b7d8b86633e2824e2f439819357b0cd010ab410ea1a691b12c5f94e91e0",
+      "live_equals_original_pe": true,
+      "file": "constant_00ce3d34.bin"
+    }
+  ],
+  "current_constant_words": [
+    {
+      "address": "00ce4788",
+      "bits": "41c00000",
+      "value": 24.0
+    },
+    {
+      "address": "00d5e138",
+      "bits": "3de38e39",
+      "value": 0.1111111119389534
+    },
+    {
+      "address": "00ce3854",
+      "bits": "40400000",
+      "value": 3.0
+    },
+    {
+      "address": "00d5e134",
+      "bits": "3caaaaab",
+      "value": 0.02083333395421505
+    },
+    {
+      "address": "00ce3850",
+      "bits": "40a00000",
+      "value": 5.0
+    },
+    {
+      "address": "00ce3958",
+      "bits": "40000000",
+      "value": 2.0
+    },
+    {
+      "address": "00cef1b0",
+      "bits": "3e555555",
+      "value": 0.2083333283662796
+    },
+    {
+      "address": "00ce54a0",
+      "bits": "3e4ccccd",
+      "value": 0.20000000298023224
+    },
+    {
+      "address": "00ce7804",
+      "bits": "3ecccccd",
+      "value": 0.4000000059604645
+    },
+    {
+      "address": "00ce69c8",
+      "bits": "3e99999a",
+      "value": 0.30000001192092896
+    },
+    {
+      "address": "00ced318",
+      "bits": "3c360b61",
+      "value": 0.011111111380159855
+    },
+    {
+      "address": "00cf2548",
+      "bits": "3bb60b61",
+      "value": 0.0055555556900799274
+    },
+    {
+      "address": "00cef0b8",
+      "bits": "3c088889",
+      "value": 0.008333333767950535
+    },
+    {
+      "address": "00d7a2f0",
+      "bits": "3dcccccd",
+      "value": 0.10000000149011612
+    },
+    {
+      "address": "00d5e130",
+      "bits": "3daaaaab",
+      "value": 0.0833333358168602
+    },
+    {
+      "address": "00ce3930",
+      "bits": "41a00000",
+      "value": 20.0
+    },
+    {
+      "address": "00d5e12c",
+      "bits": "3b888889",
+      "value": 0.004166666883975267
+    },
+    {
+      "address": "00ce380c",
+      "bits": "3fc00000",
+      "value": 1.5
+    },
+    {
+      "address": "00ce3800",
+      "bits": "3f000000",
+      "value": 0.5
+    },
+    {
+      "address": "00d7a24c",
+      "bits": "3f800000",
+      "value": 1.0
+    },
+    {
+      "address": "00ce3d34",
+      "bits": "40800000",
+      "value": 4.0
+    }
+  ],
+  "operation_schedule": [
+    {
+      "instruction": "00b0cd80",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00ce4788"
+    },
+    {
+      "instruction": "00b0cd88",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00d5e138"
+    },
+    {
+      "instruction": "00b0cd90",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00ce3854"
+    },
+    {
+      "instruction": "00b0cd9a",
+      "operation": "load",
+      "register": "XMM1",
+      "actual_constant": "00d5e134"
+    },
+    {
+      "instruction": "00b0cda2",
+      "operation": "store",
+      "offset": "00",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0cda6",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00ce3850"
+    },
+    {
+      "instruction": "00b0cdae",
+      "operation": "store",
+      "offset": "04",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0cdb3",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00ce3958"
+    },
+    {
+      "instruction": "00b0cdbb",
+      "operation": "store",
+      "offset": "18",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0cdc0",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00cef1b0"
+    },
+    {
+      "instruction": "00b0cdc8",
+      "operation": "store",
+      "offset": "30",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0cdcd",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00ce54a0"
+    },
+    {
+      "instruction": "00b0cdd5",
+      "operation": "store",
+      "offset": "08",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0cdda",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00ce7804"
+    },
+    {
+      "instruction": "00b0cde2",
+      "operation": "store",
+      "offset": "1c",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0cde7",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00ce69c8"
+    },
+    {
+      "instruction": "00b0cdef",
+      "operation": "store",
+      "offset": "34",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0cdf4",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00ced318"
+    },
+    {
+      "instruction": "00b0cdfc",
+      "operation": "store",
+      "offset": "0c",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0ce01",
+      "operation": "store",
+      "offset": "20",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0ce06",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00cf2548"
+    },
+    {
+      "instruction": "00b0ce0e",
+      "operation": "store",
+      "offset": "38",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0ce13",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00cef0b8"
+    },
+    {
+      "instruction": "00b0ce1b",
+      "operation": "store",
+      "offset": "4c",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0ce20",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00d7a2f0"
+    },
+    {
+      "instruction": "00b0ce28",
+      "operation": "store",
+      "offset": "24",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0ce2d",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00d5e130"
+    },
+    {
+      "instruction": "00b0ce35",
+      "operation": "store",
+      "offset": "3c",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0ce3a",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00ce3930"
+    },
+    {
+      "instruction": "00b0ce42",
+      "operation": "store",
+      "offset": "54",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0ce47",
+      "operation": "store",
+      "offset": "58",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0ce4c",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00d5e12c"
+    },
+    {
+      "instruction": "00b0ce54",
+      "operation": "store",
+      "offset": "10",
+      "register": "XMM1"
+    },
+    {
+      "instruction": "00b0ce59",
+      "operation": "load",
+      "register": "XMM1",
+      "actual_constant": "00ce380c"
+    },
+    {
+      "instruction": "00b0ce61",
+      "operation": "store",
+      "offset": "28",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0ce66",
+      "operation": "load",
+      "register": "XMM2",
+      "actual_constant": "00ce3800"
+    },
+    {
+      "instruction": "00b0ce6e",
+      "operation": "store",
+      "offset": "40",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0ce73",
+      "operation": "load",
+      "register": "XMM3",
+      "actual_constant": "00d7a24c"
+    },
+    {
+      "instruction": "00b0ce7b",
+      "operation": "store",
+      "offset": "5c",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0ce80",
+      "operation": "load",
+      "register": "XMM0",
+      "actual_constant": "00ce3d34"
+    },
+    {
+      "instruction": "00b0ce88",
+      "operation": "store",
+      "offset": "14",
+      "register": "XMM1"
+    },
+    {
+      "instruction": "00b0ce8d",
+      "operation": "store",
+      "offset": "2c",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0ce92",
+      "operation": "store",
+      "offset": "44",
+      "register": "XMM3"
+    },
+    {
+      "instruction": "00b0ce97",
+      "operation": "store",
+      "offset": "48",
+      "register": "XMM2"
+    },
+    {
+      "instruction": "00b0ce9c",
+      "operation": "store",
+      "offset": "50",
+      "register": "XMM1"
+    },
+    {
+      "instruction": "00b0cea1",
+      "operation": "store",
+      "offset": "60",
+      "register": "XMM0"
+    },
+    {
+      "instruction": "00b0cea6",
+      "operation": "store",
+      "offset": "64",
+      "register": "XMM3"
+    }
+  ],
+  "field_sources_in_store_order": [
+    {
+      "offset": "00",
+      "store_instruction": "00b0cda2",
+      "register": "XMM0",
+      "captured_constant": "00ce4788",
+      "capture_instruction": "00b0cd80",
+      "original_pe_bits": "41c00000"
+    },
+    {
+      "offset": "04",
+      "store_instruction": "00b0cdae",
+      "register": "XMM0",
+      "captured_constant": "00ce3850",
+      "capture_instruction": "00b0cda6",
+      "original_pe_bits": "40a00000"
+    },
+    {
+      "offset": "18",
+      "store_instruction": "00b0cdbb",
+      "register": "XMM2",
+      "captured_constant": "00d5e138",
+      "capture_instruction": "00b0cd88",
+      "original_pe_bits": "3de38e39"
+    },
+    {
+      "offset": "30",
+      "store_instruction": "00b0cdc8",
+      "register": "XMM3",
+      "captured_constant": "00ce3854",
+      "capture_instruction": "00b0cd90",
+      "original_pe_bits": "40400000"
+    },
+    {
+      "offset": "08",
+      "store_instruction": "00b0cdd5",
+      "register": "XMM0",
+      "captured_constant": "00ce3958",
+      "capture_instruction": "00b0cdb3",
+      "original_pe_bits": "40000000"
+    },
+    {
+      "offset": "1c",
+      "store_instruction": "00b0cde2",
+      "register": "XMM2",
+      "captured_constant": "00cef1b0",
+      "capture_instruction": "00b0cdc0",
+      "original_pe_bits": "3e555555"
+    },
+    {
+      "offset": "34",
+      "store_instruction": "00b0cdef",
+      "register": "XMM3",
+      "captured_constant": "00ce54a0",
+      "capture_instruction": "00b0cdcd",
+      "original_pe_bits": "3e4ccccd"
+    },
+    {
+      "offset": "0c",
+      "store_instruction": "00b0cdfc",
+      "register": "XMM0",
+      "captured_constant": "00ce7804",
+      "capture_instruction": "00b0cdda",
+      "original_pe_bits": "3ecccccd"
+    },
+    {
+      "offset": "20",
+      "store_instruction": "00b0ce01",
+      "register": "XMM2",
+      "captured_constant": "00ce69c8",
+      "capture_instruction": "00b0cde7",
+      "original_pe_bits": "3e99999a"
+    },
+    {
+      "offset": "38",
+      "store_instruction": "00b0ce0e",
+      "register": "XMM3",
+      "captured_constant": "00ced318",
+      "capture_instruction": "00b0cdf4",
+      "original_pe_bits": "3c360b61"
+    },
+    {
+      "offset": "4c",
+      "store_instruction": "00b0ce1b",
+      "register": "XMM0",
+      "captured_constant": "00ce7804",
+      "capture_instruction": "00b0cdda",
+      "original_pe_bits": "3ecccccd"
+    },
+    {
+      "offset": "24",
+      "store_instruction": "00b0ce28",
+      "register": "XMM2",
+      "captured_constant": "00cf2548",
+      "capture_instruction": "00b0ce06",
+      "original_pe_bits": "3bb60b61"
+    },
+    {
+      "offset": "3c",
+      "store_instruction": "00b0ce35",
+      "register": "XMM3",
+      "captured_constant": "00cef0b8",
+      "capture_instruction": "00b0ce13",
+      "original_pe_bits": "3c088889"
+    },
+    {
+      "offset": "54",
+      "store_instruction": "00b0ce42",
+      "register": "XMM0",
+      "captured_constant": "00d7a2f0",
+      "capture_instruction": "00b0ce20",
+      "original_pe_bits": "3dcccccd"
+    },
+    {
+      "offset": "58",
+      "store_instruction": "00b0ce47",
+      "register": "XMM0",
+      "captured_constant": "00d7a2f0",
+      "capture_instruction": "00b0ce20",
+      "original_pe_bits": "3dcccccd"
+    },
+    {
+      "offset": "10",
+      "store_instruction": "00b0ce54",
+      "register": "XMM1",
+      "captured_constant": "00d5e134",
+      "capture_instruction": "00b0cd9a",
+      "original_pe_bits": "3caaaaab"
+    },
+    {
+      "offset": "28",
+      "store_instruction": "00b0ce61",
+      "register": "XMM2",
+      "captured_constant": "00d5e130",
+      "capture_instruction": "00b0ce2d",
+      "original_pe_bits": "3daaaaab"
+    },
+    {
+      "offset": "40",
+      "store_instruction": "00b0ce6e",
+      "register": "XMM3",
+      "captured_constant": "00ce3930",
+      "capture_instruction": "00b0ce3a",
+      "original_pe_bits": "41a00000"
+    },
+    {
+      "offset": "5c",
+      "store_instruction": "00b0ce7b",
+      "register": "XMM0",
+      "captured_constant": "00d5e12c",
+      "capture_instruction": "00b0ce4c",
+      "original_pe_bits": "3b888889"
+    },
+    {
+      "offset": "14",
+      "store_instruction": "00b0ce88",
+      "register": "XMM1",
+      "captured_constant": "00ce380c",
+      "capture_instruction": "00b0ce59",
+      "original_pe_bits": "3fc00000"
+    },
+    {
+      "offset": "2c",
+      "store_instruction": "00b0ce8d",
+      "register": "XMM2",
+      "captured_constant": "00ce3800",
+      "capture_instruction": "00b0ce66",
+      "original_pe_bits": "3f000000"
+    },
+    {
+      "offset": "44",
+      "store_instruction": "00b0ce92",
+      "register": "XMM3",
+      "captured_constant": "00d7a24c",
+      "capture_instruction": "00b0ce73",
+      "original_pe_bits": "3f800000"
+    },
+    {
+      "offset": "48",
+      "store_instruction": "00b0ce97",
+      "register": "XMM2",
+      "captured_constant": "00ce3800",
+      "capture_instruction": "00b0ce66",
+      "original_pe_bits": "3f000000"
+    },
+    {
+      "offset": "50",
+      "store_instruction": "00b0ce9c",
+      "register": "XMM1",
+      "captured_constant": "00ce380c",
+      "capture_instruction": "00b0ce59",
+      "original_pe_bits": "3fc00000"
+    },
+    {
+      "offset": "60",
+      "store_instruction": "00b0cea1",
+      "register": "XMM0",
+      "captured_constant": "00ce3d34",
+      "capture_instruction": "00b0ce80",
+      "original_pe_bits": "40800000"
+    },
+    {
+      "offset": "64",
+      "store_instruction": "00b0cea6",
+      "register": "XMM3",
+      "captured_constant": "00d7a24c",
+      "capture_instruction": "00b0ce73",
+      "original_pe_bits": "3f800000"
+    }
+  ],
+  "source_contract": {
+    "actual_storage_bytes": 104,
+    "constant_reference_count": 21,
+    "snapshots_constant_values": false,
+    "captures_only_fixed_reference_addresses": true,
+    "constant_data_reads": "MOVSS at each native load point",
+    "writes": "26 exact DWORD stores, nonascending, each offset 00..64 once",
+    "allows_constant_destination_aliases": true,
+    "copies_or_constructs_service_owner": false,
+    "allocates": false,
+    "calls_native_absolute_addresses": false,
+    "throws_cpp_exceptions": false
+  },
+  "validation": {
+    "strict_source_compile": {
+      "passed": true,
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /Oy- /MD /Gy /Gw /fp:strict",
+      "log": "local/az-strict-source.log"
+    },
+    "compiled_instruction_check": {
+      "passed": true,
+      "native_operations": 47,
+      "loads": 21,
+      "stores": 26,
+      "native_and_compiled_MOVSS_register_store_schedule_equal": true,
+      "store_offsets": [
+        "00",
+        "04",
+        "18",
+        "30",
+        "08",
+        "1c",
+        "34",
+        "0c",
+        "20",
+        "38",
+        "4c",
+        "24",
+        "3c",
+        "54",
+        "58",
+        "10",
+        "28",
+        "40",
+        "5c",
+        "14",
+        "2c",
+        "44",
+        "48",
+        "50",
+        "60",
+        "64"
+      ],
+      "compiled_has_no_calls": true,
+      "note": "Compiler first captures fixed reference-binding addresses into private locals; constant referents are read only by these21 ordered MOVSS instructions. Host context/frame loads are not native constant reads.",
+      "original_listing_sha256": "58574376e88359bf4f8d4e166f9c6ceef7545ab4bb90fcc4a516271e6a53b14c",
+      "compiled_listing_sha256": "307ed35b7146471ef2ed434b1ef8b5b41ef32ad5f50bb560e925f5d56fd5651a",
+      "owned_object_sha256": "14e646ba408887b81e54362362a10fa2ca4659a17dfe5c3abe508bc377a2002a"
+    },
+    "baseline_build": {
+      "passed": true,
+      "target": "MSVC Win32 Release",
+      "command": "./scripts/build.ps1",
+      "baseline_head": "c9eb467adba6d598e6a9b9cbaf07e765b25f6363",
+      "source_registration": "new source excluded; strict standalone compile and explicit-source fixture cover this module",
+      "native_seeds": 8,
+      "native_seeds_all_match_disk": true,
+      "existing_tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "log": "local/az-baseline-build.log",
+      "log_sha256": "ff7c27eee1366cabb29835bcb61a5ccc7e2e2dc59b8c0fa2e0345318166ac739",
+      "seed_log": "local/az-verify-seeds.log",
+      "seed_log_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "fixture": {
+      "passed": true,
+      "focused_fixture_count": 1,
+      "comparisons": 2,
+      "compared_state_bytes": 272,
+      "root": "C:\\Users\\sqz269\\bsp-az-render-service-parameters",
+      "report": "verified-replay.json",
+      "report_sha256": "c12cc54f369e168cb43b497eb4c94ad76e7c345d4de0d52d3b9fe1794fdfffe7",
+      "log_sha256": "11475af178c0ae261c2eb6b6c6b49bd5ecf1eaf305ec48050e2737c6ffa9a55d",
+      "executable_sha256": "856d3808c5fd1a58a45c09de1623dd11a9ac7054399fd5b5a0ecd0333dda5ff8",
+      "worker_mode": "owned source explicitly compiled with baseline current three libraries",
+      "default_integrator_mode": "run.ps1 -Root <root> -LibraryRoot <root>, without -WorkerSource: only probe.cpp plus current three libraries after registration/build",
+      "compiler_defines": [],
+      "original_body_bytes": 300,
+      "absolute_operand_relocations_per_case": 21,
+      "original_instruction_bytes_unchanged_except_explicit_addresses": true,
+      "image_base_requirement": "none; own VirtualAlloc code span",
+      "manifest": "/MANIFEST:EMBED",
+      "case0": "current installed constant words with independent destination",
+      "case1": "deliberate remapping of constant referents into destination; later reads of preceding stores, early capture and repeated held-register values, raw NaN/infinity/negative-zero words",
+      "checked": [
+        "complete 34-DWORD containing arena per implementation/case",
+        "original/source receiver return",
+        "eight surrounding canary DWORDs",
+        "source/fixture/all three library pins unchanged across replay"
+      ],
+      "worker_capture": "worker_capture.zip",
+      "worker_capture_identity": "archive SHA256 and per-entry pins are in the adjacent preservation_manifest.json; archive includes this report and must not be rewritten after capture"
+    },
+    "new_repository_tests": 0,
+    "ghidra_writes": false,
+    "cmake_registration": "root integration only; new source explicitly compiled by worker fixture",
+    "report_call_check": {
+      "passed": true,
+      "checked": 0,
+      "failed": 0,
+      "log": "local/az-call-verification.log",
+      "log_sha256": "7fbd5f2ab88855dec7259e4ebf9d65b2f3aa175e08f9d41923c8f098feb637a5",
+      "no_outgoing_calls_established_by_full_listing": true
+    },
+    "source_header_sha256": {
+      "src/native_render_service_parameters.cpp": "98c04cb011201da7910bc8ba639d0ab837eebb7a07cb50debc8cf316c0597623",
+      "include/bsp/native_render_service_parameters.hpp": "e77c0c49073c6b525672a187701efffaa5d3a2c2077d2e59e9f227f86e0aa27a"
+    }
+  },
+  "limits": [
+    "New C++ context interface, not original ECX-only binary entry compatibility.",
+    "All 21 borrowed constant words and writable 68h destination must be valid; reference-binding storage is stable and outside the destination. Constant referents may alias the destination.",
+    "No native private stack or incoming argument-slot alias proof; host reference-address captures are an explicit interface precondition.",
+    "No invalid-address SEH, concurrent mutation, or asynchronous store-event trace equivalence claim.",
+    "Does not construct the complete 6ACh service, establish F8D39C publication, or define parameter semantics. Full B14A10 and game validation remain incomplete.",
+    "The fixture deliberately relocates constant operands into synthetic alias arrangements; this verifies load/store schedule and does not establish that the game uses those arrangements."
+  ]
+}
