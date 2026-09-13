@@ -1,0 +1,240 @@
+{
+  "packet": "orch6_ijk_publication",
+  "status": "combined_build_fixture_and_process_run_verified",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "tracked_tests_added": 0,
+  "compiled_commit": "87f9a9e0290d8470357b50cb26e4b3963ace46e7",
+  "exe_sha256": "095579980d0087862f3c18c383095c3b7fbd4495801198c29ac76a9414eb42b8",
+  "integrated_packets": [
+    {
+      "packet": "storage",
+      "commit": "5d14b54ffc8118c21326ae8d9f2b858fd9d0fd7c",
+      "report": "reports/ship_ai_search_storage.json"
+    },
+    {
+      "packet": "clearance",
+      "commit": "099df36ae42999ec90dbeb48980a7d52c721fccd",
+      "report": "reports/avoid_zone_clearance_distance.json"
+    },
+    {
+      "packet": "director",
+      "commit": "a5a74d37f4b5bd3730be42473b4dc24974fc9b74",
+      "report": "reports/game_director_avoidance.json"
+    },
+    {
+      "packet": "stored_tuning",
+      "commit": "ffd61920a18767763dbcbc976d8bd7cae5dce83b",
+      "report": "reports/ship_ai_avoidance_tuning.json"
+    },
+    {
+      "packet": "role_owner_assessment",
+      "commit": "752f438bfb9e6a48be97f215592ced4f57a827b0",
+      "report": "reports/ship_ai_role_owners.json"
+    },
+    {
+      "packet": "motion_dispatch",
+      "commit": "f2ad561f19002fade13f1ac2e94f6cc1a4e5ba07",
+      "report": "reports/ship_motion_nonfinite_origin.json"
+    },
+    {
+      "packet": "obstacle_point",
+      "commit": "b47ef953c74604ea1b89fbb4e83dde3107757706",
+      "report": "reports/ship_ai_obstacle_point.json"
+    },
+    {
+      "packet": "participant_pools",
+      "commit": "d4651cfba6225fb9527a57a4af971464682eedc6",
+      "report": "reports/session_participant_ai_flag.json"
+    },
+    {
+      "packet": "unit_roles",
+      "commit": "fe45dfe24738f8d8d4f7728d8aee6507a0915edb",
+      "report": "reports/ship_ai_unit_roles.json"
+    }
+  ],
+  "reconstruction": "Persistent search storage, endpoint clearance, director/request/tuning owner adapters, motion dispatch, two point predicates, narrow participant pools and current-role storage. See per-packet coverage and native ABI limits.",
+  "actual_host_checks": 56,
+  "existing_ctests_passed": 2,
+  "direct_call_rows_checked": 122,
+  "direct_call_failures": 0,
+  "mechanical_call_limits": "Four indirect report rows are outside the direct-call tool; reviewed vtable/receiver evidence remains in the individual reports.",
+  "mission": {
+    "frames": 120,
+    "simulated_steps": 240,
+    "exit": 0,
+    "trajectory": {
+      "rows": 18557,
+      "nonfinite_rows": 0,
+      "nonfinite_units": [],
+      "airfield_samples": 241,
+      "airfield_unchanged": true
+    },
+    "search": {
+      "queries": 2400,
+      "refills": 10,
+      "clears": 12
+    },
+    "cruise": {
+      "reads": 1080,
+      "unavailable": 0
+    }
+  },
+  "corrected_failure": {
+    "commit": "3db73f6e3aece4e0b3f8db6b7acfe97fb632b928",
+    "exit": 3221225477,
+    "cause": "Geometry load destroyed cache owners after controller registration; first query dereferenced retired storage.",
+    "correction": "87f9a9e0 clears borrowed lists and invalidates keys while retaining owners; process lifetime adapter, not a claimed native loader store."
+  },
+  "ghidra": {
+    "motion_wrappers": [
+      "00749B20",
+      "00758270"
+    ],
+    "corrected_inclusive_predicate": "009D8160",
+    "prior_annotations": "local/ghidra-annotations-20260913T042656Z.json",
+    "saved": true,
+    "note": "Fresh prototypes verified defined wrappers; forced snapshot corrected stale local lookup despite unchanged aggregate function count."
+  },
+  "worker_archive": {
+    "manifest": "local/orch6_worker_archive_ijk.json",
+    "files": 498,
+    "bytes": 44959105,
+    "historical_cache_changes": 0,
+    "cleanup": "local/orch6_cleanup_ijk.json",
+    "removed_completed_worktrees": 9
+  },
+  "limitations": [
+    "Process-run evidence, not original-game visual or gameplay parity.",
+    "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+    "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+    "Untouched native cache bounds are preserved; original allocation history is not reproduced.",
+    "MissionFrame participant publication is the next separate packet; this run uses unassigned roles and makes no participant AI-held reads.",
+    "Point predicates are reconstructed and fixture-tested but await produced node geometry and ordered refresh before live binding.",
+    "Several ship motion adapters and63 non-ship phases remain partial/unreconstructed; finite trajectories do not establish original simulation fidelity."
+  ],
+  "artifacts": [
+    {
+      "path": "local/orch6_integrate_i_20260912T214219.log",
+      "sha256": "17c7fd26701a3291fb7b27944185baae8ae73dc5d91b052dea4f840d29b97256"
+    },
+    {
+      "path": "local/orch6_combined_87f9a9e0.exe",
+      "sha256": "095579980d0087862f3c18c383095c3b7fbd4495801198c29ac76a9414eb42b8"
+    },
+    {
+      "path": "local/orch6_combined_87f9a9e0.json",
+      "sha256": "88a969ba3d94ae81dc0cb20658cd368e498134ceae5a0e498c9bd74c910bdcc1"
+    },
+    {
+      "path": "local/orch6_combined_87f9a9e0.log",
+      "sha256": "e4c01ab68ecee42eb55d2f7cf8cc751579b26b2c4ef80c4e8fd954e02607f679"
+    },
+    {
+      "path": "local/orch6_combined_87f9a9e0.csv",
+      "sha256": "6b7aa369bbef93660fe469c8be21c2e741ae5fdaa053cbb22d81e45cf1c7e573"
+    },
+    {
+      "path": "local/orch6_combined_87f9a9e0_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/orch6_combined_3db73f6e.exe",
+      "sha256": "6fed376124e3041d1707a683ccda43bd505721307887e48c93febf9f3d25e8a4"
+    },
+    {
+      "path": "local/orch6_combined_3db73f6e.json",
+      "sha256": "6d1cd05baca4953c95fec1af55c33a696b186beaef21095487e1ced4986d60f1"
+    },
+    {
+      "path": "local/orch6_combined_3db73f6e.log",
+      "sha256": "948bd311999ad9e462c41a62318863db8cdaf221ef5ed135aba519b3d0d858cd"
+    },
+    {
+      "path": "local/orch6_combined_3db73f6e_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/avoidance_owner_probe.cpp",
+      "sha256": "e783a7af9203601783ed6466129aaed8720741fc5ba1df84d2e7f6d529f118a2"
+    },
+    {
+      "path": "local/avoidance_owner_probe.exe",
+      "sha256": "a7e61fe3404c82633eea76bf16f876ecc4dad990f7ed75f3667c0d8c550c1b25"
+    },
+    {
+      "path": "local/avoidance_owner_probe.log",
+      "sha256": "d411101a75b2443020fb4216d70483c57c097d3618ca98413838e84cd4329919"
+    },
+    {
+      "path": "local/build_avoidance_owner_probe.ps1",
+      "sha256": "38ba71998cf712eb910fb60cf8de04ecf3a26114ae69d0444d018380215c491d"
+    },
+    {
+      "path": "local/build_avoidance_owner_probe.cmd",
+      "sha256": "b222df8312ef0c5c8fac92c3bdae6f2c8ccaff8f9af719a38d45238d6c3941d5"
+    },
+    {
+      "path": "local/avoidance_owner_game_objects.json",
+      "sha256": "75128e8e987b066319614e7b0377646bb66f8372f98bddc54a364d794358e509"
+    },
+    {
+      "path": "local/avoidance_owner_game_objects.rsp",
+      "sha256": "05daa7c955ff86aecd92e30ee503ce88d5d3c881ca4aa9b1a4fef18f1ff253ee"
+    },
+    {
+      "path": "local/avoidance_owner_game_hosts.lib",
+      "sha256": "55b090d71d992b91fab8b81988599ed6b9bd5169612bc16d27e7f2e6f7e06109"
+    },
+    {
+      "path": "local/run_orch6_combined_ijk.py",
+      "sha256": "c57ebf21d6f2d0e54ce8e3b02fdea82022ac402d3aeb9d3798b7ff8256d33b91"
+    },
+    {
+      "path": "local/record_orch6_ijk.py",
+      "sha256": "cd13bfa1623faf80cc3ffbda04110a4e334fd25de5ca42190b963a1754a65b73"
+    },
+    {
+      "path": "local/orch6_ijk_call_recheck.log",
+      "sha256": "f880e21e422f8a880e71b9d622559d6d20b14127d357df1eddde4d529766bd08"
+    },
+    {
+      "path": "local/orch6_worker_archive_ijk.json",
+      "sha256": "d0f2041303adfff5524f42786721ecc126f00267ecfa33f18835d64d10e565e2"
+    },
+    {
+      "path": "local/orch6_worker_archive_ijk_cache_drift.json",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "local/archive_orch6_ijk.py",
+      "sha256": "08104d88fa31b5e6b3b192d88abaed94c8a0a0748e4ed240271c10b0f01b2793"
+    },
+    {
+      "path": "local/orch6_motion_point_annotation_jk.log",
+      "sha256": "5649f0b18818bea835622c91026f8f867255476cb8097f1c92b40083f7244505"
+    },
+    {
+      "path": "local/ghidra-annotations-20260913T042656Z.json",
+      "sha256": "b567c79fca1fbe1e6c3174a235a2f7d951b90817f9b1659a45d0cb6502ff39dd"
+    },
+    {
+      "path": "local/orch6_motion_point_exports_jk.log",
+      "sha256": "7445361e1af07032e696ed8b7a2f0e8157a062e7fd74248fcbb7b55c17cd14e1"
+    },
+    {
+      "path": "local/orch6_snapshot_jk_forced.log",
+      "sha256": "22803ce105f9d1e4dda2d2061d918c0076dec03acb419b991a6a1bca4529b47b"
+    },
+    {
+      "path": "local/orch6_cleanup_ijk.json",
+      "sha256": "f344fbf8e859d9709b3cb21de7652164d8d473aa23871c0f3f1a0be82006746f"
+    },
+    {
+      "path": "local/cleanup_orch6_ijk.py",
+      "sha256": "1aa3e51ae097352b4fd02d3a39b3dd6a31ca60f4d1a69e527cabedd6ed9417b6"
+    }
+  ]
+}
