@@ -53,6 +53,7 @@ void* scalar_delete_native_input_settings_006ab800(
     void*, std::uint32_t flags, NativeInputSettingsLifetimeContext&);
 
 // New source service ABIs, not callable original virtual tables. Production
-// container providers and raw-manager CF81CC delete dispatch remain required.
+// container providers remain required. The raw manager's deletion bindings
+// must borrow this same context through input_settings for CF81CC dispatch.
 // No original FH3, private-stack aliases, hardware-fault or gameplay proof.
 } // namespace bsp

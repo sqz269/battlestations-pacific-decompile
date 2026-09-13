@@ -1,13 +1,15 @@
 {
   "packet": "orch4_input_settings_lifetime_aq",
-  "status": "raw_settings_lifetime_component_validated_integration_pending",
+  "status": "raw_settings_lifetime_and_manager_dispatch_component_validated_integration_pending",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe"
   },
   "source": [
     "include/bsp/native_input_settings_lifetime.hpp",
-    "src/native_input_settings_lifetime.cpp"
+    "src/native_input_settings_lifetime.cpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
   ],
   "documentation": "docs/NATIVE_INPUT_SETTINGS_LIFETIME.md",
   "byte_spans": [
@@ -3569,7 +3571,7 @@
   "body_extension": "reports/native_input_settings_lifetime_aq_body_extension.json",
   "limitations": [
     "Ghidra006AA460 tail ownership incomplete: bridge script execution is disabled; decoded full tail and native fixture do not establish saved body ownership.",
-    "Production container providers and raw-manager CF81CC deletion dispatch are required; shared dispatcher files are leased to another owner.",
+    "Production container providers and application construction/wiring remain required; raw-manager CF81CC dispatch is supplied and requires the borrowed settings context.",
     "Original FH3/private-stack/hardware-fault behavior and gameplay remain unvalidated."
   ],
   "component_validation": {
@@ -3583,10 +3585,10 @@
     "win32_import_calls": 2,
     "seeds_equal": 8,
     "fixture_source": "local/input_settings_lifetime_aq_probe.cpp",
-    "fixture_source_sha256": "2b745478b121f75a5051cdd6d3c0df7cf418af303e94748831227c0476f3750e",
+    "fixture_source_sha256": "fa0a33fe1502dd4375c02c3adce504d319809ec7fe5f785205941d462471b865",
     "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
-    "probe_log": "local/input_settings_lifetime_aq_probe.log",
-    "probe_log_sha256": "e1e6aabf6379e7e94e64e9d5d6a5e0be5f11f3c4b8f2e00a477dadc6de4a0865",
+    "probe_log": "local\\input_settings_lifetime_aq_dispatch_probe.log",
+    "probe_log_sha256": "1c4febc632bfa9c818419c21d6b707344f2a504af84139a32bf5108fede417f1",
     "native_spans": 418,
     "actual_native_container_providers": true,
     "actual_raw_manager": true,
@@ -3598,9 +3600,13 @@
     "pooled_strings_all_released": true,
     "original_fh3_executed": false,
     "production_library_provider_supplied": false,
-    "raw_manager_settings_profile_dispatch_supplied": false,
+    "raw_manager_settings_profile_dispatch_supplied": true,
     "original_abi_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "source_raw_manager_settings_drain_passed": true,
+    "raw_manager_pop_before_settings_close_verified": true,
+    "raw_manager_section_alive_at_settings_close_verified": true,
+    "differing_settings_publication_during_drain_passed": true
   },
   "installed_assets": [
     {
@@ -3684,5 +3690,19 @@
       "kind": "fragment",
       "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
     }
-  ]
+  ],
+  "manager_dispatch": {
+    "function": "00bd0400",
+    "call_site": "00bd0485",
+    "instruction": "CALL EDX",
+    "profile": "00cf81cc",
+    "slot": 0,
+    "native_target": "006ab800",
+    "source_binding": "NativeSingletonDeletionBindings::input_settings",
+    "source_target": "scalar_delete_native_input_settings_006ab800",
+    "profile_bytes_capture": "local/input_settings_lifetime_aq_profile.txt",
+    "profile_bytes_capture_sha256": "a9784b428e32e31efa44c8f739d2ed9aa4c0af40bfaeb91e62d8e91ad5b14513",
+    "source_integration_test_passed": true,
+    "additional_native_manager_execution": false
+  }
 }

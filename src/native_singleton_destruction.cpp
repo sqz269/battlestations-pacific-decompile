@@ -3,6 +3,7 @@
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
+#include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -104,6 +105,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.input_actions != nullptr) {
             scalar_delete_native_input_action_owner_00a93e50(owner, flags,
                 *bindings.input_actions);
+            return;
+        }
+        break;
+    case 0x00cf81cc:
+        if (bindings.input_settings != nullptr) {
+            scalar_delete_native_input_settings_006ab800(owner, flags,
+                *bindings.input_settings);
             return;
         }
         break;

@@ -1,6 +1,6 @@
 # Native input settings lifetime
 
-Addresses: 005547D0, 006AB6B0, 006AA460, 006AB800
+Addresses: 005547D0, 006AB6B0, 006AA460, 006AB800, 00BD0400
 
 `native_input_settings_lifetime.cpp` composes the actual settings constructor
 and table parser with lazy publication, populated destruction and scalar
@@ -19,7 +19,8 @@ The source borrows the application's actual E198E8 settings publication and
 The descriptive names are hypotheses, not recovered symbols. These functions
 use explicit C++ service interfaces, not original callable virtual tables.
 CF81CC's original slot zero contains 006AB800; the base profile CE3818 contains
-00412440. Raw manager dispatch for CF81CC remains a separate integration step.
+00412440. The raw manager's deletion bindings now accept a borrowed
+`NativeInputSettingsLifetimeContext` and route CF81CC to the scalar deleter.
 
 ## Construction and publication
 
@@ -97,7 +98,12 @@ registration identity, released recursion depth, fast getters, parser guard
 replay, cleared headers/publication, base profile and pooled-string release.
 The source getter also passes a controller-script open failure after earlier
 tables have populated: cleanup releases all pooled strings, publishes nothing,
-registers nothing and releases the captured section.
+registers nothing and releases the captured section. An additional source
+integration check drains a raw manager holding fully populated settings through
+the CF81CC binding. At the persistent Lua finalizer the settings pointer has
+already been popped, while the manager's section still exists. A differing
+settings publication does not suppress deletion; it is cleared by the actual
+destructor. The manager then releases its section and vector storage.
 
 The fixture contains 418 native spans. Four owned routines were freshly checked
 against live bytes; reused library spans retain the prior AP live evidence and
@@ -113,10 +119,10 @@ metadata are preserved in the body-extension report; no full saved-body repair
 is claimed. This limitation is distinct from the complete live/disk byte check
 and native execution of 006AA460..006AA63F.
 
-Production tree/vector providers remain required. The shared native manager
-deletion dispatcher is leased to another orchestrator, so this change does
-not add CF81CC dispatch there. The fixture calls the explicit scalar deleter,
-checks that it leaves registration alone, then removes that pointer before
-draining the manager. Application wiring, arbitrary private-stack aliases,
+Production tree/vector providers remain required. The borrowed settings context
+must outlive raw manager drain and provide those same container services.
+The scalar-deletion comparison also verifies that explicit early deletion
+leaves registration alone, then removes that pointer before manager cleanup.
+Application construction/wiring, arbitrary private-stack aliases,
 malformed storage, original FH3/hardware-fault behavior and gameplay remain
 unvalidated. No running game was accessed and no agents were dispatched.
