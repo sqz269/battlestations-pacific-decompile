@@ -15,8 +15,11 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py ledger add-name|add-function|add-fragment|migrate ...
 """
 import argparse
+import contextlib
 import hashlib
+import io
 import json
+import os
 import re
 import sqlite3
 import subprocess
@@ -33,6 +36,57 @@ ROOT = ledger.ROOT
 DB = ROOT / 'local/bsp_index.sqlite'
 EXPORTS = workspace.exports_dir()  # main checkout's exports/bsp, shared by every worktree
 ADDR = re.compile(r'\b(00[4-9a-c][0-9a-f]{5})\b', re.IGNORECASE)  # docs spell addresses in either case
+
+DEFAULT_OUTPUT_TOKENS = 2000  # measured: the median read, carried ~45x, is what costs money, not the outliers
+
+
+@contextlib.contextmanager
+def output_budget(argv=(), full=False):
+    """Cap what one invocation prints. Anything over the budget is written to local/output/ whole and
+    replaced by its head plus a marker naming the exact command that reads the rest.
+
+    Reasoning from a silently truncated body is the expensive failure, so the marker is never omitted.
+    Escape hatches: `--full`, or BSP_OUTPUT_BUDGET=<tokens> (0 disables the cap).
+    """
+    try:
+        budget = int(os.environ.get('BSP_OUTPUT_BUDGET', DEFAULT_OUTPUT_TOKENS))
+    except ValueError:
+        budget = DEFAULT_OUTPUT_TOKENS
+    if full or budget <= 0:
+        yield
+        return
+    limit = budget * 4  # ~4 bytes per token, measured at 3.99 on this corpus
+    buf = io.StringIO()
+    real = sys.stdout
+    sys.stdout = buf
+    try:
+        yield
+    finally:
+        sys.stdout = real
+        text = buf.getvalue()
+        if len(text) <= limit:
+            real.write(text)
+            return
+        slug = re.sub(r'[^a-z0-9]+', '-', ' '.join(str(a) for a in argv).lower()).strip('-')[:60] or 'output'
+        path = ROOT / 'local/output' / f"{slug}-{datetime.now().strftime('%H%M%S')}.txt"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding='utf-8')
+        head, shown = [], 0
+        for line in text.splitlines(True):
+            if shown + len(line) > limit:
+                break
+            head.append(line)
+            shown += len(line)
+        rest = len(text.splitlines()) - len(head)
+        real.write(''.join(head))
+        if not head or not head[-1].endswith('\n'):
+            real.write('\n')
+        rel = path.relative_to(ROOT).as_posix()
+        real.write(f"[bsp: TRUNCATED at {budget} tokens. {rest} more lines, {len(text) - shown} more bytes.\n"
+                   f" Whole output: {rel}  (ignored by git)\n"
+                   f" Read the rest with:  rg -n '<term>' {rel}   or   sed -n '{len(head) + 1},{len(head) + 80}p' {rel}\n"
+                   f" Re-run uncapped with --full, or BSP_OUTPUT_BUDGET=0. Do not conclude from the head alone.]\n")
+
 
 SCHEMA = """
 CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);
@@ -935,11 +989,84 @@ def worktree_cmd(args):
           + (f" (suggested packet: {args.packet})" if args.packet else ''))
 
 
+CHEATSHEET = """bsp.py in one screen. Every read is capped at 2000 tokens; over that it spills to
+local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
+
+  brief                          start every turn here: state + dirty files + ready packets, one call
+  state [--limit N]              snapshot, ledgers, leases, index freshness
+  lookup <addr>                  everything known about one address (name, recon, callers, docs)
+  show <addr> [--asm] [--lines N] [--start N]   capped export excerpt; --start pages, --asm for listing
+  range <lo> <hi> [--only FUN_]  functions in an address range
+  callers|callees|docs-for <addr>
+  segment <id|addr>              partition band and its keywords
+  find <text>                    name search        strings <text>   functions referencing a string
+  disasm-raw <addr> [--length N] Capstone over disk bytes, works where Ghidra has no function
+  scan-bytes '<pat ?? pat>'      byte pattern search, with the enclosing function
+
+  ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|documentation|export
+      proto/flow/comments take several addresses; decompile/disasm take one plus --lines
+      bytes <addr> --length N (NOT --limit)
+
+  snapshot [--force]             re-export only if Ghidra's function count moved
+  index [--if-stale]             rebuild local/bsp_index.sqlite after snapshots or ledger edits
+
+  lease claim --packet <id> --from-packet | --addresses A B --files P [--ttl H]
+  lease release [--packet <id>] | lease list [-v] | lease check <addr|path> | lease lock-status
+  packets list|ready|done <id>|depend <id> --on <ids>
+  worktree add <name> [--packet P] | worktree remove <name> | worktree list
+  ledger add-name <addr> <name> --evidence T [--replace|--append-evidence]
+  ledger add-function|add-fragment --json '{...}' [--replace]   |   ledger migrate
+
+Rules that cost money when broken: one representation at a time (pseudocode or assembly, not both);
+batch independent reads into one shell call; never re-read a path already in this context.
+"""
+
+
+def cheatsheet(args):
+    print(CHEATSHEET, end='')
+
+
+def brief(args):
+    """Replaces the state + git status + index + lease ritual that opened most sessions."""
+    state(args)
+    dirty = subprocess.run(['git', 'status', '--short'], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+    if dirty:
+        print(f"dirty ({len(dirty)}): " + '; '.join(d.strip() for d in dirty[:args.limit])
+              + (f" ... {len(dirty) - args.limit} more" if len(dirty) > args.limit else ''))
+    else:
+        print('dirty: clean')
+    packets, _ = load_packets()
+    leased = {l['packet'] for l in coordination.active_leases()}
+    ready = [pid for pid, p in (packets or {}).items()
+             if isinstance(p, dict) and not p.get('done') and pid not in leased
+             and not [d for d in p.get('depends_on', []) if not (packets.get(d) or {}).get('done')]]
+    if ready:
+        print(f"ready packets ({len(ready)}): " + ' '.join(sorted(ready)[:args.limit]))
+    print('next: python tools/bsp.py cheatsheet   for the full command list')
+
+
+class CompactParser(argparse.ArgumentParser):
+    """Argument errors printed the whole usage banner 795 times in one month. Print the fix instead."""
+
+    def error(self, message):
+        prog = self.prog
+        sys.stderr.write(f"{prog}: {message}\n")
+        opts = [a for action in self._actions for a in action.option_strings if a.startswith('--')]
+        if opts:
+            sys.stderr.write(f"accepted here: {' '.join(sorted(set(opts)))}\n")
+        sys.stderr.write("one-screen reference: python tools/bsp.py cheatsheet\n")
+        sys.exit(2)
+
+
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = CompactParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--full', action='store_true', help='do not cap this command\'s output')
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('index'); p.add_argument('--if-stale', action='store_true'); p.set_defaults(func=build_index)
     p = sub.add_parser('state'); p.add_argument('--limit', type=int, default=8); p.set_defaults(func=state)
+    p = sub.add_parser('brief', help='state + dirty files + ready packets in one call; start a turn here')
+    p.add_argument('--limit', type=int, default=8); p.set_defaults(func=brief)
+    sub.add_parser('cheatsheet', help='every subcommand on one screen').set_defaults(func=cheatsheet)
     p = sub.add_parser('lookup'); p.add_argument('address'); p.add_argument('--limit', type=int, default=12); p.add_argument('--width', type=int, default=300); p.set_defaults(func=lookup)
     p = sub.add_parser('show'); p.add_argument('address'); p.add_argument('--asm', action='store_true'); p.add_argument('--live', action='store_true')
     p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', default='0', help='lines to skip, or with --asm a hex instruction address (8 digits or 0x...) to start at'); p.set_defaults(func=show)
@@ -1000,7 +1127,8 @@ def main():
     q = ls.add_parser('add-fragment'); q.add_argument('--json', required=True); q.add_argument('--force', action='store_true'); q.add_argument('--replace', action='store_true')
     p.set_defaults(func=ledger_cmd)
     args = parser.parse_args()
-    args.func(args)
+    with output_budget(argv=sys.argv[1:], full=getattr(args, 'full', False)):
+        args.func(args)
 
 
 if __name__ == '__main__':
