@@ -7,7 +7,7 @@
   "address": "008f81f0",
   "call_site": "008f840b",
   "alias_store_site": "008f8414",
-  "status": "actual_process_binding_source_strict_win32_development_build_passed_runtime_receipt_separate",
+  "status": "actual_process_binding_source_strict_win32_and_bounded_60_frame_runtime_passed_final_merged_gate_separate",
   "source": "src/game_hosts.cpp",
   "owner_source": "src/game_hosts_singletons.cpp",
   "header": "include/bsp/game_hosts_singletons.hpp",
@@ -62,5 +62,34 @@
   ],
   "binary_abi_compatible": false,
   "native_FH3_tested": false,
-  "gameplay_validated": false
+  "gameplay_validated": false,
+  "initial_exact_commit_runtime": {
+    "head": "486771757d98edf57d507fe5ff80e991ee6a3332",
+    "status": "passed",
+    "frames_presented": 60,
+    "exit_code": 0,
+    "registered_slots": 6,
+    "nonnull_owner_and_matching_alias": true,
+    "owner_publication_cleared_and_alias_bits_preserved": true,
+    "build_proof": "local/native-game-resource-factory-process-bc/attempt02-build-proof.json",
+    "build_proof_sha256": "68ce453b19b587cab2aaab14f799cebfdfa0cf2c58074e7f6b1699a6d017ed04",
+    "runtime_result": "local/native-game-resource-factory-process-bc/runtime-attempt03/result.json",
+    "runtime_result_sha256": "e7b7063088f1fde8a4dd52b192eea287ea255df464a1d0a3bc69269a023e2df2",
+    "runtime_selection": "Explicit documented private Microsoft XLive2.0.0673.0 with matching msidcrl40 dependency",
+    "later_merged_candidate_requires_new_validation": true
+  },
+  "retained_runtime_failures": [
+    {
+      "attempt": "runtime-attempt01",
+      "exit_code": 3221225477,
+      "stage": "game-local XLive DLL loading",
+      "diagnostic": "debugger-attempt03: xlive RVA319049 writes90909090 to unmappedAA0F5E; invalid-handle debugger exception explicitly handled for this capture only"
+    },
+    {
+      "attempt": "runtime-attempt02",
+      "exit_code": 1,
+      "stage": "system Microsoft XLive without matching private dependency",
+      "diagnostic": "LoadLibrary Win32 error182"
+    }
+  ]
 }
