@@ -131,7 +131,7 @@ follows separately from worker fixture evidence.
 
 ## AZ exact merged validation
 
-The exact combined source commit `8e9ab00b59fe1c6f04da21bf39fcc304211b71c9` passed the strict Win32
+The exact combined source commit `eedda791230482a4ac7ccd26a6d1f214b72bd6ba` passed the strict Win32
 build, both existing tests and five current-library-only original-byte fixtures.
 See `reports/native_system_sources_az_validation.json` for hashes, preserved
 captures, case coverage and limits. Earlier pending statements describe worker
