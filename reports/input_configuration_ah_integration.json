@@ -1,17 +1,17 @@
 {
   "packet": "orch4_input_configuration_closeout_ah",
-  "utc": "2026-09-12T23:58:29.100543+00:00",
+  "utc": "2026-09-13T00:01:03.964380+00:00",
   "status": "existing_work_integrated_build_and_component_fixtures_passed_parser_and_gameplay_pending",
   "user_boundary": "Finish previous session work; no new worker or follow-on packet dispatched.",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
   "branch": "agent/orch4-20260910",
-  "validated_source_revision": "6404acb1c806b64072af0b8858a25f05b7dcb428",
-  "merged_main_revision": "a76b3c8f",
+  "validated_source_revision": "7d1f30eb82dad716062e672f23e28f7ad49b5c3e",
+  "merged_main_revision": "c95f4743a71470789436bca0b58c3de4ac8acf15",
   "code_manifest": "local\\input_configuration_ah_source_manifest.json",
-  "code_manifest_sha256": "9bc2418af9d989e961cc0d6823df61e1d7f16d9a4836bdcf341ac28531f9f8e5",
-  "code_file_count": 2125,
-  "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
-  "game_executable_sha256": "be71306a73fe9821035642835377be4903104108e818ae7c2a057a092eee1370",
+  "code_manifest_sha256": "e7f37284f40771d1a5f854c3e52bdf8c5a94d57e97c068e2bea7623a31e618e6",
+  "code_file_count": 2133,
+  "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
+  "game_executable_sha256": "46170cbfeb709e6bb1d11f2ffa84c6778108353dfe638fb91b3369eec92dcf14",
   "worker_commits": {
     "action_configuration": "7c42037631df91589b58929dca22838b3e327fe5",
     "deadline_callback": "67248e261642bad9169dbbfc9483ba709cbc5584",
@@ -28,8 +28,7 @@
     "ctests_passed": 2,
     "seeds_matched": 8,
     "build_logs": {
-      "input_configuration_ah_final_build.log": "3965d5f6e4a20e7dd717811b3d3795471c730343828dcf81df3ca6bb82d10a8f",
-      "input_configuration_ah_bound_build.log": "2878c6bf275e2aaa3eb922670d95187a9bb29501f5539df60b755c387fddf0ae"
+      "input_configuration_ah_promoted_build.log": "9ac1a1b9fdcdd216651a5bf38c197428ef796df9928135c03fca558a5a153d21"
     },
     "seed_log_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
     "call_audits": {
@@ -90,22 +89,22 @@
     },
     "fixtures": {
       "context": {
-        "log": "local\\input_configuration_ah_context.log",
-        "sha256": "8b6fc6f2e632f2df0d670e70cd58f9bc7e169ff3f21888282178d152e8e9ce35",
+        "log": "local\\input_configuration_ah_promoted_context.log",
+        "sha256": "eee3596d53f69a1bf886a33d9c9c72b567c0876569a66762546f16d61ad225f5",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "input_context_probe_ah.cpp",
           "native/source actual-storage differential: spans=4 direct_relocations=9 phases=7 unsigned_maximum=80000000 floor=1 endpoint_mutation=1 unchanged_level_still_activates=1 action_count=3 context_count=5 listener_release_mutation=1 device_calls=9 active_value_bits=3f000000 disabled_listener_clear=1 self_alias_context_clear=1",
           "real recovered storage/poll/listener providers; controlled fixture device callbacks; no SDK, window, hardware or game run",
-          "CoreArchiveSHA256=B9B2E4EB1E91288A608EC762355AE5EDD04B4B0572CF4E43EA4FD330D22A503B"
+          "CoreArchiveSHA256=C5AAACE5F61F2D5433D394096D48923299582D274BD7228900D342D0C3E586A7"
         ]
       },
       "deadlines": {
-        "log": "local\\input_configuration_ah_deadlines.log",
-        "sha256": "a7c77901466feba0f1a6816fe238196351f784d77ba10472b43d3969e87d402a",
+        "log": "local\\input_configuration_ah_promoted_deadlines.log",
+        "sha256": "cc988528d3b4d503fdf57af502cb31b3f13bd022ea5a5fbcc92ed8edfaaaa54b",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "native_deadlines_probe.cpp",
           "PASS native mode=all_edges getters=16 map_calls=16 whole_storage_equal=1 wrapper_receiver_captured=1 action_owner_and_base_reloaded=1 pre_call_rounding=1 returned_cell_store=1",
@@ -113,13 +112,13 @@
           "PASS source_exception prior_write_preserved=1 failed_cell_unwritten=1 remaining_schedule_skipped=1",
           "BOUNDARY copied native wrapper11/body1499 bytes; controlled map contract only, real source getter fast path; no map insertion, SDK, device polling, force, ShowCursor or game; exception case is source-only"
         ],
-        "runner_receipt": "local\\input_configuration_ah_deadlines.json"
+        "runner_receipt": "local\\input_configuration_ah_promoted_deadlines.json"
       },
       "owner": {
-        "log": "local\\input_configuration_ah_owner.log",
-        "sha256": "a7b0337d2f0e79e6d8a579624c63583627b72e8523e91b55aaf84f592c66bd9d",
+        "log": "local\\input_configuration_ah_promoted_owner.log",
+        "sha256": "f46f6779c5668fd1b07a5892353a21b946413e2fed2242772ed0d828e69fe001",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "GameSourcesCompiledSeparately=False",
           "native_config_owner_probe.cpp",
@@ -127,13 +126,13 @@
           "PASS destructor nonempty_native_free_order=3,2,1,0,4,5,6 nested_opaque_preserved=1 source_whole_storage_equal=1 real_owned_Lua_finalizers=1,1 Lua_live_blocks_after_close=0,0 empty_close_no_repeat=1",
           "BOUNDARY one copied-native actual-storage probe; CRT buffers and Lua allocator are real, native free trace observed; no scripts, configuration loading, action reset, SDK, device poll or game; native FH3 exception path unexercised"
         ],
-        "runner_receipt": "local\\input_configuration_ah_owner.json"
+        "runner_receipt": "local\\input_configuration_ah_promoted_owner.json"
       },
       "storage": {
-        "log": "local\\input_configuration_ah_storage.log",
+        "log": "local\\input_configuration_ah_promoted_storage.log",
         "sha256": "96c38605f4db26a9087ce41595f23939c754df93a78a7164a25049321770fcec",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "verified native spans 5 direct relocations 24 absolute relocations 1",
           "native_input_storage_probe_ag.cpp",
@@ -142,10 +141,10 @@
         ]
       },
       "class": {
-        "log": "local\\input_configuration_ah_class.log",
+        "log": "local\\input_configuration_ah_promoted_class.log",
         "sha256": "687024f3c8efa50ae8bccb8f45ab0ef4101e3de333e374842eab06b34e19cbd8",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "native_input_class_configuration_probe.cpp",
           "raw class configuration: invalid_returns=1 requested_before_validation=1 captured_erase_suffix=1 wildcard_words=3 explicit_ids=3 copy_reuse=1 self_alias_clear=1 fixed_slots_unchanged=1 dirty_callback_unchanged=1 class_buffers=0",
@@ -153,10 +152,10 @@
         ]
       },
       "map_storage": {
-        "log": "local\\input_configuration_ah_map_storage.log",
+        "log": "local\\input_configuration_ah_promoted_map_storage.log",
         "sha256": "5e440b102894f2f8a60e699659ba4beb10d656dbcd1ff45c3fd4b1b12484b29d",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "native_input_deadline_map_storage_probe.cpp",
           "PASS deadline storage: linked_nodes=6 scalar_payloads=6 signed_order_and_red_black_invariants=pass aliased_output=1 returning_CRT_handlers=2 owning_length_error=1 cleanup=pass",
@@ -164,10 +163,10 @@
         ]
       },
       "map_lookup": {
-        "log": "local\\input_configuration_ah_map_lookup.log",
+        "log": "local\\input_configuration_ah_promoted_map_lookup.log",
         "sha256": "ef2dada94e589655c7237e38cc5978a19b8db2ce1b84c3955b527e88c4828c54",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "phase invalid return",
           "phase new throw",
@@ -177,10 +176,10 @@
         ]
       },
       "hardware": {
-        "log": "local\\input_configuration_ah_hardware.log",
+        "log": "local\\input_configuration_ah_promoted_hardware.log",
         "sha256": "db68d793142d34e1b81550b9fe76ab12a502c08808dca80a38a71c1ae03c73d7",
         "passed": true,
-        "core_archive_sha256": "b9b2e4eb1e91288a608ec762355ae5edd04b4b0572cf4e43ea4fd330d22a503b",
+        "core_archive_sha256": "c5aaace5f61f2d5433d394096d48923299582d274bd7228900d342d0c3e586a7",
         "output": [
           "fixture.cpp",
           "PASS: 8582 behavior words; 56 native and 56 host output stores; 5 actual CRT throw events each."
