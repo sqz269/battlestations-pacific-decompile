@@ -1,0 +1,24 @@
+{
+  "packet": "orch4_native_lua_service_bindings_az",
+  "owner": "agent/orch4-lua-bindings-az",
+  "kind": "source-service-binding",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe"},
+  "owned_native_addresses": [],
+  "source_files": ["include/bsp/native_lua_service_bindings.hpp", "src/native_lua_service_bindings.cpp", "docs/NATIVE_LUA_SERVICE_BINDINGS_AZ.md", "reports/native_lua_service_bindings_az.json", "cmake/startup.cmake"],
+  "contract": {
+    "abi": "new C++ source interface; native callback signatures retained; no binary replacement claim",
+    "borrows": ["existing NativeLuaFundamentalsContext", "its NativeStringStorage", "its volatile manager publication", "its NativeLuaVfsDispatch", "caller X360 flag", "caller region NativeString"],
+    "owns": ["NativeLuaFileServices", "NativeLuaBootstrapInputs"],
+    "routing": "scoped thread-local activation, LIFO restoration across nested bundles; unbound callback throws logic_error",
+    "do_file": "identical zero-upvalue trampoline in both service structs; delegates to do_native_lua_file_00b69e00",
+    "overrides": "forwards passed manager without substitution to append_native_lua_script_overrides_00bdef90",
+    "fundamentals": "existing concrete native_lua_fundamentals_callback"
+  },
+  "native_call_evidence": [
+    {"function": "run_native_lua_file_00b69d40", "address": "00b69d8b", "native": "00bdef90", "evidence": "saved assembly owner; manager loaded from 0109CEEC at 00b69d7b"},
+    {"function": "do_native_lua_file_00b69e00", "address": "00b69e82", "native": "00b69d40", "evidence": "saved assembly owner"}
+  ],
+  "native_body_reconstruction": "none; source integration only",
+  "uncertainty": ["original multi-owner callback routing is unproven", "no production raw VFS manager/provider", "FH3, longjmp, hardware and Lua C callback exception behavior excluded", "no production host activation yet"],
+  "validation": {"win32_build": "passed: ./scripts/build.ps1, MSVC Win32 Release, bsp_core and bsp_game linked", "ctest": "reconstructed_math 1/1 passed via build.ps1", "report_calls": "2 rows checked, 0 failed", "focused_fixture": "ignored local/native_lua_service_bindings_az_fixture.cpp; identical DoFile pointers, unbound rejection, passed manager against differing publication, nested same/different bundle and C++ unwind restoration", "fixture_source_sha256": "43DCFE651047A8C6041D3D3B14BA61995FF5DCAC3A9B8621CF9E560D30CDD364", "fixture_runner_sha256": "AC57B07750CDE72260114F84E1E62BDB81F06C06542D35085C888EB117BDED86", "composition_fixture": "PASS ignored local/native_lua_service_bindings_az_composition.cpp; actual physical HANDLE and FileStore shared backing, nested DoFile, duplicate pc suffixes yielding MCPP, checked Lua close and canonical zero-counter shutdown", "composition_source_sha256": "4EB206627BECDD5E4E85E765C23B556747498437840D8FE240FF8DFA1947B9C6", "composition_runner_sha256": "F6514F25D55CD178680DAFB2B2000E0E15FC005154DE933F132417CDE846FE28", "core_archive_sha256": "84CDF2FB147B76CE29E5F961878A8AF455BF4989BBF854782404988E00FC3AB9", "runtime": "source fixture only; game not run"}
+}
