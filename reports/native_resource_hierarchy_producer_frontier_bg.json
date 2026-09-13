@@ -1,0 +1,980 @@
+{
+  "packet": "orch2_resource_hierarchy_producer_frontier_bg",
+  "base": "dbae27fb",
+  "status": "readonly_full_producer_contract_inventory_not_raw_implementation_ready",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "ghidra_url": "http://127.0.0.1:8089"
+  },
+  "verification_transport": "Every query uses bsp.py ghidra; client() calls Client.verify before querying. No Ghidra writes.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256_pass1": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_pass2": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "spans": [
+    {
+      "start": "00b7eb90",
+      "end_inclusive": "00b7ee90",
+      "size": 769,
+      "live_sha256": "3d29d9f744a2052f8886ff8e64278ee79670a6fa6faf90500b51c2165be3b5c4",
+      "pe_sha256": "3d29d9f744a2052f8886ff8e64278ee79670a6fa6faf90500b51c2165be3b5c4",
+      "match": true,
+      "evidence": "local\\producer_bg\\producer_bytes.txt"
+    },
+    {
+      "start": "00dfb158",
+      "end_inclusive": "00dfb18b",
+      "size": 52,
+      "live_sha256": "933684815a68a5d993c549f9608b7f45ff240aa421a69888a9da9b14d631a3ee",
+      "pe_sha256": "933684815a68a5d993c549f9608b7f45ff240aa421a69888a9da9b14d631a3ee",
+      "match": true,
+      "evidence": "local\\producer_bg\\ehmap.txt"
+    },
+    {
+      "start": "00cc1ff0",
+      "end_inclusive": "00cc1fff",
+      "size": 16,
+      "live_sha256": "6f0a021a4a9a2f149f4b157d1c6c58e424661683ab7b34d1f37138a313723af3",
+      "pe_sha256": "6f0a021a4a9a2f149f4b157d1c6c58e424661683ab7b34d1f37138a313723af3",
+      "match": true,
+      "evidence": "local\\producer_bg\\eh_actions.txt"
+    },
+    {
+      "start": "00cc2000",
+      "end_inclusive": "00cc2009",
+      "size": 10,
+      "live_sha256": "1f5cff4276dc9dbb65ee9fcf24d31efe1be04c81f0cda6d6eef0252477eca76a",
+      "pe_sha256": "1f5cff4276dc9dbb65ee9fcf24d31efe1be04c81f0cda6d6eef0252477eca76a",
+      "match": true,
+      "evidence": "local\\producer_bg\\eh_handler_bytes.txt"
+    }
+  ],
+  "producer_calls": [
+    {
+      "address": "00b7ebb4",
+      "native": "00b87a90",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=84h literal; returned EAX captured EBP"
+    },
+    {
+      "address": "00b7ec2b",
+      "native": "00715bf0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=ESI=[ESP+44] incoming wrapper"
+    },
+    {
+      "address": "00b7ec47",
+      "native": "00bea680",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=ESI parent wrapper; PUSH &local child [ESP+10] before push"
+    },
+    {
+      "address": "00b7ec61",
+      "native": "00bf7fbf",
+      "function": "00b7eb90",
+      "stack_argument_words": 2,
+      "argument_provenance": "PUSH Parent@CE5644; PUSH EAX=[child+14]; ADD ESP8"
+    },
+    {
+      "address": "00b7ec76",
+      "native": "00be9a00",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child [ESP+10]; EAX written record+0"
+    },
+    {
+      "address": "00b7ec94",
+      "native": "00bf7fbf",
+      "function": "00b7eb90",
+      "stack_argument_words": 2,
+      "argument_provenance": "PUSH Resource@D63108; PUSH EAX=[child+14]; ADD ESP8"
+    },
+    {
+      "address": "00b7eca9",
+      "native": "00be9a00",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; EAX captured EDI before reserve"
+    },
+    {
+      "address": "00b7eccb",
+      "native": "00b7d640",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=ESI=record+4C; PUSH EAX=max_signed(wrap(capacity+4),8); RET4"
+    },
+    {
+      "address": "00b7ecf8",
+      "native": "00bf7fbf",
+      "function": "00b7eb90",
+      "stack_argument_words": 2,
+      "argument_provenance": "PUSH Matrix@D63100; PUSH EAX=[child+14]; ADD ESP8"
+    },
+    {
+      "address": "00b7ed10",
+      "native": "00b936e0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child [ESP+10]; EDX=record+0C"
+    },
+    {
+      "address": "00b7ed2f",
+      "native": "00bf7fbf",
+      "function": "00b7eb90",
+      "stack_argument_words": 2,
+      "argument_provenance": "PUSH Name@CE8ED0; PUSH EAX=[child+14]; ADD ESP8"
+    },
+    {
+      "address": "00b7ed49",
+      "native": "00bea010",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "PUSH &temporary name [prepush ESP+18]; ECX=&child [postpush ESP+14]; EAX source header"
+    },
+    {
+      "address": "00b7ed63",
+      "native": "0041dd40",
+      "function": "00b7eb90",
+      "stack_argument_words": 2,
+      "argument_provenance": "ECX=EDI=record+4; PUSH1; PUSH source length [ESI]; RET8"
+    },
+    {
+      "address": "00b7ed77",
+      "native": "00bf7680",
+      "function": "00b7eb90",
+      "stack_argument_words": 3,
+      "argument_provenance": "PUSH current dest length [EDI]; PUSH current src data [ESI+4]; PUSH current dest data [EDI+4]; ADD ESP0C"
+    },
+    {
+      "address": "00b7ed9a",
+      "native": "00419cc0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "no arguments consumed; queued PUSH1,PUSH temporary length+1,PUSH captured temp data; plainRET"
+    },
+    {
+      "address": "00b7eda1",
+      "native": "00bd1510",
+      "function": "00b7eb90",
+      "stack_argument_words": 3,
+      "argument_provenance": "ECX=getter EAX; consumes prior queued(temp data,length+1,1); RET0C"
+    },
+    {
+      "address": "00b7edb7",
+      "native": "00425850",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=childnode+10; PUSH Flags@D09A68; RET4"
+    },
+    {
+      "address": "00b7edc4",
+      "native": "00be9a00",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; EAX stored record+58"
+    },
+    {
+      "address": "00b7edda",
+      "native": "00425850",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=childnode+10; PUSH BoundingSphere@D630F0; RET4"
+    },
+    {
+      "address": "00b7edec",
+      "native": "00b932e0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; EDX=ESI=record+5C"
+    },
+    {
+      "address": "00b7edf6",
+      "native": "00b7d220",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "PUSH ESI=record+5C sphere; ECX=&box temporary [postpush ESP+24]; RET4 EAX output"
+    },
+    {
+      "address": "00b7ee2f",
+      "native": "00425850",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=childnode+10; PUSH BoundingBox@D630E4; RET4"
+    },
+    {
+      "address": "00b7ee3f",
+      "native": "00b93310",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; EDX=record+6C"
+    },
+    {
+      "address": "00b7ee46",
+      "native": "00be9c40",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; unknown tag skip"
+    },
+    {
+      "address": "00b7ee57",
+      "native": "00be9ed0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ECX=&child; state=-1 before call"
+    },
+    {
+      "address": "00b7ee62",
+      "native": "00715bf0",
+      "function": "00b7eb90",
+      "stack_argument_words": 0,
+      "argument_provenance": "ESI=[ESP+48] incoming wrapper; ECX=ESI"
+    },
+    {
+      "address": "00b7ee78",
+      "native": "00b87ae0",
+      "function": "00b7eb90",
+      "stack_argument_words": 1,
+      "argument_provenance": "ECX=[saved manager+24]; PUSH EBP raw record; RET4"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00b7f165",
+      "native": "00b7eb90",
+      "function": "00b7f100",
+      "stack_argument_words": 1,
+      "argument_provenance": "LEA EDX,[ESP+18]; PUSH EDX child wrapper; ECX=EBP saved incoming manager; producer RET4"
+    }
+  ],
+  "callee_contracts": [
+    {
+      "native_entry": "00b87a90",
+      "status": "complete_raw_source",
+      "source": "src/native_resource_hierarchy_pool.cpp",
+      "contract": "void* allocate_static_native_hierarchy_slot_00b87a90(); ignores native ECX size; bound actual109022C companion required"
+    },
+    {
+      "native_entry": "00715bf0",
+      "status": "raw_body_missing_typed_only",
+      "source": "include/bsp/structured_reader.hpp",
+      "contract": "ECX wrapper; no stack; EAX0/1; null node false else node+20 !=0; typed method omits wrapper null case"
+    },
+    {
+      "native_entry": "00bea680",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_reader.cpp",
+      "contract": "ECX parent wrapper; stack output wrapper; RET4; EAX output; allocate24h and BEA250 actual parent; unique_ptr version adds checks/noexcept"
+    },
+    {
+      "native_entry": "00bf7fbf",
+      "status": "existing_crt_boundary",
+      "source": "src/native_string_compare.cpp",
+      "contract": "cdecl two C strings, caller ADD ESP8; CRT locale/invalid-parameter domain remains"
+    },
+    {
+      "native_entry": "00be9a00",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_reader.cpp",
+      "contract": "ECX wrapper; no stack; EAX unchanged BF0280 result; actual reader=[node+8], budget=&node+20; no lookup, sign conversion or index validation"
+    },
+    {
+      "native_entry": "00b7d640",
+      "status": "complete_raw_source",
+      "source": "src/native_resource_hierarchy_fields.cpp",
+      "contract": "void reserve_native_hierarchy_reference_array_00b7d640(void* header,int32_t requested_capacity); native ECX header, stack signed capacity, RET4"
+    },
+    {
+      "native_entry": "00b936e0",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_hierarchy.cpp",
+      "contract": "ECX wrapper EDX float[16], no stack RET;16 BE99D0 calls/FSTP32; typed bool read_matrix_00b936e0(StructuredNode&,array<float,16>&) early-exits failure"
+    },
+    {
+      "native_entry": "00bea010",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_reader.cpp",
+      "contract": "ECX wrapper; stack output8h name; RET4 EAX output; BE9FE0/BF0510 actual counted string missing"
+    },
+    {
+      "native_entry": "0041dd40",
+      "status": "complete_raw_source",
+      "source": "src/native_string.cpp",
+      "contract": "void resize_native_string_header_0041dd40(void*,NativeStringRawPoolContext&,uint32_t,bool); original ECX header stack(length,preserve) RET8"
+    },
+    {
+      "native_entry": "00bf7680",
+      "status": "existing_crt_boundary",
+      "source": "src/native_string.cpp",
+      "contract": "cdecl(dst,src,count), caller ADD ESP0C; original supports overlap branch, use established overlap-preserving copy boundary; current CRT not binary identity"
+    },
+    {
+      "native_entry": "00419cc0",
+      "status": "complete_raw_source",
+      "source": "src/native_string_pool_owner.cpp",
+      "contract": "native_string_pool_get_or_create_00419cc0(actual publication01090AA8,actual manager publication01090AA0); native zero arguments plainRET EAX owner; queued three words belong toBD1510"
+    },
+    {
+      "native_entry": "00bd1510",
+      "status": "complete_raw_source",
+      "source": "src/native_string_pool_storage.cpp",
+      "contract": "return_native_string_pool_00bd1510(pool,block,bytes,actual01090AA4); native ECX owner stack(block,length+1,1) RET0C; unused third word is not gate"
+    },
+    {
+      "native_entry": "00425850",
+      "status": "complete_raw_source",
+      "source": "src/native_string_compare.cpp",
+      "contract": "bool equal_native_string_header_00425850(const void* actual8h,const char*) noexcept; ECX childnode+10 stack C-string RET4 ALbool"
+    },
+    {
+      "native_entry": "00b932e0",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_hierarchy.cpp",
+      "contract": "ECX wrapper EDX float[4], no stack RET; four BE99D0/FSTP32; typed bool read_sphere_00b932e0(StructuredNode&,array<float,4>&) early-exits failure"
+    },
+    {
+      "native_entry": "00b7d220",
+      "status": "raw_wrapper_missing_typed_math_exists",
+      "source": "src/structured_hierarchy.cpp",
+      "contract": "ECX output6f stack sphere4f RET4 EAX output; B7D160 temp then6 x87 copies; sphere_to_box_00b7d160(array<float,4> const&,array<float,6>&) stages x87 math but no exact wrapper/exception ABI"
+    },
+    {
+      "native_entry": "00b93310",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_resource.cpp",
+      "contract": "ECX wrapper EDX float[6], no stack RET; six BE99D0/FSTP32 minimumXYZ maximumXYZ; typed reader full-read only"
+    },
+    {
+      "native_entry": "00be9c40",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_reader.cpp",
+      "contract": "ECX wrapper no stack RET; parent remaining-=declared; BF03E0 own remaining; zero own remaining; decrement reader+60 path; clear node+8; no duplicate-detach guard"
+    },
+    {
+      "native_entry": "00be9ed0",
+      "status": "raw_body_missing_typed_only",
+      "source": "src/structured_reader.cpp",
+      "contract": "ECX wrapper no stack RET; InterlockedDecrement(node+4), virtual0 if zero, then clear wrapper; typed unique_ptr destruction differs"
+    },
+    {
+      "native_entry": "00b87ae0",
+      "status": "unmerged_BG_append_source",
+      "source": "351572b8b7f2795e4fa9b463b143ccfe08fa11be:src/native_resource_hierarchy_append.cpp",
+      "contract": "void append_native_hierarchy_item_00b87ae0(void* resource,uint32_t record_word); native ECX resource stack record RET4; header resource+1C; current base does not contain source"
+    }
+  ],
+  "blocking_dependencies": {
+    "child": "BEA680 -> BEA250 actual24h node constructor -> BF0510 string and BF0280 DWORD; node vtable D68BB4 lifecycle target not closed by this packet",
+    "integer": "BE9A00 -> BF0280 -> actual stream virtual34 nonnull actual-count; EAX scalar preserved, count subtracted unchecked",
+    "float": "BE99D0 -> BF02C0 -> actual stream virtual44, FSTP32/FLD32 result and debit; B936E0/B932E0/B93310 consumers do not early-exit",
+    "name": "BEA010 -> BE9FE0 -> BF0510 -> actual stream virtual48 hidden8h output/non-null count; actual string storage exists but raw stream body missing",
+    "detach": "BE9C40 -> BF03E0 -> stream virtual1C(offset,high0,origin1); release BE9ED0 -> node virtual0 when refcount zero; no fabricated callback"
+  },
+  "numeric_reference_contract": "Parent/resource/flags all consume BE9A00 raw DWORD. Resource appends inline, retains captured EDI across reserve, reloads count/data, skips only null computed slot, increments current count. No lookup or retained resource-item pointer. Standalone B7D9D0 is not called; no need to implement it for producer.",
+  "next_minimum_ready_packet": {
+    "addresses": [
+      "00715bf0"
+    ],
+    "files": [
+      "include/bsp/native_structured_node_predicate.hpp",
+      "src/native_structured_node_predicate.cpp"
+    ],
+    "proposed_cpp": "bool native_structured_node_has_remaining_00715bf0(const void* actual_wrapper) noexcept;",
+    "contract": "actual wrapper itself valid; load DWORD node pointer; return false if zero otherwise load node+20 and compare nonzero; no attachment/stream/sign/bound checks; no allocation/callback; original ECX no stack plainRET",
+    "scope": "Proposal only; this address remains outside this worker lease. Source does not unblock full producer by itself."
+  },
+  "producer_packet_after_dependencies": {
+    "addresses": [
+      "00b7eb90"
+    ],
+    "files": [
+      "include/bsp/native_resource_hierarchy_producer.hpp",
+      "src/native_resource_hierarchy_producer.cpp"
+    ],
+    "requirements": "Integrate reviewed BG append first; reconstruct actual wrapper/reader dependencies above, preserving raw name context, stream dispatch and node lifecycle. No callback facade/host-global stub can stand in. Use manager actual+24 at final append and raw record pointer word."
+  },
+  "eh": {
+    "handler": "00cc2000",
+    "info": "00dfb168",
+    "unwind_map": "00dfb158",
+    "states": [
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00cc1ff8",
+        "operation": "LEA ECX,[EBP-2C]; tail JMP0041DD20 temporary name"
+      },
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00cc1ff0",
+        "operation": "LEA ECX,[EBP-34]; tail JMP00BE9ED0 current child wrapper"
+      }
+    ],
+    "record_rollback": false,
+    "limits": "No record destructor/slot return in producer map. Name state armed after reader return; disarmed before normal pool return. Child state disarmed before normal release. C++ catch shape is not native FH3/SEH proof."
+  },
+  "dependency_commits": {
+    "append": {
+      "commit": "351572b8b7f2795e4fa9b463b143ccfe08fa11be",
+      "status": "unmerged relative to dbae27fb and frozen root candidate b538f53e",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-resource-hierarchy-append-bg"
+    },
+    "cleanup": {
+      "commit": "4876b34b1bb1f132a355e86f8d7216f97523a6a3",
+      "status": "unmerged relative to base; source read; not a producer EH rollback dependency",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-resource-hierarchy-cleanup-bg"
+    }
+  },
+  "coverage_limits": [
+    "Full producer interval and27 direct call sites read; all incoming live xrefs (one) inspected.",
+    "Direct dependency bodies read; transitive listing/assembly inspected only for named blocking paths; concrete runtime stream implementations/vtables and node deleting destructor not fully audited.",
+    "CRT BF7680/BF7FBF boundaries inspected, not reconstructed or runtime-validated here.",
+    "Existing typed reader full-read domain differs from native unchecked short-read and actual-count contracts.",
+    "No source added, build/test/probe run, native ABI replacement, Ghidra mutation/save/export, original EH execution, or game/runtime claim.",
+    "Hierarchy allocation binder requires actual109022C owner and initialized shared allocator domain. Name getter uses actual01090AA8/01090AA0 and gate01090AA4."
+  ],
+  "failure_history": [
+    {
+      "phase": "initial source glob search",
+      "failure": "PowerShell rg wildcard paths yielded OS error123",
+      "recovery": "rg directory with -g filters; no source conclusion from failed search"
+    },
+    {
+      "phase": "EH handler listing",
+      "failure": "CC2000 is not a defined Ghidra function; CLI exit1",
+      "recovery": "Read10 raw live bytes and compare PE; handler/map/action bytes retained; no listing mutation"
+    },
+    {
+      "phase": "console output caps",
+      "failure": "Several requested chunks truncated; full captured evidence retained locally",
+      "recovery": "Read bounded body/assembly portions needed for contracts; coverage limits explicit"
+    }
+  ],
+  "local_evidence_inventory": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg",
+    "complete_recursive_file_count": 66,
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00419cc0.txt",
+        "size": 1561,
+        "sha256_pass1": "56734bf758bbe84ded08d0a394c0f1838ab20788281bca0a484b6d58ff972e7b",
+        "sha256_pass2": "56734bf758bbe84ded08d0a394c0f1838ab20788281bca0a484b6d58ff972e7b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_0041dd40.txt",
+        "size": 1765,
+        "sha256_pass1": "c2a53ea68c24af159b0f4c7222f12836031b8575c5c8741eb1eef9ddf6bfd803",
+        "sha256_pass2": "c2a53ea68c24af159b0f4c7222f12836031b8575c5c8741eb1eef9ddf6bfd803"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00425850.txt",
+        "size": 787,
+        "sha256_pass1": "6953bfaf75df079834fe5daecb2e2254f6a399d33195c177347008679eafece6",
+        "sha256_pass2": "6953bfaf75df079834fe5daecb2e2254f6a399d33195c177347008679eafece6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00715bf0.txt",
+        "size": 236,
+        "sha256_pass1": "a3726dd7c09d2eec589db1b7dde3d1b3e9cefab68471ae50732bc97cbf0831a3",
+        "sha256_pass2": "a3726dd7c09d2eec589db1b7dde3d1b3e9cefab68471ae50732bc97cbf0831a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b7d160.txt",
+        "size": 1858,
+        "sha256_pass1": "bbfec1edb11aaf97f1768475464e1291d2b413d4f6a104d37ace57df22bc1ca5",
+        "sha256_pass2": "bbfec1edb11aaf97f1768475464e1291d2b413d4f6a104d37ace57df22bc1ca5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b7d220.txt",
+        "size": 715,
+        "sha256_pass1": "270596fe6cad2b6be45ab455fcf03c7959bec66f3cebfc6f452764e913f06bd3",
+        "sha256_pass2": "270596fe6cad2b6be45ab455fcf03c7959bec66f3cebfc6f452764e913f06bd3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b7d640.txt",
+        "size": 1075,
+        "sha256_pass1": "30a0df8b852ba2e23b0acb8d065ade4f0b52575afe29c36f38722ab807140843",
+        "sha256_pass2": "30a0df8b852ba2e23b0acb8d065ade4f0b52575afe29c36f38722ab807140843"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b87a90.txt",
+        "size": 57,
+        "sha256_pass1": "b4eb8de02b5ca71e7ba708a567a84b0401fa0802ce8a89843f5b9b3857eb496d",
+        "sha256_pass2": "b4eb8de02b5ca71e7ba708a567a84b0401fa0802ce8a89843f5b9b3857eb496d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b87ae0.txt",
+        "size": 666,
+        "sha256_pass1": "cc7d4687bbe2a499f99f997884bd8a7a7da338aefa1fdf330fc3d6f16889ad43",
+        "sha256_pass2": "cc7d4687bbe2a499f99f997884bd8a7a7da338aefa1fdf330fc3d6f16889ad43"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b932e0.txt",
+        "size": 480,
+        "sha256_pass1": "a0a29164cfbf91978b77ca1c8a2f2eb0a0e46923b072c7735229ffcbed1c23ec",
+        "sha256_pass2": "a0a29164cfbf91978b77ca1c8a2f2eb0a0e46923b072c7735229ffcbed1c23ec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b93310.txt",
+        "size": 664,
+        "sha256_pass1": "25afa558bc51f7ad6ffc8ef027b531c6e6b863d01ed2f3445ee7a9d89ca579ce",
+        "sha256_pass2": "25afa558bc51f7ad6ffc8ef027b531c6e6b863d01ed2f3445ee7a9d89ca579ce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00b936e0.txt",
+        "size": 513,
+        "sha256_pass1": "000944ca32fc4c85e1a10d9abd9a93a972d9f2f3f1f4583a44cb1391105857c4",
+        "sha256_pass2": "000944ca32fc4c85e1a10d9abd9a93a972d9f2f3f1f4583a44cb1391105857c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bd1510.txt",
+        "size": 891,
+        "sha256_pass1": "696e84ed71011a471d68bd6666490bae7dab50285d32425ff565209c248b33d4",
+        "sha256_pass2": "696e84ed71011a471d68bd6666490bae7dab50285d32425ff565209c248b33d4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00be99d0.txt",
+        "size": 176,
+        "sha256_pass1": "3a3cc6c9415a9467150b1e2e4339126f5876cc9e37045bb77ccf2e8a94b7e730",
+        "sha256_pass2": "3a3cc6c9415a9467150b1e2e4339126f5876cc9e37045bb77ccf2e8a94b7e730"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00be9a00.txt",
+        "size": 176,
+        "sha256_pass1": "cd8558de6a9786fec7a010bba12d7bf215dd5d76da3033f2311ef54602fcb8ca",
+        "sha256_pass2": "cd8558de6a9786fec7a010bba12d7bf215dd5d76da3033f2311ef54602fcb8ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00be9c40.txt",
+        "size": 764,
+        "sha256_pass1": "733ab583bf0f6ab015f1f5286d2c61546af50254f5b0e587db7ee217870c289b",
+        "sha256_pass2": "733ab583bf0f6ab015f1f5286d2c61546af50254f5b0e587db7ee217870c289b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00be9ed0.txt",
+        "size": 507,
+        "sha256_pass1": "78285c2051b01a167c5c90ec7a083802d73e487ca353d33c65b3be76da5c54bf",
+        "sha256_pass2": "78285c2051b01a167c5c90ec7a083802d73e487ca353d33c65b3be76da5c54bf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00be9fe0.txt",
+        "size": 355,
+        "sha256_pass1": "c916acbf260f93e748daa880c8cec1ccb487256b534f6a0d1a08ccc7ba3dca9e",
+        "sha256_pass2": "c916acbf260f93e748daa880c8cec1ccb487256b534f6a0d1a08ccc7ba3dca9e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bea010.txt",
+        "size": 295,
+        "sha256_pass1": "64e4d15991ab24090c0ef328723d27a89b5f63c5754b93fccb74cd64a2fbaf3b",
+        "sha256_pass2": "64e4d15991ab24090c0ef328723d27a89b5f63c5754b93fccb74cd64a2fbaf3b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bea680.txt",
+        "size": 1062,
+        "sha256_pass1": "e7902372a703c0ee473dd248d3c62d3748a774f196a18994e49683f8f6e74e72",
+        "sha256_pass2": "e7902372a703c0ee473dd248d3c62d3748a774f196a18994e49683f8f6e74e72"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf0280.txt",
+        "size": 358,
+        "sha256_pass1": "63b1030de30ac5770da842d2729dde46d8ef28fc22fa5573d76a732c626c8269",
+        "sha256_pass2": "63b1030de30ac5770da842d2729dde46d8ef28fc22fa5573d76a732c626c8269"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf02c0.txt",
+        "size": 442,
+        "sha256_pass1": "db17d1e11e934c363a97c7381e2ee5f66eb7b75bc5dd4bcaa3be70ea6da1422e",
+        "sha256_pass2": "db17d1e11e934c363a97c7381e2ee5f66eb7b75bc5dd4bcaa3be70ea6da1422e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf03e0.txt",
+        "size": 261,
+        "sha256_pass1": "8dcf048db07b9d738c8f396ca9bf5b83cb89dcd5a1b7831d2b58b5b1d996b7da",
+        "sha256_pass2": "8dcf048db07b9d738c8f396ca9bf5b83cb89dcd5a1b7831d2b58b5b1d996b7da"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf0510.txt",
+        "size": 541,
+        "sha256_pass1": "4584127b0f061e92c6f81703453d72b01c2135e4b57dfc09b80c93793adbffdd",
+        "sha256_pass2": "4584127b0f061e92c6f81703453d72b01c2135e4b57dfc09b80c93793adbffdd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf7680.txt",
+        "size": 4746,
+        "sha256_pass1": "710af0e50812dd024baf24d4e16246a8d7209ff88016183b9b65439931382a7a",
+        "sha256_pass2": "710af0e50812dd024baf24d4e16246a8d7209ff88016183b9b65439931382a7a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\asm_00bf7fbf.txt",
+        "size": 852,
+        "sha256_pass1": "d3333279d13c436fd993ace1990ca2ea8312c72f38ebcf7d13cfb1b092d6c68a",
+        "sha256_pass2": "d3333279d13c436fd993ace1990ca2ea8312c72f38ebcf7d13cfb1b092d6c68a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\call_verification.txt",
+        "size": 93,
+        "sha256_pass1": "4dd17ec3ee451133066657b996f791fca6f515e33b9d6a80060e9eb9c1637ac1",
+        "sha256_pass2": "4dd17ec3ee451133066657b996f791fca6f515e33b9d6a80060e9eb9c1637ac1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00419cc0.txt",
+        "size": 4483,
+        "sha256_pass1": "c75a33a81687d2acb3dd5809548d4cc916483c32624d20422780eb24e1bd66ac",
+        "sha256_pass2": "c75a33a81687d2acb3dd5809548d4cc916483c32624d20422780eb24e1bd66ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_0041dd40.txt",
+        "size": 5769,
+        "sha256_pass1": "5d0571bb8beff859b15d82fefd5640179092e9abe67644ca67da11e92322f30e",
+        "sha256_pass2": "5d0571bb8beff859b15d82fefd5640179092e9abe67644ca67da11e92322f30e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00425850.txt",
+        "size": 2926,
+        "sha256_pass1": "4f7cbdc86ca98f4bb63e5e81fb8b01a41d82b30de98041a4b4bd132a58063999",
+        "sha256_pass2": "4f7cbdc86ca98f4bb63e5e81fb8b01a41d82b30de98041a4b4bd132a58063999"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00715bf0.txt",
+        "size": 802,
+        "sha256_pass1": "e46c7b939a131e04e3324e06e7baf8490b333c1fad2c89a53160ce372056c8cd",
+        "sha256_pass2": "e46c7b939a131e04e3324e06e7baf8490b333c1fad2c89a53160ce372056c8cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00b7d220.txt",
+        "size": 1170,
+        "sha256_pass1": "17c03d61da4f9e32c830643d67b319b67b389414e88b24a0cceb00f5efec67d0",
+        "sha256_pass2": "17c03d61da4f9e32c830643d67b319b67b389414e88b24a0cceb00f5efec67d0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00b932e0.txt",
+        "size": 1237,
+        "sha256_pass1": "3bf1450580b198fb792964925c01b0fb987a7d08519e06de308a7776ae0c2545",
+        "sha256_pass2": "3bf1450580b198fb792964925c01b0fb987a7d08519e06de308a7776ae0c2545"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00b93310.txt",
+        "size": 1948,
+        "sha256_pass1": "62cb0bf7a487b92663a323aae6e6916bdfa0505e1562c7d0423609afe3c6e246",
+        "sha256_pass2": "62cb0bf7a487b92663a323aae6e6916bdfa0505e1562c7d0423609afe3c6e246"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00b936e0.txt",
+        "size": 1230,
+        "sha256_pass1": "35afda94d51be413da3bccba441625ec4f1288070f4b907aacd1edcf19c25579",
+        "sha256_pass2": "35afda94d51be413da3bccba441625ec4f1288070f4b907aacd1edcf19c25579"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00bd1510.txt",
+        "size": 3359,
+        "sha256_pass1": "ad80e19dfc1099a42ed5d3f12b667d72efbba5aabf3a21c556dc3876780f1f7d",
+        "sha256_pass2": "ad80e19dfc1099a42ed5d3f12b667d72efbba5aabf3a21c556dc3876780f1f7d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00be9a00.txt",
+        "size": 946,
+        "sha256_pass1": "d16ab884e6aed0cb18d81c01e5f3768d2fccf4230a6d8c7349fb8565b8c68815",
+        "sha256_pass2": "d16ab884e6aed0cb18d81c01e5f3768d2fccf4230a6d8c7349fb8565b8c68815"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00be9c40.txt",
+        "size": 1320,
+        "sha256_pass1": "e926230ecb4b8a7a9535a5f7b149268463687fe38df7e5828e1da1d2752829b6",
+        "sha256_pass2": "e926230ecb4b8a7a9535a5f7b149268463687fe38df7e5828e1da1d2752829b6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00be9ed0.txt",
+        "size": 982,
+        "sha256_pass1": "58b4d086ab6cd28766da0a931bcb99330abcea374d66a76753be04e1df885014",
+        "sha256_pass2": "58b4d086ab6cd28766da0a931bcb99330abcea374d66a76753be04e1df885014"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00bea010.txt",
+        "size": 613,
+        "sha256_pass1": "506cf152e340555983238a3bce989a554723b167146a1e12760b207509a65966",
+        "sha256_pass2": "506cf152e340555983238a3bce989a554723b167146a1e12760b207509a65966"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\callee_00bea680.txt",
+        "size": 1288,
+        "sha256_pass1": "9d03221e25ff39a7d08ce30b2788d71d4d404c4eec659dab1465ef12ab32aac8",
+        "sha256_pass2": "9d03221e25ff39a7d08ce30b2788d71d4d404c4eec659dab1465ef12ab32aac8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\caller.txt",
+        "size": 1398,
+        "sha256_pass1": "2cc02556935b17795dc54ad60a5a7b705b4eaaa9327bddd3384d16b316cda7c6",
+        "sha256_pass2": "2cc02556935b17795dc54ad60a5a7b705b4eaaa9327bddd3384d16b316cda7c6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\collect.py",
+        "size": 1007,
+        "sha256_pass1": "88976674f48b4b638816e3b8b46e92b58d274abc852c33c39b67e7418dc97753",
+        "sha256_pass2": "88976674f48b4b638816e3b8b46e92b58d274abc852c33c39b67e7418dc97753"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\collect_deep.py",
+        "size": 558,
+        "sha256_pass1": "a564de55f08b177e7d594964d6d29a026f3c18c6b7191db3a4bfa48e1edea183",
+        "sha256_pass2": "a564de55f08b177e7d594964d6d29a026f3c18c6b7191db3a4bfa48e1edea183"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\collect_more.py",
+        "size": 1010,
+        "sha256_pass1": "a2dffe83b9b7f6d27a789904eb55578cfac281e15a469f4486f7d89cc8ceb84c",
+        "sha256_pass2": "a2dffe83b9b7f6d27a789904eb55578cfac281e15a469f4486f7d89cc8ceb84c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00b7d160.txt",
+        "size": 1927,
+        "sha256_pass1": "f1096de7e973b6f42af70a8013df08ed7fb5f4d312cb58dfeafb3b9a6cb90e07",
+        "sha256_pass2": "f1096de7e973b6f42af70a8013df08ed7fb5f4d312cb58dfeafb3b9a6cb90e07"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00be99d0.txt",
+        "size": 1020,
+        "sha256_pass1": "873a53c8a5c2396748fcfa74032a495b739823104736eecbeb119071d4857bad",
+        "sha256_pass2": "873a53c8a5c2396748fcfa74032a495b739823104736eecbeb119071d4857bad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00be9fe0.txt",
+        "size": 769,
+        "sha256_pass1": "2d9c320b0c9614144cc8c3cb28dd74f34ab9c6324f8b6c0bced89f8bdeece992",
+        "sha256_pass2": "2d9c320b0c9614144cc8c3cb28dd74f34ab9c6324f8b6c0bced89f8bdeece992"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00bea250.txt",
+        "size": 2465,
+        "sha256_pass1": "8dbbb5348164e31b31f500240c8c3fe70555a901701331a795533670b3861ff7",
+        "sha256_pass2": "8dbbb5348164e31b31f500240c8c3fe70555a901701331a795533670b3861ff7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00bf0280.txt",
+        "size": 955,
+        "sha256_pass1": "9edcff25c9860e97f8a0be9957c037d6dbb57d9ebc02af72d137c7cfa3cd87cd",
+        "sha256_pass2": "9edcff25c9860e97f8a0be9957c037d6dbb57d9ebc02af72d137c7cfa3cd87cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00bf03e0.txt",
+        "size": 825,
+        "sha256_pass1": "133aab70eedeeb20b194701585f1cda479413d44dcc6c48f7791738f792c6576",
+        "sha256_pass2": "133aab70eedeeb20b194701585f1cda479413d44dcc6c48f7791738f792c6576"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\deep_00bf0510.txt",
+        "size": 1033,
+        "sha256_pass1": "ecf95c493a9bea0cda83349871f90f289b60166193c4e97bc3a728999fde290b",
+        "sha256_pass2": "ecf95c493a9bea0cda83349871f90f289b60166193c4e97bc3a728999fde290b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\eh.txt",
+        "size": 138,
+        "sha256_pass1": "f0f912d9b2d4edb583205c840b7a542a852cf110c1a3039bd8c0cdc0c269ed2b",
+        "sha256_pass2": "f0f912d9b2d4edb583205c840b7a542a852cf110c1a3039bd8c0cdc0c269ed2b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\eh_actions.txt",
+        "size": 77,
+        "sha256_pass1": "e9a808c2cb82080659d0bdb5e5c9b28a71540bb5ddd147c343db3b298a403575",
+        "sha256_pass2": "e9a808c2cb82080659d0bdb5e5c9b28a71540bb5ddd147c343db3b298a403575"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\eh_handler_bytes.txt",
+        "size": 53,
+        "sha256_pass1": "03b7c9a89a76af415ce3df67e4a4be4441ba3b81bbfd54a64b8e1188093aaefa",
+        "sha256_pass2": "03b7c9a89a76af415ce3df67e4a4be4441ba3b81bbfd54a64b8e1188093aaefa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\ehmap.txt",
+        "size": 260,
+        "sha256_pass1": "cac8c2a43bc51ca33c2347941e41f2ca5ad0fc7fdddd2ea20cad203852a323a6",
+        "sha256_pass2": "cac8c2a43bc51ca33c2347941e41f2ca5ad0fc7fdddd2ea20cad203852a323a6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\finalize.py",
+        "size": 2345,
+        "sha256_pass1": "8f5acdc8681502c5218c8279997458c66c30437332f3850caeac07065dc9fe1f",
+        "sha256_pass2": "8f5acdc8681502c5218c8279997458c66c30437332f3850caeac07065dc9fe1f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\incoming.txt",
+        "size": 77,
+        "sha256_pass1": "46b653a3140a134e04edf8d9acd0a0bce949371d66bc175d6e4b561bb8f7829d",
+        "sha256_pass2": "46b653a3140a134e04edf8d9acd0a0bce949371d66bc175d6e4b561bb8f7829d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\make_report.py",
+        "size": 13322,
+        "sha256_pass1": "bb4c1d9706f1cd1245d66aea03728d2c5a2a1f54f8aef65f6c72e3ea1ca6063c",
+        "sha256_pass2": "bb4c1d9706f1cd1245d66aea03728d2c5a2a1f54f8aef65f6c72e3ea1ca6063c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\producer_asm.txt",
+        "size": 7056,
+        "sha256_pass1": "af70a6e0967274f2c842abe39835300f111616ca05d7de8d656da48bd1540b20",
+        "sha256_pass2": "af70a6e0967274f2c842abe39835300f111616ca05d7de8d656da48bd1540b20"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\producer_bytes.txt",
+        "size": 3713,
+        "sha256_pass1": "c6bb6ddc2afe3b2574bd95f34c24a0ae94f2b232b7e497981dd6d02b923eb163",
+        "sha256_pass2": "c6bb6ddc2afe3b2574bd95f34c24a0ae94f2b232b7e497981dd6d02b923eb163"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\producer_proto.txt",
+        "size": 137,
+        "sha256_pass1": "14959f4784cd30ae00cb8dd50ade70f2244d9d4260c134cdd098547d26e3a637",
+        "sha256_pass2": "14959f4784cd30ae00cb8dd50ade70f2244d9d4260c134cdd098547d26e3a637"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\protos.txt",
+        "size": 1704,
+        "sha256_pass1": "b8529d1d4d507e91c484075a32f07c4b9b16bcd2cdb6ef91678c41d88c51cfef",
+        "sha256_pass2": "b8529d1d4d507e91c484075a32f07c4b9b16bcd2cdb6ef91678c41d88c51cfef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\query_log.json",
+        "size": 4390,
+        "sha256_pass1": "16c8dff29559ce2398298781267fe8ba4d250545fbee5be0768ae8aedab22e70",
+        "sha256_pass2": "16c8dff29559ce2398298781267fe8ba4d250545fbee5be0768ae8aedab22e70"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\query_log_2.json",
+        "size": 5954,
+        "sha256_pass1": "9ab7f67a47740df63d4dda82ff024cb4429853cd470948e5aab10a1c7c17d998",
+        "sha256_pass2": "9ab7f67a47740df63d4dda82ff024cb4429853cd470948e5aab10a1c7c17d998"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\local\\producer_bg\\query_log_3.json",
+        "size": 1039,
+        "sha256_pass1": "de4a8739c078206f5d666d4c3dd283084d5d054b6833e07cc0c88a7b3a4cf5db",
+        "sha256_pass2": "de4a8739c078206f5d666d4c3dd283084d5d054b6833e07cc0c88a7b3a4cf5db"
+      }
+    ],
+    "canonical_rows_sha256": "b4312b8cf4030039782f82a376e89da87061e1ebd3a95380a32a2bb3d60fb829",
+    "scope": "Every file in local/producer_bg at finalization, including collection scripts, raw query output, failed handler listing, query logs and call verification. Tracked report/doc excluded to avoid recursive self hashing."
+  },
+  "source_inventory": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_resource_hierarchy_pool.cpp",
+      "size": 1064,
+      "sha256_pass1": "4b1a00ae565b019c1335e6944bbb9145566a9ffa5e163ab3895ced226e1b24c8",
+      "sha256_pass2": "4b1a00ae565b019c1335e6944bbb9145566a9ffa5e163ab3895ced226e1b24c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\include\\bsp\\native_resource_hierarchy_pool.hpp",
+      "size": 2096,
+      "sha256_pass1": "126d441f55b45c1c20e45f763eca7584d8ca986fd2daa1a85d3ffe7f2fa4100d",
+      "sha256_pass2": "126d441f55b45c1c20e45f763eca7584d8ca986fd2daa1a85d3ffe7f2fa4100d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_resource_hierarchy_fields.cpp",
+      "size": 3743,
+      "sha256_pass1": "837e3c3bdf6492fb203a2f5488985ab2c80ab9020557f48ff3d729eaa7ccc27e",
+      "sha256_pass2": "837e3c3bdf6492fb203a2f5488985ab2c80ab9020557f48ff3d729eaa7ccc27e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_resource_pointer_array.cpp",
+      "size": 3093,
+      "sha256_pass1": "327175a7ca484d03e0b3103ab812f37235ed81c1acdfc4b8c1dbc969fda02ca0",
+      "sha256_pass2": "327175a7ca484d03e0b3103ab812f37235ed81c1acdfc4b8c1dbc969fda02ca0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_string.cpp",
+      "size": 8311,
+      "sha256_pass1": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "sha256_pass2": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\include\\bsp\\native_string.hpp",
+      "size": 8019,
+      "sha256_pass1": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "sha256_pass2": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_string_compare.cpp",
+      "size": 2213,
+      "sha256_pass1": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718",
+      "sha256_pass2": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_string_pool_owner.cpp",
+      "size": 8443,
+      "sha256_pass1": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "sha256_pass2": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\native_string_pool_storage.cpp",
+      "size": 5103,
+      "sha256_pass1": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "sha256_pass2": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\structured_reader.cpp",
+      "size": 9766,
+      "sha256_pass1": "28295a40c56500e8aba68dbfcf023f84444c7f78d41f4e5068893e230a57d569",
+      "sha256_pass2": "28295a40c56500e8aba68dbfcf023f84444c7f78d41f4e5068893e230a57d569"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\include\\bsp\\structured_reader.hpp",
+      "size": 5161,
+      "sha256_pass1": "dc767b621950d1dda5f6a49fe0082fe114eee4eb305f843b0c90d92256c28072",
+      "sha256_pass2": "dc767b621950d1dda5f6a49fe0082fe114eee4eb305f843b0c90d92256c28072"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\structured_hierarchy.cpp",
+      "size": 4753,
+      "sha256_pass1": "91fbe13d6db9c4c04852761d1233ea59a3026dcf3774cad169b29a004b0f1018",
+      "sha256_pass2": "91fbe13d6db9c4c04852761d1233ea59a3026dcf3774cad169b29a004b0f1018"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\include\\bsp\\structured_hierarchy.hpp",
+      "size": 2433,
+      "sha256_pass1": "d19a625f381233c54fca061fa03a3c3412314c263b4357b16d32a1187c3c863c",
+      "sha256_pass2": "d19a625f381233c54fca061fa03a3c3412314c263b4357b16d32a1187c3c863c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\src\\structured_resource.cpp",
+      "size": 977,
+      "sha256_pass1": "08397c1c1358c650eb67419134f13c53d44d0fb813a400bd6603f0f2b5176009",
+      "sha256_pass2": "08397c1c1358c650eb67419134f13c53d44d0fb813a400bd6603f0f2b5176009"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\include\\bsp\\structured_resource.hpp",
+      "size": 1258,
+      "sha256_pass1": "ad5a690a58439a95a322f1365eeedf03998a99d35124c75da743338db5e3a970",
+      "sha256_pass2": "ad5a690a58439a95a322f1365eeedf03998a99d35124c75da743338db5e3a970"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-producer-frontier-bg\\docs\\NATIVE_RESOURCE_HIERARCHY_FRONTIER_BE.md",
+      "size": 14739,
+      "sha256_pass1": "cf23759bf6b15f3dfb9a80abc5b763fae85ef4f3d5bdf71be8669e4deda87893",
+      "sha256_pass2": "cf23759bf6b15f3dfb9a80abc5b763fae85ef4f3d5bdf71be8669e4deda87893"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-append-bg\\src\\native_resource_hierarchy_append.cpp",
+      "size": 1304,
+      "sha256_pass1": "f251dcc1c0dc66b173f3953f97fe6133670a89f9ad39b5aa152ef11aba63e838",
+      "sha256_pass2": "f251dcc1c0dc66b173f3953f97fe6133670a89f9ad39b5aa152ef11aba63e838"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-cleanup-bg\\src\\native_resource_hierarchy_cleanup.cpp",
+      "size": 727,
+      "sha256_pass1": "b079fb176ad2633850e6ba33e0b1aac30aff390d6d379066c317b602284a6e62",
+      "sha256_pass2": "b079fb176ad2633850e6ba33e0b1aac30aff390d6d379066c317b602284a6e62"
+    }
+  ],
+  "call_verification": {
+    "command": "python tools/verify_report_calls.py reports/native_resource_hierarchy_producer_frontier_bg.json",
+    "checked": 28,
+    "failed": 0,
+    "exit": 0,
+    "evidence": "local/producer_bg/call_verification.txt"
+  }
+}
