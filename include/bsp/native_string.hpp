@@ -28,6 +28,15 @@ public:
     virtual void release(char* block, std::uint32_t size) noexcept = 0;
 };
 
+struct NativeStringPoolStorage;
+// Actual publication cells shared with the native string-pool getter and raw
+// singleton manager. This context owns no storage and adds no host callback.
+struct NativeStringRawPoolContext {
+    NativeStringPoolStorage* volatile& actual_published_01090aa8;
+    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;
+    void* volatile& actual_manager_publication_01090aa0;
+};
+
 // Semantic SizedStoragePool projection; not the actual 00419cc0 owner layout.
 class PooledStringStorage final : public NativeStringStorage {
 public:
@@ -49,6 +58,13 @@ NativeStringStorage& crt_string_storage() noexcept;
 void destroy_native_string_header_0041dd20(void* actual_header,
     NativeStringStorage& storage) noexcept;
 
+// Complete raw-pool composition. Resolve 00419CC0 before every nonnull return,
+// including large blocks and disabled small returns. Getter exceptions escape;
+// the caller's original cleanup state determines subsequent cleanup. The header
+// remains untouched. Evidence: docs/NATIVE_STRING_RAW_POOL_CONTEXT.md.
+void destroy_native_string_header_0041dd20(void* actual_header,
+    NativeStringRawPoolContext& context);
+
 // Full 004BCC00; ECX actual8h header, RET. Capture data once; walk bytes by the
 // current unsigned length, reread after every store. Convert only ASCII A..Z,
 // including after embedded NUL, and still store unchanged bytes. No allocation.
@@ -65,6 +81,13 @@ void lowercase_native_string_header_004bcc00(void* actual_header) noexcept;
 // Evidence and the remaining boundaries: docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md.
 void resize_native_string_header_0041dd40(void* actual_header,
     NativeStringStorage& storage, std::uint32_t length, bool preserve);
+
+// Same complete header schedule through concrete 00419CC0/BD1120/BD1510 using
+// the actual raw manager. Getter exceptions propagate on allocation AND return.
+// Nonzero preserve copies admit overlap, as the original BF7680 branch does.
+// No rollback or native binary/SEH identity is added by this source interface.
+void resize_native_string_header_0041dd40(void* actual_header,
+    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve);
 
 // Existing BE0A30 copy fragment against actual8h headers, without starting a
 // NativeString object or copying a source header. Self-copy returns; otherwise

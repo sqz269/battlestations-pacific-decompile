@@ -1,0 +1,891 @@
+{
+  "schema": "bsp-bounded-discovery-v1",
+  "packet": "orch2_filestore_service_ba_discovery",
+  "status": "read_only_discovery_no_implementation_or_runtime_validation",
+  "utc": "2026-09-13T06:50:34.364211+00:00",
+  "reviewed_head": "522cabd13d7f3c4a6cc57119d1f073f0701b4b07",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every bsp.py ghidra invocation constructs Client and verifies project, program path, language and image base before reading. All 8 proposed complete body byte spans match disk and live Ghidra. No Ghidra mutation or shared export refresh."
+  },
+  "identity": {
+    "legacy_name": "BSP_FileStoreService_GetSingleton",
+    "publication": "0109db70",
+    "owner_bytes": 52,
+    "supported_hypothesis": "debug-feature configuration owner",
+    "evidence": [
+      "0051FA50 displays No DebugFeatures using BE8200 owner+1C and displays AI Debug Render using owner byte+2C.",
+      "006F3CC0, 009AC7C0, 009ACD90 gate world debug-render calls on byte+2C.",
+      "BE9100 parses Profile, Flag and End into 0x88-byte records using text-scanner dependencies; no caller was found."
+    ],
+    "correction": "FileStore service identity is unsupported by these bodies. Do not propagate it as a recovered class name. D68B94 has only its +00 -> BE9600 slot established; adjacent D68B98 -> BE9730 resets another publication 0109DB78 and is not a proved +04 slot."
+  },
+  "functions": [
+    {
+      "address": "0051f460",
+      "end": "0051f51c",
+      "bytes": 189,
+      "sha256": "417ade7da7db89cbc1be7c479fc8aa42b6b38e51e14fc31765cedfeef4ab6602",
+      "hex": "64a1000000006aff6853afc6005064892500000000a170db090183ec0c85c00f858900000056e8c55eefff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d70db090100753f6a34e85a736d0083c4048944240485c0c64424180174098bc8e818a06c00eb0233c0c644241800a370db0901e8655eefff8b0d70db0901518bc8e837176b0085f6740b834618ff56ff151022ce00a170db09015e8b4c240c64890d0000000083c418c3",
+      "proposed_name_hypothesis": "get_debug_feature_owner_0051f460",
+      "original_abi": "cdecl; no native arguments; EAX current publication; RET",
+      "scope": "owner",
+      "instruction_count": 51,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "0051f486",
+          "operand": "0x415350",
+          "kind": "direct",
+          "address": "0051f486",
+          "function": "0051f460",
+          "native": "00415350",
+          "source_binding": "get_native_singleton_manager_00415350 using borrowed actual01090AA0 publication"
+        },
+        {
+          "site": "0051f49f",
+          "operand": "dword ptr [0xce2218]",
+          "kind": "indirect_import",
+          "address": "0051f49f",
+          "function": "0051f460",
+          "native": "00ce2218+import:EnterCriticalSection",
+          "import_boundary": "Current Win32 EnterCriticalSection",
+          "source_binding": "Current Win32 EnterCriticalSection"
+        },
+        {
+          "site": "0051f4bc",
+          "operand": "0xbf681b",
+          "kind": "direct",
+          "address": "0051f4bc",
+          "function": "0051f460",
+          "native": "00bf681b",
+          "source_binding": "singleton_lifetime_allocate, existing source CRT new-handler allocation boundary"
+        },
+        {
+          "site": "0051f4d3",
+          "operand": "0xbe94f0",
+          "kind": "direct",
+          "address": "0051f4d3",
+          "function": "0051f460",
+          "native": "00be94f0",
+          "source_binding": "construct_native_debug_feature_owner_00be94f0"
+        },
+        {
+          "site": "0051f4e6",
+          "operand": "0x415350",
+          "kind": "direct",
+          "address": "0051f4e6",
+          "function": "0051f460",
+          "native": "00415350",
+          "source_binding": "get_native_singleton_manager_00415350 using borrowed actual01090AA0 publication"
+        },
+        {
+          "site": "0051f4f4",
+          "operand": "0xbd0c30",
+          "kind": "direct",
+          "address": "0051f4f4",
+          "function": "0051f460",
+          "native": "00bd0c30",
+          "source_binding": "register_native_singleton_object_00bd0c30 using current manager and owner reload"
+        },
+        {
+          "site": "0051f502",
+          "operand": "dword ptr [0xce2210]",
+          "kind": "indirect_import",
+          "address": "0051f502",
+          "function": "0051f460",
+          "native": "00ce2210+import:LeaveCriticalSection",
+          "import_boundary": "Current Win32 LeaveCriticalSection",
+          "source_binding": "Current Win32 LeaveCriticalSection"
+        }
+      ]
+    },
+    {
+      "address": "00be94f0",
+      "end": "00be955c",
+      "bytes": 109,
+      "sha256": "d557dd6a93aa41066908f197b2457d537dfa37cb6b629844a6367dc2db034c54",
+      "hex": "6aff684370cc0064a10000000050648925000000005153568bf18974240833dbc706948bd600895c2414895e04895e08895e0c680c3ace008d4e10c644241801e83b5383ff8b4c240c895e18895e1c895e20885e24895e28885e2c895e308bc65e5b64890d0000000083c410c3",
+      "proposed_name_hypothesis": "construct_debug_feature_owner_00be94f0",
+      "original_abi": "ECX raw owner; EAX same owner; RET",
+      "scope": "owner",
+      "instruction_count": 34,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "00be9530",
+          "operand": "0x41e870",
+          "kind": "direct",
+          "address": "00be9530",
+          "function": "00be94f0",
+          "native": "0041e870",
+          "source_binding": "construct_native_string_cstring_0041e870, existing actual string header and empty literal"
+        }
+      ]
+    },
+    {
+      "address": "00be8210",
+      "end": "00be8220",
+      "bytes": 17,
+      "sha256": "d27ad78f493a9b3f47b0a091aef94a46384766054669e0e3ed8b6b8fc682c318",
+      "hex": "c70570db090100000000c7011838ce00c3",
+      "proposed_name_hypothesis": "reset_debug_feature_owner_base_00be8210",
+      "original_abi": "ECX raw owner; no semantic return; RET",
+      "scope": "owner",
+      "instruction_count": 3,
+      "disk_matches_live_ghidra": true,
+      "calls": []
+    },
+    {
+      "address": "00be8350",
+      "end": "00be8350",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "hex": "c3",
+      "proposed_name_hypothesis": "debug_feature_shutdown_hook_00be8350",
+      "original_abi": "ECX receiver accepted but unused; EAX untouched; RET",
+      "scope": "owner",
+      "instruction_count": 1,
+      "disk_matches_live_ghidra": true,
+      "calls": []
+    },
+    {
+      "address": "00be9560",
+      "end": "00be95fb",
+      "bytes": 156,
+      "sha256": "c8712a76a7d55280eef319dc813a64862a1deb65c5d8a948c6f78c08ba2f2779",
+      "hex": "6aff686e70cc0064a100000000506489250000000051568bf157897424088d7e186a008bcfc744241802000000e89ef9ffff8b3f57e8efd300008b461483c40485c0c64424140174168b4e106a0183c1015150e8080783ff8bc8e8517ffeff8d7e046a008bcfc644241800e840db83ff8b0750e8b1d300008b4c241083c404c70570db090100000000c7061838ce005f5e64890d0000000083c410c3",
+      "proposed_name_hypothesis": "destroy_debug_feature_owner_00be9560",
+      "original_abi": "ECX raw owner; no semantic return; RET",
+      "scope": "owner",
+      "instruction_count": 48,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "00be958d",
+          "operand": "0xbe8f30",
+          "kind": "direct",
+          "address": "00be958d",
+          "function": "00be9560",
+          "native": "00be8f30",
+          "source_binding": "resize_native_debug_feature_records_00be8f30"
+        },
+        {
+          "site": "00be9595",
+          "operand": "0xbf6989",
+          "kind": "direct",
+          "address": "00be9595",
+          "function": "00be9560",
+          "native": "00bf6989",
+          "source_binding": "singleton_lifetime_free, existing source CRT free boundary"
+        },
+        {
+          "site": "00be95b3",
+          "operand": "0x419cc0",
+          "kind": "direct",
+          "address": "00be95b3",
+          "function": "00be9560",
+          "native": "00419cc0",
+          "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool"
+        },
+        {
+          "site": "00be95ba",
+          "operand": "0xbd1510",
+          "kind": "direct",
+          "address": "00be95ba",
+          "function": "00be9560",
+          "native": "00bd1510",
+          "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1"
+        },
+        {
+          "site": "00be95cb",
+          "operand": "0x427110",
+          "kind": "direct",
+          "address": "00be95cb",
+          "function": "00be9560",
+          "native": "00427110",
+          "source_binding": "resize_native_string_vector_00427110, existing complete actual string-array resize"
+        },
+        {
+          "site": "00be95d3",
+          "operand": "0xbf6989",
+          "kind": "direct",
+          "address": "00be95d3",
+          "function": "00be9560",
+          "native": "00bf6989",
+          "source_binding": "singleton_lifetime_free, existing source CRT free boundary"
+        }
+      ]
+    },
+    {
+      "address": "00be9600",
+      "end": "00be961d",
+      "bytes": 30,
+      "sha256": "7651c11217c03847a4666ae1ee5039cb35c34674662255f7552ee5ea33f88700",
+      "hex": "568bf1e858fffffff644240801740956e897cf000083c4048bc65ec20400",
+      "proposed_name_hypothesis": "delete_debug_feature_owner_00be9600",
+      "original_abi": "ECX raw owner; stack DWORD flags, tests low byte bit0; EAX captured owner; RET4",
+      "scope": "owner",
+      "instruction_count": 11,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "00be9603",
+          "operand": "0xbe9560",
+          "kind": "direct",
+          "address": "00be9603",
+          "function": "00be9600",
+          "native": "00be9560",
+          "source_binding": "destroy_native_debug_feature_owner_00be9560"
+        },
+        {
+          "site": "00be9610",
+          "operand": "0xbf65ac",
+          "kind": "direct",
+          "address": "00be9610",
+          "function": "00be9600",
+          "native": "00bf65ac",
+          "source_binding": "singleton_lifetime_free, existing source CRT scalar-delete boundary"
+        }
+      ]
+    },
+    {
+      "address": "00be8df0",
+      "end": "00be8f23",
+      "bytes": 308,
+      "sha256": "41ea90561ac2c92b5e66dcb1cc1afa5130907123e8842ba16e00b15907a93c85",
+      "hex": "64a1000000006aff688a6fcc00506489250000000083ec0cb8010000003944241c538bd97d04894424208b4424203943080f8deb00000069c08800000055565750e888c7000033ed83c404396b0489442410896c24147e77eb068d9b000000008b4c24108bc569c0880000008d3c08897c241833c93bf9894c2424743e8b3303f03bfe890f894f0474248b066a01508bcfe8ba4e83ff833e0074138b078b5604508b47045250e8e5e7000083c40c83c60883c708b920000000f3a583c5013b6b04c7442424ffffffff896c24147c9133ff397b047e3133f68b038b4c300403c685c974158b006a0183c0015051e8de0d83ff8bc8e82786feff83c70181c6880000003b7b047cd18b0b51e88ada00008b5424148b44243083c4045f5e89138943085d8b4c24105b64890d0000000083c418c20400",
+      "proposed_name_hypothesis": "reserve_debug_feature_records_00be8df0",
+      "original_abi": "ECX {data,signed count,signed capacity}; stack signed requested capacity; RET4",
+      "scope": "conditional_game_container",
+      "instruction_count": 105,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "00be8e31",
+          "operand": "0xbf55be",
+          "kind": "direct",
+          "address": "00be8e31",
+          "function": "00be8df0",
+          "native": "00bf55be",
+          "source_binding": "singleton_lifetime_allocate, existing source CRT array allocation boundary"
+        },
+        {
+          "site": "00be8e81",
+          "operand": "0x41dd40",
+          "kind": "direct",
+          "address": "00be8e81",
+          "function": "00be8df0",
+          "native": "0041dd40",
+          "source_binding": "resize_native_string_header_0041dd40, current actual headers and borrowed string storage"
+        },
+        {
+          "site": "00be8e96",
+          "operand": "0xbf7680",
+          "kind": "direct",
+          "address": "00be8e96",
+          "function": "00be8df0",
+          "native": "00bf7680",
+          "source_binding": "std::memmove source CRT boundary; BF7680 supports backward overlap"
+        },
+        {
+          "site": "00be8edd",
+          "operand": "0x419cc0",
+          "kind": "direct",
+          "address": "00be8edd",
+          "function": "00be8df0",
+          "native": "00419cc0",
+          "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool"
+        },
+        {
+          "site": "00be8ee4",
+          "operand": "0xbd1510",
+          "kind": "direct",
+          "address": "00be8ee4",
+          "function": "00be8df0",
+          "native": "00bd1510",
+          "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1"
+        },
+        {
+          "site": "00be8efa",
+          "operand": "0xbf6989",
+          "kind": "direct",
+          "address": "00be8efa",
+          "function": "00be8df0",
+          "native": "00bf6989",
+          "source_binding": "singleton_lifetime_free, existing source CRT free boundary"
+        }
+      ]
+    },
+    {
+      "address": "00be8f30",
+      "end": "00be8fc9",
+      "bytes": 154,
+      "sha256": "dcf1cd012c3ae621231adab55b1a6ac74ef18748f208f648ad6e34fb211fd7dc",
+      "hex": "558b6c2408568bf13b6e08577e0655e8acfeffff8b46043bc57d3f538bf88bdd69ff880000002bd88b0603c774206880000000c70000000000c740040000000083c0086a0050e875ea000083c40c81c78800000083eb0175cf5b3b6e047d3283cfff017e048b460469c08800000003068b480485c974158b006a0183c0015051e80b0d83ff8bc8e85485feff3b6e047cd15f896e045e5dc20400",
+      "proposed_name_hypothesis": "resize_debug_feature_records_00be8f30",
+      "original_abi": "ECX {data,signed count,signed capacity}; stack signed requested count; RET4",
+      "scope": "conditional_game_container",
+      "instruction_count": 57,
+      "disk_matches_live_ghidra": true,
+      "calls": [
+        {
+          "site": "00be8f3f",
+          "operand": "0xbe8df0",
+          "kind": "direct",
+          "address": "00be8f3f",
+          "function": "00be8f30",
+          "native": "00be8df0",
+          "source_binding": "reserve_native_debug_feature_records_00be8df0"
+        },
+        {
+          "site": "00be8f76",
+          "operand": "0xbf79f0",
+          "kind": "direct",
+          "address": "00be8f76",
+          "function": "00be8f30",
+          "native": "00bf79f0",
+          "source_binding": "std::memset source CRT boundary, exactly80h record flag bytes"
+        },
+        {
+          "site": "00be8fb0",
+          "operand": "0x419cc0",
+          "kind": "direct",
+          "address": "00be8fb0",
+          "function": "00be8f30",
+          "native": "00419cc0",
+          "source_binding": "borrowed ActualNativeStringPoolStorage through NativeStringStorage; every release obtains current pool"
+        },
+        {
+          "site": "00be8fb7",
+          "operand": "0xbd1510",
+          "kind": "direct",
+          "address": "00be8fb7",
+          "function": "00be8f30",
+          "native": "00bd1510",
+          "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "unconditional_owner_bodies": 6,
+    "unconditional_owner_bytes": 502,
+    "conditional_container_bodies": 2,
+    "conditional_container_bytes": 462,
+    "all_bodies": 8,
+    "all_bytes": 964
+  },
+  "layout": [
+    {
+      "offset": "00",
+      "size": 4,
+      "meaning": "numeric profile D68B94"
+    },
+    {
+      "offset": "04",
+      "size": 12,
+      "meaning": "game native-string array: data/count/capacity, cleared by 427110"
+    },
+    {
+      "offset": "10",
+      "size": 8,
+      "meaning": "8-byte native string; constructed from nonnull CE3A0C empty literal"
+    },
+    {
+      "offset": "18",
+      "size": 12,
+      "meaning": "0x88-byte record array: data/count/capacity"
+    },
+    {
+      "offset": "24",
+      "size": 1,
+      "meaning": "any-active-feature byte hypothesis; constructor writes exactly one byte"
+    },
+    {
+      "offset": "25",
+      "size": 3,
+      "meaning": "constructor leaves bytes untouched"
+    },
+    {
+      "offset": "28",
+      "size": 4,
+      "meaning": "selected record index; ctor0, loader -1 then0 when nonempty"
+    },
+    {
+      "offset": "2c",
+      "size": 1,
+      "meaning": "AI Debug Render flag; constructor writes exactly one byte"
+    },
+    {
+      "offset": "2d",
+      "size": 3,
+      "meaning": "constructor leaves bytes untouched"
+    },
+    {
+      "offset": "30",
+      "size": 4,
+      "meaning": "selected record pointer; constructor0"
+    }
+  ],
+  "container_classification": {
+    "decision": "provisional game-container template specializations; conditional implementation scope, not a recovered STL/library identification",
+    "support": [
+      "Physical header is data pointer plus signed element count/capacity, not the MSVC STL begin/end/capacity pointer layout.",
+      "Native records are game pooled-string header plus 128 flag bytes, not a standard library element.",
+      "Reserve mirrors existing actual 426520 game native-string array growth, including source/current field reloads.",
+      "Only reserve unwind action CC6F70 calls bare-RET 401130; no automatic deep-copy rollback."
+    ],
+    "uncertainty": "Original template/type name and compiler specialization provenance are not recovered. If further provenance establishes library ownership, leave container algorithms as explicit library contracts and isolate game element lifecycle; do not port the library. Compiler-emitted template code alone is not evidence of STL."
+  },
+  "required_analysis_repairs": [
+    {
+      "address": "00be9560",
+      "observed_body_end": "00be9599",
+      "disk_end": "00be95fb",
+      "reason": "BF6989 no-return modeling truncates free fallthrough; full disk tail cleans owner+10 string, owner+04 array and publication.",
+      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
+    },
+    {
+      "address": "00be8df0",
+      "observed_body_end": "00be8f23",
+      "disk_end": "00be8f23",
+      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed.",
+      "completion": "Completed by primary; historical discovery observation retained. See primary_analysis_acceptance."
+    }
+  ],
+  "eh": {
+    "getter": {
+      "funcinfo": "00d944d0",
+      "unwind_map": "00d944c0",
+      "actions": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c6af40",
+          "behavior": "captured guard destruction 00411EE0"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00c6af48",
+          "behavior": "delete captured unconstructed allocation BF65AC"
+        }
+      ]
+    },
+    "constructor": {
+      "funcinfo": "00e019f4",
+      "unwind_map": "00e019e4",
+      "actions": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc7030",
+          "behavior": "owner base reset BE8210"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc7038",
+          "behavior": "destroy native-string array owner+04 via427880"
+        }
+      ]
+    },
+    "destructor": {
+      "funcinfo": "00e01a30",
+      "unwind_map": "00e01a18",
+      "actions": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc7050",
+          "behavior": "base reset BE8210"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc7058",
+          "behavior": "owner+04 string-array destroy427880"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cc7063",
+          "behavior": "owner+10 string destroy41DD20"
+        }
+      ]
+    },
+    "reserve": {
+      "funcinfo": "00e01924",
+      "unwind_map": "00e0191c",
+      "actions": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc6f70",
+          "behavior": "calls bare RET401130; does not release partially copied records or new backing"
+        }
+      ]
+    }
+  },
+  "startup_and_consumers": {
+    "confirmed": [
+      "00738008 calls0051F460 then0073800F callsBE8350 during application shutdown; getter can create previously absent owner at shutdown.",
+      "0051FCAA and0051FCD1 query debug-feature state;0051FE51 reads AI Debug Render byte.",
+      "006F3CC9,009AC7C6,009ACD96 read owner+2C for debug rendering.",
+      "Disk call0074B54B is within unrecognized body starting0074AF50, after a test of game-global owner+19C4. It is not part of preceding defined0074AF20 thunk."
+    ],
+    "not_established": [
+      "No archive/VFS startup or file-loading operation is called by0051F460 orBE94F0. Constructor has exactly one direct call,41E870 on empty literal.",
+      "BE9100 has no live xrefs; do not invent automatic parser bootstrap.",
+      "Snapshot lists007CD5E0 caller, but live xrefs do not confirm that edge; leave discrepancy unresolved, without promoting it to startup evidence."
+    ]
+  },
+  "next_packet": {
+    "name": "native_debug_feature_owner_ba",
+    "fixed_addresses": [
+      "0051f460",
+      "00be94f0",
+      "00be8210",
+      "00be8350",
+      "00be9560",
+      "00be9600"
+    ],
+    "conditional_addresses": [
+      "00be8df0",
+      "00be8f30"
+    ],
+    "proposed_owned_files": [
+      "include/bsp/native_debug_feature_owner.hpp",
+      "src/native_debug_feature_owner.cpp",
+      "docs/NATIVE_DEBUG_FEATURE_OWNER.md",
+      "reports/native_debug_feature_owner.json"
+    ],
+    "shared_integrator_files": [
+      "cmake/startup.cmake",
+      "config/names/00510000.jsonl",
+      "config/names/00be0000.jsonl",
+      "config/reconstruction/00510000.jsonl",
+      "config/reconstruction/00be0000.jsonl"
+    ],
+    "implementation_requirements": [
+      "Use actual raw34h storage and retain untouched padding; numeric profile is identity only, not a callable C++ vtable.",
+      "Bind caller-owned publication0109DB70 and existing actual manager publication01090AA0; reuse get_native_singleton_manager_00415350 and register_native_singleton_object_00bd0c30; do not introduce a private domain.",
+      "Preserve fast captured return, slow current publication after captured-section release, second manager getter and current object reload before registration. Registration failure retains published owner.",
+      "Use existing actual 41E870/header string storage and actual shared pool bindings; owner backing uses source CRT allocation/free boundaries.",
+      "Destruction order: resize owner+18 to0; free its current backing; release captured owner+10 string storage; resize owner+04 to0; free its current backing; clear publication; store CE3818. Do not clear or republish fields earlier.",
+      "If conditional containers included, preserve signed comparisons, raw DWORD multiplication/wrap, count reloads around release callbacks, zero new 0x88 records and reserve no-rollback exception behavior.",
+      "Central mixed-owner profile destruction and ApplicationShutdownHost integration belong to primary and require their own owned scope. Do not pretend this implementation alone installs an executable service."
+    ],
+    "existing_bindings": [
+      {
+        "address": "00415350",
+        "source": "src/native_singleton_publication.cpp",
+        "status": "actual raw publication getter exists"
+      },
+      {
+        "address": "00bd0c30",
+        "source": "src/native_singleton_vector_registration_wrappers.cpp",
+        "status": "actual raw registration exists"
+      },
+      {
+        "address": "00411ee0",
+        "source": "src/native_diagnostic_sink_lifetime.cpp",
+        "status": "actual captured critical-section guard destruction exists"
+      },
+      {
+        "address": "0041e870",
+        "source": "src/native_physical_file_date.cpp",
+        "status": "actual raw8h string constructor exists"
+      },
+      {
+        "address": "00427110",
+        "source": "src/native_string_vector.cpp",
+        "status": "complete game string-array resize exists"
+      },
+      {
+        "address": "00427880",
+        "source": "src/native_mesh_owner.cpp",
+        "status": "complete existing array destructor has mesh-specific interface; review raw storage compatibility before reuse"
+      },
+      {
+        "address": "0041dd20",
+        "source": "src/native_string.cpp",
+        "status": "actual raw string-header destruction exists"
+      },
+      {
+        "address": "00419cc0/00bd1510",
+        "source": "include/bsp/native_string_pool_storage.hpp",
+        "status": "actual shared publication and sized storage bridge exists"
+      }
+    ]
+  },
+  "deferred_dependencies": [
+    {
+      "address": "00be9100",
+      "name": "debug-profile text loader hypothesis",
+      "status": "unreconstructed; no confirmed caller; scanner register/stack pseudocode requires assembly"
+    },
+    {
+      "address": "00be8fd0/00be8d90",
+      "name": "0x88 record append/copy",
+      "status": "unreconstructed; not called by bounded owner or its reserve/resize bodies"
+    },
+    {
+      "address": "00be9060",
+      "name": "debug-feature name lookup/registration hypothesis",
+      "status": "unreconstructed; parser dependency; not yet behavior-audited"
+    },
+    {
+      "address": "00be85c0/00be8360",
+      "name": "active-feature refresh and lock singleton",
+      "status": "unreconstructed; separate0109DB74 publication; do not bind to this lifetime packet"
+    },
+    {
+      "address": "00be8820/00be8ca0/00be8200",
+      "name": "select profile / copy selected profile name / count leaf",
+      "status": "named only in discovery, no existing reconstruction found in lookup"
+    },
+    {
+      "address": "00beed60/00beef60/00bef0b0",
+      "name": "named incomplete scanner token/boolean dependencies",
+      "status": "do not assume complete because nearby scanner functions are named"
+    }
+  ],
+  "evidence_files": [
+    {
+      "command": "python tools/bsp.py ghidra bytes 0051f460 --length 189",
+      "path": "local/filestore-service-ba-evidence/0051f460-bytes.txt",
+      "sha256": "48d20d03739940b4807233780a7b06d954008536a1fa2a59e0218ca1d781921f"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be94f0 --length 109",
+      "path": "local/filestore-service-ba-evidence/00be94f0-bytes.txt",
+      "sha256": "d3e322b00160d3888e1e16bf0513cdf12781623adc1389ad99bfa086e5e07c50"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be8210 --length 17",
+      "path": "local/filestore-service-ba-evidence/00be8210-bytes.txt",
+      "sha256": "26e36107fc623542c5a8719be55ccd0179c8d30ce054d7b46ca770e595c96cc8"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be8350 --length 1",
+      "path": "local/filestore-service-ba-evidence/00be8350-bytes.txt",
+      "sha256": "c9e286469ceb1c4ac0e6e7d44761b5ecfe14c44a45f196f8e91ad920362c8800"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be9560 --length 156",
+      "path": "local/filestore-service-ba-evidence/00be9560-bytes.txt",
+      "sha256": "dd824b9c052bc9df7cf2b1404578b014bc2e47be9cf037f01608c52b5d5e21e0"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be9600 --length 30",
+      "path": "local/filestore-service-ba-evidence/00be9600-bytes.txt",
+      "sha256": "504e92179cf8b2ca3d4f3340f862c91da20e81538a60975c8dd52b05d87871cd"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be8df0 --length 308",
+      "path": "local/filestore-service-ba-evidence/00be8df0-bytes.txt",
+      "sha256": "7855899aba7ed3e08fe2330b50734fd940982ed26d9b17f4372c72635a91f71c"
+    },
+    {
+      "command": "python tools/bsp.py ghidra bytes 00be8f30 --length 154",
+      "path": "local/filestore-service-ba-evidence/00be8f30-bytes.txt",
+      "sha256": "d79cdc03727074e40d95b1cca8522358b6833fe2f5f8f3ce91119b6eb7a20003"
+    },
+    {
+      "command": "python tools/bsp.py ghidra xrefs 0051f460 --limit 20",
+      "path": "local/filestore-service-ba-evidence/getter-xrefs.txt",
+      "sha256": "2b8424d63dd8cff38ace837d5a9f3beafa0c9152fd8f077e9e37edd30369a0b6"
+    },
+    {
+      "command": "python tools/bsp.py ghidra xrefs 00be94f0 --limit 10",
+      "path": "local/filestore-service-ba-evidence/constructor-xrefs.txt",
+      "sha256": "addf30c4614eac4589e1d54a76f39f7d0c32bd13dd55615abaed7c2f336be968"
+    },
+    {
+      "command": "python tools/bsp.py ghidra xrefs 00be9100 --limit 10",
+      "path": "local/filestore-service-ba-evidence/loader-xrefs.txt",
+      "sha256": "a28779904869e1646051692aeaf463d203dfed5f0d562091385d07f8386d5dfd"
+    },
+    {
+      "command": "python tools/bsp.py ghidra proto 00be9560 --lines 60",
+      "path": "local/filestore-service-ba-evidence/destructor-current-proto.txt",
+      "sha256": "e54c993bf193c3d0984fbf3c8bb12c7e81fe2b97b308eb00d1be077d75c8f5f9"
+    },
+    {
+      "command": "python tools/bsp.py ghidra disasm 00be94f0 --lines 50",
+      "path": "local/filestore-service-ba-evidence/constructor-asm.txt",
+      "sha256": "1a1012ec1342f9221dec18005382645712d4915665e2739dad15c2fffbce6622"
+    },
+    {
+      "command": "python tools/bsp.py ghidra xrefs 00d68b94 --limit 10",
+      "path": "local/filestore-service-ba-evidence/profile-xrefs.txt",
+      "sha256": "67e7482ef5b3b6a4bbd63db00d1d87ebc958743634c40cb27e0e560d04f1bea3"
+    },
+    {
+      "command": "python tools/bsp.py ghidra disasm 0051f460 --lines 70",
+      "path": "local/filestore-service-ba-evidence/getter-asm.txt",
+      "sha256": "d83312962b19b74d5a12905ef5f72cb6230267e3b0f7413cb8e000592b64f111"
+    },
+    {
+      "command": "python tools/bsp.py disasm-raw 00cc7030 --length 0x48 --lines 30",
+      "path": "local/filestore-service-ba-evidence/constructor-destructor-unwind.txt",
+      "sha256": "b7a676e95da048e2353805d2947bcdc11eba5c9897491a97eac2f079d2273026"
+    },
+    {
+      "command": "python tools/bsp.py disasm-raw 00c6af40 --length 0x1d --lines 15",
+      "path": "local/filestore-service-ba-evidence/getter-unwind.txt",
+      "sha256": "3591685fcefa41cbda55481a27e165d1effde6dfe3fc785b0898d537c968dccb"
+    },
+    {
+      "command": "python tools/bsp.py disasm-raw 00cc6f70 --length 0x1a --lines 15",
+      "path": "local/filestore-service-ba-evidence/reserve-unwind.txt",
+      "sha256": "6814cfb5499de0383f4621d2266382ed3830af870859dbe47abc7a706aa7f4e4"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/app_shutdown.hpp",
+      "sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce"
+    },
+    {
+      "path": "src/app_shutdown.cpp",
+      "sha256": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939"
+    },
+    {
+      "path": "include/bsp/native_string_vector.hpp",
+      "sha256": "50103278e30ffed29738b02acf97008c16c6efd0ac66669ff25ed177694ce7d2"
+    },
+    {
+      "path": "src/native_string_vector.cpp",
+      "sha256": "1075734174ec56a36ff118d9e7d6e6371288f1c5260d6df8a07f262aa2326f9e"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "validation": {
+    "binary_span_comparisons": 8,
+    "byte_disassembly_has_no_gaps": true,
+    "last_instruction_all_ret": true,
+    "cpp_changed": false,
+    "tests_added": false,
+    "build_run": false,
+    "fixture_run": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "mechanical_call_schema": {
+    "correction": "Earlier discovery used only site/operand, which the verifier did not consume. Every one of26 rows now has address/native/function;24 are direct and2 are explicit Win32 import boundaries.",
+    "direct_rows": 24,
+    "import_rows": 2,
+    "total_rows": 26,
+    "historical_pending_live_repair": "BE9560 tail calls BE95B3, BE95BA, BE95CB and BE95D3 remain outside its truncated stored body until primary repair. Disk/live whole-span bytes have already matched.",
+    "current_call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    }
+  },
+  "primary_analysis_acceptance": {
+    "status": "saved_exported_and_call_audited",
+    "flow_repairs": {
+      "path": "reports/native_ba_flow_repairs.json",
+      "sha256": "e0c14ad6aaff4680492cadde19ee47b0cf7ea17cb33252a87da5b40956fa6b39"
+    },
+    "body_definition": {
+      "path": "reports/native_ba_function_definitions.json",
+      "sha256": "532f54aa2e5954d8bc79a4dcb08f4aa13a8a701b3d69d8f2dc354b90c9f83f04"
+    },
+    "destructor": {
+      "address": "00be9560",
+      "end_inclusive": "00be95fb",
+      "bytes": 156,
+      "listed_instructions": 48,
+      "remaining_gaps": 0,
+      "flow": {
+        "path": "local/native-ba-debug-destructor-flow.txt",
+        "sha256": "84bafb0a31d4fbff0e7c48fc09b4dc94d0ad8ab27ea10f0d64400f0ca3d172aa"
+      }
+    },
+    "reserve": {
+      "address": "00be8df0",
+      "bytes": 308,
+      "remaining_call_gaps": 0,
+      "untouched_noncall_gap": "00be8e4a..00be8e50: six alignment bytes after an unconditional jump",
+      "flow": {
+        "path": "local/native-ba-debug-reserve-flow.txt",
+        "sha256": "22ef48f6546adc166b4d363b3105addaae50eec220ab41968e02faf2ba6c0683"
+      }
+    },
+    "annotation_history": {
+      "path": "local/ghidra-annotations-20260913T072404Z.json",
+      "sha256": "1bf26cedc684445801499b1f83eeb4be24bc90bfd9cb79e41afd203d6f242a3f"
+    },
+    "annotation_readback": {
+      "path": "local/native-ba-debug-annotation-readback.json",
+      "sha256": "b123e1eec92dcfdb7c56214adfee826dca2346ce221d07a76baa1641b908caca"
+    },
+    "names_applied_and_exports_refreshed": 8,
+    "call_audit": {
+      "direct_rows": 24,
+      "failed_rows": 0,
+      "import_boundaries": 2,
+      "import_boundaries_mechanically_checked": false,
+      "log": {
+        "path": "local/native-ba-debug-calls-after-repair.log",
+        "sha256": "eb381a0cf21cd5f7293b9f61c8e16a2b60286a0614c665bcc396e3f42b1baf5e"
+      },
+      "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
+    },
+    "boundary": "Analysis repair and source evidence only; final integrated fixture and gameplay remain separate.",
+    "scalar_delete": {
+      "address": "00be9600",
+      "bytes": 30,
+      "remaining_call_gaps": 0,
+      "repaired_tail": "00be9615..00be9618",
+      "flow": {
+        "path": "local/native-ba-debug-scalar-flow.txt",
+        "sha256": "821e469b1afe9878cd1690d3c52e50bd2e2de8f7ba2d22f57b8c964de8e087d4"
+      }
+    }
+  }
+}

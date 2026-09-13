@@ -1,0 +1,680 @@
+{
+  "schema": 1,
+  "packet": "orch3_renderer_frame_statistics_ay",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "utc": "2026-09-13T07:20:24.068178+00:00",
+  "normal_body_count": 3,
+  "native_body_bytes": 287,
+  "files": [
+    "include/bsp/native_renderer_frame_statistics.hpp",
+    "src/native_renderer_frame_statistics.cpp",
+    "docs/NATIVE_RENDERER_FRAME_STATISTICS.md",
+    "reports/native_renderer_frame_statistics.json"
+  ],
+  "functions": [
+    {
+      "address": "00b0cc10",
+      "end_inclusive": "00b0cca1",
+      "end_exclusive": "00b0cca2",
+      "bytes": 146,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "clear_native_renderer_frame_statistics_bank_00b0cc10",
+      "proposed_ghidra_name": "BSP_RenderFrameCounters_ClearBank",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b0cc10",
+      "original_abi": "ECX bank; zero stack argument slots; RET at 00b0cca1; EAX incidentally zero",
+      "source": "src/native_renderer_frame_statistics.cpp",
+      "header": "include/bsp/native_renderer_frame_statistics.hpp",
+      "module": "native_renderer_frame_statistics",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RenderFrameCounters_ClearBank",
+      "native_prototype": "void BSP_RenderFrameCounters_ClearBank(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b0cc10..00b0cca1 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_FRAME_STATISTICS.md and reports/native_renderer_frame_statistics.json."
+    },
+    {
+      "address": "00b0ccb0",
+      "end_inclusive": "00b0cccb",
+      "end_exclusive": "00b0cccc",
+      "bytes": 28,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "publish_native_renderer_frame_statistics_00b0ccb0",
+      "proposed_ghidra_name": "BSP_RenderFrameCounters_PublishAndClear",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b0ccb0",
+      "original_abi": "ECX bank pair; zero stack argument slots; tail JMP 00b0cc10 at 00b0ccc7; then RET; EAX incidentally zero",
+      "source": "src/native_renderer_frame_statistics.cpp",
+      "header": "include/bsp/native_renderer_frame_statistics.hpp",
+      "module": "native_renderer_frame_statistics",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RenderFrameCounters_PublishAndClear",
+      "native_prototype": "void BSP_RenderFrameCounters_PublishAndClear(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b0ccb0..00b0cccb normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_FRAME_STATISTICS.md and reports/native_renderer_frame_statistics.json."
+    },
+    {
+      "address": "00b0cce0",
+      "end_inclusive": "00b0cd50",
+      "end_exclusive": "00b0cd51",
+      "bytes": 113,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "construct_native_renderer_frame_statistics_00b0cce0",
+      "proposed_ghidra_name": "BSP_RenderFrameCounters_Construct",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b0cce0",
+      "original_abi": "ECX storage; zero stack argument slots; EAX original receiver; RET at 00b0cd50",
+      "source": "src/native_renderer_frame_statistics.cpp",
+      "header": "include/bsp/native_renderer_frame_statistics.hpp",
+      "module": "native_renderer_frame_statistics",
+      "new_native_body": true,
+      "ghidra_name": "BSP_RenderFrameCounters_Construct",
+      "native_prototype": "void * BSP_RenderFrameCounters_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b0cce0..00b0cd50 normal native body over actual storage and current concrete profiles. Full native listing, original register/stack/return ABI, producer domain, current read/output order and live/disk spans reviewed. Source uses new borrowed context interfaces; bounded original-byte comparisons do not establish original caller ABI, unrestricted EH/SEH/concurrency or gameplay. See docs/NATIVE_RENDERER_FRAME_STATISTICS.md and reports/native_renderer_frame_statistics.json."
+    }
+  ],
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b0cc10",
+        "end_inclusive": "00b0cca1",
+        "bytes": 146,
+        "sha256": "abead9276f325d167f34fc844a03a158c09853785c4fb73956cc28700cb9bcf0",
+        "bytes_hex": "33c0890189410489410889410c89411089411489411889411c89412089412489412889412c89413089413489413889413c89414089414c89414489414889415089415489415889416089416489416889416c89415c89417089417489417889417c89818000000089818400000089818800000089818c00000089819000000089819400000089819800000089819c000000c3",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b0ccb0",
+        "end_inclusive": "00b0cccb",
+        "bytes": 28,
+        "sha256": "832794c22b18b89f9fb2409083c84b2db4bfdf26624cb0af06a769da9eee3640",
+        "bytes_hex": "568bc1578db8a0000000b9280000008bf0f3a55f8bc85ee944ffffff",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b0cce0",
+        "end_inclusive": "00b0cd50",
+        "bytes": 113,
+        "sha256": "89bda0d0af2f87bfe7e3b18878f028f95899669557f1fbe39748b97ec0206c87",
+        "bytes_hex": "8bd1e829ffffff8d8aa0000000e81effffff33c089824001000089824401000089825001000089825401000089825801000089825c01000089826001000089826401000089826801000089826c01000089827001000089827401000089827801000089824801000089824c0100008bc2c3",
+        "fresh_live_PE_match": true
+      }
+    ],
+    "untouched_relocated_span": {
+      "address": "00b0cc10",
+      "bytes": 321,
+      "sha256": "471c3ce67bd2371bcc385a1aa623ad9598a92ff0e7580a07e33103962863df8d"
+    },
+    "checked_source_store_offsets": {
+      "ecx": [
+        "000",
+        "004",
+        "008",
+        "00c",
+        "010",
+        "014",
+        "018",
+        "01c",
+        "020",
+        "024",
+        "028",
+        "02c",
+        "030",
+        "034",
+        "038",
+        "03c",
+        "040",
+        "04c",
+        "044",
+        "048",
+        "050",
+        "054",
+        "058",
+        "060",
+        "064",
+        "068",
+        "06c",
+        "05c",
+        "070",
+        "074",
+        "078",
+        "07c",
+        "080",
+        "084",
+        "088",
+        "08c",
+        "090",
+        "094",
+        "098",
+        "09c"
+      ],
+      "edx": [
+        "140",
+        "144",
+        "150",
+        "154",
+        "158",
+        "15c",
+        "160",
+        "164",
+        "168",
+        "16c",
+        "170",
+        "174",
+        "178",
+        "148",
+        "14c"
+      ]
+    }
+  },
+  "evidence_review": {
+    "full_owned_assembly": true,
+    "full_owned_body_ranges": true,
+    "all_owned_xrefs_and_callees": true,
+    "incoming_call_argument_setup": true,
+    "containing_functions_live_verified": true,
+    "source_producers_reconciled": true,
+    "register_provenance": {
+      "renderer_constructor": "Whole 00b32410 listing: MOV ESI,ECX at 00b3242d; no other ESI write until POP ESI at 00b328e8",
+      "endframe": "Whole 00b2d8e0 listing: MOV ESI,ECX at 00b2d8fa; no other ESI write until POP ESI at 00b2dbbe"
+    },
+    "missing_ghidra_functions": [],
+    "ghidra_read_only": true,
+    "ghidra_mutations": false,
+    "ghidra_saved": false,
+    "verify_seeds": "passed all 8 existing seed spans",
+    "methods": "Guarded bsp.py ghidra CLI verifies bsp project, /battlestationspacific.exe, x86 language and image base before every live command; config project_file C:/Users/sqz269/bsp.gpr"
+  },
+  "call_sites": [
+    {
+      "address": "00b0ccc7",
+      "function": "00b0ccb0",
+      "native": "00b0cc10",
+      "kind": "tail_jump",
+      "contract": "After REP MOVSD copying A0 bytes, restore ECX to original receiver and clear first bank"
+    },
+    {
+      "address": "00b0cce2",
+      "function": "00b0cce0",
+      "native": "00b0cc10",
+      "contract": "Clear first bank with ECX receiver; native EDX retains receiver across complete leaf"
+    },
+    {
+      "address": "00b0cced",
+      "function": "00b0cce0",
+      "native": "00b0cc10",
+      "contract": "Clear second bank with ECX saved receiver+A0"
+    },
+    {
+      "address": "00b2dad6",
+      "function": "00b2d8e0",
+      "native": "00b0ccb0",
+      "contract": "00b2dad0 forms ECX=renderer+1B78 before publish; full EndFrame remains incomplete"
+    },
+    {
+      "address": "00b32709",
+      "function": "00b32410",
+      "native": "00b0cce0",
+      "contract": "00b326fb forms ECX=renderer+1B78; enclosing EH state13 at 00b32701; full renderer constructor remains incomplete"
+    }
+  ],
+  "storage": {
+    "receiver": "actual renderer+1B78",
+    "current_bank": {
+      "relative": "000..09f",
+      "renderer": "1b78..1c17",
+      "dwords": 40
+    },
+    "published_bank": {
+      "relative": "0a0..13f",
+      "renderer": "1c18..1cb7",
+      "dwords": 40
+    },
+    "constructor_trailing_words": {
+      "relative": "140..17b",
+      "renderer": "1cb8..1cf3",
+      "dwords": 15,
+      "untouched_by_publish": true
+    },
+    "adjacent_renderer_write": {
+      "address": "00b3270e",
+      "function": "00b32410",
+      "offset": "1cf4",
+      "role": "outside this 17C-byte block"
+    }
+  },
+  "source_producers": [
+    {
+      "offsets": [
+        "1ba0",
+        "1ba4"
+      ],
+      "source": "src/native_renderer_cached_states.cpp",
+      "evidence": "Live 00b244d1/00b246cc ADD1 after COM calls at 00b244cf/00b246ca; current source agrees"
+    },
+    {
+      "offsets": [
+        "1b94",
+        "1b9c"
+      ],
+      "source": "src/native_renderer_material_state_binding.cpp",
+      "evidence": "raw ADD DWORD1 after returning changed-binding work"
+    },
+    {
+      "offsets": [
+        "1b98"
+      ],
+      "source": "src/native_renderer_cache_clear.cpp",
+      "evidence": "raw ADD DWORD1 after returning changed-binding work"
+    },
+    {
+      "offsets": [
+        "1ba8"
+      ],
+      "source": "src/native_renderer_texture_stage_state.cpp",
+      "evidence": "current post-COM-call counter increment"
+    },
+    {
+      "offsets": [
+        "1bac"
+      ],
+      "source": "src/native_renderer_vertex_layout_binding.cpp",
+      "evidence": "current post-COM-call counter increment"
+    },
+    {
+      "offsets": [
+        "1bb4",
+        "1bbc",
+        "1bc0"
+      ],
+      "source": "src/native_renderer_vertex_binding.cpp",
+      "evidence": "current stream/pixel/vertex binding counter increments"
+    },
+    {
+      "offsets": [
+        "1bb8"
+      ],
+      "source": "src/native_renderer_index_binding.cpp",
+      "evidence": "current post-SetIndices counter increment"
+    },
+    {
+      "offsets": [
+        "1bc4"
+      ],
+      "source": "src/native_renderer_texture_binding.cpp",
+      "evidence": "current post-SetTexture counter increment"
+    },
+    {
+      "offsets": [
+        "1bcc",
+        "1ba0"
+      ],
+      "source": "src/native_renderer_surface_bindings.cpp",
+      "evidence": "current depth/surface-target increments; 1BA0 is not exclusively a render-state counter"
+    },
+    {
+      "offsets": [
+        "1bd0",
+        "1bd4"
+      ],
+      "source": "src/native_renderer_viewport_clear.cpp",
+      "evidence": "raw viewport/clear counter increments"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "query/container dependency B0CCB0 in preceding EndFrame readiness wording",
+      "evidence": "00b2dad0 LEA ECX,[ESI+1B78]; 00b2dad6 CALL 00b0ccb0; full 28-byte body copies A0 bytes then tail-jumps to complete clear. Separate query loop 00b2dadb..00b2db14 uses renderer+19A0/+19A4, query+8 and virtual+10",
+      "is": "B0CCB0 copies and clears inline renderer frame-counter banks at renderer+1B78"
+    }
+  ],
+  "dependencies": {
+    "owned_complete_callee": "00b0cc10",
+    "unresolved_reached_callees": [],
+    "host_interface": null,
+    "context": null,
+    "external_runtime_providers": [],
+    "incomplete_surrounding_routines": [
+      "00b32410 full renderer constructor",
+      "00b2d8e0 full EndFrameAndPresent"
+    ],
+    "separate_endframe_work": [
+      "query traversal",
+      "queue execution",
+      "debug rendering"
+    ]
+  },
+  "validity": {
+    "clear": "writable receiver through+9F",
+    "publish": "readable/writable receiver through+13F; fixed adjacent nonoverlapping banks; direction flag clear",
+    "construct": "writable receiver through+17B",
+    "null_accepted": false,
+    "repaired_bounds": false,
+    "field_meanings": "No guessed names for all 40 bank words or trailing 15 words",
+    "native_allocation": false,
+    "native_eh_registration": false,
+    "native_cleanup": false,
+    "native_reference_counting": false,
+    "native_locking": false,
+    "native_virtual_dispatch": false,
+    "native_global_access": false,
+    "fault_boundary": "Raw invalid-memory faults and concurrent unsynchronized access lie outside the valid-storage contract; no SEH equivalence claimed"
+  },
+  "validation": {
+    "strict_source_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /fp:strict /O2 /MT",
+      "log": "local/ay-frame-statistics-probe.log"
+    },
+    "compiled_instruction_check": {
+      "passed": true,
+      "details": {
+        "clear_native_renderer_frame_statistics_bank_00b0cc10": {
+          "exact_native_40_store_sequence_occurrences": 1,
+          "exact_native_trailing_sequence": false,
+          "copy_before_clear": false
+        },
+        "construct_native_renderer_frame_statistics_00b0cce0": {
+          "exact_native_40_store_sequence_occurrences": 2,
+          "exact_native_trailing_sequence": true,
+          "copy_before_clear": false
+        },
+        "publish_native_renderer_frame_statistics_00b0ccb0": {
+          "exact_native_40_store_sequence_occurrences": 1,
+          "exact_native_trailing_sequence": false,
+          "copy_before_clear": true
+        }
+      },
+      "note": "MSVC inlines the complete clear into publish and constructor; exact original clear-store bytes occur 1 and 2 times respectively. All15 trailing stores retain exact bytes and order. REP MOVSD precedes any clear; ESI/EDI are preserved."
+    },
+    "original_byte_fixture": {
+      "passed": true,
+      "focused_fixture_count": 1,
+      "root": "C:/Users/sqz269/bsp-ay-frame-statistics",
+      "source": "frame_statistics_probe.cpp",
+      "executable": "frame_statistics_probe.exe",
+      "link_manifest": "/MANIFEST:EMBED",
+      "untouched_original_span": "original_span.bin",
+      "body_bytes": 287,
+      "containing_span_bytes": 321,
+      "patched_original_bytes": 0,
+      "input": "Two distinct nonzero40-DWORD banks,15 nonzero trailing words and4 canary DWORDs per side",
+      "checked": [
+        "Direct40-DWORD clear extent and surrounding storage",
+        "40-DWORD publish followed by complete first-bank clear",
+        "Untouched15 trailing words during publish",
+        "All95 words zeroed by constructor",
+        "Original and rebuilt constructor receiver returns",
+        "All8 surrounding canary DWORDs preserved for all three calls"
+      ],
+      "result": "PASS: original-byte clear/publish/constructor comparison; nonzero banks, 15 trailing words, 8 canary words, receiver return",
+      "limits": "Final-storage fixture plus static compiled store-order evidence; no intermediate store-event tracing, original-caller ABI, game, concurrency or invalid-memory SEH validation"
+    },
+    "project_build": {
+      "passed": true,
+      "state": "completed",
+      "command": "./scripts/build.ps1",
+      "log": "local/ay-frame-statistics-build.log",
+      "source_registration": "central integrator owns CMake; strict standalone compile covers new source here",
+      "configuration": "Release",
+      "target": "MSVC Win32",
+      "ctests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "native_math_differential",
+          "passed": true
+        }
+      ],
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "log_sha256": "357cc0539ed2400787ec0c90bcaa9735f98f2a227de7458516af2f138b199cf1"
+    },
+    "report_calls": {
+      "passed": true,
+      "command": "python tools/verify_report_calls.py reports/native_renderer_frame_statistics.json",
+      "checked": 5,
+      "failed": 0,
+      "ghidra_read_only": true
+    },
+    "repository_tests_added": 0,
+    "original_caller_abi_compatible": false,
+    "game_validated": false
+  },
+  "integration_ay_review": {
+    "combined_validation": "passed exact merged Win32 build and four current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 16,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "previous_signatures": {
+      "00b0cc10": "00b0cc10 FUN_00b0cc10  undefined FUN_00b0cc10(void)  body 00b0cc10 - 00b0cca1",
+      "00b0ccb0": "00b0ccb0 FUN_00b0ccb0  undefined FUN_00b0ccb0(void)  body 00b0ccb0 - 00b0cccb",
+      "00b0cce0": "00b0cce0 FUN_00b0cce0  undefined FUN_00b0cce0(void)  body 00b0cce0 - 00b0cd50",
+      "00b2b200": "00b2b200 BSP_D3D9Renderer_BeginFrame  undefined BSP_D3D9Renderer_BeginFrame(void)  body 00b2b200 - 00b2b263",
+      "00b15090": "00b15090 STL_inst_00b15090  undefined STL_inst_00b15090(void)  body 00b15090 - 00b150cc",
+      "00b14480": "00b14480 FUN_00b14480  undefined FUN_00b14480(void)  body 00b14480 - 00b144fd",
+      "00b13630": "00b13630 FUN_00b13630  undefined FUN_00b13630(void)  body 00b13630 - 00b13687",
+      "00b13280": "00b13280 FUN_00b13280  undefined FUN_00b13280(void)  body 00b13280 - 00b132b7",
+      "00b13180": "00b13180 FUN_00b13180  undefined FUN_00b13180(void)  body 00b13180 - 00b1327d",
+      "00b10740": "00b10740 FUN_00b10740  undefined FUN_00b10740(void)  body 00b10740 - 00b107c2",
+      "00b2aeb0": "00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, void * window, bool fullscreen, uint width, uint height, int backbuffer_format, uint backbuffer_count, int multisample, int depth_format, uint presentation_sync, uint fullscreen_refresh_rate)  body 00b2aeb0 - 00b2b1f1",
+      "00b49940": "00b49940 FUN_00b49940  undefined FUN_00b49940(void)  body 00b49940 - 00b4994b",
+      "00b49950": "00b49950 FUN_00b49950  undefined FUN_00b49950(void)  body 00b49950 - 00b4995b",
+      "004c11f0": "004c11f0 BSP_RenderCommandQueue_GetSingleton  undefined BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac",
+      "00b51df0": "00b51df0 BSP_RenderBatch_PrepareSort  undefined BSP_RenderBatch_PrepareSort(void)  body 00b51df0 - 00b51f0b",
+      "00b1bf70": "00b1bf70 BSP_RenderBatchPreparationJob_Invoke  undefined BSP_RenderBatchPreparationJob_Invoke(void)  body 00b1bf70 - 00b1bf81"
+    },
+    "original_signature_readback": "00b0cc10 BSP_RenderFrameCounters_ClearBank  void __thiscall BSP_RenderFrameCounters_ClearBank(void * this)  body 00b0cc10 - 00b0cca1\n00b0ccb0 BSP_RenderFrameCounters_PublishAndClear  void __thiscall BSP_RenderFrameCounters_PublishAndClear(void * this)  body 00b0ccb0 - 00b0cccb\n00b0cce0 BSP_RenderFrameCounters_Construct  void * __thiscall BSP_RenderFrameCounters_Construct(void * this)  body 00b0cce0 - 00b0cd50\n00b2b200 BSP_D3D9Renderer_BeginFrame  uchar __thiscall BSP_D3D9Renderer_BeginFrame(void * this)  body 00b2b200 - 00b2b263\n00b15090 BSP_RendererRecords_Clear  void __thiscall BSP_RendererRecords_Clear(void * this)  body 00b15090 - 00b150cc\n00b14480 BSP_RendererRecords_Erase  void * __thiscall BSP_RendererRecords_Erase(void * this, void * output, void * first_owner, void * first_record, void * last_owner, void * last_record)  body 00b14480 - 00b144fd\n00b13630 BSP_RendererRecords_CopyTail  void * __cdecl BSP_RendererRecords_CopyTail(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13630 - 00b13687\n00b13280 BSP_RendererRecords_CopyForward  void * __cdecl BSP_RendererRecords_CopyForward(void * first, void * last, void * output, uint ignored_slot4, uint ignored_slot5, uint ignored_slot6)  body 00b13280 - 00b132b7\n00b13180 BSP_RendererRecord_Assign  void * __thiscall BSP_RendererRecord_Assign(void * this, void * source)  body 00b13180 - 00b1327d\n00b10740 BSP_RendererRecord_Destroy  void __thiscall BSP_RendererRecord_Destroy(void * this)  body 00b10740 - 00b107c2\n00b2aeb0 BSP_D3D9Renderer_InitializeDeviceAndResources  void __thiscall BSP_D3D9Renderer_InitializeDeviceAndResources(void * this, uint window, uint fullscreen_slot, uint width, uint height, uint format, uint count, uint multisample, uint depth_format, uint sync_slot, uint refresh)  body 00b2aeb0 - 00b2b1f1\n00b49940 BSP_NativePhysicalIndexPool_ReturnSlot  void __thiscall BSP_NativePhysicalIndexPool_ReturnSlot(void * this)  body 00b49940 - 00b4994b\n00b49950 BSP_NativePhysicalVertexPool_ReturnSlot  void __thiscall BSP_NativePhysicalVertexPool_ReturnSlot(void * this)  body 00b49950 - 00b4995b\n004c11f0 BSP_RenderCommandQueue_GetSingleton  void * __cdecl BSP_RenderCommandQueue_GetSingleton(void)  body 004c11f0 - 004c12ac\n00b51df0 BSP_RenderBatch_PrepareSort  void __thiscall BSP_RenderBatch_PrepareSort(void * this, uint index_slot)  body 00b51df0 - 00b51f0b\n00b1bf70 BSP_RenderBatchPreparationJob_Invoke  void __thiscall BSP_RenderBatchPreparationJob_Invoke(void * this, void * batch)  body 00b1bf70 - 00b1bf81\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc98"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbbc8e",
+            "end_address": "00cbbc97",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbbc8e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbbc8e",
+            "function_name": "FUN_00cbbc8e",
+            "entry_point": "00cbbc8e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbbc8e"
+          }
+        },
+        {
+          "defined": "00cbbc8e",
+          "end": "00cbbc98",
+          "name": null,
+          "after": "Function: FUN_00cbbc8e at 00cbbc8e\nSignature: undefined FUN_00cbbc8e(void)\nEntry: 00cbbc8e\nBody: 00cbbc8e - 00cbbc97"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd436",
+            "end_address": "00cbd440"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd436",
+            "end_address": "00cbd43f",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd436",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd436",
+            "function_name": "FUN_00cbd436",
+            "entry_point": "00cbd436",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd436"
+          }
+        },
+        {
+          "defined": "00cbd436",
+          "end": "00cbd440",
+          "name": null,
+          "after": "Function: FUN_00cbd436 at 00cbd436\nSignature: undefined FUN_00cbd436(void)\nEntry: 00cbd436\nBody: 00cbd436 - 00cbd43f"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00c64f13",
+            "end_address": "00c64f1d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00c64f13",
+            "end_address": "00c64f1c",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00c64f13",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00c64f13",
+            "function_name": "FUN_00c64f13",
+            "entry_point": "00c64f13",
+            "body_size": 10,
+            "message": "Function created successfully at 00c64f13"
+          }
+        },
+        {
+          "defined": "00c64f13",
+          "end": "00c64f1d",
+          "name": null,
+          "after": "Function: FUN_00c64f13 at 00c64f13\nSignature: undefined FUN_00c64f13(void)\nEntry: 00c64f13\nBody: 00c64f13 - 00c64f1c"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cleanup_flow": {
+      "repairs": [
+        {
+          "function": "00c64f08",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-13T07:48:14Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00c64f0c",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00c64f11",
+              "gap_end_exclusive": "00c64f13",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00c64f0c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00c64f11",
+                "gap_end_exclusive": "00c64f13",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00c64f0c (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00c64f0c",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00c64f0c (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00c64f13",
+          "explicit_body_sha256": "aa1668d6ed4bcdc142812fc048a1abb2835721628ec5a87e4aafbbcae28f32b9",
+          "body_before": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00c64f08 at 00c64f08\nSignature: undefined Unwind@00c64f08(void)\nEntry: 00c64f08\nBody: 00c64f08 - 00c64f10",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "cleanup_flow_limit": "C64F08 free-return tail C64F11 POP ECX/C64F12 RET decoded; stored EH body still ends C64F10. Analysis-only tail metadata remains incomplete.",
+    "cross_review": "Root reviewed complete statistics and BeginFrame listings, source read/write/call order and batch getter/preparation/job bodies. Independent startup review checked all 225 startup instructions, both pool-return thunks, x87/gamma, COM outputs, EH metadata and all nine saved state/event pairs. Batch trivial storage lifetime begins without initialization, retaining native preexisting control bytes. Existing raw string overloads were independently compared with full listings and exercised by BeginFrame raw-manager exception cases. Original ABI, general EH/SEH/concurrency and gameplay remain separate.",
+    "current_report_call_check": "reports/native_renderer_frame_statistics.json: 5 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "complete_raw_storage_strict_win32_original_byte_fixture_and_existing_build_checked",
+  "final_merged_validation_ay": {
+    "report": "reports/native_renderer_startup_ay_validation.json",
+    "tested_commit": "71ff3f1220fecd9e4e9ff7ad7ffc54b3a38477f4",
+    "existing_ctests_passed": 2,
+    "four_current_library_only_replays_passed": true,
+    "game_validated": false
+  }
+}
