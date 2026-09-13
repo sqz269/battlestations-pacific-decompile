@@ -1,0 +1,394 @@
+{
+  "packet": "orch5_native_sampler_declarations",
+  "base_commit": "6f57b694d175c54417ba03f477934d4ff77b48a7",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_sampler_declarations.cpp",
+  "header": "include/bsp/native_shader_sampler_declarations.hpp",
+  "documentation": "docs/NATIVE_SHADER_SAMPLER_DECLARATIONS.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b37ef0",
+      "end_inclusive": "00b38078",
+      "bytes": 393,
+      "sha256": "843a4397f705748ba0617450b8395c982d6315d18344a54de58257bd1c23426b",
+      "direct_calls": 2,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "268a1f828104db661f46166f9ed694ee11ed5017e3ac178e1baf842630a10516",
+      "cpp_symbol": "append_native_pixel_sampler_declarations_00b37ef0",
+      "name": "BSP_ShaderBuilder_AppendPixelSamplers",
+      "original_abi": "ECX actual B0h builder; no stack arguments; plain RET"
+    },
+    {
+      "address": "00b38080",
+      "end_inclusive": "00b38208",
+      "bytes": 393,
+      "sha256": "461592fc0462888e9f7e87212b1675e05fed4066365d62e1f958cad15d34d72d",
+      "direct_calls": 2,
+      "coverage": "complete normal body",
+      "export_assembly_sha256": "f1728b9b9eb412f861e2b8890fe0259e903c19d9934e4c9f18fbbf8c71470b1b",
+      "cpp_symbol": "append_native_vertex_sampler_declarations_00b38080",
+      "name": "BSP_ShaderBuilder_AppendVertexSamplers",
+      "original_abi": "ECX actual B0h builder; no stack arguments; plain RET"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b35110",
+      "end_inclusive": "00b35267",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+      "direct_calls": 13,
+      "coverage": "existing complete normal formatter reused unchanged; host CRT boundary",
+      "export_assembly_sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b",
+      "source": "src/native_shader_constant_header.cpp",
+      "cpp_symbol": "append_native_shader_line_00b35110"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b37f98",
+      "native": "00b35110",
+      "function": "00b37ef0",
+      "contract": "Existing actual-header cdecl variadic formatter; same supplied 0108D6F8 scratch, actual pooled temporary/output/newline schedule; caller ADD ESP,10h."
+    },
+    {
+      "address": "00b38058",
+      "native": "00b35110",
+      "function": "00b37ef0",
+      "contract": "Existing actual-header cdecl variadic formatter; same supplied 0108D6F8 scratch, actual pooled temporary/output/newline schedule; caller ADD ESP,10h."
+    },
+    {
+      "address": "00b38128",
+      "native": "00b35110",
+      "function": "00b38080",
+      "contract": "Existing actual-header cdecl variadic formatter; same supplied 0108D6F8 scratch, actual pooled temporary/output/newline schedule; caller ADD ESP,10h."
+    },
+    {
+      "address": "00b381e8",
+      "native": "00b35110",
+      "function": "00b38080",
+      "contract": "Existing actual-header cdecl variadic formatter; same supplied 0108D6F8 scratch, actual pooled temporary/output/newline schedule; caller ADD ESP,10h."
+    },
+    {
+      "address": "00b3513b",
+      "native": "00c03cee",
+      "function": "00b35110",
+      "contract": "Correct CRT vsprintf; explicit host CRT boundary and shared actual scratch."
+    },
+    {
+      "address": "00b35167",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize; preserve flag1; established same native string-storage domain."
+    },
+    {
+      "address": "00b35182",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; explicit host memmove boundary."
+    },
+    {
+      "address": "00b351a0",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize; preserve flag1; established same native string-storage domain."
+    },
+    {
+      "address": "00b351ad",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; explicit host memmove boundary."
+    },
+    {
+      "address": "00b351ca",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual pooled-string singleton getter."
+    },
+    {
+      "address": "00b351d1",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized-block return; supplied NativeStringStorage noexcept release boundary."
+    },
+    {
+      "address": "00b351e6",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize; preserve flag1; established same native string-storage domain."
+    },
+    {
+      "address": "00b35201",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; explicit host memmove boundary."
+    },
+    {
+      "address": "00b3521f",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual-header resize; preserve flag1; established same native string-storage domain."
+    },
+    {
+      "address": "00b3522c",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Correct CRT memcpy symbol has overlap branch; explicit host memmove boundary."
+    },
+    {
+      "address": "00b35249",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual pooled-string singleton getter."
+    },
+    {
+      "address": "00b35250",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized-block return; supplied NativeStringStorage noexcept release boundary."
+    }
+  ],
+  "callers": [
+    {
+      "address": "00b39355",
+      "native": "00b38080",
+      "function": "00b39110",
+      "contract": "ECX builder; no pushed argument or stack cleanup."
+    },
+    {
+      "address": "00b39a67",
+      "native": "00b37ef0",
+      "function": "00b39880",
+      "contract": "ECX builder; no pushed argument or stack cleanup."
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00b57b50",
+      "sites": [
+        "00b57b80",
+        "00b57bd1",
+        "00b57c62",
+        "00b57e46"
+      ],
+      "contract": "Actual2Ch sampler: table00, name04/08, stage BYTE0C, Type DWORD10; use existing schema."
+    },
+    {
+      "function": "00b41830",
+      "contract": "Appends actual B57B50 pointers to descriptor C4, increments C8; CC capacity."
+    }
+  ],
+  "alignment_gaps": [
+    {
+      "start": "00b37f0a",
+      "end": "00b37f0f"
+    },
+    {
+      "start": "00b37fc8",
+      "end": "00b37fcf"
+    },
+    {
+      "start": "00b3809a",
+      "end": "00b3809f"
+    },
+    {
+      "start": "00b38158",
+      "end": "00b3815f"
+    }
+  ],
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "default registered MSVC Win32 Release /W4 /WX /fp:strict",
+      "existing_ctest": "reconstructed_math and native_math_differential, 2/2 passed after verify-seeds",
+      "log": "local/sampler-build.log"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_sampler_declarations_probe.ps1",
+      "linkage": "single fixture translation unit against default-registered bsp_core; no copied production implementation source",
+      "original_bodies": 3,
+      "owned_body_bytes": 786,
+      "original_bytes_with_formatter": 1130,
+      "direct_calls_with_formatter": 17,
+      "numeric_rows_with_callers": 19,
+      "scope": "Actual B0h/110h/2Ch storage and canonical actual string pool; both stages/four types/unknown slot/low-byte/null-name/empty lists, exact text and pooled trace; live descriptor70/74 and array data/count callback changes; retained source failure, replay rejection and failed retirement exit77.",
+      "log": "local/sampler-probe.log",
+      "guard_log": "local/sampler-guard-probe.log",
+      "status_log": "local/sampler-probe-status.json"
+    }
+  },
+  "limits": [
+    "New C++ interfaces are not original ABI replacements; source generators and B3B3C0 continuation are not installed.",
+    "Borrowed owners/inputs/context/domain must outlive running or failed parent/child; caller excludes retirement, no native terminal interception.",
+    "Original private FH3 execution and rollback are not reproduced; failed work cannot replay.",
+    "Original fixture relocates copied bodies and redirects audited direct CALLs to copied formatter or established resize/pool/host CRT boundaries.",
+    "Fixture uses actual constructor-initialized native storage and borrowed pointer arrays; Lua sampler parser is not executed.",
+    "DWORD slot wrap is assembly-reviewed, not fixture-exercised; arbitrary invalid pointer/extents and CRT format domains are excluded.",
+    "Shader compilation, texture sampling, rendering parity and rebuilt gameplay remain unproven."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_sampler_declarations.cpp",
+      "bytes": 4219,
+      "sha256": "0e9421db671d697b908b79c4877f60dfb696493d2df3b3181b72a09b146b2af3"
+    },
+    {
+      "path": "include/bsp/native_shader_sampler_declarations.hpp",
+      "bytes": 2862,
+      "sha256": "7db06d67f573ea9f5ec67adcadac06a421ad5642ded036c1d3bfa8eb41dd759f"
+    },
+    {
+      "path": "docs/NATIVE_SHADER_SAMPLER_DECLARATIONS.md",
+      "bytes": 6044,
+      "sha256": "9213affebd41cc1d44fadb9bec59549b5a38f6fe480649b4612b32cadae842c5"
+    },
+    {
+      "path": "local/sampler_original.hpp",
+      "bytes": 6115,
+      "sha256": "6ea5b65bfa644427ea6a8697ac5be03b5ad9567cb36c611a167e43ee8924ed52"
+    },
+    {
+      "path": "local/sampler_original_manifest.json",
+      "bytes": 3197,
+      "sha256": "521ee3581fa6ef069b4f1ed5edb2f5d7cf920a7ed946ec0a5d6a5e37af613c4d"
+    },
+    {
+      "path": "local/pin_sampler_original.py",
+      "bytes": 2474,
+      "sha256": "60c0a9e0092afc2c4d97cf85edaee6d8b79d7c1c425b258f898f06db9b784858"
+    },
+    {
+      "path": "local/native_sampler_declarations_probe.cpp",
+      "bytes": 13180,
+      "sha256": "87740787924b6a5d97b0d65483d9b85f7983ad6c808e84a06c43ffbe38ba1986"
+    },
+    {
+      "path": "local/run_native_sampler_declarations_probe.ps1",
+      "bytes": 1750,
+      "sha256": "a78a58082e72083eb3a075b0113b22c8dafa88c6a4f9bd3b952d911b74cef12b"
+    },
+    {
+      "path": "local/register_sampler_declarations.py",
+      "bytes": 722,
+      "sha256": "3120095befc423c1c95785c910f84a30d43c96ccad16af4e525541fc997b7c40"
+    },
+    {
+      "path": "local/write_sampler_report.py",
+      "bytes": 7052,
+      "sha256": "4c26ade847c1e8ff5b0565f487deb5cc7e213e11efebba9af7c80434de6ccff1"
+    },
+    {
+      "path": "local/record_sampler_ledgers.py",
+      "bytes": 2385,
+      "sha256": "e5a1dfe8d7dd22acab14a072cdb32cf72fa2283abad44af8b24e9b1dc9ac9576"
+    },
+    {
+      "path": "local/sampler-ledger.log",
+      "bytes": 1454,
+      "sha256": "8b468ee83121cd25fa931a827afd88da66edd02c5181d149c6f8277060b76654"
+    },
+    {
+      "path": "local/sampler-build.log",
+      "bytes": 42897,
+      "sha256": "a1bc55b9c214fb10e53d539ebf5f15438d012fecb021fca566ebc9c97117207a"
+    },
+    {
+      "path": "local/sampler-probe-compile.log",
+      "bytes": 39,
+      "sha256": "01c335fca434683bef7d4959eac6de84cf0f2647bb18c5a648071fa0011faf3f"
+    },
+    {
+      "path": "local/sampler-probe.log",
+      "bytes": 719,
+      "sha256": "67251500427297604bad8eb833efdc604a402ec6e40a1d2d99a6ac2ca81232e2"
+    },
+    {
+      "path": "local/sampler-guard-probe.log",
+      "bytes": 486,
+      "sha256": "8d4a1cdc5650e9f4d0ed9efd353e72eb3091d6d008736a6c5bf162d19240b565"
+    },
+    {
+      "path": "local/sampler-probe-status.json",
+      "bytes": 158,
+      "sha256": "811f665a52e2363afd04b887ba00011ca9023e27c322236f26ed5e31b2ecff6a"
+    },
+    {
+      "path": "local/native_sampler_declarations_probe.exe",
+      "bytes": 72192,
+      "sha256": "21d6978c31a6156acbfc0f38fe1e5855776348c02a872b585390f05787df9d3d"
+    },
+    {
+      "path": "local/sampler-call-verification.log",
+      "bytes": 81,
+      "sha256": "5a62916fd23b4a4ee4d810448c8c1021b42ebc85cc0a79cf76208cefd42a18df"
+    },
+    {
+      "path": "local/sampler-seed-verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/sampler-pixel-proto.log",
+      "bytes": 129,
+      "sha256": "f82fb8d6fddab6b060eecd59ef206b588e790ab810696cefd5f25a579d923fa7"
+    },
+    {
+      "path": "local/sampler-vertex-proto.log",
+      "bytes": 131,
+      "sha256": "fabd6315e66404d3023a5a2a32bbc4ed37a2752ee215b8942ff8f617ac4ce7ee"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55543424,
+      "sha256": "93729f05e39562e205926f0de0d319810150d7935a69984918c2370e71c05dcf"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455792,
+      "sha256": "5caa7aae8140917aa5c417941db8f59a1fd5762f564cd05d9c9ead0e79a94f50"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72098,
+      "sha256": "bcf1ddf1b20af846fbd8026a172d9e3e49fb2e47edd32408dbf8050c656ff17d"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 18991,
+      "sha256": "0ba403cddc0a97b738de9f0045bd75ac02e294b50eb9cbf4be23ff5cdf214f47"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 258806,
+      "sha256": "faa9cd5c55d1835277aaec8ef85ef9ea6d9f9efa4e0fcddc5af6cd6ddf09b85a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 103552,
+      "sha256": "d6df33e1baea7ec7945e8642ada706790c1953a1efc2e13cf9f707b1c8d8d90f"
+    },
+    {
+      "path": "local/sampler_00b37ef0_bytes.txt",
+      "bytes": 1897,
+      "sha256": "b64d89b3c71657cf4a31df08b3cf4bdce7b894e920409f4d825d53a5b66a040b"
+    },
+    {
+      "path": "local/sampler_00b38080_bytes.txt",
+      "bytes": 1897,
+      "sha256": "ad263fb6da5502b2c3733b5ff3d9a218e601d7d36be470f16ff337398c534d85"
+    },
+    {
+      "path": "local/sampler_00b35110_bytes.txt",
+      "bytes": 1662,
+      "sha256": "c4cd5da4be13577473a8c4a48bafb326a21f4e1185cd8f9ca1e885597bc820c6"
+    }
+  ]
+}
