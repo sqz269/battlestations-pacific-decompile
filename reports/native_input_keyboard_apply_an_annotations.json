@@ -1,0 +1,104 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "006aa640",
+      "before": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void * self, void * unused_edx)\nEntry: 006aa640\nBody: 006aa640 - 006aac43",
+      "before_comment": {
+        "address": "006aa640",
+        "function_name": "BSP_InputSettings_ApplyKeyboardBindings",
+        "comment": "[BSP reconstruction 006aa640]\nHypothesis, not a recovered symbol. ECX=settings, no stack arguments, RET; body006aa640..006aac43. DEVINPUTS/loaded+5/action128h gates; per-device copy of code/class sensitivity map, ordered multipliers and Min1SensHacks, two bindings per described action code, reverse signs and alternate2/3 suppression. Host boundaries00a92260,006aa090,00a93750. Integrator repaired false CALL_RETURN at006aac02;39 bytes006aac07..006aac2d restore full device loop. See docs/KEYBOARD_RESTORE.md and reports/keyboard_restore.json; host build/fixture verified, not ABI/game tested.\n\n[BSP reconstruction 006aa640] update\nHypothesis, not a recovered symbol. AM actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_DEFAULTS.md; reports/native_input_settings_defaults.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation. Body-ownership correction only: decoded006AAC18 was outside any function despite a zero-gap full-span listing. Verified1540-byte006AA640..006AAC43 extent recreated preserving old name/comments, then export and90-row call audit passed. Native ECX settings, RET; DEVINPUTS50/loaded5 early gates verified. No new full raw006AA640 implementation is claimed; fixture executes only the original zero-loaded guard return."
+      },
+      "proposed": "void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 006aa640 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void * self, void * unused_edx)\nEntry: 006aa640\nBody: 006aa640 - 006aac43",
+      "readback_verified": true
+    },
+    {
+      "address": "006aa090",
+      "before": "Function: BSP_InputSettings_UseAlternateAxisSlots at 006aa090\nSignature: undefined BSP_InputSettings_UseAlternateAxisSlots(void)\nEntry: 006aa090\nBody: 006aa090 - 006aa1bf",
+      "before_comment": {
+        "address": "006aa090",
+        "function_name": "BSP_InputSettings_UseAlternateAxisSlots",
+        "comment": "[BSP reconstruction 006aa090]\nHypothesis; docs/KEYBOARD_AXIS_PAIRS.md and reports/keyboard_axis_pairs.json. ECX=settings, stack device/input pooled strings, AL result RET8. Matches second AxisPairs name by length and case-insensitive compare then compares ordered action-code vectors, not bindings. Device/code map subscripts insert defaults. Native304-byte predicate fixture uses typed getter adapters. Integrator pending locked rename/comment/save/export."
+      },
+      "proposed": "byte __fastcall BSP_InputSettings_UseAlternateAxisSlots(void* self, void* unused_edx, void* device_name, void* input_name)",
+      "apply": "Successfully set prototype for function at 006aa090 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_UseAlternateAxisSlots at 006aa090\nSignature: byte __fastcall BSP_InputSettings_UseAlternateAxisSlots(void * self, void * unused_edx, void * device_name, void * input_name)\nEntry: 006aa090\nBody: 006aa090 - 006aa1bf",
+      "readback_verified": true
+    },
+    {
+      "address": "00699bf0",
+      "before": "Function: FUN_00699bf0 at 00699bf0\nSignature: undefined FUN_00699bf0(void)\nEntry: 00699bf0\nBody: 00699bf0 - 00699c10",
+      "before_comment": {
+        "address": "00699bf0",
+        "function_name": "FUN_00699bf0"
+      },
+      "proposed": "uint __fastcall BSP_InputSettings_SuppressAlternateBinding(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00699bf0 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_SuppressAlternateBinding at 00699bf0\nSignature: uint __fastcall BSP_InputSettings_SuppressAlternateBinding(void * self, void * unused_edx)\nEntry: 00699bf0\nBody: 00699bf0 - 00699c10",
+      "readback_verified": true
+    },
+    {
+      "address": "0069e860",
+      "before": "Function: BSP_InputCodeVector_EqualsOrdered at 0069e860\nSignature: undefined BSP_InputCodeVector_EqualsOrdered(void)\nEntry: 0069e860\nBody: 0069e860 - 0069e8f5",
+      "before_comment": {
+        "address": "0069e860",
+        "function_name": "BSP_InputCodeVector_EqualsOrdered",
+        "comment": "[BSP reconstruction 0069e860]\nHypothesis; docs/KEYBOARD_AXIS_PAIRS.md and reports/keyboard_axis_pairs.json. ECX/EDX checked int32 code vectors, EAX bool RET; equal lengths then originalSTL_inst_0069dd80 integer CMP loop, no float/binding comparison. Both native bodies disk-verified and fixture-tested including aliases/empty/order. Preserve library0069dd80 name. Integrator pending locked rename/comment/save/export."
+      },
+      "proposed": "uint __fastcall BSP_InputCodeVector_EqualsOrdered(void* first, void* second)",
+      "apply": "Successfully set prototype for function at 0069e860 with __fastcall calling convention",
+      "after": "Function: BSP_InputCodeVector_EqualsOrdered at 0069e860\nSignature: uint __fastcall BSP_InputCodeVector_EqualsOrdered(void * first, void * second)\nEntry: 0069e860\nBody: 0069e860 - 0069e8f5",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006aa640",
+        "prototype": "void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006aa640 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006aa090",
+        "prototype": "byte __fastcall BSP_InputSettings_UseAlternateAxisSlots(void* self, void* unused_edx, void* device_name, void* input_name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006aa090 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00699bf0",
+        "prototype": "uint __fastcall BSP_InputSettings_SuppressAlternateBinding(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00699bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069e860",
+        "prototype": "uint __fastcall BSP_InputCodeVector_EqualsOrdered(void* first, void* second)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069e860 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

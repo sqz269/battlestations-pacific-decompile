@@ -4,24 +4,24 @@
 <style>
 :root {
   --ground: #EEF2F5; --panel: #FFFFFF; --panel-2: #F6F8FA; --ink: #132029; --muted: #5D6C78; --rule: #D3DBE2; --rule-soft: #E4EAEF;
-  --accent: #0F766E; --accent-ink: #FFFFFF; --amber: #B7791F; --neutral-fill: #DDE4EA; --shadow: 0 1px 2px rgba(19,32,41,.06);
+  --accent: #0F766E; --accent-ink: #FFFFFF; --amber: #B7791F; --neutral-fill: #DDE4EA; --prior: #A7B1BA; --shadow: 0 1px 2px rgba(19,32,41,.06);
   --c-units: #D64545; --c-ai: #EE7B2C; --c-mission: #D9AE1C; --c-scene: #3A9A4C; --c-sound: #1AA391; --c-files: #2BA3DA;
-  --c-render: #3D6BE0; --c-net: #6A5BD2; --c-lua: #A44BD3; --c-gui: #DB4A8E; --c-core: #7A8794; --c-other: #B4BEC6;
+  --c-render: #3D6BE0; --c-net: #6A5BD2; --c-lua: #A44BD3; --c-gui: #DB4A8E; --c-core: #7A8794; --c-other: #C9D1D8;
   --h-codex: #2F6FDE; --h-claude: #D97706;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --ground: #0C1319; --panel: #131C24; --panel-2: #182330; --ink: #E3EAEF; --muted: #8C9AA6; --rule: #243039; --rule-soft: #1C2731;
-    --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --shadow: none;
-    --c-core: #8B98A5; --c-other: #3A4754; --h-codex: #5B8DEF;
+    --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --prior: #4F5E6C; --shadow: none;
+    --c-core: #8B98A5; --c-other: #34424F; --h-codex: #5B8DEF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --ground: #0C1319; --panel: #131C24; --panel-2: #182330; --ink: #E3EAEF; --muted: #8C9AA6; --rule: #243039; --rule-soft: #1C2731;
-  --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --shadow: none;
-  --c-core: #8B98A5; --c-other: #3A4754; --h-codex: #5B8DEF;
+  --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --prior: #4F5E6C; --shadow: none;
+  --c-core: #8B98A5; --c-other: #34424F; --h-codex: #5B8DEF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -75,10 +75,13 @@ section.panel { background: var(--panel); border: 1px solid var(--rule); border-
 .legend button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; }
 .legend button:focus-visible { outline: 2px solid var(--accent); }
 .legend button.off { opacity: .35; }
-.legend .sw { width: 12px; height: 12px; border-radius: 2px; background: var(--sw); }
+.legend .sw { width: 12px; height: 12px; border-radius: 2px; background: var(--sw); flex: none; }
 .legend .note { color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
 .legend .note .sw { background: var(--neutral-fill); }
 .legend .note .sw.half { background: color-mix(in srgb, var(--c-render) 32%, transparent); }
+.legend .note .sw.prior { background: var(--prior); }
+.legend .note .sw.tag { background: var(--c-other); }
+.legend .note .sw.done { background: var(--c-render); }
 .detail { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px 24px; padding: 12px 14px; background: var(--panel-2); border-radius: 4px; font-size: 14px; min-height: 92px; }
 .detail .title { font-family: "Archivo", sans-serif; font-stretch: 87.5%; font-weight: 700; font-size: 16px; }
 .detail .kw { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12.5px; word-break: break-word; }
@@ -86,7 +89,7 @@ section.panel { background: var(--panel); border: 1px solid var(--rule); border-
 .detail dt { color: var(--muted); }
 .detail dd { margin: 0; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) { .detail { grid-template-columns: 1fr; } }
-.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--ink); color: var(--ground); font-size: 12.5px; padding: 6px 9px; border-radius: 4px; max-width: 260px; display: none; line-height: 1.35; }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--ink); color: var(--ground); font-size: 12.5px; padding: 6px 9px; border-radius: 4px; max-width: 300px; display: none; line-height: 1.35; }
 .tip .mono { opacity: .8; }
 
 /* charts */
@@ -101,6 +104,42 @@ section.panel { background: var(--panel); border: 1px solid var(--rule); border-
 .chart-box { position: relative; height: 380px; width: 100%; }
 .chart-box.short { height: 150px; }
 canvas { max-width: 100%; }
+
+/* reveal */
+.reveal-controls { display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px 14px; align-items: center; font-size: 13.5px; }
+.reveal-controls .btn { font: inherit; font-weight: 600; color: var(--ink); background: var(--panel-2); border: 1px solid var(--rule); border-radius: 4px; padding: 5px 12px; cursor: pointer; }
+.reveal-controls .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.reveal-controls .btn:focus-visible, .reveal-controls select:focus-visible, .reveal-controls input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.reveal-controls input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
+.reveal-controls .when { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.reveal-controls .speed { display: inline-flex; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.reveal-controls .speed label { padding: 4px 9px; cursor: pointer; user-select: none; border-right: 1px solid var(--rule); }
+.reveal-controls .speed label:last-child { border-right: 0; }
+.reveal-controls .speed input { position: absolute; opacity: 0; width: 0; height: 0; }
+.reveal-controls .speed label:has(input:checked) { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); font-weight: 600; }
+@media (max-width: 720px) { .reveal-controls { grid-template-columns: 1fr 1fr; } .reveal-controls input[type=range] { grid-column: 1 / -1; } }
+.reveal-status { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13.5px; color: var(--muted); }
+.reveal-status b { color: var(--ink); font-weight: 600; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+.reveal-wrap { position: relative; width: 100%; }
+.reveal-wrap canvas { display: block; width: 100%; cursor: crosshair; }
+.block-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.block-head select { font: inherit; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink); background: var(--panel-2); border: 1px solid var(--rule); border-radius: 4px; padding: 5px 8px; max-width: 100%; }
+.block-head .nav { font: inherit; color: var(--ink); background: var(--panel-2); border: 1px solid var(--rule); border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+.block-head .nav:focus-visible { outline: 2px solid var(--accent); }
+.block-count { font-size: 13.5px; color: var(--muted); }
+.block-count b { color: var(--ink); font-family: "IBM Plex Mono", monospace; font-weight: 600; font-variant-numeric: tabular-nums; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; max-height: 460px; overflow: auto; padding: 8px; background: var(--panel-2); border-radius: 4px; border: 1px solid var(--rule-soft); }
+.chip { --seg-color: var(--c-core); display: inline-flex; align-items: baseline; gap: 6px; padding: 2px 7px; border-radius: 3px; font-family: "IBM Plex Mono", monospace; font-size: 12px; line-height: 1.5; background: var(--neutral-fill); color: var(--muted); border: 1px solid transparent; max-width: 100%; }
+.chip .addr { font-variant-numeric: tabular-nums; }
+.chip .nm { display: none; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46ch; }
+.chip.is-prior { background: transparent; border-color: var(--rule); color: var(--muted); }
+.chip.is-prior .nm { display: inline; color: var(--muted); }
+.chip.is-tag { background: var(--c-other); }
+.chip.is-tag .nm { display: inline; color: var(--muted); }
+.chip.is-named { background: color-mix(in srgb, var(--seg-color) 16%, var(--panel)); border-color: color-mix(in srgb, var(--seg-color) 45%, transparent); color: var(--ink); }
+.chip.is-named .nm, .chip.is-recon .nm { display: inline; }
+.chip.is-recon { background: color-mix(in srgb, var(--seg-color) 26%, var(--panel)); border-color: var(--seg-color); color: var(--ink); }
+.chip.is-recon .addr::before { content: "▮ "; color: var(--seg-color); }
 
 /* tables */
 .table-wrap { overflow-x: auto; }
@@ -153,6 +192,38 @@ tr.hidden { display: none; }
 
   <section class="panel">
     <div class="section-head">
+      <h2>Every function, band by band</h2>
+      <p>One square per function inside each band, in address order. Drag the time control or replay to watch names arrive as the passes that produced them landed on main. Click a band to read its functions below.</p>
+    </div>
+    <div class="reveal-controls">
+      <button type="button" class="btn primary" id="reveal-play">Replay from start</button>
+      <span class="speed" role="radiogroup" aria-label="Replay speed">
+        <label><input type="radio" name="speed" id="speed-1" value="1" checked><span>1×</span></label>
+        <label><input type="radio" name="speed" id="speed-4" value="4"><span>4×</span></label>
+      </span>
+      <input type="range" id="reveal-time" min="0" max="1" value="1" step="1" aria-label="Time">
+      <span class="when" id="reveal-when"></span>
+    </div>
+    <div class="reveal-status" id="reveal-status"></div>
+    <div class="reveal-wrap"><canvas id="reveal" role="img" aria-label="Every function as a square, coloured by state at the selected time"></canvas></div>
+    <div class="legend">
+      <span class="note"><span class="sw done"></span>reconstructed</span>
+      <span class="note"><span class="sw half"></span>reviewed name</span>
+      <span class="note"><span class="sw prior"></span>name from analysis or library match</span>
+      <span class="note"><span class="sw tag"></span>tagged library or generated</span>
+      <span class="note"><span class="sw"></span>still <span class="mono">FUN_</span></span>
+    </div>
+    <div class="block-head">
+      <button type="button" class="nav" id="block-prev" aria-label="Previous band">◀</button>
+      <select id="block-select" aria-label="Band"></select>
+      <button type="button" class="nav" id="block-next" aria-label="Next band">▶</button>
+      <span class="block-count" id="block-count"></span>
+    </div>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
       <h2>Growth over time</h2>
       <p>Cumulative counts sampled every two hours, UTC. Small marks along the top are the executable milestones as they merged.</p>
     </div>
@@ -191,8 +262,8 @@ tr.hidden { display: none; }
 
   <div class="foot">
     <div><b>Reconstructed</b> means the address has a function record in the reconstruction ledger or a column-0 C++ definition named after it under <span class="mono">src/</span>, whichever came first in git history. It says nothing about ABI compatibility or game validation; those are separate levels.</div>
-    <div><b>Reviewed name</b> means a record in the names ledger. Names are hypotheses, not recovered symbols.</div>
-    <div><b>Excluded by tag</b> is CRT, STL instantiations, stock Lua and zlib, exception funclets and compiler-generated bodies from the inventory tag ledger; tags do not approve skipping a function.</div>
+    <div><b>Reviewed name</b> means a record in the names ledger, dated by the commit that added it. Names are hypotheses, not recovered symbols. <b>Name from analysis</b> is a Ghidra name that is not <span class="mono">FUN_</span> and has no ledger record: library identification, RTTI, or an early manual rename; it is shown from the start because its date is not in the repository.</div>
+    <div><b>Excluded by tag</b> is CRT, STL instantiations, stock Lua and zlib, exception funclets and compiler-generated bodies from the inventory tag ledger; tags do not approve skipping a function. Exception funclets and thunks are left out of the per-function view.</div>
     <div>The target of <span class="mono">13,987</span> is the inventory's point estimate of hand-reconstruction work; the remaining pool is what is left after tags and reconstructed functions are removed. Harness attribution follows commit trailers: a Claude trailer means Claude, everything else is Codex.</div>
   </div>
 </div>
@@ -213,7 +284,11 @@ tr.hidden { display: none; }
   catLabel.other = 'Outside the partition';
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const tlabel = (ts) => { const d = new Date(ts * 1000); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' ' + String(d.getUTCHours()).padStart(2, '0') + 'Z'; };
+  const tlabelMin = (ts) => { const d = new Date(ts * 1000); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' ' + String(d.getUTCHours()).padStart(2, '0') + ':' + String(d.getUTCMinutes()).padStart(2, '0') + 'Z'; };
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   const hidden = new Set();
+  const segs = D.segments;
+  const segById = Object.fromEntries(segs.map(s => [s.id, s]));
 
   // ---- header + KPIs
   $('#m-snap').textContent = D.snapshot; $('#m-head').textContent = D.head; $('#m-gen').textContent = D.generated;
@@ -229,7 +304,6 @@ tr.hidden { display: none; }
   ].map(([l, v, s]) => `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join('');
 
   // ---- address map
-  const segs = D.segments;
   const lo = segs[0].start, hi = segs[segs.length - 1].end, span = hi - lo;
   const strip = $('#strip');
   strip.innerHTML = segs.map(s => {
@@ -240,17 +314,16 @@ tr.hidden { display: none; }
     return `<div class="seg" role="listitem" tabindex="0" data-id="${s.id}" data-cat="${s.cat}" style="flex-grow:${s.end - s.start};--seg-color:${catColor(s.cat)}" aria-label="Segment ${s.id}, ${hex(s.start)} to ${hex(s.end)}, ${Math.round(donePct)}% reconstructed">` +
       `<div class="named" style="height:${namedPct.toFixed(1)}%"></div><div class="done" style="height:${donePct.toFixed(1)}%"></div></div>`;
   }).join('');
-  const ticks = $('#ticks');
   const tickVals = [];
   for (let a = Math.ceil(lo / 0x100000) * 0x100000; a < hi; a += 0x100000) tickVals.push(a);
-  ticks.innerHTML = tickVals.map(a => `<span style="left:${(100 * (a - lo) / span).toFixed(2)}%">${hex(a)}</span>`).join('');
+  $('#ticks').innerHTML = tickVals.map(a => `<span style="left:${(100 * (a - lo) / span).toFixed(2)}%">${hex(a)}</span>`).join('');
 
   const detail = $('#detail');
   function showDetail(s) {
     const denom = s.done + s.remaining;
     detail.innerHTML = `<div><div class="title">Segment ${s.id} · <span class="mono">${hex(s.start)}–${hex(s.end)}</span></div>` +
-      `<div><span class="cat-dot" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${catColor(s.cat)};margin-right:6px"></span>${catLabel[s.cat]}</div>` +
-      `<div class="kw">${s.keywords.length ? s.keywords.join(', ') : 'no string keywords in this band'}</div></div>` +
+      `<div><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${catColor(s.cat)};margin-right:6px"></span>${catLabel[s.cat]}</div>` +
+      `<div class="kw">${s.keywords.length ? esc(s.keywords.join(', ')) : 'no string keywords in this band'}</div></div>` +
       `<dl><dt>Candidates</dt><dd>${fmt(s.pool)} of ${fmt(s.total)} functions, ${fmt(s.tagged)} tagged out</dd>` +
       `<dt>Reconstructed</dt><dd>${fmt(s.done)} (${pct(s.done, denom)}%), ${fmt(s.remaining)} remaining</dd>` +
       `<dt>Reviewed names</dt><dd>${fmt(s.named)}</dd><dt>Last 24 h / 72 h</dt><dd>+${s.new24} / +${s.new72}</dd>` +
@@ -258,29 +331,30 @@ tr.hidden { display: none; }
   }
   let pinned = null;
   const busiest = segs.reduce((a, b) => (b.new24 > a.new24 ? b : a), segs[0]);
-  showDetail(busiest);
   const tip = $('#tip');
+  function showTip(html, e) {
+    tip.innerHTML = html; tip.style.display = 'block';
+    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 320) + 'px'; tip.style.top = (e.clientY + 16) + 'px';
+  }
   strip.addEventListener('mousemove', (e) => {
     const el = e.target.closest('.seg'); if (!el) { tip.style.display = 'none'; return; }
     const s = segs[+el.dataset.id];
-    tip.innerHTML = `<b>Segment ${s.id}</b> · ${catLabel[s.cat]}<br><span class="mono">${hex(s.start)}–${hex(s.end)}</span><br>${s.done} of ${s.done + s.remaining} reconstructed, ${s.named} named, +${s.new24} today`;
-    tip.style.display = 'block';
-    const x = Math.min(e.clientX + 14, window.innerWidth - 280), y = e.clientY + 16;
-    tip.style.left = x + 'px'; tip.style.top = y + 'px';
-    if (!pinned) showDetail(s);
+    showTip(`<b>Segment ${s.id}</b> · ${catLabel[s.cat]}<br><span class="mono">${hex(s.start)}–${hex(s.end)}</span><br>${s.done} of ${s.done + s.remaining} reconstructed, ${s.named} named, +${s.new24} today`, e);
+    if (pinned === null) showDetail(s);
   });
-  strip.addEventListener('mouseleave', () => { tip.style.display = 'none'; if (pinned) showDetail(segs[pinned]); });
-  function pin(el) {
-    const id = +el.dataset.id;
+  strip.addEventListener('mouseleave', () => { tip.style.display = 'none'; if (pinned !== null) showDetail(segs[pinned]); });
+  function pin(id, fromReveal) {
     strip.querySelectorAll('.seg.pinned').forEach(x => x.classList.remove('pinned'));
-    if (pinned === id) { pinned = null; return; }
-    pinned = id; el.classList.add('pinned'); showDetail(segs[id]);
+    if (pinned === id && !fromReveal) { pinned = null; return; }
+    pinned = id;
+    strip.querySelector(`.seg[data-id="${id}"]`).classList.add('pinned');
+    showDetail(segs[id]);
+    if (!fromReveal) selectBlock(id, true);
   }
-  strip.addEventListener('click', (e) => { const el = e.target.closest('.seg'); if (el) pin(el); });
-  strip.addEventListener('keydown', (e) => { const el = e.target.closest('.seg'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pin(el); } });
-  strip.addEventListener('focusin', (e) => { const el = e.target.closest('.seg'); if (el && !pinned) showDetail(segs[+el.dataset.id]); });
+  strip.addEventListener('click', (e) => { const el = e.target.closest('.seg'); if (el) pin(+el.dataset.id); });
+  strip.addEventListener('keydown', (e) => { const el = e.target.closest('.seg'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pin(+el.dataset.id); } });
+  strip.addEventListener('focusin', (e) => { const el = e.target.closest('.seg'); if (el && pinned === null) showDetail(segs[+el.dataset.id]); });
 
-  // legend with toggles
   const legend = $('#legend');
   legend.innerHTML = D.categories.map(c => `<button type="button" data-cat="${c.key}" aria-pressed="true"><span class="sw" style="--sw:${catColor(c.key)}"></span>${c.label}</button>`).join('') +
     `<span class="note"><span class="sw"></span>not yet</span><span class="note"><span class="sw half"></span>named only</span>`;
@@ -289,17 +363,161 @@ tr.hidden { display: none; }
     const k = b.dataset.cat;
     if (hidden.has(k)) hidden.delete(k); else hidden.add(k);
     b.classList.toggle('off', hidden.has(k)); b.setAttribute('aria-pressed', String(!hidden.has(k)));
-    applyHidden();
-  });
-  function applyHidden() {
     strip.querySelectorAll('.seg').forEach(el => el.classList.toggle('dim', hidden.has(el.dataset.cat)));
     document.querySelectorAll('#seg-table tbody tr').forEach(tr => tr.classList.toggle('hidden', hidden.has(tr.dataset.cat)));
     drawTimeline();
+  });
+
+  // ---- per-function reveal
+  const FN = D.fn, PASSES = D.passes, TAGS = D.tag_names;
+  const T0 = D.t0, TOTAL_MIN = Math.ceil((D.now - T0) / 60), STEP_MIN = 30, STEPS = Math.ceil(TOTAL_MIN / STEP_MIN);
+  const F_ADDR = 0, F_NAME = 1, F_NT = 2, F_NP = 3, F_RT = 4, F_RP = 5, F_TAG = 6, F_RN = 7, F_PRIOR = 8;
+  const range = $('#reveal-time'); range.max = STEPS; range.value = STEPS;
+  let minutes = TOTAL_MIN, playing = null, current = busiest.id;
+  const stateOf = (f, m) => (f[F_RT] >= 0 && f[F_RT] <= m) ? 'recon' : (f[F_NT] >= 0 && f[F_NT] <= m) ? 'named' : f[F_PRIOR] ? 'prior' : f[F_TAG] >= 0 ? 'tag' : 'none';
+  const nameAt = (f, st) => st === 'named' ? f[F_NAME] : st === 'recon' ? (f[F_NAME] || f[F_RN]) : (st === 'prior' || st === 'tag') ? f[F_NAME] : '';
+  const passText = (p, m) => { const P = PASSES[p]; return P ? `${tlabelMin(P.t)} · ${P.k === 'claude' ? 'Claude' : 'Codex'} · ${P.h} “${P.s}”` : tlabelMin(T0 + m * 60); };
+
+  // canvas layout: one row group per segment, squares in address order
+  const canvas = $('#reveal'); const ctx = canvas.getContext('2d');
+  const CELL = 3, PITCH = 4, LABEL_W = 46, ROW_GAP = 3;
+  let layout = [], cssW = 0, cssH = 0;
+  function computeLayout() {
+    cssW = canvas.parentElement.clientWidth;
+    const cols = Math.max(20, Math.floor((cssW - LABEL_W) / PITCH));
+    let y = 2; layout = [];
+    for (const s of segs) {
+      const rows = FN[s.id] || [];
+      const lines = Math.max(1, Math.ceil(rows.length / cols));
+      const h = Math.max(lines * PITCH, 11);  // room for the band label even when one line of squares suffices
+      layout.push({ id: s.id, y0: y, lines, cols, n: rows.length, h });
+      y += h + ROW_GAP;
+    }
+    cssH = y + 2;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
+  function drawCanvas() {
+    const m = minutes;
+    const neutral = css('--neutral-fill'), prior = css('--prior'), tagc = css('--c-other'), ink = css('--ink'), muted = css('--muted');
+    ctx.clearRect(0, 0, cssW, cssH);
+    const buckets = new Map();
+    const put = (color, x, y) => { let b = buckets.get(color); if (!b) buckets.set(color, b = []); b.push(x, y); };
+    ctx.font = '10px "IBM Plex Mono", monospace'; ctx.textBaseline = 'top';
+    for (const L of layout) {
+      const s = segById[L.id], rows = FN[L.id] || [], color = catColor(s.cat), pale = rgba(color, .42);
+      ctx.fillStyle = color; ctx.fillRect(0, L.y0, 3, L.h);
+      ctx.fillStyle = L.id === current ? ink : muted; ctx.fillText(String(L.id), 8, L.y0);
+      for (let i = 0; i < rows.length; i++) {
+        const st = stateOf(rows[i], m);
+        const c = st === 'recon' ? color : st === 'named' ? pale : st === 'prior' ? prior : st === 'tag' ? tagc : neutral;
+        put(c, LABEL_W + (i % L.cols) * PITCH, L.y0 + Math.floor(i / L.cols) * PITCH);
+      }
+      if (L.id === current) { ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.strokeRect(LABEL_W - 2.5, L.y0 - 1.5, Math.min(L.n, L.cols) * PITCH + 3, L.h + 2); }
+    }
+    for (const [color, pts] of buckets) { ctx.fillStyle = color; for (let i = 0; i < pts.length; i += 2) ctx.fillRect(pts[i], pts[i + 1], CELL, CELL); }
+  }
+  function hitTest(e) {
+    const r = canvas.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
+    for (const L of layout) {
+      if (y >= L.y0 - 1 && y < L.y0 + L.h + 1) {
+        if (x < LABEL_W) return { L, f: null };
+        const col = Math.floor((x - LABEL_W) / PITCH), line = Math.floor((y - L.y0) / PITCH);
+        const i = line * L.cols + col;
+        return { L, f: (col >= 0 && col < L.cols && i >= 0 && i < L.n) ? FN[L.id][i] : null };
+      }
+    }
+    return null;
+  }
+  canvas.addEventListener('mousemove', (e) => {
+    const h = hitTest(e); if (!h) { tip.style.display = 'none'; return; }
+    const s = segById[h.L.id];
+    if (!h.f) { showTip(`<b>Segment ${s.id}</b> · ${catLabel[s.cat]}<br>${h.L.n} functions`, e); return; }
+    const f = h.f, st = stateOf(f, minutes), nm = nameAt(f, st);
+    let html = `<span class="mono">${hex(f[F_ADDR])}</span> · segment ${s.id}<br>`;
+    if (nm) html += `<b>${esc(nm)}</b><br>`;
+    if (st === 'recon') html += `reconstructed ${esc(passText(f[F_RP], f[F_RT]))}<br>`;
+    if (f[F_NT] >= 0 && f[F_NT] <= minutes) html += `named ${esc(passText(f[F_NP], f[F_NT]))}<br>`;
+    if (st === 'prior') html += 'name from analysis, no ledger date<br>';
+    if (f[F_TAG] >= 0) html += `tag: ${esc(TAGS[f[F_TAG]])}<br>`;
+    if (st === 'none') html += 'not yet named';
+    showTip(html, e);
+  });
+  canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  canvas.addEventListener('click', (e) => { const h = hitTest(e); if (h) pin(h.L.id); });
+
+  // block list
+  const sel = $('#block-select'), chips = $('#chips'), blockCount = $('#block-count');
+  sel.innerHTML = segs.map(s => `<option value="${s.id}">${String(s.id).padStart(2, ' ')} · ${hex(s.start)}–${hex(s.end)} · ${catLabel[s.cat]} · ${(FN[s.id] || []).length} fn</option>`).join('');
+  let chipEls = [], chipState = [];
+  function selectBlock(id, fromMap) {
+    current = id; sel.value = String(id);
+    const s = segById[id], rows = FN[id] || [], color = catColor(s.cat);
+    chips.innerHTML = rows.map(f => `<span class="chip" style="--seg-color:${color}"><span class="addr">${hex(f[F_ADDR])}</span><span class="nm"></span></span>`).join('');
+    chipEls = Array.from(chips.children); chipState = new Array(rows.length).fill('');
+    updateChips(true);
+    if (!fromMap) pin(id, true);
+    drawCanvas();
+  }
+  function updateChips(force) {
+    const rows = FN[current] || []; let named = 0, recon = 0;
+    for (let i = 0; i < rows.length; i++) {
+      const f = rows[i], st = stateOf(f, minutes);
+      if (st === 'recon') recon++;
+      if (f[F_NT] >= 0 && f[F_NT] <= minutes) named++;
+      if (!force && chipState[i] === st) continue;
+      chipState[i] = st;
+      const el = chipEls[i]; el.className = 'chip' + (st !== 'none' ? ' is-' + st : '');
+      const nm = nameAt(f, st); el.lastElementChild.textContent = nm;
+      let title = hex(f[F_ADDR]);
+      if (nm) title += '\n' + nm;
+      if (st === 'recon') title += '\nreconstructed ' + passText(f[F_RP], f[F_RT]);
+      if (f[F_NT] >= 0 && f[F_NT] <= minutes) title += '\nnamed ' + passText(f[F_NP], f[F_NT]);
+      if (st === 'prior') title += '\nname from analysis, no ledger date';
+      if (f[F_TAG] >= 0) title += '\ntag: ' + TAGS[f[F_TAG]];
+      el.title = title;
+    }
+    const s = segById[current];
+    blockCount.innerHTML = `${catLabel[s.cat]} · <b>${fmt(rows.length)}</b> functions · <b>${fmt(named)}</b> named · <b>${fmt(recon)}</b> reconstructed at this time`;
+  }
+  sel.addEventListener('change', () => selectBlock(+sel.value));
+  $('#block-prev').addEventListener('click', () => selectBlock((current + segs.length - 1) % segs.length));
+  $('#block-next').addEventListener('click', () => selectBlock((current + 1) % segs.length));
+
+  // time control
+  const when = $('#reveal-when'), status = $('#reveal-status'), playBtn = $('#reveal-play');
+  let raf = 0;
+  function setTime(m, immediate) {
+    minutes = Math.max(0, Math.min(TOTAL_MIN, m));
+    when.textContent = tlabelMin(T0 + minutes * 60);
+    if (raf) cancelAnimationFrame(raf);
+    const paint = () => {
+      raf = 0; drawCanvas(); updateChips(false);
+      let named = 0, recon = 0, total = 0;
+      for (const id in FN) for (const f of FN[id]) { total++; if (f[F_RT] >= 0 && f[F_RT] <= minutes) recon++; if (f[F_NT] >= 0 && f[F_NT] <= minutes) named++; }
+      status.innerHTML = `<span><b>${fmt(recon)}</b> reconstructed</span><span><b>${fmt(named)}</b> reviewed names</span><span>of <b>${fmt(total)}</b> functions in the partition</span>`;
+    };
+    if (immediate) paint(); else raf = requestAnimationFrame(paint);
+  }
+  range.addEventListener('input', () => { stop(); setTime(+range.value * STEP_MIN); });
+  function stop() { if (playing) { clearInterval(playing); playing = null; } playBtn.textContent = +range.value >= STEPS ? 'Replay from start' : 'Play'; }
+  function play() {
+    if (+range.value >= STEPS) range.value = 0;
+    playBtn.textContent = 'Pause';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    playing = setInterval(() => {
+      const speed = +document.querySelector('input[name=speed]:checked').value * (reduce ? 4 : 1);
+      const v = Math.min(STEPS, +range.value + speed); range.value = v; setTime(v * STEP_MIN);
+      if (v >= STEPS) stop();
+    }, reduce ? 240 : 70);
+  }
+  playBtn.addEventListener('click', () => { if (playing) stop(); else play(); });
 
   // ---- charts
   const labels = D.grid.map(tlabel);
-  const rgba = (hexc, a) => { const h = hexc.replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; };
+  function rgba(hexc, a) { const h = hexc.replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; }
   const milestonePlugin = {
     id: 'milestones',
     afterDatasetsDraw(chart) {
@@ -400,16 +618,22 @@ tr.hidden { display: none; }
   function renderSegTable() {
     const rows = [...segs].sort((a, b) => { const va = a[sortKey], vb = b[sortKey]; const c = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb)); return sortAsc ? c : -c; });
     $('#seg-table').innerHTML = `<thead><tr>${cols.map(([k, l, t]) => `<th class="sortable ${t === 'num' || t === 'pct' ? 'num' : ''} ${sortKey === k ? 'sorted ' + (sortAsc ? 'asc' : '') : ''}" data-key="${k}" tabindex="0">${l}</th>`).join('')}</tr></thead><tbody>` +
-      rows.map(s => `<tr data-cat="${s.cat}" class="${hidden.has(s.cat) ? 'hidden' : ''}"><td class="num">${s.id}</td><td class="mono">${hex(s.start)}–${hex(s.end)}</td><td><span class="cat-dot" style="background:${catColor(s.cat)}"></span>${catLabel[s.cat]}</td><td class="kw" title="${s.keywords.join(', ')}">${s.keywords.slice(0, 5).join(', ')}</td><td class="num">${fmt(s.pool)}</td><td class="num">${fmt(s.done)}</td><td class="num">${Math.round(100 * s.pct)}%<span class="pbar"><i style="width:${Math.round(100 * s.pct)}%;background:${catColor(s.cat)}"></i></span></td><td class="num">${fmt(s.named)}</td><td class="num">${s.new24 ? '+' + s.new24 : '–'}</td></tr>`).join('') + '</tbody>';
+      rows.map(s => `<tr data-cat="${s.cat}" class="${hidden.has(s.cat) ? 'hidden' : ''}"><td class="num">${s.id}</td><td class="mono">${hex(s.start)}–${hex(s.end)}</td><td><span class="cat-dot" style="background:${catColor(s.cat)}"></span>${catLabel[s.cat]}</td><td class="kw" title="${esc(s.keywords.join(', '))}">${esc(s.keywords.slice(0, 5).join(', '))}</td><td class="num">${fmt(s.pool)}</td><td class="num">${fmt(s.done)}</td><td class="num">${Math.round(100 * s.pct)}%<span class="pbar"><i style="width:${Math.round(100 * s.pct)}%;background:${catColor(s.cat)}"></i></span></td><td class="num">${fmt(s.named)}</td><td class="num">${s.new24 ? '+' + s.new24 : '–'}</td></tr>`).join('') + '</tbody>';
   }
   $('#seg-table').addEventListener('click', (e) => { const th = e.target.closest('th.sortable'); if (!th) return; const k = th.dataset.key; if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = k === 'id' || k === 'start' || k === 'cat' || k === 'keywords'; } renderSegTable(); });
   $('#seg-table').addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches('th.sortable')) e.target.click(); });
   renderSegTable();
 
-  // ---- theme changes: redraw charts with the new tokens
-  function redraw() { drawTimeline(); drawActivity(); }
-  redraw();
+  // ---- boot, theme and resize
+  function redraw() { drawTimeline(); drawActivity(); computeLayout(); setTime(minutes, true); }
+  computeLayout();
+  selectBlock(busiest.id, true);
+  pin(busiest.id, true);
+  setTime(TOTAL_MIN, true);
+  drawTimeline(); drawActivity();
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw);
   new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  let rt = 0;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { computeLayout(); drawCanvas(); }, 120); });
 })();
 </script>

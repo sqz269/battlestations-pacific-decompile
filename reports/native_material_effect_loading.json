@@ -258,8 +258,8 @@
   "scope": "Actual B2EBB0 normal schedule and B18F70 body, with required actual VFS, shader children and callable constructor texture64 dependency. Not a complete cold-load runtime or native EH/ABI replacement.",
   "host_continuation": "Completed creator is published before B46950. Failed program child retains the exact resolved8h header and allocation, unlike native local FH3 unwinding. Program descriptor bindings transfer into the same canonical effect record only after complete pass population.",
   "validation": {
-    "build": "pending integration",
-    "runtime": "not executed"
+    "build": "passed exact combined Win32 build; CTest2/2",
+    "runtime": "full loader not executed"
   },
   "unresolved_dependencies": [
     "Actual mutable-manager BDF4C0 resolver",
@@ -272,5 +272,14 @@
   "indirect_review": {
     "00b2edfd": "IAT CE2274 OutputDebugStringA: message pointer or live empty string108D5A4",
     "00b2ee4a": "Current renderer48 B318B0: ECX captured renderer, stack actual error.shfx8h; owned EAX, RET4"
+  },
+  "integrated_validation": {
+    "commit": "f999c89ad8e6fa2992f4e3d2971a8c31cfd8ee88",
+    "batch": "reports/native_material_effect_integration.json",
+    "win32_build": true,
+    "ctest_passed": 2,
+    "full_cold_effect_load": false,
+    "complete_text": false,
+    "gameplay": false
   }
 }

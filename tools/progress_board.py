@@ -1,5 +1,6 @@
 """Build the progress board: one self-contained HTML page with the address-band map, growth over
-time by category and by harness, commit activity, and per-category / per-segment tables.
+time by category and by harness, commit activity, per-category / per-segment tables, and a
+per-function reveal of every band (addresses turning into names as the pass that named them lands).
 
     python tools/progress_board.py                 # -> local/progress_board.html
     python tools/progress_board.py --out path.html --json data.json
@@ -7,8 +8,9 @@ time by category and by harness, commit activity, and per-category / per-segment
 
 Data sources, all local: the lookup index (segments, functions, tags, docs), git history of
 config/reconstruction, config/names and src/ (when each address first got a ledger record, an
-address-named C++ body, or a reviewed name), and the merge commits of the executable milestones.
-Harness follows commit trailers: a Claude trailer means Claude, everything else is Codex.
+address-named C++ body, or a reviewed name, and in which commit), commit timestamps, and the merge
+commits of the executable milestones. Harness follows commit trailers: a Claude trailer means
+Claude, everything else is Codex.
 
 A function counts as reconstructed when its address has a function record in the reconstruction
 ledger or a column-0 C++ definition named after it under src/, dated by whichever came first.
@@ -72,32 +74,45 @@ SUFFIX = re.compile(r'_([0-9a-fA-F]{8})$')
 KEYWORDS = {'return', 'if', 'for', 'while', 'switch', 'namespace', 'using', 'template', 'struct', 'class', 'enum', 'typedef',
             'static_assert', 'extern', 'else', 'case', 'default', 'do', 'try', 'catch', 'throw', 'delete', 'new', 'sizeof'}
 SEP = '@@COMMIT@@'
-FMT = SEP + '%H%x1f%ct%x1f%(trailers)%x1e'
+FMT = SEP + '%H%x1f%ct%x1f%h%x1f%s%x1f%(trailers)%x1e'
 
 
-def git(*args, text=True):
-    return subprocess.run(['git', *args], cwd=ROOT, capture_output=True).stdout.decode('utf-8', 'replace') if text else None
+def git(*args):
+    return subprocess.run(['git', *args], cwd=ROOT, capture_output=True).stdout.decode('utf-8', 'replace')
 
 
 def harness_of(trailers):
     return 'claude' if re.search(r'Claude-Session:|co-authored-by:.*claude', trailers, re.I) else 'codex'
 
 
+class Passes:
+    """Commits that first named or first reconstructed something, numbered in the order they are met."""
+
+    def __init__(self):
+        self.rows, self.index = [], {}
+
+    def add(self, short, ts, subject, harness):
+        if short not in self.index:
+            self.index[short] = len(self.rows)
+            self.rows.append({'h': short, 't': ts, 's': subject[:96], 'k': harness})
+        return self.index[short]
+
+
 def commits_with_patches(*paths):
-    """Yield (ts, harness, patch_lines) for every non-merge commit on main touching paths, oldest first."""
+    """Yield (ts, harness, short, subject, patch_lines) for every non-merge commit on main touching paths, oldest first."""
     raw = git('log', 'main', '--reverse', '--no-merges', '-p', '--no-color', '--format=' + FMT, '--', *paths)
     for chunk in raw.split(SEP)[1:]:
         head, _, body = chunk.partition('\x1e')
         parts = head.split('\x1f')
-        if len(parts) < 3:
+        if len(parts) < 5:
             continue
-        yield int(parts[1]), harness_of(parts[2]), body.splitlines()
+        yield int(parts[1]), harness_of(parts[4]), parts[2], parts[3], body.splitlines()
 
 
-def first_ledger_records(kind_now):
-    """address -> (ts, harness) for functions and fragments, first time each address entered the ledger."""
+def first_ledger_records(kind_now, passes):
+    """address -> (ts, harness, pass) for functions and fragments, first time each address entered the ledger."""
     funcs, frags = {}, {}
-    for ts, harness, lines in commits_with_patches('config/reconstruction', 'config/reconstruction.json'):
+    for ts, harness, short, subject, lines in commits_with_patches('config/reconstruction', 'config/reconstruction.json'):
         cur = None
         for line in lines:
             if line.startswith('+++ b/'):
@@ -116,18 +131,16 @@ def first_ledger_records(kind_now):
                 m = LEGACY_KEY.match(line) or ADDR_FIELD.search(line)
                 if m:
                     addr, kind = m.group(1).lower(), kind_now.get(m.group(1).lower())
-            if not addr:
+            if not addr or addr in funcs or addr in frags:
                 continue
-            pool = frags if kind == 'fragment' else funcs
-            if addr not in funcs and addr not in frags:
-                pool[addr] = (ts, harness)
+            (frags if kind == 'fragment' else funcs)[addr] = (ts, harness, passes.add(short, ts, subject, harness))
     return funcs, frags
 
 
-def first_source_bodies(entries):
-    """address -> (ts, harness): first column-0 C++ definition named _<address> for a function entry."""
+def first_source_bodies(entries, passes):
+    """address -> (ts, harness, pass): first column-0 C++ definition named _<address> for a function entry."""
     first = {}
-    for ts, harness, lines in commits_with_patches('src'):
+    for ts, harness, short, subject, lines in commits_with_patches('src'):
         cur = None
         for line in lines:
             if line.startswith('+++ b/'):
@@ -148,20 +161,20 @@ def first_source_bodies(entries):
             if ms:
                 addr = int(ms.group(1), 16)
                 if addr in entries and addr not in first:
-                    first[addr] = (ts, harness)
+                    first[addr] = (ts, harness, passes.add(short, ts, subject, harness))
     return first
 
 
-def first_names():
+def first_names(passes):
     first = {}
-    for ts, harness, lines in commits_with_patches('config/names', 'config/ghidra_names.json'):
+    for ts, harness, short, subject, lines in commits_with_patches('config/names', 'config/ghidra_names.json'):
         for line in lines:
             if line.startswith('+') and not line.startswith('+++'):
                 m = ADDR_FIELD.search(line)
                 if m:
                     addr = int(m.group(1), 16)
                     if addr not in first:
-                        first[addr] = (ts, harness)
+                        first[addr] = (ts, harness, passes.add(short, ts, subject, harness))
     return first
 
 
@@ -176,7 +189,7 @@ def category_for(start, keywords):
 
 
 def cumulative(first_map, addr_cat, grid):
-    ev = sorted((ts, addr_cat.get(a) or 'other', h) for a, (ts, h) in first_map.items())
+    ev = sorted((v[0], addr_cat.get(a) or 'other', v[1]) for a, v in first_map.items())
     keys = [k for k, _ in CATEGORIES] + ['other']
     out_cat = {k: [] for k in keys}
     out_h = {'codex': [], 'claude': []}
@@ -200,22 +213,23 @@ def build(now=None):
     now = now or int(time.time())
     db = sqlite3.connect(f'file:{INDEX.as_posix()}?mode=ro', uri=True)
     funcs = {}
-    for a, name, seg, tag, rk, ln in db.execute('select address, name, segment, tag_category, recon_kind, ledger_name from functions'):
+    for a, name, seg, tag, rk, rn, ln in db.execute('select address, name, segment, tag_category, recon_kind, recon_name, ledger_name from functions'):
         if not name.startswith(FUNCLET):
-            funcs[a] = (seg, tag, rk, ln)
+            funcs[a] = (seg, tag, rk, ln, name, rn)
     kind_now = {}
     for addr, kind in db.execute('select printf("%08x", address), kind from recon'):
         if kind == 'function' or addr not in kind_now:
             kind_now[addr] = kind  # a function record wins over a fragment at the same address
-    ledger_funcs, ledger_frags = first_ledger_records(kind_now)
+    passes = Passes()
+    ledger_funcs, ledger_frags = first_ledger_records(kind_now, passes)
     ledger_first = {int(a, 16): v for a, v in ledger_funcs.items()}
     frag_first = {int(a, 16): v[0] for a, v in ledger_frags.items()}
-    src_first = first_source_bodies(set(funcs))
+    src_first = first_source_bodies(set(funcs), passes)
     union = dict(ledger_first)
     for a, v in src_first.items():
         if a not in union or v[0] < union[a][0]:
             union[a] = v
-    names_first = first_names()
+    names_first = first_names(passes)
 
     seg_rows = db.execute('select id, start, end, keywords from segments order by id').fetchall()
     seg_cat, segments, fallback = {}, [], []
@@ -246,7 +260,7 @@ def build(now=None):
         print(f'note: {len(fallback)} segments not in SEGMENT_CATEGORY, categorised by keywords: {fallback[:6]}', file=sys.stderr)
 
     addr_cat = {a: seg_cat.get(v[0]) for a, v in funcs.items()}
-    t0 = min(min(ts for ts, h in union.values()), min(ts for ts, h in names_first.values())) // STEP * STEP
+    t0 = min(min(v[0] for v in union.values()), min(v[0] for v in names_first.values())) // STEP * STEP
     grid = list(range(t0, now, STEP)) + [now]
     funcs_series = cumulative(union, addr_cat, grid)
     names_series = cumulative(names_first, addr_cat, grid)
@@ -257,6 +271,30 @@ def build(now=None):
             n += 1
             i += 1
         frag_total.append(n)
+
+    # per-function reveal data, per segment, minutes since t0 (-1 = never; name from analysis shows from the start)
+    tag_names = sorted({v[1] for v in funcs.values() if v[1]})
+    tag_idx = {t: i for i, t in enumerate(tag_names)}
+    fn = {}
+    for sid, rows in by_seg.items():
+        if sid is None:
+            continue
+        out = []
+        for a, (seg, tag, rk, ln, gname, rname) in sorted(rows):
+            prior = gname if (not ln and not gname.startswith('FUN_')) else ''
+            nm = ln or prior
+            nt, npass = -1, -1
+            if ln:
+                if a in names_first:
+                    nt, npass = (names_first[a][0] - t0) // 60, names_first[a][2]
+                else:
+                    nt = 0  # recorded in a merge commit; treat as present from the start
+            rt, rpass = -1, -1
+            if a in union:
+                rt, rpass = (union[a][0] - t0) // 60, union[a][2]
+            rn = rname if (rname and not nm) else ''  # only needed when the reconstruction is what reveals a name
+            out.append([a, nm, nt, npass, rt, rpass, tag_idx.get(tag, -1), rn, 1 if (prior and not ln) else 0])
+        fn[sid] = out
 
     hourly = collections.Counter(int(l) // 3600 * 3600 for l in git('log', 'main', '--format=%ct').split())
     milestones, seen = [], set()
@@ -271,15 +309,16 @@ def build(now=None):
     snapshot = (db.execute("select value from meta where key='built_utc'").fetchone() or ['?'])[0][:16].replace('T', ' ') + ' UTC'
     return dict(
         generated=dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime('%Y-%m-%d %H:%M UTC'), snapshot=snapshot,
-        head=git('rev-parse', '--short', 'main').strip(),
+        head=git('rev-parse', '--short', 'main').strip(), t0=t0, now=now,
         categories=[dict(key=k, label=l, segments=[s['id'] for s in segments if s['cat'] == k]) for k, l in CATEGORIES],
         segments=segments, grid=grid, funcs=funcs_series, names=names_series, ledger_total=ledger_total, frag_total=frag_total,
         commits=sorted(hourly.items()), milestones=milestones, tags=dict(tags.most_common()),
+        passes=passes.rows, tag_names=tag_names, fn=fn,
         kpi=dict(functions=len(union), ledger_functions=len(ledger_first), fragments=len(frag_first), names=len(names_first),
                  tags=sum(tags.values()), target=TARGET, pool_remaining=sum(s['remaining'] for s in segments),
-                 rate24=sum(1 for ts, h in union.values() if ts >= now - 86400),
-                 names24=sum(1 for ts, h in names_first.values() if ts >= now - 86400),
-                 codex=sum(1 for ts, h in union.values() if h == 'codex'), claude=sum(1 for ts, h in union.values() if h == 'claude'),
+                 rate24=sum(1 for v in union.values() if v[0] >= now - 86400),
+                 names24=sum(1 for v in names_first.values() if v[0] >= now - 86400),
+                 codex=sum(1 for v in union.values() if v[1] == 'codex'), claude=sum(1 for v in union.values() if v[1] == 'claude'),
                  internal=db.execute('select count(*) from functions').fetchone()[0]))
 
 
@@ -304,7 +343,8 @@ def main():
         Path(args.json).write_text(json.dumps(data, indent=1), encoding='utf-8')
     k = data['kpi']
     print(f"wrote {out} ({out.stat().st_size // 1024} KB): {k['functions']} reconstructed (+{k['rate24']} in 24h), "
-          f"{k['names']} named, {k['fragments']} fragments, {len(data['segments'])} segments, {len(data['grid'])} samples, "
+          f"{k['names']} named, {k['fragments']} fragments, {len(data['segments'])} segments, "
+          f"{sum(len(v) for v in data['fn'].values())} functions in the reveal, {len(data['passes'])} passes, "
           f"milestones through {data['milestones'][-1]['id'] if data['milestones'] else 'none'}")
 
 
