@@ -106,6 +106,9 @@ public:
     void construct_and_associate74_fragment(NativeModelOwner&);
 
     NativeRenderActualOwners& actual_owners() noexcept;
+    // Borrow the SAME stored canonical bind/find/unbind domain for composing
+    // other actual resource owners; this never creates a second registry.
+    const GuiNativeGeometryRegistration& registration() const noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

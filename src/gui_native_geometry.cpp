@@ -369,6 +369,9 @@ void GuiNativeGeometryOwners::register_native_declaration_reference(GuiNativeDec
     NativeVertexDeclarationLoadingContext& loading) {
     impl_->register_declaration(acquired, loading);
 }
+const GuiNativeGeometryRegistration& GuiNativeGeometryOwners::registration() const noexcept {
+    return impl_->registration;
+}
 NativeMeshSectionStorage* GuiNativeGeometryOwners::clone_section_00b85ef0(
     const NativeMeshSectionStorage& source) { return impl_->clone_section(source); }
 NativeMaterialStorage* GuiNativeGeometryOwners::clone_material_00b18b60(
