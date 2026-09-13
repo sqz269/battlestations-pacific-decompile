@@ -1,0 +1,222 @@
+{
+  "packet": "orch4_input_lua_vfs_services_az",
+  "status": "source_services_integrated_component_validated_combined_publication_pending",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/INPUT_LUA_VFS_SERVICES_AZ.md",
+  "annotations": "reports/input_lua_vfs_services_az_annotations.json",
+  "new_storage_addresses": [
+    "00bb4140",
+    "00bb4f40",
+    "00bb6180"
+  ],
+  "reused_helper": "005efba0",
+  "worker_reports": [
+    "reports/native_lua_service_bindings_az.json",
+    "reports/native_mpak_lookup_storage_az.json",
+    "reports/native_mpak_offset_copy_storage_az.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "00bb4140",
+      "bytes": 60,
+      "end_inclusive": "00bb417b",
+      "sha256": "3a757ccf97cbcdb388a61808269c3b63a65c7021ff26c5d5b8c6cb7e673b6c23",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_inst_00bb4140 at 00bb4140\nSignature: undefined STL_inst_00bb4140(void)\nEntry: 00bb4140\nBody: 00bb4140 - 00bb417b",
+      "instructions": 24,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb4179",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb4f40",
+      "bytes": 52,
+      "end_inclusive": "00bb4f73",
+      "sha256": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb4f40 at 00bb4f40\nSignature: undefined FUN_00bb4f40(void)\nEntry: 00bb4f40\nBody: 00bb4f40 - 00bb4f73",
+      "instructions": 26,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb4f6a",
+          "operand": "4"
+        },
+        {
+          "site": "00bb4f71",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bb6180",
+      "bytes": 148,
+      "end_inclusive": "00bb6213",
+      "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00bb6180 at 00bb6180\nSignature: undefined FUN_00bb6180(void)\nEntry: 00bb6180\nBody: 00bb6180 - 00bb6213",
+      "instructions": 57,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00bb6211",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "005efba0",
+      "bytes": 118,
+      "end_inclusive": "005efc15",
+      "sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_NativeStringVector_FindCaseInsensitive at 005efba0\nSignature: undefined BSP_NativeStringVector_FindCaseInsensitive(void)\nEntry: 005efba0\nBody: 005efba0 - 005efc15",
+      "instructions": 53,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "005efc04",
+          "operand": "4"
+        },
+        {
+          "site": "005efc13",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "00bb4140",
+      "address": "00bb4169",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb4f40",
+      "address": "00bb4f54",
+      "native": "005efba0",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61b3",
+      "native": "00a40ad0",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61bc",
+      "native": "00a3e910",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61d5",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61e3",
+      "native": "00bf6713",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb6200",
+      "native": "00bf67a7",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    },
+    {
+      "function": "005efba0",
+      "address": "005efbe5",
+      "native": "00bf7fbf",
+      "evidence": "Direct CALL in its owning saved function with complete live/disk envelope."
+    }
+  ],
+  "indirect_calls": [],
+  "instruction_ownership_failures": [],
+  "table_data_spans": [
+    {
+      "address": "00d685b4",
+      "bytes": 28,
+      "hex": "c025be0010f3bd0040d4bd0020d5bd00b0c8bd00f091bd0040b0bd00",
+      "sha256": "b54a3f07237b2871c3fc9f5e1913ab48c7635ef2df5bd696328dfaedccffeca5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d642c0",
+      "bytes": 56,
+      "hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00e042be00",
+      "sha256": "19bc6e25d6f70fc4313cf9b27008c556c74bcaadbb64a9b3ee5da5290479e7be",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d691b0",
+      "bytes": 56,
+      "hex": "a055bf009050bf00e04ebf00f04fbf00209d6f00f04ebf002050bf00204fbf00404fbf003050bf00504fbf00a04fbf00904fbf00e042be00",
+      "sha256": "de659fff2329d0be3e4828318c88eb4bcefd4aed941d5a13d1b9ddbfd64e7a58",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d641f8",
+      "bytes": 32,
+      "hex": "e030bd00807bbb00b05bbb00e079bb00204bbb00405fbb00c040bb004055bb00",
+      "sha256": "40c53ad8b9caa05e0b3c0f215f0f881a04ba8a040797a49b30b2dd8acac2f3dc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d62c18",
+      "bytes": 4,
+      "hex": "806bb600",
+      "sha256": "b7a82d4959f23e8c4e65a9db52f0c8121c31c91bda71ab0e73164bacc2c27381",
+      "live_disk_equal": true
+    }
+  ],
+  "native_abi": {
+    "00bb4140": "ECX actual10h vector; stacked DWORD index; EAX24h row; RET4.",
+    "00bb4f40": "ECX first14h row; EDX captured end; stacked8h key; EAX row/end; RET4.",
+    "00bb6180": "ECX actual10h destination; stacked actual10h source; EAX destination; RET4."
+  },
+  "data_service_report": "reports/game_native_readonly_data_az.json",
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lookup_native_source_checks": 8,
+    "offset_copy_native_source_cases": 5,
+    "read_only_data_bytes_equal": 1202980,
+    "readonly_nonexecutable_pages_checked": 294,
+    "lua_nested_dofile_order": "MCPP",
+    "physical_handle_and_filestore_reads": true,
+    "zero_memory_counters": true
+  },
+  "limits": [
+    "No original game or gameplay validation; no production raw VFS manager graph.",
+    "Source TLS activation excludes original multi-owner/cross-thread/longjmp/FH3 equivalence.",
+    "Offset copy comparison instruments the allocation call in unchanged source and copied native code; not original CRT/allocator identity.",
+    "Data fixture retains seeded VFS records, explicit writable descriptor pages and semantic lifetime. Physical/render-batch/type-counter raw ownership remains.",
+    "MPAK container growth/EH native validation is a separate ongoing packet; real archive loading is not enabled."
+  ],
+  "pending_followup_analysis": [
+    {
+      "packet": "orch4_physical_stream_lifetime_ba",
+      "unowned_saved_instruction": "00bf4398"
+    },
+    {
+      "packet": "orch4_mpak_container_storage_az",
+      "unowned_saved_instructions": [
+        "00bb623d",
+        "00bb6e82",
+        "00bb721a"
+      ]
+    }
+  ]
+}

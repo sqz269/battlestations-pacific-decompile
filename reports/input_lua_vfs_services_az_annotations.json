@@ -1,0 +1,102 @@
+{
+  "reason": "Concrete MPAK file/directory lookup and offset copy source providers",
+  "entries": [
+    {
+      "address": "00bb4140",
+      "lease_owner": "agent/orch4-mpak-lookup-az",
+      "before": "Function: STL_inst_00bb4140 at 00bb4140\nSignature: undefined STL_inst_00bb4140(void)\nEntry: 00bb4140\nBody: 00bb4140 - 00bb417b",
+      "before_comment": {
+        "address": "00bb4140",
+        "function_name": "STL_inst_00bb4140"
+      },
+      "name": "STL_MpakFileVector_At_00bb4140",
+      "prototype": "void* __fastcall STL_MpakFileVector_At_00bb4140(void* vector, void* unused_edx, unsigned int index)",
+      "prototype_apply": "Successfully set prototype for function at 00bb4140 with __fastcall calling convention",
+      "after": "Function: STL_MpakFileVector_At_00bb4140 at 00bb4140\nSignature: void * __fastcall STL_MpakFileVector_At_00bb4140(void * vector, void * unused_edx, uint index)\nEntry: 00bb4140\nBody: 00bb4140 - 00bb417b",
+      "after_comment": {
+        "address": "00bb4140",
+        "function_name": "STL_MpakFileVector_At_00bb4140",
+        "comment": "[BSP reconstruction 00bb4140]\nHypothesis, not a recovered symbol. AZ: docs/INPUT_LUA_VFS_SERVICES_AZ.md; reports/input_lua_vfs_services_az_validation.json; native_mpak_lookup_storage and native_mpak_offset_copy_storage modules. Actual10h vector,24h rows; first begin/null and signed byte-distance count check, returning invalid parameter, then CURRENT begin reload. Native ECX vector, index stack, EAX row,RET4. Four full live/disk envelopes including reused005EFBA0, every instruction owned,8 internal direct CALLs. Eight lookup and five offset-copy native/source fixture cases pass with explicit ABI/CRT/allocation adapters; copied offsets use unchanged source body with instrumented allocation. Three source interface operations, not original STL/CRT/FH3 identity or game/archive reachability. Shared005EFBA0 name/source retained; no private duplicate. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00bb4f40",
+      "lease_owner": "agent/orch4-mpak-lookup-az",
+      "before": "Function: FUN_00bb4f40 at 00bb4f40\nSignature: undefined FUN_00bb4f40(void)\nEntry: 00bb4f40\nBody: 00bb4f40 - 00bb4f73",
+      "before_comment": {
+        "address": "00bb4f40",
+        "function_name": "FUN_00bb4f40"
+      },
+      "name": "BSP_MpakDirectoryVector_FindMember",
+      "prototype": "void* __fastcall BSP_MpakDirectoryVector_FindMember(void* first, void* end, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 00bb4f40 with __fastcall calling convention",
+      "after": "Function: BSP_MpakDirectoryVector_FindMember at 00bb4f40\nSignature: void * __fastcall BSP_MpakDirectoryVector_FindMember(void * first, void * end, void * key)\nEntry: 00bb4f40\nBody: 00bb4f40 - 00bb4f73",
+      "after_comment": {
+        "address": "00bb4f40",
+        "function_name": "BSP_MpakDirectoryVector_FindMember",
+        "comment": "[BSP reconstruction 00bb4f40]\nHypothesis, not a recovered symbol. AZ: docs/INPUT_LUA_VFS_SERVICES_AZ.md; reports/input_lua_vfs_services_az_validation.json; native_mpak_lookup_storage and native_mpak_offset_copy_storage modules. Scan actual14h directory rows by captured first/end; call existing complete005EFBA0 on row+8 member vector with temporary name key. Own directory name is not compared. Native ECX first,EDX end,key stack,EAX row/end,RET4. Four full live/disk envelopes including reused005EFBA0, every instruction owned,8 internal direct CALLs. Eight lookup and five offset-copy native/source fixture cases pass with explicit ABI/CRT/allocation adapters; copied offsets use unchanged source body with instrumented allocation. Three source interface operations, not original STL/CRT/FH3 identity or game/archive reachability. Shared005EFBA0 name/source retained; no private duplicate. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00bb6180",
+      "lease_owner": "agent/orch4-mpak-offset-copy-az",
+      "before": "Function: FUN_00bb6180 at 00bb6180\nSignature: undefined FUN_00bb6180(void)\nEntry: 00bb6180\nBody: 00bb6180 - 00bb6213",
+      "before_comment": {
+        "address": "00bb6180",
+        "function_name": "FUN_00bb6180"
+      },
+      "name": "STL_DwordVector_CopyConstruct_00bb6180",
+      "prototype": "void* __fastcall STL_DwordVector_CopyConstruct_00bb6180(void* destination, void* unused_edx, void* source)",
+      "prototype_apply": "Successfully set prototype for function at 00bb6180 with __fastcall calling convention",
+      "after": "Function: STL_DwordVector_CopyConstruct_00bb6180 at 00bb6180\nSignature: void * __fastcall STL_DwordVector_CopyConstruct_00bb6180(void * destination, void * unused_edx, void * source)\nEntry: 00bb6180\nBody: 00bb6180 - 00bb6213",
+      "after_comment": {
+        "address": "00bb6180",
+        "function_name": "STL_DwordVector_CopyConstruct_00bb6180",
+        "comment": "[BSP reconstruction 00bb6180]\nHypothesis, not a recovered symbol. AZ: docs/INPUT_LUA_VFS_SERVICES_AZ.md; reports/input_lua_vfs_services_az_validation.json; native_mpak_lookup_storage and native_mpak_offset_copy_storage modules. Actual10h DWORD vector copy preserves allocator+0, precomputes signed count, clears pointers, guards count, publishes allocated begin/end/capacity, retains two returning invalid checks and reloads, calls memmove_s and publishes end even on returning error. Native ECX destination,source stack,EAX destination,RET4. Four full live/disk envelopes including reused005EFBA0, every instruction owned,8 internal direct CALLs. Eight lookup and five offset-copy native/source fixture cases pass with explicit ABI/CRT/allocation adapters; copied offsets use unchanged source body with instrumented allocation. Three source interface operations, not original STL/CRT/FH3 identity or game/archive reachability. Shared005EFBA0 name/source retained; no private duplicate. Prior comments preserved."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb4140",
+        "prototype": "void* __fastcall STL_MpakFileVector_At_00bb4140(void* vector, void* unused_edx, unsigned int index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb4140 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb4f40",
+        "prototype": "void* __fastcall BSP_MpakDirectoryVector_FindMember(void* first, void* end, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb4f40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb6180",
+        "prototype": "void* __fastcall STL_DwordVector_CopyConstruct_00bb6180(void* destination, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb6180 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "three_names_abis_comments_saved_verified",
+  "exports_refreshed": [
+    "00bb4140",
+    "00bb4f40",
+    "00bb6180"
+  ]
+}
