@@ -1,36 +1,640 @@
 {
   "packet": "orch4_input_scale_maps_ax",
   "status": "native_raw_map_source_build_and_report_calls_passed",
-  "target": {"project": "bsp", "program": "battlestationspacific.exe"},
-  "source": ["include/bsp/native_input_scale_maps.hpp", "src/native_input_scale_maps.cpp"],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_scale_maps.hpp",
+    "src/native_input_scale_maps.cpp"
+  ],
   "documentation": "docs/NATIVE_INPUT_SCALE_MAPS.md",
   "body_envelopes": [
-    {"address": "0055b400", "end_inclusive": "0055b470", "bytes": 113, "evidence": "live Ghidra proto and saved body"},
-    {"address": "0055b490", "end_inclusive": "0055b4b3", "bytes": 36, "evidence": "live Ghidra proto and saved body"},
-    {"address": "00444be0", "end_inclusive": "00444cd8", "bytes": 761, "evidence": "live Ghidra proto and saved body"},
-    {"address": "006a5aa0", "end_inclusive": "006a5bee", "bytes": 335, "evidence": "live repaired Ghidra proto and body"}
+    {
+      "address": "0055b400",
+      "end_inclusive": "0055b470",
+      "bytes": 113,
+      "sha256": "06236fe90b692373e3e256dfa205b1ee3ee0da8dd17edc32a3d323f6d55ecd90",
+      "live_disk_equal": true
+    },
+    {
+      "address": "0055b490",
+      "end_inclusive": "0055b4c3",
+      "bytes": 52,
+      "sha256": "774f6ab41ecd733990c8831c62283c8ff468996ae7428dfab3af5d62cf472c67",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00444be0",
+      "end_inclusive": "00444cd8",
+      "bytes": 249,
+      "sha256": "da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "006a5aa0",
+      "end_inclusive": "006a5bee",
+      "bytes": 335,
+      "sha256": "821a3fe9fcb16cd3425ae3b29513a55832aa49b147e34595b420f519e069c077",
+      "live_disk_equal": true
+    },
+    {
+      "address": "0055b300",
+      "end_inclusive": "0055b374",
+      "bytes": 117,
+      "sha256": "e1cf5c0827a6460d4dff441d9b5f9c32e6b39e3ee4fbc1d79825195c668d2394",
+      "live_disk_equal": true
+    },
+    {
+      "address": "0055b060",
+      "end_inclusive": "0055b0f1",
+      "bytes": 146,
+      "sha256": "c111f2774b6fd25edc7093126b55b5608950175626ef018a066b1b38dc8b3a1b",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00554cd0",
+      "end_inclusive": "00554d06",
+      "bytes": 55,
+      "sha256": "aaa05a69d2e2539e7cf96c963b7b3e54ebd6229d795f4013dce1bb4e73909057",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00554ec0",
+      "end_inclusive": "00554ef6",
+      "bytes": 55,
+      "sha256": "379e128ef5921666afe611547132c8bcc5dda188a24291d4031762f75abbfddc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00558570",
+      "end_inclusive": "005585e0",
+      "bytes": 113,
+      "sha256": "7adf75fe5d2d305378cad4cf75a6d314aa525e9930c19a62335a1bb4a11dd6c5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "005555b0",
+      "end_inclusive": "00555641",
+      "bytes": 146,
+      "sha256": "ffe920bf0e96e6b5ae4476a8317c5b67e6e17314937bfcca27068573e8852ded",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00554f50",
+      "end_inclusive": "00554f8e",
+      "bytes": 63,
+      "sha256": "f49e273a44592b4f5090caff74967d8ca6e043957bfb811c38487604105d11f5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "0055a290",
+      "end_inclusive": "0055a315",
+      "bytes": 134,
+      "sha256": "15b59b50094ff9d7526a72f48b63e1369d76e4ce17ae671bf8943ef0ea9281c4",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00443d60",
+      "end_inclusive": "00443db2",
+      "bytes": 83,
+      "sha256": "e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00444910",
+      "end_inclusive": "00444b0b",
+      "bytes": 508,
+      "sha256": "2d70f450e254d0a6283e6434e228a5f16d568f98bcf430459c4f795a25ad4a15",
+      "live_disk_equal": true
+    },
+    {
+      "address": "006a4dc0",
+      "end_inclusive": "006a4f7b",
+      "bytes": 444,
+      "sha256": "907c1885f06ee531f7314b0eb0a2716ca54112e75889b32f6191ef5cc91a5324",
+      "live_disk_equal": true
+    }
   ],
   "routines": [
-    {"address": "0055b400", "coverage": "complete normal populated copy", "original_abi": "thiscall ECX destination, source* stack, EAX destination, RET4", "proposed_name": "copy_native_input_scale_map"},
-    {"address": "0055b490", "coverage": "complete normal populated destruction", "original_abi": "fastcall ECX map, RET", "proposed_name": "destroy_native_input_scale_map"},
-    {"address": "00444be0", "coverage": "complete normal valid-tree lookup/insert", "original_abi": "thiscall ECX map, name* stack, EAX float*, RET4", "proposed_name": "lookup_or_insert_native_input_float"},
-    {"address": "006a5aa0", "coverage": "complete normal valid-tree lookup/insert", "original_abi": "fastcall ECX map, EDX unused, signed-key* stack, EAX inner-map*, RET4", "proposed_name": "lookup_or_insert_native_input_scalar_tree"}
+    {
+      "address": "0055b400",
+      "coverage": "complete normal populated copy",
+      "original_abi": "thiscall ECX destination, source* stack, EAX destination, RET4",
+      "proposed_name": "copy_native_input_scale_map"
+    },
+    {
+      "address": "0055b490",
+      "coverage": "complete normal populated destruction",
+      "original_abi": "fastcall ECX map, RET",
+      "proposed_name": "destroy_native_input_scale_map"
+    },
+    {
+      "address": "00444be0",
+      "coverage": "complete normal valid-tree lookup/insert",
+      "original_abi": "thiscall ECX map, name* stack, EAX float*, RET4",
+      "proposed_name": "lookup_or_insert_native_input_float"
+    },
+    {
+      "address": "006a5aa0",
+      "coverage": "complete normal valid-tree lookup/insert",
+      "original_abi": "fastcall ECX map, EDX unused, signed-key* stack, EAX inner-map*, RET4",
+      "proposed_name": "lookup_or_insert_native_input_scalar_tree"
+    }
   ],
   "host_steps": [
-    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa6fe", "native": "0055b400", "contract": "deep copy populated outer and inner trees"},
-    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa75f", "native": "00444be0", "contract": "case-insensitive borrowed float index"},
-    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa7e9", "native": "006a5aa0", "contract": "signed-key borrowed inner tree index"},
-    {"function": "BSP_InputSettings_ApplyKeyboardBindings", "address": "006aa9a2", "native": "006a5aa0", "contract": "signed-key borrowed inner tree index"},
-    {"function": "FUN_0055b400", "address": "0055b426", "native": "00554cd0", "contract": "allocate 20h outer head"},
-    {"function": "FUN_0055b400", "address": "0055b457", "native": "0055b300", "contract": "populate copied outer tree"},
-    {"function": "FUN_0055b490", "address": "0055b4a6", "native": "0055b230", "contract": "erase full outer range including nested ownership"},
-    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c02", "native": "00443d60", "contract": "native string-CI lower bound"},
-    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c1e", "native": "00443d00", "contract": "strict case-insensitive comparison"},
-    {"function": "BSP_WeatherFloatMap_LookupOrInsert", "address": "00444c81", "native": "00444910", "contract": "hinted insertion and rebalancing"},
-    {"function": "FUN_006a5aa0", "address": "006a5afc", "native": "00554ec0", "contract": "allocate default inner head"},
-    {"function": "FUN_006a5aa0", "address": "006a5b38", "native": "00558570", "contract": "copy default into pair inner head"},
-    {"function": "FUN_006a5aa0", "address": "006a5b50", "native": "006a4dc0", "contract": "insert pair by hinted outer map insertion"},
-    {"function": "FUN_006a5aa0", "address": "006a5b73", "native": "005572f0", "contract": "erase temporary default inner tree"}
+    {
+      "function": "BSP_InputSettings_ApplyKeyboardBindings",
+      "address": "006aa6fe",
+      "native": "0055b400",
+      "contract": "deep copy populated outer and inner trees"
+    },
+    {
+      "function": "BSP_InputSettings_ApplyKeyboardBindings",
+      "address": "006aa75f",
+      "native": "00444be0",
+      "contract": "case-insensitive borrowed float index"
+    },
+    {
+      "function": "BSP_InputSettings_ApplyKeyboardBindings",
+      "address": "006aa7e9",
+      "native": "006a5aa0",
+      "contract": "signed-key borrowed inner tree index"
+    },
+    {
+      "function": "BSP_InputSettings_ApplyKeyboardBindings",
+      "address": "006aa9a2",
+      "native": "006a5aa0",
+      "contract": "signed-key borrowed inner tree index"
+    },
+    {
+      "function": "FUN_0055b400",
+      "address": "0055b426",
+      "native": "00554cd0",
+      "contract": "allocate 20h outer head"
+    },
+    {
+      "function": "FUN_0055b400",
+      "address": "0055b457",
+      "native": "0055b300",
+      "contract": "populate copied outer tree"
+    },
+    {
+      "function": "FUN_0055b490",
+      "address": "0055b4a6",
+      "native": "0055b230",
+      "contract": "erase full outer range including nested ownership"
+    },
+    {
+      "function": "BSP_WeatherFloatMap_LookupOrInsert",
+      "address": "00444c02",
+      "native": "00443d60",
+      "contract": "native string-CI lower bound"
+    },
+    {
+      "function": "BSP_WeatherFloatMap_LookupOrInsert",
+      "address": "00444c1e",
+      "native": "00443d00",
+      "contract": "strict case-insensitive comparison"
+    },
+    {
+      "function": "BSP_WeatherFloatMap_LookupOrInsert",
+      "address": "00444c81",
+      "native": "00444910",
+      "contract": "hinted insertion and rebalancing"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "address": "006a5afc",
+      "native": "00554ec0",
+      "contract": "allocate default inner head"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "address": "006a5b38",
+      "native": "00558570",
+      "contract": "copy default into pair inner head"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "address": "006a5b50",
+      "native": "006a4dc0",
+      "contract": "insert pair by hinted outer map insertion"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "address": "006a5b73",
+      "native": "005572f0",
+      "contract": "erase temporary default inner tree"
+    },
+    {
+      "function": "FUN_0055b300",
+      "address": "0055b316",
+      "native": "0055b060",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_0055b060",
+      "address": "0055b0a6",
+      "native": "0055a290",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_0055b060",
+      "address": "0055b0c6",
+      "native": "0055b060",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_0055b060",
+      "address": "0055b0d4",
+      "native": "0055b060",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_00558570",
+      "address": "00558596",
+      "native": "00554ec0",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_005555b0",
+      "address": "005555f6",
+      "native": "00554f50",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_005555b0",
+      "address": "00555616",
+      "native": "005555b0",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_005555b0",
+      "address": "00555624",
+      "native": "005555b0",
+      "contract": "direct helper call"
+    },
+    {
+      "function": "FUN_0055a290",
+      "address": "0055a2f2",
+      "native": "00558570",
+      "contract": "direct helper call"
+    }
   ],
-  "uncertainty": ["Original allocator/CRT/EH ABI and fresh nested opaque dword preimage are not controlled", "Other callers of shared 00444BE0 excluded", "Primary owns keyboard call-site rewiring and Ghidra writes", "Gameplay not validated"]
+  "uncertainty": [
+    "Original allocator/CRT/EH ABI and fresh nested opaque dword preimage are not controlled",
+    "Other callers of shared 00444BE0 excluded",
+    "Primary owns keyboard call-site rewiring and Ghidra writes",
+    "Gameplay not validated"
+  ],
+  "excluded_direct_calls": [
+    {
+      "function": "FUN_0055b490",
+      "site": "0055b4a6",
+      "target": "0055b230",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_0055b490",
+      "site": "0055b4af",
+      "target": "00bf65ac",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444c0d",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444c1e",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444c43",
+      "target": "0041dd40",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444c5a",
+      "target": "00bf7680",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444ca2",
+      "target": "00419cc0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444ca9",
+      "target": "00bd1510",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444cb3",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444be0",
+      "site": "00444cbd",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5b73",
+      "target": "005572f0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5b7d",
+      "target": "00bf65ac",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5baa",
+      "target": "005572f0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5bb4",
+      "target": "00bf65ac",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5bc8",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a5aa0",
+      "site": "006a5bd2",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00554cd0",
+      "site": "00554cd2",
+      "target": "00bf681b",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00554ec0",
+      "site": "00554ec2",
+      "target": "00bf681b",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00558570",
+      "site": "005585c7",
+      "target": "00555b20",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00554f50",
+      "site": "00554f52",
+      "target": "00bf681b",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_0055a290",
+      "site": "0055a2b3",
+      "target": "00bf681b",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00443d60",
+      "site": "00443d90",
+      "target": "00bf7fbf",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "0044492f",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444950",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444969",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444981",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "0044499d",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "004449b7",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "004449d5",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "004449ed",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a02",
+      "target": "004437f0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a12",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a33",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a48",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a60",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a80",
+      "target": "00443880",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444a8e",
+      "target": "004435a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444aa2",
+      "target": "00443d00",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444abf",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444ad4",
+      "target": "004442a0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_00444910",
+      "site": "00444aed",
+      "target": "004447c0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4ddf",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4e00",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4e28",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4e44",
+      "target": "00bf6713",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4e6d",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4e91",
+      "target": "0069b000",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4eb5",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4ecc",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4ef9",
+      "target": "00552e20",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4f07",
+      "target": "00552840",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4f2f",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4f44",
+      "target": "006a3fb0",
+      "reason": "external callee outside scale-map packet"
+    },
+    {
+      "function": "FUN_006a4dc0",
+      "site": "006a4f5d",
+      "target": "006a49f0",
+      "reason": "external callee outside scale-map packet"
+    }
+  ],
+  "excluded_consumer_calls": [
+    {
+      "site": "0055b9ac",
+      "native": "0055b400",
+      "reason": "other input map producer outside keyboard apply packet"
+    },
+    {
+      "site": "006a859a",
+      "native": "006a5aa0",
+      "reason": "settings load table caller owned by primary"
+    },
+    {
+      "native": "00444be0",
+      "reason": "non-keyboard shared weather, ship, award, warning and settings loader callers outside this packet",
+      "sites": ["006912ab", "006a8448", "004457f2", "00445805", "004b0ff6", "00445121", "00445521", "00445641", "00445a8c", "004b0edf", "0055cd35", "0055ce5d", "006a9e87", "0055ded8", "0055e228", "0068ecb3", "008333df", "00979c8f", "00979cb0", "00979e0c", "00979e99", "00980a0f"]
+    },
+    {
+      "native": "0055b490",
+      "reason": "four EH unwind callsites outside packet roots",
+      "sites": ["00c6dc05", "00c6dc75", "00c6dd05", "00c7f9f3"]
+    }
+  ]
 }

@@ -24,8 +24,9 @@ void put(void* p,W n,const void* value) noexcept { write(p,n,reinterpret_cast<W>
 void* alloc(W bytes) { return singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes}); }
 void* head(void* tree,W bytes,W nil) {
     auto* h=alloc(bytes);put(h,0,nullptr);put(h,4,nullptr);put(h,8,nullptr);
-    static_cast<unsigned char*>(h)[nil-1]=1;static_cast<unsigned char*>(h)[nil]=1;
-    put(h,0,h);put(h,4,h);put(h,8,h);put(tree,4,h);write(tree,8,0);return h;
+    static_cast<unsigned char*>(h)[nil-1]=1;static_cast<unsigned char*>(h)[nil]=0;
+    put(tree,4,h);static_cast<unsigned char*>(h)[nil]=1;
+    put(h,4,h);put(h,0,h);put(h,8,h);write(tree,8,0);return h;
 }
 void free_inner_nodes(void* node) noexcept {
     while(!static_cast<unsigned char*>(node)[0x15]) {
@@ -35,7 +36,9 @@ void free_inner_nodes(void* node) noexcept {
 }
 void destroy_inner(void* tree) noexcept {
     auto* h=ptr(tree,4);if(!h)return;
-    free_inner_nodes(ptr(h,4));singleton_lifetime_free(h);put(tree,4,nullptr);write(tree,8,0);
+    free_inner_nodes(ptr(h,4));put(h,4,h);write(tree,8,0);
+    put(h,0,h);put(h,8,h);singleton_lifetime_free(h);
+    put(tree,4,nullptr);write(tree,8,0);
 }
 void free_outer_nodes(void* node) noexcept {
     while(!static_cast<unsigned char*>(node)[0x1d]) {
@@ -135,7 +138,9 @@ void* copy_native_input_scale_map_0055b400(void* dst,const void* src) {
 }
 void destroy_native_input_scale_map_0055b490(void* map) noexcept {
     auto* h=ptr(map,4);if(!h)return;
-    free_outer_nodes(ptr(h,4));singleton_lifetime_free(h);
+    free_outer_nodes(ptr(h,4));put(h,4,h);write(map,8,0);
+    put(h,0,h);put(h,8,h);singleton_lifetime_free(h);
+    put(map,4,nullptr);write(map,8,0);
 }
 void* lookup_or_insert_native_input_scalar_tree_006a5aa0(void* map,const std::int32_t* key) {
     auto* h=ptr(map,4);auto* candidate=h;auto* node=ptr(h,4);auto* parent=h;bool left=true;
