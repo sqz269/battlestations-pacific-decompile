@@ -1,0 +1,705 @@
+{
+  "packet": "orch5_effect_cache_native",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "43d53129",
+  "functions": [
+    {
+      "address": "00b318b0",
+      "end_exclusive": "00b319ae",
+      "cpp_symbol": "load_native_renderer_material_effect_00b318b0",
+      "original_abi": "ECX renderer; stack native header; EAX effect; RET4",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "be8bf951fa2c9b4970ff7718afcf80b70e126193dea1427f12c367b1255bf236",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 254
+    },
+    {
+      "address": "00b31090",
+      "end_exclusive": "00b315da",
+      "cpp_symbol": "load_native_cached_material_effect_00b31090",
+      "original_abi": "ECX registry; four DWORD arguments; EAX effect; RET10h",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "799cc20085ffedbf1a432d830b0860d83ad8528a75911455bf7874bc7057c17f",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 1354
+    },
+    {
+      "address": "00b2e940",
+      "end_exclusive": "00b2eba1",
+      "cpp_symbol": "resolve_native_effect_cache_name_00b2e940",
+      "original_abi": "ECX unused; hidden output/name/ignored word; EAX output; RET0Ch",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "654a4518984d16eaf3075e24bfd7ae963a15f23989d96a38963d07428d7f4d2b",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 609
+    },
+    {
+      "address": "00b301a0",
+      "end_exclusive": "00b3020f",
+      "cpp_symbol": "append_native_effect_record_00b301a0",
+      "original_abi": "ECX actual0Ch vector; stack source; RET4",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "c4c6b13193dcd3ae01c160f873950139b5a36f358649ae11304140fcbac21b6a",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 111
+    },
+    {
+      "address": "00b2ffe0",
+      "end_exclusive": "00b300bd",
+      "cpp_symbol": "reserve_native_effect_records_00b2ffe0",
+      "original_abi": "ECX actual0Ch vector; stack capacity; RET4",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "7506612f7cadd018fe217ed143ab284dcdbb98da98d36283406c5961de5b6c6e",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 221
+    },
+    {
+      "address": "00b2fd10",
+      "end_exclusive": "00b2fdb2",
+      "cpp_symbol": "copy_construct_native_effect_record_00b2fd10",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "d71365944f0c8ae4a794ebc08dbf3e6a5bab0e58f957f1148d2d2e10c0dc2a7d",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 162
+    },
+    {
+      "address": "00b2fa10",
+      "end_exclusive": "00b2fa88",
+      "cpp_symbol": "destroy_native_effect_record_00b2fa10",
+      "original_abi": "ECX record; RET",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "03051b56c87b9cc7b6774a82914d4a2253504e7386f6a4b920aaf6f511eac709",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 120
+    },
+    {
+      "address": "00b31ff0",
+      "end_exclusive": "00b32005",
+      "cpp_symbol": "acquire_native_cached_effect_00b31ff0",
+      "original_abi": "ECX unused; stack nonnull effect; EAX same; RET4",
+      "source": "src/native_material_effect_cache.cpp",
+      "native_sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+      "coverage": "complete source schedule over actual storage; B31090 qualified to D5F074 and B318B0 requires explicit same-domain dependencies; C++ EH only",
+      "live_matches_installed": true,
+      "native_byte_count": 21
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b318e0",
+      "function": "00b318b0",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0"
+    },
+    {
+      "address": "00b31914",
+      "function": "00b318b0",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3192b",
+      "function": "00b318b0",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3193c",
+      "function": "00b318b0",
+      "native": "004bcc00",
+      "instruction": "call 0x4bcc00"
+    },
+    {
+      "address": "00b31952",
+      "function": "00b318b0",
+      "native": "00b31090",
+      "instruction": "call 0xb31090"
+    },
+    {
+      "address": "00b3196d",
+      "function": "00b318b0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31974",
+      "function": "00b318b0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31993",
+      "function": "00b318b0",
+      "native": "00b33b00",
+      "instruction": "call 0xb33b00"
+    },
+    {
+      "address": "00b310b8",
+      "function": "00b31090",
+      "native": "00beccd0",
+      "instruction": "call 0xbeccd0"
+    },
+    {
+      "address": "00b310e0",
+      "function": "00b31090",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b310f7",
+      "function": "00b31090",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31107",
+      "function": "00b31090",
+      "native": "00bee690",
+      "instruction": "call 0xbee690"
+    },
+    {
+      "address": "00b31137",
+      "function": "00b31090",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b31145",
+      "function": "00b31090",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b31173",
+      "function": "00b31090",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b31189",
+      "function": "00b31090",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b311e9",
+      "function": "00b31090",
+      "native": "00b2e940",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b31203",
+      "function": "00b31090",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3121a",
+      "function": "00b31090",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3123a",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31241",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b3124a",
+      "function": "00b31090",
+      "native": "00bee690",
+      "instruction": "call 0xbee690"
+    },
+    {
+      "address": "00b3126f",
+      "function": "00b31090",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b31298",
+      "function": "00b31090",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b312c6",
+      "function": "00b31090",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b3130d",
+      "function": "00b31090",
+      "native": "00b2ebb0",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b31322",
+      "function": "00b31090",
+      "native": "004c3020",
+      "instruction": "call 0x4c3020"
+    },
+    {
+      "address": "00b31353",
+      "function": "00b31090",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3136d",
+      "function": "00b31090",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3138a",
+      "function": "00b31090",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b31397",
+      "function": "00b31090",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b313b3",
+      "function": "00b31090",
+      "native": "00bdd340",
+      "instruction": "call 0xbdd340"
+    },
+    {
+      "address": "00b313fd",
+      "function": "00b31090",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b31408",
+      "function": "00b31090",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b31436",
+      "function": "00b31090",
+      "native": "00b31ff0",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b31450",
+      "function": "00b31090",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b31471",
+      "function": "00b31090",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b3147e",
+      "function": "00b31090",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b3149a",
+      "function": "00b31090",
+      "native": "00b301a0",
+      "instruction": "call 0xb301a0"
+    },
+    {
+      "address": "00b314aa",
+      "function": "00b31090",
+      "native": "00a82250",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b314c5",
+      "function": "00b31090",
+      "native": "00b31ff0",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b314d2",
+      "function": "00b31090",
+      "native": "00b2fa10",
+      "instruction": "call 0xb2fa10"
+    },
+    {
+      "address": "00b314ef",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b314f6",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b3150f",
+      "function": "00b31090",
+      "native": "00b2fa10",
+      "instruction": "call 0xb2fa10"
+    },
+    {
+      "address": "00b3152c",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31533",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31553",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b3155a",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31590",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31597",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b315b7",
+      "function": "00b31090",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b315be",
+      "function": "00b31090",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2e97d",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2e994",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2e9b9",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2e9d0",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2e9ee",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2ea09",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2ea27",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2ea42",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2ea62",
+      "function": "00b2e940",
+      "native": "004cad40",
+      "instruction": "call 0x4cad40"
+    },
+    {
+      "address": "00b2ea77",
+      "function": "00b2e940",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2ea7e",
+      "function": "00b2e940",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2ea98",
+      "function": "00b2e940",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2ea9f",
+      "function": "00b2e940",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2eaaf",
+      "function": "00b2e940",
+      "native": "00bdf4c0",
+      "instruction": "call 0xbdf4c0"
+    },
+    {
+      "address": "00b2ead3",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2eaea",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2eaff",
+      "function": "00b2e940",
+      "native": "00bdf4c0",
+      "instruction": "call 0xbdf4c0"
+    },
+    {
+      "address": "00b2eb1e",
+      "function": "00b2e940",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2eb35",
+      "function": "00b2e940",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2eb5d",
+      "function": "00b2e940",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2eb64",
+      "function": "00b2e940",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2eb80",
+      "function": "00b2e940",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2eb87",
+      "function": "00b2e940",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b301d4",
+      "function": "00b301a0",
+      "native": "00b2ffe0",
+      "instruction": "call 0xb2ffe0"
+    },
+    {
+      "address": "00b301f4",
+      "function": "00b301a0",
+      "native": "00b2fd10",
+      "instruction": "call 0xb2fd10"
+    },
+    {
+      "address": "00b30022",
+      "function": "00b2ffe0",
+      "native": "00bf55be",
+      "instruction": "call 0xbf55be"
+    },
+    {
+      "address": "00b3005d",
+      "function": "00b2ffe0",
+      "native": "00b2fd10",
+      "instruction": "call 0xb2fd10"
+    },
+    {
+      "address": "00b30084",
+      "function": "00b2ffe0",
+      "native": "00b2fa10",
+      "instruction": "call 0xb2fa10"
+    },
+    {
+      "address": "00b3009b",
+      "function": "00b2ffe0",
+      "native": "00bf6989",
+      "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00b2fd48",
+      "function": "00b2fd10",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2fd5d",
+      "function": "00b2fd10",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2fd74",
+      "function": "00b2fd10",
+      "native": "004d48a0",
+      "instruction": "call 0x4d48a0"
+    },
+    {
+      "address": "00b2fa3b",
+      "function": "00b2fa10",
+      "native": "004d05e0",
+      "instruction": "call 0x4d05e0"
+    },
+    {
+      "address": "00b2fa44",
+      "function": "00b2fa10",
+      "native": "00bf65ac",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": "00b2fa6b",
+      "function": "00b2fa10",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2fa72",
+      "function": "00b2fa10",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31ff9",
+      "function": "00b31ff0",
+      "native": "InterlockedIncrement",
+      "instruction": "call dword ptr [0xce221c]"
+    }
+  ],
+  "profile_slots": [
+    {
+      "slot_address": "00d5f078",
+      "target": "00b2e940"
+    },
+    {
+      "slot_address": "00d5f07c",
+      "target": "00b2ebb0"
+    },
+    {
+      "slot_address": "00d5f080",
+      "target": "00b31ff0"
+    },
+    {
+      "slot_address": "00d61a0c",
+      "target": "00a82250"
+    },
+    {
+      "slot_address": "00d5e540",
+      "target": "00a82250"
+    }
+  ],
+  "evidence_limits": [
+    "Native call graph verifier currently fails only B2FA6B/B2FA72 outside incorrectly truncated saved B2FA10; installed/live full span matches through RET.",
+    "B2FFE0 listing omits returning-free publication B300A0..A9; reconstructed from matched live/installed bytes.",
+    "Five indirect numeric target rows resolved from original vtable data; InterlockedIncrement import at CE221C is explicit external-IAT evidence.",
+    "Native EH/FH3 encoding and game rendering are not validated; no fake successful loader provider is supplied."
+  ],
+  "saved_body_defects": [
+    {
+      "function": "00b2fa10",
+      "site": "00b2fa44",
+      "target": "00bf65ac",
+      "missing_calls": [
+        "00b2fa6b",
+        "00b2fa72"
+      ],
+      "end_inclusive": "00b2fa87"
+    },
+    {
+      "function": "00b2ffe0",
+      "site": "00b3009b",
+      "target": "00bf6989",
+      "missing_span": "00b300a0-00b300a9",
+      "bytes": "83c4045f892e895e085d"
+    }
+  ],
+  "validation": {
+    "build_command": "scripts/build.ps1",
+    "build_exit": 0,
+    "build_log": "local/effect-cache-build-final.log",
+    "tests": "reconstructed_math: 1/1 passed; fresh worktree has no verified-seed differential target enabled",
+    "call_verifier_command": "python tools/verify_report_calls.py reports/native_material_effect_cache.json",
+    "call_verifier_exit": 1,
+    "call_verifier_result": "89 numeric call rows processed; 2 failures only for saved-body gaps B2FA6B/B2FA72, 5 numeric vtable calls indirect; one InterlockedIncrement IAT row separately documented",
+    "call_verifier_log": "local/effect-cache-call-verifier.log",
+    "runtime_fixture": "Prepared local/effect_record_probe.cpp and local/run_effect_record_probe.cmd: actual string-pool producer, two alias deep copy, null resource row, independent record terminals, actual pool shutdown. Pending link/run against combined production loader/cache library; no accepted runtime evidence in this packet.",
+    "dependency_header": "include/bsp/native_material_effect_loading.hpp copied from integration worktree solely for compilation; not staged in this packet",
+    "dependency_header_sha256": "f5787e3da1c93453d3f30c6bed1d24a47e316e458c0432f9f0757209ba570e58",
+    "fixture_source_sha256": "c9673ac30dee78bbbd3182f9ddf2d4feead2099cfa562b73c08881ed9e2702c1",
+    "fixture_runner_sha256": "82b19e797a315d4209f093bb5ec5e93b717004cb679cf24c9482059cdf7c90b2"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_effect_cache.hpp": "783c1fcca72e773681e8e5c692629cc90260e88531a08ee85fae3ef66afe0059",
+    "src/native_material_effect_cache.cpp": "b167d7dd6c45116823c265dea053dc869d98b6419908751f21cbc7e76d9fb2b2",
+    "docs/NATIVE_MATERIAL_EFFECT_CACHE.md": "7626790ace3d05bcaa04b40c839c0826179ae22cef41ad28dc802e85997e23bd"
+  }
+}
