@@ -2,10 +2,11 @@
 
 Read-only reconstruction evidence, 2026-09-13. The current Ghidra program is
 `C:/Users/sqz269/bsp.gpr` `/battlestationspacific.exe`. This packet does not
-implement the setter: no existing concrete owner lookup covers every node that
-can occupy helper+08. In particular, a camera-specific terminal profile cannot
-be used for the arbitrary incoming node. This is a provider gate, not an
-uncertain instruction extent.
+implement the setter. The canonical actual-key lookup already exists in
+`GeneratedModelLifetimeRuntime::find_actual_node`; the remaining work is to
+prove the entity+808 producer class and project its matching native storage and
+current virtual+00 terminal owner. A camera-specific terminal profile cannot
+stand in for an unverified incoming node class.
 
 | Routine | Coverage | Extent | ABI |
 | --- | --- | --- | --- |
@@ -30,27 +31,31 @@ that changes +08 may therefore make the final target differ from incoming.
 | B3C69C -> old virtual+00 | ECX captured old EDI, only if decrement returned zero; exact concrete profile varies with the old object |
 | B3C6AF -> B6DA70 | ECX freshly reloaded helper+08 at B3C69E, stack float 0 and recurse 0; runs even on identity assignment |
 
-Ghidra's one contained caller is 7BC610..7BC680. At 7BC660 the caller loads
+One contained caller is 7BC610..7BC680. At 7BC660 the caller loads
 entity+808 into EAX; 7BC66D loads service pointer F8D39C, 7BC673 takes its
 +0C helper; 7BC676 pushes EAX and 7BC677 calls B3C650. The branch requires
 entity+808, entity+80C and service+0C nonnull. The other xref is 7BC707:
-disk bytes decode a candidate 7BC690..7BC797, with service+0C in ECX and
-`PUSH 0` at 7BC705. Ghidra currently reports no containing function at either
-7BC690 or 7BC707, so this candidate's attribution is pending root repair.
-The candidate first calls B6DA70 on entity+80C with factor 1 and recurse 0;
+root verified the complete 7BC690..7BC797 span against the installed PE,
+defined and saved it, and verified that it contains 7BC707. It supplies
+service+0C in ECX and `PUSH 0` at 7BC705. The analysis record is
+`reports/native_cockpit_attachment_caller_be_analysis.json`.
+That caller first calls B6DA70 on entity+80C with factor 1 and recurse 0;
 that does not establish entity+80C as the node subsequently released by the
 helper setter. Its post-call matrix writes likewise do not identify helper+08's
 concrete class.
 
 The available `SceneAttachmentRuntime::resolve_key` returns a live
 `SceneNodeAttachment`, while `NativeNodeBinding` exposes the actual node+AC
-word. `RenderCommandReference` can borrow a canonical +04 count, and
+word. `GeneratedModelLifetimeRuntime::find_actual_node` already resolves the
+actual key to the same registered lifetime and scene binding; no additional
+identity registry is required. `RenderCommandReference` can borrow a canonical +04 count, and
 `NativeRenderActualOwners::resolve_actual` is documented as a zero-transition
-lookup for known actual owners. None currently establishes a canonical mapping
-from *every* helper+08 raw key to its matching node binding **and** its current
-virtual+00 terminal owner. Before implementation, bind that mapping in the
-shared owner domain and show that it includes both the entity+808 producer and
-the old node on the zero argument path. Keep the 24h native helper storage
+lookup for known actual owners. Concrete model/group/camera/plain/light
+references expose native owner storage and checked terminal routes, but the
+entity+808 producer class has not yet been established. Before implementation,
+prove its reachable classes and use their checked storage/terminal projections
+through the existing canonical lifetime association. Include the captured old
+node on the zero argument path. Keep the 24h native helper storage
 separate from any host companion. The setter must not allocate or initialize
 the helper, invent a callback for old virtual+00, or assume camera ownership.
 

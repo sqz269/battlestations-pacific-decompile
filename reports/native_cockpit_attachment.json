@@ -8,25 +8,101 @@
       "end": "00b3c6b6",
       "bytes": 103,
       "instructions": 43,
-      "coverage": "complete static body; implementation blocked on canonical arbitrary-node owner lookup",
-      "abi": "ECX actual 24h helper; stack raw node pointer; RET4"
+      "coverage": "complete static body; implementation awaits producer class and checked native storage/terminal projection through existing canonical lookup",
+      "abi": "ECX actual 24h helper; stack raw node pointer; RET4",
+      "proposed_name": "BSP_CockpitHelper_SetAttachedNode"
     }
   ],
   "native_calls": [
-    {"address": "00b3c663", "native": "00b6da70", "containing_function": "00b3c650", "preparation": "ECX current helper+08; float 0; recurse 0"},
-    {"address": "00b3c6af", "native": "00b6da70", "containing_function": "00b3c650", "preparation": "ECX freshly reloaded helper+08; float 0; recurse 0"},
-    {"address": "007bc677", "native": "00b3c650", "containing_function": "007bc610", "preparation": "ECX service+0C; stack entity+808"}
+    {
+      "address": "00b3c663",
+      "native": "00b6da70",
+      "containing_function": "00b3c650",
+      "preparation": "ECX current helper+08; float 0; recurse 0"
+    },
+    {
+      "address": "00b3c6af",
+      "native": "00b6da70",
+      "containing_function": "00b3c650",
+      "preparation": "ECX freshly reloaded helper+08; float 0; recurse 0"
+    },
+    {
+      "address": "007bc677",
+      "native": "00b3c650",
+      "containing_function": "007bc610",
+      "preparation": "ECX service+0C; stack entity+808"
+    },
+    {
+      "address": "007bc707",
+      "native": "00b3c650",
+      "containing_function": "007bc690",
+      "preparation": "ECX current F8D39C service+0C; stack zero; verified complete264byte caller"
+    }
   ],
-  "uncontained_candidate": "007bc707: ECX service+0C, stack zero; candidate 007bc690..007bc797 from target bytes only; Ghidra has no containing function",
   "indirect_transfers": [
-    {"address": "00b3c67e", "target": "InterlockedIncrement IAT 00ce221c", "preparation": "incoming+04 after publish"},
-    {"address": "00b3c68c", "target": "InterlockedDecrement IAT 00ce2220", "preparation": "captured old+04"},
-    {"address": "00b3c69c", "target": "captured old current virtual+00", "condition": "decrement returned zero"}
+    {
+      "address": "00b3c67e",
+      "target": "InterlockedIncrement IAT 00ce221c",
+      "preparation": "incoming+04 after publish"
+    },
+    {
+      "address": "00b3c68c",
+      "target": "InterlockedDecrement IAT 00ce2220",
+      "preparation": "captured old+04"
+    },
+    {
+      "address": "00b3c69c",
+      "target": "captured old current virtual+00",
+      "condition": "decrement returned zero"
+    }
   ],
   "verification": {
     "ghidra": "target-guarded proto, disasm, xrefs, bytes; no mutations",
     "build": "not applicable: no C++ implementation",
     "fixture": "not run: no C++ implementation",
-    "game": "not run"
-  }
+    "game": "not run",
+    "root_review": "Independently inspected full43instruction setter, B6DA70 complete callee, both current xrefs and contained caller preparations; corrected prior canonical lookup and containment gaps."
+  },
+  "provider_correction": "GeneratedModelLifetimeRuntime.find_actual_node already supplies canonical actual-key association. Remaining work is proving entity+808 concrete node class and using matching native storage/current virtual0 projection; no additional identity registry is required.",
+  "caller_analysis_report": "reports/native_cockpit_attachment_caller_be_analysis.json",
+  "annotation_before": "00b3c650 FUN_00b3c650  undefined FUN_00b3c650(void)  body 00b3c650 - 00b3c6b6\n",
+  "annotation_changes": [
+    {
+      "address": "00b3c650",
+      "before": {
+        "address": "00b3c650",
+        "function_name": "FUN_00b3c650"
+      },
+      "after": {
+        "address": "00b3c650",
+        "name": "BSP_CockpitHelper_SetAttachedNode",
+        "evidence": "Hypothesis, not a recovered symbol. Complete B3C650..B3C6B6 (103 bytes,43 instructions), ECX actual24h helper, one stack node pointer, RET4. Hide current+08 through B6DA70(0,0); capture old; publish different incoming before retaining actual+4; release captured old+4 and current virtual0 onzero; hide freshly reloaded+08. Both7BC677 entity+808 and7BC707 zero callsites contained and verified. Static evidence only; producer-class/native-storage projection pending, no C++/runtime/ABI replacement credit. docs/NATIVE_COCKPIT_ATTACHMENT.md"
+      },
+      "status": "applied"
+    }
+  ],
+  "signature_events": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b3c650",
+        "prototype": "void __thiscall BSP_CockpitHelper_SetAttachedNode(void * node)",
+        "calling_convention": "__thiscall"
+      },
+      "result": {
+        "raw_response": "Successfully set prototype for function at 00b3c650 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "annotation_after": "00b3c650 BSP_CockpitHelper_SetAttachedNode  void __thiscall BSP_CockpitHelper_SetAttachedNode(void * this, void * node)  body 00b3c650 - 00b3c6b6\n",
+  "saved_and_export_refreshed": true
 }
