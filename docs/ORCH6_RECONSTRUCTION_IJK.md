@@ -42,3 +42,12 @@ described in [SHIP_AI_LIVE_AVOIDANCE.md](SHIP_AI_LIVE_AVOIDANCE.md).
 This is exported, reconstructed, build-tested, fixture-tested and process-run
 evidence with the separate scopes above. No binary replacement, original-game
 visual parity or gameplay-validation claim is made.
+
+## Publication check after shared main advanced
+
+Archive-provider changes from the other orchestrator were merged before
+publication. The exact combined input revision `130f17ba` was rebuilt
+and rerun: Win32 Release, both existing CTests and the 120-frame mission
+pass. All 18,557 trajectory rows remain finite, Airfield2 is unchanged,
+and query/refill/clear/cruise counts match the first corrected run. The
+batch report records both executable identities and the changed shared inputs.

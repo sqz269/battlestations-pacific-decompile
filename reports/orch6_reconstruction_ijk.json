@@ -235,6 +235,75 @@
     {
       "path": "local/cleanup_orch6_ijk.py",
       "sha256": "1aa3e51ae097352b4fd02d3a39b3dd6a31ca60f4d1a69e527cabedd6ed9417b6"
+    },
+    {
+      "path": "local/orch6_combined_130f17ba.exe",
+      "sha256": "77d8ea1ccc73bd8657baa3961771497caf38bf9fd2ac04c9bbe06acb48ce850b"
+    },
+    {
+      "path": "local/orch6_combined_130f17ba.json",
+      "sha256": "29a1189b3e9b09b3ce83582094d183acf0b66ad8819bce6ec7f1f104a5e57851"
+    },
+    {
+      "path": "local/orch6_combined_130f17ba.log",
+      "sha256": "e44da37c27f537b0a7d78ebd2fdaa3bbcbb5d721105031e872967feabf4ead35"
+    },
+    {
+      "path": "local/orch6_combined_130f17ba.csv",
+      "sha256": "6b7aa369bbef93660fe469c8be21c2e741ae5fdaa053cbb22d81e45cf1c7e573"
+    },
+    {
+      "path": "local/orch6_combined_130f17ba_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/orch6_exact_build_130f17ba_20260912T215138.log",
+      "sha256": "4e44ed4f204cd48b959ce32ae778422b004231d6d5d2bd15f3e12b49a3de1719"
+    },
+    {
+      "path": "local/build_orch6_exact_ijk.py",
+      "sha256": "b0bcfee48cb34a0c5fcc438c0c38435078781c3d96f64ca96fd0354071c2e6ac"
+    },
+    {
+      "path": "local/record_ijk_publication_check.py",
+      "sha256": "b5889a86aae21840b58dedd13c3fc9f449d923ae885d492fef27d6a37bfa7da5"
     }
-  ]
+  ],
+  "publication_validation_after_shared_main_merge": {
+    "compiled_commit": "130f17ba063dae9d043ec0cc223cbdcf54d57928",
+    "exe_sha256": "77d8ea1ccc73bd8657baa3961771497caf38bf9fd2ac04c9bbe06acb48ce850b",
+    "record": "local/orch6_combined_130f17ba.json",
+    "existing_ctests_passed": 2,
+    "build_log": "local\\orch6_exact_build_130f17ba_20260912T215138.log",
+    "changed_shared_inputs": [
+      "cmake/startup.cmake",
+      "include/bsp/native_mpak_factory.hpp",
+      "include/bsp/native_mpak_provider.hpp",
+      "include/bsp/native_pak_registry.hpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "include/bsp/native_stream_copy_range.hpp",
+      "src/native_mpak_factory.cpp",
+      "src/native_mpak_provider.cpp",
+      "src/native_pak_registry.cpp",
+      "src/native_physical_file_date.cpp",
+      "src/native_singleton_destruction.cpp",
+      "src/native_stream_copy_range.cpp"
+    ],
+    "trajectory": {
+      "rows": 18557,
+      "nonfinite_rows": 0,
+      "nonfinite_units": [],
+      "airfield_samples": 241,
+      "airfield_unchanged": true
+    },
+    "search": {
+      "queries": 2400,
+      "refills": 10,
+      "clears": 12
+    },
+    "cruise": {
+      "reads": 1080,
+      "unavailable": 0
+    }
+  }
 }

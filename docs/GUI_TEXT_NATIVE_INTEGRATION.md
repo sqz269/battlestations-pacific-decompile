@@ -36,3 +36,5 @@ ABI remain boundaries. No game validation is claimed.
 
 See the packet reports for exact native call evidence and the combined batch
 validation in `reports/gui_text_native_integration.json`.
+
+Exact built/promoted code: `943be54cd2dd956915d3d2d0d95004f7f5a026f3`. Win32 Release and both CTests passed. Five primary-library fixtures passed: actual Text buffers, real HAL hardware layouts and final CPU declaration retirement, Model-prefix allocation failure, retained source borrowing, and positive AA9520 Model/mesh/stream copy. The report pins library/source/log hashes. Complete Text and gameplay remain unvalidated.
