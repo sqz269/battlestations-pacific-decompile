@@ -149,3 +149,39 @@ The immutable final checkpoint is `local/checkpoints/7a060521/compiler-leaves-fi
 the changed shared storage sources. The earlier 167-artifact checkpoint remains
 preserved. This refresh changes neither the reconstruction scope nor the stated
 native ABI, FH3, full compiler and gameplay limits.
+
+## Actual field declarations and pixel compilation
+
+Four native line/field/struct routines and the full normal B61280 pixel compile
+path are now integrated. Struct emission uses the actual 1Ch fields, 0Ch lists,
+B0h builder and pooled strings. It preserves self-append/current source pointers,
+unsigned 711370 width/index formatting, live list reads and post-row descriptor
+vPos flags. Existing helper cleanup can leave stale output headers; retained
+operations keep that distinction and require the documented diagnostic cleanup.
+
+Pixel compilation creates the actual shader before diagnostics. With both mask
+pointers present, disassembly sets the returned HRESULT. The texcoord 500 sentinel
+separately for filename selection and post-stream parsing. Parsing preserves
+captured line pointers, per-component OR writes and the final captured full-string
+release. Root review corrected newline searches to subtract CURRENT full-string
+data after strstr and changed the inline copy to the original overlap-capable
+contract. Those CRT-adjacent re-reads are assembly evidence, not live mutation
+coverage from the real-CRT fixture.
+
+The default Win32 build and both CTests passed at `0114668b`. All 17 focused
+fixture programs passed at `a3c7f7f7` against the same three
+registered libraries and 45 pinned runner/fixture inputs. The new struct fixture
+compares exact text/allocation traces, aliases, live list/descriptor changes and
+retained/borrowed-helper failure state. Six pixel fixture cases compare real
+D3DX/HAL shader bytes, 312-byte diagnostic output, masks and string traces,
+including two post-cleanup sentinel transitions and retained-failure guard 77.
+This remains synthetic-HLSL and relocated-instruction/shared-helper evidence.
+
+Nine component reports have 1,096 checked numeric rows, zero failures, including the
+same four resolved indirect rows. Five new names/comments were saved under the
+Ghidra write lock, read back and exported; old values remain in the archived
+journals. The immutable checkpoint is `local/checkpoints/0114668b/native-source-default/validation.json` (213 artifacts),
+with the earlier 184-artifact checkpoint preserved. Samplers, field initialization
+and interpolator source emission continue in separate leased worktrees. Full
+native source generation, B3B3C0 continuation, FH3, rendering and gameplay remain
+unproven.
