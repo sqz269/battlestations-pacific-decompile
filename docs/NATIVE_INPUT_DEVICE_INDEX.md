@@ -17,3 +17,15 @@ The device record holds checked tree fields at `+00,+0C,+18,+24,+50,+6C,+78` wit
 Node links occupy `+00,+04,+08`, key at `+0C`, mapped record at `+14`, color at `+98`, nil at `+99`. Empty head has self links and nil=1. The insertion limit is count `> 0x01D41D3F`, observed in `0055BBE0`; the shared insertion primitive checks the equivalent `>= 0x01D41D40`. It publishes count and updates extrema, rotates and recolors the same checked tree. The implementation does not expose a general populated-device copy routine. `0055B920` (mapped copy), `0055BDE0` (unique fallback), `0055BBE0` (link and RB repair), and `0055BB40` (node allocation) are read-only dependencies; their general populated paths are outside this packet's ownership. Direct calls from the packet's owned functions to those dependencies are in the report.
 
 Original CRT invalid-parameter, `std::length_error`, native pool and SEH exception details remain outside the source ABI. Build/file checks establish only source compilation. The game was not run.
+
+## Correction from docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md
+
+The source default/pair/node path now passes the full actual settings-table lifetime fixture with independent empty heads and native producer ordering.
+
+The primary exact combined Win32 build passes both existing CTests. Full settings
+lifetime and keyboard fixtures pass with the fourteen-operation source provider;
+40 live/disk envelopes,241 direct CALL sites, and saved annotation readbacks pass.
+See `reports/native_input_keyboard_storage_ax_validation.json` for the pinned
+source/artifact hashes and coverage. Worker-only pending fixture statements above
+are historical; original exception ABI and executable/gameplay routing remain
+unvalidated.

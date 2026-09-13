@@ -44,3 +44,12 @@ see `NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md`. Fixture results establish bounded
 source behavior, not executable reachability, original exception/CRT ABI
 compatibility or gameplay. The original installation and single-instance state
 were preserved.
+
+The independent populated scale-tree fixture also matched 900 values across six
+partial/full/empty erasures and a populated copy. Its native destructor was not
+in the retained AQ capture; keyboard apply separately exercises the native
+scale destructor. The final combined build and all three fixture runs pass.
+
+`NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md` distinguishes independent native flag
+stack cells from the shared bounded source seed policy. Low-byte initialization
+does not establish zero high bytes or identity between native stack frames.

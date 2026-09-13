@@ -15,3 +15,15 @@ The `006A7BE0` table loader calls all three roots consecutively for an input key
 The root's temporary pair owns its copied key and mapped storage. On normal completion and C++ unwind, cleanup releases temporary mapped backing, then the key; the default mapped header is cleared afterward. The inserted node owns separate key and mapped storage. The source mirrors the native checked count limit, head/extrema, link orientation, recoloring and iterator publication, and uses the existing 19-byte `map/set<T> too long` exception message. The source exception ABI and malformed-storage behavior are not claimed as original FH3/CRT compatibility.
 
 The saved Ghidra body repair receipts for the root free-return gaps are in the integrator's `reports/native_input_vector_map_index_ax_flow_repair.json` and `reports/native_input_vector_map_index_ax_body_repair.json`. This worker kept Ghidra read-only. `reports/native_input_vector_map_index.json` lists direct CALL instructions for all twelve owned entries, each with verified saved owner. The standalone Win32 build validates compilation. The primary agent is responsible for combined native differential fixture integration; no gameplay validation is claimed here.
+
+## Correction from docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md
+
+The vector source registration was corrected from bsp_game to bsp_core after the independent fixture link exposed the missing symbols. All three map index operations now execute through NativeInputKeyboardStorage in the source settings parser.
+
+The primary exact combined Win32 build passes both existing CTests. Full settings
+lifetime and keyboard fixtures pass with the fourteen-operation source provider;
+40 live/disk envelopes,241 direct CALL sites, and saved annotation readbacks pass.
+See `reports/native_input_keyboard_storage_ax_validation.json` for the pinned
+source/artifact hashes and coverage. Worker-only pending fixture statements above
+are historical; original exception ABI and executable/gameplay routing remain
+unvalidated.

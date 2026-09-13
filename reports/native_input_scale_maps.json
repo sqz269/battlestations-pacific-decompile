@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_scale_maps_ax",
-  "status": "native_raw_map_source_build_and_report_calls_passed",
+  "status": "source_integrated_primary_exact_build_native_differential_passed",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe"
@@ -667,8 +667,10 @@
   ],
   "primary_integration": {
     "report": "reports/native_input_keyboard_storage_ax_validation.json",
-    "status": "fourteen_source_operations_component_build_and_native_differential_passed_combined_publication_pending",
+    "status": "fourteen_source_keyboard_storage_operations_integrated_strict_win32_native_differential_passed",
+    "source_revision": "94b1378802502f1311db98fa3666f3388bca6bf9",
     "native_differential": true,
     "game_validated": false
-  }
+  },
+  "worker_status": "native_raw_map_source_build_and_report_calls_passed"
 }

@@ -18,3 +18,15 @@ The saved recursive listings establish allocation order, not just the final topo
 The original copy constructors do not write the opaque dword at map+0. The source leaves destination+0 and freshly allocated outer-node nested +10h untouched. Allocator preimages therefore remain an explicit boundary. The full-range erase resets root, count, minimum, and maximum before freeing the head; 0055B490 then clears header+4 and +8. The 006A5AA0 missing path creates a default inner head, copies it into a pair head, then copies the pair into an inserted node head; it releases both temporaries afterward. Valid source trees, non-aliased destination, native allocator behavior, CRT invalid-parameter/SEH identity, private stack preimages, malformed trees, and gameplay behavior are outside demonstrated parity. No game validation is claimed.
 
 The string index is shared by many subsystems. This packet reconstructs its native raw-header semantics for the owned keyboard use; other call sites are excluded from this packet's host-call attribution. Primary integration owns wiring and native fixture validation.
+
+## Correction from docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md
+
+The repaired 52-byte0055B490 body requires clearing header4/8 after free; the source now does so. Independent populated-copy and partial/full/empty scale-range comparison matched900 values. The source default/pair/node path owns three inner heads and preserves native allocation/field-write order.
+
+The primary exact combined Win32 build passes both existing CTests. Full settings
+lifetime and keyboard fixtures pass with the fourteen-operation source provider;
+40 live/disk envelopes,241 direct CALL sites, and saved annotation readbacks pass.
+See `reports/native_input_keyboard_storage_ax_validation.json` for the pinned
+source/artifact hashes and coverage. Worker-only pending fixture statements above
+are historical; original exception ABI and executable/gameplay routing remain
+unvalidated.

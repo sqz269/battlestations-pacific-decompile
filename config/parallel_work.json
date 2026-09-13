@@ -10735,7 +10735,7 @@
       "id": "orch4_input_device_index_ax",
       "worker": "orch4-device-tree-ax",
       "done": true,
-      "state": "source_integrated_native_differential_passed",
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [
         "0055c110",
         "00554980",
@@ -10767,7 +10767,7 @@
       "id": "orch4_input_vector_map_index_ax",
       "worker": "orch4-vector-maps-ax",
       "done": true,
-      "state": "source_integrated_native_differential_passed",
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [
         "006a44b0",
         "006a45c0",
@@ -10806,7 +10806,7 @@
       "id": "orch4_input_scale_maps_ax",
       "worker": "orch4-scale-maps-ax",
       "done": true,
-      "state": "source_integrated_native_differential_passed",
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [
         "0055b400",
         "0055b490",
@@ -10844,7 +10844,7 @@
       "id": "orch4_input_keyboard_iterators_ax",
       "worker": "orch4-20260910",
       "done": true,
-      "state": "source_integrated_native_differential_passed",
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [
         "0048d3b0",
         "00546840",
@@ -10902,7 +10902,7 @@
       "id": "orch4_input_host_gap_ax",
       "worker": "orch4-input-host-audit-ax",
       "done": true,
-      "state": "source_routing_audit_integrated",
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [],
       "output_files": [
         "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
@@ -10915,13 +10915,14 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
     },
     {
       "id": "orch4_scale_range_validation_ax",
       "worker": "orch4-vector-maps-ax",
-      "done": false,
-      "state": "native_comparison_passed_report_pending",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [],
       "output_files": [
         "reports/native_input_scale_range_ax_validation.json"
@@ -10932,13 +10933,14 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
     },
     {
       "id": "orch4_input_preimages_ay",
       "worker": "orch4-input-host-audit-ax",
-      "done": false,
-      "state": "dispatched_read_only_evidence",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
       "function_addresses": [],
       "output_files": [
         "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
@@ -10951,7 +10953,77 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_settings_runtime_ay",
+      "worker": "orch4-settings-runtime-ay",
+      "done": false,
+      "state": "dispatched_source_composition",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_input_settings_runtime.hpp",
+        "src/game_input_settings_runtime.cpp",
+        "docs/GAME_INPUT_SETTINGS_RUNTIME_AY.md",
+        "reports/game_input_settings_runtime_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_input_settings_runtime.hpp",
+        "src/game_input_settings_runtime.cpp",
+        "docs/GAME_INPUT_SETTINGS_RUNTIME_AY.md",
+        "reports/game_input_settings_runtime_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
+    },
+    {
+      "id": "orch4_input_settings_singleton_ay",
+      "worker": "orch4-settings-singleton-ay",
+      "done": false,
+      "state": "dispatched_source_composition",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp",
+        "docs/GAME_INPUT_SETTINGS_SINGLETON_AY.md",
+        "reports/game_input_settings_singleton_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp",
+        "docs/GAME_INPUT_SETTINGS_SINGLETON_AY.md",
+        "reports/game_input_settings_singleton_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
+    },
+    {
+      "id": "orch4_input_action_contexts_ay",
+      "worker": "orch4-action-contexts-ay",
+      "done": false,
+      "state": "dispatched_source_composition",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_input_actions.hpp",
+        "src/game_input_actions.cpp",
+        "docs/GAME_INPUT_ACTION_CONTEXTS_AY.md",
+        "reports/game_input_action_contexts_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_input_actions.hpp",
+        "src/game_input_actions.cpp",
+        "docs/GAME_INPUT_ACTION_CONTEXTS_AY.md",
+        "reports/game_input_action_contexts_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
     }
   ],
   "snapshot_after_analysis": {
