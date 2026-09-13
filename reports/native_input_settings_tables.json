@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_settings_tables_ap",
-  "status": "complete_normal_raw_settings_parser_component_validated_integration_pending",
+  "status": "complete_normal_raw_settings_parser_strict_win32_native_fixture_passed_providers_and_full_lifetime_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -5922,5 +5922,35 @@
     "Opaque header words and unused padding",
     "High24 private descriptor flag preimages",
     "Unused reverse vector bits"
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T07:11:47.173164+00:00",
+    "source_revision": "588fa24195c279f9f0cd1e5e98fc8b1f204cc52d",
+    "merged_main_revision": "0f074d19734406a92937ee7a06a6db9c1f8b4ab2",
+    "code_files": 2267,
+    "code_manifest": "local\\input_settings_tables_ap_source_manifest.json",
+    "code_manifest_sha256": "1fafad7b958e1b539e5f85f832fbe39439da244d4c0834be400315c8b887c1af",
+    "core_archive_sha256": "f7c708cc9f6366a72f8a6c145d5bbd5aa68f5ac4a91ca596fd7a7b014c6d6317",
+    "game_executable_sha256": "5d1859f909ead8a296704c0c5e4b002b1cff125cd20d59c3a1709bb14d904bbf",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_settings_tables_ap_combined_build.log",
+    "build_log_sha256": "cd2d5235fbbdbc4eef5ac2fd083cdc08d2da22393f9df77e46f3a7e8d95abda1",
+    "fixture_log": "local\\input_settings_tables_ap_combined_probe.log",
+    "fixture_log_sha256": "3601e8b1a1b6b5b45f2218d3a4d08cbf26d26f6b7102238d29bf12126e6dd6a0",
+    "native_source_words_equal": 61260,
+    "calls_checked": 326,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+  "fixture_runner_sha256": "128931bd3dac62303e563a494e51bca4efe3e59994c088aeb3c976cbe35341e0",
+  "affected_caller_exports_refreshed": [
+    "006ab6b0",
+    "0073d410"
   ]
 }
