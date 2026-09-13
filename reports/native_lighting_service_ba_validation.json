@@ -1,5 +1,5 @@
 {
-  "tested_commit": "b852ae06a7fdd93c799cdacc015a1a5a96adf9f1",
+  "tested_commit": "b768339463e7017192a26a08d4d7d689321982b3",
   "reviewed_source_commit": "15210f771f9e162fb081e0ca4dd293c564e6258b",
   "source_header_hashes": {
     "include/bsp/native_ambient_construction.hpp": "d6b8a16987e63393dcea801c624330723e460863b21189c442904aecd76d85b1",
@@ -14,16 +14,16 @@
     "src/native_texture_saved_dimensions.cpp": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483"
   },
   "library_sha256": {
-    "bsp_core.lib": "f0dfaf03a8de99bce916b2092e81e479f7519023d59034aab0e480409904c650",
+    "bsp_core.lib": "31abadc20f4ed0de673e704a1e2d90deeac58a1895b5a50b627ca33f84e79e1f",
     "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
     "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
   },
   "build": "Strict MSVC Win32 passed",
   "build_log": "local/ba-final-combined-build.log",
-  "build_log_sha256": "7fef221dc7096e393bc144c455cc115c8cb82adf2b0d63ffed622f4b0fb478e3",
+  "build_log_sha256": "7ea7212a176a4fcae640a7e9b40b4d378e58a68fb99eea4e79e6e3ed28450f8d",
   "existing_ctests_passed": 2,
   "current_library_replays": {
-    "commit": "b852ae06a7fdd93c799cdacc015a1a5a96adf9f1",
+    "commit": "b768339463e7017192a26a08d4d7d689321982b3",
     "source_header_sha256": {
       "include/bsp/native_ambient_construction.hpp": "d6b8a16987e63393dcea801c624330723e460863b21189c442904aecd76d85b1",
       "src/native_ambient_construction.cpp": "fc161f8279872e552f4fc96b4952684f578f185051f177230314cfa9217a2de4",
@@ -38,7 +38,7 @@
     },
     "passed": true,
     "libraries": {
-      "bsp_core.lib": "f0dfaf03a8de99bce916b2092e81e479f7519023d59034aab0e480409904c650",
+      "bsp_core.lib": "31abadc20f4ed0de673e704a1e2d90deeac58a1895b5a50b627ca33f84e79e1f",
       "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
@@ -98,7 +98,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ba-current-ambient.log",
         "log_sha256": "6cfcacef3c32b8b397a81ca1289d77eb957002faa290d1489d36ea8bba33125e",
         "executable": "C:\\Users\\sqz269\\bsp-ba-ambient-construction\\ba_current_ambient_probe.exe",
-        "executable_sha256": "865a319de7dd9babe3ccbedc5407469ec1d01ac85fdee175f868c49809874584",
+        "executable_sha256": "45d220ba0ea3b42b61d5571b45790d1410ad5c6ffcc84398f42db4cc381800d0",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -160,7 +160,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ba-current-registry.log",
         "log_sha256": "12d964f0728aa6fd7f1520fc553b1e0c39501a7b341394df07497293155f83b3",
         "executable": "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\ba_current_registry_probe.exe",
-        "executable_sha256": "8034456495fa2e9cee386418e8b886b5cb1ca0b67e15f6f0cc4d272fdf6c26eb",
+        "executable_sha256": "2abf7da6387a6bca6fa992241abce95d493567ee972049d85f82197e898fb8f3",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -231,7 +231,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ba-current-service.log",
         "log_sha256": "310ccaffe558ba50baf109e1fc124f39f18855c4017b39dd3798abcc900817fc",
         "executable": "C:\\Users\\sqz269\\bsp-ba-service-vector-cleanup\\ba_current_service_probe.exe",
-        "executable_sha256": "f86c981ad70488781adc5dfae197c877d64f1fe7be178e07234d2118917de29d",
+        "executable_sha256": "83ca340ef1e42e7c4e9139b70d918a8d4577c9186d82896564b54ca2a14cd416",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -308,7 +308,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ba-current-texture.log",
         "log_sha256": "f361d9cda49561032d727b1bc29d9ee84d8865ff86f3ae02356a88edc410a565",
         "executable": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\ba_current_texture_probe.exe",
-        "executable_sha256": "e809a673c700b4fa4f7d5b7b3d9dbca3fbe0fecd565723e1ca0efaae2b24e82b",
+        "executable_sha256": "51bb6bda3479a9dde95163e5a99444405efa950e40fdbfafd6b2bb68f97cd00f",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -340,15 +340,15 @@
     ]
   },
   "saved_dimension_emitted_byte_checks": {
-    "commit": "b852ae06a7fdd93c799cdacc015a1a5a96adf9f1",
+    "commit": "b768339463e7017192a26a08d4d7d689321982b3",
     "passed": true,
     "object": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_texture_saved_dimensions.obj",
     "object_sha256": "487a7abfde80cd191941cdceaceae608c2ae410e5dd15a1ed9fe4dd8c5851608",
     "library": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
-    "library_sha256": "f0dfaf03a8de99bce916b2092e81e479f7519023d59034aab0e480409904c650",
+    "library_sha256": "31abadc20f4ed0de673e704a1e2d90deeac58a1895b5a50b627ca33f84e79e1f",
     "archive_member": {
       "member_header": "/0",
-      "offset": 12357250,
+      "offset": 12359252,
       "bytes": 890
     },
     "functions": [

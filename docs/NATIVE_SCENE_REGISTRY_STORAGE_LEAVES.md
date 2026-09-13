@@ -137,7 +137,7 @@ original binary replacement or gameplay claim follows from this checkpoint.
 
 ## BA exact merged validation
 
-The exact combined source commit `b852ae06a7fdd93c799cdacc015a1a5a96adf9f1` passed the strict Win32
+The exact combined source commit `b768339463e7017192a26a08d4d7d689321982b3` passed the strict Win32
 build and both existing tests. Four current-library-only original-byte fixtures
 cover the ambient, registry and two vector modules; the saved-dimension leaves
 have exact complete emitted-byte checks in the built library, with no runtime

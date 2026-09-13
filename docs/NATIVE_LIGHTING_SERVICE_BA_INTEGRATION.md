@@ -9,7 +9,7 @@ identities and prior evidence remain; one analysis-only EH definition and flow
 repairs add no reconstructed entry count.
 
 Reviewed source `15210f771f9e162fb081e0ca4dd293c564e6258b` was merged with main.
-Exact combined source `b852ae06a7fdd93c799cdacc015a1a5a96adf9f1` passed the strict Win32 build, both
+Exact combined source `b768339463e7017192a26a08d4d7d689321982b3` passed the strict Win32 build, both
 existing CTests, four probes linked only to the three current libraries, and
 complete emitted-byte checks for both saved-dimension leaves. All 16 original
 analysis signatures and complete stored ranges were saved and verified;
