@@ -23,6 +23,11 @@ void* erase_native_input_default_tree_range_0069fe70(void*, void*,
 void* erase_native_input_preset_tree_range_006a1aa0(void*, void*,
     NativeKeyboardTreeIterator, NativeKeyboardTreeIterator, NativeStringStorage&);
 
+// 0055B230: same iterator ABI; outer signed-key node20h/nil1Dh owns an
+// inner scalar tree with node18h/nil15h. Full and partial range erasure.
+void* erase_native_input_scale_tree_range_0055b230(void*, void*,
+    NativeKeyboardTreeIterator, NativeKeyboardTreeIterator, NativeStringStorage&);
+
 // Valid consistent owned trees and forward ranges are required. Release callbacks
 // must not mutate tree topology or source iterator storage. Source CRT/string and
 // exception services retain their existing boundaries. Original private-stack/FH3

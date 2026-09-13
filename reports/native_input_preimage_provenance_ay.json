@@ -1,0 +1,38 @@
+{
+  "packet": "orch4_input_preimages_ay",
+  "status": "read_only_static_preimage_audit_complete",
+  "target": {"project":"bsp","program":"battlestationspacific.exe"},
+  "documentation": "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
+  "native_mutations": [],
+  "source_mutations": [],
+  "calls": [
+    {"function":"006a7be0","address":"006a8096","native":"006a0db0","evidence":"Descriptor default after byte-only low flag clear."},
+    {"function":"006a7be0","address":"006a8344","native":"0055a9a0","evidence":"Sensitivity missing-key insertion before Lua category overwrite."},
+    {"function":"006a7be0","address":"006a8786","native":"006a6350","evidence":"AxisPairs nested checked-vector resize."},
+    {"function":"006a7be0","address":"006a8c92","native":"006a1e70","evidence":"InputNames preset index; callee clears only low flag byte."},
+    {"function":"006a7be0","address":"006a8f19","native":"006a6350","evidence":"Group nested checked-vector resize."},
+    {"function":"006a7be0","address":"006a92b0","native":"006a4710","evidence":"Conflict pair nested checked-vector resize."},
+    {"function":"006aa640","address":"006aa6fe","native":"0055b400","evidence":"Temporary scale tree copy with opaque header word0 untouched."},
+    {"function":"006aa640","address":"006aab87","native":"00a93750","evidence":"Suppressed alternate-binding descriptor after byte-only flag clear."},
+    {"function":"006a1e70","address":"006a1edc","native":"0069e6e0","evidence":"Preset pair constructed from mapped value whose flag low byte alone was cleared."}
+  ],
+  "installed_script": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/keyboardsetup.lua",
+  "preimage_results": {
+    "descriptor_flag_stack_preimage": "high24 undefined native stack bytes copied to persistent descriptor/binding words; explicit host policy required",
+    "preset_flag_high24": "independent callee stack bytes, not a full zero; separate seed if provenance matters",
+    "vector_opaque_stack_preimage": "current nested-vector copy/relocate paths do not read or propagate wrapper word0",
+    "sensitivity_default_stack_preimage": "copied transiently on miss, overwritten by shipped Lua category before completed record use",
+    "initial_sensitivity_class_preimage": "not used as map key for installed categories 0 through 4; unknown categories retain prior/initial value",
+    "suppressed_flag_stack_preimage": "high24 undefined native stack bytes may persist in raw binding+14 if suppression branch executes",
+    "temporary_map_opaque_preimage": "tree header word0 not read by reached copy/lookup/erase storage paths"
+  },
+  "keyboard_image_constants": {
+    "00d7a218":"00000000",
+    "00d7a24c":"0000803f",
+    "00d7a260":"000080bf",
+    "00d7a208":"00000080",
+    "00d7a250":"000000000000f0bf"
+  },
+  "limits": ["No runtime script selection or override verification", "No action registration or suppression-branch runtime proof", "No defined native value for uninitialized high bytes", "No game run"],
+  "validation": "saved listing, installed file and current source inspection; call rows checked separately"
+}
