@@ -21,5 +21,11 @@
   "existing_behavior": "update(), configure() and set_context_level() retain their implementations and continue using these same Impl members",
   "executable_reachability": "pending actual game+3C configuration owner, raw Lua/settings graph, settings/defaults/keyboard application and callback/game deadline publications; no production loader call added",
   "validation": "./scripts/build.ps1 on integrated 94b13788 base with BSP_AGENT=agent/orch4-action-contexts-ay, MSBUILDDISABLENODEREUSE=1, CMAKE_BUILD_PARALLEL_LEVEL=2: bsp_core and bsp_game built, configured reconstructed_math CTest 1/1 passed; no accessor-mirroring test added",
-  "base": "94b13788"
+  "base": "94b13788",
+  "primary_integration": {
+    "report": "reports/input_composition_ay_validation.json",
+    "status": "input_settings_and_raw_lua_lifetime_integrated_strict_win32_native_and_host_fixtures_passed",
+    "source_revision": "1de6e53badb5ad304e8ecd7e9a1dec21ca0de428",
+    "game_validated": false
+  }
 }

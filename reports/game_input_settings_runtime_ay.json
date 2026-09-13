@@ -8,16 +8,42 @@
   "original_abi": "No new native ABI; get() delegates to the reconstructed 005547D0 getter through a retained NativeInputSettingsLifetimeContext.",
   "evidence": "Existing lifetime reconstruction report and source; source-level composition of concrete service objects and borrowed publication cells.",
   "calls": [
-    {"function":"005547d0","address":"005547f6","native":"00415350"},
-    {"function":"005547d0","address":"00554846","native":"006ab6b0"},
-    {"function":"005547d0","address":"00554859","native":"00415350"},
-    {"function":"005547d0","address":"00554867","native":"00bd0c30"},
-    {"function":"006ab6b0","address":"006ab7e3","native":"006a7be0"}
+    {
+      "function": "005547d0",
+      "address": "005547f6",
+      "native": "00415350"
+    },
+    {
+      "function": "005547d0",
+      "address": "00554846",
+      "native": "006ab6b0"
+    },
+    {
+      "function": "005547d0",
+      "address": "00554859",
+      "native": "00415350"
+    },
+    {
+      "function": "005547d0",
+      "address": "00554867",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7e3",
+      "native": "006a7be0"
+    }
   ],
   "uncertainty": [
     "The three stack preimages are caller-supplied; this packet cannot recover their historical values.",
     "The current executable lacks a proven raw Lua/VFS settings-script service route, so startup reachability and runtime behavior are not claimed.",
     "The host must retain every borrowed service and publication cell through raw-manager drain and bind canonical deletion before its first get() call."
   ],
-  "validation": "./scripts/build.ps1 completed successfully for Win32 Release; its existing reconstructed_math CTest passed (1/1). Direct CALL verifier passed (5/5). No runtime or gameplay validation."
+  "validation": "./scripts/build.ps1 completed successfully for Win32 Release; its existing reconstructed_math CTest passed (1/1). Direct CALL verifier passed (5/5). No runtime or gameplay validation.",
+  "primary_integration": {
+    "report": "reports/input_composition_ay_validation.json",
+    "status": "input_settings_and_raw_lua_lifetime_integrated_strict_win32_native_and_host_fixtures_passed",
+    "source_revision": "1de6e53badb5ad304e8ecd7e9a1dec21ca0de428",
+    "game_validated": false
+  }
 }

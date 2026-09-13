@@ -12,7 +12,11 @@
     "host.shutdown() dispatches the existing settings deletion profile, drains the manager and clears both publications"
   ],
   "link_boundary": {
-    "actual_objects": ["game_hosts_singletons.obj", "game_observer_runtime.obj", "bsp_core.lib"],
+    "actual_objects": [
+      "game_hosts_singletons.obj",
+      "game_observer_runtime.obj",
+      "bsp_core.lib"
+    ],
     "logger": "77 unchanged GameHostLog method lines extracted from primary src/game_hosts.cpp and verified as exact normalized source text before compilation",
     "excluded": "game_hosts.obj owns the complete startup spine and produced 41 unrelated unresolved VFS/menu/mission symbols when linked alone; the fixture does not execute or replace those startup paths",
     "manifest_embed": true
@@ -39,9 +43,35 @@
     "ControllerInputNames.lua": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
   },
   "observations": {
-    "before_shutdown": {"registered_slots": 1, "settings_profile": "cf81cc", "settings_publication": "registered owner", "raw_manager_publication": "non-null"},
-    "after_shutdown": {"settings_publication": null, "raw_manager_publication": null, "owner_closes": 2, "string_allocations": 2763, "string_releases": 2763, "string_live": 0},
-    "stdout": ["observer runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained", "singleton lifetime drained: registered_slots=1 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h", "PASS host settings: owner registered=1, publication cleared, manager drained, owner closes=2, strings live=0, allocations=2763, releases=2763."]
+    "before_shutdown": {
+      "registered_slots": 1,
+      "settings_profile": "cf81cc",
+      "settings_publication": "registered owner",
+      "raw_manager_publication": "non-null"
+    },
+    "after_shutdown": {
+      "settings_publication": null,
+      "raw_manager_publication": null,
+      "owner_closes": 2,
+      "string_allocations": 2763,
+      "string_releases": 2763,
+      "string_live": 0
+    },
+    "stdout": [
+      "observer runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained",
+      "singleton lifetime drained: registered_slots=1 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h",
+      "PASS host settings: owner registered=1, publication cleared, manager drained, owner closes=2, strings live=0, allocations=2763, releases=2763."
+    ]
   },
-  "limitations": ["No original game process, device or window was started", "GameHostLog was compiled from an exact extracted source section to avoid unrelated startup object dependencies", "The retained installed-script fixture and source callbacks are not proof that the game host reaches settings at runtime"]
+  "limitations": [
+    "No original game process, device or window was started",
+    "GameHostLog was compiled from an exact extracted source section to avoid unrelated startup object dependencies",
+    "The retained installed-script fixture and source callbacks are not proof that the game host reaches settings at runtime"
+  ],
+  "primary_integration": {
+    "report": "reports/input_composition_ay_validation.json",
+    "status": "input_settings_and_raw_lua_lifetime_integrated_strict_win32_native_and_host_fixtures_passed",
+    "source_revision": "1de6e53badb5ad304e8ecd7e9a1dec21ca0de428",
+    "game_validated": false
+  }
 }

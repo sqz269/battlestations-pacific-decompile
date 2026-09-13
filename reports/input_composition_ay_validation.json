@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_composition_ay",
-  "status": "source_composition_component_validated_combined_publication_pending",
+  "status": "input_settings_and_raw_lua_lifetime_integrated_strict_win32_native_and_host_fixtures_passed",
   "documentation": "docs/INPUT_COMPOSITION_AY.md",
   "worker_reports": [
     "reports/game_input_settings_runtime_ay.json",
@@ -44,5 +44,99 @@
     "GameStartupHost does not yet reach the raw settings getter. Actual VFS graph, Lua activation and configuration timing/owner wiring remain.",
     "The source host lifetime fixture links actual host singleton and observer objects plus exactly checked GameHostLog methods; it does not execute unrelated startup paths.",
     "No gameplay validation."
-  ]
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T22:39:33.388387+00:00",
+    "source_revision": "1de6e53badb5ad304e8ecd7e9a1dec21ca0de428",
+    "merged_main_revision": "d2dce875aa7ac9781433e5481a5f5b4dd221ba08",
+    "code_files": 2445,
+    "code_manifest": "local/input_composition_ay_source_manifest.json",
+    "code_manifest_sha256": "b0daede36c22084461a6b72aa28dde80628f3c533bdb201c80c64cb8c2bdb386",
+    "core_archive_sha256": "68c05a1f7e3ccc3ab387d0e8dbfca2acf371bd0bd2b85298cf7b8d87531a736d",
+    "game_executable_sha256": "a1b89200a4ac5d08417a0c9fe8108f7163a0c7c5d371b7b0e602e3670dcbf317",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local/input_composition_ay_combined_build.log",
+    "build_log_sha256": "dac8b65a468d689f63a29ecd9198568f6f3b1ffd50025fdf076e4667ec423cc2",
+    "fixtures": [
+      {
+        "name": "fundamentals",
+        "log": "local/input_composition_ay_combined_fundamentals_probe.log",
+        "log_sha256": "7b9ccea51517c8f9cd58123be08b180c8322c2affc6d0ce4dcf43bc496670d6f",
+        "source": "local/raw_lua_fundamentals_ay_probe.cpp",
+        "source_sha256": "cdf54e16ac1ff24812dd27cca6a8db8a94685cfb105323bab5b8973935b4c84b",
+        "runner": "local/run_raw_lua_fundamentals_ay_probe.ps1",
+        "runner_sha256": "a0eaf43421985af935dcf6f4e0c4231bb817dfe80c12241b780592aefb73f289",
+        "header": "local/fundamentals-native.hpp",
+        "header_sha256": "d18c119bb46459ef38db4e6aa025813f28859b1baef3e988954f857b7997eb48",
+        "executable": "local/raw_lua_fundamentals_ay_probe.exe",
+        "executable_sha256": "23f475300bae2f6891e7cc2b7e4db52dd5aa1f56bc4a8bde8a0b9070a535a452"
+      },
+      {
+        "name": "settings",
+        "log": "local/input_composition_ay_combined_settings_probe.log",
+        "log_sha256": "9e4029dff6d6f88499f9577a7f93fa68c8d976e981a57b86caaeb2fc2d1a1a0a",
+        "source": "local/game_input_settings_runtime_ay_probe.cpp",
+        "source_sha256": "9d587d91f867a608d6ae83a4728ed0874aacebbc44d85d3d3ea2f1dd736ac328",
+        "runner": "local/run_game_input_settings_runtime_ay_probe.ps1",
+        "runner_sha256": "7d0000cc62e71c069607e3daf23ad32202407deb9a5ebe09bfa7227bbca257cb",
+        "header": "local/input_settings_lifetime_aq_native.hpp",
+        "header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+        "executable": "local/game_input_settings_runtime_ay_probe.exe",
+        "executable_sha256": "b74f3c3ccf6661412efbf0e4dd0c8c808c8e9a849febb0953ebd960cbfd5151a"
+      },
+      {
+        "name": "host",
+        "log": "local/input_composition_ay_combined_host_probe.log",
+        "log_sha256": "fb0b907d2b44df8895bbb7a22d37351010f953a58a00aa79ec85edcd6fffac8a",
+        "source": "local/game_input_settings_host_ay_probe.cpp",
+        "source_sha256": "579f5c45b7f7598d081aad22d9856b4046941817eab99408e5b9b674c4f45c4c",
+        "runner": "local/run_game_input_settings_host_ay_probe.ps1",
+        "runner_sha256": "6316ea9f4e58b3716fff80161af91ff89fb1216673bc5e094e667b7af045f7b7",
+        "header": "local/input_settings_lifetime_aq_native.hpp",
+        "header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+        "executable": "local/game_input_settings_host_ay_probe.exe",
+        "executable_sha256": "21250d30135d93bb8bef91eabe23dde89b9481500718d2c438aadaad90287b19"
+      }
+    ],
+    "support_hashes": {
+      "local/game_host_log_ay_support.cpp": "55c2ee2aa3f869bdff9fca7891e4bbb470f6eb3f0068f030e1b4c92c6c873dfc",
+      "local/verify_game_host_log_ay_support.py": "155362c2a6af9d701b75c1811e25a178ec9ce7e23680b3cdc47d2a15fe34d08e",
+      "local/input_settings_tables_ap_data.bin": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj": "9cf1ea13ad871ee10a1f19c4ee048663311e74998c301b8afceff6412745f14d",
+      "build/win32/bsp_game.dir/Release/game_observer_runtime.obj": "b36be4c11266476f513d1e09714c04e55a0c1fd2b4930dc44f28b8760b64b925"
+    },
+    "installed_script_sha256": {
+      "fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "ControlPresets.lua": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f",
+      "KeyboardSetup.lua": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb",
+      "Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5",
+      "ControllerInputNames.lua": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
+    },
+    "owned_direct_call_rows_checked": 17,
+    "owned_direct_call_rows_failed": 0,
+    "fresh_native_function_envelopes": 4,
+    "indirect_call_inventory": 8,
+    "saved_annotations_readback": 4,
+    "disk_live_seed_spans_equal": 8,
+    "annotation_receipt_sha256": "ccac11cf0d7e93e9e1659a0925deab933a973456b4ed117710fb2ef0e70291b2",
+    "body_repair_receipt_sha256": "422cf54487b98809d3a99e112d554c10a08453e0a223701ec497f31479efcc05",
+    "call_audit_log_sha256": "4b4e94ba7be916f64e49a8b11a408c390ae9b99d783c764ab6e0c14ffb15854a",
+    "original_abi_compatible": false,
+    "original_fh3_executed": false,
+    "production_host_reachable": false,
+    "game_validated": false,
+    "lifetime_words_equal": 122545,
+    "tree_range_words_equal": 309711,
+    "tree_insertion_words_equal": 168378,
+    "vector_storage_words_equal": 1448,
+    "checked_string_words_equal": 335,
+    "raw_native_source_getter_executions": 4,
+    "retained_constructor_executions": 10,
+    "semantic_domain_shutdowns": 3,
+    "host_registered_settings_owners": 1,
+    "host_string_allocations": 2763,
+    "host_string_releases": 2763,
+    "host_remaining_strings": 0
+  }
 }

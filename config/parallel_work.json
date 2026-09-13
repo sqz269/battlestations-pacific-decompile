@@ -10960,7 +10960,7 @@
       "id": "orch4_input_settings_runtime_ay",
       "worker": "orch4-settings-runtime-ay",
       "done": true,
-      "state": "source_integrated_component_validated",
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_input_settings_runtime.hpp",
@@ -10984,7 +10984,7 @@
       "id": "orch4_input_settings_singleton_ay",
       "worker": "orch4-settings-singleton-ay",
       "done": true,
-      "state": "source_integrated_component_validated",
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_hosts_singletons.hpp",
@@ -11008,7 +11008,7 @@
       "id": "orch4_input_action_contexts_ay",
       "worker": "orch4-action-contexts-ay",
       "done": true,
-      "state": "source_integrated_component_validated",
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_input_actions.hpp",
@@ -11032,7 +11032,7 @@
       "id": "orch4_raw_lua_fundamentals_ay",
       "worker": "orch4-20260910",
       "done": true,
-      "state": "raw_lifetime_integrated_component_validated",
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [
         "00884770",
         "00b68340",
@@ -11062,13 +11062,14 @@
       "dependencies": [
         "reports/input_composition_ay_validation.json"
       ],
-      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
     },
     {
       "id": "orch4_settings_host_validation_ay",
       "worker": "orch4-settings-singleton-ay",
       "done": true,
-      "state": "populated_host_lifetime_fixture_passed",
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "reports/game_input_settings_host_ay_validation.json"
@@ -11079,7 +11080,8 @@
       "dependencies": [
         "reports/input_composition_ay_validation.json"
       ],
-      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
     },
     {
       "id": "orch4_raw_vfs_host_graph_az",
