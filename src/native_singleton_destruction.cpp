@@ -4,6 +4,8 @@
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_filestore_factory.hpp"
+#include "bsp/native_mpak_factory.hpp"
+#include "bsp/native_pak_registry.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
@@ -130,6 +132,20 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.filestore_factory != nullptr) {
             delete_native_filestore_factory_secondary_00be5340(owner, flags,
                 *bindings.filestore_factory);
+            return;
+        }
+        break;
+    case 0x00cfea1c:
+        if (bindings.mpak_factory != nullptr) {
+            delete_native_mpak_factory_secondary_00735d30(owner, flags,
+                *bindings.mpak_factory);
+            return;
+        }
+        break;
+    case 0x00d6418c:
+        if (bindings.pak_registry != nullptr) {
+            delete_native_pak_registry_secondary_00bb4ff0(owner, flags,
+                *bindings.pak_registry);
             return;
         }
         break;

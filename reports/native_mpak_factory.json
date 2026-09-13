@@ -1,0 +1,518 @@
+{
+  "packet": "orch2_native_mpak_factory_ay",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "label": "factory_get",
+      "entry": "00736b60",
+      "end_inclusive": "00736c2d",
+      "bytes": 206,
+      "sha256": "1e8f7fa35ca84c32e18159c6973bd275b7de8f9ed83dd0d2280541e023a1e72a",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpak_factory.cpp",
+      "name": "get_native_mpak_factory_00736b60",
+      "original_abi": "No inputs; EAX factory; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_delete",
+      "entry": "007370d0",
+      "end_inclusive": "00737109",
+      "bytes": 58,
+      "sha256": "337ae5ae7cb2429980d78a30d4449b0b45cef12de9e70d769bb75aac5dff29bb",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpak_factory.cpp",
+      "name": "delete_native_mpak_factory_007370d0",
+      "original_abi": "ECX primary; flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_secondary",
+      "entry": "00735d30",
+      "end_inclusive": "00735d37",
+      "bytes": 8,
+      "sha256": "88f53587d63dfae0c47f2e11e9e7764be4f93e7c5c498bb503485de1d7131b1b",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpak_factory.cpp",
+      "name": "delete_native_mpak_factory_secondary_00735d30",
+      "original_abi": "ECX secondary; SUB4/JMP7370D0; inherited RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "factory_base",
+      "entry": "00735840",
+      "end_inclusive": "00735868",
+      "bytes": 41,
+      "sha256": "a7b47c2085d31fa48ef180bdce0a1415ae12bcebac5a579bae009733a8a916aa",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpak_factory.cpp",
+      "name": "delete_native_mpak_factory_base_00735840",
+      "original_abi": "ECX base allocation; flags stack; EAX captured owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "provider_create",
+      "entry": "00bb83a0",
+      "end_inclusive": "00bb8516",
+      "bytes": 375,
+      "sha256": "acd5dae88539052ff4f1906be73743e8941138497601e14de04333c9468e7e03",
+      "coverage": "complete",
+      "live_equal_PE": true,
+      "source": "src/native_mpak_factory.cpp",
+      "name": "create_native_mpak_provider_00bb83a0",
+      "original_abi": "ECX factory unused; system and unused virtual headers stacked; EAX provider/null; RET8",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_bytes": 688,
+  "host_steps": [
+    {
+      "address": "00736b86",
+      "native": "00415350",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "contract": "Current actual raw01090AA0 manager; zero arguments, EAX result, RET"
+    },
+    {
+      "address": "00736b9f",
+      "native": "IAT+00ce2218",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2218]",
+      "contract": "Win32 stdcall EnterCriticalSection on captured section; source/native fixture observer calls the real API"
+    },
+    {
+      "address": "00736bbc",
+      "native": "00bf681b",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "contract": "Existing operator_new/new-handler allocator; cdecl byte count; caller ADD ESP4"
+    },
+    {
+      "address": "00736bfe",
+      "native": "00415350",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "contract": "Current actual raw01090AA0 manager; zero arguments, EAX result, RET"
+    },
+    {
+      "address": "00736c05",
+      "native": "00bd0c30",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "contract": "ECX second current manager, captured published secondary stack argument, RET4"
+    },
+    {
+      "address": "00736c13",
+      "native": "IAT+00ce2210",
+      "function": "00736b60",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2210]",
+      "contract": "Win32 stdcall LeaveCriticalSection; getter captured section, Create current reloaded section; real API observer"
+    },
+    {
+      "address": "007370fc",
+      "native": "00bf65ac",
+      "function": "007370d0",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Existing matching _free service; cdecl captured pointer; returning continuation retained"
+    },
+    {
+      "address": "00735d33",
+      "native": "007370d0",
+      "function": "00735d30",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x7370d0",
+      "contract": "Subtract4 from ECX secondary then tail-jump; inherited flags/EAX/RET4"
+    },
+    {
+      "address": "0073585b",
+      "native": "00bf65ac",
+      "function": "00735840",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "contract": "Existing matching _free service; cdecl captured pointer; returning continuation retained"
+    },
+    {
+      "address": "00bb83dc",
+      "native": "00469840",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0x469840",
+      "contract": "ECX original system header; stack output,start=length-5,count=7FFFFFFF; EAX output, RET0C"
+    },
+    {
+      "address": "00bb83ed",
+      "native": "00425850",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0x425850",
+      "contract": "ECX returned suffix header; stack CEBA84 .mpak; AL case-insensitive comparison, RET4"
+    },
+    {
+      "address": "00bb8417",
+      "native": "00419cc0",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0x419cc0",
+      "contract": "Current canonical raw string pool getter; no inputs; preserve caller data/length stacked for return"
+    },
+    {
+      "address": "00bb841e",
+      "native": "00bd1510",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0xbd1510",
+      "contract": "ECX current pool; stack captured current data,current length+1,1; RET0C"
+    },
+    {
+      "address": "00bb8436",
+      "native": "IAT+00ce2218",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2218]",
+      "contract": "Win32 stdcall EnterCriticalSection on captured section; source/native fixture observer calls the real API"
+    },
+    {
+      "address": "00bb8450",
+      "native": "IAT+00ce2210",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call dword ptr [0xce2210]",
+      "contract": "Win32 stdcall LeaveCriticalSection; getter captured section, Create current reloaded section; real API observer"
+    },
+    {
+      "address": "00bb8463",
+      "native": "0041e870",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "contract": "ECX temporary raw8h output; stack empty CE3A0C string; RET4"
+    },
+    {
+      "address": "00bb8474",
+      "native": "00bb82f0",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0xbb82f0",
+      "contract": "ECX current temporary actual8h name; no stacked arguments or incoming ESI dependency; RET0; explicit actual-provider operation"
+    },
+    {
+      "address": "00bb8494",
+      "native": "00419cc0",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0x419cc0",
+      "contract": "Current canonical raw string pool getter; no inputs; preserve caller data/length stacked for return"
+    },
+    {
+      "address": "00bb849b",
+      "native": "00bd1510",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0xbd1510",
+      "contract": "ECX current pool; stack captured current data,current length+1,1; RET0C"
+    },
+    {
+      "address": "00bb84b8",
+      "native": "00bf681b",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "contract": "Existing operator_new/new-handler allocator; cdecl byte count; caller ADD ESP4"
+    },
+    {
+      "address": "00bb84d3",
+      "native": "00bb8240",
+      "function": "00bb83a0",
+      "kind": "call",
+      "instruction": "call 0xbb8240",
+      "contract": "ECX captured raw44h allocation; stack original system-header pointer; EAX forwarded, RET4; explicit actual-provider operation"
+    },
+    {
+      "address": "00c86063",
+      "native": "00411ee0",
+      "function": "00c86060",
+      "kind": "tail_jump",
+      "contract": "Getter unwind captures original guard section, decrements/leaves; raw action complete throughC86067"
+    },
+    {
+      "address": "00cc4763",
+      "native": "0041dd20",
+      "function": "00cc4760",
+      "kind": "tail_jump",
+      "contract": "Create state0 ECX current empty-header spill; current data/length release; complete throughCC4767"
+    },
+    {
+      "address": "00cc476c",
+      "native": "00bf65ac",
+      "function": "00cc4768",
+      "kind": "call",
+      "contract": "Create state1 captures[EBP+4], pushes raw allocation, calls free; raw POP ECX/RET throughCC4772"
+    }
+  ],
+  "auxiliary_raw_evidence": [
+    {
+      "label": "getter_eh",
+      "entry": "00c86060",
+      "end_inclusive": "00c86071",
+      "bytes": 18,
+      "sha256": "db9e1b4848d6ff15ed38ecde159d7055d615355e0fec4e9e24619fe8036dd7c2",
+      "executed": false
+    },
+    {
+      "label": "getter_map",
+      "entry": "00db5534",
+      "end_inclusive": "00db555f",
+      "bytes": 44,
+      "sha256": "1e3c91b4ec3f4eee8db420f21b1d89fffe4ba081fc70e870af289be4299b77c3",
+      "executed": false
+    },
+    {
+      "label": "create_eh",
+      "entry": "00cc4760",
+      "end_inclusive": "00cc477c",
+      "bytes": 29,
+      "sha256": "162c238d7470c8c81f6534071b5c75149d43419ec4089d62ecce91326ba29077",
+      "executed": false
+    },
+    {
+      "label": "create_map",
+      "entry": "00dfe33c",
+      "end_inclusive": "00dfe36f",
+      "bytes": 52,
+      "sha256": "ef8fb2bc456bbebe9c8d3af766d5b59a592e37493122b671a75129512ba5607c",
+      "executed": false
+    },
+    {
+      "label": "factory_profiles",
+      "entry": "00cfea00",
+      "end_inclusive": "00cfea27",
+      "bytes": 40,
+      "sha256": "016229576ddcde7cad852cf51cc525c22dcc0e7bb30c4fe42f889fc2a1e294b5",
+      "executed": false
+    },
+    {
+      "label": "suffix_literal",
+      "entry": "00ceba84",
+      "end_inclusive": "00ceba89",
+      "bytes": 6,
+      "sha256": "4623edb30de596aa2307f690abf5f43db4f76e98bb539c494d6899c1bfc809b1",
+      "executed": false
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00cc4771",
+      "end_inclusive": "00cc4772",
+      "bytes": 2,
+      "coverage": "complete raw EH free continuation POP ECX;RET; not a stored function"
+    }
+  ],
+  "corrections": [
+    "Primary locked repair decoded737101..737103 returning free continuation and created735840..735868; saved/exported, no worker Ghidra writes",
+    "BB83A0 cached branch callsBB82F0(empty current header) before returning captured cached owner; no direct-return simplification"
+  ],
+  "factory_layout": {
+    "bytes": 8,
+    "producer": "00736b60",
+    "primary": "00cfea20",
+    "secondary_offset": 4,
+    "secondary": "00cfea1c",
+    "temporary_secondary": "00cfea00",
+    "publication": "010904d4",
+    "domain": "actual raw01090AA0"
+  },
+  "lock_layout": {
+    "producer": "00bb40b0 consumes00bd1860",
+    "publication": "010904e0",
+    "bytes": 28,
+    "physical_CRITICAL_SECTION_bytes": 24,
+    "recursion_offset": 24,
+    "Create_order": "capture enter lock; Enter; captured increment; reload current lock; capture cache010904DC; current decrement/Leave"
+  },
+  "provider_boundary": {
+    "interface": "NativeMpakProviderOperations",
+    "construct": "construct_00bb8240(raw44h,original_system_header)->forwarded EAX",
+    "replace": "replace_cached_00bb82f0(actual empty header); cached owner not passed",
+    "implementation_owner": "primary",
+    "semantic_parser_used": false,
+    "successful_fallback": false
+  },
+  "EH": {
+    "getter": "DB553C/mapDB5534 state0C86060->411EE0",
+    "create": "DFE34C/mapDFE33C state0CC4760->41DD20, state1CC4768..CC4772 captured free; each lowers to-1; no suffix or lock EH owner"
+  },
+  "verification": {
+    "strict_win32_build": "local/native-mpak-factory-build01.log",
+    "MSBUILDDISABLENODEREUSE": "1",
+    "ctests_passed": 2,
+    "fixture": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-factory-ay\\local\\mpak_factory_ay\\attempt02",
+    "driver": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-factory-ay\\local\\mpak_factory_ay\\run_fixture.py",
+    "native_source_comparisons": 3,
+    "source_only_checks": 2,
+    "checks": 1034,
+    "frozen_files": 494,
+    "archive_equal_linked_objects": 122,
+    "all_outputs_accounted": true,
+    "after": {
+      "exit_code": 0,
+      "changed": [],
+      "verified_files": 494,
+      "pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 16388,
+          "sha256": "7b9131d3df4a1d0fc62da3607832d94f762b6be62576c7569de9a839c3cdf573",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 16388,
+          "sha256": "de9117884a6182acd2219921fbabaf07b6f81f1c0836474fd137f2da0e4b23f9",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 16388,
+          "sha256": "b064dd0ef0a2b352b2d4e61a4aade4ba186d297afc7c40900a8d21e2242d1412",
+          "equal": true
+        }
+      ],
+      "native_source_comparisons": 3,
+      "source_only_checks": 2,
+      "checks": 1034,
+      "provider_scope": "recorded BB8240 construction and BB82F0 replacement call boundaries only; no provider/archive-load proof",
+      "native_FH3_SEH_executed": false,
+      "seal_sha256": "b9262ccfb97e31c85c334cab53cfc7caaf97fee8b19b7ecaf5187a5dbf773c8e",
+      "exe_sha256": "adf8838398d3c441e36f41db1d89857bd1bcd0b589eeecf737c3810ed867af5d",
+      "library_sha256": "2a69d6dd5ac55f6bb6f4dd1f9ce65099d774b69a2ec282069951a2e5fc910140",
+      "execution_sha256": "38c74fa18899b955e23e08aa29dbfdfb7a18216437e86df388020ababa3061a9"
+    },
+    "after_sha256": "fd1521c9824f2844b2b1f898b8c23ded168174d542a055652ae9f52f540e0261",
+    "driver_sha256": "94b186b0fb1de4228eaba24dafe48c4a8484b104c9b6a856103da342016e1265",
+    "probe_sha256": "8a1825acdea3c78291f90e6791d38903b119f67f59e772b9e6500143fd8f2416",
+    "build_attempts": [
+      {
+        "path": "local/native-mpak-factory-build00.log",
+        "sha256": "efe76b2407cfd8a293100eb11f43287b3cce5a9f9d7ecedf4c027c33301a99ba",
+        "status": "retained preliminary concurrent CMake regeneration failure; no native execution"
+      },
+      {
+        "path": "local/native-mpak-factory-build01.log",
+        "sha256": "63b320659fc5cdb435d77f0ce34d74d8b04cd3f30bc5a53a25efafb5a3dfa5c5",
+        "status": "strict Win32 and2CTests passed with completed source stable"
+      }
+    ],
+    "retained_fixture_failures": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-factory-ay\\local\\mpak_factory_ay\\attempt01",
+        "failure": {
+          "error": ""
+        }
+      }
+    ],
+    "final_physical_audit": {
+      "attempt": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-factory-ay\\local\\mpak_factory_ay\\attempt02",
+      "physical_files": 503,
+      "frozen_inputs": 494,
+      "map_members": 122,
+      "recursive_BSP_headers": 194,
+      "native_comparison_bodies": 5,
+      "native_comparison_bytes": 688,
+      "auxiliary_data_or_EH_spans": 6,
+      "relative_transfers": 37,
+      "all_inputs_outputs_readonly": true,
+      "all_current_sources_headers_objects_and_archive_members_equal": true,
+      "manifest_before_sha256": "b9262ccfb97e31c85c334cab53cfc7caaf97fee8b19b7ecaf5187a5dbf773c8e",
+      "manifest_after_sha256": "fd1521c9824f2844b2b1f898b8c23ded168174d542a055652ae9f52f540e0261",
+      "source_code_changed_after_execution": false,
+      "native_executions_in_this_audit": 0
+    },
+    "call_verification": {
+      "path": "local/native-mpak-factory-call-verification.log",
+      "sha256": "f92f7fa3bc137f81fd05faa78cb6f3409775fa438519611ac44fe46d0bbf79b0",
+      "direct_or_tail_checked": 20,
+      "failed": 0,
+      "IAT_rows_recorded": 4
+    }
+  },
+  "limits": [
+    "Explicit BB8240/BB82F0 call-boundary fixture; no valid provider or archive parser produced",
+    "Original FH3/SEH and getter registration-failure path not executed by this fixture",
+    "Existing ActualNativeStringPoolStorage release is noexcept; throwing lazy-pool release, double failures, arbitrary compiler-spill aliases excluded",
+    "Allocator-null branches retained but source new-handler service normally throws; not exercised",
+    "Lock mutation records held first section before explicit harness teardown normalization; source does not repair native ownership",
+    "No installed archive, full runtime startup, ABI compatibility or gameplay claim"
+  ],
+  "prior_annotations": {
+    "comments": [
+      {
+        "address": "00736b60",
+        "annotation": {
+          "address": "00736b60",
+          "function_name": "BSP_MpakProviderFactory_GetSingleton",
+          "comment": "[BSP reconstruction 00736b60]\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736c2d. Same double-checked lazy 8-byte singleton shape as 00736a90 but over global DAT_010904d4: malloc(8) at 00736bba, base lifetime vtable 00cfea00 at +4, then primary vtable 00cfea20 at +0 and final lifetime vtable 00cfea1c at +4 (00736bc8/00736bcf/00736bd5); object+4 registered through 00bd0c30 under the lifetime lock. Primary vtable 00cfea20 = {007370d0 scalar deleting dtor, 00bb83a0 create}. 00bb83a0 is ECX factory, two stack strings, RET 8 (00bb84b3 and three sibling epilogues): it takes the last five characters of the system path when its length exceeds 4 and compares them to literal '.mpak' at 00ceba84 through 00425850, returning null otherwise. On a match it takes the critical section DAT_010904e0, reads cached provider DAT_010904dc and returns it when set, otherwise allocates 0x44 bytes and constructs through 00bb8240. So this is the MPAK (.mpak) provider factory, distinct from the MPKG (.mpkg) factory 00736a90. Sole caller BSP_Application_Initialize 0073d410 at 0073d955, outside both the DAT_0109ceec and DAT_0109cf00 first-time gates; its result is appended to the provider manager at 0073d95d through 00be0660, making it the fourth startup factory. It is registered after the 0073cb10 package scan, which enumerates only extension 'mpkg', so no .mpak archive is mounted by startup scanning. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; reports/app_init_vfs_singletons.json.\n\n[BSP reconstruction 00736b60] update\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736c2d. Same double-checked lazy 8-byte singleton shape as 00736a90 but over global DAT_010904d4: malloc(8) at 00736bba, base lifetime vtable 00cfea00 at +4, then primary vtable 00cfea20 at +0 and final lifetime vtable 00cfea1c at +4 (00736bc8/00736bcf/00736bd5); object+4 registered through 00bd0c30 under the lifetime lock. Primary vtable 00cfea20 = {007370d0 scalar deleting dtor, 00bb83a0 create}. 00bb83a0 is ECX factory, two stack strings, RET 8 (00bb84b3 and three sibling epilogues): it takes the last five characters of the system path when its length exceeds 4 and compares them to literal '.mpak' at 00ceba84 through 00425850, returning null otherwise. On a match it takes the critical section DAT_010904e0, reads cached provider DAT_010904dc and returns it when set, otherwise allocates 0x44 bytes and constructs through 00bb8240. So this is the MPAK (.mpak) provider factory, distinct from the MPKG (.mpkg) factory 00736a90. Sole caller BSP_Application_Initialize 0073d410 at 0073d955, outside both the DAT_0109ceec and DAT_0109cf00 first-time gates; its result is appended to the provider manager at 0073d95d through 00be0660, making it the fourth startup factory. It is registered after the 0073cb10 package scan, which enumerates only extension 'mpkg', so no .mpak archive is mounted by startup scanning. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; reports/app_init_vfs_singletons.json. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. The mpak provider factory singleton is created and registered in the factory tail; its Create 00bb83a0 is still unreconstructed, so the factory exists in the manager list and creates no provider."
+        }
+      },
+      {
+        "address": "007370d0",
+        "annotation": {
+          "address": "007370d0",
+          "function_name": "CG_scalar_deleting_dtor_007370d0"
+        }
+      },
+      {
+        "address": "00735d30",
+        "annotation": {
+          "address": "00735d30",
+          "function_name": "FUN_00735d30"
+        }
+      },
+      {
+        "address": "00735840",
+        "annotation": {
+          "address": "00735840",
+          "function_name": "FUN_00735840"
+        }
+      },
+      {
+        "address": "00bb83a0",
+        "annotation": {
+          "address": "00bb83a0",
+          "function_name": "FUN_00bb83a0"
+        }
+      }
+    ],
+    "prototypes": {
+      "00736b60": "00736b60 BSP_MpakProviderFactory_GetSingleton  undefined BSP_MpakProviderFactory_GetSingleton(void)  body 00736b60 - 00736c2d\n",
+      "007370d0": "007370d0 CG_scalar_deleting_dtor_007370d0  undefined CG_scalar_deleting_dtor_007370d0(void)  body 007370d0 - 00737109\n",
+      "00735d30": "00735d30 FUN_00735d30  undefined FUN_00735d30(void)  body 00735d30 - 00735d37\n",
+      "00735840": "00735840 FUN_00735840  undefined FUN_00735840(void)  body 00735840 - 00735868\n",
+      "00bb83a0": "00bb83a0 FUN_00bb83a0  undefined FUN_00bb83a0(void)  body 00bb83a0 - 00bb8516\n"
+    },
+    "application": "primary central annotation batch after integration; worker Ghidra read-only"
+  }
+}

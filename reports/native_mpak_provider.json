@@ -1,0 +1,732 @@
+{
+  "packet": "orch2_native_mpak_provider_ay",
+  "status": "complete_actual_storage_strict_win32_independent_assembly_review_and_generated_native_source_fixture",
+  "source": "src/native_mpak_provider.cpp",
+  "header": "include/bsp/native_mpak_provider.hpp",
+  "documentation": "docs/NATIVE_MPAK_PROVIDER.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00bb5430",
+      "inclusive_end": "00bb5475",
+      "bytes": 70,
+      "native_sha256": "4491c328e7cb5474f394795368811057a9d777028a11e30d3375a989e41fdfde",
+      "source_name": "destroy_native_mpak_file_00bb5430",
+      "original_abi": "ECX record24h; RET",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "c5302776117dc032c8c2383273fb3c45a962f195b35792a36a6b643fb323e86f",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakFileRecord_Destroy",
+      "previous_name": "FUN_00bb5430"
+    },
+    {
+      "address": "00bb5630",
+      "inclusive_end": "00bb5663",
+      "bytes": 52,
+      "native_sha256": "62685acb7aac09645d68751a277a9e9c691a5fb38905adf4d53311dc72df46e1",
+      "source_name": "read_native_mpak_string_00bb5630",
+      "original_abi": "ECX cursorDWORD; stack output8h; EAX output; RET4",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "19ecdd35b603a8b1fde9a7f71df87fe42dd156a3c0ccc30ace023c5d96cc8780",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakCursor_ReadString",
+      "previous_name": "FUN_00bb5630"
+    },
+    {
+      "address": "00bb6500",
+      "inclusive_end": "00bb6571",
+      "bytes": 114,
+      "native_sha256": "3b606d3ee3275182da7fbd6058c709a04b092be13593215be27ce871f54d326a",
+      "source_name": "destroy_native_mpak_directory_00bb6500",
+      "original_abi": "ECX record14h; RET",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "60c8002e079199229cbb8e3c74a10974bd6a02c77abb34100ec8c7906c382799",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakDirectoryRecord_Destroy",
+      "previous_name": "FUN_00bb6500"
+    },
+    {
+      "address": "00bb6870",
+      "inclusive_end": "00bb68ee",
+      "bytes": 127,
+      "native_sha256": "b0b7d3e83e7d06fdd0b8f9931c9e510750300217024adf7bbc4808445253465b",
+      "source_name": "construct_native_mpak_file_00bb6870",
+      "original_abi": "ECX record24h; stack name/first/second/flag; EAX record; RET10h",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "afc274890534137b1fac01db0db8003aaa7f082256f3f15c175d7baa107d5612",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakFileRecord_Construct",
+      "previous_name": "FUN_00bb6870"
+    },
+    {
+      "address": "00bb7c50",
+      "inclusive_end": "00bb8239",
+      "bytes": 1514,
+      "native_sha256": "0a64186bb6ddbcfeb2f8797cee21197836e7b96f5b4974175498d41361f6dcb3",
+      "source_name": "load_native_mpak_directory_00bb7c50",
+      "original_abi": "ECX provider44h; RET",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "22d350fb19d98b630cd82893e1a58de24f3e713731602ca4bbe9e097f540224b",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_LoadDirectory",
+      "previous_name": "FUN_00bb7c50"
+    },
+    {
+      "address": "00bb7920",
+      "inclusive_end": "00bb79d3",
+      "bytes": 180,
+      "native_sha256": "90ce04187d101b268f869ca356e880cb5870254caad55e80a262416125abcc7b",
+      "source_name": "destroy_native_mpak_provider_00bb7920",
+      "original_abi": "ECX provider44h; RET",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "feedcd4b15b364f0ce15c9bb4c6c9c6aeb4eb34d925cfa5849edce2c5eaf3aed",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_Destroy",
+      "previous_name": "FUN_00bb7920"
+    },
+    {
+      "address": "00bb7b80",
+      "inclusive_end": "00bb7b9d",
+      "bytes": 30,
+      "native_sha256": "46270c3b68229e5ecc03e0c3ceb345bd52c110823cd8098dbd6aa415be5a169e",
+      "source_name": "delete_native_mpak_provider_00bb7b80",
+      "original_abi": "ECX provider44h; stack flags; EAX captured owner; RET4",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "972ddabc7a3eaead33ba7d008691885d60d3a49f6af9876ddb5ca64c3834c29b",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "CG_scalar_deleting_dtor_00bb7b80",
+      "previous_name": "CG_scalar_deleting_dtor_00bb7b80"
+    },
+    {
+      "address": "00bb8240",
+      "inclusive_end": "00bb82e9",
+      "bytes": 170,
+      "native_sha256": "a20ba546385bf9afa6a26ac50831332556a1b82aff7c986ec82667f1ec4609e5",
+      "source_name": "construct_native_mpak_provider_00bb8240",
+      "original_abi": "ECX provider44h; stack original8h system name; EAX owner; RET4",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "738f551d1fb34b466657823fd37e031c06709f67c2b79d0cb681f32460472493",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_Construct",
+      "previous_name": "FUN_00bb8240"
+    },
+    {
+      "address": "00bb82f0",
+      "inclusive_end": "00bb8390",
+      "bytes": 161,
+      "native_sha256": "90231d908ac069f243c66545051e61c1182994e7bb6dd296ae11041d5ab97f3b",
+      "source_name": "replace_native_mpak_cache_00bb82f0",
+      "original_abi": "ECX actual8h name; RET; incoming ESI overwritten",
+      "source": "src/native_mpak_provider.cpp",
+      "export_assembly_sha256": "b0a4a00ab7a0e1267426ad024cea18ce70ceb09567f4700596f90caf383ba974",
+      "scope": "complete owned body with explicit existing source and library contracts",
+      "ghidra_name": "BSP_MpakProvider_ReplaceCached",
+      "previous_name": "FUN_00bb82f0"
+    }
+  ],
+  "complete_function_count": 9,
+  "complete_native_bytes": 2418,
+  "calls": [
+    {
+      "address": "00bb543b",
+      "native": "00bf65ac",
+      "caller": "00bb5430",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb5468",
+      "native": "00419cc0",
+      "caller": "00bb5430",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb546f",
+      "native": "00bd1510",
+      "caller": "00bb5430",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb564e",
+      "native": "0041e870",
+      "caller": "00bb5630",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb652d",
+      "native": "00427110",
+      "caller": "00bb6500",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb6535",
+      "native": "00bf6989",
+      "caller": "00bb6500",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb6555",
+      "native": "00419cc0",
+      "caller": "00bb6500",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb655c",
+      "native": "00bd1510",
+      "caller": "00bb6500",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb689f",
+      "native": "0041dd40",
+      "caller": "00bb6870",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb68b3",
+      "native": "00bf7680",
+      "caller": "00bb6870",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7c87",
+      "native": "EAX",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7d1a",
+      "native": "00bf55be",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7d38",
+      "native": "EAX",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7de8",
+      "native": "00bb5630",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7e06",
+      "native": "00bb6870",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7e16",
+      "native": "00bb7a20",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7e2c",
+      "native": "00bf65ac",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7e59",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7e60",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7ec0",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7ed6",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7ee7",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7f2a",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7f3d",
+      "native": "00a40d60",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7f6b",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7f72",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7fea",
+      "native": "0041dd40",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8005",
+      "native": "00bf7680",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8027",
+      "native": "0041dd40",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb803b",
+      "native": "00bf7680",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb805e",
+      "native": "00bb7ba0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8070",
+      "native": "00427110",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb807a",
+      "native": "00bf6989",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb809d",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80a4",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80bf",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80c6",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80d3",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80ed",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb80fa",
+      "native": "00bf6713",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8108",
+      "native": "00bb5630",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8125",
+      "native": "0041dd40",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8139",
+      "native": "00bf7680",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb815f",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8166",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8199",
+      "native": "00bb5630",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb81ac",
+      "native": "004cdc20",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb81cf",
+      "native": "00419cc0",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb81d6",
+      "native": "00bd1510",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb821c",
+      "native": "00bf65ac",
+      "caller": "00bb7c50",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7954",
+      "native": "dword ptr [0x00ce2220]",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7964",
+      "native": "EAX",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb796b",
+      "native": "004254b0",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb797b",
+      "native": "00bb71f0",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7999",
+      "native": "00bb6220",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb79a2",
+      "native": "00bf65ac",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb79bd",
+      "native": "00bb5380",
+      "caller": "00bb7920",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7b83",
+      "native": "00bb7920",
+      "caller": "00bb7b80",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb7b90",
+      "native": "00bf65ac",
+      "caller": "00bb7b80",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8264",
+      "native": "00bb5590",
+      "caller": "00bb8240",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8275",
+      "native": "00736c30",
+      "caller": "00bb8240",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb82af",
+      "native": "004254b0",
+      "caller": "00bb8240",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb82c8",
+      "native": "EAX",
+      "caller": "00bb8240",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb82cf",
+      "native": "00bb7c50",
+      "caller": "00bb8240",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8311",
+      "native": "dword ptr [0x00ce2218]",
+      "caller": "00bb82f0",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8328",
+      "native": "00bf7fbf",
+      "caller": "00bb82f0",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8347",
+      "native": "00bf681b",
+      "caller": "00bb82f0",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb8362",
+      "native": "00bb8240",
+      "caller": "00bb82f0",
+      "evidence": "Current verified-target export; original assembly call operands."
+    },
+    {
+      "address": "00bb837a",
+      "native": "dword ptr [0x00ce2210]",
+      "caller": "00bb82f0",
+      "evidence": "Current verified-target export; original assembly call operands."
+    }
+  ],
+  "library_contracts": [
+    {
+      "address": "00bb7a20",
+      "operation": "append actual24h file record",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bb7ba0",
+      "operation": "append actual14h directory record",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00a40d60",
+      "operation": "insert DWORD with checked iterator",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bb6220",
+      "operation": "destroy file range; ECX begin/EDX end/RET8",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bb6e60",
+      "operation": "destroy file vector",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bb71f0",
+      "operation": "destroy directory vector",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bb7580",
+      "operation": "five-byte jump to BB71F0",
+      "reconstructed_here": false
+    },
+    {
+      "address": "00bf6713",
+      "operation": "invalid parameter diagnostic",
+      "reconstructed_here": false
+    }
+  ],
+  "eh": {
+    "parser_funcinfo": "00dfe278",
+    "parser_map": "00dfe29c",
+    "parser_chains": {
+      "0": [
+        -1
+      ],
+      "1": [
+        0,
+        -1
+      ],
+      "2": [
+        -1
+      ],
+      "3": [
+        2,
+        -1
+      ],
+      "4": [
+        2,
+        -1
+      ],
+      "5": [
+        -1
+      ],
+      "6": [
+        -1
+      ]
+    },
+    "parser_scratch_owned_by_eh": false,
+    "constructor_funcinfo": "00dfe2ec",
+    "destructor_funcinfo": "00dfe254",
+    "constructor_and_destructor_chain": "directory vector -> file vector -> base",
+    "cache_cleanup_action": "00cc4740..00cc474a; captured allocation only; remains armed through LeaveCriticalSection",
+    "native_FH3_SEH_execution_claimed": false
+  },
+  "dependency_correction": {
+    "address": "0041e870",
+    "source": "src/native_physical_file_date.cpp",
+    "change": "Only actual-header constructor copy uses memmove for original BF7680 backward-overlap behavior.",
+    "call_site": "0041e8b4",
+    "library_evidence": "00bf769a -> 00bf7844",
+    "extra_reconstructed_body_count": 0
+  },
+  "independent_review": {
+    "directory": "J:/PROG/battlestations-pacific-decompile-orch2-stream-copy-ay/local/native-ay-mpak-review",
+    "manifest_sha256": "db3d780a0ce4d2849ab5fb5f8c707b9d08d882f71f7c1779e355b68e9b51e4fb",
+    "review_sha256": "b46ab4cb2d445075330abca3a0b2eaba167c89655da6c917ad3ee528f2649259",
+    "result": "No remaining concrete discrepancy after overlap and byte-load wording corrections."
+  },
+  "validation": {
+    "strict_win32": {
+      "commit": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "log": "local/native-ay-integrated-build02.log",
+      "sha256": "4b13cc0c0eb7f0d93e2aeba0267e82358163b53de4f1b6770dc6a7d70f2c732f",
+      "result": "passed"
+    },
+    "ctest": {
+      "result": "passed",
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "count": 2
+    },
+    "native_source_fixture": {
+      "family": "provider",
+      "attempt": "local/native-ay-integrated/provider/attempt03",
+      "manifest_execution_head": "7665d4eb69556b3a88c6b7cf857749037e521a11",
+      "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+      "before_sha256": "026d6998746175f7538acd044048d8f467d4d3fdf9c1bfd6ce4527a7cd090a3d",
+      "after_sha256": "9dc76c318699300b6dcdee0606f9d6c22bbd414889e3c86f2e4ed507cf49025a",
+      "native_source_comparisons_or_states": 3,
+      "checks": 3484,
+      "source_only_cases": 1,
+      "reconstructed_complete_bodies": 9,
+      "reconstructed_native_bytes": 2418,
+      "frozen_inputs": 757,
+      "physical_files": 767,
+      "linked_objects": 125,
+      "binary_pairs": [
+        {
+          "case": 0,
+          "native": "case_0_native.bin",
+          "source": "case_0_source.bin",
+          "bytes": 1328,
+          "sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "source_sha256": "cf708a5618a5055a9278e82db1876fcc73a6011a561fee8514373fed0f89718d",
+          "equal": true
+        },
+        {
+          "case": 1,
+          "native": "case_1_native.bin",
+          "source": "case_1_source.bin",
+          "bytes": 1348,
+          "sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "source_sha256": "a6ce7c90dab1433e2ef4f5c80d292e305ffe1b1141eb97062898d65ace8d848d",
+          "equal": true
+        },
+        {
+          "case": 2,
+          "native": "case_2_native.bin",
+          "source": "case_2_source.bin",
+          "bytes": 148,
+          "sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "source_sha256": "9dd86edc685c313aad394855f5fb7a78d21bd5650d0d5a92a4517a33142f7bf4",
+          "equal": true
+        }
+      ],
+      "core_library_sha256": "6a2ce7c28bc5499f818da889dee7624a5dd144d1809e0d58ddf3684296c322d5",
+      "provider_scope": "nine reconstructed provider/parser/destructor/cache bodies; generated populated archives and actual raw lifetime owners",
+      "source_only_scope": "first-read exception retains held lock and opened stream, releases provider allocation/base",
+      "oracle_scope": "52 original STL or support spans, 6523 bytes, outside reconstructed provider coverage; normal operations called on both sides",
+      "original_STL_or_support_oracle_bodies": 52,
+      "original_STL_or_support_oracle_bytes": 6523,
+      "source_only_output_bytes": 204,
+      "generated_archive": {
+        "files": 3,
+        "offsets": 6,
+        "directories": 2,
+        "members": 5
+      },
+      "failed_attempts_retained": [
+        "local/native-ay-integrated/provider/attempt01",
+        "local/native-ay-integrated/provider/attempt02"
+      ],
+      "failure_correction": "Harness omitted CE2220 InterlockedDecrement binding. AV located at imported thunk 00A056E8; attempt03 binds the verified actual Win32 import. Production source unchanged."
+    },
+    "call_rows": {
+      "direct_checked": 62,
+      "failed": 0,
+      "indirect_manually_reviewed": 7
+    },
+    "native_overlap_copy_execution": false
+  },
+  "limitations": [
+    "Original STL implementations remain explicit contracts, not reconstructed source.",
+    "New C++ interfaces are not drop-in ABI/FH3 replacements.",
+    "No native FH3/SEH, arbitrary stack-spill alias, simultaneous cleanup failure or short-read indeterminate-byte proof.",
+    "No installed archive fixture or gameplay validation.",
+    "BF7680 backward-overlap correction is assembly-reviewed; fixture binds host CRT memmove on both sides and does not independently execute that original library copy."
+  ]
+}
