@@ -1,0 +1,171 @@
+{
+  "packet": "orch6_observer_raw_lifetime_q",
+  "status": "shared_raw_lifetime_adapter_build_and_source_lifecycle_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/observer_lifetime.cpp",
+  "header": "include/bsp/observer_lifetime.hpp",
+  "integration_sources": [
+    "src/native_singleton_destruction.cpp",
+    "src/game_hosts_singletons.cpp"
+  ],
+  "calls": [
+    {
+      "address": "006942A6",
+      "native": "00415350",
+      "function": "00694280",
+      "contract": "First actual publication lookup; capture returned manager+10 section."
+    },
+    {
+      "address": "006942DC",
+      "native": "00BF681B",
+      "function": "00694280",
+      "contract": "Allocate raw8-byte observer lock owner; native CRT behavior remains existing allocation boundary."
+    },
+    {
+      "address": "006942F3",
+      "native": "00694200",
+      "function": "00694280",
+      "contract": "Construct before publishingE198E0; preserve explicit null branch and constructor exception cleanup."
+    },
+    {
+      "address": "00694306",
+      "native": "00415350",
+      "function": "00694280",
+      "contract": "Second fresh actual manager lookup after publication."
+    },
+    {
+      "address": "00694314",
+      "native": "00BD0C30",
+      "function": "00694280",
+      "contract": "Register freshly rereadE198E0 in second manager; keep first captured section through release."
+    },
+    {
+      "address": "0069422B",
+      "native": "00BD1860",
+      "function": "00694200",
+      "contract": "Reuse actual malloc-backed raw1Ch tracked-section creation, store+4."
+    },
+    {
+      "address": "00694EAC",
+      "native": "0041CC80",
+      "function": "00694EA0",
+      "contract": "Pass actual owner+4 slot to paired native release; retain null-slot policy."
+    },
+    {
+      "address": "00694EC9",
+      "native": "00BF65AC",
+      "function": "00694EA0",
+      "contract": "Free captured owner iff flags&1 after clearingE198E0 and writingCE3818."
+    },
+    {
+      "address": "00BD0485",
+      "native": "00694EA0",
+      "function": "00BD0400",
+      "kind": "indirect",
+      "contract": "Popped owner currentCF7E70 profile resolves through verified slot0 wordA04E6900 atCF7E70; pass captured owner andflags1."
+    }
+  ],
+  "original_abi": {
+    "00694280": "No inputs; EAX pointer; RET",
+    "00694200": "ECX raw8-byte storage; EAX original pointer; RET",
+    "00694EA0": "ECX owner; stackflags; RET4; EAX original address bits",
+    "00BD0400": "ECX rawmanager; no stack inputs; RET"
+  },
+  "binding": "Existing borrowed SoundLifetimeAccess/CapturedSoundLifetimeSection support both actual01090AA0 publication and preexisting semantic fixture domain. Historical sound name retained; no duplicate manager or guard implementation.",
+  "native_profile": {
+    "table": "00CF7E70",
+    "slot0": "00694EA0",
+    "live_slot_bytes": "a0 4e 69 00"
+  },
+  "constructor_deleter_pair": "create_native_tracked_critical_section_00bd1860 and release_native_tracked_critical_section_0041cc80; the former convenience new/delete pair is no longer used by this observer owner.",
+  "runtime_hook": "GameSingletonHost::bind_observer_lifetime installs the borrowed deleting context before registration; caller keeps it alive through shutdown and uses the same host publication.",
+  "no_ghidra_function": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctest": "Both existing CTests passed",
+    "source_fixture": "PASS: one raw manager, one observer lock, shared pair refcount, concrete edge delete, raw manager profile drain; no second lifetime domain",
+    "native_differential": false,
+    "new_permanent_tests": 0,
+    "fixture_inputs": "One actual rawmanager publication, explicit empty endpoint arrays and empty dispatch vector, valid borrowed service context.",
+    "initial_fixture_correction": "Initial fixture incorrectly expected the generic edge-deletion service to be called forCF7E64. Existing remove_from_endpoints_and_delete already dispatches this known canonical profile directly. Preserved failed source/executable; corrected only that fixture expectation after inspecting existing source and native call contract.",
+    "limitations": "This is a focused source lifecycle integration check. It does not reconstruct endpoint constructors or static dispatch production, test arbitrary callbacks/allocator faults/concurrency, prove native-byte equivalence of the adapter, or establish game execution."
+  },
+  "source_hashes": {
+    "include/bsp/observer_lifetime.hpp": "7621b1bbf7c011da694b58ee4592aa3249167ab70805e2567afdfe639644bd6b",
+    "src/observer_lifetime.cpp": "5d258582be7967e9665411cbe4998edaf2f03dd074838c1e6686fba5bcafab48",
+    "include/bsp/native_singleton_destruction.hpp": "d0e7a8e085a4af6a7c13919eb1a74c3d0368d635660a6b5bba5a9378158715a3",
+    "src/native_singleton_destruction.cpp": "8e503e5014ec2aed387d4aa224e9fd1aa78a210c7acb3898fcf506454d351683",
+    "include/bsp/game_hosts_singletons.hpp": "f6eff262b5103e909df42b97793f931ef5a3b46bd51e1573a0265c080f3311a9",
+    "src/game_hosts_singletons.cpp": "e4a49bb4d1a55e6510c191352d2755240d25886be81c3bb5ae56788686a94682",
+    "src/sound_lifetime_access.cpp": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a",
+    "src/native_renderer_worker_lifetime.cpp": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+    "src/native_tracked_critical_section_release.cpp": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+    "src/observer_edges.cpp": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+  },
+  "artifacts": [
+    {
+      "path": "local/observer_raw_lifetime_probe.cpp",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\observer_raw_lifetime_probe.cpp",
+      "bytes": 4081,
+      "sha256": "891670ed81d1b94c4639b3fcebe6cf3625dd1647f1d24579f81ed643ce0a873d"
+    },
+    {
+      "path": "local/build_observer_raw_lifetime_probe.cmd",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\build_observer_raw_lifetime_probe.cmd",
+      "bytes": 498,
+      "sha256": "4b72a432da304f64e5ec39a7494fdffe15c866a627339068a6cd25f048013466"
+    },
+    {
+      "path": "local/observer_raw_lifetime_probe.exe",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\observer_raw_lifetime_probe.exe",
+      "bytes": 226304,
+      "sha256": "f97c78cf7d78e6f00723342a7f0498bf37c206f8e650fe6ae19403bb0842b533"
+    },
+    {
+      "path": "local/observer_raw_lifetime_probe_result.txt",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\observer_raw_lifetime_probe_result.txt",
+      "bytes": 140,
+      "sha256": "32ad0c571560614fde3f976886ae8afcbf918e1c15e8a0b2c9c24f14f63e529c"
+    },
+    {
+      "path": "local/observer_raw_lifetime_probe_failed_initial.cpp",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\observer_raw_lifetime_probe_failed_initial.cpp",
+      "bytes": 4061,
+      "sha256": "3dc0656df43e4beaeb7b49e251b032664e1eaf57e441e550f8e6c9e7f7445e0a"
+    },
+    {
+      "path": "local/observer_raw_lifetime_probe_failed_initial.exe",
+      "archived": "local\\observer_raw_lifetime_evidence\\local\\observer_raw_lifetime_probe_failed_initial.exe",
+      "bytes": 226304,
+      "sha256": "bd7895701b2a3ea9c5cc3aa77ac94a2fdb6ed559f6b7ce2369c51e16ee236e21"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "archived": "local\\observer_raw_lifetime_evidence\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 54296206,
+      "sha256": "85dd310a235914d8be675910590482aa1fc72e3552b9c138aa27c369be515884"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "archived": "local\\observer_raw_lifetime_evidence\\build\\win32\\Release\\bsp_lua511.lib",
+      "bytes": 455244,
+      "sha256": "ae055a90b601dd5d43fad2b12bdc02ee54c0988981d6bc970b317102361fcffa"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "archived": "local\\observer_raw_lifetime_evidence\\build\\win32\\Release\\bsp_zlib121.lib",
+      "bytes": 71906,
+      "sha256": "596ca481fe038e7be5f956bbf2540e74b3f4982752d88d022ffc0422d64cab26"
+    }
+  ],
+  "limits": [
+    "Application-level observer creation remains unbound until actual dispatch static initialization and complete node/endpoint ownership are integrated.",
+    "The existing semantic fixture domain remains supported but must not be created as another application domain.",
+    "Fixed deleting profiles remain a finite source map, not arbitrary original virtual dispatch; missing context still fails explicitly.",
+    "Original FH3/SEH, raw callable ABI, allocator handler mutation and original-game gameplay remain unproven.",
+    "The same borrowed manager publication and observer context must remain live through the raw manager drain."
+  ]
+}

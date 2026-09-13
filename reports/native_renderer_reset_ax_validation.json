@@ -1,0 +1,1716 @@
+{
+  "tested_commit": "16dcc9e774a8d33eab4cb9565155d4c151bbd242",
+  "reviewed_source_commit": "91a4d59c82f680586c3cf6ab0fd76881d6c2432f",
+  "build": "Strict MSVC Win32 passed; local/ax-final-combined-build.log",
+  "existing_ctests_passed": 2,
+  "source_header_hashes": {
+    "src/native_render_queue_constructor.cpp": "d90694996abe427170c9b8943605a50127f4d708a8206c46338ae9da5fe36bef",
+    "include/bsp/native_render_queue_constructor.hpp": "63e1fb81ede2d96f0ab92078b899d0f18620fe9ddbe5476bc8a439442503f00a",
+    "src/native_renderer_presentation_mode.cpp": "2628f60cfda70f1674cc19b48a22804d39c30de407492d3ca41b015a81ab320f",
+    "include/bsp/native_renderer_presentation_mode.hpp": "482940fce0a16120e200e9de36062a334f8c394cc155722b8e3e14c20c4a6925",
+    "src/native_renderer_reset_process.cpp": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+    "include/bsp/native_renderer_reset_process.hpp": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce"
+  },
+  "library_sha256": {
+    "bsp_core.lib": "3aae34a4ddd99dc089d86207adb678815e4a511dab19773664e0380be49495f0",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "current_library_replays": {
+    "commit": "16dcc9e774a8d33eab4cb9565155d4c151bbd242",
+    "passed": true,
+    "libraries": {
+      "bsp_core.lib": "3aae34a4ddd99dc089d86207adb678815e4a511dab19773664e0380be49495f0",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "results": [
+      {
+        "fixture_source_hashes": {
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\capture.py": "f25b28d9dae060bf7909812e8569eba88b6421a328fba11c82f158c694ee14c0",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\environment.hpp": "be830be362bcea11e38d74cc82b272e3d9d7d997b1326a6d982aca8feabeb634",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\finalize_ax.py": "4d6c20042e69758684406b8fd8a35edc1e25fed20e3ad5543e7efec2282bedd4",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\make_report_ax.py": "5edb3d477ed044c4f6490dfd73131dcefcb5c4649317047ee564babc40f23c9f",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\prepare_ax.py": "27681be5e47474e4814080dc637253a29b1a95f1bc225ed370104448e8988a4d",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\probe.cpp": "bd6458cd32ae3d37507325bb3d69c67b3041f992febb61ec3a33c7d3d9738fbb",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\queue_bytes.hpp": "ce9a3040f368b0e766f1a984beba752fd0119f4e83a8f1232fcaa1ca83be5fcb",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\replay_ax.py": "c82ce6493c4efb46711be05a183001ebd0ffcb848fbe0c5749461ad392435a01",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\run.ps1": "f99f6be844431e0b955061191370ee5ed68c21446a7e2dcc0286f736c48be038",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\stop_bytes.hpp": "444344c8970ffe54fc9144fe44330e11c9388aadbc09011bb14a81fb0e6e7b01",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\stop_fixture.hpp": "51bb04d4188e8be5f738731a1787ee2ecc6d86f14267ff43c6da966c171a1ab4",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\worker_capture\\native_render_queue_constructor.cpp": "d90694996abe427170c9b8943605a50127f4d708a8206c46338ae9da5fe36bef",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\worker_capture\\native_render_queue_constructor.hpp": "63e1fb81ede2d96f0ab92078b899d0f18620fe9ddbe5476bc8a439442503f00a"
+        },
+        "key": "queue",
+        "passed": true,
+        "returncode": 0,
+        "source": "C:\\Users\\sqz269\\bsp-ax-render-queue\\probe.cpp",
+        "source_sha256": "bd6458cd32ae3d37507325bb3d69c67b3041f992febb61ec3a33c7d3d9738fbb",
+        "inputs": [
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\probe.cpp"
+        ],
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "compiler_arguments": [
+          "/nologo",
+          "/EHsc",
+          "/std:c++17",
+          "/W4",
+          "/WX",
+          "/O2",
+          "/Oy-",
+          "/MD",
+          "/Gy",
+          "/Gw",
+          "/fp:strict",
+          "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+          "C:\\Users\\sqz269\\bsp-ax-render-queue\\probe.cpp",
+          "/FoC:\\Users\\sqz269\\bsp-ax-render-queue\\ax_current_queue_probe.obj",
+          "/FeC:\\Users\\sqz269\\bsp-ax-render-queue\\ax_current_queue_probe.exe",
+          "/link",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+          "user32.lib",
+          "d3d9.lib",
+          "advapi32.lib",
+          "shell32.lib",
+          "/MANIFEST:EMBED",
+          "/SAFESEH:NO",
+          "/OPT:REF",
+          "/OPT:NOICF",
+          "/INCREMENTAL:NO",
+          "/BASE:0x30000000",
+          "/DYNAMICBASE",
+          "/HEAP:65536,4096"
+        ],
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-current-queue.log",
+        "log_sha256": "a7b145a367d0c04a23d7cb2729b6b1c7a4f7f1b0f570109e675540ccae09b67d",
+        "executable": "C:\\Users\\sqz269\\bsp-ax-render-queue\\ax_current_queue_probe.exe",
+        "executable_sha256": "ed784a5d2a13a9796dc4ac330eecad8d5233098f2e2d6a67dd45feb4e4abbfea",
+        "attempts": 1,
+        "retry_policy": "only pre-execution occupied original page exit77, up to12",
+        "pass_lines": [
+          "PASS B1F280 complete constructor: 5 original/source comparisons 36650 postimage bytes 186 event words; skip-stop hostile preimage, current real renderer/COM stop with genuine Sleep100, real worker ack, callback headers/context/padding, original FH3 early and nested depth exceptions through all three complete cleanup providers. No gameplay or general native ABI/SEH claim."
+        ],
+        "worker_archive": "C:\\Users\\sqz269\\bsp-ax-render-queue\\worker_capture.zip",
+        "worker_archive_sha256": "440f61c3d5abecbb2e259fda3cfadee906a3ec398cb8e8210b8d19445af9de67"
+      },
+      {
+        "fixture_source_hashes": {
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\aw_probe_before_mode.cpp": "8d050ccbbbc5b63ec9de583da9db0413e9329014223e198cb32743df6e33dfc4",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\capture.py": "6b81c5e675cc9cfdb1ceaf3f27e5d5acbca8b79f268d8190a98ccfd452d81796",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\capture_mode.py": "435ac25da43098c305b2a7d928f90d49f190d08d5951556dc74128bed0f538d8",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\mode_bytes.hpp": "9b088bbe986ff852ac3886057566523204c4e2d14791f32dedc5e7f81babe9f8",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\prepare_mode_probe.py": "a7ade3fbb067005e622e2d9a0b48c56e0f832f520b2912651414b198278505ac",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\probe.cpp": "b3f4995931e8452e52a7cbae9476560ba86da828ebbfe8113fb980be28f1fbf8",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\run.ps1": "b11b8ddfcd65627ee88ac1d0601b6fa7140a28d1319071d649a38d86dae598f8",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\strict_mode.ps1": "a5cc6ab67e4ccac7a56716b5e8ee37e7f1b422625933229742399dedb5a162ff",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\reviewed_source\\native_renderer_presentation_mode.cpp": "2628f60cfda70f1674cc19b48a22804d39c30de407492d3ca41b015a81ab320f",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\reviewed_source\\native_renderer_presentation_mode.hpp": "482940fce0a16120e200e9de36062a334f8c394cc155722b8e3e14c20c4a6925"
+        },
+        "key": "mode",
+        "passed": true,
+        "returncode": 0,
+        "source": "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\probe.cpp",
+        "source_sha256": "b3f4995931e8452e52a7cbae9476560ba86da828ebbfe8113fb980be28f1fbf8",
+        "inputs": [
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\probe.cpp"
+        ],
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "compiler_arguments": [
+          "/nologo",
+          "/EHsc",
+          "/std:c++17",
+          "/W4",
+          "/WX",
+          "/O2",
+          "/Oy-",
+          "/MD",
+          "/Gy",
+          "/Gw",
+          "/fp:strict",
+          "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+          "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\probe.cpp",
+          "/FoC:\\Users\\sqz269\\bsp-ax-presentation-mode\\ax_current_mode_probe.obj",
+          "/FeC:\\Users\\sqz269\\bsp-ax-presentation-mode\\ax_current_mode_probe.exe",
+          "/link",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+          "user32.lib",
+          "d3d9.lib",
+          "advapi32.lib",
+          "shell32.lib",
+          "/MANIFEST:EMBED",
+          "/SAFESEH:NO",
+          "/OPT:REF",
+          "/OPT:NOICF",
+          "/INCREMENTAL:NO",
+          "/BASE:0x30000000",
+          "/DYNAMICBASE",
+          "/HEAP:65536,4096"
+        ],
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-current-mode.log",
+        "log_sha256": "884313ce95e28d1718be7af3859d18e2f25218f5ac89ae11514c78f22662bdaf",
+        "executable": "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\ax_current_mode_probe.exe",
+        "executable_sha256": "37b8e5ecd6c7fd479d57fd9dac4f888a4c2e4eff3d1cccea3f1418a5cf5c4980",
+        "attempts": 1,
+        "retry_policy": "only pre-execution occupied original page exit77, up to12",
+        "pass_lines": [
+          "PASS full B29E60 original/source9 comparisons 73440 bytes 3210 events; raw-byte matches,zero-size,interval,real HAL recreation and output mutation,seven incoming x87 values,current BeginScene/frame-active,current lifecycle replacement and nested original FH3 cleanup. No full ABI/concurrency/game claim."
+        ],
+        "worker_archive": "C:\\Users\\sqz269\\bsp-ax-presentation-mode\\worker_capture.zip",
+        "worker_archive_sha256": "2330be8b420e011a8542afa78e1954194ac9b5efd25862c6a74a9e7b83188f2a"
+      },
+      {
+        "fixture_source_hashes": {
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\finalize.py": "5628296cdd775f243b7093a69fd1d2d45c51eb41ab340fcf844096f2ba0330cc",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\prepare_fixture.py": "0c41feb410bfd29a95972fe2649b597721dd119904c15b50bb2a6c8d1280c154",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\replay.py": "95103a711ebc18d79987db84a5782aed2a0dfcfacd61da9e14e28ad03f9be4dd",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_bytes.hpp": "0ec143e71c76f493047cb01085b4febaec1842193bf3c3d11b114f9118ba3fd7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1": "ecc59fd2f2207ef2584cc8eb62274e9653122ae4fe7893803c035d8f15078ff8"
+        },
+        "key": "reset",
+        "passed": true,
+        "returncode": 0,
+        "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp",
+        "source_sha256": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+        "inputs": [
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp"
+        ],
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "compiler_arguments": [
+          "/nologo",
+          "/EHsc",
+          "/std:c++17",
+          "/W4",
+          "/WX",
+          "/O2",
+          "/Oy-",
+          "/MD",
+          "/Gy",
+          "/Gw",
+          "/fp:strict",
+          "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp",
+          "/FoC:\\Users\\sqz269\\bsp-ax-renderer-reset\\ax_current_reset_probe.obj",
+          "/FeC:\\Users\\sqz269\\bsp-ax-renderer-reset\\ax_current_reset_probe.exe",
+          "/link",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+          "user32.lib",
+          "d3d9.lib",
+          "advapi32.lib",
+          "shell32.lib",
+          "/MANIFEST:EMBED",
+          "/SAFESEH:NO",
+          "/OPT:REF",
+          "/OPT:NOICF",
+          "/INCREMENTAL:NO",
+          "/BASE:0x00400000",
+          "/DYNAMICBASE:NO",
+          "/FIXED",
+          "/HEAP:65536,4096"
+        ],
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-current-reset.log",
+        "log_sha256": "fd9e127dd54a389e67dab2d63fe557c53dc99061e72e6367eb3cc6705d65070d",
+        "executable": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\ax_current_reset_probe.exe",
+        "executable_sha256": "7585b192f029a5f208660312b7a27309d1f43d9e268dbe241e350be8f35d6322",
+        "attempts": 1,
+        "retry_policy": "none",
+        "pass_lines": [
+          "PASS full B2ABD0 original/source14 comparisons 113904 bytes 6384 events: raw BEC230; real private HAL Reset; observed real Sleep; controlled focus/cooperative/positive-HRESULT branches; full native AW fallback; original FH3 cleanup. No foreground/display mutation or gameplay claim."
+        ],
+        "worker_archive": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\worker_capture.zip",
+        "worker_archive_sha256": "4176e9f909301485b39f4186f329758e81cb15f00291059ebc1fab39f60db9e0",
+        "fixture_image_reservation": {
+          "generator": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py",
+          "generator_sha256": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+          "record": {
+            "input_sha256": "c6208eb056b4294d30cfe57448b39a5adbd4e772be22d0d5b1592800fe524339",
+            "output_sha256": "7585b192f029a5f208660312b7a27309d1f43d9e268dbe241e350be8f35d6322",
+            "image_base": "00400000",
+            "section_name": ".awslot",
+            "section_rva": "00029000",
+            "virtual_size": "009d7000",
+            "inclusive_address_range": [
+              "00429000",
+              "00dfffff"
+            ],
+            "native_write_ranges": [
+              "00b10000..00b6ffff",
+              "00be0000..00beffff",
+              "00bf0000..00bfffff",
+              "00cb0000..00cbffff",
+              "00ce0000..00ceffff",
+              "00d10000..00d1ffff",
+              "00d50000..00d6ffff",
+              "00df0000..00dfffff"
+            ],
+            "raw_file_offset": 157184,
+            "raw_size": 512,
+            "characteristics": "c0000040",
+            "existing_section_bytes_unchanged": true,
+            "parent_native_bytes_unchanged": true,
+            "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+          },
+          "report_sha256": "7bddf1ea56c94d436bb273f3497a7262afb000eaf7c268d2e4cdff7a1280e6cd"
+        }
+      }
+    ]
+  },
+  "implemented_native_normal_bodies": 4,
+  "saved_function_names_and_original_signatures": 4,
+  "defined_analysis_only_EH_handlers": [
+    "00cbcc0e..00cbcc17",
+    "00cbd348..00cbd351",
+    "00cbd408..00cbd411"
+  ],
+  "full_stored_function_body_readback_passed": true,
+  "checked_numeric_report_call_rows": 39,
+  "failed_call_rows": 0,
+  "indirect_targets": "Numeric call-row checks do not mechanically prove indirect targets; use individual current-profile/assembly/fixture evidence.",
+  "reset_fixture": {
+    "status": "pass",
+    "kind": "external_focused_full_original_bytes_vs_current_library_fixture",
+    "created_utc": "2026-09-13T06:48:33.303519+00:00",
+    "summary": {
+      "full_reset_parent_pairs": 14,
+      "raw_window_getter_pairs": 14,
+      "normalized_state_bytes_compared": 113904,
+      "event_dwords_compared": 6384,
+      "real_hal_reset_calls": 6,
+      "full_aw_recreation_calls": 4,
+      "native_fh3_exception_pairs": 1
+    },
+    "routines": [
+      {
+        "address": "00b2abd0",
+        "inclusive_end": "00b2ae1c",
+        "bytes": 589,
+        "native_abi": "ECX actual renderer, no stack arguments, RET; source takes an additional borrowed context",
+        "coverage": "entire original body executes; 18 exact global/handler operand relocations only"
+      },
+      {
+        "address": "00bec230",
+        "inclusive_end": "00bec233",
+        "bytes": 4,
+        "native_abi": "ECX actual platform, EAX HWND, RET",
+        "coverage": "unaltered MOV EAX,[ECX+30]; RET body; paired raw getter and reached Reset callsite"
+      }
+    ],
+    "native_evidence": {
+      "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "upstream_read_only_fixture": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4",
+      "upstream_pins": {
+        "environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+        "recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+        "reserve_image_section.py": "afd0708ea1a0b9919d9be00335134010f69a43a905e698eee2bfbb470e6eb8e1",
+        "image_reserved_probe.cpp": "82cc133af916b0849a84344c7e61cf173b66f9cd5c4dc91a523a90dee6af6265",
+        "run_image_reserved.ps1": "bbae630f12b4a8a4d7568ad6c3e215e00eeec267a6d9bc112c2fe01321450947"
+      },
+      "spans": [
+        {
+          "start": "00b2abd0",
+          "end": "00b2ae1c",
+          "length": 589,
+          "sha256": "923113874aa3e3eca6eb973e7ce7b7f157d10fb53c3d4acfc4d16cee80b8567a"
+        },
+        {
+          "start": "00bec230",
+          "end": "00bec233",
+          "length": 4,
+          "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281"
+        },
+        {
+          "start": "00cbd400",
+          "end": "00cbd411",
+          "length": 18,
+          "sha256": "d3176069d18c7a735323504c56889518e3563752daccbf853ec911ebeab0f655"
+        },
+        {
+          "start": "00df5c50",
+          "end": "00df5c7b",
+          "length": 44,
+          "sha256": "669a93d389a76979cc45c9e48183cef9cb97552df17a80b43efe1a635206c407"
+        }
+      ],
+      "operand_relocations": [
+        {
+          "address": "00b2abd9",
+          "expected": "00cbd408"
+        },
+        {
+          "address": "00b2abed",
+          "expected": "0108d6dc"
+        },
+        {
+          "address": "00b2ac0f",
+          "expected": "0108d4c8"
+        },
+        {
+          "address": "00b2ac17",
+          "expected": "0108d6dc"
+        },
+        {
+          "address": "00b2ac4a",
+          "expected": "0108d4b8"
+        },
+        {
+          "address": "00b2ac4f",
+          "expected": "0108d4b9"
+        },
+        {
+          "address": "00b2ac7e",
+          "expected": "0108d4c4"
+        },
+        {
+          "address": "00b2ac89",
+          "expected": "0108d4c4"
+        },
+        {
+          "address": "00b2ac9b",
+          "expected": "0109cf04"
+        },
+        {
+          "address": "00b2acbd",
+          "expected": "0108d4c4"
+        },
+        {
+          "address": "00b2acd5",
+          "expected": "0108d4b8"
+        },
+        {
+          "address": "00b2ace0",
+          "expected": "0109cf04"
+        },
+        {
+          "address": "00b2acf8",
+          "expected": "0108d6dc"
+        },
+        {
+          "address": "00b2ad49",
+          "expected": "0109cf04"
+        },
+        {
+          "address": "00b2adc6",
+          "expected": "0108d4b8"
+        },
+        {
+          "address": "00b2adcc",
+          "expected": "0108d4b9"
+        },
+        {
+          "address": "00b2add4",
+          "expected": "0109cf04"
+        },
+        {
+          "address": "00b2adee",
+          "expected": "0108d6dc"
+        }
+      ]
+    },
+    "native_eh": {
+      "unwind_action": "00cbd400..00cbd407",
+      "handler": "00cbd408..00cbd411",
+      "state_map": "00df5c50..00df5c57",
+      "func_info": "00df5c58..00df5c7b",
+      "handler_registration": "only pushed handler immediate relocated to a fixture trampoline jumping to untouched native handler",
+      "shared_handler": "native BF6B43 jump bridges to host vcruntime140 __CxxFrameHandler3",
+      "observed": "controlled C++ int82 thrown by real SetTexture observation wrapper; original native cleanup and current source unwind leave optional depth/nesting zero and lifecycle depth zero"
+    },
+    "runtime": {
+      "adapter": "NVIDIA GeForce RTX 5090",
+      "api": "real Direct3D9 HAL and installed D3DX9_40.dll",
+      "windows": "two hidden private STATIC windows, never shown/activated/focused; foreground and GetFocus state asserted unchanged around every invocation",
+      "real_reset": "three paired scenarios call real device Reset with exact live renderer+1A28 presentation storage; Reset return 0 observed in all six calls; internal driver cooperative queries pass through original HRESULT",
+      "controlled_results": "fixture-process IAT GetFocus wrapper invokes real API then supplies branch-selected private HWND/null; parent TestCooperativeLevel wrapper calls real method then returns selected HRESULT; case9 returns S_FALSE after real Reset success to prove exact-zero acceptance; GetCurrentThreadId wrapper calls real API and case13 changes only fixture synchronization mode",
+      "real_sleep": "immutable saved real Sleep export called with100ms each observed request; ordered snapshots include lost/pending flags",
+      "fallback": "original Reset invokes all1191 original B29670 bytes through its existing thirteen operand relocations; source Reset invokes full current library recreation; no callback-shaped replacement of recreation"
+    },
+    "provider_domain": {
+      "actual_storage": "borrowed raw renderer, same publication cells and synchronization globals, actual presentation output cells, actual physical/surface/retained owner layouts and admitted original profiles",
+      "constructed_providers": "current native memory stream constructor for retained inputs, current hardware-layout constructor, real D3D9 default surfaces/dynamic vertex and index buffers/managed2D cube volume textures, concrete pooled owner contexts",
+      "composition": "concrete current binding reset, dynamic release, resource release/restore, dynamic readiness, render-state/default/gamma, synchronization, layout and retained recreation providers; original vtable/dependency bridge code only adapts native ABI to those providers",
+      "runtime_subset": "nonempty one-node zero-stream hardware layout tree; three retained resource records; dynamic pooled vertex/index wrappers; live default color/depth surfaces; logical and shader arrays empty; online publication zero; gamma input equal to current gamma"
+    },
+    "normalization": "renderer device pointer replaced by one stable marker; physical/retained/layout COM outputs normalized to present/absent; all remaining renderer bytes and owner fields compared unchanged; paired snapshots contain8136bytes each and exact event DWORD traces",
+    "boundaries": [
+      "Controlled focus results do not prove actual focus integration, user window behavior, display loss, or real lost-device recovery.",
+      "The failing Reset branch uses injected positive S_FALSE after real HAL success; no actual HAL Reset failure was induced.",
+      "Exact adjacent pending-then-lost byte access ordering remains full assembly/current-source inspection, while pending reread during cooperative callback and fresh platform after Sleep have runtime evidence.",
+      "Gamma reaches the equal-value provider path; nontrivial x87 gamma conversion and SetGammaRamp are not newly validated here.",
+      "No complete nonvolatile-register/FPU/SEH/concurrency ABI equivalence or drop-in binary interface claim.",
+      "Startup platform/renderer producer closure and gameplay remain unproven.",
+      "Unreached provider boundary methods in reused Env fail fast; no missing call is silently stubbed."
+    ],
+    "cases": [
+      {
+        "case": 0,
+        "name": "wrong_render_thread_optional_guard",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 0,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 0,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-source.state.bin",
+            "length": 8136,
+            "sha256": "15ceacb3494c8f200bced6e7cfbc1deb926dc111bd5fe3992cb92e50c210c424"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-source.events.bin",
+            "length": 8,
+            "sha256": "a4dd39dd86aac2faa310ff75ea07671e1b457f39923ba27ce9c404419593168f"
+          }
+        }
+      },
+      {
+        "case": 1,
+        "name": "both_request_bytes_zero",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 1,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 1,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-source.state.bin",
+            "length": 8136,
+            "sha256": "eb4110bdb68bfb968c9f9848078a6ab5c87cd5026bded3aace6fe11b8acb62be"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-source.events.bin",
+            "length": 8,
+            "sha256": "e4f9a5d1f83e82a7547f3ac4b6256355f542a84f44e0cbb4428d1e36467bf6c1"
+          }
+        }
+      },
+      {
+        "case": 2,
+        "name": "device_lost_retry_becomes_ten",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 2,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 10,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 2,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 10,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-source.state.bin",
+            "length": 8136,
+            "sha256": "beb406de2230f5bfbedc1b3f266eb3a0464987b4fe5f19587493d62797fd5173"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-source.events.bin",
+            "length": 24,
+            "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+          }
+        }
+      },
+      {
+        "case": 3,
+        "name": "device_lost_retry_dword_wrap",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 3,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 3,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-source.state.bin",
+            "length": 8136,
+            "sha256": "634f72c1485f41f5e5f431ce09f03ad62f6d8f26baed534830fe0d772f0888fb"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-source.events.bin",
+            "length": 24,
+            "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+          }
+        }
+      },
+      {
+        "case": 4,
+        "name": "device_lost_threshold_captured_focus_platform_full_recreation",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 4,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 806
+          },
+          {
+            "case": 4,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 806
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-source.state.bin",
+            "length": 8136,
+            "sha256": "9781505848e37ac1a29b14b51f142b1b6b97ca1778018e525908a6cdc03b392f"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-source.events.bin",
+            "length": 3224,
+            "sha256": "ea536c5f245ea7c458487a97ae07f5a6454fc2c5ee9bdee945ab4d9a4dff49aa"
+          }
+        }
+      },
+      {
+        "case": 5,
+        "name": "cooperative_success_clears_pending_before_required_reload",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 5,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 5,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-source.state.bin",
+            "length": 8136,
+            "sha256": "467c7cb5766b8343c7183ee9071932b33b2366a1d1059478d52b0df0b18649eb"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-source.events.bin",
+            "length": 24,
+            "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+          }
+        }
+      },
+      {
+        "case": 6,
+        "name": "device_not_reset_skips_pending_reload_fresh_platform_window_real_reset",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 6,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1788
+          },
+          {
+            "case": 6,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1788
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-source.state.bin",
+            "length": 8136,
+            "sha256": "4a2edb88c67ef562458b2b9fe10780af4d57e31d8482ede9489a1d2fa8304ab9"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-source.events.bin",
+            "length": 7152,
+            "sha256": "14d3581fea89ac46596ef7f207513d89b4769a7d351f0cef0a851dc80fd38fca"
+          }
+        }
+      },
+      {
+        "case": 7,
+        "name": "pending_only_real_reset_success_without_parent_cooperative_call",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 7,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 0,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1784
+          },
+          {
+            "case": 7,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 0,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1784
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-source.state.bin",
+            "length": 8136,
+            "sha256": "f67d6b715d06c8422c47ff482660a8fc42d680b640c9a430eb920a858a4b6051"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-source.events.bin",
+            "length": 7136,
+            "sha256": "31ed7250770eb0a53e4335b2cbd99f107a15445141f7852cdcdafec8c7b178f9"
+          }
+        }
+      },
+      {
+        "case": 8,
+        "name": "other_cooperative_hresult_late_focus_rejects_recreation",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 8,
+            "native": 1,
+            "sleep_count": 1,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 18
+          },
+          {
+            "case": 8,
+            "native": 0,
+            "sleep_count": 1,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 18
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-source.state.bin",
+            "length": 8136,
+            "sha256": "74fd74d79a20288278edb0ac0fa780589efd35bc52d1adf158fa83edd593cb89"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-source.events.bin",
+            "length": 72,
+            "sha256": "15c3e9e992207225335c4e860b6f0e89c3f228a95bf6517ad94bf03ffa2a1053"
+          }
+        }
+      },
+      {
+        "case": 9,
+        "name": "positive_reset_hresult_after_real_success_enters_full_recreation",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 9,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1922
+          },
+          {
+            "case": 9,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1922
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-source.state.bin",
+            "length": 8136,
+            "sha256": "aa65556572ceb21dca72cdafbe46dbce55de28320e2b301bf7eace2d66e388f8"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-source.events.bin",
+            "length": 7688,
+            "sha256": "86649fd70b6b114c16182b11ef948d6bcc6b7b56beecb2e124a1bfed85e1e252"
+          }
+        }
+      },
+      {
+        "case": 10,
+        "name": "native_fh3_release_exception_optional_guard_cleanup",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 10,
+            "native": 1,
+            "sleep_count": 1,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 82,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 27
+          },
+          {
+            "case": 10,
+            "native": 0,
+            "sleep_count": 1,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 82,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 27
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-source.state.bin",
+            "length": 8136,
+            "sha256": "e7739d50857769d7d816993539115d09cc2117601bd34a9bef2a4d2fa908e295"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-source.events.bin",
+            "length": 108,
+            "sha256": "a8d959ea14de020a7ef47e935117bfd5cf12a0a6ab5c9c71ffc06250d46617b9"
+          }
+        }
+      },
+      {
+        "case": 11,
+        "name": "device_lost_threshold_inactive_platform",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 11,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 11,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 11,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 11,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-source.state.bin",
+            "length": 8136,
+            "sha256": "b2d0d67a5bf5dc8eaed98c2647303292ae7d16c310c5092a21aabfefdc64a34b"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-source.events.bin",
+            "length": 24,
+            "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+          }
+        }
+      },
+      {
+        "case": 12,
+        "name": "early_focus_mismatch_has_no_sleep_or_reset",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 12,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 9
+          },
+          {
+            "case": 12,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 9
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-source.state.bin",
+            "length": 8136,
+            "sha256": "195eae8523d8ed2ec83b1d3c1711cc99d89dde821bbcb76cea944b6027f3a27a"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-source.events.bin",
+            "length": 36,
+            "sha256": "cd174a352f240b57f20ea7d559993aa066393bd4a83d9950422a10d46100b798"
+          }
+        }
+      },
+      {
+        "case": 13,
+        "name": "wrong_thread_current_mode_zero_skips_leave_after_entry",
+        "status": "pass",
+        "observations": [
+          {
+            "case": 13,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 13,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          }
+        ],
+        "paired_captures": {
+          "state": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-original.state.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-source.state.bin",
+            "length": 8136,
+            "sha256": "b054531500606675a729213ef63aba9ae934f310f155a9ce069f58e4e1db7928"
+          },
+          "events": {
+            "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-original.events.bin",
+            "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-source.events.bin",
+            "length": 8,
+            "sha256": "a4dd39dd86aac2faa310ff75ea07671e1b457f39923ba27ce9c404419593168f"
+          }
+        }
+      }
+    ],
+    "current_library_replay": {
+      "status": "pass",
+      "started_utc": "2026-09-13T06:46:21.526182+00:00",
+      "finished_utc": "2026-09-13T06:46:27.501515+00:00",
+      "root": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+      "root_head_before": "f66fd292500452abce432fc60e51b6efb343a31d",
+      "root_head_after": "f66fd292500452abce432fc60e51b6efb343a31d",
+      "mode": "probe_plus_current_three_libraries_only",
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1",
+        "-Root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+        "-LibraryRoot",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910"
+      ],
+      "compiler_translation_units": [
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp"
+      ],
+      "linked_libraries": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib"
+      ],
+      "exit_code": 0,
+      "before_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_reset_process.cpp": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_reset_process.hpp": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_device_recreation_actual.cpp": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_device_recreation_actual.hpp": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_extension.cpp.inc": "3b4cf2380db1b01fee6e515bf1e06940d8f6b92889a8a49e1b1750b22a8d0345",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_bytes.hpp": "0ec143e71c76f493047cb01085b4febaec1842193bf3c3d11b114f9118ba3fd7",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1": "ecc59fd2f2207ef2584cc8eb62274e9653122ae4fe7893803c035d8f15078ff8",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\prepare_fixture.py": "0c41feb410bfd29a95972fe2649b597721dd119904c15b50bb2a6c8d1280c154"
+      },
+      "after_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_reset_process.cpp": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_reset_process.hpp": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_device_recreation_actual.cpp": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_device_recreation_actual.hpp": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_extension.cpp.inc": "3b4cf2380db1b01fee6e515bf1e06940d8f6b92889a8a49e1b1750b22a8d0345",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_bytes.hpp": "0ec143e71c76f493047cb01085b4febaec1842193bf3c3d11b114f9118ba3fd7",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1": "ecc59fd2f2207ef2584cc8eb62274e9653122ae4fe7893803c035d8f15078ff8",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+        "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\prepare_fixture.py": "0c41feb410bfd29a95972fe2649b597721dd119904c15b50bb2a6c8d1280c154"
+      },
+      "changed_pins": [],
+      "case_observations": [
+        {
+          "case": 0,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        },
+        {
+          "case": 0,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        },
+        {
+          "case": 1,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        },
+        {
+          "case": 1,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        },
+        {
+          "case": 2,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 10,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 2,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 10,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 3,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 3,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 4,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 1,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 806
+        },
+        {
+          "case": 4,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 1,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 806
+        },
+        {
+          "case": 5,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 5,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 6,
+          "native": 1,
+          "sleep_count": 3,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 1,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1788
+        },
+        {
+          "case": 6,
+          "native": 0,
+          "sleep_count": 3,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 1,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1788
+        },
+        {
+          "case": 7,
+          "native": 1,
+          "sleep_count": 3,
+          "focus_count": 1,
+          "parent_cooperative_count": 0,
+          "reset_count": 1,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1784
+        },
+        {
+          "case": 7,
+          "native": 0,
+          "sleep_count": 3,
+          "focus_count": 1,
+          "parent_cooperative_count": 0,
+          "reset_count": 1,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 0,
+          "lost": 0,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1784
+        },
+        {
+          "case": 8,
+          "native": 1,
+          "sleep_count": 1,
+          "focus_count": 2,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 18
+        },
+        {
+          "case": 8,
+          "native": 0,
+          "sleep_count": 1,
+          "focus_count": 2,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 18
+        },
+        {
+          "case": 9,
+          "native": 1,
+          "sleep_count": 3,
+          "focus_count": 2,
+          "parent_cooperative_count": 1,
+          "reset_count": 1,
+          "recreation": 1,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1922
+        },
+        {
+          "case": 9,
+          "native": 0,
+          "sleep_count": 3,
+          "focus_count": 2,
+          "parent_cooperative_count": 1,
+          "reset_count": 1,
+          "recreation": 1,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 1922
+        },
+        {
+          "case": 10,
+          "native": 1,
+          "sleep_count": 1,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 82,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 27
+        },
+        {
+          "case": 10,
+          "native": 0,
+          "sleep_count": 1,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 82,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 27
+        },
+        {
+          "case": 11,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 11,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 11,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 11,
+          "normalized_bytes": 8136,
+          "event_words": 6
+        },
+        {
+          "case": 12,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 9
+        },
+        {
+          "case": 12,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 1,
+          "parent_cooperative_count": 1,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 9
+        },
+        {
+          "case": 13,
+          "native": 1,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        },
+        {
+          "case": 13,
+          "native": 0,
+          "sleep_count": 0,
+          "focus_count": 0,
+          "parent_cooperative_count": 0,
+          "reset_count": 0,
+          "recreation": 0,
+          "caught": 0,
+          "pending": 1,
+          "lost": 1,
+          "retries": 0,
+          "normalized_bytes": 8136,
+          "event_words": 2
+        }
+      ],
+      "comparisons": 14,
+      "total_normalized_state_bytes": 113904,
+      "total_event_words": 6384,
+      "log": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\current-library-final.log",
+      "log_sha256": "fd9e127dd54a389e67dab2d63fe557c53dc99061e72e6367eb3cc6705d65070d",
+      "probe_exe_sha256": "c0e0a622fec9784636e33ae13050b342146ba87392460fcffb2fdfef79a812ec"
+    },
+    "image_reservation": {
+      "input_sha256": "109f6212ab40804b31ce44d3a1d123be1c0baeb129f04c8918fc7be844370d30",
+      "output_sha256": "c0e0a622fec9784636e33ae13050b342146ba87392460fcffb2fdfef79a812ec",
+      "image_base": "00400000",
+      "section_name": ".awslot",
+      "section_rva": "00029000",
+      "virtual_size": "009d7000",
+      "inclusive_address_range": [
+        "00429000",
+        "00dfffff"
+      ],
+      "native_write_ranges": [
+        "00b10000..00b6ffff",
+        "00be0000..00beffff",
+        "00bf0000..00bfffff",
+        "00cb0000..00cbffff",
+        "00ce0000..00ceffff",
+        "00d10000..00d1ffff",
+        "00d50000..00d6ffff",
+        "00df0000..00dfffff"
+      ],
+      "raw_file_offset": 157184,
+      "raw_size": 512,
+      "characteristics": "c0000040",
+      "existing_section_bytes_unchanged": true,
+      "parent_native_bytes_unchanged": true,
+      "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+    },
+    "replay_command": "python C:/Users/sqz269/bsp-ax-renderer-reset/replay.py --root J:/PROG/battlestations-pacific-decompile-orch3-20260910 --label <new-label>",
+    "direct_compiler_script": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/sqz269/bsp-ax-renderer-reset/run.ps1 -Root J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+    "explicit_source_initial_mode": "Only add -WorkerSource to run.ps1, or --worker-source to replay.py, when deliberately validating source before library registration; default compiles only probe.cpp and links current three libraries.",
+    "capture_role": "Initial worker current-library capture; current_library_replays identifies the authoritative exact merged commit validation."
+  },
+  "fixture_coverage": {
+    "queue": "5 original/source pairs,36650 state bytes,186 event DWORDs; actual stop/COM/events/Sleep and two bounded native FH3 cleanup cases.",
+    "mode": "9 original/source pairs,73440 state bytes,3210 event DWORDs; raw six slots, real HAL recreation, current outputs/BeginScene, seven incoming x87 values and nested FH3 cleanup.",
+    "reset": "14 original/source pairs,113904 state bytes,6384 event DWORDs; full589-byte processor and4-byte raw HWND getter, real HAL Reset, wrong thread, retry wrap/threshold, pending reload, fresh HWND publication, positive-HRESULT fallback and native FH3 cleanup."
+  },
+  "corrections": [
+    "Initialization B2B1CC writes pending1 and B2B1D2 calls Reset. BeginFrame B2B229 is the second direct caller.",
+    "Presentation-mode full-screen, interval and force consume only low bytes of six native DWORD slots; only AL1 is a semantic result.",
+    "Reset treats exactly HRESULT0 as success; threshold recreation has no Sleep while reset/fallback paths preserve their distinct delay sequence."
+  ],
+  "game_validated": false,
+  "complete_native_fh3_compatibility_validated": false,
+  "remaining_boundaries": [
+    "Same actual owner/service/publication domains required; source contexts add a new ABI and are not binary entry replacements.",
+    "Reset focus selection uses a fixture-only wrapper that calls the actual API then returns controlled HWND values; actual foreground integration is not proved and user foreground is preserved.",
+    "Original parent byte execution composes with concrete current-source providers; it does not independently validate every original descendant body.",
+    "Fixtures use online0, empty logical/shader arrays and bounded gamma/EH scenarios; unrestricted FH3/SEH/concurrency and arbitrary profiles remain open.",
+    "Whole startup-to-game render submission, full queue lifecycle and gameplay remain unvalidated."
+  ]
+}
