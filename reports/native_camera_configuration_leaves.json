@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_native_camera_configuration_leaves_bc",
-  "status": "complete_native_leaf_bodies_strict_source_compile_original_byte_fixture_all_caller_checks_passed_pending_library_integration",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
   "utc": "2026-09-13T16:44:31.367935+00:00",
   "worker_branch": "agent/orch3-camera-configuration-bc",
   "baseline_commit": "3f350eef76c7fdc9d11fda1df5602465bcd08506",
@@ -2023,11 +2023,20 @@
     "push": false
   },
   "integration_bc_review": {
-    "combined_validation": "pending current combined build and applicable current-library validation",
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_render_service_construction_bc_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_camera_configuration_leaves.json: 66 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 7
+  },
+  "worker_capture_status": "complete_native_leaf_bodies_strict_source_compile_original_byte_fixture_all_caller_checks_passed_pending_library_integration",
+  "final_merged_validation_bc": {
+    "report": "reports/native_render_service_construction_bc_validation.json",
+    "tested_commit": "d6cd5f085cc8d521c31e5bf327daa10b47710e9a",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 3,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
   }
 }

@@ -116,3 +116,14 @@ evidence, saved its original analysis signature and full stored range in the
 existing BSP project, and registered the source where needed. Exact combined
 validation follows separately from worker checks. No original binary entry,
 unrestricted FH3/SEH, whole owner lifetime or gameplay claim follows.
+
+## BC exact merged validation
+
+Exact combined source `d6cd5f085cc8d521c31e5bf327daa10b47710e9a` passed the strict Win32 build
+and both existing CTests. Camera, CString and texture probes compile only
+external probe.cpp against all three current libraries; depth has a complete
+seven-byte comparison in its exact library member. Coverage is bounded;
+texture is hot-cache only. See `reports/native_render_service_construction_bc_validation.json`
+for immutable captures, hashes, adapter scope and remaining limits. Earlier
+pending statements describe worker stages. Full service/camera construction,
+native ABI/FH3 compatibility and gameplay remain unproved.

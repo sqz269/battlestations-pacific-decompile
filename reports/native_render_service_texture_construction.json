@@ -2,7 +2,7 @@
   "schema": 1,
   "packet": "orch3_native_render_service_texture_construction_bc",
   "utc": "2026-09-13T17:11:58.001225+00:00",
-  "status": "complete_normal_body_source_strict_compiled_focused_original_byte_fixture_passed",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
   "normal_body_count": 1,
   "new_native_body_count": 1,
   "native_body_bytes": 752,
@@ -517,11 +517,20 @@
     "retained_worktree": true
   },
   "integration_bc_review": {
-    "combined_validation": "pending current combined build and applicable current-library validation",
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_render_service_construction_bc_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_render_service_texture_construction.json: 39 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 7
+  },
+  "worker_capture_status": "complete_normal_body_source_strict_compiled_focused_original_byte_fixture_passed",
+  "final_merged_validation_bc": {
+    "report": "reports/native_render_service_construction_bc_validation.json",
+    "tested_commit": "d6cd5f085cc8d521c31e5bf327daa10b47710e9a",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 3,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
   }
 }

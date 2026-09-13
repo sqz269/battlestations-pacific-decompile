@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_native_renderer_current_depth_surface_bc",
-  "status": "complete_leaf_strict_compile_exact_coff_and_baseline_build_checked",
+  "status": "reconstructed_build_tested_complete_emitted_bytes_match",
   "base_commit": "cb25e7e1b026302d55804b908da04ec3b9225c00",
   "files": [
     "include/bsp/native_renderer_current_depth_surface.hpp",
@@ -229,11 +229,20 @@
     "archive_report_snapshot_precedes_archive_hash": true
   },
   "integration_bc_review": {
-    "combined_validation": "pending current combined build and applicable current-library validation",
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_render_service_construction_bc_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_renderer_current_depth_surface_bc.json: 4 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 7
+  },
+  "worker_capture_status": "complete_leaf_strict_compile_exact_coff_and_baseline_build_checked",
+  "final_merged_validation_bc": {
+    "report": "reports/native_render_service_construction_bc_validation.json",
+    "tested_commit": "d6cd5f085cc8d521c31e5bf327daa10b47710e9a",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 3,
+    "own_module_validation": "complete_emitted_byte_comparison",
+    "game_validated": false
   }
 }

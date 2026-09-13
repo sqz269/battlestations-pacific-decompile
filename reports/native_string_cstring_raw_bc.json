@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "orch3_native_string_cstring_raw_bc",
-  "status": "existing_full_body_raw_context_extension_worker_build_and_fixture_passed",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
   "base_commit": "f5ce17eb75540d6f5546ac40eb6b88d737a521e5",
   "normal_body_count": 1,
   "new_native_body_count": 0,
@@ -213,11 +213,20 @@
     "includes": "All loose fixture/native/caller/state/event/log evidence, probe and recipes, every pinned repository input and all three exact current worker libraries. The archived report snapshot precedes adding the archive hash to the tracked report."
   },
   "integration_bc_review": {
-    "combined_validation": "pending current combined build and applicable current-library validation",
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_render_service_construction_bc_validation.json",
     "game_validated": false,
     "current_report_call_check": "reports/native_string_cstring_raw_bc.json: 3 call rows checked, 0 failed",
     "saved_original_signature_readback": true,
     "saved_full_body_ranges": true,
     "current_signature_audit_count": 7
+  },
+  "worker_capture_status": "existing_full_body_raw_context_extension_worker_build_and_fixture_passed",
+  "final_merged_validation_bc": {
+    "report": "reports/native_render_service_construction_bc_validation.json",
+    "tested_commit": "d6cd5f085cc8d521c31e5bf327daa10b47710e9a",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 3,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
   }
 }
