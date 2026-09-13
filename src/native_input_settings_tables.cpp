@@ -1,5 +1,6 @@
 #include "bsp/native_input_settings_tables.hpp"
 #include "bsp/native_checked_string_storage.hpp"
+#include "bsp/native_input_settings_vector_storage.hpp"
 #include "bsp/native_input_configuration_modifiers.hpp"
 #include "bsp/native_input_deadline_map_lookup_adapter.hpp"
 #include <cstdlib>
@@ -169,8 +170,8 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
             void* input = trees.input_codes_006a44b0(device,f.str(InputName));
             append_checked_native_string_storage(at(device,0x30),f.str(InputName),s.scripts.strings);
             void* bindings = trees.bindings_006a45c0(at(device,0xc),f.str(InputName));
-            c.call_006a0db0(bindings,2,{0xffffffffu,0,0,0,s.descriptor_flag_stack_preimage & 0xffffff00u});
-            void* reverse = trees.reverse_006a4ca0(at(device,0x6c),f.str(InputName)); c.call_0049df50(reverse,2,0);
+            resize_native_input_settings_descriptors_006a0db0(bindings,2,{0xffffffffu,0,0,0,s.descriptor_flag_stack_preimage & 0xffffff00u});
+            void* reverse = trees.reverse_006a4ca0(at(device,0x6c),f.str(InputName)); resize_native_input_settings_bits_0049df50(reverse,2,0);
             f.index(Probe,Element,2); codes(f,Probe,Number,input,s); f.close(Probe); f.close(InputName); f.close(Element);
         }
         f.section("Sensitivities");
@@ -198,7 +199,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
         f.section("AxisPairs");
         for (Word i = 1; f.present(Section,i); ++i) {
             f.index(Probe,Section,i); void* pairs = at(device,0x5c);
-            c.call_006a6350(pairs,i,{s.vector_opaque_stack_preimage,0,0,0}); void* row = last_row(pairs);
+            resize_native_input_settings_name_pairs_006a6350(pairs,i,{s.vector_opaque_stack_preimage,0,0,0},s.scripts.strings); void* row = last_row(pairs);
             f.index(Scratch,Probe,1); f.make(FirstAxisName,native_lua_string_00b662b0(f.obj(Scratch)));
             append_checked_native_string_storage(row,f.str(FirstAxisName),s.scripts.strings); f.close(FirstAxisName); f.close(Scratch);
             f.index(Scratch,Probe,2); f.make(SharedName,native_lua_string_00b662b0(f.obj(Scratch)));
@@ -226,10 +227,10 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
     f.named(Groups,Conflicts,"Groups");
     for (Word group = 1; f.present(Groups,group); ++group) {
         f.index(OuterKey,Groups,group); void* outer = at(settings,0x30);
-        c.call_006a79a0(outer,group,{s.vector_opaque_stack_preimage,0,0,0}); void* rows = last_row(outer);
+        resize_native_input_settings_groups_006a79a0(outer,group,{s.vector_opaque_stack_preimage,0,0,0},s.scripts.strings); void* rows = last_row(outer);
         for (Word pair = 1; f.present(OuterKey,pair); ++pair) {
-            f.index(Probe,OuterKey,pair); c.call_006a6350(rows,pair,{s.vector_opaque_stack_preimage,0,0,0});
-            void* row = last_row(rows); c.call_0049e050(row,2,{0,0});
+            f.index(Probe,OuterKey,pair); resize_native_input_settings_name_pairs_006a6350(rows,pair,{s.vector_opaque_stack_preimage,0,0,0},s.scripts.strings);
+            void* row = last_row(rows); resize_native_input_settings_strings_0049e050(row,2,{0,0},s.scripts.strings);
             for (Word index = 0; index < 2; ++index) {
                 f.index(Element,Probe,index + 1); void* string = checked_element(row,index,3);
                 const char* text = native_lua_string_00b662b0(f.obj(Element)); overwrite_string(string,text,s.scripts.strings); f.close(Element);
@@ -241,7 +242,7 @@ void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSetting
     f.named(OuterKey,Conflicts,"Pairs"); f.assign(Groups,OuterKey); f.close(OuterKey);
     for (Word pair = 1; f.present(Groups,pair); ++pair) {
         f.index(Probe,Groups,pair); void* outer = at(settings,0x40);
-        c.call_006a4710(outer,pair,{s.vector_opaque_stack_preimage,0,0,0}); void* row = last_row(outer); c.call_00492210(row,2,0);
+        resize_native_input_settings_conflict_pairs_006a4710(outer,pair,{s.vector_opaque_stack_preimage,0,0,0}); void* row = last_row(outer); resize_native_input_settings_words_00492210(row,2,0);
         for (Word index = 0; index < 2; ++index) {
             f.index(OuterKey,Probe,index + 1); void* value = checked_element(row,index,2);
             write(value,0,static_cast<Word>(integer(f,OuterKey,s)) - 1u); f.close(OuterKey);

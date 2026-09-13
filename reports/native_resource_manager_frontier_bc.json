@@ -1,0 +1,838 @@
+{
+  "captured_utc": "2026-09-13T08:30:45.465351+00:00",
+  "head": "99cdd7fdfd48ff167cf8b13a17d9752a40a8d4fc",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "004c1400",
+      "end_inclusive": "004c14bc",
+      "bytes": 189,
+      "sha256": "edf7aec8f00a16e7a83ac7008d26836b7aea88e3e3bace2fe23d0380e357fa01",
+      "matches_installed_binary": true,
+      "decoded_instructions": 51,
+      "calls": [
+        {
+          "address": "004c1426",
+          "native": "00415350",
+          "function": "004c1400"
+        },
+        {
+          "address": "004c145c",
+          "native": "00bf681b",
+          "function": "004c1400"
+        },
+        {
+          "address": "004c1473",
+          "native": "00b81040",
+          "function": "004c1400"
+        },
+        {
+          "address": "004c1486",
+          "native": "00415350",
+          "function": "004c1400"
+        },
+        {
+          "address": "004c1494",
+          "native": "00bd0c30",
+          "function": "004c1400"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "004c143f",
+          "operand": "dword ptr [0xce2218]"
+        },
+        {
+          "address": "004c14a2",
+          "operand": "dword ptr [0xce2210]"
+        }
+      ],
+      "name": "BSP_ResourceManager_GetSingleton",
+      "original_abi": "No caller arguments; EAX owner; plain RET; x86 FH3 frame.",
+      "source_status": "reconstructed_ledger_entry_is_host_projection_not_actual_body",
+      "behavior": [
+        "Capture publication010901C4 on entry; nonnull fast path returns that captured value.",
+        "Slow path obtains actual singleton manager415350, captures manager+10 critical section, enters it and increments section+18, then rechecks publication.",
+        "Allocate28h throughBF681B, callB81040 if nonnull, publish result, obtain lifetime manager again, reload publication and register even if null throughBD0C30.",
+        "Decrement and leave the originally captured section, reload publication for slow return. No replacing this with a private lifetime domain."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "BSP_Application_Initialize @ 0073d410",
+        "BSP_GameResourceParsers_Register @ 00717e80",
+        "BSP_GameSettings_LoadFromLuaGlobals @ 0083b5e0",
+        "BSP_Game_TeardownSessionState @ 004da780",
+        "BSP_GuiManager_LoadPage @ 00aa5840",
+        "BSP_HudFormationScreen_Register @ 00538f80",
+        "BSP_HudMapScreen_Register @ 005ab190",
+        "BSP_NativeParticleObject_LoadModels @ 00af9660",
+        "BSP_Resource_Destroy @ 00b88430",
+        "BSP_Resource_LoadWithGameFactory @ 007188a0",
+        "CG_array_ctor_helper_00bbf8a0 @ 00bbf8a0",
+        "CG_vector_deleting_dtor_004dcf90 @ 004dcf90",
+        "FUN_00ac6be0 @ 00ac6be0",
+        "FUN_00accb90 @ 00accb90",
+        "FUN_00ae5160 @ 00ae5160",
+        "FUN_00bc0d40 @ 00bc0d40"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/004c1400.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/004c1400.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/004c1400.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/004c1400.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/004c1400.callers.txt"
+      ]
+    },
+    {
+      "address": "00b81040",
+      "end_inclusive": "00b81143",
+      "bytes": 260,
+      "sha256": "55ae3b87c6ed210939b75d06b7c6365b8bd78a0ac72159b33f8c73b945f7e7f5",
+      "matches_installed_binary": true,
+      "decoded_instructions": 78,
+      "calls": [
+        {
+          "address": "00b8106e",
+          "native": "00bf681b",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b8108c",
+          "native": "00b7e000",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810ba",
+          "native": "00b7e050",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810e3",
+          "native": "00b7e1d0",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810eb",
+          "native": "00b80a50",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810f0",
+          "native": "00b7e2a0",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810f8",
+          "native": "00b80a50",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b810fd",
+          "native": "00b7e530",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b81105",
+          "native": "00b80a50",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b8110a",
+          "native": "00b7e370",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b81112",
+          "native": "00b80a50",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b81117",
+          "native": "00b7e460",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b8111f",
+          "native": "00b80a50",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b81124",
+          "native": "00b7e100",
+          "function": "00b81040"
+        },
+        {
+          "address": "00b8112c",
+          "native": "00b80a50",
+          "function": "00b81040"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_ResourceManager_Construct",
+      "original_abi": "ECX raw28h owner; EAX original owner; plain RET; x86 FH3 frame.",
+      "source_status": "recovered_not_source_complete",
+      "behavior": [
+        "Write profileD63128; allocate4h and writeD63060 when nonnull; store that result atowner+4.",
+        "STL parser tree at+8 receives head+0C and count+10; STL resource cache at+14 receives head+18 and count+1C. Allocate sentinels viaB7E000/B7E050 and initialize nil byte+19 and self links+0/+4/+8.",
+        "Neither allocator words atowner+8/+14 nor later fields+20/+24 are explicitly initialized by this body; a zero-initialized C++ object changes this schedule.",
+        "Register parser gettersB7E1D0,B7E2A0,B7E530,B7E370,B7E460,B7E100 in this exact order throughB80A50; ignore each boolean result."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "BSP_ResourceManager_GetSingleton @ 004c1400"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/00b81040.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81040.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81040.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81040.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81040.callers.txt"
+      ]
+    },
+    {
+      "address": "00b80f10",
+      "end_inclusive": "00b80fca",
+      "bytes": 187,
+      "sha256": "6fe56d08965ce1ba6bbbd0f1c03f811c702dead1c7fcc24636fd51364dec2e09",
+      "matches_installed_binary": true,
+      "decoded_instructions": 66,
+      "calls": [
+        {
+          "address": "00b80f68",
+          "native": "00b805d0",
+          "function": "00b80f10"
+        },
+        {
+          "address": "00b80f71",
+          "native": "00bf65ac",
+          "function": "00b80f10"
+        },
+        {
+          "address": "00b80f96",
+          "native": "00b80500",
+          "function": "00b80f10"
+        },
+        {
+          "address": "00b80f9f",
+          "native": "00bf65ac",
+          "function": "00b80f10"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00b80f4e",
+          "operand": "edx"
+        }
+      ],
+      "name": "BSP_ResourceManager_Destroy",
+      "original_abi": "ECX raw manager; no stack arguments; plain RET; x86 FH3 frame.",
+      "source_status": "recovered_not_source_complete",
+      "behavior": [
+        "WriteD63128; load current nonnull owner+4 object/profile slot0 and invoke deleting flag1.",
+        "Erase complete resource cache range throughB805D0; reload current head, free it, zero head/count. Repeat parser tree throughB80500.",
+        "Unconditionally clear10901C4 and write base profileCE3818. No explicit release of current factory+20 or current resource+24.",
+        "The cache owns key strings and nodes, borrows resources. Existing ownership audit supports no cache AddRef/release; raw tree support remains an STL library contract."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "BSP_ResourceManager_ScalarDeletingDestructor @ 00b81150"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/00b80f10.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80f10.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80f10.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80f10.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80f10.callers.txt"
+      ]
+    },
+    {
+      "address": "00b81150",
+      "end_inclusive": "00b8116d",
+      "bytes": 30,
+      "sha256": "3934fd76e97e80600d810d84ac08106f38086761a3aed37df27f726526dff34c",
+      "matches_installed_binary": true,
+      "decoded_instructions": 11,
+      "calls": [
+        {
+          "address": "00b81153",
+          "native": "00b80f10",
+          "function": "00b81150"
+        },
+        {
+          "address": "00b81160",
+          "native": "00bf65ac",
+          "function": "00b81150"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_ResourceManager_ScalarDeletingDestructor",
+      "original_abi": "ECX owner; stack flags (low byte tested); EAX original owner; RET4.",
+      "source_status": "recovered_not_source_complete",
+      "behavior": [
+        "CallB80F10; free captured owner throughBF65AC iff flags&1; return captured owner.",
+        "D63128 slot0 points here. Future raw singleton-drain binding must use the owner itself, with no+4 adjustment."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "No callers found for function: null"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/00b81150.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81150.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81150.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81150.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/00b81150.callers.txt"
+      ]
+    },
+    {
+      "address": "00b80720",
+      "end_inclusive": "00b80a4a",
+      "bytes": 811,
+      "sha256": "72ea3477979b9f5cbb675a52192ffb3c1fcf063130b57e0f1180780e3fb8a1ba",
+      "matches_installed_binary": true,
+      "decoded_instructions": 250,
+      "calls": [
+        {
+          "address": "00b8075d",
+          "native": "00b7e7b0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b8077a",
+          "native": "00bf6713",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b8078d",
+          "native": "00bf6713",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b8079b",
+          "native": "00bf6713",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b807f4",
+          "native": "0041dd40",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b8080b",
+          "native": "00bf7680",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80825",
+          "native": "00bdf4c0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80844",
+          "native": "00bea150",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80856",
+          "native": "00bf0430",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80869",
+          "native": "0041dd40",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80889",
+          "native": "00bf7680",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b808b1",
+          "native": "00bea700",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b808c5",
+          "native": "00b7f430",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b808eb",
+          "native": "0041dd40",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80900",
+          "native": "00bf7680",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80910",
+          "native": "00b7f290",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b8093a",
+          "native": "0041dd40",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80951",
+          "native": "00bf7680",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80975",
+          "native": "00b803b0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80991",
+          "native": "00419cc0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80998",
+          "native": "00bd1510",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b809b8",
+          "native": "00419cc0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b809bf",
+          "native": "00bd1510",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b809ef",
+          "native": "00be9ed0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b809ff",
+          "native": "00be9f10",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80a22",
+          "native": "00419cc0",
+          "function": "00b80720"
+        },
+        {
+          "address": "00b80a29",
+          "native": "00bd1510",
+          "function": "00b80720"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00b807ae",
+          "operand": "dword ptr [0xce221c]"
+        },
+        {
+          "address": "00b807c7",
+          "operand": "edx"
+        },
+        {
+          "address": "00b807d6",
+          "operand": "edx"
+        },
+        {
+          "address": "00b8083c",
+          "operand": "edx"
+        },
+        {
+          "address": "00b80895",
+          "operand": "dword ptr [0xce2220]"
+        },
+        {
+          "address": "00b808a6",
+          "operand": "eax"
+        },
+        {
+          "address": "00b809d2",
+          "operand": "edx"
+        }
+      ],
+      "name": "BSP_ResourceManager_LoadAndCache",
+      "original_abi": "ECX manager; stack requested native-name header and factory; EAX resource; RET8; x86 FH3 frame.",
+      "source_status": "recovered_broad_dependency_frontier_not_source_ready",
+      "behavior": [
+        "Store supplied factory at+20 BEFORE cache lookup. Find by original requested name in+14 tree. Returning CRT validation sitesBF6713 must not be treated as no-return.",
+        "On hit, load node+14 resource, publish+24, InterlockedIncrement resource+4 and return current+24. Hit does not clear+20.",
+        "On miss, call current109CEFC profile+4 metric service, then current factory+4 with requested name; publish+24. Copy and resolve a separate name throughBDF4C0, open current109CEEC profile+4 with flags2.",
+        "Construct actual readerBEA150, attach streamBF0430, copy resolved name to its+68/+6C field; decrement acquired stream reference and invoke slot0 if zero.",
+        "Create rootBEA700; callB7F430 against the actual manager. Construct B7F290 pair with ORIGINAL requested name and CURRENT resource+24; insert into cacheB803B0; discard both owned pair temporaries.",
+        "On normal miss tail clear+20; call current metric service again; write previous-current difference to current resource+40; capture resource before root/reader/name cleanup and return it.",
+        "Pseudocode has unaffiliated registers, incorrect stack-derived string values and an unreachable warning atB80986. Complete PE-matched assembly, not that pseudocode, establishes these paths. No flow gaps currently present."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "BSP_NativeParticleObject_LoadModels @ 00af9660",
+        "BSP_NativeResourceManager_LoadDefaultFactory @ 00b80d70",
+        "BSP_Resource_LoadWithGameFactory @ 007188a0"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/00b80720.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80720.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80720.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80720.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/00b80720.callers.txt"
+      ]
+    },
+    {
+      "address": "00b7f290",
+      "end_inclusive": "00b7f330",
+      "bytes": 161,
+      "sha256": "36810d3cd7124a84c3d9b5e2d8f64dd65edfe0b2023e9405e6b21e125042924c",
+      "matches_installed_binary": true,
+      "decoded_instructions": 56,
+      "calls": [
+        {
+          "address": "00b7f2da",
+          "native": "0041dd40",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f2eb",
+          "native": "00bf7680",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f30e",
+          "native": "00419cc0",
+          "function": "00b7f290"
+        },
+        {
+          "address": "00b7f315",
+          "native": "00bd1510",
+          "function": "00b7f290"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_ResourceCachePair_ConstructFromOwnedName",
+      "original_abi": "ECX destination0Ch pair; EDX raw resource; stack by-value native name {length,data}; EAX same destination; RET8; x86 FH3 frame.",
+      "source_status": "source_ready_with_existing_actual_string_dependencies",
+      "behavior": [
+        "Capture EDX resource, input length and input data BEFORE zeroing destination name words. Compare destination with address of the native by-value input header after zeroing.",
+        "Unless same header, resize destination using captured input length/preserve1. If captured input length nonzero, copy captured input data using CURRENT destination length/data. Preserve BF7680 overlap semantics through the existing concrete copy policy.",
+        "Store captured resource atdestination+8 without AddRef; arm completed-pair local flag; set EHstate0 BEFORE normal incoming-buffer return.",
+        "Normal incoming cleanup uses CAPTURED input pointer and captured length+1 (DWORD wrap) through current419CC0 thenBD1510; leaves both headers unmodified by cleanup.",
+        "EH handlerCC2051 selects descriptorDFB1C8, two-entry unwind mapDFB1B8. State1 actionCC2030 uses CURRENT stack input header atEBP+4 and jumps41DD20. State0 actionCC2038 checks/clears local completed flag then invokesB7E8F0 on saved destination.",
+        "Initial copy failure: release incoming name, completed flag0 prevents destination cleanup. Failure during normal incoming cleanup: completed flag1 triggers destination-name cleanup. Resource pointer is never released. B7E8F0 repeats current name pointer/length pool-return schedule equivalent to the existing raw41DD20 helper.",
+        "The game-specific owned-name/raw-resource construction boundary is distinct from STL red-black-tree insertion/rebalancing. Descriptive ownership name is provisional, not a recovered symbol or binary-ABI claim."
+      ],
+      "flow_gaps": 0,
+      "live_callers": [
+        "BSP_ResourceManager_LoadAndCache @ 00b80720"
+      ],
+      "local_evidence": [
+        "local/resource-manager-frontier-bc-evidence/00b7f290.bytes.txt",
+        "local/resource-manager-frontier-bc-evidence/00b7f290.decoded.txt",
+        "local/resource-manager-frontier-bc-evidence/00b7f290.proto.txt",
+        "local/resource-manager-frontier-bc-evidence/00b7f290.flow.txt",
+        "local/resource-manager-frontier-bc-evidence/00b7f290.callers.txt"
+      ]
+    }
+  ],
+  "data": [
+    {
+      "address": "00d63128",
+      "bytes": 4,
+      "hex": "5011b800",
+      "sha256": "e21801578bcb9d33211bfaed6a1256d1b4abb2be01d9f31e7a73fbf421dd3fc3",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00d63060",
+      "bytes": 12,
+      "hex": "90d2b7004083b800a0d9b700",
+      "sha256": "a47843df097b1a4900ebbf9ef829bb47bd5f7830154ce948d2cb4fe8121b3e7e",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00cc2030",
+      "bytes": 44,
+      "hex": "8d4d04e9e8bc75ff8b45ec83e0010f840c0000008365ecfe8b4df0e9a0c8ebffc3b8c8b1df00e9e84af3ffcc",
+      "sha256": "92adf12161461f2eb49911b957f71834fbbef71ba8f6aee512bf44080aeffe0f",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00dfb1b8",
+      "bytes": 52,
+      "hex": "ffffffff3820cc00000000003020cc002205931902000000b8b1df00000000000000000000000000000000000000000001000000",
+      "sha256": "03be643b593e898751eb18aef12264ec06195236527c53925e721d8744240086",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00b7d290",
+      "bytes": 31,
+      "hex": "f644240401568bf1c706dcd7cf00740956e80693070083c4048bc65ec20400",
+      "sha256": "e67d5f38ce4aa881d6821ee1287de46105a26687aacb3271d46a760ff3b310c7",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    },
+    {
+      "address": "00b7e8f0",
+      "bytes": 45,
+      "hex": "8b510485d274158b016a0183c0015052e8bbb389ff8bc8e8042c0500c3cccccc8b510485d274158b016a0183c0",
+      "sha256": "45067b2984fb2bcd609865f733347750d391f1329bbbe899bc5f043a0921e1cd",
+      "matches_installed_binary": true,
+      "role": "auxiliary data or unwind dependency window; not an additional recovered routine contract"
+    }
+  ],
+  "schema_version": 1,
+  "packet": "orch2_resource_manager_frontier_bc",
+  "status": "read_only_frontier_audit_one_immediate_packet_and_one_deferred_owner",
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-manager-frontier-bc\\local\\resource-manager-frontier-bc-evidence",
+  "no_cpp": true,
+  "no_tests": true,
+  "no_game_execution": true,
+  "no_ghidra_mutation": true,
+  "startup_edges": [
+    {
+      "address": "0073db41",
+      "native": "004c1400",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db55",
+      "native": "004c1400",
+      "function": "0073d410"
+    },
+    {
+      "address": "007188ab",
+      "native": "004c1400",
+      "function": "007188a0"
+    },
+    {
+      "address": "00717e81",
+      "native": "004c1400",
+      "function": "00717e80"
+    }
+  ],
+  "initial_pointer_disposition": {
+    "00b88260": "Rechecked live decompile and xrefs: resource BASE constructor (44h extent) called by71B810 at71B82E and default creatorB88340 atB88376. It is not resource-manager storage. Root factory71xxxx packet owns this route; no duplicate contract or implementation proposed."
+  },
+  "existing_source": [
+    {
+      "file": "include/bsp/game_hosts_init_tail.hpp",
+      "lines": "131-136",
+      "finding": "GameResourceManager contains only StructuredResourceRegistry parsers; explicit comment says raw28h manager is not reconstructed."
+    },
+    {
+      "file": "src/game_hosts_vfs.cpp",
+      "lines": "281-291,311-325",
+      "finding": "make_unique<GameResourceManager> supplies stable per-host parser object; registration invokes semantic registry. Does not allocate/publish original28h owner, create+4 factory, own raw trees/cache or join raw singleton lifetime."
+    },
+    {
+      "file": "include/bsp/resource_parser_map.hpp",
+      "lines": "14-19,34-37",
+      "finding": "Existing std::map host projection deliberately has a new ABI and no native iterator/allocation/exception state. Preserve useful semantic registration; do not cast it to native tree storage."
+    },
+    {
+      "file": "include/bsp/native_string.hpp",
+      "lines": "36-40,60-68,84-89",
+      "finding": "Actual NativeStringRawPoolContext and complete resize/destroy overloads exist; these preserve current pool lookup exceptions. Prefer this for the cache-pair cleanup instead of noexcept NativeStringStorage::release."
+    },
+    {
+      "file": "src/native_particle_type_resources.cpp",
+      "lines": "61-62,115",
+      "finding": "Existing resource-manager/default-factory consumers have explicit callback boundaries; they do not establish actual owner or completeB80720."
+    },
+    {
+      "file": "src/structured_model.cpp",
+      "lines": "64 onward",
+      "finding": "Existing typed retained root traversal is useful; ledger identifies fragment retained_registered_model_root, not complete rawB7F430 body."
+    }
+  ],
+  "lifetime": {
+    "publication": "010901c4",
+    "allocation_bytes": 40,
+    "profile": "00d63128",
+    "scalar_deleting_selector": "00b81150",
+    "base_profile": "00ce3818",
+    "registration_owner_adjustment": 0,
+    "other_observed_publication_writer": "00b7d2c0 (base cleanup dependency; no new routine contract claimed)",
+    "default_factory": {
+      "field_offset": 4,
+      "allocation_bytes": 4,
+      "profile": "00d63060",
+      "slots": [
+        "00b7d290",
+        "00b88340",
+        "00b7d9a0"
+      ],
+      "status": "B7D290 and B7D9A0 have no current Ghidra function entries. B88340 is a defined creator callingB88260. No unsupported callable host vtable substitutes."
+    }
+  },
+  "named_incomplete_dependencies": [
+    {
+      "group": "Actual manager construction",
+      "addresses": [
+        "00b7e1d0",
+        "00b7e2a0",
+        "00b7e530",
+        "00b7e370",
+        "00b7e460",
+        "00b7e100",
+        "00b80a50"
+      ],
+      "status": "Named audited parser identities/order and semantic registrations exist; raw singleton lifetime/registration bodies not closed in inspected source."
+    },
+    {
+      "group": "STL storage library contracts",
+      "addresses": [
+        "00b7e000",
+        "00b7e050",
+        "00b80500",
+        "00b805d0",
+        "00b7e7b0",
+        "00b803b0"
+      ],
+      "status": "Do not port tree allocation/erase/find/insert algorithms. Original node/sentinel/iterator ABI requires explicit justified library support; host std::map is not the raw storage."
+    },
+    {
+      "group": "Default factory lifetime and creation",
+      "addresses": [
+        "00b7d290",
+        "00b88340",
+        "00b7d9a0"
+      ],
+      "status": "Profile verified. Two selectors lack function entries; finite creator/destructor dispatch and native base cleanup remain separate frontier."
+    },
+    {
+      "group": "Complete load miss",
+      "addresses": [
+        "00bdf4c0",
+        "00bea150",
+        "00bf0430",
+        "00bea700",
+        "00b7f430",
+        "00be9ed0",
+        "00be9f10"
+      ],
+      "status": "Existing semantic VFS/reader/model paths do not prove raw aggregate compatibility. Each raw storage/current-field/stream lifetime contract must be joined."
+    },
+    {
+      "group": "Load metric provider",
+      "addresses": [
+        "0109cefc"
+      ],
+      "status": "Current object virtual+4 called atB807C7/B809D2; delta destination+40 established, metric meaning/real service binding not established here."
+    },
+    {
+      "group": "Lifecycle unwind coverage",
+      "addresses": [
+        "00c64f53",
+        "00cc224e",
+        "00cc221e"
+      ],
+      "status": "Getter/constructor/destructor handler pointers observed. Their complete cleanup schedules remain to audit before a full owner implementation; no EH completeness claimed for quartet."
+    }
+  ],
+  "recommended_packets": [
+    {
+      "id": "native_resource_cache_pair_bc",
+      "readiness": "ready_for_bounded_source_implementation",
+      "addresses": [
+        "00b7f290"
+      ],
+      "bytes": 161,
+      "files": [
+        "include/bsp/native_resource_cache_pair.hpp",
+        "src/native_resource_cache_pair.cpp",
+        "docs/NATIVE_RESOURCE_CACHE_PAIR.md",
+        "reports/native_resource_cache_pair.json"
+      ],
+      "shared_integration": [
+        "One owned source-registration append in cmake/startup.cmake by implementer under registry exception.",
+        "Only own address name/reconstruction shard rows through bsp ledger."
+      ],
+      "dependencies": [
+        "Existing raw NativeStringRawPoolContext and complete41DD40/41DD20 overloads.",
+        "Existing419CC0,BD1120,BD1510 actual pool and original compatible BF7680 overlap policy.",
+        "No root71xxxx factory or5EFBA0 lookup file/address dependency."
+      ],
+      "implementation_boundary": "Actual0Ch destination plus explicit by-value-name input identity and concrete raw pool cells. Preserve captured normal cleanup versus current-header unwind cleanup. No cache tree/node allocation or resource ownership changes.",
+      "validation": "Strict Win32 build and existing checks first. If original/source fixture is justified, one focused case covering captured-input mutation and cleanup-state transition; do not add a broad permanent suite or claim nativeFH3 dispatch."
+    },
+    {
+      "id": "native_resource_manager_owner_bc_deferred",
+      "readiness": "not_ready_for_closed_implementation_until_named_dependencies_and_unwind_are_recovered",
+      "addresses": [
+        "004c1400",
+        "00b81040",
+        "00b80f10",
+        "00b81150"
+      ],
+      "bytes": 666,
+      "files": [
+        "include/bsp/native_resource_manager_owner.hpp",
+        "src/native_resource_manager_owner.cpp",
+        "docs/NATIVE_RESOURCE_MANAGER_OWNER.md",
+        "reports/native_resource_manager_owner.json"
+      ],
+      "next_action": "Audit the six real parser getter/name/register routes, default factory selectors and owner EH cleanup under separate explicit leases, preserving STL support as library contracts. Do not implement a callback-only/stub owner and promote it as startup closure.",
+      "integration_after_closure": "Use actual manager publication10901C4 and shared raw lifetime manager1090AA0; addD63128 deletion binding through primary when shared file leases permit; migrate GameVfsHost projection only after its parser consumers have actual compatible storage."
+    }
+  ],
+  "validation": {
+    "live_target_verification": "Every CLI batch uses tools/bsp.py ghidra, whose Client.verify checks configured project and program before reads.",
+    "matched_body_count": 6,
+    "matched_body_bytes": 1638,
+    "direct_call_rows": 61,
+    "flow_gap_total": 0,
+    "indirect_calls": "Recorded separately; no mechanical direct-call claim for vtable/Win32 import operands.",
+    "call_verifier": "python tools/verify_report_calls.py reports/native_resource_manager_frontier_bc.json: 61 call rows checked, 0 failed",
+    "scope": "Read-only discovery. No reconstruction, build, fixture, native ABI or gameplay completion claim."
+  },
+  "uncertainties": [
+    "The initial getter xref capture is capped at30 sites and is not a total site count; live callers capture lists16 containing functions.",
+    "Historical descriptive BSP names on STL tree helpers do not reclassify them as game algorithms.",
+    "B7F290 is a small game-specific owned-name/raw-pointer boundary; compiler template provenance is not recovered. Do not generalize its source implementation into std::pair or container algorithms.",
+    "No concurrency, arbitrary reentrant invalid-storage, native FH3/SEH, or game validation performed.",
+    "Worker source baseline predates root current factory work; the report explicitly avoids that owned address/file range."
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/game_hosts_init_tail.hpp",
+      "sha256": "372aaac45e72a9836f38bed1d2afb43d0bb753757b79657c4909122b77e29c78"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "sha256": "15adc5e96a9f3abce9955a97cd09879f58837d97ee4378e318896c1a28194d79"
+    },
+    {
+      "path": "include/bsp/resource_parser_map.hpp",
+      "sha256": "ba045fa28ae4f00040015698214c0b0944bbe22cba85291b677635a3a2872d4f"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "src/native_particle_type_resources.cpp",
+      "sha256": "1a3b959c8605c2413b58e5b786f61e0b0e62112c68f385ee375ee5f4dfa15c0b"
+    },
+    {
+      "path": "src/structured_model.cpp",
+      "sha256": "05453a58bcaee515076eeb551a8cdcf8ac444dfa8cf5e70d7689798288285b33"
+    }
+  ]
+}

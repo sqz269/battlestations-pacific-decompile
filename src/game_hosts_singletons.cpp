@@ -10,7 +10,10 @@ namespace bsp::game {
 
 GameSingletonHost::GameSingletonHost(GameHostLog& log)
     : log_(log), deletion_bindings_{&effect_publication_00f87664_, nullptr},
-      observers_(std::make_unique<GameObserverRuntime>(*this, log)) {}
+      observers_(std::make_unique<GameObserverRuntime>(*this, log)) {
+    // Admit factory+4 before startup can register that exact subobject.
+    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;
+}
 
 GameSingletonHost::~GameSingletonHost() {
     // Normal WinMain shutdown has already drained this owner. All publication
@@ -42,6 +45,13 @@ void GameSingletonHost::bind_observer_dispatch_owner(
     deletion_bindings_.actual_observer_dispatch_owner_00e198dc = publication;
 }
 
+void GameSingletonHost::publish_game_resource_factory_008f840b() {
+    game_resource_factory_alias_00f8d31c_ =
+        get_native_game_resource_factory_007175d0(game_resource_factory_context_);
+    log_.notef("game resource factory published: owner=%p alias=%p storage=raw8h",
+        game_resource_factory_publication_00e19b90_, game_resource_factory_alias_00f8d31c_);
+}
+
 void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     void* const owner = get_native_gameplay_effect_manager_004c1650(
         manager_publication_01090aa0_, effect_publication_00f87664_);
@@ -57,8 +67,11 @@ void GameSingletonHost::shutdown() {
     singleton_lifetime_free(manager);
     manager_publication_01090aa0_ = nullptr;
     log_.notef("singleton lifetime drained: registered_slots=%u effect_publication=%s "
-        "manager_publication=%s storage=raw14h/raw10h", registered,
+        "manager_publication=%s factory_publication=%s factory_alias=%p "
+        "storage=raw14h/raw10h/raw8h", registered,
         effect_publication_00f87664_ == nullptr ? "null" : "non-null",
-        manager_publication_01090aa0_ == nullptr ? "null" : "non-null");
+        manager_publication_01090aa0_ == nullptr ? "null" : "non-null",
+        game_resource_factory_publication_00e19b90_ == nullptr ? "null" : "non-null",
+        game_resource_factory_alias_00f8d31c_);
 }
 } // namespace bsp::game
