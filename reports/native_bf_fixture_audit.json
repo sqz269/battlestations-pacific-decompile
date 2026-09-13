@@ -1,5 +1,5 @@
 {
-  "status": "sealed worker artifacts audited; integrated-root replay pending final libraries",
+  "status": "sealed worker artifacts audited; both integrated current-library replays passed",
   "camera_archive_sha256": "8806f59c804d3c5918b5a2e7dc2d9f2ab8ef0cb18327a6f88aa9d49cd02de13f",
   "model_seal_checked": 19,
   "model_seal_mismatches": 0,
@@ -7,6 +7,21 @@
   "model_archive_files": 24,
   "model_archive": "C:/Users/sqz269/bsp-bf-model-base/worker_capture.zip",
   "replay_recipe": "C:/Users/sqz269/bsp-bf-model-base/current/run.ps1",
-  "replay_executed": false,
-  "boundaries": ["model normal scalar/destructor original differential", "model B86720 factory source smoke only", "copied original BD30E0 virtual0 forwarding body executes via fixture callable table", "model logic_error source only", "camera raw getter bad_alloc source only after hooks restored", "no game validation"]
+  "replay_executed": true,
+  "boundaries": [
+    "model normal scalar/destructor original differential",
+    "model B86720 factory source smoke only",
+    "copied original BD30E0 virtual0 forwarding body executes via fixture callable table",
+    "model logic_error source only",
+    "camera raw getter bad_alloc source only after hooks restored",
+    "no game validation"
+  ],
+  "final_combined_validation_bf": {
+    "report": "reports/native_bf_integration_validation.json",
+    "tested_commit": "f773d275c813c0ad8d625225eb746255f18c77ab",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "current_library_only_fixtures_passed": 2,
+    "game_validated": false
+  }
 }

@@ -1333,5 +1333,13 @@
   "integration_bf_review": {
     "combined_validation": "pending exact merged build and current-library fixture",
     "game_validated": false
+  },
+  "final_combined_validation_bf": {
+    "report": "reports/native_bf_integration_validation.json",
+    "tested_commit": "f773d275c813c0ad8d625225eb746255f18c77ab",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "current_library_only_fixtures_passed": 2,
+    "game_validated": false
   }
 }
