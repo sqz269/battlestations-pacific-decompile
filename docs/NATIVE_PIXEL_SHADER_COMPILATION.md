@@ -60,7 +60,9 @@ that the two mask pointers differ or clears either array.
 ## Parser storage and boundaries
 
 Searches use current full string data/length, signed-negative cursor clamp to
-zero and unsigned upper comparison. For `dcl_texcoord`/`dcl_color`, construct a
+zero and unsigned upper comparison. Declaration offsets subtract the captured
+base; both newline searches subtract current full-header data reloaded after
+`strstr` (`00B61714`, `00B6192E`). For `dcl_texcoord`/`dcl_color`, construct a
 one-character actual substring at match+12/+9 and pass its data (or the native
 empty fallback) to Win32 `atol`; release that index string before finding LF.
 Construct the line substring at match+14/+11 with DWORD-wrapped `LF-start`.
@@ -78,7 +80,9 @@ restart at cursor -1 forever or address outside a supplied mask buffer; the
 source does not claim a sanitized replacement for those invalid domains.
 
 Existing `00469840`, `0041DD40`, `0041E870`, `004261A0`, actual string pool and
-VFS bindings supply concrete storage/lifetime work. CRT strstr/atol/memcpy and
+VFS bindings supply concrete storage/lifetime work. The caller's `00BF7680`
+copy is overlap-capable and uses `memmove` at the source boundary. CRT strstr,
+atol, the overlap-capable copy and
 installed D3DX/COM/Win32 imports remain library boundaries, not reimplemented
 library code. The native caller inline line assignment is preserved explicitly
 because its captured pointer must survive substring release.

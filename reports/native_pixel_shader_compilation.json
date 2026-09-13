@@ -573,7 +573,7 @@
     "library_boundaries": [
       "CRT strstr BF9440; two cdecl arguments ADD ESP8",
       "CRT atol BF8417; one cdecl argument ADD ESP4; Win32 long32",
-      "CRT memcpy BF7680; three cdecl arguments ADD ESP0C",
+      "CRT overlap-capable memcpy BF7680 (source memmove); three cdecl arguments ADD ESP0C",
       "D3DXCompileShader C2E00A actual10stdcall arguments",
       "D3DXDisassembleShader C2E004 actual4stdcall arguments",
       "actual D3D9 COM and Win32 imports"
@@ -592,7 +592,8 @@
     "B613A3 capture VFS manager before strings; B613B4 texcoord[0] suffix selection",
     "B615E5 text cleanup then B615EE decrement/B615FE terminal then B61607 independent texcoord[0] parser sentinel",
     "B61751 capture line data before B61788 substring release; B6197A/B6198B capture before B619AE release",
-    "B61859 captured full data EDI persists across B61A80 line cleanup into B61AA3 full release"
+    "B61859 captured full data EDI persists across B61A80 line cleanup into B61AA3 full release",
+    "B61714/B6192E newline strstr offsets subtract current full-header data after CRT; B61680/B61894 declaration offsets subtract captured base; B61761/B61981 BF7680 uses overlap-capable copy (source memmove)"
   ],
   "validation": {
     "build": "PASS default registered MSVC Win32 Release scripts/build.ps1 /W4 /WX and existing CTests; see pinned log",
@@ -691,13 +692,13 @@
     },
     {
       "path": "src/native_pixel_shader_compilation.cpp",
-      "bytes": 13173,
-      "sha256": "b53f88abc20b8891fbca656f5484d8eb3b99311e71a12cb1fb30f061e0008e47"
+      "bytes": 13403,
+      "sha256": "dec59be43010c8ab6146b776c659ea4a41a05731d9daf44416520ac935bb1255"
     },
     {
       "path": "docs/NATIVE_PIXEL_SHADER_COMPILATION.md",
-      "bytes": 8186,
-      "sha256": "f31f69999d8b7a7f0a2e3a1aeb803dd65b6f6db48e2f2b19bc3c0dd1d7cdacca"
+      "bytes": 8451,
+      "sha256": "24cd79b1eebc8d7fa4bdb63d6ddd71d202223bae210f25359134e54072e6f493"
     },
     {
       "path": "cmake/startup.cmake",
@@ -757,7 +758,7 @@
     {
       "path": "local/native_pixel_probe.cpp",
       "bytes": 21279,
-      "sha256": "56e68da97c0f5832f49646a63ab03a0ffe13d09d3cd335a4281fe4eb7b61794f"
+      "sha256": "78cfc00da53dfc69d2c0a2faa57a1c4333111b341ae626a877172940d7da59eb"
     },
     {
       "path": "local/run_native_pixel_probe.ps1",
@@ -771,8 +772,8 @@
     },
     {
       "path": "local/prepare_pixel.py",
-      "bytes": 5266,
-      "sha256": "3b36613a5561b7d97b69a7729133473f9569592c97bb744a959060728b1315aa"
+      "bytes": 5267,
+      "sha256": "a24fdec4ba1f5c48ae56873e525667d5a044dbc7fa0fcebe395addd60231b96a"
     },
     {
       "path": "local/pixel_evidence.py",
@@ -786,8 +787,8 @@
     },
     {
       "path": "local/finalize_pixel.py",
-      "bytes": 6375,
-      "sha256": "f7506445665517dcd1d53c24eee1cda002f7f2f3b9c410c545d204b42c204c77"
+      "bytes": 6856,
+      "sha256": "b1aea7f407b9973babb92047dcb117737c55aa067f7c2ac2500f3fb696482d25"
     },
     {
       "path": "local/register_pixel.py",
@@ -811,8 +812,8 @@
     },
     {
       "path": "local/pixel-build.log",
-      "bytes": 4348,
-      "sha256": "af13629256bfab0e5b2f8a3ac96a8db11d72e192464ba485240573b6495a9d4b"
+      "bytes": 2691,
+      "sha256": "4cdf897a2624331c57df66abc3d3393e62a3e1ff384de96aba1cd5dbdc938aaa"
     },
     {
       "path": "local/pixel-call-check.log",
@@ -837,17 +838,17 @@
     {
       "path": "local/native_pixel_probe.exe",
       "bytes": 118784,
-      "sha256": "a5f2aa23642863f01d610509b3142f6c9e0c51273cf29951562919eb55d29c9a"
+      "sha256": "d222609389d2c9b266f47bb75450e1e3c9546b29dd410f7a8c6cd35319195a17"
     },
     {
       "path": "local/pixel-original-linked.bin",
       "bytes": 2183,
-      "sha256": "f61ac38645e8731a6de44e801d3146e6645ec279a5c0c1ba508cd5d0c35ee00a"
+      "sha256": "a770fa0c65c71a3c3b16b4b20d6efe7ace182f212980daef8949b76eced28a42"
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 55116018,
-      "sha256": "d6a6891724ef21f4450cb1d24c51e7996541911de2165708b50576d60d04104a"
+      "bytes": 55116014,
+      "sha256": "b6858083bd44f3ac8da726e88f5a7a66f4db5f23e870b561dd5600f66f9195cc"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -861,8 +862,8 @@
     },
     {
       "path": "build/win32/bsp_core.dir/Release/native_pixel_shader_compilation.obj",
-      "bytes": 25670,
-      "sha256": "46b04d26d95d678a12167679dc7cce6d8093edb2f4c494cd5620553580754be0"
+      "bytes": 25666,
+      "sha256": "c601bfb861cde34022e3ff49a8aba469f22495b71475b633b8a0686d24003873"
     },
     {
       "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/d3dx9_40.dll",

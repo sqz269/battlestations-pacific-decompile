@@ -48,13 +48,15 @@ bool contains(const char* start, const char* needle) {
     const auto* found = std::strstr(start, needle);
     return found && static_cast<U>(reinterpret_cast<U>(found) - reinterpret_cast<U>(start)) != 0xffffffffu;
 }
-U find_from(const void* header, const char* needle, U cursor) {
+U find_from(const void* header, const char* needle, U cursor, bool subtract_current_base = false) {
     const auto* base = data(header);
     if (!base) return 0xffffffffu;
     if (cursor & 0x80000000u) cursor = 0;
     else if (cursor > word(header)) return 0xffffffffu;
     const auto* found = std::strstr(reinterpret_cast<const char*>(reinterpret_cast<U>(base) + cursor), needle);
-    return found ? reinterpret_cast<U>(found) - reinterpret_cast<U>(base) : 0xffffffffu;
+    // Declaration searches subtract captured ESI/EDI; newline searches at
+    // B61714/B6192E reload the full header's CURRENT data after strstr.
+    return found ? reinterpret_cast<U>(found) - reinterpret_cast<U>(subtract_current_base ? data(header) : base) : 0xffffffffu;
 }
 void parse_declarations(Op& a, bool color) {
     const U index_site = color ? 0x00b618b0u : 0x00b6169cu;
@@ -82,7 +84,7 @@ void parse_declarations(Op& a, bool color) {
         release(a, Op::index, color ? 0x00b618e6 : 0x00b616d2);
         const U body_start = a.match + (color ? 11u : 14u);
         a.native_site = color ? 0x00b61902 : 0x00b616ee;
-        a.newline = find_from(&full, "\n", body_start);
+        a.newline = find_from(&full, "\n", body_start, true);
         entered(a, Op::substring, body_site);
         construct_native_string_substring_00469840(&full, &part,
             body_start, a.newline - body_start, c.strings);
@@ -96,7 +98,7 @@ void parse_declarations(Op& a, bool color) {
         if (word(&part)) {
             const U count = word(&line);
             a.native_site = color ? 0x00b61981 : 0x00b61761;
-            if (count) std::memcpy(a.captured_line_data, data(&part), count);
+            if (count) std::memmove(a.captured_line_data, data(&part), count);
         }
         release(a, Op::substring, color ? 0x00b619ae : 0x00b61788);
         bool any = false;
