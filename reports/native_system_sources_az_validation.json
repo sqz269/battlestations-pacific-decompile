@@ -1,5 +1,5 @@
 {
-  "tested_commit": "927c45a032828a09be40e18a98247d3796b20953",
+  "tested_commit": "7813bdc988999a39fa150b0ef9ab3529668fe27b",
   "reviewed_source_commit": "72d5e9199db74bee41f8933bb7cf53d543564ec0",
   "source_header_hashes": {
     "src/native_camera_axes.cpp": "ebd5fb40eeee382a88e7f575546985c2d7fde5c98dba6fd4629138a863bdb103",
@@ -22,7 +22,7 @@
   "build_log": "local/az-final-combined-build.log",
   "existing_ctests_passed": 2,
   "current_library_replays": {
-    "commit": "927c45a032828a09be40e18a98247d3796b20953",
+    "commit": "7813bdc988999a39fa150b0ef9ab3529668fe27b",
     "source_header_sha256": {
       "src/native_camera_axes.cpp": "ebd5fb40eeee382a88e7f575546985c2d7fde5c98dba6fd4629138a863bdb103",
       "include/bsp/native_camera_axes.hpp": "f07d649a1ac4575a8d4f7061106800a28d4b2c8c4641a70fc879da206b3baa0b",
@@ -97,9 +97,9 @@
           "/DYNAMICBASE"
         ],
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-camera.log",
-        "log_sha256": "76fcebb5925f3134a74053ececffdfd7e3920323d5b70f436a0a739b1960639b",
+        "log_sha256": "7a8475e8a1842a808983f412ef2b1e96bf65f2bdbd0a80b25c8418ad13a0b3de",
         "executable": "C:\\Users\\sqz269\\bsp-az-camera-axes\\az_current_camera_probe.exe",
-        "executable_sha256": "d62a957e6e2fbaa12fed9e47a5f5e4e88bc76fe3b90a4ea728e333d87d0215ca",
+        "executable_sha256": "b3389758e4cb075af41b8231c613590412e2a1655e00e04e4b4756e4d65189a2",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -172,7 +172,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-slots.log",
         "log_sha256": "43a79b4cced36ce5f4de57e2f5160f27c62ddba1023c39833650ea075fabb8f9",
         "executable": "C:\\Users\\sqz269\\bsp-az-system-parameter-slots\\az_current_slots_probe.exe",
-        "executable_sha256": "d8ebd5c2c03ecee5af1c5f2513893513aff7dfc3b4643ebe8790cbbf8a05f538",
+        "executable_sha256": "4594b11f6e0e417002ddaa9a3dfc3711d28a8196697bf17b3dcbee5fab5556f4",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -239,7 +239,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-fog.log",
         "log_sha256": "dd79fbf3d03e180100297c10d685fba0dbceb605e7dbfa7b0b79bbd0862c3de2",
         "executable": "C:\\Users\\sqz269\\bsp-az-fog-access\\az_current_fog_probe.exe",
-        "executable_sha256": "81b2c2124e6d727444ab1c4f52fa7ab38edb9f132478cd843e368a602b960bba",
+        "executable_sha256": "3dd67b2397331a8b62a4b8cdf976673516a8415b054c35516d750548d84c7b44",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -331,7 +331,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-base.log",
         "log_sha256": "6e8c4e1a068bac684736378b1b1f50ac3d86e8c15d2950d4246cb87e5d440c0f",
         "executable": "C:\\Users\\sqz269\\bsp-az-render-service-base\\az_current_base_probe.exe",
-        "executable_sha256": "7c6f808fde4fc3fbec7fe14bb2771f89ebf5be92eaaa38d62a7a256f2746ecd5",
+        "executable_sha256": "a569406fff9e6584f33eafcbcba140ec28f9088da10f84ab0a795cd658703ed8",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
@@ -343,8 +343,8 @@
           "generator": "C:\\Users\\sqz269\\bsp-az-render-service-base\\reserve_image_section.py",
           "generator_sha256": "44afce6ef45359a9369f31dbb1b9fb73dbb3f8877eb4c5cd31f3d630ee73a1d8",
           "record": {
-            "input_sha256": "78f9142f2e5e63d16e4ca26a95a1fdd228ac91583e5712c25f80f9ecb5afcdb7",
-            "output_sha256": "7c6f808fde4fc3fbec7fe14bb2771f89ebf5be92eaaa38d62a7a256f2746ecd5",
+            "input_sha256": "8da53832a2053f2c90eb1fb7da856270957b4edfca81ca829d14304bb00baf0d",
+            "output_sha256": "a569406fff9e6584f33eafcbcba140ec28f9088da10f84ab0a795cd658703ed8",
             "image_base": "00400000",
             "section_name": ".azbase",
             "section_rva": "0000b000",
@@ -370,7 +370,7 @@
             "existing_section_bytes_unchanged": true,
             "process_memory_mutation": "none by generator; OS loader maps this fixture-owned image section before startup; probe verifies MEM_IMAGE ownership before protection changes and writing fixture bytes"
           },
-          "report_sha256": "b258b43c1a90d68190c0ea41bc435f5187e65e7d4ad3383529c7a4771baaf3ec"
+          "report_sha256": "14406d00263c5986776872b0909373ba002feccfa59686eba99a25a2c080bc50"
         }
       },
       {
@@ -429,7 +429,7 @@
         "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\az-current-parameters.log",
         "log_sha256": "767bf3b191b9e3ed7a89ef2178209a766c27a32afd2dab585da0b07708c9cf3a",
         "executable": "C:\\Users\\sqz269\\bsp-az-render-service-parameters\\az_current_parameters_probe.exe",
-        "executable_sha256": "b6169327a0aa1095cde012fbcdcdf28db0f446a58e2b16fd168570df8fdc5dd1",
+        "executable_sha256": "08551db81f5488d687ed9cde84a984e25d5c23c44c03ca6db9ec182bc60200c0",
         "attempts": 1,
         "retry_policy": "none",
         "pass_lines": [
