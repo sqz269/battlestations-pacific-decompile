@@ -1,0 +1,40 @@
+{
+  "packet": "orch6_destroy_recursion_correction_r",
+  "status": "two_bounded_source_corrections_live_assembly_reviewed_win32_build_tested",
+  "source": "src/unit_damage.cpp",
+  "header": "include/bsp/unit_damage.hpp",
+  "function": "00926C80",
+  "original_abi": "ECX=entity,one stack DWORD recurse; only its low byte gates recursion;RET4 at00926D88 ends00926D8A. Existing source host interface is not a native ABI replacement.",
+  "corrections": [
+    {
+      "site": "00926CF7",
+      "bytes": "80 7c 24 20 00 56 74 34",
+      "instruction": "CMP byte ptr[ESP+20],0;PUSH ESI;JZ00926D33",
+      "source": "Convert recurse to uint8_t before the nonzero gate; upper bits alone do not request child recursion."
+    },
+    {
+      "site": "00926D14",
+      "bytes": "83 7f 70 00 75 07 c7 46 70 00 00 00 00",
+      "instruction": "CMP dword ptr[EDI+70],0;JNZ00926D21;MOV dword ptr[ESI+70],0",
+      "source": "After an accepting child predicate, reread parent cause and clear child cause iff zero before child destroy dispatch."
+    }
+  ],
+  "calls": [
+    {"address":"00926C9C","native":"009248D0","function":"00926C80","contract":"Existing captured entity lock-owner lookup; unchanged external source host contract."},
+    {"address":"00926D0E","native":"child+vtable78","function":"00926C80","contract":"Existing predicate; new parent-cause reload occurs only after accepting AL."},
+    {"address":"00926D2A","native":"child+vtable70","function":"00926C80","contract":"Existing child destroy with argument1; new conditional cause store precedes it."},
+    {"address":"00926D4E","native":"00924B10","function":"00926C80","contract":"Existing pending list insertion provider, unchanged."},
+    {"address":"00926D5C","native":"009267F0","function":"00926C80","contract":"Existing length-checked count increment, unchanged."}
+  ],
+  "validation": {
+    "evidence": "Root independently inspected live function body and exact gate/store bytes; pending-owner worker supplied the original low-byte finding.",
+    "build": "MSVC Win32 Release and both existing CTests passed",
+    "new_tests": 0,
+    "scope": "Focused instruction/source verification; no new native whole-body fixture or runtime invocation proof."
+  },
+  "limits": [
+    "Only two bounded semantics corrected; no claim of auditing every UnitDamageHost implementation or all source/native field-read effects.",
+    "Full pending queue delivery, lock/allocator exceptions and arbitrary virtual providers remain external contracts.",
+    "No original-game gameplay or drop-in binary ABI proof."
+  ]
+}

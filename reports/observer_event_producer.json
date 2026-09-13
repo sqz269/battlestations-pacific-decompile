@@ -1,0 +1,535 @@
+{
+  "packet": "orch6_observer_event_producer_r",
+  "base_commit": "bfef3a70",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "Read-only BSP CLI, each client verifies project/program; root already defined/saved four short functions",
+  "header": "include/bsp/observer_event_producer.hpp",
+  "source": "src/observer_event_producer.cpp",
+  "doc": "docs/OBSERVER_EVENT_PRODUCER.md",
+  "routines": [
+    {
+      "address": "00925C40",
+      "native": "00925C40",
+      "reconstruction": "bsp::notify_observer_slot04_if_present_00925c40",
+      "proposed_name": "BSP_MissionEntity_NotifyObserversIfAny",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first; RET or tail JMP 00696330",
+      "original_bytes": {
+        "entry": "00925C40",
+        "end_inclusive": "00925C83",
+        "bytes": 68,
+        "instructions": 29,
+        "sha256": "68cac144d4c36ff5a5fedfd8f675a927de64bb68f675016e2caf99358bffebc4"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00925C90",
+      "native": "00925C90",
+      "reconstruction": "bsp::notify_observer_slot08_if_present_00925c90",
+      "proposed_name": "BSP_ObserverEndpoint_NotifySlot08IfAny",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first; RET or tail JMP 00696340",
+      "original_bytes": {
+        "entry": "00925C90",
+        "end_inclusive": "00925CD3",
+        "bytes": 68,
+        "instructions": 29,
+        "sha256": "a47ebb1978fa6156fb12125c134470884021082246f275b7d89f7d624fbfc982"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00696330",
+      "native": "00696330",
+      "reconstruction": "bsp::notify_observer_slot04_00696330",
+      "proposed_name": "BSP_ObserverEndpoint_NotifySlot04",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first; EDX=00693550; tail JMP 00695F90",
+      "original_bytes": {
+        "entry": "00696330",
+        "end_inclusive": "00696339",
+        "bytes": 10,
+        "instructions": 2,
+        "sha256": "1e7cbb39df929170ab77d55408f51775aaef8bfb13049f647975a8b3964d5e6c"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00696340",
+      "native": "00696340",
+      "reconstruction": "bsp::notify_observer_slot08_00696340",
+      "proposed_name": "BSP_ObserverEndpoint_NotifySlot08",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first; EDX=00693560; tail JMP 00695F90",
+      "original_bytes": {
+        "entry": "00696340",
+        "end_inclusive": "00696349",
+        "bytes": 10,
+        "instructions": 2,
+        "sha256": "1450aa0c25af37f06632abc4ef81e6294f00ce205325f243253f25efea441b99"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00693550",
+      "native": "00693550",
+      "reconstruction": "bsp::invoke_observer_slot04_00693550",
+      "proposed_name": "BSP_ObserverEndpoint_InvokeCallbackSlot04",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first, EDX=callback owner; PUSH first; callback RET4; plain RET",
+      "original_bytes": {
+        "entry": "00693550",
+        "end_inclusive": "0069355A",
+        "bytes": 11,
+        "instructions": 6,
+        "sha256": "11fc106bf80e7ac4b10a763b6660f1af807dbf1891bdb045c8a2fbe36d02744b"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00693560",
+      "native": "00693560",
+      "reconstruction": "bsp::invoke_observer_slot08_00693560",
+      "proposed_name": "BSP_ObserverEndpoint_InvokeCallbackSlot08",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX=first, EDX=callback owner; PUSH first; callback RET4; plain RET",
+      "original_bytes": {
+        "entry": "00693560",
+        "end_inclusive": "0069356A",
+        "bytes": 11,
+        "instructions": 6,
+        "sha256": "c90a40dcf59d7edf802fdb4603f10dcba32e3187987654533694be0f55ae9a27"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0042B970",
+      "native": "0042B970",
+      "reconstruction": "bsp::observer_endpoint_identity_0042b970",
+      "proposed_name": "BSP_ReturnThis_0042B970",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX input returned in EAX; plain RET",
+      "original_bytes": {
+        "entry": "0042B970",
+        "end_inclusive": "0042B972",
+        "bytes": 3,
+        "instructions": 2,
+        "sha256": "58367ffa2a0179375018fa0f5c26da24391e42ebe0ed8fdda35a21fc7bdc396f"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00522E90",
+      "native": "00522E90",
+      "reconstruction": "bsp::observer_endpoint_null_00522e90",
+      "proposed_name": "BSP_ReturnNull_00522E90",
+      "coverage": "complete normal body; new C++ interface",
+      "original_abi": "ECX unconsumed; EAX=0; plain RET",
+      "original_bytes": {
+        "entry": "00522E90",
+        "end_inclusive": "00522E92",
+        "bytes": 3,
+        "instructions": 2,
+        "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e"
+      },
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00925C45",
+      "containing_function": "00925C40",
+      "name": "sample_observer_endpoint_presence_00925c45",
+      "coverage": "partial_projection: 00925C45..00925C71 only; enclosing prologue and 00925C72..00925C83 predicate/dispatch/return tail remain outside this helper",
+      "source_abi": "bool(source first reference, existing NativeObserverLifetime reference)",
+      "original_abi": "In-function EDI=first; samples count with SETA BL; captured ESI section; not a separately callable native body",
+      "equivalent_inlined_span": "009274DE..00927509",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00925C45",
+      "native": "00694280",
+      "function": "00925C40",
+      "kind": "call",
+      "contract": "Capture existing lock owner; sample section is owner+4"
+    },
+    {
+      "address": "00925C52",
+      "native": "00CE2218+import",
+      "function": "00925C40",
+      "kind": "call",
+      "contract": "Win32 EnterCriticalSection, section pointer, callee consumes four stack bytes"
+    },
+    {
+      "address": "00925C6C",
+      "native": "00CE2210+import",
+      "function": "00925C40",
+      "kind": "call",
+      "contract": "Win32 LeaveCriticalSection of same captured section, four stack bytes"
+    },
+    {
+      "address": "00925C7B",
+      "native": "00696330",
+      "function": "00925C40",
+      "kind": "tail_jump",
+      "contract": "Dispatch only after the saved unsigned presence predicate and lock release"
+    },
+    {
+      "address": "00925C95",
+      "native": "00694280",
+      "function": "00925C90",
+      "kind": "call",
+      "contract": "Capture existing lock owner; sample section is owner+4"
+    },
+    {
+      "address": "00925CA2",
+      "native": "00CE2218+import",
+      "function": "00925C90",
+      "kind": "call",
+      "contract": "Win32 EnterCriticalSection, section pointer, callee consumes four stack bytes"
+    },
+    {
+      "address": "00925CBC",
+      "native": "00CE2210+import",
+      "function": "00925C90",
+      "kind": "call",
+      "contract": "Win32 LeaveCriticalSection of same captured section, four stack bytes"
+    },
+    {
+      "address": "00925CCB",
+      "native": "00696340",
+      "function": "00925C90",
+      "kind": "tail_jump",
+      "contract": "Dispatch only after the saved unsigned presence predicate and lock release"
+    },
+    {
+      "address": "00696335",
+      "native": "00695F90",
+      "function": "00696330",
+      "kind": "tail_jump",
+      "contract": "Original first ECX; callback selector EDX=00693550"
+    },
+    {
+      "address": "00696345",
+      "native": "00695F90",
+      "function": "00696340",
+      "kind": "tail_jump",
+      "contract": "Original first ECX; callback selector EDX=00693560"
+    },
+    {
+      "address": "00693558",
+      "native": "00693550+vtable04",
+      "function": "00693550",
+      "kind": "call",
+      "contract": "Actual callback owner table+4; one original first pointer; callback consumes it"
+    },
+    {
+      "address": "00693568",
+      "native": "00693560+vtable08",
+      "function": "00693560",
+      "kind": "call",
+      "contract": "Actual callback owner table+8; one original first pointer; callback consumes it"
+    }
+  ],
+  "context_calls": [
+    {
+      "address": "00926401",
+      "native": "00925C40",
+      "function": "009263C0",
+      "kind": "call",
+      "contract": "Actual scene removal notifies after flag stores"
+    },
+    {
+      "address": "00927510",
+      "native": "00696330",
+      "function": "009273A0",
+      "kind": "call",
+      "contract": "Queue drain has already sampled presence; call direct selector to avoid a second sample"
+    },
+    {
+      "address": "00A2D4AE",
+      "native": "00696330",
+      "function": "00A2D440",
+      "kind": "call",
+      "contract": "Current first primary table D23084 was stored at A2D464, selecting the null getter"
+    },
+    {
+      "address": "009263A1",
+      "native": "00925C90",
+      "function": "00926390",
+      "kind": "call",
+      "contract": "Separate slot08 lifecycle hook, after +5D/+60 stores"
+    },
+    {
+      "address": "006960D1",
+      "native": "00695F90+selected_callback",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "Dispatcher invokes ECX=original first and EDX=current edge+8 callback owner"
+    },
+    {
+      "address": "00693558",
+      "native": "0064B5C0",
+      "function": "00693550",
+      "kind": "call",
+      "contract": "CF5C94 slot04 specifically resolves to the existing raw Q node callback; arbitrary tables not assumed"
+    },
+    {
+      "address": "00693568",
+      "native": "0042B120",
+      "function": "00693560",
+      "kind": "call",
+      "contract": "CF5C94 slot08 specifically resolves to verified RET4; distinct from owner-clear callback"
+    },
+    {
+      "address": "0064B5CC",
+      "native": "0042B970",
+      "function": "0064B5C0",
+      "kind": "call",
+      "contract": "Indirect actual endpoint slot04 when current producer is one of the proven identity tables"
+    },
+    {
+      "address": "0064B5CC",
+      "native": "00522E90",
+      "function": "0064B5C0",
+      "kind": "call",
+      "contract": "Same indirect slot04 when actual producer has D23084"
+    },
+    {
+      "address": "0064B5DE",
+      "native": "006952A0",
+      "function": "0064B5C0",
+      "kind": "call",
+      "contract": "Equal getter result clears node+14 before unregistering same actual first/callback pair"
+    },
+    {
+      "address": "009E532D",
+      "native": "00694A60",
+      "function": "009E52E0",
+      "kind": "call",
+      "contract": "Existing constructor registers original owner argument and raw callback node"
+    }
+  ],
+  "producer_evidence": {
+    "metadata_source": "src/unit_world_registration.cpp",
+    "metadata_source_sha256": "fec3f3dd0ea0612d19557dc8149770ca96c7ca70f496a0675e34c82e0429498c",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "producer_limit": "Reuses previously reconstructed21 creator/constructor/table identities; this packet independently verifies their live/disk slot04 words, not their full constructors.",
+    "rows": [
+      {
+        "constructor": "006FE590",
+        "primary_table": "00CFC3D0",
+        "registration_body": "006FE620",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "006FB430",
+        "primary_table": "00CFB738",
+        "registration_body": "006FB4C0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "0074BE00",
+        "primary_table": "00CFFA30",
+        "registration_body": "0074BCD0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "006EB290",
+        "primary_table": "00CFA778",
+        "registration_body": "006EB410",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "006DFEF0",
+        "primary_table": "00CF90B0",
+        "registration_body": "006E0010",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "008531A0",
+        "primary_table": "00D0BF80",
+        "registration_body": "00853090",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00857E20",
+        "primary_table": "00D0C648",
+        "registration_body": "00857EB0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00758D30",
+        "primary_table": "00D01630",
+        "registration_body": "00758F90",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "008091D0",
+        "primary_table": "00D00070",
+        "registration_body": "0074E670",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "0084CA50",
+        "primary_table": "00D0BA80",
+        "registration_body": "0084CAE0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "0074E540",
+        "primary_table": "00D00308",
+        "registration_body": "0074E700",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "007DDAE0",
+        "primary_table": "00D06920",
+        "registration_body": "007DDB70",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00956390",
+        "primary_table": "00D19D28",
+        "registration_body": "00956300",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "009564E0",
+        "primary_table": "00D1A000",
+        "registration_body": "00956450",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00956240",
+        "primary_table": "00D1A2D8",
+        "registration_body": "009561B0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "007D7850",
+        "primary_table": "00D06638",
+        "registration_body": "007D78E0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "006D3110",
+        "primary_table": "00CF8C08",
+        "registration_body": "006D36D0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00848380",
+        "primary_table": "00D0B770",
+        "registration_body": "00846CF0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "0074DF10",
+        "primary_table": "00CFFDE0",
+        "registration_body": "0074DE10",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "00747000",
+        "primary_table": "00CFF3F8",
+        "registration_body": "006F59B0",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      },
+      {
+        "constructor": "006F5C10",
+        "primary_table": "00CFB028",
+        "registration_body": "006F5A50",
+        "slot04_target": "0042B970",
+        "live_equals_disk": true
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "Event argument could be treated as a synthetic payload or universal identity getter",
+      "is": "Original first endpoint itself is delivered; its current producer table chooses identity or null getter",
+      "evidence": "00696330 -> 00695F90 -> 00693550; actual ECX/EDX provenance and table slots D19120/D192E0/D23084; callback 0064B5CC"
+    }
+  ],
+  "dependencies": {
+    "peer_schedule_source": "local/event_dependency/src/observer_dispatch_schedule.cpp",
+    "peer_schedule_sha256": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec",
+    "peer_header_sha256": "beeefe771d92181c3cd8c196da8f9328e61c865665da58a0c99175366b4a540a",
+    "root_short_function_definitions": "reports/observer_event_function_definitions.json",
+    "schedule_review": "Final peer uses private size restoration and canonical count insertion, without standalone STL erase/resize copies; requires valid storage and excludes returning validation handlers that mutate it",
+    "declaration": "ObserverEventDeliveryContext borrows the existing lifetime, actual E198E4 publication and callback providers; no new runtime owner or scheduler"
+  },
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctest_passed": 2,
+    "seed_verification": "local/event_verify_seeds_refreshed.txt",
+    "paired_probe": {
+      "pairs": 5,
+      "record_words_per_side": 913,
+      "original_core_entries": 5,
+      "getter_calls": 12,
+      "mismatches": 0
+    },
+    "owned_original_bytes": 184,
+    "shared_original_bytes": 3,
+    "relocations": 12,
+    "report_calls": {
+      "numeric_rows_checked": 16,
+      "failures": 0,
+      "indirect_numeric_resolutions": 4,
+      "symbolic_rows_skipped": 7,
+      "evidence": "local/event_report_calls.txt",
+      "limit": "Verifier checks bodies but cannot verify indirect numeric targets; these targets use separate table/listing/native evidence"
+    },
+    "manifest": "local/event_proof_manifest_final.json",
+    "manifest_sha256": "0d31860794c93bc53bf808aaae9261adb00ac0d15d7bdb170523ff8be1fd25bd",
+    "prior_manifest": "local/event_proof_manifest.json",
+    "prior_manifest_sha256": "257a087fbb1e597d50c9c54d1a5099354a3d665212dd0b1fc789eae5d9c2c1b2",
+    "library_archive_count": 9,
+    "explicit_release_library_count": 3,
+    "boundary": "Only R wrappers/getters are native/source alternatives. Recovered schedule, Q node constructor/callback/lifetime and CRT/Win32 services are shared dependencies; five fixture pairs do not independently validate those algorithms."
+  },
+  "limits": [
+    "New C++ ABI; not native ABI-compatible.",
+    "No game validation, full native unit constructor, arbitrary callback table, EH/OOM or concurrency equivalence.",
+    "The reviewed schedule dependency requires valid vector storage; mutation by returning validation handlers is outside the private restoration adapter guarantee.",
+    "Selected state/order only: canonical endpoint/node identities, actual lock counts and vector occupancy, node owner/flags and 83 constructor-untouched bytes. Not whole heap/lock/private-byte equivalence.",
+    "Initial interrupted build log and successful resumed/verbose probe attempts retained; no failure logs discarded.",
+    "Full reconstructed dispatcher is a separately owned peer dependency, temporarily copied only under ignored local for this build. Integrator must merge the peer packet before a clean production build."
+  ]
+}
