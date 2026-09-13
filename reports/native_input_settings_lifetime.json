@@ -1,0 +1,3688 @@
+{
+  "packet": "orch4_input_settings_lifetime_aq",
+  "status": "raw_settings_lifetime_component_validated_integration_pending",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_settings_lifetime.hpp",
+    "src/native_input_settings_lifetime.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_SETTINGS_LIFETIME.md",
+  "byte_spans": [
+    {
+      "address": "00444be0",
+      "end_exclusive": "00444cd9",
+      "bytes": 249,
+      "sha256": "da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00450540",
+      "end_exclusive": "004505c3",
+      "bytes": 131,
+      "sha256": "b78e4c1224ccfaca9b23e5da76842bdc791be527bdac8df87c0897e2bc390c3d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00492210",
+      "end_exclusive": "004922c3",
+      "bytes": 179,
+      "sha256": "1e28c1d05aebce48d2d5cfe33f3d68ebd26bc84dc5394b1b1fd1f94ce567c44e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004954f0",
+      "end_exclusive": "0049556e",
+      "bytes": 126,
+      "sha256": "527e8bc06eee9b4aed5d6e1321a29982e0e69ced13cf532876f1bb82fcd7bd63",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0049df50",
+      "end_exclusive": "0049dfd4",
+      "bytes": 132,
+      "sha256": "8aa3c204158ce8c52be70ec0e346a2b62448449077dac4e4b33fdad70edbd77d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0049e050",
+      "end_exclusive": "0049e144",
+      "bytes": 244,
+      "sha256": "f0c46828c6cf6e1095c57a394e9c4fdff0565405f6b07254f68a2a10a3256005",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a9a0",
+      "end_exclusive": "0055aaa2",
+      "bytes": 258,
+      "sha256": "5c23c8911eb5d4a903b5839e92a200c738e3cdcb0d6f607f17318bb18d6d287b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055c110",
+      "end_exclusive": "0055c1f3",
+      "bytes": 227,
+      "sha256": "f441173adafacf710e98e995714c53afe5a1c068fa11524ce0a47fdfa06a04de",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069fa40",
+      "end_exclusive": "0069faf9",
+      "bytes": 185,
+      "sha256": "4f12a5bc59979fc5fa9ff96ecce6083b453b28d1f6599e5a3cbb417084fda002",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a0db0",
+      "end_exclusive": "006a0e88",
+      "bytes": 216,
+      "sha256": "709aec5e0a4c911575be0f61d1bf3b9aa7068ad5a4c081e093cc9eb533985a94",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1560",
+      "end_exclusive": "006a15e0",
+      "bytes": 128,
+      "sha256": "c351998559e7eb69ce18741b9b299a4410bb4f24ddd0003ace74a60b770a8b76",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1e70",
+      "end_exclusive": "006a1f4b",
+      "bytes": 219,
+      "sha256": "d4ca838f3712088491dc6006c44acbcd527197adb5b96f1c8c72ada0965f2cea",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1f80",
+      "end_exclusive": "006a2052",
+      "bytes": 210,
+      "sha256": "165c83173efe86ecf6617f1d2347af2d839843c666edf6009caf8758af1a34b1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a44b0",
+      "end_exclusive": "006a45b2",
+      "bytes": 258,
+      "sha256": "9c3897c57decbbe69ef617b2ab1d6b2459a15800da61b1b88fe663b9951b62e1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a45c0",
+      "end_exclusive": "006a46c2",
+      "bytes": 258,
+      "sha256": "a967f580387722708f2dccc58e4f312fc714d198b47ecdbc89ae9e3ba0cdc746",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4710",
+      "end_exclusive": "006a47f0",
+      "bytes": 224,
+      "sha256": "9d5f1067c2f367fd682efa99dd471ba5c3bfd08c758d48c920356c0a4e1e97fb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4ca0",
+      "end_exclusive": "006a4dba",
+      "bytes": 282,
+      "sha256": "02e444e5e56d97f83bf31024ecdbf814583ba3d25f0040a8ad2648aef6f734bc",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a5aa0",
+      "end_exclusive": "006a5bef",
+      "bytes": 335,
+      "sha256": "821a3fe9fcb16cd3425ae3b29513a55832aa49b147e34595b420f519e069c077",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6350",
+      "end_exclusive": "006a644d",
+      "bytes": 253,
+      "sha256": "0cd48b052eb368cadc2fc75e2337adc89dd77fb728419fb4542e93b718fa282f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6900",
+      "end_exclusive": "006a6a12",
+      "bytes": 274,
+      "sha256": "dbe1ff0628897c3a8ba3edfb1b7be5f5675066cb1088e2898fccad226ed7d128",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7540",
+      "end_exclusive": "006a75e1",
+      "bytes": 161,
+      "sha256": "3fcd02079c518ccb5645fc66af7b7c8a642a3fb87338e463d990072fc5ccdf7a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a79a0",
+      "end_exclusive": "006a7a9d",
+      "bytes": 253,
+      "sha256": "3bddea2bc1bcb4ebc1a4e31da57ca0873b40e65d392e722de6c86172036b4b83",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7be0",
+      "end_exclusive": "006a9844",
+      "bytes": 7268,
+      "sha256": "145bc73648e68ea283e874f5f38420bdf57efd8c75a77694b5c7f09da3b1d3dc",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006aa460",
+      "end_exclusive": "006aa640",
+      "bytes": 480,
+      "sha256": "6cbedcb555fb094ac6bc137a23b4555cec86b2cb0c2e1f89d9a0ed9eccffc069",
+      "evidence": "fresh disk/live equality",
+      "owned": true
+    },
+    {
+      "address": "006ab6b0",
+      "end_exclusive": "006ab7fc",
+      "bytes": 332,
+      "sha256": "2f1e13a038ece972151b9dba9a4b01d7bc8aed7833e3d0fa35b66dd6a138f262",
+      "evidence": "fresh disk/live equality",
+      "owned": true
+    },
+    {
+      "address": "00432050",
+      "end_exclusive": "00432088",
+      "bytes": 56,
+      "sha256": "e8abffe39675157186112a03d0467b990eb892f5847d452436f2f86aae171b53",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00441860",
+      "end_exclusive": "00441a14",
+      "bytes": 436,
+      "sha256": "0639a11928442c4a0417e7c16741dcd41ccff6ca043d76b8f1594a411f23cf79",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00443d00",
+      "end_exclusive": "00443d51",
+      "bytes": 81,
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00443d60",
+      "end_exclusive": "00443db3",
+      "bytes": 83,
+      "sha256": "e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00444910",
+      "end_exclusive": "00444b0c",
+      "bytes": 508,
+      "sha256": "2d70f450e254d0a6283e6434e228a5f16d568f98bcf430459c4f795a25ad4a15",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044ce20",
+      "end_exclusive": "0044ceab",
+      "bytes": 139,
+      "sha256": "093820df05a3293b5ca4b482a538d90dd7de826b5f882a5bb9768741e7b23589",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044f410",
+      "end_exclusive": "0044f6ec",
+      "bytes": 732,
+      "sha256": "9faffefbc39b8eef20caeda65d3950e1966d9a8660ced3aaefa9f0c70b4136de",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00450180",
+      "end_exclusive": "00450209",
+      "bytes": 137,
+      "sha256": "6da0780c9510caeca5668555ac0edb9194e189033c18b8466c447f5343e2bbcf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004685a0",
+      "end_exclusive": "004685fa",
+      "bytes": 90,
+      "sha256": "5c2e1d383527e0db87120546f760b26da011e7d1dd80494475c80ae50af1b245",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048da50",
+      "end_exclusive": "0048daa2",
+      "bytes": 82,
+      "sha256": "445ff8c48a9f34a88f0c10b81aca1bf0c3e143b79ea280746f9e8f97f8c60374",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048f290",
+      "end_exclusive": "0048f2d7",
+      "bytes": 71,
+      "sha256": "897e21eec50a4b6ae2f309a112c43072ddda578e2529af26eab6b8b83f943ec6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048f2e0",
+      "end_exclusive": "0048f344",
+      "bytes": 100,
+      "sha256": "1d7b24a1f6ab902c601adf6435f31297a22402f9fcc9ff331c49b64540d3052b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00499700",
+      "end_exclusive": "0049981a",
+      "bytes": 282,
+      "sha256": "c912ab8410a0d540935c3358638a41e6385599d13bc5e062b422d40ffcf3be68",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0049cc50",
+      "end_exclusive": "0049cd15",
+      "bytes": 197,
+      "sha256": "7d93ad4600d2841e2f472dc70e52836652556b4b8407d8172f06f0d4da34a02b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005548c0",
+      "end_exclusive": "00554913",
+      "bytes": 83,
+      "sha256": "53aca1e0d43df45bff865c7046f2325d1e3d0c6cd50c352b3099ca6b9b237aa0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554920",
+      "end_exclusive": "00554973",
+      "bytes": 83,
+      "sha256": "c2d48ec9ed8a239a943c5770cef08e51df1517cc61ed2abe51dfe8e6d0fcc03f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554980",
+      "end_exclusive": "005549d9",
+      "bytes": 89,
+      "sha256": "9faef6d4c68bfcfeab1e26dfd17c94086964ff8b6cdff9993fac950266d406c5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554ec0",
+      "end_exclusive": "00554ef7",
+      "bytes": 55,
+      "sha256": "379e128ef5921666afe611547132c8bcc5dda188a24291d4031762f75abbfddc",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005572f0",
+      "end_exclusive": "005573b9",
+      "bytes": 201,
+      "sha256": "bc83f356cf7120c50cfa1d68f45c1bc463375287a1490b54c0d0f55d96a6d4a6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558570",
+      "end_exclusive": "005585e1",
+      "bytes": 113,
+      "sha256": "7adf75fe5d2d305378cad4cf75a6d314aa525e9930c19a62335a1bb4a11dd6c5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005586b0",
+      "end_exclusive": "00558737",
+      "bytes": 135,
+      "sha256": "ed818a396863e56273fa06203a4c87827b1bd989645e7d1af4fd15fbaef85001",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a3a0",
+      "end_exclusive": "0055a3e8",
+      "bytes": 72,
+      "sha256": "bda201e25e28b0d6bbac56d05c557cc8ec83d132aed85e9d49455c34197214e4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a520",
+      "end_exclusive": "0055a71c",
+      "bytes": 508,
+      "sha256": "e8c62f0bf4e2308e17d121cf34f8aa74a0972953e5d0c5cbb0fe50a716cfcad4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b520",
+      "end_exclusive": "0055b687",
+      "bytes": 359,
+      "sha256": "7f3f66cc1ccd127eba4e0f7aed4ab38df5860ad3ead151471ad74ba7757ae611",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b690",
+      "end_exclusive": "0055b8a6",
+      "bytes": 534,
+      "sha256": "fb15798e9e63ad6df0cd9f7916cc8d11d5226a58b35cc448679efebebe8021a7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b8b0",
+      "end_exclusive": "0055b911",
+      "bytes": 97,
+      "sha256": "3551deb332952e54b6ccca81a76c5fb9dfffd4d50b45c148013fec995defd72d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055ba80",
+      "end_exclusive": "0055baff",
+      "bytes": 127,
+      "sha256": "08b2f9c812b96e334a013269e3db7ef143ff314baa0968d18a6625f0b4ce7dc9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055bf00",
+      "end_exclusive": "0055c102",
+      "bytes": 514,
+      "sha256": "292e0a05ae4dd7e34f5e36480384c316e34e7f533eb4e93ad6a56cd03129c21a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697f40",
+      "end_exclusive": "00697fc3",
+      "bytes": 131,
+      "sha256": "5d03321f7205f5ba7b7648748d98d63467b8865f8613aa6f07ccefac345501b5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b910",
+      "end_exclusive": "0069b999",
+      "bytes": 137,
+      "sha256": "b1566219e1d730059f4b673426f2e5c5c4ab881eae59c74f7d55de8366c2a2a9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ccf0",
+      "end_exclusive": "0069cd43",
+      "bytes": 83,
+      "sha256": "823eb41ac6699d92897b433872c82df55e2f5681e9b826b35e3a049a7df8d64c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069cd50",
+      "end_exclusive": "0069cda3",
+      "bytes": 83,
+      "sha256": "f7895045e872b51318d145b2567e45dfc082afdb050f838bd26e95b2c618a2bf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069cdb0",
+      "end_exclusive": "0069ce03",
+      "bytes": 83,
+      "sha256": "12ab58df763adcd1e5091e5fa4b0bf9370809ed701d876040838f81ca520c199",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ce30",
+      "end_exclusive": "0069ce83",
+      "bytes": 83,
+      "sha256": "dc230d37b1da6a05a3b9b1611b5d67f9b6e099964ef34a870cdc7a973b9d9ed5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d1f0",
+      "end_exclusive": "0069d230",
+      "bytes": 64,
+      "sha256": "b44d55f875858753de5c228bcbec3766b35cd7cb751e9a5aa8b000f53b183d31",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d240",
+      "end_exclusive": "0069d277",
+      "bytes": 55,
+      "sha256": "b5f8fe43b13f308410be2f8624c1a5a01d2cf39e11b46086f5c60396a4f75ec5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d290",
+      "end_exclusive": "0069d2c7",
+      "bytes": 55,
+      "sha256": "b907e6f2f4b91761d1901d6de5c58dedc665424e9b2a3b345a162445b59f998b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d320",
+      "end_exclusive": "0069d357",
+      "bytes": 55,
+      "sha256": "fca52769b291460498e02552d82bf935f02f246ba3abeb61e2de624625d2c3c2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d430",
+      "end_exclusive": "0069d467",
+      "bytes": 55,
+      "sha256": "7dc501f473bbbea88220d3ff13f985b9e7ceb926d3c119da7d639681e8d1ac56",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e680",
+      "end_exclusive": "0069e6d1",
+      "bytes": 81,
+      "sha256": "4340d14c84e09644ab42982d6d9d1c217b24f54b7b60ddd056505cad24ce730a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e6e0",
+      "end_exclusive": "0069e743",
+      "bytes": 99,
+      "sha256": "15ad6f8f8aa29d7013a9f9ec92791d625c3e67c5fb42c3c64d664d37c3da1925",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e750",
+      "end_exclusive": "0069e794",
+      "bytes": 68,
+      "sha256": "d45d4d8bfa7a896ef3778773c28071ec90703fc5536c281856b680f9f76a1a02",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069eea0",
+      "end_exclusive": "0069eed6",
+      "bytes": 54,
+      "sha256": "b7fbe0920d1de9e9e9c2e9f6055065b7a6cbc69ce294355ee4be9d3b78ca6eee",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ef20",
+      "end_exclusive": "0069f10c",
+      "bytes": 492,
+      "sha256": "26a9cc7bbaa1be85d498dd86c1d9061011d52e68a9bb3599ce9d9863715be3c7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069fe70",
+      "end_exclusive": "0069ff39",
+      "bytes": 201,
+      "sha256": "56185bbb4d30b806df971144f7319c7ab29addbfdc68ad3fd282bfc2a5b07318",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ff40",
+      "end_exclusive": "006a01e9",
+      "bytes": 681,
+      "sha256": "905a921aa645abe767ac9a761006ea439c102b25c005ca9b99e9b6520ae56e8b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a0e90",
+      "end_exclusive": "006a104c",
+      "bytes": 444,
+      "sha256": "470c6881fd5ad8367b995dd78ea2e7341d6f75ec857c8dbd88eab82250617d3a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a15e0",
+      "end_exclusive": "006a17dc",
+      "bytes": 508,
+      "sha256": "ad27366ce133223bde6b3b468a80d6612bd6439d8d9d77cc3e4a7e2a3804ca16",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a17e0",
+      "end_exclusive": "006a199c",
+      "bytes": 444,
+      "sha256": "d22cf4ff891898facea3d8866cb0b2a41739b74b302e5ac779bd0059b7c4df67",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a19a0",
+      "end_exclusive": "006a1a1f",
+      "bytes": 127,
+      "sha256": "5310e3e2d7cdb0b2b76f151259147d5e911097a1b66e78b62c85abe03e9fb35a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1a20",
+      "end_exclusive": "006a1a9f",
+      "bytes": 127,
+      "sha256": "5a1659d18f0f9bf6e89a46cf0fdad6af2b066ac3389cee92f998aed06a7c3e1a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1aa0",
+      "end_exclusive": "006a1b69",
+      "bytes": 201,
+      "sha256": "cd540366fcc86c2a31f10925ba758b93da011047896ded5b604be37ebd69eea9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1b70",
+      "end_exclusive": "006a1c39",
+      "bytes": 201,
+      "sha256": "624798c145ab62f4bac0ab886582043194ee1da04b2a1e220212a3c18c23a002",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a20d0",
+      "end_exclusive": "006a2157",
+      "bytes": 135,
+      "sha256": "b935d9e6f6379607ca711f33222b191188046dfe83d75fa1089d551980297c3e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2160",
+      "end_exclusive": "006a21b8",
+      "bytes": 88,
+      "sha256": "b78ed49125de728f0a60b5fcdd2d37970be812f795d85bb34bbcb5dda0affd6b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2bb0",
+      "end_exclusive": "006a2c3f",
+      "bytes": 143,
+      "sha256": "db3c7a400bc18b8688c2d601ba866d3dd575a548d459bcf7ec7649469bccaf70",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a38b0",
+      "end_exclusive": "006a3aac",
+      "bytes": 508,
+      "sha256": "3f01e122aebb6ac0c7c107b58f0b6fb119dbe337be0ff3765e944fe629d6d7a3",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3ab0",
+      "end_exclusive": "006a3cac",
+      "bytes": 508,
+      "sha256": "494c8b6996a290ff05930d77c6f72549d1b62fe7a44bc6d1907d174fdd8a5838",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3cb0",
+      "end_exclusive": "006a3d2f",
+      "bytes": 127,
+      "sha256": "872cf0e3cbc9d303a48cdd69a3ee2967a09c1d3f0cd322decdcae07287d2ba62",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3d30",
+      "end_exclusive": "006a3fa4",
+      "bytes": 628,
+      "sha256": "dde703a7215e52d145e97588beec48756a8e284b39f1bc92b796178276a29a95",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a47f0",
+      "end_exclusive": "006a49ec",
+      "bytes": 508,
+      "sha256": "4511e40bee07cbbb40d1e43d231c0b9f144c7db6750903c61615a307e1b7d13a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4dc0",
+      "end_exclusive": "006a4f7c",
+      "bytes": 444,
+      "sha256": "907c1885f06ee531f7314b0eb0a2716ca54112e75889b32f6191ef5cc91a5324",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a5bf0",
+      "end_exclusive": "006a5c48",
+      "bytes": 88,
+      "sha256": "4335203e7ca2cb2ee7416d61b8f2aee19b6dac4fb1bb49f74f7c9914e79e6be4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a5c50",
+      "end_exclusive": "006a5ee4",
+      "bytes": 660,
+      "sha256": "5d23a4d9e34fa749980461669d86250a6006d8fd348e10edbd9733d7c76b455f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6450",
+      "end_exclusive": "006a664c",
+      "bytes": 508,
+      "sha256": "b3d74f7af038a220338ab5da39d4e55c756a379a73b2d9bfb3b7d33e1dfe7f05",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6a20",
+      "end_exclusive": "006a6ae9",
+      "bytes": 201,
+      "sha256": "809c0cdc4f505bbe14e53ed2a5b3d586d32ce24a05aa40c4b7ddfe73399f08bd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6ee0",
+      "end_exclusive": "006a6f28",
+      "bytes": 72,
+      "sha256": "d15a8b8857f4b92a1a42c53503be41da46354c29fbb5caa93061cb090bab1d99",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7630",
+      "end_exclusive": "006a7688",
+      "bytes": 88,
+      "sha256": "a8f426e80cd5938fc2ae67c0faa9131e3405bf8378cd7175c8e353680cf53c4a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7690",
+      "end_exclusive": "006a7924",
+      "bytes": 660,
+      "sha256": "e847f290606df645b9803d0b79f27860351818d9d15e41a8f068fa52d29d29c4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7aa0",
+      "end_exclusive": "006a7b69",
+      "bytes": 201,
+      "sha256": "c7f11a7e4093af7dfa4f1b950755e4b4cdcb6fb9cb94547f1eccfd543cfd07f2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0042bf40",
+      "end_exclusive": "0042bf95",
+      "bytes": 85,
+      "sha256": "f67cedc8fb49f7df051e430226963ee3e75021ebdf0d02ad0651f537fb04f709",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00431f40",
+      "end_exclusive": "00431f63",
+      "bytes": 35,
+      "sha256": "744c7a8697a4cc725eafc735fbfab05d47722d078e356e46472573cd9ed3af1b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00431f70",
+      "end_exclusive": "00431fd9",
+      "bytes": 105,
+      "sha256": "b374a90625b79a0dd2ea7acf577702804626644612a946f6ee52c4cd75061cca",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00432360",
+      "end_exclusive": "00432376",
+      "bytes": 22,
+      "sha256": "ababfda71e61f8fd7389d7140ae6b44a0db2e31c8d86f6c3cccc61441e4baccf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0043f6a0",
+      "end_exclusive": "0043f6f5",
+      "bytes": 85,
+      "sha256": "6c4bcae70273609110c0ac1a87eb640a5ea79b9caffd69734c4b198c921c08d7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0043f9e0",
+      "end_exclusive": "0043f9fe",
+      "bytes": 30,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00440140",
+      "end_exclusive": "0044016f",
+      "bytes": 47,
+      "sha256": "424b915db4746432731d8d5b4471f8ed8822e3c2c2ffb600d3f2a2d2222d27e0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00440c70",
+      "end_exclusive": "00440ca0",
+      "bytes": 48,
+      "sha256": "d941844c0994f93f01728e2bba4d8fbe0f6aaaca7f4b92b3100840b47f51e90c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00441180",
+      "end_exclusive": "004411ae",
+      "bytes": 46,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00441440",
+      "end_exclusive": "004414a9",
+      "bytes": 105,
+      "sha256": "0e78359a6f531aa58b68ce1c221c86440401a51c98519d8037f1f0b0af8de18c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004435a0",
+      "end_exclusive": "004435c9",
+      "bytes": 41,
+      "sha256": "7cbad31a70c1e2443c23a7c01046756c610cad8a4c5b0066e3c4739e2ddd4699",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004437f0",
+      "end_exclusive": "00443879",
+      "bytes": 137,
+      "sha256": "08c68b401aa84e2c2cf2cd52ef4783a8983a3244980723e208d03856563d4d86",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00443880",
+      "end_exclusive": "004438e3",
+      "bytes": 99,
+      "sha256": "f79ac330ac6cd6ff9a70cf17df8345b7368208b9649438bcf56c9be93f43e810",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00443e20",
+      "end_exclusive": "00443e57",
+      "bytes": 55,
+      "sha256": "0bf0fe0bff8ceafd374af8af7ef22d2ae38507e7e1cbde3adb09860edbb0b015",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004442a0",
+      "end_exclusive": "0044448c",
+      "bytes": 492,
+      "sha256": "2690a7f5c5cf8f69e4efd98c5dfa519e77c02be9b141c57039b014ff70c5bbef",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004447c0",
+      "end_exclusive": "004448d4",
+      "bytes": 276,
+      "sha256": "eb2a02532415aa70d46dcc058932ac3f290d981e8697ed02faa49dc82aeee489",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00444b10",
+      "end_exclusive": "00444bd9",
+      "bytes": 201,
+      "sha256": "60905a62ce144c491c8cf7ff2c042950651568cf55626daba23be4fdf36b5954",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044bcb0",
+      "end_exclusive": "0044bd26",
+      "bytes": 118,
+      "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044c770",
+      "end_exclusive": "0044c7b6",
+      "bytes": 70,
+      "sha256": "4a6cfd591b57b3d3cdd00ef2080ca402437c12ad05cc674202ce38491cac5aa4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044d0c0",
+      "end_exclusive": "0044d144",
+      "bytes": 132,
+      "sha256": "f319a13cfd49f8987aa4416b176f19ea2ce2d9926894ec82058cbea44c9c00e7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044d850",
+      "end_exclusive": "0044d89c",
+      "bytes": 76,
+      "sha256": "10d3c8ed7625383da4243ac5834cfae4b40657300abd265da5cdb13274110e56",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044db60",
+      "end_exclusive": "0044db92",
+      "bytes": 50,
+      "sha256": "08c4017bbb3cfccd575677a9e44a57a5aadc8aa9a08ce0fe77af030618420f8a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044f170",
+      "end_exclusive": "0044f195",
+      "bytes": 37,
+      "sha256": "026fc77a922cfdf68691f75b3c1986fdf099e82c56a555b8ab54dfbe53bbeacb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048d3b0",
+      "end_exclusive": "0048d47b",
+      "bytes": 203,
+      "sha256": "9f7b7c43d63b244f3a5f1fe745f41f749e5fd67685760054788bee2465a96286",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00492e50",
+      "end_exclusive": "00492f0e",
+      "bytes": 190,
+      "sha256": "726ecd09471383507f7b477355e49a94980cf9e5b7bac2fa65dc9e4dd3a80efc",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004946e0",
+      "end_exclusive": "00494742",
+      "bytes": 98,
+      "sha256": "d724a79081aaaec137494f9b7b4b19ba33c4193f2cdc75d875580d4f30cea083",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00496670",
+      "end_exclusive": "00496712",
+      "bytes": 162,
+      "sha256": "066dbdca76edcab335353db4a3f658637767d042d6ebf3d0667705a38190b3c3",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00499ac0",
+      "end_exclusive": "00499b8f",
+      "bytes": 207,
+      "sha256": "7de9fa23a788b0d741135b37e84b1c21ff688c4e16232b89ebf64abd6408e703",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004b96e0",
+      "end_exclusive": "004b9732",
+      "bytes": 82,
+      "sha256": "8c3441a1a10a57b5346f8d5f970e9f9aa22ae03f5cd606a8e25049986447accd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004beea0",
+      "end_exclusive": "004beeee",
+      "bytes": 78,
+      "sha256": "e634658a105a919a5162c439f56ba159bb4fa042eb5c46ad63b401db6f70924a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004c2700",
+      "end_exclusive": "004c2737",
+      "bytes": 55,
+      "sha256": "10078a3722fda094cbe39ce12b8ccd64500e8e0f0eb2ef01f9011028d7ddaf5c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004cef40",
+      "end_exclusive": "004cf009",
+      "bytes": 201,
+      "sha256": "fa721906217fcf0230b4890678d77caaa4dc71a8192c69f84ec262fd36015baa",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004f6210",
+      "end_exclusive": "004f62a4",
+      "bytes": 148,
+      "sha256": "759e79b7fdfc009c2b3181e404b5e579b1955c660ab8d722bdf6937d8ded3f42",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00551d50",
+      "end_exclusive": "00551d79",
+      "bytes": 41,
+      "sha256": "5cc2fc779053c880dbdbe4b7ff4af94acc17e0dbcd8c3681e1451d6387469a5d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00551dc0",
+      "end_exclusive": "00551de9",
+      "bytes": 41,
+      "sha256": "90350588e3d51e9fd73384a250486b62bb788c984461b22230387c489cb09411",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00551e00",
+      "end_exclusive": "00551e29",
+      "bytes": 41,
+      "sha256": "d6b1a817865d40ea9af32588a96146628a163235944c472025eaa68e31abf2a3",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005526e0",
+      "end_exclusive": "00552769",
+      "bytes": 137,
+      "sha256": "20017df934176ce930bfb3fe1a160bee47e55023a3d3521a668ed664c98e6070",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552770",
+      "end_exclusive": "005527d3",
+      "bytes": 99,
+      "sha256": "5915cc3c0f58f4929a109a3c41434dc3aae481d40b6f0f8135cb283be81d93af",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005527e0",
+      "end_exclusive": "00552809",
+      "bytes": 41,
+      "sha256": "4ddeea43e457ec3dd2600083bc88a92b67bad03dabfb656de40a046c31ec97f7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552840",
+      "end_exclusive": "00552869",
+      "bytes": 41,
+      "sha256": "d038a7fcd9706d6f23e9e05617ea4ff4ac0c97362d83c17ecb43f8f0955a0888",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005528a0",
+      "end_exclusive": "005528c9",
+      "bytes": 41,
+      "sha256": "d32626c03a5c07235498a945e4f9715140f3d6c0ff32406dc1a2ddbab8118aa9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552d40",
+      "end_exclusive": "00552da3",
+      "bytes": 99,
+      "sha256": "24934612cecf4bbc39d872ba2a46717950bbf7aa9a25ac2a82446cb99d1324b2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552db0",
+      "end_exclusive": "00552e13",
+      "bytes": 99,
+      "sha256": "0cc1e40ee36e386404c3f2f7a110ad31ee81ba2e6166af1d7e8685cbe00c1361",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552e20",
+      "end_exclusive": "00552e83",
+      "bytes": 99,
+      "sha256": "4a163eccefe68ea5b4f878d7e33cfba8c34bb489aef7272c88930873adfe254f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552e90",
+      "end_exclusive": "00552ef3",
+      "bytes": 99,
+      "sha256": "cffece62fe1aa82fe01f03a7fb79e5a31551cab11e2788a7fc3b77f8f9d0ada0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552f00",
+      "end_exclusive": "00552f1f",
+      "bytes": 31,
+      "sha256": "4d892f44097cbafb6251d32babfc99ecfc83badabed84de8aa80a092ca5380b0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553070",
+      "end_exclusive": "00553099",
+      "bytes": 41,
+      "sha256": "e17eb01c3f71a1c78f9b330a822fc2751337e6ed342a97e8a8bd9ab354a01353",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005531f0",
+      "end_exclusive": "00553253",
+      "bytes": 99,
+      "sha256": "3f1537617bd7c8051983248b67d08c700684f6f2ce6de6c463aa21f10de1847e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553300",
+      "end_exclusive": "00553351",
+      "bytes": 81,
+      "sha256": "69dd4683a970d933822e38610cea38a19e37b8d8a5bd6c06c76339f9966d3217",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005536a0",
+      "end_exclusive": "005536f5",
+      "bytes": 85,
+      "sha256": "c2a7db0e1bbdaf3cfae0553baa1f0dba31159b8156fd71ff14c7d57f2c03a724",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554020",
+      "end_exclusive": "005540bf",
+      "bytes": 159,
+      "sha256": "6a6a82d5b5120fbea53a26542bebc84231424febf03464a90d687a7232d1e79e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005540c0",
+      "end_exclusive": "0055413e",
+      "bytes": 126,
+      "sha256": "69908183431662bf83bcd90ebaafb330530f9fe9d49a5694a29c4d42c98f314c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554be0",
+      "end_exclusive": "00554c17",
+      "bytes": 55,
+      "sha256": "5257b4a742425d6a639d7c3ee5f5d4165d3591ea2107445ecec520e21dbae50a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554c30",
+      "end_exclusive": "00554c67",
+      "bytes": 55,
+      "sha256": "e1e395c46852bc99833a685518e7c875d11af27cd51aa89ebeddbf364fdca0c2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554c80",
+      "end_exclusive": "00554cb7",
+      "bytes": 55,
+      "sha256": "ede9b426ad0fe76a73d4c409b0c12bc16707754d6cf2d9eff84b896096bbdd69",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554cd0",
+      "end_exclusive": "00554d07",
+      "bytes": 55,
+      "sha256": "aaa05a69d2e2539e7cf96c963b7b3e54ebd6229d795f4013dce1bb4e73909057",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554d20",
+      "end_exclusive": "00554d57",
+      "bytes": 55,
+      "sha256": "f7fedf61fedc13537dab8ff7c8662055f53746f9358ef054a5a0d984e87c0776",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554f10",
+      "end_exclusive": "00554f45",
+      "bytes": 53,
+      "sha256": "85fbf2336850f8662639b5d636e08415fed359a1b5c369833fc9c914aba88d76",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005550d0",
+      "end_exclusive": "00555109",
+      "bytes": 57,
+      "sha256": "4f149ca1ca015dbc897162d36254d71a56f02edc32d1112c88b22627381810bb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00555b20",
+      "end_exclusive": "00555b95",
+      "bytes": 117,
+      "sha256": "a472b23794810ec8682e6ed96545711fe60a3bdbb5e68a8c201bd2b5a1f6b384",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00556c90",
+      "end_exclusive": "00556cf9",
+      "bytes": 105,
+      "sha256": "768493aae1a9906bb46a10f27dcbbe885509982ce8e208c4e0de2c74c2884e7e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00556d50",
+      "end_exclusive": "00556db9",
+      "bytes": 105,
+      "sha256": "356bea6879c3ee625eef913650f1fefd119a4585bd92436c1d9ceb44bee3384c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00556dc0",
+      "end_exclusive": "00557067",
+      "bytes": 679,
+      "sha256": "d1f14fe4668484a294a62ebe858b855b9f696b20ce6368e491fd32fbd1764eaf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557590",
+      "end_exclusive": "00557654",
+      "bytes": 196,
+      "sha256": "fc049fe6c7110270e0d0e6324de98ae28f0cbf81c8578ba88ad358cb82e8025d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557820",
+      "end_exclusive": "005578b4",
+      "bytes": 148,
+      "sha256": "1c0edad57de09291f6fca5306935e3d5135ff9c6e1dad0ae7a7d4ff48adffbb3",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005578c0",
+      "end_exclusive": "00557997",
+      "bytes": 215,
+      "sha256": "1d064d6bd16817f437d90f8083b68d61e3e75967be3dcbc782fc55b5d27f7049",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557bc0",
+      "end_exclusive": "00557c84",
+      "bytes": 196,
+      "sha256": "edfa0655e0565c8030714cba399db5ba7910bd1e2a2ef9721061ea01a63279dd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559110",
+      "end_exclusive": "005591d9",
+      "bytes": 201,
+      "sha256": "ad803d40704ee0ae3197c58f53cabc17dcb47645624e7d3c0d390594233372c7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559280",
+      "end_exclusive": "00559349",
+      "bytes": 201,
+      "sha256": "c973c5805f6493eb8641525cc48df5c21b7288d95399e97d96077bda652b5bde",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559710",
+      "end_exclusive": "005598fc",
+      "bytes": 492,
+      "sha256": "3e7a8e36e27e352db7aa3c4869631dd2a7508c930ac5ddb3c75896cfc120446a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005599c0",
+      "end_exclusive": "00559a89",
+      "bytes": 201,
+      "sha256": "bdb28f4778b2f000e671905687eb3fd04a1ac6bd6264457ba1968eb1c6f8d6da",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559a90",
+      "end_exclusive": "00559b59",
+      "bytes": 201,
+      "sha256": "f51f98ff5eb6bbb75827f6e2b3d066441bb885c278cb240c874dd9ab38783a36",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a000",
+      "end_exclusive": "0055a114",
+      "bytes": 276,
+      "sha256": "f98a199362f749efb8e06f5131365d3db3f201aeba4bb49d1a2f4910ec1a650d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055ac60",
+      "end_exclusive": "0055ac76",
+      "bytes": 22,
+      "sha256": "867a17fd33f570abcd45353de7726c907132d533a15650cfabb33e0e5f63fa8f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b150",
+      "end_exclusive": "0055b216",
+      "bytes": 198,
+      "sha256": "efb7e75edc62c2ec46ac642a60560d0e799b3b26edcf2eb89d54c11defa73d93",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b230",
+      "end_exclusive": "0055b2f9",
+      "bytes": 201,
+      "sha256": "4ee2732d9efdd6eb19c773fdb7a14386dbfeb05b569fad25be42cb15e71050a8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b920",
+      "end_exclusive": "0055b9f9",
+      "bytes": 217,
+      "sha256": "04560c7f4f9242904ba5500ae0c02312dab7fb867d4ed8513a22fb1a62aaac67",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055bbe0",
+      "end_exclusive": "0055bddb",
+      "bytes": 507,
+      "sha256": "473ef005d9dafc7627123e5244033b70152fdf1230e45766dac6ec495278267d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055bde0",
+      "end_exclusive": "0055befa",
+      "bytes": 282,
+      "sha256": "4f9bab65be3a7e5e83a083b2ecc5c00973bd286b91e11e68c4d360053ff0114e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006970d0",
+      "end_exclusive": "006970f6",
+      "bytes": 38,
+      "sha256": "240e117dee314b7d4acc124791688150e9666c57c81bf8373dab968dceee7234",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697dc0",
+      "end_exclusive": "00697e49",
+      "bytes": 137,
+      "sha256": "17fc8589d07845827e978850b6199119e23b4aaed1da239dfb3fd211131d8b92",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00699e70",
+      "end_exclusive": "00699e99",
+      "bytes": 41,
+      "sha256": "62e51ca6cbaa5837e9aa907c7005ec3e65fcd49a47eaee30afdf98964ecfb176",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00699eb0",
+      "end_exclusive": "00699ed9",
+      "bytes": 41,
+      "sha256": "83f02df16a649d7d773f64370ae79fd3e19d0e7654c932738002882a45b5a811",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00699ef0",
+      "end_exclusive": "00699f19",
+      "bytes": 41,
+      "sha256": "52d700a259916fd873dfbb7f2735f83165a58b7207f82c415eff059e4a65f220",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aba0",
+      "end_exclusive": "0069ac29",
+      "bytes": 137,
+      "sha256": "f96b34560c1b5e8572ab3d66a6b52c1e893a8fa56eba9fe07e5ce67817324746",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ac30",
+      "end_exclusive": "0069acb9",
+      "bytes": 137,
+      "sha256": "c9cf93c9f01c145d7791866b556be0a012e53296587efe94e4c111fbed4b9f63",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069acc0",
+      "end_exclusive": "0069ad49",
+      "bytes": 137,
+      "sha256": "09833d9d076919ac11e19c2bf526755c73cd1a406f73a49eeeff83e6f1d763c2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ad50",
+      "end_exclusive": "0069adb3",
+      "bytes": 99,
+      "sha256": "cb1bdada932158ec13f6735a07d0c59322d1bd7bd92e7c77c24b4976ae6f7a02",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069adc0",
+      "end_exclusive": "0069ae49",
+      "bytes": 137,
+      "sha256": "35e94a438c8caa1ca9faeb9b3f7db93cea670b73fc932c5247b39cf656e4ff6d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069ae50",
+      "end_exclusive": "0069aeb3",
+      "bytes": 99,
+      "sha256": "c6732552a056555278a6e1d4ad955c744c1f7f1bba709499542c5b0e600d302a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aec0",
+      "end_exclusive": "0069af49",
+      "bytes": 137,
+      "sha256": "d555a4caecc6ccb98d0341008772d65ddc54d481e143fe6b67b6d3414ffbe4c1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b000",
+      "end_exclusive": "0069b089",
+      "bytes": 137,
+      "sha256": "e6eaf8caacb959eb549b68a599b0d76eddacc147f0f1b0884915e73fdb0e9452",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b090",
+      "end_exclusive": "0069b119",
+      "bytes": 137,
+      "sha256": "3cc45c95792d732a09fa2caa2e5c1339d63564b86fc420e013dfc36445578fc4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b190",
+      "end_exclusive": "0069b219",
+      "bytes": 137,
+      "sha256": "abfaa04bebf8e0c2df2ff0ce7b64f2fc67078aa8c94da857ecd74982dfce3c38",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b360",
+      "end_exclusive": "0069b3b1",
+      "bytes": 81,
+      "sha256": "38d96573d6a9ebee3bebb45fb9fcf95880904c7b83c26d65733bc1915e3ae158",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b6f0",
+      "end_exclusive": "0069b726",
+      "bytes": 54,
+      "sha256": "b94dc76d2cd88526a3fbe0a4aab6e360ccba8ab06e49904f57f0cb803fddea57",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b9b0",
+      "end_exclusive": "0069ba01",
+      "bytes": 81,
+      "sha256": "9b864d41eb78c94b0d96aa660f96289f4ac8e1d39c52d74de3e9b274aeebaaad",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c0f0",
+      "end_exclusive": "0069c153",
+      "bytes": 99,
+      "sha256": "619da291eefc3e569240e4e752104c3bb63f9ae6c51e5aac4952d67bb46e0da0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c370",
+      "end_exclusive": "0069c3d3",
+      "bytes": 99,
+      "sha256": "73eec1ae18a957fd1751dc4299f5ef6d532d0bdc6486c6d0e32266a4b6e025df",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c930",
+      "end_exclusive": "0069c96e",
+      "bytes": 62,
+      "sha256": "0496ca0413f8edba93e9d8e121baf4f9327a67068edd0ef86ff2671dfeeb48a0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d3f0",
+      "end_exclusive": "0069d425",
+      "bytes": 53,
+      "sha256": "12a842894059eebcef51d6ba58eff2b543b072b54e83d29adac0bce9666bc28a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d580",
+      "end_exclusive": "0069d5d6",
+      "bytes": 86,
+      "sha256": "e880febf3351e2fa0c1bd70da980cc873379bde41ac600405ca78d665d991ea4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069dce0",
+      "end_exclusive": "0069dd0b",
+      "bytes": 43,
+      "sha256": "611c556b2c5d3f21ae43293a1c45a48718db17dbf3542203c47d65071fabb7e8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e1f0",
+      "end_exclusive": "0069e225",
+      "bytes": 53,
+      "sha256": "9b22046787c0e4cef5184a378b3fba8c62da0c422a4bf3189412c3011fa85246",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e900",
+      "end_exclusive": "0069e925",
+      "bytes": 37,
+      "sha256": "fe71727a6d35ef9db768d8fb22264e4b503cdd263f566ebd4c59784e1fdebfa2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f110",
+      "end_exclusive": "0069f179",
+      "bytes": 105,
+      "sha256": "4e54e43f51e9058dbcc7f686d655a389054ff8a5ee3a6af9fc8d91eceac56768",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f1a0",
+      "end_exclusive": "0069f209",
+      "bytes": 105,
+      "sha256": "2316966c556fd2d257b371d168b283e71cc4115d7cc1053e3c8925f08a9a76c9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f400",
+      "end_exclusive": "0069f5ec",
+      "bytes": 492,
+      "sha256": "88ea11197d5870ee92355a1ec4b75a861b571b127df3a674a7d45b2e93fd416d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f690",
+      "end_exclusive": "0069f937",
+      "bytes": 679,
+      "sha256": "39708d0d1a4b88c1b29a281e9be0cbf0b62965ffd8c7c7285603c1b9b63bca0f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069fb50",
+      "end_exclusive": "0069fb66",
+      "bytes": 22,
+      "sha256": "c80b52b2ddbbe7d76101fb4f6435f795aef1b07e6fe97d3c0563a75ccbee6602",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069fbc0",
+      "end_exclusive": "0069fdac",
+      "bytes": 492,
+      "sha256": "89c3d616572cb21d3bc6db79ff3db8f4285420a4648d0b9cf1c6f3301dd4014e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a01f0",
+      "end_exclusive": "006a02a9",
+      "bytes": 185,
+      "sha256": "16b1bf796a9512336ae1990e5e17c027fad66e667dc7a6cb41804bf9df31946a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a02b0",
+      "end_exclusive": "006a049c",
+      "bytes": 492,
+      "sha256": "7edf0f1ef8ef37b3d2c278c67592bded850a69923d3b2bcfb07a2eed5983baa6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a04a0",
+      "end_exclusive": "006a076c",
+      "bytes": 716,
+      "sha256": "7ca7d510453e98009711dacd9fcda6f3c30e428e37adabed338b5d85815890b2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a0770",
+      "end_exclusive": "006a07c2",
+      "bytes": 82,
+      "sha256": "5f371072a87e793d220aad976b2c42b09df393028736a9d57bfa226e9cf9eb9d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a07d0",
+      "end_exclusive": "006a0a9c",
+      "bytes": 716,
+      "sha256": "fe0f7051ceb2958cc33c758968f9912f5682f7616631d413b9d845e0d8b2aa12",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a0aa0",
+      "end_exclusive": "006a0af2",
+      "bytes": 82,
+      "sha256": "1403136e9e1e615e56e2f5e7ecd7e5cf5e9f5c4e445cb974427d4fd769fb30dd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1050",
+      "end_exclusive": "006a1164",
+      "bytes": 276,
+      "sha256": "8b6bcf2c17b8e912f2faa83a3cf21cc1bf9b4dfb29d8869b8700fef17eb4f18d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1170",
+      "end_exclusive": "006a1229",
+      "bytes": 185,
+      "sha256": "fefac5ea4d6adb5845f45fdacd5c848cc04eaf39e90619e89e6669453b6c2b28",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1cc0",
+      "end_exclusive": "006a1cf9",
+      "bytes": 57,
+      "sha256": "cbb7fd182172c39ca6fffd2e419f6fed7455c111abf90c3956c96055d33334f3",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1d00",
+      "end_exclusive": "006a1d26",
+      "bytes": 38,
+      "sha256": "1c8177760d81bdc9546a40fe48cd8c9b052c0ec6d44b4d010b2e49635f304139",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2310",
+      "end_exclusive": "006a23ed",
+      "bytes": 221,
+      "sha256": "a47da39420d8bd907d93845e8f95a6695038d4c439ce3d284d1c95f15752510e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2550",
+      "end_exclusive": "006a273c",
+      "bytes": 492,
+      "sha256": "d6effd0ca7f5ec7f8742c71a40a21f481811234acfe815539d6d1f3d0ba8d245",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2740",
+      "end_exclusive": "006a292c",
+      "bytes": 492,
+      "sha256": "162bce763820c4e0cd6e4e95c31882a518abe27faa015a6fec790469242d3208",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2930",
+      "end_exclusive": "006a29a1",
+      "bytes": 113,
+      "sha256": "4411f764fc9a6b5379121af96bc88e0977f9c53ef947cf3b304d9dd277046d39",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a29c0",
+      "end_exclusive": "006a29f9",
+      "bytes": 57,
+      "sha256": "7f0055e918987bda6d86345096f91946696850a9932cc0648a741e1ac2c48684",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2a00",
+      "end_exclusive": "006a2a26",
+      "bytes": 38,
+      "sha256": "b478ea40ded6ba0892656298c88e3deda60217442695cb679cf9c2dfa93c267b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2c90",
+      "end_exclusive": "006a2da4",
+      "bytes": 276,
+      "sha256": "c9037b5665b7b2af23543f8110dfed585a8146361508ce315830b4945c9b7425",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2db0",
+      "end_exclusive": "006a2ec4",
+      "bytes": 276,
+      "sha256": "a1f6d70d2e69c514232adf673dd16de4ccf57da78b5f1dc85a1107ad7e369539",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2ed0",
+      "end_exclusive": "006a30bc",
+      "bytes": 492,
+      "sha256": "ad4264dcc4e5b55b886e78347ce7ce0538a9fccf948ee0c4f8e32d58f9bcbf66",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a30c0",
+      "end_exclusive": "006a30f6",
+      "bytes": 54,
+      "sha256": "57e55e53c6fe1b438ede2b5fff77888bf435f5b8830dd772f723f44b46156939",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3180",
+      "end_exclusive": "006a31a5",
+      "bytes": 37,
+      "sha256": "f604d486c33f0bf376b1e6d2d463927090e5233c58f85cf01051053f30e4d72f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a31b0",
+      "end_exclusive": "006a31f0",
+      "bytes": 64,
+      "sha256": "39877ab56c4dbc56898d195e93c4271ce25dc9047bff20c37f6be2703ea2cfb2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3200",
+      "end_exclusive": "006a32f3",
+      "bytes": 243,
+      "sha256": "3f9697e225fe17412d6979ee81ef7b5a1d8f12425dd2d159362b79378a8dcb29",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3fb0",
+      "end_exclusive": "006a419c",
+      "bytes": 492,
+      "sha256": "d0145d546cde4d6c3ac1418f7037e4955f6f1fbd1f6157cd2d9d92640ed997b2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a41a0",
+      "end_exclusive": "006a42b4",
+      "bytes": 276,
+      "sha256": "ab661f4ca6e04cc760ab5d54f03115431ad01ad891559b8614f3e161993be207",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a49f0",
+      "end_exclusive": "006a4aa9",
+      "bytes": 185,
+      "sha256": "0d372c572de0e49f5792fb57bb1a23c1557f61b94e3e59fe7a49cd58a844bfc0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4b50",
+      "end_exclusive": "006a4b75",
+      "bytes": 37,
+      "sha256": "09af2325e16f19e6f40f73df558a8a4adaf387a386e3f04dd883fe98827e377f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4b80",
+      "end_exclusive": "006a4bc0",
+      "bytes": 64,
+      "sha256": "e136a28f4b485ba8b430ae5d8562a0c1c3c8b6be567cc28029481f8e9c6e759b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4f80",
+      "end_exclusive": "006a516c",
+      "bytes": 492,
+      "sha256": "cc55324b225cec355d44fe7409ebeeba89be5dd4d533b67e54d0d847dd7eda7f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a5170",
+      "end_exclusive": "006a51a6",
+      "bytes": 54,
+      "sha256": "0f9f8685d3b471b3334af13b534e7b08ddea8d12beb68886bd2536df0ffa3653",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a5ef0",
+      "end_exclusive": "006a6004",
+      "bytes": 276,
+      "sha256": "59212281c4d4551e5a6eb66e1efc0f11fbced222fc53f768fabe48ac55976b07",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6010",
+      "end_exclusive": "006a62c3",
+      "bytes": 691,
+      "sha256": "bc9bb66d9f344d67171221039110f207a30a80cede911f807cd3e4f54d3e6f5a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a62d0",
+      "end_exclusive": "006a630d",
+      "bytes": 61,
+      "sha256": "1265462f7de2277a727f703d07c3e8714474b8ea04a50f99b5b36685107e218a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6c60",
+      "end_exclusive": "006a6c99",
+      "bytes": 57,
+      "sha256": "54ad665360352b7e8531f94bb5623a2ff5ee1a7a411775af26513a8016aa7df6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6ca0",
+      "end_exclusive": "006a6cc6",
+      "bytes": 38,
+      "sha256": "dd2f8559a12ae64bce9e2bd0441f6fa63a485c334c0492fe4c701a1484ae09eb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6d20",
+      "end_exclusive": "006a6e13",
+      "bytes": 243,
+      "sha256": "11b372403d3aa4ec7141a0dc375fc8a9066d660af08cd308cacadf1d3ca143db",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a70e0",
+      "end_exclusive": "006a7105",
+      "bytes": 37,
+      "sha256": "5771f77fc5a8176d258011ea596758a24ca0d14f55047c2ff512f0d4da795063",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7110",
+      "end_exclusive": "006a7150",
+      "bytes": 64,
+      "sha256": "79a0cc09441f86e55b1dd18db72ab7a4df0f13425fe025dc2857b6c7a5397024",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7190",
+      "end_exclusive": "006a71a6",
+      "bytes": 22,
+      "sha256": "9418dd890f76fc0493c9e78f98c52075c32691031f5eb352decaccf8f23b56ce",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a71b0",
+      "end_exclusive": "006a74f8",
+      "bytes": 840,
+      "sha256": "d33d41e5aa4af1b37b51c19f703d7ab7afb34bac1ab82085af905e5075c6d94e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a7500",
+      "end_exclusive": "006a7536",
+      "bytes": 54,
+      "sha256": "a6a7458469befd97874d06ed29f7a757fd18cf05560c5365abd6011e296a8eba",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004436e0",
+      "end_exclusive": "00443732",
+      "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00443ba0",
+      "end_exclusive": "00443bee",
+      "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004441e0",
+      "end_exclusive": "00444252",
+      "bytes": 114,
+      "sha256": "7e0049cd04e82326c77c2230e00acc7cbe2cfa22375accdf95f6b9e271c285cf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00444490",
+      "end_exclusive": "0044475c",
+      "bytes": 716,
+      "sha256": "2ef9a06cc923f3cb8f5dc99972697c8eac1f21dc4fcc7950e4a4d53c9b7b598a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00444760",
+      "end_exclusive": "004447b2",
+      "bytes": 82,
+      "sha256": "abaf03bb4fae93e22287976e8e4b6bbecdcd5f7098d0e2523d666c97b29db051",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0044bc50",
+      "end_exclusive": "0044bca2",
+      "bytes": 82,
+      "sha256": "47f5b09f84cb3d3497f7abf21408109c29a95afec5ae2c81a8f600d5ce570038",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0047ed80",
+      "end_exclusive": "0047edd5",
+      "bytes": 85,
+      "sha256": "c7e2e42479bf16cfa0089c70378cb6cfe276cce1190e7e735a66c7aeb72b1aa2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00488b80",
+      "end_exclusive": "00488baf",
+      "bytes": 47,
+      "sha256": "06de98a5f486ac2101695b9792e0d358b466fa8cf1dd34d53841db657b18f197",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00489370",
+      "end_exclusive": "004893ca",
+      "bytes": 90,
+      "sha256": "7f0a08eaec836d7523b82893496c0c22954384a9130f3d6d88f4c7d96e911445",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048d100",
+      "end_exclusive": "0048d139",
+      "bytes": 57,
+      "sha256": "d4b9ad2b8fb7f11aa904879ad1d005873d17e5bbc4eaa9774619f6cf3621d0a2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00490ce0",
+      "end_exclusive": "00490d49",
+      "bytes": 105,
+      "sha256": "6a5540da5c669ec53d7c41dbf6a4c9666931451bcc54bd9b9e460427ae73594d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00490d50",
+      "end_exclusive": "00490db9",
+      "bytes": 105,
+      "sha256": "77c0b8b552126496f352708e9e2c187c641107bbe281d9f95531808f77468395",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004913b0",
+      "end_exclusive": "0049149a",
+      "bytes": 234,
+      "sha256": "2db146c79aeca26d9d6d7f28ea300c0541e87a907c4a4c498a39eeeddad76be6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00494220",
+      "end_exclusive": "004942d3",
+      "bytes": 179,
+      "sha256": "705839c523ed482c0191993ddeb3cdc1659bd81d725080c017fc6c23dedffec0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00494770",
+      "end_exclusive": "00494842",
+      "bytes": 210,
+      "sha256": "d9a28209cdb421b17d1d24ed281badd10adbe4d91762c6c31440683ee1fbc48b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00496720",
+      "end_exclusive": "004967c2",
+      "bytes": 162,
+      "sha256": "e1a4c726439a489db459553327d7ad24a33cc35747d6b4a0c5d7bb6b18923fd9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0049dec0",
+      "end_exclusive": "0049df31",
+      "bytes": 113,
+      "sha256": "dc8e65f4e1ab5cd8b8dfc968de986093df42e42aea025248cf276d2a40f45aff",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004b9f40",
+      "end_exclusive": "004b9fa3",
+      "bytes": 99,
+      "sha256": "953b20c378c3db0fbd7a8fe2a96550ab0c75ae88da3715a031c3bee03546cd61",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004c1890",
+      "end_exclusive": "004c18c5",
+      "bytes": 53,
+      "sha256": "0c5c84e5082cc44fff9d2576e942338956358356f331ca76d0829a8cc2e907fa",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004cdec0",
+      "end_exclusive": "004ce167",
+      "bytes": 679,
+      "sha256": "c6f58712e30dbe79b917024ee7bf242efb81192c260ecc690e688884912017ee",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004f60e0",
+      "end_exclusive": "004f6205",
+      "bytes": 293,
+      "sha256": "a657ca5ac7afd34a56d3cc69ceeee84b89452bd7958a37f4805ca447c2484a3c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00506c80",
+      "end_exclusive": "00506dc2",
+      "bytes": 322,
+      "sha256": "da7817ab3e5f714f97a1690c7b61b963b311afc6929b4b9fc74ec80d671bd7c4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552170",
+      "end_exclusive": "005521c2",
+      "bytes": 82,
+      "sha256": "e9860c6b397f73ba6fc0c827407bf71f9d955479974da25cbd55f01ea2c91d39",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552340",
+      "end_exclusive": "00552395",
+      "bytes": 85,
+      "sha256": "0ceddf9a78d4410192cef55d78946256b5d408b1baab99204ce85bc1008803da",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552930",
+      "end_exclusive": "0055297e",
+      "bytes": 78,
+      "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552980",
+      "end_exclusive": "005529d2",
+      "bytes": 82,
+      "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552a00",
+      "end_exclusive": "00552a4e",
+      "bytes": 78,
+      "sha256": "e52d499fe89110c3a14dd06cd0125e6b036930c52e9e6bc0a74a0ba3bfd31564",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552a50",
+      "end_exclusive": "00552aa2",
+      "bytes": 82,
+      "sha256": "b380b9d17be2a23124502cbccbab049b21cdbdda6e7f69c6a4dfd6479d47a9cb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552ad0",
+      "end_exclusive": "00552b1e",
+      "bytes": 78,
+      "sha256": "0dec57332a043da366b38f7283f93ab15070184cc9e515c8e2f94f7590843ed6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552b20",
+      "end_exclusive": "00552b72",
+      "bytes": 82,
+      "sha256": "6de63ca9db5165cceb5be9abc57092cb407a450fc6cfad440242ae4a4e3d0788",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552ba0",
+      "end_exclusive": "00552bee",
+      "bytes": 78,
+      "sha256": "cfbaa74f1e90df9a5680ea73a7f1837f7fc3db0b66502c7a736f3eb821f44fe9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552bf0",
+      "end_exclusive": "00552c42",
+      "bytes": 82,
+      "sha256": "e9860c6b397f73ba6fc0c827407bf71f9d955479974da25cbd55f01ea2c91d39",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552c50",
+      "end_exclusive": "00552c6f",
+      "bytes": 31,
+      "sha256": "0cbfe3133b77702a9fa4ee0d0a39ed634804bd734e1c03aa5337eb78ff8532d0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552c70",
+      "end_exclusive": "00552c8e",
+      "bytes": 30,
+      "sha256": "de30d491c5f4c589cf9e3e9ef39b1d2ac471448fe1c82fcaef50bcce4cd33a95",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552fb0",
+      "end_exclusive": "00552fcc",
+      "bytes": 28,
+      "sha256": "65854aed5d5c56d06e58463b6cfd1bb88a1a3af3a69793ccd0a34375ba757d82",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552fd0",
+      "end_exclusive": "00552feb",
+      "bytes": 27,
+      "sha256": "0b30700a1d486d30484ee267091ffd2148ad236d0a1aec287f615c576bb818b8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005530d0",
+      "end_exclusive": "0055311e",
+      "bytes": 78,
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553120",
+      "end_exclusive": "00553172",
+      "bytes": 82,
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553260",
+      "end_exclusive": "005532b5",
+      "bytes": 85,
+      "sha256": "c59fd1b25432c0294f58a15645f8f278576ca4ed8daab3447e2f1981b2ae81d4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553e30",
+      "end_exclusive": "00553e7e",
+      "bytes": 78,
+      "sha256": "cfbaa74f1e90df9a5680ea73a7f1837f7fc3db0b66502c7a736f3eb821f44fe9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00553f00",
+      "end_exclusive": "00553f51",
+      "bytes": 81,
+      "sha256": "f47706234a3d5bf2b4b6431cb466316985120a0f69112ddc2308d481403cf83c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00554f50",
+      "end_exclusive": "00554f8f",
+      "bytes": 63,
+      "sha256": "f49e273a44592b4f5090caff74967d8ca6e043957bfb811c38487604105d11f5",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00555000",
+      "end_exclusive": "00555026",
+      "bytes": 38,
+      "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00555060",
+      "end_exclusive": "0055509e",
+      "bytes": 62,
+      "sha256": "0496ca0413f8edba93e9d8e121baf4f9327a67068edd0ef86ff2671dfeeb48a0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005555b0",
+      "end_exclusive": "00555642",
+      "bytes": 146,
+      "sha256": "ffe920bf0e96e6b5ae4476a8317c5b67e6e17314937bfcca27068573e8852ded",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00556b10",
+      "end_exclusive": "00556b94",
+      "bytes": 132,
+      "sha256": "5a98dec7f064b2e252a075900c1a245acd0e08c40f675779117b3a0fc2a50b80",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00556c20",
+      "end_exclusive": "00556c89",
+      "bytes": 105,
+      "sha256": "8623e7fd6bedf2c567df5f410fc986500dd2b32fb6e1c7b68fcb59769b9410a1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557670",
+      "end_exclusive": "005576e1",
+      "bytes": 113,
+      "sha256": "144a5631fed2c29199a324421e95a0c49a86a8456cca7f5db62a9e61cb539f95",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557ca0",
+      "end_exclusive": "00557f87",
+      "bytes": 743,
+      "sha256": "60e36757389616b4b23621c0c925bcd9529278df6601fb93fefb0143f1748b6f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557f90",
+      "end_exclusive": "00558278",
+      "bytes": 744,
+      "sha256": "8117c9c2e4e726906988cf5b5d6231cd1b6d231b5243119d8d49af2603011182",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558310",
+      "end_exclusive": "0055837d",
+      "bytes": 109,
+      "sha256": "80c14a520ecacaaac09c99add8a0dd15bb0511925d4895ad1e24e49b5c5ba923",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558420",
+      "end_exclusive": "00558490",
+      "bytes": 112,
+      "sha256": "e615d259af468feb886c20643cddad550e84abd1d11f0218dbf1e69a0c9f9c5c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558770",
+      "end_exclusive": "00558a57",
+      "bytes": 743,
+      "sha256": "13805f7a46a29f7bf5016dc7401bfff0f85f91f1bba384bc2f13a2524d602a14",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558a60",
+      "end_exclusive": "00558d47",
+      "bytes": 743,
+      "sha256": "e970ff4eb17a052b345cf6f947a06dd2386909eeea705d5243565d3e45a5e362",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558dc0",
+      "end_exclusive": "00558e3e",
+      "bytes": 126,
+      "sha256": "cf5eb932fb369d6f8c8e67cdb099030beb8a3321ce3a6b7d53bbea37de6a13d9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558e60",
+      "end_exclusive": "00558ecd",
+      "bytes": 109,
+      "sha256": "a6fad4855fc7ec567099967f762d37a3d5fdde6cfb1157d8df6053d572627f0c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558ed0",
+      "end_exclusive": "00558f3d",
+      "bytes": 109,
+      "sha256": "890a737c34dbd95af06317ec0fc81b6d2212f9cbdc47328a949f00736a8f5c0a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005591e0",
+      "end_exclusive": "0055925e",
+      "bytes": 126,
+      "sha256": "8a214143fba0abaad63e4049b6472196e04149d7bee37242ee21ab8b029393e4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559510",
+      "end_exclusive": "0055958e",
+      "bytes": 126,
+      "sha256": "7f3ce2e4d5d4afadc828c49a857b131c79c17b14f8f5adcc2bbe18e66839fe7f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559c90",
+      "end_exclusive": "00559d0e",
+      "bytes": 126,
+      "sha256": "450e23d7632d1522f49b098d87e4044b4f85f733e800a28371b607cedb7ae576",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559dc0",
+      "end_exclusive": "00559dff",
+      "bytes": 63,
+      "sha256": "47ea27dbd76815aba5966045d154372f7005a6e903cecad21bdcf0801cf0d2d9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559e00",
+      "end_exclusive": "00559e94",
+      "bytes": 148,
+      "sha256": "b5b387d9b89b147ecbe47b712eb6e051aaeb07b5a533d0c9808dcb0c4ff62153",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559f30",
+      "end_exclusive": "00559fa1",
+      "bytes": 113,
+      "sha256": "c5fe4951ead6886f775374c379587e04cfdb2bae385d13806dcea43ca6251248",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a290",
+      "end_exclusive": "0055a316",
+      "bytes": 134,
+      "sha256": "15b59b50094ff9d7526a72f48b63e1369d76e4ce17ae671bf8943ef0ea9281c4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a770",
+      "end_exclusive": "0055a7e1",
+      "bytes": 113,
+      "sha256": "5926c5c4a5d8b3179469dcb2b0afd6801478b825fbba56de4391d0ac212d0ad1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a800",
+      "end_exclusive": "0055a871",
+      "bytes": 113,
+      "sha256": "18af767300443cc6325d90b17bf30f8b65dc73f6945e0c8bd9cc0bad37b7ad7a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055abd0",
+      "end_exclusive": "0055ac41",
+      "bytes": 113,
+      "sha256": "62d27ace1660a278c5992be347ea0d528fbd8da29a862555738098aa12c4e16b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055ac80",
+      "end_exclusive": "0055af58",
+      "bytes": 728,
+      "sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055af60",
+      "end_exclusive": "0055afc6",
+      "bytes": 102,
+      "sha256": "dbd2cd8b19918916b2d0f42f22c9a108f9434d506680ee53dc96ad98dc938fef",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b400",
+      "end_exclusive": "0055b471",
+      "bytes": 113,
+      "sha256": "06236fe90b692373e3e256dfa205b1ee3ee0da8dd17edc32a3d323f6d55ecd90",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055bb40",
+      "end_exclusive": "0055bbc7",
+      "bytes": 135,
+      "sha256": "5d6318aaeeb4a1d63340b8e41ea223eb7404a38d56beedbb223692fbf5439054",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697990",
+      "end_exclusive": "00697bcb",
+      "bytes": 571,
+      "sha256": "603d0af05c0efc477ddb8a898641d92c0e9fa4cb92640d05294c658fe629484e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a530",
+      "end_exclusive": "0069a54b",
+      "bytes": 27,
+      "sha256": "adf598a1b8efb4631a79366796f6b8860f1782dc7d4eb407a81786e014a3e956",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a560",
+      "end_exclusive": "0069a5b2",
+      "bytes": 82,
+      "sha256": "e9860c6b397f73ba6fc0c827407bf71f9d955479974da25cbd55f01ea2c91d39",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a610",
+      "end_exclusive": "0069a662",
+      "bytes": 82,
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a6a0",
+      "end_exclusive": "0069a6f2",
+      "bytes": 82,
+      "sha256": "2cf9485c469e966d4f465565736ac049a679a6ed0a40efa69df0fa596e097fda",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a780",
+      "end_exclusive": "0069a7d2",
+      "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069a9e0",
+      "end_exclusive": "0069a9fc",
+      "bytes": 28,
+      "sha256": "7d7f5bf7e12f8b55f565e7a5aa948b1435b01b36dfc42505d2b2b28b8168943c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aa10",
+      "end_exclusive": "0069aa2c",
+      "bytes": 28,
+      "sha256": "65854aed5d5c56d06e58463b6cfd1bb88a1a3af3a69793ccd0a34375ba757d82",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aa30",
+      "end_exclusive": "0069aa4b",
+      "bytes": 27,
+      "sha256": "0b30700a1d486d30484ee267091ffd2148ad236d0a1aec287f615c576bb818b8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aa60",
+      "end_exclusive": "0069aa7c",
+      "bytes": 28,
+      "sha256": "ced69a6b75a748793a526c7bacd5a2b10d2e5c438db89187ae636f4a870265ad",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aa80",
+      "end_exclusive": "0069aa9b",
+      "bytes": 27,
+      "sha256": "89a786dbdfe3fa5e3d52d31e93bfb1c2bbd3cccc50ff3b18ee43fbf308a36f8a",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aac0",
+      "end_exclusive": "0069aadc",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069aae0",
+      "end_exclusive": "0069aafb",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b790",
+      "end_exclusive": "0069b7c9",
+      "bytes": 57,
+      "sha256": "f02ad5baa0986141b33b44cd1b4c61bc0e4eaaac2acd03ff99a4c101f45418b8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c1c0",
+      "end_exclusive": "0069c20e",
+      "bytes": 78,
+      "sha256": "cfbaa74f1e90df9a5680ea73a7f1837f7fc3db0b66502c7a736f3eb821f44fe9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c220",
+      "end_exclusive": "0069c26e",
+      "bytes": 78,
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c280",
+      "end_exclusive": "0069c2ce",
+      "bytes": 78,
+      "sha256": "d9dd8b55d4dcb29ffe4451b5b07946bfd5a728ad6229a19b420a4ac26db1ea82",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c300",
+      "end_exclusive": "0069c34e",
+      "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069c8a0",
+      "end_exclusive": "0069c8fd",
+      "bytes": 93,
+      "sha256": "0ee1f1429a5344cdc2d167ee0ba4a0a800d7e525541a184c7bba3e4334b2dd70",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069d610",
+      "end_exclusive": "0069d64e",
+      "bytes": 62,
+      "sha256": "54da219c7e623aa8a99780fad38a7b8e35eb3422a9b410fe4b2274c560622efe",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e9b0",
+      "end_exclusive": "0069e9de",
+      "bytes": 46,
+      "sha256": "bee39f25b19104fb4ac4fd2d6929ae15455d9c5adc21ab64a782ab3209840fc4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f5f0",
+      "end_exclusive": "0069f66e",
+      "bytes": 126,
+      "sha256": "37822445f12a2e4d683c164b18f06a416a74f54d695d71f76238910ff8a3eefb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069f940",
+      "end_exclusive": "0069f9be",
+      "bytes": 126,
+      "sha256": "47dfd439d81ce676f70a73414d3f7f51d9bd1a757537b95d8690b7553a4eced9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1c40",
+      "end_exclusive": "006a1cb5",
+      "bytes": 117,
+      "sha256": "7526ce70b03f64f2967017d1f95b80f2c89adabeac4cd7b09dba968998e18ce1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a2270",
+      "end_exclusive": "006a2303",
+      "bytes": 147,
+      "sha256": "920c178292508b9efe902ef6443dd1524446704c673b441a9d75bf7c7b424ca2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a23f0",
+      "end_exclusive": "006a2433",
+      "bytes": 67,
+      "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3300",
+      "end_exclusive": "006a3343",
+      "bytes": 67,
+      "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a43a0",
+      "end_exclusive": "006a4433",
+      "bytes": 147,
+      "sha256": "8a818bb940a0778d4a9e6614f4d37e0d1061170446cbead5c1ebb27ca3782ebd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4ab0",
+      "end_exclusive": "006a4b2e",
+      "bytes": 126,
+      "sha256": "4a8e51aa48e57713cd307c5819fbf55274e8b9aa58599d3d5847661e36020f4c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6680",
+      "end_exclusive": "006a67c6",
+      "bytes": 326,
+      "sha256": "e2d559c347995d1d16c1084c4c54809e10fdf714cda0fa4d615598c633ad0581",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6ce0",
+      "end_exclusive": "006a6d1f",
+      "bytes": 63,
+      "sha256": "465139f8b9a6db7c761b5338f9c16243bd4807798c17a5f413f7ad2114f52c5e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6e20",
+      "end_exclusive": "006a6e63",
+      "bytes": 67,
+      "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6fa0",
+      "end_exclusive": "006a7033",
+      "bytes": 147,
+      "sha256": "6f83cc07f833c5b9344a21f02d0e5e6aa850190023700471ea6a8525246d0eee",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00432090",
+      "end_exclusive": "004320d7",
+      "bytes": 71,
+      "sha256": "b1d25f066c21a848e75ebd769fe6e7882d33b337c37445ffb4a0028c673d4215",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00441b20",
+      "end_exclusive": "00441b67",
+      "bytes": 71,
+      "sha256": "09431196f35e28be1b67e46279adcb182985f36d83dc3f95532ed86a644193ae",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004437a0",
+      "end_exclusive": "004437bc",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004437c0",
+      "end_exclusive": "004437db",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00444150",
+      "end_exclusive": "004441c0",
+      "bytes": 112,
+      "sha256": "2a2f08ddff77aa82495154fd8dda2e0400edd60c46f0b0da9a4202ccb304c0eb",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00467d90",
+      "end_exclusive": "00467dc2",
+      "bytes": 50,
+      "sha256": "eceeaf68d2cd6c8f08290941b73a90a8aef53a1f32e04eec0105cce0a0ff9f71",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00468af0",
+      "end_exclusive": "00468b29",
+      "bytes": 57,
+      "sha256": "e51cce0ebcc4fb90d099d610dc1a7652c1d2dcf3c68dad9a4841c3a7798d0ea2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048f400",
+      "end_exclusive": "0048f445",
+      "bytes": 69,
+      "sha256": "00402bd27966df8ba2bf55d72f793054579d707f77900282c1bc404ee5323fa9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00491170",
+      "end_exclusive": "00491324",
+      "bytes": 436,
+      "sha256": "36f711d824f22ba13b6b5347c66bebb1816cd8809fff1c5c2291fa6e55f6f994",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004914e0",
+      "end_exclusive": "00491691",
+      "bytes": 433,
+      "sha256": "acdc64723e4107d278305ff061c33af78d86f61f12e0c9310e22dd5f9ac856de",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00494850",
+      "end_exclusive": "00494922",
+      "bytes": 210,
+      "sha256": "0ffb6d46552f0cf5c93547fd63e60bcdfb3de0d77ecb1c14bf9679dcb15d69e4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00498ff0",
+      "end_exclusive": "00499029",
+      "bytes": 57,
+      "sha256": "d354d27113b068d3f68101bd8cb5a521d28c6dfc6aaa79a1758fad8ed5169a50",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00499680",
+      "end_exclusive": "004996f5",
+      "bytes": 117,
+      "sha256": "2fe37f51cbb90d5656d69f2c38ab6850bbb9299a4102684b3dfb56a8b0d965b9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004b9680",
+      "end_exclusive": "004b969c",
+      "bytes": 28,
+      "sha256": "4bda24aba07602f4f5032be6e32b6b63fc7af54039b1f65125657c3e382737be",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004b96a0",
+      "end_exclusive": "004b96bb",
+      "bytes": 27,
+      "sha256": "fa0c50ff8eac878c9c5bad8e9c71a1c6ce9dbeb2e69dd5142b7ed53bc5175abd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004f54a0",
+      "end_exclusive": "004f54d0",
+      "bytes": 48,
+      "sha256": "4fb9bc5c3d3f151fe6eaacd828e50c6d513c05fa600b2decf6738c9acab2a1e7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00505ad0",
+      "end_exclusive": "00505af5",
+      "bytes": 37,
+      "sha256": "86f5ecd9d1e72a5b3932998932318c299d198d941b44ce0469693acd58f396e9",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552430",
+      "end_exclusive": "0055244c",
+      "bytes": 28,
+      "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552450",
+      "end_exclusive": "0055246b",
+      "bytes": 27,
+      "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005524b0",
+      "end_exclusive": "005524cc",
+      "bytes": 28,
+      "sha256": "423ff9ab1f29ebfd3fefa807cea6de3e62b024e83a2c9b88a4c4401d3a2caf49",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005524d0",
+      "end_exclusive": "005524eb",
+      "bytes": 27,
+      "sha256": "9e359ac24131e70dc93d1afb72b89962b0997bdac2f431836a8736e63b3e2f1e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552510",
+      "end_exclusive": "0055252c",
+      "bytes": 28,
+      "sha256": "7d7f5bf7e12f8b55f565e7a5aa948b1435b01b36dfc42505d2b2b28b8168943c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552530",
+      "end_exclusive": "0055254b",
+      "bytes": 27,
+      "sha256": "adf598a1b8efb4631a79366796f6b8860f1782dc7d4eb407a81786e014a3e956",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552590",
+      "end_exclusive": "005525ac",
+      "bytes": 28,
+      "sha256": "a1a71340820e4f46d62b14a2e51d5c4bed25947ae1cb4371b8aff50555b4c7fe",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005525b0",
+      "end_exclusive": "005525cb",
+      "bytes": 27,
+      "sha256": "a04a76571d0653ecc88f541646c5450f2cada3956007ce2f535b0bc9f76f61ce",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552630",
+      "end_exclusive": "0055264c",
+      "bytes": 28,
+      "sha256": "7d7f5bf7e12f8b55f565e7a5aa948b1435b01b36dfc42505d2b2b28b8168943c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00552650",
+      "end_exclusive": "0055266b",
+      "bytes": 27,
+      "sha256": "adf598a1b8efb4631a79366796f6b8860f1782dc7d4eb407a81786e014a3e956",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00555aa0",
+      "end_exclusive": "00555b15",
+      "bytes": 117,
+      "sha256": "92d3ee7e61fd1271258e1434b8b15f62f72a0b4aa87a6f31e256e14b41906731",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00557250",
+      "end_exclusive": "00557299",
+      "bytes": 73,
+      "sha256": "611858cb45cbc10600802f65536eda634efb9730acc85f68359e12ba316eb4ba",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005577a0",
+      "end_exclusive": "0055781e",
+      "bytes": 126,
+      "sha256": "a99235a3ab6f5ccddf4bb0b2e0998ebfc11e0146f8a19aa6d765ef768bdec7de",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558280",
+      "end_exclusive": "00558304",
+      "bytes": 132,
+      "sha256": "542b9ed221e46a95febeede2f7a5da8cb9f53bcab88635c85953f59a46993aee",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005584d0",
+      "end_exclusive": "0055854e",
+      "bytes": 126,
+      "sha256": "4ec3b9a2e1d90ec18bff4cedf6cffdf30a0fd13ea64d4bb571ab54d4359dcd78",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00558f80",
+      "end_exclusive": "00559004",
+      "bytes": 132,
+      "sha256": "95ca953ce0422455153fa54aa3abd587d0a783a8d1c7dd9884d7c4a53b95c2b0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559940",
+      "end_exclusive": "005599b5",
+      "bytes": 117,
+      "sha256": "3e942bb8599354cf3b91a1fd39998810cdaaa2bce85cb581a45bde53fa206c8e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559b60",
+      "end_exclusive": "00559bd5",
+      "bytes": 117,
+      "sha256": "2609b522123ec943bc1676871d09b9b1f82feb1d1fbf0bfc14f6df66fb0143d4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a160",
+      "end_exclusive": "0055a1d5",
+      "bytes": 117,
+      "sha256": "cd3286c2766fc248eb07dfe0ab13d60a4e82cd6b81548379eee660c8ed6976bf",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a890",
+      "end_exclusive": "0055a905",
+      "bytes": 117,
+      "sha256": "0739dc05d9bdae230106e846c7905b8d275946a1dc8c01484f852aa6f32cc763",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b300",
+      "end_exclusive": "0055b375",
+      "bytes": 117,
+      "sha256": "e1cf5c0827a6460d4dff441d9b5f9c32e6b39e3ee4fbc1d79825195c668d2394",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055ba00",
+      "end_exclusive": "0055ba7e",
+      "bytes": 126,
+      "sha256": "3bc1c5484520bd2be03cd26a980eae5229a7c89c581b6172f8294d44306ca532",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00696d40",
+      "end_exclusive": "00696d66",
+      "bytes": 38,
+      "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006970b0",
+      "end_exclusive": "006970ce",
+      "bytes": 30,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697440",
+      "end_exclusive": "00697475",
+      "bytes": 53,
+      "sha256": "f4f066678d7c88e6d00da09e85117b927f19c68c70fde72608361392ac68dc22",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697760",
+      "end_exclusive": "00697792",
+      "bytes": 50,
+      "sha256": "0f64563514fad83375a8b9b4feae299ccdda5f4a17cf1f18575942b81b5a6ac7",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00697860",
+      "end_exclusive": "00697885",
+      "bytes": 37,
+      "sha256": "886cba40c974651c3445e52848da0e9429db151bed3b77acc1018712d8795428",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069b810",
+      "end_exclusive": "0069b84a",
+      "bytes": 58,
+      "sha256": "11f347df21e18315cef17c2dabb45464d25b0894001a6f7d4f20a5fad1b71410",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e7a0",
+      "end_exclusive": "0069e803",
+      "bytes": 99,
+      "sha256": "dc6032f85d068043749df3d54102826ff035493bd449b88c5f098b987229f92f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0069e810",
+      "end_exclusive": "0069e860",
+      "bytes": 80,
+      "sha256": "62f07da992c1710dbd1defea180214501363c504890ddc89a5970269623fc4f6",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a1290",
+      "end_exclusive": "006a1322",
+      "bytes": 146,
+      "sha256": "6cfd30f5e42b319c393db4c11e4e4b02308c825868821ff10302f64c455891cc",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3100",
+      "end_exclusive": "006a317e",
+      "bytes": 126,
+      "sha256": "ebee1799a2464b89f77be622bb6b2a709a5fce0fcad46f5c9b91bf3dee2508f1",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a4c00",
+      "end_exclusive": "006a4c25",
+      "bytes": 37,
+      "sha256": "a9205503b2c9faa22f0bc7cd4e11db39f0427852f093446755d8056466ca3835",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a6310",
+      "end_exclusive": "006a6349",
+      "bytes": 57,
+      "sha256": "5e49344cfce9d4bd27d6a2a679a03d2c7d61de1626410876747ff3bb813af0b4",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00486a70",
+      "end_exclusive": "00486a8e",
+      "bytes": 30,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00486a90",
+      "end_exclusive": "00486abf",
+      "bytes": 47,
+      "sha256": "778e768e91f726a3364fd79240256ab64ad6a2b7ce123045e0085bf89719d23e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048d830",
+      "end_exclusive": "0048d860",
+      "bytes": 48,
+      "sha256": "f5a6f0603dbd0bb270df1da45e2c7f7646e3a676df46490ae103ff4e4a811ad2",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048e600",
+      "end_exclusive": "0048e62e",
+      "bytes": 46,
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0048f4e0",
+      "end_exclusive": "0048f546",
+      "bytes": 102,
+      "sha256": "c24241146cd59f35bb659555f2163862193be2e84b96dff372be3fc957694ab8",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004916a0",
+      "end_exclusive": "0049184f",
+      "bytes": 431,
+      "sha256": "ac236ee0349889e54c91580913a847fd894b4fdc9980e4a7f04f0556b227e10c",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "004962c0",
+      "end_exclusive": "00496352",
+      "bytes": 146,
+      "sha256": "f7d8b92433d302bf6263e690b167475493cedfeabee598eb79138263472d7349",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00555410",
+      "end_exclusive": "005554a2",
+      "bytes": 146,
+      "sha256": "218a531fc1a900b39f5de5039826661bfc414aefeba2de0175dd264db5f4271f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559350",
+      "end_exclusive": "005593e2",
+      "bytes": 146,
+      "sha256": "f1e1ab87ff7793f4f6c6d2c00e546ea98b29550f23e1568f4999533c76a9956f",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559460",
+      "end_exclusive": "005594f2",
+      "bytes": 146,
+      "sha256": "f31b83bcdeeabdb73a17f06bed2d7b5a5cea8ed97f75361f3918f928bd2a3edd",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "00559be0",
+      "end_exclusive": "00559c72",
+      "bytes": 146,
+      "sha256": "494b78ece7c1ee13e9be9773c43df331d36446c641739aaaaf2d410238c3d98d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055a1e0",
+      "end_exclusive": "0055a272",
+      "bytes": 146,
+      "sha256": "aebba231487755ef2aadc348409c1ee76e7c8a916a1dad7263f65e8a8bc3825d",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "0055b060",
+      "end_exclusive": "0055b0f2",
+      "bytes": 146,
+      "sha256": "c111f2774b6fd25edc7093126b55b5608950175626ef018a066b1b38dc8b3a1b",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "006a3350",
+      "end_exclusive": "006a33e4",
+      "bytes": 148,
+      "sha256": "566ad6db16b195ef0ad47a92147d6ce3124b431e37c38cb6367b1b3421beda95",
+      "evidence": "prior AP live-verified span; disk hash rechecked",
+      "owned": false
+    },
+    {
+      "address": "005547d0",
+      "end_exclusive": "00554890",
+      "bytes": 192,
+      "sha256": "7bcc0ed6d14d3233dc00c9551670e863251eb3bed69b0a4807a1c62da72201fa",
+      "evidence": "fresh disk/live equality",
+      "owned": true
+    },
+    {
+      "address": "006ab800",
+      "end_exclusive": "006ab81e",
+      "bytes": 30,
+      "sha256": "1d734bba9684104bdc9f8fefb33a9446784897090414a2671ba1fcbe962693fa",
+      "evidence": "fresh disk/live equality",
+      "owned": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "006aa460",
+      "address": "006aa494",
+      "native": "00b65e80",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4a0",
+      "native": "00b669a0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4bd",
+      "native": "006a7aa0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4c6",
+      "native": "00bf65ac",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab6e0",
+      "native": "0069d1f0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab716",
+      "native": "0069d240",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab752",
+      "native": "0069d290",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab77c",
+      "native": "0069d320",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7a6",
+      "native": "0069d1f0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7d1",
+      "native": "00b66bd0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7e3",
+      "native": "006a7be0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "005547d0",
+      "address": "005547f6",
+      "native": "00415350",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "005547d0",
+      "address": "0055482f",
+      "native": "00bf681b",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "005547d0",
+      "address": "00554846",
+      "native": "006ab6b0",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "005547d0",
+      "address": "00554859",
+      "native": "00415350",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "005547d0",
+      "address": "00554867",
+      "native": "00bd0c30",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab800",
+      "address": "006ab803",
+      "native": "006aa460",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006ab800",
+      "address": "006ab810",
+      "native": "00bf65ac",
+      "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    }
+  ],
+  "tail_calls_with_pending_ghidra_ownership": [
+    {
+      "function": "006aa460",
+      "call_site": "006aa4ee",
+      "callee": "006a6a20",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa4f7",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa51d",
+      "callee": "0069fe70",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa526",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa547",
+      "callee": "0069eea0",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa550",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa579",
+      "callee": "006a6ee0",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa582",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa5ab",
+      "callee": "006a1aa0",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa5b4",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa5da",
+      "callee": "00432050",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa5e3",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa60b",
+      "callee": "006a7aa0",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    },
+    {
+      "function": "006aa460",
+      "call_site": "006aa614",
+      "callee": "00bf65ac",
+      "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "005547d0",
+      "call_site": "0055480f",
+      "instruction": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "005547d0",
+      "call_site": "00554875",
+      "instruction": "dword ptr [0xce2210]"
+    }
+  ],
+  "previous_library_span_evidence": "reports/native_input_settings_tables.json",
+  "flow_repair": "reports/native_input_settings_lifetime_aq_flow_repair.json",
+  "body_extension": "reports/native_input_settings_lifetime_aq_body_extension.json",
+  "limitations": [
+    "Ghidra006AA460 tail ownership incomplete: bridge script execution is disabled; decoded full tail and native fixture do not establish saved body ownership.",
+    "Production container providers and raw-manager CF81CC deletion dispatch are required; shared dispatcher files are leased to another owner.",
+    "Original FH3/private-stack/hardware-fault behavior and gameplay remain unvalidated."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 122545,
+    "owned_call_rows_checked": 18,
+    "owned_call_rows_failed": 0,
+    "direct_tail_calls_pending_saved_ownership": 14,
+    "full_saved_call_ownership_verified": false,
+    "win32_import_calls": 2,
+    "seeds_equal": 8,
+    "fixture_source": "local/input_settings_lifetime_aq_probe.cpp",
+    "fixture_source_sha256": "2b745478b121f75a5051cdd6d3c0df7cf418af303e94748831227c0476f3750e",
+    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "probe_log": "local/input_settings_lifetime_aq_probe.log",
+    "probe_log_sha256": "e1e6aabf6379e7e94e64e9d5d6a5e0be5f11f3c4b8f2e00a477dadc6de4a0865",
+    "native_spans": 418,
+    "actual_native_container_providers": true,
+    "actual_raw_manager": true,
+    "actual_win32_section": true,
+    "registration_identity_passed": true,
+    "flags_1_and_2_passed": true,
+    "fast_getters_passed": true,
+    "populated_source_constructor_unwind_passed": true,
+    "pooled_strings_all_released": true,
+    "original_fh3_executed": false,
+    "production_library_provider_supplied": false,
+    "raw_manager_settings_profile_dispatch_supplied": false,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "installed_assets": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControlPresets.lua",
+      "bytes": 12999,
+      "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\KeyboardSetup.lua",
+      "bytes": 26367,
+      "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua",
+      "bytes": 71090,
+      "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControllerInputNames.lua",
+      "bytes": 12362,
+      "sha256": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
+    }
+  ],
+  "annotations": "reports/native_input_settings_lifetime_aq_annotations.json",
+  "new_function_definitions": [],
+  "native_profiles": {
+    "00cf81cc": "006ab800",
+    "00ce3818": "00412440"
+  },
+  "eh_tables": {
+    "getter": "00d97884 with unwind map00d97874; state0 C6D5B0->411EE0, state1 C6D5B8->BF65AC",
+    "constructor": "00dacf70 with ten-state unwind map00dacf94",
+    "destructor": "00dace7c with ten-state unwind map00dacea0",
+    "destructor_normal_states": [
+      9,
+      8,
+      7,
+      6,
+      5,
+      3,
+      2,
+      1,
+      0
+    ],
+    "pair_vector_state_5_retained": true,
+    "original_fh3_executed": false
+  },
+  "native_abi": {
+    "005547d0": "No arguments; EAX settings; RET; 192 bytes",
+    "006ab6b0": "ECX fresh540h; EAX original; RET; 332 bytes",
+    "006aa460": "ECX settings; void; RET; complete480-byte normal schedule; saved body remains107 bytes",
+    "006ab800": "ECX settings, stack flags; EAX original bits; RET4; 30 bytes"
+  },
+  "functions": [
+    {
+      "address": "005547d0",
+      "source_entry": "get_native_input_settings_005547d0",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006ab6b0",
+      "source_entry": "construct_native_input_settings_006ab6b0",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006aa460",
+      "source_entry": "destroy_native_input_settings_006aa460",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006ab800",
+      "source_entry": "scalar_delete_native_input_settings_006ab800",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    }
+  ]
+}
