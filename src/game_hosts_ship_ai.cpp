@@ -4080,9 +4080,17 @@ void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene
     if (!lua.read_path_turn_ramp(impl_->path_turn_ramp, error))
         throw std::runtime_error("Path turn-ramp load failed: " + error);
     impl_->path_turn_ramp_loaded = true;
-    // Retire selected lists before replacing their borrowed geometry. The
-    // subsequent register_units call constructs the new controller owners.
-    for (auto& controller : impl_->controllers) controller.avoid_search.reset();
+    // MissionFrame registers controllers before this geometry load. Retire
+    // borrowed segment pointers while retaining those live cache owners.
+    // Epoch invalidation is a process lifetime adapter, not an assertion that
+    // the original geometry loader writes these controller cache fields.
+    for (auto& controller : impl_->controllers) {
+        if (!controller.avoid_search) continue;
+        for (std::size_t index = 0; index < 3; ++index) {
+            impl_->zones.clear_search(controller.avoid_search->list(index));
+            controller.avoid_search->cache(index).layer_key = -1;
+        }
+    }
     impl_->zones.rebuild(scene, mode, forced, session);
     impl_->log.notef("ship AI path turn ramp knee=%.9g limit=%.9g addon=%.9g",
         impl_->path_turn_ramp.knee_x, impl_->path_turn_ramp.limit_x, impl_->path_turn_ramp.limit_y);

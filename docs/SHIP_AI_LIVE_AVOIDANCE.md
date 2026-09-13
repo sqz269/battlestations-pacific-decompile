@@ -28,6 +28,13 @@ selected list. The 009D57E0 wrapper tests its enabled byte before forwarding to
 their allocator disappears. The director getters read the canonical unit
 director introduced in [GAME_DIRECTOR_AVOIDANCE.md](GAME_DIRECTOR_AVOIDANCE.md).
 
+MissionFrame registers controllers before loading world avoidance geometry.
+That load retains existing storage owners, clears their borrowed selected lists
+and invalidates cache keys before replacing geometry. This is process lifetime
+management, not a recovered native loader store. The first combined run at
+3db73f6e exposed and preserved an access violation caused by incorrectly
+destroying those owners during geometry load; the correction awaits rerun.
+
 ## Current verification and remaining connections
 
 The pre-cruise combined Win32 build and both existing tests passed. An ignored probe links
