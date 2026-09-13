@@ -1,0 +1,77 @@
+{
+  "packet": "orch4_settings_host_validation_ay",
+  "status": "one_populated_host_lifetime_fixture_passed",
+  "scope": "source GameSingletonHost and GameInputSettingsRuntime composition, not original game reachability",
+  "primary_revision": "320f7031ad299c8ba4a3f8de7bed514193b1f161",
+  "fixture_manifest": "local/game_input_settings_host_ay_manifest.json",
+  "fixture_command": "./local/run_game_input_settings_host_ay_probe.ps1",
+  "source_interaction": [
+    "GameSingletonHost owns the actual E198E8 and 01090AA0 publication references used by GameInputSettingsRuntime",
+    "host.bind_input_settings(&runtime.context()) completes before runtime.get()",
+    "runtime.get() loads retained installed-script services and registers one CF81CC settings owner in the host manager",
+    "host.shutdown() dispatches the existing settings deletion profile, drains the manager and clears both publications"
+  ],
+  "link_boundary": {
+    "actual_objects": [
+      "game_hosts_singletons.obj",
+      "game_observer_runtime.obj",
+      "bsp_core.lib"
+    ],
+    "logger": "77 unchanged GameHostLog method lines extracted from primary src/game_hosts.cpp and verified as exact normalized source text before compilation",
+    "excluded": "game_hosts.obj owns the complete startup spine and produced 41 unrelated unresolved VFS/menu/mission symbols when linked alone; the fixture does not execute or replace those startup paths",
+    "manifest_embed": true
+  },
+  "sha256": {
+    "fixture_source": "579f5c45b7f7598d081aad22d9856b4046941817eab99408e5b9b674c4f45c4c",
+    "logger_support": "55c2ee2aa3f869bdff9fca7891e4bbb470f6eb3f0068f030e1b4c92c6c873dfc",
+    "logger_source_section": "4b831fa75de8dcd172504143de2c3f7e9b1ad7c008977f81b95f2090801d8d7c",
+    "primary_game_hosts_source": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+    "logger_extraction_checker": "155362c2a6af9d701b75c1811e25a178ec9ce7e23680b3cdc47d2a15fe34d08e",
+    "runner": "6316ea9f4e58b3716fff80161af91ff89fb1216673bc5e094e667b7af045f7b7",
+    "fixture_exe": "f52d9cb14090a5b6aeef2c08ed94b8cbb33ddfb15428f589295566f761ac7dd2",
+    "reused_primary_fixture_source": "9d587d91f867a608d6ae83a4728ed0874aacebbc44d85d3d3ea2f1dd736ac328",
+    "reused_primary_data": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+    "core_archive": "57ac1495015a7467715b49ec305e99ea9ff84d842ad7a6dd6b0c6e6425223263",
+    "singleton_object": "9cf1ea13ad871ee10a1f19c4ee048663311e74998c301b8afceff6412745f14d",
+    "observer_object": "b36be4c11266476f513d1e09714c04e55a0c1fd2b4930dc44f28b8760b64b925"
+  },
+  "installed_script_sha256": {
+    "fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+    "ControlPresets.lua": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f",
+    "KeyboardSetup.lua": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb",
+    "Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5",
+    "ControllerInputNames.lua": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
+  },
+  "observations": {
+    "before_shutdown": {
+      "registered_slots": 1,
+      "settings_profile": "cf81cc",
+      "settings_publication": "registered owner",
+      "raw_manager_publication": "non-null"
+    },
+    "after_shutdown": {
+      "settings_publication": null,
+      "raw_manager_publication": null,
+      "owner_closes": 2,
+      "string_allocations": 2763,
+      "string_releases": 2763,
+      "string_live": 0
+    },
+    "stdout": [
+      "observer runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained",
+      "singleton lifetime drained: registered_slots=1 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h",
+      "PASS host settings: owner registered=1, publication cleared, manager drained, owner closes=2, strings live=0, allocations=2763, releases=2763."
+    ]
+  },
+  "limitations": [
+    "No original game process, device or window was started",
+    "GameHostLog was compiled from an exact extracted source section to avoid unrelated startup object dependencies",
+    "The retained installed-script fixture and source callbacks are not proof that the game host reaches settings at runtime"
+  ],
+  "primary_integration": {
+    "report": "reports/input_composition_ay_validation.json",
+    "status": "input_settings_and_raw_lua_lifetime_integrated_strict_win32_native_and_host_fixtures_passed",
+    "source_revision": "1de6e53badb5ad304e8ecd7e9a1dec21ca0de428",
+    "game_validated": false
+  }
+}

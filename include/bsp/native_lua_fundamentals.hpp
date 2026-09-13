@@ -2,6 +2,7 @@
 
 #include "bsp/native_lua_bootstrap.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include "bsp/native_lua_vfs_dispatch.hpp"
 #include <cstddef>
 
@@ -14,7 +15,9 @@ static_assert(offsetof(NativeLuaFundamentalsOwner, bytes_04) == 4);
 static_assert(offsetof(NativeLuaFundamentalsOwner, size_08) == 8);
 
 struct NativeLuaFundamentalsContext {
-    SingletonLifetimeDomain& lifetime; // application's canonical01090AA0 domain
+    // Borrow either the application's actual01090AA0 publication or the
+    // retained semantic fixture domain. This access creates no private owner.
+    SoundLifetimeAccess lifetime;
     NativeLuaFundamentalsOwner* volatile& publication_0108ff1c;
     NativeStringStorage& strings; // may be ActualNativeStringPoolStorage
     // Actual VFS owner. The default adapter requires callable original-ABI

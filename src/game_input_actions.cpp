@@ -70,4 +70,13 @@ void GameInputActions::set_context_level(std::uint32_t index, std::uint32_t leve
     void* const owner = impl_->runtime.action_owner();
     set_native_input_context_level_00a933f0(owner, index, level, impl_->configuration);
 }
+NativeInputActionBindingContext& GameInputActions::binding_context() noexcept {
+    return impl_->bindings;
+}
+NativeInputActionConfigurationContext& GameInputActions::configuration_context() noexcept {
+    return impl_->configuration;
+}
+NativeInputActionTickContext& GameInputActions::tick_context() noexcept {
+    return impl_->tick;
+}
 } // namespace bsp::game

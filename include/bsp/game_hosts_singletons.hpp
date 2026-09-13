@@ -32,6 +32,17 @@ public:
     void bind_xlive_owner(XLiveOwnerAllocation*) noexcept;
     void bind_input_backend(NativeInputBackendOwnerContext*) noexcept;
     void bind_input_actions(NativeInputActionOwnerContext*) noexcept;
+    // Borrow these stable actual-publication cells for the settings context.
+    // Both remain valid through shutdown's raw manager drain.
+    void* volatile& input_settings_publication_00e198e8() noexcept {
+        return input_settings_publication_00e198e8_;
+    }
+    void* volatile& manager_publication_01090aa0() noexcept {
+        return manager_publication_01090aa0_;
+    }
+    // Install the borrowed settings context before CF81CC can be registered.
+    // The context must remain alive until shutdown returns.
+    void bind_input_settings(NativeInputSettingsLifetimeContext*) noexcept;
     // Borrow the observer lifetime before its lock registers. It must use this
     // host's actual publication access and remain alive until shutdown returns.
     void bind_observer_lifetime(NativeObserverLifetime*) noexcept;
@@ -48,6 +59,7 @@ public:
 private:
     GameHostLog& log_;
     void* volatile manager_publication_01090aa0_{nullptr};
+    void* volatile input_settings_publication_00e198e8_{nullptr};
     void* volatile effect_publication_00f87664_{nullptr};
     void* volatile game_resource_factory_publication_00e19b90_{nullptr};
     // Native owner deletion clears E19B90, leaving this WinMain alias intact.
