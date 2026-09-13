@@ -1,0 +1,217 @@
+{
+  "packet": "orch2_native_mpak_open_az",
+  "status": "complete_actual_storage_strict_win32_and_live_call_checked",
+  "source": "src/native_mpak_open.cpp",
+  "header": "include/bsp/native_mpak_open.hpp",
+  "documentation": "docs/NATIVE_MPAK_OPEN.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification_utc": "2026-09-13T05:10:00.144209+00:00",
+  "functions": [
+    {
+      "address": "00bb4a60",
+      "inclusive_end": "00bb4b15",
+      "bytes": 182,
+      "native_sha256": "6f6e1e118d4abfea7ae3de393d660279e3f0429861fcf567b6e379d7154d1aa2",
+      "live_matches_disk": true,
+      "source_name": "find_native_mpak_file_index_00bb4a60",
+      "ghidra_name": "BSP_MpakProvider_FindFileIndex",
+      "previous_name": "FUN_00bb4a60",
+      "original_abi": "ECX provider44h; stack name8h; RET4; EAX signed index or -1",
+      "coverage": "complete",
+      "source": "src/native_mpak_open.cpp",
+      "evidence": "Complete listing, live function range, producer layout, and fresh guarded live bytes matching installed disk",
+      "export_assembly_sha256": "6781456a5910d62dd0f1bf52a5f87f5ab6b1fe619f58a1978c9ba435d77b73d9"
+    },
+    {
+      "address": "00bb4b20",
+      "inclusive_end": "00bb4b35",
+      "bytes": 22,
+      "native_sha256": "6679a1e79194d48b4d8915b6da25489f7442b526a071750bf890b89cfa40b998",
+      "live_matches_disk": true,
+      "source_name": "contains_native_mpak_file_00bb4b20",
+      "ghidra_name": "BSP_MpakProvider_ContainsFile",
+      "previous_name": "FUN_00bb4b20",
+      "original_abi": "ECX provider44h; stack name8h; RET4; AL Boolean from signed search result",
+      "coverage": "complete",
+      "source": "src/native_mpak_open.cpp",
+      "evidence": "Complete listing, live function range, producer layout, and fresh guarded live bytes matching installed disk",
+      "export_assembly_sha256": "f52416429b7169e9ccf12881b86d3dde58b83d19dc31510695934a8aff6c1eea"
+    },
+    {
+      "address": "00bb5bb0",
+      "inclusive_end": "00bb5ccb",
+      "bytes": 284,
+      "native_sha256": "4113e4522b9cd92740bef9205b4d648b873d455a6710e3344efe7e04497d0f95",
+      "live_matches_disk": true,
+      "source_name": "open_native_mpak_file_00bb5bb0",
+      "ghidra_name": "BSP_MpakProvider_OpenFile",
+      "previous_name": "FUN_00bb5bb0",
+      "original_abi": "ECX provider44h; stack name8h and flags; RET8; EAX stream",
+      "coverage": "complete",
+      "source": "src/native_mpak_open.cpp",
+      "evidence": "Complete listing, live function range, producer layout, and fresh guarded live bytes matching installed disk",
+      "export_assembly_sha256": "2b0410d36b4e9b7a9da9455d7429a49c70dfed74ed84de2cac2c4110c857be32"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bb4ab6",
+      "native": "00bf6713",
+      "function": "00bb4a60",
+      "contract": "Returning CRT invalid-parameter callback; reload actual begin after return."
+    },
+    {
+      "address": "00bb4ae7",
+      "native": "00bf7fbf",
+      "function": "00bb4a60",
+      "contract": "Current CRT stricmp; two stack pointers, ADD ESP 8."
+    },
+    {
+      "address": "00bb4b25",
+      "native": "00bb4a60",
+      "function": "00bb4b20",
+      "contract": "Actual local search, RET4; wrapper tests EAX as signed."
+    },
+    {
+      "address": "00bb5bfc",
+      "native": "00bf9440",
+      "function": "00bb5bb0",
+      "contract": "Current CRT strstr; original data and literal _0000, ADD ESP 8."
+    },
+    {
+      "address": "00bb5c1a",
+      "native": "00426060",
+      "function": "00bb5bb0",
+      "contract": "Existing actual-header copy constructor; cleanup armed only after return, RET4."
+    },
+    {
+      "address": "00bb5c35",
+      "native": "00bdd850",
+      "function": "00bb5bb0",
+      "contract": "Captured current manager; SAME temporary header as both stack arguments; second unused, RET8."
+    },
+    {
+      "address": "00bb5c57",
+      "native": "00419cc0",
+      "function": "00bb5bb0",
+      "contract": "Actual pool storage getter; block/current length+1/unused1 prepared before call."
+    },
+    {
+      "address": "00bb5c5e",
+      "native": "00bd1510",
+      "function": "00bb5bb0",
+      "contract": "Actual pool return with getter EAX as ECX; RET0C."
+    },
+    {
+      "address": "00bb5c7f",
+      "native": "004254b0",
+      "function": "00bb5bb0",
+      "contract": "Observed one-byte RET leaf; format/name/device, ADD ESP 0C."
+    },
+    {
+      "address": "00bb5c93",
+      "native": "00bb4140",
+      "function": "00bb5bb0",
+      "contract": "Preserved STL_inst checked subscript on actual provider+1C, RET4; pending name belongs to next call."
+    },
+    {
+      "address": "00bb5c9a",
+      "native": "00435c40",
+      "function": "00bb5bb0",
+      "contract": "Existing actual-header equality on returned file record and original name; RET4."
+    },
+    {
+      "address": "00bb5cab",
+      "native": "00bb4a60",
+      "function": "00bb5bb0",
+      "contract": "Actual fallback search on original provider/name, RET4."
+    },
+    {
+      "address": "00bb5cb3",
+      "native": "00bb5080",
+      "function": "00bb5bb0",
+      "contract": "Sibling materialization boundary receives original provider and selected signed index, RET4."
+    }
+  ],
+  "no_ghidra_function": [],
+  "repaired_before_final_verification": [
+    {
+      "address": "00bb4b20",
+      "inclusive_end": "00bb4b35"
+    },
+    {
+      "address": "00bb5bb0",
+      "inclusive_end": "00bb5ccb"
+    }
+  ],
+  "definition_authority": "Primary integrator, original worker leases temporarily handed off, locked definitions and export; no worker Ghidra writes",
+  "corrections": [
+    {
+      "address": "00bb4a60",
+      "was": "stl_probable medium bookmark",
+      "evidence": "BB4A70/95 read provider+20/+24, index/byte stride starts zero, BB4ABE..AF6 compares actual record names; BB4B25 and BB5CAB call it as provider lookup",
+      "is": "Custom MPAK provider file-name search; separate called BB4140 remains STL_inst_00bb4140"
+    }
+  ],
+  "layout_producers": [
+    "00bb5590 actual file-provider base initializes +10 device=-1",
+    "00bb8240 actual MPAK constructor sets vector20/24/28 and cache40=0",
+    "00bb7c50 actual parser appends file24h records whose name header is0/4",
+    "00bb5080 actual entry materialization writes cache40=index"
+  ],
+  "interfaces": {
+    "strings": "ActualNativeStringPoolStorage with one existing manager/publication/lifetime domain",
+    "library": "NativeMpakOpenLibrary::file_at_00bb4140, original STL specialization; no fallback",
+    "dispatch": [
+      "NativeMpakOpenDispatch::select_device_00bdd850",
+      "NativeMpakOpenDispatch::materialize_entry_00bb5080"
+    ],
+    "integration": "Primary wires actual route and sibling actual entry source against same provider and pool"
+  },
+  "validation": {
+    "fresh_owned_spans": 3,
+    "fresh_owned_bytes": 488,
+    "fresh_live_disk_matches": true,
+    "verified_seed_count": 8,
+    "new_tests": 0,
+    "strict_win32_build": "passed: scripts/build.ps1 Release Win32; MSBUILDDISABLENODEREUSE=1",
+    "existing_ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "call_verifier": "passed: 13 direct call rows checked, 0 failed",
+    "native_source_fixture": false,
+    "gameplay": false,
+    "build_log": "local/native_mpak_open_build.log",
+    "build_log_sha256": "ab3bbc985c7c4189fe24db9ae3b98b955d04c164ed122b3768efa85dc381d8c7"
+  },
+  "limits": [
+    "New source interface, not drop-in Win32 ABI/FH3 or SEH",
+    "Existing native pool release noexcept; a throwing native pool-getter cleanup is not source-equivalent",
+    "Original CRT and STL internals remain host/library contracts; no library ports",
+    "Volatile DWORD source access preserves explicit reloads but does not establish concurrent-storage semantics",
+    "Runtime/provider vtable wiring belongs to primary; no installed-archive or gameplay claim"
+  ],
+  "unwind_evidence": {
+    "handler": "00cc4458",
+    "func_info": "00dfdd84",
+    "unwind_map": "00dfdd7c",
+    "state_transition": "0 -> -1",
+    "funclet": "00cc4450",
+    "listing": "CC4450 LEA ECX,[EBP-14h]; CC4453 JMP0041DD20"
+  },
+  "source_pins": [
+    {
+      "path": "src/native_mpak_open.cpp",
+      "sha256": "c5e49b207b469434b0706417711e070c6f8a67762ec494da1e6e0d6f5a2afb3c"
+    },
+    {
+      "path": "include/bsp/native_mpak_open.hpp",
+      "sha256": "099a4915b4f2601e25cd14e1853c30af104399d17bda7762e8241931432ead9e"
+    },
+    {
+      "path": "docs/NATIVE_MPAK_OPEN.md",
+      "sha256": "a6ae655edfee2daf13d0582a1b51beb2235a1b76f1c33e3ebb6b79b8b7f8c4d9"
+    }
+  ]
+}
