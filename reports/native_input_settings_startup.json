@@ -1,0 +1,316 @@
+{
+  "packet": "orch4_input_settings_ao",
+  "status": "raw_settings_construction_and_script_prefixes_component_validated_integration_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_settings_startup.hpp",
+    "src/native_input_settings_startup.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_SETTINGS_STARTUP.md",
+  "byte_spans": [
+    {
+      "address": "006ab6b0",
+      "end_exclusive": "006ab7e3",
+      "bytes": 307,
+      "instructions": 94,
+      "disk_live_equal": true,
+      "sha256": "36c2193667feb3cf23392d83feec1f2e338fabec22f4a72365d3dc018f9f5ef3",
+      "coverage": "exact prefix only"
+    },
+    {
+      "address": "006a7be0",
+      "end_exclusive": "006a7ce2",
+      "bytes": 258,
+      "instructions": 72,
+      "disk_live_equal": true,
+      "sha256": "ffdaa9eee489ed0983ba4633f941072a67cf33b7c5c3c6fa97ac582c1b63aa4d",
+      "coverage": "exact prefix only"
+    },
+    {
+      "address": "0069d1f0",
+      "end_exclusive": "0069d230",
+      "bytes": 64,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "b44d55f875858753de5c228bcbec3766b35cd7cb751e9a5aa8b000f53b183d31",
+      "coverage": "consumed library node-allocation contract, no STL reconstruction claim"
+    },
+    {
+      "address": "0069d240",
+      "end_exclusive": "0069d277",
+      "bytes": 55,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "b5f8fe43b13f308410be2f8624c1a5a01d2cf39e11b46086f5c60396a4f75ec5",
+      "coverage": "consumed library node-allocation contract, no STL reconstruction claim"
+    },
+    {
+      "address": "0069d290",
+      "end_exclusive": "0069d2c7",
+      "bytes": 55,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "b907e6f2f4b91761d1901d6de5c58dedc665424e9b2a3b345a162445b59f998b",
+      "coverage": "consumed library node-allocation contract, no STL reconstruction claim"
+    },
+    {
+      "address": "0069d320",
+      "end_exclusive": "0069d357",
+      "bytes": 55,
+      "instructions": 17,
+      "disk_live_equal": true,
+      "sha256": "fca52769b291460498e02552d82bf935f02f246ba3abeb61e2de624625d2c3c2",
+      "coverage": "consumed library node-allocation contract, no STL reconstruction claim"
+    }
+  ],
+  "calls": [
+    {
+      "function": "006ab6b0",
+      "address": "006ab6e0",
+      "native": "0069d1f0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab716",
+      "native": "0069d240",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab752",
+      "native": "0069d290",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab77c",
+      "native": "0069d320",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7a6",
+      "native": "0069d1f0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006ab6b0",
+      "address": "006ab7d1",
+      "native": "00b66bd0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c25",
+      "native": "00b6a020",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c33",
+      "native": "0041e870",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c47",
+      "native": "00b69d40",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c68",
+      "native": "00419cc0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c6f",
+      "native": "00bd1510",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c7b",
+      "native": "00b66bd0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c8f",
+      "native": "00b6a020",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7c9d",
+      "native": "0041e870",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7cb7",
+      "native": "00b69d40",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7cd6",
+      "native": "00419cc0",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "006a7be0",
+      "address": "006a7cdd",
+      "native": "00bd1510",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "0069d1f0",
+      "address": "0069d1f5",
+      "native": "00bf681b",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "0069d240",
+      "address": "0069d242",
+      "native": "00bf681b",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "0069d290",
+      "address": "0069d292",
+      "native": "00bf681b",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    },
+    {
+      "function": "0069d320",
+      "address": "0069d322",
+      "native": "00bf681b",
+      "evidence": "Owned prefix or consumed empty-node library contract; register/stack schedule verified in listing."
+    }
+  ],
+  "coverage": {
+    "006ab6b0": "307-byte prefix through6AB7E2, before6A7BE0 call at6AB7E3. Does not publish or complete constructor.",
+    "006a7be0": "258-byte prefix through6A7CE1 and guarded early return; stops before tree clearing/parsing at6A7CE2. Temporary Lua owner retained for continuation."
+  },
+  "native_abi": {
+    "006ab6b0": "Full original ECX settings; EAX self; RET. Source implements only a prefix with explicit publication input for supported unwind.",
+    "006a7be0": "Full original ECX settings; no stack arguments; RET. Source returns guard_return or tables_pending and borrows explicit services/frame."
+  },
+  "exception_evidence": {
+    "constructor": {
+      "handler": "00c7fabb",
+      "func_info": "00dacf70",
+      "unwind_map": "00dacf94",
+      "states": 10,
+      "actions": [
+        "0069ba20",
+        "006aa420@settings8",
+        "004324a0@settings14",
+        "006a2b00@settings24",
+        "006a7960@settings30",
+        "006a1420@settings40",
+        "006a1df0@settings54",
+        "006a7040@settings60",
+        "006aa420@settings6c",
+        "00b669a0@settings78"
+      ],
+      "limit": "Source prefix only unwinds already-built empty members; allocator callback ownership mutation and full nonempty destructor not supplied."
+    },
+    "loader": {
+      "handler": "00c7f8f7",
+      "func_info": "00dacb90",
+      "unwind_map": "00dacbb4",
+      "full_function_states": 76,
+      "prefix_states": [
+        0,
+        1,
+        2
+      ],
+      "state0": "C7F600 destroys path via41DD20, no previous state",
+      "state1": "C7F60B closes temporary Lua owner, no previous state",
+      "state2": "C7F616 destroys path, then state1",
+      "persistent_owner_closed_on_prefix_failure": false,
+      "started_guard_rolled_back": false
+    }
+  },
+  "fixture_boundaries": {
+    "constructor": "Original prefix followed by actual20-byte original epilogue, omitting the pending loader call.",
+    "loader": "Original prefix followed by a fixture capture/close of its stack temporary before the original22-byte epilogue. Original guard jumps directly to epilogue. No parser success stub.",
+    "original_fh3_executed": false
+  },
+  "limitations": [
+    "Full6A7BE0 parser/ControllerInputNames continuation and full constructor/getter/destructor remain unfinished.",
+    "No production publication, original ABI/private stack alias/hardware fault/gameplay proof."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 482,
+    "calls_checked": 21,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "probe_log": "local/input_settings_ao_probe.log",
+    "probe_log_sha256": "a914f8bea083bd0a719d7ec75fd51cc4a37f6d0131bbd21cfd47a4100ec9377e",
+    "fixture_source": "local/input_settings_ao_probe.cpp",
+    "fixture_source_sha256": "a57c1f6d606afd0fce48e30a1be32db223905c728ab7d415706e524a068bb18b",
+    "fixture_header_sha256": "f23e51bdd6450a4338c444a92dd410079f7bf7f2762fb11e4ce6197239e7d658",
+    "raw_tree_heads": 5,
+    "distinct_lua_owners": 2,
+    "script_reads": 3,
+    "stream_opens": 3,
+    "stream_closes": 3,
+    "keyboard_categories": 4,
+    "guard_replay_passed": true,
+    "source_keyboard_open_failure_unwind_passed": true,
+    "constructor_allocation_failure_executed": false,
+    "original_fh3_executed": false,
+    "constructor_body_complete": false,
+    "loader_body_complete": false,
+    "game_validated": false,
+    "original_abi_compatible": false
+  },
+  "installed_assets": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControlPresets.lua",
+      "bytes": 12999,
+      "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\KeyboardSetup.lua",
+      "bytes": 26367,
+      "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua",
+      "bytes": 71090,
+      "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    }
+  ],
+  "annotations": "reports/native_input_settings_startup_ao_annotations.json",
+  "new_function_definitions": [],
+  "functions": [
+    {
+      "address": "006ab6b0",
+      "source_entry": "construct_native_input_settings_prefix_006ab6b0",
+      "coverage": "307-byte prefix through6AB7E2, before6A7BE0 call at6AB7E3. Does not publish or complete constructor.",
+      "kind": "fragment"
+    },
+    {
+      "address": "006a7be0",
+      "source_entry": "load_native_input_settings_scripts_prefix_006a7be0",
+      "coverage": "258-byte prefix through6A7CE1 and guarded early return; stops before tree clearing/parsing at6A7CE2. Temporary Lua owner retained for continuation.",
+      "kind": "fragment"
+    }
+  ]
+}
