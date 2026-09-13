@@ -1,0 +1,60 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "006ab820",
+      "before": "Function: FUN_006ab820 at 006ab820\nSignature: undefined FUN_006ab820(void)\nEntry: 006ab820\nBody: 006ab820 - 006aba42",
+      "before_comment": {
+        "address": "006ab820",
+        "function_name": "FUN_006ab820"
+      },
+      "proposed": "void __fastcall BSP_InputSettings_PreserveDefaultBindings(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 006ab820 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_PreserveDefaultBindings at 006ab820\nSignature: void __fastcall BSP_InputSettings_PreserveDefaultBindings(void * self, void * unused_edx)\nEntry: 006ab820\nBody: 006ab820 - 006aba42",
+      "readback_verified": true
+    },
+    {
+      "address": "006aa640",
+      "before": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: undefined BSP_InputSettings_ApplyKeyboardBindings(void)\nEntry: 006aa640\nBody: 006aa640 - 006aac43",
+      "before_comment": {
+        "address": "006aa640",
+        "function_name": "BSP_InputSettings_ApplyKeyboardBindings",
+        "comment": "[BSP reconstruction 006aa640]\nHypothesis, not a recovered symbol. ECX=settings, no stack arguments, RET; body006aa640..006aac43. DEVINPUTS/loaded+5/action128h gates; per-device copy of code/class sensitivity map, ordered multipliers and Min1SensHacks, two bindings per described action code, reverse signs and alternate2/3 suppression. Host boundaries00a92260,006aa090,00a93750. Integrator repaired false CALL_RETURN at006aac02;39 bytes006aac07..006aac2d restore full device loop. See docs/KEYBOARD_RESTORE.md and reports/keyboard_restore.json; host build/fixture verified, not ABI/game tested."
+      },
+      "proposed": "void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 006aa640 with __fastcall calling convention",
+      "after": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void * self, void * unused_edx)\nEntry: 006aa640\nBody: 006aa640 - 006aac43",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006ab820",
+        "prototype": "void __fastcall BSP_InputSettings_PreserveDefaultBindings(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006ab820 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006aa640",
+        "prototype": "void __fastcall BSP_InputSettings_ApplyKeyboardBindings(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006aa640 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

@@ -1,0 +1,88 @@
+{
+ "events": [
+  {
+   "recreate": "006aa640",
+   "previous": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: undefined BSP_InputSettings_ApplyKeyboardBindings(void)\nEntry: 006aa640\nBody: 006aa640 - 006aac43",
+   "plate": "[BSP reconstruction 006aa640]\nHypothesis, not a recovered symbol. ECX=settings, no stack arguments, RET; body006aa640..006aac43. DEVINPUTS/loaded+5/action128h gates; per-device copy of code/class sensitivity map, ordered multipliers and Min1SensHacks, two bindings per described action code, reverse signs and alternate2/3 suppression. Host boundaries00a92260,006aa090,00a93750. Integrator repaired false CALL_RETURN at006aac02;39 bytes006aac07..006aac2d restore full device loop. See docs/KEYBOARD_RESTORE.md and reports/keyboard_restore.json; host build/fixture verified, not ABI/game tested."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006aa640"
+   },
+   "result": {
+    "success": true,
+    "address": "006aa640",
+    "deleted_function": "BSP_InputSettings_ApplyKeyboardBindings",
+    "body_size": 1501,
+    "message": "Function 'BSP_InputSettings_ApplyKeyboardBindings' deleted at 006aa640"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006aa640",
+    "end_address": "006aac44"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006aa640",
+    "end_address": "006aac43",
+    "bytes_disassembled": 1540,
+    "message": "Successfully disassembled 1540 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006aa640",
+    "disassemble_first": false,
+    "name": "BSP_InputSettings_ApplyKeyboardBindings"
+   },
+   "result": {
+    "success": true,
+    "address": "006aa640",
+    "function_name": "BSP_InputSettings_ApplyKeyboardBindings",
+    "entry_point": "006aa640",
+    "body_size": 1540,
+    "message": "Function created successfully at 006aa640",
+    "warnings": [
+     "Function name 'BSP_InputSettings_ApplyKeyboardBindings' \u2014 main part 'InputSettings_ApplyKeyboardBindings' is not PascalCase. Expected: InputsettingsApplykeyboardbindings",
+     "Function name 'BSP_InputSettings_ApplyKeyboardBindings' \u2014 main part 'InputSettings_ApplyKeyboardBindings' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputSettings_ApplyKeyboardBindings' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "006aa640",
+    "comment": "[BSP reconstruction 006aa640]\nHypothesis, not a recovered symbol. ECX=settings, no stack arguments, RET; body006aa640..006aac43. DEVINPUTS/loaded+5/action128h gates; per-device copy of code/class sensitivity map, ordered multipliers and Min1SensHacks, two bindings per described action code, reverse signs and alternate2/3 suppression. Host boundaries00a92260,006aa090,00a93750. Integrator repaired false CALL_RETURN at006aac02;39 bytes006aac07..006aac2d restore full device loop. See docs/KEYBOARD_RESTORE.md and reports/keyboard_restore.json; host build/fixture verified, not ABI/game tested."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 006aa640",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "006aa640",
+   "end": "006aac44",
+   "name": "BSP_InputSettings_ApplyKeyboardBindings",
+   "after": "Function: BSP_InputSettings_ApplyKeyboardBindings at 006aa640\nSignature: undefined BSP_InputSettings_ApplyKeyboardBindings(void)\nEntry: 006aa640\nBody: 006aa640 - 006aac43"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
