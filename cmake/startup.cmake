@@ -58,6 +58,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_setti
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_startup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tables.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tree_cleanup.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_scale_maps.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tree_insertion.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_device_index.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_vector_storage.cpp)
