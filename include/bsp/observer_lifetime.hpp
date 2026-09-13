@@ -2,6 +2,7 @@
 
 #include "bsp/random_threads.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -75,7 +76,12 @@ void erase_observer_edge_00694f60(NativeObserverEdgeSlots&, NativeObserverEdgeSt
 
 class NativeObserverLifetime final {
 public:
-    NativeObserverLifetime(SingletonLifetimeDomain&,
+    // Reuse the existing borrowed lifetime access: the application passes its
+    // actual01090AA0 publication; existing fixtures may pass their semantic
+    // domain through the implicit access constructor. No second domain exists.
+    // The historical SoundLifetimeAccess name does not restrict its raw manager
+    // operations to sound. See OBSERVER_RAW_LIFETIME.md.
+    NativeObserverLifetime(SoundLifetimeAccess,
         NativeObserverLockOwner* volatile& global_00e198e0,
         NativeObserverDispatchStorage* volatile& global_00e198e4,
         ObserverLifetimeServices&) noexcept;
@@ -108,7 +114,7 @@ private:
     void remove_from_endpoints_and_delete(NativeObserverEdgeStorage&);
     void invalidate_dispatch_slots(NativeObserverEdgeStorage*, NativeObserverOwnerStorage*);
 
-    SingletonLifetimeDomain& domain_;
+    SoundLifetimeAccess domain_;
     NativeObserverLockOwner* volatile& global_00e198e0_;
     NativeObserverDispatchStorage* volatile& global_00e198e4_;
     ObserverLifetimeServices& services_;
