@@ -1,0 +1,68 @@
+{
+  "packet": "orch6_observer_application_r",
+  "status": "actual_application_owner_binding_build_tested_runtime_pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/game_observer_runtime.cpp",
+  "header": "include/bsp/game_observer_runtime.hpp",
+  "calls": [
+    {
+      "address": "00CCD6A0",
+      "native": "00696360",
+      "function": "00CCD6A0",
+      "contract": "Actual owner getter, native ADD EAX4, publish actualE198E4 alias."
+    },
+    {
+      "address": "00BFBCA7",
+      "native": "00CCD6A0",
+      "function": "00BFBC47",
+      "contract": "CRT table ascending invocation; concrete target fromCE2BAC."
+    },
+    {
+      "address": "00BFBCA7",
+      "native": "00CD2D80",
+      "function": "00BFBC47",
+      "contract": "Later represented settings initializer target fromCE3054 in same ascending table."
+    }
+  ],
+  "crt_order": {
+    "table_begin": "00CE2734",
+    "table_end_exclusive": "00CE36E4",
+    "observer_slot": "00CE2BAC",
+    "observer_word": "a0 d6 cc 00",
+    "observer_index": 286,
+    "settings_slot": "00CE3054",
+    "settings_word": "80 2d cd 00",
+    "settings_index": 584,
+    "loop": "00BFBC90..00BFBCAE loadsESI=tablebegin,readsnonnullfunction,CALL EAX,adds4,andcontinuesbelowtableend.",
+    "scope": "Relative order of these two represented initializers only; no claim that all intermediate CRT entries are implemented."
+  },
+  "original_abi": "CCD6A0 has no native inputs, calls00696360, adds4 toEAX,publishesE198E4,RET. New source context supplies actual existing manager/publication bindings; it is not an original global-address or binary ABI replacement.",
+  "ownership": [
+    "One GameObserverRuntime owned by GameSingletonHost; it holds actualE198DC/E198E0/E198E4 publication cells and existing NativeObserverLifetime.",
+    "The wrapper creates no second lifetime domain. Both deleting contexts bind the same actual raw application manager before native registration.",
+    "GameStartupHost invokes actualCCD6A0 source beforeCD2D80settings. Dispatch owner is registered during this stage; observer lock remains lazy.",
+    "GameSingletonHost drains while the context andpublicationcells remain alive; context destructor does not independently free native owners or clearalias.",
+    "CanonicalCF7E64 edge deletion remains inside recovered lifetime. Unknown producer profiles throw explicit source-contract error. Validation calls the current CRT helper with returning-call semantics."
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2existing CTests passed",
+    "runtime": "pending final combined process run",
+    "new_tests": 0
+  },
+  "source_sha256": {
+    "include/bsp/game_observer_runtime.hpp": "4c62a693dbfd85c0082ee92a978c1f180d574215e713ad25fa871e6af2a43461",
+    "src/game_observer_runtime.cpp": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+    "include/bsp/game_hosts_singletons.hpp": "ceeb354944e572e0581d06fe7b8f40060117496a6e2b727ce1cd5b2be5235064",
+    "src/game_hosts_singletons.cpp": "30a98439e5b10b700e82276ba257b8537ad27b1c6f720bcabbd8b0a9a13dac96",
+    "src/game_hosts.cpp": "40b457acb9a3d6f7d54eba7d1bf2d6e557e720d3bfd4f6a49e995a3593caa015"
+  },
+  "limits": [
+    "Full CRT initialization ordering beyond the two represented entries remains incomplete.",
+    "Actual endpoint producers, notification scheduling and raw obstacle candidate owners are separate; this change does not synthesize registrations to exercise them.",
+    "Mission/menu observer consumers must complete cleanup before raw manager drain; no full native shutdown/concurrency proof.",
+    "Original allocator-failure/FH3/SEH and invalid-input handling are not validated; native registration failure can retain publication outside the registered list.",
+    "No original-game visual/gameplay parity or native binary ABI compatibility."
+  ]
+}

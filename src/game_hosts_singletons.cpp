@@ -1,5 +1,6 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_observer_runtime.hpp"
 
 #include "bsp/native_gameplay_effect_construction.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
@@ -8,7 +9,8 @@
 namespace bsp::game {
 
 GameSingletonHost::GameSingletonHost(GameHostLog& log)
-    : log_(log), deletion_bindings_{&effect_publication_00f87664_, nullptr} {}
+    : log_(log), deletion_bindings_{&effect_publication_00f87664_, nullptr},
+      observers_(std::make_unique<GameObserverRuntime>(*this, log)) {}
 
 GameSingletonHost::~GameSingletonHost() {
     // Normal WinMain shutdown has already drained this owner. All publication
@@ -51,6 +53,7 @@ void GameSingletonHost::shutdown() {
     if (manager == nullptr) return;
     const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
     destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);
+    observers_->record_after_singleton_drain();
     singleton_lifetime_free(manager);
     manager_publication_01090aa0_ = nullptr;
     log_.notef("singleton lifetime drained: registered_slots=%u effect_publication=%s "
