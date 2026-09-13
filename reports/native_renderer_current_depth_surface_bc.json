@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_renderer_current_depth_surface_bc",
+  "status": "complete_leaf_strict_compile_exact_coff_and_baseline_build_checked",
+  "base_commit": "cb25e7e1b026302d55804b908da04ec3b9225c00",
+  "files": [
+    "include/bsp/native_renderer_current_depth_surface.hpp",
+    "src/native_renderer_current_depth_surface.cpp",
+    "docs/NATIVE_RENDERER_CURRENT_DEPTH_SURFACE_BC.md",
+    "reports/native_renderer_current_depth_surface_bc.json"
+  ],
+  "normal_body_count": 1,
+  "new_native_body_count": 1,
+  "native_body_bytes": 7,
+  "functions": [
+    {
+      "address": "00b20090",
+      "end_inclusive": "00b20096",
+      "bytes": 7,
+      "cpp_symbol": "get_native_renderer_current_depth_surface_00b20090",
+      "source": "src/native_renderer_current_depth_surface.cpp",
+      "header": "include/bsp/native_renderer_current_depth_surface.hpp",
+      "original_abi": "__thiscall; ECX actual renderer; zero stack arguments; EAX current DWORD198C; RET.",
+      "source_abi": "__fastcall with the same physical receiver and return locations; EDX unused.",
+      "existing_ghidra_name": "BSP_D3D9Renderer_GetField198C_Provisional",
+      "name_is_hypothesis": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b238d0",
+      "address": "00b23a3b",
+      "native": "00b3f2a0"
+    },
+    {
+      "function": "00b238d0",
+      "address": "00b23a5b",
+      "native": "00b3f630"
+    },
+    {
+      "function": "00b238d0",
+      "address": "00b23aec",
+      "native": "00b21690"
+    },
+    {
+      "function": "00b14a10",
+      "address": "00b14dd2",
+      "native": "00b1fb00"
+    }
+  ],
+  "indirect_consumer": {
+    "function": "00b14a10",
+    "site": "00b14dc9",
+    "target": "00b20090",
+    "current_renderer_cell": "00f8d394",
+    "current_profile_load": "00b14dc1",
+    "current_slot_load": "00b14dc3",
+    "profile": "00d5f0a8",
+    "slot": "0x12c",
+    "slot_address": "00d5f1d4",
+    "target_slot_and_complete_call_preparation_bytes_checked": true
+  },
+  "producer": {
+    "function": "00b238d0",
+    "device_get_depth_call": "00b23a34",
+    "surface_constructor_call": "00b23a5b",
+    "current_owner_publication": "00b23a7a",
+    "field": "0x198c",
+    "current_reload": "00b23ae3",
+    "depth_bind_call": "00b23aec",
+    "source": "src/native_renderer_default_surfaces.cpp",
+    "producer_is_existing_reconstruction": true
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b20090",
+        "bytes": 7,
+        "sha256": "082c6ae3eb2f4dbd995e6b580dfaef1897cd9592b0d7cc56337a144be8aea76e",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00b238d0",
+        "bytes": 562,
+        "sha256": "837027c1f54987ea218ea59e550dfeb48b2d410074c9a36d1c5749a30a75b990",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00b14dbb",
+        "bytes": 28,
+        "sha256": "dfdd0e0879ede1fa7761181293c34a75d898044e3bcd7a0e53d5a8b17f3217e1",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00b1fb00",
+        "bytes": 59,
+        "sha256": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00d5f1d4",
+        "bytes": 4,
+        "sha256": "a7930b3bbd9f5a77ad91ff6b573189dc421f85e3a7e87893a3e5f7b1a5dd7c80",
+        "live_equals_disk": true
+      }
+    ],
+    "full_live_xrefs": "all-xrefs.txt",
+    "xref_scope": "One DATA reference at D5F1D4, zero direct calls; not a complete indirect-caller inventory."
+  },
+  "validation": {
+    "strict_win32_compile": true,
+    "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+    "arguments": [
+      "/nologo",
+      "/c",
+      "/EHsc",
+      "/std:c++17",
+      "/W4",
+      "/WX",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/fp:strict",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-renderer-depth-getter-bc/include",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-renderer-depth-getter-bc\\src\\native_renderer_current_depth_surface.cpp",
+      "/FoC:\\Users\\sqz269\\bsp-bc-renderer-depth-getter\\native_renderer_current_depth_surface.obj",
+      "/FAs",
+      "/FaC:\\Users\\sqz269\\bsp-bc-renderer-depth-getter/native_renderer_current_depth_surface.asm"
+    ],
+    "source_header_sha256": {
+      "include/bsp/native_renderer_current_depth_surface.hpp": "981e6d32d28ccdd01fdcad4fc1af07ab08e0812281e6a663c1cfe84bccdd433d",
+      "src/native_renderer_current_depth_surface.cpp": "9dea62a5675f76263619297ff223aa1117bd03955ef56d7d4d30d157dde3bad7"
+    },
+    "source_header_unchanged_during_checks": true,
+    "object_path": "C:\\Users\\sqz269\\bsp-bc-renderer-depth-getter\\native_renderer_current_depth_surface.obj",
+    "object_sha256": "2075d81205dc641c3ad2ce8f1ca3161ae2e69e8abd138d9379548a0e920929a2",
+    "coff_symbol": "?get_native_renderer_current_depth_surface_00b20090@bsp@@YIPAXPBX@Z",
+    "coff_machine": "i386",
+    "code_section_bytes": 7,
+    "code_relocations": 0,
+    "complete_coff_equals_original": true,
+    "compiled_hex": "8b818c190000c3",
+    "compiled_code_sha256": "082c6ae3eb2f4dbd995e6b580dfaef1897cd9592b0d7cc56337a144be8aea76e",
+    "direct_numeric_call_rows_pe_verified": 4,
+    "baseline_build": "passed; new source remains unregistered",
+    "tests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "new_runtime_fixture": false,
+    "new_repository_tests": false,
+    "seeds_verified": 8,
+    "baseline_input_count": 2374,
+    "baseline_inputs_unchanged": true,
+    "baseline_libraries": {
+      "bsp_core.lib": "0e21da270d042d03cfcce459687550bf55ca01640ce130d5c4bd719ce39279f9",
+      "bsp_lua511.lib": "fa17f2733d726d67f0daf387d81abc5dfa0fcf98825c24bf273b65b133401967",
+      "bsp_zlib121.lib": "62b845c13ba1338755430c379e9c0b76c5fff3a633e74aeb138d8fb7225ac59c"
+    },
+    "numeric_call_verifier": "4 direct call rows checked, 0 failed; no indirect row counted as a direct call"
+  },
+  "source_registration": "New source intentionally unregistered in this worker; baseline build does not compile/link this leaf. Integrator owns final registration and combined-library byte check.",
+  "evidence_directory": "C:\\Users\\sqz269\\bsp-bc-renderer-depth-getter",
+  "limitations": [
+    "Exact leaf machine code agreement is not whole-renderer binary compatibility or gameplay proof.",
+    "No general indirect-caller inventory, alternate-profile dispatch or owner-lifetime claim.",
+    "Native profile/name identity preserved for root annotation review; no Ghidra or ledger mutation."
+  ],
+  "evidence_recipe_scope": "Worker check_leaf.py regenerates the worker report; it is not a root replay recipe. Root must inspect the final registered library symbol.",
+  "evidence_file_sha256": {
+    "00b14dbb-live.txt": "696f4650c9a09ca6f0affee079460a5fe658fef7106a9f21a2534792ca20dece",
+    "00b14dbb.bin": "dfdd0e0879ede1fa7761181293c34a75d898044e3bcd7a0e53d5a8b17f3217e1",
+    "00b1fb00-assembly.txt": "0dce7e3fa40af70d9c8138268f66d310a7c6d5b105377e8cdb53b4ca584a8651",
+    "00b1fb00-live.txt": "b83bd4c1c95630efd607f1c8b477aed239268504387aa85a00aef55a9e2dcfba",
+    "00b1fb00.bin": "c79728eed9b19cff226a057760ae14063e4d2ff4c1be835b693e2ef12e8c9de3",
+    "00b20090-assembly.txt": "a03bbea8de41e90cbb2eab2113d169954b0233ee0487e981fbac16c8b3a5dec2",
+    "00b20090-live.txt": "713047e0c0704c06d68b9a0331308e1aa2cc22eff52bcc28b3aa9d09d2dd5372",
+    "00b20090.bin": "082c6ae3eb2f4dbd995e6b580dfaef1897cd9592b0d7cc56337a144be8aea76e",
+    "00b238d0-assembly.txt": "8e2b1fa49d1c7be5f96eb9e4ff5b964ac8ba7c1391e8b87641cf1868cf2d6cd4",
+    "00b238d0-live.txt": "960bb636c53b9999327338b1ec6034c5a659d8094abeb887cfba060d82d9af54",
+    "00b238d0.bin": "837027c1f54987ea218ea59e550dfeb48b2d410074c9a36d1c5749a30a75b990",
+    "00d5f1d4-live.txt": "8662f2f28f3bed898b088097fc25ff67265afbd93653d072b595744f96563f1c",
+    "00d5f1d4.bin": "a7930b3bbd9f5a77ad91ff6b573189dc421f85e3a7e87893a3e5f7b1a5dd7c80",
+    "all-xrefs.txt": "418666c8ee9e0753f5a14e045a94e0cfd864ecd8de3a1b721860c6e9ade6830f",
+    "baseline-build.log": "4623f9f03878ddcc3fa31c6dc6ec72cf365af0cc85a60adf7a03390a6f8a3460",
+    "baseline-validation.json": "213cb4eacc2627a24b7c8ca9f773677dd4e132c837c63c426523fc34682d771b",
+    "build_baseline.py": "a6a32c9798c98d144b84f6c8b11440af0ecc26d9c3902b1ec3de0829c09ad4c3",
+    "check_leaf.py": "7711597b5644ae1610d33f49270da304a0a8b1bd45bc0958a1860eb30081725c",
+    "coff-validation.json": "a18b4ed9d11cc96d356eb520c5ced2846510f7315e14d728054fd9524feb1b12",
+    "compiled_leaf.bin": "082c6ae3eb2f4dbd995e6b580dfaef1897cd9592b0d7cc56337a144be8aea76e",
+    "index.log": "730ec1fae5464a72c6378e0fb0d934ad3a09e8f261b08b245bfabae239a818b3",
+    "lookup-before.txt": "66f0427c4a125476d37a2fb2643a991bfbedb5ebb788314e701c1bcf52fee2b4",
+    "native_renderer_current_depth_surface.asm": "d478e383c15d587abfc6836a9d99ada5aa4d549998e7c3cd4314b217ff0c51c8",
+    "native_renderer_current_depth_surface.obj": "2075d81205dc641c3ad2ce8f1ca3161ae2e69e8abd138d9379548a0e920929a2",
+    "numeric-call-check.log": "1af0b06352735e67b1dd8243fc102454dea84ad08359c1d67ca3365d6f8c23f9",
+    "proto-before.txt": "7155b0ca6ff84fe9c802414bc6c6667014995a89a9134265409f5d773183c0cc",
+    "seal_evidence.py": "13f83d5d837fe73ebb8b32512b719d71f321afda8e3bfe5df5ffe9445cb283f4",
+    "source_snapshot/include/bsp/native_renderer_current_depth_surface.hpp": "981e6d32d28ccdd01fdcad4fc1af07ab08e0812281e6a663c1cfe84bccdd433d",
+    "source_snapshot/src/native_renderer_current_depth_surface.cpp": "9dea62a5675f76263619297ff223aa1117bd03955ef56d7d4d30d157dde3bad7",
+    "strict-compile.log": "8afa06f7c57b608c2408dc3aced822ff961fe0f872858542dee747f017d04fcf",
+    "verify-seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+  },
+  "capture_archive": {
+    "path": "C:\\Users\\sqz269\\bsp-bc-renderer-depth-getter\\worker_evidence.zip",
+    "sha256": "f7df0e3f528f557700a0feda1573b4d0d2176bcc0be7a1813c2741ac4506a199",
+    "members": 35,
+    "verified_manifest_rows": 34,
+    "scope": "Leaf source/header/doc/report snapshot, exact original/COFF bytes and object, full producer/consumer evidence, scripts, logs and baseline input/library hashes. No runtime fixture or archived baseline libraries; final registered-library check belongs to root.",
+    "archive_report_snapshot_precedes_archive_hash": true
+  }
+}
