@@ -7,16 +7,24 @@ namespace bsp {
 class NativeStringStorage;
 struct SingletonLifetimeCallbacks;
 
-// Borrowed application domains. actual_string_storage must use the same actual
-// 00419CC0 SizedStoragePool supplied to the nested resource-container removal.
+// Borrowed application domains. The six-argument constructor preserves the
+// semantic pool interface; the five-argument constructor binds the SAME
+// ActualNativeStringPoolStorage for both temporary names and record removal.
 // No renderer, string, guard, resource or lifetime owner is created here.
 struct NativeRendererTextureNameNotificationContext {
+    NativeRendererTextureNameNotificationContext(const void* volatile&,
+        NativeRendererSynchronizationGlobals&, NativeStringStorage&, SizedStoragePool&,
+        const SingletonLifetimeCallbacks&, const NativeRenderResourceAccountingTables&) noexcept;
+    NativeRendererTextureNameNotificationContext(const void* volatile&,
+        NativeRendererSynchronizationGlobals&, ActualNativeStringPoolStorage&,
+        const SingletonLifetimeCallbacks&, const NativeRenderResourceAccountingTables&) noexcept;
     const void* volatile& actual_renderer_00f8d394;
     NativeRendererSynchronizationGlobals& synchronization;
     NativeStringStorage& actual_string_storage;
-    SizedStoragePool& actual_string_pool;
+    SizedStoragePool* actual_string_pool;
     const SingletonLifetimeCallbacks& callbacks;
     const NativeRenderResourceAccountingTables& accounting_tables;
+    ActualNativeStringPoolStorage* actual_native_string_pool;
 };
 
 // Complete 00B32250..00B32340. Native ECX receiver, stack original eight-byte

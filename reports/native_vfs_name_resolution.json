@@ -1,0 +1,1673 @@
+{
+  "packet": "orch5_vfs_resolve_native",
+  "baseline": "0284fb3c",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_source_strict_win32_tu_checked_integration_dependency_pending",
+  "source": "src/native_vfs_name_resolution.cpp",
+  "header": "include/bsp/native_vfs_name_resolution.hpp",
+  "evidence": "docs/NATIVE_VFS_NAME_RESOLUTION.md",
+  "abi_compatible": false,
+  "native_seh_compatible": false,
+  "game_validated": false,
+  "bodies": [
+    {
+      "start": "00bdf4c0",
+      "end_inclusive": "00bdf588",
+      "length": 201,
+      "disk_sha256": "1af8f347987129b4c22a38cb7d495bf0fda69e57fce9e682e59e64638554cb16",
+      "instruction_count": 65,
+      "abi": "ECX manager; stack mutable8h; RET4; AL",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bddc80",
+      "end_inclusive": "00bde9b3",
+      "length": 3380,
+      "disk_sha256": "efb69974fc83888529ea8ca8125b0b1b51d309897bab04bb939c781b757ed9ba",
+      "instruction_count": 1091,
+      "abi": "ECX manager; stack mutable8h; RET4; AL",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bdeb40",
+      "end_inclusive": "00bdebd3",
+      "length": 148,
+      "disk_sha256": "83cd7022d26067931fe2789c6f231b8134ae544abdf9cd109c91d6a68ad6888e",
+      "instruction_count": 37,
+      "abi": "ECX manager; stack old/new; RET8",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bdd6e0",
+      "end_inclusive": "00bdd847",
+      "length": 360,
+      "disk_sha256": "9ca39982231bc39db57dd066eb6af7b78db7295161ac351e8264e14d3e6afcc3",
+      "instruction_count": 114,
+      "abi": "ECX manager; stack input/output; RET8; AL",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bddaa0",
+      "end_inclusive": "00bddc72",
+      "length": 467,
+      "disk_sha256": "dc0b0a0864abc9528c86712da858192584e5677cdb79589ca4d21d16c51f20f7",
+      "instruction_count": 158,
+      "abi": "ECX manager; stack output/stem/extension; RET0C; AL",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bdc680",
+      "end_inclusive": "00bdc8a2",
+      "length": 547,
+      "disk_sha256": "77e209521b70bef2148332381c30d635fb2b7a8461277b5a955d9119970da722",
+      "instruction_count": 186,
+      "abi": "ECX manager; stack prefix-output/stem/extension; RET0C; AL",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bdb1e0",
+      "end_inclusive": "00bdb2d8",
+      "length": 249,
+      "disk_sha256": "1de47d6a304b78e042e3856e6312f07f59f37f55c2dc432ccf5ef0e75e554a3c",
+      "instruction_count": 92,
+      "abi": "ECX manager; stack iterator-output/extension; RET8; EAX iterator",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bda2c0",
+      "end_inclusive": "00bda313",
+      "length": 84,
+      "disk_sha256": "48abd6b8a0ac0920ca57af2956b2dc3b6551a91b99c0c30903c8d9c5ed007692",
+      "instruction_count": 36,
+      "abi": "ECX tree; stack key; RET4; EAX node",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "00bdae40",
+      "end_inclusive": "00bdae63",
+      "length": 36,
+      "disk_sha256": "be816fe23ecf1977da0841b689713934f2645e7652fe352f0334072427e63097",
+      "instruction_count": 14,
+      "abi": "ECX iterator; RET; EAX node+8",
+      "coverage": "complete body and assembly reviewed"
+    },
+    {
+      "start": "004bf5a0",
+      "end_inclusive": "004bf5c7",
+      "length": 40,
+      "disk_sha256": "f5e80b119d160f6c1a097682854d6b27779f24c87c6317a1a5cc305c640b831d",
+      "instruction_count": 16,
+      "abi": "ECX iterator; RET; EAX iterator",
+      "coverage": "complete body and assembly reviewed"
+    }
+  ],
+  "unwind_funclets": [
+    {
+      "start": "00cc6420",
+      "end_inclusive": "00cc6427",
+      "length": 8,
+      "disk_sha256": "3ede58360ae9e6a8b4e25b512f13ab6008901a60fb7ec14d3e55aee0b6783747",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6428",
+      "end_inclusive": "00cc642f",
+      "length": 8,
+      "disk_sha256": "4c046a011b8e2c5efce251458bb411b9788344aed15adce241f57c379dcda7b2",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6430",
+      "end_inclusive": "00cc6437",
+      "length": 8,
+      "disk_sha256": "a9508a6e1f7854af43cc70ae87f6bf869a45917110859440d8c73292d269277c",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6438",
+      "end_inclusive": "00cc643f",
+      "length": 8,
+      "disk_sha256": "26524e322916f785cceda5fdee6571a92f3d0e8a7799e77f477e6d11e8f76b1e",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6440",
+      "end_inclusive": "00cc6447",
+      "length": 8,
+      "disk_sha256": "30a288ad68addc073ca39f0fcfa297b5cbcb88ccdcb6797bb6ef24aa7389fe8f",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6448",
+      "end_inclusive": "00cc644f",
+      "length": 8,
+      "disk_sha256": "91c5ba86f2381e10443c63646953a7fdb8eb850829ddd37ae0f5785035f5d948",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6450",
+      "end_inclusive": "00cc6457",
+      "length": 8,
+      "disk_sha256": "884d80df3f8c22cb274d642eed2ae0a8832e53066392b327b0d325a486e7b29d",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6458",
+      "end_inclusive": "00cc645f",
+      "length": 8,
+      "disk_sha256": "483fb773b2701a2552e5875d0eb846f419518665a55db8355c1dc07e10880565",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc65c0",
+      "end_inclusive": "00cc65c7",
+      "length": 8,
+      "disk_sha256": "b6d8be852c12eccfc9ce531228590fea9e63133b9e4ad6510283a1aa763aa546",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6400",
+      "end_inclusive": "00cc6407",
+      "length": 8,
+      "disk_sha256": "8a30c2e501a22898a8d20d2709e5c901b30dc0d8045ea19e7ddd76ecb4aa7188",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc61c0",
+      "end_inclusive": "00cc61c7",
+      "length": 8,
+      "disk_sha256": "739388b0d50412fbbb7c9ea86ee68c00152996a74c9e2fe7c726e3e1b15c24f7",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc61c8",
+      "end_inclusive": "00cc61cf",
+      "length": 8,
+      "disk_sha256": "2c6a135ee3a969c5a78c559e78bc6f5842bd73424d1bf1a0c07b40d6280f8e34",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc61d0",
+      "end_inclusive": "00cc61d7",
+      "length": 8,
+      "disk_sha256": "9d557b4868ab116e8fa874e9bbaf2c1e1da34133862bf08b57d6e0afa776bfb2",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc61d8",
+      "end_inclusive": "00cc61df",
+      "length": 8,
+      "disk_sha256": "f81d2cd5dab244c8b92214260784ab679c7065512b89a49efa9514aa96390a4e",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6388",
+      "end_inclusive": "00cc638f",
+      "length": 8,
+      "disk_sha256": "d33f7b22ed080ae28e13354f87ac9ae739887aba0148b93f4d4a648298ec7c60",
+      "target": "0041dd20",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6380",
+      "end_inclusive": "00cc6387",
+      "length": 8,
+      "disk_sha256": "8765e176d4cf71025d26ec175370edde7ffbd83d5b7e3bac5a43f8d60c0638c1",
+      "target": "00bdb680",
+      "kind": "existing_ghidra_unwind_function"
+    },
+    {
+      "start": "00cc6490",
+      "end_inclusive": "00cc6497",
+      "length": 8,
+      "disk_sha256": "175657c93998eee23458bf2441115321e41a996051e3dbb107dfdcf3013ad1c8",
+      "target": "00425f80",
+      "kind": "existing_ghidra_unwind_function"
+    }
+  ],
+  "fh3": [
+    {
+      "body": "00bdf4c0",
+      "handler": "00cc65c8",
+      "funcinfo": "00e00b40",
+      "unwind_map": "00e00b38",
+      "parents": [
+        -1
+      ],
+      "headers": [
+        "normalized original"
+      ]
+    },
+    {
+      "body": "00bddc80",
+      "handler": "00cc6460",
+      "funcinfo": "00e0091c",
+      "unwind_map": "00e00940",
+      "parents": [
+        -1,
+        0,
+        1,
+        2,
+        2,
+        2,
+        5,
+        2
+      ],
+      "headers": [
+        "basename",
+        "extension",
+        "full stem",
+        "first group candidate",
+        "basename original candidate",
+        "empty alternate candidate",
+        "nested full alternate candidate",
+        "basename alternate candidate"
+      ]
+    },
+    {
+      "body": "00bdd6e0",
+      "handler": "00cc6390",
+      "funcinfo": "00e00840",
+      "unwind_map": "00e00830",
+      "parents": [
+        -1,
+        0
+      ],
+      "headers": [
+        "device visitor",
+        "copied input"
+      ]
+    },
+    {
+      "body": "00bddaa0",
+      "handler": "00cc6408",
+      "funcinfo": "00e008f8",
+      "unwind_map": "00e008f0",
+      "parents": [
+        -1
+      ],
+      "headers": [
+        "tree candidate"
+      ]
+    },
+    {
+      "body": "00bdc680",
+      "handler": "00cc61e0",
+      "funcinfo": "00e005f0",
+      "unwind_map": "00e005d0",
+      "parents": [
+        -1,
+        0,
+        1,
+        2
+      ],
+      "headers": [
+        "constructed candidate",
+        "dot",
+        "stem-dot",
+        "stem-dot-extension"
+      ]
+    },
+    {
+      "body": "00bdeb40",
+      "handler": "00cc6498",
+      "funcinfo": "00e009b4",
+      "unwind_map": "00e009ac",
+      "parents": [
+        -1
+      ],
+      "headers": [
+        "actual18h builder"
+      ]
+    }
+  ],
+  "listing_gaps": [
+    {
+      "start": "00bde0ed",
+      "end_inclusive": "00bde0ef",
+      "length": 3,
+      "disk_sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "reachable": false,
+      "evidence": "LEA ECX,[ECX] after unconditional JMP BDE0EB to BDE0F0"
+    },
+    {
+      "start": "00bde7e8",
+      "end_inclusive": "00bde7ef",
+      "length": 8,
+      "disk_sha256": "c6c5e53a181580333c3d9b6dfd57f37f0ecde9b739c5bd8887704cf87dad1e17",
+      "reachable": false,
+      "evidence": "LEA ESP,[ESP] plus NOP after unconditional JMP BDE7E6 to BDE7F0"
+    }
+  ],
+  "layout_producers": [
+    {
+      "entry": "00be1dc0",
+      "role": "actual manager tree54 and group-list60 construction; reused existing owner"
+    },
+    {
+      "entry": "00bdaba0",
+      "role": "actual20h tree-node allocator: links, key+C, prefix+14, color1C,nil1D"
+    },
+    {
+      "entry": "00be10a0",
+      "end_inclusive": "00be112d",
+      "role": "complete group payload producer read: native name0/4; list sentinels+C and+18; counts+10/+1C"
+    },
+    {
+      "entry": "004ce6f0",
+      "role": "actual10h list-node string+8 producer; existing constructor reused as layout evidence"
+    }
+  ],
+  "ordering": [
+    "direct original",
+    "tree F.E",
+    "group F.E if F!=B",
+    "tree B.E if F!=B",
+    "group B.E",
+    "all tree F.A if F!=B",
+    "empty F.A then group F.A if F!=B",
+    "all tree B.A",
+    "group B.A"
+  ],
+  "calls": [
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf4e3",
+      "native": "00bee690"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf509",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf521",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf534",
+      "native": "00bddc80"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf547",
+      "native": "00bdeb40"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf567",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdf4c0",
+      "address": "00bdf56e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddcac",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddcd8",
+      "native": "00bdd6e0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddcf1",
+      "native": "004bcb80"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddd30",
+      "native": "00bf9a50"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddd66",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddd88",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddd9a",
+      "native": "00426060"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdddb6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdddd1",
+      "native": "00bf79f0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddde4",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde00",
+      "native": "00bf79f0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde1c",
+      "native": "00bddaa0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde35",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde3c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde59",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde60",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde80",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bdde87",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddeae",
+      "native": "00bdb1e0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddec5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddedd",
+      "native": "00449af0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddeee",
+      "native": "00bdae40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf0d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf1b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf32",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf43",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf4d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf5a",
+      "native": "00426060"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf77",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf98",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddf9f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddfa8",
+      "native": "004bf5a0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddfc2",
+      "native": "00425f40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddfdf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bddfe6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde003",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde00a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde027",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde02e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde052",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde059",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde07d",
+      "native": "00449af0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde098",
+      "native": "00bddaa0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde0bb",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde0d0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde0da",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde0f9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde10c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde125",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde148",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde160",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde180",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde1a1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde1a8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde1b9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde1e1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde1f2",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde21c",
+      "native": "00449af0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde236",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde250",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde263",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde271",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde299",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde2aa",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde2bd",
+      "native": "00bddaa0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde2cf",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde2ec",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde307",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde31a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde32c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde354",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde37e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde392",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde3ac",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde3cd",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde3e0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde3f2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde413",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde42b",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde445",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde460",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde485",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde48c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde496",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde4ba",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde4c1",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde4d3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde4f7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde508",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde520",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde527",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde544",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde54b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde58c",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde59d",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde5b5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde5bc",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde5d9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde5e0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde5fd",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde604",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde62f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde649",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde65c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde66e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde696",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde6a7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde6ba",
+      "native": "00bddaa0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde6c8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde6f0",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde6f7",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde714",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde71b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde750",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde76b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde77e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde790",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde7b8",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde7d5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde7fd",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde810",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde822",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde841",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde859",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde873",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde88e",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde8af",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde8b6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde8c0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde8d9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde8fd",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde90e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde947",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde94e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde96b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde972",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde992",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddc80",
+      "address": "00bde999",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdeb6a",
+      "native": "00426500"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdeb92",
+      "native": "00bd1a60"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdeb99",
+      "native": "00bd1a20"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdeba0",
+      "native": "00bd1a60"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdeba7",
+      "native": "00bd1a20"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdebae",
+      "native": "00bd1a60"
+    },
+    {
+      "function": "00bdeb40",
+      "address": "00bdebbe",
+      "native": "00425f80"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd73c",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd753",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd764",
+      "native": "00bee690"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd775",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd795",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd7ac",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd7cb",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd7d2",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd7e3",
+      "native": "00bdb680"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd815",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd81c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd82d",
+      "native": "00bdb680"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddace",
+      "native": "00bda2c0"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddadd",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddae5",
+      "native": "00bda260"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddaf0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddaf9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb18",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb36",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb49",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb57",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb7c",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddb94",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddbb5",
+      "native": "00bdc680"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddbd9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddbe0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddbe9",
+      "native": "00bd9860"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddc0f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddc20",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddc3b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bddaa0",
+      "address": "00bddc42",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc6bd",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc6d4",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc6f1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc70c",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc728",
+      "native": "004261a0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc73e",
+      "native": "004261a0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc75f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc770",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc795",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc79c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc7b9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc7c0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc7d9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc7e0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc7f3",
+      "native": "actual-manager+vtable08",
+      "operand": "EAX",
+      "resolved_native": "00bdd440",
+      "evidence": "BDC7E5 loads current manager table; BDC7EB captures+08; call after three temporary cleanups. D685B4+08 and D68D04+08 both BDD440."
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc80b",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc823",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc846",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc84d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc882",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdc680",
+      "address": "00bdc889",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb1fa",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb20c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb225",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb231",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb23f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb26e",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb284",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb1e0",
+      "address": "00bdb29a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bda2c0",
+      "address": "00bda2f1",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bdae40",
+      "address": "00bdae48",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdae40",
+      "address": "00bdae57",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004bf5a0",
+      "address": "004bf5a8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004bf5a0",
+      "address": "004bf5b7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00cc6420",
+      "address": "00cc6423",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6428",
+      "address": "00cc642b",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6430",
+      "address": "00cc6433",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6438",
+      "address": "00cc643b",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6440",
+      "address": "00cc6443",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6448",
+      "address": "00cc644b",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6450",
+      "address": "00cc6453",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6458",
+      "address": "00cc645b",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc65c0",
+      "address": "00cc65c3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6400",
+      "address": "00cc6403",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc61c0",
+      "address": "00cc61c3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc61c8",
+      "address": "00cc61cb",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc61d0",
+      "address": "00cc61d3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc61d8",
+      "address": "00cc61db",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6388",
+      "address": "00cc638b",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6380",
+      "address": "00cc6383",
+      "native": "00bdb680",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6490",
+      "address": "00cc6493",
+      "native": "00425f80",
+      "kind": "tail_jump"
+    }
+  ],
+  "dependencies": {
+    "commit": "42d7a7be",
+    "files": [
+      "include/bsp/native_vfs_device_route.hpp",
+      "src/native_vfs_device_route.cpp",
+      "include/bsp/native_vfs_lookup_routes.hpp",
+      "src/native_vfs_lookup_routes.cpp"
+    ],
+    "prerequisites": [
+      {
+        "commit": "7f688487",
+        "files": [
+          "include/bsp/native_mpak_open.hpp",
+          "src/native_mpak_open.cpp"
+        ],
+        "entry": "00bb4b20"
+      },
+      {
+        "commit": "7cde1c94",
+        "files": [
+          "include/bsp/native_mpak_enumeration.hpp",
+          "src/native_mpak_enumeration.cpp"
+        ],
+        "entry": "00bb40c0"
+      }
+    ],
+    "closure": "42d7a7be alone is insufficient against0284fb3c. Primary is reviewing completed published source closure; no worker cherry-pick or production dependency copies.",
+    "registration": "Parent integrates dependencies and appends this source to cmake/startup.cmake after current lease release."
+  },
+  "validation": {
+    "strict_tu_compile": "passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict /O2 /MD",
+    "full_build": "not run: actual dependency source absent in baseline; parent authorized strict-TU-only commit and will integrate and build",
+    "fixture": "not run; no fabricated successful providers, semantic manager casts, or installed-file claim",
+    "permanent_tests_added": false,
+    "report_calls": "233 direct rows checked,0 failed;1 indirect manager08 manually resolved",
+    "ghidra_mutation": false
+  },
+  "limits": [
+    "New source interface, not original binary ABI, native SEH, or game validation.",
+    "Actual device/provider current24 is mandatory through42d7a7be; no default success or default unavailable provider.",
+    "Manager current08 supports verified BDD440. Other current targets remain explicit source errors.",
+    "Persistent failed frame must remain caller-owned. Native armed-header cleanup runs; freed diagnostic pointers must not be reused. No restart or rollback.",
+    "Native string release is noexcept. Host allocation/provider/returning CRT errors use C++ cleanup; unarmed partial constructors retain their existing callee boundaries.",
+    "Source construction/registration of search groups, archives and mounts is outside this consuming traversal packet.",
+    "BDEB40 performs no sink call; only gate and actual builder construction/appends/destruction."
+  ],
+  "artifacts": [
+    {
+      "path": "local/compile_resolver.cmd",
+      "sha256": "39d7e46ff9e9f7ef175e5469d77569284621885a45380b68d9fbf2e40fd371da",
+      "length": 340
+    },
+    {
+      "path": "local/resolver-tu-compile.log",
+      "sha256": "09b8ef03cc5edfca84b41da972f8afb88b347ea76e8f5c0f46037756423a2c01",
+      "length": 32
+    },
+    {
+      "path": "local/resolver-call-verification.log",
+      "sha256": "c4baa2eeaf210fe3c74c9de4a7a1e499529643872dc510aabecb8a4a316c6a03",
+      "length": 153
+    },
+    {
+      "path": "local/native_vfs_name_resolution.obj",
+      "sha256": "9602ab604d8a4d1a16662450864528538c297bb15ac7746f47cadf7e973dfc26",
+      "length": 47813
+    },
+    {
+      "path": "local/resolver_dependency/bsp/native_vfs_device_route.hpp",
+      "sha256": "49a502542511e8e860b8f030baa3aa796131ed9a69d3b892e62f768ed94cd445",
+      "length": 3233
+    },
+    {
+      "path": "local/resolver_dependency/bsp/native_vfs_lookup_routes.hpp",
+      "sha256": "51821992edd0334d7d3c8b25594f94146860bab11a5327c05743c1a8fa451238",
+      "length": 4342
+    }
+  ],
+  "integrated_checkpoint": {
+    "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report": "reports/native_loader_integration.json",
+    "default_registration_complete": false,
+    "promoted_to_main": false
+  }
+}

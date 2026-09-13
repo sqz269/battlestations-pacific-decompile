@@ -1,4 +1,5 @@
 #include "bsp/native_surface_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
 #include <new>
@@ -8,28 +9,38 @@
 #endif
 
 namespace bsp {
+NativeSurfaceStringPool::NativeSurfaceStringPool(SizedStoragePool& pool) noexcept : semantic_(&pool) {}
+NativeSurfaceStringPool::NativeSurfaceStringPool(ActualNativeStringPoolStorage& pool) noexcept : actual_(&pool) {}
+char* NativeSurfaceStringPool::allocate(std::uint32_t bytes) {
+    if (actual_) return actual_->allocate(bytes);
+    return PooledStringStorage(*semantic_).allocate(bytes);
+}
+void NativeSurfaceStringPool::release(char* block, std::uint32_t bytes) noexcept {
+    if (actual_) actual_->release(block, bytes);
+    else PooledStringStorage(*semantic_).release(block, bytes);
+}
 namespace {
 constexpr std::uint32_t surface_profile = 0x00d619a0u;
 constexpr std::uint32_t refcounted_profile = 0x00ceb130u;
 
-void release_string_preserving_fields(NativeString& name, SizedStoragePool& pool) noexcept {
+void release_string_preserving_fields(NativeString& name, NativeStringStorage& pool) noexcept {
     // 0041DD20 and the inlined owner path return the buffer without clearing
     // either string field; NativeString::release_to deliberately differs here.
     if (char* const data = name.data()) {
         const auto bytes = name.length() + 1u;
-        pool.release_00bd1510(data, bytes);
+        pool.release(data, bytes);
     }
 }
 
 class DiagnosticStringGuard final {
 public:
-    explicit DiagnosticStringGuard(SizedStoragePool& pool) noexcept : pool_(pool) {}
+    explicit DiagnosticStringGuard(NativeStringStorage& pool) noexcept : pool_(pool) {}
     ~DiagnosticStringGuard() { release_string_preserving_fields(value, pool_); }
     NativeString value;
     DiagnosticStringGuard(const DiagnosticStringGuard&) = delete;
     DiagnosticStringGuard& operator=(const DiagnosticStringGuard&) = delete;
 private:
-    SizedStoragePool& pool_;
+    NativeStringStorage& pool_;
 };
 
 void visit_resource_support(NativeSurfaceOwnerContext& context) {
@@ -63,7 +74,7 @@ NativeSurfaceOwnerStorage* construct_native_surface_00b3f630(
             surface->Release();
         }
         {
-            PooledStringStorage storage(context.actual_string_pool_00419cc0);
+            auto& storage = context.actual_string_pool_00419cc0;
             DiagnosticStringGuard temporary(context.actual_string_pool_00419cc0);
             temporary.value.resize_0041dd40(storage, 7, true);
             if (temporary.value.data()) {

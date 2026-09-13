@@ -1,0 +1,255 @@
+{
+  "packet": "orch5_material_state_cache_native",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00b26500",
+      "end_exclusive": "00b265bf",
+      "cpp_symbol": "cache_native_material_render_states_00b26500",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "89e934c8060cae9643e0616686fbc63c048018eb86cda8efdc1a80ee8787a605",
+      "live_matches_installed": true,
+      "original_abi": "ECX renderer; stack held owner; EAX held canonical owner; RET4"
+    },
+    {
+      "address": "00b265c0",
+      "end_exclusive": "00b2667f",
+      "cpp_symbol": "cache_native_material_third_states_00b265c0",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "6fc8cabe087910f42cb0021b055f6ab224c5bf399a824109d7a53562210841c4",
+      "live_matches_installed": true,
+      "original_abi": "ECX renderer; stack held owner; EAX held canonical owner; RET4"
+    },
+    {
+      "address": "00b26680",
+      "end_exclusive": "00b26735",
+      "cpp_symbol": "cache_native_material_sampler_states_00b26680",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "d10e1e8789fb148a70f769738d2c2178c1ab42b1a1e6848492a79a8465b2cee3",
+      "live_matches_installed": true,
+      "original_abi": "ECX renderer; stack held owner; EAX held canonical owner; RET4"
+    },
+    {
+      "address": "00b22650",
+      "end_exclusive": "00b226af",
+      "cpp_symbol": "reserve_native_material_third_cache_00b22650",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "a4546dc9aef64a47544db6414582ba04d65b81cef8b332353b0c15d14ef83c98",
+      "live_matches_installed": true,
+      "original_abi": "ECX actual12h vector; stack signed capacity; RET4"
+    },
+    {
+      "address": "00b226b0",
+      "end_exclusive": "00b2270f",
+      "cpp_symbol": "reserve_native_material_render_cache_00b226b0",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "30016eb06a19fe6b329421ad7159abac2e7b6952a93e083feed08d10179aaeee",
+      "live_matches_installed": true,
+      "original_abi": "ECX actual12h vector; stack signed capacity; RET4"
+    },
+    {
+      "address": "00b22710",
+      "end_exclusive": "00b2276f",
+      "cpp_symbol": "reserve_native_material_sampler_cache_00b22710",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "e9f9a89352a9077211e2ec2dae9be2a5caf55c1feaee849455f486536ed51eda",
+      "live_matches_installed": true,
+      "original_abi": "ECX actual12h vector; stack signed capacity; RET4"
+    },
+    {
+      "address": "00b5ea10",
+      "end_exclusive": "00b5ea93",
+      "cpp_symbol": "match_native_material_render_states_00b5ea10",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "dc932d194106f700f7ccf6cdeaea5f9d2e8e34e0559bff489ff4549ec9c5169d",
+      "live_matches_installed": true,
+      "original_abi": "ECX cached owner; stack incoming owner; AL match; RET4"
+    },
+    {
+      "address": "00b5eaa0",
+      "end_exclusive": "00b5eb35",
+      "cpp_symbol": "match_native_material_third_states_00b5eaa0",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "671733ab7f1b50450c7d1fb5a96bdadacf1d5675b3a77aa0e41dff2fac91cd39",
+      "live_matches_installed": true,
+      "original_abi": "ECX cached owner; stack incoming owner; AL match; RET4"
+    },
+    {
+      "address": "00b5eb40",
+      "end_exclusive": "00b5ebd5",
+      "cpp_symbol": "match_native_material_sampler_states_00b5eb40",
+      "source": "src/native_material_state_cache.cpp",
+      "native_sha256": "671733ab7f1b50450c7d1fb5a96bdadacf1d5675b3a77aa0e41dff2fac91cd39",
+      "live_matches_installed": true,
+      "original_abi": "ECX cached owner; stack incoming owner; AL match; RET4"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b26520",
+      "function": "00b26500",
+      "instruction": "call 0xb5ea10",
+      "native": "00b5ea10"
+    },
+    {
+      "address": "00b26557",
+      "function": "00b26500",
+      "instruction": "call 0xb226b0",
+      "native": "00b226b0"
+    },
+    {
+      "address": "00b265e0",
+      "function": "00b265c0",
+      "instruction": "call 0xb5eaa0",
+      "native": "00b5eaa0"
+    },
+    {
+      "address": "00b26617",
+      "function": "00b265c0",
+      "instruction": "call 0xb22650",
+      "native": "00b22650"
+    },
+    {
+      "address": "00b266a0",
+      "function": "00b26680",
+      "instruction": "call 0xb5eb40",
+      "native": "00b5eb40"
+    },
+    {
+      "address": "00b266d4",
+      "function": "00b26680",
+      "instruction": "call 0xb22710",
+      "native": "00b22710"
+    },
+    {
+      "address": "00b22670",
+      "function": "00b22650",
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be"
+    },
+    {
+      "address": "00b2269c",
+      "function": "00b22650",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989"
+    },
+    {
+      "address": "00b226d0",
+      "function": "00b226b0",
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be"
+    },
+    {
+      "address": "00b226fc",
+      "function": "00b226b0",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989"
+    },
+    {
+      "address": "00b22730",
+      "function": "00b22710",
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be"
+    },
+    {
+      "address": "00b2275c",
+      "function": "00b22710",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b26579",
+      "function": "00b26500",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b2658b",
+      "function": "00b26500",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b2659b",
+      "function": "00b26500",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b265aa",
+      "function": "00b26500",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b26639",
+      "function": "00b265c0",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b2664b",
+      "function": "00b265c0",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b2665b",
+      "function": "00b265c0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2666a",
+      "function": "00b265c0",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b266ef",
+      "function": "00b26680",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b26701",
+      "function": "00b26680",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b26711",
+      "function": "00b26680",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b26720",
+      "function": "00b26680",
+      "instruction": "call dword ptr [0xce221c]"
+    }
+  ],
+  "native_flow_repair": "local/native-material-state-cache-flow.json",
+  "coverage": "Actual renderer cache vectors, directional row matching, pointer reservation, live reference/counter schedule; valid accessible native extents, retained host-failure bookkeeping. No binary ABI or full shader/game validation.",
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX passed",
+    "fixture": "passed: exact new production TU plus existing libraries; all nine original machine bodies",
+    "direct_call_rows_checked": 12,
+    "direct_call_rows_failed": 0,
+    "canonical_terminal_deletions": 36,
+    "fixture_log": "local/native-state-cache-probe.log",
+    "fixture_log_sha256": "2050c2fffa15d4ffab78df2a011721a210a017b641ffb4c5a75fd3907f08204a",
+    "fixture_sources": {
+      "local/native_state_cache_probe.cpp": "a2f5b8e2a8d41b03e6f3d8be1869b9a9c5bf41f0168902c22f8b7ae2b7c38948",
+      "local/state_cache_original.hpp": "ae6c8200d6144dcd7c0fc2209bc55ee9c1afdef9a6ed049dd9466c6c7ca236be",
+      "local/run_native_state_cache_probe.ps1": "533d41636176f23bf64c14a89248f5c862acbee88d17b90f1b58412c59b26540"
+    },
+    "native_flow_repair_sha256": "2b1e2b72fff21fe903d04e8d741286cb3849575de2d43cf958aacec52394d88e",
+    "abi_compatible": false,
+    "game_validated": false,
+    "build_log": "local/native-state-cache-build.log",
+    "build_log_sha256": "27ba7bed58786496f4f461004b9f5d3c65da61fba0656fc1648486be8352a5cb"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_state_cache.hpp": "4079a8a77f751e920c616234e4aa8ace10551b1d2afd4c12995d34617ed00c8f",
+    "src/native_material_state_cache.cpp": "6d2be9e41ba9876728707cbebcff1d9b642180a02e92e77dc2c5bb15c0ac69ce"
+  },
+  "integrated_checkpoint": {
+    "code_commit": "c5e1427f80bef38c28277c22c437345856e37d52",
+    "report": "reports/native_loader_integration.json",
+    "default_registration_complete": false,
+    "promoted_to_main": false
+  }
+}

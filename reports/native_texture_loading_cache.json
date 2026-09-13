@@ -1,0 +1,1266 @@
+{
+  "packet": "orch5_texture_cache_native",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "0284fb3c",
+  "functions": [
+    {
+      "address": "00b319b0",
+      "end_exclusive": "00b31ab1",
+      "cpp_symbol": "load_native_renderer_texture_00b319b0",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX renderer; stack name/nullable callback word; EAX texture; RET8",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "6f9a8dd2ce45b3b51b4d3efd4e61a6086783e229bcf5197544c882b76fb7c0a5",
+      "native_byte_count": 257,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b30b40",
+      "end_exclusive": "00b3108a",
+      "cpp_symbol": "load_native_cached_texture_00b30b40",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX registry; stack name/word/acquire_new low byte/allow_load low byte; EAX texture; RET10",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "1c4c9c60bc969ad0138938021eb778691641af9659ee25fb9b9149c577848456",
+      "native_byte_count": 1354,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b31bd0",
+      "end_exclusive": "00b31c1e",
+      "cpp_symbol": "initialize_native_texture_fallback_00b31bd0",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX registry; no stack args; RET",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "e33098746cd2883f3dddfd4345e3a6fbc8995be103355511db169ebccf8a07de",
+      "native_byte_count": 78,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b31c20",
+      "end_exclusive": "00b31cfb",
+      "cpp_symbol": "resolve_native_texture_cache_name_00b31c20",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX registry; stack output/name/unused word; EAX output; RET0C",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "70a881dccadfe534ef91331466f63c0b74019114fadb77cbf2c6a57645daec12",
+      "native_byte_count": 219,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b31d80",
+      "end_exclusive": "00b31d95",
+      "cpp_symbol": "acquire_native_cached_texture_00b31d80",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX unused; stack texture; EAX same; RET4",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+      "native_byte_count": 21,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b30130",
+      "end_exclusive": "00b3019f",
+      "cpp_symbol": "append_native_texture_record_00b30130",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX actual0Ch array; stack actual2Ch record; RET4",
+      "coverage": "complete source schedule in qualified actual-provider domain; source C++ exceptions, not native FH3 ABI",
+      "native_sha256": "917414728c8d5a859ad145ab8999843652419965d380b4350274cc0a7890a778",
+      "native_byte_count": 111,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b2c2d0",
+      "end_exclusive": "00b2c897",
+      "cpp_symbol": "load_native_texture_2d_00b2c2d0",
+      "source": "src/native_texture_loading_cache.cpp",
+      "original_abi": "ECX unused; stack name/nullable ECX callback; EAX logical texture; RET8",
+      "coverage": "common/2D source fragment only; cube/volume arms inventoried but unreconstructed; image-info failing/unwritten output excluded; required retry/callback bindings remain explicit",
+      "native_sha256": "b9cde0abf2b8b2efd6bda382f436c26ce66aa1b19e73350e6a48030f5ad221b3",
+      "native_byte_count": 1479,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "cpp_symbol": "remove_native_render_resource_by_alias_00b31dc0",
+      "source": "src/native_render_resource_container_removal.cpp",
+      "original_abi": "ECX actual registry; stack original name; RET4",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+      "native_byte_count": 520,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "cpp_symbol": "notify_native_renderer_texture_name_removal_00b32250",
+      "source": "src/native_renderer_texture_name_notification.cpp",
+      "original_abi": "ECX renderer; stack name; RET4",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "native_byte_count": 240,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "cpp_symbol": "assign_native_render_resource_record_00b30510",
+      "source": "src/native_render_resource_record.cpp",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "native_byte_count": 162,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b2f990",
+      "end_exclusive": "00b2fa08",
+      "cpp_symbol": "destroy_native_render_resource_record_00b2f990",
+      "source": "src/native_render_resource_record.cpp",
+      "original_abi": "ECX actual2Ch record; RET",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "1001bf8ce6b71d52fb1ebbf7a0ecb839385119012b325611478775258b59ba4c",
+      "native_byte_count": 120,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b2fc60",
+      "end_exclusive": "00b2fd02",
+      "cpp_symbol": "copy_construct_native_render_resource_record_00b2fc60",
+      "source": "src/native_render_resource_record_construction.cpp",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "c5543d9d1fa084ee4c8fae4eb6eb185dc47980b06b93b48e55db4ef16242e3f9",
+      "native_byte_count": 162,
+      "live_matches_installed": true
+    },
+    {
+      "address": "00b2ff00",
+      "end_exclusive": "00b2ffdd",
+      "cpp_symbol": "reserve_native_render_resource_record_array_00b2ff00",
+      "source": "src/native_render_resource_record_array.cpp",
+      "original_abi": "ECX actual0Ch array; stack capacity; RET4",
+      "coverage": "additional actual string-pool overload of existing full body; semantic overload preserved",
+      "native_sha256": "89407e355f323828c0800e9a4e0686134ae6854a6d7973b8acb7bfb7bc974000",
+      "native_byte_count": 221,
+      "live_matches_installed": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b319e0",
+      "function": "00b319b0",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0"
+    },
+    {
+      "address": "00b31a14",
+      "function": "00b319b0",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b31a2b",
+      "function": "00b319b0",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31a3c",
+      "function": "00b319b0",
+      "native": "004bcc00",
+      "instruction": "call 0x4bcc00"
+    },
+    {
+      "address": "00b31a55",
+      "function": "00b319b0",
+      "native": "00b30b40",
+      "instruction": "call 0xb30b40"
+    },
+    {
+      "address": "00b31a70",
+      "function": "00b319b0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31a77",
+      "function": "00b319b0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31a96",
+      "function": "00b319b0",
+      "native": "00b33b00",
+      "instruction": "call 0xb33b00"
+    },
+    {
+      "address": "00b30b68",
+      "function": "00b30b40",
+      "native": "00beccd0",
+      "instruction": "call 0xbeccd0"
+    },
+    {
+      "address": "00b30b90",
+      "function": "00b30b40",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b30ba7",
+      "function": "00b30b40",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b30bb7",
+      "function": "00b30b40",
+      "native": "00bee690",
+      "instruction": "call 0xbee690"
+    },
+    {
+      "address": "00b30be7",
+      "function": "00b30b40",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b30bf5",
+      "function": "00b30b40",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b30c23",
+      "function": "00b30b40",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b30c39",
+      "function": "00b30b40",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b30c99",
+      "function": "00b30b40",
+      "native": "00b31c20",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b30cb3",
+      "function": "00b30b40",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b30cca",
+      "function": "00b30b40",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b30cea",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b30cf1",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b30cfa",
+      "function": "00b30b40",
+      "native": "00bee690",
+      "instruction": "call 0xbee690"
+    },
+    {
+      "address": "00b30d1f",
+      "function": "00b30b40",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b30d48",
+      "function": "00b30b40",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b30d76",
+      "function": "00b30b40",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b30dbd",
+      "function": "00b30b40",
+      "native": "00b2c2d0",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b30dd2",
+      "function": "00b30b40",
+      "native": "004c3020",
+      "instruction": "call 0x4c3020"
+    },
+    {
+      "address": "00b30e03",
+      "function": "00b30b40",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b30e1d",
+      "function": "00b30b40",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b30e3a",
+      "function": "00b30b40",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b30e47",
+      "function": "00b30b40",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b30e63",
+      "function": "00b30b40",
+      "native": "00bdd340",
+      "instruction": "call 0xbdd340"
+    },
+    {
+      "address": "00b30ead",
+      "function": "00b30b40",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b30eb8",
+      "function": "00b30b40",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b30ee6",
+      "function": "00b30b40",
+      "native": "00b31d80",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b30f00",
+      "function": "00b30b40",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b30f21",
+      "function": "00b30b40",
+      "native": "004ce6f0",
+      "instruction": "call 0x4ce6f0"
+    },
+    {
+      "address": "00b30f2e",
+      "function": "00b30b40",
+      "native": "004ce780",
+      "instruction": "call 0x4ce780"
+    },
+    {
+      "address": "00b30f4a",
+      "function": "00b30b40",
+      "native": "00b30130",
+      "instruction": "call 0xb30130"
+    },
+    {
+      "address": "00b30f5a",
+      "function": "00b30b40",
+      "native": "00d61948+vtable0c",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b30f75",
+      "function": "00b30b40",
+      "native": "00b31d80",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b30f82",
+      "function": "00b30b40",
+      "native": "00b2f990",
+      "instruction": "call 0xb2f990"
+    },
+    {
+      "address": "00b30f9f",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b30fa6",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b30fbf",
+      "function": "00b30b40",
+      "native": "00b2f990",
+      "instruction": "call 0xb2f990"
+    },
+    {
+      "address": "00b30fdc",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b30fe3",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31003",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b3100a",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31040",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31047",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31067",
+      "function": "00b30b40",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b3106e",
+      "function": "00b30b40",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31bdd",
+      "function": "00b31bd0",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b31bf2",
+      "function": "00b31bd0",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31c05",
+      "function": "00b31bd0",
+      "native": "00bdf4c0",
+      "instruction": "call 0xbdf4c0"
+    },
+    {
+      "address": "00b31c13",
+      "function": "00b31bd0",
+      "native": "00b30b40",
+      "instruction": "call 0xb30b40"
+    },
+    {
+      "address": "00b31c4b",
+      "function": "00b31c20",
+      "native": "00b31bd0",
+      "instruction": "call 0xb31bd0"
+    },
+    {
+      "address": "00b31c68",
+      "function": "00b31c20",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b31c7c",
+      "function": "00b31c20",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31c97",
+      "function": "00b31c20",
+      "native": "00bdf4c0",
+      "instruction": "call 0xbdf4c0"
+    },
+    {
+      "address": "00b31cb2",
+      "function": "00b31c20",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0"
+    },
+    {
+      "address": "00b31cc8",
+      "function": "00b31c20",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b31cdc",
+      "function": "00b31c20",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31d89",
+      "function": "00b31d80",
+      "native": "InterlockedIncrement IAT00ce221c",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b30164",
+      "function": "00b30130",
+      "native": "00b2ff00",
+      "instruction": "call 0xb2ff00"
+    },
+    {
+      "address": "00b30184",
+      "function": "00b30130",
+      "native": "00b2fc60",
+      "instruction": "call 0xb2fc60"
+    },
+    {
+      "address": "00b2c30f",
+      "function": "00b2c2d0",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2c327",
+      "function": "00b2c2d0",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2c345",
+      "function": "00b2c2d0",
+      "native": "00d685b4+vtable04",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b2c350",
+      "function": "00b2c2d0",
+      "native": "00d691b0+vtable18",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b2c35f",
+      "function": "00b2c2d0",
+      "native": "00d691b0+vtable04",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b2c37c",
+      "function": "00b2c2d0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2c383",
+      "function": "00b2c2d0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2c39f",
+      "function": "00b2c2d0",
+      "native": "00bef750",
+      "instruction": "call 0xbef750"
+    },
+    {
+      "address": "00b2c3ae",
+      "function": "00b2c2d0",
+      "native": "InterlockedDecrement IAT00ce2220",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b2c3be",
+      "function": "00b2c2d0",
+      "native": "00d691b0+vtable00",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c3e4",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b2c3e9",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610"
+    },
+    {
+      "address": "00b2c3ef",
+      "function": "00b2c2d0",
+      "native": "00c2dfec",
+      "instruction": "call 0xc2dfec"
+    },
+    {
+      "address": "00b2c42f",
+      "function": "00b2c2d0",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0"
+    },
+    {
+      "address": "00b2c464",
+      "function": "00b2c2d0",
+      "native": "0041e870",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b2c470",
+      "function": "00b2c2d0",
+      "native": "00449af0",
+      "instruction": "call 0x449af0"
+    },
+    {
+      "address": "00b2c486",
+      "function": "00b2c2d0",
+      "native": "00bf9440",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b2c4a7",
+      "function": "00b2c2d0",
+      "native": "00bf9440",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b2c4cb",
+      "function": "00b2c2d0",
+      "native": "0041dd20",
+      "instruction": "call 0x41dd20"
+    },
+    {
+      "address": "00b2c555",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c55a",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610"
+    },
+    {
+      "address": "00b2c565",
+      "function": "00b2c2d0",
+      "native": "00c2dfe6",
+      "instruction": "call 0xc2dfe6"
+    },
+    {
+      "address": "00b2c595",
+      "function": "00b2c2d0",
+      "native": "00b29670",
+      "instruction": "call 0xb29670"
+    },
+    {
+      "address": "00b2c5bf",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c5c4",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610"
+    },
+    {
+      "address": "00b2c5cf",
+      "function": "00b2c2d0",
+      "native": "00c2dfe6",
+      "instruction": "call 0xc2dfe6"
+    },
+    {
+      "address": "00b2c5e0",
+      "function": "00b2c2d0",
+      "native": "00b3f2b0",
+      "instruction": "call 0xb3f2b0"
+    },
+    {
+      "address": "00b2c60d",
+      "function": "00b2c2d0",
+      "native": "00b3f930",
+      "instruction": "call 0xb3f930"
+    },
+    {
+      "address": "00b2c624",
+      "function": "00b2c2d0",
+      "native": "00b23640",
+      "instruction": "call 0xb23640"
+    },
+    {
+      "address": "00b2c636",
+      "function": "00b2c2d0",
+      "native": "00b2c2d0+callback_EAX",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c643",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c680",
+      "function": "00b2c2d0",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c69a",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call edx",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c69f",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c6a6",
+      "function": "00b2c2d0",
+      "native": "00c2dfe0",
+      "instruction": "call 0xc2dfe0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c6d6",
+      "function": "00b2c2d0",
+      "native": "00b29670",
+      "instruction": "call 0xb29670",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c6e7",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c6ec",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c6f3",
+      "function": "00b2c2d0",
+      "native": "00c2dfe0",
+      "instruction": "call 0xc2dfe0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c708",
+      "function": "00b2c2d0",
+      "native": "00b3f2c0",
+      "instruction": "call 0xb3f2c0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c724",
+      "function": "00b2c2d0",
+      "native": "00b3ced0",
+      "instruction": "call 0xb3ced0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c763",
+      "function": "00b2c2d0",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c77d",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c782",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c789",
+      "function": "00b2c2d0",
+      "native": "00c2dfda",
+      "instruction": "call 0xc2dfda",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7ad",
+      "function": "00b2c2d0",
+      "native": "00b29670",
+      "instruction": "call 0xb29670",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7be",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable30",
+      "instruction": "call eax",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7c3",
+      "function": "00b2c2d0",
+      "native": "00bef610",
+      "instruction": "call 0xbef610",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7ca",
+      "function": "00b2c2d0",
+      "native": "00c2dfda",
+      "instruction": "call 0xc2dfda",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7db",
+      "function": "00b2c2d0",
+      "native": "00b3f2d0",
+      "instruction": "call 0xb3f2d0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c7f7",
+      "function": "00b2c2d0",
+      "native": "00b3cfa0",
+      "instruction": "call 0xb3cfa0",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c80e",
+      "function": "00b2c2d0",
+      "native": "00b23640",
+      "instruction": "call 0xb23640",
+      "coverage": "unreconstructed cube/volume arm, inventory only"
+    },
+    {
+      "address": "00b2c82e",
+      "function": "00b2c2d0",
+      "native": "00b33b00",
+      "instruction": "call 0xb33b00"
+    },
+    {
+      "address": "00b2c837",
+      "function": "00b2c2d0",
+      "native": "InterlockedDecrement IAT00ce2220",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b2c847",
+      "function": "00b2c2d0",
+      "native": "00d642c0+vtable00",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b2c873",
+      "function": "00b2c2d0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2c87a",
+      "function": "00b2c2d0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31dfd",
+      "function": "00b31dc0",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b31e14",
+      "function": "00b31dc0",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b31e28",
+      "function": "00b31dc0",
+      "native": "00bee780",
+      "instruction": "call 0xbee780"
+    },
+    {
+      "address": "00b31e40",
+      "function": "00b31dc0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31e47",
+      "function": "00b31dc0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31e77",
+      "function": "00b31dc0",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b31e86",
+      "function": "00b31dc0",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b31eb4",
+      "function": "00b31dc0",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b31ec9",
+      "function": "00b31dc0",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "address": "00b31ef6",
+      "function": "00b31dc0",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0"
+    },
+    {
+      "address": "00b31f19",
+      "function": "00b31dc0",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b31f20",
+      "function": "00b31dc0",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b31f42",
+      "function": "00b31dc0",
+      "native": "00d61948+vtable0c",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b31f67",
+      "function": "00b31dc0",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0"
+    },
+    {
+      "address": "00b31f8b",
+      "function": "00b31dc0",
+      "native": "00b30510",
+      "instruction": "call 0xb30510"
+    },
+    {
+      "address": "00b31f9d",
+      "function": "00b31dc0",
+      "native": "00b2f990",
+      "instruction": "call 0xb2f990"
+    },
+    {
+      "address": "00b32280",
+      "function": "00b32250",
+      "native": "00b33ad0",
+      "instruction": "call 0xb33ad0"
+    },
+    {
+      "address": "00b322b4",
+      "function": "00b32250",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b322cb",
+      "function": "00b32250",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b322dc",
+      "function": "00b32250",
+      "native": "004bcc00",
+      "instruction": "call 0x4bcc00"
+    },
+    {
+      "address": "00b322e8",
+      "function": "00b32250",
+      "native": "00b31dc0",
+      "instruction": "call 0xb31dc0"
+    },
+    {
+      "address": "00b32301",
+      "function": "00b32250",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b32308",
+      "function": "00b32250",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b3232a",
+      "function": "00b32250",
+      "native": "00b33b00",
+      "instruction": "call 0xb33b00"
+    },
+    {
+      "address": "00b30527",
+      "function": "00b30510",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3053d",
+      "function": "00b30510",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3055e",
+      "function": "00b30510",
+      "native": "004d05e0",
+      "instruction": "call 0x4d05e0"
+    },
+    {
+      "address": "00b3057d",
+      "function": "00b30510",
+      "native": "004d26a0",
+      "instruction": "call 0x4d26a0"
+    },
+    {
+      "address": "00b2f9bb",
+      "function": "00b2f990",
+      "native": "004d05e0",
+      "instruction": "call 0x4d05e0"
+    },
+    {
+      "address": "00b2f9c4",
+      "function": "00b2f990",
+      "native": "00bf65ac",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": "00b2f9eb",
+      "function": "00b2f990",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b2f9f2",
+      "function": "00b2f990",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b2fc98",
+      "function": "00b2fc60",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b2fcad",
+      "function": "00b2fc60",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b2fcc4",
+      "function": "00b2fc60",
+      "native": "004d48a0",
+      "instruction": "call 0x4d48a0"
+    },
+    {
+      "address": "00b2ff42",
+      "function": "00b2ff00",
+      "native": "00bf55be",
+      "instruction": "call 0xbf55be"
+    },
+    {
+      "address": "00b2ff7d",
+      "function": "00b2ff00",
+      "native": "00b2fc60",
+      "instruction": "call 0xb2fc60"
+    },
+    {
+      "address": "00b2ffa4",
+      "function": "00b2ff00",
+      "native": "00b2f990",
+      "instruction": "call 0xb2f990"
+    },
+    {
+      "address": "00b2ffbb",
+      "function": "00b2ff00",
+      "native": "00bf6989",
+      "instruction": "call 0xbf6989"
+    }
+  ],
+  "dispatch_evidence": {
+    "00d5f088": [
+      "00b339d0",
+      "00b31c20",
+      "00b2c2d0",
+      "00b31d80",
+      "00b31da0"
+    ],
+    "00b30c99": "current registry+4 -> B31C20; receiver saved at stack+10",
+    "00b30dbd": "current registry+8 -> B2C2D0; save EAX in EBX",
+    "00b30ee6": "current registry+C -> B31D80 on every nonnull hit",
+    "00b30f5a": "current texture+C -> B3CE30 for D61948; A82250 cube/volume",
+    "00b30f75": "current registry+C -> B31D80 only if acquire_new low byte nonzero",
+    "00b2c636": "CALL EAX: nullable original second word, ECX completed logical2D, no stack args",
+    "00b30be3": "CMP EAX,EAX makes validation BF6713 at B30BE7 unreachable, retained in call inventory",
+    "00b30f3a": "reload original registry ESI from stack+10: unaff_EBP in pseudocode is not an input",
+    "00b31bfa": "write registry+1C=1 before resolver/recursivecache; no rollback",
+    "00b31c18": "publish recursive cache result into actual registry+20",
+    "00b2c4dd": "second live renderer+1D84 quality read occurs AFTER detail.dds cleanup",
+    "00b2c3d4": "device captured before image-info and reused across B29670 retry"
+  },
+  "limits": [
+    "No original image execution, binary ABI, native FH3, game or full Text success claim.",
+    "B2C2D0 cube B3CED0 and volume B3CFA0 named-owner constructors remain explicit retained boundaries; inventory contains their calls but source does not claim those arms.",
+    "Resolver BDF4C0, retry B29670 and nonzero post-load word require actual same-manager/current-renderer body bindings; no fake success fallback.",
+    "Real D3DX image-info failure can leave native output unwritten; source retains memory and rejects that domain. Native HRESULT acceptance with nonnull create output is preserved.",
+    "BEF750 is existing complete actual conversion without an acquired subframe for its internal failure. This packet preserves its input and returned memory identities but does not claim recovery of its hidden partial allocations.",
+    "Static B3F2B0 binding must be the same actual texture pool supplied to owner context; original numeric tables must remain readable for NativeVfsRuntimeBindings.",
+    "Failed acquired frames must remain alive until actual resources are externally resolved; destructors terminate on unresolved frames, and no retry or implicit native rollback exists.",
+    "Record copies never retain resources. B319B0 fresh flag0 returns the original loader count; B31BD0 bootstrap flag1 adds one; hot hits add one. Teardown B316C0 invokes registry release for rows; no extra source-side cache count was invented.",
+    "Canonical metadata callbacks must be transactional and the registry/domain must outlive actual resources. Companion terminal unbinds after complete actual destruction.",
+    "Original registry B31DA0/B316C0 teardown is not newly routed through canonical TextureLoadOwners by this packet; complete renderer shutdown must supply that composition before retiring these bindings."
+  ],
+  "validation": {
+    "registered_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/texture-cache-registered-build.log",
+      "exit_code": 0,
+      "new_source_compiled": true
+    },
+    "final_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/texture-cache-final-build.log",
+      "exit_code": 0,
+      "ctest": "1/1 reconstructed_math"
+    },
+    "source_compile": {
+      "log": "local/texture-compile.log",
+      "flags": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /MD",
+      "exit_code": 0
+    },
+    "call_verifier": {
+      "log": "local/texture-call-verification.log",
+      "checked": 144,
+      "failed": 0
+    },
+    "fixture": {
+      "source": "local/texture_record_probe.cpp",
+      "runner": "local/run_texture_record_probe.cmd",
+      "log": "local/texture-record-probe.log",
+      "exit_code": 0,
+      "coverage": "actual pool + B2FC60/B2FF00/B2F990 ordered deep aliases/null row/capacity64-to65/source and old-array destruction/pool shutdown",
+      "full_texture_loader": false
+    },
+    "initial_build_failure": {
+      "log": "local/texture-cache-build.log",
+      "cause": "parallel CMake regeneration after startup.cmake append; FetchContent configure_file missing intermediate; stable rerun passed"
+    }
+  },
+  "persistent_resolution_correction": {
+    "replaces": "b699b9a6 stack resolver-output/shared opaque invocation contract",
+    "headers": "acquired.names.wrapper/normalized/resolved/resolver_output and acquired.pending_record; actual fallback registry+14 remains borrowed/stable",
+    "cleanup": "native arming/release schedule retained; consumed header preimages stay address-stable through child teardown; no freed string dereference/replay",
+    "child_ownership": "required metadata factory publishes a unique owned NativeTextureNameResolutionOperation before fresh current-manager capture; distinct resolution/fallback_resolution and recursive children",
+    "replay": "factory_started/failure reject all repeated child calls; direct B31C20/B31BD0 preflight before header/native writes; wrapper_started before guard and outer failure catch",
+    "optional_acquired": "only nonnull first-search hot hit; every resolver path requires retained acquisition",
+    "diagnostic_sites": {
+      "resize": "00b2c30f",
+      "copy": "00b2c327"
+    },
+    "review": "menu_activation bounded source acceptance; no new native body/teardown expansion",
+    "sha256": {
+      "include/bsp/native_texture_loading_cache.hpp": "f1ac2aae0cb9f29e28bf168e73d706a5183d1dc5fd2ffc9e369d87156791b7aa",
+      "src/native_texture_loading_cache.cpp": "7c082be2ea08b6fbc1961d586057edccc071b9c6f7770994ab1a56a30735c27b",
+      "local/texture_resolution_failure_probe.cpp": "21217be01b6c3b974c1bfebd2c26ac7ed486c7f894d50dbc8c63113f1ba016e7"
+    },
+    "validation": {
+      "build": "local/texture-persistent-build.log",
+      "build_exit_code": 0,
+      "ctest": "1/1",
+      "call_verifier": "local/texture-persistent-call-verification.log",
+      "call_rows_checked": 144,
+      "call_rows_failed": 0,
+      "fixture_source": "local/texture_resolution_failure_probe.cpp",
+      "fixture_runner": "local/run_texture_resolution_failure_probe.cmd",
+      "fixture_log": "local/texture-resolution-failure-probe.log",
+      "fixture_exit_code": 0,
+      "fixture_domain": "actual pool + production retained name/call holders, deliberately throwing diagnostic provider; previous record-growth case also passes; NOT real successful BDF4C0/full cache/GPU execution"
+    }
+  },
+  "integration_review": {
+    "accepted_worker_commit": "9bff4b174f832631c7448358058bc5ac706c15b7",
+    "source_import_commit": "d3daf4f1960d44fa54156eaf098a59b16ec8d61e",
+    "archive": "local/loader-native-workers/texture/manifest.json",
+    "direct_call_rows_checked": 140,
+    "resolved_indirect_rows_checked": 4,
+    "symbolic_indirect_rows": 19,
+    "failed": 0,
+    "combined_library_fixtures": {
+      "local/texture-record-registered-probe.log": "478b10f516038bd1652e0297ad3daf0c647eb96f78aa65cb8f55b5ac68f23a7b",
+      "local/texture-resolution-failure-registered-probe.log": "b528a52f24b4d8a3c0259d3855e2121591d535cfa30808237a77d1a8c589c8a3"
+    },
+    "limits": "Production record/holder fixtures pass. Throwing resolver is diagnostic injection; no actual successful texture-cache or GPU load is claimed."
+  }
+}

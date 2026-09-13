@@ -12,6 +12,22 @@
 
 namespace bsp {
 
+class ActualNativeStringPoolStorage;
+// Borrow one existing string domain. Legacy context initializers can still
+// supply SizedStoragePool; actual resource composition supplies its SAME
+// ActualNativeStringPoolStorage. This adapter owns no pool or native header.
+class NativeSurfaceStringPool final : public NativeStringStorage {
+public:
+    NativeSurfaceStringPool(SizedStoragePool&) noexcept;
+    NativeSurfaceStringPool(ActualNativeStringPoolStorage&) noexcept;
+    char* allocate(std::uint32_t) override;
+    void release(char*, std::uint32_t) noexcept override;
+    ActualNativeStringPoolStorage* actual_storage() const noexcept { return actual_; }
+private:
+    SizedStoragePool* semantic_{};
+    ActualNativeStringPoolStorage* actual_{};
+};
+
 // Actual object storage, occupying only [slot, slot+34h) of a 38h pool slot.
 // There is no host virtual table, companion reference count, or COM owner.
 struct NativeSurfaceOwnerStorage {
@@ -54,7 +70,7 @@ static_assert(offsetof(NativeSurfaceRendererStorage, surfaces_1b0c) == 0x1b0c);
 struct NativeSurfaceOwnerContext {
     NativeSurfaceRendererStorage* volatile& actual_renderer_00f8d394;
     D3D9SurfacePool& actual_surface_pool_0108db00;
-    SizedStoragePool& actual_string_pool_00419cc0;
+    NativeSurfaceStringPool actual_string_pool_00419cc0;
     SingletonLifetimeDomain& actual_lifetime_01090aa0;
     NativeResourceSupportStorage* volatile& actual_resource_support_0108fedc;
     std::uint32_t& actual_tracking_counter_0108dafc;

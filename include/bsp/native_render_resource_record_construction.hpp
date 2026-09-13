@@ -45,5 +45,8 @@ NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc6
     NativeRenderResourceRecord& actual_destination,
     const NativeRenderResourceRecord& actual_source, SizedStoragePool& actual_string_pool,
     const SingletonLifetimeCallbacks&);
+NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc60(
+    NativeRenderResourceRecord&, const NativeRenderResourceRecord&,
+    ActualNativeStringPoolStorage&, const SingletonLifetimeCallbacks&);
 
 } // namespace bsp
