@@ -1,0 +1,46 @@
+{
+  "packet": "orch3_viewport_registry_impl_bh",
+  "status": "host_registry_implemented_verification_pending",
+  "coverage": "Host actual-identity registration and retirement; no new native body",
+  "design": "docs/NATIVE_COCKPIT_VIEWPORT_LIFETIME_BH.md",
+  "source_files": [
+    "include/bsp/native_viewport_registry.hpp",
+    "src/native_viewport_registry.cpp",
+    "include/bsp/native_viewport_owner.hpp",
+    "src/native_viewport_owner.cpp"
+  ],
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "native_calls": [
+    {"address": "00b1f8f9", "native": "00bd30f0", "function": "00b1f8f0", "role": "Existing base-destructor call after concrete profile store"},
+    {"address": "00b1f906", "native": "00bf65ac", "function": "00b1f8f0", "role": "Existing conditional physical free, followed by ADD ESP,4"}
+  ],
+  "native_abi": "B1F8F0 ECX actual owner, stacked flags, EAX original address, RET4; host API is a new C++ ABI",
+  "native_extent": "00B1F8F0..00B1F913 inclusive, 36 bytes; no added native call attributed to registry hook",
+  "host_contract": {
+    "installation": "One explicitly installed borrowed registry, no nested competing installation",
+    "storage": "Caller-owned stable intrusive records with directly emplaced optional CameraViewport; future cockpit block provides two",
+    "admission": "Move-only registry/record token; valid operations require stable serialized lifetime",
+    "allocation_overload": "Validate then move caller token to local guard before native allocation; failed native construction cancels unused record",
+    "lookup": "Live actual-address equality only; no owner dereference, allocation, copy or retain",
+    "retirement": "Common source B1F8F0 entry before native profile stores, typed end or free, including flags0",
+    "quiescence": "Explicit caller guarantee before destroying retired host view and unlinking record",
+    "native_ownership": "No count, allocation shape, renderer+1904, release order or physical free timing change"
+  },
+  "verification": {
+    "build": "pending",
+    "external_source_fixture": "pending",
+    "repository_tests_added": 0,
+    "new_native_differential_evidence": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "No cockpit construction block, first-viewport camera admission or helper constructor composition yet",
+    "Retired host views remain alive but their dangling native field references must never be read",
+    "Late native construction failures can leave published native survivors; future caller storage must persist",
+    "No proof of safe terminal destruction during an in-progress renderer field read",
+    "Invalid contract diagnostics may allocate; successful registry operations do not"
+  ]
+}
