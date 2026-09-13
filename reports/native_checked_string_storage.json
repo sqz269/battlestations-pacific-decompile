@@ -408,8 +408,8 @@
   },
   "final_validation": {
     "utc": "2026-09-13T16:01:55.650956+00:00",
-    "source_revision": "4e62d3ba27ee97b716cddc252e2feadca2963e54",
-    "merged_main_revision": "a4aa7914fbf1c7113f373fcc27ee7ed479824cf1",
+    "source_revision": "d94ca9fb88f2a225c88863cc84c440391695a026",
+    "merged_main_revision": "6fa29036625dbc65a866916ef391ea5e49523110",
     "code_files": 2329,
     "code_manifest": "local/input_checked_strings_at_source_manifest.json",
     "code_manifest_sha256": "ecae746e2926b95bddf4b9e684baa26c95fce64380a635c63ca2cd327bcb6b83",
@@ -440,6 +440,14 @@
     "original_abi_compatible": false,
     "original_fh3_executed": false,
     "game_validated": false,
-    "no_subagents_dispatched": true
+    "no_subagents_dispatched": true,
+    "validated_code_revision": "4e62d3ba27ee97b716cddc252e2feadca2963e54",
+    "metadata_merge_verification": {
+      "utc": "2026-09-13T16:03:19.637534+00:00",
+      "source_paths_unchanged_from_validated_revision": true,
+      "all_recorded_code_file_hashes_unchanged": true,
+      "archive_and_original_validation_logs_unchanged": true,
+      "reason": "Concurrent main metadata was integrated after publication. The original strict build and native fixture still apply to the identical source; no repeated execution claimed."
+    }
   }
 }
