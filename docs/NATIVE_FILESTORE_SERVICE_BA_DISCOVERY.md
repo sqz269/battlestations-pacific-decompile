@@ -14,6 +14,12 @@ It records original ABI, complete byte spans/hashes, every direct/import call
 in the proposed bodies, source binding pins, cleanup maps and uncertainty.
 All eight proposed body spans match the installed PE and live Ghidra bytes.
 
+Implementation follow-up corrected the mechanical call schema: all26 original
+rows now also carry `address/native/function`, so the verifier consumes24 direct
+rows and reports2 explicit Win32 imports. Its four remaining failures are the
+known BE9560 tail sites awaiting primary flow/body repair; the old site/operand
+fields alone were not a successful mechanical call audit.
+
 ## Target and evidence boundary
 
 Worktree `agent/orch2-filestore-service-ba`; packet

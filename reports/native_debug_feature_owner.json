@@ -1,9 +1,8 @@
 {
-  "schema": "bsp-bounded-discovery-v1",
-  "packet": "orch2_filestore_service_ba_discovery",
-  "status": "read_only_discovery_no_implementation_or_runtime_validation",
-  "utc": "2026-09-13T06:50:34.364211+00:00",
-  "reviewed_head": "522cabd13d7f3c4a6cc57119d1f073f0701b4b07",
+  "schema": "bsp-native-debug-feature-owner-v1",
+  "packet": "orch2_native_debug_feature_owner_ba",
+  "utc": "2026-09-13T07:12:10.873832+00:00",
+  "status": "complete_actual_storage_strict_win32_two_existing_ctests_passed_final_native_fixture_pending",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe",
@@ -17,6 +16,7 @@
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "verification": "Every bsp.py ghidra invocation constructs Client and verifies project, program path, language and image base before reading. All 8 proposed complete body byte spans match disk and live Ghidra. No Ghidra mutation or shared export refresh."
   },
+  "source_head_before_commit": "2018f1d62981da3329eacb43689f8fdb1e9f1ec5",
   "identity": {
     "legacy_name": "BSP_FileStoreService_GetSingleton",
     "publication": "0109db70",
@@ -38,7 +38,7 @@
       "hex": "64a1000000006aff6853afc6005064892500000000a170db090183ec0c85c00f858900000056e8c55eefff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d70db090100753f6a34e85a736d0083c4048944240485c0c64424180174098bc8e818a06c00eb0233c0c644241800a370db0901e8655eefff8b0d70db0901518bc8e837176b0085f6740b834618ff56ff151022ce00a170db09015e8b4c240c64890d0000000083c418c3",
       "proposed_name_hypothesis": "get_debug_feature_owner_0051f460",
       "original_abi": "cdecl; no native arguments; EAX current publication; RET",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 51,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -107,7 +107,12 @@
           "import_boundary": "Current Win32 LeaveCriticalSection",
           "source_binding": "Current Win32 LeaveCriticalSection"
         }
-      ]
+      ],
+      "name": "get_native_debug_feature_owner_0051f460",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_GetSingleton",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be94f0",
@@ -117,7 +122,7 @@
       "hex": "6aff684370cc0064a10000000050648925000000005153568bf18974240833dbc706948bd600895c2414895e04895e08895e0c680c3ace008d4e10c644241801e83b5383ff8b4c240c895e18895e1c895e20885e24895e28885e2c895e308bc65e5b64890d0000000083c410c3",
       "proposed_name_hypothesis": "construct_debug_feature_owner_00be94f0",
       "original_abi": "ECX raw owner; EAX same owner; RET",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 34,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -130,7 +135,12 @@
           "native": "0041e870",
           "source_binding": "construct_native_string_cstring_0041e870, existing actual string header and empty literal"
         }
-      ]
+      ],
+      "name": "construct_native_debug_feature_owner_00be94f0",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_ConstructEmpty",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be8210",
@@ -140,10 +150,15 @@
       "hex": "c70570db090100000000c7011838ce00c3",
       "proposed_name_hypothesis": "reset_debug_feature_owner_base_00be8210",
       "original_abi": "ECX raw owner; no semantic return; RET",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 3,
       "disk_matches_live_ghidra": true,
-      "calls": []
+      "calls": [],
+      "name": "destroy_native_debug_feature_owner_base_00be8210",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_ResetBase",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be8350",
@@ -153,10 +168,15 @@
       "hex": "c3",
       "proposed_name_hypothesis": "debug_feature_shutdown_hook_00be8350",
       "original_abi": "ECX receiver accepted but unused; EAX untouched; RET",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 1,
       "disk_matches_live_ghidra": true,
-      "calls": []
+      "calls": [],
+      "name": "native_debug_feature_shutdown_hook_00be8350",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_ShutdownHookRet",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be9560",
@@ -166,7 +186,7 @@
       "hex": "6aff686e70cc0064a100000000506489250000000051568bf157897424088d7e186a008bcfc744241802000000e89ef9ffff8b3f57e8efd300008b461483c40485c0c64424140174168b4e106a0183c1015150e8080783ff8bc8e8517ffeff8d7e046a008bcfc644241800e840db83ff8b0750e8b1d300008b4c241083c404c70570db090100000000c7061838ce005f5e64890d0000000083c410c3",
       "proposed_name_hypothesis": "destroy_debug_feature_owner_00be9560",
       "original_abi": "ECX raw owner; no semantic return; RET",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 48,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -224,7 +244,12 @@
           "native": "00bf6989",
           "source_binding": "singleton_lifetime_free, existing source CRT free boundary"
         }
-      ]
+      ],
+      "name": "destroy_native_debug_feature_owner_00be9560",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_Destruct",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be9600",
@@ -234,7 +259,7 @@
       "hex": "568bf1e858fffffff644240801740956e897cf000083c4048bc65ec20400",
       "proposed_name_hypothesis": "delete_debug_feature_owner_00be9600",
       "original_abi": "ECX raw owner; stack DWORD flags, tests low byte bit0; EAX captured owner; RET4",
-      "scope": "owner",
+      "scope": "implemented_game_owner",
       "instruction_count": 11,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -256,7 +281,12 @@
           "native": "00bf65ac",
           "source_binding": "singleton_lifetime_free, existing source CRT scalar-delete boundary"
         }
-      ]
+      ],
+      "name": "delete_native_debug_feature_owner_00be9600",
+      "proposed_ghidra_name": "BSP_DebugFeatureOwner_ScalarDelete",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be8df0",
@@ -266,7 +296,7 @@
       "hex": "64a1000000006aff688a6fcc00506489250000000083ec0cb8010000003944241c538bd97d04894424208b4424203943080f8deb00000069c08800000055565750e888c7000033ed83c404396b0489442410896c24147e77eb068d9b000000008b4c24108bc569c0880000008d3c08897c241833c93bf9894c2424743e8b3303f03bfe890f894f0474248b066a01508bcfe8ba4e83ff833e0074138b078b5604508b47045250e8e5e7000083c40c83c60883c708b920000000f3a583c5013b6b04c7442424ffffffff896c24147c9133ff397b047e3133f68b038b4c300403c685c974158b006a0183c0015051e8de0d83ff8bc8e82786feff83c70181c6880000003b7b047cd18b0b51e88ada00008b5424148b44243083c4045f5e89138943085d8b4c24105b64890d0000000083c418c20400",
       "proposed_name_hypothesis": "reserve_debug_feature_records_00be8df0",
       "original_abi": "ECX {data,signed count,signed capacity}; stack signed requested capacity; RET4",
-      "scope": "conditional_game_container",
+      "scope": "implemented_provisional_game_container_specialization",
       "instruction_count": 105,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -324,7 +354,12 @@
           "native": "00bf6989",
           "source_binding": "singleton_lifetime_free, existing source CRT free boundary"
         }
-      ]
+      ],
+      "name": "reserve_native_debug_feature_records_00be8df0",
+      "proposed_ghidra_name": "BSP_DebugFeatureRecordArray_Reserve_Provisional",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     },
     {
       "address": "00be8f30",
@@ -334,7 +369,7 @@
       "hex": "558b6c2408568bf13b6e08577e0655e8acfeffff8b46043bc57d3f538bf88bdd69ff880000002bd88b0603c774206880000000c70000000000c740040000000083c0086a0050e875ea000083c40c81c78800000083eb0175cf5b3b6e047d3283cfff017e048b460469c08800000003068b480485c974158b006a0183c0015051e80b0d83ff8bc8e85485feff3b6e047cd15f896e045e5dc20400",
       "proposed_name_hypothesis": "resize_debug_feature_records_00be8f30",
       "original_abi": "ECX {data,signed count,signed capacity}; stack signed requested count; RET4",
-      "scope": "conditional_game_container",
+      "scope": "implemented_provisional_game_container_specialization",
       "instruction_count": 57,
       "disk_matches_live_ghidra": true,
       "calls": [
@@ -374,16 +409,19 @@
           "native": "00bd1510",
           "source_binding": "borrowed ActualNativeStringPoolStorage release, captured block and length+1"
         }
-      ]
+      ],
+      "name": "resize_native_debug_feature_records_00be8f30",
+      "proposed_ghidra_name": "BSP_DebugFeatureRecordArray_Resize_Provisional",
+      "source": "src/native_debug_feature_owner.cpp",
+      "header": "include/bsp/native_debug_feature_owner.hpp",
+      "implementation": "complete_actual_storage_source_body"
     }
   ],
   "totals": {
-    "unconditional_owner_bodies": 6,
-    "unconditional_owner_bytes": 502,
-    "conditional_container_bodies": 2,
-    "conditional_container_bytes": 462,
-    "all_bodies": 8,
-    "all_bytes": 964
+    "complete_bodies": 8,
+    "native_bytes": 964,
+    "direct_call_rows": 24,
+    "explicit_import_call_rows": 2
   },
   "layout": [
     {
@@ -437,7 +475,27 @@
       "meaning": "selected record pointer; constructor0"
     }
   ],
-  "container_classification": {
+  "source_binding_context": {
+    "type": "NativeDebugFeatureOwnerContext",
+    "members": [
+      "void* volatile& actual_manager_publication_01090aa0",
+      "void* volatile& actual_owner_publication_0109db70",
+      "NativeStringStorage& strings"
+    ],
+    "requires": "Borrow actual existing manager/publication and ActualNativeStringPoolStorage backed by the same pool publication and shutdown gate. No new private owner domain."
+  },
+  "source_notes": [
+    "Raw reads/writes are volatile DWORD/byte operations; do not zero the whole owner or its untouched padding.",
+    "Native numeric profile D68B94 is identity only; scalar deletion receives unadjusted owner and flags. Central dispatch belongs to primary.",
+    "Getter uses existing raw manager getter and registration, captures the first physical section, and preserves current publication reload timing and retained publication on registration failure.",
+    "BE9560 complete disk tail is implemented despite stored Ghidra truncation; primary must repair and refresh before accepting live call verification.",
+    "The 427880 cleanup contract is composed from existing FULL427110 resize and current-backing source free. The older mesh-only no-grow fragment is not used, so negative signed capacity is not silently ignored.",
+    "Record payload uses32 forward DWORD loads/stores matching REP MOVSD overlap propagation, not a memcpy/memmove substitution.",
+    "Record reserve has no cleanup of newly allocated backing/previous copies on allocation failure inside a later string copy; native unwind calls bare RET401130.",
+    "Record resize captures the initial growth run length, reloads current backing for each new entry, and reloads current count after each backward release.",
+    "Destructor source cleanup state follows E01A30: string, names, base; it does not retry failed record cleanup."
+  ],
+  "container_provenance": {
     "decision": "provisional game-container template specializations; conditional implementation scope, not a recovered STL/library identification",
     "support": [
       "Physical header is data pointer plus signed element count/capacity, not the MSVC STL begin/end/capacity pointer layout.",
@@ -445,24 +503,10 @@
       "Reserve mirrors existing actual 426520 game native-string array growth, including source/current field reloads.",
       "Only reserve unwind action CC6F70 calls bare-RET 401130; no automatic deep-copy rollback."
     ],
-    "uncertainty": "Original template/type name and compiler specialization provenance are not recovered. If further provenance establishes library ownership, leave container algorithms as explicit library contracts and isolate game element lifecycle; do not port the library. Compiler-emitted template code alone is not evidence of STL."
+    "uncertainty": "Original template/type name and compiler specialization provenance are not recovered. If further provenance establishes library ownership, leave container algorithms as explicit library contracts and isolate game element lifecycle; do not port the library. Compiler-emitted template code alone is not evidence of STL.",
+    "integrator_decision": "Primary accepted implementation as provisional game-container specializations on2026-09-13. Stop/reclassify if contrary library provenance appears."
   },
-  "required_analysis_repairs": [
-    {
-      "address": "00be9560",
-      "observed_body_end": "00be9599",
-      "disk_end": "00be95fb",
-      "reason": "BF6989 no-return modeling truncates free fallthrough; full disk tail cleans owner+10 string, owner+04 array and publication.",
-      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports."
-    },
-    {
-      "address": "00be8df0",
-      "observed_body_end": "00be8f23",
-      "disk_end": "00be8f23",
-      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed."
-    }
-  ],
-  "eh": {
+  "native_cleanup_maps": {
     "getter": {
       "funcinfo": "00d944d0",
       "unwind_map": "00d944c0",
@@ -536,6 +580,21 @@
       ]
     }
   },
+  "required_primary_flow_repairs": [
+    {
+      "address": "00be9560",
+      "observed_body_end": "00be9599",
+      "disk_end": "00be95fb",
+      "reason": "BF6989 no-return modeling truncates free fallthrough; full disk tail cleans owner+10 string, owner+04 array and publication.",
+      "action": "Primary acquires address lease/write lock, preserves documentation, repairs returning flow, recreates full body if needed, saves and refreshes exports."
+    },
+    {
+      "address": "00be8df0",
+      "observed_body_end": "00be8f23",
+      "disk_end": "00be8f23",
+      "reason": "Body covers range, but pseudocode stops after free at BE8EFA; restore returning fallthrough before claiming decompiler flow. No mutation performed."
+    }
+  ],
   "startup_and_consumers": {
     "confirmed": [
       "00738008 calls0051F460 then0073800F callsBE8350 during application shutdown; getter can create previously absent owner at shutdown.",
@@ -549,86 +608,7 @@
       "Snapshot lists007CD5E0 caller, but live xrefs do not confirm that edge; leave discrepancy unresolved, without promoting it to startup evidence."
     ]
   },
-  "next_packet": {
-    "name": "native_debug_feature_owner_ba",
-    "fixed_addresses": [
-      "0051f460",
-      "00be94f0",
-      "00be8210",
-      "00be8350",
-      "00be9560",
-      "00be9600"
-    ],
-    "conditional_addresses": [
-      "00be8df0",
-      "00be8f30"
-    ],
-    "proposed_owned_files": [
-      "include/bsp/native_debug_feature_owner.hpp",
-      "src/native_debug_feature_owner.cpp",
-      "docs/NATIVE_DEBUG_FEATURE_OWNER.md",
-      "reports/native_debug_feature_owner.json"
-    ],
-    "shared_integrator_files": [
-      "cmake/startup.cmake",
-      "config/names/00510000.jsonl",
-      "config/names/00be0000.jsonl",
-      "config/reconstruction/00510000.jsonl",
-      "config/reconstruction/00be0000.jsonl"
-    ],
-    "implementation_requirements": [
-      "Use actual raw34h storage and retain untouched padding; numeric profile is identity only, not a callable C++ vtable.",
-      "Bind caller-owned publication0109DB70 and existing actual manager publication01090AA0; reuse get_native_singleton_manager_00415350 and register_native_singleton_object_00bd0c30; do not introduce a private domain.",
-      "Preserve fast captured return, slow current publication after captured-section release, second manager getter and current object reload before registration. Registration failure retains published owner.",
-      "Use existing actual 41E870/header string storage and actual shared pool bindings; owner backing uses source CRT allocation/free boundaries.",
-      "Destruction order: resize owner+18 to0; free its current backing; release captured owner+10 string storage; resize owner+04 to0; free its current backing; clear publication; store CE3818. Do not clear or republish fields earlier.",
-      "If conditional containers included, preserve signed comparisons, raw DWORD multiplication/wrap, count reloads around release callbacks, zero new 0x88 records and reserve no-rollback exception behavior.",
-      "Central mixed-owner profile destruction and ApplicationShutdownHost integration belong to primary and require their own owned scope. Do not pretend this implementation alone installs an executable service."
-    ],
-    "existing_bindings": [
-      {
-        "address": "00415350",
-        "source": "src/native_singleton_publication.cpp",
-        "status": "actual raw publication getter exists"
-      },
-      {
-        "address": "00bd0c30",
-        "source": "src/native_singleton_vector_registration_wrappers.cpp",
-        "status": "actual raw registration exists"
-      },
-      {
-        "address": "00411ee0",
-        "source": "src/native_diagnostic_sink_lifetime.cpp",
-        "status": "actual captured critical-section guard destruction exists"
-      },
-      {
-        "address": "0041e870",
-        "source": "src/native_physical_file_date.cpp",
-        "status": "actual raw8h string constructor exists"
-      },
-      {
-        "address": "00427110",
-        "source": "src/native_string_vector.cpp",
-        "status": "complete game string-array resize exists"
-      },
-      {
-        "address": "00427880",
-        "source": "src/native_mesh_owner.cpp",
-        "status": "complete existing array destructor has mesh-specific interface; review raw storage compatibility before reuse"
-      },
-      {
-        "address": "0041dd20",
-        "source": "src/native_string.cpp",
-        "status": "actual raw string-header destruction exists"
-      },
-      {
-        "address": "00419cc0/00bd1510",
-        "source": "include/bsp/native_string_pool_storage.hpp",
-        "status": "actual shared publication and sized storage bridge exists"
-      }
-    ]
-  },
-  "deferred_dependencies": [
+  "remaining": [
     {
       "address": "00be9100",
       "name": "debug-profile text loader hypothesis",
@@ -658,158 +638,77 @@
       "address": "00beed60/00beef60/00bef0b0",
       "name": "named incomplete scanner token/boolean dependencies",
       "status": "do not assume complete because nearby scanner functions are named"
+    },
+    {
+      "address": "D68B94 / BD0400",
+      "name": "central singleton deletion dispatch",
+      "status": "separate primary integration; worker context/API ready"
+    },
+    {
+      "address": "00738008/0073800f",
+      "name": "ApplicationShutdownHost hook integration",
+      "status": "not wired here; no runtime startup claim"
     }
   ],
-  "evidence_files": [
-    {
-      "command": "python tools/bsp.py ghidra bytes 0051f460 --length 189",
-      "path": "local/filestore-service-ba-evidence/0051f460-bytes.txt",
-      "sha256": "48d20d03739940b4807233780a7b06d954008536a1fa2a59e0218ca1d781921f"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be94f0 --length 109",
-      "path": "local/filestore-service-ba-evidence/00be94f0-bytes.txt",
-      "sha256": "d3e322b00160d3888e1e16bf0513cdf12781623adc1389ad99bfa086e5e07c50"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be8210 --length 17",
-      "path": "local/filestore-service-ba-evidence/00be8210-bytes.txt",
-      "sha256": "26e36107fc623542c5a8719be55ccd0179c8d30ce054d7b46ca770e595c96cc8"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be8350 --length 1",
-      "path": "local/filestore-service-ba-evidence/00be8350-bytes.txt",
-      "sha256": "c9e286469ceb1c4ac0e6e7d44761b5ecfe14c44a45f196f8e91ad920362c8800"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be9560 --length 156",
-      "path": "local/filestore-service-ba-evidence/00be9560-bytes.txt",
-      "sha256": "dd824b9c052bc9df7cf2b1404578b014bc2e47be9cf037f01608c52b5d5e21e0"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be9600 --length 30",
-      "path": "local/filestore-service-ba-evidence/00be9600-bytes.txt",
-      "sha256": "504e92179cf8b2ca3d4f3340f862c91da20e81538a60975c8dd52b05d87871cd"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be8df0 --length 308",
-      "path": "local/filestore-service-ba-evidence/00be8df0-bytes.txt",
-      "sha256": "7855899aba7ed3e08fe2330b50734fd940982ed26d9b17f4372c72635a91f71c"
-    },
-    {
-      "command": "python tools/bsp.py ghidra bytes 00be8f30 --length 154",
-      "path": "local/filestore-service-ba-evidence/00be8f30-bytes.txt",
-      "sha256": "d79cdc03727074e40d95b1cca8522358b6833fe2f5f8f3ce91119b6eb7a20003"
-    },
-    {
-      "command": "python tools/bsp.py ghidra xrefs 0051f460 --limit 20",
-      "path": "local/filestore-service-ba-evidence/getter-xrefs.txt",
-      "sha256": "2b8424d63dd8cff38ace837d5a9f3beafa0c9152fd8f077e9e37edd30369a0b6"
-    },
-    {
-      "command": "python tools/bsp.py ghidra xrefs 00be94f0 --limit 10",
-      "path": "local/filestore-service-ba-evidence/constructor-xrefs.txt",
-      "sha256": "addf30c4614eac4589e1d54a76f39f7d0c32bd13dd55615abaed7c2f336be968"
-    },
-    {
-      "command": "python tools/bsp.py ghidra xrefs 00be9100 --limit 10",
-      "path": "local/filestore-service-ba-evidence/loader-xrefs.txt",
-      "sha256": "a28779904869e1646051692aeaf463d203dfed5f0d562091385d07f8386d5dfd"
-    },
-    {
-      "command": "python tools/bsp.py ghidra proto 00be9560 --lines 60",
-      "path": "local/filestore-service-ba-evidence/destructor-current-proto.txt",
-      "sha256": "e54c993bf193c3d0984fbf3c8bb12c7e81fe2b97b308eb00d1be077d75c8f5f9"
-    },
-    {
-      "command": "python tools/bsp.py ghidra disasm 00be94f0 --lines 50",
-      "path": "local/filestore-service-ba-evidence/constructor-asm.txt",
-      "sha256": "1a1012ec1342f9221dec18005382645712d4915665e2739dad15c2fffbce6622"
-    },
-    {
-      "command": "python tools/bsp.py ghidra xrefs 00d68b94 --limit 10",
-      "path": "local/filestore-service-ba-evidence/profile-xrefs.txt",
-      "sha256": "67e7482ef5b3b6a4bbd63db00d1d87ebc958743634c40cb27e0e560d04f1bea3"
-    },
-    {
-      "command": "python tools/bsp.py ghidra disasm 0051f460 --lines 70",
-      "path": "local/filestore-service-ba-evidence/getter-asm.txt",
-      "sha256": "d83312962b19b74d5a12905ef5f72cb6230267e3b0f7413cb8e000592b64f111"
-    },
-    {
-      "command": "python tools/bsp.py disasm-raw 00cc7030 --length 0x48 --lines 30",
-      "path": "local/filestore-service-ba-evidence/constructor-destructor-unwind.txt",
-      "sha256": "b7a676e95da048e2353805d2947bcdc11eba5c9897491a97eac2f079d2273026"
-    },
-    {
-      "command": "python tools/bsp.py disasm-raw 00c6af40 --length 0x1d --lines 15",
-      "path": "local/filestore-service-ba-evidence/getter-unwind.txt",
-      "sha256": "3591685fcefa41cbda55481a27e165d1effde6dfe3fc785b0898d537c968dccb"
-    },
-    {
-      "command": "python tools/bsp.py disasm-raw 00cc6f70 --length 0x1a --lines 15",
-      "path": "local/filestore-service-ba-evidence/reserve-unwind.txt",
-      "sha256": "6814cfb5499de0383f4621d2266382ed3830af870859dbe47abc7a706aa7f4e4"
-    }
+  "boundaries": [
+    "New explicit source interfaces are not original callable ABI/FH3/SEH replacements.",
+    "Source CRT allocator/free/memmove/memset and Win32 lock provider identity differs from installed binary.",
+    "NativeStringStorage::release is noexcept; current actual pool lazy-creation throw and nested cleanup-failure identities are not native EH parity.",
+    "Hardware faults, mutable saved EH spill aliases, arbitrary numeric virtual dispatch and game reachability remain unproved.",
+    "No parser/bootstrap or library stubs were added."
   ],
-  "source_pins": [
-    {
-      "path": "include/bsp/app_shutdown.hpp",
-      "sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce"
-    },
-    {
-      "path": "src/app_shutdown.cpp",
-      "sha256": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a"
-    },
-    {
-      "path": "include/bsp/native_singleton_publication.hpp",
-      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
-    },
-    {
-      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
-      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
-    },
-    {
-      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
-      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
-    },
-    {
-      "path": "include/bsp/native_string_pool_storage.hpp",
-      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
-    },
-    {
-      "path": "include/bsp/native_physical_file_date.hpp",
-      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939"
-    },
-    {
-      "path": "include/bsp/native_string_vector.hpp",
-      "sha256": "50103278e30ffed29738b02acf97008c16c6efd0ac66669ff25ed177694ce7d2"
-    },
-    {
-      "path": "src/native_string_vector.cpp",
-      "sha256": "1075734174ec56a36ff118d9e7d6e6371288f1c5260d6df8a07f262aa2326f9e"
-    },
-    {
-      "path": "include/bsp/singleton_lifetime.hpp",
-      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
-    }
-  ],
-  "validation": {
-    "binary_span_comparisons": 8,
-    "byte_disassembly_has_no_gaps": true,
-    "last_instruction_all_ret": true,
-    "cpp_changed": false,
-    "tests_added": false,
-    "build_run": false,
-    "fixture_run": false,
+  "verification": {
+    "build_and_two_existing_ctests": true,
+    "build_log": "local/native-debug-feature-owner-build.log",
+    "build_log_sha256": "3803028ef51a63526cfa4acfd5e73e79d4a5c1114d1f03f583fb8449f6d90085",
+    "native_span_bytes_match": 8,
+    "direct_calls_pending_four_tail_repairs": true,
+    "permanent_tests_added": 0,
+    "native_fixture": "primary final integration coordination requested",
     "game_validated": false,
-    "abi_compatible": false
+    "abi_compatible": false,
+    "mechanical_call_audit": {
+      "direct_rows": 24,
+      "import_boundaries": 2,
+      "failed_rows": 4,
+      "expected_sites": [
+        "00be95b3",
+        "00be95ba",
+        "00be95cb",
+        "00be95d3"
+      ],
+      "log": "local/native-debug-feature-owner-calls-before-repair.log",
+      "sha256": "41b7415d2d42989de947311aa97c569d75504d93d872af1d763943b7a99c9fa0",
+      "reason": "stored Ghidra BE9560 body truncation, primary repair pending"
+    },
+    "initial_full_build": {
+      "log": "local/native-debug-feature-owner-build-initial-one-test.log",
+      "sha256": "e35d504580f89c3f0b18f24f7e298d0938b48051ce6842b52384b0375acbea14",
+      "note": "Fresh worktree initially had only reconstructed_math. Full library/source build passed; then verify-seeds enabled the second existing CTest for the final strict build."
+    },
+    "built_artifacts": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_debug_feature_owner.obj",
+        "sha256": "791c08920e0fde02b68ddfbc05f2115b548afa1e2e39f6880bc3d096cf91cc33",
+        "bytes": 12495
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "56a04234b6cf64c456526de30279c8c8b40180c191509e5891936e34230f44e8",
+        "bytes": 54323372
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "sha256": "c20f9359fcb6e95c092df0c97949d834a1d6cac8ebecdc749fca82837755d0ce",
+        "bytes": 18432
+      }
+    ]
   },
-  "mechanical_call_schema": {
-    "correction": "Earlier discovery used only site/operand, which the verifier did not consume. Every one of26 rows now has address/native/function;24 are direct and2 are explicit Win32 import boundaries.",
-    "direct_rows": 24,
-    "import_rows": 2,
-    "total_rows": 26,
-    "pending_live_repair": "BE9560 tail calls BE95B3, BE95BA, BE95CB and BE95D3 remain outside its truncated stored body until primary repair. Disk/live whole-span bytes have already matched."
-  }
+  "source_sha256": "8ab8e346938dd00937cdcdcc8f85332a401a368d7603bb1878f130d736636cd4",
+  "header_sha256": "b98ea37efd50376fd2e1170bd15c7ada5bdf05be654c362f745f3e557d7b3e55",
+  "evidence": [
+    "docs/NATIVE_DEBUG_FEATURE_OWNER.md",
+    "docs/NATIVE_FILESTORE_SERVICE_BA_DISCOVERY.md",
+    "reports/native_filestore_service_ba_discovery.json"
+  ]
 }
