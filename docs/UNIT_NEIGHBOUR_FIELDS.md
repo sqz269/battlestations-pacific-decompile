@@ -59,3 +59,17 @@ At the source snapshot `e21be33a`, GameUnitsHost has no canonical DummyObjectID 
 The ignored fixture executes all 255 original bytes `00953A80..00953B7E` with three relative direct-call targets redirected to supplied HUD, visibility and kill trace services and a supplied primary `+140` callback. Twelve cases compare the stored ID, raw output float words, first-match selection and ordered callback receiver/argument identities: empty/missing list, mode/selection gates, global/dummy overrides, signaling-NaN payloads and signed zero/subnormal words, duplicate IDs, negative IDs, frontend mutation during `+140`, HUD changes to borrowed fields, and session-owner mutation during hide. All pass. It does not compare x87 CW/status/TOP, MXCSR, flags/register residue or exception/unwind state, and it does not execute the external services' bodies. An initial fixture attempt could not reserve a fixed global page; linking the probe at `14000000` with ASLR disabled resolved that fixture address collision. It was not a core failure.
 
 `local/neighbour_probe_inputs.json` records the original image/body hashes and redirections; `local/neighbour_probe.cpp` retains exact inputs, `local/neighbour_probe_result.txt` the observations, and `local/neighbour_manifest.json` the hash inventory including compiled source copies, executable and build log. The report records Win32/CTest and call verification results separately. There is no mission-process or live candidate-walker validation in this packet. The two root-defined entries now have complete normal bodies; no missing body or flow gap remains in the implemented target.
+
+## Correction from docs/UNIT_SCENE_FLAGS_LIVE.md
+
+Packet Q replaces the earlier fresh/discarded scene-flag hook behavior with
+persistent cells in the existing stable GameUnitSlot. Existing active+5C and
+simulate+5D remain canonical; the same slot now retains+5E,+5F and+60. World
+filters and the alive/visible predicate read those actual projected cells.
+The supported kind1 initializer paths establish the active store; type2/type3
+delivery remains separate. The focused original-byte/production-host fixture
+passed after correcting its assumption about repeated local-list rebuilds.
+
+This closes the retained scene-flag storage gap only. Native pending queues,
+observer delivery, compound destruction, actual DummyObjectID input delivery
+and dummy/frontend/visibility/kill owners are still separate prerequisites.

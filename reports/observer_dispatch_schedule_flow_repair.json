@@ -1,0 +1,48 @@
+{
+ "body_membership_audit": {
+  "function": "006959b0",
+  "decoded_instruction": "00695ab1: ADD ESP,4 (83 c4 04)",
+  "missing_body_range": "00695ab1..00695ab3",
+  "live_readback": "proto00695ab1 has no containing function; adjacent00695ab4 belongs to006959b0..00695b63",
+  "scope": "Zero call gaps means decoded instructions only; it does not establish complete stored Ghidra body membership.",
+  "remaining": "Safe stored-body union is unavailable through the enabled server API. The disabled script endpoint was not reconfigured; no function deletion/recreation or whole-program analysis was used."
+ },
+ "repairs": [
+  {
+   "function": "006959b0",
+   "owner": "agent/orch6-20260912",
+   "when": "2026-09-13T07:25:41Z",
+   "decompile_lines_before": 98,
+   "gaps": [
+    {
+     "site": "00695aac",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00695ab1",
+     "gap_end_exclusive": "00695ab4",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00695aac",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00695ab1",
+      "gap_end_exclusive": "00695ab4",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00695aac (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 97,
+   "gaps_remaining": 0
+  }
+ ]
+}
