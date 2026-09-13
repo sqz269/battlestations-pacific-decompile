@@ -77,12 +77,12 @@ void NativeMpakContainerStorage::append_file_00bb7a20(void* vector, const void* 
         return;
     }
     if (end < begin) invalid_parameter_00bf6713();
-    if (used >= 0x071c71c7u) throw std::length_error("MPAK file vector length");
     // BB7240 aliases the source through a temporary before any reallocation.
     alignas(4) std::byte temporary[0x24];
     copy_construct_native_mpak_file_00bb65a0(temporary, record, strings_, offsets_);
     auto context = directory_context();
     try {
+        if (used >= 0x071c71c7u) throw std::length_error("MPAK file vector length");
         const U next = grown(available, used + 1, 0x071c71c7u);
         void* const fresh = allocation_and_pool_.allocate_scratch_00bf55be(next * 0x24);
         U constructed = 0;
@@ -122,11 +122,11 @@ void NativeMpakContainerStorage::append_directory_00bb7ba0(void* vector,
         return;
     }
     if (end < begin) invalid_parameter_00bf6713();
-    if (used >= 0x0cccccccu) throw std::length_error("MPAK directory vector length");
     alignas(4) std::byte temporary[0x14];
     copy_construct_native_mpak_directory_00bb6630(temporary, record, strings_);
     auto context = directory_context();
     try {
+        if (used >= 0x0cccccccu) throw std::length_error("MPAK directory vector length");
         const U next = grown(available, used + 1, 0x0cccccccu);
         void* const fresh = allocation_and_pool_.allocate_scratch_00bf55be(next * 0x14);
         U constructed = 0;
