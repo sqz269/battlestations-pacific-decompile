@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_slots_al",
-  "status": "native_slot_bodies_reconstructed_component_validated_final_integration_pending",
+  "status": "actual_binding_slot_bodies_reconstructed_strict_win32_native_component_fixture_passed_settings_and_loader_tail_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -151,5 +151,34 @@
     "game_validated": false,
     "original_abi_compatible": false
   },
-  "annotations": "reports/native_input_binding_slots_al_annotations.json"
+  "annotations": "reports/native_input_binding_slots_al_annotations.json",
+  "final_validation": {
+    "utc": "2026-09-13T05:09:34.598903+00:00",
+    "source_revision": "a152f97e1de19e332b2e279be518caa697109ba6",
+    "merged_main_revision": "43d53129f7edabd1689b05268653c46fb753aba6",
+    "code_files": 2199,
+    "code_manifest": "local\\input_slots_al_source_manifest.json",
+    "code_manifest_sha256": "57f9bf3c698723e5d0ada4cbfa2dae4c76a855b4905e84e1315fa81c6849b2fb",
+    "core_archive_sha256": "d942499ee3faf044922c58c8c7be6fa95c1d5e7ccb161df1197e5830ac2ed866",
+    "game_executable_sha256": "e02ffc0f75a42cd6f3374581d16db7e3d5bc4c928e39f553faa4a3e1d98b72cd",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_slots_al_combined_build.log",
+    "build_log_sha256": "83a614f0c872e9a5cda17a1e4b2b3ab18556cddf904bbe9269f743d9cfb4dcd2",
+    "fixture_log": "local\\input_slots_al_combined_probe.log",
+    "fixture_log_sha256": "c2854fb3a19a8dbf8c30050ccaf0cf93ea2d7a20ceae6746bb182b41055c4fa7",
+    "native_source_words_equal": 189,
+    "calls_checked": 10,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "006a33f0",
+    "006aa640",
+    "006ab820"
+  ]
 }
