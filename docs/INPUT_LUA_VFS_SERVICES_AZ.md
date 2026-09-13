@@ -8,10 +8,11 @@ callback forwards its passed manager. The source routing policy is explicit and
 does not establish original cross-thread, longjmp or FH3 behavior.
 
 `GameNativeReadOnlyData` verifies the complete installed executable before
-committing its original `.rdata` bytes at their recorded addresses. It retains
+committing requested 64 KB bands of original `.rdata` at their recorded addresses. It retains
 read-only, non-executable table/literal pages for raw source dispatchers and
-releases its own reservation after all borrowers finish. The full section and
-every page are checked in the populated VFS/Lua fixture. See
+releases its own reservations after all borrowers finish. The populated VFS/Lua
+fixture checks all 196,608 bytes and 48 pages in its three required bands, plus
+collision rejection, partial rollback and unrelated-allocation preservation. See
 `GAME_NATIVE_READONLY_DATA_AZ.md` for image identity and address constraints.
 
 Two MPAK interfaces now have concrete storage implementations:

@@ -12,6 +12,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <vector>
+#include <algorithm>
 
 #pragma comment(lib, "advapi32.lib")
 
@@ -46,23 +47,37 @@ bool matches_image(const BYTE* bytes) {
 }
 } // namespace
 
-GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path) {
-    // Reserve before allocating the file buffer: a large ordinary heap request
-    // could otherwise occupy the very address range this service must retain.
+GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
+    const GameNativeDataSpan* spans, std::size_t count) {
+    // Reserve requested bands before the large file buffer. Unrequested parts
+    // of the original section may already contain unrelated process allocations.
+    if (!spans || count == 0)
+        throw std::invalid_argument("Native data requires explicit table or literal spans");
+    constexpr std::uintptr_t reservation_begin = 0x00ce0000;
+    constexpr std::uintptr_t band_size = 0x10000;
+    constexpr std::uintptr_t section_end = begin_address + byte_count;
+    std::array<bool,19> selected{};
+    for (std::size_t i=0;i<count;++i) {
+        const auto address=spans[i].address;
+        const auto size=spans[i].bytes;
+        if (!size || address<begin_address || address-begin_address>=byte_count ||
+            size>byte_count-(address-begin_address))
+            throw std::out_of_range("Required native data is outside the read-only section");
+        const auto first=(address-reservation_begin)/band_size;
+        const auto last=(address+size-1-reservation_begin)/band_size;
+        for (auto band=first;band<=last;++band) selected[band]=true;
+    }
     SYSTEM_INFO system{};
     GetSystemInfo(&system);
-    const auto granularity = static_cast<std::uintptr_t>(system.dwAllocationGranularity);
-    const auto page_size = static_cast<std::uintptr_t>(system.dwPageSize);
-    const auto reservation_begin = begin_address / granularity * granularity;
-    const auto commit_end = (begin_address + byte_count + page_size - 1) / page_size * page_size;
-    void* const requested = reinterpret_cast<void*>(reservation_begin);
-    reservation_ = VirtualAlloc(requested,commit_end-reservation_begin,MEM_RESERVE,PAGE_NOACCESS);
-    if (reservation_ != requested) {
-        if (reservation_) VirtualFree(reservation_,0,MEM_RELEASE);
-        reservation_ = nullptr;
-        throw std::runtime_error("Original read-only data addresses are unavailable in this process");
-    }
+    if (system.dwAllocationGranularity!=band_size || system.dwPageSize!=0x1000)
+        throw std::runtime_error("Unsupported native-data allocation granularity");
     try {
+        for (std::size_t i=0;i<selected.size();++i) if (selected[i]) {
+            void* const requested=reinterpret_cast<void*>(reservation_begin+i*band_size);
+            reservations_[i]=VirtualAlloc(requested,band_size,MEM_RESERVE,PAGE_NOACCESS);
+            if (reservations_[i]!=requested)
+                throw std::runtime_error("Required native data band is unavailable in this process");
+        }
         std::ifstream file(path,std::ios::binary | std::ios::ate);
         if (!file || file.tellg() != static_cast<std::streamoff>(image_bytes))
             throw std::invalid_argument("Native data requires the supported original executable size");
@@ -71,28 +86,41 @@ GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path
         if (!file.read(reinterpret_cast<char*>(bytes.data()),image_bytes) || !matches_image(bytes.data()))
             throw std::invalid_argument("Native data executable SHA-256 does not match the supported image");
 
-        void* const data = reinterpret_cast<void*>(begin_address);
-        if (VirtualAlloc(data,commit_end-begin_address,MEM_COMMIT,PAGE_READWRITE) != data)
-            throw std::runtime_error("Cannot commit original read-only data pages");
-        std::memcpy(data,bytes.data()+data_file_offset,byte_count);
-        DWORD previous = 0;
-        if (!VirtualProtect(data,commit_end-begin_address,PAGE_READONLY,&previous))
-            throw std::runtime_error("Cannot protect original read-only data pages");
+        for (std::size_t i=0;i<selected.size();++i) if (selected[i]) {
+            const auto band_begin=reservation_begin+i*band_size;
+            const auto first=std::max(band_begin,begin_address);
+            const auto last=std::min(band_begin+band_size,section_end);
+            const auto commit_end=(last+0xfff)/0x1000*0x1000;
+            void* const data=reinterpret_cast<void*>(first);
+            if (VirtualAlloc(data,commit_end-first,MEM_COMMIT,PAGE_READWRITE)!=data)
+                throw std::runtime_error("Cannot commit original read-only data pages");
+            std::memcpy(data,bytes.data()+data_file_offset+first-begin_address,last-first);
+            DWORD previous=0;
+            if (!VirtualProtect(data,commit_end-first,PAGE_READONLY,&previous))
+                throw std::runtime_error("Cannot protect original read-only data pages");
+        }
     } catch (...) {
-        VirtualFree(reservation_,0,MEM_RELEASE);
-        reservation_ = nullptr;
+        for (auto& reservation:reservations_) if (reservation) {
+            VirtualFree(reservation,0,MEM_RELEASE);reservation=nullptr;
+        }
         throw;
     }
 }
 
 GameNativeReadOnlyData::~GameNativeReadOnlyData() noexcept {
-    if (reservation_) VirtualFree(reservation_,0,MEM_RELEASE);
+    for (auto reservation:reservations_) if (reservation) VirtualFree(reservation,0,MEM_RELEASE);
 }
 
 const void* GameNativeReadOnlyData::data_at(std::uintptr_t address,std::size_t bytes) const {
-    if (address < begin_address || address - begin_address > byte_count ||
+    if (!bytes || address < begin_address || address - begin_address > byte_count ||
         bytes > byte_count - (address - begin_address))
         throw std::out_of_range("Requested native data span is outside the verified read-only section");
+    if (bytes) {
+        const auto first=(address-0xce0000)/0x10000;
+        const auto last=(address+bytes-1-0xce0000)/0x10000;
+        for (auto i=first;i<=last;++i) if (!reservations_[i])
+            throw std::out_of_range("Requested native data band is not mapped by this service");
+    }
     return reinterpret_cast<const void*>(address);
 }
 } // namespace bsp::game
