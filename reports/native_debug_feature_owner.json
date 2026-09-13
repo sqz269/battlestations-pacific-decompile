@@ -728,7 +728,7 @@
     "status": "saved_exported_and_call_audited",
     "flow_repairs": {
       "path": "reports/native_ba_flow_repairs.json",
-      "sha256": "958e6764703ecc894a73a277dd892940bb8abf439f0411043f5cba755c15c284"
+      "sha256": "e0c14ad6aaff4680492cadde19ee47b0cf7ea17cb33252a87da5b40956fa6b39"
     },
     "body_definition": {
       "path": "reports/native_ba_function_definitions.json",
@@ -775,6 +775,16 @@
       },
       "note": "Each report independently consumed 24 direct rows after the complete destructor body was recreated."
     },
-    "boundary": "Analysis repair and source evidence only; final integrated fixture and gameplay remain separate."
+    "boundary": "Analysis repair and source evidence only; final integrated fixture and gameplay remain separate.",
+    "scalar_delete": {
+      "address": "00be9600",
+      "bytes": 30,
+      "remaining_call_gaps": 0,
+      "repaired_tail": "00be9615..00be9618",
+      "flow": {
+        "path": "local/native-ba-debug-scalar-flow.txt",
+        "sha256": "821e469b1afe9878cd1690d3c52e50bd2e2de8f7ba2d22f57b8c964de8e087d4"
+      }
+    }
   }
 }
