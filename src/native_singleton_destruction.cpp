@@ -6,6 +6,7 @@
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/native_lua_fundamentals.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_input_backend_owner.hpp"
@@ -116,6 +117,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.input_settings != nullptr) {
             scalar_delete_native_input_settings_006ab800(owner, flags,
                 *bindings.input_settings);
+            return;
+        }
+        break;
+    case 0x00d62c18:
+        if (bindings.actual_lua_fundamentals_publication_0108ff1c != nullptr) {
+            delete_native_lua_fundamentals_00b66b80(
+                *static_cast<NativeLuaFundamentalsOwner*>(owner), flags,
+                *bindings.actual_lua_fundamentals_publication_0108ff1c);
             return;
         }
         break;

@@ -1,0 +1,9 @@
+# Input settings publication in GameSingletonHost
+
+`GameSingletonHost` now owns one stable, null-initialized `E198E8` settings publication cell alongside its existing `01090AA0` raw singleton-manager publication. Both direct reference accessors lend the actual cells to the caller constructing `NativeInputSettingsLifetimeContext`; the host retains ownership and their addresses remain stable for the host lifetime.
+
+`bind_input_settings` places that borrowed context in `deletion_bindings_.input_settings`, allowing the existing CF81CC profile in `native_singleton_destruction.cpp` to call the already reconstructed 006AB800 scalar delete with the same services. Bind the context before any settings owner can register. Keep the context, its table services, and borrowed storage alive until `GameSingletonHost::shutdown()` completes its raw drain. Passing null follows the existing binding convention, but only after the registered settings owner has been drained. The host destructor calls `shutdown()` as a fallback while both publication cells and the binding object are still alive.
+
+This packet adds no settings getter, construction, table parsing, script, or VFS flow. The host currently exposes the cells and binding; a consumer must compose the settings context and establish the prerequisites before any settings operation is reached. No runtime settings launch or gameplay validation is claimed. The context and CF81CC behavior remain defined by `native_input_settings_lifetime.hpp` and `native_singleton_destruction.cpp`.
+
+The static gap audit in `NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md` identifies the raw VFS/Lua/string service graph and table preimage policy as separate requirements before production settings-table construction. `NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md` distinguishes persistent descriptor and preset flag high bytes from opaque header words. This host packet chooses none of those policies.

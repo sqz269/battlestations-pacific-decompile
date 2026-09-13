@@ -10959,8 +10959,8 @@
     {
       "id": "orch4_input_settings_runtime_ay",
       "worker": "orch4-settings-runtime-ay",
-      "done": false,
-      "state": "dispatched_source_composition",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_input_settings_runtime.hpp",
@@ -10977,13 +10977,14 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
     },
     {
       "id": "orch4_input_settings_singleton_ay",
       "worker": "orch4-settings-singleton-ay",
-      "done": false,
-      "state": "dispatched_source_composition",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_hosts_singletons.hpp",
@@ -11000,13 +11001,14 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
     },
     {
       "id": "orch4_input_action_contexts_ay",
       "worker": "orch4-action-contexts-ay",
-      "done": false,
-      "state": "dispatched_source_composition",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_input_actions.hpp",
@@ -11023,7 +11025,157 @@
       "dependencies": [
         "reports/native_input_keyboard_storage_ax_validation.json"
       ],
-      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim."
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_raw_lua_fundamentals_ay",
+      "worker": "orch4-20260910",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [
+        "00884770",
+        "00b68340",
+        "00b667d0",
+        "00b66b80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_lua_fundamentals.hpp",
+        "src/native_lua_fundamentals.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md",
+        "reports/native_lua_fundamentals_raw_lifetime_ay.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_annotations.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_body_repair.json"
+      ],
+      "output_files": [
+        "include/bsp/native_lua_fundamentals.hpp",
+        "src/native_lua_fundamentals.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md",
+        "reports/native_lua_fundamentals_raw_lifetime_ay.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_annotations.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_body_repair.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_settings_host_validation_ay",
+      "worker": "orch4-settings-singleton-ay",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "reports/game_input_settings_host_ay_validation.json"
+      ],
+      "output_files": [
+        "reports/game_input_settings_host_ay_validation.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_raw_vfs_host_graph_az",
+      "worker": "orch4-raw-vfs-audit-az",
+      "done": true,
+      "state": "source_dependency_audit_integrated",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_VFS_HOST_GRAPH_AZ.md",
+        "reports/native_vfs_host_graph_az.json"
+      ],
+      "output_files": [
+        "docs/NATIVE_VFS_HOST_GRAPH_AZ.md",
+        "reports/native_vfs_host_graph_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+    },
+    {
+      "id": "orch4_native_lua_service_bindings_az",
+      "worker": "orch4-lua-bindings-az",
+      "done": false,
+      "state": "source_committed_focused_validation_running",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_lua_service_bindings.hpp",
+        "src/native_lua_service_bindings.cpp",
+        "docs/NATIVE_LUA_SERVICE_BINDINGS_AZ.md",
+        "reports/native_lua_service_bindings_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_lua_service_bindings.hpp",
+        "src/native_lua_service_bindings.cpp",
+        "docs/NATIVE_LUA_SERVICE_BINDINGS_AZ.md",
+        "reports/native_lua_service_bindings_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+    },
+    {
+      "id": "orch4_mpak_lookup_storage_az",
+      "worker": "orch4-mpak-lookup-az",
+      "done": false,
+      "state": "dispatched_actual_storage_source",
+      "function_addresses": [
+        "00bb4140",
+        "00bb4f40",
+        "005efba0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_lookup_storage.hpp",
+        "src/native_mpak_lookup_storage.cpp",
+        "docs/NATIVE_MPAK_LOOKUP_STORAGE_AZ.md",
+        "reports/native_mpak_lookup_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_lookup_storage.hpp",
+        "src/native_mpak_lookup_storage.cpp",
+        "docs/NATIVE_MPAK_LOOKUP_STORAGE_AZ.md",
+        "reports/native_mpak_lookup_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+    },
+    {
+      "id": "orch4_mpak_offset_copy_storage_az",
+      "worker": "orch4-mpak-offset-copy-az",
+      "done": false,
+      "state": "dispatched_actual_storage_source",
+      "function_addresses": [
+        "00bb6180"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_offset_copy_storage.hpp",
+        "src/native_mpak_offset_copy_storage.cpp",
+        "docs/NATIVE_MPAK_OFFSET_COPY_STORAGE_AZ.md",
+        "reports/native_mpak_offset_copy_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_offset_copy_storage.hpp",
+        "src/native_mpak_offset_copy_storage.cpp",
+        "docs/NATIVE_MPAK_OFFSET_COPY_STORAGE_AZ.md",
+        "reports/native_mpak_offset_copy_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
     }
   ],
   "snapshot_after_analysis": {
