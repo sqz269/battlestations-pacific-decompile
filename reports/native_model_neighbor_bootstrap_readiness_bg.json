@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_model_neighbor_bootstrap_bg",
+  "status": "evidence_only_existing_neighbor_providers_complete_application_wiring_unverified",
+  "native_body_credit": 0,
+  "worker_base": "5dc8942a112555d25dde817af2bc7c6bbdd736db",
+  "parent_bootstrap_reviewed_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+  "provider_introduced_commit": "7372836d92c03f93cf01c0e53a860dcafe9a465e",
+  "provider_integrated_commit": "4ff70e294b22fdd8a9318e974a8bae137f48eaad",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "verification": "bsp.py client() invokes Client.verify() before every live command; MCP discovery also confirmed the active program",
+    "ghidra_mutations": false,
+    "exports_refreshed": false
+  },
+  "source_parity": [
+    {
+      "path": "src/native_model_pool.cpp",
+      "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020",
+      "worker_matches_parent": true
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "worker_matches_parent": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00cd7f00",
+      "end_inclusive": "00cd7f15",
+      "coverage": "complete",
+      "review_scope": "complete normal static entry and all current references",
+      "existing_name": "BSP_NativeModelPool_StaticInitialize",
+      "source": "src/native_model_pool.cpp",
+      "cpp_symbol": "initialize_static_native_model_pool_00cd7f00",
+      "native_abi": "No stack arguments; RET; EAX atexit registration result",
+      "live_bytes": "b954000901e876cce9ff68500ece00e8e1f0f1ff59c3",
+      "existing_ledger_status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked"
+    },
+    {
+      "address": "00b74b80",
+      "end_inclusive": "00b74c52",
+      "coverage": "complete",
+      "review_scope": "complete normal listing and sole caller; constructor EH source and prior audit reused, native EH not executed",
+      "existing_name": "BSP_NativeModelPool_Construct",
+      "source": "src/native_model_pool.cpp",
+      "cpp_symbol": "NativeModelPool::initialize_00b74b80",
+      "native_abi": "ECX actual 38h pool; EAX same pool; RET; no stack arguments",
+      "existing_ledger_status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked"
+    },
+    {
+      "address": "00ce0e50",
+      "end_inclusive": "00ce0e59",
+      "coverage": "complete",
+      "review_scope": "complete static teardown entry and all current references",
+      "existing_name": "BSP_NativeModelPool_StaticDestroy",
+      "source": "src/native_model_pool.cpp",
+      "cpp_symbol": "destroy_static_native_model_pool_00ce0e50",
+      "native_abi": "No stack arguments; MOV ECX,01090054 then JMP B74690",
+      "live_bytes": "b954000901e93638e9ff",
+      "existing_ledger_status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked"
+    }
+  ],
+  "host_steps": [
+    {"address":"00cd7f05","native":"00b74b80","function":"00cd7f00","contract":"ECX=01090054 from CD7F00; constructor returns same pool in EAX; no stack arguments"},
+    {"address":"00cd7f0f","native":"00bf6ff5","function":"00cd7f00","contract":"PUSH CE0E50 at CD7F0A; POP ECX at CD7F14 cleans one argument; preserve EAX to RET"},
+    {"address":"00ce0e55","native":"00b74690","function":"00ce0e50","kind":"tail_jump","contract":"ECX overwritten with same canonical 01090054 before tail jump"},
+    {"address":"00b74bd2","native":"00ce220c+IAT","function":"00b74b80","contract":"InitializeCriticalSection(this+0C); EDI=ESI+0C at B74BC4; PUSH EDI at B74BC7; imported stdcall boundary; no caller cleanup"},
+    {"address":"00b74c02","native":"00bf55be","function":"00b74b80","contract":"Table allocation 80h bytes, capacity already 32; ADD ESP,4 at B74C09; EDI captures result"},
+    {"address":"00b74c34","native":"00bf6989","function":"00b74b80","contract":"Optional old this+28 table; PUSH EAX at B74C33, ADD ESP,4 at B74C39 before replacement publication"},
+    {"address":"00b746a8","native":"00bf65ac","function":"00b74690","contract":"Each live table entry, PUSH ECX at B746A7; ADD ESP,4 at B746B0; count reload controls loop"},
+    {"address":"00b746c0","native":"00bf6989","function":"00b74690","contract":"Nonnull table after all slabs; PUSH EAX at B746BF; ADD ESP,4 at B746C5"},
+    {"address":"00b746dd","native":"00ce2210+IAT","function":"00b74690","contract":"LeaveCriticalSection(this+0C); EBX loaded from CE2210 at B746D2; positive signed recursion decremented first; PUSH ESI at B746DC; imported stdcall"},
+    {"address":"00b746e7","native":"00ce2214+IAT","function":"00b74690","contract":"DeleteCriticalSection(this+0C), PUSH ESI at B746E6; imported stdcall; precedes base profile and unlink"},
+    {"address":"00bf55be","native":"00bf681b","function":"00bf55be","kind":"tail_jump","contract":"Existing library operator_new forwarding thunk; reuse singleton_lifetime_allocate boundary"},
+    {"address":"00bf6989","native":"00bf65ac","function":"00bf6989","kind":"tail_jump","contract":"Existing library free forwarding thunk; reuse singleton_lifetime_free boundary"},
+    {"address":"00bf6ff9","native":"00bf6fb9","function":"00bf6ff5","contract":"Existing CRT __onexit boundary; argument copied from caller stack at BF6FF5; POP ECX at BF7004; atexit returns 0/-1; __onexit internals not re-audited"}
+  ],
+  "all_current_references": [
+    {"target":"00cd7f00","references":[{"site":"00ce3570","kind":"DATA"}]},
+    {"target":"00b74b80","references":[{"site":"00cd7f05","function":"00cd7f00","kind":"UNCONDITIONAL_CALL"}]},
+    {"target":"00ce0e50","references":[{"site":"00cd7f0a","function":"00cd7f00","kind":"DATA_callback_address"}]},
+    {"target":"00b74690","callers":["00ce0e50"]}
+  ],
+  "crt_table": {
+    "live_bytes_at_00ce356c": "b07ecd00007fcd00207fcd00",
+    "cells": [{"cell":"00ce356c","value":"00cd7eb0"},{"cell":"00ce3570","value":"00cd7f00"},{"cell":"00ce3574","value":"00cd7f20"}],
+    "established": "Table membership and relative storage order",
+    "not_established": "Walker, bounds, direction, phase, invocation order, runtime startup or real process-exit order"
+  },
+  "storage": {
+    "canonical_pool": "01090054",
+    "bytes": 56,
+    "profile": "00d62dd0",
+    "trim_virtual0": "00b74c60",
+    "allocator_head": "00e188b4",
+    "producer": "00b74b80",
+    "fields": {"00":"profile","04":"previous","08":"next","0c":"24-byte Win32 CRITICAL_SECTION","24":"signed recursion","28":"slab table pointer","2c":"slab count","30":"table capacity","34":"first free slab"},
+    "layout_reconciled_with": "include/bsp/native_model_pool.hpp and source offsetof/sizeof assertions",
+    "distinct_from": ["0109008c model-base pool with D62C78/B6E980/B6E3D0","0108ff58 plain-node pool"],
+    "slot_contract_review_limit": "188h slots, 3144h slabs and slot+184 ID are existing source/audit contracts; allocation/slab bodies not independently re-audited in BG"
+  },
+  "corrections": [
+    {
+      "was": "Parent model-base bootstrap readiness treated neighbor CD7F00/B74B80/CE0E50 as not reconstructed or named-but-incomplete",
+      "is": "All three are complete existing integrated NativeModelPool providers; only application lifecycle wiring and CRT invocation evidence remain open",
+      "evidence": "Current lookup/show/proto, source parity, commits 7372836d and 4ff70e29, reports/native_render_storage_integration_audit.json",
+      "parent_files": ["docs/NATIVE_MODEL_BASE_BOOTSTRAP_READINESS_BG.md","reports/native_model_base_bootstrap_readiness_bg.json","docs/NATIVE_MODEL_BASE_BOOTSTRAP.md"],
+      "action": "Parent appends corrective chronology; worker does not edit parent-owned files"
+    },
+    {
+      "was": "Earlier native-model-pool worker audit and retained comments reported CD7F00 missing from Ghidra and integration pending",
+      "is": "Historical observations superseded by current existing CD7F00..CD7F15 function and integrated ledger/source status",
+      "evidence": "Live proto for all three entries and integrated source commit; preserve the original audit as chronology"
+    },
+    {
+      "was": "CD7F00 decompiled return type is void",
+      "is": "Listing leaves atexit result in EAX; existing source int return is justified",
+      "evidence": "CD7F0F CALL BF6FF5; CD7F14 POP ECX; CD7F15 RET"
+    }
+  ],
+  "next_packet": {
+    "id": "model_startup_lifetime_wiring_readiness",
+    "kind": "evidence and application integration preparation",
+    "new_neighbor_body_implementation_ready": false,
+    "reason": "Neighbor bodies and static binding adapter already exist",
+    "reuse": ["NativeModelPoolStorage","NativeModelPool","bind_static_native_model_pool_01090054","initialize_static_native_model_pool_00cd7f00","destroy_static_native_model_pool_00ce0e50","AllocatorListDomain","existing model-base bootstrap providers"],
+    "requirements": ["Identify one canonical application owner and shared allocator domain","Keep storage/domain/companion alive through the registered callback","Bind real trim dispatch before list publication","Establish original CRT walker/caller, bounds and ordering before claiming native startup parity","Establish consumer destruction and process-exit lifetime before choosing startup/shutdown wiring","Assign explicit application files and recovered caller addresses before implementation"],
+    "application_search": "Parent src/include/bsp/tests/CMake/GAME_EXECUTABLE search found bind/start names only in native_model_pool declarations and definitions; no application invocation",
+    "missing_owned_ghidra_functions": [],
+    "duplicate_body_packet_closed": true
+  },
+  "verification": {
+    "live_prototypes_and_owned_callers": true,
+    "complete_normal_assembly_review": true,
+    "library_contracts_retained": true,
+    "source_hash_parity": true,
+    "report_call_verifier": "passed: 10 direct call/tail-jump rows checked, 0 failed; 3 explicit imported IAT rows skipped by checker and inspected from assembly",
+    "historical_integrated_audit": "reports/native_render_storage_integration_audit.json",
+    "historical_build": {"command":"./scripts/build.ps1","passed":true,"tests":2,"log":"reports/native_render_storage_build.txt","rerun_in_bg":false},
+    "historical_model_fixture": {"path":"local/native_model_pool_primary_fixture.txt","sha256":"4c7a8fb3061b05830b69293d403fc82e7ad66bc46ae1bfda429f88d2e90934a7","audit_records_pass":true,"rerun_in_bg":false,"scope":"Original storage/lifetime fixture injects atexit result 17 and invokes callback; not real process-exit scheduling"},
+    "new_tests": 0,
+    "game_run_in_bg": false,
+    "game_validated": false,
+    "native_eh_execution": false,
+    "binary_abi_compatible": false,
+    "checklist": {
+      "callee_before_contract": "Owned bodies and direct normal-path providers read; imported/library internals explicitly retained contracts",
+      "boundary_before_attribution": "Current proto ownership and exact source/call rows; no raw boundary inference",
+      "all_call_sites": "Complete current references for the three owned entries and B74690 caller set; no alternative arguments",
+      "producer_before_layout": "B74B80 writes reconciled with existing NativeModelPoolStorage",
+      "partial_limits": "Owned normal bodies complete; EH dispatch, allocation/trim internals and CRT walker not re-audited; zero new body credit",
+      "runtime_evidence": "No application call found and no per-frame claim; historical fixture evidence distinguished from BG execution",
+      "cleanup_arguments": "POP ECX and ADD ESP,4 sites recorded; RET versus RET imm checked; imports retain stdcall contract",
+      "register_provenance": "Complete B74B80 listing establishes ESI/EBX/EDI; complete B74690 listing establishes EDI/ESI/EBX; wrapper ECX explicit",
+      "lease_scope": "Only owned CD7F00/B74B80/CE0E50 and two output files; all Ghidra operations read-only",
+      "report_evidence": "Address/native/function call rows, coverage and was/is/evidence corrections included"
+    }
+  }
+}
