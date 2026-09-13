@@ -1,0 +1,100 @@
+{
+  "packet": "orch3_cockpit_construction_composition_bg",
+  "date": "2026-09-13",
+  "status": "evidence_only_constructor_contract_provider_admission_gated",
+  "worker_base": "8cd30e0bec7792afa60143b56bca039c58e9f881",
+  "provider_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+  "provider_checkout": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+  "provider_pin_check": "No diff between pins in cited camera/helper/raw-string/viewport/renderer/scene/lifetime providers; root model-base bootstrap read separately.",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "bridge": "http://127.0.0.1:8089",
+    "verification": "Target-guarded BSP CLI client for each live batch; read only"
+  },
+  "routines": [
+    {"address": "00B3C800", "end_inclusive": "00B3C952", "bytes": 339, "coverage": "complete static normal-body and scoped EH review; no implementation", "abi": "ECX actual24h helper; no stack args; EAX same; RET", "listed_instructions": 108, "flow_gaps": 0}
+  ],
+  "credit": {"new_reconstructed_functions": 0, "new_reconstructed_bytes": 0, "new_tests": 0, "ghidra_mutations": 0},
+  "storage": {
+    "helper_bytes": 36,
+    "stores": ["CEB130 at+00", "count1 at+04", "state0", "D61854 at+00", "zero+08", "zero+0C", "zero+18"],
+    "preserve_preimage": ["+10", "+14", "+1C", "+20"],
+    "camera_payload_bytes": 1112,
+    "camera_slot_bytes": 1116,
+    "camera_pool_metadata_offset": "458",
+    "local_string_bytes": 8,
+    "local_string_literal": "00D6185C..00D61869 CockpitCamera including NUL",
+    "viewport_bytes": 52,
+    "helper_profile": "00D61854 exactly [00BD30E0,00B3C6C0]"
+  },
+  "host_steps": [
+    {"address": "00B3C84F", "native": "00B71930", "function": "00B3C800", "contract": "Allocate current static camera raw slot. Incoming apparent ECX458h is overwritten by callee with0108FFB0.", "cleanup": "no stack args; wrapper tail-jumps B71770"},
+    {"address": "00B3C86C", "native": "0041E870", "function": "00B3C800", "contract": "Construct actual local8h header from D6185C using raw pool context.", "cleanup": "RET4"},
+    {"address": "00B3C886", "native": "00B71A80", "function": "00B3C800", "contract": "ECX captured raw slot; stacked same local header; reuse existing raw camera body.", "cleanup": "RET4"},
+    {"address": "00B3C8AE", "native": "00419CC0", "function": "00B3C800", "contract": "Current raw getter after captured local data and length+1, with all return args already stacked.", "cleanup": "no arguments; RET; return arguments remain"},
+    {"address": "00B3C8B5", "native": "00BD1510", "function": "00B3C800", "contract": "ECX new getter result; captured data, captured wrapping length+1, unused1.", "cleanup": "RET0C"},
+    {"address": "00B3C8C7", "native": "00B6FBF0", "function": "00B3C800", "contract": "Reload helper+0C; FLD32 D7A2F0/FSTP32 argument; mask+2F0 with FFFFFF41 then+1D4.", "cleanup": "RET4"},
+    {"address": "00B3C8D9", "native": "00B6FC10", "function": "00B3C800", "contract": "Reload helper+0C; FLD32 CE38B8/FSTP32 argument; mask+2F0 then+1D8.", "cleanup": "RET4"},
+    {"address": "00B3C8E3", "native": "00B6FE10", "function": "00B3C800", "contract": "Reload helper+0C; full DWORD6 to+188.", "cleanup": "RET4"},
+    {"address": "00B3C8F1", "native": "00B6FE20", "function": "00B3C800", "contract": "FLD1/FSTP32 before actual-address leaf; reload helper+0C; raw argument to+18C.", "cleanup": "RET4"},
+    {"address": "00B3C8F8", "native": "00BF681B", "function": "00B3C800", "contract": "Actual malloc/new-handler allocation34h.", "cleanup": "ADD ESP,4 at00B3C8FD"},
+    {"address": "00B3C90F", "native": "00B1F850", "function": "00B3C800", "contract": "Construct actual saved viewport; current renderer publication reloaded for width and height.", "cleanup": "no args; RET"},
+    {"address": "00B3C923", "native": "00B71990", "function": "00B3C800", "contract": "Current helper+0C, captured local viewport; publish new, retain new, release captured old. State0 already restored.", "cleanup": "RET4"},
+    {"address": "00B3C92C", "native": "00CE2220+iat", "function": "00B3C800", "contract": "Current InterlockedDecrement on actual local EDI+4.", "cleanup": "one stdcall pointer argument", "verification": "manual complete listing; verifier skips indirect"},
+    {"address": "00B3C93C", "native": "local_viewport+vtable00", "function": "00B3C800", "contract": "Only on zero, resolve current EDI profile/slot0 after decrement; ECX same local viewport.", "cleanup": "no stack args", "verification": "manual complete listing and containing-function proto; verifier skips indirect"}
+  ],
+  "upstream_steps": [
+    {"address": "00B14F12", "native": "00BF681B", "function": "00B14A10", "contract": "PUSH24h actual helper allocation", "cleanup": "ADD ESP,4 at00B14F17"},
+    {"address": "00B14F29", "native": "00B3C800", "function": "00B14A10", "contract": "ECX captured allocation; service+0C publication at00B14F2E after return", "cleanup": "no args; RET"}
+  ],
+  "eh_steps": [
+    {"address": "00CBECE3", "native": "00BD30F0", "function": "00CBECE0", "kind": "tail_jump", "contract": "helper base cleanup; ECX saved EBP-1C"},
+    {"address": "00CBECEB", "native": "00B71350", "function": "00CBECE8", "kind": "tail_jump", "contract": "raw camera-slot return; ECX saved EBP-18"},
+    {"address": "00CBED03", "native": "0041DD20", "function": "00CBECF0", "kind": "tail_jump", "contract": "Clear live bit before conditional actual local string cleanup"},
+    {"address": "00CBED0D", "native": "00BF65AC", "function": "00CBED09", "contract": "free raw viewport allocation saved EBP-18", "cleanup": "POP ECX at00CBED12; RET00CBED13"},
+    {"address": "00CBED19", "native": "00BF6B43", "function": "00CBED14", "kind": "tail_jump", "contract": "Existing FH3 runtime receives EAX DF74C4; runtime not reconstructed by this packet"}
+  ],
+  "eh_metadata": {
+    "func_info": "00DF74C4",
+    "magic": "19930522",
+    "map_inclusive": "00DF74E8..00DF750F",
+    "states": [
+      {"state": 0, "next": -1, "action": "00CBECE0", "end_inclusive": "00CBECE7"},
+      {"state": 1, "next": 0, "action": "00CBECE8", "end_inclusive": "00CBECEF"},
+      {"state": 2, "next": 1, "action": "00CBECF0", "end_inclusive": "00CBED08"},
+      {"state": 3, "next": 0, "action": "00CBECF0", "normal_assignment": false},
+      {"state": 4, "next": 0, "action": "00CBED09", "end_inclusive": "00CBED13"}
+    ],
+    "handler": {"start": "00CBED14", "end_inclusive": "00CBED1D"},
+    "missing_scoped_functions": [],
+    "publication_limit": "Camera published00B3C892; state0 restored00B3C895. Later failure does not release published camera. No local viewport EH ownership after state0 at00B3C91E."
+  },
+  "corrections": [
+    {"was": "Old BD camera source required semantic-only strings", "is": "Raw camera/runtime and raw41E870/41DD20 available", "evidence": "native_camera_owner.cpp256/finish_node122; native_node_destruction.cpp69; native_physical_file_date.cpp162; native_string.cpp129"},
+    {"was": "Old BD helper lifetime missing and EH repair pending", "is": "BG typed helper lifetime exists; CBED09 ends13 and CBED14 ends1D with zero flow gaps", "evidence": "provider pin daa9706c; live proto/flow/disasm"},
+    {"was": "Existing owner classes alone could imply dispatch-ready constructor composition", "is": "Scene/lifetime bind allocate and persistent production viewport resolver is absent", "evidence": "scene_attachment.cpp280 and generated_model_lifetime.cpp48 push_back; resolver implementation search finds only native_camera_probe.cpp33"}
+  ],
+  "remaining_blockers": [
+    {"id": "admission", "source": ["src/native_camera_owner.cpp147", "src/scene_attachment.cpp269", "src/native_camera_reference.cpp18", "src/generated_model_lifetime.cpp42"], "contract": "Preallocate companions and exclusive registry capacity outside native events; nonallocating consume/cancel with explicit reentrancy scope and canonical identity. No admission APIs currently present."},
+    {"id": "viewport_views", "source": ["include/bsp/camera_frame_state.hpp38", "src/native_camera_probe.cpp33", "src/native_camera_owner.cpp280", "src/native_camera_owner.cpp337"], "contract": "Persistent actual-owner views for first and replacement viewports; pure lookup; concrete registration and retirement before address reuse or ending borrowed views. Audit exact child allocation/publication and native terminal points."},
+    {"id": "actual_environment", "source": ["include/bsp/native_camera_owner.hpp50", "include/bsp/native_viewport_owner.hpp70", "include/bsp/native_renderer_parameters.hpp39"], "contract": "Actual renderer publication/current dispatch/+1A14 region, pool, tables, shared scalar cells, raw context and scene/lifetime providers all persist through queue retirement."},
+    {"id": "late_failure", "source": ["00B3C892", "00B3C895", "00B3C91E"], "contract": "Retain published camera and companions on later constructor failure; do not silently clean them or leave stack-bound state."}
+  ],
+  "next_packet": {
+    "name": "cockpit_construction_admission_and_persistent_companions",
+    "new_native_credit": 0,
+    "new_files": ["include/bsp/native_cockpit_construction_runtime.hpp", "src/native_cockpit_construction_runtime.cpp"],
+    "coordinated_provider_edits": ["include/bsp/scene_attachment.hpp", "src/scene_attachment.cpp", "include/bsp/generated_model_lifetime.hpp", "src/generated_model_lifetime.cpp", "concrete viewport registration/retirement provider files selected after publication-point audit"],
+    "gate": "Concrete reviewable preparation, registration, cancellation and retirement mechanism; no opaque successful callbacks",
+    "following_constructor_packet": {"address": "00B3C800", "bytes": 339, "files": ["include/bsp/native_cockpit_helper_construction.hpp", "src/native_cockpit_helper_construction.cpp"], "integrator_only": ["CMake registration", "name/reconstruction ledgers", "Ghidra evidence annotation"]}
+  },
+  "validation": {
+    "report_calls_command": "python tools/verify_report_calls.py reports/native_cockpit_construction_composition_bg.json",
+    "report_calls_result": "PASS: 19 numeric call rows checked, 0 failed; two indirect rows explicitly skipped by verifier and manually reviewed",
+    "manual": ["Complete B3C800 assembly and register provenance", "All twelve direct calls and both indirect calls", "Actual caller ownership", "Callee body inspection for named scalar/string/pool/viewport contracts", "Current EH metadata and inclusive funclet/handler extents", "Current producer/source compatibility and separate provider pin"],
+    "limitations": ["Dependency source and established evidence reused; no new full dependency reconstruction", "No build or test execution for evidence-only files", "No fresh installed-PE parity claim", "No original binary ABI/FH3/SEH/concurrency/game validation", "Full upstream B14A10 remains gated", "Unknown later nonzero helper+18 producer not established; fresh constructor zero branch is established"]
+  }
+}
