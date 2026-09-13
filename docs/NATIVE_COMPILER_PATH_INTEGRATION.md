@@ -185,3 +185,28 @@ with the earlier 184-artifact checkpoint preserved. Samplers, field initializati
 and interpolator source emission continue in separate leased worktrees. Full
 native source generation, B3B3C0 continuation, FH3, rendering and gameplay remain
 unproven.
+
+## Actual sampler, field, interpolator and shadow helpers
+
+Ten native helper bodies now operate on the existing actual builder and pooled
+string domain. Sampler declarations preserve stage-byte selection, shared slots
+and current descriptor/list reloads. Field decoding captures its unsigned prefix
+limit once and rereads field pointers after swizzle allocation. Interpolator
+pack/struct/unpack preserves signed group arithmetic, current mappings and the
+original captured-versus-current temporary release lengths. Shadow helpers read
+builder byte AA only after the intro append returns, then retain that branch.
+
+The default Win32 build and both CTests passed at `743847de`. All 21 focused
+fixture programs passed at `743847de`; the three library hashes
+and 192 runner/transitive input hashes remained unchanged.
+The new fixtures compare original/source text and pooled traces, selected live
+mutations and retained failure/retirement behavior. The interpolator packet also
+received an independent review of all 587 owned assembly instructions.
+
+Thirteen component reports have 1,249 checked numeric rows and zero failures,
+including the same four resolved indirect rows. Ten names/comments were saved,
+read back and exported; prior values remain in the checkpoint journals. The
+immutable checkpoint is `local/checkpoints/743847de/native-generation-helpers-default/validation.json` (408 artifacts), with the earlier
+213-artifact checkpoint preserved. Full vertex/pixel source generators continue
+in separate leased worktrees. Full compiler continuation, native FH3, rendering
+and gameplay remain unproven.
