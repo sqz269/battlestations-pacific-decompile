@@ -1,0 +1,469 @@
+{
+  "packet": "orch3_native_render_service_base_az",
+  "status": "five complete source bodies (three new plus two existing raw getter extensions); strict compile, baseline build, two CTests, focused original/current-provider fixture and call audit passed; integration pending",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "port": 8089,
+  "Ghidra_mutations": "None by worker. Root defined/saved the two analysis-only handler bodies after the earlier missing observations.",
+  "live_verification": "Every bsp.py ghidra batch verifies project, program path, language and image base before querying.",
+  "functions": [
+    {
+      "address": "00b0f020",
+      "end_inclusive": "00b0f0b0",
+      "end_exclusive": "00b0f0b1",
+      "length": 145,
+      "coverage": "complete",
+      "cpp_symbol": "publish_native_render_service_base_00b0f020",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "old_name": "FUN_00b0f020",
+      "ghidra_name": "BSP_RenderService_PublishBase",
+      "suggested_name": "BSP_RenderService_PublishBase",
+      "name_is_hypothesis": true,
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_render_service_base",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderService_PublishBase(void)",
+      "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX returns the saved receiver, not current publication.",
+      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+    },
+    {
+      "address": "00b0f0c0",
+      "end_inclusive": "00b0f158",
+      "end_exclusive": "00b0f159",
+      "length": 153,
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_render_service_base_00b0f0c0",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "old_name": "FUN_00b0f0c0",
+      "ghidra_name": "BSP_RenderService_DestroyBase",
+      "suggested_name": "BSP_RenderService_DestroyBase",
+      "name_is_hypothesis": true,
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_render_service_base",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_RenderService_DestroyBase(void)",
+      "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. No semantic EAX result; unregister current publication, clear only on success.",
+      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+    },
+    {
+      "address": "00412430",
+      "end_inclusive": "00412436",
+      "end_exclusive": "00412437",
+      "length": 7,
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_generic_singleton_base_00412430",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "old_name": "TRIV_body_00412430",
+      "ghidra_name": "BSP_SingletonBase_ResetProfile",
+      "suggested_name": "BSP_SingletonBase_ResetProfile",
+      "name_is_hypothesis": true,
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_render_service_base",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_SingletonBase_ResetProfile(void)",
+      "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. No semantic EAX result; store CE3818 only.",
+      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+    },
+    {
+      "address": "00b0cf30",
+      "end_inclusive": "00b0cf36",
+      "end_exclusive": "00b0cf37",
+      "length": 7,
+      "coverage": "complete",
+      "cpp_symbol": "render_time_region_00b0cf30",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "old_name": "BSP_RenderService_GetRegion84",
+      "ghidra_name": "BSP_RenderService_GetRegion84",
+      "suggested_name": "BSP_RenderService_GetRegion84",
+      "name_is_hypothesis": true,
+      "new_native_body": false,
+      "ledger_kind": "function",
+      "module": "native_render_service_base",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderService_GetRegion84(void)",
+      "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX raw ECX+84 identity with 32-bit wrapping.",
+      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+    },
+    {
+      "address": "00b0d100",
+      "end_inclusive": "00b0d106",
+      "end_exclusive": "00b0d107",
+      "length": 7,
+      "coverage": "complete",
+      "cpp_symbol": "get_system_camera_service_matrix_00b0d100",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "old_name": "BSP_RenderService_GetSystemMatrix1D8",
+      "ghidra_name": "BSP_RenderService_GetSystemMatrix1D8",
+      "suggested_name": "BSP_RenderService_GetSystemMatrix1D8",
+      "name_is_hypothesis": true,
+      "new_native_body": false,
+      "ledger_kind": "function",
+      "module": "native_render_service_base",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_RenderService_GetSystemMatrix1D8(void)",
+      "original_abi": "ECX actual raw receiver, no stack arguments, plain RET. EAX raw ECX+1D8 identity with 32-bit wrapping.",
+      "evidence": "Full live native listing, ABI, current-field/cleanup schedule and live/disk spans reviewed. See docs/NATIVE_RENDER_SERVICE_BASE.md and reports/native_render_service_base.json. Descriptive names are hypotheses, not recovered symbols.",
+      "uncertainty": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached."
+    }
+  ],
+  "owned_files": [
+    "include/bsp/native_render_service_base.hpp",
+    "src/native_render_service_base.cpp",
+    "docs/NATIVE_RENDER_SERVICE_BASE.md",
+    "reports/native_render_service_base.json"
+  ],
+  "host_steps": [
+    {
+      "function": "00b0f020",
+      "address": "00b0f04e",
+      "native": "00415350",
+      "source": "get_native_singleton_manager_00415350"
+    },
+    {
+      "function": "00b0f020",
+      "address": "00b0f07c",
+      "native": "00415350",
+      "source": "get_native_singleton_manager_00415350"
+    },
+    {
+      "function": "00b0f020",
+      "address": "00b0f08a",
+      "native": "00bd0c30",
+      "source": "register_native_singleton_object_00bd0c30"
+    },
+    {
+      "function": "00b0f0c0",
+      "address": "00b0f0ee",
+      "native": "00415350",
+      "source": "get_native_singleton_manager_00415350"
+    },
+    {
+      "function": "00b0f0c0",
+      "address": "00b0f116",
+      "native": "00415350",
+      "source": "get_native_singleton_manager_00415350"
+    },
+    {
+      "function": "00b0f0c0",
+      "address": "00b0f124",
+      "native": "00bcfca0",
+      "source": "unregister_native_singleton_object_00bcfca0"
+    },
+    {
+      "function": "00cbbbe0",
+      "address": "00cbbbe3",
+      "native": "00412430",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00cbbbe8",
+      "address": "00cbbbeb",
+      "native": "00411ee0",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00cbbc00",
+      "address": "00cbbc03",
+      "native": "00412430",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00cbbc08",
+      "address": "00cbbc0b",
+      "native": "00411ee0",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00cbbbf0",
+      "address": "00cbbbf5",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00cbbc10",
+      "address": "00cbbc15",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "source": "Native FH3 metadata/action evidence; source RAII reproduces bounded cleanup order."
+    },
+    {
+      "function": "00b0f020",
+      "address": "00b0f067",
+      "native": "00ce2218+import",
+      "source": "EnterCriticalSection",
+      "evidence": "Indirect IAT call; captured section; increment raw depth+18 after return."
+    },
+    {
+      "function": "00b0f020",
+      "address": "00b0f098",
+      "native": "00ce2210+import",
+      "source": "LeaveCriticalSection",
+      "evidence": "Indirect IAT call; same captured section; decrement raw depth+18 before call."
+    },
+    {
+      "function": "00b0f0c0",
+      "address": "00b0f107",
+      "native": "00ce2218+import",
+      "source": "EnterCriticalSection",
+      "evidence": "Indirect IAT call; captured section; increment raw depth+18 after return."
+    },
+    {
+      "function": "00b0f0c0",
+      "address": "00b0f13c",
+      "native": "00ce2210+import",
+      "source": "LeaveCriticalSection",
+      "evidence": "Indirect IAT call; same captured section; decrement raw depth+18 before call."
+    }
+  ],
+  "existing_names": "Preserve the two reviewed getter names and old comments. Three new descriptive names are hypotheses. Previous name/comment captures preserved externally.",
+  "body_accounting": {
+    "complete_bodies": 5,
+    "normal_bytes": 319,
+    "new_bodies": 3,
+    "new_body_bytes": 305,
+    "existing_raw_getter_extensions": 2,
+    "extension_bytes": 14,
+    "analysis_only_handlers": 2
+  },
+  "storage_producers": [
+    "Actual raw F8D39C service and 01090AA0 manager publication cells are borrowed; no service overlay or replacement manager.",
+    "BD0960 full raw manager constructor initializes begin+4/end+8/capacity+0C, reserves 256 slots and creates section+10. Existing raw415350 calls it when needed.",
+    "Derived initializer B0CD80 is a separate packet; this base writes only profile+0. Raw getters compute identity without reading the object."
+  ],
+  "native_EH_dependencies": [
+    {
+      "parent": "00b0f020",
+      "handler": "00cbbbf0",
+      "handler_length": 10,
+      "func_info": "00df3e2c",
+      "func_info_length": 36,
+      "unwind_map": "00df3e1c",
+      "map_length": 16,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbbbe0",
+          "action_length": 8,
+          "target": "00412430",
+          "receiver": "[EBP-18h]"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbbbe8",
+          "action_length": 8,
+          "target": "00411ee0",
+          "receiver": "EBP-14h guard"
+        }
+      ]
+    },
+    {
+      "parent": "00b0f0c0",
+      "handler": "00cbbc10",
+      "handler_length": 10,
+      "func_info": "00df3e60",
+      "func_info_length": 36,
+      "unwind_map": "00df3e50",
+      "map_length": 16,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbbc00",
+          "action_length": 8,
+          "target": "00412430",
+          "receiver": "[EBP-18h]"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbbc08",
+          "action_length": 8,
+          "target": "00411ee0",
+          "receiver": "EBP-14h guard"
+        }
+      ]
+    }
+  ],
+  "analysis_followups": {
+    "worker_initial_missing": [
+      "00cbbbf0",
+      "00cbbc10"
+    ],
+    "root_later_defined": [
+      "00cbbbf0",
+      "00cbbc10"
+    ],
+    "root_report": "reports/native_system_sources_az_analysis_sync.json",
+    "worker_observation_file": "C:\\Users\\sqz269\\bsp-az-render-service-base\\handlers-observation.txt"
+  },
+  "installed_image": {
+    "executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "live_disk_spans": [
+    {
+      "address": "00b0f020",
+      "end_inclusive": "00b0f0b0",
+      "length": 145,
+      "sha256": "ca2bf770d4cbaeca8cd5d72657e45a060c8e13636f7446b812efd83ca47546ba",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0f0c0",
+      "end_inclusive": "00b0f158",
+      "length": 153,
+      "sha256": "987e733980b4762f71fc5113d1bd7b6a18d025c33bba31e8592106e4211401c5",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00412430",
+      "end_inclusive": "00412436",
+      "length": 7,
+      "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0cf30",
+      "end_inclusive": "00b0cf36",
+      "length": 7,
+      "sha256": "3118dec3bc33bc97e440257d3564e1715b5ed17891e03297e3affeeb44f4f6ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0d100",
+      "end_inclusive": "00b0d106",
+      "length": 7,
+      "sha256": "45dc3f81365e4dc2eb9766813ca582d55ec0da1d95961f6250ab1f11a6da8520",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbbbe0",
+      "end_inclusive": "00cbbbf9",
+      "length": 26,
+      "sha256": "32fde3ab13ecd3a8b37b0e5341a3e1733ac7b58e90047d6f429f67b3feebade7",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbbc00",
+      "end_inclusive": "00cbbc19",
+      "length": 26,
+      "sha256": "375c9859c38e45b0c5a5af6fd9c0bd01cc8e4e553020d54d2f305651b5dff491",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df3e1c",
+      "end_inclusive": "00df3e83",
+      "length": 104,
+      "sha256": "4f55251fc21571666395352b6e8b1538e91ea1cec0beb14b1d18f3b9ce82f093",
+      "live_disk_equal": true
+    }
+  ],
+  "checks": {
+    "strict_compile": "PASS /MD /EHsc /std:c++17 /W4 /WX /O2 /fp:strict; module compiled separately.",
+    "standard_build": "PASS ./scripts/build.ps1 after verify-seeds; reconstructed_math and native_math_differential 2/2. This baseline build excludes the unregistered module; owned source was separately strictly compiled and explicitly included in the worker fixture.",
+    "report_calls": "PASS python tools/verify_report_calls.py reports/native_render_service_base.json; 12 numeric call rows checked, 0 failed. Four imported OS calls are explicit indirect rows, reviewed against their native listings.",
+    "new_repository_tests": 0,
+    "seed_verification": "Eight original/live seed ranges matched before baseline build."
+  },
+  "source_validation": {
+    "base_commit": "c9eb467adba6d598e6a9b9cbaf07e765b25f6363",
+    "source_hashes": {
+      "src/native_render_service_base.cpp": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    "library_hashes": {
+      "bsp_core.lib": "766c6387a2ba356ff4fd5407c95cd1c63878ca9ce7072b743b7f8ff94962a8be",
+      "bsp_lua511.lib": "c5f7e9be505b8f9b2bc9731c988d1bfddf0f636036e358d717745431377851a7",
+      "bsp_zlib121.lib": "d04cdc4ea2cf75dc7dbaab628d1d1d1136ff9f2f92841e814a56a6153bf646de"
+    },
+    "all_input_pins_stable": true,
+    "full_pins_artifact": "C:\\Users\\sqz269\\bsp-az-render-service-base\\fixture_report.json",
+    "strict_log_sha256": "623d728d2b75a39c63a9ff1409233d0aed7036483989e969b60364976e9d9eb1",
+    "standard_build_log_sha256": "b9223261f93702653553077c88a4eb13b140308471e0d36d85df3abedb18cf3b",
+    "report_call_log_sha256": "32464a488fa7448cbb2e5add627a8f2e3595bd3678b780236c3e83f192eb0faa"
+  },
+  "fixture": {
+    "root": "C:\\Users\\sqz269\\bsp-az-render-service-base",
+    "status": "PASS",
+    "default_replay": "run.ps1 -Root <integrated root> -LibraryRoot <integrated root>, no WorkerSource: external probe.cpp plus current bsp_core/bsp_lua511/bsp_zlib121 libraries.",
+    "worker_replay": "run.ps1 -WorkerSource includes only the owned source beside the three baseline libraries.",
+    "limits": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+    "parent_pairs": 10,
+    "complete_leaves": 3,
+    "normalized_state_bytes": 11400,
+    "event_dwords": 26,
+    "real_providers": [
+      "00415350 raw manager getter and lazy full BD0960 constructor",
+      "BD0C30 raw registration, append and allocation providers",
+      "BCFCA0 raw first-match removal; success cases uninstrumented",
+      "411EE0 actual captured guard cleanup",
+      "Actual CRT invalid-parameter handler and Win32 critical sections"
+    ],
+    "genuine_cases": [
+      "Lazy manager publisher",
+      "Existing manager publisher",
+      "Throwing actual registration validator mutates publication and current section, then guard/base unwind",
+      "Returning registration validator repairs bounds and mutates publication/current section; register captured argument and return saved receiver",
+      "Null publication removal",
+      "Receiver publication removal",
+      "Different current publication removal",
+      "First duplicate removal preserves later duplicate",
+      "Generic base profile store and canaries",
+      "Raw getters real/null/wrapping address identity"
+    ],
+    "controlled_cases": [
+      "Destructor throwing real validation after a forced mutation between first count and next bounds read",
+      "Destructor returning real validation repairs storage and mutates publication; successful removal clears publication unconditionally"
+    ],
+    "controlled_input_delivery": "Only the first CALL operand to BCF910 in the private linked actual BCFCA0 provider is temporarily redirected. Wrapper invokes actual count then changes begin. All 115 provider bytes restored and verified after each controlled case; current three library files remain unchanged. No naturally reached removal-failure or concurrency claim.",
+    "relocations": {
+      "parent_handler_immediates": 2,
+      "parent_manager_rel32": 4,
+      "action_tail_rel32": 4,
+      "normal_bytes": 319,
+      "handler_action_bytes": 52,
+      "fh3_data_bytes": 104,
+      "unchanged_leaves": true,
+      "unchanged_fh3_data": true,
+      "required_provider_bridges": "BD0C30/BCFCA0/BF6B43 transfer stubs outside owned parent spans; actual Enter/Leave IAT functions. All parent and action bytes verified against exactly the ten declared operand relocations."
+    },
+    "additional_limits": [
+      "First manager allocation/constructor failure untested",
+      "First Enter failure untested",
+      "Null section branches untested",
+      "Second exception during cleanup untested",
+      "Uses host FH3 with copied original metadata; original exception runtime identity unproved"
+    ],
+    "worker_archive": {
+      "path": "C:\\Users\\sqz269\\bsp-az-render-service-base\\worker_capture.zip",
+      "sha256": "56ccfe5692ec4d48c70a58043eae7ff30c4744bf44bc7ae69fc68c952add65b4",
+      "file_count": 86,
+      "manifest": "C:\\Users\\sqz269\\bsp-az-render-service-base\\capture_manifest.json",
+      "all_members_hash_verified": true
+    }
+  },
+  "follow_up_packets": [
+    "Full derived B0CD80 initializer in separate packet.",
+    "Full actual B46A70 system constants remains independently incomplete.",
+    "Full service destruction and executable/gameplay integration remain separate."
+  ]
+}
