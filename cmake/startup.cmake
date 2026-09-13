@@ -913,3 +913,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_vecto
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_iterators.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_keyboard_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_lua_service_bindings.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_readonly_data.cpp)

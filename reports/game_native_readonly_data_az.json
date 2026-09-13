@@ -1,0 +1,65 @@
+{
+  "packet": "orch4_readonly_native_data_az",
+  "status": "source_service_component_build_and_populated_fixture_passed",
+  "documentation": "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+  "integration_report": "reports/input_lua_vfs_services_az_validation.json",
+  "source": [
+    "include/bsp/game_native_readonly_data.hpp",
+    "src/game_native_readonly_data.cpp"
+  ],
+  "native_body_reconstruction": false,
+  "supported_pe": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752,
+    "machine": "x86",
+    "image_base": "00400000",
+    "section": ".rdata",
+    "rva": "008e2000",
+    "raw_offset": "008e2000",
+    "virtual_size": "00125b24",
+    "raw_size": "00126000",
+    "characteristics": "40000040",
+    "section_sha256": "1965d6b2c0d4cc3675d78c6fa937b0a202d28ea0456b8bef63c4d43b39bcbcc9"
+  },
+  "mapping": {
+    "begin": "00ce2000",
+    "end_inclusive": "00e07b23",
+    "committed_end_exclusive": "00e08000",
+    "protection": "PAGE_READONLY",
+    "executable": false,
+    "reservation_before_file_buffer": true,
+    "hash_before_commit_and_copy": true,
+    "occupied_range_preserved": true,
+    "destructor_releases_only_owned_reservation": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "full_section_equal": true,
+    "every_page_readonly_nonexecutable": true,
+    "changed_image_rejected": true,
+    "occupied_address_unchanged": true,
+    "span_bounds_checked": true,
+    "reservation_freed": true,
+    "populated_vfs_lua_nested_dofile": true,
+    "duplicate_suffix_order": "MCPP",
+    "memory_counters_zero": true,
+    "original_code_called": false,
+    "production_host_reachable": false,
+    "game_validated": false
+  },
+  "independent_review": "scale_maps_ax checked PE constants, mapping bounds, ownership and failure cleanup; static review only; early-reservation improvement followed fixture address-allocation finding",
+  "artifacts": {
+    "local/game_native_readonly_data_az_component_probe.log": "7c10a2d4fcfe857b5fe15638b29985f7073a24159a4d38c790fa43407cb494f8",
+    "local/game_native_readonly_data_az_probe.cpp": "ef8908267c3ec49b60a6af71646b6819775cb6a11236ee074d675f5eb451a319",
+    "local/run_game_native_readonly_data_az_probe.ps1": "1137264c75c129cc197e5e7fc1a7864f6e66b4e51ff443527dcf23f0fcac6ff0",
+    "local/game_native_readonly_data_az_probe.exe": "4cb932294e63e8d9ee66792d266aa40f54842a284c4afb894e1b59771d23e4f0",
+    "local/make_game_native_readonly_data_az_probe.py": "a31f5568d608da71617b93d8e9ccf0037134ed66b7f68fd480c42b624d02d5fb"
+  },
+  "component_archive_sha256": "a72432d9df2d97479ca0bb557577d01c4fab14e11c4939d8d2f039d9f5363813",
+  "limits": [
+    "Seeded VFS records and explicit writable type-descriptor fixture pages remain; no production raw VFS graph.",
+    "Physical-stream, render-batch and type-counter services still need canonical raw-manager ownership.",
+    "The map is a source data service, not original ABI/code execution or a general PE loader."
+  ]
+}
