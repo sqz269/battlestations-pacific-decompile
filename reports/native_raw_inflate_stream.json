@@ -272,7 +272,16 @@
       "implementation_commit": "62e979c338724167d9af9f5b3fd4f218c77fa565",
       "boundary": "Build started with these source changes in the working tree and completed after their commit; no compiled source changed while building. Full integrated head will be rebuilt."
     },
-    "native_source_fixture": "separate worker pending"
+    "native_source_fixture": {
+      "status": "passed",
+      "report": "reports/native_raw_inflate_validation.json",
+      "checks": 1305,
+      "state_words": 365,
+      "source_trace_words": 854,
+      "free_events": 12,
+      "compared_output_bytes": 70087,
+      "scope": "Ten original methods plus original constructor against actual source with explicit shared stock zlib/CRT test bindings; bounded generated-payload paths."
+    }
   },
   "limits": [
     "New C++ APIs; not original ABI/FH3 replacements.",
