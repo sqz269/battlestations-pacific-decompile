@@ -21,7 +21,7 @@ The default resource factory now has a real D62D78 source provider. It construct
 | --- | --- | --- |
 | B743C0 / B743C8 | B6F5A0 | EAX=[entry ESP+4] actual name header; PUSH ESI; PUSH EAX; ESI=ECX owner. Callee RET4. Stamp D62D78 only after successful return. |
 | B74B60 / B74B63 | B6F440 | PUSH ESI, ESI=ECX actual owner; no explicit arguments; callee RET. |
-| B74B60 / B74B75 | B6E490 | Only low flags bit1: PUSH ESI original slot; ECX=0109008C; callee RET4. |
+| B74B60 / B74B75 | B6E490 | Only low flags bit0: PUSH ESI original slot; ECX=0109008C; callee RET4. |
 | B86720 / B8673B | B74EC0 | Establish FH3 frame and scratch slot; ECX=174h, no stack argument; allocator replaces ECX with actual pool. |
 | B86720 / B86756 | B743C0 | Save EAX allocated slot at ESP; state[ESP+C]=0; skip on null; ECX=[ESP+14] original caller name; PUSH ECX; ECX=EAX raw slot; callee RET4. |
 | B74EC0 / B74EC5 | B6EB00 | ECX=0109008C; tail JMP, unchanged return address. |
@@ -50,3 +50,5 @@ The final report records actual build/probe outputs and SHA256 of source, origin
 Verification completed: strict module and external probe compilation passed; The initial baseline had reconstructed_math 1/1. Guarded verify-seeds then matched all8 original spans and enabled the existing native test: incremental `scripts/build.ps1` passed2/2 reconstructed_math and native_math_differential. All3 linked library hashes remained unchanged. The worker-source lifecycle probe passed all existing cases, including restored original context observed at retirement and live token changes. The executable manifest was extracted and verified asInvoker. No original factory differential or real node-phase type callback reachability is inferred from these results.
 
 The existing source failure fixture deliberately leaves a retained-owner binding unresolved and observes std::logic_error. This is a source-domain cleanup check, not raw getter bad_alloc coverage or execution of an original native exception path.
+
+Integrator follow-up: B743E0 is now defined with its complete40-byte body, saved and exported. The source is centrally registered; exact combined build and current-library replay are recorded separately in NATIVE_BF_INTEGRATION.md.

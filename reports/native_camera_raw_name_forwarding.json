@@ -25,7 +25,20 @@
       "live_disk_match": true,
       "reconstruction": "existing_entry_raw_name_domain_extension",
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "cpp_symbol": "construct_native_camera_00b71a80",
+      "source": "src/native_camera_owner.cpp",
+      "header": "include/bsp/native_camera_owner.hpp",
+      "report": "reports/native_camera_raw_name_forwarding.json",
+      "doc": "docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md",
+      "end_exclusive": "00b71cdc",
+      "ghidra_name": "BSP_Camera_Construct",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "native_prototype": "void * BSP_Camera_Construct(void * name)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual camera; stack actual8h name header; EAX same camera; RET4 atB71CD9",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b71a80..00b71cdb, original register/stack preparation, current actual storage and bounded provider contracts reviewed. Existing camera body extended to raw actual-header/current-pool cleanup; zero new body credit. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md; reports/native_camera_raw_name_forwarding.json."
     },
     {
       "address": "00b71f10",
@@ -40,7 +53,20 @@
       "live_disk_match": true,
       "reconstruction": "existing_entry_raw_name_domain_extension",
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "cpp_symbol": "destroy_native_camera_00b71f10",
+      "source": "src/native_camera_owner.cpp",
+      "header": "include/bsp/native_camera_owner.hpp",
+      "report": "reports/native_camera_raw_name_forwarding.json",
+      "doc": "docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md",
+      "end_exclusive": "00b71fd2",
+      "ghidra_name": "BSP_Camera_Destroy",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "native_prototype": "void BSP_Camera_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual camera; no stack argument; RET atB71FD1",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b71f10..00b71fd1, original register/stack preparation, current actual storage and bounded provider contracts reviewed. Existing camera body extended to raw actual-header/current-pool cleanup; zero new body credit. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md; reports/native_camera_raw_name_forwarding.json."
     },
     {
       "address": "00b71fe0",
@@ -55,7 +81,20 @@
       "live_disk_match": true,
       "reconstruction": "existing_entry_raw_name_domain_extension",
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "cpp_symbol": "delete_native_camera_00b71fe0",
+      "source": "src/native_camera_owner.cpp",
+      "header": "include/bsp/native_camera_owner.hpp",
+      "report": "reports/native_camera_raw_name_forwarding.json",
+      "doc": "docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md",
+      "end_exclusive": "00b72000",
+      "ghidra_name": "BSP_Camera_ScalarDeletingDestructor",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "native_prototype": "void * BSP_Camera_ScalarDeletingDestructor(unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX camera; stack flags; EAX original slot; RET4 atB71FFD",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b71fe0..00b71fff, original register/stack preparation, current actual storage and bounded provider contracts reviewed. Existing camera body extended to raw actual-header/current-pool cleanup; zero new body credit. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_CAMERA_RAW_NAME_FORWARDING.md; reports/native_camera_raw_name_forwarding.json."
     }
   ],
   "accounting": {
@@ -1290,5 +1329,9 @@
     "Not gamevalidated; no installedgame changes"
   ],
   "no_ghidra_function": [],
-  "reconstruction_count_delta": 0
+  "reconstruction_count_delta": 0,
+  "integration_bf_review": {
+    "combined_validation": "pending exact merged build and current-library fixture",
+    "game_validated": false
+  }
 }

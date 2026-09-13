@@ -8,62 +8,6 @@
     "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
-  "routines": [
-    {
-      "entry": "00b743c0",
-      "end": "00b743d8",
-      "bytes": 25,
-      "coverage": "complete",
-      "abi": "ECX actual node, stack actual name header, EAX original, RET4",
-      "original_bytes_hex": "8b44240456508bf1e8d3b1ffffc706782dd6008bc65ec20400",
-      "original_bytes_sha256": "592b1f80ecb1f35ee021799d92fb0e46e7c737c4fb446765103d5f7177529793"
-    },
-    {
-      "entry": "00b74b60",
-      "end": "00b74b7f",
-      "bytes": 32,
-      "coverage": "complete",
-      "abi": "ECX actual node, stack flags, EAX original, RET4",
-      "original_bytes_hex": "568bf1e8d8a8fffff644240801740b56b98c000901e81699ffff8bc65ec20400",
-      "original_bytes_sha256": "2f987b3ce17ef28c51715c0ae821bf617f195f14ff02b2c9e7171014ef738982"
-    },
-    {
-      "entry": "00b86720",
-      "end": "00b8677e",
-      "bytes": 95,
-      "coverage": "complete",
-      "abi": "incoming ECX unused, stack actual name header, EAX actual node or null, RET4",
-      "original_bytes_hex": "6aff683825cc0064a100000000506489250000000051b974010000e880e7feff89042485c0c744240c00000000741d8b4c2414518bc8e865dcfeff8b4c240464890d0000000083c410c204008b4c240433c064890d0000000083c410c20400",
-      "original_bytes_sha256": "10ec1583b26ec4b060b4186f2bdccaf1f716e2ad268ba378a04d3ce5e2cda7ec"
-    },
-    {
-      "entry": "00b74ec0",
-      "end": "00b74ec9",
-      "bytes": 10,
-      "coverage": "complete",
-      "abi": "incoming ECX size ignored; ECX actual0109008C tail B6EB00, RET",
-      "original_bytes_hex": "b98c000901e9369cffff",
-      "original_bytes_sha256": "9504b05dbcc24fadf895417fac059b1dcf38985fe4a831a78355e008d04c3709"
-    },
-    {
-      "entry": "00b748d0",
-      "end": "00b748db",
-      "bytes": 12,
-      "coverage": "complete",
-      "abi": "ECX actual slot, RET; callee B6E490 RET4",
-      "original_bytes_hex": "51b98c000901e8b59bffffc3",
-      "original_bytes_sha256": "1a75637f830fec4d9e01d199b340fa0c7631bf5ce20036a5fc2447f4cfe048bc"
-    },
-    {
-      "entry": "00b743e0",
-      "end": "00b74407",
-      "bytes": 40,
-      "coverage": "complete",
-      "abi": "ECX unused, stack token, AL bool, RET4",
-      "original_bytes_hex": "8b4c2404b8440009018da424000000003908740f83c0043d5000090175f232c0c20400b001c20400",
-      "original_bytes_sha256": "f8795845d1043b5da03ca6d94866753fe18f8a61a7b3ca813113984760217634"
-    }
-  ],
   "host_steps": [
     {
       "address": "00b743c8",
@@ -139,14 +83,6 @@
     "Factory returns actual node only; caller supplies stable canonical node binding and persistent companion registration.",
     "No asset evidence selecting default D62D78 over group/resource override; no game validation.",
     "Factory exception branch is source-domain recovery; original allocation failure lock/publication behavior remains inherited from B6EB00."
-  ],
-  "no_ghidra_function": [
-    {
-      "entry": "00b743e0",
-      "end_inclusive": "00b74407",
-      "bytes": 40,
-      "evidence": "Exact original disk bytes; recovered three-cell loop ending RET4. Integrator owns definition after lease release."
-    }
   ],
   "corrections": [
     {
@@ -274,5 +210,221 @@
       "bytes": 2995,
       "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
     }
-  ]
+  ],
+  "worker_routines": [
+    {
+      "entry": "00b743c0",
+      "end": "00b743d8",
+      "bytes": 25,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack actual name header, EAX original, RET4",
+      "original_bytes_hex": "8b44240456508bf1e8d3b1ffffc706782dd6008bc65ec20400",
+      "original_bytes_sha256": "592b1f80ecb1f35ee021799d92fb0e46e7c737c4fb446765103d5f7177529793"
+    },
+    {
+      "entry": "00b74b60",
+      "end": "00b74b7f",
+      "bytes": 32,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack flags, EAX original, RET4",
+      "original_bytes_hex": "568bf1e8d8a8fffff644240801740b56b98c000901e81699ffff8bc65ec20400",
+      "original_bytes_sha256": "2f987b3ce17ef28c51715c0ae821bf617f195f14ff02b2c9e7171014ef738982"
+    },
+    {
+      "entry": "00b86720",
+      "end": "00b8677e",
+      "bytes": 95,
+      "coverage": "complete",
+      "abi": "incoming ECX unused, stack actual name header, EAX actual node or null, RET4",
+      "original_bytes_hex": "6aff683825cc0064a100000000506489250000000051b974010000e880e7feff89042485c0c744240c00000000741d8b4c2414518bc8e865dcfeff8b4c240464890d0000000083c410c204008b4c240433c064890d0000000083c410c20400",
+      "original_bytes_sha256": "10ec1583b26ec4b060b4186f2bdccaf1f716e2ad268ba378a04d3ce5e2cda7ec"
+    },
+    {
+      "entry": "00b74ec0",
+      "end": "00b74ec9",
+      "bytes": 10,
+      "coverage": "complete",
+      "abi": "incoming ECX size ignored; ECX actual0109008C tail B6EB00, RET",
+      "original_bytes_hex": "b98c000901e9369cffff",
+      "original_bytes_sha256": "9504b05dbcc24fadf895417fac059b1dcf38985fe4a831a78355e008d04c3709"
+    },
+    {
+      "entry": "00b748d0",
+      "end": "00b748db",
+      "bytes": 12,
+      "coverage": "complete",
+      "abi": "ECX actual slot, RET; callee B6E490 RET4",
+      "original_bytes_hex": "51b98c000901e8b59bffffc3",
+      "original_bytes_sha256": "1a75637f830fec4d9e01d199b340fa0c7631bf5ce20036a5fc2447f4cfe048bc"
+    },
+    {
+      "entry": "00b743e0",
+      "end": "00b74407",
+      "bytes": 40,
+      "coverage": "complete",
+      "abi": "ECX unused, stack token, AL bool, RET4",
+      "original_bytes_hex": "8b4c2404b8440009018da424000000003908740f83c0043d5000090175f232c0c20400b001c20400",
+      "original_bytes_sha256": "f8795845d1043b5da03ca6d94866753fe18f8a61a7b3ca813113984760217634"
+    }
+  ],
+  "functions": [
+    {
+      "entry": "00b743c0",
+      "end": "00b743d8",
+      "bytes": 25,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack actual name header, EAX original, RET4",
+      "original_bytes_hex": "8b44240456508bf1e8d3b1ffffc706782dd6008bc65ec20400",
+      "original_bytes_sha256": "592b1f80ecb1f35ee021799d92fb0e46e7c737c4fb446765103d5f7177529793",
+      "address": "00b743c0",
+      "end_inclusive": "00b743d8",
+      "cpp_symbol": "construct_native_model_base_00b743c0",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b743d9",
+      "ghidra_name": "BSP_ModelBase_Construct",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "void * BSP_ModelBase_Construct(void * name)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual node, stack actual name header, EAX original, RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b743c0..00b743d8, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json."
+    },
+    {
+      "entry": "00b74b60",
+      "end": "00b74b7f",
+      "bytes": 32,
+      "coverage": "complete",
+      "abi": "ECX actual node, stack flags, EAX original, RET4",
+      "original_bytes_hex": "568bf1e8d8a8fffff644240801740b56b98c000901e81699ffff8bc65ec20400",
+      "original_bytes_sha256": "2f987b3ce17ef28c51715c0ae821bf617f195f14ff02b2c9e7171014ef738982",
+      "address": "00b74b60",
+      "end_inclusive": "00b74b7f",
+      "cpp_symbol": "delete_native_model_base_00b74b60",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b74b80",
+      "ghidra_name": "BSP_ModelBase_ScalarDelete",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "void * BSP_ModelBase_ScalarDelete(unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual node, stack flags, EAX original, RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b74b60..00b74b7f, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json."
+    },
+    {
+      "entry": "00b86720",
+      "end": "00b8677e",
+      "bytes": 95,
+      "coverage": "complete",
+      "abi": "incoming ECX unused, stack actual name header, EAX actual node or null, RET4",
+      "original_bytes_hex": "6aff683825cc0064a100000000506489250000000051b974010000e880e7feff89042485c0c744240c00000000741d8b4c2414518bc8e865dcfeff8b4c240464890d0000000083c410c204008b4c240433c064890d0000000083c410c20400",
+      "original_bytes_sha256": "10ec1583b26ec4b060b4186f2bdccaf1f716e2ad268ba378a04d3ce5e2cda7ec",
+      "address": "00b86720",
+      "end_inclusive": "00b8677e",
+      "cpp_symbol": "create_native_model_base_00b86720",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b8677f",
+      "ghidra_name": "BSP_ModelBase_Create",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "void * BSP_ModelBase_Create(void * name)",
+      "native_calling_convention": "__stdcall",
+      "original_abi": "incoming ECX unused, stack actual name header, EAX actual node or null, RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b86720..00b8677e, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json."
+    },
+    {
+      "entry": "00b74ec0",
+      "end": "00b74ec9",
+      "bytes": 10,
+      "coverage": "complete",
+      "abi": "incoming ECX size ignored; ECX actual0109008C tail B6EB00, RET",
+      "original_bytes_hex": "b98c000901e9369cffff",
+      "original_bytes_sha256": "9504b05dbcc24fadf895417fac059b1dcf38985fe4a831a78355e008d04c3709",
+      "address": "00b74ec0",
+      "end_inclusive": "00b74ec9",
+      "cpp_symbol": "allocate_native_model_base_00b74ec0",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b74eca",
+      "ghidra_name": "BSP_ModelBase_AllocateRawSlot",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "void * BSP_ModelBase_AllocateRawSlot(void)",
+      "native_calling_convention": "__cdecl",
+      "original_abi": "incoming ECX size ignored; ECX actual0109008C tail B6EB00, RET",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b74ec0..00b74ec9, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json. Prior generated static-dtor classification is disproved by MOV ECX,0109008C; JMP B6EB00 and the contained B8673B allocator call."
+    },
+    {
+      "entry": "00b748d0",
+      "end": "00b748db",
+      "bytes": 12,
+      "coverage": "complete",
+      "abi": "ECX actual slot, RET; callee B6E490 RET4",
+      "original_bytes_hex": "51b98c000901e8b59bffffc3",
+      "original_bytes_sha256": "1a75637f830fec4d9e01d199b340fa0c7631bf5ce20036a5fc2447f4cfe048bc",
+      "address": "00b748d0",
+      "end_inclusive": "00b748db",
+      "cpp_symbol": "return_native_model_base_00b748d0",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b748dc",
+      "ghidra_name": "BSP_ModelBase_ReturnRawSlot",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "void BSP_ModelBase_ReturnRawSlot(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual slot, RET; callee B6E490 RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b748d0..00b748db, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json."
+    },
+    {
+      "entry": "00b743e0",
+      "end": "00b74407",
+      "bytes": 40,
+      "coverage": "complete",
+      "abi": "ECX unused, stack token, AL bool, RET4",
+      "original_bytes_hex": "8b4c2404b8440009018da424000000003908740f83c0043d5000090175f232c0c20400b001c20400",
+      "original_bytes_sha256": "f8795845d1043b5da03ca6d94866753fe18f8a61a7b3ca813113984760217634",
+      "address": "00b743e0",
+      "end_inclusive": "00b74407",
+      "cpp_symbol": "native_model_base_is_type_00b743e0",
+      "source": "src/native_model_base_lifetime.cpp",
+      "header": "include/bsp/native_model_base_lifetime.hpp",
+      "report": "reports/native_model_base_lifetime.json",
+      "doc": "docs/NATIVE_MODEL_BASE_LIFETIME.md",
+      "end_exclusive": "00b74408",
+      "ghidra_name": "BSP_ModelBase_IsType",
+      "new_native_body": true,
+      "existing_body_raw_extension": false,
+      "native_prototype": "bool BSP_ModelBase_IsType(unsigned int token)",
+      "native_calling_convention": "__stdcall",
+      "original_abi": "ECX unused, stack token, AL bool, RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b743e0..00b74407, original register/stack preparation, current actual storage and bounded provider contracts reviewed. New model-base D62D78 implementation; borrowed actual0109008C pool and current type-token cells must already be initialized. Source C++ exception projection is distinct from native FH3/SEH and binary replacement ABI; gameplay unverified. Evidence: docs/NATIVE_MODEL_BASE_LIFETIME.md; reports/native_model_base_lifetime.json."
+    }
+  ],
+  "integration_bf_review": {
+    "combined_validation": "pending exact merged build and current-library fixture",
+    "game_validated": false
+  },
+  "worker_no_ghidra_function": [
+    {
+      "entry": "00b743e0",
+      "end_inclusive": "00b74407",
+      "bytes": 40,
+      "evidence": "Exact original disk bytes; recovered three-cell loop ending RET4. Integrator owns definition after lease release."
+    }
+  ],
+  "no_ghidra_function": [],
+  "root_function_definition": "reports/native_model_base_bf_function_definitions.json; full B743E0..B74407 verified, saved and exported."
 }
