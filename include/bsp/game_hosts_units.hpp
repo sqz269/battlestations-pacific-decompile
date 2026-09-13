@@ -61,6 +61,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/native_unit_observer_endpoint.hpp"
+#include "bsp/native_scene_lifecycle_notify.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 
 namespace bsp::game {
@@ -461,6 +462,12 @@ public:
     // endpoint operations before the frame/units owner is destroyed or replaced.
     std::optional<bsp::NativeUnitObserverAlias> observer_alias(
         const void* canonical_identity) noexcept;
+    // Borrow the same unit's actual +5C..+60 byte cells. This additionally
+    // requires the live observer alias above and resolved flag provenance.
+    // The view expires before unit teardown, just like observer_alias; finish
+    // operations before destruction/replacement. No callback providers bind here.
+    std::optional<bsp::NativeSceneLifecycleView> scene_lifecycle_view(
+        const void* canonical_identity) noexcept;
     const void* unit_identity_from_observer(
         const bsp::NativeObserverOwnerStorage* endpoint) const noexcept;
     // One canonical owner: UnitInstanceState holds+5C/+5D; the same slot holds
@@ -497,6 +504,8 @@ public:
     void unit_class_extents(std::size_t index, float& forward, float& right,
         float& up) const;
     // One row without rebuilding the flat table, for a per-frame reader.
+    // active is refreshed from the canonical byte on each request. Request
+    // again after lifecycle writes; neither row API lends an authoritative flag.
     const GameUnitRow* unit_row(std::size_t index) const noexcept;
     bool controlled_bound() const noexcept;
     std::size_t controlled_index() const noexcept;
