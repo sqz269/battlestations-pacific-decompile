@@ -1,27 +1,27 @@
 {
-  "scope": "Actual compiler dependencies with complete vertex/pixel source generators, compiler lookups and vertex-texture format query",
-  "validated_code_commit": "e2abc28f8b8ca8b2485935302066c0742c1819a1",
+  "scope": "Actual compiler dependencies and complete shader construction, pass ownership, registry removal and terminal lifetime",
+  "validated_code_commit": "05e953d4f624ca90414567b509a292f1a8cadba3",
   "default_registration": true,
-  "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
+  "default_build": "MSVC Win32 scripts/build.ps1 passed;CTest2/2",
   "checkpoint": {
+    "path": "local/checkpoints/05e953d4/native-shader-ownership-default/validation.json",
+    "sha256": "5b8490ecccd30753fb92caf80e1d7c63f8124a180e0be98427ec09c867ae545a",
+    "artifacts": 688
+  },
+  "previous_default_checkpoint": {
     "path": "local/checkpoints/e2abc28f/native-compiler-source-default/validation.json",
     "sha256": "d855e5fb33ce5fb8eb4c43449fec09dd45942f2c0092b1c777fd27a134f1a012",
     "artifacts": 448
   },
-  "previous_default_checkpoint": {
-    "path": "local/checkpoints/743847de/native-generation-helpers-default/validation.json",
-    "sha256": "ccaf3710971f28e42a839841c65f08e59add89f5caff6d89a017c6933731c98d",
-    "artifacts": 408
-  },
-  "fixture_programs": 25,
-  "fixture_origin_commit": "e2abc28f8b8ca8b2485935302066c0742c1819a1",
+  "fixture_programs": 29,
+  "fixture_origin_commit": "05e953d4f624ca90414567b509a292f1a8cadba3",
   "fixture_equivalence_after_metadata_merge": {
     "metadata_only_changed_paths": [],
     "all_three_library_hashes_unchanged": true,
     "all_runner_and_transitive_fixture_input_hashes_unchanged": true,
-    "input_count": 208
+    "input_count": 256
   },
-  "registered_library_sha256": "189b7b756a8e732e9d14a070828923d0943a7ea65bdcaf404ff8a8f60232c181",
+  "registered_library_sha256": "c155404e05950eda4dc003309ea9e7a6ea63bc90e8e85b79f2ebeb3f02f28dc1",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -107,9 +107,29 @@
       "report": "reports/native_shader_pixel_source.json",
       "checked": 197,
       "failed": 0
+    },
+    {
+      "report": "reports/native_material_pass_shader_slots.json",
+      "checked": 71,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_shader_descriptor_samplers.json",
+      "checked": 14,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_d3d9_shader_construction.json",
+      "checked": 30,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_d3d9_shader_lifetime.json",
+      "checked": 12,
+      "failed": 0
     }
   ],
-  "numeric_checked_rows": 1547,
+  "numeric_checked_rows": 1674,
   "resolved_indirect_included": 4,
   "worker_archives": {
     "system-fields": {
@@ -213,9 +233,93 @@
       "manifest": "local/compiler-path-workers/pixel-source/manifest.json",
       "sha256": "52997aa2c507f90316d4ecc6d3dea9d28ec811408c7595c89de75f123fdb8f54",
       "artifacts": 363
+    },
+    "pass-shader-slots": {
+      "commit": "4e74cde6f7b283599184a10ad653e408d7c3537b",
+      "manifest": "local/compiler-path-workers/pass-shader-slots/manifest.json",
+      "sha256": "c303dc630f7c6db5c7881465337799ed8e7ba952075d61639ddd231fff70cc58",
+      "artifacts": 139
+    },
+    "descriptor-samplers": {
+      "commit": "33587a285faa4816c50893dfe891e0e2d5d5b394",
+      "manifest": "local/compiler-path-workers/descriptor-samplers/manifest.json",
+      "sha256": "713a1a119a1e71f412ba3cc799b77eb69755a3dda72d63933d3848e2e498c6be",
+      "artifacts": 105
+    },
+    "shader-construction": {
+      "commit": "d3deeb41fed79fc084cb1ef07f9e022d31187efb",
+      "manifest": "local/compiler-path-workers/shader-construction/manifest.json",
+      "sha256": "fcd05969cbe3fadf1d7842bdf55e04c6b12b9d16b9220daf7c691645d8a51fa0",
+      "artifacts": 220
+    },
+    "shader-lifetime": {
+      "commit": "b3ada5d45e297eeb63efc9332e9e86e19775a9e2",
+      "manifest": "local/compiler-path-workers/shader-lifetime/manifest.json",
+      "sha256": "ae6af99c18dd64b18298cc4ca713f3cf255f2214c05c8548fdbae33bffba0eb9",
+      "artifacts": 213
     }
   },
   "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_readback_exported_addresses": [
+      "00b5eff0",
+      "00b5f080",
+      "00b5f0c0",
+      "00b5f100",
+      "00b44cf0",
+      "00b18fb0",
+      "00b3b280",
+      "00cbf400",
+      "00b5f9b0",
+      "00b5faf0",
+      "00b253e0",
+      "00b25450",
+      "00b22dd0",
+      "00b22e30",
+      "00b289a0",
+      "00b289f0",
+      "00b5f410",
+      "00b5f490",
+      "00b5f6e0",
+      "00b5f700",
+      "00b268a0",
+      "00b268c0"
+    ],
+    "reconstructed_addresses": [
+      "00b5eff0",
+      "00b5f080",
+      "00b5f0c0",
+      "00b5f100",
+      "00b44cf0",
+      "00b18fb0",
+      "00b5f9b0",
+      "00b5faf0",
+      "00b253e0",
+      "00b25450",
+      "00b22dd0",
+      "00b22e30",
+      "00b289a0",
+      "00b289f0",
+      "00b5f410",
+      "00b5f490",
+      "00b5f6e0",
+      "00b5f700",
+      "00b268a0",
+      "00b268c0"
+    ],
+    "analyzed_addresses": [
+      "00b3b280"
+    ],
+    "completed_body_repair": {
+      "address": "00cbf400",
+      "end_inclusive": "00cbf40a",
+      "instructions": 5,
+      "gaps": 0,
+      "record": "local/sampler-binding-unwind-recreation.json"
+    }
+  },
+  "previous_ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "saved_readback_exported_addresses": [
@@ -239,22 +343,6 @@
       "00b34c70"
     ]
   },
-  "previous_ghidra": {
-    "project": "C:/Users/sqz269/bsp.gpr",
-    "program": "/battlestationspacific.exe",
-    "saved_readback_exported_addresses": [
-      "00b37ef0",
-      "00b38080",
-      "00b357d0",
-      "00b35820",
-      "00b34e90",
-      "00b35540",
-      "00b36e30",
-      "00b37000",
-      "00b38230",
-      "00b382b0"
-    ]
-  },
   "repairs": [
     "B5BD10/B5DF70/B5BB20 post-free flow; B5DF00 full99-byte destructor restored",
     "B346E0 post-free nine-byte publication tail",
@@ -270,7 +358,9 @@
     "Ten actual sampler, field initialization, interpolator and shadow helpers reuse the same B0h builder, 1Ch fields, 110h descriptors, mapping arrays and pooled strings.",
     "Focused original/source fixtures preserve exact text/allocation traces, live descriptor/list/group replacement, captured decode limits and shadow policy read timing, plus retained child failures.",
     "Complete actual B39110 and B39880 source generation use the same B0h builder, descriptors, fields, helper contexts and pooled strings; native capture/current-load and incremental-write order is retained.",
-    "Actual B347E0/B34890/B34920 lookups preserve the borrowed cache gate/cursor/count/base and actual pass render-state route. B20190 tests exact S_OK for D3D9 vertex-texture/render-target usage."
+    "Actual B347E0/B34890/B34920 lookups preserve the borrowed cache gate/cursor/count/base and actual pass render-state route. B20190 tests exact S_OK for D3D9 vertex-texture/render-target usage.",
+    "Three actual pass-slot bodies and three descriptor-sampler leaf bodies preserve current storage reads, native scratch preimage, publish/retain/release order and retained failure state.",
+    "Eight actual shader constructor/registry bodies compose with six new destructor/scalar-delete/renderer-unregister bodies. Concrete canonical shader companions use the same raw+04 atomic and actual terminal provider through both pass-slot setters."
   ],
   "limits": [
     "New host Win32 interfaces are not native binary replacements.",
@@ -279,9 +369,6 @@
     "Reflection excludes failed/unpopulated COM outputs and out-of-range semantic IDs.",
     "Texture fixture excludes retry execution, enabled-guard reentry, cache bootstrap and complete original-loader equivalence.",
     "Full B3B3C0 native compiler continuation, rendering parity and rebuilt gameplay remain unverified.",
-    "Constant-header mutation fixture covers registry publication/count/row/limit changes; array-base replacement and scratch overwrite during allocation are assembly-reviewed, not fixture-exercised.",
-    "Vertex fixture relocates copied native bodies and rebinds audited dependency CALLs/tables; synthetic HLSL and shared existing string/VFS bridges do not prove fixed-address replacement or full installed material compilation.",
-    "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external.",
     "Constant-header mutation fixture covers registry publication/count/row/limit changes; array-base replacement and scratch overwrite during allocation are assembly-reviewed, not fixture-exercised.",
     "Vertex fixture relocates copied native bodies and rebinds audited dependency CALLs/tables; synthetic HLSL and shared existing string/VFS bridges do not prove fixed-address replacement or full installed material compilation.",
     "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external.",
@@ -294,12 +381,16 @@
     "Vertex source from installed Lua descriptors compiles vs_3_0; pixel fixture uses actual producer storage populated locally and compiles its no-fog depth output as ps_3_0. No draw/gameplay claim.",
     "Original/source fog outputs both fail with identical cFogDirColor diagnostics under comment-only descriptor Constants. Wider descriptor/pipeline context is unresolved; this is not proof of a native shader defect.",
     "SDK format-query direct/native/source results agree for two formats without constructing the full renderer/device/window.",
-    "CBF400 tail bytes were disassembled after clearing CALL_RETURN, but stored body coverage still omits CBF409..CBF40A. Its repair record explicitly remains incomplete."
+    "Explicit C++ interfaces over verified actual storage; not fixed-address or original ABI replacements. Original normal-body fixtures share accepted actual-storage and CRT dependencies.",
+    "Eight real-HAL-COM original/source lifetime comparisons plus both canonical pass-slot terminal paths pass. Four baseline HAL COM holds and device persist until fixture process exit; wrapper acquisitions and companions are cleaned.",
+    "Source state0 cleanup effects are verified; original private FH3 delivery and hardware fault semantics are not exercised.",
+    "Full B3B280 sampler orchestration still requires complete actual cache/event/online-manager closure. B3B3C0 compiler continuation, shader binding/drawing/readback and gameplay remain unproven.",
+    "The previous fog descriptor-context negative evidence remains unresolved: both original/source outputs report missing cFogDirColor with comment-only Constants. This is not evidence of a native shader defect."
   ],
   "pending_packets": [
-    "Actual pass shader slots B5EFF0/B5F080/B5F0C0 are complete in a worker and await integration.",
-    "Actual descriptor-sampler leaves and D3D9 shader construction/registry helpers continue in separately leased workers.",
-    "Full B3B280 sampler orchestration still needs the actual singleton/cache-loader dependency route.",
-    "B3B3C0 compiler continuation, concrete shader deletion providers, native FH3, rendering and gameplay remain outstanding."
+    "Sampler-loader singleton/factory-forwarder worker completed; reviewed source/assembly, separate integration and combined validation pending.",
+    "Actual B1A51D..B1AA29 cache continuation worker is in progress. Full B1A4F0/B1B4D0 remain incomplete pending actual platform event and online-manager closure.",
+    "Actual A40110 notification prerequisites are independently in progress; full A409F0 pump and BECB20/BECCD0 closure remain incomplete.",
+    "Full B3B280/B3B3C0 compiler orchestration, native FH3, shader drawing and gameplay remain outstanding."
   ]
 }
