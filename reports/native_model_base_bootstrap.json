@@ -1,0 +1,30 @@
+{
+  "packet": "orch3_model_base_bootstrap_impl_bg",
+  "status": "source_reconstructed_pending_central_registration",
+  "addresses": ["00cd7eb0", "00cd7f20", "00ce0e60"],
+  "native_body_credit": true,
+  "routines": [
+    {"address": "00cd7eb0", "end_inclusive": "00cd7efe", "coverage": "complete", "abi": "no stack arguments; RET; return unspecified"},
+    {"address": "00cd7f20", "end_inclusive": "00cd7f35", "coverage": "complete", "abi": "no stack arguments; EAX atexit status"},
+    {"address": "00ce0e60", "end_inclusive": "00ce0e69", "coverage": "complete", "abi": "no stack arguments; tail jump"}
+  ],
+  "host_steps": [
+    {"function": "00cd7eb0", "address": "00cd7ecf", "native": "00b6f110", "preparation": "ECX=0108FF90 actual shared node; guard01090031=1; name01090050=D62DE0"},
+    {"function": "00cd7eb0", "address": "00cd7eea", "native": "006fac20", "preparation": "capture node/root before stores01090048/4C; postincrement same lifetime counter+04 and store old01090044"},
+    {"function": "00cd7f20", "address": "00cd7f25", "native": "00b6e980", "preparation": "ECX=0109008C actual38h owner; D62C78/B6EA60 bound before publication"},
+    {"function": "00cd7f20", "address": "00cd7f2f", "native": "00bf6ff5", "preparation": "PUSH00CE0E60; POP ECX cleanup CD7F34; EAX status retained"},
+    {"function": "00ce0e60", "address": "00ce0e65", "native": "00b6e3d0", "kind": "tail_jump", "preparation": "ECX=0109008C same bound actual owner"}
+  ],
+  "no_ghidra_function": [],
+  "named_but_incomplete": ["CRT walker and invocation order", "00cd7f00 neighbor", "00b74b80", "00ce0e50", "application startup wiring"],
+  "validation": {
+    "strict_standalone_win32": "MSVC /std:c++20 /W4 /WX /fp:strict /EHsc compile passed",
+    "standalone_object_sha256": "98FA569A018B641CDD3A06B649971FDCAAE1527F9CDCE8EA8B237DDC4555B5B0",
+    "source_sha256": "0A85B05F6D4EF65DA6AE986793AD1C9003CB9B50518C0E4BB3B88CBE733A5E8E",
+    "verify_seeds": "passed",
+    "verify_report_calls": "5 checked, 0 failed",
+    "standard_build_ctest": "baseline library build in progress; this worker source is not yet registered centrally",
+    "game": "not run",
+    "original_binary_abi": "not established"
+  }
+}
