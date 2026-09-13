@@ -14,11 +14,6 @@ struct NativeInputSettingsDestructionCalls {
         NativeKeyboardTreeIterator first, NativeKeyboardTreeIterator last) = 0;
     virtual void* call_006a1aa0(void* tree, void* output,
         NativeKeyboardTreeIterator first, NativeKeyboardTreeIterator last) = 0;
-    // ECX begin, EDX end, stack owner and opaque word, RET8. Normal destructor
-    // passes the settings address as the opaque word; member unwind passes
-    // the header address. Private downstream stack aliases are not promised.
-    virtual void call_0069eea0(void* begin, void* end, void* owner, void* opaque) = 0;
-    virtual void call_006a6ee0(void* begin, void* end, void* owner, void* opaque) = 0;
 };
 
 struct NativeInputSettingsLifetimeContext {
