@@ -36,13 +36,17 @@ truthiness, error replay, stored settings reaching the prepass, actual director
 message receipt, four live director reads and three cache-disable transitions.
 The storage and geometry workers retain separate original-byte evidence.
 
-Mission query refresh at 009DA6E0 and the cruise request overload still require
-the live role-owner connection. The native bot at unit+740 has an attached
+Mission query refresh at 009DA6E0 now borrows the controller's actual cache/list
+views and world geometry. Its inputs come from the existing hull, look-ahead and
+class projections. The five stored tuning fields are captured during the
+represented settings load and feed sector and clearance consumers.
+
+The cruise request overload still requires the live role-owner connection.
+The native bot at unit+740 has an attached
 entity owner at bot+50; that is not a formation-group object. Role slots and
 participant AI-held bytes cannot be inferred from Party or selected-unit state.
-Until that connection is supplied, the chain query is explicitly recorded and
-the constructed selected list remains empty. No active mission avoidance or
-gameplay validation is claimed at this checkpoint. Five stored tuning inputs
-and the remaining state/request writers are also separate work.
+The new query and tuning bindings have not yet been exercised in the combined
+mission. No active mission avoidance or gameplay validation is claimed at this
+checkpoint. The remaining state/request writers are separate work.
 
 See `reports/ship_ai_live_avoidance.json` for the checkpoint evidence paths.

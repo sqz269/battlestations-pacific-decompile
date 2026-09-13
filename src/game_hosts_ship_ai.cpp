@@ -214,9 +214,16 @@ struct GameShipAiHost::Impl {
             throw std::logic_error("Ship avoidance settings have no established producer");
         return value;
     }
+    std::array<float, 5> avoidance_tuning() const {
+        std::array<float, 5> values;
+        if (!settings_owner || !settings_owner->read_avoidance_tuning(values))
+            throw std::logic_error("Ship avoidance tuning has no established producer");
+        return values;
+    }
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     unsigned long long hull_geometry_updates{};
+    unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
     std::int32_t session_mode{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
@@ -2211,12 +2218,12 @@ public:
         : owner_(owner), index_(index) {}
 
     float settings_blocked_margin_1d8() override {
-        owner_.record("ShipAiSectorScan::settings_blocked_margin_1d8", 0x009eb686u);
-        return 0.0f;
+        owner_.done("ShipAiSectorScan::settings_blocked_margin_1d8", 0x009eb686u);
+        return owner_.avoidance_tuning()[2];
     }
     float settings_neighbour_memory_194() override {
-        owner_.record("ShipAiSectorScan::settings_neighbour_memory_194", 0x009ebee3u);
-        return 0.0f;
+        owner_.done("ShipAiSectorScan::settings_neighbour_memory_194", 0x009ebee3u);
+        return owner_.avoidance_tuning()[0];
     }
     float unit_heading_vtable50() override {
         owner_.done("ShipAiSectorScan::unit_heading_vtable50", 0x009eb939u);
@@ -2987,6 +2994,37 @@ private:
 // bsp::ShipAiControllerHost, the sixteen steps of 009F50E0
 // ---------------------------------------------------------------------------
 
+class AvoidSearchBinding final : public bsp::ShipAiAvoidZoneSearcherHost {
+public:
+    AvoidSearchBinding(GameShipAiHost::Impl& owner,
+        GameShipAiHost::Impl::Controller& controller, std::size_t index)
+        : owner_(owner), controller_(controller), index_(index) {}
+    bool director_land_avoidance_0080e160_242() override {
+        GameDirectorAvoidance flags;
+        if (!owner_.units.director_avoidance(index_, flags))
+            throw std::logic_error("Ship avoid search has no live director");
+        owner_.done("ShipAiAvoidSearch::director_land", 0x0080e160u);
+        return flags.land;
+    }
+    void avoid_zone_segment_list_clear_004158a0(std::size_t index) override {
+        owner_.zones.clear_search(controller_.avoid_search->list(index));
+        ++owner_.avoidance_clears;
+        owner_.done("ShipAiAvoidSearch::clear", 0x004158a0u);
+    }
+    void avoid_zone_query_refresh_009d7050(std::size_t index,
+        const bsp::ShipAiAvoidZoneQuery& query) override {
+        auto& storage = *controller_.avoid_search;
+        if (owner_.zones.refresh_search(storage.cache(index), storage.list(index), query))
+            ++owner_.avoidance_refills;
+        ++owner_.avoidance_queries;
+        owner_.done("ShipAiAvoidSearch::query_refresh", 0x009d7050u);
+    }
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& controller_;
+    std::size_t index_;
+};
+
 class ControllerBinding final : public bsp::ShipAiControllerHost {
 public:
     ControllerBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -3167,7 +3205,17 @@ public:
     }
     void hold_009da0d0() override { owner_.record("ShipAi::hold", 0x009da0d0u); }
     void step_009eca20(float) override { owner_.record("ShipAi::step_009eca20", 0x009eca20u); }
-    void step_009da6e0(float) override { owner_.record("ShipAi::step_009da6e0", 0x009da6e0u); }
+    void step_009da6e0(float) override {
+        bsp::ShipAiAvoidZoneSearcherInputs inputs;
+        inputs.hull_x = ctl_.hull_geometry.position_184[0];
+        inputs.hull_z = ctl_.hull_geometry.position_184[1];
+        inputs.look_ahead_3c8 = ctl_.nav.look_ahead_max_3c8;
+        inputs.layer_key_168 = static_cast<std::int32_t>(ctl_.nav_block.class_reference_168);
+        AvoidSearchBinding binding(owner_, ctl_, index_);
+        bsp::ship_ai_refresh_avoid_zone_searchers_009da6e0(
+            ctl_.avoid_search->cache_views(), ctl_.avoidance, inputs, binding);
+        owner_.done("ShipAi::refresh_avoid_zone_searchers", 0x009da6e0u);
+    }
     void step_009f0ea0(float seconds) override {
         // 009F51E4, chain slot 14, one slot before the sector refresh, so the
         // list the scan walks is aged and compacted first. Packet
@@ -3417,10 +3465,11 @@ public:
         geometry.forward_x = hull.forward_1ac[0];
         geometry.forward_z = hull.forward_1ac[1];
         bsp::ShipAiClearanceSettings settings{};
-        // settings+1D4h, +214h and +218h. 00424C40's block has no producer for
-        // these three in this process; a zero refresh period makes 009EF91D's
-        // countdown expire every tick, which is the most active reading.
-        owner_.record("ShipAiClearance::settings_00424c40", 0x009ef948u);
+        const auto tuning = owner_.avoidance_tuning();
+        settings.refresh_period_1d4 = tuning[1];
+        settings.error_gate_committed_214 = tuning[3];
+        settings.error_gate_free_218 = tuning[4];
+        owner_.done("ShipAiClearance::settings_00424c40", 0x009ef948u);
         ctl_.clearance.heading_target_324 = ctl_.blk.heading_target_324;
         ctl_.clearance.path_length_330 = ctl_.blk.distance_330;
         ctl_.clearance.steering_mode_35c = static_cast<int>(ctl_.blk.direction);
@@ -4323,6 +4372,8 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
 void GameShipAiHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
+    host.log.notef("ship avoidance search: queries=%llu refills=%llu clears=%llu",
+        host.avoidance_queries, host.avoidance_refills, host.avoidance_clears);
     host.log.notef("native ship pre-step: updates=%llu; pose=cache-valid; "
         "model=absent; class-depth=loaded; width=loaded; full009e0270=bound",
         host.hull_geometry_updates);
