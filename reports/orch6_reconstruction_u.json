@@ -1,0 +1,254 @@
+{
+  "packet": "orch6_reconstruction_u",
+  "status": "native_pending_producers_cancel_and_scene_lifecycle_integrated_build_fixture_and_process_regression_checked",
+  "packets": [
+    {
+      "packet": "pending-entity-producers-u",
+      "commit": "236fc8e0f35277d343416804d9f1b0ba0bfc4bc4",
+      "report": "reports/native_pending_entity_producers.json",
+      "coverage": "Complete normal destroy926C80 and kill926D90 bodies over actual borrowed entity/list/lock views, with exact callback/cause/flag/link order. Canonical node/count defaults supplied.",
+      "validation": "Win32+2CTests;7normal native/source pairs,5852input and5856output bytes per side,zero mismatch;9direct call checks;2source-only exception cases;one real canonical-provider composition creates2malloc-backed nodes.",
+      "limits": "Actual entity/lock/virtual providers remain required. Original FH3 attempt exitedE06D7363 and is retained; native EH/game/ABI remain unproved."
+    },
+    {
+      "packet": "pending-entity-cancel-u",
+      "commit": "ee9f12e77aab0fe034ef66a6079e803cbe66b356",
+      "report": "reports/native_pending_entity_cancel.json",
+      "coverage": "Complete138-byte normal cancellation over borrowed actual byte cells/list owners, captured section, exact parent and flag/removal order.",
+      "validation": "Win32+2CTests;8original/source cases using original removal provider;294verified native bytes,13relocations;5direct call checks.",
+      "limits": "Remove-all781260 remains an explicit required provider. Worker fixtures cover original normal path; root separately widens provider types for pre-entry allocation exceptions."
+    },
+    {
+      "packet": "scene-lifecycle-notify-u",
+      "commit": "5458566baba042ef61eeb048af6205060bd88f39",
+      "report": "reports/native_scene_lifecycle_notify.json",
+      "coverage": "Complete destroyed926390 and immediate-remove9263C0 wrappers, borrowed unit flags/endpoints, exact captured listener and current virtual table ordering; existing real observer dispatch reused.",
+      "validation": "Win32+2CTests;6paired original/source scenarios use actual observer construction/edge registration/notification/cleanup;119owned routine bytes,7verified spans190bytes;5direct call checks.",
+      "limits": "Render getter/listener/base-tail providers are explicit fixture contracts.9263C0 has no current references. No application binding or native tail-call ABI claim."
+    },
+    {
+      "packet": "canonical-list-provider-reuse-u",
+      "commit": "27b7df46",
+      "report": "reports/pending_entity_library_reuse.json",
+      "coverage": "924B10 matches existing8665F0 and9267F0 matches8675E0 after complete relative-target and FH3-graph verification; reuse existing C++ providers without newSTL bodies.",
+      "validation": "12live/disk spans520bytes; complete51/147-byte bodies and matching handler/FuncInfo/unwind graph; producer actual-provider composition passed.",
+      "limits": "Static cleanup graph identity does not prove native exception transport."
+    },
+    {
+      "packet": "cancel-provider-exception-u",
+      "commit": "b14bf1e1",
+      "report": "reports/pending_entity_cancel_provider_exception.json",
+      "coverage": "Remove unsupported noexcept restriction from provider pointer types; propagate real allocating getter failures before lock capture/entry without adding automatic cleanup.",
+      "validation": "Combined Win32+2CTests and focused source-only bad_alloc propagation probe; flags/list bytes unchanged and remaining providers uncalled.",
+      "limits": "No native EH execution or post-entry failure cleanup equivalence claim."
+    }
+  ],
+  "validation": {
+    "compiled_commit": "3e28789bad8e40e16b6d68c21f317dc79f0a4be8",
+    "exe_sha256": "d6ec8e5dec50ccca3554fae41b47876048f9a99bf8cfb065e54e155929680752",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2existing CTests passed",
+    "build_record": {
+      "compiled_commit": "3e28789bad8e40e16b6d68c21f317dc79f0a4be8",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-pending-entity-cancel-u",
+        "agent/orch6-pending-entity-producers-u",
+        "agent/orch6-scene-lifecycle-notify-u",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_u_20260913T094125.log"
+    },
+    "process_run": {
+      "compiled_commit": "3e28789bad8e40e16b6d68c21f317dc79f0a4be8",
+      "run_commit": "3e28789bad8e40e16b6d68c21f317dc79f0a4be8",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_3e28789b.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_u.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_u.csv"
+      ],
+      "exe_sha256": "d6ec8e5dec50ccca3554fae41b47876048f9a99bf8cfb065e54e155929680752",
+      "preserved_executable": "local\\orch6_combined_3e28789b.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "0c3f1bd7213ff71c430300b656e80ca91701c60f3a81c4a548aef924f6c11d22",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "d750b3583c921335baf0b2a63e4749d908193cb20703d2273aa4b639cf75075c"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 13.464325189590454,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "process_scope": "Compatibility regression of current application paths. New nonempty queue/lifecycle routines are fixture checked, not claimed reached by this empty-queue mission run."
+  },
+  "evidence_archive": {
+    "worker_manifest": "local/orch6_worker_archive_u.json",
+    "worker_sha256": "4a40c6da833c2f828f75abfb9eb96cfe7ea11ebe674f92ad1c4f84f4616af2c2",
+    "worker_artifacts": 345,
+    "library_manifest": "local\\pending_library_proof\\manifest.json",
+    "library_sha256": "6f8937d13d232a08236994c3135eabd2a8c2eedc2fb029782860d0bb7a1ffe38",
+    "library_artifacts": 36,
+    "exception_probe_manifest": "local\\pending_cancel_exception_proof\\manifest.json",
+    "exception_probe_sha256": "62f954b057a3905670bac7e7e148f2c21d3af6809ed83ed907959be4d7732861",
+    "exception_probe_artifacts": 39
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "annotation_record": "local/orch6_u_annotations.json",
+    "annotation_sha256": "37fd0cb20a636ae0a177f9ae67a829637f02d9e3e15725e7a78da098bd04fdf0",
+    "cancel_annotation": "local/pending_cancel_u_annotations.txt",
+    "function_definitions": [
+      "reports/pending_entity_library_function_definitions.json",
+      "reports/pending_entity_producer_function_definitions.json"
+    ],
+    "exports": "local/orch6_u_export_refresh.txt",
+    "exports_sha256": "f011aa168a4a0b2c2f79d03547fe529eeac3a36d96db2776202a6b8f94df5586",
+    "deferred": "006D1E80 getter definition belongs to the active V scene-handle packet; existing body gaps in781260 remain explicitly reported."
+  },
+  "limits": [
+    "Current mission queues remain empty. New producer/cancel/drain application composition remains incomplete.",
+    "Required actual virtual targets, copy/remove providers and unit field bindings are not substituted by successful defaults.",
+    "Original FH3/SEH, concurrency, full native constructors/destructors, native ABI and original-game visual/gameplay parity remain unproved."
+  ],
+  "follow_up": [
+    "V actual borrowed unit scene-byte views in existing stable owners.",
+    "V exact unit scene-handle getter, killed clear/tail and producer store evidence.",
+    "V native pending drain with actual raw scratch/list ownership, required copy provider and observer notification composition."
+  ]
+}
