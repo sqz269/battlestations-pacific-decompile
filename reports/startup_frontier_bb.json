@@ -1,0 +1,598 @@
+{
+  "captured_utc": "2026-09-13T07:48:04.882754+00:00",
+  "source_head": "ca2ca6337d1d5114aa60484dfe063639e4a44b87",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live bytes command uses the project-verifying bsp.py ghidra wrapper; all ranges match installed PE bytes. No Ghidra mutation.",
+  "spans": [
+    {
+      "entry": "007175d0",
+      "inclusive_end": "0071769d",
+      "exclusive_end": "0071769e",
+      "bytes": 206,
+      "label": "getter_with_inlined_construction",
+      "sha256": "8c7a5e78a3d83072b606255109d25ee8747858ab0795842a07a4ada767214a51",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "007175d0: mov eax, dword ptr fs:[0]",
+        "007175d6: push -1",
+        "007175d8: push 0xc84c18",
+        "007175dd: push eax",
+        "007175de: mov dword ptr fs:[0], esp",
+        "007175e5: mov eax, dword ptr [0xe19b90]",
+        "007175ea: sub esp, 8",
+        "007175ed: test eax, eax",
+        "007175ef: jne 0x71768f",
+        "007175f5: push esi",
+        "007175f6: call 0x415350",
+        "007175fb: mov esi, dword ptr [eax + 0x10]",
+        "007175fe: test esi, esi",
+        "00717600: mov dword ptr [esp + 4], 0xce37fc",
+        "00717608: mov dword ptr [esp + 8], esi",
+        "0071760c: je 0x717619",
+        "0071760e: push esi",
+        "0071760f: call dword ptr [0xce2218]",
+        "00717615: add dword ptr [esi + 0x18], 1",
+        "00717619: mov dword ptr [esp + 0x14], 0",
+        "00717621: cmp dword ptr [0xe19b90], 0",
+        "00717628: jne 0x71767a",
+        "0071762a: push 8",
+        "0071762c: call 0xbf681b",
+        "00717631: add esp, 4",
+        "00717634: test eax, eax",
+        "00717636: je 0x717653",
+        "00717638: mov dword ptr [eax + 4], 0xcfd7f8",
+        "0071763f: mov dword ptr [eax], 0xcfd850",
+        "00717645: mov dword ptr [eax + 4], 0xcfd84c",
+        "0071764c: mov dword ptr [0xe19b90], eax",
+        "00717651: jmp 0x71765d",
+        "00717653: mov dword ptr [0xe19b90], 0",
+        "0071765d: mov eax, dword ptr [0xe19b90]",
+        "00717662: test eax, eax",
+        "00717664: je 0x71766b",
+        "00717666: add eax, 4",
+        "00717669: jmp 0x71766d",
+        "0071766b: xor eax, eax",
+        "0071766d: push eax",
+        "0071766e: call 0x415350",
+        "00717673: mov ecx, eax",
+        "00717675: call 0xbd0c30",
+        "0071767a: test esi, esi",
+        "0071767c: je 0x717689",
+        "0071767e: add dword ptr [esi + 0x18], -1",
+        "00717682: push esi",
+        "00717683: call dword ptr [0xce2210]",
+        "00717689: mov eax, dword ptr [0xe19b90]",
+        "0071768e: pop esi",
+        "0071768f: mov ecx, dword ptr [esp + 8]",
+        "00717693: mov dword ptr fs:[0], ecx",
+        "0071769a: add esp, 0x14",
+        "0071769d: ret "
+      ]
+    },
+    {
+      "entry": "007150b0",
+      "inclusive_end": "007150d8",
+      "exclusive_end": "007150d9",
+      "bytes": 41,
+      "label": "transient_base_scalar_delete",
+      "sha256": "d91d28e18aee38ad59eaf3c26911bb75864de5146b9bc2cffe17ffe227f35e20",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "007150b0: test byte ptr [esp + 4], 1",
+        "007150b5: push esi",
+        "007150b6: mov esi, ecx",
+        "007150b8: mov dword ptr [0xe19b90], 0",
+        "007150c2: mov dword ptr [esi], 0xce3818",
+        "007150c8: je 0x7150d3",
+        "007150ca: push esi",
+        "007150cb: call 0xbf65ac",
+        "007150d0: add esp, 4",
+        "007150d3: mov eax, esi",
+        "007150d5: pop esi",
+        "007150d6: ret 4"
+      ]
+    },
+    {
+      "entry": "00716520",
+      "inclusive_end": "00716527",
+      "exclusive_end": "00716528",
+      "bytes": 8,
+      "label": "secondary_adjusting_thunk",
+      "sha256": "3ca23e8ac55a55c010f015a1f935741f5de8cd05b6d8665c54b3c47f56578524",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "00716520: sub ecx, 4",
+        "00716523: jmp 0x716560"
+      ]
+    },
+    {
+      "entry": "00716530",
+      "inclusive_end": "00716551",
+      "exclusive_end": "00716552",
+      "bytes": 34,
+      "label": "direct_destructor",
+      "sha256": "6bc48aa3929362c8b653440e68d5140a09c32de0b8035c17ad3e076f753bd135",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "00716530: test ecx, ecx",
+        "00716532: je 0x716539",
+        "00716534: lea eax, [ecx + 4]",
+        "00716537: jmp 0x71653b",
+        "00716539: xor eax, eax",
+        "0071653b: mov dword ptr [0xe19b90], 0",
+        "00716545: mov dword ptr [eax], 0xce3818",
+        "0071654b: mov dword ptr [ecx], 0xcfd7dc",
+        "00716551: ret "
+      ]
+    },
+    {
+      "entry": "00716560",
+      "inclusive_end": "00716599",
+      "exclusive_end": "0071659a",
+      "bytes": 58,
+      "label": "primary_scalar_delete",
+      "sha256": "9c1351cd38754920e5ac7a3d96e85279bec51df078303b261264fc56d9d1db61",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "00716560: push esi",
+        "00716561: mov esi, ecx",
+        "00716563: test esi, esi",
+        "00716565: je 0x71656c",
+        "00716567: lea eax, [esi + 4]",
+        "0071656a: jmp 0x71656e",
+        "0071656c: xor eax, eax",
+        "0071656e: test byte ptr [esp + 8], 1",
+        "00716573: mov dword ptr [0xe19b90], 0",
+        "0071657d: mov dword ptr [eax], 0xce3818",
+        "00716583: mov dword ptr [esi], 0xcfd7dc",
+        "00716589: je 0x716594",
+        "0071658b: push esi",
+        "0071658c: call 0xbf65ac",
+        "00716591: add esp, 4",
+        "00716594: mov eax, esi",
+        "00716596: pop esi",
+        "00716597: ret 4"
+      ]
+    },
+    {
+      "entry": "00c84c10",
+      "inclusive_end": "00c84c17",
+      "exclusive_end": "00c84c18",
+      "bytes": 8,
+      "label": "getter_unwind_action",
+      "sha256": "6ec9eefee23e4d444d96eda5efd8b9b3dd6d28274da30d66b2d4635cc14630ea",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "00c84c10: lea ecx, [ebp - 0x14]",
+        "00c84c13: jmp 0x411ee0"
+      ]
+    },
+    {
+      "entry": "00c84c18",
+      "inclusive_end": "00c84c21",
+      "exclusive_end": "00c84c22",
+      "bytes": 10,
+      "label": "getter_FH3_handler",
+      "sha256": "dffb322714433241da91c2920ba726d1e8f202ab772b9131039d3de8ca2a3093",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true,
+      "listing": [
+        "00c84c18: mov eax, 0xdb353c",
+        "00c84c1d: jmp 0xbf6b43"
+      ]
+    },
+    {
+      "entry": "00db3534",
+      "inclusive_end": "00db355f",
+      "exclusive_end": "00db3560",
+      "bytes": 44,
+      "label": "getter_FH3_metadata",
+      "sha256": "2ed5c45c3e0fb5efa2565357a2f16116b0dfb66a0dc59f8b052b7ee692266c52",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true
+    },
+    {
+      "entry": "00cfd84c",
+      "inclusive_end": "00cfd857",
+      "exclusive_end": "00cfd858",
+      "bytes": 12,
+      "label": "final_factory_profiles",
+      "sha256": "665c830a67c371ffade1c5e2c5eb76c2b363a9af5b83654e46eb634d353c8893",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true
+    },
+    {
+      "entry": "00cfd7dc",
+      "inclusive_end": "00cfd7fb",
+      "exclusive_end": "00cfd7fc",
+      "bytes": 32,
+      "label": "base_factory_profiles",
+      "sha256": "bcaf30cd81e28f32064452520b96307a1b0b16c01a1ba46d23fa5a4da94bfdd0",
+      "matches_installed_pe": true,
+      "matches_live_ghidra": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/game_main.cpp",
+      "sha256": "6e921699b052a124ed8c7b0232b829910ff74fbd0cb2dafb7f764a0f490e1f45"
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "7d4ed7acc3d7de42253fe4cb7b18f255539b3f7fba170a56964fda385d501f43"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "sha256": "6450346a2fa9faedd9c964b735f19652b106c5b949dfb799958eb3b989e8a7d9"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "sha256": "075dbd5221b05df470b46446a2b35a122bc578450fdbd98a990246f29a6c4643"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "sha256": "c7baf6f7a25783322c5c6bbf291439d48713e77c2e86d5cb8fe51a7d0def85f8"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "sha256": "9ccdebf1d2f8bb35a78e92969ceb720513ae9508e9118648618c98b454fe7e32"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "sha256": "31a6ca3e286659cb094208288fe839f165b7bd730e5028eac3bc50193512eb13"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "sha256": "15adc5e96a9f3abce9955a97cd09879f58837d97ee4378e318896c1a28194d79"
+    },
+    {
+      "path": "src/game_hosts_fonts.cpp",
+      "sha256": "3e6650320dfee0d8d8bf0913a4dac0e4fb60644d4fae54de5ea9c27656790440"
+    },
+    {
+      "path": "src/game_hosts_frontend.cpp",
+      "sha256": "16cbf49fecf62582bdae54c603d3ce7986bb2fcd417c5fd47d10a05f05867666"
+    },
+    {
+      "path": "src/marker_classes.cpp",
+      "sha256": "80d16e8a88c5c1d67e3a8df94756ecf755b0586a88504fa7f04b14c4bb4d8176"
+    }
+  ],
+  "packet": "orch2_startup_frontier_bb",
+  "status": "static_frontier_discovery_no_source_implementation",
+  "mode": "read_only_Ghidra_and_installed_PE",
+  "implemented_bodies": 0,
+  "candidate_bodies": 5,
+  "candidate_bytes": 347,
+  "game_validated": false,
+  "build_run": false,
+  "tests_added": 0,
+  "finding": {
+    "source": "src/game_hosts.cpp:1201",
+    "earliest_explicit_normal_WinMain_noop": "StartupHost::publish_game_resource_factory",
+    "native_getter": "007175d0",
+    "factory_publication": "00e19b90",
+    "WinMain_alias": "00f8d31c",
+    "alias_not_cleared_by_native_owner_deletion": true,
+    "qualification": "Earliest explicit no-op on the normal reconstructed WinMain path; not proof that all preceding projected behavior is native-complete."
+  },
+  "calls": [
+    {
+      "address": "008f840b",
+      "native": "007175d0",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8419",
+      "native": "00737970",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8429",
+      "native": "0073d410",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "007188a4",
+      "native": "007175d0",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "007188ab",
+      "native": "004c1400",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "007188b4",
+      "native": "00b80720",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "007175f6",
+      "native": "00415350",
+      "function": "007175d0",
+      "kind": "call"
+    },
+    {
+      "address": "0071762c",
+      "native": "00bf681b",
+      "function": "007175d0",
+      "kind": "call"
+    },
+    {
+      "address": "0071766e",
+      "native": "00415350",
+      "function": "007175d0",
+      "kind": "call"
+    },
+    {
+      "address": "00717675",
+      "native": "00bd0c30",
+      "function": "007175d0",
+      "kind": "call"
+    },
+    {
+      "address": "0071658c",
+      "native": "00bf65ac",
+      "function": "00716560",
+      "kind": "call"
+    },
+    {
+      "address": "007150cb",
+      "native": "00bf65ac",
+      "function": "007150b0",
+      "kind": "call"
+    },
+    {
+      "address": "00716523",
+      "native": "00716560",
+      "function": "00716520",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c84c13",
+      "native": "00411ee0",
+      "function": "00c84c10",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0071b888",
+      "native": "00bf681b",
+      "function": "0071b870",
+      "kind": "call"
+    },
+    {
+      "address": "0071b8a6",
+      "native": "0071b810",
+      "function": "0071b870",
+      "kind": "call"
+    }
+  ],
+  "import_contracts": [
+    {
+      "address": "0071760f",
+      "native": "IAT[00ce2218] EnterCriticalSection",
+      "function": "007175d0"
+    },
+    {
+      "address": "00717683",
+      "native": "IAT[00ce2210] LeaveCriticalSection",
+      "function": "007175d0"
+    }
+  ],
+  "no_ghidra_function_at_discovery": [
+    {
+      "entry": "007150b0",
+      "inclusive_end": "007150d8",
+      "exclusive_end": "007150d9",
+      "role": "proposed transient-base scalar delete"
+    },
+    {
+      "entry": "00716520",
+      "inclusive_end": "00716527",
+      "exclusive_end": "00716528",
+      "role": "proposed secondary adjusting thunk"
+    },
+    {
+      "entry": "00716530",
+      "inclusive_end": "00716551",
+      "exclusive_end": "00716552",
+      "role": "proposed direct destructor"
+    },
+    {
+      "entry": "00c84c18",
+      "inclusive_end": "00c84c21",
+      "exclusive_end": "00c84c22",
+      "role": "FH3 handler metadata support, not a proposed implementation body"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_gap_at_discovery": {
+    "function": "00716560",
+    "call_site": "0071658c",
+    "start": "00716591",
+    "exclusive_end": "00716594",
+    "decoded": "ADD ESP,4",
+    "bytes": 3,
+    "worker_mutated_ghidra": false
+  },
+  "eh": {
+    "function": "007175d0",
+    "handler": "00c84c18",
+    "info": "00db353c",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00db3534",
+    "state_0": {
+      "to_state": -1,
+      "action": "00c84c10",
+      "guard": "EBP-14h",
+      "callee": "00411ee0"
+    },
+    "allocation_rollback": false,
+    "native_FH3_execution_tested": false
+  },
+  "native_profiles": {
+    "primary": "00cfd850",
+    "primary_delete": "00716560",
+    "create": "0071b870",
+    "registered_secondary_offset": 4,
+    "secondary": "00cfd84c",
+    "secondary_delete": "00716520",
+    "transient_secondary": "00cfd7f8",
+    "transient_base_delete": "007150b0",
+    "base_primary_after_delete": "00cfd7dc",
+    "base_secondary_after_delete": "00ce3818"
+  },
+  "source_boundaries": [
+    {
+      "source": "src/game_hosts_vfs.cpp:281",
+      "native": "004c1400",
+      "state": "parser-map projection exists; actual raw28h/cache owner missing"
+    },
+    {
+      "source": "src/game_hosts_fonts.cpp:89",
+      "native": "00ac3910",
+      "state": "real descriptor/resource loading source exists; do not assign as wholly missing"
+    },
+    {
+      "source": "src/game_hosts_frontend.cpp:468",
+      "native": "0073bae0",
+      "state": "real font/page/child source exists; raw GUI owner and native renderer binding remain distinct"
+    },
+    {
+      "source": "src/marker_classes.cpp:76",
+      "native": "007188a0",
+      "state": "sequence source exists with factory/manager/cache host contracts"
+    },
+    {
+      "source": "src/game_hosts.cpp:1596",
+      "native": "00bec1a0",
+      "state": "concrete reconstructed loop call after initialization; no runtime/gameplay claim"
+    }
+  ],
+  "named_incomplete_dependencies": [
+    {
+      "entry": "0071b870",
+      "status": "factory Create allocates74h and delegates constructor; no concrete source record"
+    },
+    {
+      "entry": "0071b810",
+      "status": "derived resource construction; no concrete source record"
+    },
+    {
+      "entry": "00b88260",
+      "status": "resource base/name construction; no concrete source record"
+    },
+    {
+      "entry": "00b80720",
+      "status": "resource cache/miss/reader/dispatch; no concrete source record"
+    },
+    {
+      "entry": "004c1400",
+      "status": "source parser-map projection, not actual raw singleton"
+    },
+    {
+      "entry": "00b81040",
+      "status": "actual raw resource manager construction remains external"
+    }
+  ],
+  "proposed_packets": [
+    {
+      "packet": "orch2_native_game_resource_factory_bb",
+      "state": "root_accepted_ready_after_root_Ghidra_preparation_and_lease_release",
+      "addresses": [
+        "007175d0",
+        "007150b0",
+        "00716520",
+        "00716530",
+        "00716560"
+      ],
+      "files": [
+        "include/bsp/native_game_resource_factory.hpp",
+        "src/native_game_resource_factory.cpp",
+        "docs/NATIVE_GAME_RESOURCE_FACTORY.md",
+        "reports/native_game_resource_factory.json"
+      ],
+      "shared_append_only": "cmake/startup.cmake",
+      "dependencies": [
+        "existing actual00415350 manager",
+        "existing actualBD0C30 registration",
+        "existing actual411EE0 captured guard",
+        "genuine Win32 critical section and CRT allocation contracts"
+      ],
+      "excluded": [
+        "Create0071b870 implementation",
+        "resource manager/cache/parser",
+        "renderer",
+        "shared application/deletion dispatcher edits"
+      ]
+    },
+    {
+      "packet": "orch2_game_resource_factory_process_binding_bb",
+      "state": "dependent_and_shared_files_leased",
+      "fragment_addresses": [
+        "008f840b",
+        "00bd0400"
+      ],
+      "files": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp",
+        "src/game_hosts.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/GAME_RESOURCE_FACTORY_PROCESS_BINDING.md",
+        "reports/game_resource_factory_process_binding.json"
+      ],
+      "depends_on": [
+        "orch2_native_game_resource_factory_bb",
+        "release/merge orch6_observer_application_r",
+        "release/merge orch4_input_settings_lifetime_aq"
+      ],
+      "required_behavior": [
+        "stable actualE19B90 publication and distinctF8D31C alias",
+        "same actualraw01090AA0 manager",
+        "CFD84C -> secondary SUB4 deletion",
+        "binding installed before registration",
+        "context alive through normal and exceptional raw drain",
+        "do not clear alias absent native evidence"
+      ]
+    }
+  ],
+  "validation": {
+    "native_bytes": "10 spans match live Ghidra and installed PE; full five-body disassembly captured",
+    "calls": "16 direct/tail rows checked, zero failures; two explicit imports not checked by call verifier",
+    "source": "focused static reads and source SHA256 pins",
+    "runtime": "not run; no game or window mutation",
+    "build": "not run for discovery-only documents",
+    "original_ABI": "described, not source ABI compatible",
+    "names": "existing descriptive names remain hypotheses; no new Ghidra or ledger writes"
+  },
+  "root_preparation": {
+    "completed": true,
+    "worker_mutated_ghidra": false,
+    "definitions": "local/startup-frontier-bb-evidence/root-function-definitions.json",
+    "flow_repairs": "local/startup-frontier-bb-evidence/root-flow-repairs.json",
+    "scalar_delete_listed_instructions": 18,
+    "scalar_delete_gaps": 0
+  }
+}
