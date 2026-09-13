@@ -18,15 +18,16 @@ namespace bsp {
 // 00415635 FCOMI ST0,ST1 with ST0 = *low and ST1 = *value, then JA: the low
 // bound wins only on a strict greater-than, which an unordered compare does not
 // take. 0041564B FCOMI with ST0 = *value and ST1 = *high, then JBE: the value
-// is kept only when it is less than or equal, so a NaN falls through to *high.
+// is kept when below, equal, or unordered. Only an ordered value > high takes
+// the high bound; in particular, a NaN value passes through.
 float clamp_float_by_ref_00415620(float value, float low, float high) noexcept {
     if (low > value) {
         return low;
     }
-    if (value <= high) {
-        return value;
+    if (value > high) {
+        return high;
     }
-    return high;
+    return value;
 }
 
 // ---------------------------------------------------------------------------
@@ -299,8 +300,9 @@ void unit_ai_order_push_turn_limit_00815f30(UnitAiOrderRecord& record,
 // ECX is never reloaded in sub_a's arm after 00811D8C MOV ESI,ECX, and sub_b's
 // two arms reload it explicitly with MOV ECX,ESI at 00811E49 and 00811E66. The
 // sign test is COMISS 0.0 against field_08 with JBE, so a non-negative high
-// bound takes the [field_04, field_08] clamp and a negative one takes the
-// swapped clamp followed by FCHS at 00811DEB / 00811E5B. sub_b's negative arm
+// bound or unordered comparison takes the [field_04, field_08] clamp. Only an
+// ordered negative bound takes the swapped clamp followed by FCHS at
+// 00811DEB / 00811E50. sub_b's negative arm
 // returns at 00811E5F without consulting anything else.
 float unit_ai_order_turn_limit_at_00811d80(const UnitAiOrderRecord& record,
                                            const std::array<float, 2>& position_xz) noexcept {
@@ -310,7 +312,7 @@ float unit_ai_order_turn_limit_at_00811d80(const UnitAiOrderRecord& record,
         const float dx = record.sub_a.field_10 - position_xz[0];
         const float dz = record.sub_a.field_14 - position_xz[1];
         if (static_cast<double>(dx * dx + dz * dz) < kUnitAiOrderTurnLimitRadiusSq) {
-            if (record.sub_a.field_08 >= 0.0f) {
+            if (!(0.0f > record.sub_a.field_08)) {
                 result = clamp_float_by_ref_00415620(record.blend_00, record.sub_a.field_04,
                                                      record.sub_a.field_08);
             } else {
@@ -324,7 +326,7 @@ float unit_ai_order_turn_limit_at_00811d80(const UnitAiOrderRecord& record,
         const float dx = record.sub_b.field_10 - position_xz[0];
         const float dz = record.sub_b.field_14 - position_xz[1];
         if (static_cast<double>(dx * dx + dz * dz) < kUnitAiOrderTurnLimitRadiusSq) {
-            if (record.sub_b.field_08 >= 0.0f) {
+            if (!(0.0f > record.sub_b.field_08)) {
                 result = clamp_float_by_ref_00415620(record.blend_00, record.sub_b.field_04,
                                                      record.sub_b.field_08);
             } else {

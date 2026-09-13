@@ -35,12 +35,13 @@ namespace bsp {
 
 // 00415620, float __fastcall(float* value, const float* low, const float* high),
 // RET 4 at 00415654 and 0041565C, body 00415620-0041565E, complete. It reads
-// all three operands through pointers:
+// value and low through pointers, and high only if low does not win:
 //   if (*low > *value) return *low;
-//   if (*value <= *high) return *value;
-//   return *high;
-// The first compare is FCOMI/JA and the second FCOMI/JBE, so a NaN value falls
-// through both and the routine returns *high.
+//   if (*value > *high) return *high;
+//   return *value;
+// FCOMI/JA rejects unordered at the first branch; FCOMI/JBE accepts it at
+// the second. A NaN value passes through. This by-value C++ projection does
+// not reproduce the native pointer access schedule or unmasked FP traps.
 float clamp_float_by_ref_00415620(float value, float low, float high) noexcept;
 
 // 006BC0C0, float* __thiscall(float* out)(float heading), RET 4 at 006BC10F,
@@ -225,8 +226,11 @@ void unit_ai_order_push_turn_limit_00815f30(UnitAiOrderRecord& record,
 // 00811D80-00811E7C, RET 4 at 00811E5F and 00811E7A, complete. Returns 30.0f unless a live sub-record sits
 // within 20 units of the query position, in which case it returns
 // record.blend_00 clamped into that sub-record's bounds, negated when the
-// sub-record's high bound is negative. sub_b wins when both match, and sub_b's
-// negative arm returns immediately.
+// sub-record's high bound is ordered negative. An unordered high bound takes
+// the ordinary clamp arm; an unordered squared distance rejects the slot.
+// sub_b wins when both match, and sub_b's negative arm returns immediately.
+// The existing distance expression is not an all-input x87 rounding claim;
+// see docs/SHIP_AI_THROTTLE_CLAMP.md for the selected original-byte proof.
 float unit_ai_order_turn_limit_at_00811d80(const UnitAiOrderRecord& record,
                                            const std::array<float, 2>& position_xz) noexcept;
 
