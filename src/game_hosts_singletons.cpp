@@ -36,6 +36,9 @@ void GameSingletonHost::bind_input_backend(NativeInputBackendOwnerContext* conte
 void GameSingletonHost::bind_input_actions(NativeInputActionOwnerContext* context) noexcept {
     deletion_bindings_.input_actions = context;
 }
+void GameSingletonHost::bind_input_settings(NativeInputSettingsLifetimeContext* context) noexcept {
+    deletion_bindings_.input_settings = context;
+}
 void GameSingletonHost::bind_observer_lifetime(NativeObserverLifetime* lifetime) noexcept {
     deletion_bindings_.observer_lifetime = lifetime;
 }

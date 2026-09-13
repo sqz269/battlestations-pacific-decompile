@@ -1,0 +1,20 @@
+{
+  "packet": "orch4_input_settings_singleton_ay",
+  "status": "host_publication_and_binding_source_build_tested",
+  "baseline": {"before_merge": "dbf67b7ac228f2de90aab0d00e58dfba047de14d", "after_merge": "94b13788"},
+  "target": {"project": "bsp", "program": "battlestationspacific.exe"},
+  "source": ["include/bsp/game_hosts_singletons.hpp", "src/game_hosts_singletons.cpp"],
+  "documentation": "docs/GAME_INPUT_SETTINGS_SINGLETON_AY.md",
+  "behavior": [
+    "GameSingletonHost owns a stable null-initialized input settings E198E8 publication cell",
+    "Accessors lend references to this cell and the existing raw manager 01090AA0 cell",
+    "bind_input_settings supplies the borrowed settings lifetime context to existing CF81CC deletion dispatch"
+  ],
+  "prerequisites": [
+    "Consumer composes NativeInputSettingsLifetimeContext with stable cells and populated table services",
+    "Consumer binds before any settings registration and retains context through raw manager drain"
+  ],
+  "unreached": ["settings getter or construction", "table parsing", "script and VFS behavior", "gameplay validation"],
+  "validation": ["Clean ./scripts/build.ps1 at dbf67b7a passed reconstructed_math CTest", "Post-merge ./scripts/build.ps1 at 94b13788 passed reconstructed_math CTest"],
+  "ghidra": "read-only target count verified; no Ghidra mutations or address claims"
+}
