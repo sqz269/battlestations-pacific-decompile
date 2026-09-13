@@ -1,0 +1,384 @@
+{
+  "packet": "orch5_native_compiled_shader_owner",
+  "source": "src/native_compiled_shader_owner.cpp",
+  "header": "include/bsp/native_compiled_shader_owner.hpp",
+  "documentation": "docs/NATIVE_COMPILED_SHADER_OWNER.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_bsp_wrappers",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00b38310",
+      "end": "00b38381",
+      "symbol": "copy_native_compiled_shader_constant_00b38310",
+      "original_abi": "ECX destination20h, stack source20h; EAX same; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 114,
+      "sha256": "c57892fb36f1500a30fc213f786048f3af0838533131e001d52aeb0e8e90b619",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b38390",
+      "end": "00b38486",
+      "symbol": "reserve_native_compiled_shader_constants_00b38390",
+      "original_abi": "ECX actual0Ch array, signed stack capacity; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 247,
+      "sha256": "ded5273d79fb0e2b2116e2274fcc6f34e84215ae956b33105044ad129d2a00e1",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b38490",
+      "end": "00b38546",
+      "symbol": "resize_native_compiled_shader_constants_00b38490",
+      "original_abi": "ECX actual0Ch array, signed stack count; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 183,
+      "sha256": "83553ffab7e0aaf9a0423591b4a260ac666c643cb4ee3cc796366ecfc789b6ad",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b5bb40",
+      "end": "00b5bbb2",
+      "symbol": "initialize_native_compiled_shader_constant_00b5bb40",
+      "original_abi": "ECX fresh20h record; EAX same; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 115,
+      "sha256": "632b285b34189db1e51dd3e496c778a0be6d6cd76d225ce5c533168c9ac77e8a",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b3a660",
+      "end": "00b3a6cf",
+      "symbol": "append_native_compiled_shader_constant_00b3a660",
+      "original_abi": "ECX actual0Ch array, stack source20h; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 112,
+      "sha256": "f6bde10510c802d46492c2967632e24bd42672158a9d3371bf009859d4fddff0",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b3b1e0",
+      "end": "00b3b23c",
+      "symbol": "destroy_native_compiled_shader_00b3b1e0",
+      "original_abi": "ECX actual88h owner; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 93,
+      "sha256": "9d8b5aca17c6ae26a2fff0dc49c8dd524bf4773b02138212530c9ef5fc6aef55",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    },
+    {
+      "address": "00b3b260",
+      "end": "00b3b27d",
+      "symbol": "delete_native_compiled_shader_00b3b260",
+      "original_abi": "ECX owner, stack flags; EAX original pointer; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 30,
+      "sha256": "e162d6f4cdd21b2622c29c3668d88685cd0d3dfda473efa83a920e733b75f0cd",
+      "remaining": "Original private SEH/exception behavior not emitted; explicit retained host array failures where allocation/copy can throw"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b38355",
+      "native": "0041dd40",
+      "caller": "00b38310"
+    },
+    {
+      "address": "00b3836b",
+      "native": "00bf7680",
+      "caller": "00b38310"
+    },
+    {
+      "address": "00b383d0",
+      "native": "00bf55be",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b3840d",
+      "native": "00b38310",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b38447",
+      "native": "00419cc0",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b3844e",
+      "native": "00bd1510",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b38461",
+      "native": "00bf6989",
+      "caller": "00b38390"
+    },
+    {
+      "address": "00b384bb",
+      "native": "00b38390",
+      "caller": "00b38490"
+    },
+    {
+      "address": "00b384e5",
+      "native": "00b5bb40",
+      "caller": "00b38490"
+    },
+    {
+      "address": "00b3851f",
+      "native": "00419cc0",
+      "caller": "00b38490"
+    },
+    {
+      "address": "00b38526",
+      "native": "00bd1510",
+      "caller": "00b38490"
+    },
+    {
+      "address": "00b5bb7c",
+      "native": "0041dd40",
+      "caller": "00b5bb40"
+    },
+    {
+      "address": "00b5bb91",
+      "native": "00bf7680",
+      "caller": "00b5bb40"
+    },
+    {
+      "address": "00b3a695",
+      "native": "00b38390",
+      "caller": "00b3a660"
+    },
+    {
+      "address": "00b3a6b5",
+      "native": "00b38310",
+      "caller": "00b3a660"
+    },
+    {
+      "address": "00b3b20d",
+      "native": "00b38490",
+      "caller": "00b3b1e0"
+    },
+    {
+      "address": "00b3b215",
+      "native": "00bf6989",
+      "caller": "00b3b1e0"
+    },
+    {
+      "address": "00b3b263",
+      "native": "00b3b1e0",
+      "caller": "00b3b260"
+    },
+    {
+      "address": "00b3b270",
+      "native": "00bf65ac",
+      "caller": "00b3b260"
+    },
+    {
+      "address": "00b3b5b0",
+      "native": "00bf79f0",
+      "caller": "00b3b3c0"
+    },
+    {
+      "address": "00b3b60a",
+      "native": "00bf79f0",
+      "caller": "00b3b3c0"
+    },
+    {
+      "address": "00b3b56e",
+      "native": "00bf681b",
+      "caller": "00b3b3c0",
+      "arguments": "88h; ADD ESP4 atB3B575"
+    },
+    {
+      "address": "00b3b5c8",
+      "native": "00bf681b",
+      "caller": "00b3b3c0",
+      "arguments": "88h; ADD ESP4 atB3B5CF"
+    },
+    {
+      "address": "00b5bd8d",
+      "native": "00b38310",
+      "caller": "00b5bd10",
+      "arguments": "ECX replacement row; current source row on stack; RET4"
+    },
+    {
+      "address": "00b5bf24",
+      "native": "00b38310",
+      "caller": "00b5bed0",
+      "arguments": "ECX current append slot; saved source argument on stack; RET4"
+    },
+    {
+      "address": "00b5be65",
+      "native": "00b5bb40",
+      "caller": "00b5be10",
+      "arguments": "ECX current default-grown slot; RET"
+    },
+    {
+      "address": "00b3a7a0",
+      "native": "00b3a660",
+      "caller": "00b3a750",
+      "arguments": "ECX owner+78; actual20h temporary from B5BC60 on stack; RET4"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00d61810+04",
+      "caller": "00bd30e0",
+      "kind": "indirect",
+      "arguments": "Current raw owner, flags1; D61810 current04=B3B260"
+    }
+  ],
+  "raw_body_steps": [
+    {
+      "native": "00bd30f0",
+      "caller": "00b3b1e0",
+      "call_site": "00b3b227",
+      "body_status": "no_ghidra_function",
+      "intended_function": "00b3b1e0"
+    }
+  ],
+  "body_gaps": [
+    {
+      "start": "00b38466",
+      "end": "00b38474",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved free no-return omission hides replacement data/capacity publication; enclosing min/max bounds do not include these bytes."
+    },
+    {
+      "start": "00b3b21a",
+      "end": "00b3b23c",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved destructor ends after BF6989. Raw tail calls BD30F0 and returns normally."
+    },
+    {
+      "start": "00b3b275",
+      "end": "00b3b277",
+      "body_status": "no_ghidra_function",
+      "reason": "Saved scalar delete omits post-free ADD ESP4."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "D61810 could be inferred as a complete compiled COM shader from the semantic name",
+      "is": "Actual88h reflection metadata owner with an owning20h-record array at78; destructor has no COM release",
+      "evidence": "B3B57C/B3B5D6 inlined producers; D61810 bytes; B3B1E0 complete raw normal path"
+    },
+    {
+      "was": "Named free thunk truncates three saved lifetime/helper paths",
+      "is": "All return; reserve publishes afterward, destructor calls BD30F0 afterward, scalar wrapper cleans its free argument",
+      "evidence": "no_ghidra_function ranges plus original-byte fixture"
+    }
+  ],
+  "native_profile": {
+    "address": "00d61810",
+    "slot_00": "00bd30e0",
+    "slot_04": "00b3b260",
+    "next_bytes": "ShadowTexture literal, not another slot"
+  },
+  "producer": {
+    "coverage": "complete_inline_writes_only",
+    "containing_function": "00b3b3c0",
+    "containing_body": "00b3b3c0..00b3c390",
+    "ranges": [
+      "00b3b57c..00b3b5b7",
+      "00b3b5d6..00b3b611"
+    ],
+    "register_provenance": "ESI captured allocator EAX atB3B573/B3B5CD; EBP zero atB3B3F9; no intervening EBP writes untilB3B7BE",
+    "writes": [
+      "00 CEB130",
+      "04 1",
+      "00 D61810",
+      "74 byte0",
+      "78/7C/80/84 DWORD0",
+      "08..3D FF"
+    ],
+    "unwritten": [
+      "3E..73",
+      "75..77"
+    ],
+    "publication_sites": [
+      "00b3b5c5 pass+70",
+      "00b3b61c pass+74"
+    ],
+    "allocation_owned_by_caller": true
+  },
+  "ownership": {
+    "same_raw_counter": true,
+    "second_counter": false,
+    "com_owner": false,
+    "array_names": "SAME actual NativeStringStorage pool/publication/lifetime domain",
+    "terminal": "existing actual+04 decrement -> canonical owner -> BD30E0 -> current04 B3B260(flags1)",
+    "direct_delete": "No reference decrement/test; free iff flags&1",
+    "retirement": "caller keeps bind/find live through native destruction and free, then unbinds/retires companion",
+    "failure": "Required caller-retained operation keeps replacement/current row/source; caller must keep owner/source alive and prevent terminal admission; no native SEH rollback claimed Running/failed operation destructor terminates; only an explicit diagnostic cleanup acknowledgement after external cleanup and cleared acquisition pointers permits diagnostic_retired."
+  },
+  "validation": {
+    "strict_new_source_compile": "Passed; final new production source compiled by the focused runner against this baseline library",
+    "build": "scripts/build.ps1 Win32 baseline passed; CTest reconstructed_math1/1 passed; new source is deliberately not in the leased CMake registry",
+    "fixture": "Exact new production cpp compiled with /std:c++20 /W4 /WX /O2 /fp:strict and linked to current baseline bsp_core; original/source fixture passed after final guard corrections",
+    "call_verifier": "27 numeric call rows checked,0 failed;1 indirect current04 row not checked;1 raw-tail call explicitly outside live verifier coverage",
+    "cmake_registration": "not appended: cmake/startup.cmake held by foreign orch6 lease; parent integration required",
+    "independent_review": "Root/menu_activation accepted final guard and native body deltas; HPP90c998746a1b1ba47f97f53f10064bec273cf8cb0a06470adb73d1f94fa56199; CPP8526339b94c9dea0a78a098273fe3cc5a354e10353ada6c1e1d7ea24cdbfcc43",
+    "failure_disposal_guard": "Same real failed reserve fixture rerun in a child with a terminate handler: explicit failed-frame destructor reached expected exit77. Ordinary diagnostic cleanup uses diagnostic_retired, never complete."
+  },
+  "fixture": {
+    "runner": "local/run_native_compiled_shader_probe.ps1",
+    "source": "local/native_compiled_shader_probe.cpp",
+    "generator": "local/make_shader_original.py",
+    "bytes_manifest": "local/shader_original_manifest.json",
+    "bytes": 1014,
+    "instructions": 329,
+    "range_count": 9,
+    "scope": [
+      "both exact raw88h producer preimages",
+      "record default/copy and named array growth16->24 plus explicit reserve40",
+      "forward old-name release and reverse count-before-release shrink",
+      "default growth without payload zeroing",
+      "retained mid-reserve allocation/copy failure",
+      "direct flags0 count3 with stale headers",
+      "SAME raw+04 canonical2->1->0 and explicit count2 deletion, retirement after free",
+      "child-process rejection of actual failed-frame disposal, expected terminate exit77"
+    ],
+    "boundary": "Original body calls rehosted to actual string pool/CRT/refcount base operations. Inline producer adapters establish ESI/EBP. Private native SEH handlers not executed. No shader bytecode/compiler/COM/result stand-in."
+  },
+  "remaining": [
+    "Actual B3B3C0 compiler tail remains required; this constructor fragment does not publish a pass or report compile success.",
+    "B3AEA0 full raw reflection and B3A750/B5BC60 parameterized reflection-record population remain separate ready-source work.",
+    "Separate actual COM shader owners and D3D/D3DX services are not inferred from semantic pipeline objects.",
+    "Malformed raw memory, allocation overflow and native EH/SEH behavior are not covered.",
+    "Saved body gaps need primary repair after lease handoff."
+  ],
+  "reuse": [
+    {
+      "address": "00bf55be",
+      "target": "00bf681b",
+      "evidence": "Five-byte JMP thunk; existing singleton_lifetime_allocate handles real CRT/new retry boundary"
+    },
+    {
+      "address": "00bf6989",
+      "target": "00bf65ac",
+      "evidence": "Five-byte JMP thunk; singleton_lifetime_free"
+    },
+    {
+      "address": "0041dd40",
+      "evidence": "Existing actual8h string resize; ECX header, stack length/preserve, RET8"
+    },
+    {
+      "address": "00419cc0",
+      "evidence": "Existing actual string pool getter, no native arguments; three pending caller stack words belong to BD1510"
+    },
+    {
+      "address": "00bd1510",
+      "evidence": "Existing actual pool return, ECX pool, stack block/size/unused, RET0C"
+    },
+    {
+      "address": "00bd30f0",
+      "evidence": "Existing complete naked actual base stamp, ECX owner, RET; no count write"
+    }
+  ]
+}
