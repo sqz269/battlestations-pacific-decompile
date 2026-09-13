@@ -1,0 +1,255 @@
+{
+  "packet": "orch6_unit_scene_flags_v",
+  "base_commit": "b14bf1e1",
+  "dependency_commit": "14ed0b23",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "READ ONLY formal BSP CLI verifies project/program before each batch; no annotations or new address ownership",
+  "source": "src/game_hosts_units.cpp",
+  "headers": [
+    "include/bsp/game_hosts_units.hpp",
+    "include/bsp/unit_instance.hpp"
+  ],
+  "documentation": "docs/GAME_UNIT_SCENE_LIFECYCLE_VIEW.md",
+  "new_native_functions": 0,
+  "routines": [
+    {
+      "symbol": "GameUnitsHost::scene_lifecycle_view",
+      "coverage": "complete application binding only",
+      "original_abi": "none; new optional borrowed C++ interface",
+      "abi_compatible": false
+    },
+    {
+      "symbol": "GameUnitsHost::unit_row / units",
+      "coverage": "complete activity snapshot refresh at existing readers",
+      "original_abi": "none; application interface",
+      "abi_compatible": false
+    }
+  ],
+  "storage": [
+    {
+      "native_field": "+5C",
+      "owner": "UnitInstanceState::active",
+      "cell": "uint8_t",
+      "constructor_store": "00925E0E",
+      "activation_store": "00923855",
+      "host_initial": 1
+    },
+    {
+      "native_field": "+5D",
+      "owner": "UnitInstanceState::simulate",
+      "cell": "uint8_t",
+      "constructor_store": "00925E14",
+      "host_initial": 0
+    },
+    {
+      "native_field": "+5E",
+      "owner": "GameUnitSlot::scene_destroyed_005e",
+      "cell": "uint8_t",
+      "constructor_store": "00925E11",
+      "host_initial": 0
+    },
+    {
+      "native_field": "+5F",
+      "owner": "GameUnitSlot::scene_removed_005f",
+      "cell": "uint8_t",
+      "constructor_store": "00925E0B",
+      "host_initial": 0
+    },
+    {
+      "native_field": "+60",
+      "owner": "GameUnitSlot::scene_pending_destroy_0060",
+      "cell": "uint8_t",
+      "constructor_store": "00925E08",
+      "host_initial": 0
+    }
+  ],
+  "provenance": {
+    "constructor": "00925CE0 full stored listing; XOR EBX,EBX at00925CFD, all EBX/BL writes filtered; byte stores00925E08..14",
+    "activation": "00923840 complete body; MOV AL,1 at00923853 then MOV[ECX+5C],AL at00923855",
+    "generic_state_defaults": "former bool true/true retained as uint8_t1/1; actual host still explicitly1/0",
+    "alias": "existing GameUnitSlot stable identity and NativeUnitObserverPrefixStorage, actual Destroyer primaryCFC3D0/callbackCFC3B8",
+    "scope": "same retained source field owners; not a native object layout reconstruction"
+  },
+  "host_steps": [
+    {
+      "address": "009263A1",
+      "native": "00925C90",
+      "function": "00926390",
+      "contract": "existing conditional slot08 notification; actual runtime/lifetime and registered edge in fixture"
+    },
+    {
+      "address": "009263C8",
+      "native": "unit+vtable18",
+      "function": "009263C0",
+      "contract": "explicit null fixture input to verified6D1E80 field-read contract; no application scene-handle binding"
+    },
+    {
+      "address": "009263DC",
+      "native": "unit+vtable18",
+      "function": "009263C0",
+      "contract": "second getter is unreachable for fixture null input; remains explicit existing U provider"
+    },
+    {
+      "address": "009263E5",
+      "native": "004BCA80",
+      "function": "009263C0",
+      "contract": "existing renderer setter is unbound and unreachable in this fixture"
+    },
+    {
+      "address": "00926401",
+      "native": "00925C40",
+      "function": "009263C0",
+      "contract": "existing conditional slot04 notification; real T80DFC0 leaf selected by actualCFC3B8"
+    },
+    {
+      "address": "009263AE",
+      "native": "unit+vtable7C",
+      "function": "00926390",
+      "kind": "indirect_tail_jump",
+      "contract": "actualCFC3D0 slot7C824B60 remains external; explicit fixture throw after prior real effects"
+    },
+    {
+      "address": "00926411",
+      "native": "unit+vtable80",
+      "function": "009263C0",
+      "kind": "indirect_tail_jump",
+      "contract": "actualCFC3D0 slot80951FB0 remains external; explicit fixture throw after prior real effects"
+    },
+    {
+      "address": "0092589D",
+      "native": "00695870",
+      "function": "00925780",
+      "contract": "existing callback-owner teardown after source lookup withdrawal"
+    },
+    {
+      "address": "009258AC",
+      "native": "00695760",
+      "function": "00925780",
+      "contract": "existing observed-owner teardown after callback-owner teardown"
+    }
+  ],
+  "consumer_audit": {
+    "outside_owned_source": "src/unit_instance.cpp simulate conditions only; no bool references, addresses, serialization or type-dependent consumers found; no core implementation edit",
+    "host_gates": "unit_active, unit_flag_005d, SceneNodeFlags, pending getter, alive-and-visible, director and motion loops read canonical cells",
+    "snapshot_reader": "src/game_hosts_ship_ai.cpp nearby enemy scan requests unit_row and tests row.active",
+    "flat_rows": "src/game_hosts_mission_frame.cpp trajectory stream obtains units() snapshot",
+    "refresh": "both row APIs refresh active !=0 from existing state before publishing a snapshot"
+  },
+  "guards": [
+    "live bound observer runtime",
+    "known published creator prefix",
+    "actual canonical identity in this host",
+    "existing state",
+    "scene_flags_available"
+  ],
+  "corrections": [
+    {
+      "was": "five bool cells could not safely lend native uint8_t lvalues",
+      "is": "same five owners use uint8_t cells; Boolean snapshots explicitly test nonzero",
+      "evidence": "native byte stores00925E08..14 and00923855; complete direct type consumer audit"
+    },
+    {
+      "was": "store_scene_node_flags alone refreshed cached row.active",
+      "is": "unit_row and units refresh activity on every read, including direct borrowed-byte writes",
+      "evidence": "actual ship AI row.active reader; lifecycle fixture checks snapshots from observer callback after preceding native-derived stores"
+    }
+  ],
+  "lifetime": {
+    "source_verified": "observer_prefix_ready=false precedes callback and observed destruction; new view lookup delegates to that same guarded observer_alias",
+    "fixture_verified": "all views disposed before owning host destruction; real surviving endpoint detaches while runtime remains live",
+    "mechanical_reference_invalidation": false,
+    "contract": "finish all borrowed operations before teardown; lookup withdrawal does not revoke a retained C++ reference"
+  },
+  "no_ghidra_function": [
+    {
+      "address": "006D1E80",
+      "length": 7,
+      "role": "verified exact field-read getter; live formal disasm reported no stored function during V evidence batch; no annotation performed"
+    }
+  ],
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "native_eh_validated": false,
+    "game_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/scene_flags_build.log",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential",
+      "initial_attempt": "retained failed concurrent CMake reconfigure after dependency merge; rerun with completed merge"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/game_unit_scene_lifecycle_view.json",
+      "direct_rows": 5,
+      "indirect_rows": 4,
+      "failures": 0,
+      "log": "local/scene_flags_report_calls.log"
+    },
+    "actual_host_fixture": {
+      "command": "./local/run_scene_flags_probe.ps1",
+      "cases": 2,
+      "guards_and_nonzero_cell_checks": true,
+      "callback_providers": [
+        "0042B120",
+        "0080DFC0"
+      ],
+      "actual_registered_pair": true,
+      "boundary_7c": "00824B60 deliberately throws fixture Boundary after real prior writes/notification",
+      "boundary_80": "00951FB0 deliberately throws fixture Boundary after real prior writes/notification",
+      "getter_input": "explicit null fixture value, not an actual GameUnitsHost scene-handle owner",
+      "world": "walks1 chain1 updated0 on canonical byte5C0; entities_walked also counts updated entities and is0",
+      "motion": "steps1 ticks0 on same canonical byte5C0",
+      "run_log": "local/scene_flags_probe_run.log",
+      "host_log": "local/scene_flags_probe_host.log"
+    },
+    "proof_manifest": "local/scene_flags_proof/manifest.json",
+    "proof_manifest_sha256": "cce584959a9dccd267efec28673a03e57ba9b83922203abcd25f6a16cc02c526",
+    "retained_files": 229,
+    "linked_application_objects": 38,
+    "retained_libraries": 21,
+    "retained_toolchain_binaries": 14
+  },
+  "limitations": [
+    "Application binding and source composition; no new original-byte differential execution. Existing U differential proof is retained independently.",
+    "Actual renderer listener, scene-handle owner and lifecycle virtual-tail bindings are absent. Fixture uses explicit null getter input and named throwing tail boundaries.",
+    "Native EH transport, original register/stack ABI and gameplay lifecycle remain unproved.",
+    "No normal frame routing to this new lifecycle view is introduced; no claim that an installed gameplay frame executes notification."
+  ],
+  "native_evidence": {
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "006D1E80",
+        "length": 7,
+        "hex": "8b81a4040000c3",
+        "sha256": "0e28ae6d970647be6cbf4557ee0c392348362ca146b2315a0118c3cda8b20799",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00CFC3B8",
+        "length": 12,
+        "hex": "20e56f00c0df800020b14200",
+        "sha256": "125ad772ea4a466af409bba28f4e492fe0306add95e40982cd554da18e51941a",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00CFC3E8",
+        "length": 4,
+        "hex": "801e6d00",
+        "sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00CFC44C",
+        "length": 8,
+        "hex": "604b8200b01f9500",
+        "sha256": "531684866e06afe3f3a309798fe71036e32406cdae96ec0ef26145759f899e51",
+        "live_disk_equal": true
+      }
+    ]
+  }
+}

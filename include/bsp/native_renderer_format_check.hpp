@@ -27,4 +27,13 @@ bool check_native_renderer_device_format_00b21ec0(
     std::uint32_t engine_resource_flags, std::uint32_t resource_kind,
     std::uint32_t check_format);
 
+// Complete 00B20190..00B201B9, ECX renderer, stacked check format, RET4.
+// Same borrowed actual factory/table contract as above. The query uses
+// adapter0/HAL1/X8R8G8B8(16h), usage100001h (render target + vertex texture),
+// and resource kind3 (texture). Only HRESULT zero returns true. The native
+// query does not translate flags, cache a result or write renderer storage.
+// This ordinary C++ bool interface is not the original register/stack ABI.
+bool check_native_renderer_vertex_texture_render_target_00b20190(
+    void* actual_renderer, std::uint32_t check_format);
+
 } // namespace bsp
