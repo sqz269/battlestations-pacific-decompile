@@ -51,6 +51,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_confi
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_device_sdk.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_startup.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_settings_tables.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_joystick.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_keyboard_mouse.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_lua_objects.cpp src/native_shader_state_reader.cpp)
