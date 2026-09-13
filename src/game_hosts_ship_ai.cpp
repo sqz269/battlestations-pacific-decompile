@@ -222,6 +222,7 @@ struct GameShipAiHost::Impl {
     }
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
+    const bsp::SessionParticipantPools* session_participants{};
     unsigned long long hull_geometry_updates{};
     unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
     std::int32_t session_mode{};
@@ -4022,6 +4023,11 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
 GameShipAiHost::GameShipAiHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
 GameShipAiHost::~GameShipAiHost() = default;
+
+void GameShipAiHost::bind_session_participants(
+    const bsp::SessionParticipantPools& owner) noexcept {
+    impl_->session_participants = &owner;
+}
 
 void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene,
     GameMissionLuaHost& lua, std::int32_t mode, std::uint8_t forced, std::int32_t session) {

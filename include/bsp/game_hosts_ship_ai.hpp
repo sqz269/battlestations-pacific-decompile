@@ -46,6 +46,8 @@
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/unit_autopilot_pair.hpp"
 
+namespace bsp { class SessionParticipantPools; }
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -319,6 +321,9 @@ public:
     ~GameShipAiHost();
     GameShipAiHost(const GameShipAiHost&) = delete;
     GameShipAiHost& operator=(const GameShipAiHost&) = delete;
+
+    // Borrow the actual session participant owner; it must outlive this host.
+    void bind_session_participants(const bsp::SessionParticipantPools& owner) noexcept;
 
     // One controller per created instance, in creation order. Called once,
     // after the instantiate pass and after the authored commands were issued.
