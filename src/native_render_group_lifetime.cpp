@@ -1,24 +1,33 @@
 #include "bsp/native_render_group_lifetime.hpp"
 #include "bsp/native_model_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <stdexcept>
 
 namespace bsp {
 namespace {
+void return_name(SizedStoragePool& strings, char* data, std::uint32_t size) {
+    strings.release_00bd1510(data, size);
+}
+void return_name(ActualNativeStringPoolStorage& strings, char* data,
+    std::uint32_t size) noexcept {
+    strings.release(data, size);
+}
+template<class StringStorage>
 class GroupNameCleanup final {
 public:
-    GroupNameCleanup(NativeRenderGroupStorage& group, SizedStoragePool& strings) noexcept
+    GroupNameCleanup(NativeRenderGroupStorage& group, StringStorage& strings) noexcept
         : group_(group), strings_(strings) {}
     ~GroupNameCleanup() { if (armed_) run(); }
     void run() {
         char* const data = group_.name_data_08;
         armed_ = false; // Native state -1 precedes the final normal pool return.
-        if (data) strings_.release_00bd1510(data,
+        if (data) return_name(strings_, data,
             static_cast<std::uint32_t>(group_.name_length_04) + 1u);
     }
 private:
     NativeRenderGroupStorage& group_;
-    SizedStoragePool& strings_;
+    StringStorage& strings_;
     bool armed_{true};
 };
 
@@ -49,12 +58,11 @@ void release_model_then_clear(void*& field, NativeRenderGroupModels& models) {
     // the separately owned group remains accessible after that terminal call.
     field = nullptr;
 }
-} // namespace
-
-void destroy_native_render_group_00b1d760(NativeRenderGroupStorage& group,
+template<class StringStorage>
+void destroy_group(NativeRenderGroupStorage& group,
     NativeRenderActualOwners& owners, NativeRenderGroupModels& models,
-    SizedStoragePool& strings) {
-    GroupNameCleanup name(group, strings);
+    StringStorage& strings) {
+    GroupNameCleanup<StringStorage> name(group, strings);
     GroupArraysCleanup arrays(group);
     void* const binding = group.binding_00;
     if (binding) {
@@ -66,10 +74,30 @@ void destroy_native_render_group_00b1d760(NativeRenderGroupStorage& group,
     arrays.run();
     name.run();
 }
+} // namespace
+
+void destroy_native_render_group_00b1d760(NativeRenderGroupStorage& group,
+    NativeRenderActualOwners& owners, NativeRenderGroupModels& models,
+    SizedStoragePool& strings) {
+    destroy_group(group, owners, models, strings);
+}
+void destroy_native_render_group_00b1d760(NativeRenderGroupStorage& group,
+    NativeRenderActualOwners& owners, NativeRenderGroupModels& models,
+    ActualNativeStringPoolStorage& strings) {
+    destroy_group(group, owners, models, strings);
+}
 
 NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
     NativeRenderGroupStorage* group, NativeRenderActualOwners& owners,
     NativeRenderGroupModels& models, SizedStoragePool& strings, std::uint32_t flags) {
+    destroy_native_render_group_00b1d760(*group, owners, models, strings);
+    if (flags & 1) singleton_lifetime_free(group);
+    return group;
+}
+NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
+    NativeRenderGroupStorage* group, NativeRenderActualOwners& owners,
+    NativeRenderGroupModels& models, ActualNativeStringPoolStorage& strings,
+    std::uint32_t flags) {
     destroy_native_render_group_00b1d760(*group, owners, models, strings);
     if (flags & 1) singleton_lifetime_free(group);
     return group;

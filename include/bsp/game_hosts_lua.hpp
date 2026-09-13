@@ -226,6 +226,8 @@ public:
     // leaves output unchanged. This is not a per-frame ShipGlobals lookup.
     bool read_avoid_all_ship_collision(bool& value) const noexcept;
     void set_avoid_all_ship_collision_008d0852(bool value);
+    // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
+    bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
 
     // 0083ce56..0083d10d of 0083b5e0, driven by the reconstruction in
     // bsp/unit_rudder_curve.hpp over the live `ShipGlobals["Navigator"]` table.
@@ -435,6 +437,8 @@ private:
     bool error_replay_{false};
     bool avoid_all_ship_collision_{};
     bool avoid_all_ship_collision_loaded_{};
+    std::array<float, 5> avoidance_tuning_{};
+    bool avoidance_tuning_loaded_{};
     GameMissionLuaSummary summary_;
 };
 

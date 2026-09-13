@@ -1,0 +1,463 @@
+{
+  "packet": "orch6_obstacle_point_k",
+  "status": "complete native instruction schedules; Win32 Release, both existing CTests and bounded original-byte differential passed",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_obstacle_point.cpp",
+  "header": "include/bsp/ship_ai_obstacle_point.hpp",
+  "documentation": "docs/SHIP_AI_OBSTACLE_POINT.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009D80C0",
+      "native": "009D80C0",
+      "end_inclusive": "009D8156",
+      "name": "BSP_ShipAi_ObstacleNodePointInNearBox",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "ship_ai_obstacle_point_in_near_box_009d80c0",
+      "original_abi": "ECX=native90h node; sole stack argument const float* point; AL Boolean; RET4; upper EAX is not the result",
+      "instructions": 50,
+      "calls": [],
+      "coverage": "complete original leaf instruction schedule over existing semantic fields"
+    },
+    {
+      "address": "009D8160",
+      "native": "009D8160",
+      "end_inclusive": "009D8200",
+      "name": "BSP_ShipAi_ObstacleNodePointInAvoidBox",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "ship_ai_obstacle_point_in_avoid_box_009d8160",
+      "original_abi": "ECX=native90h node; sole stack argument const float* point; AL Boolean; RET4; upper EAX is not the result",
+      "instructions": 52,
+      "calls": [],
+      "coverage": "complete original leaf instruction schedule over existing semantic fields"
+    }
+  ],
+  "calls": [],
+  "caller_sites": [
+    {
+      "address": "009EB8C0",
+      "native": "009D8160",
+      "function": "009EB660",
+      "body": "009EB660..009EC277",
+      "arguments": "ECX current node from iterator at009EB8AF/009EB8B3; point ESP+20 at009EB8BB; AL true blocks straight sector"
+    },
+    {
+      "address": "009EB8CA",
+      "native": "009D80C0",
+      "function": "009EB660",
+      "body": "009EB660..009EC277",
+      "arguments": "ECX retained by preceding leaf predicate; pushed EBX=controller+184 from009EB6C6, ESI caller input from009EB693; AL true skips neighbour"
+    },
+    {
+      "address": "009EBE0E",
+      "native": "009D8160",
+      "function": "009EB660",
+      "body": "009EB660..009EC277",
+      "arguments": "ECX node loaded at009EBDE0; point ESP+3C at009EBE09; AL true blocks arc sector"
+    }
+  ],
+  "native_fields": {
+    "near_center": [
+      "20",
+      "24"
+    ],
+    "avoid_center": [
+      "44",
+      "48"
+    ],
+    "both_predicates_axes": [
+      "28",
+      "2C",
+      "30",
+      "34"
+    ],
+    "near_extents": [
+      "38",
+      "3C"
+    ],
+    "avoid_extents": [
+      "5C",
+      "60"
+    ],
+    "near_veto_bytes": [
+      "68"
+    ],
+    "avoid_veto_bytes": [
+      "68",
+      "69"
+    ],
+    "ignored_corner_axes": [
+      "4C",
+      "50",
+      "54",
+      "58"
+    ]
+  },
+  "source_storage": {
+    "type": "existing ShipAiObstacleNode",
+    "header": "include/bsp/ship_ai_sector_scan.hpp",
+    "mapping": "offsetof semantic fields, no reinterpretation as original90h storage and no duplicated record",
+    "raw_flags": "each nonzero native byte projects to bool true; no raw byte identity claim"
+  },
+  "producers": [
+    {
+      "entry": "009EAE20",
+      "source": "src/ship_ai_neighbour_box.cpp",
+      "evidence": "009EAE9D/009EAEA8 store cos/sin to28/2C;009EAEB8/009EAEC0 store beam sin,-cos to30/34;009EAF9C forward extent and009EAFAB beam extent",
+      "historical_names": "axis_beam is native forward, axis_forward is native beam; near_half_beam is native forward extent, near_half_length is native beam extent"
+    },
+    {
+      "entry": "009EAFC0",
+      "source": "src/ship_ai_neighbour_box.cpp",
+      "evidence": "existing avoid refresh owns no-pose/no-arc gates and avoid geometry; copy-near path at009EB2C9..009EB2F5"
+    },
+    {
+      "entry": "009E52E0",
+      "body": "009E52E0..009E53A5",
+      "evidence": "009E5361 stores69=0;009E5377 stores68=1",
+      "limitation": "semantic record defaults both flags false; default record is not equivalent to original constructor state; runtime must supply actual refreshed geometry/flags"
+    }
+  ],
+  "native_behavior": [
+    "Near checks68 before loading point; avoid checks68 then69 before loading point; any nonzero byte rejects.",
+    "Each point-center delta spills float32; first dot delta_z*axis0_z+delta_x*axis0_x follows exact x87 schedule and spills float32.",
+    "Clear sign bit by integer7FFFFFFF, load extent, FCOMIP then JC: equality accepts, extent below projection or unordered rejects.",
+    "Second dot only after first accepted: delta_z*axis1_z+axis1_x*delta_x with retained x87 delta operands; same float32 spill/sign-clear/compare.",
+    "Neither corner axes nor owner/lifetime/pass-side fields are read. No normalization, finite filter, epsilon, clamp or geometry repair.",
+    "Near and avoid use the same28..34 axes even when4C..58 differs. Zero axes/zero extents may accept arbitrary finite points if flags clear.",
+    "First-projection reject pops two retained delta operands; every normal path balances x87 TOP; only AL0/1 is the native Boolean return."
+  ],
+  "abi_adaptations": [
+    "Private source fastcall ECX=semantic node,EDX=point; pushEDX before native8-byte frame reserves its argument/dot spill slot.",
+    "NativeESP+C argument/dot slot becomesESP+8; native delta slotsESP+0/+4 unchanged; map node offsets tooffsetof fields.",
+    "OriginalADDESP8/RET4 becomesADDESP8/POPEDX/RET; EDX is scratch and popped bits may be dot result. No floating instruction or branch is replaced.",
+    "Public source returnsbool and does not promise native upperEAX, binary layout, register ABI, or control/status-word equivalence."
+  ],
+  "corrections": [
+    {
+      "was": "prior009D8160 plate described strict abs(dot)<extent",
+      "is_": "inclusive abs(dot)<=extent, ordered only",
+      "evidence": "009D8114/009D8118,009D813D/009D8141,009D81BE/009D81C2,009D81E7/009D81EB FCOMIP/JC pairs and original-byte edge cases",
+      "ghidra_action": "root may append correction; worker made no mutations"
+    }
+  ],
+  "flow_verification": [
+    {
+      "address": "009D80C0",
+      "instructions": 50,
+      "gaps": 0,
+      "call_count": 0
+    },
+    {
+      "address": "009D8160",
+      "instructions": 52,
+      "gaps": 0,
+      "call_count": 0
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "native_fixture": {
+    "kind": "original-byte versus compiled source, actual x87 instructions, no library hooks",
+    "preparation": "local/prepare_obstacle_point_probe.py",
+    "source": "local/obstacle_point_probe.cpp",
+    "build": "local/build_obstacle_point_probe.cmd",
+    "exe": "local/obstacle_point_probe.exe",
+    "log": "local/obstacle_point_probe.log",
+    "manifest": "local/obstacle_point_native_manifest.json",
+    "native_records": "local/obstacle_point_native_records.bin",
+    "source_records": "local/obstacle_point_source_records.bin",
+    "cases": 16,
+    "calls": 32,
+    "failures": 0,
+    "control_word_report": "0009001F; masked exceptions,53-bit precision,nearest rounding",
+    "comparisons": "32 canonical Boolean bytes, native node and semantic node and point unchanged, x87 TOP balanced",
+    "cases_covered": [
+      "distinct centers",
+      "inclusive near/avoid corners",
+      "next float beyond edge",
+      "delta spill onto edge",
+      "dot spill onto rotated edge",
+      "nonbinary no-pose/no-arc bytes",
+      "negative extents",
+      "signed-zero extents",
+      "zero axes",
+      "unnormalized axes",
+      "NaN point/axis/extent",
+      "infinite spilled dot equals infinite extent",
+      "unused corner axes"
+    ],
+    "relocation": "none required; each decoded instruction has no absolute memory operand,call,or outgoing branch; intra-function relative branches remain unchanged",
+    "image": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "mapped_span_start": "009D80C0",
+      "mapped_span_end_inclusive": "009D8200",
+      "mapped_span_bytes": 321,
+      "relocation": "none required; each decoded instruction has no absolute memory operand,call,or outgoing branch; intra-function relative branches remain unchanged",
+      "spans": [
+        {
+          "address": "009D80C0",
+          "end_inclusive": "009D8156",
+          "bytes": 151,
+          "instructions": 50,
+          "sha256": "74b77892bc530dd10303e76c8ad2c416cf4d59c3762534a4ac81fc428a9ba7d3",
+          "live_equals_installed": true
+        },
+        {
+          "address": "009D8160",
+          "end_inclusive": "009D8200",
+          "bytes": 161,
+          "instructions": 52,
+          "sha256": "1f546ad05c5a6bb1b471c72758f9974aeabe7bc373a3ae473a86270cb4966379",
+          "live_equals_installed": true
+        }
+      ],
+      "image_sha256": "27d1688d8ba2c8254ca95b7ce43e10d88982b2f985a7e12ec718da6117517275"
+    },
+    "limits": [
+      "synthetic footprint inputs; no runtime refresh or whole sector scanner execution",
+      "canonical Boolean values only; no upperEAX,full register/status-word comparison",
+      "one masked-exception control-word mode; unmasked exception delivery and other modes untested",
+      "semantic bool mapping does not preserve arbitrary raw native byte representations",
+      "no gameplay or binary replacement claim"
+    ]
+  },
+  "validation": {
+    "win32_release": "passed",
+    "existing_ctests": "2/2 passed",
+    "new_tracked_tests": 0,
+    "initial_build": "CMake generate.stamp access-denied timestamp race; unchanged build retry passed",
+    "seed_verification": "passed; local/obstacle_point_verify_seeds.log",
+    "calls": "3 direct caller rows checked by tools/verify_report_calls.py",
+    "source_compile": "/O2 /fp:strict; VS2026 Win32; /MANIFEST:EMBED for ignored probe"
+  },
+  "reproduction": [
+    "./scripts/build.ps1",
+    "python local/prepare_obstacle_point_probe.py",
+    "cmd /c local\\build_obstacle_point_probe.cmd",
+    "./local/obstacle_point_probe.exe",
+    "python tools/verify_report_calls.py reports/ship_ai_obstacle_point.json"
+  ],
+  "artifact_dependencies": "configured installed PE plus existing read-only Ghidra; Python pefile/capstone; VS2026 vcvars32 and current build/win32/Release/bsp_core.lib",
+  "artifacts": [
+    {
+      "path": "local/build_obstacle_point_probe.cmd",
+      "bytes": 348,
+      "sha256": "c7377a11262b163cd5b1d6dec93968c2c2f21e46b9194a2c79c46877322df789"
+    },
+    {
+      "path": "local/obstacle_point_009d80c0.asm",
+      "bytes": 1532,
+      "sha256": "248830cf017cec2f550c016018f1bcb6806695a27c44394eb0c7193716a7989f"
+    },
+    {
+      "path": "local/obstacle_point_009d8160.asm",
+      "bytes": 1601,
+      "sha256": "d20446ea9295291f670c7601e64b4eecc9ce03b022e052f509957a14f5a2f10e"
+    },
+    {
+      "path": "local/obstacle_point_arc_call.asm",
+      "bytes": 392,
+      "sha256": "e1eaf6dec5b39ada7b29436b6d7194a8ef286dc54c3ebe7aa51bddd5a48a178c"
+    },
+    {
+      "path": "local/obstacle_point_axes_producer.asm",
+      "bytes": 559,
+      "sha256": "1d0d3db871ae972a230edd549fef98873b76b036464bb1c31d7a44c713f7379f"
+    },
+    {
+      "path": "local/obstacle_point_build.log",
+      "bytes": 39275,
+      "sha256": "1caf1a0a7b35864a710018c0edd7ddaa04ebb325a9f354e8d1ad2f5147a253de"
+    },
+    {
+      "path": "local/obstacle_point_build_final.log",
+      "bytes": 2618,
+      "sha256": "36bad1754e5e7cc2b90f49215f01e5c12b5fce06a203afcada976d582c0808d3"
+    },
+    {
+      "path": "local/obstacle_point_build_retry.log",
+      "bytes": 4181,
+      "sha256": "5d353e5df24ac60a8fffd38e9b225457d94e3ff1cf5a0e29633f3a8225dfab6f"
+    },
+    {
+      "path": "local/obstacle_point_bytes_009D80C0.txt",
+      "bytes": 734,
+      "sha256": "0c360086e1909d2450f28364937d3dca15306755883404c56ba16ace8b646389"
+    },
+    {
+      "path": "local/obstacle_point_bytes_009D8160.txt",
+      "bytes": 787,
+      "sha256": "3ceebe308a50349a12b02618d0c4728fef24f46e7a9a5c423b16439cac30900a"
+    },
+    {
+      "path": "local/obstacle_point_caller_009eb660.asm",
+      "bytes": 28323,
+      "sha256": "9ef6a5dc9fd3bf168e5c7018412db2efdbd2c43639242d008cfb5a4b3de86dd2"
+    },
+    {
+      "path": "local/obstacle_point_capstone_009D80C0.asm",
+      "bytes": 1849,
+      "sha256": "b439fea50b3bf2311a3cfce3ede088f1d3c0d4e7352742ba80e29e4b0bdd775a"
+    },
+    {
+      "path": "local/obstacle_point_capstone_009D8160.asm",
+      "bytes": 1935,
+      "sha256": "cbf745618545ae1879b67a03beee81f2bc497196095f47f38925fb215a136393"
+    },
+    {
+      "path": "local/obstacle_point_ctor_009e52e0.asm",
+      "bytes": 1882,
+      "sha256": "ea6683803f1f7e76528ddf56b2ceb5bf52d338df1f5f506cd4687ee7d3eb8656"
+    },
+    {
+      "path": "local/obstacle_point_flow_009d80c0.json",
+      "bytes": 128,
+      "sha256": "fb76013edc51c1088d268672c485a740bdf7ae82705c2c311c2feccfda30fa12"
+    },
+    {
+      "path": "local/obstacle_point_flow_009d8160.json",
+      "bytes": 128,
+      "sha256": "cc7fc985b151abe5dd8d191482011792ef1b0909322c392d96d9925c8212c5a2"
+    },
+    {
+      "path": "local/obstacle_point_index.log",
+      "bytes": 142,
+      "sha256": "2cda24a2b1b2f6cef65747002940093aae738399ec57beb5bd4791e3d4a61adb"
+    },
+    {
+      "path": "local/obstacle_point_index_final.log",
+      "bytes": 142,
+      "sha256": "b0bb3ab8c4f59c5891c3e8749bf1daa576b49de49bf36486ebc929af4fd1179a"
+    },
+    {
+      "path": "local/obstacle_point_native_image.bin",
+      "bytes": 321,
+      "sha256": "27d1688d8ba2c8254ca95b7ce43e10d88982b2f985a7e12ec718da6117517275"
+    },
+    {
+      "path": "local/obstacle_point_native_manifest.json",
+      "bytes": 1079,
+      "sha256": "a5483a0ded0b4e073a0be687344295b043737748d84fc5661593587332e39a41"
+    },
+    {
+      "path": "local/obstacle_point_native_records.bin",
+      "bytes": 32,
+      "sha256": "7528b8aa25050aab821f505aebc52a120005cc336c6afcdf8235daa87e1610c2"
+    },
+    {
+      "path": "local/obstacle_point_near_extents_producer.asm",
+      "bytes": 307,
+      "sha256": "8bf9c287fd3c77cd3560e0eeb6517f9aa3dd21e650b455981527811baea84a5c"
+    },
+    {
+      "path": "local/obstacle_point_original_009D80C0.bin",
+      "bytes": 151,
+      "sha256": "74b77892bc530dd10303e76c8ad2c416cf4d59c3762534a4ac81fc428a9ba7d3"
+    },
+    {
+      "path": "local/obstacle_point_original_009D8160.bin",
+      "bytes": 161,
+      "sha256": "1f546ad05c5a6bb1b471c72758f9974aeabe7bc373a3ae473a86270cb4966379"
+    },
+    {
+      "path": "local/obstacle_point_prepare.log",
+      "bytes": 111,
+      "sha256": "f437147538b1da92506e93cc99c354a4a95d5424c70592b666d5dc214a1f19f1"
+    },
+    {
+      "path": "local/obstacle_point_probe.cpp",
+      "bytes": 6657,
+      "sha256": "9cccac45f1d7a4548ec99646b32b692ac368d98114d2afc52768722946824099"
+    },
+    {
+      "path": "local/obstacle_point_probe.exe",
+      "bytes": 29696,
+      "sha256": "d65bbf4f53e496794b1176f09e851a3768083d4571039b26861dd8673cfdd7f2"
+    },
+    {
+      "path": "local/obstacle_point_probe.log",
+      "bytes": 935,
+      "sha256": "482138e0b128decec9cf787f376fd07c93b491c7d4f87f21b76f937452aa8d15"
+    },
+    {
+      "path": "local/obstacle_point_probe.obj",
+      "bytes": 140473,
+      "sha256": "87cb57351dfd61c071cee2c497a7a08ddd03e51746cf3ac192f5c28f5f641931"
+    },
+    {
+      "path": "local/obstacle_point_probe_compile.log",
+      "bytes": 26,
+      "sha256": "6a6e5f54402b15f38c58d03d6bd7ac1f9fa902b277941294ddd8a4879b69345b"
+    },
+    {
+      "path": "local/obstacle_point_proto_009d80c0.json",
+      "bytes": 673,
+      "sha256": "e87ea629e515c3925f1a03232504aa4822090c04612203edbe739ce70ef00263"
+    },
+    {
+      "path": "local/obstacle_point_proto_009d8160.json",
+      "bytes": 677,
+      "sha256": "1986666516e32a1496f447dfa4c885c1b2ea9ce007e441bf4900fd36e9c5fff3"
+    },
+    {
+      "path": "local/obstacle_point_protos.txt",
+      "bytes": 2232,
+      "sha256": "6a82e40ab60a78521224be412bc6be03658baf05d0179bc9fbe8a1714e82c103"
+    },
+    {
+      "path": "local/obstacle_point_report_calls.log",
+      "bytes": 68,
+      "sha256": "d34edecf0739d4fc2741f3251ac40165ec9c6142268cc675d87e74d8b1a91f5b"
+    },
+    {
+      "path": "local/obstacle_point_source_records.bin",
+      "bytes": 32,
+      "sha256": "7528b8aa25050aab821f505aebc52a120005cc336c6afcdf8235daa87e1610c2"
+    },
+    {
+      "path": "local/obstacle_point_straight_calls.asm",
+      "bytes": 688,
+      "sha256": "2fec661487c767ea83114077e6bf8b5edbe756f5c83c86bc5f7e95bd8e51209d"
+    },
+    {
+      "path": "local/obstacle_point_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/prepare_obstacle_point_probe.py",
+      "bytes": 2499,
+      "sha256": "00cb9ac5b89c3bb5c4afc583939e33b1d9dc3f0f950a4c3152590d422e899b4d"
+    },
+    {
+      "path": "local/write_obstacle_point_report.py",
+      "bytes": 9754,
+      "sha256": "9ccf93c0330e0812735adf94a38f5c418595d8e539e96641bfd305e57835dba4"
+    },
+    {
+      "path": "local/write_obstacle_point_schedules.py",
+      "bytes": 3302,
+      "sha256": "92ba445fe333a163af74521fc946a78f2400a9a0cd12a09dfc48614850dd2bf1"
+    },
+    {
+      "path": "src/ship_ai_obstacle_point.cpp",
+      "bytes": 7508,
+      "sha256": "6a383375bba5a8af1e7a1350d8c66c1073f76b9d718df5338c497a9367650f96"
+    },
+    {
+      "path": "include/bsp/ship_ai_obstacle_point.hpp",
+      "bytes": 1129,
+      "sha256": "aeee6df49a0145f5b53fbee61def31386f5349f5f210b14f80e27e2a6cafd95a"
+    },
+    {
+      "path": "docs/SHIP_AI_OBSTACLE_POINT.md",
+      "bytes": 8114,
+      "sha256": "8e1e11e8814a4012fff390f295f3235f432bebbe4cee20aaefa21df4e0467723"
+    }
+  ]
+}

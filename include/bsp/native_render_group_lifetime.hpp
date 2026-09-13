@@ -4,6 +4,7 @@
 namespace bsp {
 class NativeModelReference;
 class SizedStoragePool;
+class ActualNativeStringPoolStorage;
 
 // Pure canonical association: one stable companion for each actual model slot
 // stored in group+1C/+20. No logical release, reference adjustment or collection
@@ -26,6 +27,10 @@ public:
 void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
     NativeRenderActualOwners& actual_binding_owners, NativeRenderGroupModels&,
     SizedStoragePool& actual_string_pool);
+// Same full body, using the SAME actual419CC0 publication/pool that allocated
+// B1DFF0's group name. Preserves capture-data/current-length and unwind order.
+void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
+    NativeRenderActualOwners&, NativeRenderGroupModels&, ActualNativeStringPoolStorage&);
 
 // Original ECX=actualgroup; stack flags; EAX=original pointer; RET4. Destroy
 // first, then ordinary-free iff flags&1. A throwing destructor prevents free.
@@ -33,5 +38,8 @@ void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
 NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
     NativeRenderGroupStorage*, NativeRenderActualOwners&, NativeRenderGroupModels&,
     SizedStoragePool&, std::uint32_t flags);
+NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
+    NativeRenderGroupStorage*, NativeRenderActualOwners&, NativeRenderGroupModels&,
+    ActualNativeStringPoolStorage&, std::uint32_t flags);
 
 } // namespace bsp

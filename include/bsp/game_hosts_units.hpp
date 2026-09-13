@@ -269,6 +269,13 @@ public:
     // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
     // process the byte is the unit 004c0890 bound.
     bool unit_player_controlled_0184(std::size_t index) const;
+    // Canonical current assignments, native unit+1ACh..+1CCh: 00928630
+    // explicitly initializes all nine to 8 (unassigned). Separate from the
+    // +188h policy table. No assignment receiver is represented yet; selecting
+    // a controlled unit or issuing a sender request does not change these.
+    // Missing unit or role outside 0..8 returns false and preserves out.
+    bool unit_current_role_slot(std::size_t index, std::int32_t role_index,
+        std::int32_t& out) const;
     // The controller's second and third gates, 009f50f2 and 009f50fc. Milestone
     // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
     // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
