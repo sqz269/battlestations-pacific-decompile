@@ -14,13 +14,14 @@ struct NativeFileStoreFactoryContext;
 struct NativeMpakFactoryContext;
 struct NativePakRegistryContext;
 class NativeObserverLifetime;
+struct NativeObserverDispatchOwner;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
-// D688B0, CFEA1C, D6418C or CF7E70. D0DA64
+// D688B0, CFEA1C, D6418C, CF7E70 or CF7E74. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -56,8 +57,12 @@ struct NativeSingletonDeletionBindings {
     // the same application manager and actualE198E0 publication as construction
     // and must remain alive through drain; the popped owner is passed directly.
     NativeObserverLifetime* observer_lifetime{};
+    // CF7E74 deletes the dispatch owner through00695F40. Borrow the same
+    // actualE198DC cell used by construction; pass the popped owner even if
+    // publication changed. The separateE198E4 alias is deliberately untouched.
+    NativeObserverDispatchOwner* volatile* actual_observer_dispatch_owner_00e198dc{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 56);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 60);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

@@ -1,0 +1,457 @@
+{
+  "packet": "orch6_native_neighbour_node_q",
+  "status": "complete_normal_callers_build_and_original_byte_fixture_tested",
+  "base_commit": "522cabd13d7f3c4a6cc57119d1f073f0701b4b07",
+  "source": "src/native_ship_ai_obstacle_node.cpp",
+  "header": "include/bsp/native_ship_ai_obstacle_node.hpp",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "entry": "009E52E0",
+      "end_inclusive": "009E53A5",
+      "bytes": 198,
+      "instructions": 55,
+      "sha256": "8da51e539768bb126d39994011f6aad208b29dd3a54e09c7bb2965e8408e84ba",
+      "cpp": "construct_native_ship_ai_obstacle_009e52e0",
+      "name": "BSP_ShipAi_ObstacleNodeConstruct",
+      "abi": "ECX=node; stack owner,controller,lifetime bits; EAX=node; RET0Ch at009E53A3",
+      "coverage": "complete normal body through existing actual observer/CRT services; callback additionally borrows actual event slot04",
+      "exception_coverage": "evidenced C++ cleanup calls; native FH3/frame/hardware faults and allocation failure not fixture-tested",
+      "ghidra_body_coverage": "complete"
+    },
+    {
+      "entry": "0064A610",
+      "end_inclusive": "0064A667",
+      "bytes": 88,
+      "instructions": 24,
+      "sha256": "2728cde7b1377da689caee5287f32a9e266ff11aa466c8d04f41abffa0bc84f5",
+      "cpp": "destroy_native_ship_ai_obstacle_base_0064a610",
+      "name": "BSP_ObservedOwnerBase_Destroy",
+      "abi": "ECX=base; no stack arguments; RET at0064A667",
+      "coverage": "complete normal body through existing actual observer/CRT services; callback additionally borrows actual event slot04",
+      "exception_coverage": "evidenced C++ cleanup calls; native FH3/frame/hardware faults and allocation failure not fixture-tested",
+      "ghidra_body_coverage": "complete"
+    },
+    {
+      "entry": "0064B5C0",
+      "end_inclusive": "0064B5E6",
+      "bytes": 39,
+      "instructions": 14,
+      "sha256": "6ecf362b7e0242ab6466e63bb8edcdef54ed41b3b0f297efade393b7b1af2da7",
+      "cpp": "native_ship_ai_obstacle_owner_callback_0064b5c0",
+      "name": "BSP_ShipAi_ObstacleOwnerCallback",
+      "abi": "ECX=node; stack actual event; RET4 at0064B5E4",
+      "coverage": "complete normal body through existing actual observer/CRT services; callback additionally borrows actual event slot04",
+      "exception_coverage": "evidenced C++ cleanup calls; native FH3/frame/hardware faults and allocation failure not fixture-tested",
+      "ghidra_body_coverage": "complete"
+    },
+    {
+      "entry": "0064B5F0",
+      "end_inclusive": "0064B60D",
+      "bytes": 30,
+      "instructions": 11,
+      "sha256": "644a3a8b7575a12effdae9841ca60869e3eaaf5dd0c11a0c18b62c562e188bc9",
+      "cpp": "delete_native_ship_ai_obstacle_0064b5f0",
+      "name": "CG_scalar_deleting_dtor_0064b5f0",
+      "abi": "ECX=node; stack DWORD flags; EAX=original identity; RET4 at0064B60B",
+      "coverage": "complete normal body through existing actual observer/CRT services; callback additionally borrows actual event slot04",
+      "exception_coverage": "evidenced C++ cleanup calls; native FH3/frame/hardware faults and allocation failure not fixture-tested",
+      "ghidra_body_coverage": "partial metadata:0064B605..607 absent from body set; verified native PE/source span complete"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "009E532D",
+      "native": "00694A60",
+      "function": "009E52E0",
+      "contract": "ECX=captured observed endpoint; EDX=actual node callback base; registration before controller/tail stores"
+    },
+    {
+      "address": "0064A644",
+      "native": "006952A0",
+      "function": "0064A610",
+      "contract": "ECX=nonnull owner+14 after CF5C20 store; EDX=node"
+    },
+    {
+      "address": "0064A653",
+      "native": "00695870",
+      "function": "0064A610",
+      "contract": "ECX=node callback base; after optional unregister"
+    },
+    {
+      "address": "0064B5DE",
+      "native": "006952A0",
+      "function": "0064B5C0",
+      "contract": "ECX=event getter identity; EDX=node; clear node+14 before this call"
+    },
+    {
+      "address": "0064B5F3",
+      "native": "0064A610",
+      "function": "0064B5F0",
+      "contract": "ECX=node saved in ESI across call"
+    },
+    {
+      "address": "0064B600",
+      "native": "00BF65AC",
+      "function": "0064B5F0",
+      "contract": "cdecl push saved node, ADD ESP4 atB605; only flags&1"
+    },
+    {
+      "address": "009F0E53",
+      "native": "009E52E0",
+      "function": "009F0D20",
+      "contract": "sole constructor caller: ECX=successful90h allocation; pushes lifetime,ESIcontroller,EBPowner"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "0064B5CC",
+      "native": "event+vtable04",
+      "function": "0064B5C0",
+      "contract": "ECX=actual stack event; calls slot04 once; EAX first endpoint; concrete event producer/target not recovered"
+    }
+  ],
+  "raw_storage": {
+    "bytes": 144,
+    "observer_base": "NativeObserverOwnerStorage at0, exact10h reused",
+    "native_writes": [
+      [
+        4,
+        4,
+        "zero"
+      ],
+      [
+        8,
+        4,
+        "zero"
+      ],
+      [
+        12,
+        4,
+        "zero"
+      ],
+      [
+        20,
+        4,
+        "zero then captured nonnull owner before register"
+      ],
+      [
+        16,
+        1,
+        "one"
+      ],
+      [
+        0,
+        4,
+        "CF5C94"
+      ],
+      [
+        24,
+        4,
+        "zero"
+      ],
+      [
+        28,
+        4,
+        "controller after registration"
+      ],
+      [
+        120,
+        4,
+        "captured owner? raw input bits:BF800000"
+      ],
+      [
+        105,
+        1,
+        "zero"
+      ],
+      [
+        136,
+        4,
+        "zero"
+      ],
+      [
+        117,
+        1,
+        "zero"
+      ],
+      [
+        140,
+        4,
+        "zero"
+      ],
+      [
+        116,
+        1,
+        "zero"
+      ],
+      [
+        104,
+        1,
+        "one"
+      ],
+      [
+        124,
+        4,
+        "zero"
+      ],
+      [
+        132,
+        4,
+        "C47A0000"
+      ],
+      [
+        128,
+        4,
+        "C47A0000"
+      ],
+      [
+        112,
+        4,
+        "zero"
+      ]
+    ],
+    "written_unique_bytes": 61,
+    "untouched_bytes": 83,
+    "untouched_inclusive": [
+      [
+        "11",
+        "13"
+      ],
+      [
+        "20",
+        "67"
+      ],
+      [
+        "6A",
+        "6F"
+      ],
+      [
+        "76",
+        "77"
+      ]
+    ],
+    "existing_partial_api": "unchanged; semantic ShipAiObstacleNode is not reinterpreted as native observer/node storage",
+    "allocation": "caller owns actual90h backing; native sole caller009F0E2F uses00BF681B. Reuse singleton_lifetime_allocate object/90h/90h; new API constructs borrowed storage and scalar destructor optionally frees it. No sidecar or duplicate persistent owner."
+  },
+  "normal_lifetime": {
+    "destructor": "CF5C94 slot0->0064B5F0->0064A610; writesCF5C20, optional unregister actual owner, existing00695870->CE3CD4 and cleanup; optional free after normal completion; owner/geometry/controller bytes not cleared.",
+    "callback": "CF5C94 slot04->0064B5C0: actual event slot04 first, fresh owner comparison, clear owner before unregister; no added null guard. Equal-null invalid downstream first endpoint is outside valid storage domain.",
+    "shared_owners": "NativeObserverLifetime, actual recursive lock owner and actual edge arrays reused. Runtime dispatch publication and actual event production remain separate."
+  },
+  "exception_metadata": {
+    "constructor": "CB0828->DE5A18 state0 mapDE5A10->CB0820 savednode ->0064A8D0 JMP0064A610",
+    "destructor": "C7A938->DA7498 state0 mapDA7490->C7A930 savednode JMP00695870",
+    "source": "Registration exception invokes common base cleanup; unregister exception invokes callback-base cleanup; then propagates. No original FH3 dispatch or double-failure equivalence claimed."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_read_only": true,
+    "all_four_call_gaps": 0,
+    "body_set_complete": false,
+    "instruction_vs_membership": "The flow tool sees zero instruction gaps but0064B605..607 is not in the Ghidra function body set."
+  },
+  "corrections": [
+    {
+      "was": "0064B5F0 export omitted fallthrough bytes0064B605..607 after _free",
+      "is": "ADD ESP4 decoded; complete30byte installed/live-verified span endsB60D, butB605..607 still lacks containing function membership. Zero instruction gaps is distinct from body-set completeness.",
+      "evidence": "Root formal locked flow repair; reports/native_neighbour_node_flow_repair.json. Q refreshed listing and verified all30 live bytes equal installed bytes."
+    }
+  ],
+  "false_free_call_gaps": [],
+  "validation": {
+    "probe": {
+      "pairs": 20,
+      "record_bytes_per_side": 17300,
+      "registration_preimage_checks": 15,
+      "original_free_calls": 20,
+      "event_getter_calls": 60,
+      "mismatches": 0
+    },
+    "exit_code": 0,
+    "native_image": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "routines": [
+        {
+          "entry": "009E52E0",
+          "end_inclusive": "009E53A5",
+          "bytes": 198,
+          "instructions": 55,
+          "sha256": "8da51e539768bb126d39994011f6aad208b29dd3a54e09c7bb2965e8408e84ba"
+        },
+        {
+          "entry": "0064A610",
+          "end_inclusive": "0064A667",
+          "bytes": 88,
+          "instructions": 24,
+          "sha256": "2728cde7b1377da689caee5287f32a9e266ff11aa466c8d04f41abffa0bc84f5"
+        },
+        {
+          "entry": "0064B5C0",
+          "end_inclusive": "0064B5E6",
+          "bytes": 39,
+          "instructions": 14,
+          "sha256": "6ecf362b7e0242ab6466e63bb8edcdef54ed41b3b0f297efade393b7b1af2da7"
+        },
+        {
+          "entry": "0064B5F0",
+          "end_inclusive": "0064B60D",
+          "bytes": 30,
+          "instructions": 11,
+          "sha256": "644a3a8b7575a12effdae9841ca60869e3eaaf5dd0c11a0c18b62c562e188bc9"
+        }
+      ],
+      "image_sha256": "72f0b8757e75b98978630ed809179bf4b1d96d6cb6b2c07c013d72e3e862943f",
+      "calls": [
+        {
+          "site": "009E532D",
+          "callee": "00694A60",
+          "offset": 78
+        },
+        {
+          "site": "0064A644",
+          "callee": "006952A0",
+          "offset": 309
+        },
+        {
+          "site": "0064A653",
+          "callee": "00695870",
+          "offset": 324
+        },
+        {
+          "site": "0064B5DE",
+          "callee": "006952A0",
+          "offset": 543
+        },
+        {
+          "site": "0064B5F3",
+          "callee": "0064A610",
+          "offset": 772
+        },
+        {
+          "site": "0064B600",
+          "callee": "00BF65AC",
+          "offset": 785
+        }
+      ],
+      "absolute_relocations": [
+        [
+          105,
+          1024
+        ],
+        [
+          113,
+          1028
+        ]
+      ],
+      "original_bytes": 355,
+      "live_equals_disk": true,
+      "limits": "Original caller normal bodies; external observer calls share actual reconstructed lifetime/edge/lock code. Native FH3 metadata kept as identities and not executed. Event slot04 is a callable fixture provider, not recovered event production."
+    },
+    "build": "scripts/build.ps1 Win32 Release; two existing CTests passed; no new tracked tests",
+    "commands": [
+      "python local/make_native_node_probe.py",
+      "local/build_native_node_probe.cmd",
+      "local/native_node_probe.exe",
+      "python tools/verify_report_calls.py reports/native_ship_ai_obstacle_node.json"
+    ],
+    "shared_calls": "355 original caller bytes; six direct-call relocations; scalar wrapper calls original common destructor inside image. Observer bridges execute existing register/unregister/callback cleanup, real edge arrays and real Win32 lock owners. Same CRT free. No independent observer algorithm/CRT fidelity claim.",
+    "inputs": "Explicit empty raw endpoint prefixes, actual allocated node90h prefilledA5, borrowed dispatch owner/vector with duplicate actual edges, callable fixture event slot04 provider. Not unit/event/dispatch producer validation.",
+    "cases": "Four owner/callback sequences x five lifetime words: ordinary,negativezero,sNaN,qNaN,infinity. Duplicate registration, callback mismatch/match/mutation, remaining detach, evenflags2 and separate oddflags3 deletion.",
+    "compared": "Whole90h node including83 untouched bytes, first endpoint10h prefix, live edge table/endpoint identities/refcount and array contents, dispatch slot occupancy, lock depth and native RecursionCount. Source/native canonical output files compared cumulatively after every pair.",
+    "normalization": "Only known typed node+4 array pointer, node+14 endpoint, node+1C controller; endpoint data pointer; known edge endpoint pointers and array edge identity. No floating masks, no geometry or padding exclusions. Actual controller, allowed owner identities, edge endpoints and retained array pointers are asserted before normalization.",
+    "excluded": "Capacity tails, freed storage, allocation addresses/history, OS-private lock bytes, singleton manager private storage. Native event/FH3/OOM/concurrency/game runtime not exercised. Oddflag source/native returned identities and original free-call count checked without reading freed bytes.",
+    "fp": "Original/source constructor restores FS head and preserves complete x87 status and MXCSR for all five lifetime bitpatterns. Source uses integer word stores; native uses MOVSS/XORPS.",
+    "artifact_manifest": "local/native_node_artifact_manifest.json",
+    "call_gate": "7 direct call rows checked,0failed; one event-vtable indirect row explicitly not resolved"
+  },
+  "compiled_source_hashes": {
+    "src/native_ship_ai_obstacle_node.cpp": "846accb81d2407c7031ec90a73615e9ad230e8179db23a910366897b1dfded4d",
+    "include/bsp/native_ship_ai_obstacle_node.hpp": "baeff42c1326001083b9390c2ac2cdbb551bfadf9a84e38725a6a3e0383f47fb",
+    "include/bsp/observer_lifetime.hpp": "39d682462f123672c7f12f2b7f125133ed54d0212957d3552684be54c9bd93ef",
+    "src/observer_lifetime.cpp": "20061ebadbb855dc16b4f8ca0e04bc37892b69d2607e1ff2b8fad0f91206c789",
+    "include/bsp/observer_edges.hpp": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27",
+    "src/observer_edges.cpp": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/random_threads.cpp": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d",
+    "local/native_node_probe.cpp": "f3dac9bdd0d90faf25556a472cba8d6e41d61a6b9e44a34077fc5610b2b8426d",
+    "build/win32/Release/bsp_core.lib": "6b0554c9dedf8ffc106dbf865bdb9be0bd851feb9ba8184ccc3f0160d12029e2",
+    "build/win32/Release/bsp_lua511.lib": "a0a34a69bb13933cd0c0e95cd2f58b0a4fa7657efe616a0558bbb8cf45a7d2f5",
+    "build/win32/Release/bsp_zlib121.lib": "a8a6b578fa6469d110442f812401444de030a8c409e86791f2d89eecbff00a0d"
+  },
+  "functions_defined_by_root": [
+    {
+      "address": "0042B110",
+      "end_inclusive": "0042B112",
+      "end_exclusive": "0042B113",
+      "bytes": 3,
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "coverage": "complete RET stub defined/saved/exported by root; not implemented or annotated by Q",
+      "evidence": "CF5C20 base slot+4",
+      "root_report": "reports/observer_callback_stub_definitions.json"
+    },
+    {
+      "address": "0042B120",
+      "end_inclusive": "0042B122",
+      "end_exclusive": "0042B123",
+      "bytes": 3,
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "coverage": "complete RET stub defined/saved/exported by root; not implemented or annotated by Q",
+      "evidence": "CF5C94 slot+8",
+      "root_report": "reports/observer_callback_stub_definitions.json"
+    },
+    {
+      "address": "0042B130",
+      "end_inclusive": "0042B132",
+      "end_exclusive": "0042B133",
+      "bytes": 3,
+      "hex": "c20c00",
+      "sha256": "dbd1a662565b07272069f88faadf4327acaf51b7d14f236c84c0a9679d07cef3",
+      "coverage": "complete RET stub defined/saved/exported by root; not implemented or annotated by Q",
+      "evidence": "CF5C94 slot+C",
+      "root_report": "reports/observer_callback_stub_definitions.json"
+    },
+    {
+      "address": "0042B140",
+      "end_inclusive": "0042B142",
+      "end_exclusive": "0042B143",
+      "bytes": 3,
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "coverage": "complete RET stub defined/saved/exported by root; not implemented or annotated by Q",
+      "evidence": "CF5C94 slot+10",
+      "root_report": "reports/observer_callback_stub_definitions.json"
+    },
+    {
+      "address": "006935C0",
+      "end_inclusive": "006935C2",
+      "end_exclusive": "006935C3",
+      "bytes": 3,
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "coverage": "complete RET stub defined/saved/exported by root; not implemented or annotated by Q",
+      "evidence": "CF5C94 slot+14",
+      "root_report": "reports/observer_callback_stub_definitions.json"
+    }
+  ],
+  "no_ghidra_function": [],
+  "incomplete_ghidra_body_membership": [
+    {
+      "entry": "0064B5F0",
+      "start": "0064B605",
+      "end_inclusive": "0064B607",
+      "end_exclusive": "0064B608",
+      "bytes": 3,
+      "hex": "83c404",
+      "instruction": "ADD ESP,4",
+      "evidence": "Root formal flow repair restored instruction; saved/exported. Live protoB605/B607 still has no owner; protoB608 belongs0064B5F0. Server disables supported body-union endpoint; configuration unchanged.",
+      "source_coverage": "full30-byte installed/live-verified native wrapper executed; this metadata gap is not a source coverage omission."
+    }
+  ]
+}
