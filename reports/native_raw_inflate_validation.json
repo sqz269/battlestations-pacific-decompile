@@ -1,0 +1,453 @@
+{
+  "packet": "orch2_native_raw_inflate_validation_az",
+  "role": "Independent read-only source review and focused original/source fixture; no additional reconstructed bodies.",
+  "source_commit": "62e979c3",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "reviewed_body_count": 10,
+  "reviewed_body_bytes": 870,
+  "reconstructed_body_count": 0,
+  "routines": [
+    {
+      "entry": "00bbbdc0",
+      "end_inclusive": "00bbbdc3",
+      "bytes": 4,
+      "sha256": "d577cc6b1b05cb0c2be7f658f60d7baf98684eeaad579cd874c21150f6dd70ab",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbbdd0",
+      "end_inclusive": "00bbbdd5",
+      "bytes": 6,
+      "sha256": "83fbd357367e7a31f9338401e419f053221a7291adc49979e5732ecf63914914",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbbe50",
+      "end_inclusive": "00bbbe55",
+      "bytes": 6,
+      "sha256": "635c2569f0b6d1e8a5a00ce8d22ae047641a78786f0f7f311ea2c7ef031a1ea4",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbbe10",
+      "end_inclusive": "00bbbe41",
+      "bytes": 50,
+      "sha256": "44fbaedf220800085a67c0969e10d806d0dcc905b608efbd31ada85b74183c3d",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbbf00",
+      "end_inclusive": "00bbc000",
+      "bytes": 257,
+      "sha256": "61dd0e75f92566b2d8ba514893c0faf7dbf29fc755d04fb48d2f67a93e931dbb",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbc060",
+      "end_inclusive": "00bbc131",
+      "bytes": 210,
+      "sha256": "a9f24e87c9f54adec80cd743a69d0ab71f44d6afecb4dc6a0cb060e1afce0072",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbc140",
+      "end_inclusive": "00bbc1b5",
+      "bytes": 118,
+      "sha256": "94570804ad4861df0695ed31e04bfebc81445d9f81c2be2b5972eca6f173f06d",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbc1c0",
+      "end_inclusive": "00bbc1c2",
+      "bytes": 3,
+      "sha256": "dbd1a662565b07272069f88faadf4327acaf51b7d14f236c84c0a9679d07cef3",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbc320",
+      "end_inclusive": "00bbc3d9",
+      "bytes": 186,
+      "sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    },
+    {
+      "entry": "00bbc3e0",
+      "end_inclusive": "00bbc3fd",
+      "bytes": 30,
+      "sha256": "a944f499cfed74a9b4906bace1fb1c5f061a052c41b7a228c5d86f770c4bc41a",
+      "live_equal_disk": true,
+      "review_coverage": "complete assembly/source review",
+      "execution_coverage": "focused generated-payload branches only",
+      "coverage": "complete assembly/source review; bounded fixture execution"
+    }
+  ],
+  "consumed_constructor": {
+    "entry": "00bbc1d0",
+    "end_inclusive": "00bbc31d",
+    "bytes": 334,
+    "sha256": "e452dcd3c3ea85998071d0b82885e92bec5e174c9ad732225e2215355f091e86",
+    "live_equal_disk": true
+  },
+  "calls": [
+    {
+      "address": "00bbbe16",
+      "native": "00bc9650",
+      "function": "00bbbe10",
+      "contract": "Existing stock zlib inflateReset on ECX current decoder; return ignored."
+    },
+    {
+      "address": "00bbbe2b",
+      "native": "captured current source seek table+1C; offset,zero,zero; forward EAX",
+      "function": "00bbbe10",
+      "contract": "captured current source seek table+1C; offset,zero,zero; forward EAX"
+    },
+    {
+      "address": "00bbbf67",
+      "native": "captured current source read table+24; inputbegin/request/local actual",
+      "function": "00bbbf00",
+      "contract": "captured current source read table+24; inputbegin/request/local actual"
+    },
+    {
+      "address": "00bbbfb6",
+      "native": "00bc9890",
+      "function": "00bbbf00",
+      "contract": "Existing stock zlib inflate on ECX decoder and EDX flush; preserve status and decoder reloads."
+    },
+    {
+      "address": "00bbc0c1",
+      "native": "00bbbe10",
+      "function": "00bbc060",
+      "contract": "Actual reset then reload current position; preserve incidental EAX."
+    },
+    {
+      "address": "00bbc0e4",
+      "native": "00bbbf00",
+      "function": "00bbc060",
+      "contract": "Actual refill then reload current output header."
+    },
+    {
+      "address": "00bbc168",
+      "native": "00bbbf00",
+      "function": "00bbc140",
+      "contract": "Actual refill then reload current output header."
+    },
+    {
+      "address": "00bbc185",
+      "native": "00bf7680",
+      "function": "00bbc140",
+      "contract": "Existing overlap-capable CRT byte-copy contract; source uses std::memmove."
+    },
+    {
+      "address": "00bbc357",
+      "native": "IAT CE2220 InterlockedDecrement on captured source+4",
+      "function": "00bbc320",
+      "contract": "IAT CE2220 InterlockedDecrement on captured source+4"
+    },
+    {
+      "address": "00bbc367",
+      "native": "captured source current table+0 at zero references; ECX source",
+      "function": "00bbc320",
+      "contract": "captured source current table+0 at zero references; ECX source"
+    },
+    {
+      "address": "00bbc373",
+      "native": "00bcacb0",
+      "function": "00bbc320",
+      "contract": "Existing stock zlib inflateEnd on ECX current decoder; return ignored."
+    },
+    {
+      "address": "00bbc37c",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc38e",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc394",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3a6",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3ac",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3c4",
+      "native": "00bd30f0",
+      "function": "00bbc320",
+      "contract": "Actual base-profile reset to CEB130 after D5C104; inlined original leaf."
+    },
+    {
+      "address": "00bbc3e3",
+      "native": "00bbc320",
+      "function": "00bbc3e0",
+      "contract": "Complete actual owner destruction before optional scalar free."
+    },
+    {
+      "address": "00bbc3f0",
+      "native": "00bf65ac",
+      "function": "00bbc3e0",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "documentation",
+      "was": "NATIVE_MPAK_ENTRY called buffer+4 cursor and+C buffered-end.",
+      "evidence": "BBBF69..BBBF77; BBC15C; BBC170; BBC18A; docs-only correction included.",
+      "is": "Header+4 buffered-end, +C current cursor; producer initializes both equally, so source is unchanged."
+    },
+    {
+      "severity": "evidence",
+      "was": "Destructor action address CC4B00 was referred to as the unwind map in a handoff.",
+      "evidence": "Verified44 bytes at DFE928 and action CC4B00..CC4B07.",
+      "is": "FuncInfo DFE930 points to map DFE928; its action is CC4B00 -> BB86E0."
+    }
+  ],
+  "behavioral_findings": "No source discrepancy found in ten complete assembly reviews or tested original/source effects.",
+  "validation": {
+    "strict_build": {
+      "status": "passed",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "environment": "MSBUILDDISABLENODEREUSE=1",
+      "log": "local/raw_inflate_az/source_build.log"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "seed_verification": "Eight spans matched before current incremental build; unchanged installed binary hash recorded.",
+    "report_calls": {
+      "status": "passed",
+      "direct_rows_checked": 15,
+      "indirect_rows_excluded": 4,
+      "failed": 0
+    },
+    "fixture": {
+      "passed": true,
+      "checks": 1305,
+      "state_words": 365,
+      "source_trace_words": 854,
+      "free_events": 12,
+      "compared_output_bytes": 70087,
+      "payload_bytes": 150123,
+      "compressed_bytes": 82120,
+      "evidence_root": "local/raw_inflate_az/verified",
+      "manifest_sha256": "25371454a9f50a51d9aa2bfc49e2213267064af57bb0cbc3e5d0fcc78f91a8cb",
+      "input": {
+        "payload_bytes": 150123,
+        "compressed_bytes": 82120,
+        "payload_sha256": "0a94fef04c97b1e03fa7d755a3600a8f28d9d28cb22ce7f71c1072687053340c",
+        "compressed_sha256": "05313d3b08bd8c560ce3d7fdbe765f1dfb29e1faa75d867cfdff3c17c3b35d33",
+        "format": "raw DEFLATE generated with Python zlib; decoded by fetched stock1.2.1 in probe"
+      },
+      "execution": "Ten original stream bodies plus consumed original334-byte constructor in relocated private copies; game-source methods from exact built objects; copied native direct internal calls remain within copied original bodies.",
+      "shared_boundaries": "Both sides use stock zlib1.2.1 adapters and a successful test CRT allocation/free service with tracked pointer identity/order. Original CRT/zlib machine code/global allocator identity are not claimed.",
+      "observed": "Zero read/seek; actual-read local ownerbits;733-byte positive short input reads; cross64KiB output read; accepted backward cursor; far reset preserving stale data; origin3 -1, EOF/FFFFFFFF/equal-relative seeks; AL82h; no-op write; zero-reference replacement callback and current clear; flags0/3 free order.",
+      "independent_output": "Each read checked against uncompressed payload, including stale read at payload70050 after logical reset0.",
+      "original_FH3_executed": false
+    }
+  },
+  "pins": [
+    {
+      "path": "include/bsp/native_raw_inflate_stream.hpp",
+      "sha256": "2bb588f4ab21a525dd3ca03197767ed6bf7ea665b8859e972af14dd099ff2ee8",
+      "bytes": 2496
+    },
+    {
+      "path": "src/native_raw_inflate_stream.cpp",
+      "sha256": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2",
+      "bytes": 9306
+    },
+    {
+      "path": "include/bsp/native_raw_inflate_owner.hpp",
+      "sha256": "261cdd63b5234e3b7ad739bfe778748ecb35323e0f0d687a050f5118e02b3ce8",
+      "bytes": 1483
+    },
+    {
+      "path": "src/native_raw_inflate_owner.cpp",
+      "sha256": "cee75de05b43224f6343fe582602ffbe6af6c1d66e0fbfa66ff3a0343b24a086",
+      "bytes": 3985
+    },
+    {
+      "path": "include/bsp/native_adopted_substream.hpp",
+      "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8",
+      "bytes": 4690
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_raw_inflate_stream.obj",
+      "sha256": "1d338b2eeb7e455fcba2084a54d7b9153f3a1d1a54459927c006479779376d63",
+      "bytes": 6460
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_raw_inflate_owner.obj",
+      "sha256": "7c38631fd66b9327dd6a5a47b00cc4cfbc1c5c458ba76c51a7df2db9a93c57b8",
+      "bytes": 5343
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "sha256": "0841311948242fd3aa0b38783d80b266e76cae2c41cac5760cc301c892779d88",
+      "bytes": 71966
+    },
+    {
+      "path": "local/raw_inflate_az/build_probe.cmd",
+      "sha256": "c85a43e693414fac64f550cbe3fab6d829add4a70d5fe9e8557018b222527796",
+      "bytes": 584
+    },
+    {
+      "path": "local/raw_inflate_az/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/raw_inflate_az/compressed.bin",
+      "sha256": "05313d3b08bd8c560ce3d7fdbe765f1dfb29e1faa75d867cfdff3c17c3b35d33",
+      "bytes": 82120
+    },
+    {
+      "path": "local/raw_inflate_az/inputs.json",
+      "sha256": "d516275e21b1c695cc354d8494e71337eb7a588f1b85e9a6f9ca9d06d3fa9fd9",
+      "bytes": 2815
+    },
+    {
+      "path": "local/raw_inflate_az/live_dtor_eh.txt",
+      "sha256": "235f9148e1c405e33c9b1e7ac13d9b43da33db8a9e9300d7c00805fd6392d370",
+      "bytes": 215
+    },
+    {
+      "path": "local/raw_inflate_az/live_entry.txt",
+      "sha256": "99b626b52ab363d25d21ad3c610f9cc68647e3d092475f98a0a918dff8d39d74",
+      "bytes": 1998
+    },
+    {
+      "path": "local/raw_inflate_az/live_profile.txt",
+      "sha256": "71aaaf731a3a54984942c6580981e905677d2efe4668cec020224b929e465b11",
+      "bytes": 308
+    },
+    {
+      "path": "local/raw_inflate_az/live_raw_region.txt",
+      "sha256": "04eaade802fd33faeca6e4bf0723aba53404bb248b5cc2bd0fcbf17c04c93e91",
+      "bytes": 7692
+    },
+    {
+      "path": "local/raw_inflate_az/native_code.hpp",
+      "sha256": "e247e806433bb04c8be483f82b4b99fdb26fb2ac38a6c88e477cd2bbca6a3fa9",
+      "bytes": 9029
+    },
+    {
+      "path": "local/raw_inflate_az/payload.bin",
+      "sha256": "0a94fef04c97b1e03fa7d755a3600a8f28d9d28cb22ce7f71c1072687053340c",
+      "bytes": 150123
+    },
+    {
+      "path": "local/raw_inflate_az/prepare.py",
+      "sha256": "d3e2af0325c678b50df7c2788f58ad6e35ef1b634dc2855013baacf96ac95634",
+      "bytes": 2420
+    },
+    {
+      "path": "local/raw_inflate_az/probe.cpp",
+      "sha256": "9f34b133f7c0316ccc43392b940c22464e9e542f12e0462ded9a18d51244e39a",
+      "bytes": 13374
+    },
+    {
+      "path": "local/raw_inflate_az/raw_probe.exe",
+      "sha256": "82079f7f63074e1f4e5a77a40f13c18ac501e46e68a1f322721823c10f5479f2",
+      "bytes": 71168
+    },
+    {
+      "path": "local/raw_inflate_az/raw_probe.map",
+      "sha256": "742eed9e0297212794a1adf86a65d9e26544d3356334edefd5856baba6a7b4c3",
+      "bytes": 76815
+    },
+    {
+      "path": "local/raw_inflate_az/raw_probe.obj",
+      "sha256": "b6362f9735b2d1bbc6b5c6c771830122652a036023a02964ab4ed55043939d03",
+      "bytes": 233166
+    },
+    {
+      "path": "local/raw_inflate_az/result.json",
+      "sha256": "0181726cfa1ee068e69af90009ca3fea9609bc9f8b87d070f644aef5aef67632",
+      "bytes": 169
+    },
+    {
+      "path": "local/raw_inflate_az/source_build.log",
+      "sha256": "06a3d49c1f53600e6021814e74ca1d11a5edf232de0dc3758465137a84fd99f3",
+      "bytes": 2573
+    }
+  ],
+  "link_identity": {
+    "source_functions": "native_raw_inflate_stream.obj and native_raw_inflate_owner.obj",
+    "allocator_boundary": "raw_probe.obj",
+    "map": "local/raw_inflate_az/verified/local/raw_inflate_az/raw_probe.map"
+  },
+  "compressed_entry_composition": {
+    "status": "pending adjacent runtime BEF750 numeric binding; not claimed by this commit"
+  },
+  "limitations": [
+    "Focused execution does not cover all native branches or arbitrary data/stack aliases.",
+    "Original FH3/SEH, allocation/decoder failure, malformed input hangs, simultaneous cleanup exceptions, concurrent mutation and installed archives/gameplay remain unvalidated.",
+    "Immediate headers are pinned; no full compiler-observed dependency closure claimed.",
+    "No source implementation changes or permanent tests added."
+  ]
+}
