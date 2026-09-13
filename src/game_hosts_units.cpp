@@ -250,9 +250,9 @@ struct GameUnitSlot {
     // Retained cells absent from UnitInstanceState. Its active/simulate cells
     // remain the only owners of+5C/+5D. Constructor00925CE0 stores BL=0 at
     //00925E11/+5E,00925E0B/+5F,00925E08/+60; later stores use this same slot.
-    bool scene_destroyed_005e{false};
-    bool scene_removed_005f{false};
-    bool scene_pending_destroy_0060{false};
+    std::uint8_t scene_destroyed_005e{0};
+    std::uint8_t scene_removed_005f{0};
+    std::uint8_t scene_pending_destroy_0060{0};
     bool scene_flags_available{false}; // process provenance, not a native byte
     bsp::UnitClassBlock class_block{};
 
@@ -989,7 +989,7 @@ public:
         // unit+5Dh, the byte docs/UNIT_INSTANCE.md names `simulate`. The list
         // filter requires it clear on a live ship, and clear is what opens the
         // planing branch at 00933639, not what shuts it.
-        in.suppress_planing = slot_.state != nullptr && slot_.state->simulate;
+        in.suppress_planing = slot_.state != nullptr && slot_.state->simulate != 0;
         in.elements = slot_.buoyancy_elements.data();
         in.element_count = static_cast<int>(slot_.buoyancy_elements.size());
 
@@ -1156,7 +1156,7 @@ private:
 
 void GameUnitsHost::Impl::refresh_row(GameUnitSlot& slot) {
     GameUnitRow& row = slot.row;
-    row.active = slot.state != nullptr && slot.state->active;
+    row.active = slot.state != nullptr && slot.state->active != 0;
     for (int i = 0; i < 3; ++i) row.position[i] = slot.motion.position[i];
     row.heading_degrees = heading_degrees_of(slot.motion);
     bsp::UnitBodyAxisSpeedInputs speed{};
@@ -1599,10 +1599,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // supported creator's primary+A0 initializer.00923855 writes+5C=1;
         // this is initialization, not the constructor's initial zero.
         //00925E14 clears+5D; type3 deadMeat delivery is not represented here.
-        slot->state->active = true;
-        slot->state->simulate = false;
+        slot->state->active = 1;
+        slot->state->simulate = 0;
         slot->scene_flags_available = slot->motion_dispatch.creator != 0;
-        row.active = slot->state->active;
+        row.active = slot->state->active != 0;
         slot->state->has_scene_node = false;  // +4A4h, 00928860 is a 2h record
         slot->state->part_count = 0;     // +A18h, the instance has no parts here
         // The actual descriptor creator selects the native+130h override;
@@ -2181,7 +2181,7 @@ bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return false;
-    return host.slots[index]->state->simulate;
+    return host.slots[index]->state->simulate != 0;
 }
 
 bool GameUnitsHost::unit_flag_0061(std::size_t index) const {
@@ -2374,7 +2374,7 @@ std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); 
 
 bool GameUnitsHost::unit_active(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return false;
-    return impl_->slots[index]->state->active;
+    return impl_->slots[index]->state->active != 0;
 }
 
 const void* GameUnitsHost::unit_identity(std::size_t index) const noexcept {
@@ -2388,6 +2388,20 @@ std::optional<bsp::NativeUnitObserverAlias> GameUnitsHost::observer_alias(
     for (const auto& slot : impl_->slots) {
         if (slot.get() == identity && slot->observer_prefix_ready)
             return bsp::NativeUnitObserverAlias{slot.get(), slot->observer_prefix};
+    }
+    return std::nullopt;
+}
+
+std::optional<bsp::NativeSceneLifecycleView> GameUnitsHost::scene_lifecycle_view(
+    const void* identity) noexcept {
+    auto alias = observer_alias(identity);
+    if (!alias) return std::nullopt;
+    for (const auto& slot : impl_->slots) {
+        if (slot.get() != identity) continue;
+        if (!slot->scene_flags_available || slot->state == nullptr) return std::nullopt;
+        return bsp::NativeSceneLifecycleView{*alias, slot->state->active,
+            slot->state->simulate, slot->scene_destroyed_005e,
+            slot->scene_removed_005f, slot->scene_pending_destroy_0060};
     }
     return std::nullopt;
 }
@@ -2409,8 +2423,8 @@ bool GameUnitsHost::unit_scene_node_flags(std::size_t index,
     if (index >= impl_->slots.size()) return false;
     const GameUnitSlot& slot = *impl_->slots[index];
     if (!slot.scene_flags_available || slot.state == nullptr) return false;
-    out = {slot.state->active, slot.state->simulate,
-        slot.scene_destroyed_005e, slot.scene_removed_005f};
+    out = {slot.state->active != 0, slot.state->simulate != 0,
+        slot.scene_destroyed_005e != 0, slot.scene_removed_005f != 0};
     return true;
 }
 
@@ -2444,7 +2458,7 @@ bool GameUnitsHost::unit_pending_destroy_0060(std::size_t index, bool& out) cons
     if (index >= impl_->slots.size()) return false;
     const GameUnitSlot& slot = *impl_->slots[index];
     if (!slot.scene_flags_available) return false;
-    out = slot.scene_pending_destroy_0060;
+    out = slot.scene_pending_destroy_0060 != 0;
     return true;
 }
 
@@ -2688,7 +2702,11 @@ void GameUnitsHost::unit_class_extents(std::size_t index, float& forward, float&
 
 const GameUnitRow* GameUnitsHost::unit_row(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return nullptr;
-    return &impl_->slots[index]->row;
+    GameUnitSlot& slot = *impl_->slots[index];
+    // Lifecycle providers can write the borrowed byte without going through
+    // store_scene_node_flags. Refresh this diagnostic snapshot at its reader.
+    slot.row.active = slot.state != nullptr && slot.state->active != 0;
+    return &slot.row;
 }
 
 bool GameUnitsHost::controlled_bound() const noexcept { return impl_->controlled_bound; }
@@ -2701,6 +2719,7 @@ const std::vector<GameUnitRow>& GameUnitsHost::units() const noexcept {
     impl_->rows.clear();
     impl_->rows.reserve(impl_->slots.size());
     for (const std::unique_ptr<GameUnitSlot>& slot : impl_->slots) {
+        slot->row.active = slot->state != nullptr && slot->state->active != 0;
         impl_->rows.push_back(slot->row);
     }
     return impl_->rows;

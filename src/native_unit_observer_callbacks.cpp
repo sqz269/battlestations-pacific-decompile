@@ -68,4 +68,6 @@ void native_shipyard_observer_callback_008455a0(
 void native_unit_observer_noop_0080dfc0() noexcept {}
 void native_unit_observer_noop_00952050() noexcept {}
 
+void native_observer_noop_0042b120() noexcept {}
+
 } // namespace bsp
