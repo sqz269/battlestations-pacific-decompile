@@ -11,6 +11,8 @@
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
+#include "bsp/native_physical_stream_open.hpp"
+#include "bsp/native_render_batch_lifetime.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_mpak_factory.hpp"
 #include "bsp/native_pak_registry.hpp"
@@ -125,6 +127,27 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             delete_native_lua_fundamentals_00b66b80(
                 *static_cast<NativeLuaFundamentalsOwner*>(owner), flags,
                 *bindings.actual_lua_fundamentals_publication_0108ff1c);
+            return;
+        }
+        break;
+    case 0x00d68ec0:
+        if (bindings.physical_stream_pool != nullptr) {
+            delete_native_physical_stream_pool_00bf4370(owner, flags,
+                *bindings.physical_stream_pool);
+            return;
+        }
+        break;
+    case 0x00d5e5dc:
+        if (bindings.render_batch_lifetime != nullptr) {
+            bindings.render_batch_lifetime->delete_pool_00b1e930(
+                static_cast<NativeRenderBatchPoolStorage*>(owner), flags);
+            return;
+        }
+        break;
+    case 0x00d5e5d4:
+        if (bindings.render_batch_lifetime != nullptr) {
+            bindings.render_batch_lifetime->delete_lock_owner_00b1d530(
+                static_cast<NativeRenderBatchLockOwner*>(owner), flags);
             return;
         }
         break;

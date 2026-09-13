@@ -14,6 +14,8 @@ struct NativeGameResourceFactoryContext;
 struct NativeStringPoolStorage;
 struct NativePhysicalFactoryContext;
 struct NativeVfsManagerLifetimeContext;
+struct NativePhysicalStreamOpenContext;
+class NativeRenderBatchLifetime;
 struct NativeFileStoreFactoryContext;
 struct NativeMpakFactoryContext;
 struct NativePakRegistryContext;
@@ -26,7 +28,7 @@ namespace game { class GameSoundRuntime; }
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
-// CFD84C or D62C18. D0DA64
+// CFD84C, D62C18, D68EC0, D5E5DC or D5E5D4. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -87,8 +89,14 @@ struct NativeSingletonDeletionBindings {
     // Pass the popped owner and clear this same0108FF1C cell unconditionally,
     // including when publication changed after registration.
     NativeLuaFundamentalsView* volatile* actual_lua_fundamentals_publication_0108ff1c{};
+    // D68EC0 is the registered raw10h physical stream pool. Pass the popped
+    // owner and its construction context, including the SAME 0109DC28 cell.
+    NativePhysicalStreamOpenContext* physical_stream_pool{};
+    // D5E5DC/D5E5D4 are the raw registered render-batch pool and lock owner.
+    // Both use the same retained lifetime object and their popped owner.
+    NativeRenderBatchLifetime* render_batch_lifetime{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 76);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 84);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

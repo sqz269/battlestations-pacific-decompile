@@ -1,0 +1,29 @@
+{
+  "packet": "orch4_physical_stream_lifetime_ba",
+  "status": "bounded-source-implementation",
+  "source": ["src/native_physical_stream_open.cpp", "src/native_singleton_destruction.cpp"],
+  "headers": ["include/bsp/native_physical_stream_open.hpp", "include/bsp/native_singleton_destruction.hpp"],
+  "documentation": "docs/NATIVE_PHYSICAL_STREAM_RAW_LIFETIME_BA.md",
+  "roots": [
+    {"address":"00bf42a0","name":"native_physical_stream_pool_00bf42a0","original_abi":"no parameters; EAX pool; RET0","coverage":"full normal source; disk/live 178 bytes, 53/53 saved instructions owned","sha256":"f95ac7971b5be29b1272c83639e4d3ce315576d8e09b8f1499907c5b911156e8"},
+    {"address":"00bf4370","name":"delete_native_physical_stream_pool_00bf4370","original_abi":"ECX popped pool, stack flags DWORD; EAX original pool; RET4","coverage":"full normal source; disk/live 49 bytes, 13/14 saved instructions owned","sha256":"25367142788dac71aa3c1c4c92e3c356c0fc7c8a7d4261115362255291604ad9","saved_body_exclusion":"00bf4398 ADD ESP,4 is an instruction but has no containing Ghidra function"}
+  ],
+  "calls": [
+    {"function":"00bf42a0","address":"00bf42c5","native":"00415350"},
+    {"function":"00bf42a0","address":"00bf42f6","native":"00bf681b"},
+    {"function":"00bf42a0","address":"00bf431a","native":"00415350"},
+    {"function":"00bf42a0","address":"00bf4328","native":"00bd0c30"},
+    {"function":"00bf4370","address":"00bf4386","native":"00bf3930"},
+    {"function":"00bf4370","address":"00bf4393","native":"00bf65ac"},
+    {"function":"00bf4ba0","address":"00bf4bbc","native":"00bf42a0"},
+    {"function":"00bf55a0","address":"00bf55ad","native":"00bf42a0"}
+  ],
+  "indirect_evidence": ["00bf42dd calls current enter target at 00ce2218", "00bf4336 calls current leave target at 00ce2210", "data 00d68ec0 begins DWORD 00bf4370"],
+  "source_dispatch_only": ["d68ec0 popped physical pool uses the same retained context/publication", "d5e5dc popped render-batch pool delegates to existing NativeRenderBatchLifetime::delete_pool_00b1e930", "d5e5d4 popped render-batch lock owner delegates to existing NativeRenderBatchLifetime::delete_lock_owner_00b1d530"],
+  "uncertainty": [
+    "Saved function ownership excludes instruction 00bf4398; primary must repair the Ghidra body before complete saved-body attribution.",
+    "Original FH3/C++ exception machinery and simultaneous cleanup failures are not replicated; source __finally preserves captured section release.",
+    "NativeRenderBatchLifetime still requires SingletonLifetimeDomain for its lock-owner path; physical stream acquisition/open/recycle is not yet raw production complete."
+  ],
+  "validation": "MSVC Win32 Release ./scripts/build.ps1 passed after the physical adaptation and again after coordinated batch dispatch; existing reconstructed_math CTest 1/1 passed both times. Direct CALL verifier 8/8 passed. No game or physical-file runtime test."
+}
