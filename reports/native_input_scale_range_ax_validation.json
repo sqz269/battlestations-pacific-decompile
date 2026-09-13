@@ -1,0 +1,52 @@
+{
+  "packet": "orch4_scale_range_validation_ax",
+  "status": "focused_win32_native_source_differential_passed",
+  "owner": "agent/orch4-vector-maps-ax",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "native_fixture_mode": "copied saved spans; no game process"
+  },
+  "fixture": {
+    "source": "local/scale_range_probe.cpp",
+    "runner": "local/run_scale_range_probe.ps1",
+    "executable": "local/scale_range_probe.exe",
+    "source_sha256": "63de43913c4011d86c38e3961ffc37a1ca9d958e73a31e6464fe7d5571c8b13a",
+    "runner_sha256": "ba586a4c235e739ae2d43c5af8605a0059575d6d69eb99e88ffc1e1175ea8ef7",
+    "executable_sha256": "bef66df23d320c5aff46caedaff9d5669e65b5a21c267069ebb07e21f58a9f7a",
+    "manifest": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/input_settings_lifetime_aq_native.hpp",
+    "manifest_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "manifest_span_count": 418,
+    "core_archive": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+    "core_archive_sha256_before_and_after": "5041af67993dd373e2d775cb39842228a47718568de5796432fee90390dfba7e",
+    "primary_source_sha256": {
+      "src/native_input_settings_tree_cleanup.cpp": "c0dfe636bacae8aedee1d2c6661ec49c800e508264585da2737f0f6111405ce0",
+      "src/native_input_scale_maps.cpp": "f2ea13287dd81f4c366cc023e15f76b8db009c007975de430bdec1dffc795aff"
+    },
+    "link": "MSVC Win32 /MD /EHsc /O2 /fp:strict, /MANIFEST:EMBED; primary bsp_core.lib, bsp_lua511.lib and bsp_zlib121.lib"
+  },
+  "native_spans": [
+    {"address": "0055b230", "manifest_index": 170, "bytes": 201, "sha256": "4ee2732d9efdd6eb19c773fdb7a14386dbfeb05b569fad25be42cb15e71050a8"},
+    {"address": "0055ac80", "manifest_index": 314, "bytes": 728, "sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a"},
+    {"address": "0055b400", "manifest_index": 316, "bytes": 113, "sha256": "06236fe90b692373e3e256dfa205b1ee3ee0da8dd17edc32a3d323f6d55ecd90"}
+  ],
+  "construction": "Each independent run builds a valid all-black balanced seven-node outer integer map (node20h, nil1Dh; signed keys -20,-10,-5,0,5,10,20). Every outer node owns an independently allocated three-node inner integer/scalar map (node18h, nil15h; black root, red children), with distinct scalar payloads. Heads, parent links, extrema, counts, colors and pooled allocator ownership are initialized explicitly.",
+  "comparison": "After each operation, snapshots normalize pointers into ordered shape and compare outer and inner counts, nil/color, signed keys, scalar payloads, parent links, head extrema, and returned owner/node. A subsequent full erase also checks cleanup after each partial case. Snapshot traversal asserts visited node count equals header count.",
+  "cases": [
+    {"case": "black left leaf erase", "native_source_equal_words": 124},
+    {"case": "nonroot two-child erase", "native_source_equal_words": 124},
+    {"case": "root erase with deeper right-subtree successor", "native_source_equal_words": 124},
+    {"case": "tail erase to end", "native_source_equal_words": 105},
+    {"case": "full begin-to-end erase", "native_source_equal_words": 6},
+    {"case": "empty end-to-end erase", "native_source_equal_words": 143},
+    {"case": "populated map copy through 0055B400", "native_source_equal_words": 274}
+  ],
+  "total_native_source_equal_words": 900,
+  "result": "PASS; no source mismatch observed",
+  "limits": [
+    "This is an isolated copied-body fixture, not the installed game process or gameplay validation.",
+    "The AQ manifest lacks 0055B490, so both populated copied maps are destroyed with the source wrapper after their topology snapshots; native copy ownership cleanup was not compared independently.",
+    "The fixture and runner live in ignored local/ and are pinned by hashes in this report; the report is the only committed artifact.",
+    "Cases use valid consistent balanced trees and supported copied-body boundaries; malformed tree, exception and native FH3 behavior remain outside the comparison."
+  ]
+}
