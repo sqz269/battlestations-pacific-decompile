@@ -113,3 +113,9 @@ validation. Original EH/runtime and invalid-memory equivalence remain unproven.
 `B88320`, hierarchy fields and arrays, producer/append ownership, finite item
 deletion, manager/cache operations and `B88430` runtime integration remain
 separate packets. The older discovery and fields worktrees/evidence are preserved.
+
+## BF integration correction, 2026-09-13
+
+The isolated BF integration on 2026-09-13 defined and range-verified all eleven previously missing functions, including `CD82D0-CD82E5`, against the installed PE and live Ghidra bytes. The seven nondeleting leaves, token startup entry and two compiler exception handlers remain analysis-only. Evidence is retained in `reports/native_resource_lifetime_bf_function_definitions.json`. The local `B7D68C` call override was cleared and its nine-byte fall-through gap decoded; the stored `B7D640-B7D69E` body now covers all95 bytes with zero remaining call gaps. Existing full-function documentation was archived before and after repair. The repair changes analysis metadata, not the installed game. See `reports/native_resource_lifetime_bf_flow_repairs.json`.
+
+The unchanged report now passes all8 direct-call rows with zero failures. Historical missing-function flags and worker-stage limitations above describe the retained original observations. New source comprises nine complete bodies (494 original bytes) across the three BF source packets; pool wrappers remain build-only. Combined candidate validation is recorded separately; this correction does not claim gameplay validation.

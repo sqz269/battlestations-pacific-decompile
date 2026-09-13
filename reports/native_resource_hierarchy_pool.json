@@ -400,5 +400,34 @@
       "sha256": "fa466279d3ce10593533fd0a5e91039edc4f4019b2a1e46a2d85165fd8a1d63c",
       "interpretation": "Exactly the two expected missing-containing-function failures for the undefined CD82D0 startup body. Root must define verified 22 bytes and rerun unchanged call rows before integration."
     }
+  },
+  "bf_integrator_correction_20260913": {
+    "scope": "Append-only correction to historical worker observations; source semantics and frozen baseline artifacts unchanged.",
+    "definitions_record": "reports/native_resource_lifetime_bf_function_definitions.json",
+    "flow_repair_record": "reports/native_resource_lifetime_bf_flow_repairs.json",
+    "defined_addresses": [
+      "00cd82d0",
+      "00b86860",
+      "00b86950",
+      "006f9d20",
+      "00b86870",
+      "00b86880",
+      "006f9d30",
+      "00b868a0",
+      "00cd82c0",
+      "00cc1fe3",
+      "00cc25f9"
+    ],
+    "reserve_function_body_inclusive": [
+      "00b7d640",
+      "00b7d69e"
+    ],
+    "reserve_body_bytes": 95,
+    "direct_call_rows_checked": 8,
+    "direct_call_rows_failed": 0,
+    "verification": "Unchanged worker report rerun against live verified bsp project after function definitions and flow repair. Indirect rows retain their original unchecked scope.",
+    "call_check_log": "local/native-bf-call-checks/native_resource_hierarchy_pool.log",
+    "source_coverage": "Nine complete source bodies,494 original bytes across hierarchy fields, finite fallback lifetime and pool wrappers; pool packet build-only. Analysis-only leaves/handlers are excluded from this count.",
+    "validation_at_metadata_edit": "Source reviews accepted; combined root build and exact candidate fixture gate remain pending."
   }
 }
