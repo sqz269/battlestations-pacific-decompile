@@ -1,0 +1,572 @@
+{
+  "packet": "orch6_neighbour_refresh_m",
+  "base_main": "87f9a9e0",
+  "incoming_dependency": "ce18a0d6979a1056e3a3f93ee42c33ce6cd69df6",
+  "dependency_merge": "dbd407e1",
+  "status": "complete normal semantic frame preparation/ordered refresh/ageing/compaction; external box math, native raw ABI and observer lifetime boundaries explicit",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_neighbour_frame.cpp",
+  "header": "include/bsp/ship_ai_neighbour_frame.hpp",
+  "documentation": "docs/SHIP_AI_NEIGHBOUR_FRAME.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009F0EA0",
+      "native": "009F0EA0",
+      "end_inclusive": "009F115D",
+      "bytes": 702,
+      "instructions": 188,
+      "name": "BSP_ShipAi_NeighbourListRefresh",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "ship_ai_neighbour_frame_refresh_009f0ea0",
+      "original_abi": "ECX=controller,sole stackdt,RET4 at009F115B; no specified return; typed source adds inspection result",
+      "coverage": "complete normal caller sequence over stable borrowed views; callees retained as existing implementations or explicit host services; no raw ABI/observer teardown implementation"
+    }
+  ],
+  "calls": [
+    {
+      "address": "009F0EC0",
+      "native": "00414DB0",
+      "function": "009F0EA0",
+      "binding": "host.refresh_pose_00414db0 on initially captured self; current pose cache and recursive world-transform service"
+    },
+    {
+      "address": "009F0F38",
+      "native": "00BF7030",
+      "function": "009F0EA0",
+      "binding": "existing native_crt_sqrt_st0_00bf7030, required CameraAxesCrtAccess, operand already inST0"
+    },
+    {
+      "address": "009F0F62",
+      "native": "00424C40",
+      "function": "009F0EA0",
+      "binding": "host.settings_00424c40; actual returned field refs, fresh lookup at both native sites"
+    },
+    {
+      "address": "009F104D",
+      "native": "009EAE20",
+      "function": "009F0EA0",
+      "binding": "direct existing near refresh with persistent node/motion/host; its unused native velocity-pointer argument omitted"
+    },
+    {
+      "address": "009F1067",
+      "native": "0080E160",
+      "function": "009F0EA0",
+      "binding": "host.director_side_filter_241_0080e160: unit+738 director, then its byte241; not class"
+    },
+    {
+      "address": "009F1075",
+      "native": "00424C40",
+      "function": "009F0EA0",
+      "binding": "host.settings_00424c40; actual returned field refs, fresh lookup at both native sites"
+    },
+    {
+      "address": "009F10FF",
+      "native": "009EAFC0",
+      "function": "009F0EA0",
+      "binding": "direct existing avoid refresh with all nine argument slots represented; existing math limits external"
+    },
+    {
+      "address": "009F1121",
+      "native": "0064A610",
+      "function": "009F0EA0",
+      "binding": "host.destroy_node_0064a610; actual observer destruction, no allocation free; explicit external lifetime binding"
+    },
+    {
+      "address": "009F1127",
+      "native": "00BF65AC",
+      "function": "009F0EA0",
+      "binding": "host.free_node_00bf65ac after destructor; original cdeclADDESP4; allocation policy remains caller-owned"
+    },
+    {
+      "address": "009F0EF1",
+      "native": "00812090",
+      "function": "009F0EA0",
+      "kind": "indirect",
+      "binding": "actual self virtual34, returned3-float pointer readX/Z; concrete table00CFC3D0 uses00812090,RET4; host preserves actual dispatch"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "009F51E4",
+      "native": "009F0EA0",
+      "function": "009F50E0",
+      "body": "009F50E0..009F5253",
+      "arguments": "009F51DA..009F51E1 float-spill dt,ECX=EDI navigation controller; then009F51F3 clearance profile and009F51FA sector refresh"
+    }
+  ],
+  "context_calls": [
+    {
+      "address": "009F51F3",
+      "native": "009E04E0",
+      "function": "009F50E0",
+      "contract": "following chain step"
+    },
+    {
+      "address": "009F51FA",
+      "native": "009EF230",
+      "function": "009F50E0",
+      "contract": "following sector refresh"
+    },
+    {
+      "address": "0081209A",
+      "native": "0092D730",
+      "function": "00812090",
+      "contract": "concrete velocity slot obtains body-axis speed before x87 axis products"
+    },
+    {
+      "address": "0064A644",
+      "native": "006952A0",
+      "function": "0064A610",
+      "contract": "nonnull owner unregister,ECX owner,EDX node"
+    },
+    {
+      "address": "0064A653",
+      "native": "00695870",
+      "function": "0064A610",
+      "contract": "callback-owner destruction before caller free"
+    }
+  ],
+  "borrowed_views": {
+    "unit": "identity,C8,FC,104,538,9C8,9CC; actual produced storage, stable references",
+    "settings": "raw byte04,float1B8; fresh singleton lookup at actual call sites",
+    "frame": "stable slots608,live signedcount604,party3F0,cachedY1BC/1C0",
+    "nodes": "existing ShipAiObstacleNode and ShipAiNeighbourNodeMotion; per-node existing near/avoid host bindings",
+    "lifetime": "caller provides real destroy and free; L initializer is not rerun each frame",
+    "constraints": "native-valid storage, original128-pointer capacity domain, no backing relocation during callbacks; view accessors expose fields without extra world updates"
+  },
+  "numeric_fragments": [
+    {
+      "range": "009F0EFC..009F0F54",
+      "source": "magnitude",
+      "schedule": "spilled X/Z; x*x+z*z in native x87 order;float spill; compare exactCE3820 double withJBE includingunordered; sharedST0sqrt; repeat resultfloatspill"
+    },
+    {
+      "range": "009F0F67..009F0FC3",
+      "source": "floor_velocity",
+      "schedule": "FLD captured class500,FMUL returnedsettings1B8;COMISS0.001f before floorFSTP; below threshold zero; otherwise only orderedfloor>magnitude scales;float gain spill and percomponentproductspill"
+    },
+    {
+      "range": "009F0FCB..009F0FEF",
+      "source": "scale_store",
+      "schedule": "full length*actual widened0.55f double;full beam*0.75 double;float stores; beam argument produced though callee ignores it"
+    },
+    {
+      "range": "009F1009..009F1023",
+      "source": "age",
+      "schedule": "FLD lifetime,FSUBdt,FSTPfloat,reload,FSTnode,orderedpositiveFCOMIP/SETA; zero/negative/unordered expires"
+    },
+    {
+      "range": "009F10A4..009F10CA",
+      "source": "copy_x87",
+      "schedule": "self minimumY read/spilled before maximumY; retain x87 copy/quieting behavior"
+    }
+  ],
+  "constant_reuse": [
+    {
+      "address": "00CE3820",
+      "symbol": "kShipAiSectorLengthEpsilon",
+      "hex": "bbbdd7d9df7cdb3d"
+    },
+    {
+      "address": "00D7A23C",
+      "symbol": "kShipAiCrossingParallelEpsilon",
+      "hex": "6f12833a"
+    },
+    {
+      "address": "00CEC8F0",
+      "symbol": "kShipAiNeighbourBoxHalfLengthScale",
+      "value": "0.550000011920929"
+    },
+    {
+      "address": "00CEC9D8",
+      "symbol": "kShipAiNeighbourSpeedFraction",
+      "value": "0.75"
+    }
+  ],
+  "ordering": [
+    "Prepare inputs even with count0. Capture old self for pose/position; reload self for velocity after pose callback.",
+    "Reload self/capture class538 before settings callback; read capturedclass500 after callback. Reload self again for extents.",
+    "Age/store before any owner test. Expired:destroy thenfree, thenremoved++. Gone survivor:set68 only.",
+    "Live survivor:near refresh, then captureparty/readobservedcategory even ifnegative; only nonnegative reachesdirector+241; only nonzero reachesfreshsettings+4.",
+    "Observed party3 accepts; otherwise reload currentparty after callbacks and accept3/equality. Do not substitute class+241.",
+    "Read current selfminY thenmaxY; synchronize actual owner-gone at avoid entry; call existing avoid.",
+    "Compact survivors only after earlier removals; increment iterator/index and reload livecount; subtract removals at end; preserve trailing slots."
+  ],
+  "corrections": [
+    {
+      "was": "L assessment says class+241 after0080E160",
+      "evidence": "0080E160..0080E166 MOV EAX,[ECX+738];RET;009F1067/009F106C",
+      "ownership": "root corrects L docs/report; L initializer unchanged",
+      "is": "director+241;0080E160 returnsunit+738"
+    },
+    {
+      "was": "age-only009F0EA0 fragment regarded as full neighbour refresh",
+      "evidence": "existing src/ship_ai_sector_scan.cpp helper versus full188-instruction009F0EA0 body",
+      "is": "legacy helper omits prologue and both box calls; new frame module supplies them"
+    },
+    {
+      "was": "class500*settings1B8 interpreted as velocity cap",
+      "evidence": "009F0F9F..009F0FBF; original-byte fixture",
+      "is": "floor that scales upward only on ordered greater comparison"
+    },
+    {
+      "was": "unqualified near/avoid geometry parity inferred from caller proof",
+      "evidence": "009EB2B5/009EB2B7 unorderedproceeds versus existing if(!(shrink>0)); caller fixture uses shared callbacks",
+      "is": "existing math remains external, including shrinkNaN branch difference"
+    }
+  ],
+  "flow_verification": [
+    {
+      "address": "009F0EA0",
+      "instructions": 188,
+      "gaps": 0,
+      "direct_calls": 9,
+      "indirect_calls": 1
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "native_fixture": {
+    "source": "local/neighbour_frame_probe.cpp",
+    "prepare": "local/prepare_neighbour_frame_probe.py",
+    "build": "local/build_neighbour_frame_probe.cmd",
+    "manifest": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "address": "009F0EA0",
+      "end_inclusive": "009F115D",
+      "bytes": 702,
+      "instructions": 188,
+      "original_sha256": "e509c325b4931ec4a5a49bbf1dabde36c9037a02220be61e34951b4346be27c3",
+      "live_equals_installed": true,
+      "image_sha256": "d3df778b9fa4025a49353785cf6ba4d9f0bc04cf16cf06d3f7d468a8310edb89",
+      "data_patches": [
+        {
+          "address": "009F0F28",
+          "offset": 138,
+          "data_offset": 1024,
+          "native_data": "00CE3820"
+        },
+        {
+          "address": "009F0F73",
+          "offset": 215,
+          "data_offset": 1032,
+          "native_data": "00D7A23C"
+        },
+        {
+          "address": "009F0FD9",
+          "offset": 315,
+          "data_offset": 1040,
+          "native_data": "00CEC8F0"
+        },
+        {
+          "address": "009F0FE9",
+          "offset": 331,
+          "data_offset": 1048,
+          "native_data": "00CEC9D8"
+        }
+      ],
+      "calls": [
+        {
+          "address": "009F0EC0",
+          "native": "00414DB0",
+          "offset": 33
+        },
+        {
+          "address": "009F0F38",
+          "native": "00BF7030",
+          "offset": 153
+        },
+        {
+          "address": "009F0F62",
+          "native": "00424C40",
+          "offset": 195
+        },
+        {
+          "address": "009F104D",
+          "native": "009EAE20",
+          "offset": 430
+        },
+        {
+          "address": "009F1067",
+          "native": "0080E160",
+          "offset": 456
+        },
+        {
+          "address": "009F1075",
+          "native": "00424C40",
+          "offset": 470
+        },
+        {
+          "address": "009F10FF",
+          "native": "009EAFC0",
+          "offset": 608
+        },
+        {
+          "address": "009F1121",
+          "native": "0064A610",
+          "offset": 642
+        },
+        {
+          "address": "009F1127",
+          "native": "00BF65AC",
+          "offset": 648
+        }
+      ],
+      "boundaries": "native frame body only; callbacks shared with compiled source for pose,velocity,settings,director,near,avoid,destroy,free; recovered ST0sqrt shared with actual mapped initial .data zero-fill for0109DD78; no independent box geometry or observer lifetime proof"
+    },
+    "log": "local/neighbour_frame_probe.log",
+    "cases": 11,
+    "compared_words": 394,
+    "failures": 0,
+    "comparison": "canonical callback trace including unit identities,all avoid argumentwords,lifetimes,68/69,count,andstale pointer slots; x87TOP balanced",
+    "case_coverage": [
+      "empty preparation",
+      "mixed finite/NaN expiry/gone/null-owner survivors",
+      "floor scaling",
+      "NaNvelocity",
+      "spilled squaredoverflow",
+      "NaNfloor",
+      "self/class/party mutation across callbacks",
+      "negativeparty shortcircuit",
+      "livecount reduction",
+      "settingsbytezero",
+      "directorbytezero andsubthresholdvelocity"
+    ],
+    "source_boundary": "link-time fixture replacements for existing near/avoid symbols; production implementations unchanged; other services shared viaexplicit source/native adapters",
+    "sqrt_boundary": "actual recovered ST0sqrt shared;0109DD78 uses verified PE virtual-data initialzero-fill; unexpected exception callback aborts",
+    "control": "masked exceptions,53-bit x87 precision,nearest rounding",
+    "exclusions": [
+      "independent near/avoid geometry parity",
+      "actual observer destruction/free/allocator behavior",
+      "whole gameplay or installed mission runtime",
+      "binary controller/node ABI equivalence",
+      "other control modes/unmasked exceptions/full register-status parity"
+    ]
+  },
+  "validation": {
+    "win32_release": "passed",
+    "ctest": "2/2 existing tests passed",
+    "new_tracked_tests": 0,
+    "note": "initial source field namednear collided with Win32 legacy macro; renamednear_host before successful build",
+    "call_gate": "indirect  report.calls[9]: 009f0ef1 uses CALL through a register or memory operand; the report resolves it to 00812090 (not verifiable here)\nreports/ship_ai_neighbour_frame.json: 25 call rows checked, 0 failed"
+  },
+  "reproduction": [
+    "./scripts/build.ps1",
+    "python local/prepare_neighbour_frame_probe.py",
+    "cmd /c local\\build_neighbour_frame_probe.cmd",
+    "./local/neighbour_frame_probe.exe",
+    "python tools/verify_report_calls.py reports/ship_ai_neighbour_frame.json"
+  ],
+  "artifacts": [
+    {
+      "path": "local/build_neighbour_frame_probe.cmd",
+      "bytes": 351,
+      "sha256": "f9d37773534fd98fc8c8504e11857a3cc918928f2323a7b0402a4e6533dcf9bc"
+    },
+    {
+      "path": "local/neighbour_frame_009f0ea0.asm",
+      "bytes": 6242,
+      "sha256": "47c4d28e0367399a51df13532bbcf5c60c1186a7cf90dd842dd844fadcd49267"
+    },
+    {
+      "path": "local/neighbour_frame_build.log",
+      "bytes": 35848,
+      "sha256": "58c3e5049f4f4cc67bbd9332b076eb091a6e21500d55e374f6b3ca88139a81e4"
+    },
+    {
+      "path": "local/neighbour_frame_build_final.log",
+      "bytes": 5839,
+      "sha256": "af12e9926ef0015b39030fa79aa4dbba043d686b18d441255b7b9f61073008d3"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_009F0EA0.txt",
+      "bytes": 3380,
+      "sha256": "6dbe2f203440e1744b0d83066f4738eacd75eb704619379e8d9177456f4c0749"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_00CE3820.txt",
+      "bytes": 45,
+      "sha256": "03cab64e28e0c5352ebc32f16a3f741366b2d8d6a34df1e894fa8ee1f1092a68"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_00CEC8F0.txt",
+      "bytes": 45,
+      "sha256": "c0956aa098b97f52a4ff0ac7efb8bc72ff2b02bcc157a4286a667cbf81101eeb"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_00CEC9D8.txt",
+      "bytes": 45,
+      "sha256": "64b751b15a84208ebd7a4b8ae9c93b29b4477cc15adc1e60c6fac0c5bf6f3b19"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_00D7A23C.txt",
+      "bytes": 29,
+      "sha256": "218aa657d17a6edfc05a4b6712d597b4cae2f54cf8264e596fa8b29adbf06f84"
+    },
+    {
+      "path": "local/neighbour_frame_bytes_0109DD78.txt",
+      "bytes": 29,
+      "sha256": "2fa76801cae560d82a97100e5e86f27a7f84d3d4ed320c3c9f4858855d6587c9"
+    },
+    {
+      "path": "local/neighbour_frame_caller.asm",
+      "bytes": 3416,
+      "sha256": "bfe76121f04db249681b8bf17c9b664484a560f8ad3e53d6a9369504f9186245"
+    },
+    {
+      "path": "local/neighbour_frame_capstone.asm",
+      "bytes": 7656,
+      "sha256": "f2dd9d442bfb9970a9eae26a93476a576a7bd0554ec391b3b378674c399d21ad"
+    },
+    {
+      "path": "local/neighbour_frame_dependency_message.txt",
+      "bytes": 189,
+      "sha256": "50ca3c71740aa6ba7f9d19634626ac688d8db58f2eef67d8c25d4acfd4dd6b71"
+    },
+    {
+      "path": "local/neighbour_frame_destructor.asm",
+      "bytes": 719,
+      "sha256": "a59c9909bf4cfdaec59835e70b60b244fc1def6fcae23647f74be4dcea7bd8bd"
+    },
+    {
+      "path": "local/neighbour_frame_flow.txt",
+      "bytes": 129,
+      "sha256": "7a748c55d8bf2546b4b46c74d9ff99f9421090d501da0c06901a91a08712ccf5"
+    },
+    {
+      "path": "local/neighbour_frame_index.log",
+      "bytes": 142,
+      "sha256": "3e80d94be9df9b5be37d5e2458cdd67891ee394b2af98acc8a9ab8869e5eea33"
+    },
+    {
+      "path": "local/neighbour_frame_index_final.log",
+      "bytes": 142,
+      "sha256": "b496e2d42578967ff8af0026e25bb215db9be7a3bc23f9f3aa26c1e8a3fd7bc2"
+    },
+    {
+      "path": "local/neighbour_frame_native_image.bin",
+      "bytes": 1088,
+      "sha256": "d3df778b9fa4025a49353785cf6ba4d9f0bc04cf16cf06d3f7d468a8310edb89"
+    },
+    {
+      "path": "local/neighbour_frame_native_manifest.json",
+      "bytes": 2196,
+      "sha256": "7adbbd5f7ab561475f8a268e5c0523944e87b1da1d1574aa6d52dc179a925888"
+    },
+    {
+      "path": "local/neighbour_frame_native_records.bin",
+      "bytes": 1576,
+      "sha256": "49c69bf72720374c92766fa637c97b71c8e44916233313220b9657908b6a0b32"
+    },
+    {
+      "path": "local/neighbour_frame_original_009F0EA0.bin",
+      "bytes": 702,
+      "sha256": "e509c325b4931ec4a5a49bbf1dabde36c9037a02220be61e34951b4346be27c3"
+    },
+    {
+      "path": "local/neighbour_frame_prepare.log",
+      "bytes": 127,
+      "sha256": "ce8dfa1542b7598b191264274a41ab35e73ce3c998b80ef77f1bb4dfc2df053d"
+    },
+    {
+      "path": "local/neighbour_frame_probe.cpp",
+      "bytes": 15229,
+      "sha256": "0e35b81728bc5392c2115a66aeb8c66d7b1a56bbe9326993eb578fb261cf8faa"
+    },
+    {
+      "path": "local/neighbour_frame_probe.exe",
+      "bytes": 46592,
+      "sha256": "260a5ca7d0746face57f771a0a063e35e06d16c78c42a58b5191193ca35a0b31"
+    },
+    {
+      "path": "local/neighbour_frame_probe.log",
+      "bytes": 582,
+      "sha256": "6c0e2d28f2b2bd87da993ce8189ef47e10731b526747200620be0a13626dfd7b"
+    },
+    {
+      "path": "local/neighbour_frame_probe.obj",
+      "bytes": 198157,
+      "sha256": "f9812ca26f61c283501f2de4a3c680e5fba56f656c3eed0f652a1ef5f166c914"
+    },
+    {
+      "path": "local/neighbour_frame_probe_compile.log",
+      "bytes": 27,
+      "sha256": "beacc8632e785b5805261693a296724f424129501025966c8f83aa04d7cb63f3"
+    },
+    {
+      "path": "local/neighbour_frame_probe_patches.hpp",
+      "bytes": 329,
+      "sha256": "5f08e018688c4b428bf2260791286e916fb276b50843f64045b672d902880d66"
+    },
+    {
+      "path": "local/neighbour_frame_proto.txt",
+      "bytes": 3238,
+      "sha256": "4417efeead00af11699f3dc02484eacdf5214e472b9a962b838510215446631f"
+    },
+    {
+      "path": "local/neighbour_frame_pseudo.txt",
+      "bytes": 4831,
+      "sha256": "3972a6122c94bc922fc075728f2a6db4bbfc61d5c343c26fe5552a58d8c87a6f"
+    },
+    {
+      "path": "local/neighbour_frame_report_calls.log",
+      "bytes": 214,
+      "sha256": "fc884bd24ae52dbec78db78d855a80a0994dbda5e3f7093ad12849ff28f18343"
+    },
+    {
+      "path": "local/neighbour_frame_source_records.bin",
+      "bytes": 1576,
+      "sha256": "49c69bf72720374c92766fa637c97b71c8e44916233313220b9657908b6a0b32"
+    },
+    {
+      "path": "local/neighbour_frame_velocity_getter.asm",
+      "bytes": 627,
+      "sha256": "b5fceb506a571e67386ea6129d971171ac26e51a80bacb61b3636f04e7f82075"
+    },
+    {
+      "path": "local/neighbour_frame_velocity_slot.txt",
+      "bytes": 29,
+      "sha256": "a510372255b5838ff2866eee3267d94e06bf3fa7bf3e137f4128fff09312a56f"
+    },
+    {
+      "path": "local/neighbour_frame_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/neighbour_frame_vtable_identity.txt",
+      "bytes": 29,
+      "sha256": "a1b97a8040217ed8ae1c6c17e17a32587452d42b9422117cf99dbab579cfc7f3"
+    },
+    {
+      "path": "local/prepare_neighbour_frame_probe.py",
+      "bytes": 3760,
+      "sha256": "f4924295ba8db93e7e0b4efc1c7ce7dc46157e5df2f24c40affd934cfea45bcb"
+    },
+    {
+      "path": "local/write_neighbour_frame_report.py",
+      "bytes": 11215,
+      "sha256": "d9012d001e59be667f82135227652a4eaeca7e0e62c398e8c6967350c756d939"
+    },
+    {
+      "path": "src/ship_ai_neighbour_frame.cpp",
+      "bytes": 8220,
+      "sha256": "fd4195df5d22eb13f0a19aaa3200dc3086e864237f4b60bd5fceb1b7a6625796"
+    },
+    {
+      "path": "include/bsp/ship_ai_neighbour_frame.hpp",
+      "bytes": 3382,
+      "sha256": "027f9bb02a303a6b04183ce1f864b5fb312a12ae81a3e43018b2fc19c14a09d3"
+    },
+    {
+      "path": "docs/SHIP_AI_NEIGHBOUR_FRAME.md",
+      "bytes": 10856,
+      "sha256": "cef64c4a8e57f2b422ba9b73b00a28d3512686d0b661e85cb36e782b61d3846e"
+    }
+  ]
+}

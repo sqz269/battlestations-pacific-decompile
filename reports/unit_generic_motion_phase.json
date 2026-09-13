@@ -1,0 +1,252 @@
+{
+  "packet": "orch6_generic_motion_l",
+  "status": "reconstructed_build_fixture_tested_explicit_host_boundaries",
+  "base_commit": "187efac2ef6e852a995c082e2b656056c6fb1ab9",
+  "source": "src/tick_element_overrides.cpp",
+  "header": "include/bsp/tick_element_overrides.hpp",
+  "api": "unit_tick_advance_sim_00953cc0(UnitTickAdvanceState&, float, UnitTickAdvanceHost&)",
+  "routines": [
+    {
+      "address": "00953CC0",
+      "native": "00953CC0",
+      "end_inclusive": "00953D9F",
+      "bytes": 224,
+      "abi": "__thiscall; ECX=node=unit+310h; one float; RET4 at00953D9D",
+      "coverage": "complete caller control sequence and local state operations through four explicit host boundaries; no runtime binding or raw native object layout"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "The final unit+1D8 virtual ran when unit+520h was set.",
+      "is": "It runs when the byte is clear; the state field is suppress_1d8_520h.",
+      "evidence": "00953D84 JNZ00953D9A skips CALL00953D98 for nonzero; full224-byte original/source fixture agrees."
+    },
+    {
+      "was": "Default notify_code_528h=-1 and enabled_520h=true.",
+      "is": "Default notify_code_528h=-9 and suppress_1d8_520h=false.",
+      "evidence": "Native constructor0095CDC1 storesFFFFFFF7;0095CDD7 stores zero BL."
+    },
+    {
+      "was": "The +5Ch host callback was named notify; role service was documented with a unit argument.",
+      "is": "+5Ch is a class query whose result is discarded;00927F10 is stdcall(role) with RET4.",
+      "evidence": "Complete three leaf query bodies;00927F10 overwrites ECX from globalE188A8 and RET4 at00927F24."
+    },
+    {
+      "was": "The body end was written as00953D9D, the first byte of RET4.",
+      "is": "Inclusive body end00953D9F.",
+      "evidence": "Live/disk224-byte equality and finalC20400."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00953CDF",
+      "native": "unit+vtable5C",
+      "function": "00953CC0",
+      "contract": "thiscall unit IsKindOf(9), result discarded, gated by signed unit+528>=0; actual query bodies read for all three leaves"
+    },
+    {
+      "address": "00953CFD",
+      "native": "0095DC40",
+      "function": "00953CC0",
+      "contract": "indirect unit+1F0(float step), unconditional; actual three leaf slots resolve0095DC40; external implementation"
+    },
+    {
+      "address": "00953D6E",
+      "native": "00927F10",
+      "function": "00953CC0",
+      "contract": "stdcall(role), RET4; role8 skips; false clears unit+520; actual participant pointer/game global required"
+    },
+    {
+      "address": "00953D98",
+      "native": "unit+vtable1D8",
+      "function": "00953CC0",
+      "resolved_target": "006D1F20",
+      "contract": "thiscall unit(float step) only if suppression clear; actual three leaf target bytes C20400; target is not yet a Ghidra function"
+    }
+  ],
+  "read_only_dependency_steps": [
+    {
+      "address": "0095DC4B",
+      "native": "00927F30",
+      "function": "0095DC40",
+      "contract": "thiscall(unit,4), RET4; unsigned local index<=7 and current role4 equals index"
+    }
+  ],
+  "producer_stores": [
+    {
+      "site": "0095CDC1",
+      "field": "unit+528h",
+      "value_bits": "FFFFFFF7"
+    },
+    {
+      "site": "0095CDD7",
+      "field": "byte unit+520h",
+      "value_bits": "00"
+    },
+    {
+      "site": "0095CE0B",
+      "field": "unit+634h",
+      "value_bits": "00000000"
+    },
+    {
+      "site": "0095CF50",
+      "field": "unit+6F8h",
+      "value_bits": "00000000"
+    },
+    {
+      "site": "0095CF58",
+      "field": "unit+6FCh",
+      "value_bits": "00000000"
+    }
+  ],
+  "register_provenance": "ESI=node at00953CC2; EDI=node-310h at00953CF1. Constructor ESI=ECX at0095CCAC; EBX=0 at0095CCE0; XMM0=0 at0095CD7D; intervening writes checked in full listing.",
+  "leaf_slots": [
+    {
+      "class": "LandVehicle",
+      "primary_vtable": "00CFFDE0",
+      "slots": {
+        "5c": "0074DD90",
+        "1d8": "006D1F20",
+        "1f0": "0095DC40"
+      }
+    },
+    {
+      "class": "LandFort",
+      "primary_vtable": "00CFF3F8",
+      "slots": {
+        "5c": "006F5890",
+        "1d8": "006D1F20",
+        "1f0": "0095DC40"
+      }
+    },
+    {
+      "class": "CommandBuilding",
+      "primary_vtable": "00CFB028",
+      "slots": {
+        "5c": "006F58E0",
+        "1d8": "006D1F20",
+        "1f0": "0095DC40"
+      }
+    }
+  ],
+  "read_only_dependencies": [
+    {
+      "entry": "0095DC40",
+      "end_inclusive": "0095DDF8",
+      "coverage": "read-only full body; no new implementation",
+      "established_arm": "Current role4==8 implies00927F30 false for every local index dword;0095DD71 writes unit+63Ch=1.0, no input/settings reads.",
+      "pending": "True predicate arm uses input manager, mission clock and settings and updates unit+640/+644/+63C; actual storage and services required."
+    },
+    {
+      "entry": "00927F10",
+      "end_inclusive": "00927F26",
+      "coverage": "read-only complete five-instruction body; existing participant owner remains dependency"
+    },
+    {
+      "entry": "00927F30",
+      "end_inclusive": "00927F59",
+      "coverage": "read-only complete predicate; no new implementation"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "006D1F20",
+      "end_inclusive": "006D1F22",
+      "end_exclusive": "006D1F23",
+      "bytes": "C20400",
+      "instructions": 1,
+      "action": "Root independently verified; locked definition deferred to integration. No worker mutation."
+    }
+  ],
+  "false_free_call_gaps": [],
+  "proof": {
+    "original": {
+      "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "body_sha256": "01aa42ffb00572401036c480701089492fda026d2b2ff8368c13a46fafac3265",
+      "span": "00953CC0..00953D9F",
+      "live_equals_disk": true,
+      "bytes": 224,
+      "leaf_slots": [
+        {
+          "class": "LandVehicle",
+          "primary_vtable": "00CFFDE0",
+          "slots": {
+            "5c": "0074DD90",
+            "1d8": "006D1F20",
+            "1f0": "0095DC40"
+          }
+        },
+        {
+          "class": "LandFort",
+          "primary_vtable": "00CFF3F8",
+          "slots": {
+            "5c": "006F5890",
+            "1d8": "006D1F20",
+            "1f0": "0095DC40"
+          }
+        },
+        {
+          "class": "CommandBuilding",
+          "primary_vtable": "00CFB028",
+          "slots": {
+            "5c": "006F58E0",
+            "1d8": "006D1F20",
+            "1f0": "0095DC40"
+          }
+        }
+      ]
+    },
+    "probe": {
+      "native_span": "00953CC0..00953D9F",
+      "original_bytes": 224,
+      "cases": 4,
+      "callback_events_per_side": 9,
+      "compared_bytes": 7424,
+      "mismatches": 0,
+      "stack_cleanup_matches": true
+    },
+    "exit_code": 0,
+    "native_relocation": "Only E8 displacement at body+AF for00953D6E->00927F10 redirected to stdcall observation seam; virtuals use three callable fixture slots.",
+    "comparison": "Four740h byte arrays per side; same table pointer; projected fields initialized; remainderA5. All bytes compared, no normalization or masks.",
+    "cases": [
+      "constructor defaults",
+      "suppression and role8",
+      "false assigned role clears suppression",
+      "true assigned role preserves suppression plus query/flag/timer operations"
+    ],
+    "shared_boundaries": "Native/source callbacks log events; +1F0/+1D8 do not execute real bodies. Role answer is explicit input. Query seam uses existing unit_is_kind_of. This is not a callable native class vtable.",
+    "limits": [
+      "ordinary finite step/timers and bool0/1 fields",
+      "no native callee effects or callback alias mutations",
+      "no FPU status/exception or arbitrary-float claim",
+      "no native allocator/object construction",
+      "no real game mission execution or runtime binding"
+    ],
+    "build": "MSVC Win32 Release via scripts/build.ps1; both existing reconstructed_math and native_math_differential CTests passed",
+    "new_tracked_tests": 0,
+    "artifact_manifest": "local/generic_motion_artifact_manifest.json"
+  },
+  "runtime_input_limits": [
+    "Byte unit+61h direct producer/lifetime unresolved; existing semantic false default is not native producer proof.",
+    "Current roles must borrow canonical owner; do not duplicate policy or current-role state.",
+    "Assigned role requires actual participant availability; role8 skips that dereference.",
+    "Complete caller sequence is distinct from complete +1F0 dependency and live unit ownership.",
+    "GameUnitsHost, ShipAI and mission files unchanged; primary binds separately."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true
+  },
+  "compiled_source_hashes": {
+    "include/bsp/tick_element_overrides.hpp": "ae82e6002b6f976f7fcdaec56e53071459ce92810ca9825b08f65911eaa315a9",
+    "src/tick_element_overrides.cpp": "beaf836a67ad7946381f467cfd359ecf60b49049d5437f4ba9e14c74b6efcf01",
+    "local/generic_motion_probe.cpp": "005c3bb8c2c72f6bced761e261dfd9468d3b59982c7717516efdb8e4b12b44c0",
+    "build/win32/Release/bsp_core.lib": "8e8f89428fb502403cbd8ce43678c745344a72d7b40fc8e90ace6a7476424043"
+  },
+  "verification_call_gate": {
+    "checked_rows": 3,
+    "failed_rows": 0,
+    "indirect_limits": "Three virtual sites qualified; two skip address validation, +1F0 verifies containing functions but slot resolution remains manual."
+  }
+}

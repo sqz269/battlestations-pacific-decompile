@@ -26,6 +26,8 @@
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_record_side_blocks.hpp"
+#include "bsp/session_participant_pools.hpp"
 #include "bsp/vfs_mounts.hpp"
 
 #include <algorithm>
@@ -336,6 +338,15 @@ struct GameMissionHost::Impl {
     std::string trajectory_csv;
     GameFrameProfiler* profiler{nullptr};
     std::string language;
+    // Native game allocation is zeroed at 0073E163. These two participant
+    // pools retain bytes across scene loads; frame_host and its ShipAI borrow
+    // this owner and are destroyed first (reverse member destruction order).
+    bsp::SessionParticipantPools participants{
+        bsp::ParticipantPoolInitialization::ZeroedGameAllocation};
+    // Only a successfully parsed header properties bag supplies native+988h.
+    // Key by the actual scene path; the semantic side_blocks vector still
+    // lacks resolved Party/Race and must not imply a zero participant count.
+    std::map<std::string, std::int32_t> participant_scene_counts;
     std::unique_ptr<GameMissionLuaHost> lua;
     std::unique_ptr<GameMissionFrameHost> frame_host;
     GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost
@@ -1117,6 +1128,7 @@ void GameMissionHost::Impl::start_briefing_005922f0() {
 
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const std::string& scene_path) {
+    participant_scene_counts.erase(scene_path);
     // 0046DF00's header pass. 008D9CF0 opens the path through the VFS provider
     // table at 0109CEEC and reads the whole stream; the parser then runs over
     // the text. The scene-graph owner is needed by passes 2 and 3 (004D4DF0),
@@ -1158,6 +1170,16 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
 
     const SceneDocument document = parse_scene_document(text);
     log.implemented("SetPendingScene::load_scene_header_pass", "0046df00");
+    if (document.has_header && document.header.has_properties) {
+        const auto table = bsp::read_scene_record_slot_table_004f1d70(document.header.properties);
+        participant_scene_counts.emplace(scene_path, table.max_player_num);
+        log.notef("scene participant scalar: path=%s available=1 max_players=%d "
+            "authored=%d", scene_path.c_str(), table.max_player_num,
+            table.max_player_num_authored ? 1 : 0);
+    } else {
+        log.notef("scene participant scalar: path=%s available=0 (header properties missing)",
+            scene_path.c_str());
+    }
 
     record.scene_path = scene_path;
     record.file_present = true;
@@ -1599,9 +1621,12 @@ void GameMissionHost::Impl::finish_scene_load() {
         "+928h script table is not filled by the header pass)", record.scene_path.c_str(),
         summary.lua_script_path.c_str());
 
+    // The previous frame and its children borrow the previous Lua owner.
+    // Destroy those borrowers before replacing that owner on a later load.
+    frame_host.reset();
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
-    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, profiler, language,
-        hud);
+    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
+        profiler, language, hud);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.
@@ -1641,8 +1666,10 @@ void GameMissionHost::Impl::finish_scene_load() {
     frontend.invalidate_bridge();
     log.note("the mission-detail page roots were hidden: 00686c90 destroys the main-menu "
         "screen, which releases the three layouts it holds at +2F0h, +244h and +248h");
+    const auto participant_count = participant_scene_counts.find(record.scene_path);
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
-        record.locale_table_list, record.mission_id);
+        record.locale_table_list, record.mission_id, &record,
+        participant_count == participant_scene_counts.end() ? nullptr : &participant_count->second);
 
     const GameMissionLoadRunSummary& load_run = frame_host->load_summary();
     summary.mission_load_finished = load_run.state_after == bsp::kGameStateSceneReady;

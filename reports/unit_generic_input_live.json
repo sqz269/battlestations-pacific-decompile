@@ -1,0 +1,27 @@
+{
+  "packet": "orch6_generic_input_live_m",
+  "status": "conditional runtime binding; validation pending",
+  "source": "src/game_hosts_units.cpp",
+  "header": "include/bsp/game_hosts_units.hpp",
+  "abi_compatible": false,
+  "game_validated": false,
+  "scope": "00953CC0 for actual generic leaves while canonical roles0/4 equal8 and owned flag634 is0",
+  "calls": [
+    {"address":"00953CFD","native":"0095DC40","function":"00953CC0","kind":"indirect","binding":"All three proven generic primary tables +1F0h; complete false-role arm over actual unit+63Ch owner"},
+    {"address":"00953D98","native":"006D1F20","function":"00953CC0","kind":"indirect","binding":"All three generic primary tables +1D8h; verified RET4 no-op"}
+  ],
+  "primary_table_input_slots": [
+    {"table":"00CFFDE0","slot":"00CFFFD0","bytes":"40 dc 95 00"},
+    {"table":"00CFF3F8","slot":"00CFF5E8","bytes":"40 dc 95 00"},
+    {"table":"00CFB028","slot":"00CFB218","bytes":"40 dc 95 00"}
+  ],
+  "dependencies": ["reports/unit_generic_motion_phase.json","reports/unit_generic_input_phase.json","reports/generic_motion_noop_definition.json"],
+  "no_ghidra_function": [],
+  "limits": [
+    "No native input or view owner is fabricated; assigned role or nonzero634 remains unavailable.",
+    "Temporary gate61 value is not native storage and the zero flag prevents its read.",
+    "Fixed-step scheduling remains the existing process adaptation.",
+    "Actual world candidate admission, observer lifetime and live neighbour refresh are still unbound.",
+    "Win32 fixture and process-run proof are distinct from original-game gameplay and visual validation."
+  ]
+}

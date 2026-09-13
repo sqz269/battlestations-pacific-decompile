@@ -1,5 +1,6 @@
 #include "bsp/native_render_command_owner.hpp"
 #include "bsp/storage_pool.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -16,20 +17,34 @@ static_assert(offsetof(NativeRenderCommandStorage, indexed_groups_2c) == 0x2c);
 static_assert(offsetof(NativeRenderCommandStorage, ordered_groups_38) == 0x38);
 
 namespace {
+char* allocate_diagnostic(SizedStoragePool& strings, std::uint32_t size) {
+    return static_cast<char*>(strings.allocate_00bd1120(size));
+}
+char* allocate_diagnostic(ActualNativeStringPoolStorage& strings, std::uint32_t size) {
+    return strings.allocate(size);
+}
+void return_diagnostic(SizedStoragePool& strings, char* data, std::uint32_t size) {
+    strings.release_00bd1510(data, size);
+}
+void return_diagnostic(ActualNativeStringPoolStorage& strings, char* data,
+    std::uint32_t size) noexcept {
+    strings.release(data, size);
+}
+template<class StringStorage>
 class DiagnosticCleanup final {
 public:
-    DiagnosticCleanup(NativeRenderCommandStorage& command, SizedStoragePool& strings) noexcept
+    DiagnosticCleanup(NativeRenderCommandStorage& command, StringStorage& strings) noexcept
         : command_(command), strings_(strings) {}
     ~DiagnosticCleanup() { if (armed_) run(); }
     void disarm() noexcept { armed_ = false; }
     void run() noexcept {
         char* const captured = command_.diagnostic_data_18;
         armed_ = false;
-        if (captured) strings_.release_00bd1510(captured, command_.diagnostic_length_14 + 1u);
+        if (captured) return_diagnostic(strings_, captured, command_.diagnostic_length_14 + 1u);
     }
 private:
     NativeRenderCommandStorage& command_;
-    SizedStoragePool& strings_;
+    StringStorage& strings_;
     bool armed_{true};
 };
 class ArrayCleanup final {
@@ -59,8 +74,12 @@ std::uintptr_t current_indexed_end(const NativeRenderCommandStorage& command) no
     return reinterpret_cast<std::uintptr_t>(command.indexed_groups_2c.data_00)
         + static_cast<std::uint32_t>(command.indexed_groups_2c.count_04) * 4u;
 }
+template<class Environment>
+void initialize_command(NativeRenderCommandStorage&, Environment&,
+    NativeRenderCommandAssociations&, void*, void*, void*, void*);
+template<class Environment>
 NativeRenderCommandStorage* construct_command(void* raw,
-    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
+    Environment& environment, NativeRenderCommandAssociations& associations,
     void* scene, void* camera, void* second_owner, void* target) {
     auto* command = ::new (raw) NativeRenderCommandStorage;
     command->native_vtable_00 = 0x00d5e5e0u;
@@ -78,15 +97,14 @@ NativeRenderCommandStorage* construct_command(void* raw,
     DiagnosticCleanup diagnostic(*command, environment.strings);
     ArrayCleanup indexed(command->indexed_groups_2c, true);
     ArrayCleanup ordered(command->ordered_groups_38, false);
-    initialize_native_render_command_00b1edc0(*command, environment, associations,
+    initialize_command(*command, environment, associations,
         scene, camera, second_owner, target);
     ordered.disarm(); indexed.disarm(); diagnostic.disarm();
     return command;
 }
-} // namespace
-
-void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage& command,
-    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
+template<class Environment>
+void initialize_command(NativeRenderCommandStorage& command,
+    Environment& environment, NativeRenderCommandAssociations& associations,
     void* scene, void* camera, void* second_owner, void* target) {
     auto* context = initialize_native_render_context_00b1edc0_fragment(
         singleton_lifetime_allocate({SingletonAllocationKind::object, 0x18, sizeof(NativeRenderContextStorage)}));
@@ -108,9 +126,9 @@ void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage& comma
         command.batches_0c[i] = batch;
     }
     if (command.diagnostic_length_14 != 1u) {
-        auto* const replacement = static_cast<char*>(environment.strings.allocate_00bd1120(2));
+        auto* const replacement = allocate_diagnostic(environment.strings, 2);
         char* const old = command.diagnostic_data_18;
-        if (old) environment.strings.release_00bd1510(old, command.diagnostic_length_14 + 1u);
+        if (old) return_diagnostic(environment.strings, old, command.diagnostic_length_14 + 1u);
         command.diagnostic_data_18 = replacement;
         command.diagnostic_length_14 = 1;
         replacement[1] = '\0';
@@ -118,18 +136,9 @@ void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage& comma
     if (char* const current = command.diagnostic_data_18)
         std::memcpy(current, environment.default_diagnostic_00ce9a38, command.diagnostic_length_14);
 }
-NativeRenderCommandStorage* construct_native_render_command_00b1f1f0(void* raw,
-    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
-    void* scene, void* camera, void* second_owner, void* target) {
-    return construct_command(raw, environment, associations, scene, camera, second_owner, target);
-}
-NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* raw,
-    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
-    void* scene, void* camera, void* target) {
-    return construct_command(raw, environment, associations, scene, camera, camera, target);
-}
-void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
-    NativeRenderCommandEnvironment& environment) {
+template<class Environment>
+void destroy_command(NativeRenderCommandStorage& command,
+    Environment& environment) {
     command.native_vtable_00 = 0x00d5e5e0u;
     DiagnosticCleanup diagnostic(command, environment.strings);
     ArrayCleanup indexed(command.indexed_groups_2c, true);
@@ -153,9 +162,58 @@ void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
     release_then_clear(command.context_28, environment.owners);
     ordered.run(); indexed.run(); diagnostic.run();
 }
+} // namespace
+
+void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage& command,
+    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* second_owner, void* target) {
+    initialize_command(command, environment, associations, scene, camera, second_owner, target);
+}
+NativeRenderCommandStorage* construct_native_render_command_00b1f1f0(void* raw,
+    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* second_owner, void* target) {
+    return construct_command(raw, environment, associations, scene, camera, second_owner, target);
+}
+NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* raw,
+    NativeRenderCommandEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* target) {
+    return construct_command(raw, environment, associations, scene, camera, camera, target);
+}
+void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
+    NativeRenderCommandEnvironment& environment) {
+    destroy_command(command, environment);
+}
 NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
-    NativeRenderCommandStorage* command, NativeRenderCommandEnvironment& environment, std::uint32_t flags) {
-    destroy_native_render_command_00b1ddd0(*command, environment);
+    NativeRenderCommandStorage* command, NativeRenderCommandEnvironment& environment,
+    std::uint32_t flags) {
+    destroy_command(*command, environment);
+    if (flags & 1u) singleton_lifetime_free(command);
+    return command;
+}
+
+void initialize_native_render_command_00b1edc0(NativeRenderCommandStorage& command,
+    NativeRenderCommandActualEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* second_owner, void* target) {
+    initialize_command(command, environment, associations, scene, camera, second_owner, target);
+}
+NativeRenderCommandStorage* construct_native_render_command_00b1f1f0(void* raw,
+    NativeRenderCommandActualEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* second_owner, void* target) {
+    return construct_command(raw, environment, associations, scene, camera, second_owner, target);
+}
+NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* raw,
+    NativeRenderCommandActualEnvironment& environment, NativeRenderCommandAssociations& associations,
+    void* scene, void* camera, void* target) {
+    return construct_command(raw, environment, associations, scene, camera, camera, target);
+}
+void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
+    NativeRenderCommandActualEnvironment& environment) {
+    destroy_command(command, environment);
+}
+NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
+    NativeRenderCommandStorage* command, NativeRenderCommandActualEnvironment& environment,
+    std::uint32_t flags) {
+    destroy_command(*command, environment);
     if (flags & 1u) singleton_lifetime_free(command);
     return command;
 }
