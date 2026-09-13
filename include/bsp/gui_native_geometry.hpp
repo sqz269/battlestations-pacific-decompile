@@ -7,6 +7,13 @@
 #include <memory>
 
 namespace bsp {
+struct NativeVertexDeclarationLoadingContext;
+struct GuiNativeDeclarationAcquired {
+    void* reference{}; // Caller reference returned by the actual cache.
+    RenderCommandReference* companion{}; // Borrows SAME actual+04.
+    bool canonical_registration{};
+    bool reused_companion{};
+};
 // Registration into the SAME canonical NativeRenderActualOwners used by the
 // supplied model, mesh and section environments. This is not another resolver.
 // bind is transactional: throwing leaves no registration; unbind cannot throw.
@@ -16,6 +23,11 @@ struct GuiNativeGeometryRegistration {
     void* context;
     void (*bind)(void*, void* actual, RenderCommandReference&);
     void (*unbind)(void*, void* actual, RenderCommandReference&) noexcept;
+    // Nonmutating lookup in this SAME canonical registry. nullptr means absent;
+    // lookup failure throws and must never be interpreted as absence. Required
+    // when declaration registration is reached; older aggregates stay explicit
+    // unsupported at that boundary. No reference operation is performed.
+    RenderCommandReference* (*find)(void*, void* actual){};
 };
 
 // Holds host companions only. Every mesh/section count is its actual +04.
@@ -61,6 +73,13 @@ public:
     // are resolved. A raw creator without companion still needs its real terminal
     // context. Never drop or retry the interrupted clone to perform cleanup.
     void register_stream_clone_creator(NativeStreamCloneAcquired&, NativeStreamCloneServices&);
+
+    // Register/reuse the cache-returned actual declaration without AddRef.
+    // Cache creator and caller reference retain their native counts. On bind
+    // failure keep the raw reference and any unbound companion in acquired;
+    // release only through its actual terminal after caller effects are resolved.
+    void register_native_declaration_reference(GuiNativeDeclarationAcquired&,
+        NativeVertexDeclarationLoadingContext&);
 
     // Actual copied creators used by B73F50. Each result is canonically
     // registered with +04=1; caller transfers/releases that creator reference.

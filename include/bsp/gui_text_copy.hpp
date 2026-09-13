@@ -38,6 +38,8 @@ struct GuiTextCursorAcquired {
     NativeMeshStorage* mesh{};
     void* declaration{};
     void* vertex{};
+    GuiNativeDeclarationAcquired declaration_factory;
+    NativeStreamCloneAcquired vertex_factory;
     NativeMeshSectionStorage* section{};
     NativeMaterialStorage* material{};
     NativeString format_name;

@@ -38,12 +38,6 @@ float current_x87_sentinel(GuiTextBufferServices& services) noexcept {
     }
     return value;
 }
-template<class Function> Function current_slot(void* renderer, std::size_t offset) {
-    require(renderer != nullptr, "Text cursor requires an actual current renderer");
-    const auto* table = *static_cast<const std::uintptr_t* const*>(renderer);
-    require(table && table[offset / 4], "Text cursor requires an actual callable renderer slot");
-    return reinterpret_cast<Function>(table[offset / 4]);
-}
 template<class Pointer> void release_creator(Pointer*& acquired, NativeRenderActualOwners& owners) {
     auto* captured = std::exchange(acquired, nullptr);
     release_native_render_actual_owner(owners, captured);
@@ -96,20 +90,29 @@ void ensure_gui_text_cursor_00ab8910(GuiTextLifetime& lifetime,
 
         acquired.format_name_live = true;
         acquired.format_name.assign_0041e870(buffers.strings, "simplecolor.mvfm");
-        using Declaration = void* (__thiscall*)(void*, NativeString*);
-        using Vertex = void* (__thiscall*)(void*, std::uint32_t, std::uint32_t, void*);
+        require(buffers.native_renderer != nullptr, "Text cursor requires concrete native renderer services");
+        auto& native = *buffers.native_renderer;
+        require_gui_text_native_renderer_domain(native, buffers.current_renderer_00f8d394,
+            buffers.strings, buffers.geometry.actual_owners());
         void* renderer = buffers.current_renderer_00f8d394;
-        acquired.declaration = current_slot<Declaration>(renderer, 0x38)(renderer, &acquired.format_name);
+        acquired.declaration = load_gui_text_native_declaration_current38(renderer,
+            acquired.format_name, native, acquired.declaration_factory);
         destroy_native_string_header_0041dd20(&acquired.format_name, buffers.strings);
         acquired.format_name_live = false;
         renderer = buffers.current_renderer_00f8d394; // Reload after name-release callbacks.
-        acquired.vertex = current_slot<Vertex>(renderer, 0x5c)(renderer, 4, 1, acquired.declaration);
+        acquired.vertex_factory.native_site = 0x00ab8b10;
+        acquired.vertex = create_gui_text_native_vertex_current5c(renderer, 4, 1,
+            acquired.declaration, native, acquired.vertex_factory);
         require(acquired.declaration && acquired.vertex,
             "Text cursor renderer factories must return actual owned resources");
         auto& owners = buffers.geometry.actual_owners();
         set_native_mesh_vertex_stream_00b73bb0(*acquired.mesh, owners, 0, acquired.vertex);
         // AB8910 order differs from AB8400. There is no index-stream factory.
+        acquired.declaration_factory = {};
         release_creator(acquired.declaration, owners);
+        acquired.vertex_factory.creator = nullptr;
+        acquired.vertex_factory.companion = nullptr;
+        acquired.vertex_factory.phase = NativeStreamClonePhase::consumed;
         release_creator(acquired.vertex, owners);
         acquired.section = buffers.geometry.create_section();
         acquired.section->primitive_08 = 5;
