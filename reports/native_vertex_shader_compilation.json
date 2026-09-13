@@ -1,0 +1,582 @@
+{
+  "packet": "orch5_native_vertex_compile",
+  "source": "src/native_vertex_shader_compilation.cpp",
+  "header": "include/bsp/native_vertex_shader_compilation.hpp",
+  "documentation": "docs/NATIVE_VERTEX_SHADER_COMPILATION.md",
+  "base_commit": "653cd6b1",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00b60f60",
+      "end": "00b611bb",
+      "bytes": 604,
+      "sha256": "e63a9273b3513f86036092e16674f849dde8d9e26af6b35e94e8323d3542cb6f",
+      "live_ghidra_disk_equal": true,
+      "instructions": 215,
+      "last_instruction": "00b611b9: ret 8",
+      "last_instruction_length": 3,
+      "gaps": [],
+      "symbol": "compile_native_vertex_shader_00b60f60",
+      "original_abi": "ECX actual8h engine name, EDX profile; stack source/actual output; EAX HRESULT; RET8",
+      "coverage": "complete_normal_readable_output_domain_and_code_null_return_with_retained_host_failure"
+    },
+    {
+      "address": "00be4430",
+      "end": "00be4456",
+      "bytes": 39,
+      "sha256": "42eab1bcbab42564300bdc5265569ce49ca215284f85035f4ca1d2408598d3b1",
+      "live_ghidra_disk_equal": true,
+      "instructions": 18,
+      "last_instruction": "00be4454: ret 8",
+      "last_instruction_length": 3,
+      "gaps": [],
+      "symbol": "write_native_shader_diagnostic_string_00be4430",
+      "original_abi": "ECX actual stream; stack actual8h string/optional count; RET8; EAX inherited from write target",
+      "coverage": "complete_normal_body_current_28_target_BF4F50"
+    },
+    {
+      "address": "00bf4f50",
+      "end": "00bf4f86",
+      "bytes": 55,
+      "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a",
+      "live_ghidra_disk_equal": true,
+      "instructions": 21,
+      "last_instruction": "00bf4f84: ret 0xc",
+      "last_instruction_length": 3,
+      "gaps": [],
+      "symbol": "write_native_physical_stream_00bf4f50",
+      "original_abi": "ECX actual20h stream; stack data/requested/optional count; EAX written count; RET0C",
+      "coverage": "complete_real_Win32_WriteFile_body"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b60f86",
+      "native": "00b1fef0",
+      "caller": "00b60f60",
+      "instruction": "call 0xb1fef0"
+    },
+    {
+      "address": "00b60fc7",
+      "native": "00c2e00a",
+      "caller": "00b60f60",
+      "instruction": "call 0xc2e00a"
+    },
+    {
+      "address": "00b60fe9",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call ecx"
+    },
+    {
+      "address": "00b60fec",
+      "native": "00c2e004",
+      "caller": "00b60f60",
+      "instruction": "call 0xc2e004"
+    },
+    {
+      "address": "00b61000",
+      "native": "0041e870",
+      "caller": "00b60f60",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b61018",
+      "native": "0041e870",
+      "caller": "00b60f60",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b6102a",
+      "native": "004261a0",
+      "caller": "00b60f60",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b6103d",
+      "native": "004261a0",
+      "caller": "00b60f60",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b61051",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b6106e",
+      "native": "00419cc0",
+      "caller": "00b60f60",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61075",
+      "native": "00bd1510",
+      "caller": "00b60f60",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61092",
+      "native": "00419cc0",
+      "caller": "00b60f60",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61099",
+      "native": "00bd1510",
+      "caller": "00b60f60",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b610b6",
+      "native": "00419cc0",
+      "caller": "00b60f60",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b610bd",
+      "native": "00bd1510",
+      "caller": "00b60f60",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b610dc",
+      "native": "00419cc0",
+      "caller": "00b60f60",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b610e3",
+      "native": "00bd1510",
+      "caller": "00b60f60",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b610f2",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b610f9",
+      "native": "0041e870",
+      "caller": "00b60f60",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b6110f",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61128",
+      "native": "00419cc0",
+      "caller": "00b60f60",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b6112f",
+      "native": "00bd1510",
+      "caller": "00b60f60",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61138",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b61148",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61158",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b61173",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b6117d",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b6118f",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b611a3",
+      "native": "00b60f60+indirect",
+      "caller": "00b60f60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00be4450",
+      "native": "00be4430+indirect",
+      "caller": "00be4430",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00bf4f68",
+      "native": "00bf4f50+indirect",
+      "caller": "00bf4f50",
+      "instruction": "call dword ptr [0xce2290]"
+    }
+  ],
+  "additional_byte_evidence": [
+    {
+      "address": "00b1fef0",
+      "end": "00b1fef6",
+      "bytes": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+      "live_ghidra_disk_equal": true,
+      "instructions": 2,
+      "last_instruction": "00b1fef6: ret ",
+      "last_instruction_length": 1,
+      "gaps": []
+    },
+    {
+      "address": "00d691b0",
+      "end": "00d69213",
+      "bytes": 100,
+      "sha256": "cfa3eedf09c6696f0fc2ddd097812d378f8159a75c7eecca584a3d0e235940ce",
+      "live_ghidra_disk_equal": true
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B60F60 available only as typed host success projection in compiled_material.cpp",
+      "is": "actual raw name/output, current native renderer/VFS/string/stream ownership path; old typed fragment retained as separate evidence",
+      "evidence": "full B60F60 assembly and source fixture"
+    },
+    {
+      "was": "no_ghidra_function at 00be4430 and 00bf4f50",
+      "is": "primary defined/saved/exported BE4430..BE4456 inclusive (39 bytes), BF4F50..BF4F86 inclusive (55 bytes)",
+      "evidence": "last RET instructions BE4454/3 bytes and BF4F84/3 bytes; primary local/vertex-diagnostic-write-definitions.json"
+    }
+  ],
+  "callers": [
+    {
+      "address": "00b3bae9",
+      "native": "00b60f60",
+      "caller": "00b3b3c0",
+      "arguments": "B3BABE builder50 source; B3BAD1 descriptor38 profile; B3BADD output stack24; B3BAE3 builder9C actual engine name; RET8"
+    }
+  ],
+  "resolved_indirect_calls": [
+    {
+      "site": "00b61051",
+      "captured": "manager current table+04",
+      "target": "00bdf310",
+      "binding": "NativeVfsRuntimeBindings::open_manager_entry; same current physical/VFS owner domain; flags35"
+    },
+    {
+      "site": "00b6110f",
+      "captured": "current stream table+5C",
+      "target": "00be4430",
+      "binding": "concrete native raw string writer; null actual-count argument"
+    },
+    {
+      "site": "00be4450",
+      "captured": "current stream table+28 after source header len/data capture",
+      "target": "00bf4f50",
+      "binding": "concrete real physical WriteFile; unsupported other numeric targets fail explicitly"
+    },
+    {
+      "site": "00bf4f68",
+      "captured": "IAT00CE2290",
+      "target": "KERNEL32.WriteFile",
+      "binding": "actual synchronous Win32; requested stack-cell count output; BOOL ignored"
+    },
+    {
+      "site": "00b61138",
+      "captured": "IAT00CE2220",
+      "target": "KERNEL32.InterlockedDecrement",
+      "binding": "actual raw stream refcount4"
+    },
+    {
+      "site": "00b61148",
+      "captured": "current stream table+00 after reference reaches zero",
+      "target": "00bf55a0 for D691B0",
+      "binding": "same canonical NativeVfsRuntimeBindings zero_reference"
+    },
+    {
+      "site": "00b6117d",
+      "captured": "device table captured B61166 before code GetBufferPointer; load16C after return",
+      "target": "IDirect3DDevice9.CreateVertexShader",
+      "binding": "actual COM interface and original caller output pointer"
+    }
+  ],
+  "dependency_boundaries": {
+    "implemented": "B60F60 normal readable/COM-output path plus code-null return; BE4430 current target BF4F50; real physical WriteFile",
+    "existing": "actual pooled string constructors/concat and their documented child cleanup, NativeVfsRuntimeBindings open/canonical physical terminal, B1FEF0 device getter",
+    "not_implemented": "outer native FH3 ABI/unwind, arbitrary stream write targets, full material source generation/cache/controller integration, pixel B61280",
+    "failure_frame": "stable one-shot raw headers/code/messages/disassembly/stream/current site; terminal flag records already-decremented reference; entered/returned/released names distinguish failed child preimages; no replay or implicit rollback",
+    "null_disassembly": "raises explicit source boundary at native dereference after previous actual acquisitions",
+    "code_null": "returns compile HRESULT and retains returned messages; output unchanged"
+  },
+  "validation": {
+    "build": "PASS default registered MSVC Win32 Release scripts/build.ps1; /W4 /WX; one existing CTest passed",
+    "fixture": "PASS one focused original-instruction/source fixture with actual D3DX9_40/HAL/VFS/physical WriteFile; matching shader function bytes and 158-byte .vsa; real failure-resource retention and explicit retirement; physical carry/count/cache and failed-handle state agree",
+    "report_calls": "PASS 19 direct numeric rows, 0 failures; 13 indirect rows separately resolved/documented; verifier does not mechanically validate indirect targets",
+    "default_registration": {
+      "before_sha256": "6423ba0c0aeeb39aae64c9c696ebb1247ed2ef9339e34d22020607928d17b59f",
+      "after_sha256": "45128ffc878b767701a3e955c3e10d6c918071740fa4dfdd13ce2d9573b82530",
+      "lease_check": "unleased under lease transaction"
+    },
+    "native_bytes_matched": 805,
+    "native_instructions": 256,
+    "native_code_gaps": [],
+    "fixture_output": "PASS original/source B60F60: real D3DX9_40 flags1200, actual HAL shader bytecode + VFS .vsa bytes equal (158 bytes); pooled strings/physical streams shut down. Code-null messages and real allocation-failure acquisitions retained/explicitly retired; original/source BF4F50 carry, actual file bytes, count and failed-HANDLE state equal.",
+    "fixture_limits": "Synthetic minimal HLSL; copied native instruction bodies are relocated; all18 wrapper direct CALL operands rebound; four invoked slots in copied numeric VFS/physical tables temporarily callable for original leg and restored before source; existing strings/open/recycle bodies are shared baseline; no native outer FH3 or installed material/gameplay claim",
+    "fixture_instruction_pin": {
+      "captured_original_bodies_match_live_disk_audit": true,
+      "direct_call_operand_sites": [
+        "00b60f86",
+        "00b60fc7",
+        "00b60fec",
+        "00b61000",
+        "00b61018",
+        "00b6102a",
+        "00b6103d",
+        "00b6106e",
+        "00b61075",
+        "00b61092",
+        "00b61099",
+        "00b610b6",
+        "00b610bd",
+        "00b610dc",
+        "00b610e3",
+        "00b610f9",
+        "00b61128",
+        "00b6112f"
+      ],
+      "changed_bytes": 72,
+      "only_allowed_call_operands_changed": true,
+      "internal_branches_and_other_instruction_bytes_unchanged": true
+    }
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_vertex_shader_compilation.hpp",
+      "bytes": 4883,
+      "sha256": "72faa5e4001e3fcffe2cf2c30651f221cae44daec28058ccd1c480bd4b766c60"
+    },
+    {
+      "path": "src/native_vertex_shader_compilation.cpp",
+      "bytes": 9293,
+      "sha256": "58aac0e9097208fe7a4447e81e222d040914b62c93132c9299af86425b356c77"
+    },
+    {
+      "path": "local/vertex-byte-audit.json",
+      "bytes": 6364,
+      "sha256": "db5879225063bc3512a75de161fcdffc23317e35bb6b1fe337c2a4c93eb4e428"
+    },
+    {
+      "path": "local/vertex-native-bytes.txt",
+      "bytes": 2910,
+      "sha256": "7c95b410322263a67636a1bc834bc9bf8f60fbd3c84ea92bee0caddd1dc33d96"
+    },
+    {
+      "path": "local/vertex-string-write-bytes.txt",
+      "bytes": 195,
+      "sha256": "7654efa3ad447d1d51c3b15420ca6feacdbfe35263451f8607e526e093874c50"
+    },
+    {
+      "path": "local/vertex-physical-write-bytes.txt",
+      "bytes": 272,
+      "sha256": "c4ce2d0e1bcd72c28de11b4f51840704afdcc95597a7d98be5a664b72f515ff5"
+    },
+    {
+      "path": "local/vertex-device-getter-bytes.txt",
+      "bytes": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "local/vertex-physical-profile-bytes.txt",
+      "bytes": 491,
+      "sha256": "1dd4a0fbe4bf5d861a1b54095f59e65f17839db72af42e3e8c9ee2fc66b112bb"
+    },
+    {
+      "path": "local/vertex-live-assembly.txt",
+      "bytes": 6227,
+      "sha256": "3fe66226b578308907c63a709098693712a65f13cd134555ccc8347e1e481733"
+    },
+    {
+      "path": "local/native_vertex_probe.cpp",
+      "bytes": 17485,
+      "sha256": "b4ddb66f31ee3112a7307160377e72fdaf80e324470ab805843ea96f091d86b0"
+    },
+    {
+      "path": "local/run_native_vertex_probe.ps1",
+      "bytes": 1344,
+      "sha256": "e93ffdea90d003963b2442e7ac3c66bae95751766afd7c0636c2b41c32e1d700"
+    },
+    {
+      "path": "local/vertex_evidence.py",
+      "bytes": 2625,
+      "sha256": "aed5bfbc5b1584eafdc995ccbee7bbd154b3297647ea95553c487a0bf4ce15a9"
+    },
+    {
+      "path": "local/vertex_report.py",
+      "bytes": 5469,
+      "sha256": "7fb8bd0853464a16c674a9bbf25095f3f248077a571ef94284269e51678dd8da"
+    },
+    {
+      "path": "local/register_vertex.py",
+      "bytes": 971,
+      "sha256": "0fdc39f63a2470a310288f22b59059f999bdf0e5959ebfcebb14ad69d46a0bd9"
+    },
+    {
+      "path": "local/vertex-registration.json",
+      "bytes": 234,
+      "sha256": "fd96e2a5daaff39bac4f71ea8a14db5f045eb2d90d4cc92376ffc836ea1baa09"
+    },
+    {
+      "path": "docs/NATIVE_VERTEX_SHADER_COMPILATION.md",
+      "bytes": 8187,
+      "sha256": "2684570089b88d87309a0742872ad94a93edbad46ff333319c785b85e01b4d97"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 98979,
+      "sha256": "45128ffc878b767701a3e955c3e10d6c918071740fa4dfdd13ce2d9573b82530"
+    },
+    {
+      "path": "local/vertex-build.log",
+      "bytes": 41151,
+      "sha256": "29bafa024a543294c51c48f5ac9cb897fff2862e5e2a8796c205508b2e543951"
+    },
+    {
+      "path": "local/vertex-probe.log",
+      "bytes": 336,
+      "sha256": "29d99b8409318ac232bc89ec47ed74a5da850056a7f7fb028f9ce629cbeda555"
+    },
+    {
+      "path": "local/vertex-probe-compile.log",
+      "bytes": 25,
+      "sha256": "1da22e898744fafeb982a1c43e546f24353b45c520153c22e43608514c0db41b"
+    },
+    {
+      "path": "local/vertex-call-check.log",
+      "bytes": 1078,
+      "sha256": "204507f331240b36cb3ce8887828a8d5ad067d630fdd1fdb833c177a7955f6bb"
+    },
+    {
+      "path": "local/native_vertex_probe.exe",
+      "bytes": 114176,
+      "sha256": "c6b73c418fef2b73cf3154681ce56a807c129c773b3f773eadcd7c180871bb35"
+    },
+    {
+      "path": "local/vertex-vfs/shaderfx/debug/vertex_fixture.vsa",
+      "bytes": 158,
+      "sha256": "d4eba7dc02aa000662e632a10835f7fe226f0b88d3573db7b887c782da6ab535"
+    },
+    {
+      "path": "local/vertex-vfs/write_original.bin",
+      "bytes": 4,
+      "sha256": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+    },
+    {
+      "path": "local/vertex-vfs/write_source.bin",
+      "bytes": 4,
+      "sha256": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+    },
+    {
+      "path": "local/vertex_finalize.py",
+      "bytes": 5896,
+      "sha256": "2421628a3ee343907564b87028307d071d586a39826865c54f28d41d75b1aa91"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55089486,
+      "sha256": "8c71c80727dd5ec196e61fccc07f7cb6ad54066ecddc0e60fa2bfbb717be6895"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455608,
+      "sha256": "210cd6eac90d621bc10cd29874ad3c94c983fee2c88ff8a7f216eac459416438"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72046,
+      "sha256": "5c8dc7300f9106e836b380abad66dec5e56b722b7000719cfa49ef777cdce670"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/d3dx9_40.dll",
+      "bytes": 4379984,
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_vertex_shader_compilation.obj",
+      "bytes": 21170,
+      "sha256": "264adce76fe396a011df8b47ca045b3cdb2ae7fe480b1c11e5bc84355843d4d9"
+    },
+    {
+      "path": "local/vertex-original-linked.bin",
+      "bytes": 604,
+      "sha256": "81ff7c8400e1e290ed2d074a63a51aa544c412a7526550155d3b494aef9d80ea"
+    },
+    {
+      "path": "local/vertex-original-00b60f60.bin",
+      "bytes": 604,
+      "sha256": "e63a9273b3513f86036092e16674f849dde8d9e26af6b35e94e8323d3542cb6f"
+    },
+    {
+      "path": "local/vertex-original-00be4430.bin",
+      "bytes": 39,
+      "sha256": "42eab1bcbab42564300bdc5265569ce49ca215284f85035f4ca1d2408598d3b1"
+    },
+    {
+      "path": "local/vertex-original-00bf4f50.bin",
+      "bytes": 55,
+      "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a"
+    },
+    {
+      "path": "local/vertex-original-00b1fef0.bin",
+      "bytes": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+    }
+  ],
+  "fixture_direct_call_rebindings": {
+    "original_body": "00b60f60",
+    "count": 18,
+    "helper_services": {
+      "0041e870": "construct_native_string_cstring_0041e870 (3 calls)",
+      "004261a0": "concatenate_native_string_headers_004261a0 (2 calls)",
+      "00419cc0": "native_string_pool_get_or_create_00419cc0 (5 calls)",
+      "00bd1510": "return_native_string_pool_00bd1510 (5 calls)",
+      "00b1fef0": "copied original getter (1 call)",
+      "00c2e00a": "actual D3DXCompileShader (1 call)",
+      "00c2e004": "actual D3DXDisassembleShader (1 call)"
+    }
+  },
+  "fixture_callable_table_slots": {
+    "00d685b4+04": "existing source open BDF310 bridge",
+    "00d691b0+00": "existing source physical recycle BF55A0 bridge",
+    "00d691b0+5c": "copied BE4430",
+    "00d691b0+28": "copied BF4F50",
+    "restoration": "all four original numeric entries restored before source leg"
+  }
+}

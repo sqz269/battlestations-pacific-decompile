@@ -48,12 +48,12 @@
     }
   ],
   "validation": {
-    "compiled_commit": "6fa29036625dbc65a866916ef391ea5e49523110",
-    "exe_sha256": "98a524b45a4e81f4f9838718b6ce67b6af4f1b4d208c2a1969341c2b7553fc52",
+    "compiled_commit": "99f106416ececc23fc9c19b30e1065616771404b",
+    "exe_sha256": "68171cfe1cce642eece4f471e2be3fcf480a6c5c52c3c4b60c720fc01b65b9d7",
     "build": "MSVC Win32 Release passed",
     "ctest": "2 existing CTests passed",
     "build_record": {
-      "compiled_commit": "6fa29036625dbc65a866916ef391ea5e49523110",
+      "compiled_commit": "99f106416ececc23fc9c19b30e1065616771404b",
       "command": [
         "C:\\ProgramData\\miniconda3\\python.exe",
         "-u",
@@ -61,14 +61,14 @@
         "agent/orch6-20260912",
         "--no-push"
       ],
-      "log": "local\\orch6_integrate_s_20260913T090147.log"
+      "log": "local\\orch6_integrate_s_20260913T090400.log"
     },
     "process_run": {
-      "compiled_commit": "6fa29036625dbc65a866916ef391ea5e49523110",
-      "run_commit": "6fa29036625dbc65a866916ef391ea5e49523110",
+      "compiled_commit": "99f106416ececc23fc9c19b30e1065616771404b",
+      "run_commit": "99f106416ececc23fc9c19b30e1065616771404b",
       "compiled_input_drift": [],
       "args": [
-        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_6fa29036.exe",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_99f10641.exe",
         "--frames",
         "360",
         "--press-start-frame",
@@ -100,8 +100,8 @@
         "--trajectory-csv",
         "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_s.csv"
       ],
-      "exe_sha256": "98a524b45a4e81f4f9838718b6ce67b6af4f1b4d208c2a1969341c2b7553fc52",
-      "preserved_executable": "local\\orch6_combined_6fa29036.exe",
+      "exe_sha256": "68171cfe1cce642eece4f471e2be3fcf480a6c5c52c3c4b60c720fc01b65b9d7",
+      "preserved_executable": "local\\orch6_combined_99f10641.exe",
       "source_sha256": {
         "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
         "src/game_hosts_units.cpp": "f81183a82574f358c01bb6f2decad179932197aeb5fa46d2187981d4f170b7a0",
@@ -119,7 +119,7 @@
       },
       "process_check": "No matching reconstructed game process before launch",
       "exit": 0,
-      "seconds": 11.77958607673645,
+      "seconds": 11.541560411453247,
       "trajectory_audit": {
         "rows": 18557,
         "nonfinite_rows": 0,

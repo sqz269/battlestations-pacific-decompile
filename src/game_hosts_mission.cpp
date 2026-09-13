@@ -8,6 +8,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_observer_runtime.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/gui_widget.hpp"
@@ -348,6 +349,7 @@ struct GameMissionHost::Impl {
     // lacks resolved Party/Race and must not imply a zero participant count.
     std::map<std::string, std::int32_t> participant_scene_counts;
     std::unique_ptr<GameMissionLuaHost> lua;
+    GameObserverRuntime* observer_runtime{nullptr};
     std::unique_ptr<GameMissionFrameHost> frame_host;
     GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost
 
@@ -1345,6 +1347,15 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
 
 GameMissionHost::~GameMissionHost() = default;
 
+void GameMissionHost::bind_observer_runtime(GameObserverRuntime& runtime) {
+    if (!runtime.has_live_dispatch_owner())
+        throw std::logic_error("mission observer binding requires a live dispatch owner");
+    if (impl_->observer_runtime != nullptr && impl_->observer_runtime != &runtime)
+        throw std::logic_error("mission observer runtime cannot change while the host lives");
+    if (impl_->frame_host != nullptr) impl_->frame_host->bind_observer_runtime(runtime);
+    impl_->observer_runtime = &runtime;
+}
+
 void GameMissionHost::set_order_unit(std::string unit) {
     impl_->order_unit = std::move(unit);
 }
@@ -1627,6 +1638,7 @@ void GameMissionHost::Impl::finish_scene_load() {
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         profiler, language, hud);
+    if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.

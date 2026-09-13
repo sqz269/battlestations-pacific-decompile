@@ -1,6 +1,7 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
+#include "bsp/native_pending_entity_lock.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
@@ -161,6 +162,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             return;
         }
         break;
+    case 0x00d190c4:
+        // This profile belongs to the actual process F899E8 owner. Pass the
+        // popped allocation even when publication differs: native teardown
+        // clears that process cell unconditionally. D190C8 is another profile.
+        delete_native_pending_entity_lock_009256d0(
+            static_cast<NativePendingEntityLockOwner*>(owner), flags,
+            process_native_pending_entity_lock_00f899e8());
+        return;
     case 0x00cf7e74:
         if (bindings.actual_observer_dispatch_owner_00e198dc != nullptr) {
             delete_observer_dispatch_owner_00695f40(
