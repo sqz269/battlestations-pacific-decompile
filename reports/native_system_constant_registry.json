@@ -1,0 +1,2533 @@
+{
+  "packet": "orch5_native_system_registry",
+  "source": "src/native_system_constant_registry.cpp",
+  "header": "include/bsp/native_system_constant_registry.hpp",
+  "documentation": "docs/NATIVE_SYSTEM_CONSTANT_REGISTRY.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_bsp_wrappers",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe"
+  },
+  "base_commit": "ac4363da763bc1d6ed1277edff90c83d11761610",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00b5bf70",
+      "end": "00b5defb",
+      "symbol": "construct_native_system_constant_registry_00b5bf70",
+      "original_abi": "ECX fresh10h owner; EAX same; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 8076,
+      "sha256": "0456f34770332748dbb1a0f72da428e7279f38142fd2b1e028ad43dd70d911c0",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5b9e0",
+      "end": "00b5ba70",
+      "symbol": "construct_native_system_constant_base_00b5b9e0",
+      "original_abi": "ECX actual owner; EAX same; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 145,
+      "sha256": "db337f728c36467b76e7f4e572e92911572a3b6a0c3c94395da444d29439f7aa",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5bbc0",
+      "end": "00b5bc5c",
+      "symbol": "construct_native_system_constant_00b5bbc0",
+      "original_abi": "ECX fresh20h record; stack actual8h name/id/secondDimension/firstDimension/arrayCount; EAX same; RET14h",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 157,
+      "sha256": "da6724ad442dac952ef1b6e01da052deaaeff5f78df27a010ea3752237e0eb32",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5bed0",
+      "end": "00b5bf3e",
+      "symbol": "append_native_system_constant_00b5bed0",
+      "original_abi": "ECX actual0Ch array; stack actual20h source; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 111,
+      "sha256": "d7cb10f397f14cfcf6ea997f1c29b9c064d9c4d52ccb8223e339099b4473e4d5",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5bd10",
+      "end": "00b5be06",
+      "symbol": "reserve_native_system_constants_00b5bd10",
+      "original_abi": "ECX actual0Ch array; signed stack capacity; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 247,
+      "sha256": "203950785446f0898407ad34cf11542b362f005ffdabb50dffbf02afc4357e5d",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5be10",
+      "end": "00b5bec6",
+      "symbol": "resize_native_system_constants_00b5be10",
+      "original_abi": "ECX actual0Ch array; signed stack count; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 183,
+      "sha256": "f30a7e5fb687e083be9431c401d5420b59a7d3d0bdac771943b7a7a5417da24f",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5df70",
+      "end": "00b5df8d",
+      "symbol": "delete_native_system_constant_registry_00b5df70",
+      "original_abi": "ECX actual10h owner; stack flags; EAX original pointer; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 30,
+      "sha256": "001d045678ce7fdf52e60c264b385a80e132f0d777a9b4bc4375d84b0288405e",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5bb20",
+      "end": "00b5bb3d",
+      "symbol": "delete_native_system_constant_base_00b5bb20",
+      "original_abi": "ECX actual base owner; stack flags; EAX original pointer; RET4",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 30,
+      "sha256": "29a6dff18cbbb4780a00c76c70befb79444eeb28ed7684c672de8651921c7730",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5df00",
+      "end": "00b5df62",
+      "symbol": "destroy_native_system_constant_registry_00b5df00",
+      "original_abi": "ECX actual10h owner; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 99,
+      "sha256": "d9fb4a9503ea51485fe83763ee3f452eb648ddded48ca955f53429f00f38d38e",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    },
+    {
+      "address": "00b5ba80",
+      "end": "00b5bb18",
+      "symbol": "destroy_native_system_constant_base_00b5ba80",
+      "original_abi": "ECX actual base owner; RET",
+      "coverage": "complete_normal_valid_domain_body",
+      "native_bytes": 153,
+      "sha256": "5e2a3d1944325cff6edee1f0a105e96a08ae26a4c4e2754f7e20e6d9eb614b76",
+      "remaining": "original private FH3 not emitted; explicit persistent borrowed failure state and owner retirement guard"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b5bf98",
+      "native": "00b5b9e0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5bfce",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5bfe8",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c005",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c012",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c02e",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c035",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c04c",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c053",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c067",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c082",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c09f",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c0ac",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c0c8",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c0cf",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c0e6",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c0ed",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c101",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c11c",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c138",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c145",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c161",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c168",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c17f",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c186",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c19a",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c1b5",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c1d2",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c1df",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c1fb",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c202",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c219",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c220",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c234",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c24f",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c26c",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c279",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c295",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c29c",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c2b3",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c2ba",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c2ce",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c2e9",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c306",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c313",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c32f",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c336",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c34d",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c354",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c368",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c383",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3a0",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3ad",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3c9",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3d0",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3e7",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c3ee",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c402",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c41d",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c43a",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c447",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c463",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c46a",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c481",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c488",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c49c",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c4b7",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c4d3",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c4e0",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c4fc",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c503",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c51a",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c521",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c535",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c550",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c56c",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c579",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c595",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c59c",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c5b3",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c5ba",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c5ce",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c5e9",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c605",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c612",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c62e",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c635",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c64c",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c653",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c667",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c682",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c69e",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c6ab",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c6c7",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c6ce",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c6e5",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c6ec",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c700",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c71b",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c737",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c744",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c760",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c767",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c77e",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c785",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c799",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c7b4",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c7d0",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c7dd",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c7f9",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c800",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c817",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c81e",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c832",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c84d",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c869",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c876",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c892",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c899",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c8b0",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c8b7",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c8cb",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c8e6",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c902",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c90f",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c92b",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c932",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c949",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c950",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c964",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c97f",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c99b",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9a8",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9c4",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9cb",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9e2",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9e9",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5c9fd",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca18",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca34",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca41",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca5d",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca64",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca7b",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca82",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ca96",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cab1",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cacd",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cada",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5caf6",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cafd",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb14",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb1b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb2f",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb4a",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb67",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb74",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb90",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cb97",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cbae",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cbb5",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cbc9",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cbe4",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cbff",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc0c",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc28",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc2f",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc46",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc4d",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc61",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc7c",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cc98",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cca5",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ccc1",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ccc8",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ccdf",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cce6",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ccfa",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd15",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd31",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd3e",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd5a",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd61",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd78",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd7f",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cd93",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cdae",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cdca",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cdd7",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cdf3",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cdfa",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce11",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce18",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce2c",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce47",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce64",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce71",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce8d",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ce94",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ceab",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ceb2",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cec6",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cee1",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cefd",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf0a",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf26",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf2d",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf44",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf4b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf5f",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf7a",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cf97",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cfa4",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cfc0",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cfc7",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cfde",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cfe5",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5cff9",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d014",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d031",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d03e",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d05a",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d061",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d078",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d07f",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d093",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d0ae",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d0cb",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d0d8",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d0f4",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d0fb",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d112",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d119",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d12d",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d148",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d165",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d172",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d18e",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d195",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d1ac",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d1b3",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d1c7",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d1e2",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d1fe",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d20b",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d227",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d22e",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d245",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d24c",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d260",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d27b",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d297",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2a4",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2c0",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2c7",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2de",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2e5",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d2f9",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d314",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d330",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d33d",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d359",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d360",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d377",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d37e",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d392",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d3ad",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d3c9",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d3d6",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d3f2",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d3f9",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d410",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d417",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d42b",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d446",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d462",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d46f",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d48b",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d492",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d4a9",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d4b0",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d4c4",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d4df",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d4fb",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d508",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d524",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d52b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d542",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d549",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d55d",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d578",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d594",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5a1",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5bd",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5c4",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5db",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5e2",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d5f6",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d611",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d62d",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d63a",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d656",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d65d",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d674",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d67b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d68f",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d6aa",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d6c6",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d6d3",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d6ef",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d6f6",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d70d",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d714",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d728",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d743",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d75f",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d76c",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d788",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d78f",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d7a6",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d7ad",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d7c1",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d7dc",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d7f8",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d805",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d821",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d828",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d83f",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d846",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d85a",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d875",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d891",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d89e",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d8ba",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d8c1",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d8d8",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d8df",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d8f3",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d90e",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d92b",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d938",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d954",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d95b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d972",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d979",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d98d",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d9a8",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d9c5",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d9d2",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d9ee",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5d9f5",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da0c",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da13",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da27",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da42",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da60",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da6d",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da89",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5da90",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5daa7",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5daae",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dac2",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dadd",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dafb",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db08",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db24",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db2b",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db42",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db49",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db5d",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db78",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5db96",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dba3",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dbbf",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dbc6",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dbdd",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dbe4",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dbf8",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc13",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc2e",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc3b",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc57",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc5e",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc75",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc7c",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dc90",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dcab",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dcc6",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dcd3",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dcef",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dcf6",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd0d",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd14",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd28",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd43",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd5e",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd6b",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd87",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dd8e",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dda5",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ddac",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ddc0",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dddb",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ddf9",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de06",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de22",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de29",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de40",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de47",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de5b",
+      "native": "0041dd40",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de76",
+      "native": "00bf7680",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de92",
+      "native": "00b5bbc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5de9f",
+      "native": "00b5bed0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5debb",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dec2",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ded9",
+      "native": "00419cc0",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5dee0",
+      "native": "00bd1510",
+      "caller": "00b5bf70"
+    },
+    {
+      "address": "00b5ba0e",
+      "native": "00415350",
+      "caller": "00b5b9e0"
+    },
+    {
+      "address": "00b5ba27",
+      "native": "dword ptr [0xce2218]",
+      "caller": "00b5b9e0",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b5ba3c",
+      "native": "00415350",
+      "caller": "00b5b9e0"
+    },
+    {
+      "address": "00b5ba4a",
+      "native": "00bd0c30",
+      "caller": "00b5b9e0"
+    },
+    {
+      "address": "00b5ba58",
+      "native": "dword ptr [0xce2210]",
+      "caller": "00b5b9e0",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b5bc11",
+      "native": "0041dd40",
+      "caller": "00b5bbc0"
+    },
+    {
+      "address": "00b5bc26",
+      "native": "00bf7680",
+      "caller": "00b5bbc0"
+    },
+    {
+      "address": "00b5bf04",
+      "native": "00b5bd10",
+      "caller": "00b5bed0"
+    },
+    {
+      "address": "00b5bf24",
+      "native": "00b38310",
+      "caller": "00b5bed0"
+    },
+    {
+      "address": "00b5bd50",
+      "native": "00bf55be",
+      "caller": "00b5bd10"
+    },
+    {
+      "address": "00b5bd8d",
+      "native": "00b38310",
+      "caller": "00b5bd10"
+    },
+    {
+      "address": "00b5bdc7",
+      "native": "00419cc0",
+      "caller": "00b5bd10"
+    },
+    {
+      "address": "00b5bdce",
+      "native": "00bd1510",
+      "caller": "00b5bd10"
+    },
+    {
+      "address": "00b5bde1",
+      "native": "00bf6989",
+      "caller": "00b5bd10"
+    },
+    {
+      "address": "00b5be3b",
+      "native": "00b5bd10",
+      "caller": "00b5be10"
+    },
+    {
+      "address": "00b5be65",
+      "native": "00b5bb40",
+      "caller": "00b5be10"
+    },
+    {
+      "address": "00b5be9f",
+      "native": "00419cc0",
+      "caller": "00b5be10"
+    },
+    {
+      "address": "00b5bea6",
+      "native": "00bd1510",
+      "caller": "00b5be10"
+    },
+    {
+      "address": "00b5df73",
+      "native": "00b5df00",
+      "caller": "00b5df70"
+    },
+    {
+      "address": "00b5df80",
+      "native": "00bf65ac",
+      "caller": "00b5df70"
+    },
+    {
+      "address": "00b5bb23",
+      "native": "00b5ba80",
+      "caller": "00b5bb20"
+    },
+    {
+      "address": "00b5bb30",
+      "native": "00bf65ac",
+      "caller": "00b5bb20"
+    },
+    {
+      "address": "00b5df33",
+      "native": "00b5be10",
+      "caller": "00b5df00"
+    },
+    {
+      "address": "00b5df3b",
+      "native": "00bf6989",
+      "caller": "00b5df00"
+    },
+    {
+      "address": "00b5df4d",
+      "native": "00b5ba80",
+      "caller": "00b5df00"
+    },
+    {
+      "address": "00b5baae",
+      "native": "00415350",
+      "caller": "00b5ba80"
+    },
+    {
+      "address": "00b5bac7",
+      "native": "dword ptr [0xce2218]",
+      "caller": "00b5ba80",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b5bad6",
+      "native": "00415350",
+      "caller": "00b5ba80"
+    },
+    {
+      "address": "00b5bae4",
+      "native": "00bcfca0",
+      "caller": "00b5ba80"
+    },
+    {
+      "address": "00b5bafc",
+      "native": "dword ptr [0xce2210]",
+      "caller": "00b5ba80",
+      "kind": "indirect"
+    }
+  ],
+  "shared_dependencies": [
+    {
+      "address": "00b38310",
+      "end": "00b38381",
+      "native_bytes": 114,
+      "sha256": "c57892fb36f1500a30fc213f786048f3af0838533131e001d52aeb0e8e90b619",
+      "name": "record_copy"
+    },
+    {
+      "address": "00b5bb40",
+      "end": "00b5bbb2",
+      "native_bytes": 115,
+      "sha256": "632b285b34189db1e51dd3e496c778a0be6d6cd76d225ce5c533168c9ac77e8a",
+      "name": "record_default"
+    }
+  ],
+  "data_evidence": {
+    "ordered_rows": 52,
+    "table": "src/shader_system_registry.inc",
+    "sha256": "84b5c00d64b789455c0d964ca073fa255ded5c7205b11661d7b5894abcba2b0b",
+    "assembly_verification": "local/registry_table_verification.json",
+    "assembly_verification_sha256": "1d1db0ff5b770c57945106d795467c4315d5c61e05f102613d75aed083611229",
+    "method": "Read each native literal and the four immediate/register push values preceding all52 B5BBC0 calls; compare exact ordered rows"
+  },
+  "ownership": {
+    "actual_owner_bytes": 16,
+    "profile": "00d62a3c",
+    "base_profile": "00d626f4",
+    "published": "0108fe94 live void* volatile&",
+    "lifetime": "same SingletonLifetimeDomain corresponding to01090AA0",
+    "array": "owner+04 uses SAME NativeCompiledShaderConstants and NativeCompiledShaderConstantStorage",
+    "strings": "borrowed same NativeStringStorage, fixture uses ActualNativeStringPoolStorage",
+    "failure": "one-shot retained operation; failed binding blocks canonical owner retirement; no native cleanup is fabricated"
+  },
+  "validation": {
+    "new_source": "Current source built by default Win32 /W4 /WX bsp_core target; fixture Win32 /W4 /WX /O2 /MD /fp:strict",
+    "default_build": "./scripts/build.ps1 passed with registered new module; CTest1/1 reconstructed_math",
+    "default_registration": "cmake/startup.cmake append succeeded under shared lease transaction after prior lease released; no registry lease acquired",
+    "original_fixture": "PASS complete52-row constructor and registry deleting/destructor paths; all record words/names/order, doubling capacity64, growth/shrink release/count schedules, flags0 stale data/capacity",
+    "canonical_shutdown": "PASS production flags1 callback with SAME shared lifetime domain and ActualNativeStringPoolStorage; pool and live0108FE94 cleared",
+    "borrowed_failure": "PASS actual source reserve after one successful copied row: unpublished/current record/current source retained, replay rejected and canonical lifetime shutdown terminates with expected exit77",
+    "calls": "443 direct rows checked against live Ghidra;0 failed;4 IAT rows explicitly excluded",
+    "original_body_bytes": 9231,
+    "original_dependency_bytes": 229,
+    "direct_call_rows": 443,
+    "indirect_iat_rows": 4,
+    "not_executed_by_original_fixture": [
+      "base-only deleting B5BB20",
+      "default growth B5BB40"
+    ],
+    "fixture_linkage": "Final replay used run_native_system_registry_probe.ps1 -Registered, linking production bsp_core.lib without compiling source separately",
+    "library_sha256": "8949e2963c1c568b74059d63df640b4c6b9e5d945a1bef8e6ea93279a85155a7"
+  },
+  "limits": [
+    "Normal valid nonnegative readable arrays and representable allocation extents only",
+    "Only one unfinished registry operation per binding; even another registry-profile owner cannot overlap; nonregistry callbacks forward. This is a host validity limit, not native reentry proof",
+    "Original private FH3 handlers and exceptional unwind not reproduced",
+    "Captured/current data preserved across supported borrowed calls; hidden acquisitions inside failing external calls remain their owner responsibility",
+    "No shader compilation/rendering/game execution claim",
+    "Interface is new C++; not a drop-in original ABI or callable original vtable"
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_system_constant_registry.cpp",
+      "sha256": "0584d7f716177f0c76a9ac8f0678074c0e2375a2ee3d1ba01b469219ab25de11"
+    },
+    {
+      "path": "include/bsp/native_system_constant_registry.hpp",
+      "sha256": "0aa419d20f2b6f48616fa33814a822bfc90d232136275647fdb72a5a588afab2"
+    },
+    {
+      "path": "docs/NATIVE_SYSTEM_CONSTANT_REGISTRY.md",
+      "sha256": "5f4734cdf1a66e9058a77ea28b1b423a1c9f5db1f6340cb706d5a69e5a339ab8"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "b062de86587e097aa510d71dc6a4cf480800354b7105d71b146ea83fa6b8e4c0"
+    },
+    {
+      "path": "local/make_registry_original.py",
+      "sha256": "45ef85799b28b2b88dd05b3149fca6e3ad2e24f9b687c365d6aed08dc3edcfe3"
+    },
+    {
+      "path": "local/registry_original.hpp",
+      "sha256": "8a6d0480528a159879f319c1cb7d8d8745811cfa8e3275ef6477741a2d2fba5f"
+    },
+    {
+      "path": "local/registry_original_manifest.json",
+      "sha256": "72e355d3dca3a682df22f9cf2ac59d049f4b1310b27a5ab1aeadd82228d73947"
+    },
+    {
+      "path": "local/registry_table_verification.json",
+      "sha256": "1d1db0ff5b770c57945106d795467c4315d5c61e05f102613d75aed083611229"
+    },
+    {
+      "path": "local/native_system_registry_probe.cpp",
+      "sha256": "ffd9a4f35782d54034ff8454918440dfde1682e9dc758a19b25e7cf048207ac1"
+    },
+    {
+      "path": "local/run_native_system_registry_probe.ps1",
+      "sha256": "02ca3e59dfaeb36cd3fe53cc153c3ec446b401213e191be1dfaaf3b4ff277960"
+    },
+    {
+      "path": "local/native_system_registry_probe_compile.log",
+      "sha256": "5ed4e6a3a2791df83abb77e49e2995b507ad71aca5c31cde378052a1de7be114"
+    },
+    {
+      "path": "local/native_system_registry_probe.log",
+      "sha256": "dc8c43b72f9c16ab61ebec7ed1da7dbc14338b5fc6c2a3a5541931ba538a3784"
+    },
+    {
+      "path": "local/native_system_registry_guard_probe.log",
+      "sha256": "65fdc7c6d47974d6f0d6d8336b555d593773a67d1312ce018beec740960036e9"
+    },
+    {
+      "path": "local/system-registry-registered-build.log",
+      "sha256": "cfb57c357f06cd3e4c6f742c25b23cfa2413f5eda92494381ee9d38fe8404f1d"
+    },
+    {
+      "path": "local/system-registry-call-verification.log",
+      "sha256": "57482fd313ab9f6e754e054f0f36745e21ad9b1434587c1f21346d54bb966b0e"
+    },
+    {
+      "path": "local/register_registry_source.py",
+      "sha256": "7d730e360dcd51d59cf21430178dd8ebe6c64cfa26c8475b279203e10b4558d0"
+    },
+    {
+      "path": "local/registry_registry_ctor_bytes.txt",
+      "sha256": "ac9319ae2a1607dbb10268a3e2f77b427d451795cb3b586c6d558194cf05cf67"
+    },
+    {
+      "path": "local/registry_base_ctor_bytes.txt",
+      "sha256": "2e9216166873f8dcba3a538f29331a4c722b0db71575b8841e5f1adfa78ee9f3"
+    },
+    {
+      "path": "local/registry_record_ctor_bytes.txt",
+      "sha256": "943c9951a9692df167895ceddbab58911084ded0cc68dc26cb3b43ccacc2118d"
+    },
+    {
+      "path": "local/registry_append_bytes.txt",
+      "sha256": "52cdc1c39d8a4fe970247f49c398330fa3e71e2158b6092ac3c471b36b8bae33"
+    },
+    {
+      "path": "local/registry_reserve_bytes.txt",
+      "sha256": "d5e566cc9ebe34e02312fae6798706822dce57bb744066940bf8f944aec0f4f1"
+    },
+    {
+      "path": "local/registry_resize_bytes.txt",
+      "sha256": "111cee81e95b970882bb67da920becfdbed126a60fd6b3acfb6a537936cd57fd"
+    },
+    {
+      "path": "local/registry_registry_delete_bytes.txt",
+      "sha256": "7506b4e0b5dd7619abdcdd12003c04ad62977dd264b63199f00c59661caf2f73"
+    },
+    {
+      "path": "local/registry_base_delete_bytes.txt",
+      "sha256": "a47363ff8a82f1715743e3c90ac3982547d936a2a0a37643ac7884b6917d02f8"
+    },
+    {
+      "path": "local/registry_registry_dtor_bytes.txt",
+      "sha256": "ca20dfe3b846a5fdf8d618974709f6fc39f174df7f806d9bd09a4d46e92080e1"
+    },
+    {
+      "path": "local/registry_base_dtor_bytes.txt",
+      "sha256": "26feab9bc5494d10624e4d484977037d0a8eea9e08444dace2fa4c6c7743a4c1"
+    },
+    {
+      "path": "local/registry_record_copy_bytes.txt",
+      "sha256": "66e6e793e759f0113f9dfb9e162a1501a27538075d6fbfbc6ecfb3e4bd52c9de"
+    },
+    {
+      "path": "local/registry_record_default_bytes.txt",
+      "sha256": "83325c11e74af01d445cc609c17aca7be76e7061e59498c8c65ca04b46ed292e"
+    }
+  ]
+}

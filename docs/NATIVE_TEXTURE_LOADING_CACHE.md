@@ -44,8 +44,8 @@ fallback reference and record-release calls. This module adds no independent
 cache reference to reconcile those schedules.
 
 The B2C2D0 source covers actual VFS open, stream validity, direct deletion of an
-invalid stream, BEF750 conversion, source release, D3DX image info and the 2D
-arm. It uses the real D3DX import contracts, current memory size/base, actual
+invalid stream, BEF750 conversion, source release, D3DX image info and the 2D,
+cube and volume arms. The 2D arm uses real D3DX import contracts, current memory size/base, actual
 B3F2B0 pool allocation, B3F930 named owner and B23640 retained-source assignment.
 The first current renderer+1D84 read gates quality reduction; the second occurs
 after the actual `detail.dds` temporary is destroyed. Width/height shifts mask
@@ -61,9 +61,12 @@ they never report a successful texture.
 
 `NativeTextureLoadOwners` registers one companion in the application's existing
 `GuiNativeGeometryRegistration`, borrowing the exact atomic word at native+04.
-Its real terminal calls B3F590, which releases retained memory, performs B32250
-name removal, unregisters/releases the native COM/surface/name state and returns
-the pool slot. Only after that terminal completes is the same canonical binding
+Its current-profile terminal selects actual B3F590 for D61948, B3F410 for
+D61870 or B3F430 for D618B0. The 2D and cube bodies release retained memory
+before B32250 name removal; the volume body notifies B32250 before capturing
+and releasing its retained source. Each follows its native COM/name and any
+2D surface cleanup sequence, then returns the correct native pool slot.
+Only after that terminal completes is the same canonical binding
 removed and its companion retired. Registration is transactional metadata and
 does not retain. The static B3F2B0 pool binding must be the same pool supplied
 to the owner context. All borrowed domains outlive their native owners.
@@ -99,27 +102,67 @@ as diagnostic preimages until the child operations are destroyed. Those pointer
 values must not be dereferenced or replayed as live string ownership. Headers
 are declared before child members so their storage also survives child teardown.
 
-Cube B3CED0 and volume B3CFA0 named-owner arms remain unreconstructed. Their
-calls are inventoried in the report and explicitly excluded from source
-coverage. D3DX image-info failure may leave native output uninitialized; that
+Cube B3CED0 and volume B3CFA0 named-owner arms now compose the accepted
+`native_named_special_textures` constructors. Both use their four-argument
+D3DX imports (C2DFE0 / CE2404 and C2DFDA / CE2408), with the device captured
+before image-info and fresh memory length/base reads on each attempt. Their
+nonnull output is persistent before native pool allocation or construction.
+B3F2C0 uses the same cube pool as destruction; the ten-byte B3F2D0 wrapper
+selects the actual volume pool and invokes its existing B3ED40 allocation body.
+The two observed B3F2D0 callers set ECX=34h, but the wrapper overwrites ECX
+with 0108DBA8 and consumes no stack arguments. It is an allocator, despite
+the old automatically assigned `CG_static_dtor_stub_00b3f2d0` analysis name.
+
+On successful special construction the loader publishes the creator, then
+uses actual B23640 to retain the memory stream at cube+2C or volume+30.
+Canonical metadata registration follows that native publication without a
+count increment. Optional guard leave at B2C82E occurs before the common tail
+releases the loader's memory reference at B2C837.
+Special arms do not apply the 2D quality policy, callback word or accounted-size
+store. Other image resource types bypass creation and optional guard entry,
+release the common memory reference and return null as observed.
+
+`NativeTextureSpecialOwnerContexts` borrows both existing owner contexts and
+their original profile tables. It must share the 2D owner's exact notification,
+retained-memory, renderer-profile and serial domains. These are checked again
+when registering or retiring special creators. No additional companion list,
+raw-owner map or string pool is added. The optional constructor argument and
+trailing import fields preserve existing 2D callers; a missing special domain
+or reached import is an explicit retained failure boundary. The original
+`load_native_texture_2d_00b2c2d0` spelling forwards the same frame to the new
+generic `load_native_texture_00b2c2d0` entry.
+
+The acquisition keeps separate typed 2D/cube/volume COM outputs and the accepted
+named-constructor child diagnostics. Registration allocation/bind failure
+leaves the creator, original COM reference, retained source and any unbound
+companion available to the caller. Failed-frame recovery remains an explicit
+external operation; there is no replay or newly invented native rollback.
+
+D3DX image-info failure may leave native output uninitialized; that
 input is also excluded, with memory retained. Create HRESULT is otherwise
 handled by the observed policy: a nonnull COM output proceeds regardless of HR;
-null output with the two excluded errors does not retry.
+null output with zero HRESULT or either excluded error does not retry. Other
+null-output failures call the required actual B29670 binding once, then retry
+with the same captured device and fresh stream reads. No new retry provider
+or successful fallback was added.
 
-Evidence is `reports/native_texture_loading_cache.json`: 13 installed/live
-matching spans, 4,944 bytes and all 163 call sites, including unreachable
+Evidence is `reports/native_texture_loading_cache.json`: 14 installed/live
+matching spans, 4,954 bytes and all 164 call/tail sites, including unreachable
 BF6713 at B30BE7 after CMP EAX,EAX. The B30F3A saved-registry reload resolves the
 pseudocode's bogus unaff_EBP; B319B0 RET8, B30B40 RET10 and B2C2D0 RET8 are checked
-from assembly. Ghidra was read-only throughout. Native code-body annotations
-remain hypotheses in the ledger until the primary performs its write pass.
+from assembly. The special-loading extension freshly compared all 1,479 bytes
+of B2C2D0 and the ten bytes of B3F2D0 with the installed image. Its Ghidra work
+was read-only; the primary must apply the new allocator name and comments under
+the write lock. Descriptive names remain reconstruction hypotheses.
 
-Validation uses the existing Win32 build and a single ignored actual-pool
-record fixture. The fixture's null row, ordered deep aliases and 64-to-65 reserve
+The original cache packet used the existing Win32 build and one ignored
+actual-pool record fixture. Its null row, ordered deep aliases and 64-to-65 reserve
 survive source/old-array destruction, then retire the actual pool. It does not
 exercise the full loader, GPU creation, Text, native ABI or game execution.
 `scripts/build.ps1` passed with the source registered; CTest passed 1/1.
-`verify_report_calls.py` checked 144 rows with zero failures. The remaining
-19 symbolic/current-slot rows retain their observed register operands and
+Its `verify_report_calls.py` checked 144 rows with zero failures, including
+140 direct calls and four resolved indirect calls. The remaining 19
+symbolic/current-slot rows retain their observed register operands and
 numeric profile or IAT identities. The ignored fixture runner is
 `local/run_texture_record_probe.cmd`, linking the complete production library
 with `/MANIFEST:EMBED`. The first build failed during concurrent CMake
@@ -135,3 +178,35 @@ ownership, and rejection of failed factory/invocation replay. It also reruns the
 existing record-growth case. It is fault injection, not a successful BDF4C0,
 full cache, native-FH3 or GPU execution test. The native loader diagnostic sites
 are corrected to resize B2C30F and copy B2C327.
+
+The cube/volume extension passed the default registered Win32 build with both
+texture sources compiled and 1/1 CTest (`local/special-loading-build.log`). The
+retained build and fixture logs were inspected after the interrupted worker:
+production source, header and source registry were unchanged after that build.
+`special_loading_extension` records their hashes, the built library and fixture
+artifacts. The refreshed report verifier passed 145 checked rows: 140 direct
+calls, the new allocator tail jump, and four resolved indirect calls. The 19
+symbolic indirect rows remain outside that check.
+
+`local/special_loading_runner.cmd` links the production library and runs one
+focused HAL fixture. It generates an 8x8 cube DDS and an 8x4x2 volume DDS, then
+loads both through actual VFS/physical HANDLE routing, BEF750, installed
+`d3dx9_40.dll`, the named constructors and retained-memory assignment. Both
+creator counts start at one in the same canonical registry. Native terminal
+destruction retires COM and retained memory, leaves memory counters zero, and
+permits actual pool, stream-type and string shutdown. The fixture also checks
+shared serial wrap and supplies a nonzero callback word with no callback
+provider, confirming that the special arms do not invoke the 2D-only callback.
+
+The same fixture injects one transactional metadata-bind failure after a real
+volume load. The failed acquisition retains the completed creator, COM output,
+source memory and unbound companion. Explicit native destruction and remaining
+reference/name cleanup resolve that frame; the loader does not perform rollback.
+Original numeric D1/D5/D6 table pages come from the installed PE and are mapped
+read-only before GUI DLL loading using `/DELAYLOAD:user32.dll` and
+`/DELAYLOAD:d3d9.dll`; the executable embeds its manifest. Stream types use the
+actual CD8FC0/CD9030 IDs and `TypeIdCounterLifetime` with the root descriptor.
+Mount/provider and renderer records remain supplied raw preimages. This is
+source-path execution with real D3DX and native reconstructed services; it does
+not execute the original loader or prove cache bootstrap/resolution, device
+retry, enabled-guard reentry, native FH3, 2D callback or game behavior.

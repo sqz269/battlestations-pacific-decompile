@@ -100,6 +100,7 @@ and opaque native storage remain outside the comparison as previously documented
 
 Original FH3/private-stack aliases, malformed storage, hardware faults,
 asynchronous mutation, complete application wiring and gameplay remain
-unvalidated. The settings destructor's separately documented saved Ghidra-tail
-ownership issue is unchanged. No running game was accessed and no agents were
-dispatched.
+unvalidated. The subsequent AS closeout repaired the settings destructor's
+saved Ghidra-tail ownership and passed all 32 lifetime CALL checks; see
+`NATIVE_INPUT_SETTINGS_LIFETIME.md`. The loader's source and fixture evidence
+are unchanged. No running game was accessed and no agents were dispatched.

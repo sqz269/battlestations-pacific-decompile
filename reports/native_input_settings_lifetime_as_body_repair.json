@@ -1,0 +1,1558 @@
+{
+  "address": "006aa460",
+  "end_exclusive": "006aa640",
+  "utc": "2026-09-13T08:17:24.850998+00:00",
+  "purpose": "Close the AQ saved destructor-tail ownership gap using supported function recreation; preserve original annotations and ABI.",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "actions": [
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006aa460"
+      },
+      "result": "{\"success\": true, \"address\": \"006aa460\", \"deleted_function\": \"BSP_InputSettings_Destruct\", \"body_size\": 107, \"message\": \"Function 'BSP_InputSettings_Destruct' deleted at 006aa460\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006aa460",
+        "end_address": "006aa640"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006aa460\", \"end_address\": \"006aa63f\", \"bytes_disassembled\": 480, \"message\": \"Successfully disassembled 480 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006aa460",
+        "name": "BSP_InputSettings_Destruct",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006aa460\", \"function_name\": \"BSP_InputSettings_Destruct\", \"entry_point\": \"006aa460\", \"body_size\": 480, \"message\": \"Function created successfully at 006aa460\", \"warnings\": [\"Function name 'BSP_InputSettings_Destruct' \\u2014 main part 'InputSettings_Destruct' is not PascalCase. Expected: InputsettingsDestruct\", \"Function name 'BSP_InputSettings_Destruct' \\u2014 main part 'InputSettings_Destruct' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_InputSettings_Destruct' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006aa460",
+        "prototype": "void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006aa460 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006aa460",
+        "comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006aa460\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "before": "Function: BSP_InputSettings_Destruct at 006aa460\nSignature: void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)\nEntry: 006aa460\nBody: 006aa460 - 006aa4ca",
+  "before_documentation": {
+    "hash": "ed1385de33da3d01fab4fc026783a6934ebd83546282271080d6b12f8e403621",
+    "source_program": "battlestationspacific.exe",
+    "source_address": "006aa460",
+    "function_name": "BSP_InputSettings_Destruct",
+    "return_type": "void",
+    "calling_convention": "__fastcall",
+    "plate_comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.",
+    "parameters": [
+      {
+        "ordinal": 0,
+        "name": "self",
+        "type": "void *"
+      },
+      {
+        "ordinal": 1,
+        "name": "unused_edx",
+        "type": "void *"
+      }
+    ],
+    "local_variables": [
+      {
+        "name": "local_4",
+        "type": "int",
+        "storage": "(stack, 0xfffffffffffffffc, 4)"
+      },
+      {
+        "name": "puStack_8",
+        "type": "undefined1 *",
+        "storage": "(stack, 0xfffffffffffffff8, 4)"
+      },
+      {
+        "name": "local_14",
+        "type": "undefined1[8]"
+      },
+      {
+        "name": "pvStack_c",
+        "type": "void *",
+        "storage": "(stack, 0xfffffffffffffff4, 4)"
+      }
+    ],
+    "comments": [],
+    "labels": [],
+    "completeness_score": 100.0
+  },
+  "live_disk_sha256": "6cbedcb555fb094ac6bc137a23b4555cec86b2cb0c2e1f89d9a0ed9eccffc069",
+  "instruction_count": 169,
+  "before_instruction_ownership": [
+    {
+      "address": "006aa460",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa462",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa467",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa46d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa46e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa475",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa478",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa479",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa481",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa487",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa48a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa48c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa494",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa499",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa49b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4aa",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ad",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ae",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4af",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b1",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4bd",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c2",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4cb",
+      "owner": null
+    },
+    {
+      "address": "006aa4cd",
+      "owner": null
+    },
+    {
+      "address": "006aa4d0",
+      "owner": null
+    },
+    {
+      "address": "006aa4d3",
+      "owner": null
+    },
+    {
+      "address": "006aa4d6",
+      "owner": null
+    },
+    {
+      "address": "006aa4d8",
+      "owner": null
+    },
+    {
+      "address": "006aa4db",
+      "owner": null
+    },
+    {
+      "address": "006aa4de",
+      "owner": null
+    },
+    {
+      "address": "006aa4df",
+      "owner": null
+    },
+    {
+      "address": "006aa4e0",
+      "owner": null
+    },
+    {
+      "address": "006aa4e1",
+      "owner": null
+    },
+    {
+      "address": "006aa4e2",
+      "owner": null
+    },
+    {
+      "address": "006aa4e6",
+      "owner": null
+    },
+    {
+      "address": "006aa4e7",
+      "owner": null
+    },
+    {
+      "address": "006aa4e9",
+      "owner": null
+    },
+    {
+      "address": "006aa4ee",
+      "owner": null
+    },
+    {
+      "address": "006aa4f3",
+      "owner": null
+    },
+    {
+      "address": "006aa4f6",
+      "owner": null
+    },
+    {
+      "address": "006aa4f7",
+      "owner": null
+    },
+    {
+      "address": "006aa4fc",
+      "owner": null
+    },
+    {
+      "address": "006aa4ff",
+      "owner": null
+    },
+    {
+      "address": "006aa502",
+      "owner": null
+    },
+    {
+      "address": "006aa505",
+      "owner": null
+    },
+    {
+      "address": "006aa507",
+      "owner": null
+    },
+    {
+      "address": "006aa50a",
+      "owner": null
+    },
+    {
+      "address": "006aa50d",
+      "owner": null
+    },
+    {
+      "address": "006aa50e",
+      "owner": null
+    },
+    {
+      "address": "006aa50f",
+      "owner": null
+    },
+    {
+      "address": "006aa510",
+      "owner": null
+    },
+    {
+      "address": "006aa511",
+      "owner": null
+    },
+    {
+      "address": "006aa515",
+      "owner": null
+    },
+    {
+      "address": "006aa516",
+      "owner": null
+    },
+    {
+      "address": "006aa518",
+      "owner": null
+    },
+    {
+      "address": "006aa51d",
+      "owner": null
+    },
+    {
+      "address": "006aa522",
+      "owner": null
+    },
+    {
+      "address": "006aa525",
+      "owner": null
+    },
+    {
+      "address": "006aa526",
+      "owner": null
+    },
+    {
+      "address": "006aa52b",
+      "owner": null
+    },
+    {
+      "address": "006aa52e",
+      "owner": null
+    },
+    {
+      "address": "006aa531",
+      "owner": null
+    },
+    {
+      "address": "006aa534",
+      "owner": null
+    },
+    {
+      "address": "006aa537",
+      "owner": null
+    },
+    {
+      "address": "006aa53a",
+      "owner": null
+    },
+    {
+      "address": "006aa53c",
+      "owner": null
+    },
+    {
+      "address": "006aa53e",
+      "owner": null
+    },
+    {
+      "address": "006aa542",
+      "owner": null
+    },
+    {
+      "address": "006aa545",
+      "owner": null
+    },
+    {
+      "address": "006aa546",
+      "owner": null
+    },
+    {
+      "address": "006aa547",
+      "owner": null
+    },
+    {
+      "address": "006aa54c",
+      "owner": null
+    },
+    {
+      "address": "006aa54f",
+      "owner": null
+    },
+    {
+      "address": "006aa550",
+      "owner": null
+    },
+    {
+      "address": "006aa555",
+      "owner": null
+    },
+    {
+      "address": "006aa558",
+      "owner": null
+    },
+    {
+      "address": "006aa55b",
+      "owner": null
+    },
+    {
+      "address": "006aa55e",
+      "owner": null
+    },
+    {
+      "address": "006aa561",
+      "owner": null
+    },
+    {
+      "address": "006aa564",
+      "owner": null
+    },
+    {
+      "address": "006aa566",
+      "owner": null
+    },
+    {
+      "address": "006aa569",
+      "owner": null
+    },
+    {
+      "address": "006aa56e",
+      "owner": null
+    },
+    {
+      "address": "006aa570",
+      "owner": null
+    },
+    {
+      "address": "006aa574",
+      "owner": null
+    },
+    {
+      "address": "006aa577",
+      "owner": null
+    },
+    {
+      "address": "006aa578",
+      "owner": null
+    },
+    {
+      "address": "006aa579",
+      "owner": null
+    },
+    {
+      "address": "006aa57e",
+      "owner": null
+    },
+    {
+      "address": "006aa581",
+      "owner": null
+    },
+    {
+      "address": "006aa582",
+      "owner": null
+    },
+    {
+      "address": "006aa587",
+      "owner": null
+    },
+    {
+      "address": "006aa58a",
+      "owner": null
+    },
+    {
+      "address": "006aa58d",
+      "owner": null
+    },
+    {
+      "address": "006aa590",
+      "owner": null
+    },
+    {
+      "address": "006aa593",
+      "owner": null
+    },
+    {
+      "address": "006aa596",
+      "owner": null
+    },
+    {
+      "address": "006aa598",
+      "owner": null
+    },
+    {
+      "address": "006aa59b",
+      "owner": null
+    },
+    {
+      "address": "006aa59c",
+      "owner": null
+    },
+    {
+      "address": "006aa59d",
+      "owner": null
+    },
+    {
+      "address": "006aa59e",
+      "owner": null
+    },
+    {
+      "address": "006aa59f",
+      "owner": null
+    },
+    {
+      "address": "006aa5a3",
+      "owner": null
+    },
+    {
+      "address": "006aa5a4",
+      "owner": null
+    },
+    {
+      "address": "006aa5a6",
+      "owner": null
+    },
+    {
+      "address": "006aa5ab",
+      "owner": null
+    },
+    {
+      "address": "006aa5b0",
+      "owner": null
+    },
+    {
+      "address": "006aa5b3",
+      "owner": null
+    },
+    {
+      "address": "006aa5b4",
+      "owner": null
+    },
+    {
+      "address": "006aa5b9",
+      "owner": null
+    },
+    {
+      "address": "006aa5bc",
+      "owner": null
+    },
+    {
+      "address": "006aa5bf",
+      "owner": null
+    },
+    {
+      "address": "006aa5c2",
+      "owner": null
+    },
+    {
+      "address": "006aa5c5",
+      "owner": null
+    },
+    {
+      "address": "006aa5c8",
+      "owner": null
+    },
+    {
+      "address": "006aa5ca",
+      "owner": null
+    },
+    {
+      "address": "006aa5cf",
+      "owner": null
+    },
+    {
+      "address": "006aa5d1",
+      "owner": null
+    },
+    {
+      "address": "006aa5d5",
+      "owner": null
+    },
+    {
+      "address": "006aa5d8",
+      "owner": null
+    },
+    {
+      "address": "006aa5d9",
+      "owner": null
+    },
+    {
+      "address": "006aa5da",
+      "owner": null
+    },
+    {
+      "address": "006aa5df",
+      "owner": null
+    },
+    {
+      "address": "006aa5e2",
+      "owner": null
+    },
+    {
+      "address": "006aa5e3",
+      "owner": null
+    },
+    {
+      "address": "006aa5e8",
+      "owner": null
+    },
+    {
+      "address": "006aa5eb",
+      "owner": null
+    },
+    {
+      "address": "006aa5ee",
+      "owner": null
+    },
+    {
+      "address": "006aa5f1",
+      "owner": null
+    },
+    {
+      "address": "006aa5f4",
+      "owner": null
+    },
+    {
+      "address": "006aa5f7",
+      "owner": null
+    },
+    {
+      "address": "006aa5f9",
+      "owner": null
+    },
+    {
+      "address": "006aa5fc",
+      "owner": null
+    },
+    {
+      "address": "006aa5fd",
+      "owner": null
+    },
+    {
+      "address": "006aa5fe",
+      "owner": null
+    },
+    {
+      "address": "006aa5ff",
+      "owner": null
+    },
+    {
+      "address": "006aa600",
+      "owner": null
+    },
+    {
+      "address": "006aa604",
+      "owner": null
+    },
+    {
+      "address": "006aa605",
+      "owner": null
+    },
+    {
+      "address": "006aa607",
+      "owner": null
+    },
+    {
+      "address": "006aa60b",
+      "owner": null
+    },
+    {
+      "address": "006aa610",
+      "owner": null
+    },
+    {
+      "address": "006aa613",
+      "owner": null
+    },
+    {
+      "address": "006aa614",
+      "owner": null
+    },
+    {
+      "address": "006aa619",
+      "owner": null
+    },
+    {
+      "address": "006aa61d",
+      "owner": null
+    },
+    {
+      "address": "006aa620",
+      "owner": null
+    },
+    {
+      "address": "006aa623",
+      "owner": null
+    },
+    {
+      "address": "006aa626",
+      "owner": null
+    },
+    {
+      "address": "006aa62c",
+      "owner": null
+    },
+    {
+      "address": "006aa62d",
+      "owner": null
+    },
+    {
+      "address": "006aa633",
+      "owner": null
+    },
+    {
+      "address": "006aa634",
+      "owner": null
+    },
+    {
+      "address": "006aa635",
+      "owner": null
+    },
+    {
+      "address": "006aa63c",
+      "owner": null
+    },
+    {
+      "address": "006aa63f",
+      "owner": null
+    }
+  ],
+  "state": "complete_body_saved",
+  "after": "Function: BSP_InputSettings_Destruct at 006aa460\nSignature: void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)\nEntry: 006aa460\nBody: 006aa460 - 006aa63f",
+  "after_documentation": {
+    "hash": "c30b19d95c708650ed4e3c46e27062ece0b774528fe14c0f83455d3eeaac2209",
+    "source_program": "battlestationspacific.exe",
+    "source_address": "006aa460",
+    "function_name": "BSP_InputSettings_Destruct",
+    "return_type": "void",
+    "calling_convention": "__fastcall",
+    "plate_comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.",
+    "parameters": [
+      {
+        "ordinal": 0,
+        "name": "self",
+        "type": "void *"
+      },
+      {
+        "ordinal": 1,
+        "name": "unused_edx",
+        "type": "void *"
+      }
+    ],
+    "local_variables": [
+      {
+        "name": "puStack_8",
+        "type": "undefined1 *",
+        "storage": "(stack, 0xfffffffffffffff8, 4)"
+      },
+      {
+        "name": "local_14",
+        "type": "undefined1[8]"
+      },
+      {
+        "name": "local_c",
+        "type": "void *",
+        "storage": "(stack, 0xfffffffffffffff4, 4)"
+      },
+      {
+        "name": "local_4",
+        "type": "int",
+        "storage": "(stack, 0xfffffffffffffffc, 4)"
+      }
+    ],
+    "comments": [],
+    "labels": [
+      {
+        "relative_offset": 248,
+        "name": "LAB_006aa558"
+      },
+      {
+        "relative_offset": 298,
+        "name": "LAB_006aa58a"
+      },
+      {
+        "relative_offset": 395,
+        "name": "LAB_006aa5eb"
+      }
+    ],
+    "completeness_score": 100.0
+  },
+  "newly_owned_labels": [
+    {
+      "relative_offset": 248,
+      "name": "LAB_006aa558"
+    },
+    {
+      "relative_offset": 298,
+      "name": "LAB_006aa58a"
+    },
+    {
+      "relative_offset": 395,
+      "name": "LAB_006aa5eb"
+    }
+  ],
+  "verification_correction": "Initial post-recreation comparison expected the old truncated body label list. The three existing default LAB labels are in the newly owned tail; they are preserved. No old label or comment was removed.",
+  "automatic_local_variable_changes": "Before/after decompiler-derived local names and types are recorded; full body discovery regenerates these. Name, parameters, original ABI and all prior comments are unchanged.",
+  "after_instruction_ownership": [
+    {
+      "address": "006aa460",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa462",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa467",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa46d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa46e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa475",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa478",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa479",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa47d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa481",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa487",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa48a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa48c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa494",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa499",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa49b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4a8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4aa",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ad",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ae",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4af",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b1",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4b8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4bd",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c2",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4c6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4cb",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4cd",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4d0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4d3",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4d6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4d8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4db",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4de",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4df",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e1",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e2",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e7",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4e9",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ee",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4f3",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4f6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4f7",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4fc",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa4ff",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa502",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa505",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa507",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa50a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa50d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa50e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa50f",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa510",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa511",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa515",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa516",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa518",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa51d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa522",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa525",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa526",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa52b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa52e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa531",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa534",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa537",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa53a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa53c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa53e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa542",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa545",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa546",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa547",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa54c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa54f",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa550",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa555",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa558",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa55b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa55e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa561",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa564",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa566",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa569",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa56e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa570",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa574",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa577",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa578",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa579",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa57e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa581",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa582",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa587",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa58a",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa58d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa590",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa593",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa596",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa598",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa59b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa59c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa59d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa59e",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa59f",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5a3",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5a4",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5a6",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5ab",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5b0",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5b3",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5b4",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5b9",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5bc",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5bf",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5c2",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5c5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5c8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5ca",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5cf",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5d1",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5d5",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5d8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5d9",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5da",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5df",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5e2",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5e3",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5e8",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5eb",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5ee",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5f1",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5f4",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5f7",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5f9",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5fc",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5fd",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5fe",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa5ff",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa600",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa604",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa605",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa607",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa60b",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa610",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa613",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa614",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa619",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa61d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa620",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa623",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa626",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa62c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa62d",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa633",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa634",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa635",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa63c",
+      "owner": "006aa460"
+    },
+    {
+      "address": "006aa63f",
+      "owner": "006aa460"
+    }
+  ],
+  "prior_annotations_and_abi_preserved": true,
+  "complete_body": true,
+  "no_callee_noreturn_flags_changed": true,
+  "script_execution_used_or_enabled": false,
+  "before_closeout_comment": {
+    "address": "006aa460",
+    "function_name": "BSP_InputSettings_Destruct",
+    "comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json."
+  },
+  "after_closeout_comment": {
+    "address": "006aa460",
+    "function_name": "BSP_InputSettings_Destruct",
+    "comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 006aa460] update\nAS closeout of the existing AQ saved-body gap: supported function recreation over the verified480-byte range now gives006AA460..006AA63F ownership for all169 instructions. Original name, prototype, parameters and all earlier comments preserved. All32 direct lifetime CALL rows pass live ownership/instruction/callee checks, including14 formerly pending tail sites. No callee no-return changes and no script execution enabled or used. Previous script refusal and native/source122545-word fixture remain historical evidence at their original revisions. Production container providers, application wiring and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime_as_body_repair.json."
+  },
+  "after_closeout_function": "Function: BSP_InputSettings_Destruct at 006aa460\nSignature: void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)\nEntry: 006aa460\nBody: 006aa460 - 006aa63f",
+  "closeout_annotation_saved_and_verified": true,
+  "export_refreshed_after_annotation": true
+}
