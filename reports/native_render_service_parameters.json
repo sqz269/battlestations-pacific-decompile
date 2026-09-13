@@ -1,6 +1,6 @@
 {
   "module": "native_render_service_parameters",
-  "status": "complete_raw_source_strict_win32_compiled_order_baseline_build_and_original_byte_fixture_checked",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
   "provenance": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -972,7 +972,7 @@
     "The fixture deliberately relocates constant operands into synthetic alias arrangements; this verifies load/store schedule and does not establish that the game uses those arrangements."
   ],
   "integration_az_review": {
-    "combined_validation": "pending exact merged source build and current-library replay",
+    "combined_validation": "passed exact merged Win32 build and five current-library-only probes within documented coverage",
     "game_validated": false,
     "saved_batch_function_names_and_original_signatures": 27,
     "signature_readback_passed": true,
@@ -980,5 +980,13 @@
     "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
     "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
     "current_report_call_check": "reports/native_render_service_parameters.json: 0 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "complete_raw_source_strict_win32_compiled_order_baseline_build_and_original_byte_fixture_checked",
+  "final_merged_validation_az": {
+    "report": "reports/native_system_sources_az_validation.json",
+    "tested_commit": "8e9ab00b59fe1c6f04da21bf39fcc304211b71c9",
+    "existing_ctests_passed": 2,
+    "five_current_library_only_replays_passed": true,
+    "game_validated": false
   }
 }

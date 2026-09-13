@@ -94,3 +94,11 @@ missing-function observations remain worker capture history. The batch adds
 22 complete body records and extends five existing bodies with raw interfaces;
 the two EH definitions add no normal-body count. Exact combined validation
 follows separately from worker fixture evidence.
+
+## AZ exact merged validation
+
+The exact combined source commit `8e9ab00b59fe1c6f04da21bf39fcc304211b71c9` passed the strict Win32
+build, both existing tests and five current-library-only original-byte fixtures.
+See `reports/native_system_sources_az_validation.json` for hashes, preserved
+captures, case coverage and limits. Earlier pending statements describe worker
+capture stages. Full rendering, native ABI and general concurrency remain open.
