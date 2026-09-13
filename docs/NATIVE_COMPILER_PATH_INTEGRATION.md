@@ -92,3 +92,60 @@ and in-range system semantics; native invalid-output/out-of-range behavior remai
 outside its domain. The texture fixture does not execute recovery, enabled-guard
 reentry, cache bootstrap or the complete original loader. Compiler-tail success,
 full rendering parity and gameplay remain unverified.
+
+## Native constant headers and vertex compilation
+
+The next integrated batch adds eight actual constant-header/formatting routines
+and three vertex-compilation/physical-write routines. The constant header uses
+the same 52-row registry, actual builder output, shared scratch and pooled strings.
+It preserves signed formatting, captured temporary releases, current count/limit
+reads and DWORD cursor wrap. The original/source fixture compares exact text and
+allocation traces, including retained failure state. Array-base replacement and
+scratch mutation during allocation are assembly-reviewed, not exercised by that fixture.
+
+Vertex compilation captures the actual device before D3DX9_40 compilation and
+the VFS manager before name allocation. Physical `.vsa` writes and diagnostic
+cleanup precede vertex-shader creation; code/message releases follow it. The real
+HAL/VFS fixture compares shader function bytes and 158-byte diagnostics, then
+checks code-null messages, retained allocation failure and physical count/carry.
+The failure leg can truncate the final `.vsa`; the earlier successful comparison
+is recorded in the pinned fixture log. Relocated original instructions, rebound
+dependency calls/table entries and shared existing helpers remain explicit limits.
+
+The final default build at `6fbdee9e` passed both CTests. All 15 focused fixture
+programs passed at `44d9fdfd`; the intervening merge contains only
+docs/reports. All three libraries and all 40 runner/fixture input hashes stayed
+unchanged, and the default build was rerun after that merge. Seven component
+reports have 936 checked numeric transfer rows and zero failures, including the
+same four resolved indirect rows. The 11 new names/comments were applied under
+the Ghidra write lock, saved, read back and exported with prior values preserved.
+
+The immutable checkpoint is `local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json` (167 artifacts). The earlier
+146-artifact default checkpoint remains unchanged. Pixel compilation and struct
+declarations continue in separate leased worktrees. These integrated helpers do
+not install the full native source generator or a successful B3B3C0 continuation;
+native FH3, full material compilation, rendering parity and gameplay remain unproven.
+
+## Validation after concurrent string-storage integration
+
+The later shared checked-string/input-settings code was merged before another
+default build and a fresh run of all 15 focused fixture programs. Both CTests and
+all 15 fixtures passed at `fa6211f1`. The final validated revision is
+`fa6211f1`; all seven accepted component source/header/report hashes remain
+unchanged. No result from the earlier library was substituted for this fresh run.
+The immutable final checkpoint is `local/checkpoints/fa6211f1/compiler-leaves-final/validation.json` (174 artifacts), including
+the changed shared storage sources. The earlier 167-artifact checkpoint remains
+preserved. This refresh changes neither the reconstruction scope nor the stated
+native ABI, FH3, full compiler and gameplay limits.
+
+## Validation after concurrent shared-source integration
+
+The later shared source code was merged before another
+default build and a fresh run of all 15 focused fixture programs. Both CTests and
+all 15 fixtures passed at `7a060521`. The final validated revision is
+`7a060521`; all seven accepted component source/header/report hashes remain
+unchanged. No result from the earlier library was substituted for this fresh run.
+The immutable final checkpoint is `local/checkpoints/7a060521/compiler-leaves-final/validation.json` (184 artifacts), including
+the changed shared storage sources. The earlier 167-artifact checkpoint remains
+preserved. This refresh changes neither the reconstruction scope nor the stated
+native ABI, FH3, full compiler and gameplay limits.

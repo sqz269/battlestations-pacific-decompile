@@ -1,38 +1,26 @@
 {
-  "scope": "Actual compiler fields, interpolators, system registry, reflection and cube/volume loading",
-  "validated_code_commit": "82a2179ede0f57aa671d561f83af0072c51a6648",
+  "scope": "Actual compiler fields, interpolators, registry, reflection, constant headers, vertex compilation and cube/volume loading",
+  "validated_code_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
   "default_registration": true,
   "default_build": "MSVC Win32 scripts/build.ps1 passed; CTest2/2",
   "checkpoint": {
-    "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
-    "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
-    "artifacts": 146
+    "path": "local/checkpoints/7a060521/compiler-leaves-final/validation.json",
+    "sha256": "707219dfea615b3574c7c6dea3fbb052a6f57019f7e207ee81e40c959c319463",
+    "artifacts": 184
   },
-  "fixture_programs": 13,
-  "fixture_origin_commit": "a52a7891089f26bf0de63f8ae06b0b56096500b0",
+  "previous_default_checkpoint": {
+    "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
+    "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
+    "artifacts": 174
+  },
+  "fixture_programs": 15,
+  "fixture_origin_commit": "7a06052171a8aca3fcd22f7a8058b7fbd86da288",
   "fixture_equivalence_after_metadata_merge": {
-    "metadata_only_changed_paths": [
-      "config/names/00420000.jsonl",
-      "config/names/00520000.jsonl",
-      "config/names/00690000.jsonl",
-      "config/names/006a0000.jsonl",
-      "config/names/00920000.jsonl",
-      "config/names/00cd0000.jsonl",
-      "docs/NATIVE_INPUT_CONFIGURATION_RUNTIME.md",
-      "docs/NATIVE_INPUT_SETTINGS_LIFETIME.md",
-      "docs/NATIVE_PENDING_ENTITY_OWNERS.md",
-      "docs/OBSERVER_DISPATCH_BINDING.md",
-      "docs/ORCH6_RECONSTRUCTION_R.md",
-      "reports/native_input_settings_lifetime.json",
-      "reports/native_input_settings_lifetime_as_body_repair.json",
-      "reports/observed_endpoint_flow_repair.json",
-      "reports/observer_endpoint_function_definitions.json",
-      "reports/orch6_reconstruction_r.json"
-    ],
+    "metadata_only_changed_paths": [],
     "all_three_library_hashes_unchanged": true,
-    "all_runner_and_fixture_input_hashes_unchanged": true
+    "all_40_runner_and_fixture_input_hashes_unchanged": true
   },
-  "registered_library_sha256": "95b1d87f7cea0f89ada89d8b22cb430b914a22ff881b5cb8dc63a473cc6436ec",
+  "registered_library_sha256": "05dd48f0e3f8d932a3e14992d08c51ad9b3321eb75707d7927e4f34706be03ce",
   "call_checks": [
     {
       "report": "reports/native_shader_system_fields.json",
@@ -58,9 +46,19 @@
       "report": "reports/native_shader_interpolators.json",
       "checked": 27,
       "failed": 0
+    },
+    {
+      "report": "reports/native_vertex_shader_compilation.json",
+      "checked": 19,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_shader_constant_header.json",
+      "checked": 70,
+      "failed": 0
     }
   ],
-  "numeric_checked_rows": 847,
+  "numeric_checked_rows": 936,
   "resolved_indirect_included": 4,
   "worker_archives": {
     "system-fields": {
@@ -92,9 +90,38 @@
       "manifest": "local/compiler-path-workers/interpolators/manifest.json",
       "sha256": "d6ea055bf5c47a9f8ed625eb30fb943bed38c18cb255777fcd493b13ee5669f4",
       "artifacts": 42
+    },
+    "vertex": {
+      "commit": "46be664b08a79f54652a2228f3ddb512cff670dd",
+      "manifest": "local/compiler-path-workers/vertex/manifest.json",
+      "sha256": "6ab9e904b515bce0660e00c9e31387ad0d8de9ccef6d8738c44848128136064f",
+      "artifacts": 39
+    },
+    "constant-header": {
+      "commit": "486bc004bcc0df6442b08d9c5262642e5d26ce4e",
+      "manifest": "local/compiler-path-workers/constant-header/manifest.json",
+      "sha256": "b91e3c7173f6ab12ac71721ef81868dc21daa8400eb15b070d318478debb0826",
+      "artifacts": 31
     }
   },
   "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_readback_exported_addresses": [
+      "00b60f60",
+      "00be4430",
+      "00bf4f50",
+      "00b38ff0",
+      "00b38c60",
+      "00b35110",
+      "005f1840",
+      "00b5b840",
+      "00b5b850",
+      "00b5b860",
+      "00b5b890"
+    ]
+  },
+  "previous_ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "saved_readback_exported_addresses": [
@@ -129,17 +156,42 @@
     "B3B3C0 six post-free CALL gaps repaired; JMP padding retained",
     "BE4430/BF4F50 definitions prepared for the separate vertex compiler worker"
   ],
-  "composition": "Actual B5BF70 52-row producer feeds original/source B3AEA0 through SAME live0108FE94 and shared singleton/string lifetime; normal and retained-failure fixture pass",
+  "composition": [
+    "Actual B5BF70 52-row producer feeds original/source B3AEA0 through SAME live0108FE94 and shared singleton/string lifetime; normal and retained-failure fixture pass",
+    "Actual52-row registry and same pooled-string domain feed original/source B38FF0/B38C60/helper declarations with matching exact text/allocation traces.",
+    "B60F60 uses real installed D3DX9_40, actual HAL shader creation and actual physical VFS .vsa writes; original/source shader function bytes and158-byte diagnostics match before retained allocation-failure validation."
+  ],
   "limits": [
     "New host Win32 interfaces are not native binary replacements.",
     "Native private FH3 unwind is not reproduced; retained failure frames require the documented caller lifetime obligations.",
     "Registry binding admits one unfinished registry operation.",
     "Reflection excludes failed/unpopulated COM outputs and out-of-range semantic IDs.",
     "Texture fixture excludes retry execution, enabled-guard reentry, cache bootstrap and complete original-loader equivalence.",
-    "Full B3B3C0 native compiler continuation, rendering parity and rebuilt gameplay remain unverified."
+    "Full B3B3C0 native compiler continuation, rendering parity and rebuilt gameplay remain unverified.",
+    "Constant-header mutation fixture covers registry publication/count/row/limit changes; array-base replacement and scratch overwrite during allocation are assembly-reviewed, not fixture-exercised.",
+    "Vertex fixture relocates copied native bodies and rebinds audited dependency CALLs/tables; synthetic HLSL and shared existing string/VFS bridges do not prove fixed-address replacement or full installed material compilation.",
+    "Writer dispatch supports the actual physical BF4F50/BE4430 target profile; other stream implementations remain external."
   ],
   "pending_packets": [
-    "Vertex compiler46be664b has worker build/fixture evidence; primary review/integration pending.",
-    "Actual constant-header generation remains active in a separate worker worktree."
+    "Actual B61280 pixel compilation and usage parsing in agent/orch5-native-pixel-compile.",
+    "Actual B34F20/B35030/B385B0/B38B50 line and struct declarations in agent/orch5-native-struct-declarations.",
+    "Native B39110/B39880 source generation and full B3B3C0 continuation still require composition."
+  ],
+  "previous_default_checkpoints": [
+    {
+      "path": "local/checkpoints/82a2179e/compiler-path-default/validation.json",
+      "sha256": "c11cea35a4676de8c4de7071b84b0d70d815616b7e974780df8e713201445f20",
+      "artifacts": 146
+    },
+    {
+      "path": "local/checkpoints/6fbdee9e/compiler-leaves-default/validation.json",
+      "sha256": "af6a1415b5cf1ab1036e4af39be12e44ed718295d8302d6aed5fdf720e079624",
+      "artifacts": 167
+    },
+    {
+      "path": "local/checkpoints/fa6211f1/compiler-leaves-final/validation.json",
+      "sha256": "c959c20d7a8c02c4170c5a678b8823a98937b35c11801a2e9d979ee2107ace30",
+      "artifacts": 174
+    }
   ]
 }

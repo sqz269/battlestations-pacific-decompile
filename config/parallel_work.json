@@ -10374,6 +10374,128 @@
       "evidence": "reports/native_render_batch_preparation_actual.json",
       "new_native_bodies": 3,
       "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_renderer_startup_ay_validation.json"
+    },
+    {
+      "id": "orch3_native_camera_axes_az",
+      "packet": "orch3_native_camera_axes_az",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b70ea0",
+        "00b70fe0",
+        "00b6feb0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_camera_axes.hpp",
+        "src/native_camera_axes.cpp",
+        "docs/NATIVE_CAMERA_AXES.md",
+        "reports/native_camera_axes.json"
+      ],
+      "evidence": "reports/native_camera_axes.json",
+      "new_native_bodies": 0,
+      "existing_body_extensions": 3,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_system_sources_az_validation.json"
+    },
+    {
+      "id": "orch3_native_fog_access_az",
+      "packet": "orch3_native_fog_access_az",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b84c90",
+        "00b84ca0",
+        "00b84cb0",
+        "00b84cc0",
+        "00b84cd0",
+        "00b84ce0",
+        "00b84cf0",
+        "00b84da0",
+        "00b84db0",
+        "00b84e20",
+        "00b84e30",
+        "00b84e40",
+        "00b84fd0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_fog_access.hpp",
+        "src/native_fog_access.cpp",
+        "docs/NATIVE_FOG_ACCESS.md",
+        "reports/native_fog_access.json"
+      ],
+      "evidence": "reports/native_fog_access.json",
+      "new_native_bodies": 13,
+      "existing_body_extensions": 0,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_system_sources_az_validation.json"
+    },
+    {
+      "id": "orch3_native_system_parameter_slots_az",
+      "packet": "orch3_native_system_parameter_slots_az",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b40860",
+        "00b9a030",
+        "00b9a080",
+        "00b9a0d0",
+        "00b9a130"
+      ],
+      "code_ownership": [
+        "include/bsp/native_system_parameter_slots.hpp",
+        "src/native_system_parameter_slots.cpp",
+        "docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md",
+        "reports/native_system_parameter_slots.json"
+      ],
+      "evidence": "reports/native_system_parameter_slots.json",
+      "new_native_bodies": 5,
+      "existing_body_extensions": 0,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_system_sources_az_validation.json"
+    },
+    {
+      "id": "orch3_native_render_service_base_az",
+      "packet": "orch3_native_render_service_base_az",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b0f020",
+        "00b0f0c0",
+        "00412430",
+        "00b0cf30",
+        "00b0d100"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_service_base.hpp",
+        "src/native_render_service_base.cpp",
+        "docs/NATIVE_RENDER_SERVICE_BASE.md",
+        "reports/native_render_service_base.json"
+      ],
+      "evidence": "reports/native_render_service_base.json",
+      "new_native_bodies": 3,
+      "existing_body_extensions": 2,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_system_sources_az_validation.json"
+    },
+    {
+      "id": "orch3_native_render_service_parameters_az",
+      "packet": "orch3_native_render_service_parameters_az",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b0cd80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_service_parameters.hpp",
+        "src/native_render_service_parameters.cpp",
+        "docs/NATIVE_RENDER_SERVICE_PARAMETERS.md",
+        "reports/native_render_service_parameters.json"
+      ],
+      "evidence": "reports/native_render_service_parameters.json",
+      "new_native_bodies": 1,
+      "existing_body_extensions": 0,
+      "boundary": "Actual owner/publication domains and bounded original-byte comparisons; whole rendering/gameplay unverified; reports/native_system_sources_az_validation.json"
     }
   ],
   "snapshot_after_analysis": {

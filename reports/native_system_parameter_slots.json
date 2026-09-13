@@ -1,0 +1,347 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_system_parameter_slots_az",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "utc": "2026-09-13T08:21:15.248145+00:00",
+  "normal_body_count": 5,
+  "native_body_bytes": 340,
+  "native_instruction_count": 73,
+  "files": [
+    "include/bsp/native_system_parameter_slots.hpp",
+    "src/native_system_parameter_slots.cpp",
+    "docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md",
+    "reports/native_system_parameter_slots.json"
+  ],
+  "functions": [
+    {
+      "address": "00b40860",
+      "end_inclusive": "00b4087f",
+      "end_exclusive": "00b40880",
+      "bytes": 32,
+      "instructions": 11,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "publish_native_system_parameter_slot_00b40860",
+      "proposed_ghidra_name": "BSP_SystemParameters_PublishSlot",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b40860",
+      "old_ghidra_prototype": "undefined FUN_00b40860(void)",
+      "original_abi": "ECX raw DWORD index; EDX source; zero stack argument slots; RET at 00b4087f; no semantic result",
+      "source": "src/native_system_parameter_slots.cpp",
+      "header": "include/bsp/native_system_parameter_slots.hpp",
+      "module": "native_system_parameter_slots",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b40860..00b4087f over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_PublishSlot",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "publish_native_system_parameter_slot_00b40860",
+      "native_prototype": "void BSP_SystemParameters_PublishSlot(unsigned int index, void * source)",
+      "native_calling_convention": "__fastcall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+    },
+    {
+      "address": "00b9a030",
+      "end_inclusive": "00b9a078",
+      "end_exclusive": "00b9a079",
+      "bytes": 73,
+      "instructions": 17,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "set_native_system_parameter_slot0_00b9a030",
+      "proposed_ghidra_name": "BSP_SystemParameters_SetSlot0",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b9a030",
+      "old_ghidra_prototype": "undefined FUN_00b9a030(void)",
+      "original_abi": "ECX actual owner; four raw DWORD argument slots; RET10h at 00b9a076; void",
+      "source": "src/native_system_parameter_slots.cpp",
+      "header": "include/bsp/native_system_parameter_slots.hpp",
+      "module": "native_system_parameter_slots",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a030..00b9a078 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot0",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot0_00b9a030",
+      "native_prototype": "void BSP_SystemParameters_SetSlot0(unsigned int slot0, unsigned int slot1, unsigned int slot2, unsigned int slot3)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+    },
+    {
+      "address": "00b9a080",
+      "end_inclusive": "00b9a0c8",
+      "end_exclusive": "00b9a0c9",
+      "bytes": 73,
+      "instructions": 12,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "set_native_system_parameter_slot2_00b9a080",
+      "proposed_ghidra_name": "BSP_SystemParameters_SetSlot2",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b9a080",
+      "old_ghidra_prototype": "undefined FUN_00b9a080(void)",
+      "original_abi": "ECX actual owner; three raw DWORD argument slots; RET0Ch at 00b9a0c6; void",
+      "source": "src/native_system_parameter_slots.cpp",
+      "header": "include/bsp/native_system_parameter_slots.hpp",
+      "module": "native_system_parameter_slots",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a080..00b9a0c8 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot2",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot2_00b9a080",
+      "native_prototype": "void BSP_SystemParameters_SetSlot2(unsigned int slot0, unsigned int slot1, unsigned int slot2)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+    },
+    {
+      "address": "00b9a0d0",
+      "end_inclusive": "00b9a126",
+      "end_exclusive": "00b9a127",
+      "bytes": 87,
+      "instructions": 16,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "set_native_system_parameter_slot3_00b9a0d0",
+      "proposed_ghidra_name": "BSP_SystemParameters_SetSlot3AndReciprocal",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b9a0d0",
+      "old_ghidra_prototype": "undefined FUN_00b9a0d0(void)",
+      "original_abi": "ECX actual owner; three raw DWORD argument slots; RET0Ch at 00b9a124; void",
+      "source": "src/native_system_parameter_slots.cpp",
+      "header": "include/bsp/native_system_parameter_slots.hpp",
+      "module": "native_system_parameter_slots",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a0d0..00b9a126 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot3AndReciprocal",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot3_00b9a0d0",
+      "native_prototype": "void BSP_SystemParameters_SetSlot3AndReciprocal(unsigned int slot0, unsigned int slot1, unsigned int slot2)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+    },
+    {
+      "address": "00b9a130",
+      "end_inclusive": "00b9a17a",
+      "end_exclusive": "00b9a17b",
+      "bytes": 75,
+      "instructions": 17,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "set_native_system_parameter_slot1_00b9a130",
+      "proposed_ghidra_name": "BSP_SystemParameters_SetSlot1",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "old_ghidra_name": "FUN_00b9a130",
+      "old_ghidra_prototype": "undefined FUN_00b9a130(void)",
+      "original_abi": "ECX actual owner; two raw DWORD argument slots; RET8 at 00b9a178; void",
+      "source": "src/native_system_parameter_slots.cpp",
+      "header": "include/bsp/native_system_parameter_slots.hpp",
+      "module": "native_system_parameter_slots",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b9a130..00b9a17a over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. New complete actual-storage normal-body implementation. Evidence: docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md; reports/native_system_parameter_slots.json.",
+      "ghidra_name": "BSP_SystemParameters_SetSlot1",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "set_native_system_parameter_slot1_00b9a130",
+      "native_prototype": "void BSP_SystemParameters_SetSlot1(unsigned int slot0, unsigned int slot1)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Complete stored body and live listing reviewed; raw actual storage and current argument/constant reads; x87 operations, quotient spill/reload, reciprocal side effect and publication alias order preserved. New C++ ABI. See docs/NATIVE_SYSTEM_PARAMETER_SLOTS.md."
+    }
+  ],
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b40860",
+        "end_inclusive": "00b4087f",
+        "bytes": 32,
+        "sha256": "37e2c3d1b15bd2d74507ad5b04a007ce2943026f90684ecdc81d32a7e3624a0b",
+        "bytes_hex": "d902c1e10481c130fc0801d919d94204d95904d94208d95908d9420cd9590cc3",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b9a030",
+        "end_inclusive": "00b9a078",
+        "bytes": 73,
+        "sha256": "05d1cacf733ade26b0951bc492f8be46074b14888f66cc4b3016cf5328ccf250",
+        "bytes_hex": "83ec10d9442414f30f10442418dc35a047ce008d91bc030000f30f114204f30f1044241cf30f114208f30f1044242033c9f30f11420cd91c24d90424d91ae8ed67faff83c410c21000",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b9a080",
+        "end_inclusive": "00b9a0c8",
+        "bytes": 73,
+        "sha256": "bc83b3dff4a9ebd00025b0dfbeedc6f9b9699a6ed62bf99d47824b119897cd35",
+        "bytes_hex": "f30f104424048d91d0050000f30f1102f30f10442408f30f1181d4050000f30f1044240cf30f1181d8050000f30f10054ca2d700f30f1181dc050000b902000000e89a67faffc20c00",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b9a0d0",
+        "end_inclusive": "00b9a126",
+        "bytes": 87,
+        "sha256": "607139a64438eee114573762a710b89f4bb4fa99b8b1c38b494884a48b4d1b59",
+        "bytes_hex": "d9442404f30f10442404d9e88d91e0050000def1f30f1102f30f10442408f30f1181e4050000f30f1044240cf30f1181e8050000f30f10054ca2d700f30f1181ec050000d999f0050000b903000000e83c67faffc20c00",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b9a130",
+        "end_inclusive": "00b9a17a",
+        "bytes": 75,
+        "sha256": "66cf47de4e72691983b5fb0ab64a499f90947254153f9259d5e2e101a1a00d34",
+        "bytes_hex": "83ec10d9442414f30f10442418dc35a047ce008d91cc030000f30f1142040f57c0f30f114208f30f10054ca2d700b901000000f30f11420cd91c24d90424d91ae8eb66faff83c410c20800",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00ce47a0",
+        "end_inclusive": "00ce47a7",
+        "bytes": 8,
+        "sha256": "139107fd63d004e94cb64abb75361dd8490810c6709a9311896ca17496f5ecde",
+        "bytes_hex": "0000000000408f40",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d7a24c",
+        "end_inclusive": "00d7a24f",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "bytes_hex": "0000803f",
+        "fresh_live_PE_match": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b9a030",
+      "address": "00b9a06e",
+      "native": "00b40860",
+      "contract": "slot0, captured owner+3BC",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "00b9a080",
+      "address": "00b9a0c1",
+      "native": "00b40860",
+      "contract": "slot2, captured owner+5D0",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "00b9a0d0",
+      "address": "00b9a11f",
+      "native": "00b40860",
+      "contract": "slot3, captured owner+5E0; reciprocal+5F0 already stored",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "00b9a130",
+      "address": "00b9a170",
+      "native": "00b40860",
+      "contract": "slot1, captured owner+3CC",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "0078c9b0",
+      "address": "0078cd92",
+      "native": "00b9a030",
+      "contract": "ECX EBX; four x87-spilled DWORD slots; callee RET10h",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "0078c9b0",
+      "address": "0078ce12",
+      "native": "00b9a080",
+      "contract": "ECX EBX; three x87-spilled DWORD slots; callee RET0Ch",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "0078c9b0",
+      "address": "0078ccff",
+      "native": "00b9a0d0",
+      "contract": "ECX EBX; three x87-spilled DWORD slots; callee RET0Ch",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    },
+    {
+      "function": "0078c9b0",
+      "address": "0078cdaf",
+      "native": "00b9a130",
+      "contract": "ECX EBX; two x87-spilled DWORD slots; callee RET8",
+      "callee_body_reviewed": true,
+      "callsite_containment_verified": true
+    }
+  ],
+  "producer_evidence": {
+    "current_source_consumer": "SystemConstantBuilderEnvironment::parameters_0108fc30 borrows the actual sixteen-word bank; no duplicate bank or owner type introduced",
+    "argument_producer": "0078c9b0 actual caller x87 spills; EBX loaded from EDI+A8 at 0078cce3; all EBX writes filtered from stored listing",
+    "record_producers": "The four complete setters establish their raw output offsets; no complete owner constructor is claimed",
+    "outside_packet_incomplete": [
+      "0078c9b0",
+      "00b46a70"
+    ]
+  },
+  "checks": {
+    "ghidra_read_only": true,
+    "live_and_disk_spans_match": true,
+    "verify_seeds_passed": true,
+    "own_source_compile": "PASS MSVC Win32 /O2 /W4 /WX /fp:strict; emitted assembly inspected",
+    "baseline_build": "PASS; source unregistered, excluded from baseline build",
+    "fixture": "PASS 4488 unchanged original-byte comparisons",
+    "fixture_domains": [
+      "12 x87 precision/rounding modes",
+      "11 input bit patterns including sNaN, qNaN, infinity, denormal, signed zero",
+      "6 setter owner/argument/constant/publication overlap layouts",
+      "current double divisor and float one operands",
+      "helper forward and backward overlap",
+      "DWORD index shift/add wrap",
+      "full borrowed arenas, x87 flags/C1/TOP/control word"
+    ],
+    "repo_tests_added": 0,
+    "cmake_registration": "root integrator required",
+    "ghidra_mutations": "none by worker"
+  },
+  "source_sha256": {
+    "include/bsp/native_system_parameter_slots.hpp": "56b7a3c391e897ad7ede63364617e2c1d00fe1f84868a3698be0b5edb078d184",
+    "src/native_system_parameter_slots.cpp": "e8fa29607de259ef095381a1d48397b0be37a294bf058df985f629ea589cb5ad"
+  },
+  "capture_archive": "C:/Users/sqz269/bsp-az-system-parameter-slots/worker_capture.zip",
+  "fixture_rebuild": "build-probe.ps1 defaults to compiling only probe.cpp against current bsp_core/bsp_lua511/bsp_zlib121 libraries; -WorkerSource used before source integration",
+  "limitations": [
+    "new C++ interfaces; original caller ABI not proved",
+    "baseline build excludes this worker source",
+    "fixture masks x87 exceptions; unrestricted unmasked exception and SEH recovery not proved",
+    "native private return/local stack slots excluded from fixture comparison",
+    "concurrency and private C++ argument/local aliasing outside contract",
+    "actual owner constructor, 0078c9b0 and 00b46a70 remain incomplete",
+    "not game-validated"
+  ],
+  "integration_az_review": {
+    "combined_validation": "passed exact merged Win32 build and five current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_system_parameter_slots.json: 8 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "worker_source_strict_compile_and_bounded_native_fixture_passed_pending_integration",
+  "final_merged_validation_az": {
+    "report": "reports/native_system_sources_az_validation.json",
+    "tested_commit": "7813bdc988999a39fa150b0ef9ab3529668fe27b",
+    "existing_ctests_passed": 2,
+    "five_current_library_only_replays_passed": true,
+    "game_validated": false
+  }
+}

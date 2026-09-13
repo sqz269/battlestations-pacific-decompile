@@ -1,0 +1,426 @@
+{
+  "packet": "orch3_native_camera_axes_az",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "base_commit": "ca2ca6337d1d5114aa60484dfe063639e4a44b87",
+  "source": "src/native_camera_axes.cpp",
+  "header": "include/bsp/native_camera_axes.hpp",
+  "functions": [
+    {
+      "address": "00b70ea0",
+      "end_inclusive": "00b70fd6",
+      "size": 311,
+      "name": "BSP_Camera_GetProjectedYAxis",
+      "proposed_ghidra_name": "BSP_Camera_GetProjectedYAxis",
+      "cpp_name": "get_native_camera_axis_y_00b70ea0",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "original_abi": "ECX actual camera receiver, no stack arguments, EAX pointer, RET; original __thiscall-compatible register use, EDX unused",
+      "new_cpp_interface": "__fastcall ECX actual camera, EDX concrete context pointer, EAX pointer, RET",
+      "prior_ledger_kind": "function",
+      "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
+      "raw_storage_extension": true,
+      "end_exclusive": "00b70fd7",
+      "cpp_symbol": "get_native_camera_axis_y_00b70ea0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetProjectedYAxis",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "BSP_Camera_GetProjectedYAxis",
+      "native_prototype": "void * BSP_Camera_GetProjectedYAxis(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b70ea0..00b70fd6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
+    },
+    {
+      "address": "00b70fe0",
+      "end_inclusive": "00b71116",
+      "size": 311,
+      "name": "BSP_Camera_GetProjectedXAxis",
+      "proposed_ghidra_name": "BSP_Camera_GetProjectedXAxis",
+      "cpp_name": "get_native_camera_axis_x_00b70fe0",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "original_abi": "ECX actual camera receiver, no stack arguments, EAX pointer, RET; original __thiscall-compatible register use, EDX unused",
+      "new_cpp_interface": "__fastcall ECX actual camera, EDX concrete context pointer, EAX pointer, RET",
+      "prior_ledger_kind": "function",
+      "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
+      "raw_storage_extension": true,
+      "end_exclusive": "00b71117",
+      "cpp_symbol": "get_native_camera_axis_x_00b70fe0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetProjectedXAxis",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "BSP_Camera_GetProjectedXAxis",
+      "native_prototype": "void * BSP_Camera_GetProjectedXAxis(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b70fe0..00b71116 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
+    },
+    {
+      "address": "00b6feb0",
+      "end_inclusive": "00b6feb6",
+      "size": 7,
+      "name": "BSP_Camera_GetContextDepthScale43C",
+      "proposed_ghidra_name": "BSP_Camera_GetContextDepthScale43C",
+      "cpp_name": "get_native_camera_context_00b6feb0",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "original_abi": "ECX actual camera receiver, no stack arguments, EAX pointer, RET; original __thiscall-compatible register use, EDX unused",
+      "new_cpp_interface": "__fastcall ECX actual camera, EAX unchanged raw +43C pointer, RET",
+      "prior_ledger_kind": "function",
+      "prior_ledger_status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
+      "raw_storage_extension": true,
+      "end_exclusive": "00b6feb7",
+      "cpp_symbol": "get_native_camera_context_00b6feb0",
+      "module": "native_camera_axes",
+      "source": "src/native_camera_axes.cpp",
+      "header": "include/bsp/native_camera_axes.hpp",
+      "ghidra_name": "BSP_Camera_GetContextDepthScale43C",
+      "new_native_body": false,
+      "existing_body_raw_extension": true,
+      "ledger_record_name": "get_camera_context_depth_scale_00b6feb0",
+      "native_prototype": "void * BSP_Camera_GetContextDepthScale43C(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": null,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b6feb0..00b6feb6 over actual borrowed storage, with full listing, original register/stack/return ABI and live/disk spans reviewed. Preserve current raw reads, ordered stores and x87/SSE dataflow as applicable. Added source interfaces remain distinct from whole native ABI, unrestricted SEH/concurrency and gameplay. Existing typed function record extended to the actual raw implementation; previous reconstruction retained, no new body count. Evidence: docs/NATIVE_CAMERA_AXES.md; reports/native_camera_axes.json."
+    }
+  ],
+  "newly_discovered_ghidra_functions": 0,
+  "existing_function_rows_extended": 3,
+  "complete_owned_normal_body_bytes": 629,
+  "ghidra_mutations": [],
+  "native_calls": [
+    {
+      "address": "00b70ebc",
+      "native": "00b6db70",
+      "containing_function": "00b70ea0",
+      "contract": "full raw world refresh; ECX camera, no stack slots"
+    },
+    {
+      "address": "00b70f19",
+      "native": "004f9b30",
+      "containing_function": "00b70ea0",
+      "contract": "cross: ECX temporary destination, EDX forward, stack world-up; RET4"
+    },
+    {
+      "address": "00b70f24",
+      "native": "004f9b30",
+      "containing_function": "00b70ea0",
+      "contract": "cross: ECX temporary destination, EDX previous cross, pre-pushed forward stack slot; RET4"
+    },
+    {
+      "address": "00b70f2f",
+      "native": "00419510",
+      "containing_function": "00b70ea0",
+      "contract": "normalize: ECX temporary destination, EDX previous cross; native RET, source adds required concrete CRT access"
+    },
+    {
+      "address": "00b70f53",
+      "native": "004f9b30",
+      "containing_function": "00b70ea0",
+      "contract": "cross: ECX temporary destination, EDX captured forward, stack actual camera+440; RET4"
+    },
+    {
+      "address": "00b70f5e",
+      "native": "00419510",
+      "containing_function": "00b70ea0",
+      "contract": "normalize: ECX temporary destination, EDX previous cross; native RET, source adds required concrete CRT access"
+    },
+    {
+      "address": "00b70f7f",
+      "native": "00419440",
+      "containing_function": "00b70ea0",
+      "contract": "length: ECX camera+440, ST0 float result; native RET, source adds concrete CRT access in EDX"
+    },
+    {
+      "address": "00b70ffc",
+      "native": "00b6db70",
+      "containing_function": "00b70fe0",
+      "contract": "full raw world refresh; ECX camera, no stack slots"
+    },
+    {
+      "address": "00b71059",
+      "native": "004f9b30",
+      "containing_function": "00b70fe0",
+      "contract": "cross: ECX temporary destination, EDX forward, stack world-up; RET4"
+    },
+    {
+      "address": "00b71064",
+      "native": "004f9b30",
+      "containing_function": "00b70fe0",
+      "contract": "cross: ECX temporary destination, EDX previous cross, pre-pushed forward stack slot; RET4"
+    },
+    {
+      "address": "00b7106f",
+      "native": "00419510",
+      "containing_function": "00b70fe0",
+      "contract": "normalize: ECX temporary destination, EDX previous cross; native RET, source adds required concrete CRT access"
+    },
+    {
+      "address": "00b71093",
+      "native": "004f9b30",
+      "containing_function": "00b70fe0",
+      "contract": "cross: ECX temporary destination, EDX captured forward, stack actual camera+440; RET4"
+    },
+    {
+      "address": "00b7109e",
+      "native": "00419510",
+      "containing_function": "00b70fe0",
+      "contract": "normalize: ECX temporary destination, EDX previous cross; native RET, source adds required concrete CRT access"
+    },
+    {
+      "address": "00b710bf",
+      "native": "00419440",
+      "containing_function": "00b70fe0",
+      "contract": "length: ECX camera+440, ST0 float result; native RET, source adds concrete CRT access in EDX"
+    }
+  ],
+  "consumers": [
+    {
+      "address": "00b1574c",
+      "native": "00b70ea0",
+      "containing_function": "00b156c0",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00b1576e",
+      "native": "00b70fe0",
+      "containing_function": "00b156c0",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00bc065d",
+      "native": "00b70fe0",
+      "containing_function": "00bc0510",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00bc066e",
+      "native": "00b70fe0",
+      "containing_function": "00bc0510",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00b46c50",
+      "native": "00b70fe0",
+      "containing_function": "00b46a70",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00b46c80",
+      "native": "00b70ea0",
+      "containing_function": "00b46a70",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00b475b6",
+      "native": "00b6feb0",
+      "containing_function": "00b46a70",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    },
+    {
+      "address": "00b475c1",
+      "native": "00b6feb0",
+      "containing_function": "00b46a70",
+      "contract": "ECX current actual camera receiver; no pushed argument; EAX borrowed pointer consumed after return"
+    }
+  ],
+  "actual_storage": {
+    "receiver": "Actual camera pool slot/raw NativeNodeStorage base, including canonical raw hierarchy prefix. CameraFrameState, CameraTransform and NativeCameraOwner companion addresses are invalid substitutes.",
+    "world": "Full refresh_native_camera_world_00b6db70; current +30 actual parent, +5C flags, +B0 local64 and +F0 world64.",
+    "axes": "Current raw +2F0 flags and +440/+44C float3 caches; source never initializes unwritten prefixes.",
+    "context": "NativeCameraAxesContext borrows actual current 0109DD78, D7A24C and CE3800; fixes handler to full legacy_crt_87except_00c27489, requiring already-bound actual E16BD0 and errno runtime.",
+    "producer": "Native B71A80: B71B26 +43C=EBX(0); B71C39 +2F0=EAX(1); B71C93..B71CC2 Y=(0,one,0), X=(one,0,0). Existing NativeCameraTailStorage agrees; no broader constructor fidelity claim.",
+    "constant_words": {
+      "00d7a24c": "3f800000",
+      "00ce3800": "3f000000"
+    }
+  },
+  "arithmetic": "Original 30h local frame and all x87/SSE operations retained, including load/spill order, cross temporary reuse, cache FLD/FSTP stores, length compare FCOMIP+FSTP and ordered JBE skip, reloading one on fallback, OR of current flag word after all stores. Added integer plumbing saves EBP context outside original frame and supplies the existing concrete CRT access. Raw context getter is exactly MOV EAX,[ECX+43C]; RET.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra bytes verifies current target before each of the eight reads",
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b70ea0",
+        "end_inclusive": "00b70fd6",
+        "size": 311,
+        "sha256": "6a4e89043d476b1997ab6d00606c7a2268c7bbe3a4bbd79bd3e92462c21d6021",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b70fe0",
+        "end_inclusive": "00b71116",
+        "size": 311,
+        "sha256": "2e9a326b2de9321a7f3f967bc84b9240482c92d1d5c42b5da18b4b49d6ec3723",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b6feb0",
+        "end_inclusive": "00b6feb6",
+        "size": 7,
+        "sha256": "bcb9ef1af03bd38b51846cb2f711d9a0dedc8fd16f37cde47fda517fea20b1de",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00419440",
+        "end_inclusive": "004194a1",
+        "size": 98,
+        "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00419510",
+        "end_inclusive": "00419564",
+        "size": 85,
+        "sha256": "f6cccaeb846eae70b4d641f0ebc6af53de5504c60806522310b1936966da615c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004f9b30",
+        "end_inclusive": "004f9ba8",
+        "size": 121,
+        "sha256": "60415d786b08a9309b49e5bb9eaca5ae4dd83f04db3ea2551123fd5be2e7ef63",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a24c",
+        "end_inclusive": "00d7a24f",
+        "size": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3800",
+        "end_inclusive": "00ce3803",
+        "size": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "strict_compile": {
+    "passed": true,
+    "command": "cl /std:c++17 /MD /EHsc /W4 /WX /O2 /Oy- /fp:strict /Gy /Gw /I include /c src/native_camera_axes.cpp",
+    "log": "local/camera_axes/strict_compile.log",
+    "object_sha256": "9e3ff36fdb331ba722f282842b0743b7380a19e96052623528461d9e6e9a310a"
+  },
+  "baseline_build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "log": "local/camera_axes/build.log",
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "seed_ranges_verified": 8,
+    "module_registered": false,
+    "note": "The full baseline build excludes this unregistered module. Separate strict compile and original-byte fixture compile owned source; integrator registration and default current-library replay remain required."
+  },
+  "fixture": {
+    "directory": "C:\\Users\\sqz269\\bsp-az-camera-axes",
+    "report": "fixture_report.json",
+    "pairs": 9,
+    "compared_bytes": 20988,
+    "raw_arena_bytes_per_pair": 2304,
+    "complete_original_owned_code_bytes": 629,
+    "complete_original_vector_kernel_bytes": 304,
+    "permitted_operand_relocations": 22,
+    "source_recompiled": true,
+    "current_library_default_replay": "run.ps1 -Root <integrated checkout> -LibraryRoot <integrated checkout>; omit -WorkerSource",
+    "result": {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az",
+      "library_root": "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az",
+      "worker_source": true,
+      "compile_exit": 0,
+      "run_exit": 0,
+      "input_hashes_before": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_core.lib": "05b57f79ceafeb175e669379a264662c91f7544538d9c23cfa68b775b2320759",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_lua511.lib": "0e1128fdbf309a1a26c32d8f77935c2412e043bc733d124b935a94dc7da52db8",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_zlib121.lib": "abdad50927b8570d257588efcd15dfe2e5013d45735bc719eb66d1d3d7ac5fdb",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\include\\bsp\\native_camera_axes.hpp": "f07d649a1ac4575a8d4f7061106800a28d4b2c8c4641a70fc879da206b3baa0b",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\src\\native_camera_axes.cpp": "069a700cf2adda621b8ca4333a97449d8850f85bea790cf93ae6613f359a231f",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\probe.cpp": "213975a0da06bf5645e979ad04126ef0883ae0e410e75b0b83b8e623da7aa774",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\original_bytes.hpp": "10cb2b6e8d8b8a5ca31aaada1b51766748a32898985763ae15096da6508bc673",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\run.py": "2ebf87ac1b90a5598247b6acea81415dbb4cce67a3bd55c9704919135f8921ff",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\run.ps1": "618ff48d89d1d4042c80a92e603693292bd8581b85441c3f09467dbc978dc7e1"
+      },
+      "input_hashes_after": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_core.lib": "05b57f79ceafeb175e669379a264662c91f7544538d9c23cfa68b775b2320759",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_lua511.lib": "0e1128fdbf309a1a26c32d8f77935c2412e043bc733d124b935a94dc7da52db8",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_zlib121.lib": "abdad50927b8570d257588efcd15dfe2e5013d45735bc719eb66d1d3d7ac5fdb",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\include\\bsp\\native_camera_axes.hpp": "f07d649a1ac4575a8d4f7061106800a28d4b2c8c4641a70fc879da206b3baa0b",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\src\\native_camera_axes.cpp": "069a700cf2adda621b8ca4333a97449d8850f85bea790cf93ae6613f359a231f",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\probe.cpp": "213975a0da06bf5645e979ad04126ef0883ae0e410e75b0b83b8e623da7aa774",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\original_bytes.hpp": "10cb2b6e8d8b8a5ca31aaada1b51766748a32898985763ae15096da6508bc673",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\run.py": "2ebf87ac1b90a5598247b6acea81415dbb4cce67a3bd55c9704919135f8921ff",
+        "C:\\Users\\sqz269\\bsp-az-camera-axes\\run.ps1": "618ff48d89d1d4042c80a92e603693292bd8581b85441c3f09467dbc978dc7e1"
+      },
+      "stable_inputs": true,
+      "exe_sha256": "3837d6afa410451e449cad503178b6e53daa609fb2b3c7ae35d247b02417afa5",
+      "build_command": "cl /nologo /std:c++17 /MD /EHsc /W4 /WX /O2 /Oy- /fp:strict /Gy /Gw /I\"J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\include\" /I\"C:\\Users\\sqz269\\bsp-az-camera-axes\" \"C:\\Users\\sqz269\\bsp-az-camera-axes\\probe.cpp\" \"J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\src\\native_camera_axes.cpp\" \"J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_core.lib\" \"J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_lua511.lib\" \"J:\\PROG\\battlestations-pacific-decompile-orch3-camera-axes-az\\build\\win32\\Release\\bsp_zlib121.lib\" user32.lib d3d9.lib advapi32.lib shell32.lib /Fe\"C:\\Users\\sqz269\\bsp-az-camera-axes\\camera_axes_probe.exe\" /link /MANIFEST:EMBED /SAFESEH:NO /OPT:REF /OPT:NOICF /INCREMENTAL:NO /MAP:\"C:\\Users\\sqz269\\bsp-az-camera-axes\\camera_axes_probe.map\"",
+      "comparison": "all Outcome bytes, including 2304-byte raw arena, returned offsets, SEH, CW, SW, MXCSR, errno; original vector kernels share full rebuilt CRT and raw-world providers with source"
+    },
+    "cases": [
+      "shared-cache hit with invalid raw parent and null source context; preserved signaling NaN cached bits",
+      "ready-world oblique vector; X getter first",
+      "dirty root copy at x87 24-bit precision",
+      "two dirty ancestors and raw affine composition at x87 53-bit round-down",
+      "parallel-up degenerate vector falls back to Y=(0,1,0),X=(1,0,0)",
+      "subnormal inputs with FTZ/DAZ MXCSR preserved",
+      "masked signaling NaN: invalid flag and errno33; no ordered fallback",
+      "maximum finite inputs overflow: invalid/overflow/precision flags and errno33",
+      "unmasked signaling NaN: actual C0000090 fault before any cache/validity publication"
+    ]
+  },
+  "limitations": [
+    "Original parent and original vector kernels share the full rebuilt B6DB70/world chain and full rebuilt CRT sqrt/C27489 providers with source; this is not independent original-world or original-CRT differential proof.",
+    "Original private argument/spill/EH-stack aliasing, invalid memory, cycles, concurrency, asynchronous global mutations, additional unmasked exception continuation modes and all possible floating-point inputs are outside this focused fixture.",
+    "The exact raw +43C getter does not recover the optional borrowed object producer or lifetime; consumer interpretation is provisional.",
+    "No Ghidra edits, CMake registration, main merge, remote publication, full B46A70 closure or gameplay validation is claimed by this worker."
+  ],
+  "call_check": {
+    "command": "python tools/verify_report_calls.py reports/native_camera_axes.json",
+    "rows": 22,
+    "failures": 0,
+    "log": "local/camera_axes/verify_calls.log"
+  },
+  "source_sha256": {
+    "include/bsp/native_camera_axes.hpp": "f07d649a1ac4575a8d4f7061106800a28d4b2c8c4641a70fc879da206b3baa0b",
+    "src/native_camera_axes.cpp": "069a700cf2adda621b8ca4333a97449d8850f85bea790cf93ae6613f359a231f"
+  },
+  "worker_capture": {
+    "path": "C:\\Users\\sqz269\\bsp-az-camera-axes\\worker_capture.zip",
+    "sha256": "6e4e207516d656ef0cfed8a6c1d57c9b05e616313ea335a7cf0a8f47a4dd2c70",
+    "members": 75,
+    "manifest": "C:\\Users\\sqz269\\bsp-az-camera-axes\\worker_capture_manifest.json",
+    "verified": true,
+    "includes": "all fixture sources, native bytes, probe binary/outcomes, exact verified worker libraries, initial root library snapshot, strict compile object/listing, scripts and build/call/seed logs"
+  },
+  "integration_az_review": {
+    "combined_validation": "passed exact merged Win32 build and five current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_batch_function_names_and_original_signatures": 27,
+    "signature_readback_passed": true,
+    "full_stored_normal_function_bodies": true,
+    "analysis_only_eh_definitions_report": "reports/native_system_sources_az_analysis_sync.json",
+    "cross_review": "Complete original bodies, producer and ABI evidence reviewed. Root reviewed camera, fog leaves, five parameter publishers and service publication/cleanup against listings. Independent reviews checked camera providers/fixtures and initializer ordered MOVSS reads/stores including held-register reuse. Existing typed body records retain their previous identities and evidence. New raw interfaces do not prove original binary ABI, general FH3/SEH, concurrency or gameplay.",
+    "current_report_call_check": "reports/native_camera_axes.json: 22 call rows checked, 0 failed"
+  },
+  "worker_capture_status": "complete_actual_raw_source_strict_Win32_baseline_and_focused_original_byte_fixture_checked",
+  "final_merged_validation_az": {
+    "report": "reports/native_system_sources_az_validation.json",
+    "tested_commit": "7813bdc988999a39fa150b0ef9ab3529668fe27b",
+    "existing_ctests_passed": 2,
+    "five_current_library_only_replays_passed": true,
+    "game_validated": false
+  }
+}
