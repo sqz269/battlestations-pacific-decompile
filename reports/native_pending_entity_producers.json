@@ -1,0 +1,718 @@
+{
+  "packet": "orch6_pending_entity_producers_u",
+  "base_commit": "78e930cf",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "READ ONLY through verifying formal BSP CLI; root owns annotations/save/export. Existing function names retained; old comments archived local/pending_producers_comments_before.json.",
+  "header": "include/bsp/native_pending_entity_producers.hpp",
+  "source": "src/native_pending_entity_producers.cpp",
+  "doc": "docs/NATIVE_PENDING_ENTITY_PRODUCERS.md",
+  "complete_functions_reconstructed": 2,
+  "functions": [
+    {
+      "address": "00926C80",
+      "name": "native_pending_entity_destroy_00926c80",
+      "ghidra_name": "BSP_MissionEntity_Destroy",
+      "coverage": "complete normal body; external required providers retained; source C++ cleanup only, native FH3 unproved",
+      "native_envelope": {
+        "entry": "00926C80",
+        "length": 267,
+        "offset": 0,
+        "role": "destroy",
+        "sha256": "3bb7f67070bfd3910d1132f2cff4ef02a91400ea1b0c5d9822d155460409ecbe"
+      },
+      "original_abi": "ECX actual entity; stack DWORD recurse (only low byte tested); RET4; no defined return",
+      "source": "src/native_pending_entity_producers.cpp",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. U complete normal267-byte body00926C80..00926D8A, RET4 at00926D88. Borrow actual entity fields and F899A8 owner; capture9248D0 owner+4 section before callbacks, modulo32 depth and release same section. Capture cause test before +60=1; preserve parent cause fallback, low-byte recurse, post-predicate parent cause reload/conditional child cause clear, live next sibling. Required actual+78/+70 providers. Allocate924B10 then count9267F0 then captured head->previous and current node->previous->next. Existing semantic source unchanged. C++ exception effects tested, native FH3/gameplay unproved. docs/NATIVE_PENDING_ENTITY_PRODUCERS.md;reports/native_pending_entity_producers.json. Library interfaces now have concrete canonical8665F0/8675E0 defaults after complete root alias proof; actual malloc-backed provider composition passed."
+    },
+    {
+      "address": "00926D90",
+      "name": "native_pending_entity_kill_00926d90",
+      "ghidra_name": "BSP_MissionEntity_Kill",
+      "coverage": "complete normal body; external required providers retained; source C++ cleanup only, native FH3 unproved",
+      "native_envelope": {
+        "entry": "00926D90",
+        "length": 238,
+        "offset": 267,
+        "role": "kill",
+        "sha256": "b4a3b05b6aaeab2c1a815c4cf3a4854a474d5e2169194a5deb0b4ca15c9450e4"
+      },
+      "original_abi": "ECX actual entity; stack original cause DWORD; RET4; direct recursive same-body child calls; no defined return",
+      "source": "src/native_pending_entity_producers.cpp",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "hypothesis_not_recovered_symbol. U complete normal238-byte body00926D90..00926E7D, RET4 at00926E7B. Borrow same actual entity/list/lock owners. Capture +60 before setting +5F; stored cause7 maps2 while original cause retained. If not destroyed, mapped cause store precedes actual+70(1); original7 restores2 after callback. DIRECT recursive00926D90(child,original cause), not virtual Kill; live next sibling after return. Allocate924B10 then count9267F0 then captured head/current node-previous links on F899B4. C++ exception effects tested, original FH3/gameplay unproved. docs/NATIVE_PENDING_ENTITY_PRODUCERS.md;reports/native_pending_entity_producers.json. Library interfaces now have concrete canonical8665F0/8675E0 defaults after complete root alias proof; actual malloc-backed provider composition passed."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00926C9C",
+      "native": "009248D0",
+      "function": "00926C80",
+      "contract": "body read; existing actual pending lock getter, no native inputs, EAX owner, RET; source captures owner+4 exactly once"
+    },
+    {
+      "address": "00926D4E",
+      "native": "00924B10",
+      "function": "00926C80",
+      "contract": "complete51-byte library body read; incoming ECX=list unused, stack next/previous/source-cell, RET0C; required external provider; no port; concrete default calls existing create_effect_deletion_node_008665f0 after complete alias proof"
+    },
+    {
+      "address": "00926D5C",
+      "native": "009267F0",
+      "function": "00926C80",
+      "contract": "complete147-byte generic STL body read; ECX=list, stack increment1, RET4; unsigned3FFFFFFF-count comparison; required external provider; no port; concrete default calls existing grow_effect_deletion_list_count_008675e0 after complete body/EH alias proof"
+    },
+    {
+      "address": "00926DBE",
+      "native": "009248D0",
+      "function": "00926D90",
+      "contract": "body read; existing actual pending lock getter, no native inputs, EAX owner, RET; source captures owner+4 exactly once"
+    },
+    {
+      "address": "00926E40",
+      "native": "00924B10",
+      "function": "00926D90",
+      "contract": "complete51-byte library body read; incoming ECX=list unused, stack next/previous/source-cell, RET0C; required external provider; no port; concrete default calls existing create_effect_deletion_node_008665f0 after complete alias proof"
+    },
+    {
+      "address": "00926E4E",
+      "native": "009267F0",
+      "function": "00926D90",
+      "contract": "complete147-byte generic STL body read; ECX=list, stack increment1, RET4; unsigned3FFFFFFF-count comparison; required external provider; no port; concrete default calls existing grow_effect_deletion_list_count_008675e0 after complete body/EH alias proof"
+    },
+    {
+      "address": "00926E19",
+      "native": "00926D90",
+      "function": "00926D90",
+      "contract": "DIRECT recursive body call on current child, original cause EBX, RET4"
+    },
+    {
+      "address": "00926D0E",
+      "native": "child+vtable78",
+      "function": "00926C80",
+      "contract": "actual child ECX, parent stack DWORD, bool AL; complete argument domain preserved"
+    },
+    {
+      "address": "00926D2A",
+      "native": "child+vtable70",
+      "function": "00926C80",
+      "contract": "actual child ECX, recurse1 stack DWORD"
+    },
+    {
+      "address": "00926E05",
+      "native": "entity+vtable70",
+      "function": "00926D90",
+      "contract": "actual entity ECX, recurse1 stack DWORD; mapped cause already stored"
+    },
+    {
+      "address": "00926CB5",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "function": "00926C80",
+      "contract": "Win32 stdcall captured section; stack DWORD consumed by import; increment explicit section+18 after enter"
+    },
+    {
+      "address": "00926D72",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "00926C80",
+      "contract": "decrement captured section+18 then Win32 stdcall leave same captured section"
+    },
+    {
+      "address": "00926DD7",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "function": "00926D90",
+      "contract": "Win32 stdcall captured section; stack DWORD consumed by import; increment explicit section+18 after enter"
+    },
+    {
+      "address": "00926E63",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "00926D90",
+      "contract": "decrement captured section+18 then Win32 stdcall leave same captured section"
+    }
+  ],
+  "eh_steps": [
+    {
+      "address": "00CA6DC3",
+      "native": "00411EE0",
+      "function": "00CA6DC0",
+      "kind": "tail_jump",
+      "contract": "state0 guard cleanup only; ECX native stack guard, captured section+4"
+    },
+    {
+      "address": "00CA6DE3",
+      "native": "00411EE0",
+      "function": "00CA6DE0",
+      "kind": "tail_jump",
+      "contract": "same sole state0 cleanup"
+    },
+    {
+      "address": "00411EF2",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "00411EE0",
+      "contract": "decrement same section+18 then leave; no list/node/entity cleanup"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00CA6DC8",
+      "length": 10,
+      "role": "consumed destroy FH3 handler thunk; exact PE/live bytes, not annotated/reconstructed as new function"
+    },
+    {
+      "address": "00CA6DE8",
+      "length": 10,
+      "role": "consumed kill FH3 handler thunk; exact PE/live bytes, not annotated/reconstructed as new function"
+    }
+  ],
+  "deferred_library_bodies": [
+    {
+      "entry": "00924B10",
+      "name": "STL_list_BuyNodeEntityPtr_00924b10",
+      "length": 51,
+      "read": "complete native bytes/assembly",
+      "owned": false,
+      "binding": "existing canonical008665F0; no new body port"
+    },
+    {
+      "entry": "009267F0",
+      "name": "STL_xlen_throw_009267f0",
+      "length": 147,
+      "read": "complete native bytes/assembly, generic list length_error/count helper",
+      "owned": false,
+      "binding": "existing canonical008675E0; no new body port"
+    }
+  ],
+  "callee_callers_survey": [
+    "00926C80",
+    "00926D90",
+    "00926BE0",
+    "00927610",
+    "009269B0"
+  ],
+  "layout_evidence": [
+    {
+      "producer": "009258F0",
+      "sites": [
+        "00925935",
+        "00925942",
+        "0092594E",
+        "00925959",
+        "00925962"
+      ],
+      "meaning": "actual parent+3C, child-next+44, first-child+48; distinct from CameraTransform offsets"
+    },
+    {
+      "producer": "00925CE0",
+      "sites": [
+        "00925D64",
+        "00925E08",
+        "00925E0B",
+        "00925E1A"
+      ],
+      "meaning": "first-child, destroyed/killed bytes and cause initialization"
+    },
+    {
+      "producer": "00924B10",
+      "sites": [
+        "00924B22",
+        "00924B2F",
+        "00924B3E"
+      ],
+      "meaning": "existing canonical0Ch node next/previous/payload widths; source cell read only after allocation and links"
+    },
+    {
+      "producer": "00CD3910 /00CD3940",
+      "evidence": "existing reports/native_pending_entity_owners.json",
+      "meaning": "actual F899A8/F899B4 owners, owner+4 head/+8 count; existing aliases reused"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "earlier semantic host enqueue contracts do not expose node/count/link timing",
+      "is": "borrow actual lists and publish captured head link only after explicit node allocation then count growth",
+      "evidence": "00926D33..00926D66 and00926E25..00926E58"
+    },
+    {
+      "was": "recursive Kill could be replaced by virtual dispatch",
+      "is": "direct recursion into the same00926D90 body with original cause",
+      "evidence": "00926E16 PUSH EBX /MOV ECX,ESI /CALL00926D90 at00926E19"
+    },
+    {
+      "was": "compare/store order could reload cause or destroyed flag after publishing adjacent flags",
+      "is": "capture cause comparison before+60 store and destroyed comparison before+5F store",
+      "evidence": "00926CD1/CD5 and00926DEF/DF3"
+    },
+    {
+      "was": "a full copied-FH3 exception attempt might establish native exception differential behavior",
+      "is": "attempt exited E06D7363; exception verification is source-only, native FH3 remains unproved",
+      "evidence": "retained local/pending_producers_attempt2 and run exit-529697949"
+    }
+  ],
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "native_eh_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/pending_producers_build.log",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential;456 native math comparisons and PRNG state matched",
+      "initial_build": "passed with semantic test only; fresh tree native seeds were then verified and existing differential test enabled"
+    },
+    "native_fixture": {
+      "capture_pairs": 7,
+      "source_only_exception_cases": [
+        "allocation throws after flags",
+        "count throws after allocated node, before links"
+      ],
+      "canonical_provider_compositions": 1,
+      "canonical_nodes": 2,
+      "input_bytes_per_side": 5852,
+      "result_bytes_per_side": 5856,
+      "original_body_bytes": 505,
+      "retained_image_bytes": 654,
+      "relocations": [
+        {
+          "operand": "00926C9D",
+          "original_operand": "FFFFDC2F",
+          "relocated_operand": "FF46141F"
+        },
+        {
+          "operand": "00926DBF",
+          "original_operand": "FFFFDB0D",
+          "relocated_operand": "FF461302"
+        },
+        {
+          "operand": "00926D4F",
+          "original_operand": "FFFFDDBD",
+          "relocated_operand": "FF4622DD"
+        },
+        {
+          "operand": "00926E41",
+          "original_operand": "FFFFDCCB",
+          "relocated_operand": "FF4621F0"
+        },
+        {
+          "operand": "00926D5D",
+          "original_operand": "FFFFFA8F",
+          "relocated_operand": "FF46258F"
+        },
+        {
+          "operand": "00926E4F",
+          "original_operand": "FFFFF99D",
+          "relocated_operand": "FF4624A2"
+        },
+        {
+          "operand": "00926E1A",
+          "original_operand": "FFFFFF72",
+          "relocated_operand": "FFFFFF72"
+        },
+        {
+          "operand": "00926CB7",
+          "original_operand": "00CE2218",
+          "relocated_operand": "0073A450"
+        },
+        {
+          "operand": "00926DD9",
+          "original_operand": "00CE2218",
+          "relocated_operand": "0073A450"
+        },
+        {
+          "operand": "00926D74",
+          "original_operand": "00CE2210",
+          "relocated_operand": "0073A46C"
+        },
+        {
+          "operand": "00926E65",
+          "original_operand": "00CE2210",
+          "relocated_operand": "0073A46C"
+        },
+        {
+          "operand": "00411EF4",
+          "original_operand": "00CE2210",
+          "relocated_operand": "0073A46C"
+        },
+        {
+          "operand": "00926D34",
+          "original_operand": "00F899AC",
+          "relocated_operand": "0073A6F4"
+        },
+        {
+          "operand": "00926E26",
+          "original_operand": "00F899B8",
+          "relocated_operand": "0073A700"
+        },
+        {
+          "operand": "00926D4A",
+          "original_operand": "00F899A8",
+          "relocated_operand": "0073A6F0"
+        },
+        {
+          "operand": "00926D56",
+          "original_operand": "00F899A8",
+          "relocated_operand": "0073A6F0"
+        },
+        {
+          "operand": "00926E3C",
+          "original_operand": "00F899B4",
+          "relocated_operand": "0073A6FC"
+        },
+        {
+          "operand": "00926E48",
+          "original_operand": "00F899B4",
+          "relocated_operand": "0073A6FC"
+        },
+        {
+          "operand": "00926C83",
+          "original_operand": "00CA6DC8",
+          "relocated_operand": "012D021A"
+        },
+        {
+          "operand": "00926D99",
+          "original_operand": "00CA6DE8",
+          "relocated_operand": "012D022C"
+        },
+        {
+          "operand": "00CA6DC4",
+          "original_operand": "FF76B118",
+          "relocated_operand": "FFFFFFDF"
+        },
+        {
+          "operand": "00CA6DE4",
+          "original_operand": "FF76B0F8",
+          "relocated_operand": "FFFFFFCD"
+        },
+        {
+          "operand": "00CA6DC9",
+          "original_operand": "00DDA0E4",
+          "relocated_operand": "012D023E"
+        },
+        {
+          "operand": "00CA6DE9",
+          "original_operand": "00DDA110",
+          "relocated_operand": "012D026A"
+        },
+        {
+          "operand": "00DDA0E0",
+          "original_operand": "00CA6DC0",
+          "relocated_operand": "012D0212"
+        },
+        {
+          "operand": "00DDA10C",
+          "original_operand": "00CA6DE0",
+          "relocated_operand": "012D0224"
+        },
+        {
+          "operand": "00DDA0EC",
+          "original_operand": "00DDA0DC",
+          "relocated_operand": "012D0236"
+        },
+        {
+          "operand": "00DDA118",
+          "original_operand": "00DDA108",
+          "relocated_operand": "012D0262"
+        },
+        {
+          "operand": "00CA6DCE",
+          "original_operand": "FFF4FD71",
+          "relocated_operand": "7174564C"
+        },
+        {
+          "operand": "00CA6DEE",
+          "original_operand": "FFF4FD51",
+          "relocated_operand": "7174563A"
+        }
+      ],
+      "mismatches": 0,
+      "inputs_equal": true,
+      "records_equal": true,
+      "inputs_sha256": "276d38068d3ade5504092b6cf884f863edc010e46ddbc247ffbb977326fd6611",
+      "records_sha256": "0dbd53602ec651039163c9776bc659218399a1fdc2b3dc1c959942afeb1e6ffb",
+      "normal_case_order": [
+        "lowbyte0x100 skips",
+        "0x101 predicate mutates cause/sibling/lock publication",
+        "already destroyed gate",
+        "inherit parent8",
+        "Kill7 direct recursion and restore2",
+        "Kill5 destroyed parent /already-killed child gates",
+        "grow provider replaces head/node-previous"
+      ],
+      "native_exception_attempt": {
+        "exit": -529697949,
+        "hex": "E06D7363",
+        "result": "uncaught exception; precise compatibility cause unproved",
+        "claims_native_exception_parity": false
+      }
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_pending_entity_producers.json",
+      "direct_rows": 9,
+      "indirect_rows": 8,
+      "failures": 0,
+      "log": "local/pending_producers_report_calls.txt"
+    },
+    "proof_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch6-pending-entity-producers-u\\local\\pending_producers_proof\\manifest.json",
+    "proof_manifest_sha256": "ce795cf8648aa7dd1ae7893bdb2071ca1f06113e1c6bb04f54433e9f4ec5f748",
+    "retained_file_count": 164,
+    "libraries": [
+      {
+        "path": "build\\win32\\Release\\bsp_core.lib",
+        "retained": "local/pending_producers_proof/libraries/00_bsp_core.lib",
+        "bytes": 55448054,
+        "sha256": "3a7e362874ac4ee7b99452054f4697f72f019a3fc83612e1a672b5dc441a0f68"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "retained": "local/pending_producers_proof/libraries/01_msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "retained": "local/pending_producers_proof/libraries/02_MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "retained": "local/pending_producers_proof/libraries/03_OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "retained": "local/pending_producers_proof/libraries/04_kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "retained": "local/pending_producers_proof/libraries/05_vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "retained": "local/pending_producers_proof/libraries/06_ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "toolchain": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+        "retained": "local/pending_producers_proof/toolchain/00_cl.exe",
+        "bytes": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+        "retained": "local/pending_producers_proof/toolchain/01_link.exe",
+        "bytes": 3208544,
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\lib.exe",
+        "retained": "local/pending_producers_proof/toolchain/02_lib.exe",
+        "bytes": 21376,
+        "sha256": "06da7daac5e297ba314d41b9930495b17fe9f43a3ffc6b4c3c542af2803451bd"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1.dll",
+        "retained": "local/pending_producers_proof/toolchain/03_c1.dll",
+        "bytes": 3131704,
+        "sha256": "37b06f075d24eb9ff01047a5747383309dcf78397ddb6de0c64144cb192e6b3a"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+        "retained": "local/pending_producers_proof/toolchain/04_c1xx.dll",
+        "bytes": 11055928,
+        "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll",
+        "retained": "local/pending_producers_proof/toolchain/05_c2.dll",
+        "bytes": 8720696,
+        "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdb140.dll",
+        "retained": "local/pending_producers_proof/toolchain/06_mspdb140.dll",
+        "bytes": 378720,
+        "sha256": "558b54f4881fd2a85c48c44928291bcd38a3fe132a552adfd76e5398ad1c112c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "retained": "local/pending_producers_proof/toolchain/07_cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "retained": "local/pending_producers_proof/toolchain/08_ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b"
+      },
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "retained": "local/pending_producers_proof/toolchain/09_python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "retained": "local/pending_producers_proof/toolchain/10_cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+        "retained": "local/pending_producers_proof/toolchain/11_link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\lib.exe",
+        "retained": "local/pending_producers_proof/toolchain/12_lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1.dll",
+        "retained": "local/pending_producers_proof/toolchain/13_c1.dll",
+        "bytes": 3734840,
+        "sha256": "a27ae108def6aaf96d0f0ba76ffe8d63fbe09c59e92ce24a3ce3dda7402fd3db"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+        "retained": "local/pending_producers_proof/toolchain/14_c1xx.dll",
+        "bytes": 13321528,
+        "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+        "retained": "local/pending_producers_proof/toolchain/15_c2.dll",
+        "bytes": 10542392,
+        "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdb140.dll",
+        "retained": "local/pending_producers_proof/toolchain/16_mspdb140.dll",
+        "bytes": 386872,
+        "sha256": "e4a77d56915522b874b682f5e33af3b40bee20b3e58e4efb139d84f05e1b22b9"
+      }
+    ],
+    "canonical_composition": {
+      "cases": 1,
+      "real_malloc_nodes": 2,
+      "source_only": true,
+      "method": "subclass supplies entity/lock methods and inherits both canonical library defaults",
+      "checks": [
+        "destroy and kill list counts1",
+        "both previous/next ring links",
+        "same actual entity payload",
+        "5F=1,60=1,cause2",
+        "captured section released",
+        "fixture nodes freed"
+      ],
+      "inputs": "local/pending_producers_canonical_inputs.bin",
+      "inputs_sha256": "9f382af213b90962a959a6e8aa8bcbeafc2a39356977da6f94b3bd8d936a9527",
+      "records": "local/pending_producers_canonical_records.bin",
+      "records_sha256": "e49689607441028944f1421b3b4a7eb0149061cbada1e170aaf3148692881bd5"
+    }
+  },
+  "integration_contract": "Root binds required entity/lock and actual vtable70/78 methods. Lists remain existing initialized owners; concrete allocation/count defaults reuse independently proved canonical providers. No synthetic defaults.",
+  "limitations": [
+    "New source ABI, no native register/stack/SEH replacement.",
+    "No game runtime binding, private queues or semantic/native casts added.",
+    "No STL/CRT bodies reconstructed; existing names retained.",
+    "Original source failure flags and lock effects tested separately from unproved native FH3."
+  ],
+  "canonical_provider_reuse": {
+    "root_report": "reports/pending_entity_library_reuse.json",
+    "retained_report": "local/pending_producers_library_reuse.json",
+    "retained_report_sha256": "9b1f886ade4225f58625896ec229e254d2dd9bd240ba867759cd45f2d38d05f5",
+    "node": {
+      "native": "00924B10",
+      "canonical": "008665F0",
+      "bytes_each": 51,
+      "normalized_sha256": "f6002f5259dbee5a3f531c64d61c6e7051e2bd51653429e3c0400fe79650d429",
+      "calls": [
+        {
+          "offset": 2,
+          "opcode": "call",
+          "target": "00bf681b"
+        }
+      ],
+      "provider": "create_effect_deletion_node_008665f0",
+      "source": "src/effect_deletion_queue.cpp"
+    },
+    "count": {
+      "native": "009267F0",
+      "canonical": "008675E0",
+      "bytes_each": 147,
+      "normalized_sha256": "7a7f99386de970c318d0090129143e457858791f77808aa6cca34715bb2d0d57",
+      "calls": [
+        {
+          "offset": 76,
+          "opcode": "call",
+          "target": "00408720"
+        },
+        {
+          "offset": 97,
+          "opcode": "call",
+          "target": "00411700"
+        },
+        {
+          "offset": 120,
+          "opcode": "call",
+          "target": "00bf6885"
+        }
+      ],
+      "provider": "grow_effect_deletion_list_count_008675e0",
+      "source": "src/effect_deletion_queue.cpp"
+    },
+    "exception_graph": {
+      "handler": "00CA6D58",
+      "canonical_handler": "00C94EA8",
+      "function_info": [
+        "00DDA008",
+        "00DC6D28"
+      ],
+      "unwind_map": [
+        "00DDA000",
+        "00DC6D20"
+      ],
+      "cleanup": [
+        "00CA6D50",
+        "00C94EA0"
+      ],
+      "cleanup_calls": [
+        {
+          "offset": 3,
+          "opcode": "jmp",
+          "target": "004072d0"
+        }
+      ],
+      "normalized_funcinfo_words": [
+        429065506,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "conclusion": "Matching full handler/FuncInfo/single-state unwind graph after identity normalization; same captured EBP-50 cleanup and shared4072D0 target."
+    },
+    "live_disk_spans": 12,
+    "bytes": 520,
+    "source_binding": "NativePendingEntityProducerAccess has concrete default calls to existing canonical providers; entity and lock access remain required"
+  }
+}
