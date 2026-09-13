@@ -1,0 +1,475 @@
+{
+  "packet": "orch3_instance_upload_av",
+  "status": "complete_normal_source_and_original_byte_fixture_checked; primary_registered_library_and_missing_function_definition_pending",
+  "source": "src/native_instance_group_upload.cpp",
+  "header": "include/bsp/native_instance_group_upload.hpp",
+  "documentation": "docs/NATIVE_INSTANCE_GROUP_UPLOAD.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00b1e990",
+      "end_inclusive": "00b1eb7d",
+      "cpp_symbol": "upload_native_instance_groups_00b1e990",
+      "original_abi": "ECX actual44h command; no stack arguments; plain RET",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void __thiscall upload(void* command)",
+      "coverage": "complete",
+      "byte_count": 494
+    },
+    {
+      "address": "00b556f0",
+      "end_inclusive": "00b55777",
+      "cpp_symbol": "write_native_generic_instance_00b556f0",
+      "original_abi": "ECX generator unused; stack actual28h entry, actual48-byte output; RET8",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void __thiscall write_generic(void* generator, const void* entry, void* output)",
+      "coverage": "complete",
+      "byte_count": 136
+    },
+    {
+      "address": "00b55780",
+      "end_inclusive": "00b55b16",
+      "cpp_symbol": "write_native_building_instance_00b55780",
+      "original_abi": "ECX generator unused; stack actual28h entry, actual144-byte output; RET8",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void __thiscall write_building(void* generator, const void* entry, void* output)",
+      "coverage": "complete",
+      "byte_count": 919
+    },
+    {
+      "address": "00b6dc50",
+      "end_inclusive": "00b6dc56",
+      "cpp_symbol": "native_node_point_light_array_00b6dc50",
+      "original_abi": "ECX actual node; EAX node+164; plain RET",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void* __thiscall point_light_array(void* node)",
+      "coverage": "complete",
+      "byte_count": 7
+    },
+    {
+      "address": "00b72110",
+      "end_inclusive": "00b72113",
+      "cpp_symbol": "native_scene_lighting_owner_00b72110",
+      "original_abi": "ECX actual outer scene; EAX [ECX+1C]; no stack arguments; plain RET",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void* __thiscall scene_lighting_owner(const void* scene)",
+      "coverage": "complete",
+      "byte_count": 4
+    },
+    {
+      "address": "00b85590",
+      "end_inclusive": "00b85599",
+      "cpp_symbol": "set_native_section_instance_count_00b85590",
+      "original_abi": "ECX actual section; stack DWORD count; store+1C; RET4",
+      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
+      "native_prototype": "void __thiscall set_instance_count(void* section, unsigned count)",
+      "coverage": "complete",
+      "byte_count": 10
+    }
+  ],
+  "normal_function_count": 6,
+  "new_partial_function_count": 0,
+  "implementation_adapter": {
+    "parent": "00b1e990",
+    "start": "00b1eacc",
+    "end_inclusive": "00b1eb1b",
+    "cpp_symbol": "detail::initialize_upload_output",
+    "classification": "internal span of fully reconstructed parent; not an original function or separate reconstructed-function count",
+    "reason": "one exact outgoing eight-word x87/SSE schedule, also used by focused original-byte FP edge fixture"
+  },
+  "no_ghidra_function": [
+    {
+      "address": "00b556f0",
+      "end_inclusive": "00b55777",
+      "byte_count": 136,
+      "evidence": "complete original/live equality, D61BFC+8 profile, RET8 at B55775, next eight bytes INT3",
+      "required_primary_action": "define complete function through centralized write lock then refresh export; no worker mutation"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b1e9d9",
+      "native": "00b72110",
+      "function": "00b1e990",
+      "contract": "zero-stack getter; earlier PUSH0 belongs to subsequent virtual50"
+    },
+    {
+      "address": "00b1e9e5",
+      "native": "00b6ed80",
+      "function": "00b1e990",
+      "contract": "current model virtual50(scene,false), RET8"
+    },
+    {
+      "address": "00b1ea0d",
+      "native": "00b1dce0",
+      "function": "00b1e990",
+      "contract": "actual source slots, signed ideal and B51AB0 comparator, RET8"
+    },
+    {
+      "address": "00b1ea1a",
+      "native": "00b74640",
+      "function": "00b1e990",
+      "contract": "current model geometry0, RET4"
+    },
+    {
+      "address": "00b1ea21",
+      "native": "00b73260",
+      "function": "00b1e990",
+      "contract": "actual mesh stream1, RET4"
+    },
+    {
+      "address": "00b1ea36",
+      "native": "00b49980",
+      "function": "00b1e990",
+      "contract": "current logical virtual10(count,0,0), RET0C"
+    },
+    {
+      "address": "00b1ea65",
+      "native": "00b556f0",
+      "function": "00b1e990",
+      "contract": "current D61BFC+8, generator ECX and entry/output, RET8"
+    },
+    {
+      "address": "00b1ea65",
+      "native": "00b55780",
+      "function": "00b1e990",
+      "contract": "current D61C1C+8, generator ECX and entry/output, RET8"
+    },
+    {
+      "address": "00b1ea6c",
+      "native": "00b556b0",
+      "function": "00b1e990",
+      "contract": "reload binding/generator then declaration+10 getter, RET"
+    },
+    {
+      "address": "00b1ea93",
+      "native": "00b74640",
+      "function": "00b1e990",
+      "contract": "reacquire current model geometry0, RET4"
+    },
+    {
+      "address": "00b1ea9a",
+      "native": "00b73260",
+      "function": "00b1e990",
+      "contract": "reacquire current mesh stream1, RET4"
+    },
+    {
+      "address": "00b1eaa6",
+      "native": "00b49a80",
+      "function": "00b1e990",
+      "contract": "current logical virtual14(), RET"
+    },
+    {
+      "address": "00b1eaae",
+      "native": "00b74640",
+      "function": "00b1e990",
+      "contract": "reacquire geometry0 for section/output, RET4"
+    },
+    {
+      "address": "00b1eab9",
+      "native": "00b732c0",
+      "function": "00b1e990",
+      "contract": "section0, RET4"
+    },
+    {
+      "address": "00b1eac7",
+      "native": "00b85590",
+      "function": "00b1e990",
+      "contract": "fresh group count to actual section+1C, RET4"
+    },
+    {
+      "address": "00b1eb17",
+      "native": "00b51a20",
+      "function": "00b1e990",
+      "contract": "eight original words: 0,section,geometry,model,camera,alpha,0,555h; RET20"
+    },
+    {
+      "address": "00b1eb34",
+      "native": "00b17300",
+      "function": "00b1e990",
+      "contract": "current captured-section effect unsigned batch selector, RET"
+    },
+    {
+      "address": "00b1eb45",
+      "native": "00b51cb0",
+      "function": "00b1e990",
+      "contract": "current retained raw output entry and actual selected batch, RET4"
+    },
+    {
+      "address": "00b55700",
+      "native": "00b6db70",
+      "function": "00b556f0",
+      "contract": "entry model world refresh on missing flag2; RET"
+    },
+    {
+      "address": "00b55795",
+      "native": "00b6db70",
+      "function": "00b55780",
+      "contract": "entry model world refresh on missing flag2; RET"
+    },
+    {
+      "address": "00b5580c",
+      "native": "00b6dc50",
+      "function": "00b55780",
+      "contract": "reloaded entry model point-light descriptor, RET"
+    },
+    {
+      "address": "00b55b00",
+      "native": "00b179f0",
+      "function": "00b55780",
+      "contract": "current entry section material diffuse(0), RET4"
+    }
+  ],
+  "profiles": [
+    {
+      "address": "00d61bfc",
+      "slot_offset": 8,
+      "native_target": "00b556f0",
+      "producer": "00b44fd0",
+      "stride": 48
+    },
+    {
+      "address": "00d61c1c",
+      "slot_offset": 8,
+      "native_target": "00b55780",
+      "producer": "00b450d0",
+      "stride": 144
+    },
+    {
+      "address": "00d61d6c",
+      "words": 13,
+      "map": "00b49980",
+      "unmap": "00b49a80",
+      "producer": "00b287c0 -> 00b4b740"
+    }
+  ],
+  "consumed_existing_complete_providers": [
+    "00b1dce0 and nine actual pointer-slot helpers",
+    "00b51ab0 raw material/depth comparator",
+    "00b6ed80 canonical scene attachment and actual node bindings",
+    "00b49980/00b49a80 actual logical mapping and physical buffer services",
+    "00b51a20 raw entry and full camera-view/model-world-sphere/point kernels",
+    "00b51cb0 actual batch append and 00b51b50 reserve",
+    "00b556b0 declaration getter",
+    "00b74640/00b73260/00b732c0 actual geometry getters",
+    "00b17300 unsigned effect selector",
+    "00b6db70 raw world refresh",
+    "00b179f0 raw material diffuse alias"
+  ],
+  "corrections": [
+    {
+      "was": "typed upload accepted stable vector/model/stream/generator identities and added preflight/exception unmap",
+      "is": "actual pointer cells and original current reload schedule with no upload guards or rollback",
+      "evidence": "B1E990 complete listing and both original-byte composition runs"
+    },
+    {
+      "was": "initial source float helper moved visibility FP crossing before native camera/model loads and omitted FLDZ/FST/FSTP zero schedule",
+      "is": "single compiled argument adapter retains complete native outgoing FP/stack schedule",
+      "evidence": "seven incoming x87 values: original/source status0841, visibilityFFC00000, all ten output DWORDs equal"
+    }
+  ],
+  "byte_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00b1e990",
+        "end_inclusive": "00b1eb7d",
+        "byte_count": 494,
+        "sha256": "d5d8e9a03a337bf27e502abc0a34711a584e72fc20c30c7fde36ebcb350d590f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b85590",
+        "end_inclusive": "00b85599",
+        "byte_count": 10,
+        "sha256": "eeccf6337909677489e16f4719bd017f6de247d05525e3dd9397e8acf32bd661",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b556f0",
+        "end_inclusive": "00b55777",
+        "byte_count": 136,
+        "sha256": "9cbf21326d032730a9c7f6b937c8fb9d2e767cc3f867bf1b46b6579938781ef2",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b55780",
+        "end_inclusive": "00b55b16",
+        "byte_count": 919,
+        "sha256": "f96cf2d7b82ed950b475f03ce0bae4ad136296742604cf421a410650b9278929",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b6dc50",
+        "end_inclusive": "00b6dc56",
+        "byte_count": 7,
+        "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b72110",
+        "end_inclusive": "00b72113",
+        "byte_count": 4,
+        "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1dce0",
+        "end_inclusive": "00b1ddca",
+        "byte_count": 235,
+        "sha256": "df3b6a3ed0dd92fca4028745fe2cae1ea65c42c54a2d2c0d615b8db6d8b4a1c6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1d420",
+        "end_inclusive": "00b1d4b5",
+        "byte_count": 150,
+        "sha256": "929943dae9485fc9fc14a4c1b641bfef1c9f52784ffef4df2e0c98c4ed3ccd88",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1c210",
+        "end_inclusive": "00b1c2a0",
+        "byte_count": 145,
+        "sha256": "80d27cb2032a3e6c5297579b5f7414164d18e4f1dd31ae41c7a2e9ce5ec6cf1f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1d280",
+        "end_inclusive": "00b1d3fd",
+        "byte_count": 382,
+        "sha256": "8c7a88234e3741e6403ff0b096e5cbfeadf075b30dfdf59c3eda92d914ad3cb0",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1cf80",
+        "end_inclusive": "00b1d01b",
+        "byte_count": 156,
+        "sha256": "2b7aaf334a7cd3f53960b24c26acebf49eeefc448a866046fb8bd26ded1e5a7e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1c8c0",
+        "end_inclusive": "00b1c90c",
+        "byte_count": 77,
+        "sha256": "8ad21098707297da5d3b3bfbf951c5bd722300c34ec6b7cd254053d58808ed49",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1d020",
+        "end_inclusive": "00b1d05d",
+        "byte_count": 62,
+        "sha256": "fd04bf3b6fff2bbb0b9693905ea2da8336646fd1fb9e5f733fcd84013d5fa570",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1d6a0",
+        "end_inclusive": "00b1d6e5",
+        "byte_count": 70,
+        "sha256": "52b76cc9e88809aa9b565e4a344f5795aea2f712315d7e770f0ff028d9a2bd65",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1c910",
+        "end_inclusive": "00b1c97d",
+        "byte_count": 110,
+        "sha256": "56b101e7dda83824a1f77bcf59304accc4336203684faa107bf240e59d857224",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b1c1b0",
+        "end_inclusive": "00b1c20b",
+        "byte_count": 92,
+        "sha256": "dc13bace7a1f15cf9acda1a0631c923ee370ca28b0e8e707fcd998f81aadf734",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b51ab0",
+        "end_inclusive": "00b51af4",
+        "byte_count": 69,
+        "sha256": "de7b6fe4974c5fad7b7b22baeb6c6e8b8268ddcfc81ea32d09c4082b945db353",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d61bfc",
+        "end_inclusive": "00d61c07",
+        "byte_count": 12,
+        "sha256": "d4e04e75eafaa5cfd0d9246867ec5167704b5236bee104591837d38b1f58d3af",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d61c1c",
+        "end_inclusive": "00d61c27",
+        "byte_count": 12,
+        "sha256": "70b2b3c7139ac6fbe6658fdf4968526026e4c7285ff817f7494ed2a2e8060a98",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d61d6c",
+        "end_inclusive": "00d61d9f",
+        "byte_count": 52,
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a24c",
+        "end_inclusive": "00d7a24f",
+        "byte_count": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3800",
+        "end_inclusive": "00ce3803",
+        "byte_count": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3978",
+        "end_inclusive": "00ce397b",
+        "byte_count": 4,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "verification": {
+    "seed_prerequisite": "passed existing tools/ghidra_export.py verify-seeds",
+    "strict_source": "MSVC Win32 /std:c++17 /W4 /WX /fp:strict /O2 /MD, passed",
+    "existing_build": "scripts/build.ps1 Release passed; 2/2 existing tests",
+    "worker_fixture": "run.ps1 -WorkerBuild passed using freshly compiled AV object in ignored copy of current built archive",
+    "composition_runs": 2,
+    "composition_dwords": 2266,
+    "raw_sources_per_run": 44,
+    "category_one_sort_count": 42,
+    "generator_rows": 9,
+    "generator_dwords": 600,
+    "fp_edge_runs": 2,
+    "fp_edge_original_and_source_status": "0841",
+    "fp_edge_original_and_source_visibility": "ffc00000",
+    "reentry": "building case actual previous-scene terminal changes category/source counts, camera publication and outer group end before mapping; one callback per original/source execution",
+    "real_resources": "canonical actual pools/models/meshes/materials/streams/strings, real combined D3D9 COM layout and 16MiB dynamic vertex buffer, actual batch pointer arrays",
+    "call_row_check": "22 numeric rows checked; 20 pass, two fail solely because live B556F0 is undefined: B1EA65 callee and B55700 containing-function. Primary coordinated definition and rerun required.",
+    "current_library_only": "primary integration pending; default run.ps1 compiles probe.cpp ONLY and links supplied current libraries, no source/object fallback",
+    "fixture_directory": "J:\\PROG\\battlestations-pacific-decompile-orch3-instance-upload-av\\local\\native_instance_group_upload",
+    "probe_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-instance-upload-av\\local\\native_instance_group_upload\\probe.log",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-instance-upload-av\\local\\native_instance_group_upload\\build.log",
+    "source_sha256": "ff301cef3c52baa9e77f8d1fa531f89f9b0f4c1a4a95ba4de7dd2f4c7f11dd85",
+    "call_row_check_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-instance-upload-av\\local\\native_instance_group_upload\\report_calls.log"
+  },
+  "boundaries": [
+    "No gameplay/application rendering validation or binary detour ABI claim",
+    "No hardware fault, FH3/SEH or unmasked-exception equivalence claim",
+    "Canonical SceneResource/registry remains existing source companion domain, not a new binary scene-resource overlay",
+    "Actual valid producer-created storage and supported current profiles required; no upload no-op generator callback",
+    "Nonfinite comparator inputs receive native comparisons but a total sort order is not claimed",
+    "Fixture raw point-light value rows establish writer reads, not point-light owner lifecycle",
+    "Six full bodies do not reconstruct B44FD0/B450D0/B55B20 generator constructors or lifetime; their existing producer evidence grounds current dispatch"
+  ]
+}
