@@ -437,3 +437,17 @@ in this packet is projected from it and no name is claimed for it. Defining it i
 other address this packet read is inside a Ghidra function whose start the tools report, including
 `009EAE20` (body `009EAE20-009EAFB4`), `009EAFC0` (body `009EAFC0-009EB651`) and every callee in
 the host table, each checked with `python tools/bsp.py ghidra proto <addr> --brief`.
+
+## Correction from docs/SHIP_AI_NEIGHBOUR_BOX_MATH.md
+
+The earlier claim that every unordered helper selected the native operand was
+too broad. The original-byte O fixture reproduces failures in the old source:
+the shrink gate accepts positive or unordered values, local min selects its
+second operand on unordered comparison, and the closing floor and turn clamp
+retain NaN. The corrected source preserves these branches, x87 shrink arithmetic
+at the caller's precision, and arc-product spills. The value at 00D1A8A0 is
+0.052359879016876220703125, the widened binary32 approximation of three degrees;
+it is not the previously recorded exact-angle double. Fourteen cases at PC24
+and PC53 match 1,188 original-byte words. This bounded fixture does not establish
+all-input FP, owner mutation, CRT, ABI or original-game parity. The enclosing
+frame and near-box producer are outside this new fixture's proof.

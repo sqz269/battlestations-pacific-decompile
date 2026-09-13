@@ -1,0 +1,383 @@
+{
+  "packet": "orch2_native_mpak_runtime_az",
+  "status": "complete_actual_numeric_dispatch_strict_win32_generated_composition_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": [
+    "src/native_mpak_runtime.cpp",
+    "src/native_vfs_runtime_bindings.cpp",
+    "src/native_filestore_open.cpp"
+  ],
+  "header": "include/bsp/native_mpak_runtime.hpp",
+  "documentation": "docs/NATIVE_MPAK_RUNTIME.md",
+  "functions": [
+    {
+      "address": "00bef580",
+      "inclusive_end": "00bef58a",
+      "bytes": 11,
+      "native_sha256": "1a708b39f19bc2f6f4e716cdb74bc8e5f82f2418f1862155773fbc46c6c8c688",
+      "source_name": "position_native_memory_stream_00bef580",
+      "original_abi": "ECX actual14h memory stream; EDX:EAX signextended wrapping cursor minus data; RET",
+      "coverage": "complete",
+      "source": "src/native_mpak_runtime.cpp",
+      "new_actual_storage_body": true,
+      "scope": "actual-storage leaf"
+    },
+    {
+      "address": "00bf4f40",
+      "inclusive_end": "00bf4f46",
+      "bytes": 7,
+      "native_sha256": "4b3af58ba7c272747e6702d82e289d42df26deb497874ab80ee331f7176f28f7",
+      "source_name": "position_native_physical_stream_00bf4f40",
+      "original_abi": "ECX actual20h physical stream; EDX:EAX current positionlow+10/high+14; RET",
+      "coverage": "complete",
+      "source": "src/native_mpak_runtime.cpp",
+      "new_actual_storage_body": true,
+      "scope": "actual-storage leaf"
+    },
+    {
+      "address": "00bef750",
+      "inclusive_end": "00bef83f",
+      "bytes": 240,
+      "native_sha256": "696afedd7e769bad800086544926b2ea51da1cf17ed5606fc16497b8a90b80e5",
+      "source_name": "convert_native_stored_stream_00bef750",
+      "original_abi": "ECX actual source; EAX memory stream; RET",
+      "coverage": "complete",
+      "source": "src/native_filestore_open.cpp",
+      "new_actual_storage_body": false,
+      "scope": "existing full body; D64400 numeric profile domain extension"
+    }
+  ],
+  "new_actual_storage_bodies": 2,
+  "new_native_bytes": 18,
+  "composition_is_not_additional_native_body_coverage": true,
+  "no_ghidra_function": [],
+  "missing_at_packet_start": [
+    {
+      "address": "00bf4f40",
+      "inclusive_end": "00bf4f46",
+      "resolution": "primary defined exact7bytes under its write lock,readback/export verified; worker then claimedaddress"
+    }
+  ],
+  "conversion_steps": [
+    {
+      "address": "00bef78f",
+      "native": "00bb8b80",
+      "function": "00bef750",
+      "contract": "D64400 current+0C type query"
+    },
+    {
+      "address": "00bef798",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "share actual backing on type match"
+    },
+    {
+      "address": "00bef7bc",
+      "native": "00bbc060",
+      "function": "00bef750",
+      "contract": "D64400 current+1C seek zero"
+    },
+    {
+      "address": "00bef7c5",
+      "native": "00bbbdd0",
+      "function": "00bef750",
+      "contract": "D64400 current+30 decoded length"
+    },
+    {
+      "address": "00bef7cf",
+      "native": "00bf681b",
+      "function": "00bef750",
+      "contract": "allocate actual10h backing owner"
+    },
+    {
+      "address": "00bef7ea",
+      "native": "008d43c0",
+      "function": "00bef750",
+      "contract": "construct actual backing"
+    },
+    {
+      "address": "00bef80b",
+      "native": "00bbc140",
+      "function": "00bef750",
+      "contract": "D64400 current+24 read once with null actual output"
+    },
+    {
+      "address": "00bef80f",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "wrap actual backing"
+    },
+    {
+      "address": "00bef81a",
+      "native": "00ce2220+import",
+      "function": "00bef750",
+      "contract": "Win32 InterlockedDecrement"
+    },
+    {
+      "address": "00bef82a",
+      "native": "00bd30e0",
+      "function": "00bef750",
+      "contract": "D15AD8 current+0 release backing at zero"
+    }
+  ],
+  "numeric_stream_routes": [
+    {
+      "profile": "00d64400",
+      "slot": "+00",
+      "native_entry": "00bd30e0",
+      "source": "src/native_vfs_runtime_bindings.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+04",
+      "native_entry": "00bbc3e0",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+0C",
+      "native_entry": "00bb8b80",
+      "source": "existing actual file-type/low-size helper"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+18",
+      "native_entry": "00bbbdc0",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+1C",
+      "native_entry": "00bbc060",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+20",
+      "native_entry": "00bbbe50",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+24",
+      "native_entry": "00bbc140",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+28",
+      "native_entry": "00bbc1c0",
+      "source": "src/native_raw_inflate_stream.cpp"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+2C",
+      "native_entry": "00be41a0",
+      "source": "existing actual file-type/low-size helper"
+    },
+    {
+      "profile": "00d64400",
+      "slot": "+30",
+      "native_entry": "00bbbdd0",
+      "source": "src/native_raw_inflate_stream.cpp"
+    }
+  ],
+  "provider_routes": [
+    {
+      "native_entry": "00bb83a0",
+      "binding": "VFS factory_create -> borrowed NativeMpakCreateContext"
+    },
+    {
+      "native_entry": "00bb5bb0",
+      "binding": "VFS provider_open D641F8+08 -> borrowed NativeMpakOpenContext"
+    },
+    {
+      "native_entry": "00bb7b80",
+      "binding": "VFS captured provider delete -> borrowed NativeMpakProviderContext"
+    },
+    {
+      "native_entry": "00bdf310",
+      "binding": "runtime provider open_manager -> existing actual VFS route"
+    },
+    {
+      "native_entry": "00bdd850",
+      "binding": "runtime open select_device -> actual NativeVfsDeviceRouteContext"
+    },
+    {
+      "native_entry": "00bb5080",
+      "binding": "runtime materialize -> actual NativeMpakEntryContext"
+    },
+    {
+      "native_entry": "00bf0fb0",
+      "binding": "captured provider resolve -> existing actual logical-name resolver"
+    },
+    {
+      "native_entry": "00bb68f0",
+      "binding": "captured provider resolve -> actual member-directory selector with original search library"
+    },
+    {
+      "native_entry": "00bb5f40",
+      "binding": "explicit captured enumeration entry -> actual original-prefix append"
+    },
+    {
+      "native_entry": "00bb79e0",
+      "binding": "explicit captured operation entry -> genuine false leaf"
+    },
+    {
+      "native_entry": "00bb7a00",
+      "binding": "explicit captured result entry -> genuine14h output clear"
+    },
+    {
+      "native_entry": "00bb79f0",
+      "binding": "explicit captured no-op entry -> genuine RET"
+    },
+    {
+      "native_entry": "00bb4b20",
+      "binding": "existing lookup module current contains dispatch"
+    },
+    {
+      "native_entry": "00bb40c0",
+      "binding": "existing lookup module current probe dispatch"
+    },
+    {
+      "native_entry": "00bb5540",
+      "binding": "existing lookup module actual name copy"
+    }
+  ],
+  "borrowed_lifetime": "NativeMpakRuntime installs source context pointers only; conditional restoration of previous MPAK/device/conversion bindings; nested normal stack order; no native owner/publication/cache/refcount changes from binding alone",
+  "explicit_libraries": [
+    "BB4140 checked STL file subscript",
+    "BB4F40/5EFBA0 directory member search",
+    "AY file/directory/offset insertion and container destruction",
+    "stock Win32 zlib1.2.1"
+  ],
+  "validation": {
+    "win32_build": "scripts/build.ps1 Release /W4 /WX; MSBUILDDISABLENODEREUSE=1; passed",
+    "ctest": "100% tests passed, 0 tests failed out of 2",
+    "fixture": {
+      "passed": true,
+      "decoded_bytes": 32,
+      "payload_match": true,
+      "position_native_comparisons": 2,
+      "nested_context_restore": true,
+      "raw_write_actual_preserved": true,
+      "memory_objects": 0,
+      "memory_requested_bytes": 0
+    },
+    "fixture_inputs": {
+      "payload_hex": "4d50414b206e756d657269632072756e74696d6520636f6e76657273696f6e0a",
+      "compressed_hex": "f30d70f456c82bcd4d2dca4c56282acd2bc9cc4d5548cecf2b4b2d2acecccfe30200",
+      "entries": [
+        {
+          "address": "00d642c0",
+          "bytes": 52,
+          "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d64400",
+          "bytes": 52,
+          "sha256": "fff0804328137d63f33430d6155050957151f4fe2597e676eb8912362d0f7b75",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d641f8",
+          "bytes": 44,
+          "sha256": "46cc71992c44dc8e9fbf843d71316c55b881f1e7247050a476bf5130c3d2aea3",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d15ad8",
+          "bytes": 8,
+          "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bef580",
+          "bytes": 11,
+          "sha256": "1a708b39f19bc2f6f4e716cdb74bc8e5f82f2418f1862155773fbc46c6c8c688",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf4f40",
+          "bytes": 7,
+          "sha256": "4b3af58ba7c272747e6702d82e289d42df26deb497874ab80ee331f7176f28f7",
+          "live_matches_disk": true
+        }
+      ],
+      "source": "generated fixture; original instruction/profile bytes verified against Ghidra and installed disk"
+    },
+    "call_verifier": "reports/native_mpak_runtime.json: 9 call rows checked, 0 failed",
+    "scope": "generated actual raw->BEF750->memory source composition,2 original-native position comparisons,nestedbindingrestore,factory/open native decline branches; no complete factory/parserconstruction claimed",
+    "artifacts": [
+      {
+        "path": "local/mpak_runtime_probe_inputs.json",
+        "sha256": "996def2cacedc06ed7ce4fbe6eee315f3ccc59ea304b48f02852a8547f1d8959"
+      },
+      {
+        "path": "local/mpak_runtime_probe_outputs.json",
+        "sha256": "4c334b6e3e41e1d1b61c547d3a597082b55252a467bfa34ef7f32caf9ddea27a"
+      },
+      {
+        "path": "local/mpak_runtime_probe.cpp",
+        "sha256": "80139c782d2c5cfc449b0dfd54292ac5ee317d55f7c115d44246f467f6d6ce2e"
+      },
+      {
+        "path": "local/mpak_runtime_probe_data.hpp",
+        "sha256": "5e0d804dcc50a67e22944542fe4f07349749724e65ee87b9a6c1bdaee79f3975"
+      },
+      {
+        "path": "local/build_mpak_runtime_probe.ps1",
+        "sha256": "3a041f0c629bfa245d8561a4adf02b7d5bc54a3b9d7417da64dd3e7dc75be4ce"
+      },
+      {
+        "path": "local/make_mpak_runtime_probe.py",
+        "sha256": "33f86174f9ebc6eb13bc2d590a1a8328131ae093a930198c6b200360ef82c4a2"
+      },
+      {
+        "path": "local/native_mpak_runtime_build.log",
+        "sha256": "c22db4a409a6e6e225660527cbb3e3a773cd25077f56c9594576abf9602e352f"
+      }
+    ],
+    "candidate_source_hashes": [
+      {
+        "path": "src/native_mpak_runtime.cpp",
+        "sha256": "14d8c7958a4df95763863d53b6958b1b4151efb39ca4d82f46445bc5668d7b12"
+      },
+      {
+        "path": "src/native_vfs_runtime_bindings.cpp",
+        "sha256": "75f07ffdc4472b81818c7f62366d49c68498d39e6f6ec1c9509d6560dd017cda"
+      },
+      {
+        "path": "src/native_filestore_open.cpp",
+        "sha256": "8f844893f5d9bc6545dec4808786b74f098d61180e7f4e8c1c644fb38ceda71f"
+      },
+      {
+        "path": "include/bsp/native_mpak_runtime.hpp",
+        "sha256": "1c61dd3620f95e637487c492a6e29644ca3414e7b318f74945fae9b44571cca0"
+      },
+      {
+        "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+        "sha256": "01e547aa8ee4f376f45b3babf7f5ec557edb594999930b80d8917edea27e31d7"
+      },
+      {
+        "path": "include/bsp/native_filestore_open.hpp",
+        "sha256": "b7ea10798dae64b2e4dfeef9a78693e4462b495fe7dba8c32ad4a7e87d782827"
+      }
+    ]
+  },
+  "limits": [
+    "No additional native bodycounts for runtime adapters",
+    "Original STL/library source remains external; no successful stub",
+    "BEF750 D64400 always uses concrete numeric source route; unknown externally callable tables retain prior original-ABI input domain",
+    "Unbound/changed numeric entries deliberately throw source-boundary errors",
+    "Memory/physical numeric writes remain unbound; existing adopted forwarding may reach that boundary",
+    "Existing managerfailure field+90 retains callable original-ABI service contract",
+    "No mount population/startup factory registration/installed archive/gameplay proof",
+    "Original FH3/SEH,concurrency,stackspillaliases and simultaneouscleanupfailures unproven",
+    "Worker Ghidra read-only; original installation unchanged"
+  ]
+}

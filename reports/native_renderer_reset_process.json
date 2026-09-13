@@ -1,0 +1,2263 @@
+{
+  "packet": "orch3_renderer_reset_process_ax",
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "draft_only": false,
+  "functions": [
+    {
+      "address": "00b2abd0",
+      "end_inclusive": "00b2ae1c",
+      "length": 589,
+      "coverage": "complete",
+      "source": "src/native_renderer_reset_process.cpp",
+      "header": "include/bsp/native_renderer_reset_process.hpp",
+      "cpp_symbol": "process_native_renderer_device_reset_00b2abd0",
+      "old_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "ghidra_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "suggested_name": "BSP_D3D9Renderer_ProcessDeviceReset",
+      "name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_D3D9Renderer_ProcessDeviceReset(void)",
+      "original_abi": "ECX actual renderer, no stack arguments, plain RET, no semantic return. Sole optional-guard state0/cleanup; no lifecycle lock.",
+      "ledger_kind": "function",
+      "status": "reconstructed_normal_body_combined_validation_pending",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00b2abd0..00b2ae1c normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_RESET_PROCESS.md; reports/native_renderer_reset_process.json.",
+      "uncertainty": "New source interfaces; same actual publication/global/owner/profile domains required. No independent complete native ABI/FH3/SEH/concurrency/startup/gameplay proof.",
+      "end_exclusive": "00b2ae1d",
+      "module": "native_renderer_reset_process",
+      "new_native_body": true,
+      "worker_evidence": "Complete listing and current source independently reviewed; live/disk spans equal. Exact native ABI, imports, optional cleanup, retry/focus/HRESULT/Sleep/current output order. Initial combined Win32 build and separate bounded worker fixture pass; final merged replay pending."
+    },
+    {
+      "address": "00bec230",
+      "end_inclusive": "00bec233",
+      "length": 4,
+      "coverage": "complete",
+      "source": "src/native_renderer_reset_process.cpp",
+      "header": "include/bsp/native_renderer_reset_process.hpp",
+      "cpp_symbol": "native_platform_window_00bec230",
+      "old_name": "BSP_Platform_GetWindow_Provisional",
+      "ghidra_name": "BSP_Platform_GetWindow_Provisional",
+      "suggested_name": "BSP_Platform_GetWindow",
+      "name_is_hypothesis": true,
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Platform_GetWindow_Provisional(void)",
+      "original_abi": "ECX actual raw platform, EAX raw HWND from+30, no stack arguments, plain RET.",
+      "ledger_kind": "function",
+      "status": "reconstructed_normal_body_combined_validation_pending",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 00bec230..00bec233 normal native body over actual storage and current concrete profiles. Reviewed native ECX/stack-slot/return ABI, current read/callback/output ordering and live/disk spans reviewed. Source adds borrowed contexts; bounded original-byte fixture evidence is separate from original caller ABI, unrestricted FH3/SEH/concurrency and gameplay. Evidence: docs/NATIVE_RENDERER_RESET_PROCESS.md; reports/native_renderer_reset_process.json.",
+      "uncertainty": "New source interfaces; same actual publication/global/owner/profile domains required. No independent complete native ABI/FH3/SEH/concurrency/startup/gameplay proof.",
+      "end_exclusive": "00bec234",
+      "module": "native_renderer_reset_process",
+      "new_native_body": true,
+      "worker_evidence": "Complete listing and current source independently reviewed; live/disk spans equal. Exact native ABI, imports, optional cleanup, retry/focus/HRESULT/Sleep/current output order. Initial combined Win32 build and separate bounded worker fixture pass; final merged replay pending."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b2abfa",
+      "native": "00b33ad0",
+      "function": "00b2abd0",
+      "contract": "Current mode nonzero only; ECX original renderer, returned AL stored to guard byte; no stack args, RET."
+    },
+    {
+      "address": "00b2ac07",
+      "native": "KERNEL32.dll!GetCurrentThreadId",
+      "function": "00b2abd0",
+      "contract": "Real stdcall with no arguments; EAX compared to current render-thread DWORD after return; optional cleanup already armed.",
+      "iat_address": "00ce223c"
+    },
+    {
+      "address": "00b2ac32",
+      "native": "00b33b00",
+      "function": "00b2abd0",
+      "contract": "Wrong-thread normal cleanup: ECX saved renderer; stacked full guard DWORD; RET4. Current mode read before disarm."
+    },
+    {
+      "address": "00b2ac71",
+      "native": "IDirect3DDevice9+vtable0C",
+      "function": "00b2abd0",
+      "contract": "Current renderer device and current table; stdcall TestCooperativeLevel(device), one stacked DWORD/RET4, full HRESULT retained."
+    },
+    {
+      "address": "00b2acaa",
+      "native": "USER32.dll!GetFocus",
+      "function": "00b2abd0",
+      "contract": "Real stdcall no args; compare HWND result to +30 of captured platform EDI AFTER return.",
+      "iat_address": "00ce2310"
+    },
+    {
+      "address": "00b2acc1",
+      "native": "00b29670",
+      "function": "00b2abd0",
+      "contract": "DEVICELOST branch only after wrapping retry result>10 and captured active/focus predicate. Reset retry DWORD first. ECX renderer, no stack args/RET. No Sleep path."
+    },
+    {
+      "address": "00b2aceb",
+      "native": "USER32.dll!GetFocus",
+      "function": "00b2abd0",
+      "contract": "Real stdcall no args; compare HWND result to +30 of captured platform EBP AFTER return. Failed focus exits before late fallback/Sleep.",
+      "iat_address": "00ce2310"
+    },
+    {
+      "address": "00b2ad33",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "First captured Sleep target from CE2230 at B2AD1A; mark renderer lost before call; stack100, stdcall RET4.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ad37",
+      "native": "00b237d0",
+      "function": "00b2abd0",
+      "contract": "ECX original renderer, no stack args/RET; complete current dynamic-buffer release with same optional-guard globals."
+    },
+    {
+      "address": "00b2ad3e",
+      "native": "00b262c0",
+      "function": "00b2abd0",
+      "contract": "ECX original renderer, no stack args/RET; complete current binding/cache/resource release domain."
+    },
+    {
+      "address": "00b2ad45",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "Second use of captured Sleep; stack100, stdcall RET4; after both release providers.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ad4d",
+      "native": "00bec230",
+      "function": "00b2abd0",
+      "contract": "ECX freshly reloaded actual platform0109CF04; no stack args/RET; raw HWND EAX stored directly to renderer+1A44."
+    },
+    {
+      "address": "00b2ad6b",
+      "native": "IDirect3DDevice9+vtable40",
+      "function": "00b2abd0",
+      "contract": "Current device/table after HWND store; stdcall Reset(device,actual writable renderer+1A28 presentation block), two DWORDs/RET8; only HRESULT exactly0 succeeds."
+    },
+    {
+      "address": "00b2ad83",
+      "native": "00b23b10",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; clear lost1D8A then inhibit1D90=2 before complete current resource restore."
+    },
+    {
+      "address": "00b2ad8a",
+      "native": "00b1fd90",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; full raw readiness/dynamic restore with current ready/lost gates and four admitted physical profiles."
+    },
+    {
+      "address": "00b2ada2",
+      "native": "00b24460",
+      "function": "00b2abd0",
+      "contract": "ECX renderer, stackA1 and freshly normalized renderer+1A38!=0; two DWORDs/RET8; same guard globals."
+    },
+    {
+      "address": "00b2ada9",
+      "native": "00b26170",
+      "function": "00b2abd0",
+      "contract": "ECX renderer/no stack args/RET; complete ordered defaults before gamma."
+    },
+    {
+      "address": "00b2adc2",
+      "native": "00b21960",
+      "function": "00b2abd0",
+      "contract": "FLD renderer196C at B2ADAE before current profile/slot read; reserve DWORD then FSTP at B2ADBF; ECX renderer, stacked actual float slot/RET4. Current D5F0A8+F0=D5F198 selects B21960.",
+      "resolved_profile": "00d5f0a8",
+      "slot_offset": "f0",
+      "slot_address": "00d5f198"
+    },
+    {
+      "address": "00b2add8",
+      "native": "00b20c50",
+      "function": "00b2abd0",
+      "contract": "ECX freshly reloaded platform/no stack args/RET. Complete actual active/focus predicate, original AL alone gates AW; concrete provider returns full EAX0/1."
+    },
+    {
+      "address": "00b2ade3",
+      "native": "00b29670",
+      "function": "00b2abd0",
+      "contract": "Late fallback only when B20C50 AL nonzero; ECX renderer/no stack args/RET. Preserve completed failed Reset/release state."
+    },
+    {
+      "address": "00b2adea",
+      "native": "KERNEL32.dll!Sleep",
+      "function": "00b2abd0",
+      "contract": "Final use of captured Sleep; stack100/stdcall RET4. Reached by successful Reset and late fallback, including false late predicate; absent from early exits and threshold AW.",
+      "iat_address": "00ce2230",
+      "captured_import_site": "00b2ad1a"
+    },
+    {
+      "address": "00b2ae05",
+      "native": "00b33b00",
+      "function": "00b2abd0",
+      "contract": "Shared normal cleanup, including inline-focus early failure; ECX saved renderer, stacked full guard DWORD/RET4, current-mode check then state disarm."
+    },
+    {
+      "address": "00cbd403",
+      "native": "00b21110",
+      "function": "00cbd400",
+      "contract": "Only EH terminal: ECX address of original optional guard [EBP-14], no stack args/RET; no lifecycle-lock cleanup.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b2b1d2",
+      "native": "00b2abd0",
+      "function": "00b2aeb0",
+      "contract": "Initialization sets pending=1 at B2B1CC (BL=1 from B2AF41), then ECX original renderer/no stack args/RET."
+    },
+    {
+      "address": "00b2b229",
+      "native": "00b2abd0",
+      "function": "00b2b200",
+      "contract": "BeginFrame captures renderer in ESI, marks frame-active and optionally decrements inhibit, then ECX original renderer/no stack args/RET."
+    },
+    {
+      "address": "00a9a157",
+      "native": "00bec230",
+      "function": "00a9a140",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to current DirectInput device SetCooperativeLevel; pending flags are arguments to that later call, not this getter."
+    },
+    {
+      "address": "00a49489",
+      "native": "00bec230",
+      "function": "00a493c0",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. ECX current platform captured at A4943B, no intervening ECX write; returned HWND stored in local descriptor for A4D5F0."
+    },
+    {
+      "address": "00a99cf6",
+      "native": "00bec230",
+      "function": "00a99940",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to joystick current DirectInput SetCooperativeLevel with flags5."
+    },
+    {
+      "address": "00a9a447",
+      "native": "00bec230",
+      "function": "00a9a3e0",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to keyboard current DirectInput SetCooperativeLevel with flags6."
+    },
+    {
+      "address": "00a9a1b0",
+      "native": "00bec230",
+      "function": "00a9a180",
+      "contract": "ECX actual platform from0109CF04; no stack arguments, raw EAX result, plain RET. Returned HWND forwarded to mouse current DirectInput SetCooperativeLevel with flags5."
+    }
+  ],
+  "host_call_coverage": {
+    "main_native_CALL_count": 22,
+    "main_rows": 22,
+    "all_recorded_rows": 30,
+    "all_six_raw_window_getter_callsites_inspected": true,
+    "raw_handler_exception": "CBD40D is separately recorded below because CBD408 has no saved Ghidra function; do not fake containing-function ownership to pass the call checker."
+  },
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "live_verification": "Client.verify before batch; bsp.py ghidra verifies before every individual query",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "spans": [
+    {
+      "address": "00b2abd0",
+      "end_inclusive": "00b2ae1c",
+      "length": 589,
+      "kind": "complete_reset_body",
+      "sha256": "923113874aa3e3eca6eb973e7ce7b7f157d10fb53c3d4acfc4d16cee80b8567a",
+      "live_matches_installed": true,
+      "bytes_file": "00b2abd0.bin"
+    },
+    {
+      "address": "00bec230",
+      "end_inclusive": "00bec233",
+      "length": 4,
+      "kind": "complete_raw_window_leaf",
+      "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+      "live_matches_installed": true,
+      "bytes_file": "00bec230.bin"
+    },
+    {
+      "address": "00cbd400",
+      "end_inclusive": "00cbd411",
+      "length": 18,
+      "kind": "unwind_action_and_raw_handler",
+      "sha256": "d3176069d18c7a735323504c56889518e3563752daccbf853ec911ebeab0f655",
+      "live_matches_installed": true,
+      "bytes_file": "00cbd400.bin"
+    },
+    {
+      "address": "00df5c50",
+      "end_inclusive": "00df5c7b",
+      "length": 44,
+      "kind": "unwind_map_and_FuncInfo",
+      "sha256": "669a93d389a76979cc45c9e48183cef9cb97552df17a80b43efe1a635206c407",
+      "live_matches_installed": true,
+      "bytes_file": "00df5c50.bin"
+    },
+    {
+      "address": "00ce2230",
+      "end_inclusive": "00ce2233",
+      "length": 4,
+      "kind": "Sleep_IAT",
+      "sha256": "ddcd45aae82a9735f434f46bae5d5af844cf584644f41563f33589113ec6b46d",
+      "live_matches_installed": true,
+      "bytes_file": "00ce2230.bin"
+    },
+    {
+      "address": "00ce223c",
+      "end_inclusive": "00ce223f",
+      "length": 4,
+      "kind": "GetCurrentThreadId_IAT",
+      "sha256": "8313ff565762f8dc934724835bd0b2eeac44ebbb4d9c215e603f8f177c4645fb",
+      "live_matches_installed": true,
+      "bytes_file": "00ce223c.bin"
+    },
+    {
+      "address": "00ce2310",
+      "end_inclusive": "00ce2313",
+      "length": 4,
+      "kind": "GetFocus_IAT",
+      "sha256": "e743d9a286ef2c7cfcffb826115e1b4125bd42aaedfe5ea05126446a1c7f3b78",
+      "live_matches_installed": true,
+      "bytes_file": "00ce2310.bin"
+    },
+    {
+      "address": "00d5f198",
+      "end_inclusive": "00d5f19b",
+      "length": 4,
+      "kind": "D5F0A8_gamma_slot_F0",
+      "sha256": "eebaec6ba405711c2d19b0a7ed19e7fcf434d931c53dc153ad657746028054a3",
+      "live_matches_installed": true,
+      "bytes_file": "00d5f198.bin"
+    }
+  ],
+  "span_count": 8,
+  "total_live_installed_bytes": 671,
+  "raw_imports": [
+    {
+      "iat_address": "00ce2310",
+      "dll": "USER32.dll",
+      "name": "GetFocus",
+      "unbound_disk_dword": "00a073a2",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    },
+    {
+      "iat_address": "00ce2230",
+      "dll": "KERNEL32.dll",
+      "name": "Sleep",
+      "unbound_disk_dword": "00a05746",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    },
+    {
+      "iat_address": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId",
+      "unbound_disk_dword": "00a0576c",
+      "actual_binding": "Source uses real Win32 API; current loaded runtime address and immutable binding are caller/runtime conditions, not established by an unbound PE IAT value."
+    }
+  ],
+  "source_draft_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-reset-draft\\native_renderer_reset_process.cpp",
+      "sha256": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ax-reset-draft\\include\\bsp\\native_renderer_reset_process.hpp",
+      "sha256": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce"
+    }
+  ],
+  "providers": [
+    {
+      "entry": "00b33ad0",
+      "cpp_symbol": "enter_native_renderer_optional_guard_00b33ad0",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Actual renderer/global synchronization entry; AL record field; same globals as outer cleanup."
+    },
+    {
+      "entry": "00b33b00",
+      "cpp_symbol": "leave_native_renderer_optional_guard_00b33b00",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Full-word saved argument/current-mode leave with RET4 native boundary."
+    },
+    {
+      "entry": "00b21110",
+      "cpp_symbol": "destroy_native_renderer_optional_guard_00b21110",
+      "module": "native_renderer_synchronization_actual",
+      "contract": "Actual8-byte optional guard; current mode gates any saved-field read; skipped entry remains uninitialized."
+    },
+    {
+      "entry": "00b29670",
+      "cpp_symbol": "recreate_native_renderer_device_00b29670",
+      "module": "native_renderer_device_recreation_actual",
+      "contract": "Complete AW parent in actual owner/profile/tree/publication domains; only its optional guard unwinds, no rollback or lifecycle-lock unwind."
+    },
+    {
+      "entry": "00b237d0",
+      "cpp_symbol": "release_native_dynamic_buffers_for_reset_00b237d0",
+      "module": "native_dynamic_buffer_device_release",
+      "contract": "Current actual renderer and dynamic wrappers; exact COM reload/release and optional guard."
+    },
+    {
+      "entry": "00b262c0",
+      "cpp_symbol": "release_native_renderer_resources_00b262c0",
+      "module": "native_renderer_resource_release",
+      "contract": "Full actual bindings/cache/resource traversal; borrow recreation.release."
+    },
+    {
+      "entry": "00b23b10",
+      "cpp_symbol": "restore_native_renderer_resources_00b23b10",
+      "module": "native_renderer_resource_restore",
+      "contract": "Full current actual registry/output restoration; borrow recreation.restore and the same publication cell."
+    },
+    {
+      "entry": "00b1fd90",
+      "cpp_symbol": "restore_native_renderer_dynamic_buffers_00b1fd90",
+      "module": "native_renderer_reset_readiness",
+      "contract": "Full70-byte current ready/lost gates and publish-before-first-call ordering; four actual pooled/private profiles from recreation."
+    },
+    {
+      "entry": "00b24460",
+      "cpp_symbol": "set_native_renderer_render_state_00b24460",
+      "module": "native_renderer_cached_states",
+      "contract": "Full raw state setter; uint32 state/value, same synchronization globals, real current COM."
+    },
+    {
+      "entry": "00b26170",
+      "cpp_symbol": "initialize_native_renderer_default_states_00b26170",
+      "module": "native_renderer_cached_states",
+      "contract": "Full ordered render/sampler defaults via complete cached-state providers."
+    },
+    {
+      "entry": "00b21960",
+      "cpp_symbol": "set_native_renderer_gamma_00b21960",
+      "module": "native_renderer_gamma",
+      "contract": "Full gamma provider borrows outgoing volatile float slot and same actual gamma/global constants; no host-pow or FP normalization."
+    },
+    {
+      "entry": "00b20c50",
+      "cpp_symbol": "native_platform_has_focus_00b20c50",
+      "module": "native_renderer_reset_readiness",
+      "contract": "Full31-byte actual raw platform predicate, real GetFocus and current HWND+30 read; full EAX exactly0/1."
+    }
+  ],
+  "current_provider_pins": [
+    {
+      "path": "src/native_dynamic_buffer_device_release.cpp",
+      "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e"
+    },
+    {
+      "path": "include/bsp/native_dynamic_buffer_device_release.hpp",
+      "sha256": "babfdf147351f9157c834933c1f0c4b25b747f98c96350da8b13cfcb5070dba1"
+    },
+    {
+      "path": "src/native_renderer_cached_states.cpp",
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_cached_states.hpp",
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295"
+    },
+    {
+      "path": "src/native_renderer_device_recreation_actual.cpp",
+      "sha256": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473"
+    },
+    {
+      "path": "include/bsp/native_renderer_device_recreation_actual.hpp",
+      "sha256": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7"
+    },
+    {
+      "path": "src/native_renderer_gamma.cpp",
+      "sha256": "e741208a329062fd8664702cd981c4e392f57a446e6d17163a34e8cbbf3d0847"
+    },
+    {
+      "path": "include/bsp/native_renderer_gamma.hpp",
+      "sha256": "bdf4eff66fec707b16101473e14f09955cc8f9a469dce76e72ca2c8d140d5738"
+    },
+    {
+      "path": "src/native_renderer_reset_readiness.cpp",
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50"
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_readiness.hpp",
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19"
+    },
+    {
+      "path": "src/native_renderer_resource_release.cpp",
+      "sha256": "c2afc920bcccfcac41120ca589a7fdb5d475a43bd63f8f7206a65213558ed359"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_release.hpp",
+      "sha256": "809ac960625203986aa35240da5ce75301a3bd59fbc19d00f8197ab03983caa0"
+    },
+    {
+      "path": "src/native_renderer_resource_restore.cpp",
+      "sha256": "05a765b85d3c3ccd7f0d23cb30ecae1679e1f827394048755bcbbdeaf3737c47"
+    },
+    {
+      "path": "include/bsp/native_renderer_resource_restore.hpp",
+      "sha256": "0198b3f63a67ef9379888fbddb5cb2308990d6fffac40e97484facce5a59e01d"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    }
+  ],
+  "native_EH_dependencies": [
+    {
+      "entry": "00cbd400",
+      "end_inclusive": "00cbd407",
+      "length": 8,
+      "kind": "existing_unwind_action",
+      "receiver": "LEA ECX,[EBP-14]",
+      "terminal_call_site": "00cbd403",
+      "terminal_address": "00b21110",
+      "counted_as_new_body": false
+    },
+    {
+      "entry": "00cbd408",
+      "end_inclusive": "00cbd411",
+      "length": 10,
+      "kind": "analysis_only_handler_defined_and_saved_by_integrator",
+      "code": "MOV EAX,DF5C58; JMP BF6B43",
+      "terminal_call_site": "00cbd40d",
+      "terminal_address": "00bf6b43",
+      "counted_as_new_body": false,
+      "mechanical_call_check": "Not a function-owned call row until explicitly defined by integrator; exact raw bytes were captured and decoded.",
+      "worker_capture_kind": "raw_handler_no_Ghidra_function",
+      "current_function": "FUN_00cbd408",
+      "definition_record": "reports/native_renderer_ax_analysis_sync.json",
+      "current_body_readback": "00cbd408..00cbd411"
+    },
+    {
+      "entry": "00df5c50",
+      "end_inclusive": "00df5c57",
+      "length": 8,
+      "kind": "unwind_map",
+      "predecessor": -1,
+      "action": "00cbd400"
+    },
+    {
+      "entry": "00df5c58",
+      "end_inclusive": "00df5c7b",
+      "length": 36,
+      "kind": "FuncInfo",
+      "magic": "19930522",
+      "state_count": 1,
+      "unwind_map": "00df5c50"
+    },
+    {
+      "entry": "00bf6b43",
+      "kind": "existing_library_runtime",
+      "identity": "FID_conflict:___CxxFrameHandler3",
+      "preserve_existing_library_name": true
+    }
+  ],
+  "state_order": [
+    {
+      "sites": "B2ABEB..B2AC0D",
+      "behavior": "Optional entry based on current mode; save renderer then AL only if entered. Arm sole cleanup before real thread ID call, then read current authorized-thread DWORD."
+    },
+    {
+      "sites": "B2AC48..B2AC63",
+      "behavior": "Read pending first and lost unconditionally second; bothzero returns. Initialize cooperative result0; only captured lost requests TestCooperativeLevel."
+    },
+    {
+      "sites": "B2AC7D..B2ACC6",
+      "behavior": "DEVICELOST increments wrapping unsigned retryDWORD, stores it, marks1D8A. Unsigned result>10 plus captured platform active41/focus30 clears retry then AW. No Sleep."
+    },
+    {
+      "sites": "B2ACCB..B2AD14",
+      "behavior": "DEVICENOTRESET skips second pending read. Other result, including initialized0, rereads pending. Capture current platform, check active41, call real GetFocus, then read captured HWND30. Failure returns through normal cleanup, before late fallback."
+    },
+    {
+      "sites": "B2AD1A..B2AD6B",
+      "behavior": "Capture immutable Sleep target; result0 or DEVICENOTRESET marks lost, Sleep100, dynamic release, resource release, Sleep100, fresh platform raw-window getter, direct1A44 store, current device/table Reset(actual writable1A28 block)."
+    },
+    {
+      "sites": "B2AD6D..B2ADCA",
+      "behavior": "Only exact HRESULT0: clear1D8A, set1D90=2, resources restore, full dynamic readiness, A1 from fresh1A38!=0, defaults, x87 FLD/currentprofile/FSTP argument/full gamma; clear pending then lost."
+    },
+    {
+      "sites": "B2ADD2..B2ADEA",
+      "behavior": "Unknown cooperative result or failed Reset reloads platform for full B20C50; only AL nonzero calls AW. Both fallback variants and Reset success then Sleep100."
+    },
+    {
+      "sites": "B2AC15..B2AC32; B2ACF6..B2AD0F; B2ADEC..B2AE05",
+      "behavior": "Normal exits reread current mode before disarming cleanup and use full saved guardDWORD if enabled. No lifecycle lock or rollback."
+    }
+  ],
+  "storage_and_producers": [
+    {
+      "field": "actual renderer",
+      "producer": "B32410 captured ECX in ESI; existing actual renderer domain",
+      "limit": "No new full renderer constructor or lifecycle owner is reconstructed here."
+    },
+    {
+      "field": "0108D4C8 render thread",
+      "producer": "B2AEB0: B2B01A GetCurrentThreadId, B2B021 store EAX",
+      "limit": "Must bind the application actual cell; full initialization/startup execution is outside this evidence."
+    },
+    {
+      "field": "0108D4B8 pending",
+      "producer": "B32410 B327B7 clears via BL=0 from B32439; initialization B2B1CC sets1 via EBX=1 at B2AF41, then B2B1D2 Reset; mode B29FBC sets1 via EBX=1 at B29F70; successful Reset clears at B2ADC4. Whole function EBX/BL write audits confirm these values."
+    },
+    {
+      "field": "0108D4B9 lost",
+      "producer": "B32410 B327BD clears via BL=0. B2D8E0 current device Present+44 call B2DB7A is compared with88760868 at B2DB7C; equality sets1 at B2DB83. Successful Reset clears at B2ADCA."
+    },
+    {
+      "field": "0108D4C4 retries",
+      "producer": "This full Reset body reads/adds/stores and conditionally zeroes actual DWORD. No private counter or wider signed arithmetic."
+    },
+    {
+      "field": "renderer1A28..1A5F presentation",
+      "producer": "B2AEB0 pushes38h,0,actual renderer+1A28 and calls BF79F0 at B2AEDC, ADD ESP,0C at B2AF2C; fills actual fields before device creation. Reset passes the SAME writable block and stores fresh platform HWND into1A44."
+    },
+    {
+      "field": "platform0109CF04/+30/+41",
+      "producer": "Borrow current actual platform cell/raw storage; no replacement platform struct. Complete raw BEC230 returns+30, existing B20C50 checks+41 then real focus against current+30; six getter callsites all pass the actual platform and consume EAX as window/descriptor input.",
+      "limit": "General platform owner/constructor and publication lifecycle are not reconstructed by this packet. Never reinterpret Win32PlatformState as the actual raw storage."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Readiness note listed B2B200 as the direct Reset caller.",
+      "is": "Two direct caller functions: B2AEB0 at B2B1D2 and B2B200 at B2B229.",
+      "evidence": "Fresh guarded callers query and exact current listing/prototype ownership at both callsites."
+    },
+    {
+      "was": "Readiness note described initialization B2B1CC as clearing pending.",
+      "is": "B2B1CC sets pending to1, immediately before Reset; mode B29FBC also sets1.",
+      "evidence": "Whole B2AEB0 EBX/BL audit: MOV EBX,1 at B2AF41, no later EBX/BL write before B2B1CC. Whole mode audit: MOV EBX,1 at B29F70, then B29FBC."
+    }
+  ],
+  "verification": {
+    "static_review": "PASS complete reviewed source/header versus complete native listings, actual current providers and raw imports; no concrete defect found.",
+    "live_disk_bytes": "PASS eight spans,671 bytes, including both complete bodies, raw EH, three IAT slots and gamma slot.",
+    "strict_compile": "Root reported a strict compile pass; this evidence task did not compile or import a compile log. Integration must record its own exact source/build evidence.",
+    "call_rows": "PASS verify_report_calls.py:22 numeric rows checked,0 failed, out of30 recorded host rows. Eight API/COM rows are nonnumeric and not mechanically checked; one numeric current-profile call is indirect and separately byte-resolved. Raw handler transfer remains separately classified because no saved function exists.",
+    "runtime_fixture": "Separate reset_fixture_ax capture reports PASS; linked and hashed, not rerun by this evidence task. Final merged source/library replay is pending.",
+    "standard_build": "Root reports initial combined build and2/2 existing tests passed. Exact final integrated validation must be supplied by root; no build performed by this evidence task.",
+    "ABI_compatible": "not established; new C++ context and raw-leaf interfaces",
+    "game_validated": false
+  },
+  "runtime_fixture": {
+    "worker": "reset_fixture_ax",
+    "status": "separate_worker_capture_pass_final_merged_replay_pending",
+    "this_task_ran_fixture": false,
+    "final_merged_replay_pass": false,
+    "capture_path": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\fixture_report.json",
+    "capture_sha256": "ba74d83f22154d75dedf5cad9ea7c37e9d8c3895d5d6a61339e14e7ffdc20f25",
+    "capture_summary": {
+      "full_reset_parent_pairs": 14,
+      "raw_window_getter_pairs": 14,
+      "normalized_state_bytes_compared": 113904,
+      "event_dwords_compared": 6384,
+      "real_hal_reset_calls": 6,
+      "full_aw_recreation_calls": 4,
+      "native_fh3_exception_pairs": 1
+    },
+    "provenance_boundary": "Worker-captured result, read from the separate report after initial static draft. Do not attribute an exact final merged commit/library pass to this evidence."
+  },
+  "limits": [
+    "Current immutable real Win32 imports and valid reached raw memory/profile domains are preconditions.",
+    "The source branch checks full B20C50 result, equivalent to native AL only because that concrete provider returns exactly0/1.",
+    "Optional guard skipped-entry storage is uninitialized; enabling cleanup later is outside valid native caller domain.",
+    "Only optional-guard EH is represented; no original FH3 frame identity, arbitrary hardware SEH or general concurrent mutation proof.",
+    "Separate worker runtime capture is linked; final merged source/library replay, complete startup/BeginFrame/EndFrame/device-mode lifecycle and gameplay proof remain pending.",
+    "No source or Ghidra mutation, test additions, shared metadata or build registration by this evidence task."
+  ],
+  "worker_capture_status": "draft_static_evidence_with_separate_worker_capture_final_merged_replay_pending",
+  "evidence_draft_provenance": "Only root local/ax-reset-evidence written. No tracked source/docs/report, ledger, Ghidra, test or CMake changes by this evidence task.",
+  "reviewed_source_pins": [
+    {
+      "path": "src/native_renderer_reset_process.cpp",
+      "sha256": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+      "identical_to_reviewed_local_draft": true
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_process.hpp",
+      "sha256": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+      "identical_to_reviewed_local_draft": true
+    }
+  ],
+  "initial_combined_build": {
+    "result": "PASS strict Win32 and both existing CTests",
+    "log": "local/ax-initial-combined-build.log",
+    "core_sha256": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+    "exact_final_merged_commit": "pending"
+  },
+  "integration_ax_review": {
+    "combined_validation": "passed exact merged Win32 build and three current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 4,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f280": "00b1f280 FUN_00b1f280  undefined FUN_00b1f280(void)  body 00b1f280 - 00b1f320",
+      "00b29e60": "00b29e60 BSP_D3D9Renderer_ChangePresentationMode  undefined BSP_D3D9Renderer_ChangePresentationMode(void)  body 00b29e60 - 00b2a063",
+      "00b2abd0": "00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  undefined BSP_D3D9Renderer_ProcessDeviceReset(void)  body 00b2abd0 - 00b2ae1c",
+      "00bec230": "00bec230 BSP_Platform_GetWindow_Provisional  undefined BSP_Platform_GetWindow_Provisional(void)  body 00bec230 - 00bec233"
+    },
+    "original_signature_readback": "00b1f280 BSP_RenderCommandQueue_Construct  void * __thiscall BSP_RenderCommandQueue_Construct(void * this)  body 00b1f280 - 00b1f320\n00b29e60 BSP_D3D9Renderer_ChangePresentationMode  uchar __thiscall BSP_D3D9Renderer_ChangePresentationMode(void * this, uint width_slot, uint height_slot, uint fullscreen_slot, uint multisample_slot, uint interval_selector_slot, uint force_slot)  body 00b29e60 - 00b2a063\n00b2abd0 BSP_D3D9Renderer_ProcessDeviceReset  void __thiscall BSP_D3D9Renderer_ProcessDeviceReset(void * this)  body 00b2abd0 - 00b2ae1c\n00bec230 BSP_Platform_GetWindow_Provisional  void * __thiscall BSP_Platform_GetWindow_Provisional(void * this)  body 00bec230 - 00bec233\n",
+    "function_definitions": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc18"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbcc0e",
+            "end_address": "00cbcc17",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbcc0e",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbcc0e",
+            "function_name": "FUN_00cbcc0e",
+            "entry_point": "00cbcc0e",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbcc0e"
+          }
+        },
+        {
+          "defined": "00cbcc0e",
+          "end": "00cbcc18",
+          "name": null,
+          "after": "Function: FUN_00cbcc0e at 00cbcc0e\nSignature: undefined FUN_00cbcc0e(void)\nEntry: 00cbcc0e\nBody: 00cbcc0e - 00cbcc17"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd348",
+            "end_address": "00cbd352"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd348",
+            "end_address": "00cbd351",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd348",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd348",
+            "function_name": "FUN_00cbd348",
+            "entry_point": "00cbd348",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd348"
+          }
+        },
+        {
+          "defined": "00cbd348",
+          "end": "00cbd352",
+          "name": null,
+          "after": "Function: FUN_00cbd348 at 00cbd348\nSignature: undefined FUN_00cbd348(void)\nEntry: 00cbd348\nBody: 00cbd348 - 00cbd351"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbd408",
+            "end_address": "00cbd412"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbd408",
+            "end_address": "00cbd411",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbd408",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbd408",
+            "function_name": "FUN_00cbd408",
+            "entry_point": "00cbd408",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbd408"
+          }
+        },
+        {
+          "defined": "00cbd408",
+          "end": "00cbd412",
+          "name": null,
+          "after": "Function: FUN_00cbd408 at 00cbd408\nSignature: undefined FUN_00cbd408(void)\nEntry: 00cbd408\nBody: 00cbd408 - 00cbd411"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "cross_review": "Independent complete-listing reviews checked the queue constructor preexisting control and EH cleanup, raw presentation flags and six native slots, current profiles and gamma outgoing x87 slot, and complete Reset flag-read/retry/focus/HRESULT/Sleep/output ordering. Readiness corrections establish initialization B2B1CC writes pending1 and B2B1D2 calls Reset, alongside BeginFrame B2B229.",
+    "current_report_call_check": "reports/native_renderer_reset_process.json: 22 call rows checked, 0 failed",
+    "reset_fixture": {
+      "status": "pass",
+      "kind": "external_focused_full_original_bytes_vs_current_library_fixture",
+      "created_utc": "2026-09-13T06:48:33.303519+00:00",
+      "summary": {
+        "full_reset_parent_pairs": 14,
+        "raw_window_getter_pairs": 14,
+        "normalized_state_bytes_compared": 113904,
+        "event_dwords_compared": 6384,
+        "real_hal_reset_calls": 6,
+        "full_aw_recreation_calls": 4,
+        "native_fh3_exception_pairs": 1
+      },
+      "routines": [
+        {
+          "address": "00b2abd0",
+          "inclusive_end": "00b2ae1c",
+          "bytes": 589,
+          "native_abi": "ECX actual renderer, no stack arguments, RET; source takes an additional borrowed context",
+          "coverage": "entire original body executes; 18 exact global/handler operand relocations only"
+        },
+        {
+          "address": "00bec230",
+          "inclusive_end": "00bec233",
+          "bytes": 4,
+          "native_abi": "ECX actual platform, EAX HWND, RET",
+          "coverage": "unaltered MOV EAX,[ECX+30]; RET body; paired raw getter and reached Reset callsite"
+        }
+      ],
+      "native_evidence": {
+        "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "upstream_read_only_fixture": "C:\\Users\\sqz269\\bsp-aw-device-recreation-diag-e30488f4",
+        "upstream_pins": {
+          "environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+          "recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+          "reserve_image_section.py": "afd0708ea1a0b9919d9be00335134010f69a43a905e698eee2bfbb470e6eb8e1",
+          "image_reserved_probe.cpp": "82cc133af916b0849a84344c7e61cf173b66f9cd5c4dc91a523a90dee6af6265",
+          "run_image_reserved.ps1": "bbae630f12b4a8a4d7568ad6c3e215e00eeec267a6d9bc112c2fe01321450947"
+        },
+        "spans": [
+          {
+            "start": "00b2abd0",
+            "end": "00b2ae1c",
+            "length": 589,
+            "sha256": "923113874aa3e3eca6eb973e7ce7b7f157d10fb53c3d4acfc4d16cee80b8567a"
+          },
+          {
+            "start": "00bec230",
+            "end": "00bec233",
+            "length": 4,
+            "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281"
+          },
+          {
+            "start": "00cbd400",
+            "end": "00cbd411",
+            "length": 18,
+            "sha256": "d3176069d18c7a735323504c56889518e3563752daccbf853ec911ebeab0f655"
+          },
+          {
+            "start": "00df5c50",
+            "end": "00df5c7b",
+            "length": 44,
+            "sha256": "669a93d389a76979cc45c9e48183cef9cb97552df17a80b43efe1a635206c407"
+          }
+        ],
+        "operand_relocations": [
+          {
+            "address": "00b2abd9",
+            "expected": "00cbd408"
+          },
+          {
+            "address": "00b2abed",
+            "expected": "0108d6dc"
+          },
+          {
+            "address": "00b2ac0f",
+            "expected": "0108d4c8"
+          },
+          {
+            "address": "00b2ac17",
+            "expected": "0108d6dc"
+          },
+          {
+            "address": "00b2ac4a",
+            "expected": "0108d4b8"
+          },
+          {
+            "address": "00b2ac4f",
+            "expected": "0108d4b9"
+          },
+          {
+            "address": "00b2ac7e",
+            "expected": "0108d4c4"
+          },
+          {
+            "address": "00b2ac89",
+            "expected": "0108d4c4"
+          },
+          {
+            "address": "00b2ac9b",
+            "expected": "0109cf04"
+          },
+          {
+            "address": "00b2acbd",
+            "expected": "0108d4c4"
+          },
+          {
+            "address": "00b2acd5",
+            "expected": "0108d4b8"
+          },
+          {
+            "address": "00b2ace0",
+            "expected": "0109cf04"
+          },
+          {
+            "address": "00b2acf8",
+            "expected": "0108d6dc"
+          },
+          {
+            "address": "00b2ad49",
+            "expected": "0109cf04"
+          },
+          {
+            "address": "00b2adc6",
+            "expected": "0108d4b8"
+          },
+          {
+            "address": "00b2adcc",
+            "expected": "0108d4b9"
+          },
+          {
+            "address": "00b2add4",
+            "expected": "0109cf04"
+          },
+          {
+            "address": "00b2adee",
+            "expected": "0108d6dc"
+          }
+        ]
+      },
+      "native_eh": {
+        "unwind_action": "00cbd400..00cbd407",
+        "handler": "00cbd408..00cbd411",
+        "state_map": "00df5c50..00df5c57",
+        "func_info": "00df5c58..00df5c7b",
+        "handler_registration": "only pushed handler immediate relocated to a fixture trampoline jumping to untouched native handler",
+        "shared_handler": "native BF6B43 jump bridges to host vcruntime140 __CxxFrameHandler3",
+        "observed": "controlled C++ int82 thrown by real SetTexture observation wrapper; original native cleanup and current source unwind leave optional depth/nesting zero and lifecycle depth zero"
+      },
+      "runtime": {
+        "adapter": "NVIDIA GeForce RTX 5090",
+        "api": "real Direct3D9 HAL and installed D3DX9_40.dll",
+        "windows": "two hidden private STATIC windows, never shown/activated/focused; foreground and GetFocus state asserted unchanged around every invocation",
+        "real_reset": "three paired scenarios call real device Reset with exact live renderer+1A28 presentation storage; Reset return 0 observed in all six calls; internal driver cooperative queries pass through original HRESULT",
+        "controlled_results": "fixture-process IAT GetFocus wrapper invokes real API then supplies branch-selected private HWND/null; parent TestCooperativeLevel wrapper calls real method then returns selected HRESULT; case9 returns S_FALSE after real Reset success to prove exact-zero acceptance; GetCurrentThreadId wrapper calls real API and case13 changes only fixture synchronization mode",
+        "real_sleep": "immutable saved real Sleep export called with100ms each observed request; ordered snapshots include lost/pending flags",
+        "fallback": "original Reset invokes all1191 original B29670 bytes through its existing thirteen operand relocations; source Reset invokes full current library recreation; no callback-shaped replacement of recreation"
+      },
+      "provider_domain": {
+        "actual_storage": "borrowed raw renderer, same publication cells and synchronization globals, actual presentation output cells, actual physical/surface/retained owner layouts and admitted original profiles",
+        "constructed_providers": "current native memory stream constructor for retained inputs, current hardware-layout constructor, real D3D9 default surfaces/dynamic vertex and index buffers/managed2D cube volume textures, concrete pooled owner contexts",
+        "composition": "concrete current binding reset, dynamic release, resource release/restore, dynamic readiness, render-state/default/gamma, synchronization, layout and retained recreation providers; original vtable/dependency bridge code only adapts native ABI to those providers",
+        "runtime_subset": "nonempty one-node zero-stream hardware layout tree; three retained resource records; dynamic pooled vertex/index wrappers; live default color/depth surfaces; logical and shader arrays empty; online publication zero; gamma input equal to current gamma"
+      },
+      "normalization": "renderer device pointer replaced by one stable marker; physical/retained/layout COM outputs normalized to present/absent; all remaining renderer bytes and owner fields compared unchanged; paired snapshots contain8136bytes each and exact event DWORD traces",
+      "boundaries": [
+        "Controlled focus results do not prove actual focus integration, user window behavior, display loss, or real lost-device recovery.",
+        "The failing Reset branch uses injected positive S_FALSE after real HAL success; no actual HAL Reset failure was induced.",
+        "Exact adjacent pending-then-lost byte access ordering remains full assembly/current-source inspection, while pending reread during cooperative callback and fresh platform after Sleep have runtime evidence.",
+        "Gamma reaches the equal-value provider path; nontrivial x87 gamma conversion and SetGammaRamp are not newly validated here.",
+        "No complete nonvolatile-register/FPU/SEH/concurrency ABI equivalence or drop-in binary interface claim.",
+        "Startup platform/renderer producer closure and gameplay remain unproven.",
+        "Unreached provider boundary methods in reused Env fail fast; no missing call is silently stubbed."
+      ],
+      "cases": [
+        {
+          "case": 0,
+          "name": "wrong_render_thread_optional_guard",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 0,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            },
+            {
+              "case": 0,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-source.state.bin",
+              "length": 8136,
+              "sha256": "15ceacb3494c8f200bced6e7cfbc1deb926dc111bd5fe3992cb92e50c210c424"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case0-source.events.bin",
+              "length": 8,
+              "sha256": "a4dd39dd86aac2faa310ff75ea07671e1b457f39923ba27ce9c404419593168f"
+            }
+          }
+        },
+        {
+          "case": 1,
+          "name": "both_request_bytes_zero",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 1,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            },
+            {
+              "case": 1,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-source.state.bin",
+              "length": 8136,
+              "sha256": "eb4110bdb68bfb968c9f9848078a6ab5c87cd5026bded3aace6fe11b8acb62be"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case1-source.events.bin",
+              "length": 8,
+              "sha256": "e4f9a5d1f83e82a7547f3ac4b6256355f542a84f44e0cbb4428d1e36467bf6c1"
+            }
+          }
+        },
+        {
+          "case": 2,
+          "name": "device_lost_retry_becomes_ten",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 2,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 10,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            },
+            {
+              "case": 2,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 10,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-source.state.bin",
+              "length": 8136,
+              "sha256": "beb406de2230f5bfbedc1b3f266eb3a0464987b4fe5f19587493d62797fd5173"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case2-source.events.bin",
+              "length": 24,
+              "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+            }
+          }
+        },
+        {
+          "case": 3,
+          "name": "device_lost_retry_dword_wrap",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 3,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            },
+            {
+              "case": 3,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-source.state.bin",
+              "length": 8136,
+              "sha256": "634f72c1485f41f5e5f431ce09f03ad62f6d8f26baed534830fe0d772f0888fb"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case3-source.events.bin",
+              "length": 24,
+              "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+            }
+          }
+        },
+        {
+          "case": 4,
+          "name": "device_lost_threshold_captured_focus_platform_full_recreation",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 4,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 1,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 806
+            },
+            {
+              "case": 4,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 1,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 806
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-source.state.bin",
+              "length": 8136,
+              "sha256": "9781505848e37ac1a29b14b51f142b1b6b97ca1778018e525908a6cdc03b392f"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case4-source.events.bin",
+              "length": 3224,
+              "sha256": "ea536c5f245ea7c458487a97ae07f5a6454fc2c5ee9bdee945ab4d9a4dff49aa"
+            }
+          }
+        },
+        {
+          "case": 5,
+          "name": "cooperative_success_clears_pending_before_required_reload",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 5,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            },
+            {
+              "case": 5,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-source.state.bin",
+              "length": 8136,
+              "sha256": "467c7cb5766b8343c7183ee9071932b33b2366a1d1059478d52b0df0b18649eb"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case5-source.events.bin",
+              "length": 24,
+              "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+            }
+          }
+        },
+        {
+          "case": 6,
+          "name": "device_not_reset_skips_pending_reload_fresh_platform_window_real_reset",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 6,
+              "native": 1,
+              "sleep_count": 3,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 1,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1788
+            },
+            {
+              "case": 6,
+              "native": 0,
+              "sleep_count": 3,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 1,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1788
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-source.state.bin",
+              "length": 8136,
+              "sha256": "4a2edb88c67ef562458b2b9fe10780af4d57e31d8482ede9489a1d2fa8304ab9"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case6-source.events.bin",
+              "length": 7152,
+              "sha256": "14d3581fea89ac46596ef7f207513d89b4769a7d351f0cef0a851dc80fd38fca"
+            }
+          }
+        },
+        {
+          "case": 7,
+          "name": "pending_only_real_reset_success_without_parent_cooperative_call",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 7,
+              "native": 1,
+              "sleep_count": 3,
+              "focus_count": 1,
+              "parent_cooperative_count": 0,
+              "reset_count": 1,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1784
+            },
+            {
+              "case": 7,
+              "native": 0,
+              "sleep_count": 3,
+              "focus_count": 1,
+              "parent_cooperative_count": 0,
+              "reset_count": 1,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 0,
+              "lost": 0,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1784
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-source.state.bin",
+              "length": 8136,
+              "sha256": "f67d6b715d06c8422c47ff482660a8fc42d680b640c9a430eb920a858a4b6051"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case7-source.events.bin",
+              "length": 7136,
+              "sha256": "31ed7250770eb0a53e4335b2cbd99f107a15445141f7852cdcdafec8c7b178f9"
+            }
+          }
+        },
+        {
+          "case": 8,
+          "name": "other_cooperative_hresult_late_focus_rejects_recreation",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 8,
+              "native": 1,
+              "sleep_count": 1,
+              "focus_count": 2,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 18
+            },
+            {
+              "case": 8,
+              "native": 0,
+              "sleep_count": 1,
+              "focus_count": 2,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 18
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-source.state.bin",
+              "length": 8136,
+              "sha256": "74fd74d79a20288278edb0ac0fa780589efd35bc52d1adf158fa83edd593cb89"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case8-source.events.bin",
+              "length": 72,
+              "sha256": "15c3e9e992207225335c4e860b6f0e89c3f228a95bf6517ad94bf03ffa2a1053"
+            }
+          }
+        },
+        {
+          "case": 9,
+          "name": "positive_reset_hresult_after_real_success_enters_full_recreation",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 9,
+              "native": 1,
+              "sleep_count": 3,
+              "focus_count": 2,
+              "parent_cooperative_count": 1,
+              "reset_count": 1,
+              "recreation": 1,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1922
+            },
+            {
+              "case": 9,
+              "native": 0,
+              "sleep_count": 3,
+              "focus_count": 2,
+              "parent_cooperative_count": 1,
+              "reset_count": 1,
+              "recreation": 1,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 1922
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-source.state.bin",
+              "length": 8136,
+              "sha256": "aa65556572ceb21dca72cdafbe46dbce55de28320e2b301bf7eace2d66e388f8"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case9-source.events.bin",
+              "length": 7688,
+              "sha256": "86649fd70b6b114c16182b11ef948d6bcc6b7b56beecb2e124a1bfed85e1e252"
+            }
+          }
+        },
+        {
+          "case": 10,
+          "name": "native_fh3_release_exception_optional_guard_cleanup",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 10,
+              "native": 1,
+              "sleep_count": 1,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 82,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 27
+            },
+            {
+              "case": 10,
+              "native": 0,
+              "sleep_count": 1,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 82,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 27
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-source.state.bin",
+              "length": 8136,
+              "sha256": "e7739d50857769d7d816993539115d09cc2117601bd34a9bef2a4d2fa908e295"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case10-source.events.bin",
+              "length": 108,
+              "sha256": "a8d959ea14de020a7ef47e935117bfd5cf12a0a6ab5c9c71ffc06250d46617b9"
+            }
+          }
+        },
+        {
+          "case": 11,
+          "name": "device_lost_threshold_inactive_platform",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 11,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 11,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            },
+            {
+              "case": 11,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 11,
+              "normalized_bytes": 8136,
+              "event_words": 6
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-source.state.bin",
+              "length": 8136,
+              "sha256": "b2d0d67a5bf5dc8eaed98c2647303292ae7d16c310c5092a21aabfefdc64a34b"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case11-source.events.bin",
+              "length": 24,
+              "sha256": "6e9c39752f7879aae15e5a608cc532db15af0ae9f2d6c9c442613c9940c1398f"
+            }
+          }
+        },
+        {
+          "case": 12,
+          "name": "early_focus_mismatch_has_no_sleep_or_reset",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 12,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 9
+            },
+            {
+              "case": 12,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 1,
+              "parent_cooperative_count": 1,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 9
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-source.state.bin",
+              "length": 8136,
+              "sha256": "195eae8523d8ed2ec83b1d3c1711cc99d89dde821bbcb76cea944b6027f3a27a"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case12-source.events.bin",
+              "length": 36,
+              "sha256": "cd174a352f240b57f20ea7d559993aa066393bd4a83d9950422a10d46100b798"
+            }
+          }
+        },
+        {
+          "case": 13,
+          "name": "wrong_thread_current_mode_zero_skips_leave_after_entry",
+          "status": "pass",
+          "observations": [
+            {
+              "case": 13,
+              "native": 1,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            },
+            {
+              "case": 13,
+              "native": 0,
+              "sleep_count": 0,
+              "focus_count": 0,
+              "parent_cooperative_count": 0,
+              "reset_count": 0,
+              "recreation": 0,
+              "caught": 0,
+              "pending": 1,
+              "lost": 1,
+              "retries": 0,
+              "normalized_bytes": 8136,
+              "event_words": 2
+            }
+          ],
+          "paired_captures": {
+            "state": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-original.state.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-source.state.bin",
+              "length": 8136,
+              "sha256": "b054531500606675a729213ef63aba9ae934f310f155a9ce069f58e4e1db7928"
+            },
+            "events": {
+              "original": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-original.events.bin",
+              "source": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\case13-source.events.bin",
+              "length": 8,
+              "sha256": "a4dd39dd86aac2faa310ff75ea07671e1b457f39923ba27ce9c404419593168f"
+            }
+          }
+        }
+      ],
+      "current_library_replay": {
+        "status": "pass",
+        "started_utc": "2026-09-13T06:46:21.526182+00:00",
+        "finished_utc": "2026-09-13T06:46:27.501515+00:00",
+        "root": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+        "root_head_before": "f66fd292500452abce432fc60e51b6efb343a31d",
+        "root_head_after": "f66fd292500452abce432fc60e51b6efb343a31d",
+        "mode": "probe_plus_current_three_libraries_only",
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1",
+          "-Root",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+          "-LibraryRoot",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910"
+        ],
+        "compiler_translation_units": [
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp"
+        ],
+        "linked_libraries": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib"
+        ],
+        "exit_code": 0,
+        "before_sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_reset_process.cpp": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_reset_process.hpp": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_device_recreation_actual.cpp": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_device_recreation_actual.hpp": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_extension.cpp.inc": "3b4cf2380db1b01fee6e515bf1e06940d8f6b92889a8a49e1b1750b22a8d0345",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_bytes.hpp": "0ec143e71c76f493047cb01085b4febaec1842193bf3c3d11b114f9118ba3fd7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1": "ecc59fd2f2207ef2584cc8eb62274e9653122ae4fe7893803c035d8f15078ff8",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\prepare_fixture.py": "0c41feb410bfd29a95972fe2649b597721dd119904c15b50bb2a6c8d1280c154"
+        },
+        "after_sha256": {
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_reset_process.cpp": "cffe429cb2aad4c7bbc99af11db7dbfe6dc80ec04cdf87226aedbb8fa5e0e14d",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_reset_process.hpp": "e504be1e907b9940d3238709b0b25912891a359e4a0a0f06dbc824d3146792ce",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_device_recreation_actual.cpp": "eef9c1ff2522fc0a0f6e2ea4c17eb67ee89b651f42445f62f86193aaac606473",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_device_recreation_actual.hpp": "906a48ce4998c07524af0bae8ef4d6db422eaf717a97f4ca0e2e9d9ffa9684e7",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "ddd88012ac0668de32959d531a2f07039a90297da0a7bf4263ad072a86ce4e67",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\probe.cpp": "3e4de7ba5971b6428bc2fe776c8d816d5d79f8d37f86c0ea3c2e0ed4c25cb8b7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_extension.cpp.inc": "3b4cf2380db1b01fee6e515bf1e06940d8f6b92889a8a49e1b1750b22a8d0345",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reset_bytes.hpp": "0ec143e71c76f493047cb01085b4febaec1842193bf3c3d11b114f9118ba3fd7",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\environment.hpp": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\recreation_bytes.hpp": "d34e1597d51daf9e4d0545a1562eb227b67f0bbd9b359c13e24af13c1d811533",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\run.ps1": "ecc59fd2f2207ef2584cc8eb62274e9653122ae4fe7893803c035d8f15078ff8",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\reserve_image_section.py": "dd8f56badaeb4c593a381f7223f28d2f6bfde6a22edc1718b64d7fec37ca9b2e",
+          "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\prepare_fixture.py": "0c41feb410bfd29a95972fe2649b597721dd119904c15b50bb2a6c8d1280c154"
+        },
+        "changed_pins": [],
+        "case_observations": [
+          {
+            "case": 0,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 0,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 1,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 1,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 2,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 10,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 2,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 10,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 3,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 3,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 4,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 806
+          },
+          {
+            "case": 4,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 806
+          },
+          {
+            "case": 5,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 5,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 6,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1788
+          },
+          {
+            "case": 6,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1788
+          },
+          {
+            "case": 7,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 0,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1784
+          },
+          {
+            "case": 7,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 1,
+            "parent_cooperative_count": 0,
+            "reset_count": 1,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 0,
+            "lost": 0,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1784
+          },
+          {
+            "case": 8,
+            "native": 1,
+            "sleep_count": 1,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 18
+          },
+          {
+            "case": 8,
+            "native": 0,
+            "sleep_count": 1,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 18
+          },
+          {
+            "case": 9,
+            "native": 1,
+            "sleep_count": 3,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1922
+          },
+          {
+            "case": 9,
+            "native": 0,
+            "sleep_count": 3,
+            "focus_count": 2,
+            "parent_cooperative_count": 1,
+            "reset_count": 1,
+            "recreation": 1,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 1922
+          },
+          {
+            "case": 10,
+            "native": 1,
+            "sleep_count": 1,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 82,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 27
+          },
+          {
+            "case": 10,
+            "native": 0,
+            "sleep_count": 1,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 82,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 27
+          },
+          {
+            "case": 11,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 11,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 11,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 11,
+            "normalized_bytes": 8136,
+            "event_words": 6
+          },
+          {
+            "case": 12,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 9
+          },
+          {
+            "case": 12,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 1,
+            "parent_cooperative_count": 1,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 9
+          },
+          {
+            "case": 13,
+            "native": 1,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          },
+          {
+            "case": 13,
+            "native": 0,
+            "sleep_count": 0,
+            "focus_count": 0,
+            "parent_cooperative_count": 0,
+            "reset_count": 0,
+            "recreation": 0,
+            "caught": 0,
+            "pending": 1,
+            "lost": 1,
+            "retries": 0,
+            "normalized_bytes": 8136,
+            "event_words": 2
+          }
+        ],
+        "comparisons": 14,
+        "total_normalized_state_bytes": 113904,
+        "total_event_words": 6384,
+        "log": "C:\\Users\\sqz269\\bsp-ax-renderer-reset\\current-library-final.log",
+        "log_sha256": "fd9e127dd54a389e67dab2d63fe557c53dc99061e72e6367eb3cc6705d65070d",
+        "probe_exe_sha256": "c0e0a622fec9784636e33ae13050b342146ba87392460fcffb2fdfef79a812ec"
+      },
+      "image_reservation": {
+        "input_sha256": "109f6212ab40804b31ce44d3a1d123be1c0baeb129f04c8918fc7be844370d30",
+        "output_sha256": "c0e0a622fec9784636e33ae13050b342146ba87392460fcffb2fdfef79a812ec",
+        "image_base": "00400000",
+        "section_name": ".awslot",
+        "section_rva": "00029000",
+        "virtual_size": "009d7000",
+        "inclusive_address_range": [
+          "00429000",
+          "00dfffff"
+        ],
+        "native_write_ranges": [
+          "00b10000..00b6ffff",
+          "00be0000..00beffff",
+          "00bf0000..00bfffff",
+          "00cb0000..00cbffff",
+          "00ce0000..00ceffff",
+          "00d10000..00d1ffff",
+          "00d50000..00d6ffff",
+          "00df0000..00dfffff"
+        ],
+        "raw_file_offset": 157184,
+        "raw_size": 512,
+        "characteristics": "c0000040",
+        "existing_section_bytes_unchanged": true,
+        "parent_native_bytes_unchanged": true,
+        "process_memory_mutation": "none; OS loader maps this fixture-owned image section before startup"
+      },
+      "replay_command": "python C:/Users/sqz269/bsp-ax-renderer-reset/replay.py --root J:/PROG/battlestations-pacific-decompile-orch3-20260910 --label <new-label>",
+      "direct_compiler_script": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/sqz269/bsp-ax-renderer-reset/run.ps1 -Root J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+      "explicit_source_initial_mode": "Only add -WorkerSource to run.ps1, or --worker-source to replay.py, when deliberately validating source before library registration; default compiles only probe.cpp and links current three libraries.",
+      "capture_role": "Initial worker current-library capture; current_library_replays identifies the authoritative exact merged commit validation."
+    }
+  },
+  "final_merged_validation_ax": {
+    "report": "reports/native_renderer_reset_ax_validation.json",
+    "tested_commit": "16dcc9e774a8d33eab4cb9565155d4c151bbd242",
+    "existing_ctests_passed": 2,
+    "three_current_library_only_replays_passed": true,
+    "game_validated": false
+  }
+}

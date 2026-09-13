@@ -1,0 +1,297 @@
+{
+  "packet": "orch2_native_raw_inflate_stream_az",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "complete_routine_count": 10,
+  "complete_body_bytes": 870,
+  "source": [
+    "src/native_raw_inflate_stream.cpp"
+  ],
+  "routines": [
+    {
+      "entry": "00bbbdc0",
+      "end_inclusive": "00bbbdc3",
+      "bytes": 4,
+      "sha256": "d577cc6b1b05cb0c2be7f658f60d7baf98684eeaad579cd874c21150f6dd70ab",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "open_native_raw_inflate_stream_00bbbdc0",
+      "name": "BSP_RawInflateStream_IsOpen"
+    },
+    {
+      "entry": "00bbbdd0",
+      "end_inclusive": "00bbbdd5",
+      "bytes": 6,
+      "sha256": "83fbd357367e7a31f9338401e419f053221a7291adc49979e5732ecf63914914",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "length_native_raw_inflate_stream_00bbbdd0",
+      "name": "BSP_RawInflateStream_GetLength"
+    },
+    {
+      "entry": "00bbbe10",
+      "end_inclusive": "00bbbe41",
+      "bytes": 50,
+      "sha256": "44fbaedf220800085a67c0969e10d806d0dcc905b608efbd31ada85b74183c3d",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "reset_native_raw_inflate_stream_00bbbe10",
+      "name": "BSP_RawInflateStream_ResetDecoderAndCounters"
+    },
+    {
+      "entry": "00bbbe50",
+      "end_inclusive": "00bbbe55",
+      "bytes": 6,
+      "sha256": "635c2569f0b6d1e8a5a00ce8d22ae047641a78786f0f7f311ea2c7ef031a1ea4",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "position_native_raw_inflate_stream_00bbbe50",
+      "name": "BSP_RawInflateStream_GetPosition"
+    },
+    {
+      "entry": "00bbbf00",
+      "end_inclusive": "00bbc000",
+      "bytes": 257,
+      "sha256": "61dd0e75f92566b2d8ba514893c0faf7dbf29fc755d04fb48d2f67a93e931dbb",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "refill_native_raw_inflate_stream_00bbbf00",
+      "name": "BSP_RawInflateStream_RefillOutput"
+    },
+    {
+      "entry": "00bbc060",
+      "end_inclusive": "00bbc131",
+      "bytes": 210,
+      "sha256": "a9f24e87c9f54adec80cd743a69d0ab71f44d6afecb4dc6a0cb060e1afce0072",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "seek_native_raw_inflate_stream_00bbc060",
+      "name": "BSP_RawInflateStream_Seek"
+    },
+    {
+      "entry": "00bbc140",
+      "end_inclusive": "00bbc1b5",
+      "bytes": 118,
+      "sha256": "94570804ad4861df0695ed31e04bfebc81445d9f81c2be2b5972eca6f173f06d",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "read_native_raw_inflate_stream_00bbc140",
+      "name": "BSP_RawInflateStream_Read"
+    },
+    {
+      "entry": "00bbc1c0",
+      "end_inclusive": "00bbc1c2",
+      "bytes": 3,
+      "sha256": "dbd1a662565b07272069f88faadf4327acaf51b7d14f236c84c0a9679d07cef3",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "write_native_raw_inflate_stream_00bbc1c0",
+      "name": "BSP_RawInflateStream_WriteNoop"
+    },
+    {
+      "entry": "00bbc320",
+      "end_inclusive": "00bbc3d9",
+      "bytes": 186,
+      "sha256": "fa39ded96a5501adf264511a8f061a57ca12fd12a49edcfbff017c412dca459a",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "destroy_native_raw_inflate_stream_00bbc320",
+      "name": "BSP_RawInflateStream_Destroy"
+    },
+    {
+      "entry": "00bbc3e0",
+      "end_inclusive": "00bbc3fd",
+      "bytes": 30,
+      "sha256": "a944f499cfed74a9b4906bace1fb1c5f061a052c41b7a228c5d86f770c4bc41a",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "delete_native_raw_inflate_stream_00bbc3e0",
+      "name": "CG_scalar_deleting_dtor_00bbc3e0"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bbbe16",
+      "native": "00bc9650",
+      "function": "00bbbe10",
+      "contract": "Existing stock zlib inflateReset on ECX current decoder; return ignored."
+    },
+    {
+      "address": "00bbbe2b",
+      "native": "captured current source seek table+1C; offset,zero,zero; forward EAX",
+      "function": "00bbbe10",
+      "contract": "captured current source seek table+1C; offset,zero,zero; forward EAX"
+    },
+    {
+      "address": "00bbbf67",
+      "native": "captured current source read table+24; inputbegin/request/local actual",
+      "function": "00bbbf00",
+      "contract": "captured current source read table+24; inputbegin/request/local actual"
+    },
+    {
+      "address": "00bbbfb6",
+      "native": "00bc9890",
+      "function": "00bbbf00",
+      "contract": "Existing stock zlib inflate on ECX decoder and EDX flush; preserve status and decoder reloads."
+    },
+    {
+      "address": "00bbc0c1",
+      "native": "00bbbe10",
+      "function": "00bbc060",
+      "contract": "Actual reset then reload current position; preserve incidental EAX."
+    },
+    {
+      "address": "00bbc0e4",
+      "native": "00bbbf00",
+      "function": "00bbc060",
+      "contract": "Actual refill then reload current output header."
+    },
+    {
+      "address": "00bbc168",
+      "native": "00bbbf00",
+      "function": "00bbc140",
+      "contract": "Actual refill then reload current output header."
+    },
+    {
+      "address": "00bbc185",
+      "native": "00bf7680",
+      "function": "00bbc140",
+      "contract": "Existing overlap-capable CRT byte-copy contract; source uses std::memmove."
+    },
+    {
+      "address": "00bbc357",
+      "native": "IAT CE2220 InterlockedDecrement on captured source+4",
+      "function": "00bbc320",
+      "contract": "IAT CE2220 InterlockedDecrement on captured source+4"
+    },
+    {
+      "address": "00bbc367",
+      "native": "captured source current table+0 at zero references; ECX source",
+      "function": "00bbc320",
+      "contract": "captured source current table+0 at zero references; ECX source"
+    },
+    {
+      "address": "00bbc373",
+      "native": "00bcacb0",
+      "function": "00bbc320",
+      "contract": "Existing stock zlib inflateEnd on ECX current decoder; return ignored."
+    },
+    {
+      "address": "00bbc37c",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc38e",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc394",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3a6",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3ac",
+      "native": "00bf65ac",
+      "function": "00bbc320",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bbc3c4",
+      "native": "00bd30f0",
+      "function": "00bbc320",
+      "contract": "Actual base-profile reset to CEB130 after D5C104; inlined original leaf."
+    },
+    {
+      "address": "00bbc3e3",
+      "native": "00bbc320",
+      "function": "00bbc3e0",
+      "contract": "Complete actual owner destruction before optional scalar free."
+    },
+    {
+      "address": "00bbc3f0",
+      "native": "00bf65ac",
+      "function": "00bbc3e0",
+      "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    }
+  ],
+  "storage": {
+    "owner_bytes": 52,
+    "numeric_profile": "00d64400",
+    "buffer_header_bytes": 16,
+    "buffer_fields": [
+      "begin",
+      "buffered_end",
+      "capacity_end",
+      "current_cursor"
+    ],
+    "decoder_bytes": 56
+  },
+  "eh": {
+    "function": "00bbc320",
+    "funcinfo": "00dfe930",
+    "unwind_map": "00dfe928",
+    "state": 0,
+    "next_state": -1,
+    "action": "00cc4b00",
+    "tail_target": "00bb86e0",
+    "contract": "Base reset only; native FH3 not executed by source exceptions."
+  },
+  "verification": {
+    "assembly_review": "primary plus independent worker; no behavior discrepancy reported",
+    "strict_build": {
+      "status": "passed",
+      "command": "$env:MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "architecture": "MSVC Win32 Release",
+      "tests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "log": "local/native-az-raw-build.log",
+      "log_sha256": "2314d48dadfa2495f4d8738a2324579988b1706f61f71cf1b5acf7b516a00a00",
+      "implementation_commit": "62e979c338724167d9af9f5b3fd4f218c77fa565",
+      "boundary": "Build started with these source changes in the working tree and completed after their commit; no compiled source changed while building. Full integrated head will be rebuilt."
+    },
+    "native_source_fixture": {
+      "status": "passed",
+      "report": "reports/native_raw_inflate_validation.json",
+      "checks": 1305,
+      "state_words": 365,
+      "source_trace_words": 854,
+      "free_events": 12,
+      "compared_output_bytes": 70087,
+      "scope": "Ten original methods plus original constructor against actual source with explicit shared stock zlib/CRT test bindings; bounded generated-payload paths."
+    }
+  },
+  "limits": [
+    "New C++ APIs; not original ABI/FH3 replacements.",
+    "Stock zlib and CRT contracts are library dependencies; no library port.",
+    "Native stack-spill aliasing, original FH3, installed archive loading and gameplay unverified."
+  ],
+  "no_ghidra_function": [],
+  "source_hashes": {
+    "include/bsp/native_raw_inflate_stream.hpp": "2bb588f4ab21a525dd3ca03197767ed6bf7ea665b8859e972af14dd099ff2ee8",
+    "src/native_raw_inflate_stream.cpp": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2",
+    "docs/NATIVE_RAW_INFLATE_STREAM.md": "85732c4a6c0435a8e0ebb4939f825641b2fe87b36757c91aea794f9f7bef8a50"
+  }
+}

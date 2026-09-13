@@ -1,0 +1,51 @@
+{
+  "repairs": [
+    {
+      "function": "0064b5f0",
+      "owner": "agent/orch6-20260912",
+      "when": "2026-09-13T06:45:28Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "0064b600",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "0064b605",
+          "gap_end_exclusive": "0064b608",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "0064b600",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "0064b605",
+            "gap_end_exclusive": "0064b608",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 0064b600 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "body_membership_audit": {
+    "decoded_but_unowned_ranges": [
+      "0064B605..0064B607"
+    ],
+    "evidence": "bsp.py ghidra proto on repaired instruction returns no containing function; adjacent original instruction is owned by the expected function. Raw bytes and full envelope remain independently verified.",
+    "scope": "Earlier gaps_remaining=0 describes restored decoded call fall-through, not complete stored function-body membership.",
+    "supported_repair_limit": "Loopback run_script_inline rejected a read-only API audit because script execution is disabled. Server configuration was not changed. No function deletion/recreation or whole-program analysis was attempted.",
+    "endpoint_response": {
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+    }
+  }
+}
