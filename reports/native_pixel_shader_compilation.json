@@ -1,0 +1,987 @@
+{
+  "packet": "orch5_native_pixel_compile",
+  "source": "src/native_pixel_shader_compilation.cpp",
+  "header": "include/bsp/native_pixel_shader_compilation.hpp",
+  "documentation": "docs/NATIVE_PIXEL_SHADER_COMPILATION.md",
+  "base_commit": "46be664b08a79f54652a2228f3ddb512cff670dd",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00b61280",
+      "end": "00b61b06",
+      "bytes": 2183,
+      "sha256": "297918958ccceeb67c13fb7757c46b5e2a6d5a67cfaa57dae08dca2ceae3d537",
+      "live_ghidra_disk_equal": true,
+      "instructions": 687,
+      "last_instruction": "00b61b04: ret 0x10",
+      "last_instruction_length": 3,
+      "gaps": [],
+      "symbol": "compile_native_pixel_shader_00b61280",
+      "original_abi": "fastcall ECX actual8h name, EDX profile; stack source/output/texcoord/color; EAX HRESULT; RET10h",
+      "coverage": "complete_normal_actual_storage_compile_usage_path_and_code_null_return_with_retained_host_failure"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b612a6",
+      "native": "00b1fef0",
+      "caller": "00b61280",
+      "instruction": "call 0xb1fef0"
+    },
+    {
+      "address": "00b612c4",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b6132b",
+      "native": "00c2e00a",
+      "caller": "00b61280",
+      "instruction": "call 0xc2e00a"
+    },
+    {
+      "address": "00b61352",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call ecx"
+    },
+    {
+      "address": "00b61358",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b6139b",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b6139e",
+      "native": "00c2e004",
+      "caller": "00b61280",
+      "instruction": "call 0xc2e004"
+    },
+    {
+      "address": "00b613c9",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b613e1",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b613f3",
+      "native": "004261a0",
+      "caller": "00b61280",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b61406",
+      "native": "004261a0",
+      "caller": "00b61280",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b6141a",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61435",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b6143c",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61459",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61460",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b6147d",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61484",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b614af",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b614c7",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b614d9",
+      "native": "004261a0",
+      "caller": "00b61280",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b614ec",
+      "native": "004261a0",
+      "caller": "00b61280",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00b61500",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b6151b",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61522",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b6153f",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61546",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61563",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b6156a",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b6158a",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61591",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b615a3",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b615aa",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b615c1",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b615de",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b615e5",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b615ee",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b615fe",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61620",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61627",
+      "native": "0041e870",
+      "caller": "00b61280",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b61670",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b6169c",
+      "native": "00469840",
+      "caller": "00b61280",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00b616ae",
+      "native": "00bf8417",
+      "caller": "00b61280",
+      "instruction": "call 0xbf8417"
+    },
+    {
+      "address": "00b616cb",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b616d2",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b616ee",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61730",
+      "native": "00469840",
+      "caller": "00b61280",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00b61749",
+      "native": "0041dd40",
+      "caller": "00b61280",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b61761",
+      "native": "00bf7680",
+      "caller": "00b61280",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b61781",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61788",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b6179b",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b617c4",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b617e6",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61808",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61884",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b618b0",
+      "native": "00469840",
+      "caller": "00b61280",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00b618c2",
+      "native": "00bf8417",
+      "caller": "00b61280",
+      "instruction": "call 0xbf8417"
+    },
+    {
+      "address": "00b618df",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b618e6",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61902",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61950",
+      "native": "00469840",
+      "caller": "00b61280",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00b61969",
+      "native": "0041dd40",
+      "caller": "00b61280",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b61981",
+      "native": "00bf7680",
+      "caller": "00b61280",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b619a7",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b619ae",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b619c1",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b619e3",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61a05",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61a27",
+      "native": "00bf9440",
+      "caller": "00b61280",
+      "instruction": "call 0xbf9440"
+    },
+    {
+      "address": "00b61a79",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61a80",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61a9c",
+      "native": "00419cc0",
+      "caller": "00b61280",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b61aa3",
+      "native": "00bd1510",
+      "caller": "00b61280",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b61ab9",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b61ad4",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b61aec",
+      "native": "00b61280+indirect",
+      "caller": "00b61280",
+      "instruction": "call edx"
+    }
+  ],
+  "no_ghidra_function": [],
+  "callers": [
+    {
+      "address": "00b3b6c1",
+      "native": "00b61280",
+      "caller": "00b3b3c0",
+      "arguments": "ECX actual name, EDX descriptor40 profile, source builder50, stack shader output, separate zeroed TEXCOORD10/COLOR2"
+    },
+    {
+      "address": "00b3be30",
+      "native": "00b61280",
+      "caller": "00b3b3c0",
+      "arguments": "ECX builder9C actual name, EDX descriptor40 profile; source builder50/output; BOTH mask pointers same stack DWORD initialized500"
+    }
+  ],
+  "resolved_indirect_calls": [
+    {
+      "site": "00b61352",
+      "binding": "actual code COM GetBufferPointer slot0C; device table captured before call"
+    },
+    {
+      "site": "00b61358",
+      "binding": "actual captured device current slot1A8 reloaded after GetBufferPointer; CreatePixelShader 3stdcall arguments"
+    },
+    {
+      "site": "00b6139b",
+      "binding": "actual code COM GetBufferPointer slot0C; before D3DXDisassembleShader4stdcall arguments"
+    },
+    {
+      "site": "00b6141a",
+      "binding": "captured manager current slot04 open_manager_entry BDF310; actual path and flags35"
+    },
+    {
+      "site": "00b61500",
+      "binding": "same open call in psa2 branch"
+    },
+    {
+      "site": "00b615a3",
+      "binding": "actual disassembly COM GetBufferPointer slot0C"
+    },
+    {
+      "site": "00b615c1",
+      "binding": "actual stream current slot5C numeric BE4430; actual string/null count; reuses current28 BF4F50 physical writer"
+    },
+    {
+      "site": "00b615ee",
+      "binding": "IAT CE2220 actual InterlockedDecrement stream04"
+    },
+    {
+      "site": "00b615fe",
+      "binding": "actual stream current slot00 via same VFS canonical zero_reference; D691B0 -> BF55A0 physical recycle"
+    },
+    {
+      "site": "00b61620",
+      "binding": "actual disassembly COM GetBufferPointer after live sentinel reread"
+    },
+    {
+      "site": "00b61ab9",
+      "binding": "actual disassembly COM Release slot08"
+    },
+    {
+      "site": "00b61ad4",
+      "binding": "actual code COM Release slot08"
+    },
+    {
+      "site": "00b61aec",
+      "binding": "actual messages COM Release slot08"
+    }
+  ],
+  "dependencies": {
+    "reused_unchanged": [
+      "native vertex diagnostic BE4430/BF4F50 writers",
+      "B1FEF0 actual renderer getter",
+      "actual pooled substring00469840",
+      "actual string constructor0041E870/resize0041DD40/concat004261A0",
+      "NativeVfsRuntimeBindings canonical physical open/write retirement",
+      "actual native string-pool storage/lifetime"
+    ],
+    "library_boundaries": [
+      "CRT strstr BF9440; two cdecl arguments ADD ESP8",
+      "CRT atol BF8417; one cdecl argument ADD ESP4; Win32 long32",
+      "CRT memcpy BF7680; three cdecl arguments ADD ESP0C",
+      "D3DXCompileShader C2E00A actual10stdcall arguments",
+      "D3DXDisassembleShader C2E004 actual4stdcall arguments",
+      "actual D3D9 COM and Win32 imports"
+    ],
+    "not_implemented": [
+      "native outer FH3 ABI/unwind",
+      "invalid disassembly/output/mask memory behavior",
+      "unqualified arbitrary stream write targets",
+      "full source generation/B3B3C0 continuation/cache/gameplay"
+    ]
+  },
+  "ordering_evidence": [
+    "B612A6 capture device before flags/source length/D3DX",
+    "B61345 capture device table; B61352 GetBufferPointer; B61354 load current capturedslot1A8; B61358 CreatePixelShader",
+    "B6139E disassembly HRESULT replaces creation HRESULT",
+    "B613A3 capture VFS manager before strings; B613B4 texcoord[0] suffix selection",
+    "B615E5 text cleanup then B615EE decrement/B615FE terminal then B61607 independent texcoord[0] parser sentinel",
+    "B61751 capture line data before B61788 substring release; B6197A/B6198B capture before B619AE release",
+    "B61859 captured full data EDI persists across B61A80 line cleanup into B61AA3 full release"
+  ],
+  "validation": {
+    "build": "PASS default registered MSVC Win32 Release scripts/build.ps1 /W4 /WX and existing CTests; see pinned log",
+    "fixture": "PASS one original-instruction/source executable using installed D3DX9_40/HAL/actual VFS and pooled strings; bytecode/diagnostic files/masks/allocation traces agree for six cases; source retained failure and guard exit77",
+    "report_calls": "PASS66 numeric rows:64 body direct calls and2 caller rows;13 indirect rows separately documented, not mechanically resolved",
+    "default_registration": {
+      "before_sha256": "45128ffc878b767701a3e955c3e10d6c918071740fa4dfdd13ce2d9573b82530",
+      "after_sha256": "0c59ce9c349741b25fa8cc55e1bb8e06b2cda2ccd5e867ebb7a23a60971a7e06",
+      "lease_check": "unleased under lease transaction"
+    },
+    "native_bytes_matched": 2384,
+    "native_instructions": 687,
+    "native_code_gaps": [],
+    "fixture_output": "PASS original/source B61280: 6 actual D3DX9_40/HAL/VFS cases; bytecode, diagnostic bytes, masks and pooled allocation/release traces equal. Flags1400/shore0/case-sensitive names, psa1/psa2, post-cleanup sentinel changes, missing usage pointer, code-null messages, created shader and failed text acquisitions retained; one-shot replay rejected. Diagnostic 312 bytes.",
+    "retained_failure_guard": "PASS retained-failure destruction guard exit77",
+    "seed_check": "verify-seeds live/disk match; pinned local/pixel-seeds.log",
+    "fixture_limits": "minimal HLSL; original B61280 directCALL operands rebound to installed imports or existing actual-string/VFS services, four native table slots callable only during original leg; shared dependency implementations; no outer native FH3 unwind or installed material/gameplay claim",
+    "fixture_instruction_pin": {
+      "captured_bodies_match_live_disk": true,
+      "direct_call_operand_sites": [
+        "00b612a6",
+        "00b612c4",
+        "00b6132b",
+        "00b6139e",
+        "00b613c9",
+        "00b613e1",
+        "00b613f3",
+        "00b61406",
+        "00b61435",
+        "00b6143c",
+        "00b61459",
+        "00b61460",
+        "00b6147d",
+        "00b61484",
+        "00b614af",
+        "00b614c7",
+        "00b614d9",
+        "00b614ec",
+        "00b6151b",
+        "00b61522",
+        "00b6153f",
+        "00b61546",
+        "00b61563",
+        "00b6156a",
+        "00b6158a",
+        "00b61591",
+        "00b615aa",
+        "00b615de",
+        "00b615e5",
+        "00b61627",
+        "00b61670",
+        "00b6169c",
+        "00b616ae",
+        "00b616cb",
+        "00b616d2",
+        "00b616ee",
+        "00b61730",
+        "00b61749",
+        "00b61761",
+        "00b61781",
+        "00b61788",
+        "00b6179b",
+        "00b617c4",
+        "00b617e6",
+        "00b61808",
+        "00b61884",
+        "00b618b0",
+        "00b618c2",
+        "00b618df",
+        "00b618e6",
+        "00b61902",
+        "00b61950",
+        "00b61969",
+        "00b61981",
+        "00b619a7",
+        "00b619ae",
+        "00b619c1",
+        "00b619e3",
+        "00b61a05",
+        "00b61a27",
+        "00b61a79",
+        "00b61a80",
+        "00b61a9c",
+        "00b61aa3"
+      ],
+      "changed_bytes": 256,
+      "only_allowed_call_operands_changed": true,
+      "internal_branches_and_other_bytes_unchanged": true
+    }
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_pixel_shader_compilation.hpp",
+      "bytes": 4168,
+      "sha256": "8c24bb21c313bdc76c72059e68bd7a788d4dab4c41ee9c93cc72839d3a8a1094"
+    },
+    {
+      "path": "src/native_pixel_shader_compilation.cpp",
+      "bytes": 13173,
+      "sha256": "b53f88abc20b8891fbca656f5484d8eb3b99311e71a12cb1fb30f061e0008e47"
+    },
+    {
+      "path": "docs/NATIVE_PIXEL_SHADER_COMPILATION.md",
+      "bytes": 8186,
+      "sha256": "f31f69999d8b7a7f0a2e3a1aeb803dd65b6f6db48e2f2b19bc3c0dd1d7cdacca"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 99110,
+      "sha256": "0c59ce9c349741b25fa8cc55e1bb8e06b2cda2ccd5e867ebb7a23a60971a7e06"
+    },
+    {
+      "path": "local/pixel-byte-audit.json",
+      "bytes": 12837,
+      "sha256": "c4cd56f26e5977a41da042e158a9d99902fc08846c221700d9ceee28912f35b2"
+    },
+    {
+      "path": "local/pixel-native-bytes.txt",
+      "bytes": 10513,
+      "sha256": "e90d2659ce19dbefc2ffff1060569e144397710dcf5ad92b4a0195ef0b2406fd"
+    },
+    {
+      "path": "local/pixel-string-write-bytes.txt",
+      "bytes": 195,
+      "sha256": "7654efa3ad447d1d51c3b15420ca6feacdbfe35263451f8607e526e093874c50"
+    },
+    {
+      "path": "local/pixel-physical-write-bytes.txt",
+      "bytes": 272,
+      "sha256": "c4ce2d0e1bcd72c28de11b4f51840704afdcc95597a7d98be5a664b72f515ff5"
+    },
+    {
+      "path": "local/pixel-device-getter-bytes.txt",
+      "bytes": 41,
+      "sha256": "e545de402c70014ce8028c562c73dd3b8128bacff7b7687cdc5838416d0c1de8"
+    },
+    {
+      "path": "local/pixel-physical-profile-bytes.txt",
+      "bytes": 491,
+      "sha256": "1dd4a0fbe4bf5d861a1b54095f59e65f17839db72af42e3e8c9ee2fc66b112bb"
+    },
+    {
+      "path": "local/pixel-live-assembly.txt",
+      "bytes": 20087,
+      "sha256": "9b4b14dafd834c7aedd96553eb25d206435d35f3399d5a380c70fcaaa27b326d"
+    },
+    {
+      "path": "local/pixel-callers.txt",
+      "bytes": 50,
+      "sha256": "3bde23fe8d3b4aaa272ecea793eaecb70e493d9e48852ca1f7e5f2a03568d9a3"
+    },
+    {
+      "path": "local/pixel-seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/pixel-registration.json",
+      "bytes": 234,
+      "sha256": "ed2e15a6e5c9852d4ab4c8371e84f6137413c16b0582a8c2b341819154fd614c"
+    },
+    {
+      "path": "local/native_pixel_probe.cpp",
+      "bytes": 21279,
+      "sha256": "56e68da97c0f5832f49646a63ab03a0ffe13d09d3cd335a4281fe4eb7b61794f"
+    },
+    {
+      "path": "local/run_native_pixel_probe.ps1",
+      "bytes": 1669,
+      "sha256": "df55c68595b15f317ab254cdf22d34c8d55b35107328e929d880b0349863dcf9"
+    },
+    {
+      "path": "local/pixel_main.txt",
+      "bytes": 7122,
+      "sha256": "ed2987e94ab4a1bb9d92afc1c72850dc491f5d30c171b5af638acc8b2957cf1f"
+    },
+    {
+      "path": "local/prepare_pixel.py",
+      "bytes": 5266,
+      "sha256": "3b36613a5561b7d97b69a7729133473f9569592c97bb744a959060728b1315aa"
+    },
+    {
+      "path": "local/pixel_evidence.py",
+      "bytes": 2634,
+      "sha256": "4884930accecf87e26d0aa63b12eceab474768ce7441ee4b2d791c63bc8071ba"
+    },
+    {
+      "path": "local/pixel_report.py",
+      "bytes": 4555,
+      "sha256": "3825953615d56e74c4d65ca988f77ab30a6e9974fdf59931f82c7461c36a5749"
+    },
+    {
+      "path": "local/finalize_pixel.py",
+      "bytes": 6375,
+      "sha256": "f7506445665517dcd1d53c24eee1cda002f7f2f3b9c410c545d204b42c204c77"
+    },
+    {
+      "path": "local/register_pixel.py",
+      "bytes": 983,
+      "sha256": "6bb1b4455b883db74b81825b83c7f3d58a5d54181316011b31ad47d8e6189c49"
+    },
+    {
+      "path": "local/pixel_precompile.ps1",
+      "bytes": 1172,
+      "sha256": "369f22b678bb693d7e5f058615463c4b75b1263e2c05e0fad38b7a5c65b5e800"
+    },
+    {
+      "path": "local/pixel-precompile.log",
+      "bytes": 37,
+      "sha256": "520e3f0bdd26efeef46609167d324ddc49cd141515287f08089f44391d69d799"
+    },
+    {
+      "path": "local/pixel-probe-precompile.log",
+      "bytes": 24,
+      "sha256": "982b6a41068abbc6ea37190ad4a3caefb67c287bc627c84947270cdeb5f2ad8f"
+    },
+    {
+      "path": "local/pixel-build.log",
+      "bytes": 4348,
+      "sha256": "af13629256bfab0e5b2f8a3ac96a8db11d72e192464ba485240573b6495a9d4b"
+    },
+    {
+      "path": "local/pixel-call-check.log",
+      "bytes": 1076,
+      "sha256": "2e3a33c30af06247c17f79569dc8ab8b4ddea4118b22327a761dce0adbfc22f3"
+    },
+    {
+      "path": "local/pixel-probe-compile.log",
+      "bytes": 24,
+      "sha256": "982b6a41068abbc6ea37190ad4a3caefb67c287bc627c84947270cdeb5f2ad8f"
+    },
+    {
+      "path": "local/pixel-probe.log",
+      "bytes": 367,
+      "sha256": "0b8369ac5cd71bd3a3eebef310d4897c7054d6076e5cb8dfc5febe7147bdc9f0"
+    },
+    {
+      "path": "local/pixel-retained-failure.log",
+      "bytes": 48,
+      "sha256": "4ed743196c63ae5f0e336e8a20a37b5da3f578e4a64f29f9b1233d733fa8a41b"
+    },
+    {
+      "path": "local/native_pixel_probe.exe",
+      "bytes": 118784,
+      "sha256": "a5f2aa23642863f01d610509b3142f6c9e0c51273cf29951562919eb55d29c9a"
+    },
+    {
+      "path": "local/pixel-original-linked.bin",
+      "bytes": 2183,
+      "sha256": "f61ac38645e8731a6de44e801d3146e6645ec279a5c0c1ba508cd5d0c35ee00a"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55116018,
+      "sha256": "d6a6891724ef21f4450cb1d24c51e7996541911de2165708b50576d60d04104a"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455580,
+      "sha256": "f593bcf293f46f5882c61c604a5213c867bb7dfd515bfadc19dc952e421f056d"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72026,
+      "sha256": "4709646cda2b86283162b529a2e1defb48b8b9c43d174c14ed2eed99c558c529"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_pixel_shader_compilation.obj",
+      "bytes": 25670,
+      "sha256": "46b04d26d95d678a12167679dc7cce6d8093edb2f4c494cd5620553580754be0"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/d3dx9_40.dll",
+      "bytes": 4379984,
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+    },
+    {
+      "path": "local/pixel-original-00b61280.bin",
+      "bytes": 2183,
+      "sha256": "297918958ccceeb67c13fb7757c46b5e2a6d5a67cfaa57dae08dca2ceae3d537"
+    },
+    {
+      "path": "local/pixel-original-00be4430.bin",
+      "bytes": 39,
+      "sha256": "42eab1bcbab42564300bdc5265569ce49ca215284f85035f4ca1d2408598d3b1"
+    },
+    {
+      "path": "local/pixel-original-00bf4f50.bin",
+      "bytes": 55,
+      "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a"
+    },
+    {
+      "path": "local/pixel-original-00b1fef0.bin",
+      "bytes": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6"
+    },
+    {
+      "path": "local/native_vertex_probe.cpp",
+      "bytes": 17485,
+      "sha256": "b4ddb66f31ee3112a7307160377e72fdaf80e324470ab805843ea96f091d86b0"
+    },
+    {
+      "path": "local/run_native_vertex_probe.ps1",
+      "bytes": 1344,
+      "sha256": "e93ffdea90d003963b2442e7ac3c66bae95751766afd7c0636c2b41c32e1d700"
+    },
+    {
+      "path": "local/vertex_evidence.py",
+      "bytes": 2625,
+      "sha256": "aed5bfbc5b1584eafdc995ccbee7bbd154b3297647ea95553c487a0bf4ce15a9"
+    },
+    {
+      "path": "local/register_vertex.py",
+      "bytes": 971,
+      "sha256": "0fdc39f63a2470a310288f22b59059f999bdf0e5959ebfcebb14ad69d46a0bd9"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/pixel-vfs/shaderfx/debug/pixel_fixture.psa1",
+      "bytes": 312,
+      "sha256": "8b4600263fde9462447df789053358f3a8f40e62ed5a2b832083867e042fd556"
+    },
+    {
+      "path": "local/pixel-vfs/shaderfx/debug/pixel_fixture.psa2",
+      "bytes": 312,
+      "sha256": "8b4600263fde9462447df789053358f3a8f40e62ed5a2b832083867e042fd556"
+    },
+    {
+      "path": "local/pixel-vfs/shaderfx/debug/pixel_partial.psa1",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/pixel-vfs/shaderfx/debug/pixel_shore_fixture.psa1",
+      "bytes": 312,
+      "sha256": "8b4600263fde9462447df789053358f3a8f40e62ed5a2b832083867e042fd556"
+    }
+  ],
+  "additional_byte_evidence": [
+    {
+      "address": "00be4430",
+      "end": "00be4456",
+      "bytes": 39,
+      "sha256": "42eab1bcbab42564300bdc5265569ce49ca215284f85035f4ca1d2408598d3b1",
+      "live_ghidra_disk_equal": true,
+      "instructions": 18,
+      "last_instruction": "00be4454: ret 8",
+      "last_instruction_length": 3,
+      "gaps": []
+    },
+    {
+      "address": "00bf4f50",
+      "end": "00bf4f86",
+      "bytes": 55,
+      "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a",
+      "live_ghidra_disk_equal": true,
+      "instructions": 21,
+      "last_instruction": "00bf4f84: ret 0xc",
+      "last_instruction_length": 3,
+      "gaps": []
+    },
+    {
+      "address": "00b1fef0",
+      "end": "00b1fef6",
+      "bytes": 7,
+      "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+      "live_ghidra_disk_equal": true,
+      "instructions": 2,
+      "last_instruction": "00b1fef6: ret ",
+      "last_instruction_length": 1,
+      "gaps": []
+    },
+    {
+      "address": "00d691b0",
+      "end": "00d69213",
+      "bytes": 100,
+      "sha256": "cfa3eedf09c6696f0fc2ddd097812d378f8159a75c7eecca584a3d0e235940ce",
+      "live_ghidra_disk_equal": true
+    }
+  ],
+  "fixture_callable_table_slots": {
+    "00d685b4+04": "existing BDF310 open bridge",
+    "00d691b0+00": "existing BF55A0 physical recycle bridge",
+    "00d691b0+5c": "copied original BE4430",
+    "00d691b0+28": "copied original BF4F50",
+    "restoration": "all four original numeric values restored before each source leg"
+  }
+}
