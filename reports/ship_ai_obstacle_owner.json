@@ -1,0 +1,656 @@
+{
+  "packet": "orch6_obstacle_owner_l",
+  "base": "4c97c137",
+  "status": "partial constructor field projection; complete normal-path native store map; Win32 and bounded original-byte field proof passed",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/ship_ai_obstacle_owner.cpp",
+  "header": "include/bsp/ship_ai_obstacle_owner.hpp",
+  "documentation": "docs/SHIP_AI_OBSTACLE_OWNER.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009E52E0",
+      "native": "009E52E0",
+      "end_inclusive": "009E53A5",
+      "instructions": 55,
+      "name": "BSP_ShipAi_ObstacleNodeConstruct",
+      "name_is_hypothesis": true,
+      "cpp_symbol": "ship_ai_obstacle_owner_initialize_projection_009e52e0",
+      "original_abi": "ECX=90h destination; stack owner,controller,lifetime; EAX=destination; RET0Ch at009E53A3",
+      "coverage": "partial: only14,68,69,78,80,84,88 fields projected; native observer prefix/registration,10,18,1C,70,74,75,7C,8C and EH not implemented",
+      "normal_native_body_read": "complete55 instructions; all stores and sole call inspected"
+    }
+  ],
+  "calls": [
+    {
+      "address": "009E532D",
+      "native": "00694A60",
+      "function": "009E52E0",
+      "binding": "not in semantic projection; existing register_observer_pair_00694a60 over actual NativeObserverOwnerStorage and NativeObserverLifetime",
+      "contract": "ECX observed first endpoint,EDX node callback owner,RET; shared lock and edge find/create/increment; before controller and validity stores"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "009F0E53",
+      "native": "009E52E0",
+      "function": "009F0D20",
+      "body": "009F0D20..009F0E83",
+      "arguments": "ECX allocation; push lifetime fromESP20 thenESI controller thenEBP observed owner; RET0Ch"
+    }
+  ],
+  "context_calls": [
+    {
+      "address": "009F0DC8",
+      "native": "00424C40",
+      "function": "009F0D20",
+      "contract": "settings+194 lifetime producer read after singleton"
+    },
+    {
+      "address": "009F0E2F",
+      "native": "00BF681B",
+      "function": "009F0D20",
+      "contract": "original operator new(90h),ADDESP4; constructor skipped on null return"
+    },
+    {
+      "address": "009F0EC0",
+      "native": "00414DB0",
+      "function": "009F0EA0",
+      "contract": "self cached pose refresh; existing game service, not reconstructed here"
+    },
+    {
+      "address": "009F0F38",
+      "native": "00BF7030",
+      "function": "009F0EA0",
+      "contract": "self velocity magnitude ST0 sqrt; existing recovered service, prologue not projected here"
+    },
+    {
+      "address": "009F0F62",
+      "native": "00424C40",
+      "function": "009F0EA0",
+      "contract": "settings+1B8 self velocity floor producer"
+    },
+    {
+      "address": "009F104D",
+      "native": "009EAE20",
+      "function": "009F0EA0",
+      "contract": "existing near refresh before filter and avoid; reads no stack input,RET4"
+    },
+    {
+      "address": "009F1067",
+      "native": "0080E160",
+      "function": "009F0EA0",
+      "contract": "self class getter for actual +241 filter byte"
+    },
+    {
+      "address": "009F1075",
+      "native": "00424C40",
+      "function": "009F0EA0",
+      "contract": "stored settings+4 filter gate"
+    },
+    {
+      "address": "009F10FF",
+      "native": "009EAFC0",
+      "function": "009F0EA0",
+      "contract": "existing avoid refresh with nine stackdwords,RET24h"
+    },
+    {
+      "address": "009F1121",
+      "native": "0064A610",
+      "function": "009F0EA0",
+      "contract": "native expiration destructor boundary; body not recovered by this packet"
+    },
+    {
+      "address": "009F1127",
+      "native": "00BF65AC",
+      "function": "009F0EA0",
+      "contract": "native expiration free,ADDESP4; not executed by semantic ageing helper"
+    }
+  ],
+  "reused_callee": {
+    "address": "00694A60",
+    "native": "00694A60",
+    "end_inclusive": "00694AE6",
+    "source": "src/observer_edges.cpp",
+    "coverage": "already reconstructed; no new implementation or annotation",
+    "actual_types": "NativeObserverOwnerStorage,NativeObserverLifetime; semantic node is not raw prefix alias"
+  },
+  "constructor_stores": [
+    {
+      "address": "009E52FC",
+      "offset": "04",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "observer array data",
+      "represented": false
+    },
+    {
+      "address": "009E52FF",
+      "offset": "08",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "observer count",
+      "represented": false
+    },
+    {
+      "address": "009E5302",
+      "offset": "0C",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "observer capacity",
+      "represented": false
+    },
+    {
+      "address": "009E530A",
+      "offset": "14",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "owner initial clear; final value projected",
+      "represented": true
+    },
+    {
+      "address": "009E530D",
+      "offset": "10",
+      "bytes": 1,
+      "value": "1",
+      "evidence": "uninterpreted constructor byte",
+      "represented": false
+    },
+    {
+      "address": "009E5311",
+      "offset": "00",
+      "bytes": 4,
+      "value": "00CF5C94",
+      "evidence": "native vtable identity",
+      "represented": false
+    },
+    {
+      "address": "009E5321",
+      "offset": "18",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "uninterpreted dword; NOT controller",
+      "represented": false
+    },
+    {
+      "address": "009E532A",
+      "offset": "14",
+      "bytes": 4,
+      "value": "nonnull owner",
+      "evidence": "before observer registration",
+      "represented": true
+    },
+    {
+      "address": "009E5338",
+      "offset": "1C",
+      "bytes": 4,
+      "value": "controller argument",
+      "evidence": "after observer registration",
+      "represented": false
+    },
+    {
+      "address": "009E5359",
+      "offset": "78",
+      "bytes": 4,
+      "value": "owner ? lifetime bits : BF800000",
+      "evidence": "no arithmetic",
+      "represented": true
+    },
+    {
+      "address": "009E5361",
+      "offset": "69",
+      "bytes": 1,
+      "value": "0",
+      "evidence": "no-arc gate",
+      "represented": true
+    },
+    {
+      "address": "009E5364",
+      "offset": "88",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "pass side",
+      "represented": true
+    },
+    {
+      "address": "009E536A",
+      "offset": "75",
+      "bytes": 1,
+      "value": "0",
+      "evidence": "uninterpreted byte",
+      "represented": false
+    },
+    {
+      "address": "009E536D",
+      "offset": "8C",
+      "bytes": 4,
+      "value": "0",
+      "evidence": "uninterpreted dword",
+      "represented": false
+    },
+    {
+      "address": "009E5373",
+      "offset": "74",
+      "bytes": 1,
+      "value": "0",
+      "evidence": "uninterpreted byte",
+      "represented": false
+    },
+    {
+      "address": "009E5377",
+      "offset": "68",
+      "bytes": 1,
+      "value": "1",
+      "evidence": "no-pose gate",
+      "represented": true
+    },
+    {
+      "address": "009E537B",
+      "offset": "7C",
+      "bytes": 4,
+      "value": "00000000",
+      "evidence": "positive zero float word",
+      "represented": false
+    },
+    {
+      "address": "009E5380",
+      "offset": "84",
+      "bytes": 4,
+      "value": "C47A0000",
+      "evidence": "cached minimum Y=-1000",
+      "represented": true
+    },
+    {
+      "address": "009E5388",
+      "offset": "80",
+      "bytes": 4,
+      "value": "C47A0000",
+      "evidence": "cached maximum Y=-1000",
+      "represented": true
+    },
+    {
+      "address": "009E5390",
+      "offset": "70",
+      "bytes": 4,
+      "value": "00000000",
+      "evidence": "positive zero float word",
+      "represented": false
+    }
+  ],
+  "constructor_untouched": {
+    "bytes": 83,
+    "ranges": [
+      "11..13",
+      "20..67",
+      "6A..6F",
+      "76..77"
+    ],
+    "caveat": "normal body excludes side effects inside observer registration; no invented allocation fill"
+  },
+  "source_projection": {
+    "native_bytes": 22,
+    "types": [
+      "ShipAiObstacleNode",
+      "ShipAiNeighbourNodeMotion"
+    ],
+    "fields": [
+      "owner",
+      "lifetime_78",
+      "no_arc_69",
+      "pass_side_88",
+      "no_pose_68",
+      "bounds_min_y_84",
+      "bounds_max_y_80"
+    ],
+    "preserves": "all other semantic fields and padding; both headings, complete geometry, owner_gone_5e",
+    "excludes": "raw observer storage/registration and native allocation/controller/unrepresented tail writes, exception cleanup and destructor",
+    "owner_gone": "belongs to observed unit+5E, never initialized by node constructor"
+  },
+  "validity_writers": [
+    {
+      "function": "009E52E0",
+      "stores": [
+        "009E5361:69=0",
+        "009E5377:68=1"
+      ]
+    },
+    {
+      "function": "009F0EA0",
+      "stores": [
+        "009F110A:68=1 for surviving null/deleted owner;69 unchanged"
+      ],
+      "ordering": "age first, live survivor near009F104D, filter009F1052..009F109B, avoid009F10FF, then compact"
+    },
+    {
+      "function": "009EAE20",
+      "stores": [],
+      "evidence": "near refresh never writes68/69, even on its owner-gone return"
+    },
+    {
+      "function": "009EAFC0",
+      "stores": [
+        "009EAFDB:68=1 then009EAFDE:69=1 for owner gone",
+        "009EB040:69=(argument lowbyte==0)",
+        "009EB619:68=1 on strict ordered vertical separation",
+        "009EB076:68=0 after vertical acceptance/settings lookup",
+        "009EB2C5:68=1 on shrink rejection before near copy"
+      ],
+      "no_model": "keep cached80/84 unchanged; constructor seeds-1000; no substitute model box",
+      "vertical_rejection": "copy near center,avoid extents1,restore cachedY-1000; axes/headings unchanged"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "registration site009E5300",
+      "evidence": "whole constructor assembly and live call gate",
+      "is": "009E532D"
+    },
+    {
+      "was": "vtable store009E5310",
+      "evidence": "MOV DWORD[ESI],00CF5C94",
+      "is": "009E5311"
+    },
+    {
+      "was": "controller argument atnode18",
+      "evidence": "009E5321 and009E5338",
+      "is": "controller at1C;18 zero"
+    },
+    {
+      "was": "semantic default flagsfalse/false represent fresh native node",
+      "evidence": "009E5361,009E5377;83byte untouched mask",
+      "is": "native seeds68=1,69=0 and leaves geometry untouched"
+    },
+    {
+      "was": "existing shrink C++ if(!(shrink>0)) matches every native branch",
+      "evidence": "009EB2B5 FCOMIP0,shrink;009EB2B7 JC009EB308 versus src/ship_ai_neighbour_box.cpp",
+      "ownership": "external limitation sent to root; no edit under this packet",
+      "is": "finite case agrees; nativeJC also proceeds when unordered, while source sets68 forNaN"
+    }
+  ],
+  "next_binding": {
+    "status": "pending actual producers; root retains point predicates unbound",
+    "observed": "actual owner/deleted byte, heading, body speed, pose cache/world position, full hull extents, model/world bounds, world velocity, reference speed and commanded yaw",
+    "self_prologue": "009F0EA0 actual position, world velocity virtual34, native magnitude/epsilon and class500*settings1B8 floor, length*actual widened0.55f, unreadbeam*0.75, cached controller1BC/1C0 Y bounds",
+    "filter": "after near: controller3F0,observed54,self class241,storedsettings4; lowbyte delivered asarg8",
+    "settings": [
+      "1A8 near",
+      "1A0",
+      "1A4",
+      "1AC",
+      "1B0",
+      "1B4",
+      "1BC",
+      "1C0",
+      "1C4",
+      "1D0"
+    ],
+    "order": "construct once, retain state, age, fetch actual owner validity, near, filter, avoid, compact, then sectors",
+    "current_source": "base4c97c137 host calls semantic ageing/compaction only and records admission boundary; no live frame claim"
+  },
+  "flow_verification": [
+    {
+      "address": "009E52E0",
+      "instructions": 55,
+      "gaps": 0,
+      "calls": 1
+    },
+    {
+      "address": "00694A60",
+      "instructions": 43,
+      "gaps": 0
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "native_fixture": {
+    "source": "local/obstacle_owner_probe.cpp",
+    "prepare": "local/prepare_obstacle_owner_probe.py",
+    "build": "local/build_obstacle_owner_probe.cmd",
+    "log": "local/obstacle_owner_probe.log",
+    "manifest": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "address": "009E52E0",
+      "end_inclusive": "009E53A5",
+      "bytes": 198,
+      "instructions": 55,
+      "live_equals_installed": true,
+      "original_sha256": "8da51e539768bb126d39994011f6aad208b29dd3a54e09c7bb2965e8408e84ba",
+      "image_sha256": "9eee1a0afd317a6cda7c04a72e70503f971c9bfb75723b0a132787c3b187e54c",
+      "data_patches": [
+        {
+          "address": "009E5345",
+          "native_data": "00D7A260",
+          "offset": 105,
+          "image_data_offset": 256
+        },
+        {
+          "address": "009E534D",
+          "native_data": "00D7A240",
+          "offset": 113,
+          "image_data_offset": 260
+        }
+      ],
+      "call_patch": {
+        "address": "009E532D",
+        "native": "00694A60",
+        "offset": 78
+      },
+      "boundaries": "00694A60 patched to fixture registration spy, no edge allocation/registration/destruction executed; absolute vtable/SEH handler words retained as identities; no exception dispatch exercised"
+    },
+    "cases": 5,
+    "failures": 0,
+    "native_constructor_bytes": 198,
+    "projected_compared_bytes": 110,
+    "coverage": "null owner and nonnull finite,-0,NaNpayload,negative lifetime; all61 native-written and83 untouched bytes;22 projected bytes percase; preserved semantic bytes",
+    "native_call_boundary": "00694A60 patched to fixture spy only; verifies ECX/EDX and assignment ordering, performs no registration",
+    "checks": [
+      "nativeEAX destination",
+      "FS:[0] restored",
+      "x87TOP balanced",
+      "pointer identities before record canonicalization"
+    ],
+    "pointer_record_normalization": "owner pointers become0/1 in projected and full-native records; controller pointer becomes1 in full-native records only after actual identity check",
+    "exclusions": [
+      "actual observer edge allocation/registration/locking/destruction",
+      "SEH dispatch/unwind",
+      "unrepresented field projection",
+      "full near/avoid refresh",
+      "runtime/gameplay"
+    ]
+  },
+  "validation": {
+    "win32_release": "passed",
+    "ctest": "2/2 existing tests passed",
+    "new_tracked_tests": 0,
+    "native_fixture": "5/5 cases and110/110 projected bytes equal",
+    "call_gate": "reports/ship_ai_obstacle_owner.json: 14 call rows checked, 0 failed"
+  },
+  "reproduction": [
+    "./scripts/build.ps1",
+    "python local/prepare_obstacle_owner_probe.py",
+    "cmd /c local\\build_obstacle_owner_probe.cmd",
+    "./local/obstacle_owner_probe.exe",
+    "python tools/verify_report_calls.py reports/ship_ai_obstacle_owner.json"
+  ],
+  "artifacts": [
+    {
+      "path": "local/build_obstacle_owner_probe.cmd",
+      "bytes": 348,
+      "sha256": "2d5dbbcf8276cc7624c97a4bfa9daf4f265d5d0008a4a10c35b848fc2474f0ea"
+    },
+    {
+      "path": "local/obstacle_owner_add.asm",
+      "bytes": 3270,
+      "sha256": "9b9c8c24c1b8379af97767d1ece7e48f8d5bb50623de339678028693d3f1b39f"
+    },
+    {
+      "path": "local/obstacle_owner_avoid_refresh.asm",
+      "bytes": 16126,
+      "sha256": "b0011754cd887c33c178d5948c37492908807e9ee0433e81587fd99917d29bac"
+    },
+    {
+      "path": "local/obstacle_owner_build.log",
+      "bytes": 39464,
+      "sha256": "9dd0b44b5b9f43720f9a871e4aea60fde7f462f1e3b01a757f70ee6a0b14a8cb"
+    },
+    {
+      "path": "local/obstacle_owner_bytes_009E52E0.txt",
+      "bytes": 961,
+      "sha256": "ee2c0376fefeacf54c39460b61305ae55a1b7c89b8407e797ba1572af7dc549a"
+    },
+    {
+      "path": "local/obstacle_owner_bytes_00D7A240.txt",
+      "bytes": 29,
+      "sha256": "14523c89c8b97ae0d41a578d83a490a71bc4d3c64ab768786177f84c151999dc"
+    },
+    {
+      "path": "local/obstacle_owner_bytes_00D7A260.txt",
+      "bytes": 29,
+      "sha256": "90071f406f4f041b108ed68b33991d361286aa04206bb39036f73ba957c52cba"
+    },
+    {
+      "path": "local/obstacle_owner_capstone.asm",
+      "bytes": 2300,
+      "sha256": "757c3f55cc18736015c09e2d3a8148e5c424aef11a132d4981b6981841e4d538"
+    },
+    {
+      "path": "local/obstacle_owner_ctor.asm",
+      "bytes": 1882,
+      "sha256": "ea6683803f1f7e76528ddf56b2ceb5bf52d338df1f5f506cd4687ee7d3eb8656"
+    },
+    {
+      "path": "local/obstacle_owner_ctor_flow.txt",
+      "bytes": 128,
+      "sha256": "4a9aaf5fe67c210bc19cc6878d6cda792c253fd6bf094e81242327c1262834da"
+    },
+    {
+      "path": "local/obstacle_owner_ctor_proto.txt",
+      "bytes": 1107,
+      "sha256": "6c7de1599fad14c9d6d058300258227ba0197b757d37cbb3e9b8239c0d2ccce8"
+    },
+    {
+      "path": "local/obstacle_owner_full_native_records.bin",
+      "bytes": 720,
+      "sha256": "a6dca184614c191b2cc112789d2678ebf21872057fa6ae0f62de131dc4cf10b6"
+    },
+    {
+      "path": "local/obstacle_owner_index.log",
+      "bytes": 142,
+      "sha256": "e2657859c18436805ada0b7ddfbb7a0d59cb9052efe9b70033620b0e6fd2c2f3"
+    },
+    {
+      "path": "local/obstacle_owner_index_final.log",
+      "bytes": 142,
+      "sha256": "6d6c8f632c7314fd41a4e26a29911b165329ca2c5579b186d110304ec11eb1f2"
+    },
+    {
+      "path": "local/obstacle_owner_native_image.bin",
+      "bytes": 264,
+      "sha256": "9eee1a0afd317a6cda7c04a72e70503f971c9bfb75723b0a132787c3b187e54c"
+    },
+    {
+      "path": "local/obstacle_owner_native_manifest.json",
+      "bytes": 1105,
+      "sha256": "b7f1b889ad179da64e1e1a4afe2ad870b49c84cb22c80659d30c26a7f094a65d"
+    },
+    {
+      "path": "local/obstacle_owner_native_records.bin",
+      "bytes": 110,
+      "sha256": "547eb4442b242af6890b17d0bcc486be8a2792ce6fdfb0d4c6cc61aea5707a9b"
+    },
+    {
+      "path": "local/obstacle_owner_near_refresh.asm",
+      "bytes": 3741,
+      "sha256": "83a0e2edcf339fb2ee3677271dcb6358539cce758d968a85a681f62a628947a1"
+    },
+    {
+      "path": "local/obstacle_owner_original_009E52E0.bin",
+      "bytes": 198,
+      "sha256": "8da51e539768bb126d39994011f6aad208b29dd3a54e09c7bb2965e8408e84ba"
+    },
+    {
+      "path": "local/obstacle_owner_prepare.log",
+      "bytes": 125,
+      "sha256": "4352b91257f7dfd968c6671ca91079180a3544e21318b8b12a9cd224c8f8e92b"
+    },
+    {
+      "path": "local/obstacle_owner_probe.cpp",
+      "bytes": 7212,
+      "sha256": "5b5ccd593b72766f54eb01c5c34b0fbbbc4f0beaa46f1136aa1403232fe1eefc"
+    },
+    {
+      "path": "local/obstacle_owner_probe.exe",
+      "bytes": 28672,
+      "sha256": "11fd981755254f6282552aae7c7efcfc7ce571e9524a18a8a68ae654469f31b4"
+    },
+    {
+      "path": "local/obstacle_owner_probe.log",
+      "bytes": 550,
+      "sha256": "ae9a944d8cbfd08262c77f24c5c22f725ed60560a13570b7ac4426fb6de7d0d3"
+    },
+    {
+      "path": "local/obstacle_owner_probe.obj",
+      "bytes": 154319,
+      "sha256": "76ede3bafcc826a9439656573f10b41e33c7cce28a468d4a6b4e178f03de4937"
+    },
+    {
+      "path": "local/obstacle_owner_probe_compile.log",
+      "bytes": 26,
+      "sha256": "4be0e8f6dc32fe1357150a5f7355b5946fd3d39216d90743aaa5e692fd88e43f"
+    },
+    {
+      "path": "local/obstacle_owner_probe_patches.hpp",
+      "bytes": 138,
+      "sha256": "78db319a996f8b199d3eb3cf7af89eca19e0570e2b9ae6beeca945fee616ce48"
+    },
+    {
+      "path": "local/obstacle_owner_refresh.asm",
+      "bytes": 6242,
+      "sha256": "47c4d28e0367399a51df13532bbcf5c60c1186a7cf90dd842dd844fadcd49267"
+    },
+    {
+      "path": "local/obstacle_owner_report_calls.log",
+      "bytes": 69,
+      "sha256": "85d0184c846cf5475fd9112c285f507e1bdc98e3a6e57e17dc4da318e2c191df"
+    },
+    {
+      "path": "local/obstacle_owner_source_records.bin",
+      "bytes": 110,
+      "sha256": "547eb4442b242af6890b17d0bcc486be8a2792ce6fdfb0d4c6cc61aea5707a9b"
+    },
+    {
+      "path": "local/obstacle_owner_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/prepare_obstacle_owner_probe.py",
+      "bytes": 3244,
+      "sha256": "e1f4cf38c730df2b8956b6673040ae5e92f143c4cfeb5e03e2c34cee51315961"
+    },
+    {
+      "path": "local/write_obstacle_owner_report.py",
+      "bytes": 11677,
+      "sha256": "ff573b11bc9cba65582b99eed8776048275413aee384355eaac55f7712679c7e"
+    },
+    {
+      "path": "src/ship_ai_obstacle_owner.cpp",
+      "bytes": 933,
+      "sha256": "5c6fd48bd4d8821281a8dbff3092354eb625252eb1fcf1e1826b6faefce00f50"
+    },
+    {
+      "path": "include/bsp/ship_ai_obstacle_owner.hpp",
+      "bytes": 1045,
+      "sha256": "1792d9f8f38bd42959fc0ae394b1d30c86bd00b44bfb4f6b6564dde6f2200244"
+    },
+    {
+      "path": "docs/SHIP_AI_OBSTACLE_OWNER.md",
+      "bytes": 12296,
+      "sha256": "04ff350c29fbd70881e82d75835fda501b4b54adaa36358673a41017edd9be2e"
+    }
+  ]
+}
