@@ -77,6 +77,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ref_counted
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_cache_pair.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_lifecycle_notify.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_shader_state_definitions.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_killed_base.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_derived_manager.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_factory_registration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/platform_services.cpp src/xlive_manager_runtime.cpp)
