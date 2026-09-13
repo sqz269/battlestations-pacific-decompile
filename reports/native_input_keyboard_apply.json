@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_keyboard_an",
-  "status": "actual_keyboard_apply_reconstructed_native_component_validated_integration_pending",
+  "status": "actual_keyboard_apply_reconstructed_strict_win32_native_fixture_passed_library_and_settings_loader_pending",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
@@ -1075,5 +1075,32 @@
       "source_entry": "equal_native_input_code_ranges",
       "coverage": "Shared source checked-range adapter; library name retained, no original STL ABI claim."
     }
+  ],
+  "final_validation": {
+    "utc": "2026-09-13T06:07:44.093900+00:00",
+    "source_revision": "9318c0992735814e2eab328224820a6d3fdca0bd",
+    "merged_main_revision": "f90ae03944ea47c172071737925e670874921aad",
+    "code_files": 2223,
+    "code_manifest": "local\\input_keyboard_an_source_manifest.json",
+    "code_manifest_sha256": "29b2b546780cf1a1146fa72eff362beb8003d46c8b9eb6852f98c0ba36f91e10",
+    "core_archive_sha256": "e6bda3f4f656dae71145e290fcfd1d340a76c1fbdb403dc1bdecfbef1b66d36d",
+    "game_executable_sha256": "6901938b28bb42e48de06573da7424752e7f2021431ee7f4613a1abd50ddefae",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_keyboard_an_combined_build.log",
+    "build_log_sha256": "e13077a6c8659e41ec4f12d5fbeceaeaf49d3a2c007cb9f89b63c08ee3b45b19",
+    "fixture_log": "local\\input_keyboard_an_combined_probe.log",
+    "fixture_log_sha256": "f61f83f3f23873b876f954de4ba40d072b7c49aaf553d559236bba59f735f5ea",
+    "native_source_words_equal": 372,
+    "calls_checked": 68,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "006a9a40"
   ]
 }
