@@ -859,3 +859,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_lifecycle_notify.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_pending_entity_drain.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_killed_base.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_mission_entity_lock.cpp)
