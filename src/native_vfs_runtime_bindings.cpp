@@ -11,6 +11,8 @@
 #include "bsp/native_physical_provider.hpp"
 #include "bsp/native_file_access_log_owner.hpp"
 #include "bsp/native_mpkg_provider.hpp"
+#include "bsp/native_mpak_runtime.hpp"
+#include "bsp/native_raw_inflate_stream.hpp"
 #include <stdexcept>
 namespace bsp {
 namespace {
@@ -22,11 +24,12 @@ void require_manager(std::uintptr_t table) {
     if(table!=0x00d685b4 && table!=0x00d68d04)unsupported();
 }
 void require_stream(std::uintptr_t table) {
-    if(table!=0x00d642c0 && table!=0x00d691b0 && table!=0x00d68db0)unsupported();
+    if(table!=0x00d642c0 && table!=0x00d691b0 && table!=0x00d68db0 &&
+        table!=0x00d64400)unsupported();
 }
 void require_reference_owner(std::uintptr_t table) {
     if(table!=0x00d69168 && table!=0x00d689e8 && table!=0x00d64390 &&
-        table!=0x00d15ad8)require_stream(table);
+        table!=0x00d15ad8 && table!=0x00d641f8)require_stream(table);
 }
 std::uint32_t memory_seek_result(void* stream,std::uint32_t distance_low,
     std::uint32_t distance_high,std::uint32_t origin) {
@@ -75,6 +78,14 @@ NativeMpkgProviderContext* NativeVfsRuntimeBindings::bind_mpkg_provider(
     NativeMpkgProviderContext* context) noexcept {
     auto* const previous=mpkg_;mpkg_=context;return previous;
 }
+NativeMpakRuntimeContext* NativeVfsRuntimeBindings::bind_mpak_provider(
+    NativeMpakRuntimeContext* context) noexcept {
+    auto* const previous=mpak_;mpak_=context;return previous;
+}
+void NativeVfsRuntimeBindings::restore_mpak_provider(NativeMpakRuntimeContext* installed,
+    NativeMpakRuntimeContext* previous) noexcept {
+    if(mpak_==installed)mpak_=previous;
+}
 std::uint8_t NativeVfsRuntimeBindings::exists(std::uintptr_t table,void* manager,NativeString& name) {
     require_manager(table);if(slot(table,8)!=0x00bdd440)unsupported();
     return exists_native_vfs_file_00bdd440(manager,&name,lookup_);
@@ -88,6 +99,7 @@ std::uint8_t NativeVfsRuntimeBindings::source_is_open(std::uintptr_t entry,void*
     case 0x00bef4c0:return native_memory_stream_open_00bef4c0(stream,nullptr);
     case 0x00bf5020:return valid_native_physical_stream_00bf5020(stream);
     case 0x00bf1090:return open_native_adopted_substream_00bf1090(stream,*this);
+    case 0x00bbbdc0:return open_native_raw_inflate_stream_00bbbdc0(stream);
     default:unsupported();
     }
 }
@@ -99,6 +111,16 @@ std::uint64_t NativeVfsRuntimeBindings::stream_length_entry(std::uintptr_t entry
     case 0x00bef600:return static_cast<std::uint64_t>(native_memory_stream_length_00bef600(stream,nullptr));
     case 0x00bf4f90:return size_native_physical_stream_00bf4f90(stream);
     case 0x00bf10a0:return length_native_adopted_substream_00bf10a0(stream);
+    case 0x00bbbdd0:return length_native_raw_inflate_stream_00bbbdd0(stream);
+    default:unsupported();
+    }
+}
+std::uint64_t NativeVfsRuntimeBindings::stream_position_entry(std::uintptr_t entry,void* stream) {
+    switch(entry) {
+    case 0x00bef580:return position_native_memory_stream_00bef580(stream);
+    case 0x00bf4f40:return position_native_physical_stream_00bf4f40(stream);
+    case 0x00bf1080:return position_native_adopted_substream_00bf1080(stream);
+    case 0x00bbbe50:return position_native_raw_inflate_stream_00bbbe50(stream);
     default:unsupported();
     }
 }
@@ -112,6 +134,7 @@ void NativeVfsRuntimeBindings::source_read(std::uintptr_t entry,void* stream,voi
     case 0x00bef590:native_memory_stream_read_00bef590(stream,nullptr,bytes,count,actual);return;
     case 0x00bf5030:(void)read_native_physical_stream_00bf5030(stream,bytes,count,actual,physical_);return;
     case 0x00bf1000:(void)read_native_adopted_substream_00bf1000(stream,bytes,count,actual,*this);return;
+    case 0x00bbc140:(void)read_native_raw_inflate_stream_00bbc140(stream,bytes,count,actual,*this);return;
     default:unsupported();
     }
 }
@@ -121,6 +144,7 @@ std::uint32_t NativeVfsRuntimeBindings::source_seek(std::uintptr_t entry,void* s
     case 0x00bef540:return memory_seek_result(stream,low,high,origin);
     case 0x00bf4f20:return static_cast<std::uint32_t>(seek_native_physical_stream_00bf4f20(stream,low,high,origin));
     case 0x00bf10e0:return seek_native_adopted_substream_00bf10e0(stream,low,high,origin,*this);
+    case 0x00bbc060:return seek_native_raw_inflate_stream_00bbc060(stream,low,high,origin,*this);
     default:unsupported();
     }
 }
@@ -128,6 +152,10 @@ void NativeVfsRuntimeBindings::source_write(std::uintptr_t entry,void* stream,co
     std::uint32_t count,std::uint32_t* actual) {
     if(entry==0x00bf1040) {
         (void)write_native_adopted_substream_00bf1040(stream,bytes,count,actual,*this);
+        return;
+    }
+    if(entry==0x00bbc1c0) {
+        write_native_raw_inflate_stream_00bbc1c0(stream,bytes,count,actual);
         return;
     }
     unsupported(); // Physical/memory write leaves need their own numeric binding.
@@ -147,7 +175,9 @@ void NativeVfsRuntimeBindings::source_zero_reference(std::uintptr_t entry,void* 
         if(terminal==0x008d4470) {delete_native_memory_backing_008d4470(stream,1,memory_);return;}
         if(terminal==0x00bb8f90) {delete_native_memory_stream_00bb8f90(stream,1,memory_);return;}
         if(terminal==0x00bf1240) {delete_native_adopted_substream_00bf1240(stream,1,*this);return;}
-        if(terminal==0x00be8090 || terminal==0x00bf4dd0 || terminal==0x00bb9ee0) {
+        if(terminal==0x00bbc3e0) {delete_native_raw_inflate_stream_00bbc3e0(stream,1,*this);return;}
+        if(terminal==0x00be8090 || terminal==0x00bf4dd0 || terminal==0x00bb9ee0 ||
+            terminal==0x00bb7b80) {
             invoke_provider_virtual4_00be1ffd(static_cast<std::uint32_t>(terminal),stream,1);
             return;
         }
@@ -159,10 +189,13 @@ void NativeVfsRuntimeBindings::source_zero_reference(std::uintptr_t entry,void* 
 }
 void* NativeVfsRuntimeBindings::provider_open(void* provider,const void* name,std::uint32_t flags) {
     const auto table=capture_native_lua_vfs_table(provider);
-    if(table!=0x00d69168 && table!=0x00d689e8)unsupported();
+    if(table!=0x00d69168 && table!=0x00d689e8 && table!=0x00d641f8)unsupported();
     switch(slot(table,8)) {
     case 0x00bf4ba0:return open_native_physical_provider_00bf4ba0(provider,name,flags,physical_);
     case 0x00be5fa0:return open_native_file_store_00be5fa0(provider,name,flags,physical_.physical.invalid_parameters,store_);
+    case 0x00bb5bb0:
+        if(!mpak_)unsupported();
+        return open_native_mpak_file_00bb5bb0(provider,name,flags,mpak_->open);
     default:unsupported();
     }
 }
@@ -191,6 +224,9 @@ void* NativeVfsRuntimeBindings::factory_create(std::uintptr_t entry,void* factor
     case 0x00bb9d90:
         if(!mpkg_)unsupported();
         return create_native_mpkg_provider_00bb9d90(factory,system,virtual_name,*mpkg_);
+    case 0x00bb83a0:
+        if(!mpak_)unsupported();
+        return create_native_mpak_provider_00bb83a0(factory,system,virtual_name,mpak_->create);
     default:unsupported();
     }
 }
@@ -214,6 +250,10 @@ void NativeVfsRuntimeBindings::invoke_provider_virtual4_00be1ffd(std::uint32_t e
     case 0x00bb9ee0:
         if(!mpkg_)unsupported();
         (void)delete_native_mpkg_provider_00bb9ee0(owner,flags,*mpkg_);
+        return;
+    case 0x00bb7b80:
+        if(!mpak_)unsupported();
+        (void)delete_native_mpak_provider_00bb7b80(owner,flags,mpak_->provider);
         return;
     case 0x00be8090: {
         NativeFileStoreProviderLifetimeContext context{physical_.physical.strings,
