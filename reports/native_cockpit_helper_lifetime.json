@@ -1,0 +1,25 @@
+{
+  "packet": "orch3_cockpit_lifetime_bg",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "status": "reconstructed_explicit_actual_binding_domain",
+  "functions": [
+    {"address":"00b3c5c0","end":"00b3c649","bytes":138,"coverage":"complete body in explicit actual binding domain; C++ base-only exception projection","abi":"ECX actual24h helper; RET"},
+    {"address":"00b3c6c0","end":"00b3c6dd","bytes":30,"coverage":"complete body in existing BF681B/free domain","abi":"ECX helper; DWORD flags; RET4; EAX captured allocation"}
+  ],
+  "native_calls": [
+    {"address":"00b3c5f2","native":"00b6dfa0","containing_function":"00b3c5c0","preparation":"ECX current helper+0C; no stack args"},
+    {"address":"00b3c601","native":"00b6dfa0","containing_function":"00b3c5c0","preparation":"ECX reloaded helper+08; no stack args"},
+    {"address":"00b3c633","native":"00bd30f0","containing_function":"00b3c5c0","preparation":"ECX helper, state already -1"},
+    {"address":"00b3c6c3","native":"00b3c5c0","containing_function":"00b3c6c0","preparation":"ECX captured helper"},
+    {"address":"00b3c6d0","native":"00bf65ac","containing_function":"00b3c6c0","preparation":"PUSH ESI captured allocation; ADD ESP,4 at B3C6D5"},
+    {"address":"00cbecc3","native":"00bd30f0","containing_function":"00cbecc0","kind":"tail_jump","preparation":"tail JMP; ECX [EBP-10]"}
+  ],
+  "indirect_transfers": [
+    {"address":"00b3c614","target":"IAT CE2220 InterlockedDecrement","preparation":"captured owner EDI+04 pushed"},
+    {"address":"00b3c624","target":"captured owner's current profile slot0","preparation":"load profile after zero decrement; ECX captured EDI"}
+  ],
+  "eh": {"func_info":"00df74a0","map":"00df7498","state0_next":-1,"action":"00cbecc0","coverage":"C++ exceptions only; noexcept member callbacks may terminate"},
+  "limits": ["B3C800 not implemented; binds constructed actual24h storage without initialization", "Nonzero+18 producer unestablished; requires existing actual-count binding and current-profile-aware zero callback", "Persistent canonical actual node descriptors required for +08/+0C", "No native ABI, FH3/SEH, fixture execution, gameplay or Ghidra mutation claim"],
+  "verification": {"strict_new_tu":"passed MSVC Win32 /std:c++17 /EHsc /W4 /WX /permissive- /MD; separate TU only", "standard_build":"scripts/build.ps1 passed; existing reconstructed_math and native_math_differential both passed; new source is not CMake registered in worker", "seeds":"8 of 8 matched", "report_calls":"6 checked, 0 failed", "artifacts":"integrator local/bg-cockpit-sealed plus local/bg-cockpit-standard-build.log; no helper fixture execution"}
+}
