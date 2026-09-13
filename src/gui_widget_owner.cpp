@@ -1,5 +1,6 @@
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/gui_text_sections.hpp"
+#include "bsp/gui_text_copy.hpp"
 #include "bsp/gui_widget_copy.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
@@ -459,13 +460,25 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
 }
 void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
     NativeNodeBinding*& publication, NativeStringStorage& strings, GuiTextSectionOperation& frame) {
-    if (publication || frame.phase != GuiTextSectionPhase::running ||
+    if (frame.phase != GuiTextSectionPhase::running)
+        throw std::logic_error("tracked Shadow construction requires its running section frame");
+    create_tracked_auxiliary_model(publication, strings, frame, false);
+}
+void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8910_fragment(
+    NativeNodeBinding*& publication, NativeStringStorage& strings, GuiTextCursorAcquired& frame) {
+    if (frame.phase != GuiTextCursorPhase::running)
+        throw std::logic_error("tracked Cursor construction requires its running cursor frame");
+    create_tracked_auxiliary_model(publication, strings, frame, true);
+}
+void GuiWidgetOwnerRuntime::create_tracked_auxiliary_model(NativeNodeBinding*& publication,
+    NativeStringStorage& strings, GuiTextAuxiliaryModelAcquired& frame, bool cursor_prefix) {
+    if (publication ||
         frame.unconstructed_model_slot || frame.constructed_model_owner || frame.model_creator ||
         frame.name_live || frame.name_cleanup_armed || frame.temporary_name_storage != &strings)
-        throw std::logic_error("tracked Shadow construction requires its fresh running section frame");
+        throw std::logic_error("tracked auxiliary Model construction requires a fresh caller frame");
     auto& environment = environment_.models;
     if (environment.actual_names && environment.actual_names != &strings)
-        throw std::logic_error("Shadow temporary and Model names require the same actual string domain");
+        throw std::logic_error("auxiliary temporary and Model names require the same actual string domain");
 
     bool inserted = false;
     bool native_constructed = false;
@@ -474,12 +487,13 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
         frame.model_phase = GuiTextSectionModelPhase::metadata;
         auto record = std::make_unique<ModelRecord>(); // No native acquisition yet.
         frame.model_phase = GuiTextSectionModelPhase::allocation;
-        frame.native_site = 0x00ab8565;
+        frame.native_site = cursor_prefix ? 0x00ab8947 : 0x00ab8565;
         slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
         frame.unconstructed_model_slot = slot;
         frame.native_unwind_state = 0;
         if (!slot) {
-            publication = nullptr; // Native AB85A2/AA; following dereference is outside valid inputs.
+            frame.native_site = cursor_prefix ? 0x00ab898c : 0x00ab85aa;
+            publication = nullptr; // Native null branch; following dereference is outside valid inputs.
             frame.native_unwind_state = -1;
             frame.model_phase = GuiTextSectionModelPhase::published;
             return;
@@ -488,7 +502,7 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
             // An occupied allocator result never transferred another ownership.
             frame.unconstructed_model_slot = nullptr;
             slot = nullptr;
-            throw std::logic_error("canonical Model pool returned an occupied Shadow slot");
+            throw std::logic_error("canonical Model pool returned an occupied auxiliary slot");
         }
         frame.model_phase = GuiTextSectionModelPhase::metadata;
         models_.emplace(slot, nullptr);
@@ -497,15 +511,15 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
         models_.at(slot) = std::move(record);
         auto& retained = *models_.at(slot);
         frame.model_phase = GuiTextSectionModelPhase::name;
-        frame.native_site = 0x00ab8581;
+        frame.native_site = cursor_prefix ? 0x00ab8963 : 0x00ab8581;
         frame.name_constructing = true;
-        frame.temporary_name.assign_0041e870(strings, "Shadow");
+        frame.temporary_name.assign_0041e870(strings, cursor_prefix ? "gui_cursor" : "Shadow");
         frame.name_constructing = false;
         frame.name_live = true;
         frame.name_cleanup_armed = true;
         frame.native_unwind_state = 1;
         frame.model_phase = GuiTextSectionModelPhase::constructor;
-        frame.native_site = 0x00ab859b;
+        frame.native_site = cursor_prefix ? 0x00ab897d : 0x00ab859b;
         construct_native_model_00b75030(*retained.owner, frame.temporary_name);
         native_constructed = true;
         frame.unconstructed_model_slot = nullptr;
@@ -518,15 +532,15 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
             NativeModelCompanionDisposal{this, retire_model});
         frame.model_creator = retained.reference.get();
         auto* const created_node = &retained.owner->node;
-        frame.native_site = 0x00ab85aa;
+        frame.native_site = cursor_prefix ? 0x00ab898c : 0x00ab85aa;
         publication = created_node;
-        frame.model_creator = nullptr; // SAME creator transferred into actual +188.
+        frame.model_creator = nullptr; // SAME creator transferred into actual +184/+188.
         frame.constructed_model_owner = nullptr;
         frame.native_unwind_state = -1;
         frame.name_cleanup_armed = false;
         frame.model_phase = GuiTextSectionModelPhase::published;
         frame.name_live = false;
-        frame.native_site = 0x00ab85d0;
+        frame.native_site = cursor_prefix ? 0x00ab89b2 : 0x00ab85d0;
         destroy_native_string_header_0041dd20(&frame.temporary_name, strings);
         // Release can reenter through publication and retire the record. No
         // subsequent access to retained/created_node/slot follows this callback.
@@ -537,16 +551,16 @@ void GuiWidgetOwnerRuntime::create_auxiliary_model_00ab8530_fragment(
             frame.model_phase == GuiTextSectionModelPhase::reference_registration;
         if (native_constructed) throw; // Retained frame + canonical map, no live-owner rollback.
         if (frame.name_cleanup_armed) {
-            frame.name_cleanup_armed = false; // CB7F34 clears the temporary bit before cleanup.
+            frame.name_cleanup_armed = false; // CB7FA4/CB7F34 clears the bit before cleanup.
             frame.name_live = false;
-            frame.cleanup_site = 0x00cb7f3b;
+            frame.cleanup_site = cursor_prefix ? 0x00cb7fab : 0x00cb7f3b;
             destroy_native_string_header_0041dd20(&frame.temporary_name, strings);
         }
         frame.native_unwind_state = -1;
         if (inserted) models_.erase(slot); // Only prepared/dead host associations remain.
         if (slot) {
             frame.unconstructed_model_slot = nullptr;
-            frame.cleanup_site = 0x00cb7f23;
+            frame.cleanup_site = cursor_prefix ? 0x00cb7f93 : 0x00cb7f23;
             try { environment.pool_01090054.return_raw_slot_00b74750(slot); }
             catch (...) { std::terminate(); } // A second exception during native unwind.
         }

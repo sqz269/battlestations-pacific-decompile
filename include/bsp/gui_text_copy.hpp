@@ -31,9 +31,11 @@ enum class GuiTextCursorPhase { not_started, running, complete, failed };
 // model/mesh/material ownership. Keep alive on failure; native publications
 // stand. No destructor rolls back/releases or retries interrupted operations.
 // Before a possibly terminal release its pointer is cleared here, so even a
-// throwing callback is never released twice. Failure cleanup/SEH is outside
-// the supported normal-return domain and needs explicit owner intervention.
-struct GuiTextCursorAcquired {
+// throwing callback is never released twice. The native conditional Model-name
+// and raw-slot cleanup is reconstructed; completed Model creators survive host
+// registration failure. FH3 states4/5 release the SAME reused name header.
+// Factory-internal mesh/material cleanup remains a provider boundary.
+struct GuiTextCursorAcquired : GuiTextAuxiliaryModelAcquired {
     GuiTextCursorPhase phase{GuiTextCursorPhase::not_started};
     NativeMeshStorage* mesh{};
     void* declaration{};
@@ -42,10 +44,6 @@ struct GuiTextCursorAcquired {
     NativeStreamCloneAcquired vertex_factory;
     NativeMeshSectionStorage* section{};
     NativeMaterialStorage* material{};
-    NativeString format_name;
-    NativeString effect_name;
-    bool format_name_live{};
-    bool effect_name_live{};
 };
 
 // AB8910..AB8C24, ECX Text/no stack arguments/RET. Full supported normal
