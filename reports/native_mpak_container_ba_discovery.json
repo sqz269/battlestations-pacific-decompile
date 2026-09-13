@@ -1,0 +1,691 @@
+{
+  "schema": "bsp-native-mpak-container-ba-discovery-v1",
+  "packet": "orch2_mpak_container_ba_discovery",
+  "status": "read_only_discovery_complete_implementation_packet_proposed",
+  "provenance": {
+    "captured_utc": "2026-09-13T06:48:26.687939+00:00",
+    "repo_head": "522cabd13d7f3c4a6cc57119d1f073f0701b4b07",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_addresses": [
+    "00bb7a20",
+    "00bb7ba0",
+    "00a40d60"
+  ],
+  "owned_files": [
+    "docs/NATIVE_MPAK_CONTAINER_BA_DISCOVERY.md",
+    "reports/native_mpak_container_ba_discovery.json"
+  ],
+  "mutations": {
+    "ghidra": false,
+    "exports": false,
+    "source": false,
+    "ledgers": false,
+    "installed_binary": false
+  },
+  "reconstructed_bodies": 0,
+  "reconstructed_bytes": 0,
+  "routines": [
+    {
+      "entry": "00bb7a20",
+      "end_inclusive": "00bb7ac0",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "24h record vector push_back",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00bb7a20",
+        "end_inclusive": "00bb7ac0",
+        "byte_count": 161,
+        "sha256": "400cb98518a1274537f87b3bd11d886e02c45f8dce2a43948417937df1528055",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00bb7ba0",
+      "end_inclusive": "00bb7c40",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "14h record vector push_back",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00bb7ba0",
+        "end_inclusive": "00bb7c40",
+        "byte_count": 161,
+        "sha256": "a6e805183b7b239f62a0e419b14036ae379492ab261e356e988794d928d10573",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00a40d60",
+      "end_inclusive": "00a40de8",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "shared DWORD vector checked one-element insert",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00a40d60",
+        "end_inclusive": "00a40de8",
+        "byte_count": 137,
+        "sha256": "107b811a33a930d7d59f0aeb196081597e0f8efd98a2696cfedb238f26acec72",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00bb6cd0",
+      "end_inclusive": "00bb6d62",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "24h record uninitialized fill",
+      "coverage": "main_and_separate_catch_listings",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb6f00",
+      "end_inclusive": "00bb6f8e",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "14h record uninitialized fill",
+      "coverage": "main_and_separate_catch_listings",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb7590",
+      "end_inclusive": "00bb7639",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "24h record checked one-element insert",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb7ad0",
+      "end_inclusive": "00bb7b79",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "14h record checked one-element insert",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb7240",
+      "end_inclusive": "00bb754b",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "24h record vector insertion and growth",
+      "coverage": "partial_assembly_and_pseudocode; full_EH_not_audited",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb7640",
+      "end_inclusive": "00bb791a",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "14h record vector insertion and growth",
+      "coverage": "partial_assembly_and_pseudocode; full_EH_not_audited",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00a40b90",
+      "end_inclusive": "00a40d43",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "DWORD vector insertion and growth",
+      "coverage": "partial_assembly_and_pseudocode; allocator_closure_not_audited",
+      "status": "analyzed_not_reconstructed"
+    },
+    {
+      "entry": "00bb6180",
+      "end_inclusive": "00bb6213",
+      "classification": "stl_contract",
+      "descriptive_hypothesis": "DWORD vector copy constructor",
+      "coverage": "complete_body",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00bb6180",
+        "end_inclusive": "00bb6213",
+        "byte_count": 148,
+        "sha256": "9746968a73bfd21f593f2ce6ca9e3edf4ac11f9c33e202ca3ca325cf0dc64775",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00bb65a0",
+      "end_inclusive": "00bb662f",
+      "classification": "game_record_ownership",
+      "descriptive_hypothesis": "MPAK file-record copy constructor",
+      "coverage": "complete_body_and_one_state_EH_map",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00bb65a0",
+        "end_inclusive": "00bb662f",
+        "byte_count": 144,
+        "sha256": "0fd0bd9f8e09b069b8ef9a2042657d7b51b6222c6861e48ef8aa2d7d46d7757b",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00bb6630",
+      "end_inclusive": "00bb66ac",
+      "classification": "game_record_ownership",
+      "descriptive_hypothesis": "MPAK directory-record copy constructor",
+      "coverage": "complete_body_and_one_state_EH_map",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00bb6630",
+        "end_inclusive": "00bb66ac",
+        "byte_count": 125,
+        "sha256": "a752cff820a9ae1b52b162dd9c13f4d2c4a984bbdfe70d0f0f4e7b10f3abb076",
+        "live_equals_disk": true
+      }
+    },
+    {
+      "entry": "00543e50",
+      "end_inclusive": "00543e8e",
+      "classification": "shared_game_container",
+      "descriptive_hypothesis": "custom counted-string-vector replacement copy",
+      "coverage": "complete_body_and_all_nine_callsite_argument_setups",
+      "status": "analyzed_not_reconstructed",
+      "byte_identity": {
+        "entry": "00543e50",
+        "end_inclusive": "00543e8e",
+        "byte_count": 63,
+        "sha256": "992372985c6d75815dcd0a20b3ef40bda01257500707492f14e38af3414f89b1",
+        "live_equals_disk": true
+      }
+    }
+  ],
+  "layouts": {
+    "stl_vector_10h": {
+      "allocator_debug_word": "00",
+      "begin": "04",
+      "end": "08",
+      "capacity_end": "0c"
+    },
+    "file_record_24h": {
+      "name_length": "00",
+      "name_pointer": "04",
+      "first_dword": "08",
+      "second_dword": "0c",
+      "flag_byte": "10",
+      "untouched_padding": [
+        "11",
+        "12",
+        "13"
+      ],
+      "offset_vector": "14",
+      "producer": "00bb6870",
+      "copy_producer": "00bb65a0"
+    },
+    "directory_record_14h": {
+      "name_length": "00",
+      "name_pointer": "04",
+      "custom_string_vector_data": "08",
+      "custom_string_vector_count": "0c",
+      "custom_string_vector_capacity": "10",
+      "producer": "00bb7c50",
+      "copy_producer": "00bb6630"
+    }
+  },
+  "original_abis": [
+    {
+      "entries": [
+        "00bb7a20",
+        "00bb7ba0"
+      ],
+      "registers": "ECX=vector",
+      "stack_words": [
+        "source_record"
+      ],
+      "cleanup": "RET 4"
+    },
+    {
+      "entries": [
+        "00bb7590",
+        "00bb7ad0",
+        "00a40d60"
+      ],
+      "registers": "ECX=vector",
+      "stack_words": [
+        "result_iterator",
+        "where_container",
+        "where_pointer",
+        "source_value"
+      ],
+      "cleanup": "RET 10h",
+      "result": "EAX=result_iterator"
+    },
+    {
+      "entries": [
+        "00bb6cd0",
+        "00bb6f00"
+      ],
+      "registers": "ECX=destination, EDX=count",
+      "stack_words_at_push_back_calls": [
+        "source_record",
+        "vector",
+        "source_record",
+        "tag_low_byte_zero"
+      ],
+      "cleanup": "RET 10h"
+    },
+    {
+      "entries": [
+        "00bb7240",
+        "00bb7640",
+        "00a40b90"
+      ],
+      "registers": "ECX=vector",
+      "stack_words": [
+        "where_container",
+        "where_pointer",
+        "count",
+        "source_value"
+      ],
+      "cleanup": "RET 10h"
+    },
+    {
+      "entries": [
+        "00bb65a0",
+        "00bb6630",
+        "00bb6180",
+        "00543e50"
+      ],
+      "registers": "ECX=destination",
+      "stack_words": [
+        "source"
+      ],
+      "cleanup": "RET 4",
+      "result": "EAX=destination"
+    }
+  ],
+  "direct_call_evidence": [
+    {
+      "function": "00bb7a20",
+      "address": "00bb7a85",
+      "native": "00bb6cd0",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb7a20",
+      "address": "00bb7aa0",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb7a20",
+      "address": "00bb7ab3",
+      "native": "00bb7590",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c05",
+      "native": "00bb6f00",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c20",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb7ba0",
+      "address": "00bb7c33",
+      "native": "00bb7ad0",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40d86",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40d93",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40db0",
+      "native": "00a40b90",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40dbd",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00a40d60",
+      "address": "00a40dd3",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb65a0",
+      "address": "00bb65d8",
+      "native": "0041dd40",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb65a0",
+      "address": "00bb65ed",
+      "native": "00bf7680",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb65a0",
+      "address": "00bb6616",
+      "native": "00bb6180",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6663",
+      "native": "0041dd40",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6677",
+      "native": "00bf7680",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6630",
+      "address": "00bb6692",
+      "native": "00543e50",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e57",
+      "native": "00427110",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e66",
+      "native": "00426520",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00543e50",
+      "address": "00543e7a",
+      "native": "004cdc20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61b3",
+      "native": "00a40ad0",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61bc",
+      "native": "00a3e910",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61d5",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb61e3",
+      "native": "00bf6713",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00bb6180",
+      "address": "00bb6200",
+      "native": "00bf67a7",
+      "scope": "direct_instruction_identity; semantics_described_in_doc"
+    },
+    {
+      "function": "00cc44f0",
+      "address": "00cc44f3",
+      "native": "0041dd20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc4510",
+      "address": "00cc4513",
+      "native": "0041dd20",
+      "scope": "direct_instruction_identity; semantics_described_in_doc",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00544540",
+      "address": "0054454b",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=owner+0c; stack=source argument; existing destination"
+    },
+    {
+      "function": "005f52c0",
+      "address": "005f5470",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+98; stack=source+98"
+    },
+    {
+      "function": "005f52c0",
+      "address": "005f5482",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+a4; stack=source+a4"
+    },
+    {
+      "function": "00b80c70",
+      "address": "00b80cfa",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=fresh backing+index*12, zeroed; stack=old backing+index*12"
+    },
+    {
+      "function": "00bf0bd0",
+      "address": "00bf0c2f",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=next 0ch element, zeroed; stack=source argument"
+    },
+    {
+      "function": "00bf2120",
+      "address": "00bf215b",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=destination+10h, zeroed; stack=source argument+4"
+    },
+    {
+      "function": "00bf2560",
+      "address": "00bf25d2",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=zeroed stack vector; stack=earlier empty stack vector"
+    },
+    {
+      "function": "00bf2560",
+      "address": "00bf25f9",
+      "native": "00543e50",
+      "scope": "callsite_argument_setup_only; caller_not_reconstructed",
+      "setup": "ECX=second zeroed stack vector; stack=preceding copied stack vector"
+    }
+  ],
+  "exception_maps": [
+    {
+      "function": "00bb65a0",
+      "handler_stub": "00cc44f8",
+      "func_info": "00dfde68",
+      "unwind_map": "00dfde60",
+      "states": 1,
+      "next_state": -1,
+      "action": "00cc44f0",
+      "action_identity": {
+        "entry": "00cc44f0",
+        "end_inclusive": "00cc44f7",
+        "byte_count": 8,
+        "sha256": "56191bb218e92a57f5b3b788c52997ba3ad3c3e0157e7c0c5e2d2ea93cf8c2be",
+        "live_equals_disk": true
+      },
+      "armed_at": "00bb660e",
+      "cleanup": "41dd20 on saved destination name only"
+    },
+    {
+      "function": "00bb6630",
+      "handler_stub": "00cc4518",
+      "func_info": "00dfde94",
+      "unwind_map": "00dfde8c",
+      "states": 1,
+      "next_state": -1,
+      "action": "00cc4510",
+      "action_identity": {
+        "entry": "00cc4510",
+        "end_inclusive": "00cc4517",
+        "byte_count": 8,
+        "sha256": "42bb6374b8f8ed6a310d99c157ea9cd6bbabe78e9b3c15d8dec84c4d212f2701",
+        "live_equals_disk": true
+      },
+      "armed_at": "00bb6686",
+      "cleanup": "41dd20 on saved destination name only"
+    }
+  ],
+  "pending_flow_repairs": [
+    {
+      "function": "00bb7240",
+      "call_site": "00bb73ca",
+      "start": "00bb73cf",
+      "end_exclusive": "00bb73d2",
+      "disk_decode": "ADD ESP,4; replacement pointer publication follows"
+    },
+    {
+      "function": "00bb7240",
+      "call_site": "00bb7400",
+      "start": "00bb7405",
+      "end_exclusive": "00bb7411",
+      "disk_decode": "ADD ESP,4; PUSH 0; PUSH 0; CALL BF6885"
+    },
+    {
+      "function": "00bb7240",
+      "call_site": "00bb7509",
+      "start": "00bb750e",
+      "end_exclusive": "00bb7511",
+      "disk_decode": "ADD ESP,4; temporary cleanup follows"
+    },
+    {
+      "function": "00bb7640",
+      "call_site": "00bb77c9",
+      "start": "00bb77ce",
+      "end_exclusive": "00bb77d1",
+      "disk_decode": "ADD ESP,4; replacement pointer publication follows"
+    },
+    {
+      "function": "00bb7640",
+      "call_site": "00bb77ff",
+      "start": "00bb7804",
+      "end_exclusive": "00bb7810",
+      "disk_decode": "ADD ESP,4; PUSH 0; PUSH 0; CALL BF6885"
+    },
+    {
+      "function": "00a40b90",
+      "call_site": "00a40c8c",
+      "start": "00a40c91",
+      "end_exclusive": "00a40c94",
+      "disk_decode": "ADD ESP,4; replacement pointer publication follows"
+    },
+    {
+      "function": "00bb5e50",
+      "call_site": "00bb5e5d",
+      "start": "00bb5e62",
+      "end_exclusive": "00bb5e65",
+      "disk_decode": "ADD ESP,4; zero offset-vector pointers and release current name"
+    }
+  ],
+  "next_packet": {
+    "id": "orch2_native_mpak_record_copy_ba",
+    "addresses": [
+      "00bb65a0",
+      "00bb6630",
+      "00543e50"
+    ],
+    "complete_body_bytes": 332,
+    "files": [
+      "include/bsp/native_mpak_record_copy.hpp",
+      "src/native_mpak_record_copy.cpp",
+      "docs/NATIVE_MPAK_RECORD_COPY.md",
+      "reports/native_mpak_record_copy.json"
+    ],
+    "readiness": "three bodies and two EH actions already defined; proposed addresses and code files unleased at discovery; recheck before claim",
+    "reuse_actual_dependencies": [
+      "0041dd40",
+      "0041dd20",
+      "00427110",
+      "00426520",
+      "004cdc20"
+    ],
+    "explicit_incomplete_dependencies": [
+      {
+        "entry": "00bb6180",
+        "kind": "STL vector DWORD copy constructor",
+        "handling": "retain a fallible explicit actual-storage library callback; no success stub or STL port"
+      },
+      {
+        "entries": [
+          "00bb7a20",
+          "00bb7ba0",
+          "00a40d60"
+        ],
+        "kind": "outer-container and offset insertion bindings remain incomplete",
+        "handling": "separate compatible library binding/integration; not closed by these three game functions"
+      }
+    ],
+    "shared_helper_caller_setup": "all nine sites across seven functions inspected; containing callers not fully audited",
+    "validation": "strict Win32 build and existing checks; at most one focused ownership comparison if needed",
+    "exclusions": [
+      "STL",
+      "CRT",
+      "zlib",
+      "Lua",
+      "full FH3/SEH compatibility",
+      "installed archive/gameplay proof"
+    ]
+  },
+  "no_ghidra_function": [],
+  "validation": {
+    "live_disk_span_comparisons": 9,
+    "live_disk_span_bytes": 955,
+    "all_compared_spans_equal": true,
+    "gap_counts_next_packet": {
+      "00bb65a0": 0,
+      "00bb6630": 0,
+      "00543e50": 0
+    },
+    "instruction_counts_next_packet": {
+      "00bb65a0": 47,
+      "00bb6630": 47,
+      "00543e50": 27
+    },
+    "mechanical_call_audit": {
+      "status": "passed",
+      "checked": 35,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/native_mpak_container_ba_discovery.json"
+    },
+    "build": "not_run_docs_and_report_only",
+    "native_fixture": "not_run",
+    "game_validation": "not_run"
+  },
+  "limitations": [
+    "Classification names are source-intent hypotheses, not recovered symbols.",
+    "Discovery does not implement or supply compatible STL bindings.",
+    "Growth and allocator exception closure remains partial; six growth gaps plus one destroy-helper gap require primary locked repair before a complete audit.",
+    "The shared 543e50 callee and all nine caller argument setups were read; containing caller bodies remain outside complete coverage.",
+    "Record copy cleanup is name-only; no nested-vector rollback or strong exception guarantee is claimed.",
+    "Nine span identities do not establish fixture, original ABI or game equivalence."
+  ]
+}
