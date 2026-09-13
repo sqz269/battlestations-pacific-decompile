@@ -148,7 +148,7 @@ validation remains separate from the worker fixture evidence.
 
 ## AW exact merged validation
 
-The exact combined source commit `e30488f4a1059a41f17cc8836b64fa7c901b95a9` passed the Win32 build,
+The exact combined source commit `842045e886c30b2dce4cb63f333cffb9a851697b` passed the Win32 build,
 both existing tests and four current-library-only original-byte fixtures.
 Full counts, original-byte relocation, exception branches and parent coverage
 are recorded in `reports/native_renderer_device_recreation_aw_validation.json`.

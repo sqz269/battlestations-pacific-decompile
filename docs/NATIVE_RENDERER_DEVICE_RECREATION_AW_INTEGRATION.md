@@ -5,7 +5,7 @@ Addresses: 00b3d7b0, 00b3e190, 00b3d7c0, 00b3d800, 00b3e1f0, 00b3e230, 00b28a90,
 Ten complete normal bodies across retained texture callbacks, worker stop and
 device recreation use the existing actual storage and service domains.
 Reviewed source `287b7d158c919f1ce2f75e0eff2e94786a2fed81` was merged with current main;
-exact combined source `e30488f4a1059a41f17cc8836b64fa7c901b95a9` passed the strict Win32 build, both existing
+exact combined source `842045e886c30b2dce4cb63f333cffb9a851697b` passed the strict Win32 build, both existing
 tests and four current-library-only original-byte probes.
 
 The integrator saved ten reviewed names/original signatures and full body
