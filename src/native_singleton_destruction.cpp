@@ -2,6 +2,7 @@
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
+#include "bsp/native_mission_entity_lock.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
@@ -162,6 +163,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             return;
         }
         break;
+    case 0x00ce7548:
+        // CE7548 has only slot0=4C4890. CE754C begins another profile.
+        // Delete the popped owner and clear the actual F878FC publication,
+        // even if that publication has changed since registration.
+        delete_native_mission_entity_lock_004c4890(
+            static_cast<NativeMissionEntityLockOwner*>(owner), flags,
+            process_native_mission_entity_lock_00f878fc());
+        return;
     case 0x00d190c4:
         // This profile belongs to the actual process F899E8 owner. Pass the
         // popped allocation even when publication differs: native teardown

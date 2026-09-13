@@ -128,3 +128,7 @@ The fixture does not establish allocator-null returns, arbitrary concurrency, or
 CRT/FH3 exception identity, process-map integration, binary replacement or gameplay.
 Build, CTests, seeds, call verification and retained artifact hashes are recorded in
 `reports/native_mission_entity_lock.json`.
+
+## Root integration metadata follow-up
+
+The root defined both complete ten-byte EH selectors through the formal byte-verifying tool. It also cleared the two caller free-flow overrides and decoded the known 004C48BE[3] and 00C64F91[2] continuations. The repair reports zero call gaps for the scalar listing and one for the funclet, with an explicit warning that the funclet stored-body tail remains incomplete. Decoding does not establish complete function-body membership, and no existing function was recreated. The original scalar-deleter name is preserved. Names/evidence were saved with prior values retained and affected exports refreshed. See `reports/native_mission_entity_lock_function_definitions.json` and `reports/native_mission_entity_lock_flow_repair.json`; original EH transport remains unproved.

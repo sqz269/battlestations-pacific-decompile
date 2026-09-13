@@ -646,5 +646,12 @@
     "getter": "publication+31; guard+4B;doublecheck+50;allocate+75;ctor+8C;publish+99;secondlookup+A6;publicationreload+AB;register+B1;guardrelease+B9;finalreload+BE",
     "scalar": "profile+30;release+36;flagsbit0test+3B;publicationclear+42;basestamp+48;optionalfree+51;capturedreturn+59",
     "limit": "EHsc compiler state stores can move across nonthrowing instructions. Original FH3/hardware-fault/native spill aliasing excluded."
+  },
+  "root_metadata_followup": {
+    "definitions": "reports/native_mission_entity_lock_function_definitions.json",
+    "flow_repair": "reports/native_mission_entity_lock_flow_repair.json",
+    "scope": "Formal locked tools defined both10-byte EH selectors, cleared caller free-flow overrides and decoded4C48BE[3]/C64F91[2]; no existing function recreation.",
+    "remaining_limit": "Flow tool reports0call gaps in scalar listing but1in funclet; explicit funclet stored-body tail warning. Decoded instructions do not establish union with existing body membership. Original EH execution remains unproved.",
+    "annotation": "Existing scalar deleting destructor name retained; all five names/comments saved, prior values retained, affected exports refreshed."
   }
 }
