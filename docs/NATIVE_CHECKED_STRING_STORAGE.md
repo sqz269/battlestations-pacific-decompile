@@ -61,7 +61,11 @@ interfaces, so source settings construction, parsing, destructor and manager
 drain use the new storage. One additional scenario checks append growth with
 an aliased element, spare-capacity append, partial/empty/full erasure, a valid
 iterator owner different from the receiver and complete pooled-string cleanup.
-Build and fixture completion are recorded in
+The strict Win32 build and both CTests pass. The settings comparison matches
+122,545 words; the focused storage comparison matches 335 words, including
+allocation/release counts, with no pooled strings left allocated. Source
+constructor-failure cleanup and actual manager drain also pass. Exact source,
+archive and fixture hashes are recorded in
 `reports/native_checked_string_storage.json`.
 
 This closes three storage dependencies. Production providers for the remaining

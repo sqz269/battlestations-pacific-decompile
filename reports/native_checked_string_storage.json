@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_checked_string_storage_at",
-  "status": "source_storage_implemented_validation_pending",
+  "status": "checked_pooled_string_storage_settings_integration_component_validated_final_merge_pending",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe"
@@ -359,5 +359,51 @@
     "Remaining tree and nonstring-vector providers, application wiring and gameplay are pending."
   ],
   "no_subagents_dispatched": true,
-  "game_validated": false
+  "game_validated": false,
+  "annotations": "reports/native_checked_string_storage_at_annotations.json",
+  "component_validation": {
+    "utc": "2026-09-13T15:59:47.032231+00:00",
+    "source_revision": "4f803bb1d1a37d892854bf3a19759f7a710a3c1d",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lifetime_words_equal": 122545,
+    "checked_string_words_equal": 335,
+    "native_fixture_spans": 418,
+    "freshly_verified_storage_spans": 6,
+    "owned_call_rows_checked": 37,
+    "owned_call_rows_failed": 0,
+    "unowned_exception_rethrow_sites": 1,
+    "disk_live_seed_spans_equal": 8,
+    "build_log": "local/input_checked_strings_at_combined_build.log",
+    "build_log_sha256": "6dc24ec1fc7f9fcf2d1e60bf2bb6239e817e33c3ac8cdc3f837f728dc9ab7484",
+    "fixture_log": "local/input_checked_strings_at_combined_probe.log",
+    "fixture_log_sha256": "1dbbc8607f12fb2d476f4c60209500cbc0c58f55f51f6e82da8694ad63e55d3e",
+    "core_archive_sha256": "da0b3a2ebfeaee733db72edee94a3356f039f5df6ddacd9ddd7a1692bab33cbd",
+    "fixture_source": "local/input_checked_strings_at_probe.cpp",
+    "fixture_source_sha256": "6951974b93fdd281afebf7dfbb50a23ff3e77112fc0abf25386d0af9d8c563bc",
+    "fixture_header": "local/input_settings_lifetime_aq_native.hpp",
+    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "fixture_runner": "local/run_input_checked_strings_at_probe.ps1",
+    "fixture_runner_sha256": "265ef439941bfe72e5bf5519cdad3754088f28c69fe45e5ec1480955fb4ced75",
+    "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+    "actual_settings_parser_uses_source_string_storage": true,
+    "populated_settings_destruction_and_constructor_unwind_passed": true,
+    "actual_raw_manager_settings_drain_passed": true,
+    "aliased_append_and_partial_empty_full_erase_passed": true,
+    "source_and_native_string_allocation_release_counts_equal": true,
+    "pooled_strings_remaining": 0,
+    "original_fh3_executed": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "no_subagents_dispatched": true,
+    "fixture_correction": "Initial focused scenario reused0041E870 construction without releasing its previous value. Corrected fixture releases that value before reconstructing it; the original/source storage code was unchanged."
+  },
+  "native_abi": {
+    "00450540": "ECX header; stack source; RET4; no return value.",
+    "004954f0": "ECX header; stack output,first_owner,first,last_owner,last; EAX output; RET14h.",
+    "0048da50": "cdecl first,last,destination; EAX end destination; RET. Native call sites also pass three unused extra stack words.",
+    "00450180": "ECX header; stack output,owner,position,value; EAX output; RET10h.",
+    "0044ce20": "ECX destination; EDX count; stack value,owner,unused_value,opaque; RET10h.",
+    "0044f410": "ECX header; stack owner,position,count,value; RET10h. General insertion is analyzed, not implemented as a full source entry."
+  }
 }
