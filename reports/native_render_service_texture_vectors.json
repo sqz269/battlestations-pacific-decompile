@@ -1,0 +1,664 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_render_service_texture_vectors_ba",
+  "utc": "2026-09-13T16:32:47.276546+00:00",
+  "status": "complete_raw_storage_worker_verified_awaiting_integration",
+  "normal_body_count": 6,
+  "new_native_body_count": 6,
+  "native_body_bytes": 502,
+  "native_instruction_count": 206,
+  "functions": [
+    {
+      "address": "00b51fc0",
+      "end_inclusive": "00b5203e",
+      "bytes": 127,
+      "instructions": 51,
+      "sha256": "8a237e2d9acf59a0b7e40fda5bbfd9cfa1e690b7b9f2cecf432a8ff92bbec403",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "reserve_native_texture_vector24_00b51fc0",
+      "end_exclusive": "00b5203f",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector24_Reserve",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    },
+    {
+      "address": "00b52040",
+      "end_inclusive": "00b520c1",
+      "bytes": 130,
+      "instructions": 52,
+      "sha256": "d9d4f8563dbdf76755218573992d4dae8257b31652b0c05db5a6efe790f26abb",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "reserve_native_texture_vector12_00b52040",
+      "end_exclusive": "00b520c2",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector12_Reserve",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    },
+    {
+      "address": "00b52170",
+      "end_inclusive": "00b521df",
+      "bytes": 112,
+      "instructions": 45,
+      "sha256": "bb15be31976d5b8101933a8c38b3fdb7536ca16a7a88350ba2971d24ee0b7624",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "resize_native_texture_vector24_00b52170",
+      "end_exclusive": "00b521e0",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector24_Resize",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    },
+    {
+      "address": "00b521e0",
+      "end_inclusive": "00b52236",
+      "bytes": 87,
+      "instructions": 38,
+      "sha256": "fdac04653306a3b3404c8531ba241b1dd0bb6d3c2286612477b16237cbbae8fa",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "resize_native_texture_vector12_00b521e0",
+      "end_exclusive": "00b52237",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; one signed requested DWORD stack argument; RET4; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector12_Resize",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    },
+    {
+      "address": "00b523c0",
+      "end_inclusive": "00b523d6",
+      "bytes": 23,
+      "instructions": 10,
+      "sha256": "f132a41697286b39d7b018b1be3f015a6ebb5dc18dadf4f90d49fb5656f2b157",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "destroy_native_texture_vector24_00b523c0",
+      "end_exclusive": "00b523d7",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; zero stack arguments; RET; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector24_Destroy",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    },
+    {
+      "address": "00b523e0",
+      "end_inclusive": "00b523f6",
+      "bytes": 23,
+      "instructions": 10,
+      "sha256": "bdbd8d6fa9bf50d6521b1ec1fd20b9305b9f75846101f1307266293a3da2bfdd",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "cpp_symbol": "destroy_native_texture_vector12_00b523e0",
+      "end_exclusive": "00b523f7",
+      "module": "native_render_service_texture_vectors",
+      "source": "src/native_render_service_texture_vectors.cpp",
+      "header": "include/bsp/native_render_service_texture_vectors.hpp",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "original_abi": "ECX actual raw pointer/count/capacity header; zero stack arguments; RET; no specified semantic return value",
+      "proposed_ghidra_name": "BSP_TextureVector12_Destroy",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "evidence": "Full fresh live listing and PE bytes after root returning-free repair; native signed/current-load/copy/null-skip/CRT allocation and post-free publication order retained. New C++ interface; ABI/gameplay unproved."
+    }
+  ],
+  "files": [
+    "include/bsp/native_render_service_texture_vectors.hpp",
+    "src/native_render_service_texture_vectors.cpp",
+    "docs/NATIVE_RENDER_SERVICE_TEXTURE_VECTORS.md",
+    "reports/native_render_service_texture_vectors.json"
+  ],
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b51fc0",
+        "end_inclusive": "00b5203e",
+        "bytes": 127,
+        "instructions": 51,
+        "sha256": "8a237e2d9acf59a0b7e40fda5bbfd9cfa1e690b7b9f2cecf432a8ff92bbec403",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b52040",
+        "end_inclusive": "00b520c1",
+        "bytes": 130,
+        "instructions": 52,
+        "sha256": "d9d4f8563dbdf76755218573992d4dae8257b31652b0c05db5a6efe790f26abb",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b52170",
+        "end_inclusive": "00b521df",
+        "bytes": 112,
+        "instructions": 45,
+        "sha256": "bb15be31976d5b8101933a8c38b3fdb7536ca16a7a88350ba2971d24ee0b7624",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b521e0",
+        "end_inclusive": "00b52236",
+        "bytes": 87,
+        "instructions": 38,
+        "sha256": "fdac04653306a3b3404c8531ba241b1dd0bb6d3c2286612477b16237cbbae8fa",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b523c0",
+        "end_inclusive": "00b523d6",
+        "bytes": 23,
+        "instructions": 10,
+        "sha256": "f132a41697286b39d7b018b1be3f015a6ebb5dc18dadf4f90d49fb5656f2b157",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b523e0",
+        "end_inclusive": "00b523f6",
+        "bytes": 23,
+        "instructions": 10,
+        "sha256": "bdbd8d6fa9bf50d6521b1ec1fd20b9305b9f75846101f1307266293a3da2bfdd",
+        "live_PE_match": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b51fc0",
+      "address": "00b51fe9",
+      "native": "00bf55be",
+      "contract": "cdecl wrapped native DWORD bytes; ADD ESP4; actual CRT new-handler allocator"
+    },
+    {
+      "function": "00b51fc0",
+      "address": "00b5202a",
+      "native": "00bf6989",
+      "contract": "cdecl current pointer; ADD ESP4; matching actual CRT free"
+    },
+    {
+      "function": "00b52040",
+      "address": "00b52061",
+      "native": "00bf55be",
+      "contract": "cdecl wrapped native DWORD bytes; ADD ESP4; actual CRT new-handler allocator"
+    },
+    {
+      "function": "00b52040",
+      "address": "00b520ae",
+      "native": "00bf6989",
+      "contract": "cdecl current pointer; ADD ESP4; matching actual CRT free"
+    },
+    {
+      "address": "00b5217e",
+      "native": "00b51fc0",
+      "function": "00b52170",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b521ee",
+      "native": "00b52040",
+      "function": "00b521e0",
+      "contract": "ECX raw0Ch-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b523c5",
+      "native": "00b52170",
+      "function": "00b523c0",
+      "contract": "ECX raw24h-record header; signed requested count stack; RET4"
+    },
+    {
+      "function": "00b523c0",
+      "address": "00b523cd",
+      "native": "00bf6989",
+      "contract": "cdecl current pointer; ADD ESP4; matching actual CRT free"
+    },
+    {
+      "address": "00b523e5",
+      "native": "00b521e0",
+      "function": "00b523e0",
+      "contract": "ECX raw0Ch-record header; signed requested count stack; RET4"
+    },
+    {
+      "function": "00b523e0",
+      "address": "00b523ed",
+      "native": "00bf6989",
+      "contract": "cdecl current pointer; ADD ESP4; matching actual CRT free"
+    },
+    {
+      "address": "00b52c6a",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b52d1d",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b53350",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b533fa",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b53dbb",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b53e6a",
+      "native": "00b51fc0",
+      "function": "00b529a0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b520e9",
+      "native": "00b51fc0",
+      "function": "00b520d0",
+      "contract": "ECX raw24h-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b52cb6",
+      "native": "00b52040",
+      "function": "00b529a0",
+      "contract": "ECX raw0Ch-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b52138",
+      "native": "00b52040",
+      "function": "00b52120",
+      "contract": "ECX raw0Ch-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b52368",
+      "native": "00b52040",
+      "function": "00b52350",
+      "contract": "ECX raw0Ch-record header; signed requested capacity stack; RET4"
+    },
+    {
+      "address": "00b524bf",
+      "native": "00b52170",
+      "function": "00b52400",
+      "contract": "ECX raw24h-record header; signed requested count stack; RET4"
+    },
+    {
+      "address": "00cbff3e",
+      "native": "00b523c0",
+      "function": "00cbff38",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbff49",
+      "native": "00b523c0",
+      "function": "00cbff43",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbff65",
+      "native": "00b523c0",
+      "function": "00cbff5c",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbff8e",
+      "native": "00b523c0",
+      "function": "00cbff88",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbff99",
+      "native": "00b523c0",
+      "function": "00cbff93",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbffb5",
+      "native": "00b523c0",
+      "function": "00cbffac",
+      "kind": "tail_jump",
+      "contract": "ECX raw24h-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbff57",
+      "native": "00b523e0",
+      "function": "00cbff4e",
+      "kind": "tail_jump",
+      "contract": "ECX raw0Ch-record header; no stack args; RET"
+    },
+    {
+      "address": "00cbffa7",
+      "native": "00b523e0",
+      "function": "00cbff9e",
+      "kind": "tail_jump",
+      "contract": "ECX raw0Ch-record header; no stack args; RET"
+    }
+  ],
+  "caller_evidence": {
+    "incoming_sites": 23,
+    "containing_functions": 17,
+    "full_listings_and_slices": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\caller-slices.txt",
+    "native_producer": "B52550 writes zero pointer/count/capacity triples at actualCCh owner+24/+7C/+8C/+A4; parent scope not claimed"
+  },
+  "analysis_repairs": {
+    "root_commit": "5896cb0f",
+    "worker_changed_ghidra": false,
+    "fresh_complete_bodies_read": true,
+    "prior_missing_ranges": [
+      "00b5202f..00b52038",
+      "00b520b3..00b520bc",
+      "00b523d2..00b523d6",
+      "00b523f2..00b523f6"
+    ]
+  },
+  "checks": {
+    "strict_compile": "PASS MSVC Win32 /O2 /W4 /WX /fp:strict",
+    "baseline_build": {
+      "result": "PASS",
+      "commit": "5896cb0f9924bd45b67f8c19a5d7a875b736740e",
+      "existing_ctests_passed": 2,
+      "excludes_unregistered_source": true,
+      "log": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\baseline-build.log"
+    },
+    "fixture": {
+      "result": "PASS",
+      "utc": "2026-09-13T16:32:47.276546+00:00",
+      "baseline_commit": "5896cb0f9924bd45b67f8c19a5d7a875b736740e",
+      "baseline_build_tests": 2,
+      "native_seeds": 8,
+      "baseline_excludes_unregistered_source": true,
+      "original_byte_pairs": 20,
+      "compared_payload_bytes": 464,
+      "complete_native_bodies": 6,
+      "complete_native_bytes": 502,
+      "native_instruction_count": 206,
+      "external_call_operand_relocations": 6,
+      "relocated_operand_bytes": 24,
+      "numeric_call_rows": 29,
+      "numeric_call_failures": 0,
+      "source_recompiled": true,
+      "current_library_only": false,
+      "emitted_order": {
+        "result": "PASS",
+        "native_instruction_count": 206,
+        "entry_shim_instruction_count": 16,
+        "rows": [
+          {
+            "symbol": "raw_00b51fc0",
+            "instructions": 51,
+            "match": true
+          },
+          {
+            "symbol": "raw_00b52040",
+            "instructions": 52,
+            "match": true
+          },
+          {
+            "symbol": "raw_00b52170",
+            "instructions": 45,
+            "match": true
+          },
+          {
+            "symbol": "raw_00b521e0",
+            "instructions": 38,
+            "match": true
+          },
+          {
+            "symbol": "destroy_native_texture_vector24_00b523c0",
+            "instructions": 10,
+            "match": true
+          },
+          {
+            "symbol": "destroy_native_texture_vector12_00b523e0",
+            "instructions": 10,
+            "match": true
+          },
+          {
+            "symbol": "reserve_native_texture_vector24_00b51fc0",
+            "instructions": 4,
+            "match": true
+          },
+          {
+            "symbol": "reserve_native_texture_vector12_00b52040",
+            "instructions": 4,
+            "match": true
+          },
+          {
+            "symbol": "resize_native_texture_vector24_00b52170",
+            "instructions": 4,
+            "match": true
+          },
+          {
+            "symbol": "resize_native_texture_vector12_00b521e0",
+            "instructions": 4,
+            "match": true
+          }
+        ],
+        "normalization": "Symbol decoration, local-label suffixes, immediate radix/sign, operand-size spelling, scale1 addressing, branch short syntax, JZ/JE and JNZ/JNE synonyms and RET0 spelling only; no instruction removed"
+      },
+      "fixture": {
+        "result": "PASS",
+        "utc": "2026-09-13T16:29:16.3633014Z",
+        "repo": "J:/PROG/battlestations-pacific-decompile-orch3-texture-vectors-ba",
+        "worker_source": true,
+        "current_library_only": false,
+        "input_hashes_unchanged": true,
+        "inputs": [
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\src\\native_render_service_texture_vectors.cpp",
+            "Hash": "564F862BCA8C7B33A7AAD1C4C41AA01C3F47EAE8EFF847FEE1922CC186869105"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\include\\bsp\\native_render_service_texture_vectors.hpp",
+            "Hash": "68914924F0817F1CA1504B5955925741928288C5B179763F7FCE86D321AFCBBD"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\src\\singleton_lifetime.cpp",
+            "Hash": "97733266A44569114FCA8142035375B728144E20658A6D914156B2A78655EC62"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\include\\bsp\\singleton_lifetime.hpp",
+            "Hash": "56621CCC09D54AD59ACD6B5AD641AA04700A7957DF972C49946E9C9A7D33041F"
+          },
+          {
+            "Path": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\probe.cpp",
+            "Hash": "48949AC55E4A74C9CB69C63AD94D7D8071401FD9592267E0D7E3F67D6FB735C5"
+          },
+          {
+            "Path": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\native_bytes.inc",
+            "Hash": "0D83A5866A7F8FB1A424516CC71EFBEC8E32F762E8B24E5A73617A549C0266C4"
+          },
+          {
+            "Path": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\run.ps1",
+            "Hash": "60D373D18E69B578125774E09C0B90D7A4969934A72037805AF6434FA6688C1F"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\build\\win32\\Release\\bsp_core.lib",
+            "Hash": "4DDEE8F07A5AB60AAF127545BFF3EEBB7F4CB0E8C14752198904D0A17CD2A43E"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\build\\win32\\Release\\bsp_lua511.lib",
+            "Hash": "6167A985BACF1FCE92C398B61BBE208616E326CDF637A1E0A43DF18C099DF289"
+          },
+          {
+            "Path": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-vectors-ba\\build\\win32\\Release\\bsp_zlib121.lib",
+            "Hash": "02D84C91C2108334DEC909A1052310DB6380995C2C659EF90C19EE63E74F347A"
+          }
+        ],
+        "compile_command_file": "C:\\Users\\sqz269\\bsp-ba-texture-vectors/compile-probe.cmd",
+        "build_log": "C:\\Users\\sqz269\\bsp-ba-texture-vectors/probe-build.log",
+        "run_log": "C:\\Users\\sqz269\\bsp-ba-texture-vectors/probe-run.log",
+        "executable_sha256": "ABDDA68E8F0DB78926EC7EC7E3724C61A66CDE83EEDA060EAA53C77B69C9EDD3"
+      },
+      "normalization": "Heap pointer identity; no comparison of uninitialized fresh allocation tail bytes",
+      "provider_boundary": "Both paths use same actual rebuilt singleton_lifetime_allocate/free, not independently replayed native CRT code",
+      "original_caller_abi_proved": false,
+      "game_validated": false
+    },
+    "source_instruction_order": {
+      "result": "PASS",
+      "native_instruction_count": 206,
+      "entry_shim_instruction_count": 16,
+      "rows": [
+        {
+          "symbol": "raw_00b51fc0",
+          "instructions": 51,
+          "match": true
+        },
+        {
+          "symbol": "raw_00b52040",
+          "instructions": 52,
+          "match": true
+        },
+        {
+          "symbol": "raw_00b52170",
+          "instructions": 45,
+          "match": true
+        },
+        {
+          "symbol": "raw_00b521e0",
+          "instructions": 38,
+          "match": true
+        },
+        {
+          "symbol": "destroy_native_texture_vector24_00b523c0",
+          "instructions": 10,
+          "match": true
+        },
+        {
+          "symbol": "destroy_native_texture_vector12_00b523e0",
+          "instructions": 10,
+          "match": true
+        },
+        {
+          "symbol": "reserve_native_texture_vector24_00b51fc0",
+          "instructions": 4,
+          "match": true
+        },
+        {
+          "symbol": "reserve_native_texture_vector12_00b52040",
+          "instructions": 4,
+          "match": true
+        },
+        {
+          "symbol": "resize_native_texture_vector24_00b52170",
+          "instructions": 4,
+          "match": true
+        },
+        {
+          "symbol": "resize_native_texture_vector12_00b521e0",
+          "instructions": 4,
+          "match": true
+        }
+      ],
+      "normalization": "Symbol decoration, local-label suffixes, immediate radix/sign, operand-size spelling, scale1 addressing, branch short syntax, JZ/JE and JNZ/JNE synonyms and RET0 spelling only; no instruction removed"
+    },
+    "no_repository_tests_added": true,
+    "cmake_registration": "root integrator required",
+    "ledger_changes": "none by worker",
+    "verify_seeds": {
+      "result": "PASS",
+      "matched": 8,
+      "log": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\verify-seeds.log"
+    },
+    "numeric_calls": {
+      "result": "PASS",
+      "rows": 29,
+      "failures": 0,
+      "tail_jumps": 8,
+      "log": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\report-call-check.log"
+    }
+  },
+  "source_sha256": {
+    "include/bsp/native_render_service_texture_vectors.hpp": "68914924f0817f1ca1504b5955925741928288c5b179763f7fce86d321afcbbd",
+    "src/native_render_service_texture_vectors.cpp": "564f862bca8c7b33a7aad1c4c41aa01c3f47eae8eff847fee1922cc186869105"
+  },
+  "fixture_rebuild": {
+    "directory": "C:\\Users\\sqz269\\bsp-ba-texture-vectors",
+    "recipe": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\run.ps1",
+    "default_command": "run.ps1 -Repo <integrated root>",
+    "default_sources": [
+      "probe.cpp"
+    ],
+    "default_current_libraries": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib"
+    ],
+    "initial_unregistered_source_switch": "-WorkerSource",
+    "manifest_embedded": true,
+    "native_external_call_operand_relocations": 6
+  },
+  "limitations": [
+    "New C++ interfaces; original caller ABI not certified",
+    "Original stack argument/private frame aliases excluded",
+    "Actual rebuilt CRT allocation/free providers shared by source and original-byte fixture; original CRT code/exception identity not independently replayed",
+    "Unwritten allocation tail preimage not deterministic across allocations",
+    "No unrestricted fault recovery/native EH-SEH/concurrency/GPU/gameplay proof",
+    "Parent B52550/render service lifetime remains separate",
+    "Baseline excludes this unregistered source"
+  ],
+  "capture_archive": {
+    "archive": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\worker_capture.zip",
+    "archive_sha256": "8fba2df059176b45f28a4a88098100bafaea7ad066924c42482762d6a817e850",
+    "files": 103,
+    "uncompressed_bytes": 56345546,
+    "verified_all_members": true,
+    "manifest": "C:\\Users\\sqz269\\bsp-ba-texture-vectors\\worker_capture_manifest.json"
+  }
+}
