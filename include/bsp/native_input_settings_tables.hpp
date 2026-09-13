@@ -11,9 +11,6 @@ namespace bsp {
 struct NativeInputSettingsTableCalls {
     virtual ~NativeInputSettingsTableCalls() = default;
     virtual void call_006a7540(void* tree, void* subtree) = 0;
-    virtual void* call_004954f0(void* header, void* output,
-        NativeKeyboardTreeIterator first, NativeKeyboardTreeIterator last) = 0;
-    virtual void call_00450540(void* header, const NativeString* value) = 0;
     virtual void call_006a0db0(void* header, std::uint32_t count, std::array<std::uint32_t,5> value) = 0;
     virtual void call_0049df50(void* header, std::uint32_t count, std::uint32_t value) = 0;
     virtual void* call_0055a9a0(void* tree, const NativeString* key) = 0;
