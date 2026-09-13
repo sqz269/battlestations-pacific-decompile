@@ -81,7 +81,7 @@ NativeGuiTextModelBaseCopyResult copy_native_gui_text_model_base_00b6f150_fragme
         src.scene_170, true);
     assign_node_retained130(source, destination, false);
 
-    // Text's flags26h include20h; B6F223..246 skips all source-child clones.
+    // Both flags26h and3Eh include20h; B6F223..246 skips all source-child clones.
     set_native_node_parent_null_00b6e680(destination.environment.nodes,
         destination.node.transform);
     propagate_native_node_root_00b6d890(destination.environment.nodes,
@@ -149,13 +149,17 @@ void finish_native_gui_text_model_clone_00b752b0_fragment(
         copy_x87_word(&source.storage.node, &destination.storage.node, byte_offset);
 }
 
-NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
+namespace {
+NativeGuiTextModelBaseCopyResult clone_model(
     NativeModelOwner& source, GuiWidgetOwnerRuntime& widgets, GuiNativeGeometryOwners& geometry,
     NativeMaterialDestructionAccess& material_access,
     const volatile std::uint32_t* material_profile,
     const volatile std::uint32_t* mesh_profile,
-    NativeGuiTextModelCloneAcquired& acquired) {
-    if (acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material)
+    NativeGuiTextModelCloneAcquired& acquired, NativeStreamCloneServices* streams) {
+    if (acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material ||
+        acquired.mesh.stream.creator || acquired.mesh.stream.companion ||
+        (acquired.mesh.stream.phase != NativeStreamClonePhase::empty &&
+         acquired.mesh.stream.phase != NativeStreamClonePhase::consumed))
         throw std::invalid_argument("Model clone requires empty creator-reference publications");
     if (&widgets.environment().models != &source.environment ||
         &geometry.actual_owners() != &source.environment.retained_owners ||
@@ -175,11 +179,27 @@ NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
         if (!mesh || &mesh->storage() != current)
             throw std::logic_error("Text Model current geometry has no matching actual mesh owner");
         geometry.clone_mesh_for_text_00b742a0(
-            mesh->storage(), mesh_profile, material_access, material_profile, acquired.mesh);
+            mesh->storage(), mesh_profile, material_access, material_profile, acquired.mesh, streams);
         associate_native_gui_text_model_clone_geometry_00b752b0_fragment(
             source, destination, acquired.mesh.mesh);
     }
     finish_native_gui_text_model_clone_00b752b0_fragment(source, destination);
     return NativeGuiTextModelBaseCopyResult::copied;
+}
+} // namespace
+NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
+    NativeModelOwner& source, GuiWidgetOwnerRuntime& widgets, GuiNativeGeometryOwners& geometry,
+    NativeMaterialDestructionAccess& materials, const volatile std::uint32_t* material_profile,
+    const volatile std::uint32_t* mesh_profile, NativeGuiTextModelCloneAcquired& acquired) {
+    return clone_model(source, widgets, geometry, materials, material_profile, mesh_profile, acquired, nullptr);
+}
+NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0_flags3e(
+    NativeModelOwner& source, GuiWidgetOwnerRuntime& widgets, GuiNativeGeometryOwners& geometry,
+    NativeMaterialDestructionAccess& materials, const volatile std::uint32_t* material_profile,
+    const volatile std::uint32_t* mesh_profile, NativeGuiTextModelCloneAcquired& acquired,
+    NativeStreamCloneServices& streams) {
+    if (&streams.geometry != &geometry)
+        throw std::logic_error("Model3E requires the same canonical stream/geometry owner");
+    return clone_model(source, widgets, geometry, materials, material_profile, mesh_profile, acquired, &streams);
 }
 } // namespace bsp

@@ -9607,6 +9607,206 @@
       "next_work": "See the explicit remaining contracts and next packet ownership in the batch report.",
       "done": true,
       "validation": "Win322CTest and six scoped primary-library fixtures passed; exact promoted evidence is pinned separately in the batch report."
+    },
+    {
+      "id": "orch5_index_stream_owner",
+      "state": "bounded_implementation_build_and_positive_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00b288b0",
+        "00b4bf30",
+        "00b4b380",
+        "00b4b0a0",
+        "00b48f70",
+        "00b22d70"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_index_owner.hpp",
+        "src/native_logical_index_owner.cpp"
+      ],
+      "output_files": [
+        "reports/native_logical_index_creation.json",
+        "docs/ORCH5_STREAM_TEXT_COPY_BATCH.md"
+      ],
+      "contract": "Actual logical index allocation/constructor/renderer registration and same-counter terminal; real HAL fixture, explicit native global producers.",
+      "integration_report": "reports/orch5_stream_text_copy_batch.json",
+      "done": true,
+      "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
+      "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch5_stream_clone_3e",
+      "state": "bounded_implementation_build_and_positive_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00b729a0",
+        "00b72a70",
+        "00b73f50",
+        "00b742a0",
+        "00b752b0",
+        "00b287c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_stream_clone.hpp",
+        "src/native_stream_clone.cpp",
+        "include/bsp/native_mesh_clone.hpp",
+        "src/native_mesh_clone.cpp",
+        "include/bsp/native_gui_text_model_clone.hpp",
+        "src/native_gui_text_model_clone.cpp",
+        "include/bsp/gui_native_geometry.hpp",
+        "src/gui_native_geometry.cpp",
+        "include/bsp/native_logical_vertex_owner.hpp",
+        "src/native_logical_vertex_owner.cpp"
+      ],
+      "output_files": [
+        "reports/native_stream_clone_3e.json",
+        "docs/ORCH5_STREAM_TEXT_COPY_BATCH.md"
+      ],
+      "contract": "Actual index/vertex factory-map-copy-unmap composition and flags3E mesh/Model integration with explicit acquired creator and map phase.",
+      "integration_report": "reports/orch5_stream_text_copy_batch.json",
+      "done": true,
+      "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
+      "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch5_text_copy_adopt",
+      "state": "bounded_cpp_composition_build_checked_actual_text_runtime_unvalidated",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00aa1380",
+        "00abb2c0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_text_runtime_factory.hpp",
+        "src/gui_text_runtime_factory.cpp",
+        "include/bsp/gui_text_copy.hpp",
+        "src/gui_text_copy.cpp"
+      ],
+      "output_files": [
+        "reports/gui_text_copy_adoption.json",
+        "docs/ORCH5_STREAM_TEXT_COPY_BATCH.md"
+      ],
+      "contract": "Stable factory copy operation, source/destination ownership, constructor borrow, in-place continuation and final same-owner adoption; positive Text path unvalidated.",
+      "integration_report": "reports/orch5_stream_text_copy_batch.json",
+      "done": true,
+      "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
+      "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch5_widget_model_copy_binding",
+      "state": "bounded_implementation_build_and_positive_fixture_checked",
+      "worker": "orch5-20260911",
+      "integration_owner": "primary",
+      "function_addresses": [
+        "00aa9520"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_widget_model_copy.hpp",
+        "src/gui_widget_model_copy.cpp",
+        "include/bsp/gui_widget_copy.hpp",
+        "src/gui_widget_copy.cpp",
+        "include/bsp/gui_widget_owner.hpp",
+        "src/gui_widget_owner.cpp"
+      ],
+      "output_files": [
+        "reports/gui_widget_model_copy.json",
+        "docs/ORCH5_STREAM_TEXT_COPY_BATCH.md"
+      ],
+      "contract": "AA9520 connects live flags26/3E to same canonical Model/mesh/material/stream domains; persistent source and constructor ownership.",
+      "integration_report": "reports/orch5_stream_text_copy_batch.json",
+      "done": true,
+      "next_work": "See the named follow-up packets and explicit remaining contracts in the batch doc/report.",
+      "validation": "Exact promoted code b1f047dd60333c96d0f836464bd22a181eaf4ca1 passed Win32/CTest2/2 and four scoped fixtures; Text composition is build-checked only. See batch report for individual scope and remaining contracts."
+    },
+    {
+      "id": "orch3_native_instance_collection_au",
+      "packet": "orch3_native_instance_collection_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b1dff0",
+        "00b172d0",
+        "00b17300",
+        "00b73770",
+        "00b51cb0",
+        "0043c130"
+      ],
+      "code_ownership": [
+        "include/bsp/native_instance_collection.hpp",
+        "src/native_instance_collection.cpp",
+        "docs/NATIVE_INSTANCE_COLLECTION.md",
+        "reports/native_instance_collection.json"
+      ],
+      "evidence": "reports/native_instance_collection.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_instance_geometry_au",
+      "packet": "orch3_native_instance_geometry_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b4c8d0",
+        "00b556b0",
+        "00b556c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_instance_geometry.hpp",
+        "src/native_instance_geometry.cpp",
+        "docs/NATIVE_INSTANCE_GEOMETRY.md",
+        "reports/native_instance_geometry.json"
+      ],
+      "evidence": "reports/native_instance_geometry.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_vertex_declaration_registry_lifetime_au",
+      "packet": "orch3_native_vertex_declaration_registry_lifetime_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b30270",
+        "00b31630",
+        "00b316a0",
+        "00b31d40",
+        "00b32030",
+        "00b32210"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vertex_declaration_registry_lifetime.hpp",
+        "src/native_vertex_declaration_registry_lifetime.cpp",
+        "docs/NATIVE_VERTEX_DECLARATION_REGISTRY_LIFETIME.md",
+        "reports/native_vertex_declaration_registry_lifetime.json"
+      ],
+      "evidence": "reports/native_vertex_declaration_registry_lifetime.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_renderer_vertex_binding_au",
+      "packet": "orch3_native_renderer_vertex_binding_au",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b24840",
+        "00b23710",
+        "00b24bf0",
+        "00b48cf0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_vertex_binding.hpp",
+        "src/native_renderer_vertex_binding.cpp",
+        "docs/NATIVE_RENDERER_VERTEX_BINDING.md",
+        "reports/native_renderer_vertex_binding.json"
+      ],
+      "evidence": "reports/native_renderer_vertex_binding.json",
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_au for exact source and fixture limits"
     }
   ],
   "snapshot_after_analysis": {

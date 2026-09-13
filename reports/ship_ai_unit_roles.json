@@ -1,0 +1,208 @@
+{
+  "packet": "orch6_unit_roles_k",
+  "status": "constructor_storage_and_getter_build_fixture_verified",
+  "base_commit": "3ea0ab13007fb26b25751a83dc0f263d39a0c6b8",
+  "base_provenance": "Fresh main ea2ed950, then authorized mechanical merge of published motion commit f2ad561f before source edits",
+  "owned_files": [
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_units.cpp",
+    "docs/SHIP_AI_UNIT_ROLES.md",
+    "reports/ship_ai_unit_roles.json"
+  ],
+  "api": {
+    "signature": "bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index, std::int32_t& out) const",
+    "owner": "One signed-dword array in each existing GameUnitSlot",
+    "count": "kUnitRoleTableEntries = 9",
+    "constructor_fill": "kUnitRoleTableFill = 8",
+    "native_current_table": "+1ACh..+1CCh",
+    "distinct_policy_table": "+188h..+1A8h",
+    "success": "Created unit and role index0..8: true and copy the stored value into out",
+    "unavailable": "Missing unit or role index outside0..8: false with out unchanged",
+    "lifetime": "Array is initialized before GameUnitSlot publication and dies with the existing owner; no mutable alias or second role owner",
+    "assignment": "Pending; no writer exposed. Party, selected-unit publication and sender intent do not assign roles"
+  },
+  "coverage": [
+    {
+      "surface": "GameUnitSlot current-role storage",
+      "coverage": "complete process storage of the constructor-produced nine values"
+    },
+    {
+      "surface": "unit_current_role_slot",
+      "coverage": "complete process getter and unavailable-output contract; not a native function replacement"
+    },
+    {
+      "entry": "00928630",
+      "body": "00928630..0092878F",
+      "coverage": "partial: projects only00928713..0092874D; all surrounding constructor behavior outside this packet",
+      "abi": "ECX owner; ESI=ECX at0092864A; RET8 at0092878D"
+    },
+    {
+      "entry": "009281C0",
+      "body": "009281C0..009281FE",
+      "coverage": "read-only writer evidence; no assignment implementation",
+      "abi": "ECX entity; role and slot stack arguments; RET8 at009281EC/009281FC"
+    },
+    {
+      "entry": "0077F480",
+      "body": "0077F480..0077F50B",
+      "coverage": "read-only complete listing; no wrapper or dependent state implementation",
+      "abi": "ECX ship; role and slot stack arguments; RET8 at0077F509"
+    },
+    {
+      "entry": "00780120",
+      "coverage": "Only prior SHIP_AI_ROLE_OWNERS assessment used for the kind4B ownership boundary; no new analysis or implementation"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00928711",
+      "native": "00D192E0+vtable148",
+      "function": "00928630",
+      "contract": "Preceding constructor policy call with mask1FFh and value9. Actual slot bytes resolve00927D20; its behavior is outside this role-store fragment"
+    },
+    {
+      "address": "009281DD",
+      "native": "00927F60",
+      "function": "009281C0",
+      "contract": "Observed role0 dependent call before current-role store; no replacement callback or completed owner contract supplied"
+    },
+    {
+      "address": "0077F48F",
+      "native": "009281C0",
+      "function": "0077F480",
+      "contract": "Ship wrapper forwards both arguments, then performs further class/policy/participant work"
+    },
+    {
+      "address": "0077F500",
+      "native": "0077EDF0",
+      "function": "0077F480",
+      "contract": "Observed accepting-path dependency followed by MOV byte ptr[EAX],1; owner remains unrepresented here"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "GameUnitSlot had no current-role storage; an unavailable current-role read could not expose the evidenced unassigned value",
+      "is": "Every created slot owns the nine constructor-produced values; reads distinguish value8 from unavailable",
+      "evidence": "00928713 MOV EAX,8; nine stores00928718..00928748, offsets1AC..1CC; existing kUnitRoleTableEntries/Fill"
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "Read-only BSP wrappers; live bytes compared with original PE",
+    "mutations": 0,
+    "no_ghidra_function": [],
+    "new_native_names_or_ledger_rows": 0
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release",
+      "exit": 0,
+      "log": "local/unit_roles_build.log",
+      "log_sha256": "e10d9a8a90ff2422db85b90bde5b5c38bd761424b34ae53447d2d6bc9f69143f"
+    },
+    "existing_tests": {
+      "passed": 2,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "native_calls": {
+      "checked": 3,
+      "failed": 0,
+      "indirect_unchecked": 1,
+      "log_sha256": "fe87194d4fd7261a6ed61eca0f45e051edef8fa69c40093bedd844a6d47efd73"
+    },
+    "native_store_fragment": {
+      "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "span": "00928713..0092874D",
+      "byte_count": 59,
+      "bytes_sha256": "32cd2046ddaf913a99d5b2060c7d6960906b0ba05b60363ed345ceb0be1eaba0",
+      "live_equals_disk": true,
+      "stores": [
+        {
+          "offset": "0x1ac",
+          "value": 8
+        },
+        {
+          "offset": "0x1b0",
+          "value": 8
+        },
+        {
+          "offset": "0x1b4",
+          "value": 8
+        },
+        {
+          "offset": "0x1b8",
+          "value": 8
+        },
+        {
+          "offset": "0x1bc",
+          "value": 8
+        },
+        {
+          "offset": "0x1c0",
+          "value": 8
+        },
+        {
+          "offset": "0x1c4",
+          "value": 8
+        },
+        {
+          "offset": "0x1c8",
+          "value": 8
+        },
+        {
+          "offset": "0x1cc",
+          "value": 8
+        }
+      ]
+    },
+    "actual_host_probe": {
+      "original_span": "00928713..0092874D",
+      "original_bytes": 59,
+      "units": 2,
+      "getter_reads": 36,
+      "unchanged_outputs_on_failure": 4,
+      "roles_equal_original": true,
+      "selected_unit_does_not_assign_roles": true
+    },
+    "probe_build": {
+      "exit": 0,
+      "run_exit": 0,
+      "host_object_count": 36,
+      "executable_sha256": "faedf880dc293a6318c55733ce07af9ba83272ed82c20cfa4665a4f8daa51876",
+      "complete_compiled_input_hashes": "local/unit_roles_probe_build.json"
+    },
+    "limits": "Actual built GameUnitsHost object and its real linked host dependencies; supplied scene records, no game main/startup or native full unit constructor."
+  },
+  "artifacts": {
+    "root": "J:/PROG/battlestations-pacific-decompile-orch6-unit-roles-k/local",
+    "manifest": "local/unit_roles_artifact_manifest.json",
+    "reproduction": [
+      "python local/make_unit_roles_probe.py",
+      "./scripts/build.ps1",
+      "python local/build_unit_roles_probe.py"
+    ]
+  },
+  "limits": [
+    "Constructor-state storage projection only, not a raw native overlay or full00928630 constructor",
+    "Kind4B acquisition/release checks, role0 side effects, ship suppression-map update and relay remain unimplemented",
+    "No participant pools, active slot pointers, AI-held predicate, sender-to-role shortcut or duplicate role owner",
+    "No cruise, Lua, script-order or mission integration changes; root binds consumers separately",
+    "Actual-host fixture uses supplied scene records without VFS manager, Lua state, game startup or native class construction",
+    "No full native game, network/session or mission-runtime validation; no tracked tests added"
+  ],
+  "source_and_evidence_hashes": {
+    "include/bsp/game_hosts_units.hpp": "b5bc5d14571fbdbfe59457e8acc6f624fe73c3fe64fe201f23e655dba7f075e8",
+    "src/game_hosts_units.cpp": "584a9637c7b8d6999cc78b53b883b3d9c004fa3e8b6f0d03b7621c60a1cb13ec",
+    "include/bsp/unit_instance_layout.hpp": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+    "include/bsp/unit_instance.hpp": "b82e3b82b4e9eb247815e3165f491db0df9273b99f10ebe0ad8bc5ae9619bec0",
+    "build/win32/bsp_game.dir/Release/game_hosts_units.obj": "ba1d81ac7a8e773526e82f317a783acb3d933be8c154c541d81da43ba3637ffc",
+    "local/unit_roles_probe.cpp": "bbb6eac169efe7bc81508087de5c00052766e064d9fc07e7e07b7338a7f21b51",
+    "local/make_unit_roles_probe.py": "8c89e8babf2c3c9bc1942ddcb3994b84d371c5d00cdf886ac8e614c4e2dbc16c",
+    "local/build_unit_roles_probe.py": "3609674ff8dd46d0cc0c358ef8b0b6fe522be3bac8a11ddb9c86b13d7c5f68e4"
+  }
+}

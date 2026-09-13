@@ -1,0 +1,894 @@
+{
+  "packet": "orch6_motion_origin_j",
+  "status": "process_dispatch_correction_build_and_runtime_verified",
+  "base_commit": "b40c84e6cd311373d7c930d9e0f9407c7bdd2e14",
+  "owned_source": [
+    "src/game_hosts_units.cpp"
+  ],
+  "coverage": "Process dispatch adaptation for 21 concrete leaf identities. Existing 00825F20 helper remains partial; no new native function implementation or binary-compatible vtable.",
+  "corrections": [
+    {
+      "was": "Every active created unit received ship motion, ship-body construction and synthetic buoyancy, including AirField.",
+      "is": "Existing descriptor allocator selects its proven constructor tick table and slot. Five class identities call the existing ship helper directly, three retain its proven unconditional base fragment, thirteen remain explicitly unimplemented.",
+      "evidence": "Original constructor stores and 21 live/disk +8h slot words; original 00874FE0 dispatch; all three complete wrapper listings."
+    },
+    {
+      "was": "Airfield2 acquired NaN yaw in its first 0.05-second fixed step.",
+      "is": "Its 006D2510 phase is recorded before ship-only operations. No synthetic ship body is built for this receiver.",
+      "evidence": "Exact H executable first-step capture; original FDIVR probe; final 241 AirField trajectory samples retain authored pose and zero yaw."
+    }
+  ],
+  "origin": {
+    "controlled_unit": "Airfield2",
+    "scene_type": "AirField",
+    "vehicle_class": 207,
+    "kind": 69,
+    "initial_linear_velocity_bits": [
+      "00000000",
+      "00000000",
+      "00000000"
+    ],
+    "semantic_max_speed_bits": "00000000",
+    "producer": "Installed class has no MaxSpeed; GameMissionLuaHost numeric reader returns zero, then the old host applies the ship-only reference speed projection.",
+    "first_nonfinite_native_span": "0093749B..0093749E",
+    "instruction": "FDIVR double ptr [ESP+18h]",
+    "source_expression": "along / static_cast<double>(in.reference_speed)",
+    "native_airfield_allocation_bytes": 2276,
+    "native_airfield_constructor": "006D1C20",
+    "native_tick_store": "006D1C90",
+    "native_tick_vtable": "00CF8BC0",
+    "native_tick_entry": "006D2510",
+    "native_airfield_has_ship_speed_field": false,
+    "first_nonfinite_runtime_observation": {
+      "step": "1",
+      "t": "0.050000",
+      "unit": "Airfield2",
+      "class": "MultiAirField",
+      "x": "4013.951660",
+      "y": "2.974100",
+      "z": "-3242.676758",
+      "heading": "15.004863",
+      "fwd_speed": "0.000000",
+      "throttle": "0.000000",
+      "rudder": "0.000000",
+      "yaw_rate": "-nan(ind)"
+    },
+    "later_first_nonfinite_position_step": "not established"
+  },
+  "dispatch_rows": [
+    {
+      "type": "Destroyer",
+      "descriptor": "0x00d1acf8",
+      "creator": "0x006fe590",
+      "instance_size": "0x1188",
+      "constructor": "0x006fe460",
+      "examined_body": "006FE460",
+      "store_address": "006fe495",
+      "receiver": "ESI",
+      "tick_vtable": "0xcfc38c",
+      "slot_address": "00CFC394",
+      "entry": "00825F20",
+      "live_equals_disk": true,
+      "source_coverage": "direct_ship_body",
+      "receiver_writes_before_store": [
+        "006fe466: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Cruiser",
+      "descriptor": "0x00d1ad38",
+      "creator": "0x006fb430",
+      "instance_size": "0x1188",
+      "constructor": "0x006fb300",
+      "examined_body": "006FB300",
+      "store_address": "006fb335",
+      "receiver": "ESI",
+      "tick_vtable": "0xcfb6f0",
+      "slot_address": "00CFB6F8",
+      "entry": "00825F20",
+      "live_equals_disk": true,
+      "source_coverage": "direct_ship_body",
+      "receiver_writes_before_store": [
+        "006fb306: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "LandingShip",
+      "descriptor": "0x00d1ad78",
+      "creator": "0x0074be00",
+      "instance_size": "0x122c",
+      "constructor": "0x0074bb00",
+      "examined_body": "0074BB00",
+      "store_address": "0074bb54",
+      "receiver": "ESI",
+      "tick_vtable": "0xcff9ec",
+      "slot_address": "00CFF9F4",
+      "entry": "00749B20",
+      "live_equals_disk": true,
+      "source_coverage": "ship_base_fragment",
+      "receiver_writes_before_store": [
+        "0074bb1c: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Cargo",
+      "descriptor": "0x00d1adbc",
+      "creator": "0x006eb290",
+      "instance_size": "0x118c",
+      "constructor": "0x006eb160",
+      "examined_body": "006EB160",
+      "store_address": "006eb198",
+      "receiver": "ESI",
+      "tick_vtable": "0xcfa730",
+      "slot_address": "00CFA738",
+      "entry": "00825F20",
+      "live_equals_disk": true,
+      "source_coverage": "direct_ship_body",
+      "receiver_writes_before_store": [
+        "006eb166: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "BattleShip",
+      "descriptor": "0x00d1adf8",
+      "creator": "0x006dfef0",
+      "instance_size": "0x118c",
+      "constructor": "0x006dfc90",
+      "examined_body": "006DFC90",
+      "store_address": "006dfcc5",
+      "receiver": "ESI",
+      "tick_vtable": "0xcf9068",
+      "slot_address": "00CF9070",
+      "entry": "00825F20",
+      "live_equals_disk": true,
+      "source_coverage": "direct_ship_body",
+      "receiver_writes_before_store": [
+        "006dfc96: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Submarine",
+      "descriptor": "0x00d1ae38",
+      "creator": "0x008531a0",
+      "instance_size": "0x1288",
+      "constructor": "0x00852f10",
+      "examined_body": "00852F10",
+      "store_address": "00852f4f",
+      "receiver": "ESI",
+      "tick_vtable": "0xd0bf3c",
+      "slot_address": "00D0BF44",
+      "entry": "00855420",
+      "live_equals_disk": true,
+      "source_coverage": "ship_base_fragment",
+      "receiver_writes_before_store": [
+        "00852f16: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "TorpedoBoat",
+      "descriptor": "0x00d1ae78",
+      "creator": "0x00857e20",
+      "instance_size": "0x1190",
+      "constructor": "0x00857cd0",
+      "examined_body": "00857CD0",
+      "store_address": "00857d05",
+      "receiver": "ESI",
+      "tick_vtable": "0xd0c604",
+      "slot_address": "00D0C60C",
+      "entry": "00825F20",
+      "live_equals_disk": true,
+      "source_coverage": "direct_ship_body",
+      "receiver_writes_before_store": [
+        "00857cd6: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "MotherShip",
+      "descriptor": "0x00d1aebc",
+      "creator": "0x00758d30",
+      "instance_size": "0x12c8",
+      "constructor": "0x00758550",
+      "examined_body": "00758550",
+      "store_address": "007585c0",
+      "receiver": "ESI",
+      "tick_vtable": "0xd015e8",
+      "slot_address": "00D015F0",
+      "entry": "00758270",
+      "live_equals_disk": true,
+      "source_coverage": "ship_base_fragment",
+      "receiver_writes_before_store": [
+        "0075856c: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "ReconPlane",
+      "descriptor": "0x00d19bf4",
+      "creator": "0x008091d0",
+      "instance_size": "0x0e94",
+      "constructor": "0x0074e0f0",
+      "examined_body": "0074E0F0",
+      "store_address": "0074e127",
+      "receiver": "ESI",
+      "tick_vtable": "0xd0002c",
+      "slot_address": "00D00034",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "0074e0f8: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "SmallReconPlane",
+      "descriptor": "0x00d1a5a8",
+      "creator": "0x0084ca50",
+      "instance_size": "0x0e94",
+      "constructor": "0x0084c920",
+      "examined_body": "0084C920",
+      "store_address": "0084c955",
+      "receiver": "ESI",
+      "tick_vtable": "0xd0ba3c",
+      "slot_address": "00D0BA44",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "0084c926: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "LargeReconPlane",
+      "descriptor": "0x00d1a5ec",
+      "creator": "0x0074e540",
+      "instance_size": "0x0e94",
+      "constructor": "0x0074e2d0",
+      "examined_body": "0074E2D0",
+      "store_address": "0074e305",
+      "receiver": "ESI",
+      "tick_vtable": "0xd002c4",
+      "slot_address": "00D002CC",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "0074e2d6: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Fighter",
+      "descriptor": "0x00d19c30",
+      "creator": "0x007ddae0",
+      "instance_size": "0x0e94",
+      "constructor": "0x007dd9b0",
+      "examined_body": "007DD9B0",
+      "store_address": "007dd9e7",
+      "receiver": "ESI",
+      "tick_vtable": "0xd068dc",
+      "slot_address": "00D068E4",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "007dd9b8: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "DiveBomber",
+      "descriptor": "0x00d19c70",
+      "creator": "0x00956390",
+      "instance_size": "0x0e94",
+      "constructor": "0x00951b60",
+      "examined_body": "00951B60",
+      "store_address": "00951b97",
+      "receiver": "ESI",
+      "tick_vtable": "0xd19ce4",
+      "slot_address": "00D19CEC",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "00951b68: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "TorpedoBomber",
+      "descriptor": "0x00d19f4c",
+      "creator": "0x009564e0",
+      "instance_size": "0x0e94",
+      "constructor": "0x00000000",
+      "examined_body": "00951C40",
+      "store_address": "00951c77",
+      "receiver": "ESI",
+      "tick_vtable": "0xd19fbc",
+      "slot_address": "00D19FC4",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "00951c48: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Kamikaze",
+      "descriptor": "0x00d1a224",
+      "creator": "0x00956240",
+      "instance_size": "0x0e94",
+      "constructor": "0x00000000",
+      "examined_body": "00951D20",
+      "store_address": "00951d57",
+      "receiver": "ESI",
+      "tick_vtable": "0xd1a294",
+      "slot_address": "00D1A29C",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "00951d28: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "LevelBomber",
+      "descriptor": "0x00d1a4f8",
+      "creator": "0x007d7850",
+      "instance_size": "0x0e94",
+      "constructor": "0x007d7720",
+      "examined_body": "007D7720",
+      "store_address": "007d7757",
+      "receiver": "ESI",
+      "tick_vtable": "0xd065f4",
+      "slot_address": "00D065FC",
+      "entry": "007CE040",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "007d7728: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "AirField",
+      "descriptor": "0x00d1a9a0",
+      "creator": "0x006d3110",
+      "instance_size": "0x08e4",
+      "constructor": "0x006d1c20",
+      "examined_body": "006D1C20",
+      "store_address": "006d1c90",
+      "receiver": "ESI",
+      "tick_vtable": "0xcf8bc0",
+      "slot_address": "00CF8BC8",
+      "entry": "006D2510",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "006d1c40: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "Shipyard",
+      "descriptor": "0x00d1a9dc",
+      "creator": "0x00848380",
+      "instance_size": "0x07a4",
+      "constructor": "0x00848080",
+      "examined_body": "00848080",
+      "store_address": "008480d9",
+      "receiver": "ESI",
+      "tick_vtable": "0xd0b728",
+      "slot_address": "00D0B730",
+      "entry": "00846320",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "008480a0: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "LandVehicle",
+      "descriptor": "0x00d1aa18",
+      "creator": "0x0074df10",
+      "instance_size": "0x0740",
+      "constructor": "0x0074dcc0",
+      "examined_body": "0074DCC0",
+      "store_address": "0074dcf7",
+      "receiver": "ESI",
+      "tick_vtable": "0xcffd9c",
+      "slot_address": "00CFFDA4",
+      "entry": "00953CC0",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "0074dcc8: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "LandFort",
+      "descriptor": "0x00cff790",
+      "creator": "0x00747000",
+      "instance_size": "0x0758",
+      "constructor": "0x00745940",
+      "examined_body": "00745940",
+      "store_address": "007459a5",
+      "receiver": "ESI",
+      "tick_vtable": "0xcff3b4",
+      "slot_address": "00CFF3BC",
+      "entry": "00953CC0",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "00745960: MOV ESI,ECX "
+      ]
+    },
+    {
+      "type": "CommandBuilding",
+      "descriptor": "0x00d1a538",
+      "creator": "0x006f5c10",
+      "instance_size": "0x07e8",
+      "constructor": "0x006f5610",
+      "examined_body": "006F5610",
+      "store_address": "006f567c",
+      "receiver": "EBP=ESI+310",
+      "tick_vtable": "0xcfafe0",
+      "slot_address": "00CFAFE8",
+      "entry": "00953CC0",
+      "live_equals_disk": true,
+      "source_coverage": "unresolved",
+      "receiver_writes_before_store": [
+        "006f562e: MOV ESI,ECX "
+      ]
+    }
+  ],
+  "dispatch_class_counts": {
+    "direct_ship_body": 5,
+    "ship_base_fragment": 3,
+    "unresolved": 13
+  },
+  "routines": [
+    {
+      "entry": "00874FE0",
+      "body": "00874FE0..00875003",
+      "coverage": "complete read-only dispatcher evidence; existing process scheduling remains an adaptation",
+      "abi": "job __thiscall; node pointer stack arg; RET4 at00875001"
+    },
+    {
+      "entry": "00825F20",
+      "body": "00825F20..00826D6B",
+      "coverage": "existing partial reconstruction reused; direct_ship_body labels dispatch identity only",
+      "abi": "__thiscall(unit+310h,float); RET4 at00826642 and00826D69"
+    },
+    {
+      "entry": "00749B20",
+      "body": "00749B20..00749BE2",
+      "coverage": "partial: unconditional base call only; 00749B31..00749BE2 remains unimplemented",
+      "abi": "__thiscall(unit+310h,float); RET4"
+    },
+    {
+      "entry": "00855420",
+      "body": "00855420..00855937",
+      "coverage": "partial: unconditional base call only; 00855434..00855937 remains unimplemented",
+      "abi": "__thiscall(unit+310h,float); RET4 at00855935"
+    },
+    {
+      "entry": "00758270",
+      "body": "00758270..007582AD",
+      "coverage": "partial: unconditional base call only; 00758280..007582AD remains unimplemented",
+      "abi": "__thiscall(unit+310h,float); RET4 at007582AB"
+    },
+    {
+      "entry": "006D2510",
+      "body": "006D2510..006D2553",
+      "coverage": "complete read-only evidence; entire native phase remains unimplemented in this host",
+      "abi": "__thiscall(unit+310h,float); RET4 at006D2551"
+    },
+    {
+      "entry": "00937440",
+      "body": "00937440..0093762D",
+      "coverage": "existing source arithmetic reused unchanged; only 0093749B..0093749E original bytes executed in this fixture",
+      "abi": "__thiscall(controller,float); RET4 at0093762B"
+    },
+    {
+      "entry": "0080FC30",
+      "body": "0080FC30..0080FC8A",
+      "coverage": "read-only producer evidence; existing source unscaled arm used",
+      "abi": "__thiscall(unit); x87 return; RET0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00874FF6",
+      "native": "tick_node+vtable08",
+      "function": "00874FE0",
+      "contract": "Actual dynamic wave-3 simulation dispatch; table word resolved separately by each constructor."
+    },
+    {
+      "address": "00874FFB",
+      "native": "00414DB0",
+      "function": "00874FE0",
+      "contract": "Following pose refresh, not changed in this process packet."
+    },
+    {
+      "address": "00749B2C",
+      "native": "00825F20",
+      "function": "00749B20",
+      "contract": "Unconditional original base call; same ECX tick-node receiver, one float argument."
+    },
+    {
+      "address": "0085542F",
+      "native": "00825F20",
+      "function": "00855420",
+      "contract": "Unconditional original base call; same ECX tick-node receiver, one float argument."
+    },
+    {
+      "address": "0075827B",
+      "native": "00825F20",
+      "function": "00758270",
+      "contract": "Unconditional original base call; same ECX tick-node receiver, one float argument."
+    },
+    {
+      "address": "006D251B",
+      "native": "00953CC0",
+      "function": "006D2510",
+      "contract": "Observed common-base call; callee behavior is outside the new implementation."
+    },
+    {
+      "address": "006D2532",
+      "native": "00CF8C08+vtable1A8",
+      "function": "006D2510",
+      "contract": "Observed primary virtual; unit receiver = tick receiver -310h."
+    },
+    {
+      "address": "006D254B",
+      "native": "006CDC70",
+      "function": "006D2510",
+      "contract": "Observed conditional call; body contract not reconstructed here."
+    },
+    {
+      "address": "006D312F",
+      "native": "00BF55BE",
+      "function": "006D3110",
+      "contract": "Allocator receives 8E4h bytes."
+    },
+    {
+      "address": "006D313E",
+      "native": "00BF79F0",
+      "function": "006D3110",
+      "contract": "Clear 8E4h bytes. ADD ESP,10h at3143 cleans both this 3-argument call and prior allocator argument."
+    },
+    {
+      "address": "006D315D",
+      "native": "006D1C20",
+      "function": "006D3110",
+      "contract": "Actual AirField constructor; ECX allocation, one stack argument, RET4."
+    },
+    {
+      "address": "006D3173",
+      "native": "009553D0",
+      "function": "006D3110",
+      "contract": "Existing class-descriptor publication after construction; no new contract."
+    },
+    {
+      "address": "0093745E",
+      "native": "00C32000",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "0093746D",
+      "native": "00C31F40",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "00937496",
+      "native": "0080FC30",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "009374F0",
+      "native": "00414DB0",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "00937535",
+      "native": "00414DB0",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "0093757A",
+      "native": "00424C40",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "00937613",
+      "native": "00C35330",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    },
+    {
+      "address": "00937622",
+      "native": "009329C0",
+      "function": "00937440",
+      "contract": "Existing force routine observed call; not a newly supplied host boundary."
+    }
+  ],
+  "no_ghidra_function": [],
+  "root_definitions": [
+    {
+      "entry": "00749B20",
+      "exclusive_end": "00749BE3",
+      "report": "reports/ship_motion_function_definitions.json"
+    },
+    {
+      "entry": "00758270",
+      "exclusive_end": "007582AE",
+      "report": "reports/mother_ship_motion_definition.json"
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "Worker read-only bsp wrappers; root alone defined/exported the two missing functions under its lease and write lock."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32 passed after final source edit",
+    "ctest": {
+      "passed": 2,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "calls": {
+      "checked": 18,
+      "failed": 0,
+      "unchecked_indirect": 2,
+      "log": "local/motion_j_call_verification.log",
+      "log_sha256": "375891f9f072ef7083b818d80d63791c251e2c0bb8527fb99198694e3d6597b4"
+    },
+    "native_ratio_fragment": {
+      "original_span": "0093749B..0093749E",
+      "bytes": "dc7c2418",
+      "original_zero_ratio_bits": "ffc00000",
+      "source_torque_bits": [
+        "ffc00000",
+        "ffc00000",
+        "ffc00000"
+      ],
+      "invalid_status": 16,
+      "zero_input_invalid": true,
+      "divisor_one_control": true
+    },
+    "native_dispatch_table_rows_matched": 21,
+    "h_first_frame_capture": {
+      "compiled_commit": "ba2bf73418153d9248053d393b2ef6a9a23ae54a",
+      "exe_sha256": "41da178f70a4ee5ea141bafb98ab587e544c0e955b0ddf1793e3d75134dfcd09",
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\orch6_combined_ba2bf734.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "1",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\motion_h_first_frame.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\motion_h_first_frame.csv"
+      ],
+      "process_check": "no bsp_game* or preserved-H executable process before launch",
+      "original_run_sha256": "25ff0d2c9e2dbaecec9c6faf2a34342977d6e2c06f13646294c1106caf2c280d",
+      "original_log_sha256": "df165a418eca07b2d8ed705468002de4c9af25bff86f64db08ff69afb7b89e79",
+      "exit": 0,
+      "seconds": 7.526580810546875
+    },
+    "runtime": {
+      "base_commit": "b40c84e6cd311373d7c930d9e0f9407c7bdd2e14",
+      "source_sha256": "ce60b2a5ec9cf4fcec707c4200da87895d17af7f1c5f633bd5a232b23ba75e72",
+      "exe_sha256": "edbe92d48317bedf1e398b1fcf51b72575c9ec1f406000b5caa4bb63ee1ac948",
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\motion_dispatch_j.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\motion_j_120.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-motion-origin-j\\local\\motion_j_120.csv"
+      ],
+      "process_check": "no bsp_game*, orch6_combined* or motion_dispatch_j.exe process before launch",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+      "exit": 0,
+      "seconds": 10.76317834854126
+    },
+    "trajectory": {
+      "trajectory_rows": 18557,
+      "motion_steps": 240,
+      "unit_dispatch_counts": {
+        "direct_ship_body": 13,
+        "ship_base_fragment": 1,
+        "unresolved": 63
+      },
+      "airfield_samples": 241,
+      "airfield_initial": {
+        "step": "0",
+        "t": "0.000000",
+        "unit": "Airfield2",
+        "class": "MultiAirField",
+        "x": "4013.951660",
+        "y": "2.999100",
+        "z": "-3242.676758",
+        "heading": "15.004863",
+        "fwd_speed": "0.000000",
+        "throttle": "0.000000",
+        "rudder": "0.000000",
+        "yaw_rate": "0.000000"
+      },
+      "airfield_step1": {
+        "step": "1",
+        "t": "0.050000",
+        "unit": "Airfield2",
+        "class": "MultiAirField",
+        "x": "4013.951660",
+        "y": "2.999100",
+        "z": "-3242.676758",
+        "heading": "15.004863",
+        "fwd_speed": "0.000000",
+        "throttle": "0.000000",
+        "rudder": "0.000000",
+        "yaw_rate": "0.000000"
+      },
+      "airfield_final": {
+        "step": "240",
+        "t": "12.000028",
+        "unit": "Airfield2",
+        "class": "MultiAirField",
+        "x": "4013.951660",
+        "y": "2.999100",
+        "z": "-3242.676758",
+        "heading": "15.004863",
+        "fwd_speed": "0.000000",
+        "throttle": "0.000000",
+        "rudder": "0.000000",
+        "yaw_rate": "0.000000"
+      },
+      "old_airfield_step1": {
+        "step": "1",
+        "t": "0.050000",
+        "unit": "Airfield2",
+        "class": "MultiAirField",
+        "x": "4013.951660",
+        "y": "2.974100",
+        "z": "-3242.676758",
+        "heading": "15.004863",
+        "fwd_speed": "0.000000",
+        "throttle": "0.000000",
+        "rudder": "0.000000",
+        "yaw_rate": "-nan(ind)"
+      },
+      "nonfinite_rows": 0,
+      "nonfinite_unit_names": [],
+      "base_fragment_unit": [
+        "Enterprise"
+      ],
+      "limits": [
+        "Post-fix base is b40c84e6 with earlier main integrations; H capture is retained ba2bf734. This is not an otherwise identical whole-program A/B.",
+        "Unreconstructed phases retain their semantic poses. A stationary AirField proves exclusion from ship motion, not native AirField simulation fidelity.",
+        "Existing ship hull/buoyancy and integration adapters remain partial."
+      ]
+    },
+    "phase_counts": {
+      "006d2510": 240,
+      "00953cc0": 10080,
+      "007ce040": 4800,
+      "00758270": 240
+    },
+    "native_fixture_limits": "Only four original arithmetic instruction bytes executed, with bridge-supplied input storage. Full force routine, class constructors, dispatcher and native game were not executed by this probe."
+  },
+  "hashes": {
+    "code_and_binaries": {
+      "src/game_hosts_units.cpp": "ce60b2a5ec9cf4fcec707c4200da87895d17af7f1c5f633bd5a232b23ba75e72",
+      "src/game_hosts_lua.cpp": "73587a25fa38674280a5d650a7b47d47ceb8ae9c3d9a7492e61d90d84717a83b",
+      "src/unit_forces.cpp": "1d23e3c5c268606e673c3c610b634468e9c3159536faf8320ad287894a769648",
+      "src/ship_motion.cpp": "744b3c973a9d55eccb086227c92d06cbf512e829215a2ec4608ed36cdb91147b",
+      "src/rigid_body_integration.cpp": "a05e5cb790f1ad2de7e266e320042e445b7d2c3747d110fc0994931df3f75aa2",
+      "src/vehicle_class.cpp": "2ce059da837a0e37f6cb63947daa8a3caebec066492167b9ee9f1d55f551a95a",
+      "src/unit_instance_layout.cpp": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "include/bsp/vehicle_class.hpp": "69dd1423f447a21125bc6209d9579c7a00f398263aeeba366377a3c7fe6ee2c6",
+      "build/win32/Release/bsp_core.lib": "59d967d86427a871dd2ac6302d3db238175aea89cfd3762957d5d237487bfaed",
+      "build/win32/Release/bsp_game.exe": "edbe92d48317bedf1e398b1fcf51b72575c9ec1f406000b5caa4bb63ee1ac948"
+    },
+    "installed_inputs": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\autoload\\vehicleclasses.lua": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\universe\\Scenes\\missions\\USN\\usn_1_marshall.scn": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\Scripts\\missions\\usn\\usn_1_marshall.lua": "4eab501a6b09825ebbd31ceee05e6f26e1c6067b66b74c885877c89586ceb634"
+    },
+    "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "source_diff_sha256": "a7c326d5b9d3ac84439d87314291ca8d2b88b134089459471320b0cef4d32ff8"
+  },
+  "artifacts": {
+    "manifest": "local/motion_j_artifact_manifest.json",
+    "root": "J:/PROG/battlestations-pacific-decompile-orch6-motion-origin-j/local",
+    "reproduce": [
+      "python local/collect_motion_slots.py",
+      "python local/audit_motion_dispatch.py",
+      "cmd /c local/build_motion_ratio.cmd",
+      "local/motion_zero_ratio_probe.exe",
+      "python local/capture_motion_h.py",
+      "python local/capture_motion_j.py"
+    ]
+  },
+  "remaining_packets": [
+    {
+      "entry": "006D2510",
+      "scope": "Actual AirField phase and owning 00953CC0/primary1A8/006CDC70 contracts; do not emulate ship fields in8E4h AirField storage."
+    },
+    {
+      "entries": [
+        "007CE040",
+        "00846320",
+        "00953CC0"
+      ],
+      "scope": "Other concrete simulation phases, left unresolved before any ship-only operation."
+    },
+    {
+      "entries": [
+        "00749B20",
+        "00855420",
+        "00758270"
+      ],
+      "scope": "Native subclass tails listed in coverage rows, after the verified unconditional base calls."
+    }
+  ],
+  "limits": [
+    "Post-fix base is b40c84e6 with earlier main integrations; H capture is retained ba2bf734. This is not an otherwise identical whole-program A/B.",
+    "Unreconstructed phases retain their semantic poses. A stationary AirField proves exclusion from ship motion, not native AirField simulation fidelity.",
+    "Existing ship hull/buoyancy and integration adapters remain partial.",
+    "Other unit frame phases, command state, per-class world-list registration and original full constructor behavior remain existing adapters.",
+    "Ship collision/AABB inputs, synthetic buoyancy, force-controller binding and integration schedule remain existing partial projections.",
+    "No native original-game runtime or visual/physics parity claim; no finiteness guard, default-speed fix, or second physics engine."
+  ]
+}

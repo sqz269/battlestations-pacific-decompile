@@ -10,6 +10,14 @@ namespace {
 void require(bool condition, const char* message) {
     if (!condition) throw std::logic_error(message);
 }
+struct CopyDispatch {
+    bool& active;
+    explicit CopyDispatch(bool& value) : active(value) {
+        require(!active, "Text copy constructor dispatch cannot reenter its native continuation");
+        active = true;
+    }
+    ~CopyDispatch() { active = false; }
+};
 void require_services(GuiTextRuntimeFactoryServices& s) {
     auto& b = s.buffers;
     auto& content = s.properties.submit.content;
@@ -142,6 +150,151 @@ std::unique_ptr<GuiWidgetTypeImplementation> GuiTextRuntimeFactory::make_type(Gu
         throw;
     }
 }
+std::unique_ptr<GuiTextRuntimeCopyOperation> GuiTextRuntimeFactory::begin_copy_00aa1380(
+    GuiWidgetOwner& source, std::unique_ptr<GuiLayoutWidget>& destination,
+    const GuiWidgetBaseCopyPreimage& preimage, GuiTextRuntimeCopyServices services) {
+    require_services(services_);
+    source.require_no_active_owned_operation();
+    auto* implementation = dynamic_cast<GuiTextRuntimeImplementation*>(&source.implementation());
+    require(implementation && &implementation->factory_ == this &&
+        source.text_lifetime() == implementation->lifetime_.get() &&
+        !implementation->has_pending_operation() && !implementation->source_copy_borrowed_ &&
+        &services_.buffers.widgets.owner(source.layout()) == &source &&
+        source.layout().type == GuiWidgetType::Text && source.layout().transform.type_id == 3,
+        "copied Text factory requires its same live source implementation and allocation domain");
+    const auto allocation = allocations_.find(&source.layout());
+    require(allocation != allocations_.end() && !allocation->second.completed_flags0,
+        "copied Text source must have its live original pool allocation transport");
+    require(destination && destination.get() != &source.layout() &&
+        !destination->before_destroy && !destination->parent && !destination->transform.parent &&
+        destination->children.empty() && destination->transform.children.empty() &&
+        !allocations_.count(destination.get()),
+        "copied Text factory requires a fresh distinct destination layout");
+    require(&services.cursor.buffers == &services_.buffers &&
+        &services.cursor.layouts == &services_.properties.submit.content.nonempty.layouts &&
+        &services.cursor.one_00d7a24c == &services_.constructor.one_00d7a24c,
+        "copied Text factory must use its same cursor/content/live constant bindings");
+    return std::unique_ptr<GuiTextRuntimeCopyOperation>(new GuiTextRuntimeCopyOperation(
+        *this, source, *implementation, destination, preimage, services));
+}
+
+GuiTextRuntimeCopyOperation::GuiTextRuntimeCopyOperation(GuiTextRuntimeFactory& factory,
+    GuiWidgetOwner& source, GuiTextRuntimeImplementation& implementation,
+    std::unique_ptr<GuiLayoutWidget>& destination, const GuiWidgetBaseCopyPreimage& preimage,
+    GuiTextRuntimeCopyServices services)
+    : factory_(factory), source_(source), source_implementation_(implementation),
+      preimage_(preimage), services_(services),
+      source_borrow_(std::make_unique<GuiWidgetCopySourceBorrow>(source)) {
+    // No native calls before this stable frame exists. A failed source-borrow
+    // admission leaves the caller's sole destination ownership untouched.
+    source_implementation_.source_copy_borrowed_ = true;
+    destination_ = std::move(destination);
+}
+GuiTextRuntimeCopyOperation::~GuiTextRuntimeCopyOperation() noexcept {
+    if (phase_ != GuiTextRuntimeCopyPhase::ready && phase_ != GuiTextRuntimeCopyPhase::complete &&
+        phase_ != GuiTextRuntimeCopyPhase::null_allocation) std::terminate();
+    release_source_borrow();
+    // Complete owns either no layout (transferred) or the same admitted layout,
+    // whose existing before_destroy performs its ordinary canonical retirement.
+}
+void GuiTextRuntimeCopyOperation::release_source_borrow() noexcept {
+    if (!source_borrow_) return; // Source may already have retired after success.
+    source_implementation_.source_copy_borrowed_ = false;
+    source_borrow_.reset();
+}
+GuiTextRuntimeImplementation& GuiTextRuntimeCopyOperation::implementation() {
+    require(destination_ && copied_implementation_ && copied_implementation_->lifetime_,
+        "copied Text implementation is not yet constructed or its layout was transferred");
+    return *copied_implementation_;
+}
+GuiTextRuntimeContentContinuation* GuiTextRuntimeCopyOperation::pending_content() noexcept {
+    return destination_ && copied_implementation_ ? copied_implementation_->pending_content() : nullptr;
+}
+GuiTextCursorAcquired& GuiTextRuntimeCopyOperation::cursor_acquired() {
+    auto& copied = implementation();
+    require(copied.copy_.has_value(), "copied Text has no admitted derived cursor frame");
+    return copied.copy_->cursor_acquired();
+}
+GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::run_00aa1380() {
+    require(phase_ == GuiTextRuntimeCopyPhase::ready && destination_ && source_borrow_,
+        "copied Text factory constructor must run exactly once");
+    phase_ = GuiTextRuntimeCopyPhase::running;
+    try {
+        // AA139E precedes ABB2E5's base copy. The raw1F4h payload stays opaque;
+        // allocating a slot does not construct a raw Text header or count.
+        raw_slot_ = allocate_gui_text_raw_slot_00ab79e0(factory_.services_.pool);
+        if (!raw_slot_) {
+            phase_ = GuiTextRuntimeCopyPhase::null_allocation;
+            release_source_borrow(); // Native AA13F2 returns zero, no Text created.
+            return phase_;
+        }
+        require(factory_.allocations_.emplace(destination_.get(),
+            GuiTextRuntimeFactory::Allocation{raw_slot_, false}).second,
+            "copied Text allocation callback occupied its destination transport");
+        auto& owner = factory_.services_.buffers.widgets.construct_base_copy_00aa9520(
+            *destination_, source_, preimage_, services_.base, base_acquired_, source_borrow_.get());
+        auto copied = std::unique_ptr<GuiTextRuntimeImplementation>(new GuiTextRuntimeImplementation(
+            factory_, owner, GuiTextRuntimeImplementation::CopiedAdmission{}));
+        copied_implementation_ = copied.get();
+        implementation_ = std::move(copied); // Preserve shell before copied lifetime effects.
+        // Publish the retained shell before allocating/copying derived fields.
+        // Its active-operation query rejects retirement even if lifetime
+        // allocation or copied-string construction throws before association.
+        factory_.services_.buffers.widgets.begin_base_copy_type_admission(owner, *copied_implementation_);
+        copied_implementation_->initialize_copy(source_implementation_.lifetime(), services_.cursor);
+        copied_implementation_->copy_operation_ = this;
+        if (copied_implementation_->run_copy() == GuiTextCopyPhase::pending_content) {
+            phase_ = GuiTextRuntimeCopyPhase::pending_content;
+            return phase_;
+        }
+        finish_admission();
+        return phase_;
+    } catch (...) {
+        failure_ = std::current_exception();
+        phase_ = GuiTextRuntimeCopyPhase::failed;
+        throw; // All published ownership and source borrow remain on this frame.
+    }
+}
+void GuiTextRuntimeCopyOperation::finish_admission() {
+    auto& copied = implementation();
+    require(copied.copy_ && copied.copy_->phase() == GuiTextCopyPhase::complete &&
+        !copied.lifetime().has_incomplete_copy() && !copied.copy_dispatch_active_,
+        "copied Text admission requires completed native content and an inactive constructor call");
+    factory_.services_.buffers.widgets.finish_base_copy_type_admission(copied.owner_, implementation_);
+    copied.copy_runtime_admitted_ = true;
+    copied.copy_operation_ = nullptr;
+    phase_ = GuiTextRuntimeCopyPhase::complete;
+    release_source_borrow(); // Holding a completed result must not pin the template.
+}
+GuiTextRuntimeCopyPhase GuiTextRuntimeCopyOperation::resume_after_glyph_child() {
+    require(phase_ == GuiTextRuntimeCopyPhase::pending_content,
+        "copied Text factory resume requires its retained constructor content");
+    auto& copied = implementation();
+    require(copied.copy_.has_value(), "copied Text factory lost its constructor frame");
+    try {
+        {
+            CopyDispatch dispatch(copied.copy_dispatch_active_);
+            if (copied.copy_->resume_after_child() == GuiTextCopyPhase::pending_content)
+                return phase_;
+        }
+        finish_admission();
+        return phase_;
+    } catch (...) {
+        failure_ = std::current_exception();
+        phase_ = GuiTextRuntimeCopyPhase::failed;
+        throw;
+    }
+}
+std::unique_ptr<GuiLayoutWidget> GuiTextRuntimeCopyOperation::take_completed_layout() {
+    require(phase_ == GuiTextRuntimeCopyPhase::complete ||
+        phase_ == GuiTextRuntimeCopyPhase::null_allocation,
+        "an unfinished copied Text cannot be transferred as a successful widget");
+    if (phase_ == GuiTextRuntimeCopyPhase::null_allocation) return nullptr;
+    require(destination_ != nullptr, "copied Text layout ownership was already transferred");
+    copied_implementation_ = nullptr;
+    raw_slot_ = nullptr; // The transported layout now owns its allocation lifetime.
+    return std::move(destination_);
+}
 std::unique_ptr<GuiLayoutWidget> GuiTextRuntimeFactory::construct_unbound_glyph_child() {
     auto child = std::make_unique<GuiLayoutWidget>();
     child->type = GuiWidgetType::Text;
@@ -174,6 +327,24 @@ GuiTextRuntimeImplementation::GuiTextRuntimeImplementation(GuiTextRuntimeFactory
     auto& s = factory_.services_;
     lifetime_ = std::make_unique<GuiTextLifetime>(owner, s.buffers, s.children, s.constructor);
 }
+GuiTextRuntimeImplementation::GuiTextRuntimeImplementation(GuiTextRuntimeFactory& factory,
+    GuiWidgetOwner& owner, CopiedAdmission) : factory_(factory), owner_(owner), copied_admission_(true) {}
+void GuiTextRuntimeImplementation::initialize_copy(const GuiTextLifetime& source,
+    GuiTextCursorServices& cursor) {
+    require(copied_admission_ && !lifetime_ && !copy_ && !copy_services_,
+        "copied Text shell may admit its sole lifetime only once");
+    auto& services = factory_.services_;
+    lifetime_ = std::make_unique<GuiTextLifetime>(GuiTextAfterBaseCopy00aa9520{},
+        owner_, services.buffers, services.children, source);
+    copy_services_.emplace(GuiTextCopyServices{cursor, services.properties.submit});
+    copy_.emplace(*lifetime_, *copy_services_);
+}
+GuiTextCopyPhase GuiTextRuntimeImplementation::run_copy() {
+    require(copy_ && copy_->phase() == GuiTextCopyPhase::admitted,
+        "copied Text implementation requires its original admitted constructor frame");
+    CopyDispatch dispatch(copy_dispatch_active_);
+    return copy_->run_derived_00abb2c0();
+}
 GuiTextRuntimeImplementation::~GuiTextRuntimeImplementation() noexcept {
     if (has_pending_operation()) std::terminate();
     const bool flags0 = lifetime_->scalar_deletion_phase() == GuiTextScalarDeletionPhase::complete &&
@@ -181,6 +352,8 @@ GuiTextRuntimeImplementation::~GuiTextRuntimeImplementation() noexcept {
     // Lifetime teardown precedes physical storage return. Failed/partial scalar
     // teardown terminates in GuiTextLifetime, never silently freeing the slot.
     auto& layout = owner_.layout();
+    copy_.reset(); // Completed frame must not outlive its sole lifetime.
+    copy_services_.reset();
     lifetime_.reset();
     factory_.implementation_destroyed(layout, flags0);
 }
@@ -189,11 +362,26 @@ void GuiTextRuntimeImplementation::require_owner(GuiWidgetOwner& owner) const {
         "Text virtual dispatch requires its same canonical implementation/lifetime");
 }
 bool GuiTextRuntimeImplementation::has_pending_operation() const noexcept {
-    return properties_ || submission_ || clip_.has_value();
+    return properties_ || submission_ || clip_.has_value() ||
+        (copied_admission_ && (!lifetime_ || !copy_ ||
+            copy_->phase() != GuiTextCopyPhase::complete || lifetime_->has_incomplete_copy()));
+}
+bool GuiTextRuntimeImplementation::has_active_operation() const noexcept {
+    return has_pending_operation() || copy_dispatch_active_;
 }
 void GuiTextRuntimeImplementation::require_idle() const {
-    if (has_pending_operation())
+    if (has_pending_operation() || source_copy_borrowed_ ||
+        (copied_admission_ && !copy_runtime_admitted_))
         throw GuiTextRuntimePending("Text still retains an unfinished content or child70 operation");
+}
+void GuiTextRuntimeImplementation::require_constructor_read_or_idle() const {
+    if (copy_dispatch_active_) {
+        require(copied_admission_ && copy_ && lifetime_ &&
+            owner_.text_lifetime() == lifetime_.get(),
+            "constructor bounds require the same actively copied Text lifetime");
+        return;
+    }
+    require_idle();
 }
 void GuiTextRuntimeImplementation::constructed74(GuiWidgetOwner& owner) {
     require_owner(owner); require_idle();
@@ -213,14 +401,14 @@ void GuiTextRuntimeImplementation::loaded78(GuiWidgetOwner& owner) {
     load_gui_text78_00ab6aa0(*lifetime_, factory_.services_.dispatch);
 }
 void GuiTextRuntimeImplementation::set_active60(GuiWidgetOwner& owner, bool active) {
-    require_owner(owner);
+    require_owner(owner); require_idle();
     set_gui_text_active60_00ab87d0(*lifetime_, active, factory_.services_.dispatch);
 }
 bool GuiTextRuntimeImplementation::is_visible38(GuiWidgetOwner& owner) {
     require_owner(owner); return owner.base_is_visible38_00a9e0d0();
 }
 void GuiTextRuntimeImplementation::visibility_changed3c(GuiWidgetOwner& owner, bool visible) {
-    require_owner(owner); owner.base_visibility_changed3c_00a9e100(visible);
+    require_owner(owner); require_idle(); owner.base_visibility_changed3c_00a9e100(visible);
 }
 void GuiTextRuntimeImplementation::before_scalar_deletion4(GuiWidgetOwner& owner) {
     require_owner(owner); require_idle();
@@ -261,6 +449,9 @@ void GuiTextRuntimeImplementation::resume_clip_after_child70() {
     continue_clip();
 }
 GuiTextRuntimeContentContinuation* GuiTextRuntimeImplementation::pending_content() noexcept {
+    if (copy_) {
+        if (auto* pending = copy_->pending_content()) return pending->content.get();
+    }
     if (properties_ && properties_->submission) return properties_->submission->content.get();
     return submission_ ? submission_->content.get() : nullptr;
 }
@@ -272,7 +463,12 @@ void GuiTextRuntimeImplementation::retain_submission(GuiTextSubmitResult result)
     }
 }
 void GuiTextRuntimeImplementation::resume_after_glyph_child() {
-    if (properties_) {
+    if (copied_admission_ && !copy_runtime_admitted_) {
+        require(copy_operation_ && copy_ && copy_->phase() == GuiTextCopyPhase::pending_content,
+            "copied Text resume requires its same pending factory caller");
+        if (copy_operation_->resume_after_glyph_child() == GuiTextRuntimeCopyPhase::pending_content)
+            throw GuiTextRuntimePending("Text copy awaits another actual glyph-child/content continuation");
+    } else if (properties_) {
         if (resume_gui_text_properties_after_child(properties_) == GuiTextPropertiesStatus::pending_content)
             throw GuiTextRuntimePending("Text properties await another actual glyph-child/content continuation");
     } else {
@@ -312,7 +508,7 @@ void GuiTextRuntimeImplementation::set_state80_00ab7200(std::int32_t state) {
     set_gui_text_state80_00ab7200(binding, state);
 }
 float GuiTextRuntimeImplementation::normalized_height_00ab6bd0() {
-    require_idle();
+    require_constructor_read_or_idle();
     return normalized_height(*lifetime_, factory_.services_.properties.font_names.fonts,
         factory_.services_.bounds.height_divisor_00cef1b8);
 }
@@ -356,7 +552,7 @@ void GuiTextRuntimeImplementation::set_alpha4c(GuiWidgetOwner& owner, float alph
 }
 void GuiTextRuntimeImplementation::align_bounds64_00ab6d70(float& left, float& top,
     float& right, float& bottom) {
-    require_idle();
+    require_constructor_read_or_idle();
     auto& s = factory_.services_;
     auto& text = lifetime_->text();
     // AB6D73 always performs FLD, even when both align branches discard half.

@@ -1,0 +1,48 @@
+{
+  "packet": "orch5_widget_model_copy_binding",
+  "status": "actual_positive_model_stream_copy_primary_fixture_passed",
+  "source": "src/gui_widget_model_copy.cpp",
+  "header": "include/bsp/gui_widget_model_copy.hpp",
+  "documentation": "docs/GUI_WIDGET_MODEL_COPY.md",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "host_steps": [
+    {
+      "function": "00aa9520",
+      "address": "00aa96fc",
+      "native": "source4C+vtable10",
+      "resolved_native": "00b752b0",
+      "original_abi": "ECX source Model; stack flags,parent; RET8; EAX acquired Model creator",
+      "binding": "GuiWidgetModelCopyRuntime forwards the caller's live D5C0B8 flags and parent0 into the same Model/mesh/material/stream owner domains",
+      "coverage": "flags3E selects actual factory/map/copy/unmap streams; flags26 shares streams; neither route is a native ABI replacement"
+    }
+  ],
+  "ownership": [
+    "No new native renderer, device, allocation pool or retained-object registry",
+    "Returns the same acquired Model creator for AA9520's final canonical transfer",
+    "Model, mesh, section, material and current stream creator plus mapping phase remain visible on interruption",
+    "No flags26 substitution after flags3E failure, synthetic Text counter or success-only no-op provider"
+  ],
+  "limitations": [
+    "Complete copied Text additionally requires its actual native retained identity, cursor and renderer/material/layout bindings",
+    "Raw1F4h Text allocation is opaque transport, not a constructed native Text reference counter",
+    "Native SEH, original entry ABI, executable global producers and gameplay remain unvalidated",
+    "Positive fixture has no mesh sections/materials/lights/children; renderer/profile/declaration/pool-header values are explicit fixture inputs."
+  ],
+  "validation": {
+    "build": {
+      "commit": "b1f047dd60333c96d0f836464bd22a181eaf4ca1",
+      "build": "MSVC Win32 Release /W4 /WX; two CTests passed",
+      "batch": "reports\\orch5_stream_text_copy_batch.json"
+    },
+    "fixture": {
+      "source_sha256": "952FA67A7B533FDE6A48DD7A31959F47A40C55B7C5AFF2F182EAA5CF2C735A03",
+      "log_sha256": "368DFFE99B9B503854878533317FCB3B5A4819FC702506082BFC562C7AFC8164",
+      "name": "widget_model_copy",
+      "exit_code": 0,
+      "source": "local/stream-text-workers/model/local/widget_model_copy_probe.cpp",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\stream-text-validation\\widget_model_copy-run.log"
+    },
+    "positive_copied_text": "unvalidated"
+  }
+}

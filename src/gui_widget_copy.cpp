@@ -1,5 +1,6 @@
 #include "bsp/gui_widget_copy.hpp"
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_text_lifetime.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -51,18 +52,36 @@ struct ActiveCopy {
     ~ActiveCopy() { source = destination = false; }
 };
 bool empty_creators(const NativeGuiTextModelCloneAcquired& acquired) noexcept {
-    return !acquired.model && !acquired.mesh.mesh && !acquired.mesh.section && !acquired.mesh.material;
+    const auto& stream = acquired.mesh.stream;
+    return !acquired.model && !acquired.mesh.mesh && !acquired.mesh.section && !acquired.mesh.material &&
+        !stream.creator && !stream.companion &&
+        (stream.phase == NativeStreamClonePhase::empty || stream.phase == NativeStreamClonePhase::consumed);
 }
+}
+
+GuiWidgetCopySourceBorrow::GuiWidgetCopySourceBorrow(GuiWidgetOwner& source)
+    : source_(source) {
+    source_.require_no_active_owned_operation();
+    if (&source_.runtime_.owner(source_.layout_) != &source_ || !source_.implementation_)
+        throw std::logic_error("copy source borrow requires the admitted canonical owner");
+    source_.base_copy_source_borrow_ = this;
+}
+GuiWidgetCopySourceBorrow::~GuiWidgetCopySourceBorrow() noexcept {
+    if (source_.base_copy_source_borrow_ != this) std::terminate();
+    source_.base_copy_source_borrow_ = nullptr;
 }
 
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base_copy_00aa9520(
     GuiLayoutWidget& destination, GuiWidgetOwner& source,
     const GuiWidgetBaseCopyPreimage& preimage, const GuiWidgetCopyServices& services,
-    NativeGuiTextModelCloneAcquired& acquired) {
+    NativeGuiTextModelCloneAcquired& acquired, const GuiWidgetCopySourceBorrow* authorized_source) {
     if (&source.runtime_ != this || &owner(source.layout_) != &source ||
         !source.implementation_ || &destination == &source.layout_)
         throw std::invalid_argument("base copy requires a distinct destination and admitted source owner");
-    source.require_no_active_owned_operation();
+    if (authorized_source && (&authorized_source->source_ != &source ||
+        source.base_copy_source_borrow_ != authorized_source))
+        throw std::logic_error("base copy requires its matching held source borrow");
+    source.require_no_active_owned_operation_impl(authorized_source, false);
     if (widgets_.count(&destination) || destination.before_destroy || destination.parent ||
         destination.transform.parent || !destination.children.empty() ||
         !destination.transform.children.empty() || !empty_creators(acquired))
@@ -143,7 +162,10 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base_copy_00aa9520(
         throw std::logic_error("AA9520 source4C has no canonical Model companion");
     require_model_copy_reference(*source_reference);
     auto* const copied = services.models.clone_current10(source_reference->model_owner(), flags, nullptr, acquired);
-    if (copied != acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material)
+    const auto& stream = acquired.mesh.stream;
+    if (copied != acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material ||
+        stream.creator || stream.companion ||
+        (stream.phase != NativeStreamClonePhase::empty && stream.phase != NativeStreamClonePhase::consumed))
         throw std::logic_error("completed current10 must publish its creator and consume temporary creators");
     if (copied) {
         require_model_copy_reference(*copied);
@@ -158,16 +180,31 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base_copy_00aa9520(
     return result;
 }
 
+void GuiWidgetOwnerRuntime::begin_base_copy_type_admission(GuiWidgetOwner& retained,
+    GuiWidgetTypeImplementation& implementation) {
+    if (&retained.runtime_ != this || &owner(retained.layout_) != &retained ||
+        !retained.base_copy_untyped_ || !retained.base_copy_complete_ ||
+        retained.implementation_ || retained.base_copy_constructor_)
+        throw std::logic_error("constructor dispatch requires its completed untyped base copy");
+    // A copied Text is constructing here. This is the sole admission that may
+    // publish constructor dispatch while its lifetime continuation is pending.
+    retained.require_no_active_owned_operation_impl(nullptr, true);
+    retained.base_copy_constructor_ = &implementation;
+}
+
 void GuiWidgetOwnerRuntime::finish_base_copy_type_admission(GuiWidgetOwner& retained,
     std::unique_ptr<GuiWidgetTypeImplementation>& implementation) {
     if (&retained.runtime_ != this || &owner(retained.layout_) != &retained ||
         !retained.base_copy_untyped_ || !retained.base_copy_complete_ ||
-        retained.implementation_ || !implementation)
+        retained.implementation_ || !implementation ||
+        (retained.base_copy_constructor_ && retained.base_copy_constructor_ != implementation.get()) ||
+        (retained.text_lifetime_ && retained.text_lifetime_->has_incomplete_copy()))
         throw std::logic_error("derived copy admission requires the completed canonical base copy");
-    retained.require_no_active_owned_operation();
+    retained.require_no_active_owned_operation_impl(nullptr, true);
     // Consume only after every preflight. A rejected pending derived copy must
     // leave the caller's sole implementation/lifetime owned and resumable.
     retained.implementation_ = std::move(implementation);
+    retained.base_copy_constructor_ = nullptr;
     retained.base_copy_untyped_ = false;
 }
 

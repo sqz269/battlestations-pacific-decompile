@@ -256,6 +256,9 @@ public:
     // 0071be40 on the unit's own weapon director, which 009f3dd0 reads at
     // 009f3de6 to decide which AI state the controller should be in.
     std::uint32_t director_current_command_0071be40(std::size_t index) const;
+    bool director_avoidance(std::size_t index, GameDirectorAvoidance& out) const;
+    bool apply_director_avoidance_message_00835640(std::size_t index,
+        const bsp::DirectorCommandMessage& message);
     // Milestone 2q: the two calls an AI state step makes when it decides its
     // command is finished, 009E595C and 009E5997 for `movetopos` and 009E88C1
     // for `attackmove`. Both go to the unit's own weapon director.
@@ -266,6 +269,13 @@ public:
     // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
     // process the byte is the unit 004c0890 bound.
     bool unit_player_controlled_0184(std::size_t index) const;
+    // Canonical current assignments, native unit+1ACh..+1CCh: 00928630
+    // explicitly initializes all nine to 8 (unassigned). Separate from the
+    // +188h policy table. No assignment receiver is represented yet; selecting
+    // a controlled unit or issuing a sender request does not change these.
+    // Missing unit or role outside 0..8 returns false and preserves out.
+    bool unit_current_role_slot(std::size_t index, std::int32_t role_index,
+        std::int32_t& out) const;
     // The controller's second and third gates, 009f50f2 and 009f50fc. Milestone
     // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
     // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
@@ -287,6 +297,12 @@ public:
     // False when the unit holds no current `cruise`, or when it is the player's.
     bool run_cruise_state_step_009e1170(std::size_t index, bsp::ShipAiControlBlock& blk,
         bsp::ShipAiSetterHost& setters);
+    // The live request overload. Slot inputs must come from their actual
+    // owners; this host supplies unit+184h itself. Historical request member
+    // flag_3fc is nav+3F4h; enable_3f4 is nav+3ECh, and side_filter is nav+3F0h.
+    bool run_cruise_state_step_009e1170(std::size_t index, bsp::ShipAiControlBlock& blk,
+        bsp::ShipAiSetterHost& setters, bsp::ShipAiAvoidanceRequest& request,
+        const bsp::ShipAiCruiseAvoidanceInputs& avoidance_inputs);
 
     // ---- milestone 2o: the hop from the AI's desired pair into the ring ----
     // 009f3ff8..009f402e, the head of 009f3f80: the slot under the ring's write

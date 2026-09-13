@@ -1,0 +1,172 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b48cc0",
+    "end_address": "00b48cc4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b48cc0",
+    "end_address": "00b48cc3",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b48cc0",
+    "disassemble_first": false,
+    "name": "BSP_D3D9LogicalVertexStream_GetFlags"
+   },
+   "result": {
+    "success": true,
+    "address": "00b48cc0",
+    "function_name": "BSP_D3D9LogicalVertexStream_GetFlags",
+    "entry_point": "00b48cc0",
+    "body_size": 4,
+    "message": "Function created successfully at 00b48cc0",
+    "warnings": [
+     "Function name 'BSP_D3D9LogicalVertexStream_GetFlags' \u2014 main part 'D3D9LogicalVertexStream_GetFlags' is not PascalCase. Expected: D3d9logicalvertexstreamGetflags",
+     "Function name 'BSP_D3D9LogicalVertexStream_GetFlags' \u2014 main part 'D3D9LogicalVertexStream_GetFlags' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9LogicalVertexStream_GetFlags' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b48cc0",
+   "end": "00b48cc4",
+   "name": "BSP_D3D9LogicalVertexStream_GetFlags",
+   "after": "Function: BSP_D3D9LogicalVertexStream_GetFlags at 00b48cc0\nSignature: undefined BSP_D3D9LogicalVertexStream_GetFlags(void)\nEntry: 00b48cc0\nBody: 00b48cc0 - 00b48cc3"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b48d80",
+    "end_address": "00b48d84"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b48d80",
+    "end_address": "00b48d83",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b48d80",
+    "disassemble_first": false,
+    "name": "BSP_D3D9LogicalIndexStream_GetFlags"
+   },
+   "result": {
+    "success": true,
+    "address": "00b48d80",
+    "function_name": "BSP_D3D9LogicalIndexStream_GetFlags",
+    "entry_point": "00b48d80",
+    "body_size": 4,
+    "message": "Function created successfully at 00b48d80",
+    "warnings": [
+     "Function name 'BSP_D3D9LogicalIndexStream_GetFlags' \u2014 main part 'D3D9LogicalIndexStream_GetFlags' is not PascalCase. Expected: D3d9logicalindexstreamGetflags",
+     "Function name 'BSP_D3D9LogicalIndexStream_GetFlags' \u2014 main part 'D3D9LogicalIndexStream_GetFlags' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_D3D9LogicalIndexStream_GetFlags' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b48d80",
+   "end": "00b48d84",
+   "name": "BSP_D3D9LogicalIndexStream_GetFlags",
+   "after": "Function: BSP_D3D9LogicalIndexStream_GetFlags at 00b48d80\nSignature: undefined BSP_D3D9LogicalIndexStream_GetFlags(void)\nEntry: 00b48d80\nBody: 00b48d80 - 00b48d83"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b48d90",
+    "end_address": "00b48d94"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b48d90",
+    "end_address": "00b48d93",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b48d90",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b48d90",
+    "function_name": "FUN_00b48d90",
+    "entry_point": "00b48d90",
+    "body_size": 4,
+    "message": "Function created successfully at 00b48d90"
+   }
+  },
+  {
+   "defined": "00b48d90",
+   "end": "00b48d94",
+   "name": null,
+   "after": "Function: FUN_00b48d90 at 00b48d90\nSignature: undefined FUN_00b48d90(void)\nEntry: 00b48d90\nBody: 00b48d90 - 00b48d93"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b48da0",
+    "end_address": "00b48da4"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b48da0",
+    "end_address": "00b48da3",
+    "bytes_disassembled": 4,
+    "message": "Successfully disassembled 4 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b48da0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b48da0",
+    "function_name": "FUN_00b48da0",
+    "entry_point": "00b48da0",
+    "body_size": 4,
+    "message": "Function created successfully at 00b48da0"
+   }
+  },
+  {
+   "defined": "00b48da0",
+   "end": "00b48da4",
+   "name": null,
+   "after": "Function: FUN_00b48da0 at 00b48da0\nSignature: undefined FUN_00b48da0(void)\nEntry: 00b48da0\nBody: 00b48da0 - 00b48da3"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

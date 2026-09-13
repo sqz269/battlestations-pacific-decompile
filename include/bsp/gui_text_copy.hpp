@@ -70,8 +70,9 @@ struct GuiTextCopyServices {
 // admits one frame only. No replay after a throwing native operation.
 //
 // AA9520 canonical widget-owner copy construction remains REQUIRED upstream.
-// Consequently this does not enable GuiTextRuntimeFactory::clone, substitute
-// default lifetime construction, or claim full ABB2C0/AAB4C0 reconstruction.
+// GuiTextRuntimeCopyOperation composes that producer and owns this frame in
+// the ONE copied implementation. This continuation alone does not enable a
+// subtree clone, substitute default construction or provide native Text ABI.
 class GuiTextCopyContinuation final {
 public:
     GuiTextCopyContinuation(GuiTextLifetime& already_admitted, GuiTextCopyServices&);
@@ -79,7 +80,9 @@ public:
     GuiTextCopyContinuation& operator=(const GuiTextCopyContinuation&) = delete;
     GuiTextCopyPhase run_derived_00abb2c0();
     // Only after the actual suspended glyph-child tail completed; the inner
-    // submission rejects other pending reasons and preserves its frame.
+    // submission rejects other pending reasons and preserves its frame. A
+    // throwing suffix marks this frame failed, forbidding partially consumed
+    // builders from being retried. Native SEH rollback is not reconstructed.
     GuiTextCopyPhase resume_after_child();
     GuiTextCopyPhase phase() const noexcept { return phase_; }
     GuiTextCursorAcquired& cursor_acquired() noexcept { return cursor_; }

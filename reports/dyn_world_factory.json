@@ -1,0 +1,434 @@
+{
+  "packet": "orch6_dyn_world_factory_h",
+  "worker": "agent/orch6-dyn-world-factory-h",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/dyn_world_factory.cpp",
+  "header": "include/bsp/dyn_world_factory.hpp",
+  "documentation": "docs/DYN_WORLD_FACTORY.md",
+  "status": "complete_normal_path_actual_storage_native_differential_and_Win32_build_verified",
+  "abi_compatible": false,
+  "game_validated": false,
+  "tracked_tests_added": false,
+  "ghidra_worker_read_only": true,
+  "routines": [
+    {
+      "address": "00c420e0",
+      "native_name_retained": "Dyn_Engine_CreateWorld",
+      "name_is_hypothesis": true,
+      "implementation": "bsp::dyn_engine_create_world_00c420e0",
+      "body_end_inclusive": "00c421a3",
+      "last_instruction": "00c421a1",
+      "last_instruction_length": 3,
+      "byte_span": 196,
+      "instruction_count": 69,
+      "coverage": "complete normal valid-storage successful-allocation body; explicit native null tests retained; native SEH/OOM unwind external",
+      "original_abi": "ECXengine; one descriptor pointer stack argument; EAXworld; RET4 at00C421A1",
+      "register_provenance": "ESI=ECX atC420FD; EBX=0 atC4210B then EAXworld atC42120; EDI=new vector atC42147. ESI is preserved by callees. Caller ESI=ECX at4DDBAB, C55F50 return EAX survives descriptor MOVSS until ECX=EAX at4DE192.",
+      "unresolved_success_path_ranges": [],
+      "excluded_failure_runtime": "SEH handler00CC81B6 and child/native allocation unwind are not reconstructed by this contextual API."
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00c420ff",
+      "native": "00bf681b",
+      "function": "00c420e0",
+      "contract": "operator new receives48Ch pushed atC420F8; ADD ESP4 atC42104; EBX remains0 when resultnull."
+    },
+    {
+      "address": "00c4211b",
+      "native": "00c41ad0",
+      "function": "00c420e0",
+      "contract": "Actual complete world ctor, stackworld/descriptor, EAXworld; callee RET8; no caller argument cleanup."
+    },
+    {
+      "address": "00c42142",
+      "native": "00bf55be",
+      "function": "00c420e0",
+      "contract": "Native operator new receives unsigned32(new_capacity*4); capacity stored before call; ADD ESP4 atC4214B."
+    },
+    {
+      "address": "00c42172",
+      "native": "00bf6989",
+      "function": "00c420e0",
+      "contract": "Free nonnull old pointer vector after ordered copy; repaired ADD ESP4 atC42177 then replacement publication atC4217A."
+    },
+    {
+      "address": "004de129",
+      "native": "00c55f50",
+      "function": "004ddb90",
+      "contract": "ECXpoints to descriptor worker-count word; actual engine ensure resultEAX later passed as factory receiver."
+    },
+    {
+      "address": "004de1d3",
+      "native": "00c420e0",
+      "function": "004ddb90",
+      "contract": "ECXactual engine; one40h descriptor pointer pushed at4DE191; RET4; result EAXpublished atgame+18 by4DE1DB."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Older docs/name evidence labels00C420F8 as operator_new call.",
+      "is": "00C420F8 isPUSH48C; CALL00BF681B is00C420FF.",
+      "evidence": "Full196-byte disk/live match and bounded post-repair listing; existing name and evidence history retained."
+    },
+    {
+      "was": "Ghidra false-free flow omittedC42177..C42179 and decompile returned after_free.",
+      "is": "83C404 ADDESP4 continues toC4217A data publication and append; final69instructions,0gaps.",
+      "evidence": "Root repaired under its temporary address lease/write lock; local/dyn_world_factory_flow.txt; root reports/dyn_world_factory_flow_repair.json."
+    }
+  ],
+  "dependency_inputs": {
+    "entry": "00c420e0",
+    "inclusive_end": "00c421a3",
+    "length": 196,
+    "instruction_count_after_repair": 69,
+    "native_body_sha256": "f34c959b0229a216e6fbc0e4d6817517bcaf7e8f561d91fee2aa3005eacdbe52",
+    "installed_and_live_bytes_match": true,
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "compiled_source_inputs": {
+      "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+      "include/bsp/dyn_engine_runtime.hpp": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+      "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "src/dyn_dispatch_initialization.cpp": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a",
+      "include/bsp/dyn_dispatch_initialization.hpp": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee",
+      "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+      "include/bsp/dyn_world_runtime.hpp": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19",
+      "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+      "include/bsp/dyn_scene_runtime.hpp": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c",
+      "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+      "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+      "src/avoid_zone_dyn_hull.cpp": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+      "include/bsp/avoid_zone_dyn_hull.hpp": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a",
+      "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "src/system_camera_axes.cpp": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415",
+      "include/bsp/system_camera_axes.hpp": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "src/dyn_world_settings.cpp": "f9466be1338c3ea03dc7adea234f956e229a4454d35fb46647c8aa3d900aac68",
+      "include/bsp/dyn_world_settings.hpp": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33",
+      "cmake/startup.cmake": "5d4f4d9e6e2ae3fa1a219b7edca8311e2aa7dc6f7a9c3a5cfd4f66851214fe1d",
+      "src/dyn_world_factory.cpp": "e9e38479cca106aaf0726f19ab47916a0d7ce69844fdf7d8df2de3ab3b07e9d4",
+      "include/bsp/dyn_world_factory.hpp": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+    },
+    "parent_owner_inputs": {
+      "local_head": "b453f63409388b7a2efa3ced43b40905aa2955fc",
+      "source_commits": {
+        "engine": "afd9a1bd564fa8d7c0bb8b0edc559e4de7b5a9b4",
+        "dispatch": "d0c048c0e951dd33712cbe72d3c5d9f309f72cb1",
+        "tasks": "7d0f80fe333af0bab0ea645fececee0f610380f3"
+      },
+      "compiled_source_inputs": {
+        "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+        "include/bsp/dyn_engine_runtime.hpp": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+        "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+        "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+        "src/dyn_dispatch_initialization.cpp": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a",
+        "include/bsp/dyn_dispatch_initialization.hpp": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee",
+        "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+        "include/bsp/dyn_world_runtime.hpp": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19",
+        "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+        "include/bsp/dyn_scene_runtime.hpp": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c",
+        "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+        "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+        "src/avoid_zone_dyn_hull.cpp": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+        "include/bsp/avoid_zone_dyn_hull.hpp": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a",
+        "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "src/system_camera_axes.cpp": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415",
+        "include/bsp/system_camera_axes.hpp": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+        "src/dyn_world_settings.cpp": "f9466be1338c3ea03dc7adea234f956e229a4454d35fb46647c8aa3d900aac68",
+        "include/bsp/dyn_world_settings.hpp": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33",
+        "cmake/startup.cmake": "8585f8e9645b5d7cc85c4e8b21617897c911c9aeaaa935d2b3ea2f8248ba647a"
+      },
+      "original_PE": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "private_image_sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+      "fixture_parent_sha256": "f50981c06d2cd2b8040f318eb38505409307dc7a1a5b3320b90f7842fca8492e",
+      "borrowed_vtables": [
+        {
+          "address": "00d7a160",
+          "slots": 8,
+          "native_targets": [
+            "00c54aa0",
+            "00c4c380",
+            "00c4c270",
+            "00c4c320",
+            "00c32b30",
+            "00c32b10",
+            "00c32af0",
+            "004043d0"
+          ],
+          "sha256": "ebd982341298e133842c110bfd9250bce8097e0ed2632192039d8332a1af8d2c",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a080",
+          "slots": 1,
+          "native_targets": [
+            "00bf698e"
+          ],
+          "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a088",
+          "slots": 1,
+          "native_targets": [
+            "00403720"
+          ],
+          "sha256": "65de32183f7c5bdcf3e3c52055c668adc0da35d9506b337290700bc2ff0b821e",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a090",
+          "slots": 1,
+          "native_targets": [
+            "00403850"
+          ],
+          "sha256": "bcfaa7a192ee05d84c2dd9367fe525b7d7e3e91aa15fb49c9d8f7d5a1b183d9a",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a110",
+          "slots": 1,
+          "native_targets": [
+            "00403cc0"
+          ],
+          "sha256": "7d3add2293ebca4f6eb73a7c6bc0fa6102492be4e87c21d6be1727516ce51747",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a184",
+          "slots": 1,
+          "native_targets": [
+            "00c49a30"
+          ],
+          "sha256": "4ee6519e35b104349a9051bdc899981e61d44273b0fb6e6a92b5dc9a2fc8ee93",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a18c",
+          "slots": 1,
+          "native_targets": [
+            "00c53630"
+          ],
+          "sha256": "9d7e5a6bbb44f443e2ea1a6bfb312a93143c120392d937cebc6cbc5802c839ea",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a1cc",
+          "slots": 1,
+          "native_targets": [
+            "00c518d0"
+          ],
+          "sha256": "20b5817b03b6263268493db2c95142fce31710f98ffc6dc8951f446a5eeb534c",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a1d4",
+          "slots": 1,
+          "native_targets": [
+            "00c48330"
+          ],
+          "sha256": "40ca41c59e1618c63769b8295c5e243f1cc921078d762c30829ac51f5d165ec5",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a1a8",
+          "slots": 1,
+          "native_targets": [
+            "00c535e0"
+          ],
+          "sha256": "9a4e2c5b09f23d2ceabbc8db24c8d1bf2da69f11fd809a1403ef00d908c7f7e5",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a1f4",
+          "slots": 1,
+          "native_targets": [
+            "00c44780"
+          ],
+          "sha256": "a9eeb9ae7f77ac83cf46561a4b824ce38066b5e959ebb196cb9827f3c950da2e",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a1fc",
+          "slots": 1,
+          "native_targets": [
+            "00c50dd0"
+          ],
+          "sha256": "f28f8379c6d1aa6d71b02db2815b6ce526954da5c02280a1866527da1aeeb731",
+          "all_targets_in_PE_executable_sections": true
+        },
+        {
+          "address": "00d7a204",
+          "slots": 1,
+          "native_targets": [
+            "00c50740"
+          ],
+          "sha256": "e5aa4be49eea830afc2538736d4558ee047545f17e90cfc064ea3614251a94ed",
+          "all_targets_in_PE_executable_sections": true
+        }
+      ],
+      "note": "Original PE method pointers are relocated by fixture; no method is substituted or executed. This validates slot extent and executable-section targets, not transitive runtime method readiness."
+    },
+    "local_base": "e1fe7d40",
+    "fixture_parent_cpp_sha256": "1312c6b4f2e36a49817782699c4c7d0fdf9cbfeb2681d5726bb5f3395e216723",
+    "read_only_project": "C:/Users/sqz269/bsp.gpr",
+    "read_only_program": "/battlestationspacific.exe"
+  },
+  "fixture": {
+    "CPP": "local/dyn_world_factory_probe.cpp",
+    "CPP_sha256": "6773041d335d6070fc782748e7d1839d18514aeb9b81793fee3859c2ba9d3bcc",
+    "generator": "local/make_dyn_world_factory_probe.py",
+    "build_script": "local/build_dyn_world_factory_probe.ps1",
+    "log": "local/dyn_world_factory_probe.log",
+    "trace": "local/dyn_world_factory_trace.json",
+    "exit_code": 0,
+    "actual_worlds_per_side": 4,
+    "worker_count": 0,
+    "count_capacity_pairs": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "live_buffer_counts": [
+      31,
+      57,
+      83,
+      109
+    ],
+    "buffer_comparisons": 280,
+    "allocation_calls_per_side": 110,
+    "old_list_frees_per_side": 1,
+    "old_list_free_observation": {
+      "kind": 2,
+      "bytes_or_freed_pointer": 302514176,
+      "engine_global": 294649856,
+      "profile_global": 294912000,
+      "count": 2,
+      "capacity": 6,
+      "list_pointer": 302514176
+    },
+    "world_allocation_observations": [
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 1164,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 0,
+        "capacity": 0,
+        "list_pointer": 0
+      },
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 1164,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 1,
+        "capacity": 2,
+        "list_pointer": 302514176
+      },
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 1164,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 2,
+        "capacity": 2,
+        "list_pointer": 302514176
+      },
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 1164,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 3,
+        "capacity": 6,
+        "list_pointer": 316407808
+      }
+    ],
+    "list_growth_observations": [
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 0,
+        "capacity": 2,
+        "list_pointer": 0
+      },
+      {
+        "kind": 1,
+        "bytes_or_freed_pointer": 24,
+        "engine_global": 294649856,
+        "profile_global": 294912000,
+        "count": 2,
+        "capacity": 6,
+        "list_pointer": 302514176
+      }
+    ],
+    "world_pointer_order_and_returned_list_entry_checked": true,
+    "spare_capacity_pointer_reuse_checked": true,
+    "serialized_bytes": 9380996,
+    "native_and_source_sha256": "75303cf20461c3bed315a6b60554b3d10498a01c190eb9845733bf72eafd54fd",
+    "all_allocation_free_publication_events_equal": true,
+    "x87_control_word": "027f",
+    "all_world_status_and_TOP": "0000",
+    "normalization": "Actual pointer fields and pointer-vector words only;102 real handles per manager validated then normalized byrole; OS DebugInfo only at taskmanager18, each manifold1D8, GeneralConvex278. Other bytes and unusedA5 capacity compared.",
+    "freed_regions_removed_before_comparison": true
+  },
+  "runtime_services": {
+    "actual_owners": "Native/source engine/profile/Root/manager plus separate actual dispatch globals; original/native factory/world/scene/pool bodies and their reconstructed counterparts.",
+    "allocation": "Both use tracked A5 hostmalloc/free; no world-constructor replacement.",
+    "CRT_vector_iterator": "Established BF7CD1 valid-construction bridge invokes each actual original element ctor; no exceptional unwind proof.",
+    "CRT_sqrt": "Shared existing reconstructedBF7030 service, actual mapped0109DD78 slot; external__87except boundary fail-fast and unreached for027F/positive operands.",
+    "vtable_inputs": "13 complete PE method tables from prior owner fixture, no substitute methods; collision/solver methods unexecuted.",
+    "atexit": "Exact original and source callbacks registered with real hostCRT and observed after execution."
+  },
+  "cleanup": {
+    "explicit_fixture_closed_handles": 204,
+    "remaining_tracked_allocations": 0,
+    "world_manifold_locks_disposed": 8,
+    "zero_worker_manager_locks_disposed": 2,
+    "zero_worker_manager_destructors_called": false,
+    "world_and_engine_destructors_validated": false,
+    "atexit": {
+      "registrations": 2,
+      "native_dispatch_deletes": 1,
+      "source_deleted_cs_matches_host": true
+    }
+  },
+  "verification": {
+    "Win32_Release_build": "passed",
+    "existing_CTests": "2/2passed",
+    "build_log": "local/dyn_world_factory_build.log",
+    "seed_log": "local/verify_seeds.log",
+    "native_call_gate": "6 direct call rows checked,0 failed",
+    "all_recorded_source_inputs_unchanged_after_build_and_probe": true
+  },
+  "limitations": [
+    "No game constructor/host binding or game+18 publication execution.",
+    "No engine/world/scene destructor, body creation, collision/solver stepping or task execution claim.",
+    "No concurrent mutation, malformed vector, wrapped extent, actual OOM/SEH unwind, failed OS or forced-null differential cases.",
+    "Shared CRT numerical service is not independent CRT handler fidelity; original methods presence does not establish transitive unexecuted runtime readiness."
+  ],
+  "artifacts_manifest": "local/dyn_world_factory_artifact_manifest.json"
+}

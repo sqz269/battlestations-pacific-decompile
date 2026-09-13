@@ -49,19 +49,49 @@ void copy_native_mesh_lod_00b72bd0(
     destination.lod_count_50 = source.lod_count_50;
 }
 
-void copy_native_mesh_for_text_00b73f50(NativeMeshStorage& destination,
+namespace {
+void consume_stream(NativeStreamCloneAcquired& stream, NativeRenderActualOwners& owners) {
+    auto* consumed = std::exchange(stream.creator, nullptr);
+    stream.companion = nullptr;
+    stream.canonical_registration = false;
+    stream.phase = NativeStreamClonePhase::consumed;
+    release_native_render_actual_owner(owners, consumed);
+}
+void copy_mesh(NativeMeshStorage& destination,
     NativeMeshStorage& source, GuiNativeGeometryOwners& geometry,
     NativeStringStorage& strings, NativeMaterialDestructionAccess& materials,
-    const volatile std::uint32_t* material_profile, NativeMeshCloneAcquired& acquired) {
-    if (&source == &destination || acquired.section || acquired.material)
+    const volatile std::uint32_t* material_profile, NativeMeshCloneAcquired& acquired,
+    NativeStreamCloneServices* streams) {
+    if (&source == &destination || acquired.section || acquired.material ||
+        acquired.stream.creator || acquired.stream.companion ||
+        (acquired.stream.phase != NativeStreamClonePhase::empty &&
+         acquired.stream.phase != NativeStreamClonePhase::consumed))
         throw std::invalid_argument("native Text mesh clone requires distinct storage and no pending creators");
     auto& owners = geometry.actual_owners();
     copy_x87_word(&source, &destination, 0x0c);
     copy_native_mesh_lod_00b72bd0(destination, source);
-    set_native_mesh_index_stream_00b73b70(destination, owners, source.index_stream_60);
-    for (std::int32_t index = 0; index < source.vertex_stream_count_7c; ++index)
-        set_native_mesh_vertex_stream_00b73bb0(
-            destination, owners, index, source.vertex_streams_64[index]);
+    if (streams && source.index_stream_60) {
+        auto* stream = clone_native_index_stream_00b729a0(source.index_stream_60, *streams, acquired.stream);
+        acquired.stream.phase = NativeStreamClonePhase::mesh_publication;
+        acquired.stream.native_site = 0x00b73f9e;
+        set_native_mesh_index_stream_00b73b70(destination, owners, stream);
+        consume_stream(acquired.stream, owners);
+    } else {
+        //3E null-source clears/releases current destination, as does this setter.
+        set_native_mesh_index_stream_00b73b70(destination, owners, source.index_stream_60);
+    }
+    for (std::int32_t index = 0; index < source.vertex_stream_count_7c; ++index) {
+        if (streams) {
+            // Native3E has no null vertex-slot skip. Reached invalid storage fails.
+            auto* stream = clone_native_vertex_stream_00b72a70(source.vertex_streams_64[index], *streams, acquired.stream);
+            acquired.stream.phase = NativeStreamClonePhase::mesh_publication;
+            acquired.stream.native_site = 0x00b7401c;
+            set_native_mesh_vertex_stream_00b73bb0(destination, owners, index, stream);
+            consume_stream(acquired.stream, owners);
+        } else {
+            set_native_mesh_vertex_stream_00b73bb0(destination, owners, index, source.vertex_streams_64[index]);
+        }
+    }
     for (std::int32_t index = 0; index < source.draw_sections_54.count_04; ++index) {
         const auto* const source_section = static_cast<NativeMeshSectionStorage*>(
             source.draw_sections_54.data_00[index]);
@@ -90,5 +120,20 @@ void copy_native_mesh_for_text_00b73f50(NativeMeshStorage& destination,
         destination.weight_names_b0, source.weight_names_b0.count_04, strings);
     for (std::int32_t index = 0; index < source.weight_names_b0.count_04; ++index)
         append_weight_name(destination.weight_names_b0, source.weight_names_b0.data_00[index], strings);
+}
+} // namespace
+void copy_native_mesh_for_text_00b73f50(NativeMeshStorage& destination,
+    NativeMeshStorage& source, GuiNativeGeometryOwners& geometry, NativeStringStorage& strings,
+    NativeMaterialDestructionAccess& materials, const volatile std::uint32_t* profile,
+    NativeMeshCloneAcquired& acquired) {
+    copy_mesh(destination, source, geometry, strings, materials, profile, acquired, nullptr);
+}
+void copy_native_mesh_for_text_00b73f50_flags3e(NativeMeshStorage& destination,
+    NativeMeshStorage& source, GuiNativeGeometryOwners& geometry, NativeStringStorage& strings,
+    NativeMaterialDestructionAccess& materials, const volatile std::uint32_t* profile,
+    NativeMeshCloneAcquired& acquired, NativeStreamCloneServices& streams) {
+    if (&streams.geometry != &geometry)
+        throw std::logic_error("mesh3E requires the same canonical stream/geometry owner");
+    copy_mesh(destination, source, geometry, strings, materials, profile, acquired, &streams);
 }
 } // namespace bsp
