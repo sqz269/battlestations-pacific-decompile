@@ -1,0 +1,159 @@
+{
+  "batch": "orch6_reconstruction_h",
+  "status": "integrated, build-tested, bounded native fixtures and 120-frame loop run; gameplay incomplete",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+  "base_main": "2f9da1dd",
+  "compiled_commit": "ba2bf73418153d9248053d393b2ef6a9a23ae54a",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "packets": [
+    {
+      "worker": "orch6-dyn-world-factory-h",
+      "report": "reports/dyn_world_factory.json",
+      "commit": "6b42f43750945b232cd9da751b7cfed3f5a88956"
+    },
+    {
+      "worker": "orch6-avoid-arc-h",
+      "report": "reports/avoid_zone_arc.json",
+      "commit": "2ff49151cf19f0ad45e2f8f9cef9485a33f6818d"
+    },
+    {
+      "worker": "orch6-avoid-owners-h",
+      "report": "reports/ship_ai_avoidance_owners.json",
+      "commit": "4c4529316da449dc095099cb12edee2c524a6c1a"
+    },
+    {
+      "worker": "orch6-dyn-profile-h",
+      "report": "reports/dyn_profile_scopes.json",
+      "commit": "45650cffdfc43fec4a9ae21a32c28506558664aa"
+    }
+  ],
+  "compiled_source_sha256": {
+    "src/dyn_world_factory.cpp": "e9e38479cca106aaf0726f19ab47916a0d7ce69844fdf7d8df2de3ab3b07e9d4",
+    "include/bsp/dyn_world_factory.hpp": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29",
+    "src/avoid_zone_arc.cpp": "cc931766395dd942a3aecb7a3544e945c0def86b6531ed8dce610b011a59c674",
+    "include/bsp/avoid_zone_arc.hpp": "b6d744aa9a3641f79c7003a44b348a319eabb3c8eddfad60efbe52118e3c33b1",
+    "src/dyn_profile_scopes.cpp": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37",
+    "include/bsp/dyn_profile_scopes.hpp": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773"
+  },
+  "reconstructed": {
+    "whole_normal_bodies": [
+      "00c420e0",
+      "00415970",
+      "004f3ba0",
+      "00c50390",
+      "00c57020"
+    ],
+    "inline_fragment": "00c5bcd7..00c5bd03 inside 00c5bb30; not a separate Ghidra function"
+  },
+  "ghidra": {
+    "profile_flow_repair": "reports/dyn_profile_flow_repair.json",
+    "director_accessor_definitions": "reports/director_avoidance_accessor_definitions.json",
+    "annotation_history": [
+      "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260913T032402Z.json",
+      "local/ghidra-annotations-20260913T032644Z.json"
+    ],
+    "refreshed_exports": [
+      "00415970",
+      "004f3ba0",
+      "00c420e0",
+      "00c50390",
+      "00c57020",
+      "00720e40",
+      "00720e50"
+    ],
+    "export_log": "local/orch6_h_exports.log"
+  },
+  "verification": {
+    "Win32_Release": "passed",
+    "existing_CTests": "2/2 passed",
+    "tracked_tests_added": 0,
+    "world_factory": "four real worlds per side; 280 buffer comparisons; 110 allocations and one old-vector free per side",
+    "arc": "21 helper and 22 arc cases; 148 equal canonical words; exact pointer identity checked",
+    "profile": "8 enter/leave pairs per side; 265 buffer comparisons; 32 actual RDTSC brackets and 16 modulo arithmetic checks",
+    "call_rows": {
+      "world_factory": 6,
+      "arc": 17,
+      "owners": 26,
+      "profile": 24,
+      "failures": 0
+    }
+  },
+  "mission_run": {
+    "compiled_commit": "ba2bf73418153d9248053d393b2ef6a9a23ae54a",
+    "run_commit": "ba2bf73418153d9248053d393b2ef6a9a23ae54a",
+    "compiled_input_drift": [],
+    "args": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "360",
+      "--press-start-frame",
+      "3",
+      "--menu-select",
+      "USN01",
+      "--mission-frames",
+      "120",
+      "--mission-frame-seconds",
+      "0.1",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--fmod-dll",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "--fmod-event-dll",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_h.log",
+      "--order-frame",
+      "0",
+      "--order-unit",
+      "Enterprise",
+      "--order",
+      "moveto:Airfield2"
+    ],
+    "exe_sha256": "41da178f70a4ee5ea141bafb98ab587e544c0e955b0ddf1793e3d75134dfcd09",
+    "source_sha256": {
+      "src/game_hosts_ship_ai.cpp": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+      "src/game_hosts_units.cpp": "d0c61dd178d6975825c1b29ce0349d3efe08e4cec27a979444f5b224fa108a56",
+      "src/game_hosts_lua.cpp": "73587a25fa38674280a5d650a7b47d47ceb8ae9c3d9a7492e61d90d84717a83b",
+      "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+      "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+      "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "src/dyn_dispatch_initialization.cpp": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a",
+      "src/ship_ai_avoid_zone_search.cpp": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+      "src/game_avoid_zone_runtime.cpp": "19e3052abb72e47b214ba22a016312e738d67b7025614e4c5a39eb6c0762efcc"
+    },
+    "exit": 0,
+    "seconds": 22.345065116882324,
+    "preserved_executable": "local/orch6_combined_ba2bf734.exe"
+  },
+  "runtime_limit": "120 requested/ran/simulated mission frames, 360 presented frames, exit 0. Controlled-unit NaN motion remains, as in batch G. No finite-physics or gameplay validation.",
+  "archive": {
+    "manifest": "local/orch6_worker_archive_h.json",
+    "files": 192,
+    "sha256": "339c65e9d952415d27b11c3307f5571d853c143d648f909c3c5b6b91a6efe47a",
+    "historical_hashes_matched": 191,
+    "mutable_index_drift": [
+      {
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-avoid-arc-h",
+        "source": "local/bsp_index.sqlite",
+        "historical_sha256": "1bb3e248bc83a3bbe22bae8c29519232e72e6ac9821910d82e38b88d704e1973",
+        "current_sha256": "b73faf3fa8d0086d51ba203526e0e9116ba41d5217ebf7733e44ae30a18aec37",
+        "reason": "Regenerable lookup index changed after the worker manifest; current copy is not the historical evidence image."
+      }
+    ]
+  },
+  "limits": [
+    "New contextual C++ interfaces are not binary drop-in replacements.",
+    "Native allocation-failure/SEH/unwind and complete native teardown remain unvalidated.",
+    "Arc deterministic parity is bounded to solver-written scratch outputs; ambient native stack on solver failure is not manufactured.",
+    "Shared recovered sqrt/host atan2 boundaries do not independently validate the original CRT.",
+    "Profile timestamps are real RDTSC; normalization follows hardware and modulo checks, not an equal-cycle claim.",
+    "Live director/request/search ownership wiring is a separate ongoing I packet."
+  ]
+}
