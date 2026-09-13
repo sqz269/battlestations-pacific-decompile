@@ -1,0 +1,69 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1b36",
+        "end_address": "00cc1b40"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cc1b36",
+        "end_address": "00cc1b3f",
+        "bytes_disassembled": 10,
+        "message": "Successfully disassembled 10 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1b36",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cc1b36",
+        "function_name": "FUN_00cc1b36",
+        "entry_point": "00cc1b36",
+        "body_size": 10,
+        "message": "Function created successfully at 00cc1b36"
+      }
+    },
+    {
+      "defined": "00cc1b36",
+      "end": "00cc1b40",
+      "name": null,
+      "after": "Function: FUN_00cc1b36 at 00cc1b36\nSignature: undefined FUN_00cc1b36(void)\nEntry: 00cc1b36\nBody: 00cc1b36 - 00cc1b3f"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entries": 0,
+  "before": "No stored function at00cc1b36; retained generated unnamed handler identity.",
+  "native_bytes": "b8a0aadf00e90350f3ff",
+  "byte_verification": "Define tool verified all ten live bytes against installed PE before mutation.",
+  "caller_evidence": "B71F12 pushes00CC1B36 in the actual B71F10 destructor prologue; separate priorCC1B28 cleanup endsCC1B35.",
+  "handler_func_info": "00dfaaa0",
+  "handler_target": "00bf6b43",
+  "final_full_body_readback": "00cc1b36 FUN_00cc1b36  undefined FUN_00cc1b36(void)  body 00cc1b36 - 00cc1b3f\n",
+  "final_listing": "00cc1b36: MOV EAX,0xdfaaa0 \n00cc1b3b: JMP 0x00bf6b43 \n",
+  "saved_and_export_refreshed": true,
+  "uncertainty": "Analysis definition only; no reconstructed-body credit or original native exception ABI execution is established."
+}
