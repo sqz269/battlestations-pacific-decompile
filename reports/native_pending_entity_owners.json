@@ -1,0 +1,430 @@
+{
+  "packet": "orch6_native_pending_entity_owners_r",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "source": "src/native_pending_entity_owners.cpp",
+  "header": "include/bsp/native_pending_entity_owners.hpp",
+  "documentation": "docs/NATIVE_PENDING_ENTITY_OWNERS.md",
+  "native_spans": [
+    {
+      "address": "00cd3910",
+      "length": 37,
+      "end_exclusive": "00cd3935",
+      "sha256": "487d8179429391db5afac8822371dea845a7955bfac57a0baad3b2d12367be63",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 5,
+          "target": "00924a50"
+        },
+        {
+          "offset": 30,
+          "target": "00bf6ff5"
+        }
+      ]
+    },
+    {
+      "address": "00cd3940",
+      "length": 37,
+      "end_exclusive": "00cd3965",
+      "sha256": "f3bdf1af8ad9300476799d9756e00c46571a8edc92c6828729ca4c373d4638bf",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 5,
+          "target": "00924a50"
+        },
+        {
+          "offset": 30,
+          "target": "00bf6ff5"
+        }
+      ]
+    },
+    {
+      "address": "00cdf4a0",
+      "length": 10,
+      "end_exclusive": "00cdf4aa",
+      "sha256": "0b0fba43879c441982cacc313d1cd77552abdb61a64ca1161a14269a60846fdd",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 5,
+          "target": "00924a70"
+        }
+      ]
+    },
+    {
+      "address": "00cdf4b0",
+      "length": 10,
+      "end_exclusive": "00cdf4ba",
+      "sha256": "8dfcc09d36c2987b3bc6aca33419ed220eee6f9a4db1b2d9b2358b254f2a5f51",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 5,
+          "target": "00924a70"
+        }
+      ]
+    },
+    {
+      "address": "00924a50",
+      "length": 26,
+      "end_exclusive": "00924a6a",
+      "sha256": "f72123d24923e48825baec486ffd0400ce41c931f3489376cac31b972ecf9f82",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 2,
+          "target": "00bf681b"
+        }
+      ]
+    },
+    {
+      "address": "00924a70",
+      "length": 72,
+      "end_exclusive": "00924ab8",
+      "sha256": "2d4cd955b1688d37f91e34dc0f4423eb0672a25dc30a93383c69f33c0cf193e2",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 35,
+          "target": "00bf65ac"
+        },
+        {
+          "offset": 55,
+          "target": "00bf65ac"
+        }
+      ]
+    },
+    {
+      "address": "004c3200",
+      "length": 26,
+      "end_exclusive": "004c321a",
+      "sha256": "10669f8973e5f5fe4155f7e3673554d547d1113721c015a54fb0ce6ace31c978",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 2,
+          "target": "00bf681b"
+        }
+      ]
+    },
+    {
+      "address": "004c5940",
+      "length": 72,
+      "end_exclusive": "004c5988",
+      "sha256": "3a405487faef79bf6a501042db1890e5c27fc04f35ff451431be66f73b172442",
+      "live_disk_equal": true,
+      "relative_calls": [
+        {
+          "offset": 35,
+          "target": "00bf65ac"
+        },
+        {
+          "offset": 55,
+          "target": "00bf65ac"
+        }
+      ]
+    }
+  ],
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "coverage": [
+    {
+      "address": "00cd3910",
+      "source_symbol": "initialize_native_pending_destroy_owner_00cd3910",
+      "original_abi": "no native inputs; EAX atexit status; RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00cd3940",
+      "source_symbol": "initialize_native_pending_kill_owner_00cd3940",
+      "original_abi": "no native inputs; EAX atexit status; RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00cdf4a0",
+      "source_symbol": "destroy_native_pending_destroy_owner_00cdf4a0",
+      "original_abi": "no native inputs; ECX=F899A8; tail JMP924A70",
+      "coverage": "complete"
+    },
+    {
+      "address": "00cdf4b0",
+      "source_symbol": "destroy_native_pending_kill_owner_00cdf4b0",
+      "original_abi": "no native inputs; ECX=F899B4; tail JMP924A70",
+      "coverage": "complete"
+    },
+    {
+      "address": "00924a50",
+      "coverage": "complete canonical source reuse; not an added function",
+      "canonical": "004c3200"
+    },
+    {
+      "address": "00924a70",
+      "coverage": "complete canonical source reuse; stored Ghidra flow partial",
+      "canonical": "004c5940"
+    },
+    {
+      "address": "00926c80",
+      "coverage": "contract_only",
+      "shared_source_corrections": "root follow-up"
+    },
+    {
+      "address": "00926d90",
+      "coverage": "contract_only"
+    },
+    {
+      "address": "00925a00",
+      "coverage": "contract_only"
+    }
+  ],
+  "normalized_equivalence": [
+    {
+      "pending": "00924a50",
+      "canonical": "004c3200",
+      "complete_bytes_equal_except_relative_calls": true
+    },
+    {
+      "pending": "00924a70",
+      "canonical": "004c5940",
+      "complete_bytes_equal_except_relative_calls": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00cd3915",
+      "native": "00924a50",
+      "function": "00cd3910",
+      "operation": "create actual raw sentinel"
+    },
+    {
+      "address": "00cd392e",
+      "native": "00bf6ff5",
+      "function": "00cd3910",
+      "operation": "register actual shutdown identity; preserve result"
+    },
+    {
+      "address": "00cd3945",
+      "native": "00924a50",
+      "function": "00cd3940",
+      "operation": "create actual raw sentinel"
+    },
+    {
+      "address": "00cd395e",
+      "native": "00bf6ff5",
+      "function": "00cd3940",
+      "operation": "register actual shutdown identity; preserve result"
+    },
+    {
+      "address": "00cdf4a5",
+      "native": "00924a70",
+      "function": "00cdf4a0",
+      "operation": "destroy actual destroy-list owner",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cdf4b5",
+      "native": "00924a70",
+      "function": "00cdf4b0",
+      "operation": "destroy actual kill-list owner",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00924a52",
+      "native": "00bf681b",
+      "function": "00924a50",
+      "operation": "allocate 0Ch; caller ADD ESP,4"
+    },
+    {
+      "address": "00924a93",
+      "native": "00bf65ac",
+      "function": "00924a70",
+      "operation": "free node; caller ADD ESP,4 in omitted listing gap"
+    },
+    {
+      "address": "00924aa7",
+      "native": "00bf65ac",
+      "function": "00924a70",
+      "operation": "free sentinel; caller ADD ESP,4 in omitted stored tail"
+    },
+    {
+      "address": "00926c9c",
+      "native": "009248d0",
+      "function": "00926c80",
+      "operation": "contract: capture producer lock owner"
+    },
+    {
+      "address": "00926d4e",
+      "native": "00924b10",
+      "function": "00926c80",
+      "operation": "contract: allocate borrowed entity node; callee RET 0Ch"
+    },
+    {
+      "address": "00926d5c",
+      "native": "009267f0",
+      "function": "00926c80",
+      "operation": "contract: checked count growth; callee RET 4"
+    },
+    {
+      "address": "00926dbe",
+      "native": "009248d0",
+      "function": "00926d90",
+      "operation": "contract: capture producer lock owner"
+    },
+    {
+      "address": "00926e40",
+      "native": "00924b10",
+      "function": "00926d90",
+      "operation": "contract: allocate borrowed entity node; callee RET 0Ch"
+    },
+    {
+      "address": "00926e4e",
+      "native": "009267f0",
+      "function": "00926d90",
+      "operation": "contract: checked count growth; callee RET 4"
+    },
+    {
+      "address": "00926e19",
+      "native": "00926d90",
+      "function": "00926d90",
+      "operation": "contract: recursively pass original kill cause to child"
+    },
+    {
+      "address": "00925a06",
+      "native": "009248d0",
+      "function": "00925a00",
+      "operation": "contract: capture cancellation lock owner"
+    },
+    {
+      "address": "00925a4d",
+      "native": "00781260",
+      "function": "00925a00",
+      "operation": "contract: remove matching payload from kill list; callee RET4"
+    },
+    {
+      "address": "00925a6b",
+      "native": "00781260",
+      "function": "00925a00",
+      "operation": "contract: remove matching payload from destroy list; callee RET4"
+    }
+  ],
+  "actual_owners": {
+    "00f899a8": "NativePendingEntityOwners.destroy_00f899a8",
+    "00f899b4": "NativePendingEntityOwners.kill_00f899b4"
+  },
+  "registration": "Required actual CRT domain callback receives CDF4A0/B0; same owners and context survive real dispatch. Failed registration keeps owner and returns actual status. No default callback or private exit registry.",
+  "canonical_provider_sources": [
+    "src/native_live_effect_manager.cpp",
+    "src/singleton_lifetime.cpp"
+  ],
+  "stored_body_limits": {
+    "00924a70": "stored last00924AAB; sites924A98/924AAC/924AB7 have no containing function; complete PE span72 ending924AB7 verified",
+    "004c5940": "stored last004C597B; complete PE span72 ending4C5987 verified"
+  },
+  "corrections": [
+    {
+      "was": "sentinel helper sole caller00926FA0 in old name ledger",
+      "is": "CD3910/CD3940 are additional actual static initialization callers",
+      "evidence": "call sitesCD3915/CD3945; CRT pointersCE30C0/CE30C4"
+    },
+    {
+      "was": "old canonical constructor report described inclusive tail through4C5988",
+      "is": "final RET4C5987; exclusive end4C5988",
+      "evidence": "72-byte full PE/provider comparison and capstone instruction boundaries"
+    },
+    {
+      "was": "shared destroy host projection tests full int recurse and omits conditional child cause store",
+      "is": "native tests low byte; after successful child predicate rereads parent+70 and clears child+70 when zero",
+      "evidence": "926CF7,926D14..926D1A; primary integrator owns shared source correction"
+    }
+  ],
+  "ghidra_mutations": false,
+  "ghidra_annotation_status": "requested for primary integrator; workers read-only",
+  "annotation_requests": [
+    {
+      "address": "00cd3910",
+      "proposed_name": "initialize_native_pending_destroy_owner_00cd3910",
+      "before_name": "FUN_00cd3910",
+      "comment": "Hypothesis, not a recovered symbol. Explicit actual pending entity owner lifetime; see docs/NATIVE_PENDING_ENTITY_OWNERS.md and reports/native_pending_entity_owners.json. Complete source with canonical raw-list helper reuse; no implicit initialization, payload deletion, event delivery or private CRT domain. New C++ ABI; game and original exception dispatch unvalidated."
+    },
+    {
+      "address": "00cd3940",
+      "proposed_name": "initialize_native_pending_kill_owner_00cd3940",
+      "before_name": "FUN_00cd3940",
+      "comment": "Hypothesis, not a recovered symbol. Explicit actual pending entity owner lifetime; see docs/NATIVE_PENDING_ENTITY_OWNERS.md and reports/native_pending_entity_owners.json. Complete source with canonical raw-list helper reuse; no implicit initialization, payload deletion, event delivery or private CRT domain. New C++ ABI; game and original exception dispatch unvalidated."
+    },
+    {
+      "address": "00cdf4a0",
+      "proposed_name": "destroy_native_pending_destroy_owner_00cdf4a0",
+      "before_name": "CG_static_init_00cdf4a0",
+      "comment": "Hypothesis, not a recovered symbol. Explicit actual pending entity owner lifetime; see docs/NATIVE_PENDING_ENTITY_OWNERS.md and reports/native_pending_entity_owners.json. Complete source with canonical raw-list helper reuse; no implicit initialization, payload deletion, event delivery or private CRT domain. New C++ ABI; game and original exception dispatch unvalidated."
+    },
+    {
+      "address": "00cdf4b0",
+      "proposed_name": "destroy_native_pending_kill_owner_00cdf4b0",
+      "before_name": "CG_static_init_00cdf4b0",
+      "comment": "Hypothesis, not a recovered symbol. Explicit actual pending entity owner lifetime; see docs/NATIVE_PENDING_ENTITY_OWNERS.md and reports/native_pending_entity_owners.json. Complete source with canonical raw-list helper reuse; no implicit initialization, payload deletion, event delivery or private CRT domain. New C++ ABI; game and original exception dispatch unvalidated."
+    }
+  ],
+  "verification": {
+    "strict_win32_build": "PASS scripts/build.ps1; local/pending-owner-proof/build.log",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "verified_seed_spans": 8,
+    "native_source_comparisons": 4,
+    "native_cases": [
+      "destroy success with 3-node teardown",
+      "kill success with 3-node teardown",
+      "destroy registration -1 with empty teardown",
+      "kill registration -1 with empty teardown"
+    ],
+    "source_only_allocation_failure": "PASS; source wrapper and canonical helper symbol instrumentation; bad_alloc before publication, no registration. Original exception dispatch unexecuted.",
+    "strict_provider_path": "PASS same fixture EXE links exact built bsp_core.lib actual owner/helper/singleton lifetime objects; real std::atexit dispatch kill then destroy at process exit; borrowed payloads unchanged",
+    "report_call_rows": 19,
+    "report_call_failures": 0,
+    "permanent_tests_added": 0,
+    "build_failures": [],
+    "fixture_failures": [],
+    "evidence_packaging_failure": "Initial verifier expected Loaded object rows from MSVC /VERBOSE:LIB, which this linker did not print. Added /MAP, relinked same inputs and reran same fixture; map proves all three actual providers. Retained initial EXE/log and packaging-failure.json.",
+    "fixture_source": "local/pending-owner-proof/probe.cpp",
+    "instrumentation": [
+      "Production canonical helper source compiled with sentinel/free symbol renames and allocation/free calls redirected to recording bridges that delegate actual canonical providers.",
+      "Production owner source compiled with wrapper/helper symbol renames; same source files and raw layouts.",
+      "Native 924A50/924A70 relative allocator/free calls redirected to those same recording bridges.",
+      "Native CD3910/CD3940 absolute raw owner operands rebound to case storage; relative sentinel and atexit calls rebound; original CDF4A0/B0 registration identity retained.",
+      "Native CDF4A0/B0 owner immediate rebound; tail jump points to complete copied native924A70.",
+      "Strict provider path calls unmodified bsp_core.lib wrappers separately; real CRT provider retains registration and teardown semantics."
+    ],
+    "native_exception_dispatch_executed": false,
+    "game_executed": false
+  },
+  "limits": [
+    "New C++ ABI; not drop-in compatible",
+    "Original exception dispatch unexecuted",
+    "No game/runtime queue binding or event delivery provided",
+    "Concurrency and malformed rings not validated",
+    "Producer/cancel/drain contracts are not newly reconstructed bodies",
+    "No complete Ghidra stored-flow claim"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "supplemental_span": {
+    "address": "007812d5",
+    "length": 7,
+    "live_disk_equal": true,
+    "sha256": "0ce3604309c6658a2d47a0735105a639e0a3507a16ee41ee9c47c0d7df17b16d"
+  },
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-native-pending-entity-owners-r\\local\\pending-owner-proof\\manifest.json",
+    "relative_path": "local/pending-owner-proof/manifest.json",
+    "sha256": "3a2af5b68fa8a7d74350fcf29db2f640c261c5fa2a5bffce47ab6a943d58a124",
+    "artifacts": 145
+  },
+  "validation_artifacts_are_ignored_and_retained": true
+}
