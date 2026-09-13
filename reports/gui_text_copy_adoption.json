@@ -1,0 +1,220 @@
+{
+  "packet": "orch5_text_copy_adopt",
+  "status": "supported_cpp_copied_Text_factory_composition_actual_resource_bindings_required",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_port": 8089,
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00aa1380",
+      "name": "BSP_GuiText_DefaultOrCopyFactory",
+      "source": "src/gui_text_runtime_factory.cpp",
+      "coverage": "Nonnull-source normal caller composition and null-allocation return; existing default branch referenced, native SEH/raw Text/header/ABI excluded",
+      "last_instruction": "00aa1403",
+      "last_instruction_length": 1,
+      "end_inclusive": "00aa1403",
+      "instruction_count": 40,
+      "flow_gaps": [],
+      "original_abi": "ECX source; EAX constructed Text/null; RET, zero stack inputs"
+    },
+    {
+      "address": "00abb2c0",
+      "name": "BSP_GuiText_CopyConstruct",
+      "source": [
+        "src/gui_text_runtime_factory.cpp",
+        "src/gui_text_copy.cpp",
+        "src/gui_text_lifetime.cpp"
+      ],
+      "coverage": "Canonical AA9520 base admission plus one copied lifetime and actual derived continuation; owner adopts same implementation only on native completion",
+      "last_instruction": "00abb621",
+      "last_instruction_length": 3,
+      "end_inclusive": "00abb623",
+      "instruction_count": 195,
+      "flow_gaps": [],
+      "original_abi": "ECX destination; source stack; EAX destination; RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa1380",
+      "containing_body": "00aa1380..00aa1403",
+      "address": "00aa139e",
+      "native": "00ab79e0",
+      "producer_evidence": "ESI captures source ECX at AA1397; ECX=1F4h at AA1399 before allocation; source tested only after this call",
+      "binding": "allocate_gui_text_raw_slot_00ab79e0 on the same NativeGuiTextPool; existing AB79E0 entire forwarding body read; allocation transport remains opaque",
+      "callee_abi": "input requested size ECX is ignored by forwarding helper; current F8BDF0 pool used; EAX allocation/null; RET"
+    },
+    {
+      "function": "00aa1380",
+      "containing_body": "00aa1380..00aa1403",
+      "address": "00aa13ba",
+      "native": "00abb2c0",
+      "producer_evidence": "Nonnull ESI source and EAX allocation; PUSH ESI AA13B7; MOV ECX,EAX AA13B8",
+      "binding": "GuiTextRuntimeCopyOperation owns allocation, base acquired creators, canonical destination and concrete copied implementation; one lifetime and in-place continuation",
+      "callee_abi": "ECX destination, source stack; EAX destination; RET4; caller plain RET AA13CE"
+    },
+    {
+      "function": "00aa1380",
+      "containing_body": "00aa1380..00aa1403",
+      "address": "00aa13dd",
+      "native": "00ab9650",
+      "producer_evidence": "ESI source null; EAX allocation nonnull; MOV ECX,EAX at AA13DB",
+      "binding": "Existing GuiTextRuntimeFactory::make_type/default GuiTextLifetime path; never called for the new copied destination. Existing host base-order/raw-header/SEH limitations remain explicit.",
+      "callee_abi": "ECX destination; no stack inputs; EAX destination; RET"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb2e5",
+      "native": "00aa9520",
+      "producer_evidence": "ESI destination saved from entry ECX, EDI source captured stack+24; push EDI",
+      "binding": "GuiWidgetOwnerRuntime::construct_base_copy_00aa9520 with the exact held source borrow; canonical actual Model current10 flags D5C0B8[type], Text3=3E,parent0; GuiTextLifetime after-base admission requires base_copy_complete_00aa9520",
+      "callee_abi": "ECX destination, source stack; EAX destination; RET4"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb303",
+      "native": "004c8dd0",
+      "producer_evidence": "ECX dest+EC, source+EC stack, zero/new wide destination header",
+      "binding": "whole body read; typed u16string copy in gui_text_lifetime.cpp, native pool/header ABI excluded",
+      "callee_abi": "ECX destination header, source header stack; EAX destination; RET4"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb32a",
+      "native": "0041dd40",
+      "producer_evidence": "ECX dest+F4; push source length,1; header zeroed before call",
+      "binding": "existing native_string.cpp; typed derived string copy excludes allocator callback/header ABI",
+      "callee_abi": "ECX string header; length,preserve stack; RET8"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb346",
+      "native": "00bf7680",
+      "producer_evidence": "dest F8,data from source F8,current destination length; ADD ESP,0Ch at ABB34B",
+      "binding": "existing correct _memcpy library name retained; typed string copy, length bytes",
+      "callee_abi": "cdecl destination,source,length; caller ADD ESP,0Ch"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb4a6",
+      "native": "0041dd40",
+      "producer_evidence": "ECX dest+1C0; source shader-name length,1; zeroed destination header",
+      "binding": "existing native_string.cpp; typed derived string copy excludes allocator callback/header ABI",
+      "callee_abi": "ECX string header; length,preserve stack; RET8"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb4c2",
+      "native": "00bf7680",
+      "producer_evidence": "dest shader data,source shader data,destination length; ADD ESP,0Ch at ABB4C7",
+      "binding": "existing correct _memcpy library name retained; typed string copy, length bytes",
+      "callee_abi": "cdecl destination,source,length; caller ADD ESP,0Ch"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb4ec",
+      "native": "0041dd40",
+      "producer_evidence": "ECX dest+1C8; source font-name length,1; zeroed destination header",
+      "binding": "existing native_string.cpp; typed derived string copy excludes allocator callback/header ABI",
+      "callee_abi": "ECX string header; length,preserve stack; RET8"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb508",
+      "native": "00bf7680",
+      "producer_evidence": "dest font data,source font data,destination length; ADD ESP,0Ch at ABB50D",
+      "binding": "existing correct _memcpy library name retained; typed string copy, length bytes",
+      "callee_abi": "cdecl destination,source,length; caller ADD ESP,0Ch"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb5fa",
+      "native": "00ab8910",
+      "producer_evidence": "ECX=ESI destination after all copied fields and state colors",
+      "binding": "src/gui_text_copy.cpp ensure_gui_text_cursor_00ab8910; supported normal path with required actual providers",
+      "callee_abi": "ECX Text; no stack inputs; RET"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb601",
+      "native": "00ab8530",
+      "producer_evidence": "ECX=ESI destination after AB8910 returns",
+      "binding": "src/gui_text_buffers.cpp ensure_gui_text_draw_sections_00ab8530; same cursor-independent shadow/main owners",
+      "callee_abi": "ECX Text; no stack inputs; RET"
+    },
+    {
+      "function": "00abb2c0",
+      "containing_body": "00abb2c0..00abb623",
+      "address": "00abb608",
+      "native": "00abb1d0",
+      "producer_evidence": "ECX=ESI destination after AB8530 returns; no final caller color50",
+      "binding": "src/gui_text_runtime_submit.cpp rebuild_gui_text_content_00abb1d0; preserve pending result",
+      "callee_abi": "ECX Text; no stack inputs; RET"
+    }
+  ],
+  "producer_edges": [
+    {
+      "kind": "tail_jump",
+      "instruction_address": "00aa6583",
+      "target": "00aa1380",
+      "containing_function": "00aa6560",
+      "producer_evidence": "Type3 table arm; MOV ECX,EDX at AA6581, JMP AA1380 at AA6583; no CALL and no added stack argument"
+    }
+  ],
+  "indirect_dependencies": [
+    {
+      "containing_body": "00aa9520..00aa9722",
+      "instruction_address": "00aa96fc",
+      "target_expression": "current source Model vtable+10",
+      "binding": "Required canonical base clone service; D5C0B8 DWORD flags table, Text3=3E,parent0. Not type names and not auxiliary flags26."
+    },
+    {
+      "containing_function": "00ab8910",
+      "dependency": "00b18a40",
+      "binding": "Required GuiTextCursorParameterOwnerServices::bind_retained_text_00b18a40; actual retained raw Text +04/current00 ownership, never semantic owner cast or opaque pool allocation header fabrication"
+    },
+    {
+      "dependency": "internal current Text bounds64 and AB6BD0 reads",
+      "binding": "Borrowed constructor dispatch resolves the same copied implementation only under its active CopyDispatch scope. External owner operations and direct Text mutations remain blocked."
+    }
+  ],
+  "ownership": [
+    "Source borrow acquired before native allocation, exact token passed to canonical base copy, released immediately after successful owner transfer or allocation-null arm.",
+    "Operation owns fresh destination unique_ptr, base acquired creators and concrete implementation until admission; implementation owns one unique_ptr lifetime and in-place copy continuation.",
+    "Generic implementation child resume routes through its same retained factory operation; native suffix completes before unique_ptr owner transfer and source-borrow release.",
+    "Started pending/failed operation cannot be destroyed or replayed. A throwing resume marks its continuation failed and retains partial state; native SEH/rollback excluded.",
+    "take_completed_layout clears copied implementation/raw allocation borrows. Completed operation destruction does not dereference released source or destination.",
+    "Allocation map remains raw transport only; no second Text state, model/widget snapshot, address-keyed resource identity, fake raw Text reference count or default-copy substitution."
+  ],
+  "unresolved": [
+    "Actual raw Text retention provider at B18A40 is not constructed by the current runtime factory. No positive copy success is reported without this binding.",
+    "Actual current Model3E cloning and renderer resource creation/section/material/layout providers remain required dependencies; no 26/no-op fallback.",
+    "Original raw Text storage/vtable/string/native SEH ABI and allocator-failure cleanup remain excluded. Typed copied string allocation and host admission use a new C++ ABI.",
+    "Generic AAB4C0 subtree clone/type-switch caller is not newly enabled here.",
+    "Internal copied Text bounds dispatch and actual glyph-child resume have source/ownership audit coverage, not a positive renderer fixture or game validation.",
+    "Existing AB8530 helper holds create_mesh/append_default_section creator references in callee-local raw pointers. This operation retains canonical publications plus explicit base/AB8910 acquisition frames, not full AB8530 callee-local exception recovery. Separate buffer-owner packet required; no full failure unwind claim."
+  ],
+  "verification": {
+    "source_review": "single lifetime/frame/source borrow/admission/current bounds and retained failure paths reviewed",
+    "build": "Win32 Release scripts/build.ps1 passed after final source changes; existing reconstructed_math CTest passed 1/1 (0.46 seconds total). No copied Text runtime coverage inferred from this test.",
+    "build_log": "local/text_copy_adoption_verified_build.log",
+    "configure_log": "local/text_copy_adoption_configure.log",
+    "configure": "Ignored CMake cache uses primary verified lua511/dxsdk_d3dx/zlib121 _deps sources; no tracked CMake changes",
+    "report_calls": "tools/verify_report_calls.py: 14 CALL rows checked, 0 failed; producer tail_jump and indirect dependencies recorded separately",
+    "new_permanent_tests": false,
+    "positive_copied_Text_fixture": "not run; actual raw Text-retention/runtime provider unavailable",
+    "native_abi_compatible": false,
+    "game_validated": false
+  }
+}

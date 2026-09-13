@@ -177,12 +177,21 @@ GuiTextCopyPhase GuiTextCopyContinuation::resume_after_child() {
         "Text copy resume requires its retained pending content frame");
     // The inner operation checks the exact pending reason before consuming it.
     // No AB8910, AB8530 or ABB1D0 prefix is repeated here.
-    const auto result = resume_gui_text_submit_after_child(pending_);
-    if (result == GuiTextSubmitStatus::complete) {
-        phase_ = GuiTextCopyPhase::complete;
-        lifetime_.copy_continuation_complete_ = true;
-        lifetime_.phase_ = GuiTextLifetime::Phase::live;
+    try {
+        const auto result = resume_gui_text_submit_after_child(pending_);
+        if (result == GuiTextSubmitStatus::complete) {
+            phase_ = GuiTextCopyPhase::complete;
+            lifetime_.copy_continuation_complete_ = true;
+            lifetime_.phase_ = GuiTextLifetime::Phase::live;
+        }
+        return phase_;
+    } catch (...) {
+        // This entry is permitted only AFTER the actual child completed.
+        // A throwing native suffix may already have effects; retain its frame
+        // for inspection, never advertise the moved/partially consumed builder
+        // as a reusable pending child. No automatic retry or rollback.
+        phase_ = GuiTextCopyPhase::failed;
+        throw;
     }
-    return phase_;
 }
 } // namespace bsp
