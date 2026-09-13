@@ -38,6 +38,8 @@
 #include "bsp/unit_instance.hpp"
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_kind_query.hpp"
+#include "bsp/unit_generic_input_phase.hpp"
+#include "bsp/tick_element_overrides.hpp"
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_rudder_curve.hpp"
@@ -51,6 +53,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -63,6 +66,7 @@ constexpr double kPi = 3.14159265358979323846;
 // 00825F20 reconstruction described in SHIP_MOTION.md.
 enum class UnitMotionCoverage {
     unresolved,
+    generic_guarded,
     direct_ship_body,
     ship_base_fragment,
 };
@@ -74,7 +78,8 @@ struct UnitMotionDispatch {
     UnitMotionCoverage coverage{UnitMotionCoverage::unresolved};
 
     bool runs_ship_base() const noexcept {
-        return coverage != UnitMotionCoverage::unresolved;
+        return coverage == UnitMotionCoverage::direct_ship_body
+            || coverage == UnitMotionCoverage::ship_base_fragment;
     }
 };
 
@@ -101,9 +106,9 @@ constexpr UnitMotionDispatch kUnitMotionDispatches[] = {
     {0x007d7850, 0x00d065f4, 0x007ce040, UnitMotionCoverage::unresolved},
     {0x006d3110, 0x00cf8bc0, 0x006d2510, UnitMotionCoverage::unresolved},
     {0x00848380, 0x00d0b728, 0x00846320, UnitMotionCoverage::unresolved},
-    {0x0074df10, 0x00cffd9c, 0x00953cc0, UnitMotionCoverage::unresolved},
-    {0x00747000, 0x00cff3b4, 0x00953cc0, UnitMotionCoverage::unresolved},
-    {0x006f5c10, 0x00cfafe0, 0x00953cc0, UnitMotionCoverage::unresolved},
+    {0x0074df10, 0x00cffd9c, 0x00953cc0, UnitMotionCoverage::generic_guarded},
+    {0x00747000, 0x00cff3b4, 0x00953cc0, UnitMotionCoverage::generic_guarded},
+    {0x006f5c10, 0x00cfafe0, 0x00953cc0, UnitMotionCoverage::generic_guarded},
 };
 
 UnitMotionDispatch unit_motion_dispatch(const bsp::VehicleClassDescriptorRow* descriptor) {
@@ -119,6 +124,7 @@ const char* unit_motion_coverage_name(UnitMotionCoverage coverage) {
     switch (coverage) {
     case UnitMotionCoverage::direct_ship_body: return "direct_ship_body";
     case UnitMotionCoverage::ship_base_fragment: return "ship_base_fragment";
+    case UnitMotionCoverage::generic_guarded: return "generic_guarded";
     default: return "unresolved";
     }
 }
@@ -173,6 +179,15 @@ struct GameUnitSlot {
     // This unit owns the canonical current roles for every process consumer.
     // Actual 4Bh receive-side assignment and its side effects remain pending.
     std::int32_t current_roles_01ac[bsp::kUnitRoleTableEntries];
+
+    // Only constructor-established cells used by 00953CC0 / 0095DC40.
+    // The role and gate members of the pure routine's view are not owners.
+    std::int32_t generic_notify_528{-9};       //0095CDC1
+    std::int32_t generic_flag_634{0};          //0095CE0B
+    float generic_timer_6f8{0.0f};             //0095CF50
+    float generic_timer_6fc{0.0f};             //0095CF58
+    bool generic_suppress_520{false};         //0095CDD7
+    volatile float generic_input_63c{1.0f};   //0095CD9E
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
     // world, +10Ch derived-valid, with no parent because every entity of this
@@ -1760,6 +1775,54 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // 8E4h allocation, for example, has entry 006D2510 and cannot contain
         // the ship-only +9C0h/+1018h fields. Resolve before any ship operation.
         if (!slot.motion_dispatch.runs_ship_base()) {
+            if (slot.motion_dispatch.entry == 0x00953cc0u) {
+                // These are the canonical current assignments. Role4==8
+                // proves the input predicate false for EVERY local-slot value.
+                // Flag634==0 skips the unresolved +61h read; role0==8 skips
+                // participant availability. Recheck on every call.
+                if (slot.current_roles_01ac[0] == bsp::kUnitRoleTableFill
+                    && slot.current_roles_01ac[4] == bsp::kUnitRoleTableFill
+                    && slot.generic_flag_634 == 0) {
+                    class GenericTickCalls final : public bsp::UnitTickAdvanceHost {
+                    public:
+                        explicit GenericTickCalls(GameUnitSlot& unit) : unit_(unit) {}
+                        void unit_virtual_5c_is_kind_of(int id) override {
+                            (void)bsp::unit_is_kind_of(unit_.class_id, id);
+                        }
+                        void unit_virtual_1f0_advance(float) override {
+                            bsp::unit_generic_input_unassigned_0095dd71(
+                                unit_.generic_input_63c);
+                        }
+                        bool unit_role_still_available_00927f10(int) override {
+                            throw std::logic_error("generic tick role guard violated");
+                        }
+                        // All three proven generic leaf tables use006D1F20:
+                        // RET4, no input read and no store. New C++ ABI here.
+                        void unit_virtual_1d8_advance(float) override {}
+                    private:
+                        GameUnitSlot& unit_;
+                    } calls(slot);
+                    bsp::UnitTickAdvanceState view;
+                    view.notify_code_528h = slot.generic_notify_528;
+                    view.flag_634h = slot.generic_flag_634;
+                    view.timer_6f8h = slot.generic_timer_6f8;
+                    view.timer_6fch = slot.generic_timer_6fc;
+                    view.role_1ach = slot.current_roles_01ac[0];
+                    view.suppress_1d8_520h = slot.generic_suppress_520;
+                    // view.gate_byte_61h is not a native value and is not read:
+                    // the verified zero flag short-circuits that expression.
+                    bsp::unit_tick_advance_sim_00953cc0(view, step_seconds, calls);
+                    slot.generic_flag_634 = view.flag_634h;
+                    slot.generic_timer_6f8 = view.timer_6f8h;
+                    slot.generic_timer_6fc = view.timer_6fch;
+                    slot.generic_suppress_520 = view.suppress_1d8_520h;
+                    ++host.summary.generic_tick_calls;
+                    host.done("UnitMotion::generic_constructor_state_tick", 0x00953cc0u);
+                    host.done("UnitMotion::generic_unassigned_input", 0x0095dc40u);
+                    continue;
+                }
+                ++host.summary.generic_tick_unavailable;
+            }
             if (slot.motion_dispatch.entry != 0) {
                 host.record_motion_phase("unreconstructed_phase", slot.motion_dispatch.entry);
             } else {
@@ -2515,6 +2578,17 @@ void GameUnitsHost::report() {
         host.summary.hydro_submerged_steps, host.summary.hydro_force_flushes,
         host.summary.hydro_torque_flushes,
         static_cast<double>(host.physics_world.gravity.y), kBuoyancyElementCount);
+    std::size_t generic_units = 0;
+    std::size_t generic_input_one = 0;
+    for (const auto& slot : host.slots) {
+        if (slot->motion_dispatch.entry != 0x00953cc0u) continue;
+        ++generic_units;
+        if (slot->generic_input_63c == 1.0f) ++generic_input_one;
+    }
+    host.log.notef("summary mission generic tick: calls=%llu unavailable=%llu "
+        "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
+        host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
+        generic_units, generic_input_one);
     host.commands.report();
 }
 
