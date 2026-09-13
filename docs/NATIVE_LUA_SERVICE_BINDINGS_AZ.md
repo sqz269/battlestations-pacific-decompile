@@ -16,3 +16,7 @@ This component is dependency-ready, not wired to an executable production host. 
 - `append_native_lua_script_overrides_00bdef90` receives its manager in ECX and uses the manager's suffixes with the VFS dispatcher. The bundle does not substitute a projected host.
 
 The original callback service routing between multiple live Lua owners is not established by these addresses. This design supplies explicit source routing without claiming binary ABI equivalence.
+
+## Focused source fixture
+
+The ignored `local/native_lua_service_bindings_az_fixture.cpp` and runner exercise the built Win32 archive with the same DoFile pointer in both service structs, explicit unbound rejection, and nested same/different bundle activation restored after C++ stack unwinding. The real override function receives a valid passed manager while the bundle's manager publication deliberately points elsewhere; empty suffix storage keeps this a focused route check without inventing VFS results. Per-bundle counting string storage confirms which active bundle supplies the callback. The fixture does not execute a populated VFS Lua file, run the game, or establish original exception/longjmp behavior.
