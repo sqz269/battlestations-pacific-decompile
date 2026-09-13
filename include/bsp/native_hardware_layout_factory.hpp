@@ -17,7 +17,12 @@ namespace bsp {
 // allocation still inserts a null value. Ignore insertion's duplicate/result
 // fields and return the newly constructed pointer without a cache AddRef.
 void* get_or_create_native_hardware_layout_00b2f710(
-    const void* actual_stream_key, NativeHardwareLayoutConstructContext&);
+    const void* actual_stream_key, NativeHardwareLayoutConstructContext&,
+    void** acquired_before_insertion = nullptr);
+
+// Optional host bookkeeping receives the acquired hit, or the completed new
+// creator before pair construction/tree insertion. It starts empty. No native
+// retain, cleanup or rollback is added; an insertion failure keeps that owner.
 
 // New MSVC Win32 C++ interface; original calling convention is not exposed.
 // The constructor's reached-input domain and existing tree/pool/invalid-handler

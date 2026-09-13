@@ -1,4 +1,5 @@
 #include "bsp/gui_text_child_lifetime.hpp"
+#include "bsp/gui_text_runtime_factory.hpp"
 #include <algorithm>
 #include <exception>
 
@@ -74,6 +75,8 @@ void GuiTextChildDeletion::delete_text_child_virtual4(GuiLayoutWidget& child,
     owner.base_lifetime_.phase = GuiWidgetBaseDeletionPhase::derived;
     lifetime->scalar_flags_ = flags;
     lifetime->scalar_phase_ = GuiTextScalarDeletionPhase::derived;
+    if (auto* text = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation()))
+        begin_native_gui_text_identity_destruction_00ab8250_fragment(text->native_identity().storage());
     lifetime->destroy_derived_00ab8250_fragment(); // AB8EE3; includes native AB80C0.
 
     destroy_gui_widget_base_00aa9730(owner, *this);

@@ -1,0 +1,55 @@
+{
+  "packet": "orch5_text_factory_identity",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "ghidra_mutated": false},
+  "source": ["src/gui_text_runtime_factory.cpp", "src/gui_text_child_lifetime.cpp", "src/gui_widget_base_lifetime.cpp"],
+  "header": "include/bsp/gui_text_runtime_factory.hpp",
+  "document": "docs/NATIVE_GUI_TEXT_FACTORY_IDENTITY.md",
+  "routines": [
+    {"address": "00AA1380", "end_inclusive": "00AA1403", "coverage": "partial_projection", "abi": "ECX source Text or null; no stack arguments; EAX new Text or null; RET", "implemented": "same pool allocation/prefix/companion registration, default retained admission and existing copied caller", "remaining": "full native body, native default allocation versus semantic base ordering, constructor SEH and exception unwind"},
+    {"address": "00AB9650", "end_inclusive": "00AB98EE", "coverage": "partial_projection", "abi": "ECX Text; no stack arguments; EAX Text; RET", "implemented": "actual derived profile before retained default lifetime and tracked AB8530, failed shell/layout preservation", "remaining": "native body headers and full default base ordering"},
+    {"address": "00ABB2C0", "end_inclusive": "00ABB623", "coverage": "partial_projection", "abi": "ECX destination; source DWORD stack; EAX destination; RET4", "implemented": "actual base prefix before base copy, canonical binding and derived publication before copied lifetime/cursor", "remaining": "whole raw body and supported dependencies' explicit native boundaries"},
+    {"address": "00AB8250", "end_inclusive": "00AB83CF", "coverage": "partial_projection", "abi": "ECX Text; RET", "implemented": "profile hook before existing same-owner derived destruction", "remaining": "native string/vector headers and SEH"},
+    {"address": "00AA9730", "end_inclusive": "00AA99B8", "coverage": "partial_projection", "abi": "ECX widget; RET", "implemented": "profile hooks around existing explicit scalar base teardown; separately bounded ordinary host-tree lifetime", "remaining": "native container allocations/headers and SEH"},
+    {"address": "00AB8EE0", "end_inclusive": "00AB8EFF", "coverage": "partial_projection", "abi": "ECX Text; flags DWORD stack; EAX original Text; RET4", "implemented": "same canonical derived/base owner, flags0 retention or same native Text pool return before registry unbind", "remaining": "full raw Text ABI, arbitrary profile/reentrant terminal and native unwind"}
+  ],
+  "host_steps": [
+    {"address": "00AA139E", "native": "00AB79E0", "function": "00AA1380", "contract": "existing actual Text pool allocation; copy before base prefix, default host admission after semantic base"},
+    {"address": "00AA13DD", "native": "00AB9650", "function": "00AA1380", "contract": "deferred default lifetime retained before tracked constructor tail"},
+    {"address": "00AA13BA", "native": "00ABB2C0", "function": "00AA1380", "contract": "existing retained copy operation with actual identity"},
+    {"address": "00AB9671", "native": "00AA9390", "function": "00AB9650", "contract": "proven native base prefix composed at documented host admission boundary"},
+    {"address": "00ABB2E5", "native": "00AA9520", "function": "00ABB2C0", "contract": "actual prefix before remaining canonical base-copy effects"},
+    {"address": "00AB98D8", "native": "00AB8530", "function": "00AB9650", "contract": "same retained default lifetime completes through tracked sections"},
+    {"address": "00AB8BB8", "native": "00B18A40", "function": "00AB8910", "contract": "factory adapter retains same actual Text through original canonical registry"},
+    {"address": "00AB8EE3", "native": "00AB8250", "function": "00AB8EE0", "contract": "Text profile hook precedes same canonical derived teardown; no count gate"},
+    {"address": "00AA9760", "native": "00AA8320", "function": "00AA9730", "contract": "base profile precedes actual scene/material releases"},
+    {"address": "00AA99A1", "native": "00BD30F0", "function": "00AA9730", "contract": "actual prefix reaches CEB130 with count untouched"},
+    {"address": "00AB8EF5", "native": "00AB75A0", "function": "00AB8EE0", "contract": "same pool slot return before canonical registry unbind/companion retirement"},
+    {"address": "00BD30EB", "native": "00AB8EE0", "function": "00BD30E0", "contract": "indirect current04 resolved only for actual Text D5C6C8; same canonical deletion"}
+  ],
+  "ownership": {
+    "identity": "same pool slot actual 8-byte prefix; sole companion owned by existing allocation map",
+    "registry": "geometry.registration() exact same bind/find/unbind/context/owners, no second actual-owner lookup domain",
+    "body": "one existing canonical GuiWidgetOwner/GuiTextLifetime; factory.canonical_owner(raw) supplies represented property storage",
+    "count": "actual raw+04 atomic used by material and terminal; direct scalar deletion neither decrements nor gates it",
+    "default_failure": "same shell/lifetime/native creators remain retained; factory-owned glyph wrapper also retained; no constructor retry or rollback",
+    "copy_failure": "existing retained copy caller plus raw prefix/registration and acquired creators, no replay",
+    "flags0": "ended canonical body, prefix CEB130; same slot/companion retained until explicit completed storage return",
+    "flags1": "completed body then same pool slot return, registry unbind, companion disposal; no post-return storage reads"
+  },
+  "dependencies": {
+    "renderer_registration": "5a7e0837 and 28420545, cherry-picked in worker as 6b5e16b9 and c0eb252b",
+    "default_owner_admission": "3b34ff57, cherry-picked as 2bd07bcc; borrowed default shell guards and retained constructor failure",
+    "deferred_lifetime": "primary-owned GuiTextDeferredDefaultAdmission/complete_default_construction_00ab9650 and persistent sections/glyph acquisitions",
+    "deferred_lifetime_build_inputs": {"include/bsp/gui_text_lifetime.hpp": "3D10D9368C850BFDB40DA91E28F82678FA76FDBAF72AC38849B6643F361707E1", "src/gui_text_lifetime.cpp": "F85233209473DB33BE801ECA99713889CE7EB932AB37D0C0222D9B23173BC1BE", "provenance": "copied only for build from primary J:/PROG/battlestations-pacific-decompile-orch5-20260911; not committed by this worker"},
+    "remaining_tracked_callers": "parent-owned gui_text_copy.cpp and other AB8530/AB8400 callers must consume lifetime-owned tracked frames; caller migration is outside this worker commit",
+    "semantic_counter_cleanup": "primary-owned; this packet does not use semantic extra_fields.references_04 as native storage"
+  },
+  "validation": {
+    "call_sites": "tools/verify_report_calls.py passed: 12 rows checked, 0 failed; one indirect target supported by Text table evidence",
+    "build": "scripts/build.ps1 passed MSVC Win32 Release W4 WX with exact primary-owned lifetime inputs recorded above; existing reconstructed_math passed 1/1; log local/native_gui_text_factory_identity_build.log",
+    "fixture": "no positive complete Text fixture: actual default sections require real material/effect48; no fake successful renderer/material supplied",
+    "game_validated": false,
+    "abi_compatible": false,
+    "canonical_terminal_executed": false
+  }
+}

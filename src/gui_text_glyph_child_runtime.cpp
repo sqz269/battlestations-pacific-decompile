@@ -145,7 +145,8 @@ GuiTextGlyphChildTailStatus begin_gui_text_glyph_child_tail_00ab98f0_fragment(
         frame.acquired.model = nullptr;
         frame.pending_native_address = 0x00ab9d93;
         auto& text = child_text(frame);
-        ensure_gui_text_draw_sections_00ab8530(owner, text.text(), text.shadow_slot_188(), b);
+        ensure_gui_text_draw_sections_00ab8530(owner, text.text(), text.shadow_slot_188(), b,
+            text.section_operation());
         frame.pending_native_address = 0x00ab9da5;
         owner.set_visible34(true);
         frame.pending_native_address = 0x00ab9db2;

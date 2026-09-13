@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_text_native_integration",
+  "status": "combined_validation_pending",
+  "integration_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+  "branch": "agent/orch5-20260911",
+  "baseline_commit": "22cecbe8b75bc7e89148c98f12fc256e42ef076f",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "worker_reports": [
+    "reports/native_gui_text_identity.json",
+    "reports/native_gui_text_factory_identity.json",
+    "reports/gui_text_native_renderer.json",
+    "reports/gui_text_section_operation.json",
+    "reports/gui_text_native_layout.json"
+  ],
+  "packets": [
+    {
+      "id": "orch5_text_identity_native",
+      "addresses": [
+        "00aa9390",
+        "00aa9520",
+        "00ab9650",
+        "00abb2c0",
+        "00ab8ee0"
+      ],
+      "contract": "Proven eight-byte prefix and same-count current Text terminal; remaining raw payload unconstructed."
+    },
+    {
+      "id": "orch5_text_factory_identity",
+      "addresses": [
+        "00aa1380",
+        "00ab9650",
+        "00ab8ee0"
+      ],
+      "contract": "Same factory allocation and canonical registry; retained default/copy admission and explicit/count-zero deletion routes; full Text execution unverified."
+    },
+    {
+      "id": "orch5_text_renderer_native",
+      "addresses": [
+        "00ab8400",
+        "00ab8910",
+        "00b317e0"
+      ],
+      "contract": "Actual renderer38/5C/60 and canonical declaration reuse with persistent acquisitions; effect48 remains required."
+    },
+    {
+      "id": "orch5_text_sections_native",
+      "addresses": [
+        "00ab8530"
+      ],
+      "contract": "Retained native caller locals and actual Shadow raw-slot cleanup; same owner default admission. Factory internal failures remain bounded."
+    },
+    {
+      "id": "orch5_text_native_layout",
+      "addresses": [
+        "00b2f710",
+        "00b483f0",
+        "00b60770",
+        "00b48ce0"
+      ],
+      "contract": "Actual current40 layout factory and canonical hardware/CPU declaration terminal cleanup."
+    }
+  ],
+  "integration_changes": [
+    "One actual Text prefix/count in its same factory slot; canonical material owner binding resolves to same semantic owner.",
+    "Retain default lifetime before tracked AB8530; preserve failed shell and factory-owned glyph wrapper.",
+    "All four AB8530 callers share the lifetime section frame; remove obsolete untracked body.",
+    "Actual AB8400 acquisitions persist on the same lifetime after content-local unwind; incomplete operations reject retirement/copy.",
+    "Hardware layout factory/companion composes with same registry and retires final CPU declaration companion."
+  ],
+  "validation": {
+    "exact_built_promoted_code": null,
+    "fixtures": null,
+    "call_verification": {
+      "numeric_rows": 105,
+      "failed": 0,
+      "log": "local/text-native-all-calls.log",
+      "indirect": "separately reviewed numeric profile/IAT evidence; excluded from direct CALL count"
+    },
+    "full_text": false,
+    "game": false
+  },
+  "analysis": {
+    "layout_annotation_preimages": "local/ghidra-annotations-20260913T044220Z.json",
+    "annotations_saved": true,
+    "annotation_preimages": [
+      "local/ghidra-annotations-20260913T044220Z.json",
+      "local/ghidra-annotations-20260913T044852Z.json",
+      "local/ghidra-annotations-20260913T045032Z.json"
+    ],
+    "annotated_addresses": 14,
+    "exports_refreshed": true,
+    "index_refreshed": true
+  },
+  "remaining_contracts": [
+    "Actual renderer48 B318B0/B31090 effect-cache loading and actual material property resolution for canonical Text.",
+    "AB8910 legacy auxiliary Model prefix and factory-internal mesh/section/material metadata failure acquisitions.",
+    "B317E0/cache internal post-decode record/date/append failure cannot publish decoded creator through current API.",
+    "External page/loader caller frames must remain retained after constructor failure; default base callback ordering precedes actual prefix admission in current host interface.",
+    "Positive full copied/default Text, native full payload/SEH ABI, device recreation and gameplay remain unvalidated."
+  ],
+  "worker_commits": {
+    "identity": "b248adce",
+    "renderer": "28420545",
+    "sections": "3b34ff5772d157bd064f102c2c9172f8054c0acb",
+    "factory_identity": "c5dcfbd3",
+    "integrated_factory_identity": "6b8684d9"
+  },
+  "fixture_runner": "local/run_text_native_fixtures.ps1",
+  "archive_manifests": [
+    "local/text-native-workers/renderer-manifest.json",
+    "local/text-native-workers/sections-manifest.json",
+    "local/text-native-workers/identity-manifest.json"
+  ],
+  "review": "Independent renderer worker reviewed new hooks; copied Text legacy section call found and fixed; no additional concrete bug found. Source review only."
+}

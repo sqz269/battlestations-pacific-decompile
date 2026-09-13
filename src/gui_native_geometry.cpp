@@ -1,5 +1,6 @@
 #include "bsp/gui_native_geometry.hpp"
 #include "bsp/native_mesh_clone.hpp"
+#include "bsp/native_vertex_declaration_loading.hpp"
 #include <cstring>
 #include <exception>
 #include <list>
@@ -50,6 +51,13 @@ struct GuiNativeGeometryOwners::Impl {
         std::unique_ptr<NativeLogicalIndexReference> reference;
         bool registered{};
     };
+    struct DeclarationEntry {
+        explicit DeclarationEntry(Impl& owner) noexcept : domain(owner) {}
+        Impl& domain;
+        void* raw{};
+        std::unique_ptr<NativeVertexDeclarationReference> reference;
+        bool registered{};
+    };
     NativeMeshEnvironment& meshes;
     NativeMeshConstants constants;
     NativeMeshSectionEnvironment& sections;
@@ -59,6 +67,7 @@ struct GuiNativeGeometryOwners::Impl {
     std::list<MaterialEntry> material_entries;
     std::list<VertexEntry> vertex_entries;
     std::list<IndexEntry> index_entries;
+    std::list<DeclarationEntry> declaration_entries;
 
     Impl(NativeMeshEnvironment& mesh_environment, NativeMeshConstants supplied,
         NativeMeshSectionEnvironment& section_environment, GuiNativeGeometryRegistration registry)
@@ -72,7 +81,7 @@ struct GuiNativeGeometryOwners::Impl {
     }
     ~Impl() {
         if (!mesh_entries.empty() || !section_entries.empty() || !material_entries.empty() ||
-            !vertex_entries.empty() || !index_entries.empty())
+            !vertex_entries.empty() || !index_entries.empty() || !declaration_entries.empty())
             std::terminate();
     }
     static void retire_mesh(void* context, NativeMeshReference& reference) noexcept {
@@ -120,6 +129,50 @@ struct GuiNativeGeometryOwners::Impl {
         for (auto it = self.index_entries.begin(); it != self.index_entries.end(); ++it)
             if (&*it == &entry) { self.index_entries.erase(it); return; }
         std::terminate();
+    }
+    static void retire_declaration(void* context, NativeVertexDeclarationReference& reference) noexcept {
+        auto& entry = *static_cast<DeclarationEntry*>(context);
+        auto& self = entry.domain;
+        if (entry.registered) self.registration.unbind(self.registration.context, entry.raw, reference);
+        for (auto it = self.declaration_entries.begin(); it != self.declaration_entries.end(); ++it)
+            if (&*it == &entry) { self.declaration_entries.erase(it); return; }
+        std::terminate();
+    }
+    void register_declaration(GuiNativeDeclarationAcquired& acquired,
+        NativeVertexDeclarationLoadingContext& loading) {
+        require(acquired.reference && !acquired.companion && !acquired.canonical_registration,
+            "declaration registration requires one acquired actual reference");
+        require(registration.find != nullptr,
+            "declaration registration requires explicit same-domain canonical lookup");
+        auto* const existing = registration.find(registration.context, acquired.reference);
+        if (existing) {
+            auto* declaration = dynamic_cast<NativeVertexDeclarationReference*>(existing);
+            require(declaration && declaration->storage() == acquired.reference &&
+                declaration->matches_context(loading.pool_0108fd38, loading.type_sizes_00d61cc0,
+                    loading.declaration_vtable_00d61d1c),
+                "cached declaration requires its canonical companion and same terminal context");
+            acquired.companion = declaration;
+            acquired.canonical_registration = true;
+            acquired.reused_companion = true;
+            return;
+        }
+        // An earlier failed transactional bind can leave an unregistered
+        // companion. Never construct a second one for that actual reference.
+        for (auto& entry : declaration_entries)
+            require(entry.raw != acquired.reference,
+                "declaration has an interrupted companion registration; resolve it before another load");
+        auto it = declaration_entries.emplace(declaration_entries.end(), *this);
+        it->raw = acquired.reference;
+        try {
+            it->reference = std::make_unique<NativeVertexDeclarationReference>(it->raw,
+                loading.pool_0108fd38, loading.type_sizes_00d61cc0,
+                loading.declaration_vtable_00d61d1c,
+                NativeVertexDeclarationCompanionDisposal{&*it, retire_declaration});
+        } catch (...) { declaration_entries.erase(it); throw; }
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.canonical_registration = true;
     }
     void register_stream(NativeStreamCloneAcquired& acquired, NativeStreamCloneServices& services) {
         require(acquired.creator && !acquired.companion && !acquired.canonical_registration,
@@ -311,6 +364,13 @@ void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcq
     require(&services.geometry == this && &services.vertices.actual_owners == &impl_->registration.owners,
         "stream companion registration must use the same canonical owner domain");
     impl_->register_stream(acquired, services);
+}
+void GuiNativeGeometryOwners::register_native_declaration_reference(GuiNativeDeclarationAcquired& acquired,
+    NativeVertexDeclarationLoadingContext& loading) {
+    impl_->register_declaration(acquired, loading);
+}
+const GuiNativeGeometryRegistration& GuiNativeGeometryOwners::registration() const noexcept {
+    return impl_->registration;
 }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::clone_section_00b85ef0(
     const NativeMeshSectionStorage& source) { return impl_->clone_section(source); }

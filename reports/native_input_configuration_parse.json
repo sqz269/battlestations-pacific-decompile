@@ -1,0 +1,1975 @@
+{
+  "packet": "orch4_input_parser_ak",
+  "status": "actual_inputs_parser_prefix_and_binding_producers_reconstructed_strict_win32_native_component_fixture_passed_final_tail_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_configuration_parse.hpp",
+    "src/native_input_configuration_parse.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_CONFIGURATION_PARSE.md",
+  "functions": [
+    {
+      "address": "00698a10",
+      "coverage": "698A10..699AD7 only; final166-byte rebind/update/settings/flag/cleanup remains",
+      "source_entry": "load_native_input_configuration_actions_prefix_00698a10"
+    },
+    {
+      "address": "00a93350",
+      "coverage": "complete156-byte native body, explicit raw storage ABI",
+      "source_entry": "construct_native_input_binding_00a93350"
+    },
+    {
+      "address": "00a93070",
+      "coverage": "complete109-byte native body; byte-verified stored-body repair",
+      "source_entry": "destroy_native_input_binding_00a93070"
+    },
+    {
+      "address": "00a93620",
+      "coverage": "complete111-byte native body, explicit raw storage ABI",
+      "source_entry": "append_native_input_action_descriptor_00a93620"
+    },
+    {
+      "address": "00a93830",
+      "coverage": "complete46-byte native body, explicit raw storage ABI",
+      "source_entry": "append_native_input_owner_descriptor_00a93830"
+    }
+  ],
+  "byte_spans": [
+    {
+      "address": "00698a10",
+      "end_exclusive": "00699ad8",
+      "bytes": 4296,
+      "sha256": "33fd6ee670f86a1d830b6353253f28923789ba8d309289b2544f07d0644dcbf1",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_loader_live.txt",
+      "role": "original loader prefix"
+    },
+    {
+      "address": "00697f40",
+      "end_exclusive": "00697fc3",
+      "bytes": 131,
+      "sha256": "5d03321f7205f5ba7b7648748d98d63467b8865f8613aa6f07ccefac345501b5",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_word_append.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "00698040",
+      "end_exclusive": "00698a04",
+      "bytes": 2500,
+      "sha256": "47e9967e94d7e6661a91dc8c6898cc2ff947d206436d808fed524c97ad3ef13e",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_rows.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "00557590",
+      "end_exclusive": "00557654",
+      "bytes": 196,
+      "sha256": "fc049fe6c7110270e0d0e6324de98ae28f0cbf81c8578ba88ad358cb82e8025d",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_row_copy.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "00555000",
+      "end_exclusive": "00555026",
+      "bytes": 38,
+      "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_copy_words.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "004d49b0",
+      "end_exclusive": "004d49e6",
+      "bytes": 54,
+      "sha256": "0b0cf5dd95a4c58091d690158c6f53d2e2feed4e8f0f1538863a7a24065a1d27",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_destroy_rows.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "004d29d0",
+      "end_exclusive": "004d29fe",
+      "bytes": 46,
+      "sha256": "f77de825202168a7f5bc40bb25b1c34d4d018d3f7e782a9643e66410c2b5ef91",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_destroy_row.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "006970d0",
+      "end_exclusive": "006970f6",
+      "bytes": 38,
+      "sha256": "240e117dee314b7d4acc124791688150e9666c57c81bf8373dab968dceee7234",
+      "disk_live_equal": true,
+      "capture": "local/input_modifiers_aj_live_fill_word.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "006974f0",
+      "end_exclusive": "00697706",
+      "bytes": 534,
+      "sha256": "65ac8517931476ea709aac836403397622beb75da5cb12499b01b3909042d5d3",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_descriptor_live.txt",
+      "role": "previously established dependency"
+    },
+    {
+      "address": "00a93350",
+      "end_exclusive": "00a933ec",
+      "bytes": 156,
+      "sha256": "49497f83781cff650e476686eb1571584376096007686ce1b702fca7b8f31597",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_constructor_live.txt",
+      "role": "new binding producer"
+    },
+    {
+      "address": "00a93070",
+      "end_exclusive": "00a930dd",
+      "bytes": 109,
+      "sha256": "f378564382b980ac8de1d3999d976f1fcf5020429914ce96681b16efcfa04159",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_binding_destructor_bytes.txt",
+      "role": "new binding producer"
+    },
+    {
+      "address": "00a93620",
+      "end_exclusive": "00a9368f",
+      "bytes": 111,
+      "sha256": "69ba87026e157171189e7c14886a718eee47884576c1e3831cced8ac01f7b843",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_action_append_live.txt",
+      "role": "new binding producer"
+    },
+    {
+      "address": "00a93830",
+      "end_exclusive": "00a9385e",
+      "bytes": 46,
+      "sha256": "6915b9f53c601d7d43f32bc6f4225ef82e3a975f438837e4057f406f23f42402",
+      "disk_live_equal": true,
+      "capture": "local/input_parser_ak_owner_append_live.txt",
+      "role": "new binding producer"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00698a10",
+      "address": "00698a2f",
+      "native": "00698730",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a43",
+      "native": "00b6a020",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a5c",
+      "native": "0041e870",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a6f",
+      "native": "00b66c60",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698a98",
+      "native": "0041e870",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aaf",
+      "native": "00b66c60",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad1",
+      "native": "00419cc0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ad8",
+      "native": "00bd1510",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698aed",
+      "native": "0041dd40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b08",
+      "native": "00bf7680",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b23",
+      "native": "00b69d40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b42",
+      "native": "00419cc0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b49",
+      "native": "00bd1510",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698b5f",
+      "native": "00b67980",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ba1",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bbf",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bd0",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698be1",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698bfd",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c0b",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c3d",
+      "native": "00698980",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c52",
+      "native": "00bf65ac",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c73",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c82",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698c93",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ca9",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cb6",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cc2",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cd2",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ce2",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698cf1",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d02",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d18",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d25",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d31",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d41",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d54",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d62",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d80",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698d92",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698da2",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698db5",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698dc3",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698dd6",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698de6",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698df9",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e07",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e21",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e33",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e43",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e56",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e64",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e77",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e87",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698e9a",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ea8",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ec2",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ed4",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ee4",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698ef7",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f05",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f18",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f28",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f3b",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f49",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f63",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f75",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f85",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698f98",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fa6",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fb9",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fc9",
+      "native": "00697f40",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fdc",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fea",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00698fff",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699010",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699021",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699035",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069903a",
+      "native": "004bec00",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699059",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069906d",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699081",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006990a5",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006990b9",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006990d7",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006990e7",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006990f8",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699127",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699148",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069915c",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699169",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069918b",
+      "native": "00696d80",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006991ba",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006991ce",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006991f3",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699208",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069921c",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699228",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699238",
+      "native": "00b66250",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699258",
+      "native": "00a93c80",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699271",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699286",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069929a",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006992b8",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006992c7",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006992e0",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699300",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699314",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699328",
+      "native": "00b65f50",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699346",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069939c",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006993ec",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069941a",
+      "native": "006974f0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699455",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699467",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069947b",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699484",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006994a5",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006994b6",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006994d6",
+      "native": "006974f0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006994f8",
+      "native": "00696de0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699544",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699555",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699576",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699588",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069959c",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006995a5",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006995c6",
+      "native": "00b67080",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006995d7",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006995f7",
+      "native": "006974f0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699619",
+      "native": "00696de0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699665",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699676",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006996a5",
+      "native": "00b67800",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006996b7",
+      "native": "00b67690",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006996cb",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006996d4",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006996e1",
+      "native": "00b66270",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699707",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699718",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699721",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": true
+    },
+    {
+      "function": "00698a10",
+      "address": "0069972f",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699741",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699776",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699788",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699791",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": true
+    },
+    {
+      "function": "00698a10",
+      "address": "0069979f",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006997b1",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006997ee",
+      "native": "00a93830",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699801",
+      "native": "00697220",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069980b",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699821",
+      "native": "00697220",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069982b",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069983f",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699853",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699867",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069987b",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069989b",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006998aa",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006998c3",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006998df",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006998fb",
+      "native": "00bf55be",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "0069992e",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699984",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699998",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006999ac",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006999c8",
+      "native": "00b67190",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "006999dc",
+      "native": "00b66420",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699a05",
+      "native": "00696d80",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699a31",
+      "native": "00a93c80",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699a4d",
+      "native": "00bf55be",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699a7f",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698a10",
+      "address": "00699ad0",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00697f40",
+      "address": "00697f89",
+      "native": "006970d0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00697f40",
+      "address": "00697fa3",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00697f40",
+      "address": "00697fb6",
+      "native": "00697dc0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698980",
+      "address": "006989c9",
+      "native": "00698040",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698980",
+      "address": "006989e3",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00698980",
+      "address": "006989f6",
+      "native": "006988f0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069751b",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697528",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069753c",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069754a",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697559",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069756a",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069757c",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069758b",
+      "native": "00b65fb0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069759d",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975af",
+      "native": "00b67720",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975be",
+      "native": "00b66290",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006975cd",
+      "native": "00b67700",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697617",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697628",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697631",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": true
+    },
+    {
+      "function": "006974f0",
+      "address": "00697643",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "00697659",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069767a",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "0069768c",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006976a7",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "006974f0",
+      "address": "006976c4",
+      "native": "00bf6713",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93350",
+      "address": "00a933a4",
+      "native": "00a92ee0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93350",
+      "address": "00a933bd",
+      "native": "00a92ee0",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93070",
+      "address": "00a9309d",
+      "native": "00697220",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93070",
+      "address": "00a930a5",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93070",
+      "address": "00a930bc",
+      "native": "00697220",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93070",
+      "address": "00a930c4",
+      "native": "00bf6989",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93620",
+      "address": "00a93656",
+      "native": "00a93350",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93620",
+      "address": "00a93667",
+      "native": "00a93440",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93620",
+      "address": "00a93678",
+      "native": "00a93070",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    },
+    {
+      "function": "00a93830",
+      "address": "00a93856",
+      "native": "00a93620",
+      "evidence": "Native CALL, actual containing body and argument/cleanup schedule checked. Dead self-owner comparisons retained as unreachable evidence.",
+      "unreachable": false
+    }
+  ],
+  "native_abi": {
+    "00698a10": "ECX configuration, no stack inputs, RET; new source prefix retains four real Lua objects for caller and stops before699AD8.",
+    "00a93350": "ECX fresh34h binding; stack descriptor14h pointer, required/forbidden0Ch header pointers, float scale; EAX fresh, RET10h.",
+    "00a93070": "ECX actual34h binding; no stack inputs/result; RET. Both arrays are resized to0 and freed, forbidden then required.",
+    "00a93620": "ECX actual30h action; stack descriptor, required, forbidden, float scale; RET10h. Constructs/appends/destroys temporary34h binding.",
+    "00a93830": "ECX actual24h owner; stack action index, descriptor, required, forbidden, float scale; RET14h. Computes captured action base+index*30h, delegatesA93620."
+  },
+  "boundaries": {
+    "script_modifier_prefix": "Reuses existing AI/AJ concrete functions and real Lua objects, no alternative owner or parsed container.",
+    "output": "Actual action records/configuration and four retained caller-owned Lua objects; no setting520, final rebind, tick or settings call.",
+    "scratch_padding": "Native and C++ stack preimages differ. Descriptor11..13 and binding02..03 preserve their respective preimages; fixture comparisons must mask undefined scratch preimages.",
+    "callbacks": "Required action activation uses real source poll/listener code. A fixture may provide finite device services, but production must route reached calls to real devices."
+  },
+  "recovered_behavior": {
+    "groups": "Iterate groups values into actual DWORD header, helper nil defaults0 otherwise Lua boolean, configure each action before appending bindings.",
+    "inputs": "Probe each consecutive numeric entry for nil and destroy the probe, then fetch the same entry again; stop at the first nil.",
+    "bindings": "press descriptor, optional and/not descriptors, nil-default mul from live one bits; static general/map flags gate modifier-list lookup, descriptor subsequently gates on live runtime/config flags.",
+    "inversion": "Checked camera then plane membership with separate live config byte reads; each match performs x87 float*live double sign and stores binary32.",
+    "tail": "After all Inputs, configure action128h with context1Eh and helper0. Free context storage; preserve Inputs value/key/table/globals for the remaining tail."
+  },
+  "flow_repair": "reports/native_input_configuration_parse_ak_flow.json",
+  "definitions": "reports/native_input_configuration_parse_ak_definitions.json",
+  "fixture": {
+    "prefix_bytes": 4296,
+    "spans": 13,
+    "direct_relocations": 265,
+    "absolute_relocations": 24,
+    "return_tail_hex": "8bcce8000000008d8c2404010000e8000000008d8c24f0000000e8000000008d8c2418010000e8000000008d8c2440010000e8000000005e5b8b8c24600100005f5d64890d0000000081c464010000c3"
+  },
+  "limitations": [
+    "Final699AD8..699B7D rebind/update/settings/flag/cleanup schedule is not supplied by this prefix.",
+    "No original FH3, hardware faults, malformed negative array sizes, arbitrary stack aliases, native VFS routing or gameplay validation."
+  ],
+  "exception_evidence": {
+    "spans": [
+      {
+        "address": "00dec9a4",
+        "bytes": 36,
+        "sha256": "e37c1c8809b1a0e75bfbd64b644f72291f3cfca5bb77940f581880be7d9afc38",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_destructor_fh.txt"
+      },
+      {
+        "address": "00deca30",
+        "bytes": 36,
+        "sha256": "ec233806ab138f5599e420b6326371427bf49fb07a20e04e99ed671dffdb68e8",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_constructor_fh.txt"
+      },
+      {
+        "address": "00decab4",
+        "bytes": 36,
+        "sha256": "e722b1d32aa0daeb616c411cf7ab44323cae07c647605a70a017cdce0d993807",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_append_fh.txt"
+      },
+      {
+        "address": "00dec99c",
+        "bytes": 8,
+        "sha256": "b4760eeeac2a663a6acb96bd92e3a11ac2f5dd5a75d021c73eef97b2b45d465a",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_destructor_unwind.txt"
+      },
+      {
+        "address": "00deca28",
+        "bytes": 8,
+        "sha256": "a0cc8550590dfad709b00d85acf9d3e4ade4414ac6a56ec1072f025839d307ea",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_constructor_unwind.txt"
+      },
+      {
+        "address": "00decaac",
+        "bytes": 8,
+        "sha256": "8513def585d5a8fc29a26250ae7544f42079ea78d2aac27aaba0cac06458b8b9",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_append_unwind.txt"
+      },
+      {
+        "address": "00cb66b0",
+        "bytes": 11,
+        "sha256": "708c99e0f8646b7d0b01aebf269377526ead4acaa40464cc636b85f39f863764",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_destructor_cleanup.txt"
+      },
+      {
+        "address": "00cb6720",
+        "bytes": 11,
+        "sha256": "929211fc16112fe7f179c992bc47077bd406ca4f2ae69b0a1793c79a5c6369f6",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_constructor_cleanup.txt"
+      },
+      {
+        "address": "00cb6790",
+        "bytes": 8,
+        "sha256": "e55c9029faf2f2d1d26d47b3a8c8b939ed5982718bf7dabb3ee418fd45380090",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_append_cleanup.txt"
+      },
+      {
+        "address": "00dabbb0",
+        "bytes": 280,
+        "sha256": "9c40cca73ba4bae4fc3c621e421a97c331ea008f159fca6b9b5510519a643f16",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_loader_unwind.txt"
+      },
+      {
+        "address": "00c7ed72",
+        "bytes": 211,
+        "sha256": "2136ab636a99f4377f9d2743c54dd2f0d6660fb9a3462056d84bb200bee2ec7d",
+        "disk_live_equal": true,
+        "capture": "local/input_parser_ak_loader_eh_thunks.txt"
+      }
+    ],
+    "loader_states": [
+      {
+        "state": 15,
+        "unwind_to": 3,
+        "thunk": "00c7ed72",
+        "instructions": [
+          "lea ecx, [ebp - 0x5c]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 16,
+        "unwind_to": 15,
+        "thunk": "00c7ed7a",
+        "instructions": [
+          "lea ecx, [ebp - 0x84]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 17,
+        "unwind_to": 16,
+        "thunk": "00c7ed85",
+        "instructions": [
+          "lea ecx, [ebp - 0x70]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 18,
+        "unwind_to": 17,
+        "thunk": "00c7ed8d",
+        "instructions": [
+          "lea ecx, [ebp - 0x48]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 19,
+        "unwind_to": 18,
+        "thunk": "00c7ed95",
+        "instructions": [
+          "lea ecx, [ebp - 0x100]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 20,
+        "unwind_to": 19,
+        "thunk": "00c7eda0",
+        "instructions": [
+          "lea ecx, [ebp - 0x160]",
+          "jmp 0x6972b0"
+        ]
+      },
+      {
+        "state": 21,
+        "unwind_to": 20,
+        "thunk": "00c7edab",
+        "instructions": [
+          "lea ecx, [ebp - 0xc0]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 22,
+        "unwind_to": 21,
+        "thunk": "00c7edb6",
+        "instructions": [
+          "lea ecx, [ebp - 0xd4]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 23,
+        "unwind_to": 21,
+        "thunk": "00c7edc1",
+        "instructions": [
+          "lea ecx, [ebp - 0xd4]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 24,
+        "unwind_to": 21,
+        "thunk": "00c7edcc",
+        "instructions": [
+          "lea ecx, [ebp - 0xd4]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 25,
+        "unwind_to": 21,
+        "thunk": "00c7edd7",
+        "instructions": [
+          "lea ecx, [ebp - 0xd4]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 26,
+        "unwind_to": 25,
+        "thunk": "00c7ede2",
+        "instructions": [
+          "lea ecx, [ebp - 0xac]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 27,
+        "unwind_to": 26,
+        "thunk": "00c7eded",
+        "instructions": [
+          "lea ecx, [ebp - 0xe8]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 28,
+        "unwind_to": 27,
+        "thunk": "00c7edf8",
+        "instructions": [
+          "lea ecx, [ebp - 0x130]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 29,
+        "unwind_to": 28,
+        "thunk": "00c7ee03",
+        "instructions": [
+          "lea ecx, [ebp - 0x114]",
+          "jmp 0x6977d0"
+        ]
+      },
+      {
+        "state": 30,
+        "unwind_to": 29,
+        "thunk": "00c7ee0e",
+        "instructions": [
+          "lea ecx, [ebp - 0x144]",
+          "jmp 0x6977d0"
+        ]
+      },
+      {
+        "state": 31,
+        "unwind_to": 30,
+        "thunk": "00c7ee19",
+        "instructions": [
+          "lea ecx, [ebp - 0x98]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 32,
+        "unwind_to": 30,
+        "thunk": "00c7ee24",
+        "instructions": [
+          "lea ecx, [ebp - 0x98]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 33,
+        "unwind_to": 30,
+        "thunk": "00c7ee2f",
+        "instructions": [
+          "lea ecx, [ebp - 0x98]",
+          "jmp 0xb67700"
+        ]
+      },
+      {
+        "state": 34,
+        "unwind_to": 17,
+        "thunk": "00c7ee3a",
+        "instructions": [
+          "lea ecx, [ebp - 0x160]",
+          "jmp 0x6972b0"
+        ]
+      }
+    ],
+    "binding_states": {
+      "00a93350": "State0 required header cleanup after successful first assignment; forbidden construction failure releases required only.",
+      "00a93070": "State0 releases required if forbidden destruction fails; reset before normal required destruction.",
+      "00a93620": "State0 owns temporary binding only after constructor returns; resets before normal destructor."
+    },
+    "original_fh3_executed": false
+  },
+  "component_validation": {
+    "probe_log": "local\\input_parser_ak_probe.log",
+    "probe_sha256": "5ffbfb83a524702b902a39e5cff17c332d008538f28c5664d4054da092f2c99f",
+    "words_compared": 14015,
+    "calls_checked": 210,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "fixture_source": "local/input_parser_ak_probe.cpp",
+    "fixture_source_sha256": "87821ad6b4f0e78a410659b9ed8564de1ba8a0a225d73ef1e80e3c23cf85cca8",
+    "fixture_header_sha256": "fbb3a13f34f3e54c0d0de8bdbb4ba53a4bd991749ea1e2420788226b478cb3c6",
+    "device_calls": 0,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "assets": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    }
+  },
+  "final_validation": {
+    "utc": "2026-09-13T04:50:17.924717+00:00",
+    "source_revision": "fb953cae3829e80ee18c7356925d7223c48f0e99",
+    "merged_main_revision": "e55192a5becaaad094e03a3db17979c7dd1ae7ae",
+    "code_files": 2189,
+    "code_manifest": "local\\input_parser_ak_source_manifest.json",
+    "code_manifest_sha256": "bc14efab5593bfc5676982132f2318364e6d63250766e3dba19bdbb88c0a239d",
+    "core_archive_sha256": "768646afbfc87597ae17ac662fffb0b1161875e50ee6418dded2d5a2a795f6ae",
+    "game_executable_sha256": "47ef4931bfe8480ef31f2b7a74e9bb3de9d2a93ed067a996c347882bed34b770",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_parser_ak_combined_build.log",
+    "build_log_sha256": "16116a981066203ce6b47b73d867496aefa02aba27d44fe490c34347b0e296ef",
+    "fixture_log": "local\\input_parser_ak_combined_probe.log",
+    "fixture_log_sha256": "af8e99231b0aba5d7b0ada706efb5f8d653c365a2a4cff4fdbb743db9934d5f3",
+    "native_source_words_equal": 14015,
+    "calls_checked": 210,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  }
+}

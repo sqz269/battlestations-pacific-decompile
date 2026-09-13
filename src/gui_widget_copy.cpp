@@ -105,7 +105,6 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base_copy_00aa9520(
     auto& to = destination.transform;
     auto& extra = result.extra_;
     auto& source_extra = source.extra_;
-    extra.references_04 = 1;
     copy_x87(to.position.x, from.position.x); //0C
     copy_x87(to.position.y, from.position.y); //10
     copy_x87(to.position.z, from.position.z); //14

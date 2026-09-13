@@ -1,0 +1,445 @@
+{
+  "packet": "orch5_text_sections_native",
+  "baseline": "22cecbe8",
+  "address": "00ab8530",
+  "implementation": [
+    "include/bsp/gui_text_sections.hpp",
+    "src/gui_text_sections.cpp",
+    "include/bsp/gui_widget_owner.hpp",
+    "src/gui_widget_owner.cpp"
+  ],
+  "evidence": "docs/GUI_TEXT_SECTION_OPERATION.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "verified wrappers, read only, no mutations"
+  },
+  "routines": [
+    {
+      "address": "00ab8530",
+      "end_inclusive": "00ab87cb",
+      "byte_length": 668,
+      "instruction_count": 208,
+      "flow_gaps": 0,
+      "last_instruction": "00ab87cb",
+      "last_instruction_length": 1,
+      "abi": "ECX Text; no stack arguments; RET",
+      "coverage": "complete supported normal caller; tracked returned creators; Model raw-slot/name and effect-name cleanup; existing mesh/section/material internal factory failures remain explicit boundaries"
+    }
+  ],
+  "callers": [
+    {
+      "address": "00aba8ec",
+      "function": "00aba8d0",
+      "native": "00ab8530",
+      "binding": "ECX unchanged Text; no pushes"
+    },
+    {
+      "address": "00ab9d93",
+      "function": "00ab98f0",
+      "native": "00ab8530",
+      "binding": "MOV ECX,ESI after AA6720; no pushes"
+    },
+    {
+      "address": "00ab98d8",
+      "function": "00ab9650",
+      "native": "00ab8530",
+      "binding": "MOV ECX,ESI after derived field stores; no pushes"
+    },
+    {
+      "address": "00abb601",
+      "function": "00abb2c0",
+      "native": "00ab8530",
+      "binding": "MOV ECX,ESI between AB8910 and ABB1D0; no pushes"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00ab8530",
+      "address": "00ab8565",
+      "native": "00b74eb0",
+      "binding": "ECX184 discarded by canonical Model pool forwarder; EAX raw188h slot"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8581",
+      "native": "0041e870",
+      "binding": "ECX reused actual8h temporary header; stack const char*, RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab859b",
+      "native": "00b75030",
+      "binding": "ECX allocated actual Model; stack pointer to SAME temporary NativeString; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85c9",
+      "native": "00419cc0",
+      "binding": "no explicit arguments; caller-pushed (buffer,length+1,1) remain for subsequent BD1510"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85d0",
+      "native": "00bd1510",
+      "binding": "ECX actual pool; stack(buffer,length+1,1), RET0Ch; same-header destruction via string storage boundary"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85e7",
+      "native": "00b73b60",
+      "binding": "ECX BC discarded by canonical mesh pool forwarder; rawC0h slot; composed create_mesh boundary"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab85fe",
+      "native": "00b73d70",
+      "binding": "ECX allocated mesh; EAX same mesh; RET; existing actual producer under composed create_mesh boundary"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8626",
+      "native": "00b75170",
+      "binding": "ECX current Shadow captured after FLD; stack(0,mesh,scalar178,scalar17C), RET10h"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab862b",
+      "native": "00533fa0",
+      "binding": "no semantic input; EAX one creator actual section; RET"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8635",
+      "native": "00b73c60",
+      "binding": "ECX captured mesh; stack section; append then retain; RET4 via InterlockedIncrement tail"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8643",
+      "native": "0041e870",
+      "binding": "ECX reused actual8h temporary header; stack const char*, RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8654",
+      "native": "00535320",
+      "binding": "ECX SAME current effect-name header; EAX material creator; RET; actual renderer48 dependency"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8676",
+      "native": "00419cc0",
+      "binding": "no explicit arguments; caller-pushed (buffer,length+1,1) remain for subsequent BD1510"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab867d",
+      "native": "00bd1510",
+      "binding": "ECX actual pool; stack(buffer,length+1,1), RET0Ch; same-header destruction via string storage boundary"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8685",
+      "native": "00b864c0",
+      "binding": "ECX captured section; stack material; publish/retain new before release old; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab868e",
+      "native": "IAT[00ce2220]",
+      "binding": "InterlockedDecrement(section+04), WINAPI; stdcall stack DWORD"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab869e",
+      "native": "section.current00",
+      "binding": "ECX current section; native zero-count terminal via current vtable0"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86aa",
+      "native": "IAT[00ce2220]",
+      "binding": "EDI captured at AB86A0; InterlockedDecrement(material+04)"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86b7",
+      "native": "material.current00",
+      "binding": "ECX material; current virtual0 after zero"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86bd",
+      "native": "IAT[00ce2220]",
+      "binding": "same captured EDI; InterlockedDecrement(mesh+04)"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86c9",
+      "native": "mesh.current00",
+      "binding": "ECX captured mesh; current virtual0 after zero"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86d6",
+      "native": "00b74650",
+      "binding": "ECX captured main+4C; EAX actual Model+180 !=0; RET"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86e8",
+      "native": "00b74640",
+      "binding": "ECX freshly reloaded main+4C; stack unused0; actual+180; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86f1",
+      "native": "00b72b40",
+      "binding": "ECX captured main mesh; EAX current count+58; RET"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab86fe",
+      "native": "00533fa0",
+      "binding": "no semantic input; EAX one creator actual section; RET"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8708",
+      "native": "00b73c60",
+      "binding": "ECX captured mesh; stack section; append then retain; RET4 via InterlockedIncrement tail"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8716",
+      "native": "0041e870",
+      "binding": "ECX reused actual8h temporary header; stack const char*, RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8727",
+      "native": "00535320",
+      "binding": "ECX SAME current effect-name header; EAX material creator; RET; actual renderer48 dependency"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8749",
+      "native": "00419cc0",
+      "binding": "no explicit arguments; caller-pushed (buffer,length+1,1) remain for subsequent BD1510"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8750",
+      "native": "00bd1510",
+      "binding": "ECX actual pool; stack(buffer,length+1,1), RET0Ch; same-header destruction via string storage boundary"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8758",
+      "native": "00b864c0",
+      "binding": "ECX captured section; stack material; publish/retain new before release old; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8767",
+      "native": "IAT[00ce2220]",
+      "binding": "EBP captured at AB875D; InterlockedDecrement(section+04)"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8773",
+      "native": "section.current00",
+      "binding": "ECX section; current virtual0 after zero"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8779",
+      "native": "IAT[00ce2220]",
+      "binding": "same captured EBP; InterlockedDecrement(material+04)"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab8785",
+      "native": "material.current00",
+      "binding": "ECX material; current virtual0 after zero"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab879e",
+      "native": "00b6e680",
+      "binding": "ECX freshly captured Shadow; stack current primary or null from live shadowed byte; RET4"
+    },
+    {
+      "function": "00ab8530",
+      "address": "00ab87b4",
+      "native": "00b6d890",
+      "binding": "ECX freshly reloaded Shadow after second shadowed read; stack null root; RET4"
+    },
+    {
+      "function": "00cb7f20",
+      "address": "00cb7f23",
+      "native": "00b748c0",
+      "binding": "ECX [EH EBP-18], captured raw Model; tail to canonical slot return",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cb7f28",
+      "address": "00cb7f3b",
+      "native": "0041dd20",
+      "binding": "test/clear mask1 at[EH EBP-1C]; ECX same[EH EBP-14] string header",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cb7f41",
+      "address": "00cb7f44",
+      "native": "00b72f70",
+      "binding": "ECX [EH EBP-18], captured raw mesh; caller action delegated existing mesh producer",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cb7f49",
+      "address": "00cb7f4c",
+      "native": "0041dd20",
+      "binding": "ECX same[EH EBP-14] string header; shadow effect state4",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cb7f51",
+      "address": "00cb7f54",
+      "native": "0041dd20",
+      "binding": "ECX same[EH EBP-14] string header; main effect state5",
+      "kind": "tail_jump"
+    }
+  ],
+  "cleanup_evidence": {
+    "handler": "00cb7f59 loads00deed34",
+    "map": "00deed58",
+    "count": 6,
+    "entries": [
+      [
+        -1,
+        "00cb7f20"
+      ],
+      [
+        0,
+        "00cb7f28"
+      ],
+      [
+        -1,
+        "00cb7f28"
+      ],
+      [
+        -1,
+        "00cb7f41"
+      ],
+      [
+        -1,
+        "00cb7f49"
+      ],
+      [
+        -1,
+        "00cb7f51"
+      ]
+    ],
+    "funclet_ranges": [
+      [
+        "00cb7f20",
+        "00cb7f27",
+        8
+      ],
+      [
+        "00cb7f28",
+        "00cb7f40",
+        25
+      ],
+      [
+        "00cb7f41",
+        "00cb7f48",
+        8
+      ],
+      [
+        "00cb7f49",
+        "00cb7f50",
+        8
+      ],
+      [
+        "00cb7f51",
+        "00cb7f58",
+        8
+      ]
+    ],
+    "interpretation": "No completed mesh/section/material/Shadow creator release in AB8530 unwind map; state2 is not assigned in normal body"
+  },
+  "corrections": [
+    {
+      "was": "AB8530 kept mesh/section/material creators only in automatic raw pointer locals; exceptions lost caller ownership bookkeeping",
+      "is": "one persistent same-lifetime frame stores returned creators before next calls; marks failed site/provider and rejects replay; only recovered native name cleanup runs",
+      "evidence": "AB8630/35 precede AB8654; releases are AB868E/86AA/86BD, absent from FH3 mapDEED58"
+    },
+    {
+      "was": "Shadow temporary name and post-construction host errors hidden in old create_model helper",
+      "is": "same canonical ModelRecord map uses tracked name/raw slot/native owner/reference state; publish188 before name destruction; retain live owner on host metadata failure",
+      "evidence": "AB8565..85D0 and CB7F20/28"
+    },
+    {
+      "was": "construct_base erased canonical owner when a retained default constructor shell threw",
+      "is": "explicit host begin/finish default admission retains that owner and constructor dispatch until same unique_ptr transfer completes",
+      "evidence": "source integration requirement; host retention metadata only, not a newly inferred native field or count"
+    }
+  ],
+  "uncertainty": [
+    "Parent must migrate four call paths and retain failed frames/lifetimes before removing legacy body; no current caller migration is claimed here",
+    "Composed create_mesh does not expose inner raw slot/constructor/metadata failure location; factory_in_flight preserves entry boundary instead of inventing an exact native instruction",
+    "Existing geometry factory host metadata rollback and internal effect/material acquisitions remain provider boundaries; B318B0 actual effect loading is mandatory",
+    "Post-B75030 host reference registration failure retains live ModelRecord/name and has no native rollback/resume claim",
+    "AB8910 remains on legacy hidden auxiliary Model-prefix helper",
+    "SEH memory faults/unmasked FP faults, native invalid allocation inputs and game rendering not exercised",
+    "No actual Text interruption fixture before parent lifetime integration; no fabricated Text or guard-only substitute"
+  ],
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "ctest": "1/1 passed",
+      "log": "local/text_sections_build_final.log",
+      "initial_log": "local/text_sections_build.log",
+      "initial_failure": "C4099 NativeNodeBinding forward declaration class/struct mismatch, corrected before final build",
+      "core_sha256": "733513ECCD16D517E8BD5845947156B01F1148A90355FF793B0885EAED12E8AA"
+    },
+    "report_calls": {
+      "direct_checked": 36,
+      "failed": 0,
+      "indirect_or_import_reviewed": 10,
+      "normal_body_calls": 37,
+      "cleanup_tail_jumps": 5,
+      "caller_calls": 4,
+      "log": "local/text_sections_calls.log"
+    },
+    "fixture": {
+      "status": "passed",
+      "source": "local/text_sections_model_prefix_probe.cpp",
+      "runner": "local/run_text_sections_model_prefix_probe.ps1",
+      "log": "local/text_sections_model_prefix_probe.log",
+      "scope": "actual tracked Model-prefix only: real first temporary allocation then injected second allocation failure in B75030; conditional name cleanup before canonical raw-slot return; no Shadow/retained Model/creator and stale header preservation",
+      "link": "fixture TU only against production libraries, /MANIFEST:EMBED",
+      "limits": "no complete AB8530, default Text admission, material48, post-construction metadata failure or game execution",
+      "core_sha256": "733513ECCD16D517E8BD5845947156B01F1148A90355FF793B0885EAED12E8AA"
+    },
+    "object_review": {
+      "listing": "local/text_sections_object.asm",
+      "scope": "capture_geometry_arguments only; FLD at+25, capture shadow+2A, FST+32, state store+37, FSTP+40 observed"
+    },
+    "artifacts": {
+      "include/bsp/gui_text_sections.hpp": "B8002D96B886BA39B61C8BDDD156CC4D1D42C33183228CA991C256A05F2854D3",
+      "src/gui_text_sections.cpp": "595909493EF377922589501977270B30E1A24F649ADB9327F72991C3D71D7CD1",
+      "include/bsp/gui_widget_owner.hpp": "8D793D5EADE71D55C0BC4D0CEDDB909D761C854318EC7FD1581A0A3F0724F865",
+      "src/gui_widget_owner.cpp": "F2A31E00A74002A3C53481DFEDE1994C008AB678A0DE230BCF86003993F27BD1",
+      "build/win32/bsp_core.dir/Release/gui_text_sections.obj": "D750321BC5F3AB36E2CB461221E63A0F06C73180E27EB7C9D46F217612939453",
+      "local/text_sections_model_prefix_probe.cpp": "66E0F122755D129DA454A16EFFD6B06168F91F10C9A90C53B31B6389B3CC15C0",
+      "local/run_text_sections_model_prefix_probe.ps1": "EEF33794EF50B1D9227A6629B824AD6810C12C571387DCD0DC34890C5C1E8B13",
+      "local/text_sections_model_prefix_probe.exe": "6E7A7218C5D60A320F3C47FBDD0A35AD6E4160DD2628B9771A12EFDF8D013FC9"
+    }
+  }
+}

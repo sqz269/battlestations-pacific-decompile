@@ -3,6 +3,7 @@
 #include "bsp/gui_widget_detach.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include "bsp/gui_section_runtime.hpp"
+#include "bsp/gui_text_runtime_factory.hpp"
 #include <algorithm>
 
 namespace bsp {
@@ -81,6 +82,8 @@ void destroy_gui_widget_base_00aa9730(GuiWidgetOwner& owner,
         throw GuiTextDeletionBoundary("base teardown requires its original active scalar owner");
     auto& child = owner.layout_;
     const auto flags = owner.base_lifetime_.scalar_flags;
+    if (auto* text = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation()))
+        begin_native_gui_widget_identity_destruction_00aa9730_fragment(text->native_identity().storage());
     calls.set_base_phase(owner, GuiWidgetBaseDeletionPhase::scene_nodes);
     // AA9752 installs the base table before AA9760. Current object's lineage
     // query is therefore base-only; child20 still uses each child's actual type.
@@ -118,6 +121,8 @@ void destroy_gui_widget_base_00aa9730(GuiWidgetOwner& owner,
     decltype(child.children){}.swap(child.children);
     decltype(child.transform.children){}.swap(child.transform.children);
     // AA99A1 only resets the base profile; reference count is not decremented.
+    if (auto* text = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation()))
+        finish_native_gui_widget_identity_destruction_00aa9730_fragment(text->native_identity().storage());
     calls.set_base_phase(owner, GuiWidgetBaseDeletionPhase::complete);
     calls.erase_completed_owner(owner, flags);
 }
