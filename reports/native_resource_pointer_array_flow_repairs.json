@@ -1,0 +1,426 @@
+{
+  "status": "saved_complete_verified_array_body_repairs",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_packet_commit": "d67779ebf3c90bdfc873fd91be52f6b5f84348e8",
+  "scope": "Analysis metadata for two complete23-byte raw-array destroy bodies already reconstructed by the six-body source packet. No additional source body, original ABI/exception or gameplay claim.",
+  "method": "Clear owned call-site overrides, decode PE/live-matched returning-free tails, then recreate exact stored body ranges using the supported locked definition tool. Apply reviewed hypothesis names, preserve all prior comments and old names in evidence, save and refresh exports. Callee no-return flags were not changed.",
+  "annotations_before": {
+    "00b872f0": {
+      "address": "00b872f0",
+      "function_name": "BSP_ResourceItemArray_ReserveRawPointers",
+      "comment": "[BSP reconstruction 00b872f0]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Clamp request to16; if signed capacity smaller allocate4*request, copy count raw pointers, free old storage, commit data/capacity. No item AddRef, release or tail initialization. Matched complete body00b872f0-00b8734e to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    "00b87350": {
+      "address": "00b87350",
+      "function_name": "BSP_HierarchyItemArray_ReserveRawPointers",
+      "comment": "[BSP reconstruction 00b87350]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Same raw reserve contract as00b872f0. Hierarchy record pointers are shallow copied; count unchanged. Matched complete body00b87350-00b873ae to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    "00b873c0": {
+      "address": "00b873c0",
+      "function_name": "FUN_00b873c0"
+    },
+    "00b87410": {
+      "address": "00b87410",
+      "function_name": "FUN_00b87410"
+    },
+    "00b87b20": {
+      "address": "00b87b20",
+      "function_name": "FUN_00b87b20"
+    },
+    "00b87b40": {
+      "address": "00b87b40",
+      "function_name": "FUN_00b87b40"
+    }
+  },
+  "annotations_after": {
+    "00b872f0": {
+      "address": "00b872f0",
+      "function_name": "BSP_ResourceItemArray_ReserveRawPointers",
+      "comment": "[BSP reconstruction 00b872f0]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Clamp request to16; if signed capacity smaller allocate4*request, copy count raw pointers, free old storage, commit data/capacity. No item AddRef, release or tail initialization. Matched complete body00b872f0-00b8734e to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b872f0] update\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Clamp request to16; if signed capacity smaller allocate4*request, copy count raw pointers, free old storage, commit data/capacity. No item AddRef, release or tail initialization. Matched complete body00b872f0-00b8734e to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete 95-byte actual raw pointer-array body through 00b8734e; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    },
+    "00b87350": {
+      "address": "00b87350",
+      "function_name": "BSP_HierarchyItemArray_ReserveRawPointers",
+      "comment": "[BSP reconstruction 00b87350]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Same raw reserve contract as00b872f0. Hierarchy record pointers are shallow copied; count unchanged. Matched complete body00b87350-00b873ae to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b87350] update\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Same raw reserve contract as00b872f0. Hierarchy record pointers are shallow copied; count unchanged. Matched complete body00b87350-00b873ae to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete 95-byte actual raw pointer-array body through 00b873ae; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    },
+    "00b873c0": {
+      "address": "00b873c0",
+      "function_name": "BSP_ResourceItemArray_ResizeRawPointers",
+      "comment": "[BSP reconstruction 00b873c0]\nComplete 80-byte actual raw pointer-array body through 00b8740f; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    },
+    "00b87410": {
+      "address": "00b87410",
+      "function_name": "BSP_HierarchyItemArray_ResizeRawPointers",
+      "comment": "[BSP reconstruction 00b87410]\nComplete 80-byte actual raw pointer-array body through 00b8745f; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    },
+    "00b87b20": {
+      "address": "00b87b20",
+      "function_name": "BSP_ResourceItemArray_DestroyRawPointers",
+      "comment": "[BSP reconstruction 00b87b20]\nComplete 23-byte actual raw pointer-array body through 00b87b36; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    },
+    "00b87b40": {
+      "address": "00b87b40",
+      "function_name": "BSP_HierarchyItemArray_DestroyRawPointers",
+      "comment": "[BSP reconstruction 00b87b40]\nComplete 23-byte actual raw pointer-array body through 00b87b56; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+    }
+  },
+  "evidence": [
+    {
+      "path": "local/native-resource-pointer-array-flow-b87b20-applied.json",
+      "sha256": "53209eeae67ff327a388222fe7a4d78f89b3d472f1bea25bc6243dbb188431fa",
+      "record": {
+        "repairs": [
+          {
+            "function": "00b87b20",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-13T17:21:25Z",
+            "decompile_lines_before": 9,
+            "gaps": [
+              {
+                "site": "00b87b2d",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b87b32",
+                "gap_end_exclusive": "00b87b37",
+                "bytes": 5,
+                "after_call": true,
+                "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b87b2d",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b87b32",
+                  "gap_end_exclusive": "00b87b37",
+                  "bytes": 5,
+                  "after_call": true,
+                  "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+                },
+                "clear": "Success: Cleared flow override at 00b87b2d (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 5 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b87b2d",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b87b2d (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b87b37",
+            "explicit_body_sha256": "a88935dad73891d318eaae104e800fc3b6365077bae26e7525c4d69e7f67d82e",
+            "body_before": "Function: FUN_00b87b20 at 00b87b20\nSignature: undefined FUN_00b87b20(void)\nEntry: 00b87b20\nBody: 00b87b20 - 00b87b31",
+            "decompile_lines_after": 9,
+            "gaps_remaining": 1,
+            "body_after": "Function: FUN_00b87b20 at 00b87b20\nSignature: undefined FUN_00b87b20(void)\nEntry: 00b87b20\nBody: 00b87b20 - 00b87b31",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    {
+      "path": "local/native-resource-pointer-array-flow-b87b40-applied.json",
+      "sha256": "2a868063da22e9d3cd15cf8c7bd95c158e788024dea591a595a85a6d39097f47",
+      "record": {
+        "repairs": [
+          {
+            "function": "00b87b40",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-13T17:21:34Z",
+            "decompile_lines_before": 9,
+            "gaps": [
+              {
+                "site": "00b87b4d",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b87b52",
+                "gap_end_exclusive": "00b87b57",
+                "bytes": 5,
+                "after_call": true,
+                "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b87b4d",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b87b52",
+                  "gap_end_exclusive": "00b87b57",
+                  "bytes": 5,
+                  "after_call": true,
+                  "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+                },
+                "clear": "Success: Cleared flow override at 00b87b4d (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 5 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b87b4d",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b87b4d (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b87b57",
+            "explicit_body_sha256": "4ae3aca82491c36333995ba13a20e5df2ab7009cce27ec88dd71244371736d90",
+            "body_before": "Function: FUN_00b87b40 at 00b87b40\nSignature: undefined FUN_00b87b40(void)\nEntry: 00b87b40\nBody: 00b87b40 - 00b87b51",
+            "decompile_lines_after": 9,
+            "gaps_remaining": 1,
+            "body_after": "Function: FUN_00b87b40 at 00b87b40\nSignature: undefined FUN_00b87b40(void)\nEntry: 00b87b40\nBody: 00b87b40 - 00b87b51",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    {
+      "path": "local/native-resource-pointer-array-body-repair.json",
+      "sha256": "15d8222a589906d9ec9fb9c4bad92d9c3e4a20606f8937a83f3cda393674cc39",
+      "record": {
+        "events": [
+          {
+            "recreate": "00b87b20",
+            "previous": "Function: FUN_00b87b20 at 00b87b20\nSignature: undefined FUN_00b87b20(void)\nEntry: 00b87b20\nBody: 00b87b20 - 00b87b31",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b87b20"
+            },
+            "result": {
+              "success": true,
+              "address": "00b87b20",
+              "deleted_function": "FUN_00b87b20",
+              "body_size": 18,
+              "message": "Function 'FUN_00b87b20' deleted at 00b87b20"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b87b20",
+              "end_address": "00b87b37"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b87b20",
+              "end_address": "00b87b36",
+              "bytes_disassembled": 23,
+              "message": "Successfully disassembled 23 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b87b20",
+              "disassemble_first": false,
+              "name": "BSP_ResourceItemArray_DestroyRawPointers"
+            },
+            "result": {
+              "success": true,
+              "address": "00b87b20",
+              "function_name": "BSP_ResourceItemArray_DestroyRawPointers",
+              "entry_point": "00b87b20",
+              "body_size": 23,
+              "message": "Function created successfully at 00b87b20",
+              "warnings": [
+                "Function name 'BSP_ResourceItemArray_DestroyRawPointers' \u2014 main part 'ResourceItemArray_DestroyRawPointers' is not PascalCase. Expected: ResourceitemarrayDestroyrawpointers",
+                "Function name 'BSP_ResourceItemArray_DestroyRawPointers' \u2014 main part 'ResourceItemArray_DestroyRawPointers' contains underscores. Use PascalCase after the module prefix.",
+                "Function name 'BSP_ResourceItemArray_DestroyRawPointers' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+              ]
+            }
+          },
+          {
+            "defined": "00b87b20",
+            "end": "00b87b37",
+            "name": "BSP_ResourceItemArray_DestroyRawPointers",
+            "after": "Function: BSP_ResourceItemArray_DestroyRawPointers at 00b87b20\nSignature: undefined BSP_ResourceItemArray_DestroyRawPointers(void)\nEntry: 00b87b20\nBody: 00b87b20 - 00b87b36"
+          },
+          {
+            "recreate": "00b87b40",
+            "previous": "Function: FUN_00b87b40 at 00b87b40\nSignature: undefined FUN_00b87b40(void)\nEntry: 00b87b40\nBody: 00b87b40 - 00b87b51",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b87b40"
+            },
+            "result": {
+              "success": true,
+              "address": "00b87b40",
+              "deleted_function": "FUN_00b87b40",
+              "body_size": 18,
+              "message": "Function 'FUN_00b87b40' deleted at 00b87b40"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b87b40",
+              "end_address": "00b87b57"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b87b40",
+              "end_address": "00b87b56",
+              "bytes_disassembled": 23,
+              "message": "Successfully disassembled 23 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b87b40",
+              "disassemble_first": false,
+              "name": "BSP_HierarchyItemArray_DestroyRawPointers"
+            },
+            "result": {
+              "success": true,
+              "address": "00b87b40",
+              "function_name": "BSP_HierarchyItemArray_DestroyRawPointers",
+              "entry_point": "00b87b40",
+              "body_size": 23,
+              "message": "Function created successfully at 00b87b40",
+              "warnings": [
+                "Function name 'BSP_HierarchyItemArray_DestroyRawPointers' \u2014 main part 'HierarchyItemArray_DestroyRawPointers' is not PascalCase. Expected: HierarchyitemarrayDestroyrawpointers",
+                "Function name 'BSP_HierarchyItemArray_DestroyRawPointers' \u2014 main part 'HierarchyItemArray_DestroyRawPointers' contains underscores. Use PascalCase after the module prefix.",
+                "Function name 'BSP_HierarchyItemArray_DestroyRawPointers' does not start with a recognized verb. First word 'Hierarchy' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+              ]
+            }
+          },
+          {
+            "defined": "00b87b40",
+            "end": "00b87b57",
+            "name": "BSP_HierarchyItemArray_DestroyRawPointers",
+            "after": "Function: BSP_HierarchyItemArray_DestroyRawPointers at 00b87b40\nSignature: undefined BSP_HierarchyItemArray_DestroyRawPointers(void)\nEntry: 00b87b40\nBody: 00b87b40 - 00b87b56"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path": "local/ghidra-annotations-20260913T172214Z.json",
+      "sha256": "4da65ea0e241c9728f718cf6d8a262ce793852152abb532bfe2af6cfab688099",
+      "record": [
+        {
+          "address": "00b872f0",
+          "before": {
+            "address": "00b872f0",
+            "function_name": "BSP_ResourceItemArray_ReserveRawPointers",
+            "comment": "[BSP reconstruction 00b872f0]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Clamp request to16; if signed capacity smaller allocate4*request, copy count raw pointers, free old storage, commit data/capacity. No item AddRef, release or tail initialization. Matched complete body00b872f0-00b8734e to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+          },
+          "after": {
+            "address": "00b872f0",
+            "name": "BSP_ResourceItemArray_ReserveRawPointers",
+            "evidence": "ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Clamp request to16; if signed capacity smaller allocate4*request, copy count raw pointers, free old storage, commit data/capacity. No item AddRef, release or tail initialization. Matched complete body00b872f0-00b8734e to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete 95-byte actual raw pointer-array body through 00b8734e; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00b87350",
+          "before": {
+            "address": "00b87350",
+            "function_name": "BSP_HierarchyItemArray_ReserveRawPointers",
+            "comment": "[BSP reconstruction 00b87350]\nECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Same raw reserve contract as00b872f0. Hierarchy record pointers are shallow copied; count unchanged. Matched complete body00b87350-00b873ae to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+          },
+          "after": {
+            "address": "00b87350",
+            "name": "BSP_HierarchyItemArray_ReserveRawPointers",
+            "evidence": "ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Same raw reserve contract as00b872f0. Hierarchy record pointers are shallow copied; count unchanged. Matched complete body00b87350-00b873ae to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX array triplet; signed requested capacity stack; RET4; no meaningful return value. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete 95-byte actual raw pointer-array body through 00b873ae; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00b873c0",
+          "before": {
+            "address": "00b873c0",
+            "function_name": "FUN_00b873c0"
+          },
+          "after": {
+            "address": "00b873c0",
+            "name": "BSP_ResourceItemArray_ResizeRawPointers",
+            "evidence": "Complete 80-byte actual raw pointer-array body through 00b8740f; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00b87410",
+          "before": {
+            "address": "00b87410",
+            "function_name": "FUN_00b87410"
+          },
+          "after": {
+            "address": "00b87410",
+            "name": "BSP_HierarchyItemArray_ResizeRawPointers",
+            "evidence": "Complete 80-byte actual raw pointer-array body through 00b8745f; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00b87b20",
+          "before": {
+            "address": "00b87b20",
+            "function_name": "BSP_ResourceItemArray_DestroyRawPointers"
+          },
+          "after": {
+            "address": "00b87b20",
+            "name": "BSP_ResourceItemArray_DestroyRawPointers",
+            "evidence": "Complete 23-byte actual raw pointer-array body through 00b87b36; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        },
+        {
+          "address": "00b87b40",
+          "before": {
+            "address": "00b87b40",
+            "function_name": "BSP_HierarchyItemArray_DestroyRawPointers"
+          },
+          "after": {
+            "address": "00b87b40",
+            "name": "BSP_HierarchyItemArray_DestroyRawPointers",
+            "evidence": "Complete 23-byte actual raw pointer-array body through 00b87b56; signed DWORD counts/capacity, minimum-16 reserve, wrapping arithmetic, current-header reload/alias order, computed-null destination skip, resize-zero before free even for negative capacity. Existing concrete allocation/free; no pointee operations or complete resource-teardown claim. Strict Win32/2 CTests and frozen original-normal-body capsule passed. Source C++ ABI differs; Ghidra writes/root tail repair deferred. docs/NATIVE_RESOURCE_POINTER_ARRAY.md; reports/native_resource_pointer_array.json."
+          },
+          "status": "applied"
+        }
+      ]
+    }
+  ],
+  "final_body_records": [
+    {
+      "defined": "00b87b20",
+      "end": "00b87b37",
+      "name": "BSP_ResourceItemArray_DestroyRawPointers",
+      "after": "Function: BSP_ResourceItemArray_DestroyRawPointers at 00b87b20\nSignature: undefined BSP_ResourceItemArray_DestroyRawPointers(void)\nEntry: 00b87b20\nBody: 00b87b20 - 00b87b36"
+    },
+    {
+      "defined": "00b87b40",
+      "end": "00b87b57",
+      "name": "BSP_HierarchyItemArray_DestroyRawPointers",
+      "after": "Function: BSP_HierarchyItemArray_DestroyRawPointers at 00b87b40\nSignature: undefined BSP_HierarchyItemArray_DestroyRawPointers(void)\nEntry: 00b87b40\nBody: 00b87b40 - 00b87b56"
+    }
+  ],
+  "post_repair": {
+    "saved": true,
+    "exports_refreshed": true,
+    "each_listing_instructions": 10,
+    "remaining_call_gaps": 0
+  }
+}

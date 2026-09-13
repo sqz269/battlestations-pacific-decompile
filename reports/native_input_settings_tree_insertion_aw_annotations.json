@@ -1,0 +1,699 @@
+{
+  "reason": "Five source input-settings index/insert contracts; supporting helper names remain hypotheses and their coverage is explicitly bounded.",
+  "entries": [
+    {
+      "address": "0055a9a0",
+      "before": "Function: FUN_0055a9a0 at 0055a9a0\nSignature: void * __fastcall FUN_0055a9a0(void * tree, void * unused_edx, void * key)\nEntry: 0055a9a0\nBody: 0055a9a0 - 0055aaa1",
+      "before_comment": {
+        "address": "0055a9a0",
+        "function_name": "FUN_0055a9a0",
+        "comment": ""
+      },
+      "name": "STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0",
+      "prototype": "void* __fastcall STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0(void* tree, void* unused_edx, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 0055a9a0 with __fastcall calling convention",
+      "after": "Function: STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0 at 0055a9a0\nSignature: void * __fastcall STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0(void * tree, void * unused_edx, void * key)\nEntry: 0055a9a0\nBody: 0055a9a0 - 0055aaa1",
+      "after_comment": {
+        "address": "0055a9a0",
+        "function_name": "STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0",
+        "comment": "[BSP reconstruction 0055a9a0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069fa40",
+      "before": "Function: STL_Tree_InsertUnique_IntKey_N14_0069fa40 at 0069fa40\nSignature: undefined STL_Tree_InsertUnique_IntKey_N14_0069fa40(void)\nEntry: 0069fa40\nBody: 0069fa40 - 0069faf8",
+      "before_comment": {
+        "address": "0069fa40",
+        "function_name": "STL_Tree_InsertUnique_IntKey_N14_0069fa40",
+        "comment": "[BSP reconstruction 0069fa40]\nHypothesis, not a recovered symbol. insert(const value_type&) returning pair<iterator,bool>: signed-int descent on node+0x0c, writes the byte flag at slot+8 (0 on duplicate, 1 after delegating to _Insert 0069ef20); __thiscall, RET 0x8. Instantiation N14: node 0x14 (_Left+0,_Parent+4,_Right+8,_Myval+0x0c[4],_Color+0x10,_Isnil+0x11); _Insert 0069ef20 checks _Mysize>0x3ffffffd so sizeof(value_type)=4."
+      },
+      "name": "STL_Tree_InsertUnique_IntKey_N14_0069fa40",
+      "prototype": "void* __fastcall STL_Tree_InsertUnique_IntKey_N14_0069fa40(void* tree, void* unused_edx, void* output, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 0069fa40 with __fastcall calling convention",
+      "after": "Function: STL_Tree_InsertUnique_IntKey_N14_0069fa40 at 0069fa40\nSignature: void * __fastcall STL_Tree_InsertUnique_IntKey_N14_0069fa40(void * tree, void * unused_edx, void * output, void * key)\nEntry: 0069fa40\nBody: 0069fa40 - 0069faf8",
+      "after_comment": {
+        "address": "0069fa40",
+        "function_name": "STL_Tree_InsertUnique_IntKey_N14_0069fa40",
+        "comment": "[BSP reconstruction 0069fa40]\nHypothesis, not a recovered symbol. insert(const value_type&) returning pair<iterator,bool>: signed-int descent on node+0x0c, writes the byte flag at slot+8 (0 on duplicate, 1 after delegating to _Insert 0069ef20); __thiscall, RET 0x8. Instantiation N14: node 0x14 (_Left+0,_Parent+4,_Right+8,_Myval+0x0c[4],_Color+0x10,_Isnil+0x11); _Insert 0069ef20 checks _Mysize>0x3ffffffd so sizeof(value_type)=4.\n\n[BSP reconstruction 0069fa40] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1e70",
+      "before": "Function: STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70 at 006a1e70\nSignature: undefined STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70(void)\nEntry: 006a1e70\nBody: 006a1e70 - 006a1f4a",
+      "before_comment": {
+        "address": "006a1e70",
+        "function_name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+        "comment": "[BSP reconstruction 006a1e70]\nHypothesis, not a recovered symbol. map::operator[](const key&): _Lbound 0069cdb0, on a miss builds a default mapped value and hint-inserts with 006a15e0, releases the temporary pooled string, returns node+0x14 which is the 20-byte mapped value after the 8-byte key; __thiscall, RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+      "prototype": "void* __fastcall STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70(void* tree, void* unused_edx, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 006a1e70 with __fastcall calling convention",
+      "after": "Function: STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70 at 006a1e70\nSignature: void * __fastcall STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70(void * tree, void * unused_edx, void * key)\nEntry: 006a1e70\nBody: 006a1e70 - 006a1f4a",
+      "after_comment": {
+        "address": "006a1e70",
+        "function_name": "STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70",
+        "comment": "[BSP reconstruction 006a1e70]\nHypothesis, not a recovered symbol. map::operator[](const key&): _Lbound 0069cdb0, on a miss builds a default mapped value and hint-inserts with 006a15e0, releases the temporary pooled string, returns node+0x14 which is the 20-byte mapped value after the 8-byte key; __thiscall, RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 006a1e70] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a6900",
+      "before": "Function: FUN_006a6900 at 006a6900\nSignature: void * __fastcall FUN_006a6900(void * tree, void * unused_edx, void * key)\nEntry: 006a6900\nBody: 006a6900 - 006a6a11",
+      "before_comment": {
+        "address": "006a6900",
+        "function_name": "FUN_006a6900",
+        "comment": ""
+      },
+      "name": "STL_Tree_MapIndex_StringControllerNames_N24_006A6900",
+      "prototype": "void* __fastcall STL_Tree_MapIndex_StringControllerNames_N24_006A6900(void* tree, void* unused_edx, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 006a6900 with __fastcall calling convention",
+      "after": "Function: STL_Tree_MapIndex_StringControllerNames_N24_006A6900 at 006a6900\nSignature: void * __fastcall STL_Tree_MapIndex_StringControllerNames_N24_006A6900(void * tree, void * unused_edx, void * key)\nEntry: 006a6900\nBody: 006a6900 - 006a6a11",
+      "after_comment": {
+        "address": "006a6900",
+        "function_name": "STL_Tree_MapIndex_StringControllerNames_N24_006A6900",
+        "comment": "[BSP reconstruction 006a6900]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1f80",
+      "before": "Function: STL_Tree_MapIndex_IntKey_N1C_006a1f80 at 006a1f80\nSignature: undefined STL_Tree_MapIndex_IntKey_N1C_006a1f80(void)\nEntry: 006a1f80\nBody: 006a1f80 - 006a2051",
+      "before_comment": {
+        "address": "006a1f80",
+        "function_name": "STL_Tree_MapIndex_IntKey_N1C_006a1f80",
+        "comment": "[BSP reconstruction 006a1f80]\nHypothesis, not a recovered symbol. map::operator[](const int&): inlined lower_bound, on a miss builds a default-constructed pooled string and hint-inserts, returns node+0x10 which is the mapped string handle; __thiscall, RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_MapIndex_IntKey_N1C_006a1f80",
+      "prototype": "void* __fastcall STL_Tree_MapIndex_IntKey_N1C_006a1f80(void* tree, void* unused_edx, void* key)",
+      "prototype_apply": "Successfully set prototype for function at 006a1f80 with __fastcall calling convention",
+      "after": "Function: STL_Tree_MapIndex_IntKey_N1C_006a1f80 at 006a1f80\nSignature: void * __fastcall STL_Tree_MapIndex_IntKey_N1C_006a1f80(void * tree, void * unused_edx, void * key)\nEntry: 006a1f80\nBody: 006a1f80 - 006a2051",
+      "after_comment": {
+        "address": "006a1f80",
+        "function_name": "STL_Tree_MapIndex_IntKey_N1C_006a1f80",
+        "comment": "[BSP reconstruction 006a1f80]\nHypothesis, not a recovered symbol. map::operator[](const int&): inlined lower_bound, on a miss builds a default-constructed pooled string and hint-inserts, returns node+0x10 which is the mapped string handle; __thiscall, RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a1f80] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005586b0",
+      "before": "Function: FUN_005586b0 at 005586b0\nSignature: undefined FUN_005586b0(void)\nEntry: 005586b0\nBody: 005586b0 - 00558736",
+      "before_comment": {
+        "address": "005586b0",
+        "function_name": "FUN_005586b0"
+      },
+      "name": "STL_StringSensitivityPair_Construct_005586B0",
+      "after": "Function: STL_StringSensitivityPair_Construct_005586B0 at 005586b0\nSignature: undefined STL_StringSensitivityPair_Construct_005586B0(void)\nEntry: 005586b0\nBody: 005586b0 - 00558736",
+      "after_comment": {
+        "address": "005586b0",
+        "function_name": "STL_StringSensitivityPair_Construct_005586B0",
+        "comment": "[BSP reconstruction 005586b0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069e6e0",
+      "before": "Function: FUN_0069e6e0 at 0069e6e0\nSignature: undefined FUN_0069e6e0(void)\nEntry: 0069e6e0\nBody: 0069e6e0 - 0069e742",
+      "before_comment": {
+        "address": "0069e6e0",
+        "function_name": "FUN_0069e6e0"
+      },
+      "name": "STL_StringPresetPair_Construct_0069E6E0",
+      "after": "Function: STL_StringPresetPair_Construct_0069E6E0 at 0069e6e0\nSignature: undefined STL_StringPresetPair_Construct_0069E6E0(void)\nEntry: 0069e6e0\nBody: 0069e6e0 - 0069e742",
+      "after_comment": {
+        "address": "0069e6e0",
+        "function_name": "STL_StringPresetPair_Construct_0069E6E0",
+        "comment": "[BSP reconstruction 0069e6e0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a3cb0",
+      "before": "Function: FUN_006a3cb0 at 006a3cb0\nSignature: undefined FUN_006a3cb0(void)\nEntry: 006a3cb0\nBody: 006a3cb0 - 006a3d2e",
+      "before_comment": {
+        "address": "006a3cb0",
+        "function_name": "FUN_006a3cb0"
+      },
+      "name": "STL_StringControllerNamesPair_Construct_006A3CB0",
+      "after": "Function: STL_StringControllerNamesPair_Construct_006A3CB0 at 006a3cb0\nSignature: undefined STL_StringControllerNamesPair_Construct_006A3CB0(void)\nEntry: 006a3cb0\nBody: 006a3cb0 - 006a3d2e",
+      "after_comment": {
+        "address": "006a3cb0",
+        "function_name": "STL_StringControllerNamesPair_Construct_006A3CB0",
+        "comment": "[BSP reconstruction 006a3cb0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069e680",
+      "before": "Function: FUN_0069e680 at 0069e680\nSignature: undefined FUN_0069e680(void)\nEntry: 0069e680\nBody: 0069e680 - 0069e6d0",
+      "before_comment": {
+        "address": "0069e680",
+        "function_name": "FUN_0069e680"
+      },
+      "name": "STL_IntStringPair_Construct_0069E680",
+      "after": "Function: STL_IntStringPair_Construct_0069E680 at 0069e680\nSignature: undefined STL_IntStringPair_Construct_0069E680(void)\nEntry: 0069e680\nBody: 0069e680 - 0069e6d0",
+      "after_comment": {
+        "address": "0069e680",
+        "function_name": "STL_IntStringPair_Construct_0069E680",
+        "comment": "[BSP reconstruction 0069e680]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055a520",
+      "before": "Function: FUN_0055a520 at 0055a520\nSignature: undefined FUN_0055a520(void)\nEntry: 0055a520\nBody: 0055a520 - 0055a71b",
+      "before_comment": {
+        "address": "0055a520",
+        "function_name": "FUN_0055a520"
+      },
+      "name": "STL_Tree_InsertHint_StringSensitivity_N2C_0055A520",
+      "after": "Function: STL_Tree_InsertHint_StringSensitivity_N2C_0055A520 at 0055a520\nSignature: undefined STL_Tree_InsertHint_StringSensitivity_N2C_0055A520(void)\nEntry: 0055a520\nBody: 0055a520 - 0055a71b",
+      "after_comment": {
+        "address": "0055a520",
+        "function_name": "STL_Tree_InsertHint_StringSensitivity_N2C_0055A520",
+        "comment": "[BSP reconstruction 0055a520]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a6450",
+      "before": "Function: FUN_006a6450 at 006a6450\nSignature: undefined FUN_006a6450(void)\nEntry: 006a6450\nBody: 006a6450 - 006a664b",
+      "before_comment": {
+        "address": "006a6450",
+        "function_name": "FUN_006a6450"
+      },
+      "name": "STL_Tree_InsertHint_StringControllerNames_N24_006A6450",
+      "after": "Function: STL_Tree_InsertHint_StringControllerNames_N24_006A6450 at 006a6450\nSignature: undefined STL_Tree_InsertHint_StringControllerNames_N24_006A6450(void)\nEntry: 006a6450\nBody: 006a6450 - 006a664b",
+      "after_comment": {
+        "address": "006a6450",
+        "function_name": "STL_Tree_InsertHint_StringControllerNames_N24_006A6450",
+        "comment": "[BSP reconstruction 006a6450]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a15e0",
+      "before": "Function: STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0 at 006a15e0\nSignature: undefined STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0(void)\nEntry: 006a15e0\nBody: 006a15e0 - 006a17db",
+      "before_comment": {
+        "address": "006a15e0",
+        "function_name": "STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0",
+        "comment": "[BSP reconstruction 006a15e0]\nHypothesis, not a recovered symbol. insert(const_iterator,const value_type&): the three hint cases decided by BSP_NativeString_LessCaseInsensitive on the key at +0x0c, calling _Insert 0069fbc0 or falling back to 006a1050; __thiscall, RET 0x10. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0",
+      "after": "Function: STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0 at 006a15e0\nSignature: undefined STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0(void)\nEntry: 006a15e0\nBody: 006a15e0 - 006a17db",
+      "after_comment": {
+        "address": "006a15e0",
+        "function_name": "STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0",
+        "comment": "[BSP reconstruction 006a15e0]\nHypothesis, not a recovered symbol. insert(const_iterator,const value_type&): the three hint cases decided by BSP_NativeString_LessCaseInsensitive on the key at +0x0c, calling _Insert 0069fbc0 or falling back to 006a1050; __thiscall, RET 0x10. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 006a15e0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a17e0",
+      "before": "Function: STL_Tree_InsertHint_IntKey_N1C_006a17e0 at 006a17e0\nSignature: undefined STL_Tree_InsertHint_IntKey_N1C_006a17e0(void)\nEntry: 006a17e0\nBody: 006a17e0 - 006a199b",
+      "before_comment": {
+        "address": "006a17e0",
+        "function_name": "STL_Tree_InsertHint_IntKey_N1C_006a17e0",
+        "comment": "[BSP reconstruction 006a17e0]\nHypothesis, not a recovered symbol. insert(const_iterator,const value_type&): the three hint cases against keys at +0x0c, calling _Insert 006a02b0 or falling back to 006a1170; __thiscall, RET 0x10. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_InsertHint_IntKey_N1C_006a17e0",
+      "after": "Function: STL_Tree_InsertHint_IntKey_N1C_006a17e0 at 006a17e0\nSignature: undefined STL_Tree_InsertHint_IntKey_N1C_006a17e0(void)\nEntry: 006a17e0\nBody: 006a17e0 - 006a199b",
+      "after_comment": {
+        "address": "006a17e0",
+        "function_name": "STL_Tree_InsertHint_IntKey_N1C_006a17e0",
+        "comment": "[BSP reconstruction 006a17e0]\nHypothesis, not a recovered symbol. insert(const_iterator,const value_type&): the three hint cases against keys at +0x0c, calling _Insert 006a02b0 or falling back to 006a1170; __thiscall, RET 0x10. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a17e0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069ef20",
+      "before": "Function: STL_Tree_Insert_IntKey_N14_0069ef20 at 0069ef20\nSignature: undefined STL_Tree_Insert_IntKey_N14_0069ef20(void)\nEntry: 0069ef20\nBody: 0069ef20 - 0069f10b",
+      "before_comment": {
+        "address": "0069ef20",
+        "function_name": "STL_Tree_Insert_IntKey_N14_0069ef20",
+        "comment": "[BSP reconstruction 0069ef20]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen('map/set<T> too long') at _Mysize>0x3ffffffd, _Buynode 005550d0, ++_Mysize, link, red-black fixup with _Color at +0x10, returns iterator {tree,node}; __thiscall, RET 0x10. Instantiation N14: node 0x14 (_Left+0,_Parent+4,_Right+8,_Myval+0x0c[4],_Color+0x10,_Isnil+0x11); _Insert 0069ef20 checks _Mysize>0x3ffffffd so sizeof(value_type)=4."
+      },
+      "name": "STL_Tree_Insert_IntKey_N14_0069ef20",
+      "after": "Function: STL_Tree_Insert_IntKey_N14_0069ef20 at 0069ef20\nSignature: undefined STL_Tree_Insert_IntKey_N14_0069ef20(void)\nEntry: 0069ef20\nBody: 0069ef20 - 0069f10b",
+      "after_comment": {
+        "address": "0069ef20",
+        "function_name": "STL_Tree_Insert_IntKey_N14_0069ef20",
+        "comment": "[BSP reconstruction 0069ef20]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen('map/set<T> too long') at _Mysize>0x3ffffffd, _Buynode 005550d0, ++_Mysize, link, red-black fixup with _Color at +0x10, returns iterator {tree,node}; __thiscall, RET 0x10. Instantiation N14: node 0x14 (_Left+0,_Parent+4,_Right+8,_Myval+0x0c[4],_Color+0x10,_Isnil+0x11); _Insert 0069ef20 checks _Mysize>0x3ffffffd so sizeof(value_type)=4.\n\n[BSP reconstruction 0069ef20] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00559710",
+      "before": "Function: STL_xlen_throw_00559710 at 00559710\nSignature: undefined STL_xlen_throw_00559710(void)\nEntry: 00559710\nBody: 00559710 - 005598fb",
+      "before_comment": {
+        "address": "00559710",
+        "function_name": "STL_xlen_throw_00559710"
+      },
+      "name": "STL_Tree_Insert_StringSensitivity_N2C_00559710",
+      "after": "Function: STL_Tree_Insert_StringSensitivity_N2C_00559710 at 00559710\nSignature: undefined STL_Tree_Insert_StringSensitivity_N2C_00559710(void)\nEntry: 00559710\nBody: 00559710 - 005598fb",
+      "after_comment": {
+        "address": "00559710",
+        "function_name": "STL_Tree_Insert_StringSensitivity_N2C_00559710",
+        "comment": "[BSP reconstruction 00559710]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069fbc0",
+      "before": "Function: STL_Tree_Insert_StrKeyCI_N2C_0069fbc0 at 0069fbc0\nSignature: undefined STL_Tree_Insert_StrKeyCI_N2C_0069fbc0(void)\nEntry: 0069fbc0\nBody: 0069fbc0 - 0069fdab",
+      "before_comment": {
+        "address": "0069fbc0",
+        "function_name": "STL_Tree_Insert_StrKeyCI_N2C_0069fbc0",
+        "comment": "[BSP reconstruction 0069fbc0]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x9249247 (sizeof=28), _Buynode 0069f5f0, rotates 0069c1c0/0069a560; the stl_throw_site tag is wrong; __thiscall, RET 0x10. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_Insert_StrKeyCI_N2C_0069fbc0",
+      "after": "Function: STL_Tree_Insert_StrKeyCI_N2C_0069fbc0 at 0069fbc0\nSignature: undefined STL_Tree_Insert_StrKeyCI_N2C_0069fbc0(void)\nEntry: 0069fbc0\nBody: 0069fbc0 - 0069fdab",
+      "after_comment": {
+        "address": "0069fbc0",
+        "function_name": "STL_Tree_Insert_StrKeyCI_N2C_0069fbc0",
+        "comment": "[BSP reconstruction 0069fbc0]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x9249247 (sizeof=28), _Buynode 0069f5f0, rotates 0069c1c0/0069a560; the stl_throw_site tag is wrong; __thiscall, RET 0x10. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 0069fbc0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a02b0",
+      "before": "Function: STL_Tree_Insert_IntKey_N1C_006a02b0 at 006a02b0\nSignature: undefined STL_Tree_Insert_IntKey_N1C_006a02b0(void)\nEntry: 006a02b0\nBody: 006a02b0 - 006a049b",
+      "before_comment": {
+        "address": "006a02b0",
+        "function_name": "STL_Tree_Insert_IntKey_N1C_006a02b0",
+        "comment": "[BSP reconstruction 006a02b0]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x15555553 (sizeof=12), _Buynode 0069f940, rotates 0069c300/0069a780; the stl_throw_site tag is wrong; __thiscall, RET 0x10. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_Insert_IntKey_N1C_006a02b0",
+      "after": "Function: STL_Tree_Insert_IntKey_N1C_006a02b0 at 006a02b0\nSignature: undefined STL_Tree_Insert_IntKey_N1C_006a02b0(void)\nEntry: 006a02b0\nBody: 006a02b0 - 006a049b",
+      "after_comment": {
+        "address": "006a02b0",
+        "function_name": "STL_Tree_Insert_IntKey_N1C_006a02b0",
+        "comment": "[BSP reconstruction 006a02b0]\nHypothesis, not a recovered symbol. _Tree::_Insert(bool,_Nodeptr,const value_type&): _Xlen at _Mysize>0x15555553 (sizeof=12), _Buynode 0069f940, rotates 0069c300/0069a780; the stl_throw_site tag is wrong; __thiscall, RET 0x10. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a02b0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a4f80",
+      "before": "Function: STL_xlen_throw_006a4f80 at 006a4f80\nSignature: undefined STL_xlen_throw_006a4f80(void)\nEntry: 006a4f80\nBody: 006a4f80 - 006a516b",
+      "before_comment": {
+        "address": "006a4f80",
+        "function_name": "STL_xlen_throw_006a4f80"
+      },
+      "name": "STL_Tree_Insert_StringControllerNames_N24_006A4F80",
+      "after": "Function: STL_Tree_Insert_StringControllerNames_N24_006A4F80 at 006a4f80\nSignature: undefined STL_Tree_Insert_StringControllerNames_N24_006A4F80(void)\nEntry: 006a4f80\nBody: 006a4f80 - 006a516b",
+      "after_comment": {
+        "address": "006a4f80",
+        "function_name": "STL_Tree_Insert_StringControllerNames_N24_006A4F80",
+        "comment": "[BSP reconstruction 006a4f80]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00557590",
+      "before": "Function: FUN_00557590 at 00557590\nSignature: undefined FUN_00557590(void)\nEntry: 00557590\nBody: 00557590 - 00557653",
+      "before_comment": {
+        "address": "00557590",
+        "function_name": "FUN_00557590"
+      },
+      "name": "STL_CheckedWordVector_CopyConstruct_00557590",
+      "after": "Function: STL_CheckedWordVector_CopyConstruct_00557590 at 00557590\nSignature: undefined STL_CheckedWordVector_CopyConstruct_00557590(void)\nEntry: 00557590\nBody: 00557590 - 00557653",
+      "after_comment": {
+        "address": "00557590",
+        "function_name": "STL_CheckedWordVector_CopyConstruct_00557590",
+        "comment": "[BSP reconstruction 00557590]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a2930",
+      "before": "Function: FUN_006a2930 at 006a2930\nSignature: undefined FUN_006a2930(void)\nEntry: 006a2930\nBody: 006a2930 - 006a29a0",
+      "before_comment": {
+        "address": "006a2930",
+        "function_name": "FUN_006a2930"
+      },
+      "name": "STL_IntStringTree_CopyConstruct_N1C_006A2930",
+      "after": "Function: STL_IntStringTree_CopyConstruct_N1C_006A2930 at 006a2930\nSignature: undefined STL_IntStringTree_CopyConstruct_N1C_006A2930(void)\nEntry: 006a2930\nBody: 006a2930 - 006a29a0",
+      "after_comment": {
+        "address": "006a2930",
+        "function_name": "STL_IntStringTree_CopyConstruct_N1C_006A2930",
+        "comment": "[BSP reconstruction 006a2930]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069d430",
+      "before": "Function: FUN_0069d430 at 0069d430\nSignature: undefined FUN_0069d430(void)\nEntry: 0069d430\nBody: 0069d430 - 0069d466",
+      "before_comment": {
+        "address": "0069d430",
+        "function_name": "FUN_0069d430"
+      },
+      "name": "STL_Tree_AllocateHeadNode_N1C_0069D430",
+      "after": "Function: STL_Tree_AllocateHeadNode_N1C_0069D430 at 0069d430\nSignature: undefined STL_Tree_AllocateHeadNode_N1C_0069D430(void)\nEntry: 0069d430\nBody: 0069d430 - 0069d466",
+      "after_comment": {
+        "address": "0069d430",
+        "function_name": "STL_Tree_AllocateHeadNode_N1C_0069D430",
+        "comment": "[BSP reconstruction 0069d430]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005550d0",
+      "before": "Function: FUN_005550d0 at 005550d0\nSignature: undefined FUN_005550d0(void)\nEntry: 005550d0\nBody: 005550d0 - 00555108",
+      "before_comment": {
+        "address": "005550d0",
+        "function_name": "FUN_005550d0"
+      },
+      "name": "STL_Tree_Buynode_IntKey_N14_005550D0",
+      "after": "Function: STL_Tree_Buynode_IntKey_N14_005550D0 at 005550d0\nSignature: undefined STL_Tree_Buynode_IntKey_N14_005550D0(void)\nEntry: 005550d0\nBody: 005550d0 - 00555108",
+      "after_comment": {
+        "address": "005550d0",
+        "function_name": "STL_Tree_Buynode_IntKey_N14_005550D0",
+        "comment": "[BSP reconstruction 005550d0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005591e0",
+      "before": "Function: FUN_005591e0 at 005591e0\nSignature: undefined FUN_005591e0(void)\nEntry: 005591e0\nBody: 005591e0 - 0055925d",
+      "before_comment": {
+        "address": "005591e0",
+        "function_name": "FUN_005591e0"
+      },
+      "name": "STL_Tree_Buynode_StringSensitivity_N2C_005591E0",
+      "after": "Function: STL_Tree_Buynode_StringSensitivity_N2C_005591E0 at 005591e0\nSignature: undefined STL_Tree_Buynode_StringSensitivity_N2C_005591E0(void)\nEntry: 005591e0\nBody: 005591e0 - 0055925d",
+      "after_comment": {
+        "address": "005591e0",
+        "function_name": "STL_Tree_Buynode_StringSensitivity_N2C_005591E0",
+        "comment": "[BSP reconstruction 005591e0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069f5f0",
+      "before": "Function: STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0 at 0069f5f0\nSignature: undefined STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0(void)\nEntry: 0069f5f0\nBody: 0069f5f0 - 0069f66d",
+      "before_comment": {
+        "address": "0069f5f0",
+        "function_name": "STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0",
+        "comment": "[BSP reconstruction 0069f5f0]\nHypothesis, not a recovered symbol. _Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): sole caller is _Insert 0069fbc0; __thiscall, RET 0x14. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0",
+      "after": "Function: STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0 at 0069f5f0\nSignature: undefined STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0(void)\nEntry: 0069f5f0\nBody: 0069f5f0 - 0069f66d",
+      "after_comment": {
+        "address": "0069f5f0",
+        "function_name": "STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0",
+        "comment": "[BSP reconstruction 0069f5f0]\nHypothesis, not a recovered symbol. _Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): sole caller is _Insert 0069fbc0; __thiscall, RET 0x14. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 0069f5f0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069f940",
+      "before": "Function: STL_Tree_Buynode_IntKey_N1C_0069f940 at 0069f940\nSignature: undefined STL_Tree_Buynode_IntKey_N1C_0069f940(void)\nEntry: 0069f940\nBody: 0069f940 - 0069f9bd",
+      "before_comment": {
+        "address": "0069f940",
+        "function_name": "STL_Tree_Buynode_IntKey_N1C_0069f940",
+        "comment": "[BSP reconstruction 0069f940]\nHypothesis, not a recovered symbol. _Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): called by _Insert 006a02b0 and by _Copy 006a1290 with the source node's _Myval at +0x0c and _Color at +0x18; __thiscall, RET 0x14. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_Buynode_IntKey_N1C_0069f940",
+      "after": "Function: STL_Tree_Buynode_IntKey_N1C_0069f940 at 0069f940\nSignature: undefined STL_Tree_Buynode_IntKey_N1C_0069f940(void)\nEntry: 0069f940\nBody: 0069f940 - 0069f9bd",
+      "after_comment": {
+        "address": "0069f940",
+        "function_name": "STL_Tree_Buynode_IntKey_N1C_0069f940",
+        "comment": "[BSP reconstruction 0069f940]\nHypothesis, not a recovered symbol. _Buynode(_Larg,_Parg,_Rarg,const value_type&,char _Carg): called by _Insert 006a02b0 and by _Copy 006a1290 with the source node's _Myval at +0x0c and _Color at +0x18; __thiscall, RET 0x14. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 0069f940] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1c40",
+      "before": "Function: STL_Tree_CopyAssign_IntKey_N1C_006a1c40 at 006a1c40\nSignature: undefined STL_Tree_CopyAssign_IntKey_N1C_006a1c40(void)\nEntry: 006a1c40\nBody: 006a1c40 - 006a1cb4",
+      "before_comment": {
+        "address": "006a1c40",
+        "function_name": "STL_Tree_CopyAssign_IntKey_N1C_006a1c40",
+        "comment": "[BSP reconstruction 006a1c40]\nHypothesis, not a recovered symbol. the copy body of _Tree::operator=: _Root() = _Copy(right._Root(), _Myhead), _Mysize copied, then _Lmost and _Rmost recomputed by walking _Left and _Right; __thiscall, RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_CopyBody_IntKey_N1C_006A1C40",
+      "after": "Function: STL_Tree_CopyBody_IntKey_N1C_006A1C40 at 006a1c40\nSignature: undefined STL_Tree_CopyBody_IntKey_N1C_006A1C40(void)\nEntry: 006a1c40\nBody: 006a1c40 - 006a1cb4",
+      "after_comment": {
+        "address": "006a1c40",
+        "function_name": "STL_Tree_CopyBody_IntKey_N1C_006A1C40",
+        "comment": "[BSP reconstruction 006a1c40]\nHypothesis, not a recovered symbol. the copy body of _Tree::operator=: _Root() = _Copy(right._Root(), _Myhead), _Mysize copied, then _Lmost and _Rmost recomputed by walking _Left and _Right; __thiscall, RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a1c40] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a4ab0",
+      "before": "Function: FUN_006a4ab0 at 006a4ab0\nSignature: undefined FUN_006a4ab0(void)\nEntry: 006a4ab0\nBody: 006a4ab0 - 006a4b2d",
+      "before_comment": {
+        "address": "006a4ab0",
+        "function_name": "FUN_006a4ab0"
+      },
+      "name": "STL_Tree_Buynode_StringControllerNames_N24_006A4AB0",
+      "after": "Function: STL_Tree_Buynode_StringControllerNames_N24_006A4AB0 at 006a4ab0\nSignature: undefined STL_Tree_Buynode_StringControllerNames_N24_006A4AB0(void)\nEntry: 006a4ab0\nBody: 006a4ab0 - 006a4b2d",
+      "after_comment": {
+        "address": "006a4ab0",
+        "function_name": "STL_Tree_Buynode_StringControllerNames_N24_006A4AB0",
+        "comment": "[BSP reconstruction 006a4ab0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558280",
+      "before": "Function: FUN_00558280 at 00558280\nSignature: undefined FUN_00558280(void)\nEntry: 00558280\nBody: 00558280 - 00558303",
+      "before_comment": {
+        "address": "00558280",
+        "function_name": "FUN_00558280"
+      },
+      "name": "STL_StringSensitivityPair_CopyConstruct_00558280",
+      "after": "Function: STL_StringSensitivityPair_CopyConstruct_00558280 at 00558280\nSignature: undefined STL_StringSensitivityPair_CopyConstruct_00558280(void)\nEntry: 00558280\nBody: 00558280 - 00558303",
+      "after_comment": {
+        "address": "00558280",
+        "function_name": "STL_StringSensitivityPair_CopyConstruct_00558280",
+        "comment": "[BSP reconstruction 00558280]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1290",
+      "before": "Function: STL_Tree_CopyNodes_IntKey_N1C_006a1290 at 006a1290\nSignature: undefined STL_Tree_CopyNodes_IntKey_N1C_006a1290(void)\nEntry: 006a1290\nBody: 006a1290 - 006a1321",
+      "before_comment": {
+        "address": "006a1290",
+        "function_name": "STL_Tree_CopyNodes_IntKey_N1C_006a1290",
+        "comment": "[BSP reconstruction 006a1290]\nHypothesis, not a recovered symbol. _Copy(_Nodeptr,_Nodeptr): recursively rebuilds a subtree, _Buynode 0069f940 with the source _Myval at +0x0c and _Color at +0x18, then recurses on _Left and _Right; __thiscall, RET 0x8. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_CopyNodes_IntKey_N1C_006a1290",
+      "after": "Function: STL_Tree_CopyNodes_IntKey_N1C_006a1290 at 006a1290\nSignature: undefined STL_Tree_CopyNodes_IntKey_N1C_006a1290(void)\nEntry: 006a1290\nBody: 006a1290 - 006a1321",
+      "after_comment": {
+        "address": "006a1290",
+        "function_name": "STL_Tree_CopyNodes_IntKey_N1C_006a1290",
+        "comment": "[BSP reconstruction 006a1290]\nHypothesis, not a recovered symbol. _Copy(_Nodeptr,_Nodeptr): recursively rebuilds a subtree, _Buynode 0069f940 with the source _Myval at +0x0c and _Color at +0x18, then recurses on _Left and _Right; __thiscall, RET 0x8. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a1290] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069e7a0",
+      "before": "Function: FUN_0069e7a0 at 0069e7a0\nSignature: undefined FUN_0069e7a0(void)\nEntry: 0069e7a0\nBody: 0069e7a0 - 0069e802",
+      "before_comment": {
+        "address": "0069e7a0",
+        "function_name": "FUN_0069e7a0"
+      },
+      "name": "STL_StringPresetPair_CopyConstruct_0069E7A0",
+      "after": "Function: STL_StringPresetPair_CopyConstruct_0069E7A0 at 0069e7a0\nSignature: undefined STL_StringPresetPair_CopyConstruct_0069E7A0(void)\nEntry: 0069e7a0\nBody: 0069e7a0 - 0069e802",
+      "after_comment": {
+        "address": "0069e7a0",
+        "function_name": "STL_StringPresetPair_CopyConstruct_0069E7A0",
+        "comment": "[BSP reconstruction 0069e7a0]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069e810",
+      "before": "Function: FUN_0069e810 at 0069e810\nSignature: undefined FUN_0069e810(void)\nEntry: 0069e810\nBody: 0069e810 - 0069e85f",
+      "before_comment": {
+        "address": "0069e810",
+        "function_name": "FUN_0069e810"
+      },
+      "name": "STL_IntStringPair_CopyConstruct_0069E810",
+      "after": "Function: STL_IntStringPair_CopyConstruct_0069E810 at 0069e810\nSignature: undefined STL_IntStringPair_CopyConstruct_0069E810(void)\nEntry: 0069e810\nBody: 0069e810 - 0069e85f",
+      "after_comment": {
+        "address": "0069e810",
+        "function_name": "STL_IntStringPair_CopyConstruct_0069E810",
+        "comment": "[BSP reconstruction 0069e810]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a3100",
+      "before": "Function: FUN_006a3100 at 006a3100\nSignature: undefined FUN_006a3100(void)\nEntry: 006a3100\nBody: 006a3100 - 006a317d",
+      "before_comment": {
+        "address": "006a3100",
+        "function_name": "FUN_006a3100"
+      },
+      "name": "STL_StringControllerNamesPair_CopyConstruct_006A3100",
+      "after": "Function: STL_StringControllerNamesPair_CopyConstruct_006A3100 at 006a3100\nSignature: undefined STL_StringControllerNamesPair_CopyConstruct_006A3100(void)\nEntry: 006a3100\nBody: 006a3100 - 006a317d",
+      "after_comment": {
+        "address": "006a3100",
+        "function_name": "STL_StringControllerNamesPair_CopyConstruct_006A3100",
+        "comment": "[BSP reconstruction 006a3100]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554920",
+      "before": "Function: FUN_00554920 at 00554920\nSignature: undefined FUN_00554920(void)\nEntry: 00554920\nBody: 00554920 - 00554972",
+      "before_comment": {
+        "address": "00554920",
+        "function_name": "FUN_00554920"
+      },
+      "name": "STL_Tree_Lbound_StringSensitivity_N2C_00554920",
+      "after": "Function: STL_Tree_Lbound_StringSensitivity_N2C_00554920 at 00554920\nSignature: undefined STL_Tree_Lbound_StringSensitivity_N2C_00554920(void)\nEntry: 00554920\nBody: 00554920 - 00554972",
+      "after_comment": {
+        "address": "00554920",
+        "function_name": "STL_Tree_Lbound_StringSensitivity_N2C_00554920",
+        "comment": "[BSP reconstruction 00554920]\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069cdb0",
+      "before": "Function: STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0 at 0069cdb0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0(void)\nEntry: 0069cdb0\nBody: 0069cdb0 - 0069ce02",
+      "before_comment": {
+        "address": "0069cdb0",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+        "comment": "[BSP reconstruction 0069cdb0]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr: descends from _Root remembering the last node not less than the key, comparing the {count+0x0c, buffer+0x10} string handles with __stricmp and treating a null buffer as smallest, returns _Myhead when every node is less; __thiscall, RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+      "after": "Function: STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0 at 0069cdb0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0(void)\nEntry: 0069cdb0\nBody: 0069cdb0 - 0069ce02",
+      "after_comment": {
+        "address": "0069cdb0",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0",
+        "comment": "[BSP reconstruction 0069cdb0]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr: descends from _Root remembering the last node not less than the key, comparing the {count+0x0c, buffer+0x10} string handles with __stricmp and treating a null buffer as smallest, returns _Myhead when every node is less; __thiscall, RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 0069cdb0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069ce30",
+      "before": "Function: STL_Tree_Lbound_StrKeyCI_N24_0069ce30 at 0069ce30\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N24_0069ce30(void)\nEntry: 0069ce30\nBody: 0069ce30 - 0069ce82",
+      "before_comment": {
+        "address": "0069ce30",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+        "comment": "[BSP reconstruction 0069ce30]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x21; __thiscall, RET 0x4. Instantiation N24: node 0x24 (_Myval+0x0c[20]; _Color+0x20,_Isnil+0x21)."
+      },
+      "name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+      "after": "Function: STL_Tree_Lbound_StrKeyCI_N24_0069ce30 at 0069ce30\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N24_0069ce30(void)\nEntry: 0069ce30\nBody: 0069ce30 - 0069ce82",
+      "after_comment": {
+        "address": "0069ce30",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N24_0069ce30",
+        "comment": "[BSP reconstruction 0069ce30]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x21; __thiscall, RET 0x4. Instantiation N24: node 0x24 (_Myval+0x0c[20]; _Color+0x20,_Isnil+0x21).\n\n[BSP reconstruction 0069ce30] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a7be0",
+      "before": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: void __fastcall BSP_InputSettings_LoadDataTables(void * self, void * unused_edx)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "before_comment": {
+        "address": "006a7be0",
+        "function_name": "BSP_InputSettings_LoadDataTables",
+        "comment": "[BSP reconstruction 006a7be0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073da9b right after the input settings singleton. References Scripts\\datatables\\ControllerInputNames.lua, Scripts\\datatables\\KeyboardSetup.lua, Scripts/datatables/ControlPresets.lua and the table keys Inputs, DEVINPUTS, Pairs, Groups, Conflicts, InputNames, AxisPairs, BaseSensitivities, Sensitivities and Min1SensHacks. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path. | Hypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "name": "BSP_InputSettings_LoadDataTables",
+      "after": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: void __fastcall BSP_InputSettings_LoadDataTables(void * self, void * unused_edx)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "after_comment": {
+        "address": "006a7be0",
+        "function_name": "BSP_InputSettings_LoadDataTables",
+        "comment": "[BSP reconstruction 006a7be0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073da9b right after the input settings singleton. References Scripts\\datatables\\ControllerInputNames.lua, Scripts\\datatables\\KeyboardSetup.lua, Scripts/datatables/ControlPresets.lua and the table keys Inputs, DEVINPUTS, Pairs, Groups, Conflicts, InputNames, AxisPairs, BaseSensitivities, Sensitivities and Min1SensHacks. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path. | Hypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AW: docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md and reports/native_input_settings_tree_insertion.json. Five actual-header map-index/integer-set insert contracts now replace the last five table callbacks; separate keyboard providers remain. String CI ordering and signed integer ordering; native node layouts, lower-bound hint/link/RB fixup and count/extrema; owner/node/low flag byte publication. Sensitivity default scalar and preset flag upper bytes are explicit native stack preimages. Controller default allocates three independent empty heads; only reached empty tree-copy helper paths supplied.006A1C40 is copy body, not full clear/assignment. Strict Win32 plus2 CTests; native168378 insertion,122545 lifetime,309711 tree-range,1448 vector and335 string words matched; source second-key allocation failure cleaned temporary pool ownership.35 live/disk envelopes,188 owned CALLs, two root bodies repaired with all instruction owners checked; prior evidence retained. New source ABI only; original FH3/private aliases, malformed trees, mutating callbacks, general nonempty tree copy, remaining keyboard providers, application wiring and game validation are outside scope."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055a9a0",
+        "prototype": "void* __fastcall STL_Tree_MapIndex_StringSensitivity_N2C_0055A9A0(void* tree, void* unused_edx, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055a9a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069fa40",
+        "prototype": "void* __fastcall STL_Tree_InsertUnique_IntKey_N14_0069fa40(void* tree, void* unused_edx, void* output, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069fa40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a1e70",
+        "prototype": "void* __fastcall STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70(void* tree, void* unused_edx, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a1e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a6900",
+        "prototype": "void* __fastcall STL_Tree_MapIndex_StringControllerNames_N24_006A6900(void* tree, void* unused_edx, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a6900 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a1f80",
+        "prototype": "void* __fastcall STL_Tree_MapIndex_IntKey_N1C_006a1f80(void* tree, void* unused_edx, void* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a1f80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "names_comments_five_root_abis_saved_and_verified",
+  "exports_refreshed": [
+    "0055a9a0",
+    "0069fa40",
+    "006a1e70",
+    "006a6900",
+    "006a1f80",
+    "005586b0",
+    "0069e6e0",
+    "006a3cb0",
+    "0069e680",
+    "0055a520",
+    "006a6450",
+    "006a15e0",
+    "006a17e0",
+    "0069ef20",
+    "00559710",
+    "0069fbc0",
+    "006a02b0",
+    "006a4f80",
+    "00557590",
+    "006a2930",
+    "0069d430",
+    "005550d0",
+    "005591e0",
+    "0069f5f0",
+    "0069f940",
+    "006a1c40",
+    "006a4ab0",
+    "00558280",
+    "006a1290",
+    "0069e7a0",
+    "0069e810",
+    "006a3100",
+    "00554920",
+    "0069cdb0",
+    "0069ce30",
+    "006a7be0"
+  ]
+}

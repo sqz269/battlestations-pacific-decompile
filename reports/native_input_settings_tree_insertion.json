@@ -1,0 +1,2071 @@
+{
+  "packet": "orch4_input_settings_tree_insertion_aw",
+  "status": "five_source_tree_index_insert_contracts_integrated_settings_strict_win32_native_differential_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "src/native_input_settings_tree_insertion.cpp",
+    "include/bsp/native_input_settings_tree_insertion.hpp",
+    "src/native_input_settings_tables.cpp",
+    "include/bsp/native_input_settings_tables.hpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_SETTINGS_TREE_INSERTION.md",
+  "byte_spans": [
+    {
+      "address": "0055a9a0",
+      "end_inclusive": "0055aaa1",
+      "bytes": 258,
+      "sha256": "5c23c8911eb5d4a903b5839e92a200c738e3cdcb0d6f607f17318bb18d6d287b",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055a9a0 at 0055a9a0\nSignature: undefined FUN_0055a9a0(void)\nEntry: 0055a9a0\nBody: 0055a9a0 - 0055aaa1",
+      "returns": [
+        {
+          "site": "0055aa9f",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069fa40",
+      "end_inclusive": "0069faf8",
+      "bytes": 185,
+      "sha256": "4f12a5bc59979fc5fa9ff96ecce6083b453b28d1f6599e5a3cbb417084fda002",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_InsertUnique_IntKey_N14_0069fa40 at 0069fa40\nSignature: undefined STL_Tree_InsertUnique_IntKey_N14_0069fa40(void)\nEntry: 0069fa40\nBody: 0069fa40 - 0069faf8",
+      "returns": [
+        {
+          "site": "0069fabd",
+          "operand": "8"
+        },
+        {
+          "site": "0069faf6",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a1e70",
+      "end_inclusive": "006a1f4a",
+      "bytes": 219,
+      "sha256": "d4ca838f3712088491dc6006c44acbcd527197adb5b96f1c8c72ada0965f2cea",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70 at 006a1e70\nSignature: undefined STL_Tree_MapIndex_StrKeyCI_N2C_006a1e70(void)\nEntry: 006a1e70\nBody: 006a1e70 - 006a1f4a",
+      "returns": [
+        {
+          "site": "006a1f48",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a6900",
+      "end_inclusive": "006a6a11",
+      "bytes": 274,
+      "sha256": "dbe1ff0628897c3a8ba3edfb1b7be5f5675066cb1088e2898fccad226ed7d128",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a6900 at 006a6900\nSignature: undefined FUN_006a6900(void)\nEntry: 006a6900\nBody: 006a6900 - 006a6a11",
+      "returns": [
+        {
+          "site": "006a6a0f",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a1f80",
+      "end_inclusive": "006a2051",
+      "bytes": 210,
+      "sha256": "165c83173efe86ecf6617f1d2347af2d839843c666edf6009caf8758af1a34b1",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_MapIndex_IntKey_N1C_006a1f80 at 006a1f80\nSignature: undefined STL_Tree_MapIndex_IntKey_N1C_006a1f80(void)\nEntry: 006a1f80\nBody: 006a1f80 - 006a2051",
+      "returns": [
+        {
+          "site": "006a204f",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "005586b0",
+      "end_inclusive": "00558736",
+      "bytes": 135,
+      "sha256": "ed818a396863e56273fa06203a4c87827b1bd989645e7d1af4fd15fbaef85001",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005586b0 at 005586b0\nSignature: undefined FUN_005586b0(void)\nEntry: 005586b0\nBody: 005586b0 - 00558736",
+      "returns": [
+        {
+          "site": "00558734",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0069e6e0",
+      "end_inclusive": "0069e742",
+      "bytes": 99,
+      "sha256": "15ad6f8f8aa29d7013a9f9ec92791d625c3e67c5fb42c3c64d664d37c3da1925",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069e6e0 at 0069e6e0\nSignature: undefined FUN_0069e6e0(void)\nEntry: 0069e6e0\nBody: 0069e6e0 - 0069e742",
+      "returns": [
+        {
+          "site": "0069e740",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a3cb0",
+      "end_inclusive": "006a3d2e",
+      "bytes": 127,
+      "sha256": "872cf0e3cbc9d303a48cdd69a3ee2967a09c1d3f0cd322decdcae07287d2ba62",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a3cb0 at 006a3cb0\nSignature: undefined FUN_006a3cb0(void)\nEntry: 006a3cb0\nBody: 006a3cb0 - 006a3d2e",
+      "returns": [
+        {
+          "site": "006a3d2c",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0069e680",
+      "end_inclusive": "0069e6d0",
+      "bytes": 81,
+      "sha256": "4340d14c84e09644ab42982d6d9d1c217b24f54b7b60ddd056505cad24ce730a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069e680 at 0069e680\nSignature: undefined FUN_0069e680(void)\nEntry: 0069e680\nBody: 0069e680 - 0069e6d0",
+      "returns": [
+        {
+          "site": "0069e6ce",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0055a520",
+      "end_inclusive": "0055a71b",
+      "bytes": 508,
+      "sha256": "e8c62f0bf4e2308e17d121cf34f8aa74a0972953e5d0c5cbb0fe50a716cfcad4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055a520 at 0055a520\nSignature: undefined FUN_0055a520(void)\nEntry: 0055a520\nBody: 0055a520 - 0055a71b",
+      "returns": [
+        {
+          "site": "0055a54b",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a59f",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a5f3",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a651",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a666",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a6dd",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a6f2",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055a719",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a6450",
+      "end_inclusive": "006a664b",
+      "bytes": 508,
+      "sha256": "b3d74f7af038a220338ab5da39d4e55c756a379a73b2d9bfb3b7d33e1dfe7f05",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a6450 at 006a6450\nSignature: undefined FUN_006a6450(void)\nEntry: 006a6450\nBody: 006a6450 - 006a664b",
+      "returns": [
+        {
+          "site": "006a647b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a64cf",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a6523",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a6581",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a6596",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a660d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a6622",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a6649",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a15e0",
+      "end_inclusive": "006a17db",
+      "bytes": 508,
+      "sha256": "ad27366ce133223bde6b3b468a80d6612bd6439d8d9d77cc3e4a7e2a3804ca16",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0 at 006a15e0\nSignature: undefined STL_Tree_InsertHint_StrKeyCI_N2C_006a15e0(void)\nEntry: 006a15e0\nBody: 006a15e0 - 006a17db",
+      "returns": [
+        {
+          "site": "006a160b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a165f",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a16b3",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a1711",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a1726",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a179d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a17b2",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a17d9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a17e0",
+      "end_inclusive": "006a199b",
+      "bytes": 444,
+      "sha256": "d22cf4ff891898facea3d8866cb0b2a41739b74b302e5ac779bd0059b7c4df67",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_InsertHint_IntKey_N1C_006a17e0 at 006a17e0\nSignature: undefined STL_Tree_InsertHint_IntKey_N1C_006a17e0(void)\nEntry: 006a17e0\nBody: 006a17e0 - 006a199b",
+      "returns": [
+        {
+          "site": "006a180b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a1856",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a189b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a18e3",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a18fa",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a195d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a1972",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a1999",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "0069ef20",
+      "end_inclusive": "0069f10b",
+      "bytes": 492,
+      "sha256": "26a9cc7bbaa1be85d498dd86c1d9061011d52e68a9bb3599ce9d9863715be3c7",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Insert_IntKey_N14_0069ef20 at 0069ef20\nSignature: undefined STL_Tree_Insert_IntKey_N14_0069ef20(void)\nEntry: 0069ef20\nBody: 0069ef20 - 0069f10b",
+      "returns": [
+        {
+          "site": "0069f109",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00559710",
+      "end_inclusive": "005598fb",
+      "bytes": 492,
+      "sha256": "3e7a8e36e27e352db7aa3c4869631dd2a7508c930ac5ddb3c75896cfc120446a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_xlen_throw_00559710 at 00559710\nSignature: undefined STL_xlen_throw_00559710(void)\nEntry: 00559710\nBody: 00559710 - 005598fb",
+      "returns": [
+        {
+          "site": "005598f9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "0069fbc0",
+      "end_inclusive": "0069fdab",
+      "bytes": 492,
+      "sha256": "89c3d616572cb21d3bc6db79ff3db8f4285420a4648d0b9cf1c6f3301dd4014e",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Insert_StrKeyCI_N2C_0069fbc0 at 0069fbc0\nSignature: undefined STL_Tree_Insert_StrKeyCI_N2C_0069fbc0(void)\nEntry: 0069fbc0\nBody: 0069fbc0 - 0069fdab",
+      "returns": [
+        {
+          "site": "0069fda9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a02b0",
+      "end_inclusive": "006a049b",
+      "bytes": 492,
+      "sha256": "7edf0f1ef8ef37b3d2c278c67592bded850a69923d3b2bcfb07a2eed5983baa6",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Insert_IntKey_N1C_006a02b0 at 006a02b0\nSignature: undefined STL_Tree_Insert_IntKey_N1C_006a02b0(void)\nEntry: 006a02b0\nBody: 006a02b0 - 006a049b",
+      "returns": [
+        {
+          "site": "006a0499",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a4f80",
+      "end_inclusive": "006a516b",
+      "bytes": 492,
+      "sha256": "cc55324b225cec355d44fe7409ebeeba89be5dd4d533b67e54d0d847dd7eda7f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_xlen_throw_006a4f80 at 006a4f80\nSignature: undefined STL_xlen_throw_006a4f80(void)\nEntry: 006a4f80\nBody: 006a4f80 - 006a516b",
+      "returns": [
+        {
+          "site": "006a5169",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00557590",
+      "end_inclusive": "00557653",
+      "bytes": 196,
+      "sha256": "fc049fe6c7110270e0d0e6324de98ae28f0cbf81c8578ba88ad358cb82e8025d",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00557590 at 00557590\nSignature: undefined FUN_00557590(void)\nEntry: 00557590\nBody: 00557590 - 00557653",
+      "returns": [
+        {
+          "site": "00557651",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a2930",
+      "end_inclusive": "006a29a0",
+      "bytes": 113,
+      "sha256": "4411f764fc9a6b5379121af96bc88e0977f9c53ef947cf3b304d9dd277046d39",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a2930 at 006a2930\nSignature: undefined FUN_006a2930(void)\nEntry: 006a2930\nBody: 006a2930 - 006a29a0",
+      "returns": [
+        {
+          "site": "006a299e",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069d430",
+      "end_inclusive": "0069d466",
+      "bytes": 55,
+      "sha256": "7dc501f473bbbea88220d3ff13f985b9e7ceb926d3c119da7d639681e8d1ac56",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069d430 at 0069d430\nSignature: undefined FUN_0069d430(void)\nEntry: 0069d430\nBody: 0069d430 - 0069d466",
+      "returns": [
+        {
+          "site": "0069d466",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "005550d0",
+      "end_inclusive": "00555108",
+      "bytes": 57,
+      "sha256": "4f149ca1ca015dbc897162d36254d71a56f02edc32d1112c88b22627381810bb",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005550d0 at 005550d0\nSignature: undefined FUN_005550d0(void)\nEntry: 005550d0\nBody: 005550d0 - 00555108",
+      "returns": [
+        {
+          "site": "00555106",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "005591e0",
+      "end_inclusive": "0055925d",
+      "bytes": 126,
+      "sha256": "8a214143fba0abaad63e4049b6472196e04149d7bee37242ee21ab8b029393e4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005591e0 at 005591e0\nSignature: undefined FUN_005591e0(void)\nEntry: 005591e0\nBody: 005591e0 - 0055925d",
+      "returns": [
+        {
+          "site": "0055925b",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0069f5f0",
+      "end_inclusive": "0069f66d",
+      "bytes": 126,
+      "sha256": "37822445f12a2e4d683c164b18f06a416a74f54d695d71f76238910ff8a3eefb",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0 at 0069f5f0\nSignature: undefined STL_Tree_Buynode_StrKeyCI_N2C_0069f5f0(void)\nEntry: 0069f5f0\nBody: 0069f5f0 - 0069f66d",
+      "returns": [
+        {
+          "site": "0069f66b",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0069f940",
+      "end_inclusive": "0069f9bd",
+      "bytes": 126,
+      "sha256": "47dfd439d81ce676f70a73414d3f7f51d9bd1a757537b95d8690b7553a4eced9",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Buynode_IntKey_N1C_0069f940 at 0069f940\nSignature: undefined STL_Tree_Buynode_IntKey_N1C_0069f940(void)\nEntry: 0069f940\nBody: 0069f940 - 0069f9bd",
+      "returns": [
+        {
+          "site": "0069f9bb",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "006a1c40",
+      "end_inclusive": "006a1cb4",
+      "bytes": 117,
+      "sha256": "7526ce70b03f64f2967017d1f95b80f2c89adabeac4cd7b09dba968998e18ce1",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_CopyAssign_IntKey_N1C_006a1c40 at 006a1c40\nSignature: undefined STL_Tree_CopyAssign_IntKey_N1C_006a1c40(void)\nEntry: 006a1c40\nBody: 006a1c40 - 006a1cb4",
+      "returns": [
+        {
+          "site": "006a1ca4",
+          "operand": "4"
+        },
+        {
+          "site": "006a1cb2",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a4ab0",
+      "end_inclusive": "006a4b2d",
+      "bytes": 126,
+      "sha256": "4a8e51aa48e57713cd307c5819fbf55274e8b9aa58599d3d5847661e36020f4c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a4ab0 at 006a4ab0\nSignature: undefined FUN_006a4ab0(void)\nEntry: 006a4ab0\nBody: 006a4ab0 - 006a4b2d",
+      "returns": [
+        {
+          "site": "006a4b2b",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "00558280",
+      "end_inclusive": "00558303",
+      "bytes": 132,
+      "sha256": "542b9ed221e46a95febeede2f7a5da8cb9f53bcab88635c85953f59a46993aee",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00558280 at 00558280\nSignature: undefined FUN_00558280(void)\nEntry: 00558280\nBody: 00558280 - 00558303",
+      "returns": [
+        {
+          "site": "00558301",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a1290",
+      "end_inclusive": "006a1321",
+      "bytes": 146,
+      "sha256": "6cfd30f5e42b319c393db4c11e4e4b02308c825868821ff10302f64c455891cc",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_CopyNodes_IntKey_N1C_006a1290 at 006a1290\nSignature: undefined STL_Tree_CopyNodes_IntKey_N1C_006a1290(void)\nEntry: 006a1290\nBody: 006a1290 - 006a1321",
+      "returns": [
+        {
+          "site": "006a131f",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0069e7a0",
+      "end_inclusive": "0069e802",
+      "bytes": 99,
+      "sha256": "dc6032f85d068043749df3d54102826ff035493bd449b88c5f098b987229f92f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069e7a0 at 0069e7a0\nSignature: undefined FUN_0069e7a0(void)\nEntry: 0069e7a0\nBody: 0069e7a0 - 0069e802",
+      "returns": [
+        {
+          "site": "0069e800",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069e810",
+      "end_inclusive": "0069e85f",
+      "bytes": 80,
+      "sha256": "62f07da992c1710dbd1defea180214501363c504890ddc89a5970269623fc4f6",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0069e810 at 0069e810\nSignature: undefined FUN_0069e810(void)\nEntry: 0069e810\nBody: 0069e810 - 0069e85f",
+      "returns": [
+        {
+          "site": "0069e85d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a3100",
+      "end_inclusive": "006a317d",
+      "bytes": 126,
+      "sha256": "ebee1799a2464b89f77be622bb6b2a709a5fce0fcad46f5c9b91bf3dee2508f1",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a3100 at 006a3100\nSignature: undefined FUN_006a3100(void)\nEntry: 006a3100\nBody: 006a3100 - 006a317d",
+      "returns": [
+        {
+          "site": "006a317b",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00554920",
+      "end_inclusive": "00554972",
+      "bytes": 83,
+      "sha256": "c2d48ec9ed8a239a943c5770cef08e51df1517cc61ed2abe51dfe8e6d0fcc03f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00554920 at 00554920\nSignature: undefined FUN_00554920(void)\nEntry: 00554920\nBody: 00554920 - 00554972",
+      "returns": [
+        {
+          "site": "00554970",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069cdb0",
+      "end_inclusive": "0069ce02",
+      "bytes": 83,
+      "sha256": "12ab58df763adcd1e5091e5fa4b0bf9370809ed701d876040838f81ca520c199",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0 at 0069cdb0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2C_0069cdb0(void)\nEntry: 0069cdb0\nBody: 0069cdb0 - 0069ce02",
+      "returns": [
+        {
+          "site": "0069ce00",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069ce30",
+      "end_inclusive": "0069ce82",
+      "bytes": 83,
+      "sha256": "dc230d37b1da6a05a3b9b1611b5d67f9b6e099964ef34a870cdc7a973b9d9ed5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Lbound_StrKeyCI_N24_0069ce30 at 0069ce30\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N24_0069ce30(void)\nEntry: 0069ce30\nBody: 0069ce30 - 0069ce82",
+      "returns": [
+        {
+          "site": "0069ce80",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "0055a9a0",
+      "address": "0055a9c3",
+      "native": "00554920",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055a9d0",
+      "native": "00bf6713",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055a9e1",
+      "native": "00443d00",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa08",
+      "native": "005586b0",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa1c",
+      "native": "0055a520",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa33",
+      "native": "00bf65ac",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa5a",
+      "native": "00419cc0",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa61",
+      "native": "00bd1510",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa6f",
+      "native": "00bf65ac",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa7b",
+      "native": "00bf6713",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a9a0",
+      "address": "0055aa85",
+      "native": "00bf6713",
+      "byte_span": "0055a9a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fa40",
+      "address": "0069fa9e",
+      "native": "0069ef20",
+      "byte_span": "0069fa40",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fa40",
+      "address": "0069fac0",
+      "native": "0069b910",
+      "byte_span": "0069fa40",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1e93",
+      "native": "0069cdb0",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1ea0",
+      "native": "00bf6713",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1eb1",
+      "native": "00443d00",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1edc",
+      "native": "0069e6e0",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1eef",
+      "native": "006a15e0",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1f14",
+      "native": "00419cc0",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1f1b",
+      "native": "00bd1510",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1f24",
+      "native": "00bf6713",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1e70",
+      "address": "006a1f2e",
+      "native": "00bf6713",
+      "byte_span": "006a1e70",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6923",
+      "native": "0069ce30",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6930",
+      "native": "00bf6713",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6941",
+      "native": "00443d00",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6952",
+      "native": "0069d430",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6985",
+      "native": "006a3cb0",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a6999",
+      "native": "006a6450",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a69ab",
+      "native": "006a2bb0",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a69cd",
+      "native": "006a1b70",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a69d7",
+      "native": "00bf65ac",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a69eb",
+      "native": "00bf6713",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6900",
+      "address": "006a69f5",
+      "native": "00bf6713",
+      "byte_span": "006a6900",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a1fe7",
+      "native": "0069e680",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a1ffb",
+      "native": "006a17e0",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a201c",
+      "native": "00419cc0",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a2023",
+      "native": "00bd1510",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a202c",
+      "native": "00bf6713",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1f80",
+      "address": "006a2036",
+      "native": "00bf6713",
+      "byte_span": "006a1f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005586b0",
+      "address": "005586e8",
+      "native": "0041dd40",
+      "byte_span": "005586b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005586b0",
+      "address": "005586fd",
+      "native": "00bf7680",
+      "byte_span": "005586b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005586b0",
+      "address": "0055871d",
+      "native": "00557590",
+      "byte_span": "005586b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e6e0",
+      "address": "0069e6fe",
+      "native": "0041dd40",
+      "byte_span": "0069e6e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e6e0",
+      "address": "0069e713",
+      "native": "00bf7680",
+      "byte_span": "0069e6e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3cb0",
+      "address": "006a3ce8",
+      "native": "0041dd40",
+      "byte_span": "006a3cb0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3cb0",
+      "address": "006a3cfd",
+      "native": "00bf7680",
+      "byte_span": "006a3cb0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3cb0",
+      "address": "006a3d15",
+      "native": "006a2930",
+      "byte_span": "006a3cb0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e680",
+      "address": "0069e6ac",
+      "native": "0041dd40",
+      "byte_span": "0069e680",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e680",
+      "address": "0069e6c1",
+      "native": "00bf7680",
+      "byte_span": "0069e680",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a53f",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a560",
+      "native": "00bf6713",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a579",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a591",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a5ad",
+      "native": "00bf6713",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a5c7",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a5e5",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a5fd",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a612",
+      "native": "005526e0",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a622",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a643",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a658",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a670",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a690",
+      "native": "00552770",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a69e",
+      "native": "00551dc0",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a6b2",
+      "native": "00443d00",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a6cf",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a6e4",
+      "native": "00559710",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0055a520",
+      "address": "0055a6fd",
+      "native": "0055a000",
+      "byte_span": "0055a520",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a646f",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6490",
+      "native": "00bf6713",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a64a9",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a64c1",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a64dd",
+      "native": "00bf6713",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a64f7",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6515",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a652d",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6542",
+      "native": "0069acc0",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6552",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6573",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6588",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a65a0",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a65c0",
+      "native": "0069ad50",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a65ce",
+      "native": "00699e70",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a65e2",
+      "native": "00443d00",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a65ff",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a6614",
+      "native": "006a4f80",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a6450",
+      "address": "006a662d",
+      "native": "006a5ef0",
+      "byte_span": "006a6450",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a15ff",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1620",
+      "native": "00bf6713",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1639",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1651",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a166d",
+      "native": "00bf6713",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1687",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16a5",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16bd",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16d2",
+      "native": "0069aec0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a16e2",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1703",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1718",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1730",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1750",
+      "native": "0069c0f0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a175e",
+      "native": "00699ef0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a1772",
+      "native": "00443d00",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a178f",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a17a4",
+      "native": "0069fbc0",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a15e0",
+      "address": "006a17bd",
+      "native": "006a1050",
+      "byte_span": "006a15e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a17ff",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1820",
+      "native": "00bf6713",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1848",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1864",
+      "native": "00bf6713",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a188d",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a18b1",
+      "native": "0069adc0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a18d5",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a18ec",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1919",
+      "native": "0069ae50",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1927",
+      "native": "00699eb0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a194f",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a1964",
+      "native": "006a02b0",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a17e0",
+      "address": "006a197d",
+      "native": "006a1170",
+      "byte_span": "006a17e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069ef63",
+      "native": "00408720",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069ef75",
+      "native": "00411700",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069ef8c",
+      "native": "00bf6885",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069efa4",
+      "native": "005550d0",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069f035",
+      "native": "004beea0",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069f053",
+      "native": "004b96e0",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ef20",
+      "address": "0069f081",
+      "native": "004b96e0",
+      "byte_span": "0069ef20",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559753",
+      "native": "00408720",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559765",
+      "native": "00411700",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "0055977c",
+      "native": "00bf6885",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559794",
+      "native": "005591e0",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559825",
+      "native": "00553e30",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559843",
+      "native": "00552170",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00559710",
+      "address": "00559871",
+      "native": "00552170",
+      "byte_span": "00559710",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fc03",
+      "native": "00408720",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fc15",
+      "native": "00411700",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fc2c",
+      "native": "00bf6885",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fc44",
+      "native": "0069f5f0",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fcd5",
+      "native": "0069c1c0",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fcf3",
+      "native": "0069a560",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069fbc0",
+      "address": "0069fd21",
+      "native": "0069a560",
+      "byte_span": "0069fbc0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a02f3",
+      "native": "00408720",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a0305",
+      "native": "00411700",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a031c",
+      "native": "00bf6885",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a0334",
+      "native": "0069f940",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a03c5",
+      "native": "0069c300",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a03e3",
+      "native": "0069a780",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a02b0",
+      "address": "006a0411",
+      "native": "0069a780",
+      "byte_span": "006a02b0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a4fc3",
+      "native": "00408720",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a4fd5",
+      "native": "00411700",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a4fec",
+      "native": "00bf6885",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a5004",
+      "native": "006a4ab0",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a5095",
+      "native": "0069c280",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a50b3",
+      "native": "0069a6a0",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4f80",
+      "address": "006a50e1",
+      "native": "0069a6a0",
+      "byte_span": "006a4f80",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00557590",
+      "address": "005575e3",
+      "native": "00556c20",
+      "byte_span": "00557590",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00557590",
+      "address": "005575ec",
+      "native": "00553260",
+      "byte_span": "00557590",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00557590",
+      "address": "0055760c",
+      "native": "00bf6713",
+      "byte_span": "00557590",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00557590",
+      "address": "0055761c",
+      "native": "00bf6713",
+      "byte_span": "00557590",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00557590",
+      "address": "00557637",
+      "native": "00555000",
+      "byte_span": "00557590",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a2930",
+      "address": "006a2956",
+      "native": "0069d430",
+      "byte_span": "006a2930",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a2930",
+      "address": "006a2987",
+      "native": "006a1c40",
+      "byte_span": "006a2930",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069d430",
+      "address": "0069d432",
+      "native": "00bf681b",
+      "byte_span": "0069d430",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005550d0",
+      "address": "005550d2",
+      "native": "00bf681b",
+      "byte_span": "005550d0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005591e0",
+      "address": "00559203",
+      "native": "00bf681b",
+      "byte_span": "005591e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "005591e0",
+      "address": "0055923a",
+      "native": "00558280",
+      "byte_span": "005591e0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069f5f0",
+      "address": "0069f613",
+      "native": "00bf681b",
+      "byte_span": "0069f5f0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069f5f0",
+      "address": "0069f64a",
+      "native": "0069e7a0",
+      "byte_span": "0069f5f0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069f940",
+      "address": "0069f963",
+      "native": "00bf681b",
+      "byte_span": "0069f940",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069f940",
+      "address": "0069f99a",
+      "native": "0069e810",
+      "byte_span": "0069f940",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1c40",
+      "address": "006a1c56",
+      "native": "006a1290",
+      "byte_span": "006a1c40",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4ab0",
+      "address": "006a4ad3",
+      "native": "00bf681b",
+      "byte_span": "006a4ab0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a4ab0",
+      "address": "006a4b0a",
+      "native": "006a3100",
+      "byte_span": "006a4ab0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00558280",
+      "address": "005582b8",
+      "native": "0041dd40",
+      "byte_span": "00558280",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00558280",
+      "address": "005582cd",
+      "native": "00bf7680",
+      "byte_span": "00558280",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00558280",
+      "address": "005582ea",
+      "native": "00557590",
+      "byte_span": "00558280",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1290",
+      "address": "006a12d6",
+      "native": "0069f940",
+      "byte_span": "006a1290",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1290",
+      "address": "006a12f6",
+      "native": "006a1290",
+      "byte_span": "006a1290",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a1290",
+      "address": "006a1304",
+      "native": "006a1290",
+      "byte_span": "006a1290",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e7a0",
+      "address": "0069e7be",
+      "native": "0041dd40",
+      "byte_span": "0069e7a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e7a0",
+      "address": "0069e7d3",
+      "native": "00bf7680",
+      "byte_span": "0069e7a0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e810",
+      "address": "0069e83b",
+      "native": "0041dd40",
+      "byte_span": "0069e810",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069e810",
+      "address": "0069e850",
+      "native": "00bf7680",
+      "byte_span": "0069e810",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3100",
+      "address": "006a3138",
+      "native": "0041dd40",
+      "byte_span": "006a3100",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3100",
+      "address": "006a314d",
+      "native": "00bf7680",
+      "byte_span": "006a3100",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "006a3100",
+      "address": "006a3164",
+      "native": "006a2930",
+      "byte_span": "006a3100",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "00554920",
+      "address": "00554950",
+      "native": "00bf7fbf",
+      "byte_span": "00554920",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069cdb0",
+      "address": "0069cde0",
+      "native": "00bf7fbf",
+      "byte_span": "0069cdb0",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    },
+    {
+      "function": "0069ce30",
+      "address": "0069ce60",
+      "native": "00bf7fbf",
+      "byte_span": "0069ce30",
+      "evidence": "Direct CALL at its saved owner; source coverage and exception boundaries stated separately."
+    }
+  ],
+  "unowned_calls": [],
+  "reconstructed": [
+    "0055a9a0",
+    "0069fa40",
+    "006a1e70",
+    "006a6900",
+    "006a1f80"
+  ],
+  "analyzed_helpers": [
+    "005586b0",
+    "0069e6e0",
+    "006a3cb0",
+    "0069e680",
+    "0055a520",
+    "006a6450",
+    "006a15e0",
+    "006a17e0",
+    "0069ef20",
+    "00559710",
+    "0069fbc0",
+    "006a02b0",
+    "006a4f80",
+    "00557590",
+    "006a2930",
+    "0069d430",
+    "005550d0",
+    "005591e0",
+    "0069f5f0",
+    "0069f940",
+    "006a1c40",
+    "006a4ab0",
+    "00558280",
+    "006a1290",
+    "0069e7a0",
+    "0069e810",
+    "006a3100",
+    "00554920",
+    "0069cdb0",
+    "0069ce30"
+  ],
+  "removed_required_callbacks": [
+    "0055a9a0",
+    "0069fa40",
+    "006a1e70",
+    "006a6900",
+    "006a1f80"
+  ],
+  "remaining_table_callbacks": [],
+  "remaining_keyboard_library_callbacks": 14,
+  "flow_repair": "reports/native_input_settings_tree_insertion_aw_flow_repair.json",
+  "body_repair": "reports/native_input_settings_tree_insertion_aw_body_repair.json",
+  "annotations": "reports/native_input_settings_tree_insertion_aw_annotations.json",
+  "limits": [
+    "Valid owned consistent trees, stable ordering, and callbacks that do not mutate topology, keys or private defaults.",
+    "New source APIs; original STL/CRT/FH3 ABI, private-stack aliases, malformed storage and hardware faults are unvalidated.",
+    "Controller tree-copy helpers are implemented only along the freshly constructed empty-default path reached by map indexing; general populated copy is not provided.",
+    "Sensitivity scalar and upper preset flag bytes are explicit preimages of native uninitialized stack bytes. Opaque words remain untouched.",
+    "Separate 14-method keyboard library, application wiring and game validation remain."
+  ],
+  "no_subagents_dispatched": true,
+  "game_validated": false,
+  "native_abi": {
+    "0055a9a0": "ECX tree; stack key; EAX mapped; RET4.",
+    "0069fa40": "ECX tree; stack output/key; EAX output; RET8.",
+    "006a1e70": "ECX tree; stack key; EAX mapped; RET4.",
+    "006a6900": "ECX tree; stack key; EAX mapped; RET4.",
+    "006a1f80": "ECX tree; stack key; EAX mapped; RET4."
+  },
+  "final_validation": {
+    "utc": "2026-09-13T18:07:44.374497+00:00",
+    "source_revision": "989f0c102102d60d40ef101706a82538f9ee2571",
+    "merged_main_revision": "d026dc1f5c9a4e120d8d38ba60f1045d7188f583",
+    "code_files": 2417,
+    "code_manifest": "local/input_settings_tree_insertion_aw_source_manifest.json",
+    "code_manifest_sha256": "8518236644d135f74feec7910387e0cda226180b6c468cc4c169af3d69d950c3",
+    "core_archive_sha256": "7abdb7fbb4303f03992e27a1d04ad98655d4f96f9df3714d3f6ade4e33ddf146",
+    "game_executable_sha256": "173d6b52abb7132789c1e834bc45788cc20238883ff86d412a9e9c54165635a8",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lifetime_words_equal": 122545,
+    "tree_range_words_equal": 309711,
+    "tree_insertion_words_equal": 168378,
+    "vector_storage_words_equal": 1448,
+    "checked_string_words_equal": 335,
+    "native_fixture_spans": 418,
+    "freshly_verified_storage_spans": 35,
+    "owned_call_rows_checked": 188,
+    "owned_call_rows_failed": 0,
+    "unowned_calls": 0,
+    "disk_live_seed_spans_equal": 8,
+    "build_log": "local/input_settings_tree_insertion_aw_combined_build.log",
+    "build_log_sha256": "234b391b579a227425c30a2066689023f6c824b294789e582c4304f04be4d336",
+    "fixture_log": "local/input_settings_tree_insertion_aw_combined_probe.log",
+    "fixture_log_sha256": "ed602aa034754a6cdd1357d62d541e2127f74672d75316ac213934de4ef5dac3",
+    "fixture_source": "local/input_settings_tree_insertion_aw_probe.cpp",
+    "fixture_source_sha256": "ec259cf983421784af391e64e692924b92777eb8b8f39a0687dec78924308cac",
+    "fixture_header": "local/input_settings_lifetime_aq_native.hpp",
+    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "fixture_runner": "local/run_input_settings_tree_insertion_aw_probe.ps1",
+    "fixture_runner_sha256": "71708ef86e7a3f2b284a1fd5fa0a01f42b8f979bfec8a33589a29cb30d9fb735",
+    "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+    "call_audit_log": "local/input_settings_tree_insertion_aw_calls.log",
+    "call_audit_log_sha256": "f04e641c0d8ace072a9a4139178e5b94bb812bd92806e912051eb57f79d24cd8",
+    "annotation_receipt_sha256": "26c4eb5faa51d8c40726734a483b415687c0d7e56ee18195d27fc30d22fe3500",
+    "saved_annotation_entries": 36,
+    "root_abis_restored": 5,
+    "body_repair_receipt_sha256": "f296784e0dd1ff2899717adc72e76243cdab6d8e4dbc3eab1933efc8aa4f3ce8",
+    "repaired_bodies_with_all_instruction_owners_verified": 2,
+    "envelopes_with_all_instruction_owners_verified": 35,
+    "five_required_table_callbacks_removed": true,
+    "settings_table_provider_interface_removed": true,
+    "remaining_keyboard_library_methods": 14,
+    "actual_settings_parser_uses_source_tree_index_insert": true,
+    "empty_existing_missing_case_insensitive_keys_and_signed_extremes_passed": true,
+    "native_private_stack_preimages_controlled_in_isolated_fixture": true,
+    "integer_set_output_flag_padding_preserved": true,
+    "topology_parent_extrema_count_color_and_nested_payload_comparison_passed": true,
+    "source_second_key_allocation_failure_cleanup_passed": true,
+    "populated_settings_destruction_and_source_constructor_unwind_passed": true,
+    "actual_raw_manager_settings_drain_passed": true,
+    "pooled_strings_remaining": 0,
+    "original_fh3_executed": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "no_subagents_dispatched": true
+  }
+}

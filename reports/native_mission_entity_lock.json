@@ -1,0 +1,657 @@
+{
+  "packet": "orch6_native_mission_entity_lock_x",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_mission_entity_lock.cpp",
+  "header": "include/bsp/native_mission_entity_lock.hpp",
+  "documentation": "docs/NATIVE_MISSION_ENTITY_LOCK.md",
+  "native_spans": [
+    {
+      "address": "004bd150",
+      "length": 69,
+      "end_exclusive": "004bd195",
+      "hex": "6aff68284dc60064a100000000506489250000000051568bf189742404c744241000000000c7064875ce00e8e04671008b4c24088946048bc65e64890d0000000083c410c3",
+      "sha256": "487f77cd3925b437117c6f0d249ee9bb83a1c32463668b95cb2a34602a78d1ea",
+      "live_disk_equal": true,
+      "file_backed_bytes": 69,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "004c1570",
+      "length": 189,
+      "end_exclusive": "004c162d",
+      "hex": "64a1000000006aff68934fc6005064892500000000a1fc78f80083ec0c85c00f858900000056e8b53df5ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833dfc78f80000753f6a08e84a52730083c4048944240485c0c64424180174098bc8e868bbffffeb0233c0c644241800a3fc78f800e8553df5ff8b0dfc78f800518bc8e827f6700085f6740b834618ff56ff151022ce00a1fc78f8005e8b4c240c64890d0000000083c418c3",
+      "sha256": "4ef35feca69df4c9a8168564d10f23e669ee24528406dc9c7e29244d100c524d",
+      "live_disk_equal": true,
+      "file_backed_bytes": 189,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "004b7ed0",
+      "length": 17,
+      "end_exclusive": "004b7ee1",
+      "hex": "c705fc78f80000000000c7011838ce00c3",
+      "sha256": "9467bc92687146801f22263fde61d51a070b382b2a87562b3d8daf23566c3466",
+      "live_disk_equal": true,
+      "file_backed_bytes": 17,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "004c4860",
+      "length": 35,
+      "end_exclusive": "004c4883",
+      "hex": "568bf18d4e04c7064875ce00e80f84f5ffc705fc78f80000000000c7061838ce005ec3",
+      "sha256": "b99c4cfc2360d5e51186ec5b5d28a5df076629413b2994bbc5d05e5dc3d94bf0",
+      "live_disk_equal": true,
+      "file_backed_bytes": 35,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "004c4890",
+      "length": 55,
+      "end_exclusive": "004c48c7",
+      "hex": "568bf18d4e04c7064875ce00e8df83f5fff644240801c705fc78f80000000000c7061838ce00740956e8ee1c730083c4048bc65ec20400",
+      "sha256": "718b0ef361e0bd50010737ed18f66a484230ec82dadb417fc043a7198a5957aa",
+      "live_disk_equal": true,
+      "file_backed_bytes": 55,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00c64d20",
+      "length": 8,
+      "end_exclusive": "00c64d28",
+      "hex": "8b4df0e9a83185ff",
+      "sha256": "18cdd63ed67385d3e606e9eb9127d7b890871dd090ad5f555ec960faaf0c0ae9",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00c64f80",
+      "length": 8,
+      "end_exclusive": "00c64f88",
+      "hex": "8d4dece958cf7aff",
+      "sha256": "52969635fe2ce3ec2d053126298babe675ddf74935dc64be8330d58cbb9ca4a7",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00c64f88",
+      "length": 11,
+      "end_exclusive": "00c64f93",
+      "hex": "8b45e850e81b16f9ff59c3",
+      "sha256": "ff8f811cf3bf4b40fcd52259e94a886479d0f87dc7e424102997a22cb7f83d11",
+      "live_disk_equal": true,
+      "file_backed_bytes": 11,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00c64d28",
+      "length": 10,
+      "end_exclusive": "00c64d32",
+      "hex": "b878d2d800e9111ef9ff",
+      "sha256": "aa97501c78b4563aefa4c21c538d0bd804580da14b54d1affbdb38b3bf0e5480",
+      "live_disk_equal": true,
+      "file_backed_bytes": 10,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00c64f93",
+      "length": 10,
+      "end_exclusive": "00c64f9d",
+      "hex": "b8ecd5d800e9a61bf9ff",
+      "sha256": "a2dbabff67c15987876232e86d91a272402b191a6bd0e478dd0d6cfc27dbffcd",
+      "live_disk_equal": true,
+      "file_backed_bytes": 10,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce7548",
+      "length": 16,
+      "end_exclusive": "00ce7558",
+      "hex": "90484c0010fa4b0030fb4b00c0fa4b00",
+      "sha256": "6df6d5512cf4d7db11bd6def542e5b67954012936003e792e4475f7bc24ca212",
+      "live_disk_equal": true,
+      "file_backed_bytes": 16,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d8d270",
+      "length": 44,
+      "end_exclusive": "00d8d29c",
+      "hex": "ffffffff204dc600220593190100000070d2d800000000000000000000000000000000000000000001000000",
+      "sha256": "a7439167f7e2af6e29d6671fce2df5166e6269e36961745c48f6acd71038ed5a",
+      "live_disk_equal": true,
+      "file_backed_bytes": 44,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d8d5dc",
+      "length": 52,
+      "end_exclusive": "00d8d610",
+      "hex": "ffffffff804fc60000000000884fc6002205931902000000dcd5d800000000000000000000000000000000000000000001000000",
+      "sha256": "c05bce88810b57cb3bb9c2633d9d70ff19aec7355adcd00e788bfea17e9e5716",
+      "live_disk_equal": true,
+      "file_backed_bytes": 52,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00f878fc",
+      "length": 4,
+      "end_exclusive": "00f87900",
+      "hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_disk_equal": true,
+      "file_backed_bytes": 0,
+      "pe_loader_zero_fill_bytes": 4
+    },
+    {
+      "address": "004bf9a0",
+      "length": 67,
+      "end_exclusive": "004bf9e3",
+      "hex": "6aff68884dc60064a100000000506489250000000051568bf18974240433c089442410c7064c75ce00884644e89f7c23008b4c24088bc65e64890d0000000083c410c3",
+      "sha256": "2391b77f9801d4d8cc44ded8b19bcb672a0bc351b09dda87f39b6b5e813c8d87",
+      "live_disk_equal": true,
+      "file_backed_bytes": 67,
+      "pe_loader_zero_fill_bytes": 0
+    }
+  ],
+  "coverage": [
+    {
+      "address": "004bd150",
+      "source_symbol": "construct_native_mission_entity_lock_004bd150",
+      "original_abi": "ECX raw8; EAX captured owner; RET",
+      "coverage": "complete_source_behavior"
+    },
+    {
+      "address": "004c1570",
+      "source_symbol": "get_native_mission_entity_lock_004c1570",
+      "original_abi": "no inputs; EAX captured fast/current slow publication; RET",
+      "coverage": "complete_source_behavior"
+    },
+    {
+      "address": "004b7ed0",
+      "source_symbol": "unwind_native_mission_entity_lock_004b7ed0",
+      "original_abi": "ECX owner; RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "004c4860",
+      "source_symbol": "destroy_native_mission_entity_lock_004c4860",
+      "original_abi": "ECX owner; RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "004c4890",
+      "source_symbol": "delete_native_mission_entity_lock_004c4890",
+      "original_abi": "ECX owner; stack DWORD flags; EAX captured address; RET4",
+      "coverage": "complete_full_PE_span_with_stored_body_gap"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "004bd150",
+      "address": "004bd17b",
+      "native": "00bd1860",
+      "kind": "call"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c1596",
+      "native": "00415350",
+      "kind": "call"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c15cc",
+      "native": "00bf681b",
+      "kind": "call"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c15e3",
+      "native": "004bd150",
+      "kind": "call"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c15f6",
+      "native": "00415350",
+      "kind": "call"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c1604",
+      "native": "00bd0c30",
+      "kind": "call"
+    },
+    {
+      "function": "004c4860",
+      "address": "004c486c",
+      "native": "0041cc80",
+      "kind": "call"
+    },
+    {
+      "function": "004c4890",
+      "address": "004c489c",
+      "native": "0041cc80",
+      "kind": "call"
+    },
+    {
+      "function": "004c4890",
+      "address": "004c48b9",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00c64d20",
+      "address": "00c64d23",
+      "native": "004b7ed0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c64f80",
+      "address": "00c64f83",
+      "native": "00411ee0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c64f88",
+      "address": "00c64f8c",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00c64d28",
+      "address": "00c64d2d",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c64f93",
+      "address": "00c64f98",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00928c80",
+      "address": "00928caa",
+      "native": "004c1570",
+      "kind": "call"
+    }
+  ],
+  "import_steps": [
+    {
+      "function": "004c1570",
+      "address": "004c15af",
+      "native": "IAT00ce2218:EnterCriticalSection"
+    },
+    {
+      "function": "004c1570",
+      "address": "004c1612",
+      "native": "IAT00ce2210:LeaveCriticalSection"
+    }
+  ],
+  "stack_cleanup": [
+    "004C15D1 ADD ESP4 for one raw8 allocation argument",
+    "00BD0C30 RET4 for one registered owner",
+    "004C48BE ADD ESP4 after captured owner free",
+    "004C48C4 RET4 for scalar flag DWORD",
+    "00C64F91 POP ECX;00C64F92 RET after captured allocation free"
+  ],
+  "cleanup_fragments": [
+    {
+      "address": "00c64d20",
+      "length": 8,
+      "coverage": "complete_cleanup_effects_original_FH3_ABI_excluded",
+      "funcinfo": "00d8d278",
+      "map": "00d8d270",
+      "transition": "0 -> -1",
+      "captured": "owner [EBP-10]"
+    },
+    {
+      "address": "00c64f80",
+      "length": 8,
+      "coverage": "complete_cleanup_effects_original_FH3_ABI_excluded",
+      "funcinfo": "00d8d5ec",
+      "map": "00d8d5dc",
+      "transition": "0 -> -1",
+      "captured": "guard [EBP-14]"
+    },
+    {
+      "address": "00c64f88",
+      "length": 11,
+      "coverage": "complete_cleanup_effects_in_full_PE_span_original_FH3_ABI_excluded",
+      "funcinfo": "00d8d5ec",
+      "map": "00d8d5e4",
+      "transition": "1 -> 0",
+      "captured": "allocation [EBP-18]"
+    }
+  ],
+  "handlers": [
+    {
+      "address": "00c64d28",
+      "length": 10,
+      "coverage": "read_only_complete_selector_bytes_required_external_FH3",
+      "initial_status": "no_ghidra_function",
+      "funcinfo": "00d8d278",
+      "current_status": "root_formally_defined_named_saved_and_exported",
+      "current_name": "EH_MissionEntityLock_Construct",
+      "readback": "local/mission_lock_handler_root_ctor.txt"
+    },
+    {
+      "address": "00c64f93",
+      "length": 10,
+      "coverage": "read_only_complete_selector_bytes_required_external_FH3",
+      "initial_status": "no_ghidra_function",
+      "funcinfo": "00d8d5ec",
+      "current_status": "root_formally_defined_named_saved_and_exported",
+      "current_name": "EH_MissionEntityLock_Get",
+      "readback": "local/mission_lock_handler_root_getter.txt"
+    }
+  ],
+  "metadata_gaps": [
+    {
+      "address": "004c48be",
+      "length": 3,
+      "status": "no_containing_function",
+      "instructions": "ADD ESP4",
+      "owner_by_PE_control_flow": "004c4890"
+    },
+    {
+      "address": "00c64f91",
+      "length": 2,
+      "status": "no_containing_function",
+      "instructions": "POP ECX; RET",
+      "owner_by_PE_control_flow": "00c64f88"
+    }
+  ],
+  "storage": {
+    "source_alias": "NativeMissionEntityLockOwner = NativeObserverLockOwner",
+    "owner_size": 8,
+    "profile_offset": 0,
+    "section_offset": 4,
+    "section_size": 28,
+    "depth_offset": 24,
+    "publication": "00f878fc",
+    "profile": "00ce7548",
+    "virtual_slots": [
+      "004c4890"
+    ],
+    "next_distinct_profile": "00ce754c",
+    "next_profile_producer": "004bf9c3",
+    "process_accessor": "process_native_mission_entity_lock_00f878fc",
+    "process_getter": "get_process_native_mission_entity_lock_004c1570"
+  },
+  "providers": {
+    "lifetime": "SoundLifetimeAccess raw01090AA0 mode only",
+    "guard": "CapturedSoundLifetimeSection actual first-manager section",
+    "section_create": "create_native_tracked_critical_section_00bd1860",
+    "section_release": "release_native_tracked_critical_section_0041cc80",
+    "allocation": "singleton_lifetime_allocate raw8 host8; existing source CRT boundary",
+    "free": "singleton_lifetime_free; source CRT boundary",
+    "original_FH3": "BF6B43 selector read; external original runtime not ported or executed"
+  },
+  "instruction_comparison": {
+    "evidence": "local/mission_lock_pending_comparison.json",
+    "complete_entries": 5,
+    "bytes": 365,
+    "normalization": "resolve rel32; map own entries/internal blocks, profile, publication and EH handler identity; retain opcode, size, offset and all other operands",
+    "result": "complete normalized match; not literal byte identity"
+  },
+  "corrections": [
+    {
+      "was": "CE754C adjacency could be interpreted as another lock virtual entry",
+      "evidence": "live/PE CE7548[16], both constructor bodies and profile xrefs",
+      "is": "CE7548 has exactly slot0=4C4890; CE754C begins the profile independently stamped by4BF9A0"
+    },
+    {
+      "was": "free no-return analysis can hide returning scalar and funclet continuation bytes",
+      "evidence": "local/mission_lock_proto_004c48be.txt;local/mission_lock_proto_00c64f91.txt;full span disassembly",
+      "is": "full PE/live scalar55 and funclet11 spans include4C48BE[3] andC64F91[2] outside stored containing functions"
+    }
+  ],
+  "integration": {
+    "required_narrow_root_route": "CE7548 -> delete_native_mission_entity_lock_004c4890(popped_owner, flags, process_native_mission_entity_lock_00f878fc())",
+    "bindings": "same actual raw01090AA0 manager and one processF878FC cell; unconditional publication clear even when changed",
+    "base_killed": "004C1570 result section_04 lvalue can satisfy NativeUnitKilledLockView without copied field or new owner",
+    "worker_shared_file_edits": false
+  },
+  "annotation_audit": {
+    "worker_ghidra_mutations": false,
+    "policy": "strict read-only",
+    "owned_documentation_before": "local/mission_lock_documentation_before.json",
+    "root_annotations": "separate integrator responsibility",
+    "documentation_after": "local/mission_lock_documentation_after.json",
+    "owned_preservation": "all names/comments/stored hashes and all other documentation fields unchanged; only two synthesized stack-8 local names/types reflect root handler definitions",
+    "exact_synthesized_local_diff": "local/mission_lock_documentation_diff.json"
+  },
+  "validation": {
+    "status": "passed_with_explicit_native_FH3_and_integration_limits",
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local/mission_lock_build.txt",
+    "seed_verification": "local/mission_lock_verify_seeds.txt",
+    "probe_source": "local/mission_lock_probe.cpp",
+    "probe_build_command": "./local/mission_lock_probe_build.ps1",
+    "native_scope": "five complete relocated original code spans, actual compiled raw manager/registration/section/allocator providers; native EH handlers deliberately unbound",
+    "source_failure_scope": "malloc/new-handler boundary fault injection through imported CRT; native original FH3 not executed",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 passed",
+    "seed_byte_checks": "8/8 live/PE equal",
+    "direct_call_checks": 15,
+    "failed_call_checks": 0,
+    "indirect_rows": 2,
+    "probe_runs": [
+      {
+        "args": [
+          "local/mission_lock_probe.exe",
+          "native"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: enter-publication -> doublecheck-skip; enter-manager-replacement -> register-second -> leave-first -> return-reloaded-publication; second-manager-construction -> publication-replacement -> register-reloaded-owner\nPASS: native five original entries; raw manager registration and fast reuse, real recursive section drain, scalar flags0x100/3, nondeleting destruction, base unwind\n",
+        "stderr": ""
+      },
+      {
+        "args": [
+          "local/mission_lock_probe.exe",
+          "source"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: enter-publication -> doublecheck-skip; enter-manager-replacement -> register-second -> leave-first -> return-reloaded-publication; second-manager-construction -> publication-replacement -> register-reloaded-owner\nSOURCE-ONLY: raw8 failure; section allocation failure base-clear/free/guard unwind; registration allocation failure retains publication and releases guard\nPASS: source five original entries; raw manager registration and fast reuse, real recursive section drain, scalar flags0x100/3, nondeleting destruction, base unwind; process publication wrapper\n",
+        "stderr": ""
+      }
+    ],
+    "checks": [
+      "five complete original entries",
+      "actual raw manager construction,registration,fast reuse",
+      "locked publication mutation skips construction",
+      "manager replacement retains first-section capture and registers second manager",
+      "leave mutation changes final returned publication",
+      "second allocating manager constructor mutates publication before registration reload",
+      "recursive actual section depth2 drain",
+      "scalar upperflags100h and flags3 free/return",
+      "unconditional replaced-publication clear",
+      "nondeleting section release",
+      "base cleanup preserves slot preimage",
+      "source process cell/getter share publication",
+      "source raw8/section/registration allocation failures"
+    ],
+    "relocation_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\local\\mission_lock_relocation_proof.json",
+      "bytes": 13545,
+      "sha256": "07047e803533ead37b98f4cadc91a676b27fa3620ed924b87b46c7c62514e0e1"
+    },
+    "failures": [
+      {
+        "stage": "initial evidence script",
+        "error": "adjacent producer requested115 bytes and ended inside instruction",
+        "resolution": "queried actual stored body4BF9A0..4BF9E2, corrected span to67; final complete decode/live/PE proof passes",
+        "log": "local/mission_lock_evidence_initial.txt"
+      },
+      {
+        "stage": "initial fixture compile",
+        "error": "C2440 DWORD* versus uintptr_t* import slot pointer",
+        "resolution": "explicit pointer reinterpretation at actual PE32 import slot; final strict compile passes",
+        "log": "local/mission_lock_probe_build_initial.txt"
+      },
+      {
+        "stage": "initial call validation",
+        "error": "two selectors not defined",
+        "resolution": "root formal definitions;15final rows pass",
+        "log": "local/mission_lock_report_calls_initial.txt"
+      },
+      {
+        "stage": "full documentation equality audit",
+        "error": "two synthesized stack-8 local names/types differ after root selector definitions",
+        "resolution": "retained exact values; all other fields unchanged; worker made no writes",
+        "log": "local/mission_lock_documentation_diff.json"
+      }
+    ],
+    "toolchain": {
+      "generator": "Visual Studio 18 2026",
+      "platform": "Win32 Release",
+      "msvc_tools": "14.51.36231",
+      "windows_sdk": "10.0.26100.0",
+      "resolved_tools": [
+        {
+          "Name": "cl.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "FileVersion": "19.51.36244.0"
+        },
+        {
+          "Name": "link.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "dumpbin.exe",
+          "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\dumpbin.exe",
+          "FileVersion": "14.51.36244.0"
+        },
+        {
+          "Name": "mt.exe",
+          "Source": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64\\mt.exe",
+          "FileVersion": "10.0.26100.8249 (WinBuild.160101.0800)"
+        }
+      ],
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP:local/mission_lock_probe.map"
+    },
+    "owned_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\build\\win32\\bsp_core.dir\\Release\\native_mission_entity_lock.obj",
+      "bytes": 8766,
+      "sha256": "2a9af68678e667ca00c7a31a23da8cec617210cca2e15e997eae943b34f92dd9"
+    },
+    "core_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 55473576,
+      "sha256": "a6474e50489d2407f130685a07ec7bf35bbf66b616ee4c502809361aebeef818"
+    },
+    "linked_core_objects": [
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_mission_entity_lock.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_removal_reorder.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_tracked_critical_section_release.obj",
+      "singleton_lifetime.obj",
+      "sound_lifetime_access.obj"
+    ],
+    "linked_libraries": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+        "bytes": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+        "bytes": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 55473576,
+        "sha256": "a6474e50489d2407f130685a07ec7bf35bbf66b616ee4c502809361aebeef818"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455608,
+        "sha256": "fa42020d928f480297ccf1c15a2833d550fee295373d9c5443ec9f9b38a98dd0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72046,
+        "sha256": "b15f4ea4a459ed8dc8f8177a189f25f43dcaa450f4087b822202d78c73d659a3"
+      }
+    ],
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-mission-entity-lock-x\\local\\mission_lock_manifest.json",
+      "bytes": 53495,
+      "sha256": "1f390b205c1cbda21798d856c017d3d9e89240d4a72fcfc280a6eef80cdede0f"
+    },
+    "probe_manifest": "embedded asInvoker verified with resolved SDK mt"
+  },
+  "limits": [
+    "New source ABI, not binary replacement or callable native profiles",
+    "Original FH3/SEH, hardware-fault cleanup, native spill aliases, original CRT exception identity unproved",
+    "Original-byte fixture executes normal paths only; allocation exceptions are source-only",
+    "Stored scalar and free-funclet continuations remain no_function",
+    "No allocation-null path or arbitrary concurrency runtime proof",
+    "Root production profile-map integration and actual game validation are separate"
+  ],
+  "compiled_schedule_review": {
+    "evidence": "local/mission_lock_object_disasm.txt",
+    "getter": "publication+31; guard+4B;doublecheck+50;allocate+75;ctor+8C;publish+99;secondlookup+A6;publicationreload+AB;register+B1;guardrelease+B9;finalreload+BE",
+    "scalar": "profile+30;release+36;flagsbit0test+3B;publicationclear+42;basestamp+48;optionalfree+51;capturedreturn+59",
+    "limit": "EHsc compiler state stores can move across nonthrowing instructions. Original FH3/hardware-fault/native spill aliasing excluded."
+  },
+  "root_metadata_followup": {
+    "definitions": "reports/native_mission_entity_lock_function_definitions.json",
+    "flow_repair": "reports/native_mission_entity_lock_flow_repair.json",
+    "scope": "Formal locked tools defined both10-byte EH selectors, cleared caller free-flow overrides and decoded4C48BE[3]/C64F91[2]; no existing function recreation.",
+    "remaining_limit": "Flow tool reports0call gaps in scalar listing but1in funclet; explicit funclet stored-body tail warning. Decoded instructions do not establish union with existing body membership. Original EH execution remains unproved.",
+    "annotation": "Existing scalar deleting destructor name retained; all five names/comments saved, prior values retained, affected exports refreshed."
+  }
+}

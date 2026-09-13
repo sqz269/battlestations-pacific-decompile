@@ -16,5 +16,18 @@
     "No new ownership, synchronization or release implementation.",
     "Existing VoiceReferenceHost contract remains required.",
     "Native EH, stack aliases and concurrent access remain unproved."
-  ]
+  ],
+  "x_codegen_correction": {
+    "trigger": "Discarded volatile-reference call result in W generated an extra MOV ECX,[ESI] at +23 in the nonvolatile overload.",
+    "change": "Bind returned reference and discard its address, avoiding a volatile lvalue-to-rvalue conversion; return original nonvolatile reference without stripping qualification.",
+    "verification": "PASS: removed extra slot read; unchanged volatile body and identical corrected overload machine bytes",
+    "before_commit": "0c10e31a0fff48f239d7932cde8b1457fe9f7355",
+    "compiler": "MSVC 19.51.36244.0 Hostx64/x86, /O2 /W4 /WX /c",
+    "manifest": "local\\volatile_adoption_codegen_x\\manifest.json",
+    "manifest_sha256": "16a1e525ddccb2c9132ac83a3de663ff8b01e204d70c6fdcb4753a81d3e8eafc",
+    "retained_artifacts": 307,
+    "combined_build": "Combined MSVC Win32 and2existingCTests passed",
+    "limits": "Object-code check of these new C++ interfaces; not original ABI or game validation. Initial batch-writing warning attempt retained separately.",
+    "compiled_commit": "2e86ce362bd58c8881c7dff63607334153f74021"
+  }
 }
