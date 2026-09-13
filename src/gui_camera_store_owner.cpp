@@ -37,6 +37,7 @@ NativeGuiSceneOwner::~NativeGuiSceneOwner() {
 NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
     NativeGuiSceneEnvironment& environment, const NativeString& name) {
     require_scene_profile(environment);
+    auto& name_pool = environment.nodes.require_semantic_name_pool();
     void* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x24, 0x24});
     if (!raw) throw std::bad_alloc();
     // Establish typed lifetime but restore constructor preimage before the
@@ -58,14 +59,14 @@ NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
         name_initialized = true;
         actual->lighting_1c = nullptr;
         actual->field_20 = 0;
-        PooledStringStorage strings(environment.nodes.strings);
+        PooledStringStorage strings(name_pool);
         actual->name_10.copy_from_00be0a30_fragment(strings, name);
         actual->scalar_18 = environment.one_00d7a24c;
         owner->live_ = true;
         return owner;
     } catch (...) {
         if (name_initialized) {
-            PooledStringStorage strings(environment.nodes.strings);
+            PooledStringStorage strings(name_pool);
             destroy_native_string_header_0041dd20(&actual->name_10, strings);
         }
         if (base_constructed) environment.weak_base.destroy_00925540(*actual);
@@ -78,6 +79,8 @@ NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
 void NativeGuiSceneOwner::release_zero_references() noexcept {
     if (!live_ || storage.vtable_00 != 0x00d62d48u) std::terminate();
     try { require_scene_profile(environment); } catch (...) { std::terminate(); }
+    SizedStoragePool* name_pool{};
+    try { name_pool = &environment.nodes.require_semantic_name_pool(); } catch (...) { std::terminate(); }
     // B72430: release captured lighting, then clear the slot even if a callback
     // changed it. Reload root head after every potentially terminal node call.
     storage.vtable_00 = 0x00d62d48u;
@@ -87,7 +90,7 @@ void NativeGuiSceneOwner::release_zero_references() noexcept {
     }
     while (roots.first)
         unlink_and_release_render_model_00b6dfa0(environment.nodes.attachments.resolve(*roots.first));
-    PooledStringStorage strings(environment.nodes.strings);
+    PooledStringStorage strings(*name_pool);
     destroy_native_string_header_0041dd20(&storage.name_10, strings);
     environment.weak_base.destroy_00925540(storage);
     auto* raw = &storage;

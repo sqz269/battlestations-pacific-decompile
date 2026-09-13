@@ -43,6 +43,7 @@ struct PopulationGuard {
 };
 void __fastcall create_light_bridge(void* definition,const NativeParticleObjectStateAccess* a,void* state) {
     if(!load<std::uint8_t>(definition,0x64))return;
+    auto& name_pool=a->lights.nodes.require_semantic_name_pool();
     PopulationGuard guard(*a);
     auto& pool=a->lights.pool_0109011c;
     void* raw=pool.allocate_raw_slot_00b7b810(); // B7BD30 forwards to this canonical pool.
@@ -55,7 +56,7 @@ void __fastcall create_light_bridge(void* definition,const NativeParticleObjectS
         const void* parent=load<const void*>(definition,0x14);
         concatenate_native_string_headers_004261a0(&prefix,&name,at(parent,8),a->strings);
         name_ready=true;
-        auto constructed=construct_native_point_light_00b7c710(raw,NativePointLightPool::slot_bytes,name,a->lights.nodes.strings);
+        auto constructed=construct_native_point_light_00b7c710(raw,NativePointLightPool::slot_bytes,name,name_pool);
         owns_raw=false; // Adoption now owns native construction, even on host failure.
         adopt_constructed_native_point_light(a->lights,constructed);
         store<void*>(state,0x60,raw);
