@@ -153,7 +153,8 @@ void* construct_native_string_cstring_0041e870(void* destination, const char* so
     auto* data = pointer(destination, 4);
     if (data) {
         const auto count = word(destination) + 1u;
-        if (count != 0) std::memcpy(data, source, count);
+        // BF7680 at41E8B4 also implements backward overlap (BF769A -> BF7844).
+        if (count != 0) std::memmove(data, source, count);
     }
     return destination;
 }
