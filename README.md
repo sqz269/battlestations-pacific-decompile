@@ -18,6 +18,7 @@ current numbers are kept. It carries no counts or milestone claims of its own.
 | --- | --- |
 | What is going on right now (owner, leases, index freshness, packets) | `python tools/bsp.py state` |
 | Coverage counts with the caveats attached | `python tools/status.py` |
+| Progress board: address bands by category, reconstruction and naming over time, harness split | `python tools/progress_board.py`, then open `local/progress_board.html` |
 | Milestone plan and the next bounded work | [docs/ROADMAP.md](docs/ROADMAP.md) |
 | The runnable executable: what it does on screen, its host coverage, how to run it | [docs/GAME_EXECUTABLE.md](docs/GAME_EXECUTABLE.md) |
 | Packet ownership, states and dependencies | `config/parallel_work.json`, `python tools/bsp.py packets ready` |
