@@ -1,0 +1,1551 @@
+{
+  "packet": "orch4_native_input_action_configuration_ag",
+  "source": [
+    "include/bsp/native_input_action_configuration.hpp",
+    "src/native_input_action_configuration.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "READ ONLY verified CLI batches; exports, body/ABI/caller and raw byte evidence",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00a93c80",
+      "name": "configure_native_input_action_00a93c80",
+      "coverage": "complete normal flow over valid actual storage and existing concrete providers",
+      "native_return": "void, no consumed result",
+      "convention": "__thiscall",
+      "ecx": "actual24h owner",
+      "edx": "not an input",
+      "stack_arguments": [
+        "uint32 action index",
+        "actual12h context source header pointer",
+        "DWORD replace listener, low byte"
+      ],
+      "ret_argument_bytes": 12,
+      "last_instruction": "00a93d47",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a93d49",
+      "end_exclusive": "00a93d4a"
+    },
+    {
+      "address": "00a92d40",
+      "name": "activate_native_input_action_context_00a92d40",
+      "coverage": "complete normal flow over valid actual storage and existing concrete providers",
+      "native_return": "void, no consumed result",
+      "convention": "__thiscall",
+      "ecx": "actual30h action",
+      "edx": "not an input",
+      "stack_arguments": [
+        "actual12h owner context values header pointer",
+        "DWORD enabled, low byte",
+        "int32 active context value"
+      ],
+      "ret_argument_bytes": 12,
+      "last_instruction": "00a92e68",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a92e6a",
+      "end_exclusive": "00a92e6b"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a93c95",
+      "native": "00a93c10",
+      "function": "00a93c80",
+      "contract": "ECX owner+4; stack signed(index+1), RET4; existing raw action resize; action pointer captured after return",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a93cb3",
+      "native": "00a92b70",
+      "function": "00a93c80",
+      "contract": "ECX captured actual30h action, no stack args; real listener allocation/replacement; current action pointer retained",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a93cc0",
+      "native": "00a92e70",
+      "function": "00a93c80",
+      "contract": "ECX action+4; stack actual context source header; RET4 EAX destination; clear/reserve/copy; self-alias clears source",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a93ced",
+      "native": "0086a430",
+      "function": "00a93c80",
+      "contract": "ECX owner+10; stack signed(context id+1); RET4; explicit captured old-count..new-bound zero stores follow",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a93d3f",
+      "native": "00a92d40",
+      "function": "00a93c80",
+      "contract": "ECX captured action; stack owner+10, fresh owner byte1C, fresh owner word20; RET0Ch",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a92e03",
+      "native": "00a92370",
+      "function": "00a92d40",
+      "contract": "ECX captured action, no stack args, after enabled test; real raw binding poll; listener pointer read after return",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    },
+    {
+      "address": "00a92e54",
+      "native": "00a91a50",
+      "function": "00a92d40",
+      "contract": "ECX captured post-poll listener; stack FLD1-spilled delta, previous_down byte, current_down byte; RET0Ch; current predicate evaluated first",
+      "callee_verification": "current body, assembly cleanup and existing actual producer/source provider inspected"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00699258",
+      "native": "00a93c80",
+      "function": "00698a10",
+      "contract": "ECX captured lazy action owner; three stack DWORDs action Lua integer, actual local context header, press lowbyte; RET0Ch"
+    },
+    {
+      "address": "00699a31",
+      "native": "00a93c80",
+      "function": "00698a10",
+      "contract": "ECX captured lazy owner; three stack DWORDs index128h, actual local context header containing1Eh, zero replace listener; RET0Ch"
+    },
+    {
+      "address": "00a9304c",
+      "native": "00a92d40",
+      "function": "00a93020",
+      "contract": "ECX each actual30h action; stack owner+10, current owner byte1C, current owner word20; RET0Ch; endpoint reloaded afterward"
+    },
+    {
+      "address": "004dd745",
+      "native": "00698a10",
+      "function": "004dd5b0",
+      "contract": "ECX game+3C on game+55C zero arm; no stack argument; evidence-only caller, no source698A10 wrapper"
+    }
+  ],
+  "partial_caller": {
+    "address": "00698a10",
+    "coverage": "evidence_only_partial: no C++ implementation; selected entry/parser callers and excluded tail inspected",
+    "current_ghidra_end_inclusive": "00699ad4",
+    "current_ghidra_end_reason": "CALL699AD0 to returning free; fallthrough excluded",
+    "native_ecx": "actual embedded game input configuration; OnInitOnce game+3C",
+    "native_stack": "none",
+    "native_result": "no consumed result; raw RET at699B7D",
+    "source_supplied": false,
+    "complete_callee_semantics": false,
+    "listed_direct_calls": [
+      {
+        "address": "00698a2f",
+        "native": "00698730",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698a43",
+        "native": "00b6a020",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698a5c",
+        "native": "0041e870",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698a6f",
+        "native": "00b66c60",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698a98",
+        "native": "0041e870",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698aaf",
+        "native": "00b66c60",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ad1",
+        "native": "00419cc0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ad8",
+        "native": "00bd1510",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698aed",
+        "native": "0041dd40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698b08",
+        "native": "00bf7680",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698b23",
+        "native": "00b69d40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698b42",
+        "native": "00419cc0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698b49",
+        "native": "00bd1510",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698b5f",
+        "native": "00b67980",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ba1",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698bbf",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698bd0",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698be1",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698bfd",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c0b",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c3d",
+        "native": "00698980",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c52",
+        "native": "00bf65ac",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c73",
+        "native": "00b67720",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c82",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698c93",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ca9",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698cb6",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698cc2",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698cd2",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ce2",
+        "native": "00b67720",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698cf1",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d02",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d18",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d25",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d31",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d41",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d54",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d62",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d80",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698d92",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698da2",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698db5",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698dc3",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698dd6",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698de6",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698df9",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e07",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e21",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e33",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e43",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e56",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e64",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e77",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e87",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698e9a",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ea8",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ec2",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ed4",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ee4",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698ef7",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f05",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f18",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f28",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f3b",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f49",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f63",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f75",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f85",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698f98",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fa6",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fb9",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fc9",
+        "native": "00697f40",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fdc",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fea",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00698fff",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699010",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699021",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699035",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069903a",
+        "native": "004bec00",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699059",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069906d",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699081",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006990a5",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006990b9",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006990d7",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006990e7",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006990f8",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699127",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699148",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069915c",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699169",
+        "native": "00b66290",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069918b",
+        "native": "00696d80",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006991ba",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006991ce",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006991f3",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699208",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069921c",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699228",
+        "native": "00b65fb0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699238",
+        "native": "00b66250",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699258",
+        "native": "00a93c80",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699271",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699286",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069929a",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006992b8",
+        "native": "00b67720",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006992c7",
+        "native": "00b65fb0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006992e0",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699300",
+        "native": "00b67720",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699314",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699328",
+        "native": "00b65f50",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699346",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069939c",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006993ec",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069941a",
+        "native": "006974f0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699455",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699467",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069947b",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699484",
+        "native": "00b65fb0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006994a5",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006994b6",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006994d6",
+        "native": "006974f0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006994f8",
+        "native": "00696de0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699544",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699555",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699576",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699588",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069959c",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006995a5",
+        "native": "00b65fb0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006995c6",
+        "native": "00b67080",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006995d7",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006995f7",
+        "native": "006974f0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699619",
+        "native": "00696de0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699665",
+        "native": "00b67190",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699676",
+        "native": "00b66420",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006996a5",
+        "native": "00b67800",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006996b7",
+        "native": "00b67690",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006996cb",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006996d4",
+        "native": "00b65fb0",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006996e1",
+        "native": "00b66270",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699707",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699718",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699721",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069972f",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699741",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699776",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699788",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699791",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069979f",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006997b1",
+        "native": "00bf6713",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006997ee",
+        "native": "00a93830",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699801",
+        "native": "00697220",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069980b",
+        "native": "00bf6989",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006998df",
+        "native": "00b67700",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "006998fb",
+        "native": "00bf55be",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "0069992e",
+        "native": "00bf6989",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699984",
+        "native": "00bf6989",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699a05",
+        "native": "00696d80",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699a31",
+        "native": "00a93c80",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699a4d",
+        "native": "00bf55be",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699a7f",
+        "native": "00bf6989",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      },
+      {
+        "address": "00699ad0",
+        "native": "00bf6989",
+        "function": "00698a10",
+        "coverage": "evidence_only_partial_caller",
+        "contract": "mechanically inventoried direct CALL in current Ghidra body; no implementation or callee semantics adopted by this packet"
+      }
+    ],
+    "excluded_raw_calls": [
+      {
+        "site": "00699821",
+        "callee": "00697220",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8fad9ffff"
+      },
+      {
+        "site": "0069982b",
+        "callee": "00bf6989",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e859d15500"
+      },
+      {
+        "site": "0069983f",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8bcde4c00"
+      },
+      {
+        "site": "00699853",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8a8de4c00"
+      },
+      {
+        "site": "00699867",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e894de4c00"
+      },
+      {
+        "site": "0069987b",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e880de4c00"
+      },
+      {
+        "site": "0069989b",
+        "callee": "00b67720",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e880de4c00"
+      },
+      {
+        "site": "006998aa",
+        "callee": "00b65fb0",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e801c74c00"
+      },
+      {
+        "site": "006998c3",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e838de4c00"
+      },
+      {
+        "site": "00699998",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e863dd4c00"
+      },
+      {
+        "site": "006999ac",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e84fdd4c00"
+      },
+      {
+        "site": "006999c8",
+        "callee": "00b67190",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8c3d74c00"
+      },
+      {
+        "site": "006999dc",
+        "callee": "00b66420",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e83fca4c00"
+      },
+      {
+        "site": "00699ad8",
+        "callee": "004bec00",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e82351e2ff"
+      },
+      {
+        "site": "00699adf",
+        "callee": "00a922a0",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8bc873f00"
+      },
+      {
+        "site": "00699aea",
+        "callee": "004bec00",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e81151e2ff"
+      },
+      {
+        "site": "00699af1",
+        "callee": "00a92c40",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e84a913f00"
+      },
+      {
+        "site": "00699b01",
+        "callee": "005547d0",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8caacebff"
+      },
+      {
+        "site": "00699b08",
+        "callee": "006ab820",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8131d0100"
+      },
+      {
+        "site": "00699b23",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8d8db4c00"
+      },
+      {
+        "site": "00699b37",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8c4db4c00"
+      },
+      {
+        "site": "00699b4b",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e8b0db4c00"
+      },
+      {
+        "site": "00699b62",
+        "callee": "00b67700",
+        "coverage": "raw_disk_decode_only_outside_listed_CALL_inventory",
+        "qualified_owner": "not attributed to a Ghidra containing function",
+        "contract": "unreconstructed raw caller path",
+        "bytes": "e899db4c00"
+      }
+    ],
+    "excluded_final_tail": {
+      "start": "00699ad5",
+      "end_inclusive": "00699b7d",
+      "end_exclusive": "00699b7e",
+      "length": 169,
+      "sha256": "bad21399c3e840ec4199011140a6089fc60c976b018d19230cfc52495d9e50a5",
+      "live_matches_disk": true,
+      "ret_address": "00699b7d",
+      "ghidra_membership": "proto returns no containing function for699AD8/699ADF/699AF1/699B08/699B7D",
+      "meaning": "after free: lazy/rebind, fresh lazy/tick delta0, conditional settings apply, Lua cleanup, +520 completion byte, EH restoration, RET",
+      "worker_repair": false
+    },
+    "unresolved": [
+      "Actual embedded game configuration constructor and canonical raw Lua-owner storage",
+      "698730 cleanup over registered actions and mutable checked configuration containers; returning-free gaps remain",
+      "Complete698A10 Lua schema to actual action/group/input/helper storage; raw A93830 binding install and dependent mutation semantics",
+      "Complete normal/EH Lua object and temporary storage cleanup",
+      "Conditional settings getter5547D0/apply6AB820 composition; distinct from typed InputScriptStartup"
+    ]
+  },
+  "call_audit": {
+    "implemented_direct_CALLs": 7,
+    "implemented_indirect_CALLs": 0,
+    "incoming_rows": 4,
+    "partial_caller_listed_direct_CALLs": 160,
+    "excluded_raw_CALLs": 23,
+    "policy": "all direct calls in both implemented bodies and all listed direct calls of evidence-only698A10 inventoried. Raw calls excluded from Ghidra body audit use site/callee keys, bytes and explicit qualification.",
+    "unassigned_export_site": "0069982b is printed by the export but live proto has no containing function; its E859D15500 bytes are in excluded_raw_calls, not assigned to698A10"
+  },
+  "providers": {
+    "records": "native_input_action_records: canonical actual30h allocation/copy/destruction",
+    "words": "native_input_binding_storage: actual12h headers and existing recognized source allocation contracts, no STL port",
+    "listener_owner": "native_input_action_listener_owner; dependency8387bfa0 -> worker27a6afda, primary21d9af26",
+    "poll": "native_input_action_binding_runtime, commit896eefaf; actual34h/14h and captured-profile device methods",
+    "listener_tick": "native_input_action_tick; dependency06616914 -> workere2e18656; actual24h timing provider"
+  },
+  "code_gaps": [
+    {
+      "function": "00a93c80",
+      "start": "00a93cfa",
+      "end_inclusive": "00a93cff",
+      "bytes": "8d9b00000000",
+      "meaning": "LEA EBX,[EBX] alignment skipped byA93CF8 JMPA93D00; no missing reachable operation",
+      "worker_repair": false
+    }
+  ],
+  "native_mutation_order": [
+    "A93C80 unsigned action bound, postresize action capture, registered write before listener replacement",
+    "Source header assignment after listener callback; retained action/current iterator across providers; fresh source count/base endpoint",
+    "Signed context bound; captured oldcount/newbound explicit zeroing with current owner base",
+    "Fresh owner enabled then active reads beforeA92D40",
+    "A92D40 captured context end, wildcard-1, nonzero byte gate, actual pointer-only listener test",
+    "Postpoll listener capture, current predicate before previous, exact COMISS/JBE, FLD1 delta, final FLD/latch-read/FSTP/latch-write"
+  ],
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 exit0, MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "ctests": "2/2 passed",
+    "probe": "one ignored manifested actual-storage/original-native differential; /O2 /fp:strict /W4 /WX; exit0",
+    "native_spans": [
+      {
+        "address": "00a93c80",
+        "length": 202,
+        "sha256": "fbc39c1f4c62ab4de401eb8531489824ec09aa967b65ff7199e73fbf6ee01f48",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a92d40",
+        "length": 299,
+        "sha256": "4dc92201212f94e22c3ed3809ad88935484e597f6453fda7d9f787f39ed65efe",
+        "live_matches_disk": true
+      }
+    ],
+    "direct_relocations": 7,
+    "absolute_relocations": 0,
+    "phases": 4,
+    "device_calls": 3,
+    "action_count": 3,
+    "context_count": 5,
+    "active_value_bits": "3f000000",
+    "checks": [
+      "original action resize/listener allocation",
+      "listener release mutates source and owner state before assignment/activation",
+      "context growth and zeroing",
+      "real binding poll/listener tick",
+      "disabled listener flags/timers clear",
+      "self-alias context assignment clears count"
+    ],
+    "runner": "local/run_native_action_configuration_probe_ag.ps1 [-PrimaryWorktree path]",
+    "log": "local/native_action_configuration_probe_ag.log",
+    "core_archive_sha256": "bab7882bbeadf7a673df9dbdf797443f5e3139a0f8d64819aeee9ef3807fa6fb",
+    "probe_log_sha256": "c5505b30d0e155ff9b6436f9a5f4834e2ae78d67c3215171c812add935ed66a4",
+    "report_call_rows_checked": 171,
+    "report_call_rows_failed": 0
+  },
+  "limitations": [
+    "New source interfaces, not original ABI/FH3/SEH or hardware-fault replacements",
+    "Finite numerical fixture uses default masked FP environment; signaling NaNs/status/control modes not exhaustively tested",
+    "Explicit fixture device callbacks; no SDK/window/hardware/force/cursor/game execution",
+    "No698A10 wrapper, raw settings/Lua owner projection, parser stub, or application reachability claim",
+    "Dependency commits remain separate; only this packet source and fragments are committed here"
+  ]
+}

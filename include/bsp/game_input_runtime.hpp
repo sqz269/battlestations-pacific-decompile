@@ -39,6 +39,7 @@ public:
     GameInputRuntime& operator=(const GameInputRuntime&) = delete;
     NativeInputBackendOwnerContext& backend_context() noexcept;
     NativeInputActionOwnerContext& action_context() noexcept;
+    NativeInputActionRecordsContext& records_context() noexcept;
     NativeInputDeviceRuntime& devices() noexcept;
     // Native allocation/constructor, publication reload/callback write/reset.
     void startup();

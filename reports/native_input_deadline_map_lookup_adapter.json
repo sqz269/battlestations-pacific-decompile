@@ -1,0 +1,651 @@
+{
+  "packet": "orch4_native_input_deadline_lookup_adapter_ag",
+  "status": "real_source_subscript_provider_verified_application_forwarding_remaining",
+  "baseline_commit": "c8c01c9f2bdeae385e8c7f83d256c5256d872c75",
+  "scope": "Source reuse: parameterized existing lower-bound/unique drivers plus thin signed-scalar subscript adapter. No new STL port, shadow map, native address reconstruction/name rows or ABI replacement claim.",
+  "source": [
+    {
+      "path": "include/bsp/detail/native_tree_insert_storage.hpp",
+      "sha256": "999ad44f5de88f9f3239034989e921ade1ab9e34d20dc9bc7f42efa884377592"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_insert.cpp",
+      "sha256": "3643a3f8c40e04957dc7b9bb972726e281fd421ad336bf1a8b789d675e0c2e79"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_key.cpp",
+      "sha256": "447a7f5941edd81f076288b5829fe0697493982faab37d1abb10d1c62bf4f761"
+    },
+    {
+      "path": "include/bsp/native_input_deadline_map_lookup_adapter.hpp",
+      "sha256": "0757c7ead04ea0fbfae79037364338494994e995f322bf032667c0af178ecfab"
+    },
+    {
+      "path": "src/native_input_deadline_map_lookup_adapter.cpp",
+      "sha256": "b19d29f343dd01e15c510277ef0622f8fd03561cedf694599a638b81b95b65e8"
+    }
+  ],
+  "document": "docs/NATIVE_INPUT_DEADLINE_MAP_LOOKUP_ADAPTER.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py verifies target for each live batch; five complete driver spans match disk/live"
+  },
+  "ghidra_mutations": false,
+  "native_records_added": false,
+  "functions": [
+    {
+      "address": "00b23020",
+      "source_entry": "lower_bound_native_hardware_layout_key_00b23020",
+      "coverage": "existing complete source contract preserved through driver extraction",
+      "native_abi": "ECX actual tree, stack key pointer, EAX node, RET4 atB23056; EDX unconsumed"
+    },
+    {
+      "address": "00b2f540",
+      "source_entry": "insert_native_hardware_layout_pair_00b2f540",
+      "coverage": "existing complete source contract preserved through driver extraction",
+      "native_abi": "ECX actual tree, stack output12h and pair pointers, EAX output, RET8 atB2F628; EDX unconsumed"
+    }
+  ],
+  "adapter": {
+    "source_entry": "subscript_input_deadline_map_storage",
+    "native_evidence": "004d6900",
+    "coverage": "complete equivalent source operation for every valid-entry subscript hint path; arbitrary-hint API excluded",
+    "native_abi_evidence": "ECX actual12h header, one stack constint32key pointer, EAX floatmappedpointer; RET4 at4D697D, incoming EDX unconsumed",
+    "native_abi_compatible": false,
+    "owns_storage": false,
+    "binding": "NativeInputActionDeadlineCalls::call_004d6900 forwards directly to subscript_input_deadline_map_storage(actual_header,key)",
+    "key_layout": "signed int32 at node+C; float bits at node+10; all18h scalar node fields unchanged",
+    "source_reuse": [
+      "B23020 lower-bound traversal through lower_bound_tree_node",
+      "B2F540 unique-driver through insert_unique_tree_pair",
+      "existing deadline18h predecessor/link/allocation with existing owning length-error transport"
+    ]
+  },
+  "valid_hint_equivalence": {
+    "entry_domain": "actual initialized consistent12h/18h signed-key tree; caller key may alias live header/node bytes; no unsynchronized concurrent mutation",
+    "five_paths": [
+      {
+        "case": "empty",
+        "hint_call": "004d3cef",
+        "parent": "head",
+        "side": 1
+      },
+      {
+        "case": "new minimum",
+        "hint_call": "004d3d38",
+        "parent": "minimum",
+        "side": 1
+      },
+      {
+        "case": "new maximum",
+        "hint_call": "004d3d7d",
+        "parent": "maximum",
+        "side": 0
+      },
+      {
+        "case": "interior predecessor right nil",
+        "hint_call": "004d3dc5",
+        "parent": "predecessor",
+        "side": 0
+      },
+      {
+        "case": "interior predecessor right nonnil",
+        "hint_call": "004d3ddc",
+        "parent": "candidate",
+        "side": 1
+      }
+    ],
+    "preallocation_observability": "Both drivers choose the same parent/side before first allocator call. Extra raw scalar traversal and valid predecessor operations cannot invoke an external service; native checked hint owner equals nonnull actual tree. General increment/equality/fallback branches cannot be reached by this lower-bound hint.",
+    "publication": "Shared link retains preallocation head/parent/pair capture and current head/count reload after allocator/new-handler. Internal copied pair protects caller-key aliases.",
+    "returned_result": "Capture returned owner/node; real BF6713-equivalent diagnostics may return. Preserve current owner-head reload and final captured-node+10 result.",
+    "unimplemented": "General4D3CD0 arbitrary hints and malformed entry headers; original private stack aliases, register clobbers, C++ EH/RTTI identity and data-racing mutation are not source ABI guarantees."
+  },
+  "reload_evidence": [
+    {
+      "site": "004d6916",
+      "operation": "first nonnil root captures query once for traversal"
+    },
+    {
+      "site": "004d692c",
+      "operation": "reload current header head"
+    },
+    {
+      "site": "004d6935",
+      "operation": "reread key before candidate key load"
+    },
+    {
+      "site": "004d693c",
+      "operation": "reread key into local8h pair before allocation, mapped bits zero"
+    },
+    {
+      "site": "004d695c",
+      "operation": "capture returned owner then returned node+4"
+    },
+    {
+      "site": "004d6965",
+      "operation": "real returning-capable null-owner diagnostic"
+    },
+    {
+      "site": "004d696a",
+      "operation": "compare captured node to current owner head after first diagnostic"
+    },
+    {
+      "site": "004d696f",
+      "operation": "real returning-capable end-node diagnostic then LEA capturednode+10"
+    }
+  ],
+  "native_body_evidence": [
+    {
+      "evidence_address": "004d6900",
+      "bytes": 128,
+      "instructions": 50,
+      "end_inclusive": "004d697f",
+      "end_exclusive": "004d6980",
+      "last_instruction": "004d697d",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 4",
+      "sha256": "a6cb00a3cec618fbcd1813234aab037aa323107f4691765dd06437b14110e13d"
+    },
+    {
+      "evidence_address": "004d3cd0",
+      "bytes": 444,
+      "instructions": 183,
+      "end_inclusive": "004d3e8b",
+      "end_exclusive": "004d3e8c",
+      "last_instruction": "004d3e89",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 0x10",
+      "sha256": "c12a51d9ba17586811be6d1429de6171e955b645b4b678761816ea496663f8b6"
+    },
+    {
+      "evidence_address": "004d1f40",
+      "bytes": 185,
+      "instructions": 73,
+      "end_inclusive": "004d1ff8",
+      "end_exclusive": "004d1ff9",
+      "last_instruction": "004d1ff6",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 8",
+      "sha256": "88b0b0963cb59c01f9815932c5ef6a44d473642d96318807f0263628a7fae00a"
+    },
+    {
+      "evidence_address": "004b7520",
+      "bytes": 137,
+      "instructions": 48,
+      "end_inclusive": "004b75a8",
+      "end_exclusive": "004b75a9",
+      "last_instruction": "004b75a8",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "sha256": "287713b4385fb67ae32ca312f1ed93dfa6f2bfd1a40363e49ed8869c997c85d4"
+    },
+    {
+      "evidence_address": "004b75b0",
+      "bytes": 99,
+      "instructions": 38,
+      "end_inclusive": "004b7612",
+      "end_exclusive": "004b7613",
+      "last_instruction": "004b7612",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "sha256": "d69eab5c8b4259ec6e9039200956fc508766ccd8d0e5179a6ed99216a5437a9f"
+    },
+    {
+      "evidence_address": "004b5ac0",
+      "bytes": 41,
+      "instructions": 18,
+      "end_inclusive": "004b5ae8",
+      "end_exclusive": "004b5ae9",
+      "last_instruction": "004b5ae6",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 4",
+      "sha256": "664b8928a62da3227e3c386a6ed6d7906b4af75d54e33cedb58e214b582ab219"
+    },
+    {
+      "evidence_address": "00b23020",
+      "bytes": 57,
+      "instructions": 25,
+      "end_inclusive": "00b23058",
+      "end_exclusive": "00b23059",
+      "last_instruction": "00b23056",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 4",
+      "sha256": "576b49eb2c12f512fd10b41786c9ae5f1dd78509c6dc9c4d60f80d24d5c93b8e"
+    },
+    {
+      "evidence_address": "00b2f540",
+      "bytes": 235,
+      "instructions": 95,
+      "end_inclusive": "00b2f62a",
+      "end_exclusive": "00b2f62b",
+      "last_instruction": "00b2f628",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 8",
+      "sha256": "ca2cffe7151672f686d2f39257e1cb0b01a71f66a297904f28f1af251d6421c0"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "function": "004d6900",
+      "address": "004d6957",
+      "native": "004d3cd0"
+    },
+    {
+      "function": "004d6900",
+      "address": "004d6965",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d6900",
+      "address": "004d696f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3cef",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d10",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d38",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d54",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d7d",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3da1",
+      "native": "004b7520"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3dc5",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3ddc",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e09",
+      "native": "004b75b0"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e17",
+      "native": "004b5ac0"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e3f",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e54",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e6d",
+      "native": "004d1f40"
+    },
+    {
+      "function": "004d1f40",
+      "address": "004d1f9e",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d1f40",
+      "address": "004d1fc0",
+      "native": "004b7520"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7528",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7543",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b759f",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b75b0",
+      "address": "004b75b8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004b75b0",
+      "address": "004b75c7",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b5ac0",
+      "address": "004b5ad2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b23020",
+      "address": "00b23039",
+      "native": "00b20bf0"
+    },
+    {
+      "function": "00b2f540",
+      "address": "00b2f568",
+      "native": "00b20bf0"
+    },
+    {
+      "function": "00b2f540",
+      "address": "00b2f5a2",
+      "native": "00b2f1b0"
+    },
+    {
+      "function": "00b2f540",
+      "address": "00b2f5c9",
+      "native": "00b20d30"
+    },
+    {
+      "function": "00b2f540",
+      "address": "00b2f5d6",
+      "native": "00b20bf0"
+    },
+    {
+      "function": "00b2f540",
+      "address": "00b2f5ed",
+      "native": "00b2f1b0"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8d28",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8d85",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8de2",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8e3f",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8e9c",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8ef9",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8f56",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d8fb3",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d9010",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d906d",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d90ca",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d9127",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d9184",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d91e1",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d923e",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d8cd0",
+      "address": "004d929b",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d92b0",
+      "address": "004d9314",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d92b0",
+      "address": "004d9351",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d9420",
+      "address": "004d9431",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d9420",
+      "address": "004d9452",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d9480",
+      "address": "004d94b5",
+      "native": "004d6900"
+    },
+    {
+      "function": "004d9480",
+      "address": "004d94d6",
+      "native": "004d6900"
+    }
+  ],
+  "caller_contracts": [
+    {
+      "function": "004d8cd0",
+      "call_count": 16,
+      "calls": [
+        "004d8d28",
+        "004d8d85",
+        "004d8de2",
+        "004d8e3f",
+        "004d8e9c",
+        "004d8ef9",
+        "004d8f56",
+        "004d8fb3",
+        "004d9010",
+        "004d906d",
+        "004d90ca",
+        "004d9127",
+        "004d9184",
+        "004d91e1",
+        "004d923e",
+        "004d929b"
+      ],
+      "header": "E18A7C",
+      "key_contract": "pointer to caller actual local/argument signed-DWORD storage; mapped float address is read/written",
+      "full_body_listing": "local/adapter_caller_4d8cd0.txt"
+    },
+    {
+      "function": "004d92b0",
+      "call_count": 2,
+      "calls": [
+        "004d9314",
+        "004d9351"
+      ],
+      "header": "E18A7C",
+      "key_contract": "pointer to caller actual local/argument signed-DWORD storage; mapped float address is read/written",
+      "full_body_listing": "local/adapter_caller_4d92b0.txt"
+    },
+    {
+      "function": "004d9420",
+      "call_count": 2,
+      "calls": [
+        "004d9431",
+        "004d9452"
+      ],
+      "header": "actual game+5C8",
+      "key_contract": "pointer to caller actual local/argument signed-DWORD storage; mapped float address is read/written",
+      "full_body_listing": "local/adapter_caller_4d9420.txt"
+    },
+    {
+      "function": "004d9480",
+      "call_count": 2,
+      "calls": [
+        "004d94b5",
+        "004d94d6"
+      ],
+      "header": "actual game+5C8",
+      "key_contract": "pointer to caller actual local/argument signed-DWORD storage; mapped float address is read/written",
+      "full_body_listing": "local/adapter_caller_4d9480.txt"
+    }
+  ],
+  "no_ghidra_function": [],
+  "library_names_preserved": true,
+  "metadata_repairs": [],
+  "validation": {
+    "build": "MSVC Win32 /W4 /WX pass",
+    "existing_ctests": "2/2 pass",
+    "seeds": {
+      "matched": 8,
+      "total": 8
+    },
+    "hardware_regression": {
+      "fixture_cpp_unchanged": true,
+      "behavior_words": 8582,
+      "native_output_stores": 56,
+      "source_output_stores": 56,
+      "actual_crt_throw_events_each": 5,
+      "runner": "local/run_hardware_insert_storage_regression.ps1"
+    },
+    "deadline_differential": {
+      "runner": "local/run_deadline_lookup_differential.ps1",
+      "fixture": "local/deadline_lookup_differential/fixture.cpp",
+      "words": 15055,
+      "permutations": 120,
+      "signed_keys": [
+        "INT_MIN",
+        "-1",
+        "0",
+        "1",
+        "INT_MAX"
+      ],
+      "hint_paths": "5/5",
+      "insertions_each": 605,
+      "duplicate_address_and_bits_checks_each": 600,
+      "key_aliases_each": 602,
+      "actual_new_handlers_each": 2,
+      "returning_crt_diagnostics_each": 1,
+      "throwing_error_cases_each": 2,
+      "raw_allocations_each": 730,
+      "raw_frees_each": 730,
+      "original_instructions_executed": [
+        "004d6900",
+        "004d3cd0",
+        "004b7520"
+      ],
+      "shared_source_boundary": "004cf010 forwards to real link_input_deadline_map_node; BF6713 forwards to actual CRT. This isolates original driver behavior; original link/EH is not independently executed in this fixture.",
+      "earlier_kernel_proof": "prior storage report complete492-byte policy equivalence plus original hardware differential",
+      "fault_domain": "Malloc IAT fault/retry invokes actual new handler; copied key/current count mutation, prepublication throwing handler, owning length-error and returned-head diagnostic. Returning diagnostic deliberately repairs header/link storage for cleanup; no claim of native automatic recovery from callback-created invalid state.",
+      "archive_only": true,
+      "manifest_embedded": true
+    },
+    "artifacts": [
+      {
+        "path": "local/native_input_deadline_lookup_adapter_build.log",
+        "sha256": "4c8b92a7c6d21e5869182ce391f8fc5b29a678450636dc50c885a0279f7100e4"
+      },
+      {
+        "path": "local/native_input_deadline_lookup_hardware_regression.log",
+        "sha256": "db68d793142d34e1b81550b9fe76ab12a502c08808dca80a38a71c1ae03c73d7"
+      },
+      {
+        "path": "local/native_input_deadline_lookup_differential.log",
+        "sha256": "ef2dada94e589655c7237e38cc5978a19b8db2ce1b84c3955b527e88c4828c54"
+      },
+      {
+        "path": "local/native_input_deadline_lookup_adapter_seeds.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "88a3b51d27c7cbc75f1f287ed302048d8cc3ff2dcb63978a3013a007c5c92622"
+      },
+      {
+        "path": "local/deadline_lookup_differential/fixture.cpp",
+        "sha256": "b252249f41238c67608fabba280039b436588fa5b1b285a5c5780f8ff05883c0"
+      },
+      {
+        "path": "local/deadline_lookup_differential/reference.hpp",
+        "sha256": "993f2a2335dd232e8c03b2d970ba58986b90a422e830c698fcbcf39ef6c286ba"
+      },
+      {
+        "path": "local/deadline_lookup_differential/deadline_lookup_probe.exe",
+        "sha256": "501dee41af6458daf18717276726f4257686e3843d0c9ead7c9eda2ebf4c83a2"
+      },
+      {
+        "path": "local/hardware_insert_storage_regression/fixture.cpp",
+        "sha256": "2f42acc1e4201e6ab41746ae885ed8f42c35d76c20c0b94c0d6fc09c643406b6"
+      }
+    ],
+    "call_audit": {
+      "checked": 52,
+      "failed": 0,
+      "log": "local/native_input_deadline_lookup_adapter_call_audit.json"
+    }
+  },
+  "remaining": [
+    "Primary forwards the required deadline storage service to the concrete adapter and binds existing map lifetime/callback.",
+    "No operational application/game callback claim, SDK execution or game launch."
+  ]
+}

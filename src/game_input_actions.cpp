@@ -1,14 +1,42 @@
 #include "bsp/game_input_actions.hpp"
+#include "bsp/native_input_deadline_map_lookup_adapter.hpp"
+#include <stdexcept>
 
 namespace bsp::game {
+namespace {
+class DeadlineMapCalls final : public NativeInputActionDeadlineCalls {
+    float* call_004d6900(void* map, const std::int32_t* key) override {
+        return subscript_input_deadline_map_storage(map, key);
+    }
+};
+NativeInputActionDeadlineCalls& deadline_map_calls() {
+    static DeadlineMapCalls calls;
+    return calls;
+}
+} // namespace
+GameInputDeadlineCallback::GameInputDeadlineCallback(GameInputRuntime& runtime,
+    void* volatile& game, void* map, const volatile double& delay)
+    : GameInputDeadlineCallback(runtime, game, map, delay, deadline_map_calls()) {}
+GameInputDeadlineCallback::GameInputDeadlineCallback(GameInputRuntime& runtime,
+    void* volatile& game, void* map, const volatile double& delay,
+    NativeInputActionDeadlineCalls& calls)
+    : game_(game), deadlines_{runtime.action_context(), map, delay, calls} {}
+void GameInputDeadlineCallback::post_tick(std::uint32_t identity) {
+    if (identity != 0x006965a0)
+        throw std::invalid_argument("unbound native input deadline callback identity");
+    invoke_native_input_action_deadline_callback_006965a0(game_, deadlines_);
+}
+
 struct GameInputActions::Impl final : NativeInputActionTickCalls {
     GameInputRuntime& runtime;
     GameInputActionServices bound;
     NativeInputActionBindingContext bindings;
+    NativeInputActionConfigurationContext configuration;
     NativeInputActionTickContext tick;
     Impl(GameInputRuntime& input, GameInputActionServices services)
         : runtime(input), bound(services),
           bindings{input.devices(), services.crt, services.constants},
+          configuration{input.records_context(), bindings, services.timing},
           tick{input.backend_context().global_00f8bbf4, services.callback_00f8bbfc,
               services.zero_00d7a218, services.timing, *this} {}
     void backend_vslot04(void* backend, std::uint32_t profile, float seconds) override {
@@ -31,5 +59,15 @@ GameInputActions::~GameInputActions() = default;
 void GameInputActions::update(float seconds) {
     void* const owner = impl_->runtime.action_owner();
     update_native_input_action_owner_00a92c40(owner, seconds, impl_->tick);
+}
+void GameInputActions::configure(std::uint32_t index, const void* contexts,
+    std::uint8_t replace_listener) {
+    void* const owner = impl_->runtime.action_owner();
+    configure_native_input_action_00a93c80(owner, index, contexts, replace_listener,
+        impl_->configuration);
+}
+void GameInputActions::set_context_level(std::uint32_t index, std::uint32_t level) {
+    void* const owner = impl_->runtime.action_owner();
+    set_native_input_context_level_00a933f0(owner, index, level, impl_->configuration);
 }
 } // namespace bsp::game

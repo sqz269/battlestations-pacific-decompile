@@ -110,6 +110,7 @@ GameInputRuntime::GameInputRuntime(GameInputRuntimeBindings b) : impl_(std::make
 GameInputRuntime::~GameInputRuntime() = default;
 NativeInputBackendOwnerContext& GameInputRuntime::backend_context() noexcept { return impl_->backend; }
 NativeInputActionOwnerContext& GameInputRuntime::action_context() noexcept { return impl_->actions; }
+NativeInputActionRecordsContext& GameInputRuntime::records_context() noexcept { return impl_->records; }
 NativeInputDeviceRuntime& GameInputRuntime::devices() noexcept { return impl_->device_runtime; }
 void GameInputRuntime::startup() {
     if (impl_->started || impl_->bound.backend_00f8bbf4)

@@ -1,4 +1,5 @@
 #include "bsp/native_hardware_layout_tree_key.hpp"
+#include "bsp/detail/native_tree_insert_storage.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native hardware-layout tree key operations require MSVC Win32.
@@ -20,10 +21,6 @@ void write_word(void* storage, std::size_t offset, std::uint32_t value) noexcept
 }
 void* read_pointer(const void* storage, std::size_t offset) noexcept {
     return reinterpret_cast<void*>(read_word(storage, offset));
-}
-bool is_sentinel(const void* node) noexcept {
-    return *reinterpret_cast<const volatile unsigned char*>(
-        static_cast<const unsigned char*>(node) + 0x25) != 0;
 }
 const void* node_key(const void* node) noexcept {
     return static_cast<const unsigned char*>(node) + 0x0c;
@@ -71,17 +68,10 @@ bool less_native_hardware_layout_key_00b20bf0(
 
 void* lower_bound_native_hardware_layout_key_00b23020(
     void* actual_tree, const void* key) noexcept {
-    auto* candidate = read_pointer(actual_tree, 4);
-    auto* node = read_pointer(candidate, 4);
-    while (!is_sentinel(node)) {
-        if (less_native_hardware_layout_key_00b20bf0(node_key(node), key)) {
-            node = read_pointer(node, 8);
-        } else {
-            candidate = node;
-            node = read_pointer(node, 0);
-        }
-    }
-    return candidate;
+    return detail::lower_bound_tree_node<detail::TreeInsertAccess<0x24, 0x25>>(
+        actual_tree, [key](void* node) {
+            return less_native_hardware_layout_key_00b20bf0(node_key(node), key);
+        });
 }
 
 NativeHardwareLayoutTreeIterator* find_native_hardware_layout_key_00b28220(

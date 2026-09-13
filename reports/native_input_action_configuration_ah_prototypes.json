@@ -1,0 +1,59 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "00a93c80",
+      "before": "Function: FUN_00a93c80 at 00a93c80\nSignature: undefined FUN_00a93c80(void)\nEntry: 00a93c80\nBody: 00a93c80 - 00a93d49",
+      "before_comment": {
+        "address": "00a93c80",
+        "function_name": "FUN_00a93c80"
+      },
+      "proposed": "void __fastcall BSP_InputAction_Configure(void* self, void* unused_edx, uint index, void* contexts, byte replace_listener)",
+      "apply": "Successfully set prototype for function at 00a93c80 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_Configure at 00a93c80\nSignature: void __fastcall BSP_InputAction_Configure(void * self, void * unused_edx, uint index, void * contexts, byte replace_listener)\nEntry: 00a93c80\nBody: 00a93c80 - 00a93d49",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92d40",
+      "before": "Function: FUN_00a92d40 at 00a92d40\nSignature: undefined FUN_00a92d40(void)\nEntry: 00a92d40\nBody: 00a92d40 - 00a92e6a",
+      "before_comment": {
+        "address": "00a92d40",
+        "function_name": "FUN_00a92d40"
+      },
+      "proposed": "void __fastcall BSP_InputAction_ActivateContext(void* self, void* unused_edx, void* contexts, byte enabled, int active)",
+      "apply": "Successfully set prototype for function at 00a92d40 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_ActivateContext at 00a92d40\nSignature: void __fastcall BSP_InputAction_ActivateContext(void * self, void * unused_edx, void * contexts, byte enabled, int active)\nEntry: 00a92d40\nBody: 00a92d40 - 00a92e6a",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93c80",
+        "prototype": "void __fastcall BSP_InputAction_Configure(void* self, void* unused_edx, uint index, void* contexts, byte replace_listener)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93c80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92d40",
+        "prototype": "void __fastcall BSP_InputAction_ActivateContext(void* self, void* unused_edx, void* contexts, byte enabled, int active)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92d40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "006965a0",
+      "before": "Function: FUN_006965a0 at 006965a0\nSignature: undefined FUN_006965a0(void)\nEntry: 006965a0\nBody: 006965a0 - 006965aa",
+      "before_comment": {
+        "address": "006965a0",
+        "function_name": "FUN_006965a0"
+      },
+      "proposed": "void __cdecl BSP_Game_InputDeadlineCallback(void)",
+      "apply": "Successfully set prototype for function at 006965a0 with __cdecl calling convention",
+      "after": "Function: BSP_Game_InputDeadlineCallback at 006965a0\nSignature: void __cdecl BSP_Game_InputDeadlineCallback(void)\nEntry: 006965a0\nBody: 006965a0 - 006965aa",
+      "readback_verified": true
+    },
+    {
+      "address": "004d8cd0",
+      "before": "Function: BSP_Game_RecordActionDeadlines at 004d8cd0\nSignature: undefined BSP_Game_RecordActionDeadlines(void)\nEntry: 004d8cd0\nBody: 004d8cd0 - 004d92aa",
+      "before_comment": {
+        "address": "004d8cd0",
+        "function_name": "BSP_Game_RecordActionDeadlines",
+        "comment": "[BSP reconstruction 004d8cd0]\nHypothesis, not a recovered symbol. Packet game_world_entities, read-only analysis. __thiscall(this), RET (004d92aa), no argument, ECX game from BSP_Game_OnMove at 004e4feb, on the join point every frame path reaches, immediately before game+648h += 1. Sixteen identical blocks. Each fetches the input singleton with 004bec00 and applies the full 004c43c0 edge test to one 30h-byte record at inputSingleton+4h + id*30h: record+28h set, record+24h greater than zero, and either record+20h clear or record+1Ch not greater than zero. On a press it writes game+64Ch + 0.4 into the std::map<int,float> at 00e18a7c through operator[] at 004d6900, whose ECX is the literal 0E18A7Ch. The delay constant 00ce65d0 holds 3FD99999A0000000h, the double promotion of 0.4f, so the map stores an absolute deadline on the game+64Ch clock. Action ids in order: 4Ah 4Bh 4Eh 4Fh 50h 51h 52h 53h 54h 55h 46h 47h 4Ch 4Dh 57h 58h; 004d9251 confirms the divisor by computing input+4h+1080h for id 58h. docs/GAME_WORLD_ENTITIES.md."
+      },
+      "proposed": "void __fastcall BSP_Game_RecordActionDeadlines(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 004d8cd0 with __fastcall calling convention",
+      "after": "Function: BSP_Game_RecordActionDeadlines at 004d8cd0\nSignature: void __fastcall BSP_Game_RecordActionDeadlines(void * self, void * unused_edx)\nEntry: 004d8cd0\nBody: 004d8cd0 - 004d92aa",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006965a0",
+        "prototype": "void __cdecl BSP_Game_InputDeadlineCallback(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 006965a0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004d8cd0",
+        "prototype": "void __fastcall BSP_Game_RecordActionDeadlines(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004d8cd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

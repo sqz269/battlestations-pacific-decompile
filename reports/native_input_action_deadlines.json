@@ -1,0 +1,616 @@
+{
+  "packet": "orch4_native_input_action_deadlines_ag",
+  "sources": [
+    "include/bsp/native_input_action_deadlines.hpp",
+    "src/native_input_action_deadlines.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_ACTION_DEADLINES.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_each_live_batch": true,
+    "worker_ghidra_mutations": 0,
+    "analysis": "Capped bsp.py show/proto/disasm/flow/xrefs/bytes queries; Ghidra client verifies configured project/program before each batch; no annotations/definitions/export mutations"
+  },
+  "functions": [
+    {
+      "address": "006965a0",
+      "name": "invoke_native_input_action_deadline_callback_006965a0",
+      "original_name": null,
+      "coverage": "complete within the actual-storage/provider domain",
+      "no_ghidra_function": true,
+      "end_inclusive": "006965aa",
+      "end_exclusive": "006965ab",
+      "length": 11,
+      "instruction_count": 2,
+      "bytes": "8b0da888e100e92527e4ff",
+      "final_instruction": {
+        "address": "006965a6",
+        "length": 5,
+        "mnemonic": "JMP 004D8CD0"
+      },
+      "tail_site": "006965a6",
+      "callee": "004d8cd0",
+      "native_abi": {
+        "ecx": "Overwritten by single E188A8 publication load",
+        "edx": "Not a semantic input",
+        "stack": [],
+        "ret_cleanup_bytes": 0,
+        "result": "No semantic result; unconditional tail transfer"
+      },
+      "source": "src/native_input_action_deadlines.cpp",
+      "source_abi_is_original": false,
+      "native_cleanup_frame": false
+    },
+    {
+      "address": "004d8cd0",
+      "name": "record_native_input_action_deadlines_004d8cd0",
+      "original_name": "BSP_Game_RecordActionDeadlines",
+      "coverage": "complete within the actual-storage/provider domain",
+      "no_ghidra_function": false,
+      "end_inclusive": "004d92aa",
+      "end_exclusive": "004d92ab",
+      "length": 1499,
+      "instruction_count": 390,
+      "instruction_gaps": [],
+      "final_instruction": {
+        "address": "004d92aa",
+        "length": 1,
+        "mnemonic": "RET"
+      },
+      "native_abi": {
+        "ecx": "Actual game pointer, captured in ESI at4D8CD4",
+        "edx": "Not a semantic input",
+        "stack": [],
+        "ret_cleanup_bytes": 0,
+        "result": "No semantic result used by callers"
+      },
+      "source": "src/native_input_action_deadlines.cpp",
+      "source_abi_is_original": false,
+      "native_cleanup_frame": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "004d8cd6",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8d28",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8d33",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8d85",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8d90",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8de2",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8ded",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8e3f",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8e4a",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8e9c",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8ea7",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8ef9",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8f04",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8f56",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8f61",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d8fb3",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d8fbe",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d9010",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d901b",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d906d",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d9078",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d90ca",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d90d5",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d9127",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d9132",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d9184",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d918f",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d91e1",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d91ec",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d923e",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004d9249",
+      "native": "004bec00",
+      "function": "004d8cd0",
+      "contract": "No native inputs; EAX current actual24h action owner; raw array pointer+4 reloaded after each of sixteen getter calls. Existing concrete raw getter reused."
+    },
+    {
+      "address": "004d929b",
+      "native": "004d6900",
+      "function": "004d8cd0",
+      "contract": "ECX actual12h E18A7C map header, one stack pointer to signed key; EAX writable float cell; callee RET4. Binary32 deadline already spilled before call; FLD/FSTP returned cell after return."
+    },
+    {
+      "address": "004e4feb",
+      "native": "004d8cd0",
+      "function": "004e4a40",
+      "contract": "ECX=ESI at4E4FE9; ESI captures incoming game at4E4A5C and is retained. No stack args; plain RET."
+    },
+    {
+      "address": "004d9314",
+      "native": "004d6900",
+      "function": "004d92b0",
+      "contract": "ECX same actual12h E18A7C header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "004d9351",
+      "native": "004d6900",
+      "function": "004d92b0",
+      "contract": "ECX same actual12h E18A7C header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "004d9431",
+      "native": "004d6900",
+      "function": "004d9420",
+      "contract": "ECX same actual12h captured game+5C8 header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "004d9452",
+      "native": "004d6900",
+      "function": "004d9420",
+      "contract": "ECX same actual12h captured game+5C8 header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "004d94b5",
+      "native": "004d6900",
+      "function": "004d9480",
+      "contract": "ECX same actual12h captured game+5C8 header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "004d94d6",
+      "native": "004d6900",
+      "function": "004d9480",
+      "contract": "ECX same actual12h captured game+5C8 header; one stack pointer to caller signed action key; EAX writable float cell; callee RET4. Read all sites before shared map-provider contract."
+    },
+    {
+      "address": "00a92d0d",
+      "native": "callback_00f8bbfc",
+      "function": "00a92c40",
+      "contract": "Capture/test current callback DWORD then indirect call with no semantic arguments; known installed identity6965A0, no numeric foreign-process call in source."
+    }
+  ],
+  "routine_schedule": {
+    "indices": [
+      74,
+      75,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      70,
+      71,
+      76,
+      77,
+      87,
+      88
+    ],
+    "record_offsets": [
+      "0xde0",
+      "0xe10",
+      "0xea0",
+      "0xed0",
+      "0xf00",
+      "0xf30",
+      "0xf60",
+      "0xf90",
+      "0xfc0",
+      "0xff0",
+      "0xd20",
+      "0xd50",
+      "0xe40",
+      "0xe70",
+      "0x1050",
+      "0x1080"
+    ],
+    "getter_count": 16,
+    "map_calls_on_all_edges": 16,
+    "predicate": "Current BYTE28 nonzero and COMISS float24,zero ordered-greater; previous only blocks when BYTE20 nonzero and COMISS float1C,zero ordered-greater. Current NaN suppresses; previous NaN allows.",
+    "missing_native_guards": "No null game/action/table/returned-cell check, count/capacity check or enabled BYTE1 test; valid original storage is required.",
+    "reloads": "Wrapper captures E188A8 once; body preserves game across all calls. Fresh concrete4BEC00 and raw+4 table reload for each index. Each edge reads captured-game float+64C then live doubleCE65D0.",
+    "writes": "x87 FLD float clock, FADD live double delay, FSTP float local BEFORE map call; then FLD saved float/FSTP through returned cell. No other native field or ownership writes.",
+    "exceptions": "No native EH frame in either body. C++ provider failures propagate, preserve earlier effects, and skip remaining store/schedule. No rollback/free/retry is introduced."
+  },
+  "raw_producer_evidence": {
+    "game_publication": {
+      "function": "004ddb90",
+      "end_inclusive": "004de266",
+      "receiver_capture": "004ddbab MOV ESI,ECX",
+      "write_site": "004de105",
+      "store": "DWORD[E188A8]=ESI",
+      "provenance": "Entire bounded402-instruction listing filtered for ESI writes; original captured receiver retained"
+    },
+    "game_clock": {
+      "offset": "64C",
+      "type": "binary32 float",
+      "reset": {
+        "function": "004dfb70",
+        "end_inclusive": "004e18d9",
+        "receiver": "ECX captured EDI at4DFB9B, saved EBP+4C at4DFBB5, restored ESI at4E0754",
+        "zero": "XORPS XMM0 at4E0757",
+        "store": "MOVSS [ESI+64C],XMM0 at4E0764"
+      },
+      "accumulate": {
+        "function": "004c6e30",
+        "receiver": "MOV ESI,ECX at4C6E36; no later ESI receiver overwrite before stores",
+        "stores": [
+          "004c6f29",
+          "004c6f76"
+        ],
+        "meaning": "Adds undilated step; separate from frame-clock accumulated value"
+      }
+    },
+    "action_owner": {
+      "function": "00a93da0",
+      "size": "24h",
+      "profile": "00d5b630",
+      "array_fields": "Base+4/count+8/capacity+C",
+      "source": "src/native_input_action_owner.cpp"
+    },
+    "action_record": {
+      "function": "00a93940",
+      "size": "30h",
+      "stores": {
+        "previous_float_1c": "00a93971",
+        "previous_byte_20": "00a93976",
+        "current_float_24": "00a93979",
+        "current_byte_28": "00a9397e"
+      },
+      "padding": "Untouched by this packet",
+      "source": "src/native_input_action_records.cpp"
+    },
+    "static_map": {
+      "function": "00cc9e30",
+      "size": "12h",
+      "header": "00e18a7c",
+      "head": "00e18a80",
+      "count": "00e18a84",
+      "opaque_word": "Header+0 untouched",
+      "sentinel": "Actual18h; publishedCC9E3A, nil byte15 and self-links0/4/8; count zeroCC9E5F",
+      "atexit_call": "00cc9e69",
+      "destructor": "00cd9ec0",
+      "ownership": "Separate native_input_action_deadline_map packet; same borrowed caller header"
+    }
+  },
+  "map_library_boundary": {
+    "address": "004d6900",
+    "body_end_inclusive": "004d697f",
+    "body_end_exclusive": "004d6980",
+    "final_ret": {
+      "address": "004d697d",
+      "length": 3,
+      "cleanup_bytes": 4
+    },
+    "native_abi": "ECX actual12h header; stack const signed int* key; EAX writable float* node+10",
+    "body": "Signed lower-bound traversal; capture key and zero mapped float before insertion4D3CD0 at4D6957; use returned iterator header/node; returning CRT validationBF6713 at4D6965/4D696F; return node+10 at4D6974.",
+    "recognized_library_contract": true,
+    "original_stl_port": false,
+    "source_adapter_implemented": false,
+    "existing_other_headers": {
+      "004d92b0": "E18A7C",
+      "004d9420": "game+5C8",
+      "004d9480": "game+5C8"
+    },
+    "all_live_subscript_sites": 22,
+    "all_sites_read": true,
+    "required": "Genuine raw header-parameterized lookup/insertion and validation provider, preserving allocator/callback/exception effects; no shadow std::map or fake successful cell."
+  },
+  "callback_evidence": {
+    "writer": {
+      "function": "004dd5b0",
+      "end_inclusive": "004dd7b0",
+      "site": "004dd71b",
+      "store": "DWORD[F8BBFC]=6965A0"
+    },
+    "consumer": {
+      "function": "00a92c40",
+      "site": "00a92d0d",
+      "contract": "Captured nonzero identity, no arguments; existing raw tick provider forwards identity"
+    },
+    "body_callers": [
+      {
+        "site": "004e4feb",
+        "function": "004e4a40",
+        "end_inclusive": "004e5537",
+        "receiver_setup": "4E4FE9 MOV ECX,ESI; ESI set4E4A5C and maintained; no stack pushes"
+      },
+      {
+        "tail_site": "006965a6",
+        "callee": "004d8cd0",
+        "containing_function": null,
+        "no_ghidra_function": true,
+        "evidence": "11 exact bytes plus relative target; do not attribute to preceding696540 function"
+      }
+    ]
+  },
+  "constants": {
+    "00ce65d0": {
+      "type": "live double",
+      "bytes": "000000a09999d93f",
+      "bits": "3fd99999a0000000",
+      "value": "0.4000000059604644775390625; double promotion of0.4f",
+      "source_binding": "const volatile double&; not a fixed default"
+    },
+    "zero": {
+      "type": "XORPS-generated positive zero, not a global read"
+    }
+  },
+  "corrections": [
+    {
+      "was": "Older typed predicate phrasing previous<=0 omits unordered previous values",
+      "evidence": "4D8CFC..4D8D04 and all repeated blocks; NaN-mixed copied-native fixture",
+      "is": "Native COMISS/JA only suppresses an edge for ordered-positive previous"
+    },
+    {
+      "was": "A decimal0.4 or copied float-delay could hide the live double/x87 schedule",
+      "evidence": "4D8D06 FLD,4D8D10 FADD qword,4D8D24 FSTP before4D8D28; bytes3FD99999A0000000",
+      "is": "Borrow live double CE65D0 and preserve binary32 spill before map callback"
+    },
+    {
+      "was": "Existing semantic WorldTickState does not supply actual owner/map/clock storage",
+      "evidence": "A93DA0/A93940, game publication/clock producers, mapCC9E30 and subscript body",
+      "is": "Additive actual-storage functions with genuine raw getter and required map service"
+    }
+  ],
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": 8,
+      "failed": 0,
+      "before_native_execution": true,
+      "receipt": "local/native_input_action_deadlines_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "build": {
+      "command": "MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_failed": 0,
+      "log": "local/native_input_action_deadlines_ag_build.log",
+      "log_sha256": "a549931d42adb719042cb4d84c1b7d1248c522cb1ad8de8ef83b4261df5c913e"
+    },
+    "fixture": {
+      "command": "./local/native_deadlines_probe.ps1 -CoreWorktree J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af -LogPath J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af/local/native_deadlines_ag_probe.log",
+      "receipt": {
+        "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af",
+        "source_commit": "06616914ee71d88961bf7116d04876913c5f0453",
+        "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\build\\win32\\Release\\bsp_core.lib",
+        "core_archive_sha256": "f819026815e0f647a476c07bf345ded68585ef8cf977a143ac9800f9dee54c61",
+        "archive_stable": true,
+        "fixture_source_sha256": "74c8ed6bacb52d3966bd951869bd2cb705f1ab61736ce471d843e7b3ce81e416",
+        "runner_sha256": "a5c031d40b9a98c07cb78d6287b12b789df5550caae08d137483934f020a7b57",
+        "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\include",
+        "game_sources_compiled_separately": false,
+        "manifest_embedded": true,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\local\\native_deadlines_ag_probe.log",
+        "log_sha256": "ca13fef421258d3b06a86b736527e6bd39d013cee7feb541dedfb30168247bf6",
+        "exit_code": 0,
+        "sdk_calls": 0,
+        "real_activation_calls": 0,
+        "game_launches": 0
+      },
+      "native_bytes": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "ranges": [
+          {
+            "address": "004d8cd0",
+            "end_exclusive": "004d92ab",
+            "length": 1499,
+            "sha256": "a96704b1fcd25d6b9363c49b22524fe3ed9fa8abed7994a8b044d5e52f7b458d"
+          },
+          {
+            "address": "006965a0",
+            "end_exclusive": "006965ab",
+            "length": 11,
+            "sha256": "b0fcc66ae41ee5e602601e736c36c6860cf53ad62bfdd144f130697c1c4cebe9"
+          }
+        ],
+        "source": "Exact bytes read from unchanged installed executable; eight seeds verified before native execution"
+      },
+      "source_snapshot_note": "Receipt HEAD is parent06616914 at build; new deadline source was present but uncommitted. Compiled file hashes identify exact code.",
+      "compiled_source_sha256": "6b42f32bb8d7a937b86dc0eb6a0d8725766329da45876980fa4576fadc2f7cfa",
+      "compiled_header_sha256": "ce2c5e5fa6a9f17a53eca86ff9a22516e0fe7f8aeb9e037a25734e3122840093",
+      "native_differential_cases": 2,
+      "map_calls": [
+        16,
+        8
+      ],
+      "native_getter_calls_per_case": 16,
+      "whole_raw_storage_equal": true,
+      "controlled_mutations": [
+        "Wrapper publication changes after first subscript while original receiver remains captured",
+        "Real source action getter fast path follows changed publication",
+        "Current owner array base changes twice",
+        "Captured game clock and live delay change during subscript",
+        "Returned cell changed inside provider before overwritten by previously rounded deadline"
+      ],
+      "predicate_cases": [
+        "Noncanonical nonzero latch bytes",
+        "Current quiet NaN and negative zero suppress edge",
+        "Previous quiet NaN permits edge",
+        "Positive infinity versus prior positive infinity",
+        "Count zero and enabled byte0 still retain fixed native indices"
+      ],
+      "source_exception_case": "Second controlled subscript throws; first deadline remains, second cell not written, later checks skipped. Not original FH3/SEH differential evidence.",
+      "relocations": "Sixteen getter CALLs bind controlled native current-publication getter; sixteen subscript CALLs bind controlled map contract; sixteen map header immediates and sixteen double operands bind actual fixture storage; wrapper publication and E9 target relocated.",
+      "production_source_boundaries": "Concrete existing raw4BEC00 getter fast path used; fixture owner resize callbacks and lifetime publication are uncalled; controlled map provider is not production lookup/insertion.",
+      "map_insertions": 0,
+      "sdk_calls": 0,
+      "device_poll_calls": 0,
+      "force_calls": 0,
+      "show_cursor_calls": 0,
+      "game_launches": 0
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_input_action_deadlines.json",
+      "status": "passed",
+      "numeric_call_rows": 39,
+      "scope": "32 owned calls + direct game caller + 6 other subscript callers; generic callback row is indirect; missing wrapper tail recorded separately",
+      "numeric_call_rows_checked": 39,
+      "failures": 0,
+      "log": "local/native_deadlines_ag_call_audit.log",
+      "log_sha256": "6cc41684f71e4c0dc5b493acd3f1000a75e8a8b8c0e010e765e0e78541fb6a02"
+    }
+  },
+  "limitations": [
+    "Actual map insertion provider remains required; static header lifetime alone does not make callback operational.",
+    "Whole game owner/publication/clock production and app/frame wiring remain outside this packet.",
+    "New C++ source ABI; original callable/FH3/SEH ABI, hardware faults, asynchronous mutation and unmasked floating exception equivalence not claimed.",
+    "6965A0 function start remains missing in current Ghidra analysis; exact11-byte bounds/tail recorded for primary metadata.",
+    "Ignored controlled provider fixture does not establish SDK, hardware, force, ShowCursor or gameplay behavior."
+  ]
+}
