@@ -68,29 +68,141 @@
     }
   ],
   "host_steps": [
-    {"address":"00cd7f05","native":"00b74b80","function":"00cd7f00","contract":"ECX=01090054 from CD7F00; constructor returns same pool in EAX; no stack arguments"},
-    {"address":"00cd7f0f","native":"00bf6ff5","function":"00cd7f00","contract":"PUSH CE0E50 at CD7F0A; POP ECX at CD7F14 cleans one argument; preserve EAX to RET"},
-    {"address":"00ce0e55","native":"00b74690","function":"00ce0e50","kind":"tail_jump","contract":"ECX overwritten with same canonical 01090054 before tail jump"},
-    {"address":"00b74bd2","native":"00ce220c+IAT","function":"00b74b80","contract":"InitializeCriticalSection(this+0C); EDI=ESI+0C at B74BC4; PUSH EDI at B74BC7; imported stdcall boundary; no caller cleanup"},
-    {"address":"00b74c02","native":"00bf55be","function":"00b74b80","contract":"Table allocation 80h bytes, capacity already 32; ADD ESP,4 at B74C09; EDI captures result"},
-    {"address":"00b74c34","native":"00bf6989","function":"00b74b80","contract":"Optional old this+28 table; PUSH EAX at B74C33, ADD ESP,4 at B74C39 before replacement publication"},
-    {"address":"00b746a8","native":"00bf65ac","function":"00b74690","contract":"Each live table entry, PUSH ECX at B746A7; ADD ESP,4 at B746B0; count reload controls loop"},
-    {"address":"00b746c0","native":"00bf6989","function":"00b74690","contract":"Nonnull table after all slabs; PUSH EAX at B746BF; ADD ESP,4 at B746C5"},
-    {"address":"00b746dd","native":"00ce2210+IAT","function":"00b74690","contract":"LeaveCriticalSection(this+0C); EBX loaded from CE2210 at B746D2; positive signed recursion decremented first; PUSH ESI at B746DC; imported stdcall"},
-    {"address":"00b746e7","native":"00ce2214+IAT","function":"00b74690","contract":"DeleteCriticalSection(this+0C), PUSH ESI at B746E6; imported stdcall; precedes base profile and unlink"},
-    {"address":"00bf55be","native":"00bf681b","function":"00bf55be","kind":"tail_jump","contract":"Existing library operator_new forwarding thunk; reuse singleton_lifetime_allocate boundary"},
-    {"address":"00bf6989","native":"00bf65ac","function":"00bf6989","kind":"tail_jump","contract":"Existing library free forwarding thunk; reuse singleton_lifetime_free boundary"},
-    {"address":"00bf6ff9","native":"00bf6fb9","function":"00bf6ff5","contract":"Existing CRT __onexit boundary; argument copied from caller stack at BF6FF5; POP ECX at BF7004; atexit returns 0/-1; __onexit internals not re-audited"}
+    {
+      "address": "00cd7f05",
+      "native": "00b74b80",
+      "function": "00cd7f00",
+      "contract": "ECX=01090054 from CD7F00; constructor returns same pool in EAX; no stack arguments"
+    },
+    {
+      "address": "00cd7f0f",
+      "native": "00bf6ff5",
+      "function": "00cd7f00",
+      "contract": "PUSH CE0E50 at CD7F0A; POP ECX at CD7F14 cleans one argument; preserve EAX to RET"
+    },
+    {
+      "address": "00ce0e55",
+      "native": "00b74690",
+      "function": "00ce0e50",
+      "kind": "tail_jump",
+      "contract": "ECX overwritten with same canonical 01090054 before tail jump"
+    },
+    {
+      "address": "00b74bd2",
+      "native": "00ce220c+IAT",
+      "function": "00b74b80",
+      "contract": "InitializeCriticalSection(this+0C); EDI=ESI+0C at B74BC4; PUSH EDI at B74BC7; imported stdcall boundary; no caller cleanup"
+    },
+    {
+      "address": "00b74c02",
+      "native": "00bf55be",
+      "function": "00b74b80",
+      "contract": "Table allocation 80h bytes, capacity already 32; ADD ESP,4 at B74C09; EDI captures result"
+    },
+    {
+      "address": "00b74c34",
+      "native": "00bf6989",
+      "function": "00b74b80",
+      "contract": "Optional old this+28 table; PUSH EAX at B74C33, ADD ESP,4 at B74C39 before replacement publication"
+    },
+    {
+      "address": "00b746a8",
+      "native": "00bf65ac",
+      "function": "00b74690",
+      "contract": "Each live table entry, PUSH ECX at B746A7; ADD ESP,4 at B746B0; count reload controls loop"
+    },
+    {
+      "address": "00b746c0",
+      "native": "00bf6989",
+      "function": "00b74690",
+      "contract": "Nonnull table after all slabs; PUSH EAX at B746BF; ADD ESP,4 at B746C5"
+    },
+    {
+      "address": "00b746dd",
+      "native": "00ce2210+IAT",
+      "function": "00b74690",
+      "contract": "LeaveCriticalSection(this+0C); EBX loaded from CE2210 at B746D2; positive signed recursion decremented first; PUSH ESI at B746DC; imported stdcall"
+    },
+    {
+      "address": "00b746e7",
+      "native": "00ce2214+IAT",
+      "function": "00b74690",
+      "contract": "DeleteCriticalSection(this+0C), PUSH ESI at B746E6; imported stdcall; precedes base profile and unlink"
+    },
+    {
+      "address": "00bf55be",
+      "native": "00bf681b",
+      "function": "00bf55be",
+      "kind": "tail_jump",
+      "contract": "Existing library operator_new forwarding thunk; reuse singleton_lifetime_allocate boundary"
+    },
+    {
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "function": "00bf6989",
+      "kind": "tail_jump",
+      "contract": "Existing library free forwarding thunk; reuse singleton_lifetime_free boundary"
+    },
+    {
+      "address": "00bf6ff9",
+      "native": "00bf6fb9",
+      "function": "00bf6ff5",
+      "contract": "Existing CRT __onexit boundary; argument copied from caller stack at BF6FF5; POP ECX at BF7004; atexit returns 0/-1; __onexit internals not re-audited"
+    }
   ],
   "all_current_references": [
-    {"target":"00cd7f00","references":[{"site":"00ce3570","kind":"DATA"}]},
-    {"target":"00b74b80","references":[{"site":"00cd7f05","function":"00cd7f00","kind":"UNCONDITIONAL_CALL"}]},
-    {"target":"00ce0e50","references":[{"site":"00cd7f0a","function":"00cd7f00","kind":"DATA_callback_address"}]},
-    {"target":"00b74690","callers":["00ce0e50"]}
+    {
+      "target": "00cd7f00",
+      "references": [
+        {
+          "site": "00ce3570",
+          "kind": "DATA"
+        }
+      ]
+    },
+    {
+      "target": "00b74b80",
+      "references": [
+        {
+          "site": "00cd7f05",
+          "function": "00cd7f00",
+          "kind": "UNCONDITIONAL_CALL"
+        }
+      ]
+    },
+    {
+      "target": "00ce0e50",
+      "references": [
+        {
+          "site": "00cd7f0a",
+          "function": "00cd7f00",
+          "kind": "DATA_callback_address"
+        }
+      ]
+    },
+    {
+      "target": "00b74690",
+      "callers": [
+        "00ce0e50"
+      ]
+    }
   ],
   "crt_table": {
     "live_bytes_at_00ce356c": "b07ecd00007fcd00207fcd00",
-    "cells": [{"cell":"00ce356c","value":"00cd7eb0"},{"cell":"00ce3570","value":"00cd7f00"},{"cell":"00ce3574","value":"00cd7f20"}],
+    "cells": [
+      {
+        "cell": "00ce356c",
+        "value": "00cd7eb0"
+      },
+      {
+        "cell": "00ce3570",
+        "value": "00cd7f00"
+      },
+      {
+        "cell": "00ce3574",
+        "value": "00cd7f20"
+      }
+    ],
     "established": "Table membership and relative storage order",
     "not_established": "Walker, bounds, direction, phase, invocation order, runtime startup or real process-exit order"
   },
@@ -101,9 +213,22 @@
     "trim_virtual0": "00b74c60",
     "allocator_head": "00e188b4",
     "producer": "00b74b80",
-    "fields": {"00":"profile","04":"previous","08":"next","0c":"24-byte Win32 CRITICAL_SECTION","24":"signed recursion","28":"slab table pointer","2c":"slab count","30":"table capacity","34":"first free slab"},
+    "fields": {
+      "00": "profile",
+      "04": "previous",
+      "08": "next",
+      "0c": "24-byte Win32 CRITICAL_SECTION",
+      "24": "signed recursion",
+      "28": "slab table pointer",
+      "2c": "slab count",
+      "30": "table capacity",
+      "34": "first free slab"
+    },
     "layout_reconciled_with": "include/bsp/native_model_pool.hpp and source offsetof/sizeof assertions",
-    "distinct_from": ["0109008c model-base pool with D62C78/B6E980/B6E3D0","0108ff58 plain-node pool"],
+    "distinct_from": [
+      "0109008c model-base pool with D62C78/B6E980/B6E3D0",
+      "0108ff58 plain-node pool"
+    ],
     "slot_contract_review_limit": "188h slots, 3144h slabs and slot+184 ID are existing source/audit contracts; allocation/slab bodies not independently re-audited in BG"
   },
   "corrections": [
@@ -111,7 +236,11 @@
       "was": "Parent model-base bootstrap readiness treated neighbor CD7F00/B74B80/CE0E50 as not reconstructed or named-but-incomplete",
       "is": "All three are complete existing integrated NativeModelPool providers; only application lifecycle wiring and CRT invocation evidence remain open",
       "evidence": "Current lookup/show/proto, source parity, commits 7372836d and 4ff70e29, reports/native_render_storage_integration_audit.json",
-      "parent_files": ["docs/NATIVE_MODEL_BASE_BOOTSTRAP_READINESS_BG.md","reports/native_model_base_bootstrap_readiness_bg.json","docs/NATIVE_MODEL_BASE_BOOTSTRAP.md"],
+      "parent_files": [
+        "docs/NATIVE_MODEL_BASE_BOOTSTRAP_READINESS_BG.md",
+        "reports/native_model_base_bootstrap_readiness_bg.json",
+        "docs/NATIVE_MODEL_BASE_BOOTSTRAP.md"
+      ],
       "action": "Parent appends corrective chronology; worker does not edit parent-owned files"
     },
     {
@@ -130,8 +259,23 @@
     "kind": "evidence and application integration preparation",
     "new_neighbor_body_implementation_ready": false,
     "reason": "Neighbor bodies and static binding adapter already exist",
-    "reuse": ["NativeModelPoolStorage","NativeModelPool","bind_static_native_model_pool_01090054","initialize_static_native_model_pool_00cd7f00","destroy_static_native_model_pool_00ce0e50","AllocatorListDomain","existing model-base bootstrap providers"],
-    "requirements": ["Identify one canonical application owner and shared allocator domain","Keep storage/domain/companion alive through the registered callback","Bind real trim dispatch before list publication","Establish original CRT walker/caller, bounds and ordering before claiming native startup parity","Establish consumer destruction and process-exit lifetime before choosing startup/shutdown wiring","Assign explicit application files and recovered caller addresses before implementation"],
+    "reuse": [
+      "NativeModelPoolStorage",
+      "NativeModelPool",
+      "bind_static_native_model_pool_01090054",
+      "initialize_static_native_model_pool_00cd7f00",
+      "destroy_static_native_model_pool_00ce0e50",
+      "AllocatorListDomain",
+      "existing model-base bootstrap providers"
+    ],
+    "requirements": [
+      "Identify one canonical application owner and shared allocator domain",
+      "Keep storage/domain/companion alive through the registered callback",
+      "Bind real trim dispatch before list publication",
+      "Establish original CRT walker/caller, bounds and ordering before claiming native startup parity",
+      "Establish consumer destruction and process-exit lifetime before choosing startup/shutdown wiring",
+      "Assign explicit application files and recovered caller addresses before implementation"
+    ],
     "application_search": "Parent src/include/bsp/tests/CMake/GAME_EXECUTABLE search found bind/start names only in native_model_pool declarations and definitions; no application invocation",
     "missing_owned_ghidra_functions": [],
     "duplicate_body_packet_closed": true
@@ -143,8 +287,20 @@
     "source_hash_parity": true,
     "report_call_verifier": "passed: 10 direct call/tail-jump rows checked, 0 failed; 3 explicit imported IAT rows skipped by checker and inspected from assembly",
     "historical_integrated_audit": "reports/native_render_storage_integration_audit.json",
-    "historical_build": {"command":"./scripts/build.ps1","passed":true,"tests":2,"log":"reports/native_render_storage_build.txt","rerun_in_bg":false},
-    "historical_model_fixture": {"path":"local/native_model_pool_primary_fixture.txt","sha256":"4c7a8fb3061b05830b69293d403fc82e7ad66bc46ae1bfda429f88d2e90934a7","audit_records_pass":true,"rerun_in_bg":false,"scope":"Original storage/lifetime fixture injects atexit result 17 and invokes callback; not real process-exit scheduling"},
+    "historical_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests": 2,
+      "log": "reports/native_render_storage_build.txt",
+      "rerun_in_bg": false
+    },
+    "historical_model_fixture": {
+      "path": "local/native_model_pool_primary_fixture.txt",
+      "sha256": "4c7a8fb3061b05830b69293d403fc82e7ad66bc46ae1bfda429f88d2e90934a7",
+      "audit_records_pass": true,
+      "rerun_in_bg": false,
+      "scope": "Original storage/lifetime fixture injects atexit result 17 and invokes callback; not real process-exit scheduling"
+    },
     "new_tests": 0,
     "game_run_in_bg": false,
     "game_validated": false,
@@ -162,5 +318,10 @@
       "lease_scope": "Only owned CD7F00/B74B80/CE0E50 and two output files; all Ghidra operations read-only",
       "report_evidence": "Address/native/function call rows, coverage and was/is/evidence corrections included"
     }
+  },
+  "central_bh_review": {
+    "annotation_report": "reports/native_bh_readiness_annotation_audit.json",
+    "notes": "Existing startup signature corrected to int cdecl; zero newbodycredit.",
+    "new_native_body_credit": 0
   }
 }

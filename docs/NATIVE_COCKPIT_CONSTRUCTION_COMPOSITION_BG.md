@@ -1,6 +1,6 @@
 # Cockpit constructor composition contract, BG
 
-Address: `00B3C800`. Evidence-only review, 2026-09-13. The complete constructor
+Addresses: `00B3C800`. Evidence-only review, 2026-09-13. The complete constructor
 body is recoverable, and the BF raw-camera and BG helper-lifetime dependencies
 exist. A production constructor packet still needs a concrete preparation and
 viewport-view lifetime provider. The current interfaces do not establish that
