@@ -1,0 +1,318 @@
+{
+  "packet": "orch6_throw_rates_m",
+  "owner": "agent/orch6-throw-rates-m",
+  "base_commit": "43d53129",
+  "doc": "docs/GAMEPLAY_THROW_RATES.md",
+  "sources": [
+    "include/bsp/gameplay_settings.hpp",
+    "src/gameplay_settings.cpp"
+  ],
+  "compiled_source_sha256": {
+    "include/bsp/gameplay_settings.hpp": "4476d28ccb109c561786701c06538bc205d734b567a343a410c0800cd6d0c823",
+    "src/gameplay_settings.cpp": "b17fe3d9e9a75d0c19d40cab696dbc6459fbd781502f6f48bc39d2b5e270536b"
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only BSP wrappers; Client.verify checks before each batch"
+  },
+  "routine": {
+    "address": "0083b5e0",
+    "name": "BSP_GameSettings_LoadFromLuaGlobals",
+    "body_inclusive": [
+      "0083b5e0",
+      "00842951"
+    ],
+    "native_abi": "ECX=settings, zero stack arguments, plain RET at00842951; Ghidra displayed prototype omits ECX receiver",
+    "receiver_provenance": "00424BF5 MOV ECX,ESI before caller00424BFC; loader0083B604 MOV ESI,ECX, no further ESI write until epilogue POP ESI0084294B",
+    "current_name_preserved": true,
+    "coverage": "partial arithmetic/store projection in an existing partial keyed loader; complete native loader and native SEH/lifecycle not reconstructed",
+    "covered_ranges_inclusive": [
+      [
+        "0083da26",
+        "0083da66"
+      ],
+      [
+        "0083da9b",
+        "0083dadb"
+      ],
+      [
+        "0083db10",
+        "0083db50"
+      ]
+    ],
+    "final_store_lengths": 3,
+    "api": "void store_gameplay_artillery_throw_rate_0083da26(float duration, float& rate) noexcept",
+    "abi_compatible": false,
+    "owner": "existing GameplayTuningSettings; no new owner, no GameHosts modifications",
+    "registered_source": "Existing src/gameplay_settings.cpp is already compiled; no startup.cmake change needed"
+  },
+  "inputs": [
+    {
+      "key": "PlayerArtilleryThrow.ThrowIncrementTime_HasTarget",
+      "getter_site": "0083da21",
+      "fallback_duration": 12.0,
+      "store_site": "0083da64",
+      "settings_offset": "038",
+      "installed_duration": 2.0,
+      "installed_stored_rate": 0.5
+    },
+    {
+      "key": "PlayerArtilleryThrow.ThrowIncrementTime_NoTarget",
+      "getter_site": "0083da96",
+      "fallback_duration": 8.0,
+      "store_site": "0083dad9",
+      "settings_offset": "03c",
+      "installed_duration": 4.0,
+      "installed_stored_rate": 0.25
+    },
+    {
+      "key": "PlayerArtilleryThrow.ThrowDecrementTime",
+      "getter_site": "0083db0b",
+      "fallback_duration": 10.0,
+      "store_site": "0083db4e",
+      "settings_offset": "040",
+      "installed_duration": 2.0,
+      "installed_stored_rate": 0.5
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d7a3a0",
+      "bytes": "000000a09999b93f",
+      "type": "double",
+      "value_exact": "0.100000001490116119384765625",
+      "meaning": "exact widened0.1f comparison minimum"
+    },
+    {
+      "address": "00d7a2f0",
+      "bytes": "cdcccc3d",
+      "type": "float",
+      "meaning": "replacement minimum0.1f"
+    }
+  ],
+  "schedule": "FSTP inputfloat; FLD inputfloat; FLD widened minimum; FCOMIP ST0,ST1; FSTP ST0; JBE retain duration including unordered; otherwise MOVSS minimum; MOVSS inputslot; FLD duration; FLD1; FDIVRP ST1,ST0; FSTP settings float. Each getter/store precedes next getter.",
+  "callees": [
+    {
+      "entry": "00b67800",
+      "name": "BSP_LuaObject_GetByName",
+      "body_inclusive": [
+        "00b67800",
+        "00b678da"
+      ],
+      "abi": "ECX table reference; stack output and key; RET8; EAX output",
+      "contract": "actual Lua gettable/metatable and tracked14h reference construction remain existing service"
+    },
+    {
+      "entry": "00b66330",
+      "name": "BSP_LuaReference_GetFloatOrDefault",
+      "body_inclusive": [
+        "00b66330",
+        "00b66371"
+      ],
+      "abi": "ECX child reference; stack float fallback; RET4; ST0 float32 value",
+      "contract": "valid kind2 and exact Lua NUMBER type3 use numeric conversion rounded through float32; otherwise fallback; numeric strings rejected"
+    },
+    {
+      "entry": "00b67700",
+      "name": "BSP_LuaObject_Destruct",
+      "body_inclusive": [
+        "00b67700",
+        "00b6771f"
+      ],
+      "abi": "ECX reference, plain RET",
+      "contract": "release populated current reference and clear current kind; library lifecycle unchanged"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00424bfc",
+      "native": "0083b5e0",
+      "function": "00424a10"
+    },
+    {
+      "address": "0083d95e",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d97f",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d998",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d9af",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d9c5",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d9de",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083d9f2",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083da08",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083da21",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083da67",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083da7d",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083da96",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083dadc",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083daf2",
+      "native": "00b67800",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083db0b",
+      "native": "00b66330",
+      "function": "0083b5e0"
+    },
+    {
+      "address": "0083db51",
+      "native": "00b67700",
+      "function": "0083b5e0"
+    }
+  ],
+  "call_coverage": "All16 direct calls in original tested section0083D94A..0083DB55, plus the only observed direct loader caller; no claim to enumerate unrelated calls elsewhere in0083B5E0.",
+  "no_ghidra_function": [],
+  "flow_gaps": [],
+  "corrections": [
+    "Existing reports/gameplay_settings.json installed/default values at038/03C/040 are duration inputs; final store sites already correct. They do not describe the reciprocal stored output.",
+    "Legacy member identifiers retained for0095DC40 consumer; header comments now identify rates.",
+    "Existing overall keyed loader is grouped by offsets, not complete native order. Corrected this prior header claim; only within-row represented getter/store order is established here."
+  ],
+  "installed_data": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/Scripts/datatables/shipglobals.lua",
+    "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80",
+    "lines": [
+      53,
+      54,
+      55,
+      56,
+      57
+    ],
+    "scope": "static source inspection plus original-byte arithmetic; no mission run or actual Lua load exercised by this packet"
+  },
+  "fixture": {
+    "source": "local/throw_probe.cpp",
+    "preparer": "local/prepare_throw_probe.py",
+    "builder": "local/build_throw_probe.ps1",
+    "binary": "local/throw_probe.exe",
+    "log": "local/throw_probe.log",
+    "original_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_section": "local/throw_native_section.bin",
+    "section_inclusive": [
+      "0083d94a",
+      "0083db55"
+    ],
+    "section_sha256": "ba1acedcbf9fe63dc677087fa91310f842fbbcee64c818f9badb42488d0d815d",
+    "section_size": 524,
+    "relocation": "original internal branches unchanged,16 CALL displacements redirected, RET appended at0083DB56; native constant/string pages copied from same original PE; scratch stack holds native SEH byte stores without installing SEH frame",
+    "numerical_cases": 240,
+    "fp_state_comparisons": 240,
+    "ordered_prefix_cases": 6,
+    "result": "PASS",
+    "input_bits": [
+      "00000000",
+      "80000000",
+      "bf800000",
+      "3d4ccccd",
+      "3dcccccc",
+      "3dcccccd",
+      "3dccccce",
+      "3f800000",
+      "40000000",
+      "40800000",
+      "41400000",
+      "41000000",
+      "41200000",
+      "00000001",
+      "7f7fffff",
+      "7f800000",
+      "ff800000",
+      "7fc12345",
+      "7f812345",
+      "ffc12345"
+    ],
+    "controls": "24/53/64-bit x87 precision x all4 rounding modes, exceptions masked, MXCSR initially1F80h",
+    "compared": [
+      "five float32 output words atsettings30..40",
+      "read-key sequence",
+      "x87 control word",
+      "full x87 status word including TOP",
+      "MXCSR"
+    ],
+    "not_compared": [
+      "x87 tag word",
+      "all registers/XMM values/EFLAGS",
+      "DAZ/FTZ variants",
+      "unmasked FP exceptions",
+      "complete binary ABI"
+    ],
+    "ordered_prefix_scope": "fallback reads, stop before each of5 getters and normal completion. Compare already-written outputs and read keys. Native longjmp and C++ throw are test boundaries, not native unwind proof.",
+    "lua_scope": "GetByName, float getter and destructor redirected; no real Lua state, native tracking lifetime, metatables, or error/unwind execution",
+    "tracked_tests_added": 0
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/throw_rate_build.log",
+    "platform": "MSVC Win32",
+    "result": "PASS",
+    "ctest": "2/2: reconstructed_math, native_math_differential"
+  },
+  "call_check": {
+    "command": "python tools/verify_report_calls.py reports/gameplay_throw_rates.json",
+    "log": "local/throw_rate_call_check.log",
+    "result": "PASS:17 checked,0 failed"
+  },
+  "artifact_manifest": "local/throw_rate_manifest.json",
+  "runtime_evidence": {
+    "game_run": false,
+    "scope": "compiled and focused original-byte fixture only; parent owns runtime integration"
+  },
+  "limits": [
+    "Existing whole keyed loader remains partial and reordered relative to native outside this row.",
+    "Lua reads/lifecycle/errors remain existing host contracts.",
+    "New helper is a C++ projection, not drop-in original ABI.",
+    "No Ghidra mutation or duplicated library numerical service."
+  ]
+}

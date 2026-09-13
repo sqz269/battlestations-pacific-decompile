@@ -58,9 +58,11 @@ struct GameplayTuningSettings {
     float          debris_splash_fxid_2;                          // +02Ch  Debris.SplashFXID.[2]
     float          player_artillery_throw_after_shot_fire_time;   // +030h  PlayerArtilleryThrow.AfterShot_FireTime
     float          player_artillery_throw_after_shot_wait_time;   // +034h  PlayerArtilleryThrow.AfterShot_WaitTime
-    float          player_artillery_throw_throw_increment_time_has_target; // +038h  PlayerArtilleryThrow.ThrowIncrementTime_HasTarget
-    float          player_artillery_throw_throw_increment_time_no_target; // +03Ch  PlayerArtilleryThrow.ThrowIncrementTime_NoTarget
-    float          player_artillery_throw_throw_decrement_time;   // +040h  PlayerArtilleryThrow.ThrowDecrementTime
+    // Legacy member names retain Lua duration keys; these three fields store
+    // reciprocal rates after the native minimum-duration clamp, not seconds.
+    float          player_artillery_throw_throw_increment_time_has_target; // +038h  rate from PlayerArtilleryThrow.ThrowIncrementTime_HasTarget
+    float          player_artillery_throw_throw_increment_time_no_target; // +03Ch  rate from PlayerArtilleryThrow.ThrowIncrementTime_NoTarget
+    float          player_artillery_throw_throw_decrement_time;   // +040h  rate from PlayerArtilleryThrow.ThrowDecrementTime
     bool           pipe_sight_params_pipesight_enabled;           // +044h  PipeSightParams.pipesight_enabled
     std::byte gap_045h[0x3];
     float          pipe_sight_params_blur_heavy_add;              // +048h  PipeSightParams.blur_heavy_add
@@ -524,7 +526,17 @@ struct GameplayTuningRowView {
     virtual bool boolean_or(const char* key, int index, bool fallback) = 0;
 };
 
-// The keyed part of 0083B5E0, in the loader's own order. The unkeyed parts of the routine
+// Arithmetic/store projection of0083DA26..0083DA66, repeated for+3C/+40 at
+// 0083DA9B..0083DADB and0083DB10..0083DB50. `duration` is the float32 value
+// returned by the existing row getter; the native clamp retains unordered NaN.
+// Uses the caller's x87 control word and writes one float32 reciprocal rate.
+// No Lua wrapper lifecycle or native SEH state is represented by this API.
+// Evidence: docs/GAMEPLAY_THROW_RATES.md. New C++ ABI, not a native replacement.
+void store_gameplay_artillery_throw_rate_0083da26(float duration, float& rate) noexcept;
+
+// The keyed projection of 0083B5E0, grouped by settings fields. The overall
+// sequence is not the native loader's complete call/error order. Within the
+// PlayerArtilleryThrow block, each read/store precedes the next read. The unkeyed parts of the routine
 // (the four 58h sub-objects, the failure descriptor vector at +3E8h, the three physics
 // material records at +4E0h, the per-class sound records at +5BCh and the effect-name reads)
 // are not in this sequence; docs/GAMEPLAY_SETTINGS.md lists them by address range.
