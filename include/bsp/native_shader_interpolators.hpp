@@ -5,7 +5,8 @@ namespace bsp {
 // Host continuation storage, never inserted into the actual B0h builder or its
 // 0Ch arrays. Keep this address, builder, descriptors, usage buffers, output and
 // supplied string owner alive until completion or explicit diagnostic cleanup.
-// A failed operation cannot replay or admit builder destruction. Native FH3
+// Frame lifetime/replay checks are enforced here. The caller must prohibit
+// builder destruction while this operation is live or failed. Native FH3
 // cleanup is not reconstructed: partial acquisitions stay visible here.
 struct NativeShaderInterpolatorOperation final {
     enum class Phase { fresh, field_allocation, temporary_name, field_copy,
