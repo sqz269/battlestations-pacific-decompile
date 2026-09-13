@@ -1,0 +1,790 @@
+{
+  "packet": "orch4_input_defaults_am",
+  "status": "raw_default_binding_preservation_reconstructed_component_validated_integration_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_settings_defaults.hpp",
+    "src/native_input_settings_defaults.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_SETTINGS_DEFAULTS.md",
+  "functions": [
+    {
+      "address": "006ab820",
+      "source_entry": "preserve_native_input_default_bindings_006ab820",
+      "coverage": "Complete547-byte normal schedule with required raw006AA640 provider; not full input startup."
+    }
+  ],
+  "native_abi": "ECX actual540h settings, no stack inputs. Plain RET when byte50 is nonzero; otherwise tail JMP006AA640 with original settings receiver.",
+  "byte_spans": [
+    {
+      "address": "006ab820",
+      "end_exclusive": "006aba43",
+      "bytes": 547,
+      "instructions": 169,
+      "disk_live_equal": true,
+      "sha256": "8bbf5eba46dc37f14ddda5356ec554a4ed40b13cdfb0bec4bd06e06b1d817b44",
+      "capture": "local/input_defaults_am_live.txt",
+      "role": "owned full engine body"
+    },
+    {
+      "address": "006a1460",
+      "end_exclusive": "006a14df",
+      "bytes": 127,
+      "instructions": 49,
+      "disk_live_equal": true,
+      "sha256": "fca62f512cedb24e5a57e53033407c5b97527dd2567922ec3fee7cad5b369edd",
+      "capture": "local/input_defaults_am_subscript_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "006a0ba0",
+      "end_exclusive": "006a0d5c",
+      "bytes": 444,
+      "instructions": 183,
+      "disk_live_equal": true,
+      "sha256": "7483a8c57e40de064ff051a8bd3c2557c9662b7a66317588a0d810accd20b0f2",
+      "capture": "local/input_defaults_am_hint_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "0069ab10",
+      "end_exclusive": "0069ab99",
+      "bytes": 137,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "8a6cc91a1f681fb793ebd6185ea79d824d1b310d1ac4d8a93c83c3b4e63c8600",
+      "capture": "local/input_defaults_am_decrement_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "0069c370",
+      "end_exclusive": "0069c3d3",
+      "bytes": 99,
+      "instructions": 38,
+      "disk_live_equal": true,
+      "sha256": "73eec1ae18a957fd1751dc4299f5ef6d532d0bdc6486c6d0e32266a4b6e025df",
+      "capture": "local/input_defaults_am_increment_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "00a92790",
+      "end_exclusive": "00a9281a",
+      "bytes": 138,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "7b7150325d19477cd3de556670892d0be42824ba34095d6c77625fb0ed74b465",
+      "capture": "local/input_slots_al_read_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "00a92820",
+      "end_exclusive": "00a92834",
+      "bytes": 20,
+      "instructions": 6,
+      "disk_live_equal": true,
+      "sha256": "1669b2051cd070d31367c35fac28f08231af147b0bd9517eefc620e9a3499853",
+      "capture": "local/input_slots_al_count_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "00a93750",
+      "end_exclusive": "00a937c2",
+      "bytes": 114,
+      "instructions": 39,
+      "disk_live_equal": true,
+      "sha256": "096bceba3e9454bcbf1beb3a216341b368c125250842ad9ed2c5dc7623109978",
+      "capture": "local/input_slots_al_install_live.txt",
+      "role": "existing boundary or native library fixture body"
+    },
+    {
+      "address": "006aa640",
+      "end_exclusive": "006aac44",
+      "bytes": 1540,
+      "instructions": 458,
+      "disk_live_equal": true,
+      "sha256": "2ddf5be7c7dbf55a3e46ac136422d934c779e9a18d8684fa19e8480042fb48a4",
+      "capture": "local/input_defaults_am_keyboard_live.txt",
+      "role": "early guard/return only executed"
+    }
+  ],
+  "calls": [
+    {
+      "function": "006ab820",
+      "address": "006ab837",
+      "native": "004bec00",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab854",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab868",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab87c",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab890",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab8a4",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab8b8",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab8cc",
+      "native": "006a1460",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab8f2",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab905",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab90f",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab919",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab924",
+      "native": "00a92820",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab935",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab962",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab978",
+      "native": "00a92790",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab982",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab9c0",
+      "native": "00a93750",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab9d2",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006aba02",
+      "native": "00a93750",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006aba17",
+      "native": "0069c370",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006ab820",
+      "address": "006aba36",
+      "native": "006aa640",
+      "kind": "tail_jump",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a1460",
+      "address": "006a14b6",
+      "native": "006a0ba0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a1460",
+      "address": "006a14c4",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a1460",
+      "address": "006a14ce",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0bbf",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0be0",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0c08",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0c24",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0c4d",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0c71",
+      "native": "0069ab10",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0c95",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0cac",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0cd9",
+      "native": "0069c370",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0ce7",
+      "native": "00699e10",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0d0f",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0d24",
+      "native": "0069f210",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006a0ba0",
+      "address": "006a0d3d",
+      "native": "0069fdb0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "0069ab10",
+      "address": "0069ab18",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "0069c370",
+      "address": "0069c378",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "00a93750",
+      "address": "00a93772",
+      "native": "00a93500",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "00a93750",
+      "address": "00a937b7",
+      "native": "00a91e80",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa67f",
+      "native": "004bec00",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa68f",
+      "native": "00a92260",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6be",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6cf",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6d9",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6ea",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa6fe",
+      "native": "0055b400",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa72e",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa73f",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa749",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa756",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa75f",
+      "native": "00444be0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7cc",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7e9",
+      "native": "006a5aa0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa7f0",
+      "native": "006a1560",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa84c",
+      "native": "00546840",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa85e",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa88c",
+      "native": "00552770",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8be",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8cf",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8d9",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa8eb",
+      "native": "006aa090",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa90b",
+      "native": "006a45c0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa935",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa94c",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa971",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa989",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9a2",
+      "native": "006a5aa0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9a9",
+      "native": "006a1560",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9de",
+      "native": "006a4ca0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9f1",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aa9fa",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa13",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa25",
+      "native": "0048d3b0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa32",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa37",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa45",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa56",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaa73",
+      "native": "00bf6713",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaad3",
+      "native": "00a93750",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaaec",
+      "native": "00699bf0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab37",
+      "native": "00a93750",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab87",
+      "native": "00a93750",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aabbf",
+      "native": "00552d40",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aabf8",
+      "native": "0055b230",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aac02",
+      "native": "00bf65ac",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aac18",
+      "native": "005540c0",
+      "kind": "call",
+      "evidence": "Owned engine body or reused library/callee native listing; complete containing function and encoded target verified. Keyboard body reached only through its early return guard in fixture."
+    },
+    {
+      "function": "00698a10",
+      "address": "00699b08",
+      "native": "006ab820",
+      "evidence": "Live caller xref, actual loader body and ECX from preceding settings singleton getter."
+    }
+  ],
+  "library_boundary": {
+    "increment": "0069C370 and existing00869A20 are byte-identical except rel32 CRT targets; actual same18h nil15 iterator.",
+    "subscript": "Reuse existing signed-int/raw-DWORD lower-bound and insertion adapter. N18B6A1460 writes zero mapped bits with MOV; deadline4D6900 uses XORPS/MOVSS. Both yield identical raw zero and return node10.",
+    "hint": "6A0BA0 internally generated valid lower-bound hint selects same five vacant-parent cases as existing unique adapter. Fixture executes original6A1460/6A0BA0/69AB10, sharing actual69F210-equivalent link boundary.",
+    "link": "Existing concrete link_input_deadline_map_node owns18h key/DWORD nodes with14/15 color/nil, count and allocator. No new library implementation or renamed STL symbol."
+  },
+  "boundaries": {
+    "keyboard": "Required NativeInputSettingsKeyboardApplication provider for actual540h receiver. No cast to projected InputSettings and no successful fallback.",
+    "scratch": "Cleared descriptor high24 flag bits and absent-slot reader stack preimage are explicit source inputs; private native stack aliases and FH3 not supplied.",
+    "ownership": "Slot descriptors/scales move; modifier arrays remain with their individual slots. Ascending overlap and repeat calls are not made idempotent."
+  },
+  "limitations": [
+    "Actual540h constructor/data table population and raw006AA640 loaded-settings application remain unfinished dependencies.",
+    "Fixture keyboard tail executes original zero-loaded early return only. No loaded settings, original ABI/FH3, hardware polling or gameplay proof."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 1680,
+    "calls_checked": 90,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "probe_log": "local/input_defaults_am_probe.log",
+    "probe_log_sha256": "88b92ab3a4f1cd8792317208a8c6183f2d5d884619825402063c329071d85c45",
+    "fixture_source": "local/input_defaults_am_probe.cpp",
+    "fixture_source_sha256": "53bc9f7c3d978d0e6e3552ba38579630c96fa32f08cb04427935ded275bfd0f6",
+    "fixture_header_sha256": "3fe3d55d605cc0fba9e39e383d0261ce7fd0d81e0d919648e93a629204117a90",
+    "original_tree_insertions": 7,
+    "original_resizes": 50,
+    "original_rebinds": 144,
+    "original_keyboard_guard_returns": 4,
+    "device_calls": 0,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "annotations": "reports/native_input_settings_defaults_am_annotations.json",
+  "body_ownership_repair": {
+    "address": "006aa640",
+    "unowned_decoded_call": "006aac18",
+    "end_exclusive": "006aac44",
+    "bytes": 1540,
+    "old_flow_gap_count": 0,
+    "body_restored": true,
+    "receipt": "reports/native_input_settings_defaults_am_definitions.json",
+    "library_no_return_flags_changed": false
+  }
+}
