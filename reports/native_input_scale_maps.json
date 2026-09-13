@@ -629,12 +629,46 @@
     {
       "native": "00444be0",
       "reason": "non-keyboard shared weather, ship, award, warning and settings loader callers outside this packet",
-      "sites": ["006912ab", "006a8448", "004457f2", "00445805", "004b0ff6", "00445121", "00445521", "00445641", "00445a8c", "004b0edf", "0055cd35", "0055ce5d", "006a9e87", "0055ded8", "0055e228", "0068ecb3", "008333df", "00979c8f", "00979cb0", "00979e0c", "00979e99", "00980a0f"]
+      "sites": [
+        "006912ab",
+        "006a8448",
+        "004457f2",
+        "00445805",
+        "004b0ff6",
+        "00445121",
+        "00445521",
+        "00445641",
+        "00445a8c",
+        "004b0edf",
+        "0055cd35",
+        "0055ce5d",
+        "006a9e87",
+        "0055ded8",
+        "0055e228",
+        "0068ecb3",
+        "008333df",
+        "00979c8f",
+        "00979cb0",
+        "00979e0c",
+        "00979e99",
+        "00980a0f"
+      ]
     },
     {
       "native": "0055b490",
       "reason": "four EH unwind callsites outside packet roots",
-      "sites": ["00c6dc05", "00c6dc75", "00c6dd05", "00c7f9f3"]
+      "sites": [
+        "00c6dc05",
+        "00c6dc75",
+        "00c6dd05",
+        "00c7f9f3"
+      ]
     }
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/native_input_keyboard_storage_ax_validation.json",
+    "status": "fourteen_source_operations_component_build_and_native_differential_passed_combined_publication_pending",
+    "native_differential": true,
+    "game_validated": false
+  }
 }

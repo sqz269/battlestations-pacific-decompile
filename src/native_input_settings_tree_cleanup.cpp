@@ -202,4 +202,5 @@ void* erase_native_input_device_tree_range_006a7aa0(void* t,void* o,NativeKeyboa
 void* erase_native_input_controller_tree_range_006a6a20(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::controller,t,o,a,b,s); }
 void* erase_native_input_default_tree_range_0069fe70(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::defaults,t,o,a,b,s); }
 void* erase_native_input_preset_tree_range_006a1aa0(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::preset,t,o,a,b,s); }
+void* erase_native_input_scale_tree_range_0055b230(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::int_set,t,o,a,b,s); }
 } // namespace bsp

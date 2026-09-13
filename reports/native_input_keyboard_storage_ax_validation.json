@@ -1,0 +1,2563 @@
+{
+  "packet": "orch4_input_keyboard_storage_ax",
+  "status": "fourteen_source_operations_component_build_and_native_differential_passed_combined_publication_pending",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "worker_reports": [
+    "reports/native_input_device_index.json",
+    "reports/native_input_vector_map_index.json",
+    "reports/native_input_scale_maps.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "00443d60",
+      "end_inclusive": "00443db2",
+      "bytes": 83,
+      "sha256": "e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_WeatherFloatMap_LowerBound at 00443d60\nSignature: undefined BSP_WeatherFloatMap_LowerBound(void)\nEntry: 00443d60\nBody: 00443d60 - 00443db2",
+      "returns": [
+        {
+          "site": "00443db0",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00444910",
+      "end_inclusive": "00444b0b",
+      "bytes": 508,
+      "sha256": "2d70f450e254d0a6283e6434e228a5f16d568f98bcf430459c4f795a25ad4a15",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_StringFloatMap_InsertHint_00444910 at 00444910\nSignature: undefined STL_StringFloatMap_InsertHint_00444910(void)\nEntry: 00444910\nBody: 00444910 - 00444b0b",
+      "returns": [
+        {
+          "site": "0044493b",
+          "operand": "0x10"
+        },
+        {
+          "site": "0044498f",
+          "operand": "0x10"
+        },
+        {
+          "site": "004449e3",
+          "operand": "0x10"
+        },
+        {
+          "site": "00444a41",
+          "operand": "0x10"
+        },
+        {
+          "site": "00444a56",
+          "operand": "0x10"
+        },
+        {
+          "site": "00444acd",
+          "operand": "0x10"
+        },
+        {
+          "site": "00444ae2",
+          "operand": "0x10"
+        },
+        {
+          "site": "00444b09",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "00444be0",
+      "end_inclusive": "00444cd8",
+      "bytes": 249,
+      "sha256": "da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_WeatherFloatMap_LookupOrInsert at 00444be0\nSignature: undefined BSP_WeatherFloatMap_LookupOrInsert(void)\nEntry: 00444be0\nBody: 00444be0 - 00444cd8",
+      "returns": [
+        {
+          "site": "00444cd6",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0048d3b0",
+      "end_inclusive": "0048d47a",
+      "bytes": 203,
+      "sha256": "9f7b7c43d63b244f3a5f1fe745f41f749e5fd67685760054788bee2465a96286",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0048d3b0 at 0048d3b0\nSignature: undefined FUN_0048d3b0(void)\nEntry: 0048d3b0\nBody: 0048d3b0 - 0048d47a",
+      "returns": [
+        {
+          "site": "0048d459",
+          "operand": "4"
+        },
+        {
+          "site": "0048d478",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00546840",
+      "end_inclusive": "005468a8",
+      "bytes": 105,
+      "sha256": "d5a4629dcc5664e247ad2d32d8a6acc519f6900ffd7f9a875a1f62a571e3edd5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00546840 at 00546840\nSignature: undefined FUN_00546840(void)\nEntry: 00546840\nBody: 00546840 - 005468a8",
+      "returns": [
+        {
+          "site": "005468a6",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00552770",
+      "end_inclusive": "005527d2",
+      "bytes": 99,
+      "sha256": "5915cc3c0f58f4929a109a3c41434dc3aae481d40b6f0f8135cb283be81d93af",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552770 at 00552770\nSignature: undefined FUN_00552770(void)\nEntry: 00552770\nBody: 00552770 - 005527d2",
+      "returns": [
+        {
+          "site": "005527ae",
+          "operand": ""
+        },
+        {
+          "site": "005527d2",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00552d40",
+      "end_inclusive": "00552da2",
+      "bytes": 99,
+      "sha256": "24934612cecf4bbc39d872ba2a46717950bbf7aa9a25ac2a82446cb99d1324b2",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552d40 at 00552d40\nSignature: undefined FUN_00552d40(void)\nEntry: 00552d40\nBody: 00552d40 - 00552da2",
+      "returns": [
+        {
+          "site": "00552d7e",
+          "operand": ""
+        },
+        {
+          "site": "00552da2",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00552e20",
+      "end_inclusive": "00552e82",
+      "bytes": 99,
+      "sha256": "4a163eccefe68ea5b4f878d7e33cfba8c34bb489aef7272c88930873adfe254f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552e20 at 00552e20\nSignature: void __fastcall FUN_00552e20(void * iterator, void * unused_edx)\nEntry: 00552e20\nBody: 00552e20 - 00552e82",
+      "returns": [
+        {
+          "site": "00552e5e",
+          "operand": ""
+        },
+        {
+          "site": "00552e82",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "005540c0",
+      "end_inclusive": "0055413d",
+      "bytes": 126,
+      "sha256": "69908183431662bf83bcd90ebaafb330530f9fe9d49a5694a29c4d42c98f314c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005540c0 at 005540c0\nSignature: undefined FUN_005540c0(void)\nEntry: 005540c0\nBody: 005540c0 - 0055413d",
+      "returns": [
+        {
+          "site": "00554111",
+          "operand": ""
+        },
+        {
+          "site": "0055413d",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "005548c0",
+      "end_inclusive": "00554912",
+      "bytes": 83,
+      "sha256": "53aca1e0d43df45bff865c7046f2325d1e3d0c6cd50c352b3099ca6b9b237aa0",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005548c0 at 005548c0\nSignature: undefined FUN_005548c0(void)\nEntry: 005548c0\nBody: 005548c0 - 00554912",
+      "returns": [
+        {
+          "site": "00554910",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00554980",
+      "end_inclusive": "005549d8",
+      "bytes": 89,
+      "sha256": "9faef6d4c68bfcfeab1e26dfd17c94086964ff8b6cdff9993fac950266d406c5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00554980 at 00554980\nSignature: undefined FUN_00554980(void)\nEntry: 00554980\nBody: 00554980 - 005549d8",
+      "returns": [
+        {
+          "site": "005549d6",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00554cd0",
+      "end_inclusive": "00554d06",
+      "bytes": 55,
+      "sha256": "aaa05a69d2e2539e7cf96c963b7b3e54ebd6229d795f4013dce1bb4e73909057",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00554cd0 at 00554cd0\nSignature: undefined FUN_00554cd0(void)\nEntry: 00554cd0\nBody: 00554cd0 - 00554d06",
+      "returns": [
+        {
+          "site": "00554d06",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00554ec0",
+      "end_inclusive": "00554ef6",
+      "bytes": 55,
+      "sha256": "379e128ef5921666afe611547132c8bcc5dda188a24291d4031762f75abbfddc",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00554ec0 at 00554ec0\nSignature: undefined FUN_00554ec0(void)\nEntry: 00554ec0\nBody: 00554ec0 - 00554ef6",
+      "returns": [
+        {
+          "site": "00554ef6",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00554f50",
+      "end_inclusive": "00554f8e",
+      "bytes": 63,
+      "sha256": "f49e273a44592b4f5090caff74967d8ca6e043957bfb811c38487604105d11f5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00554f50 at 00554f50\nSignature: undefined FUN_00554f50(void)\nEntry: 00554f50\nBody: 00554f50 - 00554f8e",
+      "returns": [
+        {
+          "site": "00554f8c",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "005555b0",
+      "end_inclusive": "00555641",
+      "bytes": 146,
+      "sha256": "ffe920bf0e96e6b5ae4476a8317c5b67e6e17314937bfcca27068573e8852ded",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005555b0 at 005555b0\nSignature: undefined FUN_005555b0(void)\nEntry: 005555b0\nBody: 005555b0 - 00555641",
+      "returns": [
+        {
+          "site": "0055563f",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00558570",
+      "end_inclusive": "005585e0",
+      "bytes": 113,
+      "sha256": "7adf75fe5d2d305378cad4cf75a6d314aa525e9930c19a62335a1bb4a11dd6c5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00558570 at 00558570\nSignature: undefined FUN_00558570(void)\nEntry: 00558570\nBody: 00558570 - 005585e0",
+      "returns": [
+        {
+          "site": "005585de",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0055a290",
+      "end_inclusive": "0055a315",
+      "bytes": 134,
+      "sha256": "15b59b50094ff9d7526a72f48b63e1369d76e4ce17ae671bf8943ef0ea9281c4",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055a290 at 0055a290\nSignature: undefined FUN_0055a290(void)\nEntry: 0055a290\nBody: 0055a290 - 0055a315",
+      "returns": [
+        {
+          "site": "0055a313",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0055ac80",
+      "end_inclusive": "0055af57",
+      "bytes": 728,
+      "sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: void * __fastcall STL_xlen_throw_0055ac80(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af57",
+      "returns": [
+        {
+          "site": "0055af55",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "0055b060",
+      "end_inclusive": "0055b0f1",
+      "bytes": 146,
+      "sha256": "c111f2774b6fd25edc7093126b55b5608950175626ef018a066b1b38dc8b3a1b",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b060 at 0055b060\nSignature: undefined FUN_0055b060(void)\nEntry: 0055b060\nBody: 0055b060 - 0055b0f1",
+      "returns": [
+        {
+          "site": "0055b0ef",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0055b230",
+      "end_inclusive": "0055b2f8",
+      "bytes": 201,
+      "sha256": "4ee2732d9efdd6eb19c773fdb7a14386dbfeb05b569fad25be42cb15e71050a8",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_IntIntTreeTree_EraseRange_N20_0055B230 at 0055b230\nSignature: void * __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "returns": [
+        {
+          "site": "0055b2ac",
+          "operand": "0x14"
+        },
+        {
+          "site": "0055b2f6",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "0055b300",
+      "end_inclusive": "0055b374",
+      "bytes": 117,
+      "sha256": "e1cf5c0827a6460d4dff441d9b5f9c32e6b39e3ee4fbc1d79825195c668d2394",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b300 at 0055b300\nSignature: undefined FUN_0055b300(void)\nEntry: 0055b300\nBody: 0055b300 - 0055b374",
+      "returns": [
+        {
+          "site": "0055b364",
+          "operand": "4"
+        },
+        {
+          "site": "0055b372",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0055b400",
+      "end_inclusive": "0055b470",
+      "bytes": 113,
+      "sha256": "06236fe90b692373e3e256dfa205b1ee3ee0da8dd17edc32a3d323f6d55ecd90",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b400 at 0055b400\nSignature: undefined FUN_0055b400(void)\nEntry: 0055b400\nBody: 0055b400 - 0055b470",
+      "returns": [
+        {
+          "site": "0055b46e",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0055b490",
+      "end_inclusive": "0055b4c3",
+      "bytes": 52,
+      "sha256": "774f6ab41ecd733990c8831c62283c8ff468996ae7428dfab3af5d62cf472c67",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b490 at 0055b490\nSignature: void __fastcall FUN_0055b490(void * tree, void * unused_edx)\nEntry: 0055b490\nBody: 0055b490 - 0055b4c3",
+      "returns": [
+        {
+          "site": "0055b4c3",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "0055b520",
+      "end_inclusive": "0055b686",
+      "bytes": 359,
+      "sha256": "7f3f66cc1ccd127eba4e0f7aed4ab38df5860ad3ead151471ad74ba7757ae611",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055b520 at 0055b520\nSignature: undefined FUN_0055b520(void)\nEntry: 0055b520\nBody: 0055b520 - 0055b686",
+      "returns": [
+        {
+          "site": "0055b686",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "0055ba80",
+      "end_inclusive": "0055bafe",
+      "bytes": 127,
+      "sha256": "08b2f9c812b96e334a013269e3db7ef143ff314baa0968d18a6625f0b4ce7dc9",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055ba80 at 0055ba80\nSignature: undefined FUN_0055ba80(void)\nEntry: 0055ba80\nBody: 0055ba80 - 0055bafe",
+      "returns": [
+        {
+          "site": "0055bafc",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "0055bf00",
+      "end_inclusive": "0055c101",
+      "bytes": 514,
+      "sha256": "292e0a05ae4dd7e34f5e36480384c316e34e7f533eb4e93ad6a56cd03129c21a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055bf00 at 0055bf00\nSignature: undefined FUN_0055bf00(void)\nEntry: 0055bf00\nBody: 0055bf00 - 0055c101",
+      "returns": [
+        {
+          "site": "0055bf2b",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055bf7f",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055bfd3",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055c034",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055c049",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055c0c3",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055c0d8",
+          "operand": "0x10"
+        },
+        {
+          "site": "0055c0ff",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "0055c110",
+      "end_inclusive": "0055c1f2",
+      "bytes": 227,
+      "sha256": "f441173adafacf710e98e995714c53afe5a1c068fa11524ce0a47fdfa06a04de",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0055c110 at 0055c110\nSignature: undefined FUN_0055c110(void)\nEntry: 0055c110\nBody: 0055c110 - 0055c1f2",
+      "returns": [
+        {
+          "site": "0055c1f0",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069ccf0",
+      "end_inclusive": "0069cd42",
+      "bytes": 83,
+      "sha256": "823eb41ac6699d92897b433872c82df55e2f5681e9b826b35e3a049a7df8d64c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Lbound_StrKeyCI_N28_0069ccf0 at 0069ccf0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N28_0069ccf0(void)\nEntry: 0069ccf0\nBody: 0069ccf0 - 0069cd42",
+      "returns": [
+        {
+          "site": "0069cd40",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "0069cd50",
+      "end_inclusive": "0069cda2",
+      "bytes": 83,
+      "sha256": "f7895045e872b51318d145b2567e45dfc082afdb050f838bd26e95b2c618a2bf",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50 at 0069cd50\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50(void)\nEntry: 0069cd50\nBody: 0069cd50 - 0069cda2",
+      "returns": [
+        {
+          "site": "0069cda0",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a19a0",
+      "end_inclusive": "006a1a1e",
+      "bytes": 127,
+      "sha256": "5310e3e2d7cdb0b2b76f151259147d5e911097a1b66e78b62c85abe03e9fb35a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a19a0 at 006a19a0\nSignature: undefined FUN_006a19a0(void)\nEntry: 006a19a0\nBody: 006a19a0 - 006a1a1e",
+      "returns": [
+        {
+          "site": "006a1a1c",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a1a20",
+      "end_inclusive": "006a1a9e",
+      "bytes": 127,
+      "sha256": "5a1659d18f0f9bf6e89a46cf0fdad6af2b066ac3389cee92f998aed06a7c3e1a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a1a20 at 006a1a20\nSignature: undefined FUN_006a1a20(void)\nEntry: 006a1a20\nBody: 006a1a20 - 006a1a9e",
+      "returns": [
+        {
+          "site": "006a1a9c",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a20d0",
+      "end_inclusive": "006a2156",
+      "bytes": 135,
+      "sha256": "b935d9e6f6379607ca711f33222b191188046dfe83d75fa1089d551980297c3e",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a20d0 at 006a20d0\nSignature: undefined FUN_006a20d0(void)\nEntry: 006a20d0\nBody: 006a20d0 - 006a2156",
+      "returns": [
+        {
+          "site": "006a2154",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "006a38b0",
+      "end_inclusive": "006a3aab",
+      "bytes": 508,
+      "sha256": "3f01e122aebb6ac0c7c107b58f0b6fb119dbe337be0ff3765e944fe629d6d7a3",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a38b0 at 006a38b0\nSignature: undefined FUN_006a38b0(void)\nEntry: 006a38b0\nBody: 006a38b0 - 006a3aab",
+      "returns": [
+        {
+          "site": "006a38db",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a392f",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3983",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a39e1",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a39f6",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3a6d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3a82",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3aa9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a3ab0",
+      "end_inclusive": "006a3cab",
+      "bytes": 508,
+      "sha256": "494c8b6996a290ff05930d77c6f72549d1b62fe7a44bc6d1907d174fdd8a5838",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a3ab0 at 006a3ab0\nSignature: undefined FUN_006a3ab0(void)\nEntry: 006a3ab0\nBody: 006a3ab0 - 006a3cab",
+      "returns": [
+        {
+          "site": "006a3adb",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3b2f",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3b83",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3be1",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3bf6",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3c6d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3c82",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a3ca9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a44b0",
+      "end_inclusive": "006a45b1",
+      "bytes": 258,
+      "sha256": "9c3897c57decbbe69ef617b2ab1d6b2459a15800da61b1b88fe663b9951b62e1",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a44b0 at 006a44b0\nSignature: void * __fastcall FUN_006a44b0(void * tree, void * unused_edx, void * key)\nEntry: 006a44b0\nBody: 006a44b0 - 006a45b1",
+      "returns": [
+        {
+          "site": "006a45af",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a45c0",
+      "end_inclusive": "006a46c1",
+      "bytes": 258,
+      "sha256": "a967f580387722708f2dccc58e4f312fc714d198b47ecdbc89ae9e3ba0cdc746",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a45c0 at 006a45c0\nSignature: void * __fastcall FUN_006a45c0(void * tree, void * unused_edx, void * key)\nEntry: 006a45c0\nBody: 006a45c0 - 006a46c1",
+      "returns": [
+        {
+          "site": "006a46bf",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a47f0",
+      "end_inclusive": "006a49eb",
+      "bytes": 508,
+      "sha256": "4511e40bee07cbbb40d1e43d231c0b9f144c7db6750903c61615a307e1b7d13a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a47f0 at 006a47f0\nSignature: undefined FUN_006a47f0(void)\nEntry: 006a47f0\nBody: 006a47f0 - 006a49eb",
+      "returns": [
+        {
+          "site": "006a481b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a486f",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a48c3",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4921",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4936",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a49ad",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a49c2",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a49e9",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a4ca0",
+      "end_inclusive": "006a4db9",
+      "bytes": 282,
+      "sha256": "02e444e5e56d97f83bf31024ecdbf814583ba3d25f0040a8ad2648aef6f734bc",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a4ca0 at 006a4ca0\nSignature: void * __fastcall FUN_006a4ca0(void * tree, void * unused_edx, void * key)\nEntry: 006a4ca0\nBody: 006a4ca0 - 006a4db9",
+      "returns": [
+        {
+          "site": "006a4db7",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "006a4dc0",
+      "end_inclusive": "006a4f7b",
+      "bytes": 444,
+      "sha256": "907c1885f06ee531f7314b0eb0a2716ca54112e75889b32f6191ef5cc91a5324",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a4dc0 at 006a4dc0\nSignature: undefined FUN_006a4dc0(void)\nEntry: 006a4dc0\nBody: 006a4dc0 - 006a4f7b",
+      "returns": [
+        {
+          "site": "006a4deb",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4e36",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4e7b",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4ec3",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4eda",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4f3d",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4f52",
+          "operand": "0x10"
+        },
+        {
+          "site": "006a4f79",
+          "operand": "0x10"
+        }
+      ]
+    },
+    {
+      "address": "006a5aa0",
+      "end_inclusive": "006a5bee",
+      "bytes": 335,
+      "sha256": "821a3fe9fcb16cd3425ae3b29513a55832aa49b147e34595b420f519e069c077",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_006a5aa0 at 006a5aa0\nSignature: void * __fastcall FUN_006a5aa0(void * tree, void * unused_edx, void * key)\nEntry: 006a5aa0\nBody: 006a5aa0 - 006a5bee",
+      "returns": [
+        {
+          "site": "006a5bec",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "00443d60",
+      "address": "00443d90",
+      "native": "00bf7fbf",
+      "byte_span": "00443d60",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "0044492f",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444950",
+      "native": "00bf6713",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444969",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444981",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "0044499d",
+      "native": "00bf6713",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "004449b7",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "004449d5",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "004449ed",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a02",
+      "native": "004437f0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a12",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a33",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a48",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a60",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a80",
+      "native": "00443880",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444a8e",
+      "native": "004435a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444aa2",
+      "native": "00443d00",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444abf",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444ad4",
+      "native": "004442a0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444910",
+      "address": "00444aed",
+      "native": "004447c0",
+      "byte_span": "00444910",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c02",
+      "native": "00443d60",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c0d",
+      "native": "00bf6713",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c1e",
+      "native": "00443d00",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c43",
+      "native": "0041dd40",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c5a",
+      "native": "00bf7680",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444c81",
+      "native": "00444910",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444ca2",
+      "native": "00419cc0",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444ca9",
+      "native": "00bd1510",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444cb3",
+      "native": "00bf6713",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00444be0",
+      "address": "00444cbd",
+      "native": "00bf6713",
+      "byte_span": "00444be0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d3cb",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d3e6",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d407",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d421",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552770",
+      "address": "00552778",
+      "native": "00bf6713",
+      "byte_span": "00552770",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552d40",
+      "address": "00552d48",
+      "native": "00bf6713",
+      "byte_span": "00552d40",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552e20",
+      "address": "00552e28",
+      "native": "00bf6713",
+      "byte_span": "00552e20",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005540c0",
+      "address": "005540c8",
+      "native": "00bf6713",
+      "byte_span": "005540c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005548c0",
+      "address": "005548f0",
+      "native": "00bf7fbf",
+      "byte_span": "005548c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00554980",
+      "address": "005549b3",
+      "native": "00bf7fbf",
+      "byte_span": "00554980",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00554cd0",
+      "address": "00554cd2",
+      "native": "00bf681b",
+      "byte_span": "00554cd0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00554ec0",
+      "address": "00554ec2",
+      "native": "00bf681b",
+      "byte_span": "00554ec0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00554f50",
+      "address": "00554f52",
+      "native": "00bf681b",
+      "byte_span": "00554f50",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005555b0",
+      "address": "005555f6",
+      "native": "00554f50",
+      "byte_span": "005555b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005555b0",
+      "address": "00555616",
+      "native": "005555b0",
+      "byte_span": "005555b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005555b0",
+      "address": "00555624",
+      "native": "005555b0",
+      "byte_span": "005555b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00558570",
+      "address": "00558596",
+      "native": "00554ec0",
+      "byte_span": "00558570",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00558570",
+      "address": "005585c7",
+      "native": "00555b20",
+      "byte_span": "00558570",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055a290",
+      "address": "0055a2b3",
+      "native": "00bf681b",
+      "byte_span": "0055a290",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055a290",
+      "address": "0055a2f2",
+      "native": "00558570",
+      "byte_span": "0055a290",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acc8",
+      "native": "00408720",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acda",
+      "native": "00411700",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acf1",
+      "native": "00bf6885",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acfe",
+      "native": "00552e20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ad60",
+      "native": "005525b0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ad82",
+      "native": "00552590",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae20",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae53",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae6f",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae84",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055aecd",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055aee7",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af02",
+      "native": "005572f0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af0b",
+      "native": "00bf65ac",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af19",
+      "native": "00bf65ac",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b060",
+      "address": "0055b0a6",
+      "native": "0055a290",
+      "byte_span": "0055b060",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b060",
+      "address": "0055b0c6",
+      "native": "0055b060",
+      "byte_span": "0055b060",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b060",
+      "address": "0055b0d4",
+      "native": "0055b060",
+      "byte_span": "0055b060",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b24a",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b266",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b27a",
+      "native": "0055af60",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2ba",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2c9",
+      "native": "00552e20",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2d7",
+      "native": "0055ac80",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b300",
+      "address": "0055b316",
+      "native": "0055b060",
+      "byte_span": "0055b300",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b400",
+      "address": "0055b426",
+      "native": "00554cd0",
+      "byte_span": "0055b400",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b400",
+      "address": "0055b457",
+      "native": "0055b300",
+      "byte_span": "0055b400",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b490",
+      "address": "0055b4a6",
+      "native": "0055b230",
+      "byte_span": "0055b490",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b490",
+      "address": "0055b4af",
+      "native": "00bf65ac",
+      "byte_span": "0055b490",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b540",
+      "native": "00554be0",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b56c",
+      "native": "00554c30",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b594",
+      "native": "00554c80",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b5bd",
+      "native": "00443e20",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b5f8",
+      "native": "00554cd0",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b62a",
+      "native": "00554d20",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b653",
+      "native": "004c2700",
+      "byte_span": "0055b520",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bab8",
+      "native": "0041dd40",
+      "byte_span": "0055ba80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bacd",
+      "native": "00bf7680",
+      "byte_span": "0055ba80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bae5",
+      "native": "0055b920",
+      "byte_span": "0055ba80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf1f",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf40",
+      "native": "00bf6713",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf59",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf71",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf8d",
+      "native": "00bf6713",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bfa7",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bfc5",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bfdd",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bff2",
+      "native": "00554020",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c002",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c026",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c03b",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c053",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c073",
+      "native": "005540c0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c081",
+      "native": "00551e00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c095",
+      "native": "00443d00",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c0b5",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c0ca",
+      "native": "0055bbe0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c0e3",
+      "native": "0055bde0",
+      "byte_span": "0055bf00",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c138",
+      "native": "00554980",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c143",
+      "native": "00bf6713",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c154",
+      "native": "00443d00",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c161",
+      "native": "0055b520",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c17a",
+      "native": "0055ba80",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c191",
+      "native": "0055bf00",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1aa",
+      "native": "0055b8b0",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1be",
+      "native": "0055b690",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1c7",
+      "native": "00bf6713",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1d1",
+      "native": "00bf6713",
+      "byte_span": "0055c110",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0069ccf0",
+      "address": "0069cd20",
+      "native": "00bf7fbf",
+      "byte_span": "0069ccf0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0069cd50",
+      "address": "0069cd80",
+      "native": "00bf7fbf",
+      "byte_span": "0069cd50",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a19a0",
+      "address": "006a19d8",
+      "native": "0041dd40",
+      "byte_span": "006a19a0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a19a0",
+      "address": "006a19ed",
+      "native": "00bf7680",
+      "byte_span": "006a19a0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a19a0",
+      "address": "006a1a05",
+      "native": "005578c0",
+      "byte_span": "006a19a0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a1a20",
+      "address": "006a1a58",
+      "native": "0041dd40",
+      "byte_span": "006a1a20",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a1a20",
+      "address": "006a1a6d",
+      "native": "00bf7680",
+      "byte_span": "006a1a20",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a1a20",
+      "address": "006a1a85",
+      "native": "00557590",
+      "byte_span": "006a1a20",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a20d0",
+      "address": "006a2108",
+      "native": "0041dd40",
+      "byte_span": "006a20d0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a20d0",
+      "address": "006a211d",
+      "native": "00bf7680",
+      "byte_span": "006a20d0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a20d0",
+      "address": "006a213d",
+      "native": "00557820",
+      "byte_span": "006a20d0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a38cf",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a38f0",
+      "native": "00bf6713",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3909",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3921",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a393d",
+      "native": "00bf6713",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3957",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3975",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a398d",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a39a2",
+      "native": "0069ac30",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a39b2",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a39d3",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a39e8",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a00",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a20",
+      "native": "00552d40",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a2e",
+      "native": "00551d50",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a42",
+      "native": "00443d00",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a5f",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a74",
+      "native": "006a2550",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a38b0",
+      "address": "006a3a8d",
+      "native": "006a2c90",
+      "byte_span": "006a38b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3acf",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3af0",
+      "native": "00bf6713",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b09",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b21",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b3d",
+      "native": "00bf6713",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b57",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b75",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3b8d",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3ba2",
+      "native": "0069aba0",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3bb2",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3bd3",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3be8",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c00",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c20",
+      "native": "00552db0",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c2e",
+      "native": "005527e0",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c42",
+      "native": "00443d00",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c5f",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c74",
+      "native": "006a2740",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a3ab0",
+      "address": "006a3c8d",
+      "native": "006a2db0",
+      "byte_span": "006a3ab0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a44d3",
+      "native": "005548c0",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a44e0",
+      "native": "00bf6713",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a44f1",
+      "native": "00443d00",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a4518",
+      "native": "006a1a20",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a452c",
+      "native": "006a38b0",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a4543",
+      "native": "00bf65ac",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a456a",
+      "native": "00419cc0",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a4571",
+      "native": "00bd1510",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a457f",
+      "native": "00bf65ac",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a458b",
+      "native": "00bf6713",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a44b0",
+      "address": "006a4595",
+      "native": "00bf6713",
+      "byte_span": "006a44b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a45e3",
+      "native": "0069ccf0",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a45f0",
+      "native": "00bf6713",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a4601",
+      "native": "00443d00",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a4628",
+      "native": "006a19a0",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a463c",
+      "native": "006a3ab0",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a4653",
+      "native": "00bf65ac",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a467a",
+      "native": "00419cc0",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a4681",
+      "native": "00bd1510",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a468f",
+      "native": "00bf65ac",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a469b",
+      "native": "00bf6713",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a45c0",
+      "address": "006a46a5",
+      "native": "00bf6713",
+      "byte_span": "006a45c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a480f",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4830",
+      "native": "00bf6713",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4849",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4861",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a487d",
+      "native": "00bf6713",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4897",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a48b5",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a48cd",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a48e2",
+      "native": "0069b090",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a48f2",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4913",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4928",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4940",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4960",
+      "native": "00552e90",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a496e",
+      "native": "005528a0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a4982",
+      "native": "00443d00",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a499f",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a49b4",
+      "native": "006a2ed0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a47f0",
+      "address": "006a49cd",
+      "native": "006a41a0",
+      "byte_span": "006a47f0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4cc3",
+      "native": "0069cd50",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4cd0",
+      "native": "00bf6713",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4ce1",
+      "native": "00443d00",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d0c",
+      "native": "006a20d0",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d20",
+      "native": "006a47f0",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d3b",
+      "native": "00bf65ac",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d62",
+      "native": "00419cc0",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d69",
+      "native": "00bd1510",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d7b",
+      "native": "00bf65ac",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d93",
+      "native": "00bf6713",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4ca0",
+      "address": "006a4d9d",
+      "native": "00bf6713",
+      "byte_span": "006a4ca0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4ddf",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4e00",
+      "native": "00bf6713",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4e28",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4e44",
+      "native": "00bf6713",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4e6d",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4e91",
+      "native": "0069b000",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4eb5",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4ecc",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4ef9",
+      "native": "00552e20",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4f07",
+      "native": "00552840",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4f2f",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4f44",
+      "native": "006a3fb0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a4dc0",
+      "address": "006a4f5d",
+      "native": "006a49f0",
+      "byte_span": "006a4dc0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5afc",
+      "native": "00554ec0",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5b38",
+      "native": "00558570",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5b50",
+      "native": "006a4dc0",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5b73",
+      "native": "005572f0",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5b7d",
+      "native": "00bf65ac",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5baa",
+      "native": "005572f0",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5bb4",
+      "native": "00bf65ac",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5bc8",
+      "native": "00bf6713",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "006a5aa0",
+      "address": "006a5bd2",
+      "native": "00bf6713",
+      "byte_span": "006a5aa0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    }
+  ],
+  "unowned_calls": [],
+  "primary_addresses": [
+    "00546840",
+    "00552770",
+    "0048d3b0",
+    "00552d40",
+    "0055b230",
+    "005540c0",
+    "00552e20",
+    "0055ac80"
+  ],
+  "source": [
+    "include/bsp/native_input_keyboard_iterators.hpp",
+    "src/native_input_keyboard_iterators.cpp",
+    "include/bsp/native_input_keyboard_storage.hpp",
+    "src/native_input_keyboard_storage.cpp",
+    "include/bsp/native_input_settings_tree_cleanup.hpp",
+    "src/native_input_settings_tree_cleanup.cpp"
+  ],
+  "repairs": [
+    "reports/native_input_vector_map_index_ax_flow_repair.json",
+    "reports/native_input_vector_map_index_ax_body_repair.json",
+    "reports/native_input_scale_maps_ax_flow_repair.json",
+    "reports/native_input_scale_maps_ax_destructor_flow_repair.json",
+    "reports/native_input_scale_maps_ax_body_repair.json",
+    "reports/native_input_keyboard_iterators_ax_flow_repair.json",
+    "reports/native_input_keyboard_iterators_ax_body_repair.json",
+    "reports/native_input_keyboard_iterators_ax_abi_repair.json"
+  ],
+  "limits": [
+    "New source service ABIs over valid owned native containers; no original exception/CRT ABI or private-stack alias claim.",
+    "Vector/device copy helpers cover reached fresh empty defaults; scale-map copying covers populated trees.",
+    "NativeInputKeyboardLibrary remains a consumer interface; all fourteen operations have a concrete source provider.",
+    "Production application wiring and gameplay remain unvalidated. No game interaction or single-instance bypass."
+  ],
+  "documentation": "docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md",
+  "annotations": "reports/native_input_keyboard_storage_ax_annotations.json",
+  "reconstructed": [
+    "0055c110",
+    "006a44b0",
+    "0055b400",
+    "0055b490",
+    "00444be0",
+    "006a5aa0",
+    "00546840",
+    "00552770",
+    "006a45c0",
+    "006a4ca0",
+    "0048d3b0",
+    "00552d40",
+    "0055b230",
+    "005540c0"
+  ],
+  "native_abi": {
+    "0055c110": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "006a44b0": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "0055b400": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "0055b490": "ECX receiver/iterator; no stack arguments; RET.",
+    "00444be0": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "006a5aa0": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "00546840": "ECX tree; stack output,key; EAX output; RET8.",
+    "00552770": "ECX receiver/iterator; no stack arguments; RET.",
+    "006a45c0": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "006a4ca0": "ECX receiver; stack input pointer; EAX result; RET4.",
+    "0048d3b0": "ECX iterator; stack signed distance; EAX iterator; RET4.",
+    "00552d40": "ECX receiver/iterator; no stack arguments; RET.",
+    "0055b230": "ECX tree; stack output,first owner/node,last owner/node; EAX output; RET14h.",
+    "005540c0": "ECX receiver/iterator; no stack arguments; RET."
+  },
+  "integration_corrections": [
+    "Vector map source registered on bsp_core, correcting initial worker bsp_game-only registration caught by native fixture linking.",
+    "Device empty producers publish heads in original tree/vector construction order; no duplicate vector initialization.",
+    "Scale-map copy preserves left-before-right node ownership and targeted writes; scalar insertion owns default/pair/node inner heads.",
+    "Restored0055B490 free fallthrough clears header4/8; restored0055AC80 full728-byte partial eraser.",
+    "Restored00552E20 iterator argument exposes true two-child successor transplant in decompiler."
+  ],
+  "independent_reviews": [
+    {
+      "worker": "device_index_ax",
+      "scope": "Scale copy allocation order/field writes",
+      "result": "No normal-path listing mismatch; static review only"
+    },
+    {
+      "worker": "vector_maps_ax",
+      "scope": "Five iterator functions and scale range wrapper",
+      "result": "No source/listing mismatch; static review only"
+    }
+  ],
+  "host_gap_report": "reports/native_input_host_integration_gap_ax.json",
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "lifetime_words_equal": 122545,
+    "tree_range_words_equal": 309711,
+    "tree_insertion_words_equal": 168378,
+    "vector_words_equal": 1448,
+    "string_words_equal": 335,
+    "keyboard_words_equal": 372,
+    "bit_position_pairs_equal": 9409,
+    "pooled_strings_remaining": 0,
+    "core_archive_sha256": "5041af67993dd373e2d775cb39842228a47718568de5796432fee90390dfba7e",
+    "game_validated": false
+  }
+}

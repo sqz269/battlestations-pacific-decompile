@@ -1,0 +1,387 @@
+{
+  "packet": "orch4_input_keyboard_iterators_ax",
+  "status": "fourteen_source_operations_component_build_and_native_differential_passed_combined_publication_pending",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_keyboard_iterators.hpp",
+    "src/native_input_keyboard_iterators.cpp",
+    "include/bsp/native_input_keyboard_storage.hpp",
+    "src/native_input_keyboard_storage.cpp",
+    "include/bsp/native_input_settings_tree_cleanup.hpp",
+    "src/native_input_settings_tree_cleanup.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_KEYBOARD_ITERATORS.md",
+  "integration_report": "reports/native_input_keyboard_storage_ax_validation.json",
+  "reconstructed": [
+    "00546840",
+    "00552770",
+    "0048d3b0",
+    "00552d40",
+    "0055b230",
+    "005540c0"
+  ],
+  "analyzed_helpers": [
+    "00552e20",
+    "0055ac80"
+  ],
+  "native_abi": {
+    "00546840": "ECX tree; stack output,key; EAX output; RET8.",
+    "00552770": "ECX receiver/iterator; no stack arguments; RET.",
+    "0048d3b0": "ECX iterator; stack signed distance; EAX iterator; RET4.",
+    "00552d40": "ECX receiver/iterator; no stack arguments; RET.",
+    "0055b230": "ECX tree; stack output,first owner/node,last owner/node; EAX output; RET14h.",
+    "005540c0": "ECX receiver/iterator; no stack arguments; RET."
+  },
+  "byte_spans": [
+    {
+      "address": "0048d3b0",
+      "end_inclusive": "0048d47a",
+      "bytes": 203,
+      "sha256": "9f7b7c43d63b244f3a5f1fe745f41f749e5fd67685760054788bee2465a96286",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_0048d3b0 at 0048d3b0\nSignature: undefined FUN_0048d3b0(void)\nEntry: 0048d3b0\nBody: 0048d3b0 - 0048d47a",
+      "returns": [
+        {
+          "site": "0048d459",
+          "operand": "4"
+        },
+        {
+          "site": "0048d478",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00546840",
+      "end_inclusive": "005468a8",
+      "bytes": 105,
+      "sha256": "d5a4629dcc5664e247ad2d32d8a6acc519f6900ffd7f9a875a1f62a571e3edd5",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00546840 at 00546840\nSignature: undefined FUN_00546840(void)\nEntry: 00546840\nBody: 00546840 - 005468a8",
+      "returns": [
+        {
+          "site": "005468a6",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00552770",
+      "end_inclusive": "005527d2",
+      "bytes": 99,
+      "sha256": "5915cc3c0f58f4929a109a3c41434dc3aae481d40b6f0f8135cb283be81d93af",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552770 at 00552770\nSignature: undefined FUN_00552770(void)\nEntry: 00552770\nBody: 00552770 - 005527d2",
+      "returns": [
+        {
+          "site": "005527ae",
+          "operand": ""
+        },
+        {
+          "site": "005527d2",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00552d40",
+      "end_inclusive": "00552da2",
+      "bytes": 99,
+      "sha256": "24934612cecf4bbc39d872ba2a46717950bbf7aa9a25ac2a82446cb99d1324b2",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552d40 at 00552d40\nSignature: undefined FUN_00552d40(void)\nEntry: 00552d40\nBody: 00552d40 - 00552da2",
+      "returns": [
+        {
+          "site": "00552d7e",
+          "operand": ""
+        },
+        {
+          "site": "00552da2",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00552e20",
+      "end_inclusive": "00552e82",
+      "bytes": 99,
+      "sha256": "4a163eccefe68ea5b4f878d7e33cfba8c34bb489aef7272c88930873adfe254f",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_00552e20 at 00552e20\nSignature: void __fastcall FUN_00552e20(void * iterator, void * unused_edx)\nEntry: 00552e20\nBody: 00552e20 - 00552e82",
+      "returns": [
+        {
+          "site": "00552e5e",
+          "operand": ""
+        },
+        {
+          "site": "00552e82",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "005540c0",
+      "end_inclusive": "0055413d",
+      "bytes": 126,
+      "sha256": "69908183431662bf83bcd90ebaafb330530f9fe9d49a5694a29c4d42c98f314c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: FUN_005540c0 at 005540c0\nSignature: undefined FUN_005540c0(void)\nEntry: 005540c0\nBody: 005540c0 - 0055413d",
+      "returns": [
+        {
+          "site": "00554111",
+          "operand": ""
+        },
+        {
+          "site": "0055413d",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "0055ac80",
+      "end_inclusive": "0055af57",
+      "bytes": 728,
+      "sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: void * __fastcall STL_xlen_throw_0055ac80(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af57",
+      "returns": [
+        {
+          "site": "0055af55",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "0055b230",
+      "end_inclusive": "0055b2f8",
+      "bytes": 201,
+      "sha256": "4ee2732d9efdd6eb19c773fdb7a14386dbfeb05b569fad25be42cb15e71050a8",
+      "live_disk_equal": true,
+      "before_annotation": "Function: STL_IntIntTreeTree_EraseRange_N20_0055B230 at 0055b230\nSignature: void * __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "returns": [
+        {
+          "site": "0055b2ac",
+          "operand": "0x14"
+        },
+        {
+          "site": "0055b2f6",
+          "operand": "0x14"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "0048d3b0",
+      "address": "0048d3cb",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d3e6",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d407",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0048d3b0",
+      "address": "0048d421",
+      "native": "00bf6713",
+      "byte_span": "0048d3b0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552770",
+      "address": "00552778",
+      "native": "00bf6713",
+      "byte_span": "00552770",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552d40",
+      "address": "00552d48",
+      "native": "00bf6713",
+      "byte_span": "00552d40",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "00552e20",
+      "address": "00552e28",
+      "native": "00bf6713",
+      "byte_span": "00552e20",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "005540c0",
+      "address": "005540c8",
+      "native": "00bf6713",
+      "byte_span": "005540c0",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acc8",
+      "native": "00408720",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acda",
+      "native": "00411700",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acf1",
+      "native": "00bf6885",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055acfe",
+      "native": "00552e20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ad60",
+      "native": "005525b0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ad82",
+      "native": "00552590",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae20",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae53",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae6f",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055ae84",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055aecd",
+      "native": "00552ad0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055aee7",
+      "native": "00552b20",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af02",
+      "native": "005572f0",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af0b",
+      "native": "00bf65ac",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055ac80",
+      "address": "0055af19",
+      "native": "00bf65ac",
+      "byte_span": "0055ac80",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b24a",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b266",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b27a",
+      "native": "0055af60",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2ba",
+      "native": "00bf6713",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2c9",
+      "native": "00552e20",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    },
+    {
+      "function": "0055b230",
+      "address": "0055b2d7",
+      "native": "0055ac80",
+      "byte_span": "0055b230",
+      "evidence": "Direct CALL at actual saved owner, including external/shared callees; implementation coverage stated separately."
+    }
+  ],
+  "limits": [
+    "New source service ABIs over valid owned native containers; no original exception/CRT ABI or private-stack alias claim.",
+    "Vector/device copy helpers cover reached fresh empty defaults; scale-map copying covers populated trees.",
+    "NativeInputKeyboardLibrary remains a consumer interface; all fourteen operations have a concrete source provider.",
+    "Production application wiring and gameplay remain unvalidated. No game interaction or single-instance bypass."
+  ]
+}

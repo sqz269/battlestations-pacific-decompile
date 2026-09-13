@@ -10734,8 +10734,8 @@
     {
       "id": "orch4_input_device_index_ax",
       "worker": "orch4-device-tree-ax",
-      "done": false,
-      "state": "dispatched_source_reconstruction",
+      "done": true,
+      "state": "source_integrated_native_differential_passed",
       "function_addresses": [
         "0055c110",
         "00554980",
@@ -10760,13 +10760,14 @@
         "src/native_input_device_index.cpp",
         "docs/NATIVE_INPUT_DEVICE_INDEX.md",
         "reports/native_input_device_index.json"
-      ]
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
     },
     {
       "id": "orch4_input_vector_map_index_ax",
       "worker": "orch4-vector-maps-ax",
-      "done": false,
-      "state": "dispatched_source_reconstruction",
+      "done": true,
+      "state": "source_integrated_native_differential_passed",
       "function_addresses": [
         "006a44b0",
         "006a45c0",
@@ -10798,13 +10799,14 @@
         "src/native_input_vector_map_index.cpp",
         "docs/NATIVE_INPUT_VECTOR_MAP_INDEX.md",
         "reports/native_input_vector_map_index.json"
-      ]
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
     },
     {
       "id": "orch4_input_scale_maps_ax",
       "worker": "orch4-scale-maps-ax",
-      "done": false,
-      "state": "dispatched_source_reconstruction",
+      "done": true,
+      "state": "source_integrated_native_differential_passed",
       "function_addresses": [
         "0055b400",
         "0055b490",
@@ -10835,20 +10837,23 @@
         "src/native_input_scale_maps.cpp",
         "docs/NATIVE_INPUT_SCALE_MAPS.md",
         "reports/native_input_scale_maps.json"
-      ]
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
     },
     {
       "id": "orch4_input_keyboard_iterators_ax",
       "worker": "orch4-20260910",
-      "done": false,
-      "state": "integrator_source_and_fixture_work",
+      "done": true,
+      "state": "source_integrated_native_differential_passed",
       "function_addresses": [
+        "0048d3b0",
         "00546840",
         "00552770",
-        "0048d3b0",
         "00552d40",
-        "0055b230",
-        "005540c0"
+        "00552e20",
+        "005540c0",
+        "0055ac80",
+        "0055b230"
       ],
       "code_ownership": [
         "include/bsp/native_input_keyboard_iterators.hpp",
@@ -10867,15 +10872,86 @@
       ],
       "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage.",
       "output_files": [
-        "include/bsp/native_input_keyboard_iterators.hpp",
-        "src/native_input_keyboard_iterators.cpp",
         "docs/NATIVE_INPUT_KEYBOARD_ITERATORS.md",
-        "reports/native_input_keyboard_iterators.json",
+        "docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md",
         "include/bsp/native_input_keyboard_apply.hpp",
-        "src/native_input_keyboard_apply.cpp",
+        "include/bsp/native_input_keyboard_iterators.hpp",
+        "include/bsp/native_input_keyboard_storage.hpp",
         "include/bsp/native_input_settings_tables.hpp",
-        "src/native_input_settings_tables.cpp"
-      ]
+        "include/bsp/native_input_settings_tree_cleanup.hpp",
+        "reports/native_input_keyboard_iterators.json",
+        "reports/native_input_keyboard_iterators_ax_abi_repair.json",
+        "reports/native_input_keyboard_iterators_ax_body_repair.json",
+        "reports/native_input_keyboard_iterators_ax_flow_repair.json",
+        "reports/native_input_keyboard_storage_ax_annotations.json",
+        "reports/native_input_keyboard_storage_ax_validation.json",
+        "reports/native_input_scale_maps_ax_body_repair.json",
+        "reports/native_input_scale_maps_ax_destructor_flow_repair.json",
+        "reports/native_input_scale_maps_ax_flow_repair.json",
+        "reports/native_input_vector_map_index_ax_body_repair.json",
+        "reports/native_input_vector_map_index_ax_flow_repair.json",
+        "src/native_input_keyboard_apply.cpp",
+        "src/native_input_keyboard_iterators.cpp",
+        "src/native_input_keyboard_storage.cpp",
+        "src/native_input_settings_tables.cpp",
+        "src/native_input_settings_tree_cleanup.cpp"
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_host_gap_ax",
+      "worker": "orch4-input-host-audit-ax",
+      "done": true,
+      "state": "source_routing_audit_integrated",
+      "function_addresses": [],
+      "output_files": [
+        "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
+        "reports/native_input_host_integration_gap_ax.json"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
+        "reports/native_input_host_integration_gap_ax.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
+    },
+    {
+      "id": "orch4_scale_range_validation_ax",
+      "worker": "orch4-vector-maps-ax",
+      "done": false,
+      "state": "native_comparison_passed_report_pending",
+      "function_addresses": [],
+      "output_files": [
+        "reports/native_input_scale_range_ax_validation.json"
+      ],
+      "code_ownership": [
+        "reports/native_input_scale_range_ax_validation.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
+    },
+    {
+      "id": "orch4_input_preimages_ay",
+      "worker": "orch4-input-host-audit-ax",
+      "done": false,
+      "state": "dispatched_read_only_evidence",
+      "function_addresses": [],
+      "output_files": [
+        "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
+        "reports/native_input_preimage_provenance_ay.json"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
+        "reports/native_input_preimage_provenance_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation."
     }
   ],
   "snapshot_after_analysis": {

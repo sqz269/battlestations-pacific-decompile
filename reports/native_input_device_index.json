@@ -1,49 +1,205 @@
 {
   "packet": "orch4_input_device_index_ax",
   "status": "bounded_source_win32_build_and_existing_math_test_passed",
-  "target": {"project": "bsp", "program": "battlestationspacific.exe"},
-  "source": ["include/bsp/native_input_device_index.hpp", "src/native_input_device_index.cpp"],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_device_index.hpp",
+    "src/native_input_device_index.cpp"
+  ],
   "documentation": "docs/NATIVE_INPUT_DEVICE_INDEX.md",
   "routines": [
-    {"address":"0055c110","coverage":"normal existing and missing with fresh empty default; exception ABI excluded","name":"STL_NativeInputDevice_MapIndex_StrKeyCI_N9C_0055C110"},
-    {"address":"00554980","coverage":"normal lower-bound search","name":"STL_NativeInputDevice_LowerBound_StrKeyCI_00554980"},
-    {"address":"0055b520","coverage":"fresh empty record constructor; opaque fields untouched","name":"NativeInputDevice_ConstructEmpty_0055B520"},
-    {"address":"0055ba80","coverage":"fresh empty mapped pair copy only","name":"NativeInputDevicePair_CopyFresh_0055BA80"},
-    {"address":"0055bf00","coverage":"normal checked hint, fallback unique, and link/RB insertion","name":"STL_NativeInputDevice_InsertHint_0055BF00"}
+    {
+      "address": "0055c110",
+      "coverage": "normal existing and missing with fresh empty default; exception ABI excluded",
+      "name": "STL_NativeInputDevice_MapIndex_StrKeyCI_N9C_0055C110"
+    },
+    {
+      "address": "00554980",
+      "coverage": "normal lower-bound search",
+      "name": "STL_NativeInputDevice_LowerBound_StrKeyCI_00554980"
+    },
+    {
+      "address": "0055b520",
+      "coverage": "fresh empty record constructor; opaque fields untouched",
+      "name": "NativeInputDevice_ConstructEmpty_0055B520"
+    },
+    {
+      "address": "0055ba80",
+      "coverage": "fresh empty mapped pair copy only",
+      "name": "NativeInputDevicePair_CopyFresh_0055BA80"
+    },
+    {
+      "address": "0055bf00",
+      "coverage": "normal checked hint, fallback unique, and link/RB insertion",
+      "name": "STL_NativeInputDevice_InsertHint_0055BF00"
+    }
   ],
   "calls": [
-    {"function":"0055c110","address":"0055c138","native":"00554980"},
-    {"function":"0055c110","address":"0055c143","native":"00bf6713"},
-    {"function":"0055c110","address":"0055c154","native":"00443d00"},
-    {"function":"0055c110","address":"0055c161","native":"0055b520"},
-    {"function":"0055c110","address":"0055c17a","native":"0055ba80"},
-    {"function":"0055c110","address":"0055c191","native":"0055bf00"},
-    {"function":"0055c110","address":"0055c1aa","native":"0055b8b0"},
-    {"function":"0055c110","address":"0055c1be","native":"0055b690"},
-    {"function":"0055c110","address":"0055c1c7","native":"00bf6713"},
-    {"function":"0055c110","address":"0055c1d1","native":"00bf6713"},
-    {"function":"00554980","address":"005549b3","native":"00bf7fbf"},
-    {"function":"0055b520","address":"0055b540","native":"00554be0"},
-    {"function":"0055b520","address":"0055b56c","native":"00554c30"},
-    {"function":"0055b520","address":"0055b594","native":"00554c80"},
-    {"function":"0055b520","address":"0055b5bd","native":"00443e20"},
-    {"function":"0055b520","address":"0055b5f8","native":"00554cd0"},
-    {"function":"0055b520","address":"0055b62a","native":"00554d20"},
-    {"function":"0055b520","address":"0055b653","native":"004c2700"},
-    {"function":"0055ba80","address":"0055bab8","native":"0041dd40"},
-    {"function":"0055ba80","address":"0055bacd","native":"00bf7680"},
-    {"function":"0055ba80","address":"0055bae5","native":"0055b920"},
-    {"function":"0055bf00","address":"0055bf1f","native":"0055bbe0"},
-    {"function":"0055bf00","address":"0055bf59","native":"00443d00"},
-    {"function":"0055bf00","address":"0055bf71","native":"0055bbe0"},
-    {"function":"0055bf00","address":"0055bfc5","native":"0055bbe0"},
-    {"function":"0055bf00","address":"0055bff2","native":"00554020"},
-    {"function":"0055bf00","address":"0055c073","native":"005540c0"},
-    {"function":"0055bf00","address":"0055c081","native":"00551e00"},
-    {"function":"0055bf00","address":"0055c0e3","native":"0055bde0"}
+    {
+      "function": "0055c110",
+      "address": "0055c138",
+      "native": "00554980"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c143",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c154",
+      "native": "00443d00"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c161",
+      "native": "0055b520"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c17a",
+      "native": "0055ba80"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c191",
+      "native": "0055bf00"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1aa",
+      "native": "0055b8b0"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1be",
+      "native": "0055b690"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1c7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0055c110",
+      "address": "0055c1d1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00554980",
+      "address": "005549b3",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b540",
+      "native": "00554be0"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b56c",
+      "native": "00554c30"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b594",
+      "native": "00554c80"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b5bd",
+      "native": "00443e20"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b5f8",
+      "native": "00554cd0"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b62a",
+      "native": "00554d20"
+    },
+    {
+      "function": "0055b520",
+      "address": "0055b653",
+      "native": "004c2700"
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bab8",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bacd",
+      "native": "00bf7680"
+    },
+    {
+      "function": "0055ba80",
+      "address": "0055bae5",
+      "native": "0055b920"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf1f",
+      "native": "0055bbe0"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf59",
+      "native": "00443d00"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bf71",
+      "native": "0055bbe0"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bfc5",
+      "native": "0055bbe0"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055bff2",
+      "native": "00554020"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c073",
+      "native": "005540c0"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c081",
+      "native": "00551e00"
+    },
+    {
+      "function": "0055bf00",
+      "address": "0055c0e3",
+      "native": "0055bde0"
+    }
   ],
-  "limits": ["No source SEH or native exception identity", "No general populated device copy", "No game validation"],
-  "validation": ["python tools/verify_report_calls.py reports/native_input_device_index.json: 29 rows checked, 0 failed", "./scripts/build.ps1: Win32 build passed; existing reconstructed_math 1/1 passed", "No native differential fixture or game run in worker worktree"],
+  "limits": [
+    "No source SEH or native exception identity",
+    "No general populated device copy",
+    "No game validation"
+  ],
+  "validation": [
+    "python tools/verify_report_calls.py reports/native_input_device_index.json: 29 rows checked, 0 failed",
+    "./scripts/build.ps1: Win32 build passed; existing reconstructed_math 1/1 passed",
+    "No native differential fixture or game run in worker worktree"
+  ],
   "ghidra_edits": "none; read-only worker",
-  "proposed_names": "See routines; names are hypotheses pending primary annotation"
+  "proposed_names": "See routines; names are hypotheses pending primary annotation",
+  "primary_integration": {
+    "report": "reports/native_input_keyboard_storage_ax_validation.json",
+    "status": "fourteen_source_operations_component_build_and_native_differential_passed_combined_publication_pending",
+    "native_differential": true,
+    "game_validated": false
+  }
 }
