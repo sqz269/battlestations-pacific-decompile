@@ -167,14 +167,16 @@
   ],
   "verification": {
     "strict_win32_translation_unit": "passed /std:c++17 /EHsc /O2 /W4 /WX /fp:strict /MD",
-    "baseline_build": "scripts/build.ps1 Release passed; reconstructed_math 1/1,0 failures. New TU is intentionally awaiting integrator central source registration.",
+    "baseline_build": "Initial baseline1/1; after guarded verify-seeds matched8/8 spans and generated local/seed_reference.hpp, incremental scripts/build.ps1 passed2/2 reconstructed_math and native_math_differential. All3 linked library SHA256 values unchanged, so lifecycle fixture remains against exact final libraries.",
     "call_rows": "tools/verify_report_calls.py:7 checked,0 failed",
     "worker_probe": "PASS adapted existing lifecycle: original B74B60/B6F440/BD30E0, flags2/1, names7/149; real factory source smoke; canonical actual+04 lookup/terminal; live type-cell changes; original context restoration observed at retirement; reentrant retirement; no pool return after source C++ destructor failure.",
     "game_validated": false,
     "probe_control": "Worker-source control: external probe plus src/native_model_base_lifetime.cpp and all3 worker baseline libraries. Integrator must register module then replay external probe plus selected current3 libraries ONLY.",
     "manifest": "mt extracted RT_MANIFEST #1; requestedExecutionLevel asInvoker, uiAccess false",
     "external_directory": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe",
-    "captured_tool_session": 5241
+    "captured_tool_session": 5241,
+    "seed_verification": "8/8 original saved Ghidra/disk ranges matched; copied evidence and generated header sealed.",
+    "exception_boundary": "Existing failure case uses an unresolved retained-owner binding throwing source std::logic_error. It demonstrates no physical slot return after that source-domain destruction failure, not actual raw getter bad_alloc or original native exception execution."
   },
   "artifact_seals": [
     {
@@ -189,8 +191,8 @@
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\docs\\NATIVE_MODEL_BASE_LIFETIME.md",
-      "bytes": 7530,
-      "sha256": "eefa1ea4c2012ea49f3b0c92df19285849324a773cf6a54ab0d61a99a0e0cf1a"
+      "bytes": 7985,
+      "sha256": "ecb082f14ce1aa01794e2cb84c9117f3207170ac66f5ba4cdba424f1ec58ba40"
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\probe.cpp",
@@ -256,6 +258,21 @@
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\build\\win32\\Release\\bsp_zlib121.lib",
       "bytes": 72046,
       "sha256": "78468ee85768d884db4f2a567495e3c5c4489cc1acbdaccb60f0f66f83227fdf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\verified-build.log",
+      "bytes": 4372,
+      "sha256": "e4ddef0fcca2fb8797b91a9b0f7040b96af6e23abb47ac79d99827ee508ffcf8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\model_base_probe\\seed_byte_comparison.json",
+      "bytes": 3288,
+      "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-model-base-lifetime-bf\\local\\seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
     }
   ]
 }
