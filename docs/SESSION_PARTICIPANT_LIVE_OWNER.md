@@ -142,3 +142,12 @@ Native-store differential coverage remains the earlier K fixture; this packet's
 runtime evidence is limited to the actual host paths exercised by its mission run.
 Assigned unit-role message delivery, mode-1 readiness/network startup, other
 `118h` fields and the full native constructors remain outside this binding.
+
+## Root integration lifetime correction
+
+`finish_scene_load` now destroys the old Frame before replacing its borrowed
+Lua owner. The member destruction order already preserves this relationship
+at shutdown; the explicit reset preserves it during reassignment as well.
+Participant pools remain owned by GameMissionHost throughout. This is a process
+lifetime correction verified by source order; repeated-load runtime validation
+remains separate from the worker's single-load mission evidence above.

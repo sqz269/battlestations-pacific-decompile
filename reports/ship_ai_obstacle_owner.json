@@ -8,6 +8,14 @@
   "source": "src/ship_ai_obstacle_owner.cpp",
   "header": "include/bsp/ship_ai_obstacle_owner.hpp",
   "documentation": "docs/SHIP_AI_OBSTACLE_OWNER.md",
+  "root_review_corrections": [
+    {
+      "old": "self class getter for actual +241 filter byte; self class241 in next binding",
+      "corrected": "009F1067 calls0080E160, which loads unit+738 director; filter reads director+241",
+      "evidence": "Whole getter0080E160..0080E166: MOV EAX,[ECX+738]; RET. Prior wording retained as history, superseded here.",
+      "constructor_projection_affected": false
+    }
+  ],
   "abi_compatible": false,
   "game_validated": false,
   "functions": [

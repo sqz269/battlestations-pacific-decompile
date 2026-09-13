@@ -1621,6 +1621,9 @@ void GameMissionHost::Impl::finish_scene_load() {
         "+928h script table is not filled by the header pass)", record.scene_path.c_str(),
         summary.lua_script_path.c_str());
 
+    // The previous frame and its children borrow the previous Lua owner.
+    // Destroy those borrowers before replacing that owner on a later load.
+    frame_host.reset();
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         profiler, language, hud);

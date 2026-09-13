@@ -3,6 +3,11 @@
   "status": "process_bound_build_and_runtime_verified_with_explicit_limits",
   "base_commit": "87f9a9e0290d8470357b50cb26e4b3963ace46e7",
   "doc": "docs/SESSION_PARTICIPANT_LIVE_OWNER.md",
+  "root_integration_lifetime_correction": {
+    "change": "Destroy the old frame_host before replacing the Lua owner it borrows in finish_scene_load",
+    "scope": "Process reassignment lifetime ordering; persistent participant pools remain alive",
+    "validation": "Source ownership/order reviewed; final combined build and single-load run follow integration. Repeated-load runtime remains unverified."
+  },
   "owned_files": [
     "include/bsp/game_hosts_mission_frame.hpp",
     "src/game_hosts_mission_frame.cpp",
