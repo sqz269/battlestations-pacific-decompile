@@ -85,8 +85,61 @@ executable and linker map are frozen under `local/raw_inflate_az/verified`.
 Immediate headers are recorded; a complete compiler dependency closure is not
 claimed.
 
-Compressed entry-to-memory composition will be recorded after the runtime
-adapter is available. Original FH3/SEH, allocation or decoder failures,
-malformed-input hangs, arbitrary stack/data aliasing, concurrent mutation and
-installed archive/gameplay behavior remain unvalidated. No permanent tests were
-added.
+## Compressed entry-to-memory composition
+
+The runtime adapter from `ad60fb260181097ebdc6dcfc528c80e6afe832dc` enables
+the existing BEF750 source implementation to consume numeric D64400 owners.
+A separate fixture compares the original 415-byte BB5080 caller with its
+actual source implementation. Both sides call shared actual constructor,
+conversion and destructor support. The ten raw methods were independently
+compared above; this is a composition check of the entry caller, not another
+independent execution of every original dependency.
+
+The same compressed payload appears twice in an archive-like byte array, at
+offsets 13 and 82,140. Three successive entry opens select the first copy, the
+second copy and then the first copy again through the exhausted-offset fallback.
+The comparison passes 1,468 checks: three entry pairs, 33 state words, 1,023
+source-call trace words and 450,369 decoded output bytes. Each output matches
+the immutable uncompressed payload, starts at cursor zero and owns independent
+memory backing. The underlying source returns with reference count one; after
+each returned stream is released, the actual memory counters are zero.
+
+The numeric D64400 table retains its original bytes in private read-only memory.
+A private BD30E0 support trampoline invokes the already reconstructed raw
+deleting destructor. The actual shared source allocator is linked from the
+current core, unlike the explicitly instrumented allocator boundary in the
+standalone raw fixture. Distinct fixture type IDs are borrowed through the
+existing conversion context; original global descriptor initialization, the
+full NativeMpakRuntime service graph and VFS open/name lookup are not claimed.
+
+The first composition attempt failed while reserving the numeric profile page,
+before target game-body execution. Its error metadata is retained; the initial
+conflicting memory map and binary were not captured before relinking. Linking
+the private probe at fixed image base 20000000 allows the required reservations
+and passes. This changed only the probe's layout.
+
+## Replaying a selected built checkout
+
+Both local helpers accept `--repo <selected built checkout>` and a **new**
+`--output <directory>`. Keep each helper beside its captured `verified` folder:
+
+- `local/raw_inflate_az/replay.py`: exact current raw-stream and constructor
+  objects plus stock zlib, with the original 1,305-check expectation.
+- `local/compressed_entry_az/replay.py`: nine current source objects verified
+  byte-for-byte against their selected core archive members, plus the core and
+  stock zlib, with the original 1,468-check expectation.
+
+They preserve captured native bytes, payload, probe logic and output expectations;
+they never regenerate expected results from the candidate. Each run records
+compiler `/showIncludes`, linker `/MAP` and `/VERBOSE:LIB`, executable results,
+source/object/library hashes and input stability. Syntax-only source reads
+observe the current include closure without rewriting selected built objects;
+the preceding strict build provides their freshness check. Current merged-head
+replays captured 224 raw-fixture and 235 composition-fixture include paths.
+Exact candidate commits, attempt paths and manifest hashes are in the report.
+The combined call-site audit passes all 27 direct rows; seven indirect rows
+retain explicit contracts outside that mechanical check.
+
+Original FH3/SEH, allocation or decoder failures, malformed-input hangs,
+arbitrary stack/data aliasing, concurrent mutation and installed archive/gameplay
+behavior remain unvalidated. No permanent tests were added.

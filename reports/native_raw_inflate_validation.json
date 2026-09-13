@@ -240,6 +240,96 @@
       "native": "00bf65ac",
       "function": "00bbc3e0",
       "contract": "Existing CRT free contract; preserve captured arguments and later owner reloads."
+    },
+    {
+      "address": "00bb50da",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning file-vector validity handler; reload begin afterward."
+    },
+    {
+      "address": "00bb510f",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning nonempty offset-vector handler; reload begin afterward."
+    },
+    {
+      "address": "00bb5124",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator > current end handler; captured first offset already read."
+    },
+    {
+      "address": "00bb513c",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning begin > captured end handler; keep captured end for equality."
+    },
+    {
+      "address": "00bb5145",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Unreachable handler: CMP ESI,ESI at BB5141 always takes BB5143 JZ."
+    },
+    {
+      "address": "00bb5155",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before offset comparison."
+    },
+    {
+      "address": "00bb5167",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before +4 increment."
+    },
+    {
+      "address": "00bb5176",
+      "native": "00bf6713",
+      "function": "00bb5080",
+      "contract": "Returning iterator >= current end handler before selected-offset dereference."
+    },
+    {
+      "address": "00bb50f5",
+      "native": "captured source current table +0x20",
+      "function": "00bb5080",
+      "contract": "ECX captured provider+14 source; no stack arguments; EDX:EAX position, retain EAX only."
+    },
+    {
+      "address": "00bb519d",
+      "native": "00bf681b",
+      "function": "00bb5080",
+      "contract": "cdecl scalar new34h; ADD ESP,4 at BB51A2; arm allocation cleanup only after return."
+    },
+    {
+      "address": "00bb51c8",
+      "native": "00bbc1d0",
+      "function": "00bb5080",
+      "contract": "ECX raw34h; stacked current source, actual12h descriptor,4000h,10000h; RET10h."
+    },
+    {
+      "address": "00bb51d9",
+      "native": "00bef750",
+      "function": "00bb5080",
+      "contract": "ECX constructed actual inflater; no stack args; state -1 before conversion; capture EAX result."
+    },
+    {
+      "address": "00bb51e4",
+      "native": "IAT 00ce2220 InterlockedDecrement",
+      "function": "00bb5080",
+      "contract": "stdcall actual inflater+4; RET4; only result zero selects current slot0."
+    },
+    {
+      "address": "00bb51f4",
+      "native": "current inflater table +0",
+      "function": "00bb5080",
+      "contract": "ECX inflater; no stacked arguments; current table/slot0 captured after decrement; result wrapper retained."
+    },
+    {
+      "address": "00bb5201",
+      "native": "00bef840",
+      "function": "00bb5080",
+      "contract": "ECX CURRENT provider+14 source; stacked selected offset,0,record+8 decoded length,0; RET10h."
     }
   ],
   "findings": [
@@ -275,8 +365,8 @@
     "seed_verification": "Eight spans matched before current incremental build; unchanged installed binary hash recorded.",
     "report_calls": {
       "status": "passed",
-      "direct_rows_checked": 15,
-      "indirect_rows_excluded": 4,
+      "direct_rows_checked": 27,
+      "indirect_rows_excluded": 7,
       "failed": 0
     },
     "fixture": {
@@ -442,12 +532,305 @@
     "map": "local/raw_inflate_az/verified/local/raw_inflate_az/raw_probe.map"
   },
   "compressed_entry_composition": {
-    "status": "pending adjacent runtime BEF750 numeric binding; not claimed by this commit"
+    "status": "passed",
+    "runtime_source_commit": "ad60fb260181097ebdc6dcfc528c80e6afe832dc",
+    "original_caller": {
+      "label": "entry",
+      "entry": "00bb5080",
+      "end_inclusive": "00bb521e",
+      "bytes": 415,
+      "sha256": "1a2770cc16843e304ffd2f14a5cf9a0bd88f990744ca63f3a7f9130d1eeee874",
+      "live_equal_disk": true,
+      "coverage": "complete",
+      "source_function": "materialize_native_mpak_entry_00bb5080"
+    },
+    "result": {
+      "passed": true,
+      "checks": 1468,
+      "entry_pairs": 3,
+      "state_words": 33,
+      "source_trace_words": 1023,
+      "compared_output_bytes": 450369,
+      "payload_bytes": 150123,
+      "compressed_bytes": 82120,
+      "final_memory_objects": 0,
+      "final_memory_bytes": 0
+    },
+    "native_profile_sha256": "6b208b1b00af9f99393e3806d759354f9c276daaf8c671c7fcf7fc8723d3fb63",
+    "immutable_basis": "local/compressed_entry_az/verified",
+    "basis_manifest_sha256": "d6b6eba44017487c7008b4c5d696203d801f88629bbd21164727b07dcb68bcd1",
+    "archive_offsets": [
+      13,
+      82140
+    ],
+    "selected_offsets": [
+      13,
+      82140,
+      13
+    ],
+    "independent_proof": "Copied original415-byte BB5080 compressed caller versus actual source caller with shared already-reconstructed constructor/conversion/raw-destructor support; standalone raw fixture independently compares its10 original methods.",
+    "actual_storage": "Original D64400 profile words remain unchanged; actual raw inflater/provider/record/memory owner storage and actual source allocator. Same borrowed source refs remain1 after each return; memory counters drain0.",
+    "library_boundaries": "Stock zlib1.2.1, source CRT allocator, source BEF750/constructor/destructor and private typed BD30E0 support trampoline are shared dependencies, not independently executed original dependencies of this composition fixture.",
+    "descriptor_boundary": "Distinct borrowed fixture memory/file type IDs; original global type initialization and full NativeMpakRuntime/VFS graph not exercised.",
+    "prior_failure": {
+      "stage": "first fixed-address profile allocation",
+      "checks": 1,
+      "result": "failed before game body execution; conflicting mapping was not captured",
+      "correction": "Relink the private probe at20000000 with DYNAMICBASE:NO; the subsequent reservation succeeds. No candidate source change."
+    },
+    "failure_preservation": "Failure metadata retained; initial executable and conflicting memory map were not captured before successful fixed-base relink.",
+    "current_build": "local/compressed_entry_az/source_build.log: strict Win32 Release, both existing CTests passed before current-head replays"
   },
   "limitations": [
     "Focused execution does not cover all native branches or arbitrary data/stack aliases.",
     "Original FH3/SEH, allocation/decoder failure, malformed input hangs, simultaneous cleanup exceptions, concurrent mutation and installed archives/gameplay remain unvalidated.",
-    "Immediate headers are pinned; no full compiler-observed dependency closure claimed.",
+    "Initial raw seal pins immediate headers only; current-head replays separately freeze compiler-observed include closure from syntax-only current source reads and probe compilation. Primary strict build supplies built-object freshness.",
     "No source implementation changes or permanent tests added."
-  ]
+  ],
+  "current_head_replays": [
+    {
+      "status": "passed",
+      "candidate_head": "364e66568404430ccd372a53163e9e3f7830552b",
+      "evidence_root": "local/raw_inflate_replay02",
+      "manifest_sha256": "674917cf5d334246d9ad9f938fc34021938a4e136b785bee433cc55c6393234c",
+      "helper": "local/raw_inflate_az/replay.py",
+      "helper_sha256": "d40e428b0f76d2c4fe980e666a440650e1d1582d745adb1ff50e4e0937a979b7",
+      "result": {
+        "passed": true,
+        "checks": 1305,
+        "state_words": 365,
+        "source_trace_words": 854,
+        "free_events": 12,
+        "compared_output_bytes": 70087,
+        "payload_bytes": 150123,
+        "compressed_bytes": 82120
+      },
+      "compiler_include_count": 224,
+      "object_library_source_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\Release\\bsp_zlib121.lib",
+          "frozen": "current/repo/build/win32/Release/bsp_zlib121.lib",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 71966,
+          "sha256": "0841311948242fd3aa0b38783d80b266e76cae2c41cac5760cc301c892779d88"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_raw_inflate_owner.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_raw_inflate_owner.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 5343,
+          "sha256": "7c38631fd66b9327dd6a5a47b00cc4cfbc1c5c458ba76c51a7df2db9a93c57b8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_raw_inflate_stream.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_raw_inflate_stream.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 6460,
+          "sha256": "1d338b2eeb7e455fcba2084a54d7b9153f3a1d1a54459927c006479779376d63"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\include\\bsp\\native_raw_inflate_owner.hpp",
+          "frozen": "current/repo/include/bsp/native_raw_inflate_owner.hpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 1483,
+          "sha256": "261cdd63b5234e3b7ad739bfe778748ecb35323e0f0d687a050f5118e02b3ce8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\include\\bsp\\native_raw_inflate_stream.hpp",
+          "frozen": "current/repo/include/bsp/native_raw_inflate_stream.hpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 2496,
+          "sha256": "2bb588f4ab21a525dd3ca03197767ed6bf7ea665b8859e972af14dd099ff2ee8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_raw_inflate_owner.cpp",
+          "frozen": "current/repo/src/native_raw_inflate_owner.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 3985,
+          "sha256": "cee75de05b43224f6343fe582602ffbe6af6c1d66e0fbfa66ff3a0343b24a086"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_raw_inflate_stream.cpp",
+          "frozen": "current/repo/src/native_raw_inflate_stream.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 9306,
+          "sha256": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2"
+        }
+      ],
+      "compiler_source_includes_sha256": "039a22bd00e3577bca3dbb1a71f41858a1905d0c9e3e544d6dd9aa0eb0925eab",
+      "compiler_and_linker_log_sha256": "3883da9c5851857d257284d5d8ad2bda2d293304715ca9bbd9ec4ac84d705a04",
+      "linker_map_sha256": "7502e35fe08f3a67f9838366dc7c6479358eb6a8b2ba1fb6a84c758ec7ebd5db",
+      "executable_sha256": "f56c1163797013547a36e35decc03d84ac193627590f0863ae732092b73a1994",
+      "core_member_parity": "not applicable: raw fixture links selected objects directly"
+    },
+    {
+      "status": "passed",
+      "candidate_head": "364e66568404430ccd372a53163e9e3f7830552b",
+      "evidence_root": "local/compressed_entry_replay01",
+      "manifest_sha256": "38b94e6b4945ee99a8b77c0eab013c183cae6b9bad2693600c409c5c5639064b",
+      "helper": "local/compressed_entry_az/replay.py",
+      "helper_sha256": "dc508f552cf3b2cad0c9a2d94abd4a06aa132ae405ea972458367ec3f4d0fde4",
+      "result": {
+        "passed": true,
+        "checks": 1468,
+        "entry_pairs": 3,
+        "state_words": 33,
+        "source_trace_words": 1023,
+        "compared_output_bytes": 450369,
+        "payload_bytes": 150123,
+        "compressed_bytes": 82120,
+        "final_memory_objects": 0,
+        "final_memory_bytes": 0
+      },
+      "compiler_include_count": 235,
+      "object_library_source_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\Release\\bsp_core.lib",
+          "frozen": "current/repo/build/win32/Release/bsp_core.lib",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 53939620,
+          "sha256": "56b6caf7997ac0b3ae2cc69ed71566eedfea0214eb73cbadc72ae8cccc6d171c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\Release\\bsp_zlib121.lib",
+          "frozen": "current/repo/build/win32/Release/bsp_zlib121.lib",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 71966,
+          "sha256": "0841311948242fd3aa0b38783d80b266e76cae2c41cac5760cc301c892779d88"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_adopted_substream.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_adopted_substream.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 14138,
+          "sha256": "be84383716e8a5a2058fffa0eb8ed21951120be4a51e6e8a32f85a0eb6ac4026"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_filestore_open.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_filestore_open.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 19883,
+          "sha256": "d593f87f5c9a23eef229c582ee07d2ed3bc420eb0d4e8080510ab4c8f5a888fa"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_memory_stream.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_memory_stream.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 6522,
+          "sha256": "0959b784cf0da60bc734da1a9a2a3714aa5bbaeea6ccd6fb19b5898753df3549"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_mpak_entry.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_mpak_entry.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 4086,
+          "sha256": "b31b3d5e8f96ca3e6b6c8d6f4ca4d859b5ae5692c7a78e4f2ed6aa60f112105d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_raw_inflate_owner.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_raw_inflate_owner.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 5343,
+          "sha256": "7c38631fd66b9327dd6a5a47b00cc4cfbc1c5c458ba76c51a7df2db9a93c57b8"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_raw_inflate_stream.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_raw_inflate_stream.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 6460,
+          "sha256": "1d338b2eeb7e455fcba2084a54d7b9153f3a1d1a54459927c006479779376d63"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_retained_memory_owners.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_retained_memory_owners.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 9593,
+          "sha256": "4f3eee64ffe4203459352a028b207fea37e32f8a927ce75f2df5a0782cd0a72c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\native_stream_copy_range.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/native_stream_copy_range.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 3830,
+          "sha256": "b94da0ede81cc8799d7bfc6560b33588dbf45ea65b42afd0c29d83fa2a8e219f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "frozen": "current/repo/build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 32963,
+          "sha256": "13fb1dc89873c9db38e3fa6042061cd57cbd36667dca58cfabb5788b3a1fc90b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_adopted_substream.cpp",
+          "frozen": "current/repo/src/native_adopted_substream.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 9011,
+          "sha256": "cc290d6afb33d1e3ee42455b2aa7a327e1c34d5eb12e3903f82c13caed15985a"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_filestore_open.cpp",
+          "frozen": "current/repo/src/native_filestore_open.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 12292,
+          "sha256": "8f844893f5d9bc6545dec4808786b74f098d61180e7f4e8c1c644fb38ceda71f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_memory_stream.cpp",
+          "frozen": "current/repo/src/native_memory_stream.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 6507,
+          "sha256": "1b55127245d09d5ad2eedfb3e00d02ecbe1b310e8630f4c24e5490273a119fbd"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_mpak_entry.cpp",
+          "frozen": "current/repo/src/native_mpak_entry.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 4612,
+          "sha256": "5632ab4ce80a066ebcbc48e2e83a83495b9c6308b5769857211cb9baec011e90"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_raw_inflate_owner.cpp",
+          "frozen": "current/repo/src/native_raw_inflate_owner.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 3985,
+          "sha256": "cee75de05b43224f6343fe582602ffbe6af6c1d66e0fbfa66ff3a0343b24a086"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_raw_inflate_stream.cpp",
+          "frozen": "current/repo/src/native_raw_inflate_stream.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 9306,
+          "sha256": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_retained_memory_owners.cpp",
+          "frozen": "current/repo/src/native_retained_memory_owners.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 6850,
+          "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\native_stream_copy_range.cpp",
+          "frozen": "current/repo/src/native_stream_copy_range.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 2332,
+          "sha256": "166689ef6c0e1893054e3d9d85f2b5020e4b825b901dae92adb0851c08efaed4"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-mpak-entry-az\\src\\singleton_lifetime.cpp",
+          "frozen": "current/repo/src/singleton_lifetime.cpp",
+          "kind": "candidate_source_or_object_or_library",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        }
+      ],
+      "compiler_source_includes_sha256": "8e8bcdfe1e842c9a29145468100576fa0640319bfacb261b41c77f704a0d7e5d",
+      "compiler_and_linker_log_sha256": "a718830c902fb17929118b6718cd6a5a9ed85ca92443eb0bbb46a8808ba926ee",
+      "linker_map_sha256": "3333d8d59c7349aecbb2af9758c52e4fc98dd24ee840b7942f82e1a7647a7d6a",
+      "executable_sha256": "67609496e9197f5d83361417d77f0fce5d7c28786a2caeed843bc8e49f6fd813",
+      "core_member_parity": true
+    }
+  ],
+  "replay_contract": "Run helper beside its verified directory with --repo <built checkout> --output <new directory>. Existing attempts refused; captured native/payload/probe/result expectations immutable; selected input stability checked; compiler /showIncludes and linker /MAP /VERBOSE:LIB preserved."
 }
