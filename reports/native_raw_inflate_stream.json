@@ -259,7 +259,19 @@
   },
   "verification": {
     "assembly_review": "primary plus independent worker; no behavior discrepancy reported",
-    "strict_build": "pending",
+    "strict_build": {
+      "status": "passed",
+      "command": "$env:MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "architecture": "MSVC Win32 Release",
+      "tests": {
+        "passed": 2,
+        "failed": 0
+      },
+      "log": "local/native-az-raw-build.log",
+      "log_sha256": "2314d48dadfa2495f4d8738a2324579988b1706f61f71cf1b5acf7b516a00a00",
+      "implementation_commit": "62e979c338724167d9af9f5b3fd4f218c77fa565",
+      "boundary": "Build started with these source changes in the working tree and completed after their commit; no compiled source changed while building. Full integrated head will be rebuilt."
+    },
     "native_source_fixture": "separate worker pending"
   },
   "limits": [
