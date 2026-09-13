@@ -37,3 +37,5 @@ membership and relative storage order only. CRT walker/order, CD7F00 neighbor,
 B74B80/CE0E50, and application startup wiring remain named-but-incomplete.
 This is source reconstruction, not original binary ABI compatibility or game
 validation. Existing generic pool and singleton provider contracts are reused.
+
+BG neighbor recheck: CD7F00/B74B80/CE0E50 are already complete NativeModelPool providers in src/native_model_pool.cpp and include/bsp/native_model_pool.hpp, introduced by 7372836d92c03f93cf01c0e53a860dcafe9a465e and integrated by 4ff70e294b22fdd8a9318e974a8bae137f48eaad. Current Ghidra owns CD7F00..CD7F15, B74B80..B74C52 and CE0E50..CE0E59. The earlier incomplete-neighbor statements are superseded by this recheck. Reuse the distinct canonical 01090054/D62DD0 NativeModelPool and the shared AllocatorListDomain; do not duplicate these bodies or substitute the 0109008C/D62C78 model-base pool. CRT walker/invocation order and application startup/lifetime wiring remain unverified.

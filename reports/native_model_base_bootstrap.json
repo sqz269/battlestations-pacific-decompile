@@ -1,6 +1,6 @@
 {
   "packet": "orch3_model_base_bootstrap_impl_bg",
-  "status": "registered_source_pending_exact_combined_validation",
+  "status": "registered_strict_win32_build_and_source_process_exit_fixture_passed",
   "addresses": [
     "00cd7eb0",
     "00cd7f20",
@@ -64,10 +64,7 @@
   "no_ghidra_function": [],
   "named_but_incomplete": [
     "CRT walker and invocation order",
-    "00cd7f00 neighbor",
-    "00b74b80",
-    "00ce0e50",
-    "application startup wiring"
+    "application startup/lifetime wiring"
   ],
   "validation": {
     "strict_standalone_win32": "MSVC /std:c++20 /MD /W4 /WX /fp:strict /EHsc compile passed",
@@ -162,6 +159,26 @@
     ],
     "worker_control_scope": "13 pinned source/probe/object/library/recipe/report files, plus original manifest. Full worker transitive headers and build inputs were not pinned; final combined root replay must pin them.",
     "combined_validation": "pending",
+    "game_validated": false
+  },
+  "neighbor_recheck_bg": {
+    "correction": "BG neighbor recheck: CD7F00/B74B80/CE0E50 are already complete NativeModelPool providers in src/native_model_pool.cpp and include/bsp/native_model_pool.hpp, introduced by 7372836d92c03f93cf01c0e53a860dcafe9a465e and integrated by 4ff70e294b22fdd8a9318e974a8bae137f48eaad. Current Ghidra owns CD7F00..CD7F15, B74B80..B74C52 and CE0E50..CE0E59. The earlier incomplete-neighbor statements are superseded by this recheck. Reuse the distinct canonical 01090054/D62DD0 NativeModelPool and the shared AllocatorListDomain; do not duplicate these bodies or substitute the 0109008C/D62C78 model-base pool. CRT walker/invocation order and application startup/lifetime wiring remain unverified.",
+    "provider_source_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+    "new_native_body_credit": false
+  },
+  "historical_named_but_incomplete_before_neighbor_recheck": [
+    "CRT walker and invocation order",
+    "00cd7f00 neighbor",
+    "00b74b80",
+    "00ce0e50",
+    "application startup wiring"
+  ],
+  "final_combined_validation_bg": {
+    "report": "reports/native_bg_integration_validation.json",
+    "tested_commit": "daa9706c969f965ceb70790ccd2ef68f68ca0b1b",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "current_library_only_fixtures_passed": 2,
     "game_validated": false
   }
 }
