@@ -1,6 +1,7 @@
 #include "bsp/native_input_settings_tables.hpp"
 #include "bsp/native_checked_string_storage.hpp"
 #include "bsp/native_input_settings_vector_storage.hpp"
+#include "bsp/native_input_settings_tree_cleanup.hpp"
 #include "bsp/native_input_configuration_modifiers.hpp"
 #include "bsp/native_input_deadline_map_lookup_adapter.hpp"
 #include <cstdlib>
@@ -144,7 +145,7 @@ void codes(Frame& f, Object table, Object value, void* header,
 void parse_tables(void* settings, NativeLuaStateStorage& lua, NativeInputSettingsTableServices& s) {
     Frame f(s.scripts.strings); auto& c = s.containers; auto& trees = s.trees;
     void* tree = at(settings,8);
-    c.call_006a7540(tree,pointer(read(pointer(read(tree,4)),4)));
+    destroy_native_input_device_subtree_006a7540(tree,pointer(read(pointer(read(tree,4)),4)),s.scripts.strings);
     void* head = read<void*>(tree,4); write(head,4,address(head)); write(tree,8,0u);
     head = read<void*>(tree,4); write(head,0,address(head)); head = read<void*>(tree,4); write(head,8,address(head));
     void* order = at(settings,0x14); const auto end = read(order,8);
