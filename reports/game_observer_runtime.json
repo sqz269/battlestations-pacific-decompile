@@ -1,6 +1,6 @@
 {
   "packet": "orch6_observer_application_r",
-  "status": "actual_application_owner_binding_build_tested_runtime_pending",
+  "status": "actual_application_owner_binding_build_and_mission_process_validated",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "source": "src/game_observer_runtime.cpp",
@@ -48,8 +48,28 @@
   "validation": {
     "build": "MSVC Win32 Release passed",
     "ctest": "2existing CTests passed",
-    "runtime": "pending final combined process run",
-    "new_tests": 0
+    "runtime": {
+      "compiled_commit": "1e88b3b956f5a3109201740eb5450b9f0d6d68ef",
+      "exe_sha256": "f8656d76b7405e555fd9a060121697bd0f7c205a2358c0eac94d277fffd4019d",
+      "record": "local/orch6_combined_1e88b3b9.json",
+      "log": "local/orch6_combined_1e88b3b9.log",
+      "observations": {
+        "initialized": true,
+        "drained": true
+      },
+      "exit": 0,
+      "mission_frames": 120,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "scope": "Actual startup creates/publishes/registers the dispatch owner and actual raw manager drain clears its owning cell while retaining alias. No observer lock or endpoint is fabricated; actual edge/event paths remain separate."
+    },
+    "new_tests": 0,
+    "runtime_log_sha256": "959f0087dd584a51ed6c431a035e3532c480139d3086e4d2b15999db8bfc37e2"
   },
   "source_sha256": {
     "include/bsp/game_observer_runtime.hpp": "4c62a693dbfd85c0082ee92a978c1f180d574215e713ad25fa871e6af2a43461",
