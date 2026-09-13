@@ -13,60 +13,102 @@
       "end_inclusive": "00b1eb7d",
       "cpp_symbol": "upload_native_instance_groups_00b1e990",
       "original_abi": "ECX actual44h command; no stack arguments; plain RET",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void __thiscall upload(void* command)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_InstanceGroups_UploadAndQueue(void)",
       "coverage": "complete",
-      "byte_count": 494
+      "byte_count": 494,
+      "end_exclusive": "00b1eb7e",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_InstanceGroups_UploadAndQueue",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     },
     {
       "address": "00b556f0",
       "end_inclusive": "00b55777",
       "cpp_symbol": "write_native_generic_instance_00b556f0",
       "original_abi": "ECX generator unused; stack actual28h entry, actual48-byte output; RET8",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void __thiscall write_generic(void* generator, const void* entry, void* output)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_WriteNativeGenericInstance(void *entry, void *output)",
       "coverage": "complete",
-      "byte_count": 136
+      "byte_count": 136,
+      "end_exclusive": "00b55778",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_WriteNativeGenericInstance",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     },
     {
       "address": "00b55780",
       "end_inclusive": "00b55b16",
       "cpp_symbol": "write_native_building_instance_00b55780",
       "original_abi": "ECX generator unused; stack actual28h entry, actual144-byte output; RET8",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void __thiscall write_building(void* generator, const void* entry, void* output)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_BuildingInstanceGenerator_WriteRecord(void *entry, void *output)",
       "coverage": "complete",
-      "byte_count": 919
+      "byte_count": 919,
+      "end_exclusive": "00b55b17",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_BuildingInstanceGenerator_WriteRecord",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     },
     {
       "address": "00b6dc50",
       "end_inclusive": "00b6dc56",
       "cpp_symbol": "native_node_point_light_array_00b6dc50",
       "original_abi": "ECX actual node; EAX node+164; plain RET",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void* __thiscall point_light_array(void* node)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Node_GetPointLights(void)",
       "coverage": "complete",
-      "byte_count": 7
+      "byte_count": 7,
+      "end_exclusive": "00b6dc57",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_Node_GetPointLights",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     },
     {
       "address": "00b72110",
       "end_inclusive": "00b72113",
       "cpp_symbol": "native_scene_lighting_owner_00b72110",
       "original_abi": "ECX actual outer scene; EAX [ECX+1C]; no stack arguments; plain RET",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void* __thiscall scene_lighting_owner(const void* scene)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Scene_GetLightingOwner(void)",
       "coverage": "complete",
-      "byte_count": 4
+      "byte_count": 4,
+      "end_exclusive": "00b72114",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_Scene_GetLightingOwner",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     },
     {
       "address": "00b85590",
       "end_inclusive": "00b85599",
       "cpp_symbol": "set_native_section_instance_count_00b85590",
       "original_abi": "ECX actual section; stack DWORD count; store+1C; RET4",
-      "native_calling_convention": "__thiscall (observed ECX owner and callee stack cleanup)",
-      "native_prototype": "void __thiscall set_instance_count(void* section, unsigned count)",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_DrawSection_SetInstanceCount(unsigned int count)",
       "coverage": "complete",
-      "byte_count": 10
+      "byte_count": 10,
+      "end_exclusive": "00b8559a",
+      "source": "src/native_instance_group_upload.cpp",
+      "header": "include/bsp/native_instance_group_upload.hpp",
+      "module": "native_instance_group_upload",
+      "ghidra_name": "BSP_DrawSection_SetInstanceCount",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_INSTANCE_GROUP_UPLOAD.md; reports/native_instance_group_upload.json."
     }
   ],
   "normal_function_count": 6,
@@ -79,15 +121,6 @@
     "classification": "internal span of fully reconstructed parent; not an original function or separate reconstructed-function count",
     "reason": "one exact outgoing eight-word x87/SSE schedule, also used by focused original-byte FP edge fixture"
   },
-  "no_ghidra_function": [
-    {
-      "address": "00b556f0",
-      "end_inclusive": "00b55777",
-      "byte_count": 136,
-      "evidence": "complete original/live equality, D61BFC+8 profile, RET8 at B55775, next eight bytes INT3",
-      "required_primary_action": "define complete function through centralized write lock then refresh export; no worker mutation"
-    }
-  ],
   "host_steps": [
     {
       "address": "00b1e9d9",
@@ -471,5 +504,153 @@
     "Nonfinite comparator inputs receive native comparisons but a total sort order is not claimed",
     "Fixture raw point-light value rows establish writer reads, not point-light owner lifecycle",
     "Six full bodies do not reconstruct B44FD0/B450D0/B55B20 generator constructors or lifetime; their existing producer evidence grounds current dispatch"
+  ],
+  "integration_av_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 15,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f170": "00b1f170 BSP_RenderCommand_Construct  undefined BSP_RenderCommand_Construct(void)  body 00b1f170 - 00b1f1ef",
+      "00b1f1f0": "00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  undefined BSP_RenderCommand_ConstructWithSeparateOwner(void)  body 00b1f1f0 - 00b1f273",
+      "00b1edc0": "00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  undefined BSP_RenderCommand_InitializeContextAndBatches(void)  body 00b1edc0 - 00b1ef56",
+      "00b1ddd0": "00b1ddd0 BSP_RenderCommand_Destroy  undefined BSP_RenderCommand_Destroy(void)  body 00b1ddd0 - 00b1dfec",
+      "00b1e6b0": "00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  undefined BSP_RenderCommand_ScalarDeletingDestructor(void)  body 00b1e6b0 - 00b1e6cd",
+      "00b262c0": "00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  undefined BSP_D3D9Renderer_ReleaseResourcesForReset(void)  body 00b262c0 - 00b26493",
+      "00b241c0": "00b241c0 BSP_D3D9Renderer_ClearBindingCache  undefined BSP_D3D9Renderer_ClearBindingCache(void)  body 00b241c0 - 00b24457",
+      "00b27b00": "00b27b00 FUN_00b27b00  undefined FUN_00b27b00(void)  body 00b27b00 - 00b27b81",
+      "00b71360": "00b71360 BSP_Camera_ExecuteFrameCommand  undefined BSP_Camera_ExecuteFrameCommand(void)  body 00b71360 - 00b713c5",
+      "00b1e990": "00b1e990 BSP_InstanceGroups_UploadAndQueue  undefined BSP_InstanceGroups_UploadAndQueue(void)  body 00b1e990 - 00b1eb7d",
+      "00b556f0": "00b556f0 FUN_00b556f0  undefined FUN_00b556f0(void)  body 00b556f0 - 00b55777",
+      "00b55780": "00b55780 BSP_BuildingInstanceGenerator_WriteRecord  undefined BSP_BuildingInstanceGenerator_WriteRecord(void)  body 00b55780 - 00b55b16",
+      "00b6dc50": "00b6dc50 BSP_Node_GetPointLights  undefined BSP_Node_GetPointLights(void)  body 00b6dc50 - 00b6dc56",
+      "00b72110": "00b72110 BSP_Scene_GetLightingOwner  undefined BSP_Scene_GetLightingOwner(void)  body 00b72110 - 00b72113",
+      "00b85590": "00b85590 BSP_DrawSection_SetInstanceCount  undefined BSP_DrawSection_SetInstanceCount(void)  body 00b85590 - 00b85599"
+    },
+    "original_signature_readback": "00b1f170 BSP_RenderCommand_Construct  void * __thiscall BSP_RenderCommand_Construct(void * this, void * scene, void * camera, void * target)  body 00b1f170 - 00b1f1ef\n00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  void * __thiscall BSP_RenderCommand_ConstructWithSeparateOwner(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1f1f0 - 00b1f273\n00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  void __thiscall BSP_RenderCommand_InitializeContextAndBatches(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1edc0 - 00b1ef56\n00b1ddd0 BSP_RenderCommand_Destroy  void __thiscall BSP_RenderCommand_Destroy(void * this)  body 00b1ddd0 - 00b1dfec\n00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  void * __thiscall BSP_RenderCommand_ScalarDeletingDestructor(void * this, uint flags)  body 00b1e6b0 - 00b1e6cd\n00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  void __thiscall BSP_D3D9Renderer_ReleaseResourcesForReset(void * this)  body 00b262c0 - 00b26493\n00b241c0 BSP_D3D9Renderer_ClearBindingCache  void __thiscall BSP_D3D9Renderer_ClearBindingCache(void * this)  body 00b241c0 - 00b24457\n00b27b00 BSP_BindNativeRendererMaterialThirdStates  void __thiscall BSP_BindNativeRendererMaterialThirdStates(void * this, void * owner)  body 00b27b00 - 00b27b81\n00b71360 BSP_Camera_ExecuteFrameCommand  void __thiscall BSP_Camera_ExecuteFrameCommand(void * this)  body 00b71360 - 00b713c5\n00b1e990 BSP_InstanceGroups_UploadAndQueue  void __thiscall BSP_InstanceGroups_UploadAndQueue(void * this)  body 00b1e990 - 00b1eb7d\n00b556f0 BSP_WriteNativeGenericInstance  void __thiscall BSP_WriteNativeGenericInstance(void * this, void * entry, void * output)  body 00b556f0 - 00b55777\n00b55780 BSP_BuildingInstanceGenerator_WriteRecord  void __thiscall BSP_BuildingInstanceGenerator_WriteRecord(void * this, void * entry, void * output)  body 00b55780 - 00b55b16\n00b6dc50 BSP_Node_GetPointLights  void * __thiscall BSP_Node_GetPointLights(void * this)  body 00b6dc50 - 00b6dc56\n00b72110 BSP_Scene_GetLightingOwner  void * __thiscall BSP_Scene_GetLightingOwner(void * this)  body 00b72110 - 00b72113\n00b85590 BSP_DrawSection_SetInstanceCount  void __thiscall BSP_DrawSection_SetInstanceCount(void * this, uint count)  body 00b85590 - 00b85599\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b27b00",
+              "end_address": "00b27b82"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b27b00",
+              "end_address": "00b27b81",
+              "bytes_disassembled": 130,
+              "message": "Successfully disassembled 130 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b27b00",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b27b00",
+              "function_name": "FUN_00b27b00",
+              "entry_point": "00b27b00",
+              "body_size": 130,
+              "message": "Function created successfully at 00b27b00"
+            }
+          },
+          {
+            "defined": "00b27b00",
+            "end": "00b27b82",
+            "name": null,
+            "after": "Function: FUN_00b27b00 at 00b27b00\nSignature: undefined FUN_00b27b00(void)\nEntry: 00b27b00\nBody: 00b27b00 - 00b27b81"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b556f0",
+              "end_address": "00b55778"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b556f0",
+              "end_address": "00b55777",
+              "bytes_disassembled": 136,
+              "message": "Successfully disassembled 136 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b556f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b556f0",
+              "function_name": "FUN_00b556f0",
+              "entry_point": "00b556f0",
+              "body_size": 136,
+              "message": "Function created successfully at 00b556f0"
+            }
+          },
+          {
+            "defined": "00b556f0",
+            "end": "00b55778",
+            "name": null,
+            "after": "Function: FUN_00b556f0 at 00b556f0\nSignature: undefined FUN_00b556f0(void)\nEntry: 00b556f0\nBody: 00b556f0 - 00b55777"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent reviews checked complete cache/deleting dispatch and row/count reloads, command string allocation/publication and cleanup scopes, full parent resource traversal/guard order, both instance writers and parent x87 argument schedule. The parent upload float helper was replaced with the exact native argument schedule; the original/source x87 stack-pressure case passed. Root preserved the resource guard DWORD access width.",
+    "current_report_call_check": "reports/native_instance_group_upload.json: 22 call rows checked, 0 failed"
+  },
+  "worker_capture_no_ghidra_function": [
+    {
+      "address": "00b556f0",
+      "end_inclusive": "00b55777",
+      "byte_count": 136,
+      "evidence": "complete original/live equality, D61BFC+8 profile, RET8 at B55775, next eight bytes INT3",
+      "required_primary_action": "define complete function through centralized write lock then refresh export; no worker mutation"
+    }
   ]
 }

@@ -1,5 +1,7 @@
 # Actual renderer cache clear and third-state binding
 
+Addresses: 00b241c0, 00b27b00
+
 The complete normal `B241C0` body now operates on the actual cache at
 **renderer+34**, including all 26 current intrusive owner cells. It composes
 the existing raw destruction implementations. The independent 130-byte raw
@@ -171,3 +173,11 @@ tests parent scheduling across real source owners, not the original bytes of
 every nested terminal. COM observation objects are fixture providers, not a
 GPU/device or original-game runtime. Full renderer reset/recreation, original
 caller ABI, exhaustive failure domains and gameplay remain separate work.
+
+## AV integration analysis refresh
+
+The integrator defined the full B27B00..B27B81 body under its lease and the
+Ghidra write lock, then saved its name, original signature and evidence. Full
+body/signature readback passed. The current numeric call check passes all15
+rows with no failures. The missing-function observations above describe the
+worker capture before this integration; runtime caller identity remains open.

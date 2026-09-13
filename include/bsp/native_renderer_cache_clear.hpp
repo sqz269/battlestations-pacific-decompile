@@ -16,7 +16,7 @@ struct NativeRendererThirdStateBindingContext {
     const volatile std::uint32_t* actual_third_profile_00d61a3c;
 };
 
-// Full raw B27B00..B27B81 (130 bytes); saved analysis has no Ghidra function.
+// Full B27B00..B27B81 (130 bytes); integrator defined and saved the full body.
 // Original ECX renderer, stack incoming owner, RET4. This new fastcall adds a
 // fixed borrowed context in EDX. Publish/retain before releasing captured old;
 // reload current row base/count after each complete B24510 stage/state/value

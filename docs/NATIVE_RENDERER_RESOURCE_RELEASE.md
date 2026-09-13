@@ -1,5 +1,7 @@
 # Actual renderer resource release
 
+Addresses: 00b262c0
+
 `release_native_renderer_resources_00b262c0` reconstructs the complete468-byte
 B262C0..B26493 normal body over the actual renderer. The original interface
 receives ECX, no stack arguments, and returns with RET. Its descriptive name is
@@ -42,3 +44,11 @@ passed. The report records later combined build, independent review and any
 full-parent original-byte fixture separately. Leaf fixtures and cache tests do
 not themselves prove this parent. B29670 device recreation, complete render
 composition and gameplay remain unverified.
+
+## AV independent review
+
+Independent complete-listing review confirmed the native ready/state0 order,
+current resource traversal, callback-free record walk and cache/guard sequence.
+The final leave path now loads the full saved guard DWORD after disarming,
+matching the native access width even though B33B00 ignores that argument.
+The final report distinguishes parent fixture coverage from leaf evidence.

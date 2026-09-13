@@ -1,5 +1,7 @@
 # Native command lifetime with actual string storage
 
+Addresses: 00b1f170, 00b1f1f0, 00b1edc0, 00b1ddd0, 00b1e6b0
+
 The existing full command constructors, initializer and destruction now accept
 `NativeRenderCommandActualEnvironment`. Its string reference is the same
 `ActualNativeStringPoolStorage` publication and pool used by B1DFF0 collection

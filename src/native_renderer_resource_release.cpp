@@ -160,6 +160,6 @@ void release_native_renderer_resources_00b262c0(void* renderer,
     const auto current_mode = globals.mode_00;
     cleanup.armed = false;
     if (current_mode != 0)
-        leave_native_renderer_optional_guard_00b33b00(guard.renderer_04, guard.entered_00, globals);
+        leave_native_renderer_optional_guard_00b33b00(guard.renderer_04, word(&guard), globals);
 }
 } // namespace bsp

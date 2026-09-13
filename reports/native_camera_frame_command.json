@@ -3,7 +3,9 @@
   "packet": "orch3_camera_frame_av",
   "worker": "agent/orch3-camera-frame-av",
   "base": "4c97c137",
-  "owned_addresses": ["00b71360"],
+  "owned_addresses": [
+    "00b71360"
+  ],
   "routine": {
     "address": "00b71360",
     "native": "00b71360",
@@ -18,15 +20,56 @@
     "no_ghidra_function": false
   },
   "host_steps": [
-    {"address":"00b7137b","native":"00b285a0","function":"00b71360","slot":"00d5f0a8+a0","coverage":"complete","contract":"current renderer prepares actual camera, RET4"},
-    {"address":"00b71392","native":"00b26770","function":"00b71360","slot":"00d5f0a8+a4","coverage":"complete","contract":"current renderer binds captured borrowed viewport, RET4"},
-    {"address":"00b713c2","native":"00b21430","function":"00b71360","slot":"00d5f0a8+08","coverage":"complete","contract":"current renderer receives count0/null/flags/color address/by-value x87 depth/stencil, RET18h"}
+    {
+      "address": "00b7137b",
+      "native": "00b285a0",
+      "function": "00b71360",
+      "slot": "00d5f0a8+a0",
+      "coverage": "complete",
+      "contract": "current renderer prepares actual camera, RET4"
+    },
+    {
+      "address": "00b71392",
+      "native": "00b26770",
+      "function": "00b71360",
+      "slot": "00d5f0a8+a4",
+      "coverage": "complete",
+      "contract": "current renderer binds captured borrowed viewport, RET4"
+    },
+    {
+      "address": "00b713c2",
+      "native": "00b21430",
+      "function": "00b71360",
+      "slot": "00d5f0a8+08",
+      "coverage": "complete",
+      "contract": "current renderer receives count0/null/flags/color address/by-value x87 depth/stencil, RET18h"
+    }
   ],
   "caller_steps": [
-    {"address":"00b15e81","native":"00b71360","function":"00b156c0","argument":"B1BF40 result EAX -> ECX"},
-    {"address":"00b161f0","native":"00b71360","function":"00b156c0","argument":"B1BF40 result EAX -> ECX"},
-    {"address":"00b4f2d6","native":"00b71360","function":"00b4f1c0","argument":"camera [ESI+34] -> ECX"},
-    {"address":"00b1d9a0","native":"00b71360","function":"00b1d950","argument":"EBP captured from context+08 -> ECX"}
+    {
+      "address": "00b15e81",
+      "native": "00b71360",
+      "function": "00b156c0",
+      "argument": "B1BF40 result EAX -> ECX"
+    },
+    {
+      "address": "00b161f0",
+      "native": "00b71360",
+      "function": "00b156c0",
+      "argument": "B1BF40 result EAX -> ECX"
+    },
+    {
+      "address": "00b4f2d6",
+      "native": "00b71360",
+      "function": "00b4f1c0",
+      "argument": "camera [ESI+34] -> ECX"
+    },
+    {
+      "address": "00b1d9a0",
+      "native": "00b71360",
+      "function": "00b1d950",
+      "argument": "EBP captured from context+08 -> ECX"
+    }
   ],
   "producer": {
     "function": "00b71a80",
@@ -48,11 +91,31 @@
     "complete_spans": 5,
     "complete_bytes": 1275,
     "spans": [
-      {"start":"00b71360","end_inclusive":"00b713c5","length":102},
-      {"start":"00b285a0","end_inclusive":"00b287bf","length":544},
-      {"start":"00b26770","end_inclusive":"00b26891","length":290},
-      {"start":"00b21430","end_inclusive":"00b214da","length":171},
-      {"start":"00d5f0a8","end_inclusive":"00d5f14f","length":168}
+      {
+        "start": "00b71360",
+        "end_inclusive": "00b713c5",
+        "length": 102
+      },
+      {
+        "start": "00b285a0",
+        "end_inclusive": "00b287bf",
+        "length": 544
+      },
+      {
+        "start": "00b26770",
+        "end_inclusive": "00b26891",
+        "length": 290
+      },
+      {
+        "start": "00b21430",
+        "end_inclusive": "00b214da",
+        "length": 171
+      },
+      {
+        "start": "00d5f0a8",
+        "end_inclusive": "00d5f14f",
+        "length": 168
+      }
     ],
     "Ghidra_mutations": false,
     "fixture_directory": "J:/PROG/battlestations-pacific-decompile-orch3-camera-frame-av/local/native_camera_frame_command",
@@ -85,7 +148,27 @@
     "reference_profile_relocations": "slots+08/+A0/+A4 ->3 integer EDX-context tail bridges; reference receiver vptrs -> relocated profile23000000; source uses D5F0A8 native tag and original profile words",
     "original_descendants_executed": false,
     "gameplay_validated": false,
-    "fixture_artifacts": ["prepare.py","original.hpp","00b71360.bin","00b285a0.bin","00b26770.bin","00b21430.bin","00d5f0a8.bin","pins.json","original_assembly.txt","probe.cpp","run.ps1","build.ps1","extra.cmake","runtime.log","build.log","probe.map","traces.bin","frames.bin","manifest.json"]
+    "fixture_artifacts": [
+      "prepare.py",
+      "original.hpp",
+      "00b71360.bin",
+      "00b285a0.bin",
+      "00b26770.bin",
+      "00b21430.bin",
+      "00d5f0a8.bin",
+      "pins.json",
+      "original_assembly.txt",
+      "probe.cpp",
+      "run.ps1",
+      "build.ps1",
+      "extra.cmake",
+      "runtime.log",
+      "build.log",
+      "probe.map",
+      "traces.bin",
+      "frames.bin",
+      "manifest.json"
+    ]
   },
   "limits": [
     "Explicit new source context; no drop-in binary caller ABI or semantic return promise.",
@@ -93,5 +176,168 @@
     "Original parent fixture uses current-library descendants through three integer context bridges, not original descendant machine code.",
     "Focused warm-cache camera; cold getter, clip and ambient behavior rely on complete provider evidence.",
     "No gameplay, rendered game frame, or whole native descendant EH/SEH equivalence claim."
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00b71360",
+      "native": "00b71360",
+      "function": "00b71360",
+      "end_inclusive": "00b713c5",
+      "length": 102,
+      "coverage": "complete",
+      "source": "src/native_camera_frame_command.cpp",
+      "interface": "ECX actual camera, EDX added immutable context; RET; no semantic return",
+      "original_abi": "ECX actual camera; RET; ESI saved/restored; no semantic return",
+      "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f",
+      "no_ghidra_function": false,
+      "end_exclusive": "00b713c6",
+      "cpp_symbol": "execute_native_camera_frame_command_00b71360",
+      "header": "include/bsp/native_camera_frame_command.hpp",
+      "module": "native_camera_frame_command",
+      "ghidra_name": "BSP_Camera_ExecuteFrameCommand",
+      "native_prototype": "void BSP_Camera_ExecuteFrameCommand(void)",
+      "native_calling_convention": "__thiscall",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_CAMERA_FRAME_COMMAND.md; reports/native_camera_frame_command.json."
+    }
+  ],
+  "integration_av_review": {
+    "combined_validation": "pending exact merged source build and current-library replay",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 15,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f170": "00b1f170 BSP_RenderCommand_Construct  undefined BSP_RenderCommand_Construct(void)  body 00b1f170 - 00b1f1ef",
+      "00b1f1f0": "00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  undefined BSP_RenderCommand_ConstructWithSeparateOwner(void)  body 00b1f1f0 - 00b1f273",
+      "00b1edc0": "00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  undefined BSP_RenderCommand_InitializeContextAndBatches(void)  body 00b1edc0 - 00b1ef56",
+      "00b1ddd0": "00b1ddd0 BSP_RenderCommand_Destroy  undefined BSP_RenderCommand_Destroy(void)  body 00b1ddd0 - 00b1dfec",
+      "00b1e6b0": "00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  undefined BSP_RenderCommand_ScalarDeletingDestructor(void)  body 00b1e6b0 - 00b1e6cd",
+      "00b262c0": "00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  undefined BSP_D3D9Renderer_ReleaseResourcesForReset(void)  body 00b262c0 - 00b26493",
+      "00b241c0": "00b241c0 BSP_D3D9Renderer_ClearBindingCache  undefined BSP_D3D9Renderer_ClearBindingCache(void)  body 00b241c0 - 00b24457",
+      "00b27b00": "00b27b00 FUN_00b27b00  undefined FUN_00b27b00(void)  body 00b27b00 - 00b27b81",
+      "00b71360": "00b71360 BSP_Camera_ExecuteFrameCommand  undefined BSP_Camera_ExecuteFrameCommand(void)  body 00b71360 - 00b713c5",
+      "00b1e990": "00b1e990 BSP_InstanceGroups_UploadAndQueue  undefined BSP_InstanceGroups_UploadAndQueue(void)  body 00b1e990 - 00b1eb7d",
+      "00b556f0": "00b556f0 FUN_00b556f0  undefined FUN_00b556f0(void)  body 00b556f0 - 00b55777",
+      "00b55780": "00b55780 BSP_BuildingInstanceGenerator_WriteRecord  undefined BSP_BuildingInstanceGenerator_WriteRecord(void)  body 00b55780 - 00b55b16",
+      "00b6dc50": "00b6dc50 BSP_Node_GetPointLights  undefined BSP_Node_GetPointLights(void)  body 00b6dc50 - 00b6dc56",
+      "00b72110": "00b72110 BSP_Scene_GetLightingOwner  undefined BSP_Scene_GetLightingOwner(void)  body 00b72110 - 00b72113",
+      "00b85590": "00b85590 BSP_DrawSection_SetInstanceCount  undefined BSP_DrawSection_SetInstanceCount(void)  body 00b85590 - 00b85599"
+    },
+    "original_signature_readback": "00b1f170 BSP_RenderCommand_Construct  void * __thiscall BSP_RenderCommand_Construct(void * this, void * scene, void * camera, void * target)  body 00b1f170 - 00b1f1ef\n00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  void * __thiscall BSP_RenderCommand_ConstructWithSeparateOwner(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1f1f0 - 00b1f273\n00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  void __thiscall BSP_RenderCommand_InitializeContextAndBatches(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1edc0 - 00b1ef56\n00b1ddd0 BSP_RenderCommand_Destroy  void __thiscall BSP_RenderCommand_Destroy(void * this)  body 00b1ddd0 - 00b1dfec\n00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  void * __thiscall BSP_RenderCommand_ScalarDeletingDestructor(void * this, uint flags)  body 00b1e6b0 - 00b1e6cd\n00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  void __thiscall BSP_D3D9Renderer_ReleaseResourcesForReset(void * this)  body 00b262c0 - 00b26493\n00b241c0 BSP_D3D9Renderer_ClearBindingCache  void __thiscall BSP_D3D9Renderer_ClearBindingCache(void * this)  body 00b241c0 - 00b24457\n00b27b00 BSP_BindNativeRendererMaterialThirdStates  void __thiscall BSP_BindNativeRendererMaterialThirdStates(void * this, void * owner)  body 00b27b00 - 00b27b81\n00b71360 BSP_Camera_ExecuteFrameCommand  void __thiscall BSP_Camera_ExecuteFrameCommand(void * this)  body 00b71360 - 00b713c5\n00b1e990 BSP_InstanceGroups_UploadAndQueue  void __thiscall BSP_InstanceGroups_UploadAndQueue(void * this)  body 00b1e990 - 00b1eb7d\n00b556f0 BSP_WriteNativeGenericInstance  void __thiscall BSP_WriteNativeGenericInstance(void * this, void * entry, void * output)  body 00b556f0 - 00b55777\n00b55780 BSP_BuildingInstanceGenerator_WriteRecord  void __thiscall BSP_BuildingInstanceGenerator_WriteRecord(void * this, void * entry, void * output)  body 00b55780 - 00b55b16\n00b6dc50 BSP_Node_GetPointLights  void * __thiscall BSP_Node_GetPointLights(void * this)  body 00b6dc50 - 00b6dc56\n00b72110 BSP_Scene_GetLightingOwner  void * __thiscall BSP_Scene_GetLightingOwner(void * this)  body 00b72110 - 00b72113\n00b85590 BSP_DrawSection_SetInstanceCount  void __thiscall BSP_DrawSection_SetInstanceCount(void * this, uint count)  body 00b85590 - 00b85599\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b27b00",
+              "end_address": "00b27b82"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b27b00",
+              "end_address": "00b27b81",
+              "bytes_disassembled": 130,
+              "message": "Successfully disassembled 130 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b27b00",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b27b00",
+              "function_name": "FUN_00b27b00",
+              "entry_point": "00b27b00",
+              "body_size": 130,
+              "message": "Function created successfully at 00b27b00"
+            }
+          },
+          {
+            "defined": "00b27b00",
+            "end": "00b27b82",
+            "name": null,
+            "after": "Function: FUN_00b27b00 at 00b27b00\nSignature: undefined FUN_00b27b00(void)\nEntry: 00b27b00\nBody: 00b27b00 - 00b27b81"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b556f0",
+              "end_address": "00b55778"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b556f0",
+              "end_address": "00b55777",
+              "bytes_disassembled": 136,
+              "message": "Successfully disassembled 136 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b556f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b556f0",
+              "function_name": "FUN_00b556f0",
+              "entry_point": "00b556f0",
+              "body_size": 136,
+              "message": "Function created successfully at 00b556f0"
+            }
+          },
+          {
+            "defined": "00b556f0",
+            "end": "00b55778",
+            "name": null,
+            "after": "Function: FUN_00b556f0 at 00b556f0\nSignature: undefined FUN_00b556f0(void)\nEntry: 00b556f0\nBody: 00b556f0 - 00b55777"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent reviews checked complete cache/deleting dispatch and row/count reloads, command string allocation/publication and cleanup scopes, full parent resource traversal/guard order, both instance writers and parent x87 argument schedule. The parent upload float helper was replaced with the exact native argument schedule; the original/source x87 stack-pressure case passed. Root preserved the resource guard DWORD access width.",
+    "current_report_call_check": "reports/native_camera_frame_command.json: 7 call rows checked, 0 failed"
+  }
 }

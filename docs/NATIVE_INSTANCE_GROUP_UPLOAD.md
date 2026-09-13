@@ -1,5 +1,7 @@
 # Actual instance group upload and generator records
 
+Addresses: 00b1e990, 00b556f0, 00b55780, 00b6dc50, 00b72110, 00b85590
+
 `upload_native_instance_groups_00b1e990` covers the complete normal upload body
 over the existing actual command, group, source pointer cells, generated models,
 logical streams, retained 28h output entries and batches. It uses the current

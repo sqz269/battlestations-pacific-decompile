@@ -1,5 +1,7 @@
 # Native camera frame command
 
+Addresses: 00b71360
+
 `execute_native_camera_frame_command_00b71360` reconstructs the complete normal
 routine on actual camera, renderer, viewport and shared global storage. It uses
 the complete native camera preparation, viewport binding and Clear providers.
