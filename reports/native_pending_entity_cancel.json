@@ -1,0 +1,224 @@
+{
+  "packet": "orch6_native_pending_entity_cancel_u",
+  "base_commit": "78e930cf",
+  "status": "normal_path_reconstructed_required_native_provider",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "operations": "read_only_verified_bsp_cli",
+    "mutations": []
+  },
+  "routines": [
+    {
+      "function": "00925a00",
+      "length": 138,
+      "coverage": "complete_normal_path_with_required_providers",
+      "source": "src/native_pending_entity_cancel.cpp",
+      "abi": "native ECX=entity; bare RET; source C++ ABI is new",
+      "exception_coverage": "native exception and asynchronous fault parity unproved"
+    },
+    {
+      "function": "00781260",
+      "length": 156,
+      "coverage": "provider_contract_only",
+      "source": null,
+      "abi": "native ECX=actual raw0Ch list, stack=&entity, RET4",
+      "contract": "Capture *value once; scan full ring; unlink/free every matching node and decrement actual count for each; retain sentinel/allocator/nonmatching nodes/payloads and returning-validation behavior",
+      "saved_body_gap": {
+        "address": "007812d5",
+        "length": 7,
+        "status": "no_ghidra_function",
+        "bytes": "83c404834508ff",
+        "evidence": "verified live/installedPE bytes: ADD ESP4; ADD [EBP+8],-1"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00925a06",
+      "native": "009248d0",
+      "function": "00925a00",
+      "method": "lock_owner_009248d0",
+      "contract": "Required actual raw8 owner getter; capture section+4 once"
+    },
+    {
+      "address": "00925a4d",
+      "native": "00781260",
+      "function": "00925a00",
+      "method": "remove_all_matching_00781260",
+      "owner": "00f899b4",
+      "contract": "Kill ring, stack pointer to current actual entity; clear5F only after return"
+    },
+    {
+      "address": "00925a6b",
+      "native": "00781260",
+      "function": "00925a00",
+      "method": "remove_all_matching_00781260",
+      "owner": "00f899a8",
+      "contract": "Destroy ring, stack pointer to current actual entity; clear60 only after return"
+    }
+  ],
+  "other_callsites_reviewed": [
+    {
+      "address": "0078138a",
+      "native": "00781260",
+      "function": "00781350",
+      "owner": "00f899cc",
+      "contract": "ECX set at781359, &entity pushed at781358 and spill at781386; same RET4 provider"
+    },
+    {
+      "address": "007280d4",
+      "native": "00925a00",
+      "function": "007280a0",
+      "contract": "ECX=ESI entity; no stack argument"
+    }
+  ],
+  "ordering": {
+    "parent": "load3C after captured lock; permit null or5C!=0,5D==0,60==0,5E==0 in that order",
+    "accepted": [
+      "conditional kill remove",
+      "clear5F",
+      "capture60 compare",
+      "clear5E",
+      "conditional destroy remove",
+      "clear60 after return",
+      "clear5D"
+    ],
+    "preserved": [
+      "5C and unrelated entity bytes",
+      "parent and payload owners",
+      "same actual ring owners",
+      "captured lock release",
+      "DWORD recursion arithmetic"
+    ],
+    "source_unbound": "Reject missing provider before lock or storage changes; no default/noop provider"
+  },
+  "reuse_assessment": [
+    {
+      "candidate": "destroy_native_effect_deletion_list_004c5940",
+      "actual_storage": "same raw0Ch ring layout",
+      "decision": "reject",
+      "reason": "destroys all nodes and sentinel; clears head/count; no matching-payload contract"
+    },
+    {
+      "candidate": "GUI00A9BD50 source projection in detach_gui_widget_child_00aa83a0",
+      "decision": "reject",
+      "reason": "semantic vector/unique_ptr owners and different deletion/iterator semantics; not an actual raw ring provider"
+    },
+    {
+      "candidate": "canonical00781260 source provider",
+      "decision": "required_external_provider",
+      "reason": "No complete byte/relocation equivalence to an existing canonical source provider established; no STL body ported"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "coarse prose reads clear5E before checking60",
+      "is": "capture60 comparison first, then clear5E, then branch",
+      "evidence": "00925A55 CMP,00925A58 MOV,00925A5B JZ"
+    },
+    {
+      "was": "saved00781260 pseudocode appears to return after first free",
+      "is": "complete PE path decrements count and loops over all nodes",
+      "evidence": "missing7812D5[7], then7812DC/DE/E2 continues to781280"
+    }
+  ],
+  "verification": {
+    "build": "PASS scripts/build.ps1; clean MSVC Win32 Release; exit0; local/native_pending_entity_cancel_build.log",
+    "ctest": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "verify_seeds": "PASS8installedbinarymatches;local/native_pending_entity_cancel_seeds.json",
+    "verify_report_calls": "PASS5callrows;0failed;local/native_pending_entity_cancel_calls.log",
+    "fixture_command": "./local/run_pending_cancel_probe.ps1",
+    "fixture_source": "local/native_pending_entity_cancel_probe.cpp",
+    "fixture_native_spans": "138bytes00925A00 plus156bytes00781260; all294bytes match Ghidra and installedPE;13relocations validated",
+    "fixture_role": "Copied original00781260 is the required provider on both native/source sides; this checks cancellation and provider ordering, not an independent source reimplementation of STL",
+    "fixture_result": "PASS8pairedcases; allfiveentityflags and unrelatedbytes, parent/payload preservation, finite ring links/counts, remove-all duplicates, gettercount1, captured/replacementsectiondepths and eventorder match",
+    "fixture_exception_coverage": "none; valid finite rings and nonthrowing providers only",
+    "fixture_toolchain": "MSVC19.51.36244.0 Win32 /std:c++17 /EHsc /O2 /MD; /link /MANIFEST:EMBED /MACHINE:X86 /SUBSYSTEM:CONSOLE",
+    "fixture_manifest": "local/native_pending_entity_cancel_probe_manifest.json",
+    "fixture_results": "local/native_pending_entity_cancel_probe_result.json",
+    "fixture_byte_evidence": "local/native_pending_entity_cancel_byte_evidence.json",
+    "application_runtime": "not integrated or exercised",
+    "game_validated": false,
+    "artifact_hashes": [
+      {
+        "path": "local/native_pending_entity_cancel_probe_manifest.json",
+        "sha256": "ea7f827ed784e4bf61196612b623e5d92d1f1f25f62e803c575c4c2eb4ff46ef",
+        "bytes": 7284
+      },
+      {
+        "path": "local/native_pending_entity_cancel_probe.cpp",
+        "sha256": "65f8f65e3925aee2deb6913130b50cad58b9995533518df92ec059d61e611c5c",
+        "bytes": 11647
+      },
+      {
+        "path": "local/native_pending_entity_cancel_probe.exe",
+        "sha256": "d8dc57ba67b1b0aeb84dd19c1286f6d3829c5b3a4991e52041017e1a65b76054",
+        "bytes": 24576
+      },
+      {
+        "path": "local/native_pending_entity_cancel_probe_result.json",
+        "sha256": "d282630db368650bebcf6c4f17088e546f74693f2a8181f0123a917866436d42",
+        "bytes": 1302
+      },
+      {
+        "path": "local/native_pending_entity_cancel_byte_evidence.json",
+        "sha256": "99c77ca4047c0469eec5de397af8df7d67853190aff717fa8ff10d4ba257f6e4",
+        "bytes": 3823
+      },
+      {
+        "path": "local/native_pending_entity_cancel_build.log",
+        "sha256": "95dd2cbe627e08bac41588b2251ca04ec6899a42f0b92b06362bb4ac79021e50",
+        "bytes": 42558
+      },
+      {
+        "path": "local/native_pending_entity_cancel_calls.log",
+        "sha256": "866004c85580f9ba557fe36f983ab9713ca76509a4ac671a3d64c9a5d908ed45",
+        "bytes": 74
+      },
+      {
+        "path": "local/native_pending_entity_cancel_seeds.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "bytes": 3034
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_pending_entity_cancel.obj",
+        "sha256": "e822d31e1362f376e3f2ce2e7ccc0df73334ed3f2b91ff1bce80116d4e132787",
+        "bytes": 7456
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "51a7cfd57f35442538631c4aa19c4631acf2c63c426eae79bcf2f8c92f733e58",
+        "bytes": 55445546
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "sha256": "5c2e6b2806845604fc51d167ef14c10f350f6086e5a3aaea6dc573b1b47d8771",
+        "bytes": 2037248
+      }
+    ],
+    "compiled_source_hashes": [
+      {
+        "path": "include/bsp/native_pending_entity_cancel.hpp",
+        "sha256": "bba955dab19986febd441a50fa3df680944b558af214d3d5e1977339e86d1f38"
+      },
+      {
+        "path": "src/native_pending_entity_cancel.cpp",
+        "sha256": "afadec3c10c9856c48035721e93c6449ba0d883f5ae62f6b2320579662cf960c"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "39db4db4062522297e2f1a4f20805fe927f8be74b1c1a2744a50d4d53ecd97f8"
+      }
+    ]
+  },
+  "uncertainty": [
+    "No complete current source00781260 provider is claimed",
+    "No native exception/FH3/SEH or corrupt-list returning-handler proof",
+    "No concurrent entity destruction, gameplay or binary drop-in ABI claim",
+    "Runtime one-owner mapping remains with integrator; no shared unit_damage/runtime files changed"
+  ]
+}

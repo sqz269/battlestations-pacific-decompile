@@ -1,0 +1,503 @@
+{
+  "packet": "orch5_native_field_initialization",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_field_initialization.cpp",
+  "header": "include/bsp/native_shader_field_initialization.hpp",
+  "documentation": "docs/NATIVE_SHADER_FIELD_INITIALIZATION.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b357d0",
+      "end_inclusive": "00b3581c",
+      "bytes": 77,
+      "sha256": "e874d405d336b78c62c86f9ff70e56cf99e02130f7b1aba1e1c2cda9bed4374f",
+      "direct_calls": 2,
+      "instructions": 32,
+      "export_assembly_sha256": "c13f4e47c361f981f26a572f9b675aae98dc13cb0f438fc1db0ccaa35d97a8d8",
+      "role": "owned",
+      "name": "BSP_ShaderBuilder_AppendZeroFieldAssignments",
+      "cpp_symbol": "append_native_shader_zero_fields_00b357d0",
+      "original_abi": "ECX actualB0h builder; stack instance8h/list0Ch; RET8 at B3581A",
+      "coverage": "complete normal body"
+    },
+    {
+      "address": "00b35820",
+      "end_inclusive": "00b35924",
+      "bytes": 261,
+      "sha256": "bd5facd0d1e8dbb841052427b477b0d24103302176205470be26ce4a5fe1d456",
+      "direct_calls": 4,
+      "instructions": 86,
+      "export_assembly_sha256": "be39911f6cb4e5acd004b0df3133ff6e9c849feb48215b40b219ab6fb173a6f4",
+      "role": "owned",
+      "name": "BSP_ShaderBuilder_AppendVertexInputDecode",
+      "cpp_symbol": "append_native_shader_vertex_decode_00b35820",
+      "original_abi": "ECX actualB0h builder; no stack parameters; RET at B35924",
+      "coverage": "complete normal body"
+    },
+    {
+      "address": "00b34e90",
+      "end_inclusive": "00b34f07",
+      "bytes": 120,
+      "sha256": "71e533b4dc4b64f9b4ceaaca4d3bdb29c9d0795326a69314d0661bd5d7312329",
+      "direct_calls": 1,
+      "instructions": 34,
+      "export_assembly_sha256": "13bfe82dd189afba6f8d3ee1db6c0c3bde747aef5c69fb51a7ee7c183592bb59",
+      "role": "owned",
+      "name": "BSP_ShaderField_ConstructComponentSwizzle",
+      "cpp_symbol": "construct_native_shader_field_swizzle_00b34e90",
+      "original_abi": "ECX actual1Ch field; stack fresh output8h; EAX output; RET4 at B34F05",
+      "coverage": "complete normal body"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00b35110",
+      "end_inclusive": "00b35267",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+      "direct_calls": 13,
+      "instructions": 120,
+      "export_assembly_sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b",
+      "role": "existing_dependency_original_fixture",
+      "coverage": "existing normal body reused unchanged",
+      "source": "src/native_shader_constant_header.cpp"
+    },
+    {
+      "address": "00419ca0",
+      "end_inclusive": "00419cac",
+      "bytes": 13,
+      "sha256": "b340afb96657d7d2eb26b0b5d7908d66a16a68c6b20d44b0df250b68e0a9058f",
+      "direct_calls": 0,
+      "instructions": 5,
+      "export_assembly_sha256": "77b08bd20c7c1ca197c2570b5d5f9e057bce3c8f42cca6395fcfc34460fa596b",
+      "role": "existing_dependency_original_fixture",
+      "coverage": "existing normal body reused unchanged",
+      "source": "src/native_lua_script_overrides.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b357fa",
+      "native": "00419ca0",
+      "function": "00b357d0",
+      "contract": "Existing actual8h data getter reused unchanged; distinct external E17654 empty fallback. Field name is captured before this call."
+    },
+    {
+      "address": "00b35806",
+      "native": "00b35110",
+      "function": "00b357d0",
+      "contract": "Existing actual B35110 formatted-line operation/context reused unchanged; its failed child and acquired headers remain attached to parent frame."
+    },
+    {
+      "address": "00b35883",
+      "native": "00b34e90",
+      "function": "00b35820",
+      "contract": "Owned actual1Ch field width to fresh8h swizzle helper; unsigned1..4 or null header."
+    },
+    {
+      "address": "00b358d6",
+      "native": "00b35110",
+      "function": "00b35820",
+      "contract": "Existing actual B35110 formatted-line operation/context reused unchanged; its failed child and acquired headers remain attached to parent frame."
+    },
+    {
+      "address": "00b358f9",
+      "native": "00419cc0",
+      "function": "00b35820",
+      "contract": "Established actual string-pool singleton getter through the supplied NativeStringStorage."
+    },
+    {
+      "address": "00b35900",
+      "native": "00bd1510",
+      "function": "00b35820",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b34eef",
+      "native": "0041e350",
+      "function": "00b34e90",
+      "contract": "Existing actual8h C-string assignment, preserve=false; no new helper cleanup/unwind behavior."
+    },
+    {
+      "address": "00b3513b",
+      "native": "00c03cee",
+      "function": "00b35110",
+      "contract": "Original library vsprintf; unchanged B35110 uses host CRT and SAME0108D6F8 scratch."
+    },
+    {
+      "address": "00b35167",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h resize and SAME NativeStringStorage pool domain."
+    },
+    {
+      "address": "00b35182",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy admits overlap; unchanged B35110 source uses host memmove."
+    },
+    {
+      "address": "00b351a0",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h resize and SAME NativeStringStorage pool domain."
+    },
+    {
+      "address": "00b351ad",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy admits overlap; unchanged B35110 source uses host memmove."
+    },
+    {
+      "address": "00b351ca",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter through the supplied NativeStringStorage."
+    },
+    {
+      "address": "00b351d1",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    },
+    {
+      "address": "00b351e6",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h resize and SAME NativeStringStorage pool domain."
+    },
+    {
+      "address": "00b35201",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy admits overlap; unchanged B35110 source uses host memmove."
+    },
+    {
+      "address": "00b3521f",
+      "native": "0041dd40",
+      "function": "00b35110",
+      "contract": "Existing actual8h resize and SAME NativeStringStorage pool domain."
+    },
+    {
+      "address": "00b3522c",
+      "native": "00bf7680",
+      "function": "00b35110",
+      "contract": "Original library memcpy admits overlap; unchanged B35110 source uses host memmove."
+    },
+    {
+      "address": "00b35249",
+      "native": "00419cc0",
+      "function": "00b35110",
+      "contract": "Established actual string-pool singleton getter through the supplied NativeStringStorage."
+    },
+    {
+      "address": "00b35250",
+      "native": "00bd1510",
+      "function": "00b35110",
+      "contract": "Established actual sized block return; existing noexcept release boundary."
+    }
+  ],
+  "literals": [
+    {
+      "address": "00ceb488",
+      "bytes": 2,
+      "hex": "7800",
+      "sha256": "14f825b2bbc32dd8d196367fa8776873069c12a8954d8da7513aa7704ddd09eb",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    },
+    {
+      "address": "00d5f304",
+      "bytes": 16,
+      "hex": "78797a770000000078797a0078790000",
+      "sha256": "610a67bf7e6248601cceec02d5f82227082ea0644da36f555e75ffcb7bc3f602",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    },
+    {
+      "address": "00d5f3f4",
+      "bytes": 76,
+      "hex": "090925732e25733d303b000009494e2e25733d494e2e2573202a2063567478456c656d5363616c655b25695d2e2573202b2063567478456c656d4f66667365745b25695d2e25733b00000000",
+      "sha256": "0abd5538aefdaa7c4f747cf5375181df8dce883f32e9f584879d29c2903aaeec",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    },
+    {
+      "address": "00e17654",
+      "bytes": 1,
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    },
+    {
+      "address": "0108d6f2",
+      "bytes": 1,
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "image_source": "PE virtual zero-fill (no raw disk bytes), live Ghidra zero bytes verified"
+    },
+    {
+      "address": "00ce4390",
+      "bytes": 2,
+      "hex": "0a00",
+      "sha256": "102b51b9765a56a3e899f7cf0ee38e5251f9c503b357b330a49183eb7b155604",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    },
+    {
+      "address": "00b34f08",
+      "bytes": 16,
+      "hex": "d34eb300da4eb300e14eb300e84eb300",
+      "sha256": "f8a1b8ddecfcc9f4f5840e7ac1f0c46e731dc3a37d8ac35197bfb7bb90b89dd7",
+      "image_source": "live Ghidra bytes equal raw installed PE bytes"
+    }
+  ],
+  "switch_destinations": [
+    "00b34ed3",
+    "00b34eda",
+    "00b34ee1",
+    "00b34ee8"
+  ],
+  "producer_layout": {
+    "builder": "Existing B354D0 actualB0h initializer. Source4C; input pointer table04/count08; descriptor70.",
+    "field": "Existing B34E20 actual1Ch constructor used by fixture; name8h, scalar08/width0C/mask10/semantic14/index18.",
+    "list": "Existing B34680 allocates actual0Ch pointer-array storage; fixture uses same singleton allocation and normal B3A7E0 teardown.",
+    "descriptor": "Existing NativeShaderDescriptorStorage actual110h layout; opaque bytes1F and20 are supplied valid fixture preimages, not inferred defaults."
+  },
+  "evidence": {
+    "flow": "All five saved complete normal bodies have zero gaps; project/program verified by each BSP wrapper batch.",
+    "zero": "Capture current field+04 before419CA0. Field fallback108D6F2 is separate from getter fallbackE17654. Current list00/count04 reload each iteration.",
+    "decode": "Capture descriptor70 once, test byte1F, capture unsigned min(descriptor20,builder08) once. Reload builder04 after allocating B34E90 child; load name twice from same captured current table. Release swizzle using current header after B35110.",
+    "swizzle": "Clear output header without freeing prior storage; unsigned width-1 <=3 switch invokes41E350 with x/xy/xyz/xyzw; other values do not allocate.",
+    "literal_origin": "All815 code bytes and file-backed literals/table match installed PE. Empty108D6F2 is verified virtual zero-fill, with no raw disk byte; distinguished in literal records."
+  },
+  "source_hashes": {
+    "src/native_shader_field_initialization.cpp": "bf9ab2d9359bb70eddf99815e34c489ca40313c8cea621a3c6b08dc030236a61",
+    "include/bsp/native_shader_field_initialization.hpp": "b7883ed4762f74fce904aaa08624b6976b2f5ecec8cbf6628f79fc485283b84b"
+  },
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+      "log": "local/field_init_build.log",
+      "default_registration": "Deferred target_sources appended transactionally while registry unleased and no build in flight.",
+      "existing_ctest": "reconstructed_math and native_math_differential after verify-seeds"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_field_initialization_probe.ps1",
+      "linkage": "Only fixture translation unit against default-registered bsp_core/bsp_lua511/bsp_zlib121 libraries.",
+      "original_bodies": 5,
+      "original_bytes": 815,
+      "direct_calls": 20,
+      "switch_destinations": 4,
+      "scope": "Exact original/source text and actual pooled allocation/release trace; B34E20 fields/B34680 pointer arrays/B354D0 builder and canonical destruction. All swizzle widths/unknown widths, empty headers, zero-list bounds, current list/count/instance replacement, captured unsigned decode bound/gate and table reload after swizzle allocation, field/builder preimages. Source failure retains actual swizzle+existing formatted-line child+output preimage; replay rejected and failed-frame retirement exits77.",
+      "original_execution_boundaries": {
+        "0041e350": "Existing actual8h C-string assignment, preserve=false; no new helper cleanup/unwind behavior.",
+        "00419ca0": "Existing actual8h data getter reused unchanged; distinct external E17654 empty fallback. Field name is captured before this call.",
+        "00b35110": "Existing actual B35110 formatted-line operation/context reused unchanged; its failed child and acquired headers remain attached to parent frame.",
+        "0041dd40": "Existing actual8h resize and SAME NativeStringStorage pool domain.",
+        "00419cc0": "Established actual string-pool singleton getter through the supplied NativeStringStorage.",
+        "00bd1510": "Established actual sized block return; existing noexcept release boundary.",
+        "00bf7680": "Original library memcpy admits overlap; unchanged B35110 source uses host memmove.",
+        "00c03cee": "Original library vsprintf; unchanged B35110 uses host CRT and SAME0108D6F8 scratch.",
+        "00b34e90": "Owned actual1Ch field width to fresh8h swizzle helper; unsigned1..4 or null header."
+      },
+      "relocation": "Five complete original normal bodies; verified E8 CALL operands redirected to copied originals or existing actual-storage/CRT bridges. Only B34ECF absolute switch-table operand changed to the same four relocated branch offsets. Native branches/FH3 registration bytes unchanged; original exception handlers are not executed.",
+      "log": "local/native_field_initialization_probe.log",
+      "guard_log": "local/native_field_initialization_guard_probe.log"
+    }
+  },
+  "limits": [
+    "New explicit C++ interfaces are not original thiscall/SEH binary replacements.",
+    "Private FH3 handlers are not emitted. Existing assignment/format/resize/noexcept pool-release boundaries remain unchanged; source failure handling is retained one-shot host state.",
+    "Caller must keep borrowed owners/inputs/domain/scratch and failed frame alive and exclude teardown; only frame retirement/replay are automatically guarded.",
+    "Readable actual pointer graphs, loop extents and sufficiently sized original scratch are required; scratch reentry/concurrency restrictions remain. No pointer validation or malformed-width text fallback is invented.",
+    "Complete vertex/pixel source generator wiring, shader compilation/rendering and gameplay are unproven by this packet."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_field_initialization.cpp",
+      "bytes": 6818,
+      "sha256": "bf9ab2d9359bb70eddf99815e34c489ca40313c8cea621a3c6b08dc030236a61"
+    },
+    {
+      "path": "include/bsp/native_shader_field_initialization.hpp",
+      "bytes": 4129,
+      "sha256": "b7883ed4762f74fce904aaa08624b6976b2f5ecec8cbf6628f79fc485283b84b"
+    },
+    {
+      "path": "local/prepare_field_initialization_evidence.py",
+      "bytes": 3955,
+      "sha256": "37873fafe618698586bfff30d2d3f87c38993bd959fc21982f7532d5a69033b5"
+    },
+    {
+      "path": "local/field_init_original.hpp",
+      "bytes": 4995,
+      "sha256": "affe3f9d15d0f282bba0b1150f2aed363e15558a652563c9ac70af24811c3cc2"
+    },
+    {
+      "path": "local/field_init_original_manifest.json",
+      "bytes": 6375,
+      "sha256": "5e3b9117be95d596c437fb0f00d7e3f43c9b433f0b76bd9dfbb19125e269552a"
+    },
+    {
+      "path": "local/native_field_initialization_probe.cpp",
+      "bytes": 16385,
+      "sha256": "84624af244fab43ec0abdbf1a58dafc8f696e9b58cd29c20e99fcf5293edb2dd"
+    },
+    {
+      "path": "local/run_native_field_initialization_probe.ps1",
+      "bytes": 1756,
+      "sha256": "1c415ae07324cc581ff4dc125f52892268139a6fce9c0c5da8741461025445a5"
+    },
+    {
+      "path": "local/register_field_initialization.py",
+      "bytes": 627,
+      "sha256": "ab1425a21410073cc8660a1a8d73d9243187f04c344e07a9cbcc31f031cdff24"
+    },
+    {
+      "path": "local/field_init_build.log",
+      "bytes": 42897,
+      "sha256": "2f76ecdbc1d261e75f6ebacdbe0956c8163e70306c36a6cdace9e23bf406827c"
+    },
+    {
+      "path": "local/native_field_initialization_probe_compile.log",
+      "bytes": 39,
+      "sha256": "b7c192683334a9fe107fa8bebcc95cbc1b48d35f93526bab118f69d6c137fe96"
+    },
+    {
+      "path": "local/native_field_initialization_probe.log",
+      "bytes": 920,
+      "sha256": "9b2c7d1c2f976ca76f230fa9ebbcffd0cb8f868993ae821170adbd5dfce3c0e9"
+    },
+    {
+      "path": "local/native_field_initialization_guard_probe.log",
+      "bytes": 696,
+      "sha256": "5afea032641c69612213c4b81ffb4fea5d761acac89ff3c772b6bdb9c7968007"
+    },
+    {
+      "path": "local/native_field_initialization_probe.exe",
+      "bytes": 79872,
+      "sha256": "830d54abd6a3096e697d1748c6a2dcc719af1e40716fb78a9f68a43ff1958001"
+    },
+    {
+      "path": "local/field_init_call_verification.log",
+      "bytes": 81,
+      "sha256": "4787117edd59d2156ba5777048a330df3e7ee90b103ad7267aa447a87f9ba8ff"
+    },
+    {
+      "path": "local/field_init_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/field_init_flow.log",
+      "bytes": 304,
+      "sha256": "36484e1837c2e1ff57ff38e56deeebc86a75dd4c3cedf0049782d58f344fb0b3"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55552540,
+      "sha256": "1e286c3ed66900f26e040c7a5fa4fda5f08f89843fb9feef5341c7358cf22c2d"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455792,
+      "sha256": "ae77ef085b402fc50b4f7795df53222d79df2945a7489115d45172dd68b6b0dd"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72098,
+      "sha256": "be4019e263b427f7f5ef57c22a4eb702e84c42b956666579f5d32fafe969c130"
+    },
+    {
+      "path": "local/field_init_00419ca0_bytes.txt",
+      "bytes": 65,
+      "sha256": "518e0ffae14bcb446e84fa745cd7a9b6d4dbc5b03066321833b7c599e0d19d65"
+    },
+    {
+      "path": "local/field_init_00b34e90_bytes.txt",
+      "bytes": 584,
+      "sha256": "b37e6b30851e391d1aa00cb052560e88c5476912ae29b4218d8dbe57dcd3d141"
+    },
+    {
+      "path": "local/field_init_00b34f08_bytes.txt",
+      "bytes": 77,
+      "sha256": "925777d06fe9c66e7ea147225b91d584aa37094b747b73f4d379e3b787324866"
+    },
+    {
+      "path": "local/field_init_00b35110_bytes.txt",
+      "bytes": 1662,
+      "sha256": "c4cd5da4be13577473a8c4a48bafb326a21f4e1185cd8f9ca1e885597bc820c6"
+    },
+    {
+      "path": "local/field_init_00b357d0_bytes.txt",
+      "bytes": 373,
+      "sha256": "cf86449fbb7601d946e6d117130a604df729e70698173847e5f5d6dac2198947"
+    },
+    {
+      "path": "local/field_init_00b35820_bytes.txt",
+      "bytes": 1265,
+      "sha256": "b67070b2713d0082dadafb9cf0de2b80ee44a15811c7af9274c2a84b4689e47d"
+    },
+    {
+      "path": "local/field_init_00ce4390_bytes.txt",
+      "bytes": 21,
+      "sha256": "75e9773122dd34d7820b779b14fcd6a1891ded53afd9cf28dcde65d4295b7280"
+    },
+    {
+      "path": "local/field_init_00ceb488_bytes.txt",
+      "bytes": 21,
+      "sha256": "c92de13162e75b926b66bf3fb31f953392bdef3b9f0650a7433793b31b8a1607"
+    },
+    {
+      "path": "local/field_init_00d5f304_bytes.txt",
+      "bytes": 77,
+      "sha256": "7141b699bdd7223618876b3057b5c90a69e862023aaf54e612598c311d46e56b"
+    },
+    {
+      "path": "local/field_init_00d5f3f4_bytes.txt",
+      "bytes": 369,
+      "sha256": "1d05a200c958094ff7a5954875f38a0513c0cd63bc9faa64b52bb57821af8b8e"
+    },
+    {
+      "path": "local/field_init_00e17654_bytes.txt",
+      "bytes": 17,
+      "sha256": "06888dee8d642324d143be4afd6f6a7d3344a4a47ebd5a2201b56c06defcc3e2"
+    },
+    {
+      "path": "local/field_init_0108d6f2_bytes.txt",
+      "bytes": 17,
+      "sha256": "17de39af95a7bf709ec366509250a1421e128d0f20913015d4c0d4e3a916b261"
+    },
+    {
+      "path": "local/field_init_00419ca0_assembly.txt",
+      "bytes": 134,
+      "sha256": "77b08bd20c7c1ca197c2570b5d5f9e057bce3c8f42cca6395fcfc34460fa596b"
+    },
+    {
+      "path": "local/field_init_00b34e90_assembly.txt",
+      "bytes": 990,
+      "sha256": "13bfe82dd189afba6f8d3ee1db6c0c3bde747aef5c69fb51a7ee7c183592bb59"
+    },
+    {
+      "path": "local/field_init_00b35110_assembly.txt",
+      "bytes": 3203,
+      "sha256": "fbaa6ee3f9cb358361883156c9b87187b5751cc871ad69c899c80566b8f0181b"
+    },
+    {
+      "path": "local/field_init_00b357d0_assembly.txt",
+      "bytes": 856,
+      "sha256": "c13f4e47c361f981f26a572f9b675aae98dc13cb0f438fc1db0ccaa35d97a8d8"
+    },
+    {
+      "path": "local/field_init_00b35820_assembly.txt",
+      "bytes": 2423,
+      "sha256": "be39911f6cb4e5acd004b0df3133ff6e9c849feb48215b40b219ab6fb173a6f4"
+    }
+  ],
+  "base_commit": "6f57b694d175c54417ba03f477934d4ff77b48a7"
+}

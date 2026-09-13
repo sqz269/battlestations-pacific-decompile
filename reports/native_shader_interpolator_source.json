@@ -1,0 +1,1203 @@
+{
+  "packet": "orch5_native_interpolator_source",
+  "source": "src/native_shader_interpolator_source.cpp",
+  "header": "include/bsp/native_shader_interpolator_source.hpp",
+  "documentation": "docs/NATIVE_SHADER_INTERPOLATOR_SOURCE.md",
+  "base_commit": "3b43e62685724709dc38a87f6fd9ffed18e8dce0",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b35540",
+      "bytes": 656,
+      "sha256": "e673ecf98fe39198aff5008319b9777d5ad858ffbcee39c260181ecd0861c536",
+      "end": "00b357cf",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b35540.bin",
+      "instructions": 211,
+      "last_instruction": "00b357cf: ret ",
+      "last_instruction_length": 1,
+      "symbol": "append_native_shader_interpolator_pack_00b35540",
+      "original_abi": "ECX actualB0h builder; RET",
+      "coverage": "complete_normal_actual_storage_domain_with_retained_host_failure"
+    },
+    {
+      "address": "00b36e30",
+      "bytes": 454,
+      "sha256": "124518905a76f417cfdab0f5faf77dc6caf685cf87e670230faa313f2db09021",
+      "end": "00b36ff5",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b36e30.bin",
+      "instructions": 147,
+      "last_instruction": "00b36ff3: ret 0xc",
+      "last_instruction_length": 3,
+      "symbol": "append_native_shader_interpolator_struct_00b36e30",
+      "original_abi": "ECX actualB0h builder; three stackedDWORD flags, lowbytes position/fog/vPos; RET0C",
+      "coverage": "complete_normal_actual_storage_domain_with_retained_host_failure"
+    },
+    {
+      "address": "00b37000",
+      "bytes": 714,
+      "sha256": "0c496ce65e6813297be9e3356a0144152692b4c6390317d43d5d31e1f630cd5b",
+      "end": "00b372c9",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b37000.bin",
+      "instructions": 229,
+      "last_instruction": "00b372c7: ret 4",
+      "last_instruction_length": 3,
+      "symbol": "append_native_shader_interpolator_unpack_00b37000",
+      "original_abi": "ECX actualB0h builder; stackedactual0Ch fieldlist; RET4",
+      "coverage": "complete_normal_actual_storage_domain_with_retained_host_failure"
+    }
+  ],
+  "additional_evidence": [
+    {
+      "address": "00b34f20",
+      "bytes": 272,
+      "sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d",
+      "end": "00b3502f",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b34f20.bin",
+      "instructions": 95,
+      "last_instruction": "00b3502d: ret 4",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b35030",
+      "bytes": 220,
+      "sha256": "b4d6824f68dead82ca379647352206925f0a2aeba6884aa4901a40226bf5266b",
+      "end": "00b3510b",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b35030.bin",
+      "instructions": 79,
+      "last_instruction": "00b35109: ret 4",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b35110",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+      "end": "00b35267",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00b35110.bin",
+      "instructions": 120,
+      "last_instruction": "00b35267: ret ",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00d5f318",
+      "bytes": 944,
+      "sha256": "d96f1ef57931f19a20e01b07da3198964e1a6044154c3106ccf55c33fd9e828c",
+      "end": "00d5f6c7",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00d5f318.bin"
+    },
+    {
+      "address": "00ce4d38",
+      "bytes": 2,
+      "sha256": "4d74440c32c4fad5c28ebb6cf407a7d3433fbd7ae90cff66354d9353b200b5b7",
+      "end": "00ce4d39",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00ce4d38.bin"
+    },
+    {
+      "address": "00ce4cd4",
+      "bytes": 2,
+      "sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5",
+      "end": "00ce4cd5",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00ce4cd4.bin"
+    },
+    {
+      "address": "00ce4390",
+      "bytes": 2,
+      "sha256": "102b51b9765a56a3e899f7cf0ee38e5251f9c503b357b330a49183eb7b155604",
+      "end": "00ce4391",
+      "live_disk_equal": true,
+      "path": "local/isource-original-00ce4390.bin"
+    },
+    {
+      "address": "0108d6f2",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "end": "0108d6f2",
+      "live_disk_equal": true,
+      "path": "local/isource-original-0108d6f2.bin",
+      "pe_zero_filled_virtual_tail": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b35570",
+      "native": "0041dd40",
+      "caller": "00b35540",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3558b",
+      "native": "00bf7680",
+      "caller": "00b35540",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b355a1",
+      "native": "00b35030",
+      "caller": "00b35540",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b355bd",
+      "native": "00419cc0",
+      "caller": "00b35540",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b355c4",
+      "native": "00bd1510",
+      "caller": "00b35540",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b355d9",
+      "native": "0041dd40",
+      "caller": "00b35540",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b355f4",
+      "native": "00bf7680",
+      "caller": "00b35540",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3560b",
+      "native": "00b35030",
+      "caller": "00b35540",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b35623",
+      "native": "00419cc0",
+      "caller": "00b35540",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b3562a",
+      "native": "00bd1510",
+      "caller": "00b35540",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b35636",
+      "native": "00b34f20",
+      "caller": "00b35540",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b35642",
+      "native": "00b34f20",
+      "caller": "00b35540",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b356a2",
+      "native": "00b35110",
+      "caller": "00b35540",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b3570e",
+      "native": "00b35110",
+      "caller": "00b35540",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b35741",
+      "native": "00b35110",
+      "caller": "00b35540",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b35750",
+      "native": "00b34f20",
+      "caller": "00b35540",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b35767",
+      "native": "0041dd40",
+      "caller": "00b35540",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b35782",
+      "native": "00bf7680",
+      "caller": "00b35540",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b35799",
+      "native": "00b35030",
+      "caller": "00b35540",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b357b1",
+      "native": "00419cc0",
+      "caller": "00b35540",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b357b8",
+      "native": "00bd1510",
+      "caller": "00b35540",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b36e60",
+      "native": "0041dd40",
+      "caller": "00b36e30",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b36e7b",
+      "native": "00bf7680",
+      "caller": "00b36e30",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b36e91",
+      "native": "00b35030",
+      "caller": "00b36e30",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b36ea9",
+      "native": "00419cc0",
+      "caller": "00b36e30",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b36eb0",
+      "native": "00bd1510",
+      "caller": "00b36e30",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b36ec3",
+      "native": "00b34f20",
+      "caller": "00b36e30",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b36f1e",
+      "native": "00b35110",
+      "caller": "00b36e30",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b36f84",
+      "native": "00b35110",
+      "caller": "00b36e30",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b36fab",
+      "native": "00b34f20",
+      "caller": "00b36e30",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b36fd0",
+      "native": "00b34f20",
+      "caller": "00b36e30",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b36fdc",
+      "native": "00b34f20",
+      "caller": "00b36e30",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b3702f",
+      "native": "0041dd40",
+      "caller": "00b37000",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3704a",
+      "native": "00bf7680",
+      "caller": "00b37000",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b37061",
+      "native": "00b35030",
+      "caller": "00b37000",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b3707d",
+      "native": "00419cc0",
+      "caller": "00b37000",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b37084",
+      "native": "00bd1510",
+      "caller": "00b37000",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b37099",
+      "native": "0041dd40",
+      "caller": "00b37000",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b370b4",
+      "native": "00bf7680",
+      "caller": "00b37000",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b370cb",
+      "native": "00b35030",
+      "caller": "00b37000",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b370e7",
+      "native": "00419cc0",
+      "caller": "00b37000",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b370ee",
+      "native": "00bd1510",
+      "caller": "00b37000",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b370fa",
+      "native": "00b34f20",
+      "caller": "00b37000",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b3715c",
+      "native": "00b35110",
+      "caller": "00b37000",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b371c5",
+      "native": "00b35110",
+      "caller": "00b37000",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b37219",
+      "native": "00b35110",
+      "caller": "00b37000",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b37239",
+      "native": "00b35110",
+      "caller": "00b37000",
+      "instruction": "call 0xb35110"
+    },
+    {
+      "address": "00b37248",
+      "native": "00b34f20",
+      "caller": "00b37000",
+      "instruction": "call 0xb34f20"
+    },
+    {
+      "address": "00b3725f",
+      "native": "0041dd40",
+      "caller": "00b37000",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3727a",
+      "native": "00bf7680",
+      "caller": "00b37000",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b37291",
+      "native": "00b35030",
+      "caller": "00b37000",
+      "instruction": "call 0xb35030"
+    },
+    {
+      "address": "00b372aa",
+      "native": "00419cc0",
+      "caller": "00b37000",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b372b1",
+      "native": "00bd1510",
+      "caller": "00b37000",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b34f47",
+      "native": "0041e870",
+      "caller": "00b34f20",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00b34f68",
+      "native": "0041dd40",
+      "caller": "00b34f20",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b34f75",
+      "native": "00bf7680",
+      "caller": "00b34f20",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b34f92",
+      "native": "00419cc0",
+      "caller": "00b34f20",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b34f99",
+      "native": "00bd1510",
+      "caller": "00b34f20",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b34fae",
+      "native": "0041dd40",
+      "caller": "00b34f20",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b34fc9",
+      "native": "00bf7680",
+      "caller": "00b34f20",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b34fe7",
+      "native": "0041dd40",
+      "caller": "00b34f20",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b34ff4",
+      "native": "00bf7680",
+      "caller": "00b34f20",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3500f",
+      "native": "00419cc0",
+      "caller": "00b34f20",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b35016",
+      "native": "00bd1510",
+      "caller": "00b34f20",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b35060",
+      "native": "0041dd40",
+      "caller": "00b35030",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b35070",
+      "native": "00bf7680",
+      "caller": "00b35030",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3508a",
+      "native": "0041dd40",
+      "caller": "00b35030",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b350a5",
+      "native": "00bf7680",
+      "caller": "00b35030",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b350c3",
+      "native": "0041dd40",
+      "caller": "00b35030",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b350d0",
+      "native": "00bf7680",
+      "caller": "00b35030",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b350eb",
+      "native": "00419cc0",
+      "caller": "00b35030",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b350f2",
+      "native": "00bd1510",
+      "caller": "00b35030",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b3513b",
+      "native": "00c03cee",
+      "caller": "00b35110",
+      "instruction": "call 0xc03cee"
+    },
+    {
+      "address": "00b35167",
+      "native": "0041dd40",
+      "caller": "00b35110",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b35182",
+      "native": "00bf7680",
+      "caller": "00b35110",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b351a0",
+      "native": "0041dd40",
+      "caller": "00b35110",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b351ad",
+      "native": "00bf7680",
+      "caller": "00b35110",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b351ca",
+      "native": "00419cc0",
+      "caller": "00b35110",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b351d1",
+      "native": "00bd1510",
+      "caller": "00b35110",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b351e6",
+      "native": "0041dd40",
+      "caller": "00b35110",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b35201",
+      "native": "00bf7680",
+      "caller": "00b35110",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b3521f",
+      "native": "0041dd40",
+      "caller": "00b35110",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b3522c",
+      "native": "00bf7680",
+      "caller": "00b35110",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b35249",
+      "native": "00419cc0",
+      "caller": "00b35110",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b35250",
+      "native": "00bd1510",
+      "caller": "00b35110",
+      "instruction": "call 0xbd1510"
+    }
+  ],
+  "no_ghidra_function": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "callers": [
+    {
+      "address": "00b3934e",
+      "native": "00b36e30",
+      "caller": "00b39110",
+      "arguments": "ECX builderEBP; pushesEBX0(vPos),1fog,1position; EBXzero B3913A unchanged; RET0C"
+    },
+    {
+      "address": "00b3961a",
+      "native": "00b35540",
+      "caller": "00b39110",
+      "arguments": "ECX builderEBP, no stackargs; RET"
+    },
+    {
+      "address": "00b3997d",
+      "native": "00b36e30",
+      "caller": "00b39880",
+      "arguments": "ECX builderEBP; position0, fogSETZCL from bytebuilder98, vPos1; flags lowbytes, RET0C"
+    },
+    {
+      "address": "00b39ef4",
+      "native": "00b37000",
+      "caller": "00b39880",
+      "arguments": "ECX builderEBP; stack current argument atESP50 actual0Ch fieldlist; RET4"
+    }
+  ],
+  "producer_evidence": {
+    "builder": "B354D0 actualB0h, existing NativeMaterialProgramBuilderStorage; source4C, fields28, mapping54/60, byte6C, descriptors70/74, byte98; newwrites7C/80/84/88 retain shared opaque storage",
+    "fields": "B34E20 actual1Ch owns8h name; B36800 actual current descriptor70/74 field selection; B34AA0 fields1..currentcount, lowbytefield/componentbyte from bits0..3; lastFOGword6C"
+  },
+  "contracts": {
+    "B34F20": "actual cstring line constructor/capturedtext append/return, then independent poolednewline; ECX destination stackcstring RET4",
+    "B35030": "actual current8h source data reload after destinationresize; ECXdestination stacksource RET4",
+    "B35110": "cdecl destination,format,...; actual0108D6F8 vsprintf, pooledline/newline; pack/unpack6arg ADDESP18,struct5arg ADDESP14,fog3arg ADDESP0C,vPos2arg ADDESP8",
+    "41DD40": "actual8h resize through same nativepool; ECXheader stacklength/preserve1 RET8",
+    "419CC0_BD1510": "actual poolgetter and poolreturn with original captured data/length schedule; ECXpool stackblock/size/align1 RET0C",
+    "BF7680": "CRT overlap-capable copy, cdecl destination/source/count ADDESP0C; source memmove"
+  },
+  "ordering": [
+    "pack currentfields28; unpack currentsuppliedlist identity, mappingdata/count reloaded each iteration",
+    "native channelbytesxyzw; fieldindexbyte truncation established by producer; no boundsclamp",
+    "pack outeropening release currentlength; packbraces capturedlength; structopening capturedlength; unpackopening+openingbrace currentlength; finalbrace capturedlength",
+    "struct mappingcount+3 wraps before signed/4; signed remainder, zero->4; publishescount thenwidth at7C/80 and84/88",
+    "struct currentgroupcount/lastwidth perrow and loopbound afterformat; colorcountread aftertexloop",
+    "fog byte6C, unpackbyte98 controlszero; vPos currentdescriptor70/74 lowbyte30 shortcircuit afterfog"
+  ],
+  "validation": {
+    "build": "PASS default registered MSVC Win32 C++17 Release /W4 /WX scripts/build.ps1 and both existing CTests after verify-seeds",
+    "fixture": "PASS one focused original/source executable with13 comparisons over actual B36800/B34AA0 producers; exact text/pooltrace, unaffected builder bytes, live mapping/list/group/descriptor changes, lowbyteflags/signededge arithmetic; retained parent/child failure, guard77, canonical string-pool shutdown",
+    "report_calls": "PASS89 numeric direct rows,0fail:53owned-body+32unchanged helper+4caller rows",
+    "registration": {
+      "before_sha256": "dd0776abc8b02cf36aa9646df729fb78d9534e4a9bd5e8b533dc929b6f2fe0ad",
+      "after_sha256": "2a1d55c11fc9e8eae1be253a8b0d34a09a2eadc34f45cfaf091823fb08b9dd3a",
+      "lease_check": "unleased under lease_transaction; no build in flight"
+    },
+    "native_bytes": 3611,
+    "owned_body_instructions": 587,
+    "live_flow_gaps": [],
+    "fixture_output": "PASS 13 original/source B35540/B36E30/B37000 comparisons: exact text and actual pooled allocation/release trace, actual B36800/B34AA0 field/mapping producers, distinct supplied pixel names, current mapping/list/count changes, live group/width/descriptor changes, low-byte flags, signed wrap/remainder and empty groups.\nPASS retained actual outer49-byte header/output preimage and failed B35030 child; replay rejected.\nPASS explicit retained-child diagnostic cleanup. LIMIT original normal bodies share existing actual storage/CRT dependencies; no outer FH3 or gameplay claim.\nPASS canonical actual string-pool shutdown after builder/field retirement.",
+    "retained_failure_guard": "PASS verified childexit77 in runner; local/native_interpolator_source_guard_probe.log",
+    "fixture_instruction_pins": [
+      {
+        "address": "00b35540",
+        "direct_calls": 21,
+        "changed_bytes": 84,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "e673ecf98fe39198aff5008319b9777d5ad858ffbcee39c260181ecd0861c536",
+        "linked_sha256": "4d838202f99f72e60c6890ddbd967381f25470487b71d0e91ea68c374a17d07a"
+      },
+      {
+        "address": "00b36e30",
+        "direct_calls": 11,
+        "changed_bytes": 42,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "124518905a76f417cfdab0f5faf77dc6caf685cf87e670230faa313f2db09021",
+        "linked_sha256": "a9b15ec9f263f716835af3d35329ff16a0203b49db4254737a4c156ecfdd9edf"
+      },
+      {
+        "address": "00b37000",
+        "direct_calls": 21,
+        "changed_bytes": 84,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "0c496ce65e6813297be9e3356a0144152692b4c6390317d43d5d31e1f630cd5b",
+        "linked_sha256": "63f4fc8a03f329e686663815f5b1f9149b0736e712af08532f362a491c16fc8a"
+      },
+      {
+        "address": "00b34f20",
+        "direct_calls": 11,
+        "changed_bytes": 44,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d",
+        "linked_sha256": "ebd33cd1623ac60ff2de9ab35c7053b7997604a50d982018a2ec18d567e4bf7d"
+      },
+      {
+        "address": "00b35030",
+        "direct_calls": 8,
+        "changed_bytes": 32,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "b4d6824f68dead82ca379647352206925f0a2aeba6884aa4901a40226bf5266b",
+        "linked_sha256": "c6a1b11c22bb7d5d2992b04837984189af8c0a1e4775cd347d1305f2673d9eaa"
+      },
+      {
+        "address": "00b35110",
+        "direct_calls": 13,
+        "changed_bytes": 52,
+        "only_direct_call_operand_bytes_changed": true,
+        "original_sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8",
+        "linked_sha256": "ca3df9f126d22a065ab4182586b99edb52ab95924ac3da6423c6e06612c837b0"
+      }
+    ],
+    "seed_check": "PASS live/disk verify-seeds; local/isource-seeds.log and local/seed_reference.hpp",
+    "fixture_limits": "Relocated six audited original normal bodies; only CALL operand relocations; shared existing actual string/pool/CRT bridges, literal pages from pinned game binary and same global scratch. Source failure only, no original privateFH3 unwind, full generator/compiler or game claim"
+  },
+  "boundaries": [
+    "actualvalidmappedfields/components0..3 and readable strings required",
+    "no nativeFH3 ABI/unwind, sourceframes retain failedownedtemp/output/child; externalowneradmission obligation",
+    "no entire sourcegenerator/materialcompiler/gameplay claim"
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_shader_interpolator_source.cpp",
+      "bytes": 9283,
+      "sha256": "62956a281784436663f3a14d76158923bd4d24ed3e6b2e350cc4b627cf69e553"
+    },
+    {
+      "path": "include/bsp/native_shader_interpolator_source.hpp",
+      "bytes": 3083,
+      "sha256": "9ce6334fdb08b1ed00695f982cb3be57f7973279bae0e84936f20550e721a86e"
+    },
+    {
+      "path": "docs/NATIVE_SHADER_INTERPOLATOR_SOURCE.md",
+      "bytes": 7069,
+      "sha256": "d347d29ca19ecb8f0d1e65c478fd4b3b8ba15ce423ead9d16c20c4bbd0478f8d"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 102820,
+      "sha256": "2a1d55c11fc9e8eae1be253a8b0d34a09a2eadc34f45cfaf091823fb08b9dd3a"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/isource-audit.json",
+      "bytes": 15886,
+      "sha256": "7cb98890358e7b3eebfd02faca2f9cd8d16e90297dc0e244bb2234363eb08810"
+    },
+    {
+      "path": "local/interpolator_source_evidence.py",
+      "bytes": 3102,
+      "sha256": "241dd82c245698268bd4d62fe0841bdf9927e2f35b12a30640ae31a1552e8d0e"
+    },
+    {
+      "path": "local/isource_report.py",
+      "bytes": 4229,
+      "sha256": "3906e92c276e77020a261dcf06fb1f1c65ef175cb47bbcd91ae3e4f0af75c49b"
+    },
+    {
+      "path": "local/finalize_isource.py",
+      "bytes": 6149,
+      "sha256": "b9d4ac12c4ee90b3bd090dc0ba5e78d3fd22f2823f8dc4832ccfaad892a789ee"
+    },
+    {
+      "path": "local/register_isource.py",
+      "bytes": 915,
+      "sha256": "de5f033f6b75d6a8fad1758f780a302c3f081f34831bd154d63cbbd60cc6dfe4"
+    },
+    {
+      "path": "local/isource-registration.json",
+      "bytes": 254,
+      "sha256": "7b3be134f1032ed1d909ee91ff114ee2e6531abb89f7776dd44c2ae5cfc47453"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/isource-seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/isource-calls.log",
+      "bytes": 80,
+      "sha256": "efdc9a5720115ce668958d474f4a05e7ab3d3b6793f2aef67584dc2c2865752f"
+    },
+    {
+      "path": "local/isource-build.log",
+      "bytes": 6124,
+      "sha256": "15030f82615f22db4e1466dae862c8ae8de0ea35b9d12dde48b511d39b0a15ac"
+    },
+    {
+      "path": "local/isource_precompile.ps1",
+      "bytes": 1034,
+      "sha256": "d0ef255ce4288aeccfc4c87aef9a6a76769b4e2a6ef6da80598ccc77635e0764"
+    },
+    {
+      "path": "local/isource-precompile.log",
+      "bytes": 39,
+      "sha256": "4eae37b2f70b88aeabc09119a57c7be325acc511e82ab868e011ae16a2f44c64"
+    },
+    {
+      "path": "local/isource-probe-precompile.log",
+      "bytes": 38,
+      "sha256": "67626099fa8e0d24e596cafd7c35bfdfca5e86f8422315ca1df2f7775dea2f45"
+    },
+    {
+      "path": "local/prepare_isource_probe.py",
+      "bytes": 2634,
+      "sha256": "df3c024778c051fe0888a322eda9d95af8361d346eeee0a0b5f403beeb20ebb8"
+    },
+    {
+      "path": "local/native_struct_declarations_probe.cpp",
+      "bytes": 17876,
+      "sha256": "2c68e9ac517df164e433e5501ba14962ab0c00eca33f114921dccd93ada95ad0"
+    },
+    {
+      "path": "local/run_native_struct_declarations_probe.ps1",
+      "bytes": 1730,
+      "sha256": "6054a592a4bf762ecc484ff7d2b7d4cd7cdc1777be96ca88377f640d5f2cb163"
+    },
+    {
+      "path": "local/isource_probe_main.txt",
+      "bytes": 8943,
+      "sha256": "687a3930d0c082f215397032fcf3d0c4961468b9bcacfd973ba7ffda4b8940aa"
+    },
+    {
+      "path": "local/isource_original.hpp",
+      "bytes": 14834,
+      "sha256": "889fd04bf3eee71f4be38c67903f587b63e7c3123d9583d55a2746951d9bacca"
+    },
+    {
+      "path": "local/native_interpolator_source_probe.cpp",
+      "bytes": 17337,
+      "sha256": "7c4bfc137c1124126b125b1bd1304578ae13ed1e2658c839cec5b8ff09bcb63a"
+    },
+    {
+      "path": "local/run_native_interpolator_source_probe.ps1",
+      "bytes": 1858,
+      "sha256": "b2e162dadc63e3c4221d6aaeaaa7b97f590422c917a1b09cea1ecf5de078e407"
+    },
+    {
+      "path": "local/native_interpolator_source_probe.exe",
+      "bytes": 86528,
+      "sha256": "0a2dcbb83b0bbb1ed4733593402a34ad99c3f71aa7459594b95c036185c9f19a"
+    },
+    {
+      "path": "local/native_interpolator_source_probe_compile.log",
+      "bytes": 38,
+      "sha256": "67626099fa8e0d24e596cafd7c35bfdfca5e86f8422315ca1df2f7775dea2f45"
+    },
+    {
+      "path": "local/native_interpolator_source_probe.log",
+      "bytes": 655,
+      "sha256": "e582722c2b2dbdd8e10d13e95955008ac91deb3fd04e4fe6d61fbe43f6e58e2b"
+    },
+    {
+      "path": "local/native_interpolator_source_guard_probe.log",
+      "bytes": 467,
+      "sha256": "44197222fd6f4ca7426ef6cc7a51aacf087fb1ccb6488c5a7dea132d93e7d4d7"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55612702,
+      "sha256": "d4936145587244cb22535cd33951b5d9e9e8f7fc844ca4707fba5680bff8698f"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455768,
+      "sha256": "1fb430db9173f9178c0a0b6dae2da877f28955032608de3726db8268893e133a"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72086,
+      "sha256": "3598c6d998151797d663dfea4a9667c1c6d92155a72716862746bb5ff9e010d2"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_shader_interpolator_source.obj",
+      "bytes": 42287,
+      "sha256": "28ae19392d5c3e38aba7bbb45d189935a4e711615f3fd727ba590b3d93f60162"
+    },
+    {
+      "path": "local/isource-original-00b35540.bin",
+      "bytes": 656,
+      "sha256": "e673ecf98fe39198aff5008319b9777d5ad858ffbcee39c260181ecd0861c536"
+    },
+    {
+      "path": "local/isource-original-00b36e30.bin",
+      "bytes": 454,
+      "sha256": "124518905a76f417cfdab0f5faf77dc6caf685cf87e670230faa313f2db09021"
+    },
+    {
+      "path": "local/isource-original-00b37000.bin",
+      "bytes": 714,
+      "sha256": "0c496ce65e6813297be9e3356a0144152692b4c6390317d43d5d31e1f630cd5b"
+    },
+    {
+      "path": "local/isource-original-00b34f20.bin",
+      "bytes": 272,
+      "sha256": "79fd6843400442bfc5dc45697048c338b874a87748fdd3640aee5a9003c69e5d"
+    },
+    {
+      "path": "local/isource-original-00b35030.bin",
+      "bytes": 220,
+      "sha256": "b4d6824f68dead82ca379647352206925f0a2aeba6884aa4901a40226bf5266b"
+    },
+    {
+      "path": "local/isource-original-00b35110.bin",
+      "bytes": 344,
+      "sha256": "77930fda7245b1b5a04f0062d866d411892277567034d50040e6f90afe09d4e8"
+    },
+    {
+      "path": "local/isource-original-00d5f318.bin",
+      "bytes": 944,
+      "sha256": "d96f1ef57931f19a20e01b07da3198964e1a6044154c3106ccf55c33fd9e828c"
+    },
+    {
+      "path": "local/isource-original-00ce4d38.bin",
+      "bytes": 2,
+      "sha256": "4d74440c32c4fad5c28ebb6cf407a7d3433fbd7ae90cff66354d9353b200b5b7"
+    },
+    {
+      "path": "local/isource-original-00ce4cd4.bin",
+      "bytes": 2,
+      "sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5"
+    },
+    {
+      "path": "local/isource-original-00ce4390.bin",
+      "bytes": 2,
+      "sha256": "102b51b9765a56a3e899f7cf0ee38e5251f9c503b357b330a49183eb7b155604"
+    },
+    {
+      "path": "local/isource-original-0108d6f2.bin",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "path": "local/isource-live-00b35540.txt",
+      "bytes": 3157,
+      "sha256": "400e816917bd6c523ff17cce447c6a3e64b8c266973dc2ce27176a566cfcfcb1"
+    },
+    {
+      "path": "local/isource-live-00b36e30.txt",
+      "bytes": 2193,
+      "sha256": "450a2464e4d39ccebd942772e403119f0d9e56b79c451406f98427ca6c8b8d20"
+    },
+    {
+      "path": "local/isource-live-00b37000.txt",
+      "bytes": 3441,
+      "sha256": "246b1366387b9be2a779ba2e0f15feba8dee71a706333e4aab3fca11289314b6"
+    },
+    {
+      "path": "local/isource-live-00b34f20.txt",
+      "bytes": 1309,
+      "sha256": "97e680b1a067f3fd7d117faf41dfeae9ff534f4839e5cef84075d657c0746619"
+    },
+    {
+      "path": "local/isource-live-00b35030.txt",
+      "bytes": 1062,
+      "sha256": "fb9ea5ae86406e244d0496deaa739a26860e48052a32f5a6383904fb9f3294b6"
+    },
+    {
+      "path": "local/isource-live-00b35110.txt",
+      "bytes": 1662,
+      "sha256": "c4cd5da4be13577473a8c4a48bafb326a21f4e1185cd8f9ca1e885597bc820c6"
+    },
+    {
+      "path": "local/isource-live-00d5f318.txt",
+      "bytes": 4543,
+      "sha256": "63592e1d250339e852701f41f1357e55c63685eabbd213ecc8e9ebfa4893ded8"
+    },
+    {
+      "path": "local/isource-live-00ce4d38.txt",
+      "bytes": 21,
+      "sha256": "93f8b025313ff402bc357e80a8834318ff750c06c708f9ba8a3b198cd6c61023"
+    },
+    {
+      "path": "local/isource-live-00ce4cd4.txt",
+      "bytes": 21,
+      "sha256": "7e5cd74caaa696c37b38e927edc8efd4a0cbf477e64d69d0d98467212d395662"
+    },
+    {
+      "path": "local/isource-live-00ce4390.txt",
+      "bytes": 21,
+      "sha256": "75e9773122dd34d7820b779b14fcd6a1891ded53afd9cf28dcde65d4295b7280"
+    },
+    {
+      "path": "local/isource-live-0108d6f2.txt",
+      "bytes": 17,
+      "sha256": "17de39af95a7bf709ec366509250a1421e128d0f20913015d4c0d4e3a916b261"
+    },
+    {
+      "path": "local/isource-linked-00b35540.bin",
+      "bytes": 656,
+      "sha256": "4d838202f99f72e60c6890ddbd967381f25470487b71d0e91ea68c374a17d07a"
+    },
+    {
+      "path": "local/isource-linked-00b36e30.bin",
+      "bytes": 454,
+      "sha256": "a9b15ec9f263f716835af3d35329ff16a0203b49db4254737a4c156ecfdd9edf"
+    },
+    {
+      "path": "local/isource-linked-00b37000.bin",
+      "bytes": 714,
+      "sha256": "63f4fc8a03f329e686663815f5b1f9149b0736e712af08532f362a491c16fc8a"
+    },
+    {
+      "path": "local/isource-linked-00b34f20.bin",
+      "bytes": 272,
+      "sha256": "ebd33cd1623ac60ff2de9ab35c7053b7997604a50d982018a2ec18d567e4bf7d"
+    },
+    {
+      "path": "local/isource-linked-00b35030.bin",
+      "bytes": 220,
+      "sha256": "c6a1b11c22bb7d5d2992b04837984189af8c0a1e4775cd347d1305f2673d9eaa"
+    },
+    {
+      "path": "local/isource-linked-00b35110.bin",
+      "bytes": 344,
+      "sha256": "ca3df9f126d22a065ab4182586b99edb52ab95924ac3da6423c6e06612c837b0"
+    },
+    {
+      "path": "local/isource-output-0-0-original.txt",
+      "bytes": 443,
+      "sha256": "82d9cc2a68a8c0e7eab959ee461374d67f91fd0ca54443095b8a6239f41b5fae"
+    },
+    {
+      "path": "local/isource-output-0-0-source.txt",
+      "bytes": 443,
+      "sha256": "82d9cc2a68a8c0e7eab959ee461374d67f91fd0ca54443095b8a6239f41b5fae"
+    },
+    {
+      "path": "local/isource-output-0-1-original.txt",
+      "bytes": 443,
+      "sha256": "82d9cc2a68a8c0e7eab959ee461374d67f91fd0ca54443095b8a6239f41b5fae"
+    },
+    {
+      "path": "local/isource-output-0-1-source.txt",
+      "bytes": 443,
+      "sha256": "82d9cc2a68a8c0e7eab959ee461374d67f91fd0ca54443095b8a6239f41b5fae"
+    },
+    {
+      "path": "local/isource-output-0-2-original.txt",
+      "bytes": 283,
+      "sha256": "6825109ecff3e4b256e41c74fb746a79488fe7df69c0bf052d364a06128b9465"
+    },
+    {
+      "path": "local/isource-output-0-2-source.txt",
+      "bytes": 283,
+      "sha256": "6825109ecff3e4b256e41c74fb746a79488fe7df69c0bf052d364a06128b9465"
+    },
+    {
+      "path": "local/isource-output-0-4-original.txt",
+      "bytes": 135,
+      "sha256": "d5789fa6ff4c2fb81bc4f634e1336ce84677ff8c51dd3268d029371a78925d43"
+    },
+    {
+      "path": "local/isource-output-0-4-source.txt",
+      "bytes": 135,
+      "sha256": "d5789fa6ff4c2fb81bc4f634e1336ce84677ff8c51dd3268d029371a78925d43"
+    },
+    {
+      "path": "local/isource-output-1-0-original.txt",
+      "bytes": 194,
+      "sha256": "d7833ecb0a2eeccdbab914bf27ef06ae7491a3dc59dd21e305c8c14f56e9331b"
+    },
+    {
+      "path": "local/isource-output-1-0-source.txt",
+      "bytes": 194,
+      "sha256": "d7833ecb0a2eeccdbab914bf27ef06ae7491a3dc59dd21e305c8c14f56e9331b"
+    },
+    {
+      "path": "local/isource-output-1-1-original.txt",
+      "bytes": 123,
+      "sha256": "bc4e68b39130f8cacf1656c7b9ecb887131f49f864c4e38cb2fd327c34c8c124"
+    },
+    {
+      "path": "local/isource-output-1-1-source.txt",
+      "bytes": 123,
+      "sha256": "bc4e68b39130f8cacf1656c7b9ecb887131f49f864c4e38cb2fd327c34c8c124"
+    },
+    {
+      "path": "local/isource-output-1-2-original.txt",
+      "bytes": 188,
+      "sha256": "a64efaa067ac69f0fe2f92188cb15685962f90df221d58305e2e6b513d7c6983"
+    },
+    {
+      "path": "local/isource-output-1-2-source.txt",
+      "bytes": 188,
+      "sha256": "a64efaa067ac69f0fe2f92188cb15685962f90df221d58305e2e6b513d7c6983"
+    },
+    {
+      "path": "local/isource-output-1-3-original.txt",
+      "bytes": 36,
+      "sha256": "aa6d1f2f026919a3646e78d45aea6767ffa3ff6c4e3cf0f2fdde87116d453f21"
+    },
+    {
+      "path": "local/isource-output-1-3-source.txt",
+      "bytes": 36,
+      "sha256": "aa6d1f2f026919a3646e78d45aea6767ffa3ff6c4e3cf0f2fdde87116d453f21"
+    },
+    {
+      "path": "local/isource-output-1-4-original.txt",
+      "bytes": 36,
+      "sha256": "aa6d1f2f026919a3646e78d45aea6767ffa3ff6c4e3cf0f2fdde87116d453f21"
+    },
+    {
+      "path": "local/isource-output-1-4-source.txt",
+      "bytes": 36,
+      "sha256": "aa6d1f2f026919a3646e78d45aea6767ffa3ff6c4e3cf0f2fdde87116d453f21"
+    },
+    {
+      "path": "local/isource-output-2-0-original.txt",
+      "bytes": 525,
+      "sha256": "0b7a8dff10a56144296f8937428de440f69acabc4e614129e8a05cb10b18b377"
+    },
+    {
+      "path": "local/isource-output-2-0-source.txt",
+      "bytes": 525,
+      "sha256": "0b7a8dff10a56144296f8937428de440f69acabc4e614129e8a05cb10b18b377"
+    },
+    {
+      "path": "local/isource-output-2-1-original.txt",
+      "bytes": 492,
+      "sha256": "93e77841dd5b5ba53243e330ceeac1b95fd3164e07b19c2c4f69550df822db9b"
+    },
+    {
+      "path": "local/isource-output-2-1-source.txt",
+      "bytes": 492,
+      "sha256": "93e77841dd5b5ba53243e330ceeac1b95fd3164e07b19c2c4f69550df822db9b"
+    },
+    {
+      "path": "local/isource-output-2-2-original.txt",
+      "bytes": 293,
+      "sha256": "064a3dc4733d65eab4db20a7ee7692ae1306717b651e6f1dec5af09b8e544604"
+    },
+    {
+      "path": "local/isource-output-2-2-source.txt",
+      "bytes": 293,
+      "sha256": "064a3dc4733d65eab4db20a7ee7692ae1306717b651e6f1dec5af09b8e544604"
+    },
+    {
+      "path": "local/isource-output-2-4-original.txt",
+      "bytes": 100,
+      "sha256": "df2d0c2c04c4e798d0c77d173d342ebdd11091a6d2257cf69e8b2275f4187a72"
+    },
+    {
+      "path": "local/isource-output-2-4-source.txt",
+      "bytes": 100,
+      "sha256": "df2d0c2c04c4e798d0c77d173d342ebdd11091a6d2257cf69e8b2275f4187a72"
+    }
+  ]
+}
