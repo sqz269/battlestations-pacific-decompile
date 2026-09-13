@@ -1,0 +1,102 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c64d28",
+    "end_address": "00c64d32"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c64d28",
+    "end_address": "00c64d31",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c64d28",
+    "disassemble_first": false,
+    "name": "EH_MissionEntityLock_Construct"
+   },
+   "result": {
+    "success": true,
+    "address": "00c64d28",
+    "function_name": "EH_MissionEntityLock_Construct",
+    "entry_point": "00c64d28",
+    "body_size": 10,
+    "message": "Function created successfully at 00c64d28",
+    "warnings": [
+     "Function name 'EH_MissionEntityLock_Construct' \u2014 main part 'MissionEntityLock_Construct' is not PascalCase. Expected: MissionentitylockConstruct",
+     "Function name 'EH_MissionEntityLock_Construct' \u2014 main part 'MissionEntityLock_Construct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'EH_MissionEntityLock_Construct' does not start with a recognized verb. First word 'Mission' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c64d28",
+   "end": "00c64d32",
+   "name": "EH_MissionEntityLock_Construct",
+   "after": "Function: EH_MissionEntityLock_Construct at 00c64d28\nSignature: undefined EH_MissionEntityLock_Construct(void)\nEntry: 00c64d28\nBody: 00c64d28 - 00c64d31"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c64f93",
+    "end_address": "00c64f9d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c64f93",
+    "end_address": "00c64f9c",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c64f93",
+    "disassemble_first": false,
+    "name": "EH_MissionEntityLock_Get"
+   },
+   "result": {
+    "success": true,
+    "address": "00c64f93",
+    "function_name": "EH_MissionEntityLock_Get",
+    "entry_point": "00c64f93",
+    "body_size": 10,
+    "message": "Function created successfully at 00c64f93",
+    "warnings": [
+     "Function name 'EH_MissionEntityLock_Get' \u2014 main part 'MissionEntityLock_Get' is not PascalCase. Expected: MissionentitylockGet",
+     "Function name 'EH_MissionEntityLock_Get' \u2014 main part 'MissionEntityLock_Get' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'EH_MissionEntityLock_Get' does not start with a recognized verb. First word 'Mission' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c64f93",
+   "end": "00c64f9d",
+   "name": "EH_MissionEntityLock_Get",
+   "after": "Function: EH_MissionEntityLock_Get at 00c64f93\nSignature: undefined EH_MissionEntityLock_Get(void)\nEntry: 00c64f93\nBody: 00c64f93 - 00c64f9c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

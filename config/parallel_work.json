@@ -10607,6 +10607,89 @@
       "new_native_bodies": 2,
       "existing_body_extensions": 0,
       "boundary": "Actual raw storage and bounded module validation; whole rendering/gameplay unverified; reports/native_lighting_service_ba_validation.json"
+    },
+    {
+      "id": "orch3_native_camera_configuration_leaves_bc",
+      "packet": "orch3_native_camera_configuration_leaves_bc",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_bounded_fixture_coverage",
+      "function_addresses": [
+        "00b6fbf0",
+        "00b6fc10",
+        "00b6fe10",
+        "00b6fe20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_camera_configuration_leaves.hpp",
+        "src/native_camera_configuration_leaves.cpp",
+        "docs/NATIVE_CAMERA_CONFIGURATION_LEAVES.md",
+        "reports/native_camera_configuration_leaves.json"
+      ],
+      "evidence": "reports/native_camera_configuration_leaves.json",
+      "new_native_bodies": 1,
+      "existing_body_extensions": 3,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_render_service_construction_bc_validation.json"
+    },
+    {
+      "id": "orch3_native_string_cstring_raw_bc",
+      "packet": "orch3_native_string_cstring_raw_bc",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_bounded_fixture_coverage",
+      "function_addresses": [
+        "0041e870"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_file_date.hpp",
+        "src/native_physical_file_date.cpp",
+        "docs/NATIVE_STRING_CSTRING_RAW_BC.md",
+        "reports/native_string_cstring_raw_bc.json"
+      ],
+      "evidence": "reports/native_string_cstring_raw_bc.json",
+      "new_native_bodies": 0,
+      "existing_body_extensions": 1,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_render_service_construction_bc_validation.json"
+    },
+    {
+      "id": "orch3_native_render_service_texture_construction_bc",
+      "packet": "orch3_native_render_service_texture_construction_bc",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_bounded_fixture_coverage",
+      "function_addresses": [
+        "00b52550"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_service_texture_construction.hpp",
+        "src/native_render_service_texture_construction.cpp",
+        "docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md",
+        "reports/native_render_service_texture_construction.json"
+      ],
+      "evidence": "reports/native_render_service_texture_construction.json",
+      "new_native_bodies": 1,
+      "existing_body_extensions": 0,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_render_service_construction_bc_validation.json"
+    },
+    {
+      "id": "orch3_native_renderer_current_depth_surface_bc",
+      "packet": "orch3_native_renderer_current_depth_surface_bc",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "reconstructed_build_tested_complete_emitted_bytes_match",
+      "function_addresses": [
+        "00b20090"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_current_depth_surface.hpp",
+        "src/native_renderer_current_depth_surface.cpp",
+        "docs/NATIVE_RENDERER_CURRENT_DEPTH_SURFACE_BC.md",
+        "reports/native_renderer_current_depth_surface_bc.json"
+      ],
+      "evidence": "reports/native_renderer_current_depth_surface_bc.json",
+      "new_native_bodies": 1,
+      "existing_body_extensions": 0,
+      "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_render_service_construction_bc_validation.json"
     }
   ],
   "snapshot_after_analysis": {

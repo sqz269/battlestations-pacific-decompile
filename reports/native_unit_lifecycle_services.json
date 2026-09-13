@@ -1,0 +1,141 @@
+{
+  "packet": "orch6_native_unit_lifecycle_services_w",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_unit_lifecycle_services.cpp",
+  "header": "include/bsp/native_unit_lifecycle_services.hpp",
+  "documentation": "docs/NATIVE_UNIT_LIFECYCLE_SERVICES.md",
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00803ba0",
+        "length": 56,
+        "end_exclusive": "00803bd8",
+        "hex": "8b048dbc74f80085c07404c64025018b15a888e1008b82ec18000085c07c1883f8077f138b8482cc1800003b48287507c6823c19000000c3",
+        "sha256": "4fd0c88ae8793f27f7c73e27c5912534c4a3dab699cc330f3920fc630521dfc6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004bca80",
+        "length": 19,
+        "end_exclusive": "004bca93",
+        "hex": "890ddc88e100518b0d9cd3f800e81e0d6500c3",
+        "sha256": "3d0f01d0b495865e9cbd899d9564c215eeff02479cae49992124726f705fb4c7",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b0d7b0",
+        "length": 25,
+        "end_exclusive": "00b0d7c9",
+        "hex": "8b4424048981c00100008b493085c97405e8ca140400c20400",
+        "sha256": "8f024f498c2c33bcb06fa0d49b2b4a7de76c138f2704c19935d21dcba9b862b3",
+        "live_disk_equal": true
+      }
+    ],
+    "relocations": [
+      {
+        "function": "00803BA0",
+        "offset": 3,
+        "kind": "absolute",
+        "original": "00F874BC"
+      },
+      {
+        "function": "00803BA0",
+        "offset": 17,
+        "kind": "absolute",
+        "original": "00E188A8"
+      },
+      {
+        "function": "004BCA80",
+        "offset": 2,
+        "kind": "absolute",
+        "original": "00E188DC"
+      },
+      {
+        "function": "004BCA80",
+        "offset": 9,
+        "kind": "absolute",
+        "original": "00F8D39C"
+      },
+      {
+        "function": "004BCA80",
+        "offset": 14,
+        "kind": "rel32",
+        "original": "00B0D7B0"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00803BA0",
+      "length": 56,
+      "end_inclusive": "00803BD7",
+      "coverage": "complete_normal_source",
+      "original_abi": "ECX signed recon index; no calls or stack inputs; RET",
+      "source_symbol": "mark_native_recon_slot_dirty_00803ba0"
+    },
+    {
+      "address": "004BCA80",
+      "length": 19,
+      "end_inclusive": "004BCA92",
+      "coverage": "complete_normal_source_with_required_renderer_provider",
+      "original_abi": "ECX handle; no stack inputs; current F8D39C in ECX plus stack handle into B0D7B0; RET",
+      "source_symbol": "publish_native_controlled_listener_004bca80"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004BCA8D",
+      "native": "00B0D7B0",
+      "function": "004BCA80",
+      "contract": "Required complete renderer update on owner loaded after actual listener publication; unchanged handle, no skip or rollback."
+    },
+    {
+      "address": "00B0D7C1",
+      "native": "00B4EC90",
+      "function": "00B0D7B0",
+      "contract": "Read-only provider evidence: conditional call after actual+1C0 store and current+30 load; external node invalidation/update."
+    }
+  ],
+  "storage": {
+    "recon_slot": "Required actual F874BC entry to existing slot+25 byte alias. Uses existing fixed_step_countdown/recon_slot_lists field evidence; null entry is distinct from missing binding.",
+    "world": "Capture actual E188A8 after marking; borrow its signed+18EC, cache byte+193C and same captured-world player pointer/context+28. No new native layout or source owner.",
+    "publications": "Borrow actual E188DC and F8D39C pointer cells; never source globals or inferred GameUnitsHost scene handles."
+  },
+  "ordering": [
+    "Null slot skips only dirty store, not world-context check.",
+    "Native input recon index is unchecked; source mappings must address readable actual table storage.",
+    "Signed world player index0..7 only; no in-range null-player fallback.",
+    "Store actual E188DC before loading current F8D39C and invoking B0D7B0.",
+    "No writes after the required renderer update; its publication changes survive."
+  ],
+  "validation": {
+    "status": "strict_Win32_native_fixture_and_combined_build_passed",
+    "paired_scenarios": 6,
+    "owned_native_bytes": 75,
+    "read_provider_bytes": 25,
+    "root_relocations": 5,
+    "fixture_provider_relocations": 1,
+    "input_bytes_per_side": 29048,
+    "output_bytes_per_side": 88,
+    "preimages_equal": true,
+    "outputs_equal": true,
+    "surrounding_storage_preserved": true,
+    "fixture_provider": "Both sides execute original25-byte B0D7B0 with explicit B4EC90 capture boundary. This does not implement or validate complete node invalidation.",
+    "manifest": "local/lifecycle_services_proof/manifest.json",
+    "manifest_sha256": "e9df0162899c688926d1bc8202efd2c4a22f7617c06c15852516a851758c038d",
+    "retained_artifacts": 207,
+    "compiler": "MSVC Win32 /W4 /WX /O2 /MD; VsDevCmd hostx64 x86; MANIFEST:EMBED",
+    "failed_attempt": "Initial response-file sourceDependencies newline syntax failed before compilation; retained log/rsp, corrected without source workaround.",
+    "combined_commit": "9c53c9ce4b71b9ccb4a8f7ae3eeb6a9b019458fc",
+    "ctest": "2existingCTests passed"
+  },
+  "no_ghidra_function": [],
+  "limitations": [
+    "New C++ interfaces, not drop-in native ABI.",
+    "Actual world/slot/publication bindings and complete renderer provider remain required; no gameplay application routing.",
+    "Native exception transport, asynchronous mutation and full renderer/scene behavior unproved."
+  ]
+}

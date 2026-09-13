@@ -50,6 +50,14 @@ SoundClassLevel* const* sound_class_slot_00a7f0f0(SoundSystemOwner& owner, std::
 }
 
 void*& adopt_sound_reference_0054d510(void*& destination, void* source, VoiceReferenceHost& references) {
+    auto& adopted_slot = adopt_sound_reference_0054d510(
+        static_cast<void* volatile&>(destination), source, references);
+    // Discarding a volatile glvalue would read the slot again. Take its address.
+    (void)&adopted_slot;
+    return destination;
+}
+
+void* volatile& adopt_sound_reference_0054d510(void* volatile& destination, void* source, VoiceReferenceHost& references) {
     if (auto* old = destination) {
         references.release_reference(old);
         destination = nullptr;

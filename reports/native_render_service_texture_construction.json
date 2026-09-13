@@ -1,0 +1,536 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_render_service_texture_construction_bc",
+  "utc": "2026-09-13T17:11:58.001225+00:00",
+  "status": "reconstructed_build_tested_bounded_fixture_coverage",
+  "normal_body_count": 1,
+  "new_native_body_count": 1,
+  "native_body_bytes": 752,
+  "native_instruction_count": 242,
+  "functions": [
+    {
+      "address": "00b52550",
+      "end_inclusive": "00b5283f",
+      "bytes": 752,
+      "sha256": "13dec3414f78384f7951a73a125b0180c1a5a11aa9605ca15263f26328fec058",
+      "live_PE_match": true,
+      "coverage": "complete",
+      "body_kind": "normal_body",
+      "new_native_body": true,
+      "existing_body_extension": false,
+      "cpp_symbol": "construct_native_render_service_textures_00b52550",
+      "module": "native_render_service_texture_construction",
+      "source": "src/native_render_service_texture_construction.cpp",
+      "header": "include/bsp/native_render_service_texture_construction.hpp",
+      "end_exclusive": "00b52840",
+      "proposed_ghidra_name": "BSP_RenderServiceTextureHelper_Construct",
+      "name_status": "descriptive_hypothesis_not_recovered_symbol",
+      "original_abi": "ECX actual CCh allocation from B14EC6; no stack arguments; EAX same owner; RET at B5283F",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.",
+      "packet_key": "texture",
+      "report": "reports/native_render_service_texture_construction.json",
+      "doc": "docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md",
+      "ghidra_name": "BSP_RenderServiceTextureHelper_Construct",
+      "existing_body_raw_extension": false,
+      "ledger_record_name": "construct_native_render_service_textures_00b52550",
+      "native_prototype": "void * BSP_RenderServiceTextureHelper_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "worker_evidence": "Full242-instruction fresh live listing, complete sole caller/EBX provenance, saved dimension producer B3F930, 1232 live/PE body/profile/literal/EH bytes. Reuse actual cache, four persistent acquired frames, raw strings/pool/manager, native vectors and saved dimension targets; source API and bounded exceptions, not original ABI certification."
+    }
+  ],
+  "files": [
+    "include/bsp/native_render_service_texture_construction.hpp",
+    "src/native_render_service_texture_construction.cpp",
+    "docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md",
+    "reports/native_render_service_texture_construction.json"
+  ],
+  "calls": [
+    {
+      "function": "00b14a10",
+      "address": "00b14ec6",
+      "native": "00bf681b",
+      "contract": "PUSH CCh at B14EC1; cdecl operator-new allocation; ADD ESP4 at B14ECB; preserve allocated raw size"
+    },
+    {
+      "function": "00b14a10",
+      "address": "00b14edd",
+      "native": "00b52550",
+      "contract": "B14ED2 tests EAX against EBX0, B14ED9 skips null; B14EDB MOV ECX,EAX; zero stack arguments/RET; B14EF0 publishes EAX at service+34"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b525dd",
+      "native": "0041dd40",
+      "contract": "ECX raw8h name; stack length,preserve1; RET8; current raw pool getter/resize"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b525f8",
+      "native": "00bf7680",
+      "contract": "cdecl captured data,current literal,current name length+1; ADD ESP0C; overlap-capable CRT copy represented by memmove"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52616",
+      "native": "00b319b0",
+      "kind": "indirect",
+      "slot": "+64",
+      "contract": "Fresh F8D394 -> current D5F0A8/+64 target; ECX captured renderer; stack raw local name,zero; RET8; persistent actual cache acquisition"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52632",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current published actual pool; RET; pool-return arguments already pushed remain on stack"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52639",
+      "native": "00bd1510",
+      "contract": "ECX getter result; stack captured pointer,current length+1,unused1; RET0C; current return gate"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5264b",
+      "native": "00b3ce80",
+      "kind": "indirect",
+      "slot": "+4C",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52659",
+      "native": "00b3ce70",
+      "kind": "indirect",
+      "slot": "+48",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52679",
+      "native": "0041dd40",
+      "contract": "ECX raw8h name; stack length,preserve1; RET8; current raw pool getter/resize"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52694",
+      "native": "00bf7680",
+      "contract": "cdecl captured data,current literal,current name length+1; ADD ESP0C; overlap-capable CRT copy represented by memmove"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b526b2",
+      "native": "00b319b0",
+      "kind": "indirect",
+      "slot": "+64",
+      "contract": "Fresh F8D394 -> current D5F0A8/+64 target; ECX captured renderer; stack raw local name,zero; RET8; persistent actual cache acquisition"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b526ce",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current published actual pool; RET; pool-return arguments already pushed remain on stack"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b526d5",
+      "native": "00bd1510",
+      "contract": "ECX getter result; stack captured pointer,current length+1,unused1; RET0C; current return gate"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b526e7",
+      "native": "00b3ce80",
+      "kind": "indirect",
+      "slot": "+4C",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b526f5",
+      "native": "00b3ce70",
+      "kind": "indirect",
+      "slot": "+48",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52715",
+      "native": "0041dd40",
+      "contract": "ECX raw8h name; stack length,preserve1; RET8; current raw pool getter/resize"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52730",
+      "native": "00bf7680",
+      "contract": "cdecl captured data,current literal,current name length+1; ADD ESP0C; overlap-capable CRT copy represented by memmove"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5274e",
+      "native": "00b319b0",
+      "kind": "indirect",
+      "slot": "+64",
+      "contract": "Fresh F8D394 -> current D5F0A8/+64 target; ECX captured renderer; stack raw local name,zero; RET8; persistent actual cache acquisition"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5276a",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current published actual pool; RET; pool-return arguments already pushed remain on stack"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52771",
+      "native": "00bd1510",
+      "contract": "ECX getter result; stack captured pointer,current length+1,unused1; RET0C; current return gate"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5277e",
+      "native": "00b3ce70",
+      "kind": "indirect",
+      "slot": "+48",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5279b",
+      "native": "0041dd40",
+      "contract": "ECX raw8h name; stack length,preserve1; RET8; current raw pool getter/resize"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b527b6",
+      "native": "00bf7680",
+      "contract": "cdecl captured data,current literal,current name length+1; ADD ESP0C; overlap-capable CRT copy represented by memmove"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b527d4",
+      "native": "00b319b0",
+      "kind": "indirect",
+      "slot": "+64",
+      "contract": "Fresh F8D394 -> current D5F0A8/+64 target; ECX captured renderer; stack raw local name,zero; RET8; persistent actual cache acquisition"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b527f3",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current published actual pool; RET; pool-return arguments already pushed remain on stack"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b527fa",
+      "native": "00bd1510",
+      "contract": "ECX getter result; stack captured pointer,current length+1,unused1; RET0C; current return gate"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b5280e",
+      "native": "00b3ce80",
+      "kind": "indirect",
+      "slot": "+4C",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00b52550",
+      "address": "00b52819",
+      "native": "00b3ce70",
+      "kind": "indirect",
+      "slot": "+48",
+      "contract": "ECX captured texture receiver; freshly captured current D61948 slot; no stack args; RET; EAX current saved dimension at +34/+38"
+    },
+    {
+      "function": "00cbff80",
+      "address": "00cbff83",
+      "native": "00bd30f0",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbff88",
+      "address": "00cbff8e",
+      "native": "00b523c0",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbff93",
+      "address": "00cbff99",
+      "native": "00b523c0",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbff9e",
+      "address": "00cbffa7",
+      "native": "00b523e0",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffac",
+      "address": "00cbffb5",
+      "native": "00b523c0",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffba",
+      "address": "00cbffbd",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffc2",
+      "address": "00cbffc5",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffca",
+      "address": "00cbffcd",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffd2",
+      "address": "00cbffd5",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    },
+    {
+      "function": "00cbffda",
+      "address": "00cbffdf",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "contract": "FH3 cleanup thunk reuses original frame, no pushed arguments; raw string/vector/base ECX from saved frame; handler CBFFDA sets EAX=DF8AE0 before tail FH3"
+    }
+  ],
+  "numeric_transfer_rows": 39,
+  "native_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b52550",
+        "end_inclusive": "00b5283f",
+        "bytes": 752,
+        "sha256": "13dec3414f78384f7951a73a125b0180c1a5a11aa9605ca15263f26328fec058",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbff80",
+        "end_inclusive": "00cbffe3",
+        "bytes": 100,
+        "sha256": "c844d69f43b597970b1cda0a4f97500a4c13a16d4a85b7a9d44aaf793f1b9c47",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8ae0",
+        "end_inclusive": "00df8b4b",
+        "bytes": 108,
+        "sha256": "c256110ab0befc430f3e48f170954db4e1e9fcbba7187ae0f3d430370fb33c85",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d62074",
+        "end_inclusive": "00d620ab",
+        "bytes": 56,
+        "sha256": "ec68c1153b240d56c21b283952f8dc9afd3938127c045835112b4b553b68a5cb",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61948",
+        "end_inclusive": "00d6199f",
+        "bytes": 88,
+        "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d5f0a8",
+        "end_inclusive": "00d5f127",
+        "bytes": 128,
+        "sha256": "595f1e16926eb9879c551dd08d7c25425091a18578b9a7cd1f79f7dd5756c2df",
+        "live_PE_match": true
+      }
+    ],
+    "instructions": 242
+  },
+  "caller_evidence": {
+    "all_incoming_sites": [
+      "00b14edd"
+    ],
+    "full_containing_listing": "caller-b14a10-full.txt",
+    "arguments": "CCh allocation, ECX EAX, zero args, RET; EBX established once at B14A57 and preserved by all callees before this call",
+    "producer": "Actual owner allocation B14EC1..B14EDD; B3F9EA/B3F9F9 write saved dimensions +34/+38, separately from COM description +28/+2C"
+  },
+  "local_layout": {
+    "bytes": 36,
+    "native_esp_region": "ESP+10..33 after prolog",
+    "name_offsets": [
+      0,
+      12,
+      20,
+      28
+    ],
+    "saved_owner_offset": 8,
+    "saved_height_spill_offset": 0,
+    "spill_sites": [
+      "00b52655",
+      "00b526f1"
+    ],
+    "four_caller_retained_cache_acquisitions": true
+  },
+  "current_dispatch": {
+    "renderer": "Fresh F8D394 -> actual profile D5F0A8 -> current +64 word B319B0 on each load",
+    "dimension": "Texture field reloaded after raw string cleanup; same receiver for each pair, fresh actual profile and slot before each call; admit current B3CE70/B3CE80 in either requested dimension slot",
+    "strings": "Fresh pool getter on every native reached resize/return; capture return data BEFORE state4, capture current length+1 BEFORE getter, current gate in BD1510",
+    "literals": [
+      "D620A0 kosz_01.tga",
+      "D62094 szor_01.tga",
+      "D62088 csikok.tga",
+      "D6207C splotch.tga"
+    ]
+  },
+  "cleanup": {
+    "handler": "CBFFDA..CBFFE3 -> BF6B43, FuncInfo DF8AE0 maxstate9, unwind map DF8B04..DF8B4B",
+    "states": "0 base;1 +24 vector24;2 +7C vector24;3 +8C vector12;4 +A4 vector24;5..8 respective raw strings then4",
+    "normal_arming": "state0 after derived profile, state4 after four zero triples,5..8 immediately before load; native publication precedes return pointer capture and state4",
+    "never_release_published_textures": true,
+    "domain": "C++ cleanup projection. Original FH3/SEH identity, hardware-fault unwinding, second-exception search ordering and private frame aliases are not certified. Existing acquired children retain failures for explicit external resolution; never discard/reset them."
+  },
+  "corrections": [
+    {
+      "was": "std::memcpy at the four BF7680 calls",
+      "is": "std::memmove with captured current data/current length+1",
+      "evidence": "BF7694..BF769A overlap branch to BF7844 backward STD/REP/CLD; existing raw provider convention and root review"
+    }
+  ],
+  "checks": {
+    "strict_compile": "PASS MSVC Win32 /std:c++17 /W4 /WX /O2 /EHsc /MD /fp:strict after final source correction",
+    "baseline": "PASS worktree f5ce17eb full scripts/build.ps1, both existing CTests; unregistered parent is excluded and vector registration postdates this baseline",
+    "verify_seeds": "PASS eight seed spans live/PE equality",
+    "call_rows": "PASS39 numeric rows including11 manual-resolved indirect calls and10 tail jumps; mechanical verifier cannot independently resolve current vtable targets",
+    "no_repository_tests_added": true,
+    "cmake_registration": "root integration required",
+    "ledger_and_ghidra_mutations": "none"
+  },
+  "source_sha256": {
+    "include/bsp/native_render_service_texture_construction.hpp": "700e0fecf55236b51fb73ea236c6c02117f798c9d473e3b8d8caee21b35b7794",
+    "src/native_render_service_texture_construction.cpp": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df"
+  },
+  "provider_sha256": {
+    "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+    "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+    "include/bsp/native_material_effect_runtime.hpp": "405fea0c8ae9ad74407b148198ba7c77f3a748eb8566b624bfc3f1b90eed4ab5",
+    "src/native_material_effect_runtime.cpp": "8487121fd202fa3ad647daeef793db74b17993a706f26a67c04e01db2f30ebe4",
+    "include/bsp/native_vfs_name_resolution.hpp": "149e85bbc3e03e968a28ffad46a23d4afc7e10c3986d30f9591a6894e958378a",
+    "src/native_vfs_name_resolution.cpp": "3518ea9da4307dfe6f646f02ae77690577abf7e38d83811aa498e2cbd48acec5",
+    "include/bsp/native_vfs_device_route.hpp": "49a502542511e8e860b8f030baa3aa796131ed9a69d3b892e62f768ed94cd445",
+    "src/native_vfs_device_route.cpp": "09bb76bd0bc6f98253f261c9f8280edcf489ec9718beef72273b6c47780888d8",
+    "include/bsp/native_vfs_runtime_bindings.hpp": "01e547aa8ee4f376f45b3babf7f5ec557edb594999930b80d8917edea27e31d7",
+    "src/native_vfs_runtime_bindings.cpp": "75f07ffdc4472b81818c7f62366d49c68498d39e6f6ec1c9509d6560dd017cda",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_render_service_texture_vectors.hpp": "87a991b960d1ab4e8d6dd9ad8450a69fe7e6f7a00fba9cfe8ef1718cf3091471",
+    "src/native_render_service_texture_vectors.cpp": "a9a028939d9cced314d111549c79d772b1aefde1f1e6c8d8fa6cb85d3ec81934",
+    "include/bsp/native_texture_saved_dimensions.hpp": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+    "src/native_texture_saved_dimensions.cpp": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+    "include/bsp/native_ref_counted.hpp": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+    "src/native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+    "include/bsp/native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+    "src/native_texture_2d_owner.cpp": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "fixture": {
+    "result": "PASS",
+    "cases": 1,
+    "comparison": "Original full752-byte native body vs rebuilt source; exact204-byte CCh owner including patterned untouched preimage; same actual pooled texture; saved unsigned width0x8000000F,height7 vs COM8x4; four hot alias hits/+4 refs each; original local spacing C/14/1C; source retained first-height spill; actual canonical/COM/string-pool/raw-manager teardown",
+    "composition": "Actual B3F930/D3D9 HAL texture2D; native alias nodes, record copy and append, raw singleton/string pool, full B319B0/B30B40 hot cache, BECCD0 and real private XLive5030 pretranslation with BECB20 null-online guard",
+    "original_adapter_changes": "Relocate752-byte body; patch16 external E8 displacements and4 absolute F8D394 publication operands only. Three copied profile slots temporarily select ABI adapters for original CALL-register instructions, then restore original numeric words for source dispatch. Shared rebuilt callee bodies, not original callee machine-code replay.",
+    "source_cold_name_binding": "Production bind_native_texture_vfs_name_resolution creates retained actual BDF4C0 operations. Fixture supplies concrete BF0FB0 physical route but never invokes resolution; no fake successful resolver or texture callback.",
+    "library_build_commit": "b7683394",
+    "worker_source_baseline": "f5ce17eb",
+    "mixed_initial_stage": "Explicit -WorkerSource compiles only unregistered BC parent plus probe against exact root BA three libraries; it does not compile BA provider sources. Root later commits/reports do not change these libraries.",
+    "libraries": {
+      "bsp_core.lib": "31abadc20f4ed0de673e704a1e2d90deeac58a1895b5a50b627ca33f84e79e1f",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "build_inputs_archive": "library-build-inputs.zip at b7683394",
+    "build_inputs_archive_sha256": "443ebe0f92e9a61c90f797ee1adc4acd501f9bd959e775e49e6e2ee0533eeb2b",
+    "recipe": "run.ps1 -Repo <integrated root>; default compiles external probe.cpp only against selected root bsp_core/bsp_lua511/bsp_zlib121; runtime DLLs are immutable capture files",
+    "initial_command": "run.ps1 -Repo J:/PROG/battlestations-pacific-decompile-orch3-20260910 -WorkerSource -WorkerRepo J:/PROG/battlestations-pacific-decompile-orch3-texture-construction-bc",
+    "manifest_embedded": true,
+    "input_pins_unchanged": true,
+    "logs": [
+      "strict-source-build.log",
+      "probe-build.log",
+      "probe-run.log",
+      "fixture-result.json",
+      "baseline-build.log",
+      "baseline-seeds.log"
+    ],
+    "setup_limits": "Initial fixed code reservations overlapped CRT heap reservations; explicit relocations used. Game-local XLive faulted at load; system XLive load error182; retained Microsoft private runtime + explicit msidcrl40 preload succeeds. None of these setup failures entered B52550.",
+    "limits": [
+      "No cold VFS/D3DX texture-load execution",
+      "No overlap or induced failure/FH3/SEH execution",
+      "No arbitrary current profiles/targets or private-frame alias proof",
+      "No original CRT or provider instruction equivalence",
+      "No original reconstructed caller ABI, renderer bootstrap, concurrency or gameplay proof"
+    ],
+    "immutable_archive": {
+      "path": "C:\\Users\\sqz269\\bsp-bc-texture-construction\\worker_capture_v2.zip",
+      "sha256": "e198c51db5b49a689883fe5fc3c1c612144d2884fd94d0a233ae3c294b65e443",
+      "members": 66,
+      "uncompressed_bytes": 95049698,
+      "bytes": 37703295,
+      "immutable": true
+    }
+  },
+  "worker_bounds": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch3-texture-construction-bc",
+    "branch": "agent/orch3-texture-construction-bc",
+    "exactly_four_owned_files": true,
+    "no_merge_push": true,
+    "retained_worktree": true
+  },
+  "integration_bc_review": {
+    "combined_validation": "passed exact merged build and applicable validation in reports/native_render_service_construction_bc_validation.json",
+    "game_validated": false,
+    "current_report_call_check": "reports/native_render_service_texture_construction.json: 39 call rows checked, 0 failed",
+    "saved_original_signature_readback": true,
+    "saved_full_body_ranges": true,
+    "current_signature_audit_count": 7
+  },
+  "worker_capture_status": "complete_normal_body_source_strict_compiled_focused_original_byte_fixture_passed",
+  "final_merged_validation_bc": {
+    "report": "reports/native_render_service_construction_bc_validation.json",
+    "tested_commit": "175cf8f60ab6b54dbf227b9b645b9734871cde89",
+    "existing_ctests_passed": 2,
+    "current_library_only_replays_passed": 3,
+    "own_module_validation": "bounded_original_byte_fixture",
+    "game_validated": false
+  }
+}

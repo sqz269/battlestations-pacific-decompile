@@ -1,0 +1,1005 @@
+{
+  "reason": "Concrete source input-settings tree cleanup, complete four range erasers and established payload order. Names remain hypotheses; preserve earlier evidence.",
+  "entries": [
+    {
+      "address": "006a7540",
+      "before": "Function: FUN_006a7540 at 006a7540\nSignature: undefined FUN_006a7540(void)\nEntry: 006a7540\nBody: 006a7540 - 006a75e0",
+      "before_comment": {
+        "address": "006a7540",
+        "function_name": "FUN_006a7540"
+      },
+      "name": "STL_InputDeviceTree_DestroySubtree_006A7540",
+      "prototype": "void __fastcall STL_InputDeviceTree_DestroySubtree_006A7540(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a7540 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceTree_DestroySubtree_006A7540 at 006a7540\nSignature: void __fastcall STL_InputDeviceTree_DestroySubtree_006A7540(void * tree, void * unused_edx, void * node)\nEntry: 006a7540\nBody: 006a7540 - 006a75e0",
+      "after_comment": {
+        "address": "006a7540",
+        "function_name": "STL_InputDeviceTree_DestroySubtree_006A7540",
+        "comment": "[BSP reconstruction 006a7540]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b690",
+      "before": "Function: FUN_0055b690 at 0055b690\nSignature: void __fastcall FUN_0055b690(void * self, void * unused_edx)\nEntry: 0055b690\nBody: 0055b690 - 0055b8a5",
+      "before_comment": {
+        "address": "0055b690",
+        "function_name": "FUN_0055b690",
+        "comment": ""
+      },
+      "name": "STL_InputDeviceRecord_Destroy_0055B690",
+      "prototype": "void __fastcall STL_InputDeviceRecord_Destroy_0055B690(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 0055b690 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceRecord_Destroy_0055B690 at 0055b690\nSignature: void __fastcall STL_InputDeviceRecord_Destroy_0055B690(void * self, void * unused_edx)\nEntry: 0055b690\nBody: 0055b690 - 0055b8a5",
+      "after_comment": {
+        "address": "0055b690",
+        "function_name": "STL_InputDeviceRecord_Destroy_0055B690",
+        "comment": "[BSP reconstruction 0055b690]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a7aa0",
+      "before": "Function: FUN_006a7aa0 at 006a7aa0\nSignature: undefined FUN_006a7aa0(void)\nEntry: 006a7aa0\nBody: 006a7aa0 - 006a7b68",
+      "before_comment": {
+        "address": "006a7aa0",
+        "function_name": "FUN_006a7aa0"
+      },
+      "name": "STL_InputDeviceTree_EraseRange_006A7AA0",
+      "prototype": "void* __fastcall STL_InputDeviceTree_EraseRange_006A7AA0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 006a7aa0 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceTree_EraseRange_006A7AA0 at 006a7aa0\nSignature: void * __fastcall STL_InputDeviceTree_EraseRange_006A7AA0(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 006a7aa0\nBody: 006a7aa0 - 006a7b68",
+      "after_comment": {
+        "address": "006a7aa0",
+        "function_name": "STL_InputDeviceTree_EraseRange_006A7AA0",
+        "comment": "[BSP reconstruction 006a7aa0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a6a20",
+      "before": "Function: FUN_006a6a20 at 006a6a20\nSignature: undefined FUN_006a6a20(void)\nEntry: 006a6a20\nBody: 006a6a20 - 006a6ae8",
+      "before_comment": {
+        "address": "006a6a20",
+        "function_name": "FUN_006a6a20"
+      },
+      "name": "STL_ControllerNameTree_EraseRange_006A6A20",
+      "prototype": "void* __fastcall STL_ControllerNameTree_EraseRange_006A6A20(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 006a6a20 with __fastcall calling convention",
+      "after": "Function: STL_ControllerNameTree_EraseRange_006A6A20 at 006a6a20\nSignature: void * __fastcall STL_ControllerNameTree_EraseRange_006A6A20(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 006a6a20\nBody: 006a6a20 - 006a6ae8",
+      "after_comment": {
+        "address": "006a6a20",
+        "function_name": "STL_ControllerNameTree_EraseRange_006A6A20",
+        "comment": "[BSP reconstruction 006a6a20]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069fe70",
+      "before": "Function: STL_Tree_EraseRange_IntKey_N18B_0069fe70 at 0069fe70\nSignature: undefined STL_Tree_EraseRange_IntKey_N18B_0069fe70(void)\nEntry: 0069fe70\nBody: 0069fe70 - 0069ff38",
+      "before_comment": {
+        "address": "0069fe70",
+        "function_name": "STL_Tree_EraseRange_IntKey_N18B_0069fe70",
+        "comment": "[BSP reconstruction 0069fe70]\nHypothesis, not a recovered symbol. erase(const_iterator,const_iterator): whole-range fast path inlines the 0069dc70 clear sequence, otherwise loops operator++ 0069c370 with erase 0069f690; __thiscall, RET 0x14. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610."
+      },
+      "name": "STL_Tree_EraseRange_IntKey_N18B_0069fe70",
+      "prototype": "void* __fastcall STL_Tree_EraseRange_IntKey_N18B_0069fe70(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 0069fe70 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseRange_IntKey_N18B_0069fe70 at 0069fe70\nSignature: void * __fastcall STL_Tree_EraseRange_IntKey_N18B_0069fe70(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0069fe70\nBody: 0069fe70 - 0069ff38",
+      "after_comment": {
+        "address": "0069fe70",
+        "function_name": "STL_Tree_EraseRange_IntKey_N18B_0069fe70",
+        "comment": "[BSP reconstruction 0069fe70]\nHypothesis, not a recovered symbol. erase(const_iterator,const_iterator): whole-range fast path inlines the 0069dc70 clear sequence, otherwise loops operator++ 0069c370 with erase 0069f690; __thiscall, RET 0x14. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.\n\n[BSP reconstruction 0069fe70] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1aa0",
+      "before": "Function: STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0 at 006a1aa0\nSignature: undefined STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0(void)\nEntry: 006a1aa0\nBody: 006a1aa0 - 006a1b68",
+      "before_comment": {
+        "address": "006a1aa0",
+        "function_name": "STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0",
+        "comment": "[BSP reconstruction 006a1aa0]\nHypothesis, not a recovered symbol. erase(const_iterator,const_iterator): whole-range fast path inlines the 006a1230 clear sequence, otherwise loops operator++ 0069c0f0 with erase 006a04a0, returning an iterator; __thiscall, RET 0x14. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0",
+      "prototype": "void* __fastcall STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 006a1aa0 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0 at 006a1aa0\nSignature: void * __fastcall STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 006a1aa0\nBody: 006a1aa0 - 006a1b68",
+      "after_comment": {
+        "address": "006a1aa0",
+        "function_name": "STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0",
+        "comment": "[BSP reconstruction 006a1aa0]\nHypothesis, not a recovered symbol. erase(const_iterator,const_iterator): whole-range fast path inlines the 006a1230 clear sequence, otherwise loops operator++ 0069c0f0 with erase 006a04a0, returning an iterator; __thiscall, RET 0x14. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 006a1aa0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a62d0",
+      "before": "Function: FUN_006a62d0 at 006a62d0\nSignature: undefined FUN_006a62d0(void)\nEntry: 006a62d0\nBody: 006a62d0 - 006a630c",
+      "before_comment": {
+        "address": "006a62d0",
+        "function_name": "FUN_006a62d0"
+      },
+      "name": "STL_ControllerNameTree_DestroySubtree_006A62D0",
+      "prototype": "void __fastcall STL_ControllerNameTree_DestroySubtree_006A62D0(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a62d0 with __fastcall calling convention",
+      "after": "Function: STL_ControllerNameTree_DestroySubtree_006A62D0 at 006a62d0\nSignature: void __fastcall STL_ControllerNameTree_DestroySubtree_006A62D0(void * tree, void * unused_edx, void * node)\nEntry: 006a62d0\nBody: 006a62d0 - 006a630c",
+      "after_comment": {
+        "address": "006a62d0",
+        "function_name": "STL_ControllerNameTree_DestroySubtree_006A62D0",
+        "comment": "[BSP reconstruction 006a62d0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069d3f0",
+      "before": "Function: STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0 at 0069d3f0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void)\nEntry: 0069d3f0\nBody: 0069d3f0 - 0069d424",
+      "before_comment": {
+        "address": "0069d3f0",
+        "function_name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+        "comment": "[BSP reconstruction 0069d3f0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a whole subtree without rebalancing, recursing on _Right, walking _Left and freeing each node; called by clear 0069dc70 and range erase 0069fe70; RET 0x4. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610."
+      },
+      "name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+      "prototype": "void __fastcall STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 0069d3f0 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0 at 0069d3f0\nSignature: void __fastcall STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void * tree, void * unused_edx, void * node)\nEntry: 0069d3f0\nBody: 0069d3f0 - 0069d424",
+      "after_comment": {
+        "address": "0069d3f0",
+        "function_name": "STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0",
+        "comment": "[BSP reconstruction 0069d3f0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a whole subtree without rebalancing, recursing on _Right, walking _Left and freeing each node; called by clear 0069dc70 and range erase 0069fe70; RET 0x4. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.\n\n[BSP reconstruction 0069d3f0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a0770",
+      "before": "Function: STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770 at 006a0770\nSignature: undefined STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void)\nEntry: 006a0770\nBody: 006a0770 - 006a07c1",
+      "before_comment": {
+        "address": "006a0770",
+        "function_name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+        "comment": "[BSP reconstruction 006a0770]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled key buffer at +0x10 with length +0x0c plus one before freeing the node; RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+      "prototype": "void __fastcall STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a0770 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770 at 006a0770\nSignature: void __fastcall STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void * tree, void * unused_edx, void * node)\nEntry: 006a0770\nBody: 006a0770 - 006a07c1",
+      "after_comment": {
+        "address": "006a0770",
+        "function_name": "STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770",
+        "comment": "[BSP reconstruction 006a0770]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled key buffer at +0x10 with length +0x0c plus one before freeing the node; RET 0x4. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 006a0770] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a2bb0",
+      "before": "Function: FUN_006a2bb0 at 006a2bb0\nSignature: void __fastcall FUN_006a2bb0(void * self, void * unused_edx)\nEntry: 006a2bb0\nBody: 006a2bb0 - 006a2c3e",
+      "before_comment": {
+        "address": "006a2bb0",
+        "function_name": "FUN_006a2bb0",
+        "comment": ""
+      },
+      "name": "STL_ControllerNamePair_Destroy_006A2BB0",
+      "prototype": "void __fastcall STL_ControllerNamePair_Destroy_006A2BB0(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 006a2bb0 with __fastcall calling convention",
+      "after": "Function: STL_ControllerNamePair_Destroy_006A2BB0 at 006a2bb0\nSignature: void __fastcall STL_ControllerNamePair_Destroy_006A2BB0(void * self, void * unused_edx)\nEntry: 006a2bb0\nBody: 006a2bb0 - 006a2c3e",
+      "after_comment": {
+        "address": "006a2bb0",
+        "function_name": "STL_ControllerNamePair_Destroy_006A2BB0",
+        "comment": "[BSP reconstruction 006a2bb0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "004c1890",
+      "before": "Function: FUN_004c1890 at 004c1890\nSignature: undefined FUN_004c1890(void)\nEntry: 004c1890\nBody: 004c1890 - 004c18c4",
+      "before_comment": {
+        "address": "004c1890",
+        "function_name": "FUN_004c1890"
+      },
+      "name": "STL_IntOnlyTree_DestroySubtree_N14_004C1890",
+      "prototype": "void __fastcall STL_IntOnlyTree_DestroySubtree_N14_004C1890(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 004c1890 with __fastcall calling convention",
+      "after": "Function: STL_IntOnlyTree_DestroySubtree_N14_004C1890 at 004c1890\nSignature: void __fastcall STL_IntOnlyTree_DestroySubtree_N14_004C1890(void * tree, void * unused_edx, void * node)\nEntry: 004c1890\nBody: 004c1890 - 004c18c4",
+      "after_comment": {
+        "address": "004c1890",
+        "function_name": "STL_IntOnlyTree_DestroySubtree_N14_004C1890",
+        "comment": "[BSP reconstruction 004c1890]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558310",
+      "before": "Function: FUN_00558310 at 00558310\nSignature: undefined FUN_00558310(void)\nEntry: 00558310\nBody: 00558310 - 0055837c",
+      "before_comment": {
+        "address": "00558310",
+        "function_name": "FUN_00558310"
+      },
+      "name": "STL_StringWordVectorTree_DestroySubtree_N28_00558310",
+      "prototype": "void __fastcall STL_StringWordVectorTree_DestroySubtree_N28_00558310(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00558310 with __fastcall calling convention",
+      "after": "Function: STL_StringWordVectorTree_DestroySubtree_N28_00558310 at 00558310\nSignature: void __fastcall STL_StringWordVectorTree_DestroySubtree_N28_00558310(void * tree, void * unused_edx, void * node)\nEntry: 00558310\nBody: 00558310 - 0055837c",
+      "after_comment": {
+        "address": "00558310",
+        "function_name": "STL_StringWordVectorTree_DestroySubtree_N28_00558310",
+        "comment": "[BSP reconstruction 00558310]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558420",
+      "before": "Function: FUN_00558420 at 00558420\nSignature: undefined FUN_00558420(void)\nEntry: 00558420\nBody: 00558420 - 0055848f",
+      "before_comment": {
+        "address": "00558420",
+        "function_name": "FUN_00558420"
+      },
+      "name": "STL_StringBitVectorTree_DestroySubtree_N2C_00558420",
+      "prototype": "void __fastcall STL_StringBitVectorTree_DestroySubtree_N2C_00558420(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00558420 with __fastcall calling convention",
+      "after": "Function: STL_StringBitVectorTree_DestroySubtree_N2C_00558420 at 00558420\nSignature: void __fastcall STL_StringBitVectorTree_DestroySubtree_N2C_00558420(void * tree, void * unused_edx, void * node)\nEntry: 00558420\nBody: 00558420 - 0055848f",
+      "after_comment": {
+        "address": "00558420",
+        "function_name": "STL_StringBitVectorTree_DestroySubtree_N2C_00558420",
+        "comment": "[BSP reconstruction 00558420]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558e60",
+      "before": "Function: FUN_00558e60 at 00558e60\nSignature: undefined FUN_00558e60(void)\nEntry: 00558e60\nBody: 00558e60 - 00558ecc",
+      "before_comment": {
+        "address": "00558e60",
+        "function_name": "FUN_00558e60"
+      },
+      "name": "STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60",
+      "prototype": "void __fastcall STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00558e60 with __fastcall calling convention",
+      "after": "Function: STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60 at 00558e60\nSignature: void __fastcall STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60(void * tree, void * unused_edx, void * node)\nEntry: 00558e60\nBody: 00558e60 - 00558ecc",
+      "after_comment": {
+        "address": "00558e60",
+        "function_name": "STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60",
+        "comment": "[BSP reconstruction 00558e60]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558ed0",
+      "before": "Function: FUN_00558ed0 at 00558ed0\nSignature: undefined FUN_00558ed0(void)\nEntry: 00558ed0\nBody: 00558ed0 - 00558f3c",
+      "before_comment": {
+        "address": "00558ed0",
+        "function_name": "FUN_00558ed0"
+      },
+      "name": "STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0",
+      "prototype": "void __fastcall STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00558ed0 with __fastcall calling convention",
+      "after": "Function: STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0 at 00558ed0\nSignature: void __fastcall STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0(void * tree, void * unused_edx, void * node)\nEntry: 00558ed0\nBody: 00558ed0 - 00558f3c",
+      "after_comment": {
+        "address": "00558ed0",
+        "function_name": "STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0",
+        "comment": "[BSP reconstruction 00558ed0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055af60",
+      "before": "Function: FUN_0055af60 at 0055af60\nSignature: void __fastcall FUN_0055af60(void * tree, void * unused_edx, void * node)\nEntry: 0055af60\nBody: 0055af60 - 0055afc5",
+      "before_comment": {
+        "address": "0055af60",
+        "function_name": "FUN_0055af60",
+        "comment": ""
+      },
+      "name": "STL_IntIntTreeTree_DestroySubtree_N20_0055AF60",
+      "prototype": "void __fastcall STL_IntIntTreeTree_DestroySubtree_N20_0055AF60(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 0055af60 with __fastcall calling convention",
+      "after": "Function: STL_IntIntTreeTree_DestroySubtree_N20_0055AF60 at 0055af60\nSignature: void __fastcall STL_IntIntTreeTree_DestroySubtree_N20_0055AF60(void * tree, void * unused_edx, void * node)\nEntry: 0055af60\nBody: 0055af60 - 0055afc5",
+      "after_comment": {
+        "address": "0055af60",
+        "function_name": "STL_IntIntTreeTree_DestroySubtree_N20_0055AF60",
+        "comment": "[BSP reconstruction 0055af60]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00444760",
+      "before": "Function: FUN_00444760 at 00444760\nSignature: undefined FUN_00444760(void)\nEntry: 00444760\nBody: 00444760 - 004447b1",
+      "before_comment": {
+        "address": "00444760",
+        "function_name": "FUN_00444760"
+      },
+      "name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+      "prototype": "void __fastcall STL_StringScalarTree_DestroySubtree_N1C_00444760(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00444760 with __fastcall calling convention",
+      "after": "Function: STL_StringScalarTree_DestroySubtree_N1C_00444760 at 00444760\nSignature: void __fastcall STL_StringScalarTree_DestroySubtree_N1C_00444760(void * tree, void * unused_edx, void * node)\nEntry: 00444760\nBody: 00444760 - 004447b1",
+      "after_comment": {
+        "address": "00444760",
+        "function_name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+        "comment": "[BSP reconstruction 00444760]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a0aa0",
+      "before": "Function: STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 at 006a0aa0\nSignature: undefined STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void)\nEntry: 006a0aa0\nBody: 006a0aa0 - 006a0af1",
+      "before_comment": {
+        "address": "006a0aa0",
+        "function_name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+        "comment": "[BSP reconstruction 006a0aa0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled string buffer at +0x14 with length +0x10 plus one before freeing the node; RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780."
+      },
+      "name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+      "prototype": "void __fastcall STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a0aa0 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0 at 006a0aa0\nSignature: void __fastcall STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void * tree, void * unused_edx, void * node)\nEntry: 006a0aa0\nBody: 006a0aa0 - 006a0af1",
+      "after_comment": {
+        "address": "006a0aa0",
+        "function_name": "STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0",
+        "comment": "[BSP reconstruction 006a0aa0]\nHypothesis, not a recovered symbol. _Erase(_Nodeptr): destroys a subtree without rebalancing, per node returning the pooled string buffer at +0x14 with length +0x10 plus one before freeing the node; RET 0x4. Instantiation N1C: node 0x1c (_Myval+0x0c[12]: signed int key +0x0c, pooled string count +0x10 / buffer +0x14; _Color+0x18,_Isnil+0x19); _Insert 006a02b0 checks _Mysize>0x15555553 so sizeof(value_type)=12; _Buynode 0069f940, rotates 0069c300/0069a780.\n\n[BSP reconstruction 006a0aa0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554f10",
+      "before": "Function: FUN_00554f10 at 00554f10\nSignature: undefined FUN_00554f10(void)\nEntry: 00554f10\nBody: 00554f10 - 00554f44",
+      "before_comment": {
+        "address": "00554f10",
+        "function_name": "FUN_00554f10"
+      },
+      "name": "STL_IntScalarTree_DestroySubtree_N18_00554F10",
+      "prototype": "void __fastcall STL_IntScalarTree_DestroySubtree_N18_00554F10(void* tree, void* unused_edx, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 00554f10 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTree_DestroySubtree_N18_00554F10 at 00554f10\nSignature: void __fastcall STL_IntScalarTree_DestroySubtree_N18_00554F10(void * tree, void * unused_edx, void * node)\nEntry: 00554f10\nBody: 00554f10 - 00554f44",
+      "after_comment": {
+        "address": "00554f10",
+        "function_name": "STL_IntScalarTree_DestroySubtree_N18_00554F10",
+        "comment": "[BSP reconstruction 00554f10]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a71b0",
+      "before": "Function: STL_xlen_throw_006a71b0 at 006a71b0\nSignature: void * __fastcall STL_xlen_throw_006a71b0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a71b0\nBody: 006a71b0 - 006a74f7",
+      "before_comment": {
+        "address": "006a71b0",
+        "function_name": "STL_xlen_throw_006a71b0",
+        "comment": ""
+      },
+      "name": "STL_InputDeviceTree_EraseIterator_006A71B0",
+      "prototype": "void* __fastcall STL_InputDeviceTree_EraseIterator_006A71B0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a71b0 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceTree_EraseIterator_006A71B0 at 006a71b0\nSignature: void * __fastcall STL_InputDeviceTree_EraseIterator_006A71B0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a71b0\nBody: 006a71b0 - 006a74f7",
+      "after_comment": {
+        "address": "006a71b0",
+        "function_name": "STL_InputDeviceTree_EraseIterator_006A71B0",
+        "comment": "[BSP reconstruction 006a71b0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a6010",
+      "before": "Function: STL_xlen_throw_006a6010 at 006a6010\nSignature: void * __fastcall STL_xlen_throw_006a6010(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a6010\nBody: 006a6010 - 006a62c2",
+      "before_comment": {
+        "address": "006a6010",
+        "function_name": "STL_xlen_throw_006a6010",
+        "comment": ""
+      },
+      "name": "STL_ControllerNameTree_EraseIterator_006A6010",
+      "prototype": "void* __fastcall STL_ControllerNameTree_EraseIterator_006A6010(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a6010 with __fastcall calling convention",
+      "after": "Function: STL_ControllerNameTree_EraseIterator_006A6010 at 006a6010\nSignature: void * __fastcall STL_ControllerNameTree_EraseIterator_006A6010(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a6010\nBody: 006a6010 - 006a62c2",
+      "after_comment": {
+        "address": "006a6010",
+        "function_name": "STL_ControllerNameTree_EraseIterator_006A6010",
+        "comment": "[BSP reconstruction 006a6010]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069f690",
+      "before": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: void * __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0069f690\nBody: 0069f690 - 0069f936",
+      "before_comment": {
+        "address": "0069f690",
+        "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+        "comment": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610."
+      },
+      "name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+      "prototype": "void* __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 0069f690 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseIter_IntKey_N18B_0069f690 at 0069f690\nSignature: void * __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0069f690\nBody: 0069f690 - 0069f936",
+      "after_comment": {
+        "address": "0069f690",
+        "function_name": "STL_Tree_EraseIter_IntKey_N18B_0069f690",
+        "comment": "[BSP reconstruction 0069f690]\nHypothesis, not a recovered symbol. erase(const_iterator): throws out_of_range 'invalid map/set<T> iterator' on a nil _Ptr, unlinks the node with the red-black delete fixup over _Color +0x14, then --_Mysize and frees the node; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 0069f901. Instantiation N18B: node 0x18 (signed int key +0x0c, mapped +0x10; _Color+0x14,_Isnil+0x15); separate instantiation from N18A: its _Insert 0069f210 uses _Buynode 0069d2d0 and rotates 0069c220/0069a610.\n\n[BSP reconstruction 0069f690] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a04a0",
+      "before": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: void * __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a04a0\nBody: 006a04a0 - 006a076b",
+      "before_comment": {
+        "address": "006a04a0",
+        "function_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+        "comment": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560."
+      },
+      "name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+      "prototype": "void* __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+      "prototype_apply": "Successfully set prototype for function at 006a04a0 with __fastcall calling convention",
+      "after": "Function: STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0 at 006a04a0\nSignature: void * __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 006a04a0\nBody: 006a04a0 - 006a076b",
+      "after_comment": {
+        "address": "006a04a0",
+        "function_name": "STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0",
+        "comment": "[BSP reconstruction 006a04a0]\nHypothesis, not a recovered symbol. erase(const_iterator): 'invalid map/set<T> iterator' guard, _Lmost/_Rmost fixups via 0069a530/0069a9e0, the red-black delete fixup over _Color +0x28, then the node's pooled key string is released and the node freed; __thiscall, RET 0xC recovered from the undefined epilogue bytes at 006a0732. Instantiation N2C: node 0x2c (_Myval+0x0c[28]: pooled string key count +0x0c / buffer +0x10 compared with __stricmp, mapped 20 bytes at +0x14; _Color+0x28,_Isnil+0x29); _Insert 0069fbc0 checks _Mysize>0x9249247 so sizeof(value_type)=28; _Buynode 0069f5f0, rotates 0069c1c0/0069a560.\n\n[BSP reconstruction 006a04a0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "004cef40",
+      "before": "Function: FUN_004cef40 at 004cef40\nSignature: undefined FUN_004cef40(void)\nEntry: 004cef40\nBody: 004cef40 - 004cf008",
+      "before_comment": {
+        "address": "004cef40",
+        "function_name": "FUN_004cef40"
+      },
+      "name": "STL_IntOnlyTree_EraseRange_N14_004CEF40",
+      "prototype": "void* __fastcall STL_IntOnlyTree_EraseRange_N14_004CEF40(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 004cef40 with __fastcall calling convention",
+      "after": "Function: STL_IntOnlyTree_EraseRange_N14_004CEF40 at 004cef40\nSignature: void * __fastcall STL_IntOnlyTree_EraseRange_N14_004CEF40(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 004cef40\nBody: 004cef40 - 004cf008",
+      "after_comment": {
+        "address": "004cef40",
+        "function_name": "STL_IntOnlyTree_EraseRange_N14_004CEF40",
+        "comment": "[BSP reconstruction 004cef40]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00559110",
+      "before": "Function: FUN_00559110 at 00559110\nSignature: undefined FUN_00559110(void)\nEntry: 00559110\nBody: 00559110 - 005591d8",
+      "before_comment": {
+        "address": "00559110",
+        "function_name": "FUN_00559110"
+      },
+      "name": "STL_StringWordVectorTree_EraseRange_N28_00559110",
+      "prototype": "void* __fastcall STL_StringWordVectorTree_EraseRange_N28_00559110(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 00559110 with __fastcall calling convention",
+      "after": "Function: STL_StringWordVectorTree_EraseRange_N28_00559110 at 00559110\nSignature: void * __fastcall STL_StringWordVectorTree_EraseRange_N28_00559110(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 00559110\nBody: 00559110 - 005591d8",
+      "after_comment": {
+        "address": "00559110",
+        "function_name": "STL_StringWordVectorTree_EraseRange_N28_00559110",
+        "comment": "[BSP reconstruction 00559110]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00559280",
+      "before": "Function: FUN_00559280 at 00559280\nSignature: undefined FUN_00559280(void)\nEntry: 00559280\nBody: 00559280 - 00559348",
+      "before_comment": {
+        "address": "00559280",
+        "function_name": "FUN_00559280"
+      },
+      "name": "STL_StringBitVectorTree_EraseRange_N2C_00559280",
+      "prototype": "void* __fastcall STL_StringBitVectorTree_EraseRange_N2C_00559280(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 00559280 with __fastcall calling convention",
+      "after": "Function: STL_StringBitVectorTree_EraseRange_N2C_00559280 at 00559280\nSignature: void * __fastcall STL_StringBitVectorTree_EraseRange_N2C_00559280(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 00559280\nBody: 00559280 - 00559348",
+      "after_comment": {
+        "address": "00559280",
+        "function_name": "STL_StringBitVectorTree_EraseRange_N2C_00559280",
+        "comment": "[BSP reconstruction 00559280]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005599c0",
+      "before": "Function: FUN_005599c0 at 005599c0\nSignature: undefined FUN_005599c0(void)\nEntry: 005599c0\nBody: 005599c0 - 00559a88",
+      "before_comment": {
+        "address": "005599c0",
+        "function_name": "FUN_005599c0"
+      },
+      "name": "STL_StringDescriptorVectorTree_EraseRange_N28_005599C0",
+      "prototype": "void* __fastcall STL_StringDescriptorVectorTree_EraseRange_N28_005599C0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 005599c0 with __fastcall calling convention",
+      "after": "Function: STL_StringDescriptorVectorTree_EraseRange_N28_005599C0 at 005599c0\nSignature: void * __fastcall STL_StringDescriptorVectorTree_EraseRange_N28_005599C0(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 005599c0\nBody: 005599c0 - 00559a88",
+      "after_comment": {
+        "address": "005599c0",
+        "function_name": "STL_StringDescriptorVectorTree_EraseRange_N28_005599C0",
+        "comment": "[BSP reconstruction 005599c0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00559a90",
+      "before": "Function: FUN_00559a90 at 00559a90\nSignature: undefined FUN_00559a90(void)\nEntry: 00559a90\nBody: 00559a90 - 00559b58",
+      "before_comment": {
+        "address": "00559a90",
+        "function_name": "FUN_00559a90"
+      },
+      "name": "STL_StringSensitivityTree_EraseRange_N2C_00559A90",
+      "prototype": "void* __fastcall STL_StringSensitivityTree_EraseRange_N2C_00559A90(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 00559a90 with __fastcall calling convention",
+      "after": "Function: STL_StringSensitivityTree_EraseRange_N2C_00559A90 at 00559a90\nSignature: void * __fastcall STL_StringSensitivityTree_EraseRange_N2C_00559A90(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 00559a90\nBody: 00559a90 - 00559b58",
+      "after_comment": {
+        "address": "00559a90",
+        "function_name": "STL_StringSensitivityTree_EraseRange_N2C_00559A90",
+        "comment": "[BSP reconstruction 00559a90]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b230",
+      "before": "Function: FUN_0055b230 at 0055b230\nSignature: undefined FUN_0055b230(void)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "before_comment": {
+        "address": "0055b230",
+        "function_name": "FUN_0055b230"
+      },
+      "name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+      "prototype": "void* __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 0055b230 with __fastcall calling convention",
+      "after": "Function: STL_IntIntTreeTree_EraseRange_N20_0055B230 at 0055b230\nSignature: void * __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "after_comment": {
+        "address": "0055b230",
+        "function_name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+        "comment": "[BSP reconstruction 0055b230]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00444b10",
+      "before": "Function: FUN_00444b10 at 00444b10\nSignature: undefined FUN_00444b10(void)\nEntry: 00444b10\nBody: 00444b10 - 00444bd8",
+      "before_comment": {
+        "address": "00444b10",
+        "function_name": "FUN_00444b10"
+      },
+      "name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+      "prototype": "void* __fastcall STL_StringScalarTree_EraseRange_N1C_00444B10(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 00444b10 with __fastcall calling convention",
+      "after": "Function: STL_StringScalarTree_EraseRange_N1C_00444B10 at 00444b10\nSignature: void * __fastcall STL_StringScalarTree_EraseRange_N1C_00444B10(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 00444b10\nBody: 00444b10 - 00444bd8",
+      "after_comment": {
+        "address": "00444b10",
+        "function_name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+        "comment": "[BSP reconstruction 00444b10]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1b70",
+      "before": "Function: FUN_006a1b70 at 006a1b70\nSignature: undefined FUN_006a1b70(void)\nEntry: 006a1b70\nBody: 006a1b70 - 006a1c38",
+      "before_comment": {
+        "address": "006a1b70",
+        "function_name": "FUN_006a1b70"
+      },
+      "name": "STL_IntStringTree_EraseRange_N1C_006A1B70",
+      "prototype": "void* __fastcall STL_IntStringTree_EraseRange_N1C_006A1B70(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 006a1b70 with __fastcall calling convention",
+      "after": "Function: STL_IntStringTree_EraseRange_N1C_006A1B70 at 006a1b70\nSignature: void * __fastcall STL_IntStringTree_EraseRange_N1C_006A1B70(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 006a1b70\nBody: 006a1b70 - 006a1c38",
+      "after_comment": {
+        "address": "006a1b70",
+        "function_name": "STL_IntStringTree_EraseRange_N1C_006A1B70",
+        "comment": "[BSP reconstruction 006a1b70]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005572f0",
+      "before": "Function: FUN_005572f0 at 005572f0\nSignature: undefined FUN_005572f0(void)\nEntry: 005572f0\nBody: 005572f0 - 005573b8",
+      "before_comment": {
+        "address": "005572f0",
+        "function_name": "FUN_005572f0"
+      },
+      "name": "STL_IntScalarTree_EraseRange_N18_005572F0",
+      "prototype": "void* __fastcall STL_IntScalarTree_EraseRange_N18_005572F0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 005572f0 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTree_EraseRange_N18_005572F0 at 005572f0\nSignature: void * __fastcall STL_IntScalarTree_EraseRange_N18_005572F0(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 005572f0\nBody: 005572f0 - 005573b8",
+      "after_comment": {
+        "address": "005572f0",
+        "function_name": "STL_IntScalarTree_EraseRange_N18_005572F0",
+        "comment": "[BSP reconstruction 005572f0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b8b0",
+      "before": "Function: FUN_0055b8b0 at 0055b8b0\nSignature: undefined FUN_0055b8b0(void)\nEntry: 0055b8b0\nBody: 0055b8b0 - 0055b910",
+      "before_comment": {
+        "address": "0055b8b0",
+        "function_name": "FUN_0055b8b0"
+      },
+      "name": "STL_InputDevicePair_Destroy_0055B8B0",
+      "prototype": "void __fastcall STL_InputDevicePair_Destroy_0055B8B0(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 0055b8b0 with __fastcall calling convention",
+      "after": "Function: STL_InputDevicePair_Destroy_0055B8B0 at 0055b8b0\nSignature: void __fastcall STL_InputDevicePair_Destroy_0055B8B0(void * self, void * unused_edx)\nEntry: 0055b8b0\nBody: 0055b8b0 - 0055b910",
+      "after_comment": {
+        "address": "0055b8b0",
+        "function_name": "STL_InputDevicePair_Destroy_0055B8B0",
+        "comment": "[BSP reconstruction 0055b8b0]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a7be0",
+      "before": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: void __fastcall BSP_InputSettings_LoadDataTables(void * self, void * unused_edx)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "before_comment": {
+        "address": "006a7be0",
+        "function_name": "BSP_InputSettings_LoadDataTables",
+        "comment": "[BSP reconstruction 006a7be0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073da9b right after the input settings singleton. References Scripts\\datatables\\ControllerInputNames.lua, Scripts\\datatables\\KeyboardSetup.lua, Scripts/datatables/ControlPresets.lua and the table keys Inputs, DEVINPUTS, Pairs, Groups, Conflicts, InputNames, AxisPairs, BaseSensitivities, Sensitivities and Min1SensHacks. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path. | Hypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored."
+      },
+      "name": "BSP_InputSettings_LoadDataTables",
+      "after": "Function: BSP_InputSettings_LoadDataTables at 006a7be0\nSignature: void __fastcall BSP_InputSettings_LoadDataTables(void * self, void * unused_edx)\nEntry: 006a7be0\nBody: 006a7be0 - 006a9843",
+      "after_comment": {
+        "address": "006a7be0",
+        "function_name": "BSP_InputSettings_LoadDataTables",
+        "comment": "[BSP reconstruction 006a7be0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073da9b right after the input settings singleton. References Scripts\\datatables\\ControllerInputNames.lua, Scripts\\datatables\\KeyboardSetup.lua, Scripts/datatables/ControlPresets.lua and the table keys Inputs, DEVINPUTS, Pairs, Groups, Conflicts, InputNames, AxisPairs, BaseSensitivities, Sensitivities and Min1SensHacks. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, void. Guarded by the byte at this+0x04, which it sets first, so it runs once per object; reached from 006ab6b0 and again from 0073da9b. Runs Scripts/datatables/ControlPresets.lua in the persistent wrapper at this+0x78 and never reads a table out of it, then runs Scripts\\datatables\\KeyboardSetup.lua and Scripts\\datatables\\ControllerInputNames.lua in one stack-local wrapper. Clears only the device map at this+0x08 (006a7540) and the name vector at this+0x14 (004954f0). Fills this+0x08 device records, this+0x14 names, this+0x24 InputNames, this+0x30 Conflicts.Groups, this+0x40 Conflicts.Pairs, this+0x50 DEVINPUTS and this+0x60 ControllerInputNames. Full Lua schema and the per-key destinations are in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: normal-flow startup now composed in InputScriptStartup using actual VFS/Lua/DoFile and existing schema readers. Assembly006a7c09..25 proves+4 guard set before mask1 persistent open;006a7c74..cb7 separate mask1 temporary owner;006a947a parses DEVINPUTS before006a94bd controller script;006a9829 closes only temporary state. Persistent ControlPresets retained; +5 unchanged. Win32/existing tests and installed-script lifetime/override fixture pass. New C++ ABI, not game/native-differential validated. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Executable keeps loaded InputSettings and persistent presets Lua; explicit application reload after constructor observes the native once flag. Cold globals are proven false/unset image state. Runtime input devices/profile application remain unbound. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only258-byte raw script prefix through006A7CE1 plus original early guard. Byte4 set before persistent mask1 open and ControlPresets.lua; separate retained temporary mask1 owner executes KeyboardSetup.lua and nested Inputs.lua. Stops before006A7CE2 tree clearing/parsing. Native/source482 words,21 CALL rows, installed script bytes; source-only KeyboardSetup open failure closes temporary but retains persistent and guard. Frame returns tables_pending; not a complete loader or publication path. | Hypothesis, not a recovered symbol. AP continues the prior AO script prefix through the complete normal7268-byte raw loader schedule: actual device/input/sensitivity/base-scale/axis/hack storage, InputNames, Conflicts, DEVINPUTS, same-temporary-owner ControllerInputNames, then tracked Lua/string reverse cleanup. Byte4 guard retained, byte5 untouched. Native/source61260 compared words from unmodified installed scripts,326 CALL rows,8 seeds. Required native library storage providers and complete source settings singleton lifetime remain external; original FH3/private stack aliases/gameplay unproven. New explicit-service C++ ABI. See docs/NATIVE_INPUT_SETTINGS_TABLES.md and reports/native_input_settings_tables.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored.\n\n[BSP reconstruction 006a7be0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006aa460",
+      "before": "Function: BSP_InputSettings_Destruct at 006aa460\nSignature: void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)\nEntry: 006aa460\nBody: 006aa460 - 006aa63f",
+      "before_comment": {
+        "address": "006aa460",
+        "function_name": "BSP_InputSettings_Destruct",
+        "comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 006aa460] update\nAS closeout of the existing AQ saved-body gap: supported function recreation over the verified480-byte range now gives006AA460..006AA63F ownership for all169 instructions. Original name, prototype, parameters and all earlier comments preserved. All32 direct lifetime CALL rows pass live ownership/instruction/callee checks, including14 formerly pending tail sites. No callee no-return changes and no script execution enabled or used. Previous script refusal and native/source122545-word fixture remain historical evidence at their original revisions. Production container providers, application wiring and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime_as_body_repair.json.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim. | AQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | AS closeout of the existing AQ saved-body gap: supported function recreation over the verified480-byte range now gives006AA460..006AA63F ownership for all169 instructions. Original name, prototype, parameters and all earlier comments preserved. All32 direct lifetime CALL rows pass live ownership/instruction/callee checks, including14 formerly pending tail sites. No callee no-return changes and no script execution enabled or used. Previous script refusal and native/source122545-word fixture remain historical evidence at their original revisions. Production container providers, application wiring and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime_as_body_repair.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored."
+      },
+      "name": "BSP_InputSettings_Destruct",
+      "after": "Function: BSP_InputSettings_Destruct at 006aa460\nSignature: void __fastcall BSP_InputSettings_Destruct(void * self, void * unused_edx)\nEntry: 006aa460\nBody: 006aa460 - 006aa63f",
+      "after_comment": {
+        "address": "006aa460",
+        "function_name": "BSP_InputSettings_Destruct",
+        "comment": "[BSP reconstruction 006aa460]\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006aa460] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 006aa460] update\nAS closeout of the existing AQ saved-body gap: supported function recreation over the verified480-byte range now gives006AA460..006AA63F ownership for all169 instructions. Original name, prototype, parameters and all earlier comments preserved. All32 direct lifetime CALL rows pass live ownership/instruction/callee checks, including14 formerly pending tail sites. No callee no-return changes and no script execution enabled or used. Previous script refusal and native/source122545-word fixture remain historical evidence at their original revisions. Production container providers, application wiring and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime_as_body_repair.json.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Complete480-byte normal destructor through006AA63F: CF81CC; close owner78 through B65E80 then B669A0; duplicate device/controller/count/pair/group/name/order/device cleanup; unconditional E198E8 clear and CE3818 stamp. No unregister. State5 retained during pair-vector cleanup. Saved function body still ends006AA4CA: decoded tail is live/disk verified and executed in fixture, but body-extension scripts disabled;14 tail CALLs are not ownership-audit passes. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim. | AQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | AS closeout of the existing AQ saved-body gap: supported function recreation over the verified480-byte range now gives006AA460..006AA63F ownership for all169 instructions. Original name, prototype, parameters and all earlier comments preserved. All32 direct lifetime CALL rows pass live ownership/instruction/callee checks, including14 formerly pending tail sites. No callee no-return changes and no script execution enabled or used. Previous script refusal and native/source122545-word fixture remain historical evidence at their original revisions. Production container providers, application wiring and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime_as_body_repair.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored.\n\n[BSP reconstruction 006aa460] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006ab6b0",
+      "before": "Function: BSP_InputSettings_Construct at 006ab6b0\nSignature: void * __fastcall BSP_InputSettings_Construct(void * self, void * unused_edx)\nEntry: 006ab6b0\nBody: 006ab6b0 - 006ab7fb",
+      "before_comment": {
+        "address": "006ab6b0",
+        "function_name": "BSP_InputSettings_Construct",
+        "comment": "[BSP reconstruction 006ab6b0]\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Full raw constructor now composes the AO actual member prefix and AP full table parser. Post-prefix loader failure destroys populated members, closes persistent Lua and clears publication/base. Prefix allocation-failure contract unchanged. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006ab6b0] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim. | Hypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Full raw constructor now composes the AO actual member prefix and AP full table parser. Post-prefix loader failure destroys populated members, closes persistent Lua and clears publication/base. Prefix allocation-failure contract unchanged. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim. | AQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored."
+      },
+      "name": "BSP_InputSettings_Construct",
+      "after": "Function: BSP_InputSettings_Construct at 006ab6b0\nSignature: void * __fastcall BSP_InputSettings_Construct(void * self, void * unused_edx)\nEntry: 006ab6b0\nBody: 006ab6b0 - 006ab7fb",
+      "after_comment": {
+        "address": "006ab6b0",
+        "function_name": "BSP_InputSettings_Construct",
+        "comment": "[BSP reconstruction 006ab6b0]\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Full raw constructor now composes the AO actual member prefix and AP full table parser. Post-prefix loader failure destroys populated members, closes persistent Lua and clears publication/base. Prefix allocation-failure contract unchanged. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim.\n\n[BSP reconstruction 006ab6b0] update\nAQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. Packet app_init_input, Ghidra read-only. __fastcall on ECX, RET with no operand, returns this. Sole caller 005547d0. Sets vtable 00cf81cc, builds five red-black tree heads (_Isnil at +0x99, +0x29, +0x15, +0x21 and +0x99) and three checked vectors, constructs the persistent Lua script wrapper at this+0x78 through 00b66bd0, clears the flag bytes at +0x04 and +0x05, then calls 006a7be0 on itself. Object size 0x540; full member table in docs/APP_INIT_INPUT.md. Evidence: docs/APP_INIT_INPUT.md; reports/app_init_input.json. | orch2_input_script_startup: constructor normal-flow composition owns InputSettings and persistent presets owner, clears separate+4/+5 flags then loads immediately. Current assembly006ab7d1 constructs owner+78;006ab7dd/+e0 clear flags;006ab7e3 invokes loader;006ab7ed returns this and006ab7fb RET. Native unused trees+54/+6c, vtable/layout/allocator and singleton remain outside typed constructor fragment. Installed-script and exact Lua lifetime fixture pass. Evidence: docs/INPUT_SCRIPT_STARTUP.md; reports/input_script_startup.json. | Hypothesis, not a recovered symbol. Existing InputScriptStartup constructor now runs in persistent GameScriptHost before options load. Its VFS/files/runtime/globals outlive the input Lua owner; native object/vtable/allocator layout is not implied. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Hypothesis, not a recovered symbol. AO actual-storage reconstruction: docs/NATIVE_INPUT_SETTINGS_STARTUP.md; reports/native_input_settings_startup.json. Native registers and stack cleanup verified; original comments retained. New C++ service ABI; no gameplay validation.Only307-byte raw construction prefix through006AB7E2, before required006A7BE0 call. Actual540h allocation: five empty heads (9C/2C/18/24/9C), three checked vectors and persistent actual4C8h Lua owner at78. Opaque/padding/byte50 retain preimages; bytes4/5 clear. Prefix exception cleanup limited to already-built empty members, with69BA20 publication/base stamp. Native/source482 words with explicit fragment return; no full constructor/getter/destructor or game claim. | Hypothesis, not a recovered symbol. AQ source: docs/NATIVE_INPUT_SETTINGS_LIFETIME.md; reports/native_input_settings_lifetime.json. Full raw constructor now composes the AO actual member prefix and AP full table parser. Post-prefix loader failure destroys populated members, closes persistent Lua and clears publication/base. Prefix allocation-failure contract unchanged. Native/source122545 words, actual raw manager, flags1/2, fast getters and source populated constructor unwind. Required production library providers and manager CF81CC dispatch remain open. New source service ABI; no original FH3/gameplay claim. | AQ integration completion: the previously pending CF81CC raw-manager deletion binding is now supplied through NativeSingletonDeletionBindings::input_settings. Source integration drains fully populated settings through the real raw manager, proving pop before persistent Lua close, section retained until owner cleanup and unconditional clearing of a differing current settings publication. Native/source lifetime comparison remains122545 words. Production container providers, application wiring, saved006AA460 tail ownership and original FH3/gameplay remain open. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Hypothesis, not a recovered symbol. AT evidence: docs/NATIVE_CHECKED_STRING_STORAGE.md; reports/native_checked_string_storage.json. Actual10h checked vector and8h pooled strings; source append preserves growth aliases with a temporary,1.5x capacity and capacity/end/begin publication after forward old cleanup. Erase validates only matching nonnull owners, assigns captured suffix, destroys trailing strings then writes end/output. Existing resize/assignment/range destruction reused. Source settings parser/lifetime now remove three required string-storage callbacks. Strict Win32/2 CTests; native/source122545 settings words and335 focused alias/erase words matched with no pooled leaks. All37 owned direct CALL rows passed; one decoded rethrow0044F5E5 remains outside its saved catch body and is not a passed check. General insertion, original FH3/private-stack ABI, malformed storage, structural mutation by allocation callbacks, remaining container providers, application wiring and gameplay are not supplied.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AU evidence: docs/NATIVE_INPUT_SETTINGS_VECTOR_STORAGE.md; reports/native_input_settings_vector_storage.json. Seven actual checked-vector resize contracts and two nested range destructors replace nine required settings callbacks. Nested fill values deep-copy exact size; outer reallocation constructs empty headers and swaps existing begin/end/capacity, preserving nested identities and capacities. Descriptor copies all five DWORDs. Packed bits use low fill byte, word storage and shrink masking. Consumed by-value owners and forward cleanup retained. Strict Win32 and2 CTests; native/source122545 lifetime words,1448 vector words,335 retained string words matched with zero pooled leaks.22 byte envelopes equal live/disk;180 owned CALLs audited,4 separately unowned exception rethrows explicitly excluded. General insertion away from end, original STL/CRT/FH3 ABI, malformed ranges, private-stack aliases, structurally mutating allocation callbacks, remaining trees, application wiring and gameplay are not supplied. Supporting helper labels describe observed behavior; their existing decompiler signatures remain provisional unless separately restored.\n\n[BSP reconstruction 006ab6b0] update\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a7540",
+        "prototype": "void __fastcall STL_InputDeviceTree_DestroySubtree_006A7540(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a7540 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b690",
+        "prototype": "void __fastcall STL_InputDeviceRecord_Destroy_0055B690(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a7aa0",
+        "prototype": "void* __fastcall STL_InputDeviceTree_EraseRange_006A7AA0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a7aa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a6a20",
+        "prototype": "void* __fastcall STL_ControllerNameTree_EraseRange_006A6A20(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a6a20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069fe70",
+        "prototype": "void* __fastcall STL_Tree_EraseRange_IntKey_N18B_0069fe70(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069fe70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a1aa0",
+        "prototype": "void* __fastcall STL_Tree_EraseRange_StrKeyCI_N2C_006a1aa0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a1aa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a62d0",
+        "prototype": "void __fastcall STL_ControllerNameTree_DestroySubtree_006A62D0(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a62d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069d3f0",
+        "prototype": "void __fastcall STL_Tree_EraseSubtree_IntKey_N18B_0069d3f0(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069d3f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a0770",
+        "prototype": "void __fastcall STL_Tree_EraseSubtree_StrKeyCI_N2C_006a0770(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a0770 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a2bb0",
+        "prototype": "void __fastcall STL_ControllerNamePair_Destroy_006A2BB0(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a2bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004c1890",
+        "prototype": "void __fastcall STL_IntOnlyTree_DestroySubtree_N14_004C1890(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004c1890 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00558310",
+        "prototype": "void __fastcall STL_StringWordVectorTree_DestroySubtree_N28_00558310(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00558310 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00558420",
+        "prototype": "void __fastcall STL_StringBitVectorTree_DestroySubtree_N2C_00558420(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00558420 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00558e60",
+        "prototype": "void __fastcall STL_StringDescriptorVectorTree_DestroySubtree_N28_00558E60(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00558e60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00558ed0",
+        "prototype": "void __fastcall STL_StringSensitivityTree_DestroySubtree_N2C_00558ED0(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00558ed0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055af60",
+        "prototype": "void __fastcall STL_IntIntTreeTree_DestroySubtree_N20_0055AF60(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055af60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00444760",
+        "prototype": "void __fastcall STL_StringScalarTree_DestroySubtree_N1C_00444760(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00444760 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a0aa0",
+        "prototype": "void __fastcall STL_Tree_EraseSubtree_IntKey_N1C_006a0aa0(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a0aa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00554f10",
+        "prototype": "void __fastcall STL_IntScalarTree_DestroySubtree_N18_00554F10(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00554f10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a71b0",
+        "prototype": "void* __fastcall STL_InputDeviceTree_EraseIterator_006A71B0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a71b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a6010",
+        "prototype": "void* __fastcall STL_ControllerNameTree_EraseIterator_006A6010(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a6010 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0069f690",
+        "prototype": "void* __fastcall STL_Tree_EraseIter_IntKey_N18B_0069f690(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0069f690 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a04a0",
+        "prototype": "void* __fastcall STL_Tree_EraseIter_StrKeyCI_N2C_006a04a0(void* tree, void* unused_edx, void* output, void* owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a04a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004cef40",
+        "prototype": "void* __fastcall STL_IntOnlyTree_EraseRange_N14_004CEF40(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004cef40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00559110",
+        "prototype": "void* __fastcall STL_StringWordVectorTree_EraseRange_N28_00559110(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00559110 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00559280",
+        "prototype": "void* __fastcall STL_StringBitVectorTree_EraseRange_N2C_00559280(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00559280 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005599c0",
+        "prototype": "void* __fastcall STL_StringDescriptorVectorTree_EraseRange_N28_005599C0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005599c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00559a90",
+        "prototype": "void* __fastcall STL_StringSensitivityTree_EraseRange_N2C_00559A90(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00559a90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b230",
+        "prototype": "void* __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b230 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00444b10",
+        "prototype": "void* __fastcall STL_StringScalarTree_EraseRange_N1C_00444B10(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00444b10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a1b70",
+        "prototype": "void* __fastcall STL_IntStringTree_EraseRange_N1C_006A1B70(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a1b70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005572f0",
+        "prototype": "void* __fastcall STL_IntScalarTree_EraseRange_N18_005572F0(void* tree, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005572f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b8b0",
+        "prototype": "void __fastcall STL_InputDevicePair_Destroy_0055B8B0(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b8b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "names_comments_33_storage_abis_saved_and_verified",
+  "exports_refreshed": [
+    "006a7540",
+    "0055b690",
+    "006a7aa0",
+    "006a6a20",
+    "0069fe70",
+    "006a1aa0",
+    "006a62d0",
+    "0069d3f0",
+    "006a0770",
+    "006a2bb0",
+    "004c1890",
+    "00558310",
+    "00558420",
+    "00558e60",
+    "00558ed0",
+    "0055af60",
+    "00444760",
+    "006a0aa0",
+    "00554f10",
+    "006a71b0",
+    "006a6010",
+    "0069f690",
+    "006a04a0",
+    "004cef40",
+    "00559110",
+    "00559280",
+    "005599c0",
+    "00559a90",
+    "0055b230",
+    "00444b10",
+    "006a1b70",
+    "005572f0",
+    "0055b8b0",
+    "006a7be0",
+    "006aa460",
+    "006ab6b0"
+  ]
+}
