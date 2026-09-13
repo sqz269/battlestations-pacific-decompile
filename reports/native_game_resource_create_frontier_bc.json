@@ -1,0 +1,1077 @@
+{
+  "packet": "native_game_resource_create_frontier_bc",
+  "status": "read_only_discovery_complete",
+  "candidate_head": "a4aa7914fbf1c7113f373fcc27ee7ed479824cf1",
+  "identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification": "Every live command uses bsp.py ghidra -> client() -> Client.verify() before reads.",
+  "scope": {
+    "full_bodies": 6,
+    "full_body_bytes": 1197,
+    "ready_construction_bodies": 4,
+    "ready_construction_bytes": 465,
+    "source_changed": false,
+    "ghidra_mutated": false,
+    "new_tests": 0,
+    "build_or_fixture_run": false,
+    "game_launched": false
+  },
+  "functions": [
+    {
+      "address": "0071b870",
+      "end": "0071b8ce",
+      "byte_count": 95,
+      "sha256": "ab2a4333a1d4fed0015236c5456719da1179a1257d190f57a3bad82a872c2099",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/0071b870.bin",
+      "instruction_count": 26,
+      "direct_calls": [
+        {
+          "function": "0071b870",
+          "address": "0071b888",
+          "native": "00bf681b"
+        },
+        {
+          "function": "0071b870",
+          "address": "0071b8a6",
+          "native": "0071b810"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_GameResourceFactory_Create",
+      "original_abi": "ECX factory unused; stack pointer to native 8h name header; EAX 74h allocation/null; RET4; FH3 frame.",
+      "behavior": [
+        "Allocate exactly74h through BF681B; saved incoming ECX is a local slot, not an allocator argument. Store returned allocation in that slot and arm state0 even when null.",
+        "On nonnull allocation call71B810 with the incoming name pointer; return its EAX. Null returns0 without reading name contents.",
+        "State0 exception action C84FA0 reloads saved allocation and calls BF65AC. Constructor exceptions propagate; no successful-resource destructor is called here."
+      ],
+      "source_status": "ready_for_bounded_actual_storage_construction",
+      "flow_gaps": 0
+    },
+    {
+      "address": "0071b810",
+      "end": "0071b869",
+      "byte_count": 90,
+      "sha256": "fb558cdc8fdb7a4b6cfc6dccf3d6d92b976160b5a200d4a9c5bb877c9e6ed6be",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/0071b810.bin",
+      "instruction_count": 28,
+      "direct_calls": [
+        {
+          "function": "0071b810",
+          "address": "0071b82e",
+          "native": "00b88260"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_GameResource_Construct",
+      "original_abi": "ECX caller-owned 74h raw allocation; stack name header pointer; EAX same allocation; RET4; FH3 state stays -1.",
+      "behavior": [
+        "Call B88260 on the same allocation before derived writes. Install CFD8CC and zero exactly+48/+4C/+50,+58/+5C/+60,+68/+6C/+70.",
+        "Words+44,+54,+64 are never written by either constructor. Preserve their incoming bits; do not manufacture current-STL proxy/container objects there.",
+        "The entry pushes state-1 and contains no state update. Its static three-row unwind map is not evidence that base/vector destructors run for an exception from B88260. No post-base operation can throw a C++ exception in the observed body."
+      ],
+      "source_status": "ready_for_bounded_actual_storage_construction",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00b88260",
+      "end": "00b88318",
+      "byte_count": 185,
+      "sha256": "37d15ed24f220037f8c3b6995858adef6e36d5137fda761fa1e5202507bdf28c",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00b88260.bin",
+      "instruction_count": 61,
+      "direct_calls": [
+        {
+          "function": "00b88260",
+          "address": "00b882b0",
+          "native": "0041dd40"
+        },
+        {
+          "function": "00b88260",
+          "address": "00b882c4",
+          "native": "00bf7680"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_Resource_ConstructBase",
+      "original_abi": "ECX caller-owned 44h-or-larger raw allocation; stack name header pointer; EAX same allocation; RET4; FH3 state0 around name copy.",
+      "behavior": [
+        "Stamp CEB130; write refcount+4=1; capture source header pointer. Compare destination+8 with source BEFORE writing the destination header; stamp D63228 and arm state0; zero destination length/data.",
+        "If equal headers, skip source reads and resize/copy: constructing into the own-name header discards its prior header bits. Otherwise read source length for 41DD40(destination+8,length,preserve1).",
+        "AFTER resize, reread source length; when nonzero, reread current destination length, current source data and current destination data for BF7680. Do not snapshot the input header, force a terminator, or infer length from C-string contents. The nonzero copy admits the original BF7680 overlap contract.",
+        "After successful name copy zero +10..+24, six positive-zero floating words+28..+3C, and+40. On name-copy failure these later fields retain their incoming bits.",
+        "The sole state0 action CC2590 tail-jumps BD30F0 on the whole object. It only restamps CEB130. There is no name-header destructor/return action on this failure path."
+      ],
+      "source_status": "ready_for_bounded_actual_storage_construction",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00b88340",
+      "end": "00b8839e",
+      "byte_count": 95,
+      "sha256": "7252f54d3ae1e1618c604d74af33ec30474e195ab24b49841d96aebd5ad9ebed",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00b88340.bin",
+      "instruction_count": 26,
+      "direct_calls": [
+        {
+          "function": "00b88340",
+          "address": "00b88358",
+          "native": "00bf681b"
+        },
+        {
+          "function": "00b88340",
+          "address": "00b88376",
+          "native": "00b88260"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "Default resource creator (provisional; live FUN_00b88340)",
+      "original_abi": "ECX default factory unused; stack native name header pointer; EAX 44h allocation/null; RET4; FH3 frame.",
+      "behavior": [
+        "Same outer allocation/cleanup schedule as71B870, but allocate44h and call B88260 directly.",
+        "State0 action CC25B0 calls BF65AC on saved allocation and returns. Default factory profileD63060 has B88340 in slot+4; factory lifetime selectors B7D290/B7D9A0 remain distinct incomplete dependencies."
+      ],
+      "source_status": "ready_for_bounded_actual_storage_construction",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00718810",
+      "end": "0071886f",
+      "byte_count": 96,
+      "sha256": "e1491471b9009f7c578c522b2ae0bf4f7b70c64d17a14cd0b65cf15fd5d21fb7",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00718810.bin",
+      "instruction_count": 36,
+      "direct_calls": [
+        {
+          "function": "00718810",
+          "address": "00718824",
+          "native": "00bf65ac"
+        },
+        {
+          "function": "00718810",
+          "address": "0071883d",
+          "native": "00bf65ac"
+        },
+        {
+          "function": "00718810",
+          "address": "00718856",
+          "native": "00bf65ac"
+        },
+        {
+          "function": "00718810",
+          "address": "0071886b",
+          "native": "00b88430",
+          "kind": "tail_jump"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_GameResource_Destroy",
+      "original_abi": "ECX actual74h resource; no stack arguments; tail JMP B88430; no local FH3 frame.",
+      "behavior": [
+        "Stamp CFD8CC; conditionally free backing data at+68, then zero+68/+6C/+70; repeat+58/+5C/+60 then+48/+4C/+50.",
+        "No pointee reference changes and no writes to+44/+54/+64. Tail-call B88430; this body does not free the resource allocation."
+      ],
+      "source_status": "named_incomplete_dependency_frontier",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00b88430",
+      "end": "00b886ab",
+      "byte_count": 636,
+      "sha256": "8cc36729f1cf5c5d0c7aa421a2833e5ff2589e55a9d5ad1d32c5f544e9d52158",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00b88430.bin",
+      "instruction_count": 202,
+      "direct_calls": [
+        {
+          "function": "00b88430",
+          "address": "00b88495",
+          "native": "004c1400"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b8849c",
+          "native": "00b801c0"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b884bc",
+          "native": "00b88180"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88555",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88583",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b885d4",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b885ee",
+          "native": "00bf55be"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b8861c",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88664",
+          "native": "00bf6989"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88682",
+          "native": "00419cc0"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88689",
+          "native": "00bd1510"
+        },
+        {
+          "function": "00b88430",
+          "address": "00b88694",
+          "native": "00bd30f0"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "00b8847a",
+          "operand": "ebx"
+        },
+        {
+          "site": "00b88487",
+          "operand": "eax"
+        },
+        {
+          "site": "00b884c6",
+          "operand": "dword ptr [0xce2218]"
+        },
+        {
+          "site": "00b8852c",
+          "operand": "dword ptr [0xce2210]"
+        }
+      ],
+      "name": "BSP_Resource_Destroy",
+      "original_abi": "ECX actual44h-or-derived resource; no stack arguments; RET; FH3 states3 through0 then-1.",
+      "behavior": [
+        "Stamp D63228 and arm state3. Walk primary data+10 using signed index<CURRENT count+14; decrement each loaded item+4 through actual InterlockedDecrement; invoke item slot0 only on zero. Null items are not guarded.",
+        "Push the name header+8 BEFORE calling4C1400; pass its returned actual manager to B801C0 with the already-pushed name. This cache-name operation remains mandatory even for an otherwise empty resource.",
+        "Walk hierarchy data+1C with current signed count+20. Nonnull record: B88180 first, then enter section1090238, increment1090250, use record+84 pool index and1090254 page table, return signed-difference/88h slot as a WORD at page+4400+2*WORD(page+4500), increment that WORD count, lower unsigned1090260 when appropriate, decrement recursion and leave.",
+        "State2 precedes inline hierarchy raw-array cleanup, state1 precedes primary raw-array cleanup. Preserve signed-negative count/capacity branches, including their40h allocation/copy/free paths. These are observed raw game arrays; no STL algorithm port is authorized by this report.",
+        "Free hierarchy data then primary data through BF6989; count words become0 while freed data pointers/capacity are not unconditionally cleared. State0 precedes optional name return; capture data, length+1 moduloDWORD and flag1 BEFORE419CC0, then pass its returned pool to BD1510. Set state-1 before BD30F0.",
+        "Full EH map additionally invokes B87B40/B87B20 array destructors,41DD20 name-header cleanup and BD30F0. Actual hierarchy pool, cache manager, item deletion profiles and array EH helpers are required; no empty-resource success stub closes this body."
+      ],
+      "source_status": "named_incomplete_dependency_frontier",
+      "flow_gaps": 0
+    }
+  ],
+  "auxiliary_spans": [
+    {
+      "address": "00cfd8cc",
+      "end": "00cfd8df",
+      "byte_count": 20,
+      "sha256": "1d4d209bf71db55141ac31d8b20bee0d25430896acce6ddf9a983293b8135043",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/game_vtable.bin"
+    },
+    {
+      "address": "00d63228",
+      "end": "00d6323b",
+      "byte_count": 20,
+      "sha256": "4c30c91fd469da1201fc2855ab6c9be14525310772ce8641ff49b51ecca09015",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/base_vtable.bin"
+    },
+    {
+      "address": "00cfd850",
+      "end": "00cfd85f",
+      "byte_count": 16,
+      "sha256": "74eb4d5a8fe068c379d5170d2e81d274e0c7958995f644d8bc88a11a8d294e15",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/factory_vtable.bin"
+    },
+    {
+      "address": "00c84f70",
+      "end": "00c84fb4",
+      "byte_count": 69,
+      "sha256": "46846d867488da12171dc4e6a55bc15f14a24eae2ba520846eec472c6388b119",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/game_constructor_create_eh_code.bin"
+    },
+    {
+      "address": "00cc2590",
+      "end": "00cc2602",
+      "byte_count": 115,
+      "sha256": "c9e267d62d91e0f7846da98da263017bc01829a626ad487e4d344d802db776e4",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/base_create_destroy_eh_code.bin"
+    },
+    {
+      "address": "00db3c08",
+      "end": "00db3c6f",
+      "byte_count": 104,
+      "sha256": "9589a86289f9ccd83a3bc77f9ca7c2e3ca299d4f949380adab4d85d55dcd72eb",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/game_constructor_create_eh_data.bin"
+    },
+    {
+      "address": "00dfb9ec",
+      "end": "00dfbabb",
+      "byte_count": 208,
+      "sha256": "ede1374c59196f3c828069177d240c4cf1cbea1bdd3c4b9dc31c82036589156d",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/base_create_destroy_eh_data.bin"
+    },
+    {
+      "address": "00d63060",
+      "end": "00d6306b",
+      "byte_count": 12,
+      "sha256": "a47843df097b1a4900ebbf9ef829bb47bd5f7830154ce948d2cb4fe8121b3e7e",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/default_factory_vtable.bin"
+    }
+  ],
+  "exception_maps": [
+    {
+      "owner": "0071b810",
+      "handler": "00c84f8e",
+      "function_info": "00db3c20",
+      "unwind_map": "00db3c08",
+      "magic": "19930522",
+      "max_state": 3,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00c84f70"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00c84f78"
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "action": "00c84f83"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00c84f8e",
+          "instruction": "mov eax, 0xdb3c20"
+        },
+        {
+          "site": "00c84f93",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "0071b870",
+      "handler": "00c84fab",
+      "function_info": "00db3c4c",
+      "unwind_map": "00db3c44",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00c84fa0"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00c84fab",
+          "instruction": "mov eax, 0xdb3c4c"
+        },
+        {
+          "site": "00c84fb0",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "00b88260",
+      "handler": "00cc2598",
+      "function_info": "00dfb9f4",
+      "unwind_map": "00dfb9ec",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc2590"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00cc2598",
+          "instruction": "mov eax, 0xdfb9f4"
+        },
+        {
+          "site": "00cc259d",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "00b88340",
+      "handler": "00cc25bb",
+      "function_info": "00dfba20",
+      "unwind_map": "00dfba18",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc25b0"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00cc25bb",
+          "instruction": "mov eax, 0xdfba20"
+        },
+        {
+          "site": "00cc25c0",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "00b88430",
+      "handler": "00cc25f9",
+      "function_info": "00dfba64",
+      "unwind_map": "00dfba44",
+      "magic": "19930522",
+      "max_state": 4,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc25d0"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00cc25d8"
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "action": "00cc25e3"
+        },
+        {
+          "state": 3,
+          "next_state": 2,
+          "action": "00cc25ee"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00cc25f9",
+          "instruction": "mov eax, 0xdfba64"
+        },
+        {
+          "site": "00cc25fe",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    }
+  ],
+  "exception_actions": [
+    {
+      "entry": "00c84f70",
+      "matched_span": "00c84f70-00c84f77",
+      "instructions": [
+        {
+          "site": "00c84f70",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f73",
+          "instruction": "jmp 0xb88430"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f70",
+          "address": "00c84f73",
+          "native": "00b88430",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84f78",
+      "matched_span": "00c84f78-00c84f82",
+      "instructions": [
+        {
+          "site": "00c84f78",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f7b",
+          "instruction": "add ecx, 0x44"
+        },
+        {
+          "site": "00c84f7e",
+          "instruction": "jmp 0x7180e0"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f78",
+          "address": "00c84f7e",
+          "native": "007180e0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84f83",
+      "matched_span": "00c84f83-00c84f8d",
+      "instructions": [
+        {
+          "site": "00c84f83",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f86",
+          "instruction": "add ecx, 0x54"
+        },
+        {
+          "site": "00c84f89",
+          "instruction": "jmp 0x718110"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f83",
+          "address": "00c84f89",
+          "native": "00718110",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84fa0",
+      "matched_span": "00c84fa0-00c84faa",
+      "instructions": [
+        {
+          "site": "00c84fa0",
+          "instruction": "mov eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84fa3",
+          "instruction": "push eax"
+        },
+        {
+          "site": "00c84fa4",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "site": "00c84fa9",
+          "instruction": "pop ecx"
+        },
+        {
+          "site": "00c84faa",
+          "instruction": "ret "
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84fa0",
+          "address": "00c84fa4",
+          "native": "00bf65ac"
+        }
+      ],
+      "ghidra_boundary_note": "Current Ghidra funclet ends at the CALL, omitting trailing POP ECX;RET (two bytes). PE+live auxiliary span proves return. Read-only discovery made no repair."
+    },
+    {
+      "entry": "00cc2590",
+      "matched_span": "00cc2590-00cc2597",
+      "instructions": [
+        {
+          "site": "00cc2590",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc2593",
+          "instruction": "jmp 0xbd30f0"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc2590",
+          "address": "00cc2593",
+          "native": "00bd30f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00cc25b0",
+      "matched_span": "00cc25b0-00cc25ba",
+      "instructions": [
+        {
+          "site": "00cc25b0",
+          "instruction": "mov eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25b3",
+          "instruction": "push eax"
+        },
+        {
+          "site": "00cc25b4",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "site": "00cc25b9",
+          "instruction": "pop ecx"
+        },
+        {
+          "site": "00cc25ba",
+          "instruction": "ret "
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25b0",
+          "address": "00cc25b4",
+          "native": "00bf65ac"
+        }
+      ],
+      "ghidra_boundary_note": "Current Ghidra funclet ends at the CALL, omitting trailing POP ECX;RET (two bytes). PE+live auxiliary span proves return. Read-only discovery made no repair."
+    },
+    {
+      "entry": "00cc25d0",
+      "matched_span": "00cc25d0-00cc25d7",
+      "instructions": [
+        {
+          "site": "00cc25d0",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25d3",
+          "instruction": "jmp 0xbd30f0"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25d0",
+          "address": "00cc25d3",
+          "native": "00bd30f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00cc25d8",
+      "matched_span": "00cc25d8-00cc25e2",
+      "instructions": [
+        {
+          "site": "00cc25d8",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25db",
+          "instruction": "add ecx, 8"
+        },
+        {
+          "site": "00cc25de",
+          "instruction": "jmp 0x41dd20"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25d8",
+          "address": "00cc25de",
+          "native": "0041dd20",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00cc25e3",
+      "matched_span": "00cc25e3-00cc25ed",
+      "instructions": [
+        {
+          "site": "00cc25e3",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25e6",
+          "instruction": "add ecx, 0x10"
+        },
+        {
+          "site": "00cc25e9",
+          "instruction": "jmp 0xb87b20"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25e3",
+          "address": "00cc25e9",
+          "native": "00b87b20",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00cc25ee",
+      "matched_span": "00cc25ee-00cc25f8",
+      "instructions": [
+        {
+          "site": "00cc25ee",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25f1",
+          "instruction": "add ecx, 0x1c"
+        },
+        {
+          "site": "00cc25f4",
+          "instruction": "jmp 0xb87b40"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25ee",
+          "address": "00cc25f4",
+          "native": "00b87b40",
+          "kind": "tail_jump"
+        }
+      ]
+    }
+  ],
+  "imports": [
+    {
+      "iat": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedDecrement"
+    },
+    {
+      "iat": "00ce2218",
+      "dll": "KERNEL32.dll",
+      "symbol": "EnterCriticalSection"
+    },
+    {
+      "iat": "00ce2210",
+      "dll": "KERNEL32.dll",
+      "symbol": "LeaveCriticalSection"
+    }
+  ],
+  "profiles": {
+    "factory": {
+      "address": "00cfd850",
+      "known_slots": {
+        "00": "00716560",
+        "04": "0071b870"
+      },
+      "current_live_xrefs_to_create": "No references found; matched table bytes establish slot+4 despite absent data xref."
+    },
+    "default_factory": {
+      "address": "00d63060",
+      "known_slots": {
+        "00": "00b7d290",
+        "04": "00b88340",
+        "08": "00b7d9a0"
+      },
+      "current_live_xrefs_to_create": "No references found; matched table bytes establish slot+4."
+    },
+    "game_resource": {
+      "address": "00cfd8cc",
+      "known_slots": {
+        "00": "00bd30e0",
+        "04": "00718c20",
+        "08": "007137f0",
+        "0c": "0071bb40",
+        "10": "0071aed0"
+      },
+      "unknown_slot_note": "7137F0 has a data xref from CFD8D4 but no current Ghidra function entry; no role inferred here."
+    },
+    "base_resource": {
+      "address": "00d63228",
+      "known_slots": {
+        "00": "00bd30e0",
+        "04": "00b88760",
+        "08": "00b891a0",
+        "0c": "00b87aa0",
+        "10": "00b89fe0"
+      }
+    }
+  },
+  "reader_result_boundary": {
+    "construction": "The four constructor/create bodies neither read serialized data, touch manager/cache fields, register a singleton nor publish a process-global resource. Refcount1 and the copied raw name are established here; resource+40 starts0.",
+    "manager_consumer": "Peer B80720 audit records factory slot+4 with requested name, publication of returned raw resource at manager+24, separate resolved-name stream/open and reader construction, dispatch, insertion of original-name/current-resource pair, and captured result return after cleanup. This packet does not re-audit B80720.",
+    "reader_sequence": [
+      "00bea150 actual reader construction",
+      "00bf0430 stream attach",
+      "00bea700 root creation",
+      "00b7f430 root dispatch",
+      "00bea680 child creation",
+      "00be9ed0 node-handle release"
+    ],
+    "result_ownership": "Successful creation returns an initial owned reference. Derived classification lists are non-owning pointers; primary array holds release obligations per entry. Actual registered parser return ownership must be established per native callback; typed payload variants are not native item pointers.",
+    "caller_routes": "7188A0 already has a source interface in marker_classes.cpp. B80D70 already has a complete bounded actual-manager forwarding wrapper in native_particle_type_resources.cpp. Their unresolved B80720 service must not be replaced by an empty success result."
+  },
+  "existing_source": [
+    {
+      "file": "include/bsp/game_hosts_init_tail.hpp",
+      "finding": "GameResourceManager is the semantic parser-map owner only; its storage is not the actual28h native manager."
+    },
+    {
+      "file": "src/structured_reader.cpp",
+      "finding": "Working typed reader/node methods, stream lifetime guards and sticky errors exist. They are not missing and are not raw BEA150/BF0430 node/reader storage."
+    },
+    {
+      "file": "src/structured_resource_registry.cpp",
+      "finding": "Existing Mesh, Note and GroupParams parsers and ordered registered dispatch are implemented against typed payloads. Preserve them; no reinterpret cast to native objects."
+    },
+    {
+      "file": "src/structured_model.cpp",
+      "finding": "Existing retained root/hierarchy/bounds traversal. StructuredModel explicitly says it is not the native74h resource ABI."
+    },
+    {
+      "file": "include/bsp/native_string.hpp",
+      "finding": "Use existing NativeStringRawPoolContext resize overload for actual pool and raw singleton-manager publications. It allows getter exceptions to reach the caller cleanup state."
+    },
+    {
+      "file": "src/native_string.cpp",
+      "finding": "The BE0A30 copy fragment currently uses std::memcpy; do not reuse it as overlap-complete B88260 copy. Use existing raw resize plus fixed CRT memmove for nonzero BF7680-domain copies, recording the zero-count/pointer domain boundary."
+    }
+  ],
+  "named_incomplete_dependencies": [
+    {
+      "addresses": [
+        "004c1400",
+        "00b81040",
+        "00b80720",
+        "00b803b0",
+        "00b801c0"
+      ],
+      "role": "Actual manager/cache/tree service",
+      "status": "Peer discovery covers this frontier. B7F290 pair is leased to the resource-manager worker; do not duplicate it. Named tree helpers remain library-bound contracts, not permission to port STL."
+    },
+    {
+      "addresses": [
+        "00b88430",
+        "00718810",
+        "00718c20",
+        "00b88760",
+        "00b88180",
+        "00b87b20",
+        "00b87b40"
+      ],
+      "role": "Resource/hierarchy destruction and unwind",
+      "status": "Full two destroy bodies audited here; cleanup still needs actual cache manager, item deletion profiles, hierarchy pool and array exception helpers. Source callbacks with dummy ownership would not close it."
+    },
+    {
+      "addresses": [
+        "0071bb40",
+        "0071b8d0",
+        "0071b940",
+        "0071b9b0",
+        "0071b230",
+        "0071b2c0",
+        "0071b350"
+      ],
+      "role": "Actual append/classification storage",
+      "status": "Named incomplete native method/container bindings. Existing typed resource parsing does not supply raw pointer-array ownership."
+    },
+    {
+      "addresses": [
+        "00bea150",
+        "00bf0430",
+        "00bea700",
+        "00bea680",
+        "00be9ed0",
+        "00b7f430",
+        "00b7e970"
+      ],
+      "role": "Actual reader/node and parser result binding",
+      "status": "Typed implementations exist. Native storage, vtable dispatch and parser result ownership remain separate composition work."
+    },
+    {
+      "addresses": [
+        "00b7d290",
+        "00b7d9a0",
+        "007137f0"
+      ],
+      "role": "Default-factory lifetime / unresolved game-resource virtual method",
+      "status": "Current absent function entries require separately leased definition/evidence work; no fabricated host vtable."
+    }
+  ],
+  "recommended_packets": [
+    {
+      "id": "native_resource_construction_bc",
+      "readiness": "ready_for_bounded_actual_storage_source_implementation",
+      "addresses": [
+        "00b88260",
+        "0071b810",
+        "0071b870",
+        "00b88340"
+      ],
+      "body_bytes": 465,
+      "files": [
+        "include/bsp/native_resource_construction.hpp",
+        "src/native_resource_construction.cpp",
+        "docs/NATIVE_RESOURCE_CONSTRUCTION.md",
+        "reports/native_resource_construction.json"
+      ],
+      "dependency_order": [
+        "B88260 base construction",
+        "71B810 concrete construction",
+        "71B870 and B88340 factory creates"
+      ],
+      "existing_dependencies": [
+        "resize_native_string_header_0041dd40 with NativeStringRawPoolContext",
+        "destroy_native_ref_counted_base_00bd30f0",
+        "singleton_lifetime_allocate({object,74h,74h}) or44h and singleton_lifetime_free as the established source CRT allocation boundary",
+        "fixed CRT memmove for reached nonzero BF7680 copies; no library algorithm port"
+      ],
+      "implementation_constraints": [
+        "Accept raw caller-owned object/name addresses. Preserve write and post-call reload order, untouched+44/+54/+64 and state-specific partial state.",
+        "Free allocation only in the outer create catch; B88260 catch invokes only existing ref-counted base stamp then rethrows. Do not add name rollback or derived cleanup on unreachable constructor unwind states.",
+        "Return raw refcount1 storage through a new source interface. Keep actual source profile selection finite and separate from constructing callable numeric vtables.",
+        "Use the actual raw pool context, not a typed manager/semantic resource masquerading as native storage."
+      ],
+      "verification": "Strict Win32 build and existing checks. If a new focused fixture is needed, combine initialized-byte masks, self-name alias/post-allocation reload and propagated name-allocation exception into one small case/capsule. No broad suite or new library tests.",
+      "integration_limit": "Useful raw resource creation component; not yet a runnable B80720 load/cache/destruction path. Do not install a success stub in the process host.",
+      "shared_edits": "Primary integrator owns ledger/names and CMake registration coordination; claim addresses/files before implementation. No overlap with B7F290/native_resource_cache_pair.* or current process publication files."
+    }
+  ],
+  "deferred_packet": {
+    "name": "native_resource_lifetime",
+    "readiness": "not_ready_for_closed_production_implementation",
+    "reason": "Even empty-resource B88430 calls actual manager/cache; normal and exception paths require named dependencies above. Retaining callback-only teardown would preserve a different ownership end state."
+  },
+  "source_pins": [
+    {
+      "path": "src/native_game_resource_factory.cpp",
+      "sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022"
+    },
+    {
+      "path": "include/bsp/native_game_resource_factory.hpp",
+      "sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/structured_reader.cpp",
+      "sha256": "28295a40c56500e8aba68dbfcf023f84444c7f78d41f4e5068893e230a57d569"
+    },
+    {
+      "path": "include/bsp/structured_reader.hpp",
+      "sha256": "dc767b621950d1dda5f6a49fe0082fe114eee4eb305f843b0c90d92256c28072"
+    },
+    {
+      "path": "src/structured_resource_registry.cpp",
+      "sha256": "2307f22badb0d296dac91b1e550ee3e7001e66038ea83230be77390ac73b6380"
+    },
+    {
+      "path": "src/structured_model.cpp",
+      "sha256": "05453a58bcaee515076eeb551a8cdcf8ac444dfa8cf5e70d7689798288285b33"
+    },
+    {
+      "path": "include/bsp/structured_model.hpp",
+      "sha256": "eed27ba6a3a83906001c363d394c800d8cae594dbde135f1ca0e4e643b7dc552"
+    },
+    {
+      "path": "include/bsp/game_hosts_init_tail.hpp",
+      "sha256": "372aaac45e72a9836f38bed1d2afb43d0bb753757b79657c4909122b77e29c78"
+    },
+    {
+      "path": "src/marker_classes.cpp",
+      "sha256": "80d16e8a88c5c1d67e3a8df94756ecf755b0586a88504fa7f04b14c4bb4d8176"
+    },
+    {
+      "path": "src/native_particle_type_resources.cpp",
+      "sha256": "1a3b959c8605c2413b58e5b786f61e0b0e62112c68f385ee375ee5f4dfa15c0b"
+    },
+    {
+      "path": "tools/bsp.py",
+      "sha256": "9517ff8cafa293f5918c82abd927655315d9468e79d61d70e65da80ae62d10d7"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    }
+  ],
+  "peer_evidence": {
+    "file": "reports/native_resource_manager_frontier_bc.json",
+    "commit": "6c94c63bf9dab464af40ba75ded27fcde297ff2c",
+    "sha256": "6f7c26f6d377df4dfc816ee93e95929c68b299ea3d067662c5ae89b86f9be876",
+    "retained_copy": "local/resource-create-frontier-bc/basis/native_resource_manager_frontier_bc.json"
+  },
+  "evidence_directory": "local/resource-create-frontier-bc",
+  "uncertainty": [
+    "Descriptive C++ names are hypotheses, not recovered source symbols.",
+    "PE equality and call/flow audits establish static evidence only. No C++ implementation, fixture, ABI compatibility or gameplay validation is claimed by this packet.",
+    "Static FH3 maps include unreachable states; their presence alone must not add cleanup. Source C++ exception composition would not reproduce original FH3/SEH ABI."
+  ],
+  "validation": {
+    "static_call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_game_resource_create_frontier_bc.json",
+      "checked": 33,
+      "failed": 0,
+      "evidence": "local/resource-create-frontier-bc/call-audit.txt"
+    },
+    "flow_listing_gaps": 0,
+    "cpp_changes": false,
+    "build_required": false,
+    "new_tests": 0
+  }
+}
