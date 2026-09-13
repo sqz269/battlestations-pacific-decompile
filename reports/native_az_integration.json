@@ -1,0 +1,256 @@
+{
+  "packet": "orch2_native_az_integration",
+  "tag_corrections": [
+    {
+      "address": "00bb4a60",
+      "before_tag": {
+        "address": "00bb4a60",
+        "name": "",
+        "category": "stl_probable",
+        "confidence": "medium",
+        "action": "bookmark",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0029"
+      },
+      "correction": "Custom MPAK provider file24h-vector index search: same length, then case-insensitive name comparison. Original BB4140 remains an STL contract.",
+      "evidence": "docs/NATIVE_MPAK_OPEN.md; reports/native_mpak_open.json",
+      "ghidra_bookmark_removed": true,
+      "bookmark_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00bb4a60"
+      }
+    }
+  ],
+  "status": "reviewed_components_and_fixed_fixtures_passed_exact_candidate_gate_required",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_branch": "agent/orch2-20260910",
+  "complete_body_count": 30,
+  "complete_native_bytes": 3792,
+  "components": [
+    {
+      "report": "reports/native_mpak_entry.json",
+      "complete_bodies": 2,
+      "native_bytes": 749,
+      "addresses": [
+        "00bb5080",
+        "00bbc1d0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_open.json",
+      "complete_bodies": 3,
+      "native_bytes": 488,
+      "addresses": [
+        "00bb4a60",
+        "00bb4b20",
+        "00bb5bb0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_enumeration.json",
+      "complete_bodies": 7,
+      "native_bytes": 769,
+      "addresses": [
+        "00bb5f40",
+        "00bb68f0",
+        "00bb40c0",
+        "00bb79e0",
+        "00bb79f0",
+        "00bb7a00",
+        "00bee340"
+      ]
+    },
+    {
+      "report": "reports/native_raw_inflate_stream.json",
+      "complete_bodies": 10,
+      "native_bytes": 870,
+      "addresses": [
+        "00bbbdc0",
+        "00bbbdd0",
+        "00bbbe10",
+        "00bbbe50",
+        "00bbbf00",
+        "00bbc060",
+        "00bbc140",
+        "00bbc1c0",
+        "00bbc320",
+        "00bbc3e0"
+      ]
+    },
+    {
+      "report": "reports/native_vfs_device_route.json",
+      "complete_bodies": 6,
+      "native_bytes": 898,
+      "addresses": [
+        "00bdd850",
+        "00bdbc70",
+        "00bdb680",
+        "00bdb670",
+        "00bdbe00",
+        "00bf0fb0"
+      ]
+    },
+    {
+      "report": "reports/native_mpak_runtime.json",
+      "complete_bodies": 2,
+      "native_bytes": 18,
+      "addresses": [
+        "00bef580",
+        "00bf4f40"
+      ]
+    }
+  ],
+  "not_additional_native_bodies": [
+    "NativeMpakRuntime source composition",
+    "BDD0A0/BD90D0/BDBC00 existing lookup dispatcher extension",
+    "BEF750 existing full conversion numeric-profile extension"
+  ],
+  "combined_build": {
+    "status": "passed",
+    "head": "529025f3fd6bd28f55c7ac69d5a5c4826b9b62d0",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "command": "scripts/build.ps1",
+    "environment": {
+      "MSBUILDDISABLENODEREUSE": "1"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "log": "local/native-az-combined-build.log",
+    "sha256": "354fdcc3653727ceac28cdba69a49ac636d3db1fe6f66f149ffb8a9ee704007f",
+    "scope": "Combined source build, before the later exact-commit promotion gate."
+  },
+  "ghidra": {
+    "definitions": "reports/native_az_function_definitions.json",
+    "flow_repairs": "reports/native_az_flow_repairs.json",
+    "destructor_readback": {
+      "entry": "00bbc320",
+      "end_inclusive": "00bbc3d9",
+      "instructions": 59,
+      "remaining_gaps": 0
+    },
+    "cleanup_readback": [
+      {
+        "entry": "00cc4360",
+        "end_inclusive": "00cc436a",
+        "instructions": 5,
+        "remaining_gaps": 0,
+        "preserved_name": "Unwind@00cc4360"
+      },
+      {
+        "entry": "00cc4ad8",
+        "end_inclusive": "00cc4ae2",
+        "instructions": 5,
+        "remaining_gaps": 0,
+        "preserved_name": "Unwind@00cc4ad8"
+      },
+      {
+        "entry": "00cc4ae3",
+        "end_inclusive": "00cc4aed",
+        "instructions": 5,
+        "remaining_gaps": 0,
+        "preserved_name": "Unwind@00cc4ae3"
+      }
+    ],
+    "annotations": "All30 routine names plus extended existing dispatch names applied; prior comments preserved and project saved; affected exports force refreshed.",
+    "tool_limit": "Inline Java scripting was disabled. No script mutation occurred; supported locked --recreate repaired the existing function bodies instead.",
+    "annotation_records": [
+      {
+        "path": "local/native-az-device-annotations-after.json",
+        "sha256": "e1ea110c97adf1150c41dd0e1a60f60dd6842fca066a45ade7d04f0ae4dc8964"
+      },
+      {
+        "path": "local/native-az-provider-annotations-after.json",
+        "sha256": "8473e3334726680b1d7ba1fb0762f116496208760df0f3ab3aea852188cd3cb2"
+      },
+      {
+        "path": "local/native-az-raw-annotations-after.json",
+        "sha256": "2342f8af0ba0d44baefc7b3e18152c30cf68e0fdc2c62e1eca79058035a98788"
+      },
+      {
+        "path": "local/native-az-runtime-annotations-after.json",
+        "sha256": "247e7c120b8eb1b94f4c89347ec21c781f45c913339cb0574c74958b9e2c2999"
+      },
+      {
+        "path": "local/native-az-final-fixture-annotations-after.json",
+        "sha256": "425547f585965bc8bce0d11ea65b0dd2be4e96530e42d4b946d4585eba9bf395"
+      }
+    ]
+  },
+  "corrections": [
+    "D641F8 BB5BB0/BB4B20 are open/contains; BB79E0 false and BB7A00 14h-byte clear are defaults.",
+    "Buffer header+4 is buffered end; +C is current cursor. Constructor initializes both equally.",
+    "BB4A60 custom search is not probable STL; BB4140 and BB4F40/5EFBA0 retain library contracts.",
+    "Enumeration uses original prefix; directory selection tests member containment.",
+    "Raw inflater needs actual storage/methods beyond the earlier bounded projection."
+  ],
+  "validation_boundaries": [
+    "Generated fixtures only; no installed archive/gameplay validation.",
+    "New C++ interfaces over actual storage; not original ABI/FH3 replacements.",
+    "Original stack-spill aliases, arbitrary malformed input, concurrency and original exception handling unverified.",
+    "STL/zlib/CRT remain explicit library dependencies; shared fixture adapters are not independent proof of those original bodies.",
+    "Readable numeric profiles and borrowed service graph are explicit source-runtime preconditions; real startup reachability and runnable-game objective remain open."
+  ],
+  "independent_reviews": {
+    "ledger": "reports/native_az_ledger_audit.json",
+    "gate": "reports/native_az_promotion_review.json",
+    "unresolved_findings": 0
+  },
+  "fixture_families": [
+    {
+      "name": "raw",
+      "checks": 1305,
+      "report": "reports/native_raw_inflate_validation.json"
+    },
+    {
+      "name": "compressed",
+      "checks": 1468,
+      "entry_pairs": 3,
+      "decoded_bytes": 450369,
+      "report": "reports/native_raw_inflate_validation.json"
+    },
+    {
+      "name": "enumeration",
+      "report": "reports/native_mpak_enumeration.json",
+      "allocations": 48,
+      "releases": 48
+    },
+    {
+      "name": "runtime",
+      "report": "reports/native_mpak_runtime.json",
+      "position_native_comparisons": 2,
+      "decoded_bytes": 32
+    },
+    {
+      "name": "device",
+      "report": "reports/native_vfs_device_composition.json",
+      "variants": 8,
+      "original_routines": 4,
+      "original_bytes": 793
+    }
+  ],
+  "promotion_procedure": {
+    "status": "required_after_final_candidate_merge",
+    "anchor": "local/native-az-fixture-anchor-v1/anchor.json",
+    "anchor_sha256": "8587a6943a4f517e8e77c1eaecfded1e4076e3f4b3e52c06786695474f631dbf",
+    "immutable_anchor_files": 60,
+    "gate": "local/validate_native_az_promotion.py",
+    "gate_sha256": "32f424e2815e4dc7adebb6b37cf8778a57ca7d09fd31b41975e2fdce96edd5c2",
+    "checks": [
+      "Clean exact HEAD before and after each stage",
+      "MSVC Win32 Release strict build and both existing CTests",
+      "All compiler-recorded source/header/toolchain inputs stable before build through final sealing",
+      "All five fixed fixture results match original captured outcomes or explicitly source-only results",
+      "Every linked game/library object matches the unique member of the current strict-built archive",
+      "Immutable attempt payload plus external passed receipt after post-seal current-input verification",
+      "Ordinary Git fast-forward of the validated SHA; moving main requires a new merged-candidate gate"
+    ],
+    "receipt_pattern": "local/native-az-promotion-checks/<timestamp>-<head>-receipt.json",
+    "record_boundary": "This tracked report describes pre-promotion evidence. Only the immutable external receipt records a final candidate pass; no self-referential commit claim."
+  }
+}

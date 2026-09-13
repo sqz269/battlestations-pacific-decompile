@@ -5,15 +5,23 @@
 namespace bsp {
 struct NativePhysicalFileDateContext;
 class ActualNativeStringPoolStorage;
+struct NativeVfsDeviceRouteContext;
 
-// Bind actual profile storage for the two original stack-visitor identities.
+// Bind actual profile storage for the original stack-visitor identities.
 // Each reached virtual call rereads the current visitor identity and table word.
 // The physical context supplies current publication, actual strings and CRT.
 struct NativeVfsLookupRouteContext {
     NativePhysicalFileDateContext& physical;
     const void* actual_exists_profile_00d68398;
     const void* actual_name_probe_profile_00d683e8;
+    NativeVfsDeviceRouteContext* device{}; // Optional D683F4 profile/source binding.
 };
+
+// Invoke the already captured original provider+10h target on actual storage.
+// Shared by BD90D0 and BF0FB0; includes actual MPAK BB4B20. Unknown entries
+// retain the existing explicit invalid_argument source boundary.
+std::uint8_t invoke_native_vfs_provider_contains(std::uintptr_t captured_entry,
+    void* actual_provider, const void* actual_name, NativeVfsLookupRouteContext&);
 
 // Full five-byte +18 leaves: ECX and stack name unused, RET4, AL0.
 // No provider/profile/header read and no mutation, even for unusable arguments.
@@ -45,7 +53,8 @@ void reset_native_vfs_name_probe_base_00bd8fe0(void* actual_visitor) noexcept;
 void destroy_native_vfs_name_probe_visitor_00bdb5e0(void* actual_visitor,
     ActualNativeStringPoolStorage&);
 
-// Full BDD0A0 (672 bytes), dedicated qualified implementation for D68398/E8.
+// Full BDD0A0 (672 bytes), qualified implementation for D68398/E8 and F4
+// when the optional device route binding is supplied.
 // ECX captured manager; stack name/visitor; RET8; no specified result.
 // Existing actual tree layout/traversal/EH ordering; no tree population.
 // Unknown identities/current slots are explicit invalid_argument SOURCE

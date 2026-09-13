@@ -1,5 +1,6 @@
 #include "bsp/native_filestore_open.hpp"
 #include "bsp/native_adopted_substream.hpp"
+#include "bsp/native_raw_inflate_stream.hpp"
 
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_physical_stream_conversion.hpp"
@@ -72,7 +73,7 @@ bool current_type_query(void* owner, std::uint32_t token,
         return query_native_physical_stream_type_00bf4ff0(token,
             context.actual_physical_type_ids_0109dc30);
     }
-    if (profile == 0x00d68db0) {
+    if (profile == 0x00d68db0 || profile == 0x00d64400) {
         require_substream_slot(profile, 0x0c, 0x00bb8b80, context);
         return query_native_file_stream_type_00bb8b80(token,
             context.actual_file_type_ids_0109db58);
@@ -97,6 +98,12 @@ void current_seek_zero(void* owner, NativeStoredStreamConversionContext& context
             *context.adopted_substreams);
         return;
     }
+    if (profile == 0x00d64400) {
+        require_substream_slot(profile, 0x1c, 0x00bbc060, context);
+        (void)seek_native_raw_inflate_stream_00bbc060(owner, 0, 0, 0,
+            *context.adopted_substreams);
+        return;
+    }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x1c);
     reinterpret_cast<SeekEntry>(target)(owner, target, 0, 0, 0);
 }
@@ -113,6 +120,10 @@ std::uint32_t current_length_low(void* owner,
     if (profile == 0x00d68db0) {
         require_substream_slot(profile, 0x30, 0x00bf10a0, context);
         return static_cast<std::uint32_t>(length_native_adopted_substream_00bf10a0(owner));
+    }
+    if (profile == 0x00d64400) {
+        require_substream_slot(profile, 0x30, 0x00bbbdd0, context);
+        return static_cast<std::uint32_t>(length_native_raw_inflate_stream_00bbbdd0(owner));
     }
     auto* const target = pointer(reinterpret_cast<void*>(profile), 0x30);
     return static_cast<std::uint32_t>(reinterpret_cast<LengthEntry>(target)(owner, target));
@@ -133,6 +144,12 @@ void current_read_once(void* owner, void* data, std::uint32_t count,
     if (profile == 0x00d68db0) {
         require_substream_slot(profile, 0x24, 0x00bf1000, context);
         (void)read_native_adopted_substream_00bf1000(owner, data, count, nullptr,
+            *context.adopted_substreams);
+        return;
+    }
+    if (profile == 0x00d64400) {
+        require_substream_slot(profile, 0x24, 0x00bbc140, context);
+        (void)read_native_raw_inflate_stream_00bbc140(owner, data, count, nullptr,
             *context.adopted_substreams);
         return;
     }

@@ -1,0 +1,449 @@
+{
+  "packet": "orch2_native_mpak_enumeration_az",
+  "status": "complete_actual_storage_strict_win32_native_instruction_comparison_verified",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_mpak_enumeration.cpp",
+  "header": "include/bsp/native_mpak_enumeration.hpp",
+  "documentation": "docs/NATIVE_MPAK_ENUMERATION.md",
+  "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00bb5f40",
+      "inclusive_end": "00bb60c5",
+      "bytes": 390,
+      "native_sha256": "9699872484a036ac3062f6b2160885f8bbb64e13baca44361f927e8664521b68",
+      "calls": [
+        {
+          "address": "00bb5f7d",
+          "native": "0041dd40",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb5f94",
+          "native": "00bf7680",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb5fbc",
+          "native": "0041e870",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb5fe0",
+          "native": "0041dd40",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb5fee",
+          "native": "00bf7680",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb6006",
+          "native": "00419cc0",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb600d",
+          "native": "00bd1510",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb6058",
+          "native": "00bf6713",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb6070",
+          "native": "00bee340",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb607e",
+          "native": "004cdc20",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb60a9",
+          "native": "00419cc0",
+          "function": "00bb5f40"
+        },
+        {
+          "address": "00bb60b0",
+          "native": "00bd1510",
+          "function": "00bb5f40"
+        }
+      ],
+      "source_name": "append_native_mpak_names_00bb5f40",
+      "ghidra_name": "BSP_MpakProvider_AppendFilteredNames",
+      "original_abi": "ECX provider44h; stack originalprefix8h,extension8h,flags,output0Ch; RET10h",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb5f40",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bb68f0",
+      "inclusive_end": "00bb69f8",
+      "bytes": 265,
+      "native_sha256": "fdd3a16a3c868a752d4ede288483d70e6d41cd148e60efb110d995fb361eaf7c",
+      "calls": [
+        {
+          "address": "00bb6919",
+          "native": "0041dd40",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb6930",
+          "native": "00bf7680",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb6950",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb695d",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb696f",
+          "native": "00bb4f40",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb697a",
+          "native": "00bb6500",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb6987",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb6994",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb69a2",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb69ac",
+          "native": "00bf6713",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb69c7",
+          "native": "0041dd40",
+          "function": "00bb68f0"
+        },
+        {
+          "address": "00bb69db",
+          "native": "00bf7680",
+          "function": "00bb68f0"
+        }
+      ],
+      "source_name": "select_native_mpak_member_directory_00bb68f0",
+      "ghidra_name": "BSP_MpakProvider_SelectMemberDirectory",
+      "original_abi": "ECX provider44h; stack input8h,output8h; AL bool; RET8",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb68f0",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bb40c0",
+      "inclusive_end": "00bb40c4",
+      "bytes": 5,
+      "native_sha256": "cc0e3cb106eb0fdec984d44a563d98c3da80700bbb8d2be4e66ebd54a9919626",
+      "calls": [],
+      "source_name": "reject_native_mpak_probe_00bb40c0",
+      "ghidra_name": "BSP_MpakProvider_RejectProbeDefault",
+      "original_abi": "ECX unused; stack ignoredword; AL false; RET4",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb40c0",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bb79e0",
+      "inclusive_end": "00bb79e4",
+      "bytes": 5,
+      "native_sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "calls": [],
+      "source_name": "reject_native_mpak_operation_00bb79e0",
+      "ghidra_name": "BSP_MpakProvider_RejectOperationDefault",
+      "original_abi": "ECX unused; stack fourignoredwords; AL false; RET10h",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb79e0",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bb79f0",
+      "inclusive_end": "00bb79f0",
+      "bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "calls": [],
+      "source_name": "noop_native_mpak_default_00bb79f0",
+      "ghidra_name": "BSP_MpakProvider_NoopDefault",
+      "original_abi": "RET; no stable result",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb79f0",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bb7a00",
+      "inclusive_end": "00bb7a16",
+      "bytes": 23,
+      "native_sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+      "calls": [],
+      "source_name": "clear_native_mpak_result_00bb7a00",
+      "ghidra_name": "BSP_MpakProvider_ClearResultDefault",
+      "original_abi": "ECX unused; stack output14h,ignoredword; EAX output; RET8",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "FUN_00bb7a00",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    },
+    {
+      "address": "00bee340",
+      "inclusive_end": "00bee38f",
+      "bytes": 80,
+      "native_sha256": "9344ea2e15d5bbdad619ff5284c46806f3c3a5f1f6e059f83e9bfec3fdc83a3b",
+      "calls": [
+        {
+          "address": "00bee350",
+          "native": "0043e9a0",
+          "function": "00bee340"
+        },
+        {
+          "address": "00bee374",
+          "native": "004bcb80",
+          "function": "00bee340"
+        },
+        {
+          "address": "00bee385",
+          "native": "0043e9a0",
+          "function": "00bee340"
+        }
+      ],
+      "source_name": "matches_native_provider_enumeration_00bee340",
+      "ghidra_name": "BSP_ProviderName_MatchesEnumerationFilter",
+      "original_abi": "ECX prefix8h; EDX extension8h; stack flags,candidate8h; AL bool; RET8",
+      "coverage": "complete",
+      "source": "src/native_mpak_enumeration.cpp",
+      "previous_name": "BSP_ProviderName_MatchesEnumerationFilter",
+      "boundary": "new source API; original compatible raw Win32 storage; explicit original search library contract"
+    }
+  ],
+  "external_library_contracts": [
+    {
+      "address": "00bb4f40",
+      "inclusive_end": "00bb4f73",
+      "bytes": 52,
+      "native_sha256": "83c76d0d3deb873de5e120009ad5b46f798c8fac36be31dffaa40d5f06534b1c",
+      "calls": [
+        {
+          "address": "00bb4f54",
+          "native": "005efba0",
+          "function": "00bb4f40"
+        }
+      ],
+      "coverage": "read_only_contract",
+      "contract": "ECX first14h row,EDX capturedend,stack temporary14h key,RET4; first row whose actualmembervector5EFBA0 returns signed index>-1; otherwise end"
+    },
+    {
+      "address": "005efba0",
+      "inclusive_end": "005efc15",
+      "bytes": 118,
+      "native_sha256": "da62e19f30397ded6702195281f777a492349f783a84d105428ed58ffc089def",
+      "calls": [
+        {
+          "address": "005efbe5",
+          "native": "00bf7fbf",
+          "function": "005efba0"
+        }
+      ],
+      "coverage": "read_only_contract",
+      "contract": "ECX actual0Ch stringvector,stack key8h,RET4; equal recorded lengths then empty/empty or CRT _stricmp equality; first index orFFFFFFFF"
+    }
+  ],
+  "no_ghidra_function": [],
+  "missing_at_packet_start": [
+    {
+      "address": "00bb68f0",
+      "inclusive_end": "00bb69f8",
+      "resolution": "defined,readback,force-exported by primary under write lock",
+      "primary_record": "reports/native_az_function_definitions.json"
+    },
+    {
+      "address": "00bb40c0",
+      "inclusive_end": "00bb40c4",
+      "resolution": "defined,readback,force-exported by primary under write lock",
+      "primary_record": "reports/native_az_function_definitions.json"
+    },
+    {
+      "address": "00bb79e0",
+      "inclusive_end": "00bb79e4",
+      "resolution": "defined,readback,force-exported by primary under write lock",
+      "primary_record": "reports/native_az_function_definitions.json"
+    },
+    {
+      "address": "00bb79f0",
+      "inclusive_end": "00bb79f0",
+      "resolution": "defined,readback,force-exported by primary under write lock",
+      "primary_record": "reports/native_az_function_definitions.json"
+    },
+    {
+      "address": "00bb7a00",
+      "inclusive_end": "00bb7a16",
+      "resolution": "defined,readback,force-exported by primary under write lock",
+      "primary_record": "reports/native_az_function_definitions.json"
+    }
+  ],
+  "callee_reuse": [
+    {
+      "address": "0043e9a0",
+      "source": "src/native_particle_type_property.cpp",
+      "symbol": "matches_native_particle_string_at_0043e9a0",
+      "coverage": "existing actual-header source reused"
+    },
+    {
+      "address": "004bcb80",
+      "source": "src/native_lua_script_overrides.cpp",
+      "symbol": "reverse_find_native_string_bytes_004bcb80",
+      "coverage": "existing actual-string source reused"
+    },
+    {
+      "address": "004cdc20",
+      "source": "src/native_string_vector.cpp",
+      "coverage": "existing actual0Ch string vector append reused"
+    },
+    {
+      "address": "00bb6500",
+      "source": "src/native_mpak_provider.cpp",
+      "coverage": "existing actual14h directory destructor reused"
+    },
+    {
+      "address": "00bb5540",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "coverage": "existing source; not duplicated or counted"
+    }
+  ],
+  "unwind": {
+    "function": "00bb5f40",
+    "func_info": "00dfde10",
+    "map": "00dfde00",
+    "state1": "00cc44b8 ->0041dd20 slash header",
+    "state0": "00cc44b0 ->0041dd20 prefix header",
+    "initial_copy_state": -1,
+    "selector": "00bb68f0 has no EH prologue and no exception cleanup in source"
+  },
+  "corrections": [
+    {
+      "was": "AY follow-up text suggested BB79E0/BB7A00 as provider lookup/open methods",
+      "is": "BB79E0 is false/RET10h; BB7A00 clears five DWORDs and returns output/RET8; actual open is BB5BB0",
+      "evidence": "D641F8 slots +08,+0C,+20 and exact bodies"
+    },
+    {
+      "was": "Slash-appended enumeration temporary could be inferred to be the effective prefix",
+      "is": "BB6070 passes original prefix argument in ECX",
+      "evidence": "BB6060..BB6070 original argument offsets with two pushes; full BB5F40 register provenance"
+    },
+    {
+      "was": "Directory lookup could be inferred to compare directory name",
+      "is": "BB4F54 calls5EFBA0 on row+8 member stringvector with key name; output is containing directory name",
+      "evidence": "BB4F40..BB4F73,5EFBA0..5EFC15,BB696F,BB69BB,BB69C7"
+    },
+    {
+      "was": "BB7A00 clears20h bytes",
+      "is": "Five DWORDs =14h bytes =20 decimal bytes",
+      "evidence": "BB7A06/+10,BB7A09/+C,BB7A0C/+8,BB7A0F/+4,BB7A12/+0"
+    }
+  ],
+  "validation": {
+    "seed_verify": "passed all8 current seed byte comparisons",
+    "instruction_bytes": "all11 fixture bodies independently read with verified BSP CLI and equal current disk bytes",
+    "win32_build": "passed strict scripts/build.ps1 Win32 Release /W4 /WX; MSBUILDDISABLENODEREUSE=1",
+    "ctest": "100% tests passed, 0 tests failed out of 2",
+    "call_verifier": "reports/native_mpak_enumeration.json: 29 call rows checked, 0 failed",
+    "fixture": {
+      "enumeration": [
+        {
+          "flags": 0,
+          "names": [
+            "foo/a.lua"
+          ]
+        },
+        {
+          "flags": 1,
+          "names": [
+            "foo/a.lua",
+            "foobar/b.lua",
+            "foo/deep/c.lua"
+          ]
+        },
+        {
+          "flags": 256,
+          "names": [
+            "foo/a.lua"
+          ]
+        }
+      ],
+      "selection": "match,miss,self-output and publish-before-copy agree",
+      "filter": "empty prefix and no-slash agree",
+      "leaves": "all four agree; output tail preserved",
+      "allocations": 48,
+      "releases": 48,
+      "passed": true
+    },
+    "fixture_binding": "11 exact native bodies; rel32 callee/data relocation; actual source dependency adapters; neutral Win32 executable /MANIFEST:EMBED; no exception path exercised",
+    "artifacts": [
+      {
+        "path": "local/enumeration_probe_inputs.json",
+        "sha256": "bcaf6ce34ae97794e57dd07c65acb2b1ae1cfde83918b31305e9f45bbb3a9b94"
+      },
+      {
+        "path": "local/enumeration_probe_outputs.json",
+        "sha256": "f48c7a7eec21d9f0968e137100f18a68964c4a0b98558dcfe42dcd80e457d5c0"
+      },
+      {
+        "path": "local/enumeration_native_bodies.hpp",
+        "sha256": "1c9907dd0c7a5c39aa8df39bf965f1cbad2786ee704d6a35ab66754f23f388a6"
+      },
+      {
+        "path": "local/enumeration_probe.cpp",
+        "sha256": "edd5ba44de0e7e053d8be7da9c4383762cf852a0ed4d91d8a3a6e3f86d254dab"
+      },
+      {
+        "path": "local/make_enumeration_probe.py",
+        "sha256": "dee507a2bc755339e966acf36781bf93f1758ed5af582a2e22bf425efa6160dc"
+      },
+      {
+        "path": "local/build_enumeration_probe.ps1",
+        "sha256": "217ada732dd01831b6bcde13ddb12009f9cde796ccf5aec6abe3cdd8f0437cef"
+      },
+      {
+        "path": "local/native_mpak_enumeration_build.log",
+        "sha256": "18bd17313e3a84c01a8317f99dfc1f05f8b41a2279ea18074bbfabe92ba184e2"
+      }
+    ]
+  },
+  "limits": [
+    "new source APIs, not original binary ABI or FH3/SEH replacements",
+    "original BB4F40 and5EFBA0 retained as external library contracts; no container library source port",
+    "native fixture shares reconstructed resize,construct,append,destructor and explicit allocation bindings; those downstream bodies not independently verified here",
+    "native exception path, simultaneous cleanup exceptions, arbitrary stack-spill aliases and concurrent mutation unproven",
+    "no installed archive, startup or gameplay validation; worker did not modify installed game or Ghidra"
+  ]
+}
