@@ -58,6 +58,12 @@ public:
     // Contexts is an actual12h DWORD-vector header, borrowed through the call.
     void configure(std::uint32_t action_index, const void* contexts, std::uint8_t replace_listener);
     void set_context_level(std::uint32_t context_index, std::uint32_t level);
+    // Borrow the same contexts used by configure(), set_context_level(), and
+    // update(). References remain stable for this object's lifetime; the
+    // GameInputRuntime and borrowed services must outlive this object.
+    NativeInputActionBindingContext& binding_context() noexcept;
+    NativeInputActionConfigurationContext& configuration_context() noexcept;
+    NativeInputActionTickContext& tick_context() noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
