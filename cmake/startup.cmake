@@ -866,3 +866,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 
 # Bounded unit scene-handle getter, producer store and killed tail.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_scene_handle.cpp)
+
+# Bounded player-unit killed handler with required actual providers.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_killed_tail.cpp)
