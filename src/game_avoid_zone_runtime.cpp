@@ -1,5 +1,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/avoid_zone_clearance.hpp"
+#include "bsp/avoid_zone_arc.hpp"
+#include "bsp/avoid_zone_clearance_distance.hpp"
 #include "bsp/avoid_zone_manager_queries.hpp"
 #include "bsp/avoid_zone_query_binding.hpp"
 #include "bsp/game_hosts.hpp"
@@ -285,5 +287,21 @@ bool GameAvoidZoneRuntime::search_segment(const ShipAiAvoidZoneSegmentList& list
     std::array<float, 2>& hit) const {
     impl_->require_ready();
     return avoid_zone_selected_segments_hit_004158e0(list.head, from, toward, hit);
+}
+bool GameAvoidZoneRuntime::search_arc(const ShipAiAvoidZoneSegmentList& list,
+    const std::array<float, 2>& center, float radius, float start, float& end) const {
+    impl_->require_ready();
+    return avoid_zone_selected_segments_arc_00415970(list.head, center, radius,
+        start, end, impl_->crt) != nullptr;
+}
+float GameAvoidZoneRuntime::search_clearance(const ShipAiAvoidZoneSegmentList& list,
+    const std::array<float, 2>& center, float radius,
+    const std::array<float, 2>& normal_a, const std::array<float, 2>& normal_b) const {
+    impl_->require_ready();
+    return avoid_zone_selected_segments_clearance_00415d70(list.head, center, radius,
+        normal_a, normal_b, impl_->crt);
+}
+const AvoidZoneAllocationAccess& GameAvoidZoneRuntime::allocation_access() const noexcept {
+    return allocation;
 }
 } // namespace bsp::game

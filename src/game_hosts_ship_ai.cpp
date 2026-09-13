@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/ship_ai_search_storage.hpp"
 
 #include <array>
 #include <cmath>
@@ -206,6 +207,13 @@ struct GameShipAiHost::Impl {
     GameHostLog& log;
     GameUnitsHost& units;
     GameAvoidZoneRuntime zones;
+    GameMissionLuaHost* settings_owner{}; // borrowed stored-settings projection
+    bool avoid_all_ship_collision() const {
+        bool value;
+        if (!settings_owner || !settings_owner->read_avoid_all_ship_collision(value))
+            throw std::logic_error("Ship avoidance settings have no established producer");
+        return value;
+    }
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     unsigned long long hull_geometry_updates{};
@@ -252,6 +260,7 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiGoalPlan goal{};
         bsp::ShipAiPathPlan path{};
         bsp::ShipAiAvoidanceRequest avoidance{};
+        std::unique_ptr<bsp::ShipAiSearchStorage> avoid_search;
         bsp::ShipAiStopStepState stop_state{};
         bsp::ShipAiAttackMoveSelector selector{};
         // Milestone 2p. `goal_vector` is the brain fields 009F1420's head owns
@@ -2193,11 +2202,9 @@ private:
 // swept-arc geometry between 009EB6B7 and 009EBECC was not read by any packet
 // and the neighbour list at blk+608h is empty in this process.
 
-// Milestone 2r: bsp::ShipAiSectorScanHost, the call sites of 009EB660. The
-// neighbour list blk+608h is empty and blk+0A3Ch / blk+0A24h are the zeroes
-// 009E4330 wrote, so both avoid-zone gates are shut and no node can block a
-// sector; what the scan does produce is the probe geometry and the range with
-// the hysteresis margin, per sector, per frame.
+// 009EB660 borrows the controller's actual searcher-zero list. Its cache
+// starts enabled and its head starts null; query refresh is a separate chain
+// dependency. The neighbour list remains empty in this process.
 class SectorScanBinding final : public bsp::ShipAiSectorScanHost {
 public:
     SectorScanBinding(GameShipAiHost::Impl& owner, std::size_t index)
@@ -2215,11 +2222,12 @@ public:
         owner_.done("ShipAiSectorScan::unit_heading_vtable50", 0x009eb939u);
         return owner_.units.unit_heading_radians(index_);
     }
-    bool avoid_zone_segment_crossing_004158e0(const std::array<float, 2>&,
-                                              const std::array<float, 2>&,
-                                              std::array<float, 2>&) override {
-        owner_.record("ShipAiSectorScan::zone_segment_crossing_004158e0", 0x004158e0u);
-        return false;
+    bool avoid_zone_segment_crossing_004158e0(const std::array<float, 2>& from,
+                                              const std::array<float, 2>& toward,
+                                              std::array<float, 2>& hit) override {
+        const auto& list = owner_.controllers[index_].avoid_search->list(0);
+        owner_.done("ShipAiSectorScan::zone_segment_crossing_004158e0", 0x004158e0u);
+        return owner_.zones.search_segment(list, from, toward, hit);
     }
     bool point_in_avoid_box_009d8160(const bsp::ShipAiObstacleNode&,
                                      const std::array<float, 2>&) override {
@@ -2237,10 +2245,12 @@ public:
         owner_.record("ShipAiSectorScan::clip_ray_009dd540", 0x009dd540u);
         return false;
     }
-    bool clip_arc_against_avoid_zones_00415970(const std::array<float, 2>&, float, float,
-                                               float&) override {
-        owner_.record("ShipAiSectorScan::clip_arc_zones_00415970", 0x00415970u);
-        return false;
+    bool clip_arc_against_avoid_zones_00415970(const std::array<float, 2>& center,
+                                               float radius, float start,
+                                               float& end) override {
+        const auto& list = owner_.controllers[index_].avoid_search->list(0);
+        owner_.done("ShipAiSectorScan::clip_arc_zones_00415970", 0x00415970u);
+        return owner_.zones.search_arc(list, center, radius, start, end);
     }
     bool clip_arc_against_node_009dd010(const bsp::ShipAiObstacleNode&,
                                         const std::array<float, 2>&, float, float,
@@ -2305,8 +2315,8 @@ public:
                 // cc_ai_sector_scan's whole-body projection in place of
                 // milestone 2p's record, so the probe geometry, the swept arc
                 // and the range with the hysteresis margin are code. The
-                // neighbour list at blk+608h is empty and both avoid-zone
-                // gates are the zeroes 009E4330 wrote, so no sector is marked.
+                // neighbour list at blk+608h is empty; the zone gates below
+                // read the live cache and selected-list owner.
                 bsp::ShipAiSectorScanInputs scan{};
                 const auto& hull = ctl.hull_geometry;
                 scan.pose.x = hull.position_184[0];
@@ -2318,8 +2328,8 @@ public:
                 scan.pose.starboard_x = hull.opposite_beam_1a4[0];
                 scan.pose.starboard_z = hull.opposite_beam_1a4[1];
                 scan.pose.heading = owner.units.unit_heading_radians(index);
-                scan.avoid_zones_present = false;  // blk+0A3Ch, 009E4401
-                scan.avoid_zones_enabled = false;  // blk+0A24h
+                scan.avoid_zones_present = ctl.avoid_search->list(0).head != nullptr;
+                scan.avoid_zones_enabled = ctl.avoid_search->cache(0).enabled;
                 SectorScanBinding scan_host(owner, index);
                 const bsp::ShipAiSectorScanResult result
                     = bsp::ship_ai_scan_obstacle_sector_009eb660(
@@ -2649,10 +2659,9 @@ private:
 // Packet cc_ai_clearance_profile read the routine whole; the executable runs it
 // from inside 009F4D10 at 009F4D87. Every neighbour and zone test answers "no
 // such thing" here, and that is the run's own state rather than a stand-in: the
-// neighbour count blk+604h is the zero 009E4659 wrote and 009F0D20 / 009F0EA0
-// never move because no world entity list exists, and blk+0A3Ch is the zero
-// 009E4401 wrote because no avoid zone is loaded. With nothing to lower it the
-// clearance stays at the 9999.0f sentinel 009EF96F seeds.
+// neighbour count blk+604h is the zero 009E4659 wrote and no world candidate
+// producer is bound. Static-zone tests borrow the live selected-list head;
+// they retain the 009EF96F sentinel while that list remains empty.
 class ClearanceBinding final : public bsp::ShipAiClearanceHost {
 public:
     ClearanceBinding(GameShipAiHost::Impl& owner, std::size_t index)
@@ -2663,24 +2672,35 @@ public:
         return owner_.units.unit_heading_radians(index_);
     }
     bool obstacle_category_enabled_009ec770(int category) override {
-        // 009EFA08. The predicate needs the unit's gameplay object byte +241h
-        // and the settings byte +4h, neither of which has a producer here.
-        static_cast<void>(category);
-        owner_.record("ShipAiClearance::category_enabled_009ec770", 0x009ec770u);
-        return false;
+        GameDirectorAvoidance director;
+        if (!owner_.units.director_avoidance(index_, director))
+            throw std::logic_error("Ship clearance has no live director");
+        owner_.done("ShipAiClearance::category_enabled_009ec770", 0x009ec770u);
+        return bsp::ship_ai_avoidance_party_accepted_009ec770(
+            owner_.controllers[index_].avoidance.side_filter_3f8, category,
+            director.ship, owner_.avoid_all_ship_collision());
     }
     bool avoidance_globally_enabled_0080e160_242() override {
-        owner_.record("ShipAiClearance::avoidance_enabled_0080e160", 0x0080e160u);
-        return false;
+        GameDirectorAvoidance director;
+        if (!owner_.units.director_avoidance(index_, director))
+            throw std::logic_error("Ship clearance has no live director");
+        owner_.done("ShipAiClearance::avoidance_enabled_0080e160", 0x0080e160u);
+        return director.land;
     }
-    bool static_zone_blocks_009d57e0(float, float, float, float, float) override {
-        owner_.record("ShipAiClearance::static_zone_blocks_009d57e0", 0x009d57e0u);
-        return false;
+    bool static_zone_blocks_009d57e0(float x, float z, float radius,
+                                     float start, float end) override {
+        const auto& search = *owner_.controllers[index_].avoid_search;
+        owner_.done("ShipAiClearance::static_zone_blocks_009d57e0", 0x009d57e0u);
+        // The original wrapper tests searcher+0, then passes searcher+18 to
+        // 00415970. Its caller owns the temporary end-bearing slot.
+        return search.cache(0).enabled
+            && owner_.zones.search_arc(search.list(0), {x, z}, radius, start, end);
     }
-    float static_zone_clearance_00415d70(float, float, float, float, float, float,
-                                         float) override {
-        owner_.record("ShipAiClearance::static_zone_clearance_00415d70", 0x00415d70u);
-        return bsp::kShipAiClearanceSentinel;
+    float static_zone_clearance_00415d70(float x, float z, float radius,
+                                         float ax, float az, float bx, float bz) override {
+        const auto& list = owner_.controllers[index_].avoid_search->list(0);
+        owner_.done("ShipAiClearance::static_zone_clearance_00415d70", 0x00415d70u);
+        return owner_.zones.search_clearance(list, {x, z}, radius, {ax, az}, {bx, bz});
     }
     int neighbour_count_604() override {
         owner_.done("ShipAiClearance::neighbour_count_604", 0x009efd5bu);
@@ -3011,6 +3031,11 @@ public:
                                                         elapsed, goal);
         owner_.done("ShipAi::replan_prepare", 0x009f1420u);
         owner_.record("ShipAi::replan_prepare_threat_scan", 0x009f158au);
+        const auto request = bsp::ship_ai_avoidance_request_prepass_009f1b7b(
+            owner_.avoid_all_ship_collision());
+        ctl_.avoidance = request.request;
+        ctl_.blk.early_out_3f5 = request.early_out_3f5;
+        owner_.done("ShipAi::avoidance_request_prepass", 0x009f1b7bu);
         ++row_.goal_prepasses;
         ++owner_.summary.goal_prepasses;
         if (result.goal_rewritten) {
@@ -3399,9 +3424,9 @@ public:
         ctl_.clearance.heading_target_324 = ctl_.blk.heading_target_324;
         ctl_.clearance.path_length_330 = ctl_.blk.distance_330;
         ctl_.clearance.steering_mode_35c = static_cast<int>(ctl_.blk.direction);
-        ctl_.clearance.category_3f0 = ctl_.nav_block.plan_state_3f0;
-        ctl_.clearance.avoidance_enabled_3f4 = ctl_.nav_block.flag_3f4;
-        ctl_.clearance.static_zone_present_a3c = false;
+        ctl_.clearance.category_3f0 = ctl_.avoidance.side_filter_3f8;
+        ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
+        ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
         ClearanceBinding clearance(owner_, index_);
         bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
                                                      seconds, clearance);
@@ -3955,6 +3980,9 @@ void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene
     if (!lua.read_path_turn_ramp(impl_->path_turn_ramp, error))
         throw std::runtime_error("Path turn-ramp load failed: " + error);
     impl_->path_turn_ramp_loaded = true;
+    // Retire selected lists before replacing their borrowed geometry. The
+    // subsequent register_units call constructs the new controller owners.
+    for (auto& controller : impl_->controllers) controller.avoid_search.reset();
     impl_->zones.rebuild(scene, mode, forced, session);
     impl_->log.notef("ship AI path turn ramp knee=%.9g limit=%.9g addon=%.9g",
         impl_->path_turn_ramp.knee_x, impl_->path_turn_ramp.limit_x, impl_->path_turn_ramp.limit_y);
@@ -4031,8 +4059,10 @@ private:
 void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t session_mode) {
     Impl& host = *impl_;
     host.session_mode = session_mode;
+    host.settings_owner = &lua;
     const std::size_t count = host.units.count();
-    host.controllers.assign(count, Impl::Controller{});
+    host.controllers.clear();
+    host.controllers.resize(count);
     host.rows.assign(count, GameShipAiRow{});
     for (std::size_t index = 0; index < count; ++index) {
         const GameUnitRow* row = host.units.unit_row(index);
@@ -4048,6 +4078,8 @@ void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t sessio
             host.units.unit_hull_length_09c8(index), host.units.unit_half_width_09cc(index));
         if (row != nullptr && row->class_row_found && has_ship_navigation_class(kind)) {
             Impl::Controller& ctl = host.controllers[index];
+            ctl.avoid_search = std::make_unique<bsp::ShipAiSearchStorage>(
+                host.zones.allocation_access());
             GameShipDepthInput depth{};
             std::string error;
             if (!lua.read_ship_depth_input(row->type_id, session_mode, depth, error))
@@ -4074,7 +4106,11 @@ void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t sessio
             ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
             ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
             ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
-            ctl.blk.early_out_3f5 = ctl.nav_block.early_out_3f5;
+            const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
+            ctl.avoidance = request.request;
+            ctl.blk.early_out_3f5 = request.early_out_3f5;
+            host.rows[index].avoidance_enabled = ctl.avoidance.enable_3f4;
+            host.rows[index].avoidance_side = ctl.avoidance.side_filter_3f8;
             host.rows[index].nav_turn_circle_3c8 = ctl.nav_block.turn_circle_full_3c8;
             host.rows[index].nav_turn_circle_3cc = ctl.nav_block.turn_circle_cruise_3cc;
             host.rows[index].nav_yaw_floor_3d0 = ctl.nav_block.yaw_rate_3d0;
