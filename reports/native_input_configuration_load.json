@@ -558,7 +558,7 @@
       "include/bsp/native_input_configuration_load.hpp": "8d266b47c5764606c25df71d773875f64525c4598b19fc7f2d5f479818530c4c",
       "src/native_input_configuration_load.cpp": "313cd7b68e8d12e587b9a87c4a75412e2603a132596b8ef113d37efadaabfc3d"
     },
-    "code_revision": "pending final committed-source validation",
+    "code_revision": "d2fa9e6ad49aaf705b4780fa546677be2a17d325",
     "native_abi_compatible": false,
     "native_EH_executed": false,
     "physical_archive_vfs_route_validated": false,
@@ -583,5 +583,27 @@
     "prototypes": "reports/native_input_configuration_load_ai_prototypes.json",
     "definitions": "reports/native_input_configuration_load_ai_definitions.json",
     "saved_readback_exported": true
+  },
+  "final_validation": {
+    "utc": "2026-09-13T03:42:29.896688+00:00",
+    "source_revision": "f4b30f8f29cd75fc221f776d63990a91adbd3cd1",
+    "merged_main_revision": "ba2bf73418153d9248053d393b2ef6a9a23ae54a",
+    "code_manifest": "local\\input_load_ai_source_manifest.json",
+    "code_manifest_sha256": "f45e98caff329563f3c15d78c810ff1f6c72224bfeb9f1f7a38cd7971a6b2929",
+    "code_files": 2155,
+    "core_archive_sha256": "ada7d1dcde398dee5fe022f5f511bf40aeceaf17e8a108e93560554c4a90c330",
+    "game_executable_sha256": "b7f6084a140cdd46a44f76d912b8979a2acc812b1182918b32ccecacd850aa08",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_load_ai_combined_build.log",
+    "build_log_sha256": "fca661f4ba173d2a02ea08b450a8fcaa79f12938e063c6d02591eb6c9d9716e3",
+    "fixture_log": "local\\input_load_ai_combined_probe.log",
+    "fixture_log_sha256": "aa6ab033e735bcae7aabb0a5c1694e9200b638dbdafd549f663b34d02c111334",
+    "fixture_passed": true,
+    "same_source_hashes_as_native_byte_component_comparison": true,
+    "native_descriptor_and_prefix_same_archive": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
   }
 }

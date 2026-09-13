@@ -52,6 +52,12 @@ at698B5F. `InputModifiers`, `Inputs`, action/binding production and the later ti
 are outside this source entry. The required VFS/bootstrap/string services remain
 borrowed application bindings; a missing service is not replaced with success.
 
+The ten incoming references to698A10 were inspected. Eight calls have verified
+containing functions. Two sites have no stored caller boundary:560E1C is a CALL,
+while55FA79 is an opcodeE9 tail JMP despite Ghidra reporting it as a CALL. Their
+complete14/15-byte setup blocks match disk and live memory and load ECX from
+the current game publication plus3C. No containing function was invented.
+
 ## Cleanup and validation
 
 Descriptor FH3 states0/1/2 release the temporary at EBP-34; state3 releases EBP-20.
