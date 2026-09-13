@@ -135,8 +135,16 @@
       "end_inclusive": "00b34c7c",
       "bytes": 13,
       "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
-      "status": "no_ghidra_function",
-      "decode": "MOV EAX,ECX; XOR ECX,ECX; MOV [EAX],ECX; MOV [EAX+4],ECX; MOV [EAX+8],ECX; RET; byte count +C left untouched by this constructor"
+      "status": "integrator_defined_saved_named_readback_exported",
+      "decode": "MOV EAX,ECX; XOR ECX,ECX; MOV [EAX],ECX; MOV [EAX+4],ECX; MOV [EAX+8],ECX; RET; byte count +C left untouched by this constructor",
+      "worker_status": "no_ghidra_function",
+      "integrator_evidence": {
+        "definitions": "local/compiler-lookups-function-definitions.json",
+        "readback": "local/compiler-source-integrator-readback.json",
+        "original_end_inclusive": "00b34c7c",
+        "reconstructed": false,
+        "name": "BSP_ShaderBinaryCacheRecord_InitializePrefix"
+      }
     },
     {
       "address": "00ce7f68",

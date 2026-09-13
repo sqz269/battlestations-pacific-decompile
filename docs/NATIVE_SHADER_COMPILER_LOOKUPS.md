@@ -102,3 +102,13 @@ The fixture uses borrowed actual-layout names and ASCII CRT comparison; it does
 not allocate strings or validate all historical CRT locales/invalid-parameter
 behavior. Native exceptional unwinding, real shaders.bin loading, full compiler
 integration, compiled shaders, rendered output and gameplay are not validated.
+
+## Integrator producer-definition correction
+
+The worker's B34C70 no-function observation is preserved in its immutable
+archive. The integrator subsequently verified and defined the complete 13-byte
+body through B34C7C, named it `BSP_ShaderBinaryCacheRecord_InitializePrefix`,
+saved the project, read back the existing/new comments and refreshed exports.
+It clears record DWORDs00/04/08, leaves byte-count0C untouched and returns the
+original ECX pointer in EAX with plain RET. This is an analyzed producer;
+the packet's C++ implementation still covers only B347E0/B34890/B34920.
