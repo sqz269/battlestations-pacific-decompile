@@ -1,0 +1,452 @@
+{
+  "packet": "orch6_native_unit_scene_handle_v",
+  "base_commit": "156db21e",
+  "status": "bounded_source_reconstruction_native_fragment_fixture_passed",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "operations": "read_only_verified_bsp_cli",
+    "mutations": []
+  },
+  "routines": [
+    {
+      "function": "006d1e80",
+      "length": 7,
+      "coverage": "complete",
+      "abi": "ECX=actual unit; EAX=current[ECX+4A4]; bareRET",
+      "ghidra_status": "no_ghidra_function at worker inspection; integrator definition pending",
+      "source": "src/native_unit_scene_handle.cpp"
+    },
+    {
+      "address": "00955448",
+      "function": "00955420",
+      "length": 6,
+      "coverage": "partial_projection",
+      "abi": "in-function ESI=actual unit,EAX=actual resolved node; MOV[ESI+4A4],EAX",
+      "excluded": "00955420..00955447 including0087BCC0 and pointer chain;0095544E..0095559E pose/matrix/root/property work",
+      "source": "src/native_unit_scene_handle.cpp",
+      "operation": "in_function_store"
+    },
+    {
+      "function": "00951fb0",
+      "length": 15,
+      "coverage": "complete",
+      "abi": "ECX=actual unit; storezero then tailJMP00779AF0 unchangedECX; no stack arguments",
+      "source": "src/native_unit_scene_handle.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00951fba",
+      "native": "00779af0",
+      "function": "00951fb0",
+      "kind": "tail_jump",
+      "method": "on_killed_00779af0",
+      "contract": "Required existing killed handler after actual scene-cell clear; same canonical receiver; no substitute or post-provider work"
+    }
+  ],
+  "reviewed_incoming_tails": [
+    {
+      "address": "0074cd26",
+      "native": "00951fb0",
+      "function": "0074cd10",
+      "kind": "tail_jump",
+      "contract": "LandVehicle restoresECX=ESI then POPESI/JMP"
+    },
+    {
+      "address": "007b95d3",
+      "native": "00951fb0",
+      "function": "007b9590",
+      "kind": "tail_jump",
+      "contract": "Plane retirement restoresECX=ESI then POPESI/JMP"
+    }
+  ],
+  "field_evidence": {
+    "existing_offset_constants": [
+      "unit_instance.hpp kUnitOffSceneNode=4A4",
+      "unit_parts.hpp kUnitOffModelRoot=4A4"
+    ],
+    "producer": {
+      "function": "00955420",
+      "site": "00955448",
+      "provenance": "ESI=ECX at955422; call887BCC0; EAX=[unit+360], conditional EAX=[EAX+160], EAX=[EAX+0C] at955445; actual MOV at955448",
+      "fallback": "none inferred: null+360 branch setsEAX0 but still dereferences+0C",
+      "fragment_only": true
+    },
+    "destructor_clear": {
+      "function": "00959940",
+      "site": "00959a04",
+      "provenance": "ESI=unit,EBX0; after actual node refcount release and optional deleting virtual, MOV[ESI+4A4],EBX",
+      "coverage": "consumed existing destructor evidence only; no new teardown implementation"
+    },
+    "writer_scan": {
+      "artifact": "local/unit_scene_handle_writer_candidates.json",
+      "scope": "nine raw MOVdisp32 candidates inPE.text; candidate scan is not an exhaustive write proof",
+      "excluded": "unrelated GUI/subobject fields with same offset; no new generic initializer inferred"
+    },
+    "application": "CurrentGameUnitsHost only sets has_scene_node=false; no actual+4A4 pointer mapping provided or invented"
+  },
+  "provider_00779af0": {
+    "coverage": "read_only_contract; externally owned",
+    "callee_read": "Full pseudocode and assembly00779AF0..00779B5C",
+    "actual_behavior": "primaryslot18 query and conditional secondquery/current-node clear; world+193Cclear; three34h recon records and positive-count marking; tail00928C80",
+    "existing_source": "mission_entity_lua_attach.cpp contains partial base00928C80 Lua behavior, not complete00779AF0",
+    "exceptions": "provider may propagate; no synthesized rollback after clear; native exception dispatch remains unproved"
+  },
+  "annotation_plan": [
+    {
+      "address": "006d1e80",
+      "was": "no_ghidra_function",
+      "proposed": "BSP_UnitGameObject_GetSceneHandle",
+      "evidence": "8b81a4040000c3 thenCCpadding;25verifiedslot18references",
+      "owner": "primary integrator only"
+    },
+    {
+      "address": "00951fb0",
+      "was": "CG_adjustor_thunk_00951fb0",
+      "proposed": "BSP_UnitGameObject_OnKilledClearSceneHandle",
+      "evidence": "c781a404000000000000e9317be2ff;store+4A4 thenJMP779AF0,unchangedECX",
+      "owner": "primary integrator only",
+      "previous_comments": "local/native_unit_scene_handle_tail_previous_comments.txt"
+    }
+  ],
+  "verification": {
+    "build": "PASS: scripts/build.ps1, MSVC Win32 Release; local/native_unit_scene_handle_build.log",
+    "ctest": "PASS: 2 existing CTests (reconstructed_math and native_math_differential), 0 failures",
+    "verify_report_calls": "PASS: 3 call rows checked, 0 failed; local/native_unit_scene_handle_calls.log",
+    "verify_seeds": "PASS: all 8 installed binary seed spans match; local/native_unit_scene_handle_seeds.json",
+    "native_evidence": "5 spans, 128 bytes; 21 existing primary profiles at slots +18/+80 and 4 extra getter profiles; live Ghidra bytes match installed PE; 1 rel32 target validated",
+    "fixture_source": "local/native_unit_scene_handle_probe.cpp",
+    "fixture_command": "./local/run_unit_scene_handle_probe.ps1",
+    "fixture_result": "PASS: 3 paired original-byte cases; distinct native/source owner layouts, current getter, exact pointer store, clear before handler, same canonical receiver, provider rebind retained, unrelated bytes unchanged",
+    "fixture_scope": "7-byte getter, 15-byte killed tail, 6-byte store fragment; fragment appends harness RET and invokes ESI/EAX with caller ESI preserved; external 00779AF0 body is not executed",
+    "fixture_provider": "test-only recorder of actual cleared cell and canonical receiver; not a gameplay handler",
+    "fixture_manifest": "local/native_unit_scene_handle_probe_manifest.json",
+    "fixture_results": "local/native_unit_scene_handle_probe_result.json",
+    "toolchain": "MSVC 19.51.36244.0 x86, /std:c++17 /EHsc /O2 /MD; explicit /link /MANIFEST:EMBED and extracted asInvoker manifest",
+    "abi_compatible": false,
+    "game_validated": false,
+    "artifact_hashes": [
+      {
+        "path": "local/native_unit_scene_handle_probe_manifest.json",
+        "bytes": 14654,
+        "sha256": "80ffcdd144e5b920f4aaec0f094dd7e39080db60f342c4084a4a5fb6270ac0de"
+      },
+      {
+        "path": "local/native_unit_scene_handle_probe.cpp",
+        "bytes": 6134,
+        "sha256": "dff0371891a6a06a5404879db80c18e393ee31e0f38ef68136802959bcce1008"
+      },
+      {
+        "path": "local/native_unit_scene_handle_probe.exe",
+        "bytes": 13824,
+        "sha256": "ad62ab93d7e47bc34bb732884f2f2f1cc07b28575c5baa5658a9f5c7fe2a195b"
+      },
+      {
+        "path": "local/native_unit_scene_handle_probe_result.json",
+        "bytes": 491,
+        "sha256": "3d047a121ff9f80832c0d0c1110e70e9b6dc2b1881527954b50e899cd7fbfb69"
+      },
+      {
+        "path": "local/native_unit_scene_handle_byte_evidence.json",
+        "bytes": 8541,
+        "sha256": "45659fdcba14d36b3e108d3227fcbba9aedad992681bc9d3c9bc1fd4889f2702"
+      },
+      {
+        "path": "local/native_unit_scene_handle_build.log",
+        "bytes": 4285,
+        "sha256": "e3dece99464c4b0816a6590ff389480c8ea38e1b155a89a6bef306eb28880721"
+      },
+      {
+        "path": "local/native_unit_scene_handle_calls.log",
+        "bytes": 70,
+        "sha256": "fa025473e4967daacee112aa3f2ea0b560b1377bcbdb393328a9cc3e4ea46d97"
+      },
+      {
+        "path": "local/native_unit_scene_handle_seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/native_unit_scene_handle_previous_functions.txt",
+        "bytes": 130,
+        "sha256": "422ac68e0f659b5a40a3d4c1db50a31a728a17730900d72018cc1eed6f0e1c08"
+      },
+      {
+        "path": "local/native_unit_scene_handle_tail_previous_comments.txt",
+        "bytes": 141,
+        "sha256": "69b082ae8e68b6c6b7a2d1907e2852c5e0afab62e05c42693f9f7cc44b844b3e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_unit_scene_handle.obj",
+        "bytes": 7331,
+        "sha256": "daf899c0b8fa87c83e639eec3666556da3ea0849e61ef6c3cf7cc31509bb1d79"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 55529642,
+        "sha256": "a2c41de1a1f352e472bf9c81c4a344c6c46c686dad6ae17a2c8b58443fed98f6"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2037248,
+        "sha256": "89c4842e145a5fe793e9aae3f123cfe2952b4ea2cc7d7fb3fa2667ad5e988034"
+      }
+    ],
+    "compiled_source_hashes": [
+      {
+        "path": "include/bsp/native_unit_scene_handle.hpp",
+        "bytes": 2674,
+        "sha256": "5a79dc96056476afd762702f349bde8e08d044e08937179e10a008c5702f2f7f"
+      },
+      {
+        "path": "src/native_unit_scene_handle.cpp",
+        "bytes": 781,
+        "sha256": "380ea01e4423e9e96d91d6b23ef06da9d1de435fa78a0117af3a4e56c2aa06a3"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 102972,
+        "sha256": "1f1e6433f140e78f04c19ec222a29b470d3562340cc61108869f11ca44cf1a19"
+      }
+    ]
+  },
+  "limitations": [
+    "No current application scene handle binding or new scene owner",
+    "No complete native initializer/resource ownership/reference lifetime",
+    "779AF0 actual handler remains externally required",
+    "No native exception/FH3/SEH or gameplay proof",
+    "Descriptive source/proposedGhidranames are hypotheses,not recovered symbols"
+  ],
+  "primary_table_map": [
+    {
+      "creator": "006fe590",
+      "primary": "00cfc3d0",
+      "class": "Destroyer",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "6b5c98d3d51fd5d53b7e2bfd3c5272c305f83ed7a7192b788595dc80b6022df8"
+    },
+    {
+      "creator": "006fb430",
+      "primary": "00cfb738",
+      "class": "Cruiser",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "89d0b72d265ce2065c5390f8ff5ceb99604b6410cb2aae16b4ca9890e5f75de8"
+    },
+    {
+      "creator": "0074be00",
+      "primary": "00cffa30",
+      "class": "LandingShip",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "149a0f5aa7c5c916d9c539eb495596b177c1406ddf47e36963531b7e425cc182"
+    },
+    {
+      "creator": "006eb290",
+      "primary": "00cfa778",
+      "class": "Cargo",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "42c8077244ea3591894cf1fb42617f11280fe159f2c5fd51dd8abb675e56857b"
+    },
+    {
+      "creator": "006dfef0",
+      "primary": "00cf90b0",
+      "class": "BattleShip",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "a62f4c466c70b3ed7549c54157ff9b2c6f6a60a75dbcb947c774cf14e55f16e3"
+    },
+    {
+      "creator": "008531a0",
+      "primary": "00d0bf80",
+      "class": "Submarine",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "a4424b4c3df396abe9b0baf061c2b3c8affcdaa8b379766c15573da478f8aa78"
+    },
+    {
+      "creator": "00857e20",
+      "primary": "00d0c648",
+      "class": "TorpedoBoat",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "2f9f1ca10e2bc48a1c147d2b7bb2299fd0ff779ba8de77e7f499c0f8124094a7"
+    },
+    {
+      "creator": "00758d30",
+      "primary": "00d01630",
+      "class": "MotherShip",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "6ff649e12c293d502047dabf6ac964bfeff9560286e8e394a061cd3342978e3d"
+    },
+    {
+      "creator": "008091d0",
+      "primary": "00d00070",
+      "class": "ReconPlane",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "bbd762a584c8821d926db8cf72f9126ff507472e93638db2931497961b6eb22e"
+    },
+    {
+      "creator": "0084ca50",
+      "primary": "00d0ba80",
+      "class": "SmallReconPlane",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "8c38ee24153186ea170abdfc50abb22cb0a6f3dd7fb81ac4c1bd9dba7cf8a38c"
+    },
+    {
+      "creator": "0074e540",
+      "primary": "00d00308",
+      "class": "LargeReconPlane",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "48dcedaa40c0a432fb18b19c098782e8570be0988b1728cbe338d8442c91c913"
+    },
+    {
+      "creator": "007ddae0",
+      "primary": "00d06920",
+      "class": "Fighter",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "ef8aa2e3a890688d9df83b2f4ce4a05a25e8fbbd461cebe9bf0a4eecbdb382a6"
+    },
+    {
+      "creator": "00956390",
+      "primary": "00d19d28",
+      "class": "DiveBomber",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "e3944693697b6bc70f43e3de26a1ce97c283b8311dc2ba1318ca4d32e9c8de62"
+    },
+    {
+      "creator": "009564e0",
+      "primary": "00d1a000",
+      "class": "TorpedoBomber",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "12915f6588303b381efba6874b6fb90b699d022674b4460ceaead2f2e9102baf"
+    },
+    {
+      "creator": "00956240",
+      "primary": "00d1a2d8",
+      "class": "Kamikaze",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "62f23349ad0f326475d078eb1a7292ab51d51ffaffe5abab72e88a8a9b4f8ce9"
+    },
+    {
+      "creator": "007d7850",
+      "primary": "00d06638",
+      "class": "LevelBomber",
+      "slot18": "006d1e80",
+      "slot80": "007b9590",
+      "verified_span_sha256": "a650e279bd3a1518f5d7365ae32257ce5f2fa800ed8f6e2387cbe9e89522e5c6"
+    },
+    {
+      "creator": "006d3110",
+      "primary": "00cf8c08",
+      "class": "AirField",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "10aa34934b566e275e2a0b00b27767a42ec548916ac8cde96e9a449b20820cca"
+    },
+    {
+      "creator": "00848380",
+      "primary": "00d0b770",
+      "class": "Shipyard",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "a67a425e00d3ec1364ca03b031b1f2c21fb5f6b5a8adae843d4457c33a5dc3b7"
+    },
+    {
+      "creator": "0074df10",
+      "primary": "00cffde0",
+      "class": "LandVehicle",
+      "slot18": "006d1e80",
+      "slot80": "0074cd10",
+      "verified_span_sha256": "0ebe007089fecf8327d5a8cbc58871b92235a82294a5b80465f6446794347016"
+    },
+    {
+      "creator": "00747000",
+      "primary": "00cff3f8",
+      "class": "LandFort",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "17d07ff4c6409be088e25e1ed0ded69f7a0699f5a4fd5ae60c2d0b3074bb00f9"
+    },
+    {
+      "creator": "006f5c10",
+      "primary": "00cfb028",
+      "class": "CommandBuilding",
+      "slot18": "006d1e80",
+      "slot80": "00951fb0",
+      "verified_span_sha256": "17024bb04a95bdf42a13f235030a587795c8d9f4f1298a3dd9aed4cc612f4b19"
+    },
+    {
+      "primary": "00cfcd60",
+      "class": "extra referenced profile; no new creator inference",
+      "slot18": "006d1e80",
+      "verified_span_sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77"
+    },
+    {
+      "primary": "00d05f20",
+      "class": "extra referenced profile; no new creator inference",
+      "slot18": "006d1e80",
+      "verified_span_sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77"
+    },
+    {
+      "primary": "00d09678",
+      "class": "extra referenced profile; no new creator inference",
+      "slot18": "006d1e80",
+      "verified_span_sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77"
+    },
+    {
+      "primary": "00d1a698",
+      "class": "extra referenced profile; no new creator inference",
+      "slot18": "006d1e80",
+      "verified_span_sha256": "b5315842afe786fffe915e5350a614043f82f9bca06a0d203783f8f7cb7cee77"
+    }
+  ],
+  "verified_native_spans": [
+    {
+      "address": "006d1e80",
+      "length": 7,
+      "sha256": "0e28ae6d970647be6cbf4557ee0c392348362ca146b2315a0118c3cda8b20799",
+      "hex": "8b81a4040000c3",
+      "ghidra_matches_disk": true
+    },
+    {
+      "address": "00951fb0",
+      "length": 15,
+      "sha256": "95bd53d881721a30c97b8dcd786c0c48c0ce4c0e214eb199ce9f8ac451e71581",
+      "hex": "c781a404000000000000e9317be2ff",
+      "ghidra_matches_disk": true
+    },
+    {
+      "address": "00955448",
+      "length": 6,
+      "sha256": "cf6ecf68c774b80f1d3bdc35c441ce1a5a132197904e8654bac4e4d7ddb2dfec",
+      "hex": "8986a4040000",
+      "ghidra_matches_disk": true
+    },
+    {
+      "address": "00955429",
+      "length": 37,
+      "sha256": "5df38d651cf1762f618dee3ded8db01578029f38c68e86b5e2487d763fbd5b7e",
+      "hex": "8b866003000033db3bc374088b8060010000eb0233c0389ec80000008b400c8986a4040000",
+      "ghidra_matches_disk": true
+    },
+    {
+      "address": "009599cb",
+      "length": 63,
+      "sha256": "5542c40b65539eff2e13054c85a442bdcc55f3845224f4840ea6ca0bdcbf48cc",
+      "hex": "8b86a40400003bc374353905dc88e100750733c9e89c30b6ff8bbea40400003bfb741c8d4f0451ff152022ce0085c075088b178b028bcfffd0899ea4040000",
+      "ghidra_matches_disk": true
+    }
+  ]
+}
