@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <cstdint>
 
@@ -16,7 +17,7 @@ struct TypeIdCounterStorage {
 
 class TypeIdCounterLifetime final {
 public:
-    TypeIdCounterLifetime(SingletonLifetimeDomain&,
+    TypeIdCounterLifetime(SoundLifetimeAccess,
         TypeIdCounterStorage* volatile& actual_global_0109db7c) noexcept;
     TypeIdCounterStorage* get_006fac20();
     // Dispatch this from the shared lifetime manager for vtable 00CFB6C4.
@@ -25,7 +26,7 @@ public:
         TypeIdCounterStorage*, std::uint32_t flags) noexcept;
 
 private:
-    SingletonLifetimeDomain& lifetime_;
+    SoundLifetimeAccess lifetime_;
     TypeIdCounterStorage* volatile& global_0109db7c_;
 };
 
