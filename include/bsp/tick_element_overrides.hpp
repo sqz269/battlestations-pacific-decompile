@@ -124,28 +124,29 @@ inline constexpr std::size_t kUnitTickAlternateSourceFlag = 0x1c8; // byte, unit
 
 MatrixCopyRequest unit_tick_commit_pose_006d1fc0(bool use_alternate_source) noexcept;
 
-// 00953CC0, __thiscall void(node, float step), RET 4, body 00953CC0..00953D9D.
+// 00953CC0, __thiscall void(node, float step), RET 4, body 00953CC0..00953D9F.
 struct UnitTickAdvanceState {
-    std::int32_t notify_code_528h = -1; // node+218h; the virtual runs when >= 0
+    std::int32_t notify_code_528h = -9; //0095CDC1; node+218h; virtual runs when >=0
     std::int32_t flag_634h = 0;         // node+324h
     bool gate_byte_61h = false;         // node-2AFh
     float timer_6f8h = 0.0f;            // node+3E8h, counts down
     float timer_6fch = 0.0f;            // node+3ECh, counts down
     std::int32_t role_1ach = 8;         // unit+1ACh, 8 skips the role check
-    bool enabled_520h = true;           // node+210h byte
+    bool suppress_1d8_520h = false;     //0095CDD7; node+210h byte; nonzero skips+1D8
 };
 
 struct UnitTickAdvanceHost {
     virtual ~UnitTickAdvanceHost() = default;
 
-    // 00953CDF: unit->vtable[+5Ch](9), reached only when node+218h >= 0.
-    virtual void unit_virtual_5c_notify(int code) = 0;
+    //00953CDF: unit->vtable[+5Ch](9), reached only when node+218h >=0.
+    // This is IsKindOf for the proven unit leaves; its result is discarded.
+    virtual void unit_virtual_5c_is_kind_of(int class_id) = 0;
     // 00953CFD: unit->vtable[+1F0h](step). Always runs.
     virtual void unit_virtual_1f0_advance(float step) = 0;
-    // 00953D6E: 00927F10(unit, role), skipped when unit+1ACh == 8. False
-    // clears the node+210h byte.
+    //00953D6E: __stdcall00927F10(role), RET4; no unit argument. Skipped when
+    // unit+1ACh ==8. False clears node+210h and allows the following virtual.
     virtual bool unit_role_still_available_00927f10(int role) = 0;
-    // 00953D98: unit->vtable[+1D8h](step), only while node+210h is set.
+    //00953D98: unit->vtable[+1D8h](step), only while node+210h is clear.
     virtual void unit_virtual_1d8_advance(float step) = 0;
 };
 

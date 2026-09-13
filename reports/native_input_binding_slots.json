@@ -1,0 +1,184 @@
+{
+  "packet": "orch4_input_slots_al",
+  "status": "actual_binding_slot_bodies_reconstructed_strict_win32_native_component_fixture_passed_settings_and_loader_tail_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": [
+    "include/bsp/native_input_binding_slots.hpp",
+    "src/native_input_binding_slots.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_BINDING_SLOTS.md",
+  "byte_spans": [
+    {
+      "address": "00a92790",
+      "end_exclusive": "00a9281a",
+      "bytes": 138,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "sha256": "7b7150325d19477cd3de556670892d0be42824ba34095d6c77625fb0ed74b465",
+      "capture": "local/input_slots_al_read_live.txt"
+    },
+    {
+      "address": "00a92820",
+      "end_exclusive": "00a92834",
+      "bytes": 20,
+      "instructions": 6,
+      "disk_live_equal": true,
+      "sha256": "1669b2051cd070d31367c35fac28f08231af147b0bd9517eefc620e9a3499853",
+      "capture": "local/input_slots_al_count_live.txt"
+    },
+    {
+      "address": "00a93750",
+      "end_exclusive": "00a937c2",
+      "bytes": 114,
+      "instructions": 39,
+      "disk_live_equal": true,
+      "sha256": "096bceba3e9454bcbf1beb3a216341b368c125250842ad9ed2c5dc7623109978",
+      "capture": "local/input_slots_al_install_live.txt"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00a93750",
+      "address": "00a93772",
+      "native": "00a93500",
+      "evidence": "Actual containing body, CALL encoding, ECX receiver and stack cleanup verified."
+    },
+    {
+      "function": "00a93750",
+      "address": "00a937b7",
+      "native": "00a91e80",
+      "evidence": "Actual containing body, CALL encoding, ECX receiver and stack cleanup verified."
+    },
+    {
+      "function": "006a33f0",
+      "address": "006a3466",
+      "native": "00a92790",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab978",
+      "native": "00a92790",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab924",
+      "native": "00a92820",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aaad3",
+      "native": "00a93750",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab37",
+      "native": "00a93750",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006aa640",
+      "address": "006aab87",
+      "native": "00a93750",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006ab820",
+      "address": "006ab9c0",
+      "native": "00a93750",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    },
+    {
+      "function": "006ab820",
+      "address": "006aba02",
+      "native": "00a93750",
+      "evidence": "Live Ghidra xref and installed CALL bytes; caller register/stack schedule inspected."
+    }
+  ],
+  "functions": [
+    {
+      "address": "00a92790",
+      "coverage": "complete normal body; explicit source services/padding preimage",
+      "source_entry": "read_native_input_binding_slot_00a92790"
+    },
+    {
+      "address": "00a92820",
+      "coverage": "complete normal body; explicit source services/padding preimage",
+      "source_entry": "count_native_input_binding_slots_00a92820"
+    },
+    {
+      "address": "00a93750",
+      "coverage": "complete normal body; explicit source services/padding preimage",
+      "source_entry": "install_native_input_binding_slot_00a93750"
+    }
+  ],
+  "native_abi": {
+    "00a92790": "ECX actual24h owner; stack action,signed slot,descriptor14 output,float output; RET10h. No consumed result.",
+    "00a92820": "ECX actual24h owner; stack action; EAX signed count; RET4.",
+    "00a93750": "ECX actual24h owner; stack action,signed slot,five descriptor DWORDs by value,float scale; RET20h. No consumed result."
+  },
+  "boundaries": {
+    "storage": "Actual owner+4/actions30h/action+10/bindings34h and modifier14h records; no owning projected vectors.",
+    "dependencies": "Existing concrete native A93500 storage resize and A91E80 whole-action rebind; no hardware polling.",
+    "padding": "Absent-slot high24 flag bits come from incoming native stack scratch. Source receives an explicit preimage; it does not pretend these are zero or preserved output bytes.",
+    "floating_point": "Present-slot read uses x87 FLD/FSTP after ordered descriptor copies; install uses raw MOVSS-equivalent bits."
+  },
+  "limitations": [
+    "No original ABI/SEH or gameplay validation. Native valid-address preconditions remain; no added action/negative-slot bounds checks.",
+    "Settings540h producer, actual map/application graph, and remaining full loader tail are separate unfinished dependencies."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 189,
+    "calls_checked": 10,
+    "calls_failed": 0,
+    "seeds_equal": 8,
+    "probe_log": "local/input_slots_al_probe.log",
+    "probe_log_sha256": "3b9e6cb83cc77c977e4fefd580173e9019c1fec285b6e9321277df6e9a67546e",
+    "fixture_source": "local/input_slots_al_probe.cpp",
+    "fixture_source_sha256": "66b78ca96e6d59eeeeab7629128def4f60f3f2dfad385bcfb285fb220126aa91",
+    "fixture_header_sha256": "e8a44659cbedb47996a0108fe952da96c36622dac725eb5cc0c425592eaa8918",
+    "native_resize_calls": 1,
+    "native_rebind_calls": 3,
+    "device_calls": 0,
+    "game_validated": false,
+    "original_abi_compatible": false
+  },
+  "annotations": "reports/native_input_binding_slots_al_annotations.json",
+  "final_validation": {
+    "utc": "2026-09-13T05:09:34.598903+00:00",
+    "source_revision": "a152f97e1de19e332b2e279be518caa697109ba6",
+    "merged_main_revision": "43d53129f7edabd1689b05268653c46fb753aba6",
+    "code_files": 2199,
+    "code_manifest": "local\\input_slots_al_source_manifest.json",
+    "code_manifest_sha256": "57f9bf3c698723e5d0ada4cbfa2dae4c76a855b4905e84e1315fa81c6849b2fb",
+    "core_archive_sha256": "d942499ee3faf044922c58c8c7be6fa95c1d5e7ccb161df1197e5830ac2ed866",
+    "game_executable_sha256": "e02ffc0f75a42cd6f3374581d16db7e3d5bc4c928e39f553faa4a3e1d98b72cd",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_slots_al_combined_build.log",
+    "build_log_sha256": "83a614f0c872e9a5cda17a1e4b2b3ab18556cddf904bbe9269f743d9cfb4dcd2",
+    "fixture_log": "local\\input_slots_al_combined_probe.log",
+    "fixture_log_sha256": "c2854fb3a19a8dbf8c30050ccaf0cf93ea2d7a20ceae6746bb182b41055c4fa7",
+    "native_source_words_equal": 189,
+    "calls_checked": 10,
+    "calls_failed": 0,
+    "disk_live_seeds_equal": 8,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true
+  },
+  "affected_caller_exports_refreshed": [
+    "006a33f0",
+    "006aa640",
+    "006ab820"
+  ]
+}

@@ -1,0 +1,415 @@
+<title>Battlestations Reconstruction Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87.5,500;87.5,700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --ground: #EEF2F5; --panel: #FFFFFF; --panel-2: #F6F8FA; --ink: #132029; --muted: #5D6C78; --rule: #D3DBE2; --rule-soft: #E4EAEF;
+  --accent: #0F766E; --accent-ink: #FFFFFF; --amber: #B7791F; --neutral-fill: #DDE4EA; --shadow: 0 1px 2px rgba(19,32,41,.06);
+  --c-units: #D64545; --c-ai: #EE7B2C; --c-mission: #D9AE1C; --c-scene: #3A9A4C; --c-sound: #1AA391; --c-files: #2BA3DA;
+  --c-render: #3D6BE0; --c-net: #6A5BD2; --c-lua: #A44BD3; --c-gui: #DB4A8E; --c-core: #7A8794; --c-other: #B4BEC6;
+  --h-codex: #2F6FDE; --h-claude: #D97706;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0C1319; --panel: #131C24; --panel-2: #182330; --ink: #E3EAEF; --muted: #8C9AA6; --rule: #243039; --rule-soft: #1C2731;
+    --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --shadow: none;
+    --c-core: #8B98A5; --c-other: #3A4754; --h-codex: #5B8DEF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0C1319; --panel: #131C24; --panel-2: #182330; --ink: #E3EAEF; --muted: #8C9AA6; --rule: #243039; --rule-soft: #1C2731;
+  --accent: #34D3BF; --accent-ink: #0C1319; --amber: #E0A94A; --neutral-fill: #223040; --shadow: none;
+  --c-core: #8B98A5; --c-other: #3A4754; --h-codex: #5B8DEF;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 400 15px/1.5 "Source Sans 3", "Segoe UI", system-ui, sans-serif; padding-block: 28px 56px; padding-inline: clamp(16px, 4vw, 40px); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: "Archivo", "Arial Narrow", Arial, sans-serif; font-stretch: 87.5%; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; line-height: 1.05; }
+h2 { font-size: 20px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.mono, .num, td.num, th.num { font-family: "IBM Plex Mono", "Consolas", monospace; font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.muted { color: var(--muted); }
+header { display: grid; gap: 10px; }
+header .lede { color: var(--muted); font-size: 16px; }
+header .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; }
+header .meta span { font-family: "IBM Plex Mono", monospace; color: var(--muted); }
+header .meta b { font-weight: 500; color: var(--ink); }
+
+/* KPI strip: one object, shared edges */
+.kpis { display: grid; grid-template-columns: repeat(6, 1fr); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; }
+.kpi { padding: 14px 16px 12px; border-right: 1px solid var(--rule-soft); display: grid; gap: 2px; align-content: start; }
+.kpi:last-child { border-right: 0; }
+.kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.kpi .value { font-family: "IBM Plex Mono", monospace; font-size: 26px; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi .sub { font-size: 12.5px; color: var(--muted); }
+.kpi .sub b { color: var(--accent); font-weight: 600; }
+.bar { height: 6px; background: var(--neutral-fill); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+@media (max-width: 900px) { .kpis { grid-template-columns: repeat(3, 1fr); } .kpi:nth-child(3) { border-right: 0; } .kpi:nth-child(-n+3) { border-bottom: 1px solid var(--rule-soft); } }
+@media (max-width: 520px) { .kpis { grid-template-columns: repeat(2, 1fr); } .kpi { border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); } .kpi:nth-child(even) { border-right: 0; } .kpi:nth-child(3) { border-right: 1px solid var(--rule-soft); } }
+
+section.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 18px 20px 20px; display: grid; gap: 14px; }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.section-head p { font-size: 13.5px; color: var(--muted); }
+
+/* address map */
+.map { display: grid; gap: 8px; }
+.strip { display: flex; align-items: flex-end; gap: 1px; height: 132px; padding-top: 6px; border-bottom: 1px solid var(--rule); }
+.seg { flex: 1 1 3px; min-width: 3px; height: 100%; position: relative; background: var(--neutral-fill); cursor: pointer; border-radius: 2px 2px 0 0; outline-offset: 1px; }
+.seg .named, .seg .done { position: absolute; left: 0; right: 0; bottom: 0; }
+.seg .named { background: color-mix(in srgb, var(--seg-color) 32%, transparent); }
+.seg .done { background: var(--seg-color); }
+.seg.dim { opacity: .18; }
+.seg.pinned, .seg:hover { outline: 2px solid var(--ink); z-index: 2; }
+.seg:focus-visible { outline: 2px solid var(--accent); }
+.ticks { position: relative; height: 18px; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); }
+.ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.ticks span::before { content: ""; position: absolute; left: 50%; top: -7px; height: 5px; border-left: 1px solid var(--rule); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.legend button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; }
+.legend button:focus-visible { outline: 2px solid var(--accent); }
+.legend button.off { opacity: .35; }
+.legend .sw { width: 12px; height: 12px; border-radius: 2px; background: var(--sw); }
+.legend .note { color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.legend .note .sw { background: var(--neutral-fill); }
+.legend .note .sw.half { background: color-mix(in srgb, var(--c-render) 32%, transparent); }
+.detail { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px 24px; padding: 12px 14px; background: var(--panel-2); border-radius: 4px; font-size: 14px; min-height: 92px; }
+.detail .title { font-family: "Archivo", sans-serif; font-stretch: 87.5%; font-weight: 700; font-size: 16px; }
+.detail .kw { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12.5px; word-break: break-word; }
+.detail dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0; align-content: start; }
+.detail dt { color: var(--muted); }
+.detail dd { margin: 0; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .detail { grid-template-columns: 1fr; } }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--ink); color: var(--ground); font-size: 12.5px; padding: 6px 9px; border-radius: 4px; max-width: 260px; display: none; line-height: 1.35; }
+.tip .mono { opacity: .8; }
+
+/* charts */
+.controls { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13.5px; }
+.controls .group { display: inline-flex; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.controls .group label { padding: 4px 10px; cursor: pointer; border-right: 1px solid var(--rule); user-select: none; }
+.controls .group label:last-child { border-right: 0; }
+.controls .group input { position: absolute; opacity: 0; width: 0; height: 0; }
+.controls .group input:checked + span { color: var(--accent); font-weight: 600; }
+.controls .group label:has(input:checked) { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.controls .group label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+.chart-box { position: relative; height: 380px; width: 100%; }
+.chart-box.short { height: 150px; }
+canvas { max-width: 100%; }
+
+/* tables */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule-soft); white-space: nowrap; vertical-align: middle; }
+th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--rule); }
+th.num, td.num { text-align: right; }
+th.sortable { cursor: pointer; }
+th.sortable:hover, th.sorted { color: var(--ink); }
+th.sorted::after { content: " ▾"; font-size: 10px; }
+th.sorted.asc::after { content: " ▴"; }
+td .cat-dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+td .pbar { display: inline-block; width: 90px; height: 7px; background: var(--neutral-fill); border-radius: 3px; vertical-align: middle; margin-left: 8px; overflow: hidden; }
+td .pbar i { display: block; height: 100%; }
+td.kw { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 12px; max-width: 320px; overflow: hidden; text-overflow: ellipsis; }
+.split { display: inline-flex; height: 7px; width: 70px; border-radius: 3px; overflow: hidden; vertical-align: middle; margin-left: 6px; background: var(--neutral-fill); }
+.split i { display: block; height: 100%; }
+tr.hidden { display: none; }
+.foot { font-size: 13px; color: var(--muted); display: grid; gap: 6px; max-width: 80ch; }
+.foot b { color: var(--ink); font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) { .seg, .legend button { transition: opacity .15s ease; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">battlestationspacific.exe · source-level reconstruction</div>
+    <h1>Battlestations Reconstruction Map</h1>
+    <p class="lede">Where the image has been decoded, which address bands are being worked, and how reconstruction and naming have grown since the ledgers started.</p>
+    <div class="meta">
+      <span>Ghidra snapshot <b id="m-snap"></b></span>
+      <span>main <b id="m-head"></b></span>
+      <span>data built <b id="m-gen"></b></span>
+    </div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section class="panel">
+    <div class="section-head">
+      <h2>The image by address band</h2>
+      <p>98 partition segments from <span class="mono">0x00401010</span> to <span class="mono">0x00c30570</span>, width proportional to address span. Solid fill is the share of each band's candidate pool already reconstructed; the pale extension adds functions that only have a reviewed name.</p>
+    </div>
+    <div class="map">
+      <div class="strip" id="strip" role="list" aria-label="Address bands"></div>
+      <div class="ticks" id="ticks"></div>
+      <div class="legend" id="legend"></div>
+      <div class="detail" id="detail"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <h2>Growth over time</h2>
+      <p>Cumulative counts sampled every two hours, UTC. Small marks along the top are the executable milestones as they merged.</p>
+    </div>
+    <div class="controls">
+      <span class="group" role="radiogroup" aria-label="Measure">
+        <label><input type="radio" name="measure" id="measure-funcs" value="funcs" checked><span>Reconstructed functions</span></label>
+        <label><input type="radio" name="measure" id="measure-names" value="names"><span>Reviewed names</span></label>
+        <label><input type="radio" name="measure" id="measure-all" value="all"><span>All measures</span></label>
+      </span>
+      <span class="group" role="radiogroup" aria-label="Split">
+        <label><input type="radio" name="split" id="split-cat" value="cat" checked><span>By category</span></label>
+        <label><input type="radio" name="split" id="split-harness" value="harness"><span>By harness</span></label>
+      </span>
+      <span class="muted" id="chart-note"></span>
+    </div>
+    <div class="chart-box"><canvas id="timeline" role="img" aria-label="Cumulative reconstruction over time"></canvas></div>
+    <h3>Commits on main per hour</h3>
+    <div class="chart-box short"><canvas id="activity" role="img" aria-label="Commits per hour"></canvas></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <h2>Categories</h2>
+      <p>Pool is the candidate count after library, template and compiler-generated code is excluded. Done counts a ledger record or an address-named C++ body. The last column splits done functions between the Codex and Claude harnesses.</p>
+    </div>
+    <div class="table-wrap"><table id="cat-table"></table></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <h2>Segments</h2>
+      <p>Click a column to sort. Use the legend above the map to hide categories here as well.</p>
+    </div>
+    <div class="table-wrap"><table id="seg-table"></table></div>
+  </section>
+
+  <div class="foot">
+    <div><b>Reconstructed</b> means the address has a function record in the reconstruction ledger or a column-0 C++ definition named after it under <span class="mono">src/</span>, whichever came first in git history. It says nothing about ABI compatibility or game validation; those are separate levels.</div>
+    <div><b>Reviewed name</b> means a record in the names ledger. Names are hypotheses, not recovered symbols.</div>
+    <div><b>Excluded by tag</b> is CRT, STL instantiations, stock Lua and zlib, exception funclets and compiler-generated bodies from the inventory tag ledger; tags do not approve skipping a function.</div>
+    <div>The target of <span class="mono">13,987</span> is the inventory's point estimate of hand-reconstruction work; the remaining pool is what is left after tags and reconstructed functions are removed. Harness attribution follows commit trailers: a Claude trailer means Claude, everything else is Codex.</div>
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const $ = (s) => document.querySelector(s);
+  const fmt = (n) => n.toLocaleString('en-US');
+  const hex = (n) => n.toString(16).padStart(8, '0');
+  const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const catColor = (k) => css('--c-' + k);
+  const catLabel = Object.fromEntries(D.categories.map(c => [c.key, c.label]));
+  catLabel.other = 'Outside the partition';
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const tlabel = (ts) => { const d = new Date(ts * 1000); return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' ' + String(d.getUTCHours()).padStart(2, '0') + 'Z'; };
+  const hidden = new Set();
+
+  // ---- header + KPIs
+  $('#m-snap').textContent = D.snapshot; $('#m-head').textContent = D.head; $('#m-gen').textContent = D.generated;
+  const K = D.kpi;
+  const share = pct(K.functions, K.target);
+  $('#kpis').innerHTML = [
+    ['Reconstructed functions', fmt(K.functions), `<b>+${fmt(K.rate24)}</b> in the last 24 h`],
+    ['Of the 13,987 target', share + '%', `<div class="bar"><i style="width:${share}%"></i></div>`],
+    ['Reviewed names', fmt(K.names), `<b>+${fmt(K.names24)}</b> in the last 24 h`],
+    ['Fragments', fmt(K.fragments), 'partial routines, counted apart'],
+    ['Remaining in pool', fmt(K.pool_remaining), 'untagged, not yet reconstructed'],
+    ['Excluded by tag', fmt(K.tags), 'CRT, STL, Lua, zlib, generated'],
+  ].map(([l, v, s]) => `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join('');
+
+  // ---- address map
+  const segs = D.segments;
+  const lo = segs[0].start, hi = segs[segs.length - 1].end, span = hi - lo;
+  const strip = $('#strip');
+  strip.innerHTML = segs.map(s => {
+    const denom = s.done + s.remaining;
+    const donePct = denom ? 100 * s.done / denom : 0;
+    const namedOnly = Math.max(0, Math.min(denom - s.done, s.named - s.done));
+    const namedPct = denom ? 100 * (s.done + namedOnly) / denom : 0;
+    return `<div class="seg" role="listitem" tabindex="0" data-id="${s.id}" data-cat="${s.cat}" style="flex-grow:${s.end - s.start};--seg-color:${catColor(s.cat)}" aria-label="Segment ${s.id}, ${hex(s.start)} to ${hex(s.end)}, ${Math.round(donePct)}% reconstructed">` +
+      `<div class="named" style="height:${namedPct.toFixed(1)}%"></div><div class="done" style="height:${donePct.toFixed(1)}%"></div></div>`;
+  }).join('');
+  const ticks = $('#ticks');
+  const tickVals = [];
+  for (let a = Math.ceil(lo / 0x100000) * 0x100000; a < hi; a += 0x100000) tickVals.push(a);
+  ticks.innerHTML = tickVals.map(a => `<span style="left:${(100 * (a - lo) / span).toFixed(2)}%">${hex(a)}</span>`).join('');
+
+  const detail = $('#detail');
+  function showDetail(s) {
+    const denom = s.done + s.remaining;
+    detail.innerHTML = `<div><div class="title">Segment ${s.id} · <span class="mono">${hex(s.start)}–${hex(s.end)}</span></div>` +
+      `<div><span class="cat-dot" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${catColor(s.cat)};margin-right:6px"></span>${catLabel[s.cat]}</div>` +
+      `<div class="kw">${s.keywords.length ? s.keywords.join(', ') : 'no string keywords in this band'}</div></div>` +
+      `<dl><dt>Candidates</dt><dd>${fmt(s.pool)} of ${fmt(s.total)} functions, ${fmt(s.tagged)} tagged out</dd>` +
+      `<dt>Reconstructed</dt><dd>${fmt(s.done)} (${pct(s.done, denom)}%), ${fmt(s.remaining)} remaining</dd>` +
+      `<dt>Reviewed names</dt><dd>${fmt(s.named)}</dd><dt>Last 24 h / 72 h</dt><dd>+${s.new24} / +${s.new72}</dd>` +
+      `<dt>Codex / Claude</dt><dd>${s.codex} / ${s.claude}</dd></dl>`;
+  }
+  let pinned = null;
+  const busiest = segs.reduce((a, b) => (b.new24 > a.new24 ? b : a), segs[0]);
+  showDetail(busiest);
+  const tip = $('#tip');
+  strip.addEventListener('mousemove', (e) => {
+    const el = e.target.closest('.seg'); if (!el) { tip.style.display = 'none'; return; }
+    const s = segs[+el.dataset.id];
+    tip.innerHTML = `<b>Segment ${s.id}</b> · ${catLabel[s.cat]}<br><span class="mono">${hex(s.start)}–${hex(s.end)}</span><br>${s.done} of ${s.done + s.remaining} reconstructed, ${s.named} named, +${s.new24} today`;
+    tip.style.display = 'block';
+    const x = Math.min(e.clientX + 14, window.innerWidth - 280), y = e.clientY + 16;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+    if (!pinned) showDetail(s);
+  });
+  strip.addEventListener('mouseleave', () => { tip.style.display = 'none'; if (pinned) showDetail(segs[pinned]); });
+  function pin(el) {
+    const id = +el.dataset.id;
+    strip.querySelectorAll('.seg.pinned').forEach(x => x.classList.remove('pinned'));
+    if (pinned === id) { pinned = null; return; }
+    pinned = id; el.classList.add('pinned'); showDetail(segs[id]);
+  }
+  strip.addEventListener('click', (e) => { const el = e.target.closest('.seg'); if (el) pin(el); });
+  strip.addEventListener('keydown', (e) => { const el = e.target.closest('.seg'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pin(el); } });
+  strip.addEventListener('focusin', (e) => { const el = e.target.closest('.seg'); if (el && !pinned) showDetail(segs[+el.dataset.id]); });
+
+  // legend with toggles
+  const legend = $('#legend');
+  legend.innerHTML = D.categories.map(c => `<button type="button" data-cat="${c.key}" aria-pressed="true"><span class="sw" style="--sw:${catColor(c.key)}"></span>${c.label}</button>`).join('') +
+    `<span class="note"><span class="sw"></span>not yet</span><span class="note"><span class="sw half"></span>named only</span>`;
+  legend.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const k = b.dataset.cat;
+    if (hidden.has(k)) hidden.delete(k); else hidden.add(k);
+    b.classList.toggle('off', hidden.has(k)); b.setAttribute('aria-pressed', String(!hidden.has(k)));
+    applyHidden();
+  });
+  function applyHidden() {
+    strip.querySelectorAll('.seg').forEach(el => el.classList.toggle('dim', hidden.has(el.dataset.cat)));
+    document.querySelectorAll('#seg-table tbody tr').forEach(tr => tr.classList.toggle('hidden', hidden.has(tr.dataset.cat)));
+    drawTimeline();
+  }
+
+  // ---- charts
+  const labels = D.grid.map(tlabel);
+  const rgba = (hexc, a) => { const h = hexc.replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; };
+  const milestonePlugin = {
+    id: 'milestones',
+    afterDatasetsDraw(chart) {
+      const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+      const g = D.grid; const ink = css('--muted');
+      ctx.save(); ctx.font = '10px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillStyle = ink; ctx.strokeStyle = css('--rule'); ctx.setLineDash([2, 3]);
+      let lastX = -100, row = 0;
+      D.milestones.forEach(m => {
+        let i = g.findIndex(t => t >= m.ts); if (i < 0) i = g.length - 1;
+        const i0 = Math.max(0, i - 1), f = g[i] === g[i0] ? 0 : (m.ts - g[i0]) / (g[i] - g[i0]);
+        const px = x.getPixelForValue(i0) + f * (x.getPixelForValue(i) - x.getPixelForValue(i0));
+        ctx.beginPath(); ctx.moveTo(px, top + 8); ctx.lineTo(px, bottom); ctx.stroke();
+        row = (px - lastX < 24) ? (row + 1) % 3 : 0; lastX = px;
+        ctx.fillText(m.id, px, top + 4 - row * 10);
+      });
+      ctx.restore();
+    }
+  };
+  let timeline, activity;
+  function baseOpts(stacked, yTitle) {
+    const ink = css('--ink'), muted = css('--muted'), rule = css('--rule-soft');
+    return {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: { mode: 'index', intersect: false },
+      layout: { padding: { top: 34 } },
+      scales: {
+        x: { ticks: { color: muted, maxTicksLimit: 9, maxRotation: 0, font: { family: '"IBM Plex Mono", monospace', size: 11 } }, grid: { color: rule } },
+        y: { stacked, beginAtZero: true, title: { display: true, text: yTitle, color: muted, font: { family: '"Source Sans 3", sans-serif', size: 12 } }, ticks: { color: muted, font: { family: '"IBM Plex Mono", monospace', size: 11 }, callback: (v) => fmt(v) }, grid: { color: rule } },
+      },
+      plugins: {
+        legend: { position: 'bottom', labels: { color: ink, boxWidth: 12, boxHeight: 12, font: { family: '"Source Sans 3", sans-serif', size: 12.5 } } },
+        tooltip: { backgroundColor: css('--ink'), titleColor: css('--ground'), bodyColor: css('--ground'), titleFont: { family: '"IBM Plex Mono", monospace' }, bodyFont: { family: '"Source Sans 3", sans-serif' },
+          itemSort: (a, b) => b.raw - a.raw, filter: (i) => i.raw > 0,
+          callbacks: { label: (i) => ` ${i.dataset.label}: ${fmt(i.raw)}`, footer: (items) => stacked && items.length > 1 ? 'Total ' + fmt(items.reduce((s, i) => s + i.raw, 0)) : '' } },
+      },
+    };
+  }
+  function drawTimeline() {
+    const measure = document.querySelector('input[name=measure]:checked').value;
+    const split = document.querySelector('input[name=split]:checked').value;
+    const note = $('#chart-note');
+    let datasets, stacked = true, yTitle = 'functions';
+    if (measure === 'all') {
+      stacked = false; yTitle = 'count';
+      const acc = css('--accent'), amb = css('--amber'), mut = css('--muted');
+      datasets = [
+        { label: 'Reconstructed functions', data: D.funcs.total, borderColor: acc, backgroundColor: rgba(acc, .12), fill: 'origin', borderWidth: 2 },
+        { label: 'Ledger function records', data: D.ledger_total, borderColor: mut, borderDash: [5, 4], borderWidth: 1.5, fill: false },
+        { label: 'Reviewed names', data: D.names.total, borderColor: amb, borderWidth: 2, fill: false },
+        { label: 'Fragments', data: D.frag_total, borderColor: css('--c-core'), borderWidth: 1.5, fill: false },
+      ];
+      note.textContent = 'Unstacked. The ledger line jumps where existing C++ bodies were back-filled into the ledger; the reconstructed line dates each function by its first appearance instead.';
+    } else {
+      const src = measure === 'funcs' ? D.funcs : D.names;
+      yTitle = measure === 'funcs' ? 'functions' : 'named addresses';
+      if (split === 'harness') {
+        datasets = [['codex', 'Codex', css('--h-codex')], ['claude', 'Claude', css('--h-claude')]].map(([k, l, c], i) => ({ label: l, data: src.harness[k], borderColor: c, backgroundColor: rgba(c, .75), fill: i ? '-1' : 'origin', borderWidth: 1 }));
+        note.textContent = 'Stacked. Harness follows commit trailers.';
+      } else {
+        const keys = [...D.categories.map(c => c.key), 'other'].filter(k => !hidden.has(k));
+        datasets = keys.map((k, i) => ({ label: catLabel[k], data: src.cat[k], borderColor: catColor(k), backgroundColor: rgba(catColor(k), .82), fill: i ? '-1' : 'origin', borderWidth: 1 }));
+        note.textContent = hidden.size ? `${hidden.size} categor${hidden.size > 1 ? 'ies' : 'y'} hidden via the legend above.` : 'Stacked by address-band category.';
+      }
+    }
+    datasets.forEach(d => Object.assign(d, { pointRadius: 0, pointHitRadius: 6, tension: 0.15 }));
+    const cfg = { type: 'line', data: { labels, datasets }, options: baseOpts(stacked, yTitle), plugins: [milestonePlugin] };
+    if (timeline) timeline.destroy();
+    timeline = new Chart($('#timeline'), cfg);
+  }
+  function drawActivity() {
+    const hours = [];
+    const first = D.commits[0][0], last = D.grid[D.grid.length - 1];
+    const map = new Map(D.commits);
+    for (let t = first; t <= last; t += 3600) hours.push([t, map.get(t) || 0]);
+    const acc = css('--accent');
+    const cfg = { type: 'bar', data: { labels: hours.map(h => tlabel(h[0])), datasets: [{ label: 'commits', data: hours.map(h => h[1]), backgroundColor: rgba(acc, .7), borderWidth: 0, barPercentage: 1, categoryPercentage: .9 }] },
+      options: Object.assign(baseOpts(false, 'commits'), { plugins: { legend: { display: false }, tooltip: { callbacks: { label: (i) => ` ${i.raw} commits` } } } }) };
+    cfg.options.layout = { padding: { top: 4 } };
+    if (activity) activity.destroy();
+    activity = new Chart($('#activity'), cfg);
+  }
+  document.querySelectorAll('input[name=measure], input[name=split]').forEach(el => el.addEventListener('change', drawTimeline));
+
+  // ---- tables
+  const catRows = D.categories.map(c => {
+    const ss = segs.filter(s => s.cat === c.key);
+    const sum = (k) => ss.reduce((a, s) => a + s[k], 0);
+    return { key: c.key, label: c.label, n: ss.length, pool: sum('pool'), done: sum('done'), remaining: sum('remaining'), named: sum('named'), new24: sum('new24'), codex: sum('codex'), claude: sum('claude') };
+  });
+  const other = { key: 'other', label: catLabel.other, n: 0, pool: 0, done: D.funcs.cat.other[D.funcs.cat.other.length - 1], remaining: 0, named: D.names.cat.other[D.names.cat.other.length - 1], new24: 0, codex: 0, claude: 0 };
+  const splitBar = (r) => { const t = r.codex + r.claude; return t ? `<span class="split" title="Codex ${r.codex}, Claude ${r.claude}"><i style="width:${100 * r.codex / t}%;background:var(--h-codex)"></i><i style="width:${100 * r.claude / t}%;background:var(--h-claude)"></i></span>` : ''; };
+  $('#cat-table').innerHTML = `<thead><tr><th>Category</th><th class="num">Segments</th><th class="num">Pool</th><th class="num">Done</th><th class="num">Remaining</th><th>Done share</th><th class="num">Named</th><th class="num">Last 24 h</th><th>Codex · Claude</th></tr></thead><tbody>` +
+    [...catRows, other].map(r => { const denom = r.done + r.remaining; const p = pct(r.done, denom); return `<tr><td><span class="cat-dot" style="background:${catColor(r.key)}"></span>${r.label}</td><td class="num">${r.n || '–'}</td><td class="num">${r.pool ? fmt(r.pool) : '–'}</td><td class="num">${fmt(r.done)}</td><td class="num">${r.remaining ? fmt(r.remaining) : '–'}</td><td><span class="num">${denom ? p + '%' : '–'}</span>${denom ? `<span class="pbar"><i style="width:${p}%;background:${catColor(r.key)}"></i></span>` : ''}</td><td class="num">${fmt(r.named)}</td><td class="num">${r.new24 ? '+' + fmt(r.new24) : '–'}</td><td><span class="num">${r.codex} · ${r.claude}</span>${splitBar(r)}</td></tr>`; }).join('') + '</tbody>';
+
+  const cols = [['id', 'Seg', 'num'], ['start', 'Range', 'range'], ['cat', 'Category', 'cat'], ['keywords', 'Keywords', 'kw'], ['pool', 'Pool', 'num'], ['done', 'Done', 'num'], ['pct', 'Share', 'pct'], ['named', 'Named', 'num'], ['new24', 'Last 24 h', 'num']];
+  let sortKey = 'id', sortAsc = true;
+  segs.forEach(s => { s.pct = (s.done + s.remaining) ? s.done / (s.done + s.remaining) : 0; });
+  function renderSegTable() {
+    const rows = [...segs].sort((a, b) => { const va = a[sortKey], vb = b[sortKey]; const c = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb)); return sortAsc ? c : -c; });
+    $('#seg-table').innerHTML = `<thead><tr>${cols.map(([k, l, t]) => `<th class="sortable ${t === 'num' || t === 'pct' ? 'num' : ''} ${sortKey === k ? 'sorted ' + (sortAsc ? 'asc' : '') : ''}" data-key="${k}" tabindex="0">${l}</th>`).join('')}</tr></thead><tbody>` +
+      rows.map(s => `<tr data-cat="${s.cat}" class="${hidden.has(s.cat) ? 'hidden' : ''}"><td class="num">${s.id}</td><td class="mono">${hex(s.start)}–${hex(s.end)}</td><td><span class="cat-dot" style="background:${catColor(s.cat)}"></span>${catLabel[s.cat]}</td><td class="kw" title="${s.keywords.join(', ')}">${s.keywords.slice(0, 5).join(', ')}</td><td class="num">${fmt(s.pool)}</td><td class="num">${fmt(s.done)}</td><td class="num">${Math.round(100 * s.pct)}%<span class="pbar"><i style="width:${Math.round(100 * s.pct)}%;background:${catColor(s.cat)}"></i></span></td><td class="num">${fmt(s.named)}</td><td class="num">${s.new24 ? '+' + s.new24 : '–'}</td></tr>`).join('') + '</tbody>';
+  }
+  $('#seg-table').addEventListener('click', (e) => { const th = e.target.closest('th.sortable'); if (!th) return; const k = th.dataset.key; if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = k === 'id' || k === 'start' || k === 'cat' || k === 'keywords'; } renderSegTable(); });
+  $('#seg-table').addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches('th.sortable')) e.target.click(); });
+  renderSegTable();
+
+  // ---- theme changes: redraw charts with the new tokens
+  function redraw() { drawTimeline(); drawActivity(); }
+  redraw();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw);
+  new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>

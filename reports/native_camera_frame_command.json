@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_camera_frame_av",
+  "worker": "agent/orch3-camera-frame-av",
+  "base": "4c97c137",
+  "owned_addresses": [
+    "00b71360"
+  ],
+  "routine": {
+    "address": "00b71360",
+    "native": "00b71360",
+    "function": "00b71360",
+    "end_inclusive": "00b713c5",
+    "length": 102,
+    "coverage": "complete",
+    "source": "src/native_camera_frame_command.cpp",
+    "interface": "ECX actual camera, EDX added immutable context; RET; no semantic return",
+    "original_abi": "ECX actual camera; RET; ESI saved/restored; no semantic return",
+    "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f",
+    "no_ghidra_function": false
+  },
+  "host_steps": [
+    {
+      "address": "00b7137b",
+      "native": "00b285a0",
+      "function": "00b71360",
+      "slot": "00d5f0a8+a0",
+      "coverage": "complete",
+      "contract": "current renderer prepares actual camera, RET4"
+    },
+    {
+      "address": "00b71392",
+      "native": "00b26770",
+      "function": "00b71360",
+      "slot": "00d5f0a8+a4",
+      "coverage": "complete",
+      "contract": "current renderer binds captured borrowed viewport, RET4"
+    },
+    {
+      "address": "00b713c2",
+      "native": "00b21430",
+      "function": "00b71360",
+      "slot": "00d5f0a8+08",
+      "coverage": "complete",
+      "contract": "current renderer receives count0/null/flags/color address/by-value x87 depth/stencil, RET18h"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00b15e81",
+      "native": "00b71360",
+      "function": "00b156c0",
+      "argument": "B1BF40 result EAX -> ECX"
+    },
+    {
+      "address": "00b161f0",
+      "native": "00b71360",
+      "function": "00b156c0",
+      "argument": "B1BF40 result EAX -> ECX"
+    },
+    {
+      "address": "00b4f2d6",
+      "native": "00b71360",
+      "function": "00b4f1c0",
+      "argument": "camera [ESI+34] -> ECX"
+    },
+    {
+      "address": "00b1d9a0",
+      "native": "00b71360",
+      "function": "00b1d950",
+      "argument": "EBP captured from context+08 -> ECX"
+    }
+  ],
+  "producer": {
+    "function": "00b71a80",
+    "viewport": "00b71add",
+    "flags": "00b71c4b",
+    "stencil": "00b71c69",
+    "enabled": "00b71c6f",
+    "depth": "00b71c75",
+    "color": "00b71c8d",
+    "existing_layout": "include/bsp/native_camera_owner.hpp: NativeCameraTailStorage; src/native_camera_owner.cpp static offsets"
+  },
+  "evidence": {
+    "target_project": "C:/Users/sqz269/bsp.gpr",
+    "target_program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_equals_installed_PE": true,
+    "complete_spans": 5,
+    "complete_bytes": 1275,
+    "spans": [
+      {
+        "start": "00b71360",
+        "end_inclusive": "00b713c5",
+        "length": 102
+      },
+      {
+        "start": "00b285a0",
+        "end_inclusive": "00b287bf",
+        "length": 544
+      },
+      {
+        "start": "00b26770",
+        "end_inclusive": "00b26891",
+        "length": 290
+      },
+      {
+        "start": "00b21430",
+        "end_inclusive": "00b214da",
+        "length": 171
+      },
+      {
+        "start": "00d5f0a8",
+        "end_inclusive": "00d5f14f",
+        "length": 168
+      }
+    ],
+    "Ghidra_mutations": false,
+    "fixture_directory": "J:/PROG/battlestations-pacific-decompile-orch3-camera-frame-av/local/native_camera_frame_command",
+    "pins": "local/native_camera_frame_command/pins.json"
+  },
+  "validation": {
+    "strict_MSVC_Win32_source_compile": "passed /MD /W4 /WX /fp:strict",
+    "verify_seeds": "passed eight installed/live seed ranges",
+    "repository_build": "passed scripts/build.ps1 with ignored CMAKE_PROJECT_INCLUDE_BEFORE target_sources registration; fresh Release libraries",
+    "existing_tests": "2/2 reconstructed_math and native_math_differential passed",
+    "report_call_verification": "7 call rows checked, 0 failures; 3 resolved indirect virtual calls",
+    "current_library_fixture": "passed 15 original/source pairs; probe.cpp only against current bsp_core,bsp_lua511,bsp_zlib121 libraries",
+    "fixture_flags": "/MD /W4 /WX /fp:strict /O2 /Oy- /EHsc /link /MANIFEST:EMBED",
+    "real_device": "NVIDIA GeForce RTX 5090 D3D9 HAL nvldumd.dll; hidden window; real COM forwarding and Win32 critical sections",
+    "pixel_readback": "passed RGB1256AB in selected viewport",
+    "scenarios": [
+      "finite Clear, flags-zero signaling NaN, flags-zero denormal: each CW007F/027F/067F/0E7F, MXCSR1F80/9FC0",
+      "disabled camera with inaccessible context, no dispatch",
+      "unmasked invalid CW027E: FSTP[ESP] raises C0000090 before Clear",
+      "C++ throw after real HAL Clear: guard drains, current receiver attempted counter remains0"
+    ],
+    "observations": [
+      "prepare callback changes current renderer and viewport; viewport callback changes current renderer, camera viewport and Clear fields; all current dispatches and field timing match",
+      "borrowed viewport published from captured pointer while camera now points elsewhere; ownership counts unchanged",
+      "incoming x87 stack value, CW, exact resulting SW and MXCSR match; HAL adds MXCSR precision status in both paths",
+      "flags0 still causes x87 invalid or denormal status; unmasked exception records match status/control/tag and live x87 data",
+      "full callback storage traces compare with only three declared reference receiver-vptr relocations normalized"
+    ],
+    "original_parent_relocations": "exactly3 F8D394 address operands at offsets14,31,66 -> actual fixture current-global slot2200D394; all other parent bytes unchanged",
+    "reference_profile_relocations": "slots+08/+A0/+A4 ->3 integer EDX-context tail bridges; reference receiver vptrs -> relocated profile23000000; source uses D5F0A8 native tag and original profile words",
+    "original_descendants_executed": false,
+    "gameplay_validated": false,
+    "fixture_artifacts": [
+      "prepare.py",
+      "original.hpp",
+      "00b71360.bin",
+      "00b285a0.bin",
+      "00b26770.bin",
+      "00b21430.bin",
+      "00d5f0a8.bin",
+      "pins.json",
+      "original_assembly.txt",
+      "probe.cpp",
+      "run.ps1",
+      "build.ps1",
+      "extra.cmake",
+      "runtime.log",
+      "build.log",
+      "probe.map",
+      "traces.bin",
+      "frames.bin",
+      "manifest.json"
+    ]
+  },
+  "limits": [
+    "Explicit new source context; no drop-in binary caller ABI or semantic return promise.",
+    "Concrete D5F0A8 renderer and complete existing provider domains; unsupported profile traps.",
+    "Original parent fixture uses current-library descendants through three integer context bridges, not original descendant machine code.",
+    "Focused warm-cache camera; cold getter, clip and ambient behavior rely on complete provider evidence.",
+    "No gameplay, rendered game frame, or whole native descendant EH/SEH equivalence claim."
+  ],
+  "functions": [
+    {
+      "address": "00b71360",
+      "native": "00b71360",
+      "function": "00b71360",
+      "end_inclusive": "00b713c5",
+      "length": 102,
+      "coverage": "complete",
+      "source": "src/native_camera_frame_command.cpp",
+      "interface": "ECX actual camera, EDX added immutable context; RET; no semantic return",
+      "original_abi": "ECX actual camera; RET; ESI saved/restored; no semantic return",
+      "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f",
+      "no_ghidra_function": false,
+      "end_exclusive": "00b713c6",
+      "cpp_symbol": "execute_native_camera_frame_command_00b71360",
+      "header": "include/bsp/native_camera_frame_command.hpp",
+      "module": "native_camera_frame_command",
+      "ghidra_name": "BSP_Camera_ExecuteFrameCommand",
+      "native_prototype": "void BSP_Camera_ExecuteFrameCommand(void)",
+      "native_calling_convention": "__thiscall",
+      "new_native_body": true,
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage and concrete current profiles; original register/stack ABI and complete live/disk spans reviewed. Focused original-byte comparisons cover documented paths only. New source interfaces, not complete native FH3/SEH or gameplay validation. Evidence: docs/NATIVE_CAMERA_FRAME_COMMAND.md; reports/native_camera_frame_command.json."
+    }
+  ],
+  "integration_av_review": {
+    "combined_validation": "passed exact merged Win32 build and six current-library-only probes within documented coverage",
+    "game_validated": false,
+    "saved_function_names_and_original_signatures": 15,
+    "signature_readback_passed": true,
+    "full_stored_function_bodies": true,
+    "previous_signatures": {
+      "00b1f170": "00b1f170 BSP_RenderCommand_Construct  undefined BSP_RenderCommand_Construct(void)  body 00b1f170 - 00b1f1ef",
+      "00b1f1f0": "00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  undefined BSP_RenderCommand_ConstructWithSeparateOwner(void)  body 00b1f1f0 - 00b1f273",
+      "00b1edc0": "00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  undefined BSP_RenderCommand_InitializeContextAndBatches(void)  body 00b1edc0 - 00b1ef56",
+      "00b1ddd0": "00b1ddd0 BSP_RenderCommand_Destroy  undefined BSP_RenderCommand_Destroy(void)  body 00b1ddd0 - 00b1dfec",
+      "00b1e6b0": "00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  undefined BSP_RenderCommand_ScalarDeletingDestructor(void)  body 00b1e6b0 - 00b1e6cd",
+      "00b262c0": "00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  undefined BSP_D3D9Renderer_ReleaseResourcesForReset(void)  body 00b262c0 - 00b26493",
+      "00b241c0": "00b241c0 BSP_D3D9Renderer_ClearBindingCache  undefined BSP_D3D9Renderer_ClearBindingCache(void)  body 00b241c0 - 00b24457",
+      "00b27b00": "00b27b00 FUN_00b27b00  undefined FUN_00b27b00(void)  body 00b27b00 - 00b27b81",
+      "00b71360": "00b71360 BSP_Camera_ExecuteFrameCommand  undefined BSP_Camera_ExecuteFrameCommand(void)  body 00b71360 - 00b713c5",
+      "00b1e990": "00b1e990 BSP_InstanceGroups_UploadAndQueue  undefined BSP_InstanceGroups_UploadAndQueue(void)  body 00b1e990 - 00b1eb7d",
+      "00b556f0": "00b556f0 FUN_00b556f0  undefined FUN_00b556f0(void)  body 00b556f0 - 00b55777",
+      "00b55780": "00b55780 BSP_BuildingInstanceGenerator_WriteRecord  undefined BSP_BuildingInstanceGenerator_WriteRecord(void)  body 00b55780 - 00b55b16",
+      "00b6dc50": "00b6dc50 BSP_Node_GetPointLights  undefined BSP_Node_GetPointLights(void)  body 00b6dc50 - 00b6dc56",
+      "00b72110": "00b72110 BSP_Scene_GetLightingOwner  undefined BSP_Scene_GetLightingOwner(void)  body 00b72110 - 00b72113",
+      "00b85590": "00b85590 BSP_DrawSection_SetInstanceCount  undefined BSP_DrawSection_SetInstanceCount(void)  body 00b85590 - 00b85599"
+    },
+    "original_signature_readback": "00b1f170 BSP_RenderCommand_Construct  void * __thiscall BSP_RenderCommand_Construct(void * this, void * scene, void * camera, void * target)  body 00b1f170 - 00b1f1ef\n00b1f1f0 BSP_RenderCommand_ConstructWithSeparateOwner  void * __thiscall BSP_RenderCommand_ConstructWithSeparateOwner(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1f1f0 - 00b1f273\n00b1edc0 BSP_RenderCommand_InitializeContextAndBatches  void __thiscall BSP_RenderCommand_InitializeContextAndBatches(void * this, void * scene, void * camera, void * second_owner, void * target)  body 00b1edc0 - 00b1ef56\n00b1ddd0 BSP_RenderCommand_Destroy  void __thiscall BSP_RenderCommand_Destroy(void * this)  body 00b1ddd0 - 00b1dfec\n00b1e6b0 BSP_RenderCommand_ScalarDeletingDestructor  void * __thiscall BSP_RenderCommand_ScalarDeletingDestructor(void * this, uint flags)  body 00b1e6b0 - 00b1e6cd\n00b262c0 BSP_D3D9Renderer_ReleaseResourcesForReset  void __thiscall BSP_D3D9Renderer_ReleaseResourcesForReset(void * this)  body 00b262c0 - 00b26493\n00b241c0 BSP_D3D9Renderer_ClearBindingCache  void __thiscall BSP_D3D9Renderer_ClearBindingCache(void * this)  body 00b241c0 - 00b24457\n00b27b00 BSP_BindNativeRendererMaterialThirdStates  void __thiscall BSP_BindNativeRendererMaterialThirdStates(void * this, void * owner)  body 00b27b00 - 00b27b81\n00b71360 BSP_Camera_ExecuteFrameCommand  void __thiscall BSP_Camera_ExecuteFrameCommand(void * this)  body 00b71360 - 00b713c5\n00b1e990 BSP_InstanceGroups_UploadAndQueue  void __thiscall BSP_InstanceGroups_UploadAndQueue(void * this)  body 00b1e990 - 00b1eb7d\n00b556f0 BSP_WriteNativeGenericInstance  void __thiscall BSP_WriteNativeGenericInstance(void * this, void * entry, void * output)  body 00b556f0 - 00b55777\n00b55780 BSP_BuildingInstanceGenerator_WriteRecord  void __thiscall BSP_BuildingInstanceGenerator_WriteRecord(void * this, void * entry, void * output)  body 00b55780 - 00b55b16\n00b6dc50 BSP_Node_GetPointLights  void * __thiscall BSP_Node_GetPointLights(void * this)  body 00b6dc50 - 00b6dc56\n00b72110 BSP_Scene_GetLightingOwner  void * __thiscall BSP_Scene_GetLightingOwner(void * this)  body 00b72110 - 00b72113\n00b85590 BSP_DrawSection_SetInstanceCount  void __thiscall BSP_DrawSection_SetInstanceCount(void * this, uint count)  body 00b85590 - 00b85599\n",
+    "function_definitions": [
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b27b00",
+              "end_address": "00b27b82"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b27b00",
+              "end_address": "00b27b81",
+              "bytes_disassembled": 130,
+              "message": "Successfully disassembled 130 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b27b00",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b27b00",
+              "function_name": "FUN_00b27b00",
+              "entry_point": "00b27b00",
+              "body_size": 130,
+              "message": "Function created successfully at 00b27b00"
+            }
+          },
+          {
+            "defined": "00b27b00",
+            "end": "00b27b82",
+            "name": null,
+            "after": "Function: FUN_00b27b00 at 00b27b00\nSignature: undefined FUN_00b27b00(void)\nEntry: 00b27b00\nBody: 00b27b00 - 00b27b81"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b556f0",
+              "end_address": "00b55778"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b556f0",
+              "end_address": "00b55777",
+              "bytes_disassembled": 136,
+              "message": "Successfully disassembled 136 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b556f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b556f0",
+              "function_name": "FUN_00b556f0",
+              "entry_point": "00b556f0",
+              "body_size": 136,
+              "message": "Function created successfully at 00b556f0"
+            }
+          },
+          {
+            "defined": "00b556f0",
+            "end": "00b55778",
+            "name": null,
+            "after": "Function: FUN_00b556f0 at 00b556f0\nSignature: undefined FUN_00b556f0(void)\nEntry: 00b556f0\nBody: 00b556f0 - 00b55777"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    ],
+    "cross_review": "Independent reviews checked complete cache/deleting dispatch and row/count reloads, command string allocation/publication and cleanup scopes, full parent resource traversal/guard order, both instance writers and parent x87 argument schedule. The parent upload float helper was replaced with the exact native argument schedule; the original/source x87 stack-pressure case passed. Root preserved the resource guard DWORD access width.",
+    "current_report_call_check": "reports/native_camera_frame_command.json: 7 call rows checked, 0 failed"
+  },
+  "final_merged_validation_av": {
+    "tested_commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
+    "reviewed_source_commit": "f66b1f18ac44801765897540f916327935d84d64",
+    "build": "Strict MSVC Win32 passed; local/av-final-combined-build.log",
+    "existing_ctests_passed": 2,
+    "source_header_hashes": {
+      "src/native_render_command_owner.cpp": "5d97fb0c22f2f6d79062bb4a8a6fee5ad897e41f6c96988c63e439a3c080298d",
+      "include/bsp/native_render_command_owner.hpp": "a4c5397ff2764c14dfa1890ad68530046ecbb0b4b3789be97c677e30cdc59c30",
+      "src/native_renderer_resource_release.cpp": "c2afc920bcccfcac41120ca589a7fdb5d475a43bd63f8f7206a65213558ed359",
+      "include/bsp/native_renderer_resource_release.hpp": "809ac960625203986aa35240da5ce75301a3bd59fbc19d00f8197ab03983caa0",
+      "src/native_renderer_cache_clear.cpp": "8dd73d58ba377bf82c74eef612b7f02d54dbf0788303bf3f8c95ae1ed8251a7d",
+      "include/bsp/native_renderer_cache_clear.hpp": "f4da4a96a07b5dfb72fae59a7159520e996154350ffe8fe3fd01b4e5f67d2748",
+      "src/native_camera_frame_command.cpp": "9b88d61f567a3228ee519772b369d8c86fc21968eb10308da94f202f2f0ee269",
+      "include/bsp/native_camera_frame_command.hpp": "842e2795af3798d18f6be7d2d2b4217446a4a44b177d089d8c625c083d42097b",
+      "src/native_instance_group_upload.cpp": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+      "include/bsp/native_instance_group_upload.hpp": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99"
+    },
+    "library_sha256": {
+      "bsp_core.lib": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": {
+      "commit": "8d224ed49b2bf8ab78d31777cbc609b05e6454f0",
+      "passed": true,
+      "libraries": {
+        "bsp_core.lib": "6796f4dff7b8ff67df1fbdd69770ed1a4042c091774f2cbca7784a0dcd75b54c",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+      },
+      "results": [
+        {
+          "key": "command_actual",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp",
+          "source_sha256": "378b876726b347e8e5a793b5995014f80625d4bb5181c868962308896bcc3c88",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "C:\\Users\\sqz269\\bsp-av-command\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-command/av_command_actual_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_actual.log",
+          "log_sha256": "b01661d43b6c2798d01f7362da4cbf4f585b06106d77e8d39d6c10b06ede68d9",
+          "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_actual_probe.exe",
+          "executable_sha256": "c8f36585a35e5d570c1aad82e3b0aa6c43d7620eddd7bd9fe514175a76322b7f",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS full3/4arg native command constructors and populated teardown, 1459 normalized words; SAME actual string publication/ring for diagnostics and small/large group names, held actual model/context/batch, scalar flags2, pool reuse and shutdown. Original command EH and callback-mutated indexed end not executed here."
+          ]
+        },
+        {
+          "key": "command_old",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp",
+          "source_sha256": "d2e660101cf190783144cff49f4c1cfc91247dafced797467947caa521ab8723",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "C:\\Users\\sqz269\\bsp-av-command\\native_command_owner_check.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-command/av_command_old_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-command_old.log",
+          "log_sha256": "7d97a926615aed132657abd65a0bfe4829c6ce30f0b93493f49fd134cff544a4",
+          "executable": "C:\\Users\\sqz269\\bsp-av-command\\av_command_old_probe.exe",
+          "executable_sha256": "d9bc0b29eab2d46847904bccdcf8250bd607edebbee838d20bb4efa05d9110b5",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS full3/4arg native command constructors and populated teardown, 1451 normalized words; live group-end reload, held actual model/context/batch, scalar flags2, pool reuse and shutdown."
+          ]
+        },
+        {
+          "key": "camera",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp",
+          "source_sha256": "473d73a23a422a2e3aee849f1ab70fa3a6fe937b95d588001a0c2fa7a3018e2b",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x30000000",
+            "/DYNAMICBASE:NO",
+            "/FIXED",
+            "/MAP:C:\\Users\\sqz269\\bsp-orch3-av\\camera/av_camera_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-camera.log",
+          "log_sha256": "476c2cdc8e5242e688c491852c381e0a21c351de42c457f79ab00767c08e291e",
+          "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\camera\\av_camera_probe.exe",
+          "executable_sha256": "057e229285a41048d02bbbbeaf9c4f1fd1f4b87dee70feec99094a2162bbb91a",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS scenario=0 cw=007F mxcsr_in=1F80 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=007F mxcsr_in=1F80 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=027F mxcsr_in=9FC0 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=027F mxcsr_in=9FC0 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=067F mxcsr_in=1F80 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=067F mxcsr_in=1F80 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=0E7F mxcsr_in=9FC0 source=0 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=0 cw=0E7F mxcsr_in=9FC0 source=1 words=57669 state=2 viewport=1 clear=1 sw=3800 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=007F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=007F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=027F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=027F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=067F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=067F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=0E7F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=1 cw=0E7F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3801 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=007F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=007F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=027F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=027F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=067F mxcsr_in=1F80 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=067F mxcsr_in=1F80 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=1FA0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=0E7F mxcsr_in=9FC0 source=0 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=2 cw=0E7F mxcsr_in=9FC0 source=1 words=46133 state=2 viewport=1 clear=0 sw=3802 mxcsr_out=9FE0 fault=00000000 caught=00000000",
+            "PASS scenario=3 cw=007F mxcsr_in=1F80 source=0 words=11536 state=0 viewport=0 clear=0 sw=3800 mxcsr_out=1F80 fault=00000000 caught=00000000",
+            "PASS scenario=3 cw=007F mxcsr_in=1F80 source=1 words=11536 state=0 viewport=0 clear=0 sw=3800 mxcsr_out=1F80 fault=00000000 caught=00000000",
+            "PASS scenario=4 cw=027E mxcsr_in=1F80 source=0 words=46134 state=2 viewport=1 clear=0 sw=0000 mxcsr_out=0000 fault=C0000090 caught=00000000",
+            "PASS scenario=4 cw=027E mxcsr_in=1F80 source=1 words=46134 state=2 viewport=1 clear=0 sw=0000 mxcsr_out=0000 fault=C0000090 caught=00000000",
+            "PASS scenario=5 cw=007F mxcsr_in=1F80 source=0 words=57665 state=2 viewport=1 clear=1 sw=0000 mxcsr_out=0000 fault=00000000 caught=C0DE0005",
+            "PASS scenario=5 cw=007F mxcsr_in=1F80 source=1 words=57665 state=2 viewport=1 clear=1 sw=0000 mxcsr_out=0000 fault=00000000 caught=C0DE0005",
+            "PASS 15 original/full-library pairs; real HAL readback, live renderer dispatch, FP and exception boundaries"
+          ]
+        },
+        {
+          "key": "upload",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp",
+          "source_sha256": "c674a0dfc32c9098daa6f2e7398671e8e80355d7322c3b04a003d8dfdddd7862",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "/Oy-",
+            "/Gy",
+            "/Gw",
+            "/D_CRT_SECURE_NO_WARNINGS",
+            "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "gdi32.lib",
+            "winmm.lib",
+            "ole32.lib",
+            "shlwapi.lib",
+            "dxguid.lib",
+            "dinput8.lib",
+            "dsound.lib",
+            "ws2_32.lib",
+            "/OPT:REF",
+            "/OPT:NOICF",
+            "/INCREMENTAL:NO",
+            "/MAP:C:\\Users\\sqz269\\bsp-orch3-av\\upload/av_upload_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-upload.log",
+          "log_sha256": "ddc5908c43bad7cb011171fed3e6f61250a9d402ff363bb58849cd3768f8b37e",
+          "executable": "C:\\Users\\sqz269\\bsp-orch3-av\\upload\\av_upload_probe.exe",
+          "executable_sha256": "459caaa4d5f09197a865402c4e9775868e84bb8c2b016cef5c574a99a190c764",
+          "attempts": 1,
+          "retry_policy": "none",
+          "pass_lines": [
+            "PASS generator bodies: nine focused rows, 600 DWORDs, signed clamp/unsigned conversion and forward aliases",
+            "PASS actual compiled argument adapter: seven incoming x87 slots, native/source status=0841, visibility=ffc00000",
+            "PASS composed 48-byte generator, two real generated models, 44 raw sources, ninther/tie sort, real D3D9 writes, two actual output entries and batch routing",
+            "PASS actual compiled argument adapter: seven incoming x87 slots, native/source status=0841, visibility=ffc00000",
+            "PASS composed 144-byte generator, two real generated models, 44 raw sources, ninther/tie sort, real D3D9 writes, two actual output entries and batch routing",
+            "PASS full B1E990 normal composition: 2266 normalized/output DWORDs; actual map/unmap counters and canonical finalization; no gameplay or hardware-SEH claim."
+          ]
+        },
+        {
+          "key": "resource",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp",
+          "source_sha256": "67101a328e3630c8e5c69271dc8979cecb1706ec2d4b303344e5ade2c6df5d53",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\probe_release.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x10000000",
+            "/DYNAMICBASE",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release/av_resource_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-resource.log",
+          "log_sha256": "e45eab31a60a64677eeaa7fea69e7349350be2a67981d65a9bfb25b6aa819ec2",
+          "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\resource_release\\av_resource_probe.exe",
+          "executable_sha256": "439ca6f45e73115d90246f471bd385fb23048bec830cfa85ea73473d2a070fac",
+          "attempts": 3,
+          "retry_policy": "only pre-execution address-occupied exit77, up to8",
+          "pass_lines": [
+            "PASS B262C0 full-parent 4 comparisons 43840 bytes; ready0/1,20 textures,four stream0 calls,actual counts/current query rows/current texture+surface cursor ends,callback-free records,full B241C0,original FH3 throw99 cleanup. Exactly3 global DWORD relocations and1 EH-registration DWORD to jump-only host trampoline; concrete dependency bridges; no gameplay/ABI claim."
+          ]
+        },
+        {
+          "key": "cache",
+          "passed": true,
+          "returncode": 0,
+          "source": "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp",
+          "source_sha256": "bf9582e1e6c1fb49ca4daec14924055522427b566a04d8e001792ef4fdec2c69",
+          "inputs": [
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp"
+          ],
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "compiler_arguments": [
+            "/nologo",
+            "/EHsc",
+            "/std:c++17",
+            "/W4",
+            "/WX",
+            "/O2",
+            "/MD",
+            "/fp:strict",
+            "/IJ:\\PROG\\battlestations-pacific-decompile-orch3-20260910/include",
+            "C:\\Users\\sqz269\\bsp-av-cache-clear\\probe.cpp",
+            "/FoC:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.obj",
+            "/FeC:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.exe",
+            "/link",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+            "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+            "user32.lib",
+            "d3d9.lib",
+            "advapi32.lib",
+            "shell32.lib",
+            "/MANIFEST:EMBED",
+            "/SAFESEH:NO",
+            "/BASE:0x10000000",
+            "/DYNAMICBASE",
+            "/MAP:C:\\Users\\sqz269\\bsp-av-cache-clear/av_cache_probe.map"
+          ],
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-cache.log",
+          "log_sha256": "5ca2c14d53ad8dcc13afd41d60b5b190512544b9a537be0ffb3730139ef7d650",
+          "executable": "C:\\Users\\sqz269\\bsp-av-cache-clear\\av_cache_probe.exe",
+          "executable_sha256": "0460e356cc94d7f59ed3fb519c6dec4d2b68507b865d24b7278d536fd50eee5b",
+          "attempts": 1,
+          "retry_policy": "only pre-execution address-occupied exit77, up to8",
+          "pass_lines": [
+            "PASS 7 original-parent/source comparisons, 54704 postimage bytes; actual material/cube/frame terminals; all26 retained; current owner/row reloads and throws73/91; original bytes and dependency bridges explicit."
+          ]
+        }
+      ]
+    },
+    "implemented_native_normal_bodies": 10,
+    "extended_existing_command_lifetime_bodies": 5,
+    "saved_function_names_and_original_signatures": 15,
+    "defined_full_functions": [
+      "00b27b00..00b27b81",
+      "00b556f0..00b55777"
+    ],
+    "full_stored_function_body_readback_passed": true,
+    "checked_numeric_report_call_rows": 69,
+    "failed_call_rows": 0,
+    "indirect_targets": "See individual current-profile/assembly/fixture evidence; indirect targets are not mechanically proven by numeric call-row checks.",
+    "game_validated": false,
+    "complete_native_fh3_compatibility_validated": false,
+    "remaining_boundaries": [
+      "Current actual owner/service/publication domains are required. Source interfaces are not drop-in native ABI replacements.",
+      "Renderer B29670 device recreation and retained logical vertex base+4C runtime producer identity remain application dependencies.",
+      "No visible scene, whole game render submission or gameplay validation.",
+      "Original-byte parent fixtures compose with concrete current-source descendants; they do not independently validate all original descendant bodies.",
+      "Selected FP/exception paths are bounded evidence; complete original FH3/SEH/concurrency behavior remains unvalidated."
+    ],
+    "cache_preexecution_mapping_limitation": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\av-current-cache-mapping-collision.log",
+      "sha256": "f0d2d93d78a0c1138da784cf22cc11a209bc97962fa476a8a30eb7cd932d6209",
+      "observation": "One cache replay launch batch exhausted8 pre-execution original-page-occupied exit77 attempts; focused relaunch passed. No native routine ran on rejected mappings and no behavioral failure was retried."
+    }
+  },
+  "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+  "worker_capture_status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed"
+}

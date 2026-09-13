@@ -1,0 +1,158 @@
+{
+  "packet": "orch6_generic_input_live_m",
+  "status": "conditional runtime binding; Win32 build and process run verified",
+  "source": "src/game_hosts_units.cpp",
+  "header": "include/bsp/game_hosts_units.hpp",
+  "abi_compatible": false,
+  "game_validated": false,
+  "scope": "00953CC0 for actual generic leaves while canonical roles0/4 equal8 and owned flag634 is0",
+  "calls": [
+    {
+      "address": "00953CFD",
+      "native": "0095DC40",
+      "function": "00953CC0",
+      "kind": "indirect",
+      "binding": "All three proven generic primary tables +1F0h; complete false-role arm over actual unit+63Ch owner"
+    },
+    {
+      "address": "00953D98",
+      "native": "006D1F20",
+      "function": "00953CC0",
+      "kind": "indirect",
+      "binding": "All three generic primary tables +1D8h; verified RET4 no-op"
+    }
+  ],
+  "primary_table_input_slots": [
+    {
+      "table": "00CFFDE0",
+      "slot": "00CFFFD0",
+      "bytes": "40 dc 95 00"
+    },
+    {
+      "table": "00CFF3F8",
+      "slot": "00CFF5E8",
+      "bytes": "40 dc 95 00"
+    },
+    {
+      "table": "00CFB028",
+      "slot": "00CFB218",
+      "bytes": "40 dc 95 00"
+    }
+  ],
+  "dependencies": [
+    "reports/unit_generic_motion_phase.json",
+    "reports/unit_generic_input_phase.json",
+    "reports/generic_motion_noop_definition.json"
+  ],
+  "no_ghidra_function": [],
+  "limits": [
+    "No native input or view owner is fabricated; assigned role or nonzero634 remains unavailable.",
+    "Temporary gate61 value is not native storage and the zero flag prevents its read.",
+    "Fixed-step scheduling remains the existing process adaptation.",
+    "Actual world candidate admission, observer lifetime and live neighbour refresh are still unbound.",
+    "Win32 fixture and process-run proof are distinct from original-game gameplay and visual validation."
+  ],
+  "validation": {
+    "compiled_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
+    "exe_sha256": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2 existing tests passed",
+    "process_run": {
+      "compiled_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
+      "run_commit": "fdb806e25116119a52a43ffca58b6382137c98e7",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_fdb806e2.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_m.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_m.csv"
+      ],
+      "exe_sha256": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
+      "preserved_executable": "local\\orch6_combined_fdb806e2.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "f1200eb7b5023a137fd01e977ef3749eb36361350701cc4cf38a62f0258c0488",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.98841381072998,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "artifacts": {
+      "local/orch6_worker_archive_lm.json": "ba353f03681e30e8a40733896db31f21e42382897de789b651b45e5cf26778d6",
+      "local/orch6_report_calls_lm.log": "322ea4153f6bd99555ec7fd341ae6361de3f0f7c2a8f3defece1c79c2e3de08b",
+      "local/orch6_integrate_m_20260912T222716.log": "3a3167862346fb9c5e246191553c36636e3fac52b8a1034d9a16cbddefa5b8f4",
+      "local/orch6_combined_fdb806e2.exe": "a350f0a0c41fb73b323f0b30c55622e1b04e9b7f598b30b4feb3b9b5326b40bb",
+      "local/orch6_combined_fdb806e2.json": "889ff0e6eab490af9551a9ca477127b5714f2d91ddaadc2637a69bfde157d6ad",
+      "local/orch6_combined_fdb806e2.log": "fa1ef666cdaeeaa646bb4284a1744f16ecbe18049bf36cc25289422fe1ff5065",
+      "local/orch6_combined_fdb806e2.csv": "6b7aa369bbef93660fe469c8be21c2e741ae5fdaa053cbb22d81e45cf1c7e573",
+      "local/orch6_combined_fdb806e2_stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

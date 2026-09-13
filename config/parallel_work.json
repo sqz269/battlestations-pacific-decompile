@@ -10041,6 +10041,111 @@
         "00b265c0",
         "00b26680"
       ]
+    },
+    {
+      "id": "orch3_native_render_command_actual_strings_av",
+      "packet": "orch3_native_render_command_actual_strings_av",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b1f170",
+        "00b1f1f0",
+        "00b1edc0",
+        "00b1ddd0",
+        "00b1e6b0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_command_owner.hpp",
+        "src/native_render_command_owner.cpp",
+        "docs/NATIVE_RENDER_COMMAND_ACTUAL_STRINGS.md",
+        "reports/native_render_command_actual_strings.json"
+      ],
+      "evidence": "reports/native_render_command_actual_strings.json",
+      "new_native_bodies": 0,
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_renderer_resource_release_av",
+      "packet": "orch3_native_renderer_resource_release_av",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b262c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_resource_release.hpp",
+        "src/native_renderer_resource_release.cpp",
+        "docs/NATIVE_RENDERER_RESOURCE_RELEASE.md",
+        "reports/native_renderer_resource_release.json"
+      ],
+      "evidence": "reports/native_renderer_resource_release.json",
+      "new_native_bodies": 1,
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_renderer_cache_clear_av",
+      "packet": "orch3_native_renderer_cache_clear_av",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b241c0",
+        "00b27b00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_cache_clear.hpp",
+        "src/native_renderer_cache_clear.cpp",
+        "docs/NATIVE_RENDERER_CACHE_CLEAR.md",
+        "reports/native_renderer_cache_clear.json"
+      ],
+      "evidence": "reports/native_renderer_cache_clear.json",
+      "new_native_bodies": 2,
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_camera_frame_command_av",
+      "packet": "orch3_native_camera_frame_command_av",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b71360"
+      ],
+      "code_ownership": [
+        "include/bsp/native_camera_frame_command.hpp",
+        "src/native_camera_frame_command.cpp",
+        "docs/NATIVE_CAMERA_FRAME_COMMAND.md",
+        "reports/native_camera_frame_command.json"
+      ],
+      "evidence": "reports/native_camera_frame_command.json",
+      "new_native_bodies": 1,
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
+    },
+    {
+      "id": "orch3_native_instance_group_upload_av",
+      "packet": "orch3_native_instance_group_upload_av",
+      "worker": "orch3-20260910",
+      "done": true,
+      "state": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "function_addresses": [
+        "00b1e990",
+        "00b556f0",
+        "00b55780",
+        "00b6dc50",
+        "00b72110",
+        "00b85590"
+      ],
+      "code_ownership": [
+        "include/bsp/native_instance_group_upload.hpp",
+        "src/native_instance_group_upload.cpp",
+        "docs/NATIVE_INSTANCE_GROUP_UPLOAD.md",
+        "reports/native_instance_group_upload.json"
+      ],
+      "evidence": "reports/native_instance_group_upload.json",
+      "new_native_bodies": 6,
+      "boundary": "Current actual owners/services required; visible render composition/gameplay unverified; see final_merged_validation_av for exact source and fixture limits"
     }
   ],
   "snapshot_after_analysis": {
