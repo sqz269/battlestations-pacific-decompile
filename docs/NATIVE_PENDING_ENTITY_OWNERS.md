@@ -165,3 +165,7 @@ actual wrappers through real `std::atexit` in reverse registration order.
 This is a new C++ ABI, not a binary replacement. Original exception dispatch,
 concurrency, corrupted rings, whole producer/cancel/drain behavior and game
 validation remain unproved. No permanent test suite is added.
+
+## Correction from docs/UNIT_DAMAGE_AND_DEATH.md
+
+The root correction is now implemented in `src/unit_damage.cpp` at commit `9cc35911`: only the recursion low byte is tested, and parent cause is reread after the accepted child predicate, clearing child cause when zero. The producer remains a host projection; this does not establish native queue population or whole-producer runtime equivalence. See `reports/unit_destroy_recursion_correction.json`.

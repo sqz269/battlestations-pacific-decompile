@@ -1,0 +1,215 @@
+{
+  "packet": "orch6_reconstruction_r",
+  "status": "three_workers_reviewed_integrated_and_application_observer_startup_process_checked",
+  "packets": [
+    {
+      "packet": "observer-event-producer-r",
+      "commit": "7aa55f9b53eaa5c84527b9e18f13888ecfa4ecd6",
+      "report": "reports/observer_event_producer.json",
+      "call_rows_checked": 16,
+      "coverage": "Eight complete wrapper/getter bodies and one bounded presence-sample fragment; original first endpoint is the event, with producer-specific virtual getter contracts.",
+      "fixture": "Five paired cases, 184 original bytes, 913 ordered words per side, 12 getter calls, zero mismatches. Both sides reuse the same reviewed core; wrapper evidence is separate from the independent core fixture.",
+      "limits": "Real unit secondary callback implementations, original exceptions, concurrency and gameplay remain outside this packet."
+    },
+    {
+      "packet": "observer-dispatch-schedule-r",
+      "commit": "bb8272a802ac6fc275007371a43abd070c0cb57b",
+      "report": "reports/observer_dispatch_schedule.json",
+      "call_rows_checked": 35,
+      "coverage": "Complete normal 00695F90 schedule consumes the actual dispatch alias and captured recursive lock, captures the appended interval, skips nulled slots and restores its own interval after nested dispatch.",
+      "fixture": "Ten original spans, 1485 bytes, 88 canonical words match; five original vector allocations. Callback shortening and restore growth are included. Source-only exception check leaves vector size four and lock depth zero.",
+      "correction": "Reviewed production code removes copied STL bodies and reuses canonical vector mechanics; original STL fixture bytes remain only as the ignored oracle.",
+      "limits": "Three indirect call rows are separately documented. Native FH3 execution and returning invalid-handler mutation are not proved."
+    },
+    {
+      "packet": "native-pending-entity-owners-r",
+      "commit": "fa1816859f4bb6805f934c172595f2edad1224ac",
+      "report": "reports/native_pending_entity_owners.json",
+      "call_rows_checked": 19,
+      "coverage": "Four complete explicit CRT owner wrappers use actual raw destroy/kill owners. Sentinel and teardown reuse canonical helpers after complete relative-call-normalized byte/provider equality.",
+      "fixture": "Eight complete spans, 290 bytes, four native/source comparisons, one source allocation-failure case and actual library providers through real CRT shutdown; zero mismatches.",
+      "limits": "Native producer/cancel/drain execution, exceptions and concurrency are not supplied by the owner component. Stored teardown flow remains partial."
+    },
+    {
+      "packet": "observer-application-r",
+      "commit": "1e88b3b956f5a3109201740eb5450b9f0d6d68ef",
+      "report": "reports/game_observer_runtime.json",
+      "call_rows_checked": 3,
+      "coverage": "GameStartup calls actual CCD6A0 dispatch publication before represented CD2D80 settings initialization, as proven by ascending native CRT table entries. Actual application raw manager owns teardown; owner+4 alias is retained after drain.",
+      "fixture": "Actual 120-frame application process run logs owner publication and raw-manager destruction; shared observer lock remains lazy without a real consumer.",
+      "limits": "Relative order of the two represented initializers only; not reconstruction of the full CRT initializer table. Runtime endpoint/event delivery is not yet instantiated."
+    },
+    {
+      "packet": "destroy-recursion-correction-r",
+      "commit": "9cc35911",
+      "report": "reports/unit_destroy_recursion_correction.json",
+      "call_rows_checked": 3,
+      "coverage": "Existing 00926C80 projection tests the recursion low byte and rereads parent cause after accepted child predicate, clearing child cause when zero.",
+      "fixture": "Independent live assembly and disk bytes plus required Win32 build and existing checks; no new whole-body differential fixture.",
+      "limits": "No claim that the combined mission run invokes this destroy branch."
+    }
+  ],
+  "validation": {
+    "compiled_commit": "61223cd893778d1eb27ba0872e4affd78f8916d1",
+    "exe_sha256": "5cd31e110f74fcbd3d64d848567bafd9ba6788fb401cbb0f3a689a9a85455a8f",
+    "build": "MSVC Win32 Release passed",
+    "ctest": "2 existing CTests passed",
+    "build_record": {
+      "compiled_commit": "61223cd893778d1eb27ba0872e4affd78f8916d1",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-observer-dispatch-schedule-r",
+        "agent/orch6-observer-event-producer-r",
+        "agent/orch6-native-pending-entity-owners-r",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_r_20260913T011617.log"
+    },
+    "process_run": {
+      "compiled_commit": "61223cd893778d1eb27ba0872e4affd78f8916d1",
+      "run_commit": "61223cd893778d1eb27ba0872e4affd78f8916d1",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_61223cd8.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_r.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_r.csv"
+      ],
+      "exe_sha256": "5cd31e110f74fcbd3d64d848567bafd9ba6788fb401cbb0f3a689a9a85455a8f",
+      "preserved_executable": "local\\orch6_combined_61223cd8.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "f81183a82574f358c01bb6f2decad179932197aeb5fa46d2187981d4f170b7a0",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "1c3e51a5bc559b3e4d9490a647d7b0261560f7b356e6dedd247d69af3727951b"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 13.008464097976685,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    }
+  },
+  "evidence_archive": {
+    "manifest": "local/orch6_worker_archive_r.json",
+    "sha256": "9ee4b6ee45246ff69dec1ff6fc22fed2c230227e48117de423086b5b8986e368",
+    "artifacts": 688,
+    "includes": "Recorded native/source fixtures, historical corrected drafts, exact linked libraries and pending-owner compiler/linker inputs."
+  },
+  "analysis_followups": [
+    "Twelve reviewed event/getter/pending-owner name records applied to Ghidra; existing comments preserved, prior values retained in local/ghidra-annotations-20260913T081929Z.json, project saved and affected exports refreshed.",
+    "Defined two 8-byte secondary-pointer adjustment thunks and two 10-byte FH3 handler entries, saved and exported after live/disk verification; no callback body implementation is implied.",
+    "Cleared two false-free call overrides and decoded three continuation bytes each; addresses0069580B and006954FF remain outside stored Ghidra body membership. Skipped padding0069542A..2F was left unchanged."
+  ],
+  "limits": [
+    "Only recorded compiled inputs and exercised paths are process checked.",
+    "Actual application observer dispatch ownership now runs, but new wrapper/core/pending-list behavior is fixture checked rather than demonstrated by the mission process run.",
+    "Unit endpoint storage, real callbacks and native pending queue population/delivery remain continuing work.",
+    "Original-game visual/gameplay parity, native exceptions/concurrency and drop-in binary ABI compatibility are not established."
+  ],
+  "follow_up": [
+    "S: actual primary/secondary raw unit observer prefixes and explicit aliases from stable GameUnitSlot.",
+    "S: primary observed endpoint detach/destruction and original unit teardown order.",
+    "S: concrete process-lifetime pending-list storage and real CRT exit registration, before existing frame consumer binding."
+  ]
+}

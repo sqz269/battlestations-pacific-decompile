@@ -1,0 +1,85 @@
+{
+  "repairs": [
+    {
+      "function": "00695760",
+      "owner": "agent/orch6-20260912",
+      "when": "2026-09-13T08:10:50Z",
+      "decompile_lines_before": 64,
+      "gaps": [
+        {
+          "site": "00695806",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "0069580b",
+          "gap_end_exclusive": "0069580e",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00695806",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "0069580b",
+            "gap_end_exclusive": "0069580e",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00695806 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 63,
+      "gaps_remaining": 0
+    },
+    {
+      "function": "006953c0",
+      "owner": "agent/orch6-20260912",
+      "when": "2026-09-13T08:10:51Z",
+      "decompile_lines_before": 86,
+      "gaps": [
+        {
+          "site": "006954fa",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "006954ff",
+          "gap_end_exclusive": "00695502",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "006954fa",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "006954ff",
+            "gap_end_exclusive": "00695502",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 006954fa (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 85,
+      "gaps_remaining": 0
+    }
+  ],
+  "body_membership_audit": {
+    "query": "bsp.py ghidra proto 0069580b 006954ff --brief",
+    "addresses_without_containing_function": [
+      "0069580b",
+      "006954ff"
+    ],
+    "scope": "Continuations decoded and exported, but stored function-body membership remains incomplete; not a full metadata repair.",
+    "unchanged_padding": "0069542a..0069542f"
+  }
+}
