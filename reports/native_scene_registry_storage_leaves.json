@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "packet": "orch3_native_scene_registry_storage_leaves_ba",
+  "status": "complete_native_leaf_bodies_strict_source_compile_original_byte_fixture_passed_pending_library_integration",
+  "utc": "2026-09-13T16:08:47.637474+00:00",
+  "normal_body_count": 3,
+  "native_body_bytes": 121,
+  "files": [
+    "include/bsp/native_scene_registry_storage_leaves.hpp",
+    "src/native_scene_registry_storage_leaves.cpp",
+    "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
+    "reports/native_scene_registry_storage_leaves.json"
+  ],
+  "functions": [
+    {
+      "address": "00b82390",
+      "end_inclusive": "00b823a9",
+      "native_bytes": 26,
+      "cpp_symbol": "bsp::allocate_native_scene_registry_sentinel_00b82390",
+      "coverage": "complete",
+      "source": "src/native_scene_registry_storage_leaves.cpp",
+      "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
+      "original_abi": "ECX ignored; no stack arguments; EAX pointer; RET",
+      "native_prototype_evidence": "void* __thiscall fn(void*)",
+      "evidence": [
+        "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b82390.asm.txt",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
+      ]
+    },
+    {
+      "address": "00b823b0",
+      "end_inclusive": "00b823e2",
+      "native_bytes": 51,
+      "cpp_symbol": "bsp::allocate_native_scene_registry_node_00b823b0",
+      "coverage": "complete",
+      "source": "src/native_scene_registry_storage_leaves.cpp",
+      "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
+      "original_abi": "ECX ignored; next/previous/key-source three stack DWORDs; EAX pointer; RET Ch",
+      "native_prototype_evidence": "void* __thiscall fn(void*, uint32_t, uint32_t, const void*)",
+      "evidence": [
+        "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b823b0.asm.txt",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
+      ]
+    },
+    {
+      "address": "00b82570",
+      "end_inclusive": "00b8259b",
+      "native_bytes": 44,
+      "cpp_symbol": "bsp::fill_native_scene_registry_iterators_00b82570",
+      "coverage": "complete",
+      "source": "src/native_scene_registry_storage_leaves.cpp",
+      "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
+      "original_abi": "ECX destination; EDX unsigned count; pair-source plus three ignored stack DWORDs; RET 10h; EAX incidental",
+      "native_prototype_evidence": "void __fastcall fn(void*, uint32_t, const void*, uint32_t, uint32_t, uint32_t)",
+      "evidence": [
+        "docs/NATIVE_SCENE_REGISTRY_STORAGE_LEAVES.md",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\00b82570.asm.txt",
+        "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\strict_disasm.txt"
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b82392",
+      "native": "00bf681b",
+      "function": "00b82390",
+      "contract": "PUSH Ch; BF681B cdecl; ADD ESP,4"
+    },
+    {
+      "address": "00b823b2",
+      "native": "00bf681b",
+      "function": "00b823b0",
+      "contract": "PUSH Ch; BF681B cdecl; ADD ESP,4"
+    },
+    {
+      "address": "00b8362d",
+      "native": "00b82390",
+      "function": "00b83600",
+      "contract": "ECX registry+4; no leaf stack args; RET"
+    },
+    {
+      "address": "00b82b53",
+      "native": "00b82390",
+      "function": "00b82b50",
+      "contract": "ECX list owner; no leaf stack args; RET"
+    },
+    {
+      "address": "00b83b21",
+      "native": "00b823b0",
+      "function": "00b83700",
+      "contract": "Push key-source, current previous, next; RET Ch"
+    },
+    {
+      "address": "00b83366",
+      "native": "00b823b0",
+      "function": "00b832f0",
+      "contract": "Push EDI+8 key-source, current EBX+4 previous, EBX next; RET Ch"
+    },
+    {
+      "address": "00b83298",
+      "native": "00b82570",
+      "function": "00b83220",
+      "contract": "ECX allocated destination; EDX count; four stack words; RET 10h"
+    },
+    {
+      "address": "00b82ba4",
+      "native": "00b82570",
+      "function": "00b82b80",
+      "contract": "ECX destination; EDX count; first of four stack words source; RET 10h"
+    }
+  ],
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b82390",
+        "length": 26,
+        "sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b823b0",
+        "length": 51,
+        "sha256": "5181d9bcd37ed6c4336012414e7725bb5bba8dc156eda7bf3ef43b7b15bc2109",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b82570",
+        "length": 44,
+        "sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf681b",
+        "length": 105,
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b83600",
+        "length": 120,
+        "sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b82b50",
+        "length": 24,
+        "sha256": "0a38a99c2b4489257a1daac7dcf7a2ec62d3e7fc6a0c528d84a391b39d40893c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b83700",
+        "length": 1247,
+        "sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b832f0",
+        "length": 276,
+        "sha256": "a85fb887cd740dd87bedfa9b68fed80937204ba845056b0c4dc1a802238188cd",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b83220",
+        "length": 150,
+        "sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b82b80",
+        "length": 50,
+        "sha256": "5a95eca353fe61c3f8dde52f81a927b9fb3e3cda7c19337cf75979159ca1206d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf9f1a",
+        "length": 195,
+        "sha256": "89943c6ab4d47d638b1f5fc58698ee7bbe279eb7748d347edd54dd9819596e4f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00c055b1",
+        "length": 34,
+        "sha256": "ee46ba523d066e7aa16ef3d636e1869ecfeab38fec0c26e9b02266b6e44f42e1",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf6802",
+        "length": 25,
+        "sha256": "7d11d73b61068786e29ac218765bbf3774791e6571ee7fb76a0c07853edc26e3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf63a6",
+        "length": 88,
+        "sha256": "f7fe4d0f89633bc027a593b2d30c3311a8bcbf6b061d589ab6f301cb92cccf0d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf6885",
+        "length": 74,
+        "sha256": "34b35f6e9cbaaf9cac0aa426bbcbd07072c70a0969a1dbc45acadd20624d8f05",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "source_sha256": {
+    "include/bsp/native_scene_registry_storage_leaves.hpp": "5e2f67b2533fa78220c15b7abe02cb0e69bf76530a53ab9214807b994845e9da",
+    "src/native_scene_registry_storage_leaves.cpp": "49b15bea43c399ed05d50943b1f48ab2ff7309a3caaf3d13aed3f607c0b2fcaa"
+  },
+  "producer_evidence": {
+    "raw_node": "B82390 and B823B0 allocate Ch and produce +0 next/+4 previous/+8 borrowed key; sentinel +8 untouched",
+    "raw_iterator": "B83600 temporary pair {registry+4,sentinel}; B83220 forwards raw pair-source; eight-byte pairs",
+    "owner_boundary": "Existing SceneNodeRegistry is a distinct typed owner, not a raw overlay. No inner 3Ch resource or light lifetime is reconstructed."
+  },
+  "checks": {
+    "strict_compile": "PASS /W4 /WX /O2 /MD /fp:strict; emitted COFF reviewed",
+    "baseline_build": "PASS existing build log from worker predecessor; unregistered new source excluded",
+    "baseline_ctest": "PASS reconstructed_math and native_math_differential",
+    "verify_seeds": {
+      "count": 8,
+      "all_equal": true
+    },
+    "fixture": {
+      "result": "PASS",
+      "fixtures": 1,
+      "pairs": 9,
+      "compared_bytes": 932,
+      "owned_original_bytes": 121,
+      "relocated_call_operands": 2,
+      "shared_rebuilt_allocator": true,
+      "source_recompiled": true,
+      "library_root": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-registry-leaves-ba",
+      "source_root": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-registry-leaves-ba",
+      "pins_before_after_equal": true,
+      "pinned_files": 1148,
+      "baseline_commit": "e109c2182d6e59aa1d5a4206fa756afbf9af534c"
+    },
+    "ghidra": "READONLY; BSP Client.verify target guard before every live CLI batch",
+    "repository_tests_added": 0,
+    "call_rows": 8,
+    "numeric_calls": "PASS 8 rows, zero failures"
+  },
+  "fixture_rebuild": {
+    "directory": "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves",
+    "command": "pwsh -NoProfile -File run.ps1 -Root <selected-root> -LibraryRoot <selected-root>",
+    "default_source_inputs": [
+      "external probe.cpp"
+    ],
+    "default_libraries": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib"
+    ],
+    "initial_only_switch": "-WorkerSource compiles the still-unregistered new source explicitly",
+    "native_bytes": "121 unchanged owned bytes except two relative CALL displacement operands (8 bytes) redirected to the shared rebuilt allocator boundary",
+    "allocator": "Existing singleton_lifetime_allocate full malloc/new-handler retry/std::bad_alloc contract; decorator initializes genuine allocation preimage and current external key. No result or failure is fabricated. Original BF681B bytes are evidence only."
+  },
+  "limitations": [
+    "Original allocator byte execution and CRT exception/global identity unproved; both fixture sides use a shared rebuilt provider.",
+    "Allocator failure, null/wrap results, private stack or fresh-allocation key aliasing, inaccessible wrap and huge unsigned count remain inspection-only.",
+    "Initial source compiled explicitly with baseline libraries; current-library-only replay requires primary registration and build.",
+    "New allocator-context C++ APIs are not drop-in binary replacements.",
+    "No whole registry constructors, growth, insertion, erasure, teardown, inner lighting resource, lifetime, gameplay or runnable-game claim."
+  ],
+  "capture_archive": {
+    "archive": "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\worker_capture.zip",
+    "sha256": "a619dde0f5e046607c8f88c7bfd484e9242f0990d827f0d6b7d9443b8c96e2f5",
+    "members": 1229,
+    "uncompressed_bytes": 63314367,
+    "manifest": "C:\\Users\\sqz269\\bsp-ba-scene-registry-leaves\\worker_capture_manifest.json",
+    "verified": true,
+    "includes": "15 live/disk spans, full native/caller/provider listings, 3 libraries, own and provider sources, all header pins, probe, inc, recipe, logs, objects and executable"
+  }
+}
