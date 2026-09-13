@@ -1,0 +1,882 @@
+{
+  "packet": "orch6_ship_avoidance_owners_h",
+  "status": "read_only_assessment_complete; runtime prerequisites remain explicit",
+  "doc": "docs/SHIP_AI_AVOIDANCE_OWNERS.md",
+  "owned_tracked_files": [
+    "docs/SHIP_AI_AVOIDANCE_OWNERS.md",
+    "reports/ship_ai_avoidance_owners.json"
+  ],
+  "base_commit": "2195d2f5",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra constructs Client and invokes verify() before each live query; config/target.json inspected"
+  },
+  "routines": [
+    {
+      "entry": "009f3f20",
+      "end_inclusive": "009f3f7f",
+      "coverage": "complete wrapper read; no new implementation",
+      "original_abi": "ECX unit; no stack arguments; RET",
+      "evidence": "local/owners_009f3f20.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009f3ba0",
+      "end_inclusive": "009f3c70",
+      "coverage": "partial: pre-brain construction and offsets; later virtual/attach behavior remains existing external contracts",
+      "original_abi": "ECX composite; unit stack argument; RET 4",
+      "evidence": "local/owners_009f3ba0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "0072bbd0",
+      "end_inclusive": "0072bc6d",
+      "coverage": "complete base body read; stores confined to 00h..57h",
+      "original_abi": "ECX base; one stack argument; RET 4",
+      "evidence": "local/owners_0072bbd0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009f39c0",
+      "end_inclusive": "009f3b99",
+      "coverage": "partial: pre-navigation construction; later state registration not reconstructed",
+      "original_abi": "ECX brain; unit stack argument; RET 4",
+      "evidence": "local/owners_009f39c0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009f1160",
+      "end_inclusive": "009f1413",
+      "coverage": "partial: pre-navigation constructor call and unit/director pointer producers; later brain initialization not reconstructed",
+      "original_abi": "ECX brain; unit stack argument; RET 4",
+      "evidence": "local/owners_009f1160.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e4330",
+      "end_inclusive": "009e46c2",
+      "coverage": "partial read of existing complete reconstruction: searcher and request stores, caller and callee offsets",
+      "original_abi": "ECX nav; unit stack argument; RET 4",
+      "evidence": "local/owners_009e4330.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "00bf681b",
+      "end_inclusive": "00bf6883",
+      "coverage": "partial: allocator success/retry path; EH bodies not reconstructed",
+      "original_abi": "cdecl size_t; EAX allocation; caller cleanup 4",
+      "evidence": "local/owners_00bf681b.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "00bf9f1a",
+      "end_inclusive": "00bf9fdc",
+      "coverage": "partial: ordinary heap path flags; alternate heap and CRT failure services not reconstructed",
+      "original_abi": "cdecl size_t; EAX allocation",
+      "evidence": "local/owners_00bf9f1a.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "0080e160",
+      "end_inclusive": "0080e166",
+      "coverage": "complete getter read; existing reconstruction reused",
+      "original_abi": "ECX unit; EAX=[unit+738h]; RET",
+      "evidence": "MOV EAX,[ECX+738h] at 0080E160, one-byte RET at 0080E166",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "00810f60",
+      "end_inclusive": "008110cf",
+      "coverage": "partial: allocation/director ownership stores; later hull and class behavior not reconstructed",
+      "original_abi": "ECX unit; no new ABI claim for whole routine",
+      "evidence": "local/owners_00810f60.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "008366d0",
+      "end_inclusive": "0083678b",
+      "coverage": "partial read of existing compiled constructor: actual avoidance-byte stores and receiver provenance",
+      "original_abi": "ECX director; unit stack argument; RET 4",
+      "evidence": "local/owners_008366d0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "00835a40",
+      "end_inclusive": "00835abb",
+      "coverage": "complete sender body read; called message/router services remain existing contracts",
+      "original_abi": "ECX director; byte-valued stack argument; RET 4",
+      "evidence": "local/owners_00835a40.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "008a3b10",
+      "end_inclusive": "008a3cc4",
+      "coverage": "partial: two Lua arguments, direct unit+738h and sender call; broader Lua/error/parts path not reconstructed",
+      "original_abi": "Lua callback; exact register/stack evidence preserved; no drop-in ABI claimed",
+      "evidence": "local/owners_008a3b10.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "00835640",
+      "end_inclusive": "0083568e",
+      "coverage": "complete derived switch read; base tail behavior consumed from existing implementation",
+      "original_abi": "ECX director; message pointer; RET 4 or tail jump",
+      "evidence": "local/owners_00835640.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "008362a0",
+      "end_inclusive": "008363d4",
+      "coverage": "partial: value-only property output for avoidance bytes; sink contract external",
+      "original_abi": "ECX director; property sink pointer; RET 4",
+      "evidence": "local/owners_008362a0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "008367f0",
+      "end_inclusive": "0083691c",
+      "coverage": "partial: mutable property address exposure; sink target and wider restore not reconstructed",
+      "original_abi": "ECX director; property sink pointer; RET 4",
+      "evidence": "local/owners_008367f0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "0081f980",
+      "end_inclusive": "008206eb",
+      "coverage": "partial: property call at 00820046 and unit+738h producer at 00820027 only",
+      "original_abi": "ECX unit captured in ESI; whole ABI not recovered here",
+      "evidence": "local/owners_0081f980.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "007214c0",
+      "end_inclusive": "00721544",
+      "coverage": "partial: snapshot avoidance-byte producer; base snapshot contract reused",
+      "original_abi": "ECX message; director pointer; RET 4",
+      "evidence": "local/owners_007214c0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "007219c0",
+      "end_inclusive": "00721a38",
+      "coverage": "partial: snapshot avoidance-byte apply; base apply contract reused",
+      "original_abi": "ECX message; director pointer; RET 4",
+      "evidence": "local/owners_007219c0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "0077c2a0",
+      "end_inclusive": "0077c469",
+      "coverage": "partial: session presence/stage/mode gates and local enqueue; network and delivery not reconstructed",
+      "original_abi": "ECX endpoint; message, channel, flags; RET 0Ch",
+      "evidence": "local/owners_0077c2a0.asm and local/owners_0077c2a0_tail.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009da6e0",
+      "end_inclusive": "009da860",
+      "coverage": "complete scheduling body read; existing compiled sequence reused",
+      "original_abi": "ECX nav; float seconds argument unused; RET 4",
+      "evidence": "local/owners_009da6e0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009d7050",
+      "end_inclusive": "009d724e",
+      "coverage": "partial evidence read: integer key miss and mandatory old-box reads; existing complete core reused",
+      "original_abi": "ECX searcher; query pointer; RET 4",
+      "evidence": "local/owners_009d7050.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009f1420",
+      "end_inclusive": "009f1bba",
+      "coverage": "partial: request-reset tail 009F1B71..009F1B9A and EDI receiver provenance; no new prepass reconstruction",
+      "original_abi": "ECX brain retained in EDI; seconds; RET 4",
+      "evidence": "local/owners_009f1420.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e1170",
+      "end_inclusive": "009e14b7",
+      "coverage": "partial: request producer branches verified; no new whole-state reconstruction",
+      "original_abi": "ECX state; brain through state+4h; float argument; RET 4",
+      "evidence": "local/owners_009e1170.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e14c0",
+      "end_inclusive": "009e1607",
+      "coverage": "partial: request producer branches verified; no new whole-state reconstruction",
+      "original_abi": "ECX state; brain through state+4h; float argument; RET 4",
+      "evidence": "local/owners_009e14c0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e1950",
+      "end_inclusive": "009e201a",
+      "coverage": "partial: request producer branches verified; no new whole-state reconstruction",
+      "original_abi": "ECX state; brain through state+4h; float argument; RET 4",
+      "evidence": "local/owners_009e1950.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e2020",
+      "end_inclusive": "009e23a5",
+      "coverage": "partial: request producer branches verified; no new whole-state reconstruction",
+      "original_abi": "ECX state; brain through state+4h; float argument; RET 4",
+      "evidence": "local/owners_009e2020.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009e23b0",
+      "end_inclusive": "009e26bf",
+      "coverage": "partial: request producer branches verified; no new whole-state reconstruction",
+      "original_abi": "ECX state; brain through state+4h; float argument; RET 4",
+      "evidence": "local/owners_009e23b0.asm",
+      "reconstructed_or_annotated_here": false
+    },
+    {
+      "entry": "009eb660",
+      "end_inclusive": "009ec277",
+      "coverage": "partial: 009EBDAA callback receiver/arguments only; arc core owned by another worker",
+      "original_abi": "ECX nav retained in ESI; whole sector ABI not reconstructed here",
+      "evidence": "local/owners_009eb660.asm",
+      "reconstructed_or_annotated_here": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "009f3f3e",
+      "native": "00bf681b",
+      "function": "009f3f20",
+      "contract": "new(2268h); ADD ESP,4 at 009F3F43"
+    },
+    {
+      "address": "009f3f59",
+      "native": "009f3ba0",
+      "function": "009f3f20",
+      "contract": "ECX allocation; ESI original unit pushed; callee RET 4"
+    },
+    {
+      "address": "009f3bc1",
+      "native": "0072bbd0",
+      "function": "009f3ba0",
+      "contract": "ECX composite; PUSH 0; callee RET 4; no stores beyond composite+57h"
+    },
+    {
+      "address": "009f3be5",
+      "native": "009f39c0",
+      "function": "009f3ba0",
+      "contract": "ECX=composite+58h; EBP unit pushed; callee RET 4"
+    },
+    {
+      "address": "009f39e5",
+      "native": "009f1160",
+      "function": "009f39c0",
+      "contract": "ECX incoming brain unchanged; unit pushed; callee RET 4"
+    },
+    {
+      "address": "009f118d",
+      "native": "009e4330",
+      "function": "009f1160",
+      "contract": "ECX=brain+8h; EDI unit pushed; callee RET 4"
+    },
+    {
+      "address": "00bf6833",
+      "native": "00bf9f1a",
+      "function": "00bf681b",
+      "contract": "same allocation size; POP ECX cleans four bytes"
+    },
+    {
+      "address": "00810f85",
+      "native": "00bf681b",
+      "function": "00810f60",
+      "contract": "new(250h); ADD ESP,4 at 00810F8A"
+    },
+    {
+      "address": "00810fa0",
+      "native": "008366d0",
+      "function": "00810f60",
+      "contract": "ECX allocation; unit ESI pushed; result stored unit+738h at 00810FA9"
+    },
+    {
+      "address": "00835a61",
+      "native": "0075b430",
+      "function": "00835a40",
+      "contract": "message kind 5Ah; message base construction consumed from existing contract"
+    },
+    {
+      "address": "00835aa5",
+      "native": "0077c2a0",
+      "function": "00835a40",
+      "contract": "ECX=director+34h endpoint; message, 7, 0; callee RET 0Ch"
+    },
+    {
+      "address": "008a3c67",
+      "native": "00835a40",
+      "function": "008a3b10",
+      "contract": "ECX=[unit ESI+738h]; byte from actual Lua argument 1; callee RET 4"
+    },
+    {
+      "address": "007219ca",
+      "native": "00721890",
+      "function": "007219c0",
+      "contract": "existing base snapshot apply precedes derived stores; contract reused"
+    },
+    {
+      "address": "007214c9",
+      "native": "00721280",
+      "function": "007214c0",
+      "contract": "existing base snapshot producer precedes derived copies; contract reused"
+    },
+    {
+      "address": "00820046",
+      "native": "008367f0",
+      "function": "0081f980",
+      "contract": "ECX director from unit+738h at 00820027; property sink pointer; callee RET 4"
+    },
+    {
+      "address": "0077c44d",
+      "native": "0076e520",
+      "function": "0077c2a0",
+      "contract": "session+1EF0 enqueue on local routing arm; delivery remains external"
+    },
+    {
+      "address": "009da6f6",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "ECX=[nav+3FCh] unit; zero stack args; result +242h read independently at each site"
+    },
+    {
+      "address": "009da73f",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "ECX=[nav+3FCh] unit; zero stack args; result +242h read independently at each site"
+    },
+    {
+      "address": "009da78c",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "ECX=[nav+3FCh] unit; zero stack args; result +242h read independently at each site"
+    },
+    {
+      "address": "009da7dd",
+      "native": "0080e160",
+      "function": "009da6e0",
+      "contract": "ECX=[nav+3FCh] unit; zero stack args; result +242h read independently at each site"
+    },
+    {
+      "address": "009da724",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "ECX selected list at searcher+18h; then cache key=-1; old box unchanged"
+    },
+    {
+      "address": "009da76e",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "ECX selected list at searcher+18h; then cache key=-1; old box unchanged"
+    },
+    {
+      "address": "009da7bb",
+      "native": "004158a0",
+      "function": "009da6e0",
+      "contract": "ECX selected list at searcher+18h; then cache key=-1; old box unchanged"
+    },
+    {
+      "address": "009da854",
+      "native": "009d7050",
+      "function": "009da6e0",
+      "contract": "ECX=nav+A24h; disjoint stack query x/z from184/188, integer168 key, extent from3C8; RET 4"
+    },
+    {
+      "address": "009f1b71",
+      "native": "00424c40",
+      "function": "009f1420",
+      "contract": "actual settings singleton+4h controls party filter; request land byte set true independently"
+    },
+    {
+      "address": "009ebdaa",
+      "native": "00415970",
+      "function": "009eb660",
+      "contract": "ECX=nav+A3Ch, searcher0 selected list; arc core is other worker contract; no core-body claim"
+    },
+    {
+      "address": "00836889",
+      "native": "property_sink+vtable10",
+      "function": "008367f0",
+      "contract": "ECX sink; bool type3 and POINTER director+242h paired with literal landCollisionAvoidance; target unread"
+    },
+    {
+      "address": "00836339",
+      "native": "property_sink+vtable0c",
+      "function": "008362a0",
+      "contract": "ECX sink; bool type3 and COPIED VALUE paired with same name; target unread"
+    }
+  ],
+  "searcher_initialization": {
+    "receivers": {
+      "brain": "composite+58h",
+      "nav": "brain+8h",
+      "searchers": [
+        "nav+A24h",
+        "nav+A44h",
+        "nav+A64h"
+      ]
+    },
+    "written_relative_fields": {
+      "00": "enabled byte 1",
+      "14": "integer cache key -1",
+      "18": "list head 0",
+      "1c": "list key 0"
+    },
+    "untouched_relative_words": [
+      "04",
+      "08",
+      "0c",
+      "10"
+    ],
+    "negative_result_scope": "Checked pre-navigation constructor chain contains no producer. Existing other callee contracts do not initialize searcher boxes; no assertion about arbitrary opaque side effects or all possible restore paths.",
+    "allocation": "operator new -> _malloc; ordinary HeapAlloc path flags0; no zero-fill guarantee",
+    "heap_import": {
+      "iat": "00ce20f8",
+      "module": "KERNEL32.dll",
+      "name": "HeapAlloc"
+    },
+    "first_use": "009D706B key miss branches009D70F9; old max/min extents read009D70F9..009D710B before overwrite",
+    "remaining_input": "actual prior box words or explicitly non-native initialization policy; neither supplied here"
+  },
+  "director": {
+    "owner": "unit+738h allocated/constructed by00810F60; cached brain+AB8h; getter0080E160 rereads unit owner",
+    "constructor_land_value": true,
+    "constructor_store": "00836730 (BL=1 from008366F4)",
+    "authored_name": "landCollisionAvoidance at00D09E64",
+    "writers": [
+      "00836730 constructor",
+      "0083567D sub-kind9 apply",
+      "00721A09 state snapshot apply",
+      "00836889 mutable property sink",
+      "00720E68 unreferenced direct setter"
+    ],
+    "snapshot_producer": "00721516 reads director+242h;0072151F writes message+46h;007219F7 reads it for00721A09",
+    "lua_binding": {
+      "name": "NavigatorSetAvoidLandCollision",
+      "registration": "00E0BC60 name pointer00D10708; function pointer008A3B10 at00E0BC64",
+      "arguments": "unit Lua argument0 from00888AA0; boolean argument1 from00B66250",
+      "sender_call": "008A3C67"
+    },
+    "runtime": "GameUnitsHost::Impl::commands owns GameCommandsHost::Impl::directors; GameDirector lacks these flags; no canonical WeaponDirectorState currently present",
+    "unresolved": "actual endpoint/property/state-message delivery and full constructor services; borrowed constants cannot stand in for mutable owner"
+  },
+  "request": {
+    "canonical_existing_record": "GameShipAiHost::Impl::Controller::avoidance (ShipAiAvoidanceRequest)",
+    "mapping": {
+      "enable_3f4": "brain+3F4h = nav+3ECh, torpedo",
+      "side_filter_3f8": "brain+3F8h = nav+3F0h, party",
+      "flag_3fc": "brain+3FCh = nav+3F4h, land"
+    },
+    "constructor_helper": "ship_ai_avoidance_request_constructed_009e468b; currently not copied into runtime request",
+    "prepass_helper": "ship_ai_avoidance_request_prepass_009f1b7b; runtime currently stops before tail; settings+4 input not represented",
+    "settings_known_producers": [
+      "0083BCD5 immediate1",
+      "008D0852 Lua override; existing SHIP_AI_SETTINGS_BLOCK contract"
+    ],
+    "state_land_stores": {
+      "009e1170": [
+        "009e11ea",
+        "009e12ff",
+        "009e13d2"
+      ],
+      "009e14c0": [
+        "009e15bb",
+        "009e15e4"
+      ],
+      "009e1950": [
+        "009e1c28",
+        "009e1ea2"
+      ],
+      "009e2020": [
+        "009e2235",
+        "009e22d8"
+      ],
+      "009e23b0": [
+        "009e25cc",
+        "009e2669"
+      ]
+    },
+    "runtime_sync_gaps": [
+      "construction leaves request at C++ false/-1/false",
+      "prepass request reset omitted",
+      "cruise signature has no request reference",
+      "clearance reads constructor nav_block.flag_3f4/plan_state_3f0 rather than live request",
+      "row avoidance_enabled names torpedo member",
+      "non-replan frames must retain published request"
+    ]
+  },
+  "arc_list_owner": {
+    "site": "009EBDAA",
+    "function": "009EB660",
+    "receiver": "nav+A3Ch = searcher0+18h",
+    "runtime": "callback returns false; no native selected-list owner yet",
+    "required": "same owned list refreshed by009DA6E0/query core, native zone/corner lifetime, matching allocator/clear; arc body belongs to other worker"
+  },
+  "no_ghidra_function": [
+    {
+      "entry": "00720e40",
+      "end_inclusive": "00720e46",
+      "last_instruction": "RET",
+      "last_instruction_address": "00720e46",
+      "last_instruction_length": 1,
+      "coverage": "complete raw getter; no definition/name requested by this packet"
+    },
+    {
+      "entry": "00720e50",
+      "end_inclusive": "00720e70",
+      "last_instruction": "RET 0Ch",
+      "last_instruction_address": "00720e6e",
+      "last_instruction_length": 3,
+      "coverage": "complete raw setter, three byte-valued stack args; no xrefs; no definition/name requested"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "searcher key -1 or upstream allocation implies a zero box",
+      "is": "key-miss path still reads untouched box words; no upstream zero-fill producer found",
+      "evidence": "constructor chain +009D70F9..009D710B"
+    },
+    {
+      "was": "flag_3fc is nav+3FCh",
+      "is": "historical member is brain-relative and maps to nav+3F4h; nav+3FCh is unit pointer",
+      "evidence": "009E469C vs state stores at brain+3FCh"
+    },
+    {
+      "was": "current runtime director flag is a live default-backed field",
+      "is": "persistent command owner lacks avoidance bytes; temporary defaults/constant false are not canonical state",
+      "evidence": "preserved GameDirector and AI snapshots"
+    },
+    {
+      "was": "only constructor and sub-kind9 can change director+242h",
+      "is": "snapshot apply, mutable property sink, and unreferenced direct setter also expose writes",
+      "evidence": "00721A09,00836889,00720E68"
+    },
+    {
+      "was": "old docs classify00835640 and some short bodies as missing or use stale inclusive ends",
+      "is": "current live body00835640..0083568E exists; report lists live bounds and separately identifies two missing accessors",
+      "evidence": "live proto checks"
+    }
+  ],
+  "future_ownership": [
+    {
+      "files": [
+        "src/game_hosts_commands.cpp",
+        "include/bsp/game_hosts_commands.hpp"
+      ],
+      "scope": "extend existing director owner with existing WeaponDirectorState and shared writer/read APIs; reconcile cruise fields"
+    },
+    {
+      "files": [
+        "src/game_hosts_units.cpp",
+        "include/bsp/game_hosts_units.hpp"
+      ],
+      "scope": "forward canonical director access; carry live request through cruise path; recheck external lease"
+    },
+    {
+      "files": [
+        "src/game_hosts_ship_ai.cpp"
+      ],
+      "scope": "constructor/prepass/state request synchronization; three actual searcher/list owners and shared arc consumption; root owns runtime"
+    },
+    {
+      "files": [
+        "src/game_hosts_lua.cpp",
+        "include/bsp/game_hosts_lua.hpp"
+      ],
+      "scope": "actual mutable settings+4 and NavigatorSetAvoidLandCollision entry; no fabricated session delivery"
+    }
+  ],
+  "preserved_evidence": {
+    "manifest": "local/owners_manifest.json",
+    "artifacts": [
+      {
+        "path": "local/owners_00720de0.asm",
+        "bytes": 350,
+        "sha256": "8e525908a050fd9c008952a23ec1af2aa714d58dbfe980e9c65b08e8a20fbd2a"
+      },
+      {
+        "path": "local/owners_00720e0b_raw.txt",
+        "bytes": 908,
+        "sha256": "d4beb9055f224492c271f364016745d7e5d3bc423a18e1b102843918a8916d07"
+      },
+      {
+        "path": "local/owners_00720e40_bytes.txt",
+        "bytes": 41,
+        "sha256": "e9b752cb36ff86d21a08ba99c092fc786ddb0c8855175c94ab34242ba615128f"
+      },
+      {
+        "path": "local/owners_00720e50_bytes.txt",
+        "bytes": 171,
+        "sha256": "1f5395bd3aea85ae7cd465ba371333d713f61fa674ab7e0eb20f9365cc68785d"
+      },
+      {
+        "path": "local/owners_00720e50_raw.txt",
+        "bytes": 561,
+        "sha256": "e0e8655955b73b0b922d670312178877cb9f434ce26b655c25329a16712727f5"
+      },
+      {
+        "path": "local/owners_007214c0.asm",
+        "bytes": 1202,
+        "sha256": "04de5836ec171d03e24aba7e86cf9e5c9042723da597e08359d3f22c379edb76"
+      },
+      {
+        "path": "local/owners_007219c0.asm",
+        "bytes": 1115,
+        "sha256": "1c5cf48d5bac563e680766051d26a619811800771b7a086729eee1aad9a9e1f0"
+      },
+      {
+        "path": "local/owners_0072bbd0.asm",
+        "bytes": 1513,
+        "sha256": "2f7ae7cdda2df0c324324733103a2a98a4b20a4fef1dc2defa4490692ac6d734"
+      },
+      {
+        "path": "local/owners_0077c2a0.asm",
+        "bytes": 3640,
+        "sha256": "ed06eee5f10ac1d87e2e4536e8772287f54b83103bd57b9bfd4e055bb3ccac13"
+      },
+      {
+        "path": "local/owners_0077c2a0_tail.asm",
+        "bytes": 444,
+        "sha256": "b0b6ca7d4600bef128906807f3b978d926fb64d9d5532aee39084ee8702af69d"
+      },
+      {
+        "path": "local/owners_0080e160.asm",
+        "bytes": 60,
+        "sha256": "34bb950b14ed65ea22e3481d08b96d926315b91fa479ec9dbf5fba952d929f55"
+      },
+      {
+        "path": "local/owners_0080e160_xrefs.txt",
+        "bytes": 1195,
+        "sha256": "479db41df52a79f326e728533fe7ee61ce4ce32b8c1e4651b0cacca6b7528507"
+      },
+      {
+        "path": "local/owners_00810f60.asm",
+        "bytes": 3092,
+        "sha256": "99c9713a9c124ec535eb740ce19b89e57a429be2bf9aa2d41815d1ff82ebe0a1"
+      },
+      {
+        "path": "local/owners_0081f980.asm",
+        "bytes": 22629,
+        "sha256": "ba76c848f1691562fe6b979ad6440335112172f34dc39bb3dfd600ac7f67eeed"
+      },
+      {
+        "path": "local/owners_00835640.asm",
+        "bytes": 685,
+        "sha256": "19aedf56c95b449ae9103b08d705e99b13132b66abf2e0ceaa5864391e4ab23a"
+      },
+      {
+        "path": "local/owners_00835a40.asm",
+        "bytes": 1011,
+        "sha256": "9ba518297156a3868f3f83a008dd448c2e73e86cc321f521e60c9a73f81ca83f"
+      },
+      {
+        "path": "local/owners_008362a0.asm",
+        "bytes": 2757,
+        "sha256": "519b0ed2b59f6f4bf5e53073450edf18aba5b1494989e9950d5b01a49c3af4d5"
+      },
+      {
+        "path": "local/owners_008366d0.asm",
+        "bytes": 1627,
+        "sha256": "5062bd34666d04474e4c96e7505aebc67326ae776d14f40a4f92f338bd313a69"
+      },
+      {
+        "path": "local/owners_008367f0.asm",
+        "bytes": 2699,
+        "sha256": "04e797a713d483df960659ca31c7e54b0286de5359f53676a52f98be575720ab"
+      },
+      {
+        "path": "local/owners_008a3b10.asm",
+        "bytes": 3425,
+        "sha256": "71722a12ee5fc3d457d64095a3a6e121034f09cb7ff77bf2d7efebde7c88e990"
+      },
+      {
+        "path": "local/owners_008a3b10.c",
+        "bytes": 1625,
+        "sha256": "564fe536ec0c1077cb6aadb771e5c7c4c41eb9f1c745ea941343a4ef92b4fae6"
+      },
+      {
+        "path": "local/owners_009d7050.asm",
+        "bytes": 5062,
+        "sha256": "c9c43ebadf691208d19edab7506a64a3a8c2ecbd098acd7dfab5f48372dc8138"
+      },
+      {
+        "path": "local/owners_009da6e0.asm",
+        "bytes": 2944,
+        "sha256": "7f23b1b42235b9802e9fb05aebad0ddeaf613d6daab2525f88b0e79e4f1cd0ee"
+      },
+      {
+        "path": "local/owners_009e1170.asm",
+        "bytes": 7519,
+        "sha256": "a286681c180e7ab19695f9ffb4ffe9dbe80200e10b3021f203e8603fa417f7c3"
+      },
+      {
+        "path": "local/owners_009e14c0.asm",
+        "bytes": 3110,
+        "sha256": "dfd4a254cee98509566fe246d751bb29529d3da148d180588cc5981fbddbeb25"
+      },
+      {
+        "path": "local/owners_009e1950.asm",
+        "bytes": 15894,
+        "sha256": "8629be345eea4d2d909468a7299da32f817af4bde8181516c64970b8cf80b5a6"
+      },
+      {
+        "path": "local/owners_009e2020.asm",
+        "bytes": 8160,
+        "sha256": "4e0a9061ab57840791f8668de75eb30fa1882c784d29bb7613443471c5954c43"
+      },
+      {
+        "path": "local/owners_009e23b0.asm",
+        "bytes": 7401,
+        "sha256": "d962549c7cbac32c1edee4af69c4aa2b75763a94316ac69ab22a079aa9ba6ab5"
+      },
+      {
+        "path": "local/owners_009e4330.asm",
+        "bytes": 7177,
+        "sha256": "f9cc222b686e317dfb70422c7089115f2f512e1b99b67f7ba5765bbfee4ad714"
+      },
+      {
+        "path": "local/owners_009eb660.asm",
+        "bytes": 28481,
+        "sha256": "294baf8902751402f084a589630029a4a1848e8375a17d843e9be1021fd77934"
+      },
+      {
+        "path": "local/owners_009f1160.asm",
+        "bytes": 5215,
+        "sha256": "7f8ea1804437bd1b559bcdccb7dcfc0e5137ae99887ec03e4d8a0e99acbb15dd"
+      },
+      {
+        "path": "local/owners_009f1160.c",
+        "bytes": 3862,
+        "sha256": "11eb003e42799edc35662d083d80d99ae685e04e01b1f3666721eb9bd196ce54"
+      },
+      {
+        "path": "local/owners_009f1420.asm",
+        "bytes": 16553,
+        "sha256": "903aee2c19fc6d6983086ff6a60a7ef986a0f73dffe52ba3df2419da54ebdcf7"
+      },
+      {
+        "path": "local/owners_009f1420_tail.asm",
+        "bytes": 564,
+        "sha256": "9ce0682c551bba8015b3123e57c619a4d289b35213e14f239b6f2d2a548b322c"
+      },
+      {
+        "path": "local/owners_009f39c0.asm",
+        "bytes": 3452,
+        "sha256": "f4e949509e500078c8393a3659e2f7a3b5fe1dc7585b26a9ec5712ad6763dd05"
+      },
+      {
+        "path": "local/owners_009f39c0.c",
+        "bytes": 2750,
+        "sha256": "865f414fde78bc24519eb56890f4546eb86a76c5ae8958bab31175f445e7a48b"
+      },
+      {
+        "path": "local/owners_009f3ba0.asm",
+        "bytes": 1693,
+        "sha256": "9782166e090e61ee90bf6d34a2fd0b5aa59c9fac54862f217412ebc7afb3b41d"
+      },
+      {
+        "path": "local/owners_009f3f20.asm",
+        "bytes": 796,
+        "sha256": "153928a303cf6414cf1f6147d23552fe587abcbcb49eb51389954f005c85b53f"
+      },
+      {
+        "path": "local/owners_00bf681b.asm",
+        "bytes": 912,
+        "sha256": "7350621805d1f18d0888429a2fa64d39a393f284098eceb44485ab4a1cd39661"
+      },
+      {
+        "path": "local/owners_00bf9f1a.asm",
+        "bytes": 1983,
+        "sha256": "22cf7747bc62d0ebd6c0aa0b0a71f2d77cfbe1475586549ccb9a5c831bf62ce0"
+      },
+      {
+        "path": "local/owners_242_displacements.txt",
+        "bytes": 1672,
+        "sha256": "4a2de771d3b63a6cd17023e8aab7580e6f2c14c38df352be16a7923605c7d3ec"
+      },
+      {
+        "path": "local/owners_report_calls.log",
+        "bytes": 225,
+        "sha256": "b50a9c6140e15ab78b701ac2b5d5490ec36f588082bd258a249feef1cebd45cd"
+      },
+      {
+        "path": "local/review/game_hosts_commands.cpp",
+        "bytes": 94677,
+        "sha256": "0cd79189a2ae34be80e80b678d034fc5d7df1d1f9b4de80cdc1256c4bd259ed3"
+      },
+      {
+        "path": "local/review/game_hosts_commands.hpp",
+        "bytes": 15019,
+        "sha256": "ff936825b03605093f7b36a29dae23da122937c0a3fda4eb9daff301283e7904"
+      },
+      {
+        "path": "local/review/game_hosts_ship_ai.cpp",
+        "bytes": 227432,
+        "sha256": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a"
+      },
+      {
+        "path": "local/review/game_hosts_units.cpp",
+        "bytes": 119302,
+        "sha256": "d0c61dd178d6975825c1b29ce0349d3efe08e4cec27a979444f5b224fa108a56"
+      },
+      {
+        "path": "local/review/game_hosts_units.hpp",
+        "bytes": 26653,
+        "sha256": "7dbad245a92e7c3de8f3e7d635a1c4e2c834614d4aebbb8d00a2566d5d258d99"
+      },
+      {
+        "path": "local/review/ship_ai_avoidance_request.cpp",
+        "bytes": 10348,
+        "sha256": "da36efd46843f4f6517acccb30e4339c4211c984333442ce9f458fefb6a7feec"
+      },
+      {
+        "path": "local/review/ship_ai_nav_block_ctor.hpp",
+        "bytes": 15845,
+        "sha256": "ae7075e7f12e9e183e0601231d158a4945ea1eb65be964388c81787d3c737a32"
+      },
+      {
+        "path": "local/review/weapon_director.cpp",
+        "bytes": 9295,
+        "sha256": "d590782779ca9fca9e643d4618df41b7ed298e5452c897d99b0904ea6f3f35d1"
+      },
+      {
+        "path": "local/review/weapon_director.hpp",
+        "bytes": 14053,
+        "sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330"
+      },
+      {
+        "path": "local/write_owners_report.py",
+        "bytes": 17132,
+        "sha256": "2d1e4a8dec87e6628f5fc621132bdcccf21c441ee0f57e65d7dc78dbc9b4a198"
+      }
+    ],
+    "old_G_dependencies": []
+  },
+  "validation": {
+    "report_calls": "26 direct call rows checked, 0 failed; 2 property-sink virtual rows explicitly unchecked",
+    "tests": "none; requested read-only analysis packet",
+    "build": "not run; no code changes",
+    "runtime": "not exercised; no execution claim",
+    "ghidra_mutations": 0,
+    "new_tracked_tests": 0,
+    "ledger_mutations": 0
+  },
+  "limits": [
+    "No new complete routine implementation",
+    "No whole-image alias/bulk-write exclusion proof",
+    "No session/property delivery reconstruction",
+    "No raw heap-box initial values fabricated",
+    "Arc core is other worker contract",
+    "Runtime source hashes identify exact inspected state; current Units changed independently and its relevant methods were re-read"
+  ]
+}

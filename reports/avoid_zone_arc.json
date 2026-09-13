@@ -1,0 +1,657 @@
+{
+  "packet": "orch6_avoid_arc_h",
+  "status": "complete native instruction schedules; Win32 Release/build and bounded original-byte geometry differential passed; solver-failure ambient-stack and library boundaries explicit",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_arc.cpp",
+  "header": "include/bsp/avoid_zone_arc.hpp",
+  "documentation": "docs/AVOID_ZONE_ARC.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00415970",
+      "native": "00415970",
+      "end_inclusive": "00415D6E",
+      "name": "BSP_AvoidZone_ClipSelectedArc_00415970",
+      "cpp_symbol": "avoid_zone_selected_segments_arc_00415970",
+      "original_abi": "ECX head-word; stack center,radius,start_bearing,end_bearing_pointer; EAX last writing segment; RET10h at00415D6C",
+      "coverage": "complete native instruction schedule; deterministic solver-output and explicit CRT boundaries",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "004F3BA0",
+      "native": "004F3BA0",
+      "end_inclusive": "004F3D90",
+      "name": "BSP_Geometry_CircleSegmentIntersections_004F3BA0",
+      "cpp_symbol": "avoid_zone_circle_segment_004f3ba0",
+      "original_abi": "ECX center,EDX start; stack radius,end,output; EAX count; RET0Ch at004F3D64/004F3D79/004F3D8E",
+      "coverage": "complete native instruction schedule; deterministic solver-output and explicit CRT boundaries",
+      "name_is_hypothesis": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00415A96",
+      "native": "00BF7030",
+      "function": "00415970",
+      "binding": "existing recovered native_crt_sqrt_st0_00bf7030 with explicit borrowed CRT access"
+    },
+    {
+      "address": "00415BCE",
+      "native": "00BF7030",
+      "function": "00415970",
+      "binding": "existing recovered native_crt_sqrt_st0_00bf7030 with explicit borrowed CRT access"
+    },
+    {
+      "address": "00415C12",
+      "native": "004F3BA0",
+      "function": "00415970"
+    },
+    {
+      "address": "00415C3B",
+      "native": "00438B10",
+      "function": "00415970"
+    },
+    {
+      "address": "00415C74",
+      "native": "00BF701A",
+      "function": "00415970",
+      "binding": "current host _CIatan2 ST0/ST1 library boundary; original CRT parity excluded"
+    },
+    {
+      "address": "00415CB4",
+      "native": "00438B10",
+      "function": "00415970"
+    },
+    {
+      "address": "00415CF7",
+      "native": "00438AA0",
+      "function": "00415970"
+    },
+    {
+      "address": "00415D31",
+      "native": "00438AA0",
+      "function": "00415970"
+    },
+    {
+      "address": "004F3BFB",
+      "native": "00BF7030",
+      "function": "004F3BA0",
+      "binding": "existing recovered native_crt_sqrt_st0_00bf7030 with explicit borrowed CRT access"
+    },
+    {
+      "address": "004F3C5B",
+      "native": "004F3630",
+      "function": "004F3BA0"
+    },
+    {
+      "address": "004F3C90",
+      "native": "00BF7030",
+      "function": "004F3BA0",
+      "binding": "existing recovered native_crt_sqrt_st0_00bf7030 with explicit borrowed CRT access"
+    }
+  ],
+  "producer_and_layout": "Reuses AvoidZoneSelectedSegment in avoid_zone_clearance.hpp:00415190/00417630 produce20h nodes,start0/end8,next10/previous14/next_run18,closes_run byte1C,untouched padding1D..1F. No new runtime object layout.",
+  "native_behavior": [
+    "Circle solver spills delta,squared length,length,normalized direction and perpendicular exactly; cutoff double1e-10 uses JBE including unordered.",
+    "Ignore004F3630 success. Test strict -radius<u<radius, then roots t-sqrt(radius^2-u^2),t+sqrt(...); emit only0<parameter<length, in that order.",
+    "Exact tangency and endpoints excluded; signed radius unmodified; unwritten output bytes preserved.",
+    "Arc skips unless at least one endpoint is ordered outside/on radius; exact closest-projection/x87 clamp and cutoff branches retained.",
+    "Within each segment, capture wrapped(end-start) once; each candidate compares to that snapshot even after an earlier candidate writes end.",
+    "Return last writing segment; preserve cyclic-run closes_run/non-null-next/next_run traversal; only end-bearing reference is written,with any caller-supplied alias effects.",
+    "Preserve original reloads after output aliases input, including second circle point reloading start and arc later candidate reloading center."
+  ],
+  "constant_evidence": [
+    {
+      "address": "00CE3820",
+      "hex": "bbbdd7d9df7cdb3d",
+      "double": 1e-10
+    },
+    {
+      "address": "00CE3828",
+      "hex": "00000060fb211940",
+      "double": 6.2831854820251465
+    },
+    {
+      "address": "00CE3830",
+      "hex": "00000060fb21f93f",
+      "double": 1.5707963705062866
+    }
+  ],
+  "abi_adaptations": [
+    "circle private fastcall keeps ECX/EDX and original3 stack args,appends CRT pointer at entryESP+10; scratch frame untouched; RET10 replaces nativeRET0C",
+    "arc private fastcall adds CRT in EDX,saves it before native80h frame,shifts only original argument references+4,leaves local spill addresses unchanged; originalRET10 retained",
+    "sqrt gets required CRT in ECX with operand alreadyST0 and no added FP spill; atan2 directly uses existing host _CIatan2 with ST0=x/ST1=y",
+    "cdecl existing wrapped-angle functions receive same2 float stack args; adapter ADD ESP8 replaces native calleeRET8 without another FP operation"
+  ],
+  "limits": [
+    "If004F3630 declines output,t retains initialized delta-x but signed perpendicular u local+18h is ambient uninitialized stack. Finite squared-length overflow can normalize to zero direction and reach this. No deterministic cross-context parity promised; no invented initialization.",
+    "Shared host _CIatan2 is an explicit library boundary,not independent VS2005 atan2 reconstruction. Shared recovered sqrt uses borrowed CRT dispatch state/handler.",
+    "Native unbounded angle-wrap loops can stall on infinities or large finite values; no input clamping added.",
+    "Typed API and added CRT binding are not original ABI replacements; runtime callback wiring remains root-owned and was not changed."
+  ],
+  "flow_verification": [
+    {
+      "address": "00415970",
+      "instructions": 308,
+      "gaps": 0
+    },
+    {
+      "address": "004F3BA0",
+      "instructions": 172,
+      "gaps": 0
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "native_reference": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_base": "30000000",
+    "spans": [
+      {
+        "address": "00415970",
+        "end_inclusive": "00415D6E",
+        "length": 1023,
+        "live_matches_installed": true,
+        "sha256": "efe563d8efac953107277b7e8a36ee0aef3ebd5146c079432a646901d74686cb",
+        "relocations": [
+          {
+            "instruction": "00415A80",
+            "operand": "00415A82",
+            "old": "00CE3820",
+            "new": "308E3820",
+            "text": "fld qword ptr [0xce3820]"
+          },
+          {
+            "instruction": "00415BBE",
+            "operand": "00415BC0",
+            "old": "00CE3820",
+            "new": "308E3820",
+            "text": "fld qword ptr [0xce3820]"
+          },
+          {
+            "instruction": "00415C81",
+            "operand": "00415C83",
+            "old": "00CE3830",
+            "new": "308E3830",
+            "text": "fsubr qword ptr [0xce3830]"
+          },
+          {
+            "instruction": "00415C95",
+            "operand": "00415C97",
+            "old": "00CE3828",
+            "new": "308E3828",
+            "text": "fadd qword ptr [0xce3828]"
+          }
+        ]
+      },
+      {
+        "address": "004F3BA0",
+        "end_inclusive": "004F3D90",
+        "length": 497,
+        "live_matches_installed": true,
+        "sha256": "be957a4bb5aa49cabb5a9b7257b6ae04adbbacdd9022b7b031d1174db2f8b34b",
+        "relocations": [
+          {
+            "instruction": "004F3BEB",
+            "operand": "004F3BED",
+            "old": "00CE3820",
+            "new": "308E3820",
+            "text": "fld qword ptr [0xce3820]"
+          }
+        ]
+      },
+      {
+        "address": "004F3630",
+        "end_inclusive": "004F372E",
+        "length": 255,
+        "live_matches_installed": true,
+        "sha256": "9bb99bbce080b202b385b2bbcab10caf5ceb2a2d4122d90a0f63f5a876892d55",
+        "relocations": []
+      },
+      {
+        "address": "004F3560",
+        "end_inclusive": "004F3626",
+        "length": 199,
+        "live_matches_installed": true,
+        "sha256": "a6ca2474e1a962bf20ae902331fedf59e6ab9dceac7a32f81fdcd62ae1eedd1e",
+        "relocations": [
+          {
+            "instruction": "004F3577",
+            "operand": "004F357B",
+            "old": "00D7A208",
+            "new": "3097A208",
+            "text": "movss xmm3, dword ptr [0xd7a208]"
+          },
+          {
+            "instruction": "004F35F2",
+            "operand": "004F35F6",
+            "old": "00D7A24C",
+            "new": "3097A24C",
+            "text": "movss xmm0, dword ptr [0xd7a24c]"
+          },
+          {
+            "instruction": "004F3608",
+            "operand": "004F360A",
+            "old": "00E0830C",
+            "new": "30A0830C",
+            "text": "fmul dword ptr [0xe0830c]"
+          }
+        ]
+      },
+      {
+        "address": "00438AA0",
+        "end_inclusive": "00438B0D",
+        "length": 110,
+        "live_matches_installed": true,
+        "sha256": "366372c0137d0cfa4b711b4e15d4adc779303b3446435026d69edcbbb70f5102",
+        "relocations": [
+          {
+            "instruction": "00438AB0",
+            "operand": "00438AB2",
+            "old": "00CE3D18",
+            "new": "308E3D18",
+            "text": "fld qword ptr [0xce3d18]"
+          },
+          {
+            "instruction": "00438ABA",
+            "operand": "00438ABC",
+            "old": "00CE3828",
+            "new": "308E3828",
+            "text": "fld qword ptr [0xce3828]"
+          },
+          {
+            "instruction": "00438AE1",
+            "operand": "00438AE3",
+            "old": "00CE3D28",
+            "new": "308E3D28",
+            "text": "fld qword ptr [0xce3d28]"
+          },
+          {
+            "instruction": "00438AED",
+            "operand": "00438AEF",
+            "old": "00CE3828",
+            "new": "308E3828",
+            "text": "fld qword ptr [0xce3828]"
+          }
+        ]
+      },
+      {
+        "address": "00438B10",
+        "end_inclusive": "00438B7D",
+        "length": 110,
+        "live_matches_installed": true,
+        "sha256": "0327308c667025b3b21d8df0f905cfa41e63dd1e7fe7007c39d7028bd9bd173b",
+        "relocations": [
+          {
+            "instruction": "00438B20",
+            "operand": "00438B22",
+            "old": "00CE3D18",
+            "new": "308E3D18",
+            "text": "fld qword ptr [0xce3d18]"
+          },
+          {
+            "instruction": "00438B2A",
+            "operand": "00438B2C",
+            "old": "00CE3828",
+            "new": "308E3828",
+            "text": "fld qword ptr [0xce3828]"
+          },
+          {
+            "instruction": "00438B51",
+            "operand": "00438B53",
+            "old": "00CE3D28",
+            "new": "308E3D28",
+            "text": "fld qword ptr [0xce3d28]"
+          },
+          {
+            "instruction": "00438B5D",
+            "operand": "00438B5F",
+            "old": "00CE3828",
+            "new": "308E3828",
+            "text": "fld qword ptr [0xce3828]"
+          }
+        ]
+      }
+    ],
+    "image_sha256": "87f143685fcb3f0882d77675d09b64e4bd29b9967fc758fed9fb20296f75d94e",
+    "constants": [
+      {
+        "address": "00CE3820",
+        "hex": "bbbdd7d9df7cdb3d",
+        "double": 1e-10
+      },
+      {
+        "address": "00CE3828",
+        "hex": "00000060fb211940",
+        "double": 6.2831854820251465
+      },
+      {
+        "address": "00CE3830",
+        "hex": "00000060fb21f93f",
+        "double": 1.5707963705062866
+      }
+    ]
+  },
+  "validation": {
+    "build": "./scripts/build.ps1:Win32 Release passed; reconstructed_math and native_math_differential2/2 passed",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds:passed",
+    "fixture_build": "cmd /c local\\build_arc_native_probe.cmd:MSVC Win32 /O2 /fp:strict /W4 /WX,manifest embedded,hostbase20000000/nativebase30000000",
+    "fixture_run": "local\\arc_native_probe.exe:exit0,21 helper+22 arc cases,0 failures,148 canonical words",
+    "original_byte_execution": true,
+    "helper_cases": 21,
+    "arc_cases": 22,
+    "failures": 0,
+    "canonical_words": 148,
+    "records_equal": true,
+    "record_sha256": "3180f28474bde0fada8c99ba9204cb3808f6e4b60282b0674e76d5663905df58",
+    "comparison": "helper count/all16 output bytes,arc exact returned pointer and bearing bits; unchanged selected-node/padding bytes; source/native saved pointer result canonicalized to null/non-null but actual pointer identity checked separately",
+    "fp_environment": "masked exceptions,53-bit precision,round-to-nearest; _controlfp_s state0009001F; sqrt borrowed bypass1; exception handler aborts if unexpectedly reached",
+    "library_exclusions": "Both sides share recovered ST0sqrt and host _CIatan2; no independent original CRT implementation/diagnostic parity. Original parameter solver,relative comparison and wrapped-angle bytes execute on reference side.",
+    "fixture_correction": {
+      "was": "optimized inline raw-call adapter let compiler retain radius/from in XMM1/XMM0 across native asm CALL",
+      "is": "noinline raw adapter establishes separate C++ call boundary; optimized fixture passes",
+      "evidence": "local/arc_probe_o2.asm lines12535,12547,12567,12573-12574; no production change"
+    },
+    "call_verification": "17 direct rows checked,0 failed"
+  },
+  "counterexamples": [
+    {
+      "case": "center0,0; chord-10,3->10,3; radius5; start-1.3,end1.3",
+      "native_result_bits": "3F6D6338",
+      "native_result": 0.9272952079772949,
+      "meaning": "second farther intersection overwrites earlier approximately-0.927295 candidate because segment baseline is captured once"
+    },
+    {
+      "case": "same chord; circle-helper first output aliases input start",
+      "native_points": [
+        [
+          -4,
+          3
+        ],
+        [
+          10,
+          3
+        ]
+      ],
+      "meaning": "second point reloads start after first output write"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "src/avoid_zone_arc.cpp",
+      "sha256": "e0a073340fa61c158ddb3a0a629a5cc1692350ec46a3e320c9feeb2f20893a7b",
+      "bytes": 22911
+    },
+    {
+      "path": "include/bsp/avoid_zone_arc.hpp",
+      "sha256": "b6d744aa9a3641f79c7003a44b348a319eabb3c8eddfad60efbe52118e3c33b1",
+      "bytes": 1873
+    },
+    {
+      "path": "local/arc_00415970.asm",
+      "sha256": "0a60450371d74102e5e30c3e49cbded3561db07d6bb4136bd45acc16d6460d65",
+      "bytes": 9633
+    },
+    {
+      "path": "local/arc_004F3BA0.asm",
+      "sha256": "e5398c404c23bc88edef2616673c985365fe654e5c2da904c40852e94e8dca64",
+      "bytes": 5137
+    },
+    {
+      "path": "local/arc_boundaries.txt",
+      "sha256": "c801da6bbf3df954fa897b132931c37d3bdd650d0ae3b0ed5bdbd85f2ec9813d",
+      "bytes": 669
+    },
+    {
+      "path": "local/arc_build.log",
+      "sha256": "4ef5731add282a9a111a7e0c33530010e29850a7ec79bfc435ea227dcfd56870",
+      "bytes": 5556
+    },
+    {
+      "path": "local/arc_bytes_00415970.txt",
+      "sha256": "93b954af61ebf4a7d49cc21af7a5915f77fa8c85fab037589edbd58ff92298c5",
+      "bytes": 4924
+    },
+    {
+      "path": "local/arc_bytes_00438AA0.txt",
+      "sha256": "47f0e65af6de3da6062114ddefbe28918594f697716997b7034f4494eacf4703",
+      "bytes": 531
+    },
+    {
+      "path": "local/arc_bytes_00438B10.txt",
+      "sha256": "ae0146b8fe92f2970e0ca9aed11bc387e50c1f1bd421be17388df15230d3a32b",
+      "bytes": 531
+    },
+    {
+      "path": "local/arc_bytes_004F3560.txt",
+      "sha256": "cb62b39a420cbcfe16c886b16d476cfd356d14e9d7a76e5883ed6e48a73705d9",
+      "bytes": 965
+    },
+    {
+      "path": "local/arc_bytes_004F3630.txt",
+      "sha256": "d35db9992ae37e35f8e42fa58babb61adf618fa6802e61895af217cbeeb20142",
+      "bytes": 1228
+    },
+    {
+      "path": "local/arc_bytes_004F3BA0.txt",
+      "sha256": "3a0b835c472de0303c611fb7992b2e4eeaa96ab835ed692c92cb105dd7b9d155",
+      "bytes": 2404
+    },
+    {
+      "path": "local/arc_native_image.bin",
+      "sha256": "87f143685fcb3f0882d77675d09b64e4bd29b9967fc758fed9fb20296f75d94e",
+      "bytes": 14872576
+    },
+    {
+      "path": "local/arc_native_manifest.json",
+      "sha256": "4b03444005f8ec3ece98bb34919d369d95e97897d5d1ebf1f90b7a8231d88a4b",
+      "bytes": 5471
+    },
+    {
+      "path": "local/arc_native_probe.cpp",
+      "sha256": "6bb687a883de7962da6e9c4221e8b053e73f6a4ab538c45a8c16dc6d10a70fb1",
+      "bytes": 8547
+    },
+    {
+      "path": "local/arc_native_probe.exe",
+      "sha256": "45567dde76a553bca8bfc57fe5b6bd4d4a384a6ac9895f0726e6092ddc3f00e2",
+      "bytes": 41472
+    },
+    {
+      "path": "local/arc_native_records.bin",
+      "sha256": "3180f28474bde0fada8c99ba9204cb3808f6e4b60282b0674e76d5663905df58",
+      "bytes": 592
+    },
+    {
+      "path": "local/arc_original_00415970.bin",
+      "sha256": "efe563d8efac953107277b7e8a36ee0aef3ebd5146c079432a646901d74686cb",
+      "bytes": 1023
+    },
+    {
+      "path": "local/arc_original_00438AA0.bin",
+      "sha256": "366372c0137d0cfa4b711b4e15d4adc779303b3446435026d69edcbbb70f5102",
+      "bytes": 110
+    },
+    {
+      "path": "local/arc_original_00438B10.bin",
+      "sha256": "0327308c667025b3b21d8df0f905cfa41e63dd1e7fe7007c39d7028bd9bd173b",
+      "bytes": 110
+    },
+    {
+      "path": "local/arc_original_004F3560.bin",
+      "sha256": "a6ca2474e1a962bf20ae902331fedf59e6ab9dceac7a32f81fdcd62ae1eedd1e",
+      "bytes": 199
+    },
+    {
+      "path": "local/arc_original_004F3630.bin",
+      "sha256": "9bb99bbce080b202b385b2bbcab10caf5ceb2a2d4122d90a0f63f5a876892d55",
+      "bytes": 255
+    },
+    {
+      "path": "local/arc_original_004F3BA0.bin",
+      "sha256": "be957a4bb5aa49cabb5a9b7257b6ae04adbbacdd9022b7b031d1174db2f8b34b",
+      "bytes": 497
+    },
+    {
+      "path": "local/arc_prepare.log",
+      "sha256": "459a02e0f032ff08d9ab99265990dd652c218a5a5b4834f5c196fdb55d66af76",
+      "bytes": 120
+    },
+    {
+      "path": "local/arc_probe.log",
+      "sha256": "c4fa97b91581ac98221563343abc63ab4bb1b0e2416773ad56d37bd44b2515d5",
+      "bytes": 209
+    },
+    {
+      "path": "local/arc_probe_compile.log",
+      "sha256": "fb8ef9c6d72e0b8bbabfc047c592c76938651072237d678abda68dd256a765d5",
+      "bytes": 22
+    },
+    {
+      "path": "local/arc_probe_inspect.log",
+      "sha256": "fb8ef9c6d72e0b8bbabfc047c592c76938651072237d678abda68dd256a765d5",
+      "bytes": 22
+    },
+    {
+      "path": "local/arc_probe_o2.asm",
+      "sha256": "6f5127b8edadede67db9373011f8fa4bb5b4b53b0bf8ebcbba56e37a453baa1f",
+      "bytes": 767788
+    },
+    {
+      "path": "local/arc_report_calls.log",
+      "sha256": "5192a8043890bbc6ad447a73ea1e9c519e2baa7a1373fb6a81ec26d1343d4607",
+      "bytes": 61
+    },
+    {
+      "path": "local/arc_source_records.bin",
+      "sha256": "3180f28474bde0fada8c99ba9204cb3808f6e4b60282b0674e76d5663905df58",
+      "bytes": 592
+    },
+    {
+      "path": "local/arc_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/bsp_index.sqlite",
+      "sha256": "1bb3e248bc83a3bbe22bae8c29519232e72e6ac9821910d82e38b88d704e1973",
+      "bytes": 23498752
+    },
+    {
+      "path": "local/build_arc_native_probe.cmd",
+      "sha256": "6ea70e93802043a444b136459f1c612ded116601389e4522bb21edc1c5e01307",
+      "bytes": 369
+    },
+    {
+      "path": "local/caller_00416270.asm",
+      "sha256": "6507c1a1fea556ebbdb3a7f6178bc8710fa508f747e95af5cf24f3cb4b480e19",
+      "bytes": 10686
+    },
+    {
+      "path": "local/caller_0041AC60.asm",
+      "sha256": "4eb3fdc31dd15c2315edaaaf2de9a7ed2cf8734b252efa87d93315b3ae0919e8",
+      "bytes": 5552
+    },
+    {
+      "path": "local/caller_009D57E0.asm",
+      "sha256": "c7e439abf2f303ec79f2211985d038cab733e252af052b2e4f8518655b28f9bc",
+      "bytes": 543
+    },
+    {
+      "path": "local/caller_009DD010.asm",
+      "sha256": "b1226188cfdb5b34ceb55cb09944c0046e29ca6e27fbc4bbf8abf25df1c2a2de",
+      "bytes": 12354
+    },
+    {
+      "path": "local/caller_009EB660.asm",
+      "sha256": "294baf8902751402f084a589630029a4a1848e8375a17d843e9be1021fd77934",
+      "bytes": 28481
+    },
+    {
+      "path": "local/dependency_00438AA0.asm",
+      "sha256": "c020b02e216135303a068ebb1f81f444ef2e27272cf0d3683a2c51b8da1eea73",
+      "bytes": 1054
+    },
+    {
+      "path": "local/dependency_00438B10.asm",
+      "sha256": "76ddec1401c5fb498d3bcdf2617974746a7d9a028daa713fe1f16ead48dfb431",
+      "bytes": 1054
+    },
+    {
+      "path": "local/dependency_004F3630.asm",
+      "sha256": "dcdc2bef7a534173eb41e7050de641822b6a4866d8e9a8dedf31e859fadb2cd1",
+      "bytes": 2524
+    },
+    {
+      "path": "local/dependency_00BF701A.asm",
+      "sha256": "258ca456e60c74a21967c2dac24afd090f66feb13e5379ce6c489cab4074d43b",
+      "bytes": 56
+    },
+    {
+      "path": "local/dependency_00BF7030.asm",
+      "sha256": "529d48a2193dafac3598cf0d6575620665f895a11161a7b4a447410843b4a676",
+      "bytes": 153
+    },
+    {
+      "path": "local/inspect_arc_probe.cmd",
+      "sha256": "7ec6f29fffe6bb1353c56b680bb64d8d658e75124c69b89d47dc1efaea05fe24",
+      "bytes": 270
+    },
+    {
+      "path": "local/prepare_arc_probe.py",
+      "sha256": "7d26211930487bbc97313bdf7e858687e578a64f6c9de4caa1679349ae8b9bd7",
+      "bytes": 2680
+    },
+    {
+      "path": "local/record_arc_report.py",
+      "sha256": "46d076da0d83e5e27f42f1e04ccce2dcfed9c802373af6fcc3490aa51ba9c1fc",
+      "bytes": 9467
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "bytes": 2995
+    },
+    {
+      "path": "local/write_arc_schedules.py",
+      "sha256": "01e51381453962794c00e2ccbe3fb535f10fe410188d079e20e30b92bbb48e24",
+      "bytes": 4485
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "009EBDAA",
+      "native": "00415970",
+      "function": "009EB660"
+    },
+    {
+      "address": "009D5809",
+      "native": "00415970",
+      "function": "009D57E0"
+    },
+    {
+      "address": "004163E0",
+      "native": "004F3BA0",
+      "function": "00416270"
+    },
+    {
+      "address": "00416640",
+      "native": "004F3BA0",
+      "function": "00416270"
+    },
+    {
+      "address": "0041AD82",
+      "native": "004F3BA0",
+      "function": "0041AC60"
+    },
+    {
+      "address": "009DD3BB",
+      "native": "004F3BA0",
+      "function": "009DD010"
+    }
+  ]
+}
