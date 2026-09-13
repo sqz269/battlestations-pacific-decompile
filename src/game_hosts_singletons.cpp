@@ -35,6 +35,11 @@ void GameSingletonHost::bind_observer_lifetime(NativeObserverLifetime* lifetime)
     deletion_bindings_.observer_lifetime = lifetime;
 }
 
+void GameSingletonHost::bind_observer_dispatch_owner(
+    NativeObserverDispatchOwner* volatile* publication) noexcept {
+    deletion_bindings_.actual_observer_dispatch_owner_00e198dc = publication;
+}
+
 void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     void* const owner = get_native_gameplay_effect_manager_004c1650(
         manager_publication_01090aa0_, effect_publication_00f87664_);
