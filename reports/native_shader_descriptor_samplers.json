@@ -1,0 +1,858 @@
+{
+  "packet": "orch5_native_descriptor_samplers",
+  "base_commit": "910add53dbe388607c556e534e0c8358c8164899",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "worker_read_only_verified_bsp_wrappers; no Ghidra writes"
+  },
+  "source": "src/native_shader_descriptor_samplers.cpp",
+  "header": "include/bsp/native_shader_descriptor_samplers.hpp",
+  "documentation": "docs/NATIVE_SHADER_DESCRIPTOR_SAMPLERS.md",
+  "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b5f100",
+      "bytes": 81,
+      "end_inclusive": "00b5f150",
+      "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+      "direct_calls": 1,
+      "coverage": "complete normal body reconstructed",
+      "export_assembly_sha256": "5a1183be949595c03f383b8cfe316680020c8cd5d79858d0b6ff8d2945a6aaf2",
+      "name": "BSP_MaterialPass_AppendTextureReference",
+      "cpp_symbol": "append_native_material_texture_reference_00b5f100",
+      "original_abi": "ECX actual pass; stack index/stage DWORD (low byte only); RET8",
+      "status": "complete_actual_storage_normal_body",
+      "contract": "Actual pass+24 eight-byte rows, unchanged B40C80 reserve; explicit borrowed native ESP-4 DWORD preimage, low-byte stage write before reserve, current full DWORD/data/count reads afterward. Native stack upper bytes are never invented or zeroed."
+    },
+    {
+      "address": "00b44cf0",
+      "bytes": 106,
+      "end_inclusive": "00b44d59",
+      "sha256": "bb34f3378fa7b369d2d58c4f96a9ba82f6a43a983079ddfbc0debedafffa92b1",
+      "direct_calls": 2,
+      "coverage": "complete normal body reconstructed",
+      "export_assembly_sha256": "5add9cf82cc06317ab968dc4977e5351054399825b74c934d43d6fe3c8477fd7",
+      "name": "BSP_MaterialPass_AppendBinding",
+      "cpp_symbol": "append_native_material_pass_binding_00b44cf0",
+      "original_abi": "ECX actual88h pass; stack word/retained owner/actual8h name; RET0C",
+      "status": "complete_actual_storage_normal_body",
+      "contract": "Shared16-byte allocation and unchanged B44690 constructor; current pass6C publication after constructor. DF7D74 state0 frees raw allocation through CBF400 on constructor throw; rawfree tracked by retained host frame."
+    },
+    {
+      "address": "00b18fb0",
+      "bytes": 80,
+      "end_inclusive": "00b18fff",
+      "sha256": "58fd67f221744c024c933d6617afec76a3657468f6c7dea9a9d11ca938a62b5f",
+      "direct_calls": 2,
+      "coverage": "complete normal body reconstructed",
+      "export_assembly_sha256": "28184ee9dcb10899732be6321973f0cb30cea8c98080f2b7d7f17887d1909a5c",
+      "name": "BSP_MaterialEffect_SetTextureName",
+      "cpp_symbol": "set_native_material_effect_texture_name_00b18fb0",
+      "original_abi": "ECX actual effect base; stack unsigned index/actual8h name; RET8",
+      "status": "complete_actual_storage_normal_body",
+      "contract": "Existing actual effect names3C and signed count94; unsigned compare against sign-extended count; publish low16(index+1) before same-header guard/resize; current copy operands, overlap-capable BF7680 represented by memmove."
+    }
+  ],
+  "analyzed_routines": [
+    {
+      "address": "00b3b280",
+      "bytes": 306,
+      "end_inclusive": "00b3b3b1",
+      "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+      "direct_calls": 6,
+      "coverage": "complete listing analyzed; unimplemented; actual singleton/cache-loader prerequisite missing",
+      "export_assembly_sha256": "7c958a53e356ecccb773b9e9b2394e37ce4e07b4d53717a456f7318231effc5d",
+      "name": "BSP_ShaderBuilder_AddDescriptorSamplers",
+      "status": "analyzed_unimplemented_native_loader_prerequisite_missing",
+      "source": null,
+      "original_abi": "ECX actualB0h builder; stacked pass then descriptor; RET8"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b5f12b",
+      "native": "00b40c80",
+      "function": "00b5f100",
+      "contract": "Existing actual12h pair-array reserve, same singleton heap; ECX header, stack capacity, RET4."
+    },
+    {
+      "address": "00b44d0b",
+      "native": "00bf681b",
+      "function": "00b44cf0",
+      "contract": "Existing shared singleton_lifetime_allocate boundary; cdecl16-byte allocation; ADD ESP,4."
+    },
+    {
+      "address": "00b44d34",
+      "native": "00b44690",
+      "function": "00b44cf0",
+      "contract": "Existing actual16-byte binding constructor in native_material_pass_copy; ECX fresh allocation, stack word/retained owner/name, RET0C; same actual strings and owner domain."
+    },
+    {
+      "address": "00b18fde",
+      "native": "0041dd40",
+      "function": "00b18fb0",
+      "contract": "Existing actual-header resize; ECX header, stack length/preserve1, RET8; borrowed canonical string domain."
+    },
+    {
+      "address": "00b18ff3",
+      "native": "00bf7680",
+      "function": "00b18fb0",
+      "contract": "Original CRT copy explicitly selects reverse copy for overlap; cdecl destination/source/count, ADD ESP,0C; host memmove."
+    },
+    {
+      "address": "00b3b2ba",
+      "native": "004de4b0",
+      "function": "00b3b280",
+      "contract": "Analyzed prerequisite: original actual1Ch singleton. Existing ParticleClock C++ getter exposes a projection; cannot be substituted as the actual owner for B1B4D0."
+    },
+    {
+      "address": "00b3b2c5",
+      "native": "00b1b4d0",
+      "function": "00b3b280",
+      "contract": "Analyzed/unimplemented: ECX actual1Ch singleton, stack source name, RET4; pooled lowercase name and Default, then B1A4F0 on owner+4, and pooled cleanup."
+    },
+    {
+      "address": "00b3b2df",
+      "native": "00b44cf0",
+      "function": "00b3b280",
+      "contract": "Implemented leaf: ECX actual pass, stack current builder8C/returned texture/source-name header, RET0C."
+    },
+    {
+      "address": "00b3b313",
+      "native": "00b18fb0",
+      "function": "00b3b280",
+      "contract": "Implemented leaf: ECX actual builder78 effect, stack current sampler20 index/name18, RET8."
+    },
+    {
+      "address": "00b3b328",
+      "native": "00b5f100",
+      "function": "00b3b280",
+      "contract": "Implemented leaf: ECX actual pass, stack index and zero-extended stage byte, RET8; actual local scratch preimage must be supplied by later caller integration."
+    },
+    {
+      "address": "00b3b369",
+      "native": "00b5ed60",
+      "function": "00b3b280",
+      "contract": "Existing actual sampler-state setter, ECX pass, stack slot/state/value, RET0C; actual pass20 owner."
+    }
+  ],
+  "callers": [
+    {
+      "address": "00b3c018",
+      "native": "00b3b280",
+      "function": "00b3b3c0",
+      "contract": "ECX builder; push descriptor70 then EBP actual pass; RET8."
+    },
+    {
+      "address": "00b3c024",
+      "native": "00b3b280",
+      "function": "00b3b3c0",
+      "contract": "ECX builder; push descriptor74 then EBP actual pass; RET8."
+    }
+  ],
+  "unwind_steps": [
+    {
+      "address": "00cbf404",
+      "native": "00bf65ac",
+      "function": "00cbf400",
+      "contract": "Original CRT free; cdecl raw binding allocation; raw unwind POP ECX,RET tail pinned although outside stored Ghidra body."
+    }
+  ],
+  "auxiliary_bytes": [
+    {
+      "address": "00cbf400",
+      "bytes": 11,
+      "end_inclusive": "00cbf40a",
+      "sha256": "b62ccc3936cfad622502028a9feb8cd696d707db86919d853e3557f5d84fd8bc"
+    },
+    {
+      "address": "00df7d74",
+      "bytes": 8,
+      "end_inclusive": "00df7d7b",
+      "sha256": "92433e20daad45513093be7b34880ec430212de0c30c608714c3d16b18050afe"
+    },
+    {
+      "address": "00df7d7c",
+      "bytes": 36,
+      "end_inclusive": "00df7d9f",
+      "sha256": "91e7abb019bb7a7dcf349e72cae1e39c6a6702b9c566344be41c55052a1554c6"
+    }
+  ],
+  "unwind_evidence": {
+    "state_map": "00df7d74",
+    "state0_previous": -1,
+    "state0_handler": "00cbf400",
+    "raw_start": "00cbf400",
+    "raw_end_inclusive": "00cbf40a",
+    "stored_function_end_at_review": "00cbf408",
+    "outside_stored_body": {
+      "start": "00cbf409",
+      "end_inclusive": "00cbf40a",
+      "status": "no_ghidra_function_at_review",
+      "decode": "POP ECX; RET"
+    },
+    "repair_status": "Integrator attempted official tail repair but reported stored function body extension still incomplete; worker made no mutations. Saved proto/raw evidence retained; no full repair claim."
+  },
+  "readiness": {
+    "00b3b280": "Analyzed, not implemented. Three leaves added, existing actual B5ED60 remains unchanged. Full route awaits actual singleton/cache loader and concrete returned resource lifetime.",
+    "required": [
+      "Actual1Ch owner/getter4DE4B0 at sharedF8D420, including owner+4 cache base and canonical lifetime; existing projected ParticleClock is insufficient.",
+      "Actual B1B4D0 pooled lowercase/default loader wrapper and B1A4F0 cache/aliases/path/virtual resolution-loading-retain/record/file-date contracts.",
+      "Returned texture actual+04 reference count/current virtual0 terminal release must be bound in the same canonical owner domain before B3B280 integration."
+    ],
+    "assembly_order": "Source0 appends index; source3 writes actual effect name then rereads sampler20 for FFFFFFFF-index; source1 nonnull loads binding, writes pass80, releases returned owner then increments current builder8C. Null/other source types skip8C yet still process state list. State loops and final stage counters reread byte0C/list24/count/data and builder90/94 after calls."
+  },
+  "producers": [
+    {
+      "function": "00b5f720",
+      "evidence": "Existing actual pass base clears12h pairs24 header and creates actual state owners; B40C80 reserves eight-byte rows."
+    },
+    {
+      "function": "00b44b10",
+      "evidence": "Existing actual88h pass producer; bindings5C four slots, count6C=0; binding itself produced by unchanged actualB44690."
+    },
+    {
+      "function": "00b18d60",
+      "evidence": "Existing actualC4h effect producer creates eleven8h headers at3C (B18DBB/B18DBF), clears names and word94; actual schema reused."
+    },
+    {
+      "function": "00b57b50",
+      "evidence": "Existing actual2Ch sampler producer; name18/index20/source14/stage0C/state-list24 reused by analyzed B3B280."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Stage row can be represented as index plus normalized bool/zero padding.",
+      "is": "Only local byte0 is initialized; complete DWORD is copied after reserve.",
+      "evidence": "B5F10B writes BYTE at entryESP-4; B5F13C loads DWORD after B40C80; fixture seeds/mutates upper bytes."
+    },
+    {
+      "was": "All B3B280 prerequisites are available because they have descriptive names or semantic wrappers.",
+      "is": "Actual singleton/cache loader still missing; B3B280 analyzed only.",
+      "evidence": "4DE4B0 actual1Ch assembly vs ParticleClock projection; B1B4D0 and B1A4F0 bodies; source search pinned."
+    }
+  ],
+  "validation": {
+    "build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "default registered MSVC Win32 /W4 /WX /fp:strict",
+      "existing_ctest": "reconstructed_math and native_math_differential,2/2 passed after seed verification",
+      "log": "local/descriptor-samplers-build.log"
+    },
+    "fixture": {
+      "status": "passed",
+      "command": "./local/run_native_descriptor_samplers_probe.ps1",
+      "linkage": "single fixture TU linked with registered bsp_core; no production source copied into probe",
+      "normal_body_bytes": 267,
+      "analyzed_body_bytes_not_executed": 306,
+      "unwind_code_data_bytes_not_executed": 55,
+      "numeric_rows": 14,
+      "normal_exit": 0,
+      "failed_frame_guard_exit": 77,
+      "scope": "Stage scratch preimage/reserve mutation, binding current-count publication and canonical actual references, effect-name preallocation count/live source/self-header/signed count/overlap, selected heap/string traces; source failures/raw-free/replay/diagnostic cleanup/guard.",
+      "logs": [
+        "local/descriptor-samplers-probe.log",
+        "local/descriptor-samplers-probe-status.json",
+        "local/descriptor-samplers-guard-probe.log"
+      ]
+    }
+  },
+  "limits": [
+    "Descriptive names are reconstruction hypotheses; explicit C++ interfaces are not native ABI replacements.",
+    "No B3B280 source implementation or full compiler/loader/texture/shader/render/game validation.",
+    "Only267 implemented normal-body bytes are relocated in the fixture;306 B3B280 analyzed bytes and55 unwind code/data bytes are separate evidence.",
+    "Both fixture legs share existing actual reserve, binding constructor, allocator and resize boundaries; no independent child differential claim.",
+    "Source-only failures check host exception behavior; copied original bodies never execute private native exception handlers.",
+    "Caller supplies actual stage scratch preimage and keeps all borrowed owners/storage/contexts alive with retirement excluded while running/failed; diagnostic acknowledgement frees nothing.",
+    "Binding indices0..3 and effect-name indices0..10 are checked host extents; corrupt native writes are not reproduced. A completed unpublishable binding is retained for explicit cleanup."
+  ],
+  "quoted_include_closure": {
+    "policy": "Conservative local quoted-include closure of fixture, owned source and named unchanged actual implementation dependencies; external SDK/compiler headers excluded.",
+    "paths": [
+      "include/bsp/allocator_list.hpp",
+      "include/bsp/camera_projection.hpp",
+      "include/bsp/camera_transform.hpp",
+      "include/bsp/d3d9_buffers.hpp",
+      "include/bsp/d3d9_startup.hpp",
+      "include/bsp/d3d9_states.hpp",
+      "include/bsp/d3d9_vertex_layout.hpp",
+      "include/bsp/frame_clock.hpp",
+      "include/bsp/game_entry.hpp",
+      "include/bsp/instance_grouping.hpp",
+      "include/bsp/instance_sort.hpp",
+      "include/bsp/instance_upload.hpp",
+      "include/bsp/material_lighting.hpp",
+      "include/bsp/material_sort_metadata.hpp",
+      "include/bsp/native_material_effect_owner.hpp",
+      "include/bsp/native_material_owner.hpp",
+      "include/bsp/native_material_pass_base.hpp",
+      "include/bsp/native_material_pass_copy.hpp",
+      "include/bsp/native_material_pass_owner.hpp",
+      "include/bsp/native_material_pass_states.hpp",
+      "include/bsp/native_material_pools.hpp",
+      "include/bsp/native_physical_file_date.hpp",
+      "include/bsp/native_pooled_string_substring.hpp",
+      "include/bsp/native_render_context.hpp",
+      "include/bsp/native_shader_descriptor_samplers.hpp",
+      "include/bsp/native_singleton_publication.hpp",
+      "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "include/bsp/native_string.hpp",
+      "include/bsp/native_string_pool_owner.hpp",
+      "include/bsp/native_string_pool_storage.hpp",
+      "include/bsp/native_vfs_date_leaf_providers.hpp",
+      "include/bsp/random.hpp",
+      "include/bsp/random_threads.hpp",
+      "include/bsp/render_command_queue.hpp",
+      "include/bsp/render_tail.hpp",
+      "include/bsp/singleton_lifetime.hpp",
+      "include/bsp/storage_pool.hpp",
+      "include/bsp/system_time_constants.hpp",
+      "include/bsp/vertex_declaration.hpp",
+      "local/dsampler_original.hpp",
+      "local/native_descriptor_samplers_probe.cpp",
+      "src/native_material_effect_owner.cpp",
+      "src/native_material_pass_base.cpp",
+      "src/native_material_pass_copy.cpp",
+      "src/native_material_pass_owner.cpp",
+      "src/native_material_pass_states.cpp",
+      "src/native_material_pools.cpp",
+      "src/native_physical_file_date.cpp",
+      "src/native_shader_descriptor_samplers.cpp",
+      "src/native_string.cpp",
+      "src/native_string_pool_owner.cpp",
+      "src/native_string_pool_storage.cpp",
+      "src/singleton_lifetime.cpp"
+    ]
+  },
+  "source_sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13",
+  "header_sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977",
+  "artifacts": [
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 18983,
+      "sha256": "c3354ede00c28f0b7f56da9554a55c815a8c01108dc50adb1434f3fea1b1c00c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55910276,
+      "sha256": "4b9cefb217508c9c505f5efc23c74ff45d448c78d0df315755a1727606818249"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455768,
+      "sha256": "cbd26e9bd912fe45a7a70f4dde93af6a03b8f4e4f70069b35fbb0802f322e84e"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72086,
+      "sha256": "91d5dfe2c6beb04c1fd5b70bffd33acb8165313f897c91e7018e51ea61e94a78"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 204417,
+      "sha256": "d3f6785c01e1862a403ad66be29b201678c8be189bf7538674467b6f0275983f"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 106018,
+      "sha256": "429f28d9aa82b5c4643508b01b40173d6ed1b1a49e5e611ad15bb2456451bcd1"
+    },
+    {
+      "path": "docs/NATIVE_SHADER_DESCRIPTOR_SAMPLERS.md",
+      "bytes": 7943,
+      "sha256": "c5f13989ae65a4c155e6bc8551930f87e1e4d1e401b2ffebb4460a51d05013ea"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/d3d9_buffers.hpp",
+      "bytes": 3262,
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+    },
+    {
+      "path": "include/bsp/d3d9_startup.hpp",
+      "bytes": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+    },
+    {
+      "path": "include/bsp/d3d9_vertex_layout.hpp",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/instance_grouping.hpp",
+      "bytes": 4008,
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+    },
+    {
+      "path": "include/bsp/instance_sort.hpp",
+      "bytes": 4479,
+      "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+    },
+    {
+      "path": "include/bsp/instance_upload.hpp",
+      "bytes": 6532,
+      "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+    },
+    {
+      "path": "include/bsp/material_lighting.hpp",
+      "bytes": 1642,
+      "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+    },
+    {
+      "path": "include/bsp/material_sort_metadata.hpp",
+      "bytes": 3332,
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+    },
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "bytes": 7664,
+      "sha256": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd"
+    },
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "bytes": 5986,
+      "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+    },
+    {
+      "path": "include/bsp/native_material_pass_base.hpp",
+      "bytes": 5388,
+      "sha256": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70"
+    },
+    {
+      "path": "include/bsp/native_material_pass_copy.hpp",
+      "bytes": 3595,
+      "sha256": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff"
+    },
+    {
+      "path": "include/bsp/native_material_pass_owner.hpp",
+      "bytes": 5800,
+      "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18"
+    },
+    {
+      "path": "include/bsp/native_material_pass_states.hpp",
+      "bytes": 5387,
+      "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "bytes": 10219,
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "bytes": 4310,
+      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "bytes": 1557,
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+    },
+    {
+      "path": "include/bsp/native_shader_descriptor_samplers.hpp",
+      "bytes": 3377,
+      "sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_vfs_date_leaf_providers.hpp",
+      "bytes": 3083,
+      "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "include/bsp/vertex_declaration.hpp",
+      "bytes": 1462,
+      "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+    },
+    {
+      "path": "local/descriptor-samplers-build.log",
+      "bytes": 4511,
+      "sha256": "85e6c224d813a6ed7f084aecb384dd27a233113ed3ff54bf7f36bbab1bd7deea"
+    },
+    {
+      "path": "local/descriptor-samplers-call-verification.log",
+      "bytes": 80,
+      "sha256": "c5af22e8279ad4c4d328320376c168cdc2d9e8bec6334a498261f5cf441f4c31"
+    },
+    {
+      "path": "local/descriptor-samplers-flow.log",
+      "bytes": 261,
+      "sha256": "6998de11b927f6176c607d63a1563d64427d9015c7b3adbe6ec8eff5eaa2697c"
+    },
+    {
+      "path": "local/descriptor-samplers-guard-probe.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/descriptor-samplers-initial-build.log",
+      "bytes": 43645,
+      "sha256": "fe06e15b4ecd323e4769796792f3230a67bbee7cbca269a088f65f7254c4f462"
+    },
+    {
+      "path": "local/descriptor-samplers-ledger.log",
+      "bytes": 1292,
+      "sha256": "abb15917343b206cb46338b7aeefcb8394d63396925588c1a8707fedb7b2fc90"
+    },
+    {
+      "path": "local/descriptor-samplers-original-verification.log",
+      "bytes": 112,
+      "sha256": "da6c7d1a4513515acc2ffd4cff403249bfc8e9009ef0b720c1620ccb8c989af9"
+    },
+    {
+      "path": "local/descriptor-samplers-probe-compile.log",
+      "bytes": 38,
+      "sha256": "aeecf24545f2d4b9ca554c87a56ba9eab5017785ae9fdfd267ea9a3337b7e05e"
+    },
+    {
+      "path": "local/descriptor-samplers-probe-status.json",
+      "bytes": 157,
+      "sha256": "1911e59318be901d4aa79a1495e195817e93736eda14f50ca4eefaba1dc20501"
+    },
+    {
+      "path": "local/descriptor-samplers-probe.log",
+      "bytes": 606,
+      "sha256": "922e4f7f99c5ef1595b0b6e57cd08318b17805c461b0ff6765d90969b72c541e"
+    },
+    {
+      "path": "local/descriptor-samplers-prototypes.log",
+      "bytes": 532,
+      "sha256": "e13b4d4d295ae0956465d957f3894ae0244f3eb73512e9343bf9305ec5aa1d03"
+    },
+    {
+      "path": "local/descriptor-samplers-readiness-source-search.log",
+      "bytes": 1522,
+      "sha256": "28a77007624da8eda67ce11006d697d6fad17e2e4bc19976ff6cccdd2374a664"
+    },
+    {
+      "path": "local/descriptor-samplers-seed-verification.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/dsampler_004de4b0_assembly.txt",
+      "bytes": 1689,
+      "sha256": "9e611b9884b5fc9fe64bae62a5408ebf00dc17b8209d959063932612763744d5"
+    },
+    {
+      "path": "local/dsampler_00b18d60_assembly.txt",
+      "bytes": 2621,
+      "sha256": "7d1ea361463cf74f3b0e9afcb25ce8559d1eaa400c568b4c17e836eab99d956c"
+    },
+    {
+      "path": "local/dsampler_00b18fb0_assembly.txt",
+      "bytes": 844,
+      "sha256": "28184ee9dcb10899732be6321973f0cb30cea8c98080f2b7d7f17887d1909a5c"
+    },
+    {
+      "path": "local/dsampler_00b18fb0_bytes.txt",
+      "bytes": 385,
+      "sha256": "a5dcf498eb2435945bdb9c0fbe466afa4e09bf84a009c65941d821d6e684a1d9"
+    },
+    {
+      "path": "local/dsampler_00b1a4f0_assembly.txt",
+      "bytes": 13139,
+      "sha256": "64f83ce87b7c44f463e26b857ee0705f575a120323b363adc80253a697c2f708"
+    },
+    {
+      "path": "local/dsampler_00b1b4d0_assembly.txt",
+      "bytes": 2613,
+      "sha256": "edb44684fdf8edc49c38220a0a569e8cc174f6fe5bb0ae902c55e57b35fa43e6"
+    },
+    {
+      "path": "local/dsampler_00b3b280_assembly.txt",
+      "bytes": 3114,
+      "sha256": "7c958a53e356ecccb773b9e9b2394e37ce4e07b4d53717a456f7318231effc5d"
+    },
+    {
+      "path": "local/dsampler_00b3b280_bytes.txt",
+      "bytes": 1484,
+      "sha256": "53a9cf1ec4c78287e0074161572a84a1f49e04b554c9121535109690de9961ae"
+    },
+    {
+      "path": "local/dsampler_00b3b3c0_assembly.txt",
+      "bytes": 37017,
+      "sha256": "f63cbd51f955f26f3dc8f3ff6f1668bc3f87de74fdee36fd9ff3f3fbce7edcd5"
+    },
+    {
+      "path": "local/dsampler_00b40c80_assembly.txt",
+      "bytes": 1168,
+      "sha256": "349bcf98be44af758f74274ebc54f98ebdf92fb7f0e25baf32735425172e204c"
+    },
+    {
+      "path": "local/dsampler_00b44690_assembly.txt",
+      "bytes": 1853,
+      "sha256": "d00d67083cfeaa951bbc1d11fdef8c070295123e27be335b453f3032408d8713"
+    },
+    {
+      "path": "local/dsampler_00b44cf0_assembly.txt",
+      "bytes": 960,
+      "sha256": "5add9cf82cc06317ab968dc4977e5351054399825b74c934d43d6fe3c8477fd7"
+    },
+    {
+      "path": "local/dsampler_00b44cf0_bytes.txt",
+      "bytes": 515,
+      "sha256": "400ba695f0d695bf3f6f01868035343fb0fa932ccbacce4958dfb87f23f517b2"
+    },
+    {
+      "path": "local/dsampler_00b57b50_assembly.txt",
+      "bytes": 10005,
+      "sha256": "4911c98c5cb8e8a5f11fc8500e8f340e8ad44a0afca101e72a6a95eed8a85121"
+    },
+    {
+      "path": "local/dsampler_00b5ed60_assembly.txt",
+      "bytes": 1814,
+      "sha256": "1c4b4f454b15f2b549c6fd1b07aa207394a4e11b0fb303efd62f9625b00d9e71"
+    },
+    {
+      "path": "local/dsampler_00b5f100_assembly.txt",
+      "bytes": 886,
+      "sha256": "5a1183be949595c03f383b8cfe316680020c8cd5d79858d0b6ff8d2945a6aaf2"
+    },
+    {
+      "path": "local/dsampler_00b5f100_bytes.txt",
+      "bytes": 402,
+      "sha256": "f1735c86b36f670a2e1b6bc3000ae96c6ea0ce396677dd6945171b567b8f719a"
+    },
+    {
+      "path": "local/dsampler_00bf7680_assembly.txt",
+      "bytes": 7677,
+      "sha256": "029263e174c3cae7b769e1f2651aa61e24a6a8f3f43f4753f81dd58b1ac83cc7"
+    },
+    {
+      "path": "local/dsampler_00cbf400_assembly.txt",
+      "bytes": 90,
+      "sha256": "d81b6183ac0dbeac9358ae6da96c77e86513b487b862329a09a7f84336d7992e"
+    },
+    {
+      "path": "local/dsampler_00cbf400_bytes.txt",
+      "bytes": 57,
+      "sha256": "c1139f72f519cc19cb573ebf2334696336d5ca977ab7164de8fedce1d8ccb7af"
+    },
+    {
+      "path": "local/dsampler_00df7d74_bytes.txt",
+      "bytes": 45,
+      "sha256": "2d37491d652416f47e56f26209bacd4e31de6adb65aeeab4828adeb0e2e32ac8"
+    },
+    {
+      "path": "local/dsampler_00df7d7c_bytes.txt",
+      "bytes": 183,
+      "sha256": "5419e94b443f12d41e2faa6cd6c1b2a471180e1a201bfb66e45251072df63987"
+    },
+    {
+      "path": "local/dsampler_original.hpp",
+      "bytes": 1804,
+      "sha256": "3acf56c30ca8b2b453155f7346cc0fd7a543358b6945d8aab3c6e663ddc3484a"
+    },
+    {
+      "path": "local/dsampler_original_manifest.json",
+      "bytes": 3619,
+      "sha256": "d1d66575d24bbfe471b610462099dd1e39dfec9ce519e6e52f8d005efe97bdb2"
+    },
+    {
+      "path": "local/native_descriptor_samplers_probe.cpp",
+      "bytes": 17412,
+      "sha256": "5a9bc20c4442bf82c5cabb62301bfcf021462efe1034e752f619ae33e95072b3"
+    },
+    {
+      "path": "local/native_descriptor_samplers_probe.exe",
+      "bytes": 58368,
+      "sha256": "be8132f690d966a188c5820a86879e925589825fcdeac5ac01e412ca9f689434"
+    },
+    {
+      "path": "local/prepare_descriptor_samplers_evidence.py",
+      "bytes": 3304,
+      "sha256": "8890cd67497a3ebcef6a138d7d0cdb8ca4421243e2682a35b1de451a59600acf"
+    },
+    {
+      "path": "local/register_descriptor_samplers.py",
+      "bytes": 635,
+      "sha256": "717980815d3e34b660d8ec0eb50e1a301cad49eba4e6b3abe4e8b2a3eea7245c"
+    },
+    {
+      "path": "local/run_native_descriptor_samplers_probe.ps1",
+      "bytes": 1827,
+      "sha256": "661328925cf044a766a70594e7432d376fad1b6e741dba6b893fc4ca771c5ea8"
+    },
+    {
+      "path": "local/write_descriptor_samplers_report.py",
+      "bytes": 14786,
+      "sha256": "04527c755b434f2a8fb3b712fe1824a9dc8892dd1f8c45e053ca79fc5d3ecffd"
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "bytes": 9330,
+      "sha256": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0"
+    },
+    {
+      "path": "src/native_material_pass_base.cpp",
+      "bytes": 7909,
+      "sha256": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b"
+    },
+    {
+      "path": "src/native_material_pass_copy.cpp",
+      "bytes": 10448,
+      "sha256": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357"
+    },
+    {
+      "path": "src/native_material_pass_owner.cpp",
+      "bytes": 5767,
+      "sha256": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586"
+    },
+    {
+      "path": "src/native_material_pass_states.cpp",
+      "bytes": 9379,
+      "sha256": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "bytes": 16388,
+      "sha256": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "bytes": 15546,
+      "sha256": "203658be8e2820c639399053fdbb1ebdb1f1482b48729de0161cd29cb8135443"
+    },
+    {
+      "path": "src/native_shader_descriptor_samplers.cpp",
+      "bytes": 4927,
+      "sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/system_time_constants.cpp",
+      "bytes": 7366,
+      "sha256": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c"
+    }
+  ],
+  "integrator_unwind_repair": {
+    "address": "00cbf400",
+    "end_inclusive": "00cbf40a",
+    "bytes": 11,
+    "instructions": 5,
+    "gaps": 0,
+    "original_name_preserved": "Unwind@00cbf400",
+    "saved_readback_exported": true,
+    "previous_incomplete_attempt": "local/sampler-binding-unwind-flow-repair.json",
+    "before": "local/sampler-binding-unwind-before-recreation.json",
+    "recreation": "local/sampler-binding-unwind-recreation.json",
+    "readback": "local/shader-owner-first-readback.json",
+    "limits": "Stored-body repair only; no original private FH3 runtime claim."
+  }
+}

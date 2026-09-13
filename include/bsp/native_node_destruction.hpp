@@ -74,6 +74,17 @@ void native_node_world_changed_00b6dbe0(SceneAttachmentRuntime&, SceneNodeAttach
 // ActualNativeStringPoolStorage routes actual native owner/ring operations.
 void destroy_native_node_00b6f440(NativeNodeDestructionRuntime&, NativeNodeBinding&,
     NativeStringStorage& actual_name_storage);
+// Same full body with actual01090AA8/01090AA4/01090AA0 cells. Normal name
+// return captures current data before state0, then current length+1 before the
+// fresh419CC0 getter. A throwing getter still runs base cleanup, without
+// repeating the consumed array/name stages. Failed name ownership remains
+// external; this call cannot be retried on the ended prefix.
+// Point-light backing must belong to runtime.point_lights with valid
+// nonnegative count/capacity. Foreign backing remains a terminal boundary.
+// This overload does not remove the runtime constructor's existing semantic
+// SizedStoragePool dependency or certify original FH3/SEH/terminal ABI.
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime&, NativeNodeBinding&,
+    NativeStringRawPoolContext& actual_name_pool);
 // Existing semantic callers use the runtime's SizedStoragePool adapter.
 void destroy_native_node_00b6f440(NativeNodeDestructionRuntime&, NativeNodeBinding&);
 

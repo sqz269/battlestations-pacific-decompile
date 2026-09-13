@@ -1,0 +1,1617 @@
+{
+  "packet": "orch5_native_shader_construction",
+  "source": "src/native_d3d9_shader_construction.cpp",
+  "header": "include/bsp/native_d3d9_shader_construction.hpp",
+  "documentation": "docs/NATIVE_D3D9_SHADER_CONSTRUCTION.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b5f9b0",
+      "bytes": 320,
+      "end": "00b5faef",
+      "sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b5f9b0.bin",
+      "instructions": 107,
+      "last_instruction": "00b5faed: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b5f9b0 FUN_00b5f9b0  undefined FUN_00b5f9b0(void)  body 00b5f9b0 - 00b5faef",
+      "symbol": "construct_native_pixel_shader_00b5f9b0",
+      "original_abi": "ECX fresh actual10h; stack actual COM shader or null; EAX same; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b5faf0",
+      "bytes": 320,
+      "end": "00b5fc2f",
+      "sha256": "eb4fa1ea8a2bf1e507457b08c7af5a2c7613cf3599e15cee06440e557fec932b",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b5faf0.bin",
+      "instructions": 107,
+      "last_instruction": "00b5fc2d: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b5faf0 FUN_00b5faf0  undefined FUN_00b5faf0(void)  body 00b5faf0 - 00b5fc2f",
+      "symbol": "construct_native_vertex_shader_00b5faf0",
+      "original_abi": "ECX fresh actual10h; stack actual COM shader or null; EAX same; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b289a0",
+      "bytes": 73,
+      "end": "00b289e8",
+      "sha256": "10b02dfeaedcd66ddc9da8db6f624b1ac21511147c3f9651b051c5957f10b278",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b289a0.bin",
+      "instructions": 26,
+      "last_instruction": "00b289e6: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b289a0 FUN_00b289a0  undefined FUN_00b289a0(void)  body 00b289a0 - 00b289e8",
+      "symbol": "register_native_vertex_shader_00b289a0",
+      "original_abi": "ECX actual renderer; stack borrowed raw wrapper; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b289f0",
+      "bytes": 73,
+      "end": "00b28a38",
+      "sha256": "144d6f5a1977d7e313a52b376393b639a3b359084624620824fcdebec1d9cf3c",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b289f0.bin",
+      "instructions": 26,
+      "last_instruction": "00b28a36: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b289f0 FUN_00b289f0  undefined FUN_00b289f0(void)  body 00b289f0 - 00b28a38",
+      "symbol": "register_native_pixel_shader_00b289f0",
+      "original_abi": "ECX actual renderer; stack borrowed raw wrapper; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b253e0",
+      "bytes": 103,
+      "end": "00b25446",
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b253e0.bin",
+      "instructions": 46,
+      "last_instruction": "00b25444: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b253e0 FUN_00b253e0  undefined FUN_00b253e0(void)  body 00b253e0 - 00b25446",
+      "symbol": "remove_native_vertex_shader_registry_00b253e0",
+      "original_abi": "ECX actual0Ch registry; stack pointer to raw shader pointer; AL found; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b25450",
+      "bytes": 103,
+      "end": "00b254b6",
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b25450.bin",
+      "instructions": 46,
+      "last_instruction": "00b254b4: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b25450 FUN_00b25450  undefined FUN_00b25450(void)  body 00b25450 - 00b254b6",
+      "symbol": "remove_native_pixel_shader_registry_00b25450",
+      "original_abi": "ECX actual0Ch registry; stack pointer to raw shader pointer; AL found; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b22dd0",
+      "bytes": 95,
+      "end": "00b22e2e",
+      "sha256": "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b22dd0.bin",
+      "instructions": 38,
+      "last_instruction": "00b22e2c: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b22dd0 FUN_00b22dd0  undefined FUN_00b22dd0(void)  body 00b22dd0 - 00b22e2e",
+      "symbol": "reserve_native_vertex_shader_registry_00b22dd0",
+      "original_abi": "ECX actual0Ch registry; stack signed capacity; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    },
+    {
+      "address": "00b22e30",
+      "bytes": 95,
+      "end": "00b22e8e",
+      "sha256": "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b22e30.bin",
+      "instructions": 38,
+      "last_instruction": "00b22e8c: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b22e30 FUN_00b22e30  undefined FUN_00b22e30(void)  body 00b22e30 - 00b22e8e",
+      "symbol": "reserve_native_pixel_shader_registry_00b22e30",
+      "original_abi": "ECX actual0Ch registry; stack signed capacity; RET4",
+      "coverage": "complete normal body; explicit C++ host frame where needed; no native private FH3/ABI adapter"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b5fa26",
+      "caller": "00b5f9b0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h pooled header, stack DWORD length/preserve1; RET8; unchanged current pool resize"
+    },
+    {
+      "address": "00b5fa41",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove(dst,src,count), ADD ESP,0Ch. Firstcopy capturedfirstlength+1; secondcopy currentsecondlength/currentfirstdata"
+    },
+    {
+      "address": "00b5fa64",
+      "caller": "00b5f9b0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h pooled header, stack DWORD length/preserve1; RET8; unchanged current pool resize"
+    },
+    {
+      "address": "00b5fa7c",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove(dst,src,count), ADD ESP,0Ch. Firstcopy capturedfirstlength+1; secondcopy currentsecondlength/currentfirstdata"
+    },
+    {
+      "address": "00b5fa89",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xb3e730",
+      "native": "00b3e730",
+      "contract": "zero native args, EAX actual support singleton, RET. Same0108FEDC publication and shared01090AA0 lifetime domain; neighboring COM stack snapshot is not a parameter"
+    },
+    {
+      "address": "00b5faa2",
+      "caller": "00b5f9b0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current actual pool; following BD1510 consumes previously pushed data/size/flag1"
+    },
+    {
+      "address": "00b5faa9",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual pool, stack data/size/flag1; RET0C. Seconddata captured/currentsecondlength; firstdata current/capturedfirstlength"
+    },
+    {
+      "address": "00b5fac1",
+      "caller": "00b5f9b0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current actual pool; following BD1510 consumes previously pushed data/size/flag1"
+    },
+    {
+      "address": "00b5fac8",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual pool, stack data/size/flag1; RET0C. Seconddata captured/currentsecondlength; firstdata current/capturedfirstlength"
+    },
+    {
+      "address": "00b5fad4",
+      "caller": "00b5f9b0",
+      "instruction": "call 0xb289f0",
+      "native": "00b289f0",
+      "contract": "ECX current F8D394 renderer, stack actual wrapper; RET4; pixel registry1AD0 after name cleanups"
+    },
+    {
+      "address": "00b5fb5d",
+      "caller": "00b5faf0",
+      "instruction": "call 0xb289a0",
+      "native": "00b289a0",
+      "contract": "ECX current F8D394 renderer, stack actual wrapper; RET4; vertex registry1AC4 before name allocations"
+    },
+    {
+      "address": "00b5fb72",
+      "caller": "00b5faf0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h pooled header, stack DWORD length/preserve1; RET8; unchanged current pool resize"
+    },
+    {
+      "address": "00b5fb8d",
+      "caller": "00b5faf0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove(dst,src,count), ADD ESP,0Ch. Firstcopy capturedfirstlength+1; secondcopy currentsecondlength/currentfirstdata"
+    },
+    {
+      "address": "00b5fbb0",
+      "caller": "00b5faf0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h pooled header, stack DWORD length/preserve1; RET8; unchanged current pool resize"
+    },
+    {
+      "address": "00b5fbc8",
+      "caller": "00b5faf0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove(dst,src,count), ADD ESP,0Ch. Firstcopy capturedfirstlength+1; secondcopy currentsecondlength/currentfirstdata"
+    },
+    {
+      "address": "00b5fbd5",
+      "caller": "00b5faf0",
+      "instruction": "call 0xb3e730",
+      "native": "00b3e730",
+      "contract": "zero native args, EAX actual support singleton, RET. Same0108FEDC publication and shared01090AA0 lifetime domain; neighboring COM stack snapshot is not a parameter"
+    },
+    {
+      "address": "00b5fbee",
+      "caller": "00b5faf0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current actual pool; following BD1510 consumes previously pushed data/size/flag1"
+    },
+    {
+      "address": "00b5fbf5",
+      "caller": "00b5faf0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual pool, stack data/size/flag1; RET0C. Seconddata captured/currentsecondlength; firstdata current/capturedfirstlength"
+    },
+    {
+      "address": "00b5fc0d",
+      "caller": "00b5faf0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "no native arguments, EAX current actual pool; following BD1510 consumes previously pushed data/size/flag1"
+    },
+    {
+      "address": "00b5fc14",
+      "caller": "00b5faf0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual pool, stack data/size/flag1; RET0C. Seconddata captured/currentsecondlength; firstdata current/capturedfirstlength"
+    },
+    {
+      "address": "00b289ae",
+      "caller": "00b289a0",
+      "instruction": "call 0xb253e0",
+      "native": "00b253e0",
+      "contract": "ECX actual0Ch vertex registry, stack pointer to incoming shader pointer; RET4, AL found. Swap-remove firstmatch without retain/free"
+    },
+    {
+      "address": "00b289ca",
+      "caller": "00b289a0",
+      "instruction": "call 0xb22dd0",
+      "native": "00b22dd0",
+      "contract": "ECX actual0Ch vertex registry; stack signed max(DWORD(capacity*2),1); RET4; grow raw slots"
+    },
+    {
+      "address": "00b289fe",
+      "caller": "00b289f0",
+      "instruction": "call 0xb25450",
+      "native": "00b25450",
+      "contract": "ECX actual0Ch pixel registry, stack pointer to incoming shader pointer; RET4, AL found. Same raw swap removal"
+    },
+    {
+      "address": "00b28a1a",
+      "caller": "00b289f0",
+      "instruction": "call 0xb22e30",
+      "native": "00b22e30",
+      "contract": "ECX actual0Ch pixel registry; stack signed max(DWORD(capacity*2),1); RET4; grow raw slots"
+    },
+    {
+      "address": "00b22df0",
+      "caller": "00b22dd0",
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be",
+      "contract": "cdecl one DWORD bytes, ADD ESP,4; JMP BF681B malloc/new-handler retry/throw boundary; uses unchanged singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b22e1c",
+      "caller": "00b22dd0",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "contract": "cdecl one old data pointer, ADD ESP,4; JMP BF65AC CRT free; unchanged singleton_lifetime_free"
+    },
+    {
+      "address": "00b22e50",
+      "caller": "00b22e30",
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be",
+      "contract": "cdecl one DWORD bytes, ADD ESP,4; JMP BF681B malloc/new-handler retry/throw boundary; uses unchanged singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b22e7c",
+      "caller": "00b22e30",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "contract": "cdecl one old data pointer, ADD ESP,4; JMP BF65AC CRT free; unchanged singleton_lifetime_free"
+    },
+    {
+      "address": "00b3bc9e",
+      "native": "00b5faf0",
+      "caller": "00b3b3c0",
+      "contract": "Fresh10h fromBF681B atB3BC7F -> ECX=EAX; stack actual vertex COM at callerESP+24, RET4"
+    },
+    {
+      "address": "00b3bfb6",
+      "native": "00b5f9b0",
+      "caller": "00b3b3c0",
+      "contract": "Fresh10h fromBF681B atB3BF97 -> ECX=EAX; stack actual pixel COM at callerESP+28, RET4"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b5fa08",
+      "caller": "00b5f9b0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "coverage": "actual current COM vtable+04 AddRef invoked directly",
+      "target_contract": "CURRENT supplied COM vtable+04; stdcall pushedthis, callee cleanup4; no invented fixed target address",
+      "numeric_target": "runtime COM target not a static executable address"
+    },
+    {
+      "address": "00b5fa14",
+      "caller": "00b5f9b0",
+      "instruction": "call ecx",
+      "indirect_register": "ecx",
+      "coverage": "unreachable under native stdcall ABI",
+      "target_contract": "CURRENT oldCOM vtable+08 Release; EDI provenzero by MOV EDI,EBX after XOR EBX,EBX, preserved by stdcall",
+      "numeric_target": "runtime COM target not a static executable address"
+    },
+    {
+      "address": "00b5fb48",
+      "caller": "00b5faf0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "coverage": "actual current COM vtable+04 AddRef invoked directly",
+      "target_contract": "CURRENT supplied COM vtable+04; stdcall pushedthis, callee cleanup4; no invented fixed target address",
+      "numeric_target": "runtime COM target not a static executable address"
+    },
+    {
+      "address": "00b5fb54",
+      "caller": "00b5faf0",
+      "instruction": "call ecx",
+      "indirect_register": "ecx",
+      "coverage": "unreachable under native stdcall ABI",
+      "target_contract": "CURRENT oldCOM vtable+08 Release; EDI provenzero by MOV EDI,EBX after XOR EBX,EBX, preserved by stdcall",
+      "numeric_target": "runtime COM target not a static executable address"
+    }
+  ],
+  "no_ghidra_function": [],
+  "callees": {
+    "00419cc0": "00419cc0 BSP_SizedStoragePool_GetSingleton  undefined BSP_SizedStoragePool_GetSingleton(void)  body 00419cc0 - 00419d7f",
+    "0041dd40": "0041dd40 BSP_NativeString_Resize  void __thiscall BSP_NativeString_Resize(void * this, uint length, uint preserve_slot)  body 0041dd40 - 0041dde3",
+    "00b22dd0": "00b22dd0 FUN_00b22dd0  undefined FUN_00b22dd0(void)  body 00b22dd0 - 00b22e2e",
+    "00b22e30": "00b22e30 FUN_00b22e30  undefined FUN_00b22e30(void)  body 00b22e30 - 00b22e8e",
+    "00b253e0": "00b253e0 FUN_00b253e0  undefined FUN_00b253e0(void)  body 00b253e0 - 00b25446",
+    "00b25450": "00b25450 FUN_00b25450  undefined FUN_00b25450(void)  body 00b25450 - 00b254b6",
+    "00b289a0": "00b289a0 FUN_00b289a0  undefined FUN_00b289a0(void)  body 00b289a0 - 00b289e8",
+    "00b289f0": "00b289f0 FUN_00b289f0  undefined FUN_00b289f0(void)  body 00b289f0 - 00b28a38",
+    "00b32410": "00b32410 BSP_D3D9Renderer_Construct  undefined BSP_D3D9Renderer_Construct(void)  body 00b32410 - 00b328f7",
+    "00b3b3c0": "00b3b3c0 BSP_ShaderBuilder_CompileMaterialPass  undefined BSP_ShaderBuilder_CompileMaterialPass(void)  body 00b3b3c0 - 00b3c390",
+    "00b3e730": "00b3e730 bsp_resource_support_get_singleton  undefined bsp_resource_support_get_singleton(void)  body 00b3e730 - 00b3e7ec",
+    "00b5f9b0": "00b5f9b0 FUN_00b5f9b0  undefined FUN_00b5f9b0(void)  body 00b5f9b0 - 00b5faef",
+    "00b5faf0": "00b5faf0 FUN_00b5faf0  undefined FUN_00b5faf0(void)  body 00b5faf0 - 00b5fc2f",
+    "00bd1510": "00bd1510 BSP_SizedStoragePool_ReturnBlock  undefined BSP_SizedStoragePool_ReturnBlock(void)  body 00bd1510 - 00bd156e",
+    "00bf55be": "00bf55be operator_new  undefined operator_new(void)  body 00bf55be - 00bf55c2",
+    "00bf65ac": "00bf65ac _free  void __cdecl _free(void * _Memory)  body 00bf65ac - 00bf65b0",
+    "00bf681b": "00bf681b operator_new  undefined operator_new(void)  body 00bf681b - 00bf6883",
+    "00bf6989": "00bf6989 _free  void __cdecl _free(void * _Memory)  body 00bf6989 - 00bf698d",
+    "00bf7680": "00bf7680 _memcpy  void * __cdecl _memcpy(void * _Dst, void * _Src, size_t _Size)  body 00bf7680 - 00bf79e4"
+  },
+  "additional_evidence": [
+    {
+      "address": "00d62a94",
+      "bytes": 12,
+      "end": "00d62a9f",
+      "sha256": "09dd939ddfe29cbf590e54dbc08e3d13f3ef0533bfca8a3fe8815304be220752",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00d62a94.bin"
+    },
+    {
+      "address": "00d62aa0",
+      "bytes": 13,
+      "end": "00d62aac",
+      "sha256": "08dcdd3434c71939f01ba9847e54e47fd1f003a567e6cfbc5affb269129e8f13",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00d62aa0.bin"
+    },
+    {
+      "address": "00d62a60",
+      "bytes": 32,
+      "end": "00d62a7f",
+      "sha256": "54c8f8d0c4187359598abaf986fb4a9a709696b281d4f62f6966d9eb68e7a8bd",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00d62a60.bin"
+    },
+    {
+      "address": "00b325d6",
+      "bytes": 36,
+      "end": "00b325f9",
+      "sha256": "a12c6be10dc71dfa5a71e96883c74b1259a58c15d2fc482abb39fa3535739beb",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b325d6.bin"
+    },
+    {
+      "address": "00b32439",
+      "bytes": 2,
+      "end": "00b3243a",
+      "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+      "live_disk_equal": true,
+      "path": "local/sc-original-00b32439.bin"
+    }
+  ],
+  "dependencies": {
+    "storage": "actual10h wrapper produced by these constructors; CEB130/ref1 thenD62A60orD62A70/+0C0/+080 before optionalCOM store/AddRef",
+    "renderer_registry_producer": "B32410 sixzero stores B325D6..B325F9; EBX zeroedB32439, no writes until epiloguePOP B328E9. Fixture executes same original6stores with register adapter; no fullrenderer construction claim",
+    "actual_domains": "Existing NativeRenderActualOwners companions borrow same+04; original constructors never decrement or invoke zero-count lookup. Same actualpool/resourceSupport0108FEDC/sharedSingletonLifetimeDomain01090AA0",
+    "external_terminal_providers": [
+      "00b5f410",
+      "00b5f490",
+      "00b5f6e0",
+      "00b5f700"
+    ],
+    "terminal_boundary": "Required externally, not reconstructed here. Fixture companions fail fast if invoked and remain in process arena with wrappers/COM holds through exit; never a successful terminal stub."
+  },
+  "corrections": [
+    {
+      "was": "B22DD0/B22E30 exports skipped continuation after BF6989 free",
+      "is": "Full saved bodies include ADD ESP4; publishdataEBX then signedcapacityEDI; POP EBX; existing epilogue/RET4",
+      "evidence": "Integrator official flow repair before worker implementation; local/sc-flow-00b22dd0.txt and sc-flow-00b22e30.txt each38instructions/0gaps, endsB22E2E/B22E8E"
+    },
+    {
+      "was": "Treat both shader registrations as identically ordered or owning arrays",
+      "is": "Pixel registers after bothtemp cleanups; vertex before temps. Registry arrays contain borrowed pointers with no engine count changes",
+      "evidence": "B5FAD4 versusB5FB5D; B289A0/B289F0 call rawremove/reserve and store pointer only"
+    }
+  ],
+  "validation": {
+    "build": "PASS default registered MSVC Win32 C++17 Release W4/WX and both existing CTests after verify-seeds",
+    "fixture": "PASS one focused original/source executable;8comparisons; actualHALCOMshader AddRef/exactwrapper/pooltrace/sharedsupport/registryproducer/mutation/growth/swaporder, failedsecondallocation/replay/guard77; actualsupport+poolcanonicalshutdown",
+    "report_calls": "PASS 30 numeric direct rows, 0 failures; four runtime COM sites documented separately",
+    "limits": "Only construction/registry normal paths and explicit source failure retention. Actual shader wrappers, canonicalcompanion bindings and COM holds remain alive in process arena until exit; missing shader terminal destruction not executed. No privateFH3, originalC++ABI, draw/readback or gameplay claim.",
+    "original_relocation_checks": [
+      {
+        "address": "00b5f9b0",
+        "bytes": 320,
+        "changed_bytes": 40,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b5faf0",
+        "bytes": 320,
+        "changed_bytes": 40,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b289a0",
+        "bytes": 73,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b289f0",
+        "bytes": 73,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b253e0",
+        "bytes": 103,
+        "changed_bytes": 0,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b25450",
+        "bytes": 103,
+        "changed_bytes": 0,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b22dd0",
+        "bytes": 95,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b22e30",
+        "bytes": 95,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true
+      }
+    ],
+    "registry_producer_adapter": "Exact 36 original bytes between PUSH EBX/PUSH ESI/MOV ESI,ECX/XOR EBX,EBX and POP ESI/POP EBX/RET; original producer proves EBX zero.",
+    "original_source_trace_pairs": 8,
+    "field_0c": "opaque_0c: constructor zero store is proven; no semantic role inferred. Exact offset 0Ch asserted.",
+    "build_log": "local/shader-construction-final-build.log",
+    "fixture_log": "local/shader-construction-probe.log",
+    "guard_log": "local/shader-construction-guard.log"
+  },
+  "evidence_artifacts": [
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10.h",
+      "bytes": 2103,
+      "sha256": "d8d9f4faca413a107833018c3f158a5b334880f23a0ee8f4dcc4a8aba114b775"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx10async.h",
+      "bytes": 15605,
+      "sha256": "dd4efe3db5ca3cd3a876f15901a969b66fd605f5ca2d4d8eed6bb0591737cb2d"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10core.h",
+      "bytes": 14454,
+      "sha256": "a44d0817cc825593278f4b2970b8ad868033dfbf8c99e984bcac2ef05a01e0eb"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10math.h",
+      "bytes": 62479,
+      "sha256": "0394cac9bd91fcd3f32d6e1ce74f547ef52ad37de7b10eba0257497df82f3e2d"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10math.inl",
+      "bytes": 45816,
+      "sha256": "5715b5bd81a3c36c5c02389b472f0d7979ad2deee0482e066844350e9c45b9b8"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10mesh.h",
+      "bytes": 11046,
+      "sha256": "b34f787535ddf34b2b02c140e6be10bda9d61fbeda0f2fb80e22f0c25b7d4c50"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX10tex.h",
+      "bytes": 26616,
+      "sha256": "cef689b72a61fc73f8ea9450e24113f397162aab8e9d61eb54fdadcb6349d621"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX11.h",
+      "bytes": 2100,
+      "sha256": "414fc34666cd5977f832e62c38db0485acb2ab536eae012276f8865f79014382"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX11async.h",
+      "bytes": 8700,
+      "sha256": "709f6379f69458edcbac8a3f02e71e8f31169237f6afbe802dd09a9565e7654f"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX11core.h",
+      "bytes": 3868,
+      "sha256": "3357181adc8c86e8bae58ba8acc081adc9acc2ffa595c5965af50366243cd152"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX11tex.h",
+      "bytes": 26986,
+      "sha256": "6ca32a21934597e9ad2f555d812462699275be4420be7aaa9057eb98c17f6d22"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9.h",
+      "bytes": 2385,
+      "sha256": "396f2382eccb05456c465482910edc391e744c914fc7732ae280c69a51bbc842"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9anim.h",
+      "bytes": 43369,
+      "sha256": "13e3d815d23e6daddde706dafef769bb40416e5c6c5ba817296377595a9716b2"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9core.h",
+      "bytes": 23921,
+      "sha256": "7e360611940e9520c9dd983dbe9e48a78df8b723d95de1a57a63580de52a0207"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9effect.h",
+      "bytes": 42312,
+      "sha256": "72d6665d54c425b8a99fe0716518b2711f7cece6a3b2f8e7c6fc307e0a3fae26"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9math.h",
+      "bytes": 59604,
+      "sha256": "27ac937a3eb64f9ed917a4265ac4e1f6817a94bd15ca7a5cc1eb63c2cb9ea1d9"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9math.inl",
+      "bytes": 45267,
+      "sha256": "51ae36e6cbec27c7ecd8be77b9587ca6e32e541228e8580a20bad08c5289abf6"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9mesh.h",
+      "bytes": 128409,
+      "sha256": "9430487b9a0f6cbbb6839e27811bb70bbcd2d958666fc75c8da9d20ccc60bc41"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9shader.h",
+      "bytes": 39300,
+      "sha256": "235bf935a1381c68d0847cfb8d5422f33cdd92d33acee5a59befeef6afad78d4"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9shape.h",
+      "bytes": 7943,
+      "sha256": "481ce5fc79bba00750dce857e6d0507cb0b7b82013bcea1728b1abfdc5fe9a7b"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9tex.h",
+      "bytes": 61840,
+      "sha256": "64dfa1f26d6df792f6cf261c79f737e6e5c7670787ba6abfe0f76aba348e9422"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/d3dx9xof.h",
+      "bytes": 12012,
+      "sha256": "145c211ccbcd880f411195e66881a9172df52ac495f309dc7c97875ba73d3c55"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/D3DX_DXGIFormatConvert.inl",
+      "bytes": 34332,
+      "sha256": "c77b201e047d88333d3f78f141202bbdcdf93337a22ad8bdccd70569da64283e"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/rmxfguid.h",
+      "bytes": 8751,
+      "sha256": "429607aac63f33915f94a9f935e31138b9eb77433bf529c966444551134cd7c3"
+    },
+    {
+      "path": "build/win32/_deps/dxsdk_d3dx-src/build/native/include/rmxftmpl.h",
+      "bytes": 17623,
+      "sha256": "ef346fb437df306e460d3728e72769e13263c821d322cf164dcfccbf340cb6d6"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_d3d9_shader_construction.obj",
+      "bytes": 28768,
+      "sha256": "02127515fb8a25ed3201d0b24e19f22c7571d99611a92cc3912f0487d02c3f39"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_legacy_exception_owner.obj",
+      "bytes": 7108,
+      "sha256": "c0620c626222aecbed184377f8c74c4b025e7f4f1084334a26685b7067bf9586"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_legacy_sbo_string.obj",
+      "bytes": 18682,
+      "sha256": "a7ed8e51fb5dd739ccd6c997c3400099deb4e5af31281eafabd5628e808477bf"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_worker_lifetime.obj",
+      "bytes": 6117,
+      "sha256": "8924a559466487038161f024fe5ef952ba1ece026ecf64a456fab0dabc14d22d"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_support.obj",
+      "bytes": 5015,
+      "sha256": "26eff49c9bca7443638f060dc4517d9ccb3f064b38edf742ee23fd9ab1e57433"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+      "bytes": 5055,
+      "sha256": "0999245d62d5b5f0a406e197dc0cbc19518a7c143c4cbccefe295c7c427ed04e"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_allocation.obj",
+      "bytes": 10592,
+      "sha256": "b88c3f34ca1e7c7ab0ae52884ae3420bfdb308380a4e636ce68600a5906ff31e"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_insert_count.obj",
+      "bytes": 2217,
+      "sha256": "5441a09c5508f84de59b7e7e2132428bb33d5ec9656a1aa62efd4f058114d42e"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_leaves.obj",
+      "bytes": 2612,
+      "sha256": "e0d7dfa2c29722ac218b043a08dd56b59f7abfd26f9cae2473430561fe70fa0f"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_registration_wrappers.obj",
+      "bytes": 1886,
+      "sha256": "bb7a838ce4186a19c0a650b062cc45d6bb08ab5183ea8930edc369630ddae71f"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_reserve_construct.obj",
+      "bytes": 4205,
+      "sha256": "92fa9bc66807cae0f272fa50df1a692769017b7a6eba488191555dc47d4fd417"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+      "bytes": 17936,
+      "sha256": "ea72fbfe0f249590b79c932569c947ee87ee285c6aaa799e4a5facd6a4fe39a7"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+      "bytes": 15558,
+      "sha256": "3407bb36a13e574e128d49f48d12dc6f7ecb7cca490ed389bef32decfdce2a82"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "bytes": 9163,
+      "sha256": "e1536458ed539da6c952a8da1910fa56bac44de4bfd64e1d9f8cad7e0532eadc"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "bytes": 32975,
+      "sha256": "82adbb29a148fb38a93b4d40df3fc18e47c6579dce223100db56df5164f44fc6"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 204415,
+      "sha256": "5b040e946baf5b183cf464a71b017342164bc366916ee9352538731c831b7ea7"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 55927398,
+      "sha256": "db155cb3a804b0129f1265d4c4da757a46a0ffa0b9d31f3a5beeee05bd711d09"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455768,
+      "sha256": "06a78b47cfcdb5081f9681e1d1261d486e902b0d1192c5920ddda00487181bf1"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72086,
+      "sha256": "0d7e8d76e902c986bb27cf307179481c58a2fdda3df6082510baba3e57a27004"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 106016,
+      "sha256": "e41b8ac60a87404c4828341992bc1879ee9ba855f19514806e133966b6723555"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 14869,
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/d3d9_buffers.hpp",
+      "bytes": 3262,
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+    },
+    {
+      "path": "include/bsp/d3d9_startup.hpp",
+      "bytes": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+    },
+    {
+      "path": "include/bsp/d3d9_states.hpp",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+    },
+    {
+      "path": "include/bsp/d3d9_vertex_layout.hpp",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/instance_grouping.hpp",
+      "bytes": 4008,
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+    },
+    {
+      "path": "include/bsp/instance_sort.hpp",
+      "bytes": 4479,
+      "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+    },
+    {
+      "path": "include/bsp/instance_upload.hpp",
+      "bytes": 6532,
+      "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+    },
+    {
+      "path": "include/bsp/material_sort_metadata.hpp",
+      "bytes": 3332,
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+    },
+    {
+      "path": "include/bsp/native_d3d9_shader_construction.hpp",
+      "bytes": 5363,
+      "sha256": "7c6c877a417293cacfd530dd992599eaa685d3da78a7f9f9d70ea2034c9c7922"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_construction.hpp",
+      "bytes": 2336,
+      "sha256": "50607201a87a306462eaba1a6dc83c733dd7307eb3078cf0966903b349a49cb3"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "bytes": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_insert_count.hpp",
+      "bytes": 1212,
+      "sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_leaves.hpp",
+      "bytes": 3101,
+      "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "include/bsp/vertex_declaration.hpp",
+      "bytes": 1462,
+      "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+    },
+    {
+      "path": "local/finalize_shader_construction.py",
+      "bytes": 5685,
+      "sha256": "5f0c71148fd995ad4fe39ea122d0694da22959eaeeb00f39988f68aafc8711e2"
+    },
+    {
+      "path": "local/ledger_shader_construction.py",
+      "bytes": 1408,
+      "sha256": "712f159cf348f856bb1fe8a7cf8d4474180a84d9db8569495076dd2baa0d86a4"
+    },
+    {
+      "path": "local/native_shader_construction_probe.cpp",
+      "bytes": 15177,
+      "sha256": "375ed1d16a5799a67a48f5664e042354209059068b1520d77df03e7ad96ce738"
+    },
+    {
+      "path": "local/native_shader_construction_probe.exe",
+      "bytes": 70656,
+      "sha256": "069ae459c9b3b29b921b3574fa604091c0e20c05fe1f882dfaf1f2a2c1b6a401"
+    },
+    {
+      "path": "local/native_shader_construction_probe.map",
+      "bytes": 158541,
+      "sha256": "d909277bde26415d049402b4600544b8a9982f3683f3f9bf0f8477934100745a"
+    },
+    {
+      "path": "local/native_shader_construction_probe.obj",
+      "bytes": 462344,
+      "sha256": "835a42bd8e80612eecfebdfea919e8b727f889aa803525562e62a11ae9548db6"
+    },
+    {
+      "path": "local/register_shader_construction.py",
+      "bytes": 564,
+      "sha256": "185c143b3343583f0e907466ed779c0f0a9142c226b83f40caa88e5abee1fec2"
+    },
+    {
+      "path": "local/run_native_shader_construction_probe.ps1",
+      "bytes": 1951,
+      "sha256": "4361e398913dbcea068f0743a168d61bb07ecc416aded49126f556b81c641f5b"
+    },
+    {
+      "path": "local/sc-audit.json",
+      "bytes": 9900,
+      "sha256": "3cbd1fd4ded4b0a3f9c0bf9bcc7614dadbe45533943adf520451a62a5ea65473"
+    },
+    {
+      "path": "local/sc-calls.log",
+      "bytes": 78,
+      "sha256": "b1df3ad3a8f63155504ad5ea05278f8ee39c80c9ca62e8271297f8a204dce2a5"
+    },
+    {
+      "path": "local/sc-flow-00b22dd0.txt",
+      "bytes": 128,
+      "sha256": "5cb80b7ff4c26ff2096cdc6e38c87d42d13210e26ba9aabcfa69e2548b0add0b"
+    },
+    {
+      "path": "local/sc-flow-00b22e30.txt",
+      "bytes": 128,
+      "sha256": "60e115508f9ac69893c077edc8957b4803eb2bed06774ac1743053b8f9bb842d"
+    },
+    {
+      "path": "local/sc-flow-00b253e0.txt",
+      "bytes": 128,
+      "sha256": "27c80a16b9af7dddd630002eb877ecadc9b9b10f64ecc5408f1add88093e37ed"
+    },
+    {
+      "path": "local/sc-flow-00b25450.txt",
+      "bytes": 128,
+      "sha256": "6ee099a5b0e04fd820ed4d73c39c412e445ed00f45711686eae0befa8fb22cb4"
+    },
+    {
+      "path": "local/sc-flow-00b289a0.txt",
+      "bytes": 128,
+      "sha256": "1cec59c1f2dbcc48eaf813420f8160150885663715baca1be598cf0e86c9d700"
+    },
+    {
+      "path": "local/sc-flow-00b289f0.txt",
+      "bytes": 128,
+      "sha256": "97ab387d02a27b66ac56a1b7c826aefc6fe076aa0513a777ce511382b28b9236"
+    },
+    {
+      "path": "local/sc-flow-00b5f9b0.txt",
+      "bytes": 129,
+      "sha256": "032071fc26c374f1463d6058be4cbd99faaec7c2117cf31565f43d2fc0758631"
+    },
+    {
+      "path": "local/sc-flow-00b5faf0.txt",
+      "bytes": 129,
+      "sha256": "8a237d4175c081fe53b7105f8f266bf0fc2b2eb7dc8ea60a5fa231e129f9bf69"
+    },
+    {
+      "path": "local/sc-linked-00b22dd0.bin",
+      "bytes": 95,
+      "sha256": "0141435790b3285881c336b9afa9112b165a87f4b47491589dc5287eda423d9a"
+    },
+    {
+      "path": "local/sc-linked-00b22e30.bin",
+      "bytes": 95,
+      "sha256": "4ca0e6af0ddad0f0f182bdc39c164aef9d93a3c21f278ace37c55271a8863a9f"
+    },
+    {
+      "path": "local/sc-linked-00b253e0.bin",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "path": "local/sc-linked-00b25450.bin",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "path": "local/sc-linked-00b289a0.bin",
+      "bytes": 73,
+      "sha256": "213c542556b30e1b82001cd46ce00739c8148db59d49c6bfa5db1e4ef821b37d"
+    },
+    {
+      "path": "local/sc-linked-00b289f0.bin",
+      "bytes": 73,
+      "sha256": "765b2bc27a41b8f3cbe91d752a25d4e1c6984e1741d265adc8aa3f661bb6c872"
+    },
+    {
+      "path": "local/sc-linked-00b5f9b0.bin",
+      "bytes": 320,
+      "sha256": "4cd831bd974d101d4c110324dd68679e496b68beee2b9df621947d8356856aef"
+    },
+    {
+      "path": "local/sc-linked-00b5faf0.bin",
+      "bytes": 320,
+      "sha256": "db5a32eb72da5bf1d929e042447acffa519fee9a882dab3d82cba355fb9176e0"
+    },
+    {
+      "path": "local/sc-linked-registry-producer.bin",
+      "bytes": 45,
+      "sha256": "985f6c7f782f2ab1e3f8ca6e137a3191d71cc21016b509f32ea9f6a7306c6d92"
+    },
+    {
+      "path": "local/sc-live-00b22dd0.txt",
+      "bytes": 458,
+      "sha256": "bcb4610502eb1102876d5a1a7543a7631b2dfecd2350d247a5534fc7afff6178"
+    },
+    {
+      "path": "local/sc-live-00b22e30.txt",
+      "bytes": 458,
+      "sha256": "128bdce7f02adaf426f5d76c55893c3d6e3cf3be04b0c3980934060d4e0d18ed"
+    },
+    {
+      "path": "local/sc-live-00b253e0.txt",
+      "bytes": 503,
+      "sha256": "f3d0016fcd0b663380a87d3d5646800243b5bfa9b4282f291b4a205a1b198045"
+    },
+    {
+      "path": "local/sc-live-00b25450.txt",
+      "bytes": 503,
+      "sha256": "88a34646ad507030b4b63b780b76c9bff465993f4d3a7e23d006159a82a9b075"
+    },
+    {
+      "path": "local/sc-live-00b289a0.txt",
+      "bytes": 357,
+      "sha256": "b4c05212aa121eec8ba4e5a983a8c531df2a483428962c64fa4bdec7cda4e06c"
+    },
+    {
+      "path": "local/sc-live-00b289f0.txt",
+      "bytes": 357,
+      "sha256": "00088cad7ad6161a818462d5f1c0e64e64d063f74c9bafadf6f30763070b0132"
+    },
+    {
+      "path": "local/sc-live-00b32439.txt",
+      "bytes": 21,
+      "sha256": "e8874c20ae9c37f7725669bde6c51bb8de356015d0f87258bd58b77666dbf488"
+    },
+    {
+      "path": "local/sc-live-00b325d6.txt",
+      "bytes": 183,
+      "sha256": "78431f2a1132c42a4353fd9ebf96244ee3b558aa8c99d210635df3da7394407e"
+    },
+    {
+      "path": "local/sc-live-00b5f9b0.txt",
+      "bytes": 1540,
+      "sha256": "5c6b9e5d7204e4256226daa00a0dc75e0f796e5bd8ef79b8d44d27c15722cf56"
+    },
+    {
+      "path": "local/sc-live-00b5faf0.txt",
+      "bytes": 1540,
+      "sha256": "525283db64e14d9e16e2d3fe9ae836cc5a8592e3194c7ad76d5b2cc19a44586d"
+    },
+    {
+      "path": "local/sc-live-00d62a60.txt",
+      "bytes": 154,
+      "sha256": "51ff694dbf225fd624273be42e5f190af9c07fd1c899812afb0689144f05e14d"
+    },
+    {
+      "path": "local/sc-live-00d62a94.txt",
+      "bytes": 61,
+      "sha256": "fa12b75c351bfd0815e505ef3164e2da7aa69b19ae353970632e44940ede1e45"
+    },
+    {
+      "path": "local/sc-live-00d62aa0.txt",
+      "bytes": 65,
+      "sha256": "d8306f98f8c782375970220827754cbd0c24ed3743899b0dc0ecae6562ac325d"
+    },
+    {
+      "path": "local/sc-original-00b22dd0.bin",
+      "bytes": 95,
+      "sha256": "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1"
+    },
+    {
+      "path": "local/sc-original-00b22e30.bin",
+      "bytes": 95,
+      "sha256": "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6"
+    },
+    {
+      "path": "local/sc-original-00b253e0.bin",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "path": "local/sc-original-00b25450.bin",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+    },
+    {
+      "path": "local/sc-original-00b289a0.bin",
+      "bytes": 73,
+      "sha256": "10b02dfeaedcd66ddc9da8db6f624b1ac21511147c3f9651b051c5957f10b278"
+    },
+    {
+      "path": "local/sc-original-00b289f0.bin",
+      "bytes": 73,
+      "sha256": "144d6f5a1977d7e313a52b376393b639a3b359084624620824fcdebec1d9cf3c"
+    },
+    {
+      "path": "local/sc-original-00b32439.bin",
+      "bytes": 2,
+      "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d"
+    },
+    {
+      "path": "local/sc-original-00b325d6.bin",
+      "bytes": 36,
+      "sha256": "a12c6be10dc71dfa5a71e96883c74b1259a58c15d2fc482abb39fa3535739beb"
+    },
+    {
+      "path": "local/sc-original-00b5f9b0.bin",
+      "bytes": 320,
+      "sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28"
+    },
+    {
+      "path": "local/sc-original-00b5faf0.bin",
+      "bytes": 320,
+      "sha256": "eb4fa1ea8a2bf1e507457b08c7af5a2c7613cf3599e15cee06440e557fec932b"
+    },
+    {
+      "path": "local/sc-original-00d62a60.bin",
+      "bytes": 32,
+      "sha256": "54c8f8d0c4187359598abaf986fb4a9a709696b281d4f62f6966d9eb68e7a8bd"
+    },
+    {
+      "path": "local/sc-original-00d62a94.bin",
+      "bytes": 12,
+      "sha256": "09dd939ddfe29cbf590e54dbc08e3d13f3ef0533bfca8a3fe8815304be220752"
+    },
+    {
+      "path": "local/sc-original-00d62aa0.bin",
+      "bytes": 13,
+      "sha256": "08dcdd3434c71939f01ba9847e54e47fd1f003a567e6cfbc5affb269129e8f13"
+    },
+    {
+      "path": "local/sc-pixel-caller.txt",
+      "bytes": 522,
+      "sha256": "4f270cc14326d9d9b5316c13abe158e3d50d9c5ce0fa2ba44db86b3fa5a751b4"
+    },
+    {
+      "path": "local/sc-pixel-code.bin",
+      "bytes": 136,
+      "sha256": "1741a3341fbe6b9a05d6668673e3bab126741d800e406982c6ea953f0c710b43"
+    },
+    {
+      "path": "local/sc-proto-00419cc0.txt",
+      "bytes": 121,
+      "sha256": "984e62dfb9438f448344876a7883fc44125c0180ae220afe2c1ce9b64aff9d48"
+    },
+    {
+      "path": "local/sc-proto-0041dd40.txt",
+      "bytes": 147,
+      "sha256": "ef23645c54a7f2a9ecd8a7249c81f826956270825a2c4b83e0929760aa5d99ea"
+    },
+    {
+      "path": "local/sc-proto-00b22dd0.txt",
+      "bytes": 79,
+      "sha256": "75db70d0c678aa1d5df6d29dce2a3ac5c200388f07d408298c51c5060ebc82ef"
+    },
+    {
+      "path": "local/sc-proto-00b22e30.txt",
+      "bytes": 79,
+      "sha256": "2ef985d8384572e89e2f04f9d127c62c011dcaf8748004f53547252f25134617"
+    },
+    {
+      "path": "local/sc-proto-00b253e0.txt",
+      "bytes": 79,
+      "sha256": "dc6a7c2fcf0c3d615e0314eb70732b4ceb48aba6efd60515d7d31032f64e2995"
+    },
+    {
+      "path": "local/sc-proto-00b25450.txt",
+      "bytes": 79,
+      "sha256": "5b7a82eab39133528223c99be33b7a17744c16b010eadb87ab98301b68bcde27"
+    },
+    {
+      "path": "local/sc-proto-00b289a0.txt",
+      "bytes": 79,
+      "sha256": "508bde13054da04d94d771dc0cc0da0b1de15bcd0938e6d5f55794e8fe266631"
+    },
+    {
+      "path": "local/sc-proto-00b289f0.txt",
+      "bytes": 79,
+      "sha256": "6c9fd18221c4e8b49f756a8a4b6c6a77871f585697b84efb792fcb1ce5c61f6f"
+    },
+    {
+      "path": "local/sc-proto-00b32410.txt",
+      "bytes": 107,
+      "sha256": "8cf84974a3baffad84b8300cdfa8252bd68f9d1f6a8114070abbe6bc09a52fe5"
+    },
+    {
+      "path": "local/sc-proto-00b3b3c0.txt",
+      "bytes": 129,
+      "sha256": "08ab79b7894a07ff74b13afeb5332ba59853f28691701c8ddc5a5867f11f1d5f"
+    },
+    {
+      "path": "local/sc-proto-00b3e730.txt",
+      "bytes": 123,
+      "sha256": "b13bf7f1f78d4c686d8a6b5b23675f1241140c4ed777088e92caf98a929544ce"
+    },
+    {
+      "path": "local/sc-proto-00b5f9b0.txt",
+      "bytes": 79,
+      "sha256": "b7262720df1963ba54b4efa622a0615f96ab547b8bddf580473d6ca186370874"
+    },
+    {
+      "path": "local/sc-proto-00b5faf0.txt",
+      "bytes": 79,
+      "sha256": "8877b06d69a7fa697cbb7268f58d204e8612665d9b3e72877f50932571903064"
+    },
+    {
+      "path": "local/sc-proto-00bd1510.txt",
+      "bytes": 119,
+      "sha256": "db4f196956b39fd27089594cb993e7d050577952ee44f3ed5e060cc3ff829564"
+    },
+    {
+      "path": "local/sc-proto-00bf55be.txt",
+      "bytes": 79,
+      "sha256": "d8394894b882c8b506ba11647f8b68b27ccae05347a45166e757bc8597044b91"
+    },
+    {
+      "path": "local/sc-proto-00bf65ac.txt",
+      "bytes": 78,
+      "sha256": "d49029d9e89a6b8006bbcb060ed876be05acea65632fb6517017e7731694c7dc"
+    },
+    {
+      "path": "local/sc-proto-00bf681b.txt",
+      "bytes": 79,
+      "sha256": "a3a4c7a5e5434c9cda8d5e2edb06a5e22e33e7117af245f33148c909809c00dc"
+    },
+    {
+      "path": "local/sc-proto-00bf6989.txt",
+      "bytes": 78,
+      "sha256": "2ab2a148dcfaee8aa3cdba1fdbb13ab30a361cb2f475cf0d9fa4a5c715deb3fa"
+    },
+    {
+      "path": "local/sc-proto-00bf7680.txt",
+      "bytes": 108,
+      "sha256": "2f298397141b7d27b28a74ef020c63f117df2bdbcb2ef097145a0e0c80a3275a"
+    },
+    {
+      "path": "local/sc-renderer-ebx.txt",
+      "bytes": 253,
+      "sha256": "96b86edbbcf11b48649fa8e56991e995ae23438d18df81d35d1beeb44fb82ca3"
+    },
+    {
+      "path": "local/sc-renderer-producer.txt",
+      "bytes": 324,
+      "sha256": "16344eeeb79c992aa460fd7618443de0a2264686828a7408cba32050df79546a"
+    },
+    {
+      "path": "local/sc-seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/sc-trace-0-0-original.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-0-source.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-1-original.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-1-source.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-2-original.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-2-source.txt",
+      "bytes": 87,
+      "sha256": "901b83cbd617683d023c76e2c4ff80de331036f807fe13a49c8560f407b1a20e"
+    },
+    {
+      "path": "local/sc-trace-0-3-original.txt",
+      "bytes": 235,
+      "sha256": "f3337d9011c2e05d3b0e696f24168f3245a9a2148edb28bc57e0d45a414930b1"
+    },
+    {
+      "path": "local/sc-trace-0-3-source.txt",
+      "bytes": 235,
+      "sha256": "f3337d9011c2e05d3b0e696f24168f3245a9a2148edb28bc57e0d45a414930b1"
+    },
+    {
+      "path": "local/sc-trace-1-0-original.txt",
+      "bytes": 85,
+      "sha256": "e26f9d97a0c7be848998eac2046fc96b784cded3e33881b9135b97703445eddb"
+    },
+    {
+      "path": "local/sc-trace-1-0-source.txt",
+      "bytes": 85,
+      "sha256": "e26f9d97a0c7be848998eac2046fc96b784cded3e33881b9135b97703445eddb"
+    },
+    {
+      "path": "local/sc-trace-1-1-original.txt",
+      "bytes": 85,
+      "sha256": "e26f9d97a0c7be848998eac2046fc96b784cded3e33881b9135b97703445eddb"
+    },
+    {
+      "path": "local/sc-trace-1-1-source.txt",
+      "bytes": 85,
+      "sha256": "e26f9d97a0c7be848998eac2046fc96b784cded3e33881b9135b97703445eddb"
+    },
+    {
+      "path": "local/sc-trace-1-2-original.txt",
+      "bytes": 85,
+      "sha256": "f06b53e9b87ce2fea2fce85c28e0d18e17cd42deab65db59f77f37c5c47b3076"
+    },
+    {
+      "path": "local/sc-trace-1-2-source.txt",
+      "bytes": 85,
+      "sha256": "f06b53e9b87ce2fea2fce85c28e0d18e17cd42deab65db59f77f37c5c47b3076"
+    },
+    {
+      "path": "local/sc-trace-1-3-original.txt",
+      "bytes": 229,
+      "sha256": "6b1d976b7e8b828d1c73a18299345c34b0a7cf63254d094faa7bedd08cdc5db5"
+    },
+    {
+      "path": "local/sc-trace-1-3-source.txt",
+      "bytes": 229,
+      "sha256": "6b1d976b7e8b828d1c73a18299345c34b0a7cf63254d094faa7bedd08cdc5db5"
+    },
+    {
+      "path": "local/sc-vertex-caller.txt",
+      "bytes": 522,
+      "sha256": "b69a313dbd76d4439a9b4e0cb7018db2118976c98821d647cd0bc05d34f45f3a"
+    },
+    {
+      "path": "local/sc-vertex-code.bin",
+      "bytes": 136,
+      "sha256": "7d5f8d88a2b3d48e64b6aaa65b9491afe1bb1385802e47bd7573e8cdc1b4f0f5"
+    },
+    {
+      "path": "local/sc_original.hpp",
+      "bytes": 7111,
+      "sha256": "219f184bee2a015ac1836b1a6a0c7fed386fed69d55855db7e1c107a464909b2"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/shader-construction-build.log",
+      "bytes": 43643,
+      "sha256": "a3e7ef667b535cce8d8d755e2cb76bd4be82f5c4d4c69f80308d68eebb045e87"
+    },
+    {
+      "path": "local/shader-construction-final-build.log",
+      "bytes": 2787,
+      "sha256": "78b2974d31cc284b782e71af01e3c8f6eb320b97d89444ff794c9746ee0629b8"
+    },
+    {
+      "path": "local/shader-construction-guard.log",
+      "bytes": 450,
+      "sha256": "6ca6eff0a21558a66eb5db896721bedf65d72ae7358499efa7ebd4ac7e44bc75"
+    },
+    {
+      "path": "local/shader-construction-index.log",
+      "bytes": 142,
+      "sha256": "3e11f5af1bcf09a8892574a15bc61c11aae03ea77c54aa6c245ec1a2e308d6cc"
+    },
+    {
+      "path": "local/shader-construction-ledger.log",
+      "bytes": 936,
+      "sha256": "e74ed58f20df41f96dd6f001633d7ad5fb23b407cf8b63ddcc14a9089c99c8b7"
+    },
+    {
+      "path": "local/shader-construction-precompile.log",
+      "bytes": 277,
+      "sha256": "b552eb390288cbde8e92ceac8578f9d026098f09e7f3531a5da1921011290c3f"
+    },
+    {
+      "path": "local/shader-construction-probe-compile.log",
+      "bytes": 38,
+      "sha256": "07fdafc10dcb88232c57e1325e746e9fc8315aad17b8cb6414e4ddb5dbf58d41"
+    },
+    {
+      "path": "local/shader-construction-probe.log",
+      "bytes": 743,
+      "sha256": "627286c6a8e95b3665e5ae467dca175ae826032526056b408b18c1c052fc9b6b"
+    },
+    {
+      "path": "local/shader_construction_evidence.py",
+      "bytes": 3529,
+      "sha256": "1dd56b31d64db8a564ce28526d07db427bd14441737aeeab958bb7876572ec04"
+    },
+    {
+      "path": "local/shader_construction_manifest.py",
+      "bytes": 2880,
+      "sha256": "00d3391460ad2775e47cc7e7526de84ce2d3311320cbf59856c8c39dde6ad0bd"
+    },
+    {
+      "path": "local/shader_construction_precompile.ps1",
+      "bytes": 874,
+      "sha256": "35fcb10f37b2ce9ad095c218c4ede509c94e062e9662636a8bd7609a9be12444"
+    },
+    {
+      "path": "local/shader_construction_report.py",
+      "bytes": 7148,
+      "sha256": "1583c9be778bd3259792eaed99155165ba0cca5b025a6992b6276d0668b7a532"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "src/native_d3d9_shader_construction.cpp",
+      "bytes": 9180,
+      "sha256": "32fb5716943589a04e51f1c328cece8d0b0e1d46f0ae4587a02b043c6b7885c6"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 5121,
+      "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "bytes": 3238,
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+    },
+    {
+      "path": "src/native_singleton_vector_insert_count.cpp",
+      "bytes": 5712,
+      "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+    },
+    {
+      "path": "src/native_singleton_vector_leaves.cpp",
+      "bytes": 3538,
+      "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "linker_selected_core_objects": [
+    "native_d3d9_shader_construction",
+    "native_legacy_exception_owner",
+    "native_legacy_sbo_string",
+    "native_renderer_worker_lifetime",
+    "native_resource_support",
+    "native_singleton_publication",
+    "native_singleton_vector_allocation",
+    "native_singleton_vector_insert_count",
+    "native_singleton_vector_leaves",
+    "native_singleton_vector_registration_wrappers",
+    "native_singleton_vector_reserve_construct",
+    "native_string",
+    "native_string_pool_owner",
+    "native_string_pool_storage",
+    "singleton_lifetime"
+  ],
+  "external_artifacts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/d3dx9_40.dll",
+      "bytes": 4379984,
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+      "preserved_in_place": true
+    }
+  ],
+  "integrator_terminal_composition": {
+    "report": "reports/native_d3d9_shader_lifetime.json",
+    "manifest": "local/compiler-path-workers/shader-lifetime/manifest.json",
+    "sha256": "ae6af99c18dd64b18298cc4ca713f3cf255f2214c05c8548fdbae33bffba0eb9",
+    "evidence": "Eight original/source real-HAL-COM lifetime comparisons; both actual pass-slot setters use the concrete canonical same-atomic terminal provider; all wrapper acquisitions and companions cleaned.",
+    "limits": "Historical worker fixture unchanged; no private FH3, fixed-address ABI, drawing or gameplay validation."
+  }
+}

@@ -1,6 +1,8 @@
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/point_effect_matrix_setters.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_ref_counted.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <algorithm>
 #include <stdexcept>
 
@@ -26,9 +28,31 @@ void destroy_point_light_array(NativeNodeDestructionRuntime& runtime, NativeNode
 void destroy_name(NativeStringStorage& strings, NativeNodeStorage& node) noexcept {
     destroy_native_string_header_0041dd20(&node.name_54, strings);
 }
+void destroy_name(NativeStringRawPoolContext& strings, NativeNodeStorage& node) {
+    destroy_native_string_header_0041dd20(&node.name_54, strings);
+}
+void* current_name_data(NativeNodeStorage& node) noexcept {
+    return *reinterpret_cast<void* const volatile*>(
+        reinterpret_cast<unsigned char*>(&node.name_54) + 4);
+}
+std::uint32_t current_name_size(NativeNodeStorage& node) noexcept {
+    return *reinterpret_cast<const volatile std::uint32_t*>(&node.name_54) + 1u;
+}
+void return_captured_name(NativeStringStorage& strings, NativeNodeStorage& node,
+    void* captured_data) noexcept {
+    strings.release(static_cast<char*>(captured_data), current_name_size(node));
+}
+void return_captured_name(NativeStringRawPoolContext& strings, NativeNodeStorage& node,
+    void* captured_data) {
+    const auto size = current_name_size(node); // B6F52C/B6F531, before getter.
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool, captured_data, size,
+        strings.actual_small_returns_disabled_01090aa4);
+}
 void destroy_reference_base(NativeNodeStorage& node) noexcept {
-    node.vtable_00 = 0x00d5c104u;
-    node.vtable_00 = 0x00ceb130u; // BD30F0, no reference-count modification
+    *static_cast<volatile std::uint32_t*>(&node.vtable_00) = 0x00d5c104u;
+    destroy_native_ref_counted_base_00bd30f0(&node); // No count modification.
     node.~NativeNodeStorage();
 }
 }
@@ -174,8 +198,10 @@ void remove_native_node_scene_00b6ee10(SceneAttachmentRuntime& runtime,
         }
     }
 }
-void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding,
-    NativeStringStorage& strings) {
+namespace {
+template<class Strings>
+void destroy_node(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding,
+    Strings& strings) {
     if (&runtime.scenes.resolve(binding.transform) != &binding.scene_attachment)
         throw std::logic_error("native node destructor requires its existing scene dispatch binding");
     auto& node = binding.storage;
@@ -186,6 +212,7 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
     binding.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
     binding.scene_attachment.attach_scene = set_node_scene_00b6ed80;
     binding.scene_attachment.remove_scene = remove_native_node_scene_00b6ee10;
+    int state = 2;
     try {
         unregister_current_attachment(runtime, transform);
         set_native_node_parent_null_00b6e680(runtime, transform);
@@ -208,19 +235,36 @@ void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeN
         SceneResource* scene = node.scene_170;
         node.retained_130 = nullptr; // second native clear precedes B6EE10
         remove_native_node_scene_00b6ee10(runtime.scenes, binding.scene_attachment, scene, true);
-    } catch (...) {
-        // CC1A01 / DFA900 / DFA8E8 state 2 ->1 ->0: B6F3E0 array,
-        // 41DD20 name, AA6E10/BD30F0 reference base. No physical slot return.
+        state = 1; // B6F50C consumes array cleanup BEFORE its resize/free.
         destroy_point_light_array(runtime, node);
-        destroy_name(strings, node);
+        void* const captured_data = current_name_data(node); // B6F51E.
+        state = 0; // B6F526 consumes name cleanup BEFORE getter/return.
+        if (captured_data) return_captured_name(strings, node, captured_data);
+        state = -1; // B6F544 consumes base cleanup before both profile stores.
         destroy_reference_base(node);
+    } catch (...) {
+        // CC1A01 / DFA900 / DFA8E8. Consume each reached stage before invoking
+        // it; a normal name-getter failure therefore reaches ONLY state0.
+        // A second cleanup exception terminates this source projection;
+        // original FH3 second-exception search ordering is not certified.
+        try {
+            while (state >= 0) {
+                const int current = state--;
+                if (current == 2) destroy_point_light_array(runtime, node);
+                else if (current == 1) destroy_name(strings, node);
+                else destroy_reference_base(node);
+            }
+        } catch (...) { std::terminate(); }
         throw;
     }
-    // These three recovered cleanup operations cannot throw in this interface.
-    destroy_point_light_array(runtime, node);
-    destroy_name(strings, node);
-    destroy_reference_base(node);
 }
+} // namespace
+
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding,
+    NativeStringStorage& strings) { destroy_node(runtime, binding, strings); }
+
+void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding,
+    NativeStringRawPoolContext& strings) { destroy_node(runtime, binding, strings); }
 
 void destroy_native_node_00b6f440(NativeNodeDestructionRuntime& runtime, NativeNodeBinding& binding) {
     PooledStringStorage strings(runtime.strings);
