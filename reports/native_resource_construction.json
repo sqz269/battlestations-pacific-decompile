@@ -1,0 +1,539 @@
+{
+  "packet": "native_resource_construction_bc",
+  "status": "complete_actual_storage_source_build_and_shared_contract_fixture_tested",
+  "source": "src/native_resource_construction.cpp",
+  "header": "include/bsp/native_resource_construction.hpp",
+  "source_sha256": "d3330960bf189a12b7d03549f2d47058f6eade66a2bad420731548421d929fee",
+  "header_sha256": "e29766a6c0e0a3344a8326b45787b7950d71bb5c2fa445f4eeec8445155c13be",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "0071b870",
+      "end": "0071b8ce",
+      "byte_count": 95,
+      "sha256": "ab2a4333a1d4fed0015236c5456719da1179a1257d190f57a3bad82a872c2099",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/0071b870.bin",
+      "instruction_count": 26,
+      "direct_calls": [
+        {
+          "function": "0071b870",
+          "address": "0071b888",
+          "native": "00bf681b"
+        },
+        {
+          "function": "0071b870",
+          "address": "0071b8a6",
+          "native": "0071b810"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_GameResourceFactory_Create",
+      "original_abi": "ECX factory unused; stack pointer to native 8h name header; EAX 74h allocation/null; RET4; FH3 frame.",
+      "behavior": [
+        "Allocate exactly74h through BF681B; saved incoming ECX is a local slot, not an allocator argument. Store returned allocation in that slot and arm state0 even when null.",
+        "On nonnull allocation call71B810 with the incoming name pointer; return its EAX. Null returns0 without reading name contents.",
+        "State0 exception action C84FA0 reloads saved allocation and calls BF65AC. Constructor exceptions propagate; no successful-resource destructor is called here."
+      ],
+      "source_status": "complete_actual_storage_source_build_and_shared_contract_fixture_tested",
+      "flow_gaps": 0,
+      "source_name": "create_native_game_resource_0071b870"
+    },
+    {
+      "address": "0071b810",
+      "end": "0071b869",
+      "byte_count": 90,
+      "sha256": "fb558cdc8fdb7a4b6cfc6dccf3d6d92b976160b5a200d4a9c5bb877c9e6ed6be",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/0071b810.bin",
+      "instruction_count": 28,
+      "direct_calls": [
+        {
+          "function": "0071b810",
+          "address": "0071b82e",
+          "native": "00b88260"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_GameResource_Construct",
+      "original_abi": "ECX caller-owned 74h raw allocation; stack name header pointer; EAX same allocation; RET4; FH3 state stays -1.",
+      "behavior": [
+        "Call B88260 on the same allocation before derived writes. Install CFD8CC and zero exactly+48/+4C/+50,+58/+5C/+60,+68/+6C/+70.",
+        "Words+44,+54,+64 are never written by either constructor. Preserve their incoming bits; do not manufacture current-STL proxy/container objects there.",
+        "The entry pushes state-1 and contains no state update. Its static three-row unwind map is not evidence that base/vector destructors run for an exception from B88260. No post-base operation can throw a C++ exception in the observed body."
+      ],
+      "source_status": "complete_actual_storage_source_build_and_shared_contract_fixture_tested",
+      "flow_gaps": 0,
+      "source_name": "construct_native_game_resource_0071b810"
+    },
+    {
+      "address": "00b88260",
+      "end": "00b88318",
+      "byte_count": 185,
+      "sha256": "37d15ed24f220037f8c3b6995858adef6e36d5137fda761fa1e5202507bdf28c",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00b88260.bin",
+      "instruction_count": 61,
+      "direct_calls": [
+        {
+          "function": "00b88260",
+          "address": "00b882b0",
+          "native": "0041dd40"
+        },
+        {
+          "function": "00b88260",
+          "address": "00b882c4",
+          "native": "00bf7680"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "BSP_Resource_ConstructBase",
+      "original_abi": "ECX caller-owned 44h-or-larger raw allocation; stack name header pointer; EAX same allocation; RET4; FH3 state0 around name copy.",
+      "behavior": [
+        "Stamp CEB130; write refcount+4=1; capture source header pointer. Compare destination+8 with source BEFORE writing the destination header; stamp D63228 and arm state0; zero destination length/data.",
+        "If equal headers, skip source reads and resize/copy: constructing into the own-name header discards its prior header bits. Otherwise read source length for 41DD40(destination+8,length,preserve1).",
+        "AFTER resize, reread source length; when nonzero, reread current destination length, current source data and current destination data for BF7680. Do not snapshot the input header, force a terminator, or infer length from C-string contents. The nonzero copy admits the original BF7680 overlap contract.",
+        "After successful name copy zero +10..+24, six positive-zero floating words+28..+3C, and+40. On name-copy failure these later fields retain their incoming bits.",
+        "The sole state0 action CC2590 tail-jumps BD30F0 on the whole object. It only restamps CEB130. There is no name-header destructor/return action on this failure path."
+      ],
+      "source_status": "complete_actual_storage_source_build_and_shared_contract_fixture_tested",
+      "flow_gaps": 0,
+      "source_name": "construct_native_resource_base_00b88260"
+    },
+    {
+      "address": "00b88340",
+      "end": "00b8839e",
+      "byte_count": 95,
+      "sha256": "7252f54d3ae1e1618c604d74af33ec30474e195ab24b49841d96aebd5ad9ebed",
+      "live_equals_pe": true,
+      "capture": "local/resource-create-frontier-bc/00b88340.bin",
+      "instruction_count": 26,
+      "direct_calls": [
+        {
+          "function": "00b88340",
+          "address": "00b88358",
+          "native": "00bf681b"
+        },
+        {
+          "function": "00b88340",
+          "address": "00b88376",
+          "native": "00b88260"
+        }
+      ],
+      "indirect_calls": [],
+      "name": "Default resource creator (provisional; live FUN_00b88340)",
+      "original_abi": "ECX default factory unused; stack native name header pointer; EAX 44h allocation/null; RET4; FH3 frame.",
+      "behavior": [
+        "Same outer allocation/cleanup schedule as71B870, but allocate44h and call B88260 directly.",
+        "State0 action CC25B0 calls BF65AC on saved allocation and returns. Default factory profileD63060 has B88340 in slot+4; factory lifetime selectors B7D290/B7D9A0 remain distinct incomplete dependencies."
+      ],
+      "source_status": "complete_actual_storage_source_build_and_shared_contract_fixture_tested",
+      "flow_gaps": 0,
+      "source_name": "create_native_default_resource_00b88340"
+    }
+  ],
+  "original_body_count": 4,
+  "original_body_bytes": 465,
+  "exception_maps": [
+    {
+      "owner": "0071b810",
+      "handler": "00c84f8e",
+      "function_info": "00db3c20",
+      "unwind_map": "00db3c08",
+      "magic": "19930522",
+      "max_state": 3,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00c84f70"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00c84f78"
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "action": "00c84f83"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00c84f8e",
+          "instruction": "mov eax, 0xdb3c20"
+        },
+        {
+          "site": "00c84f93",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "0071b870",
+      "handler": "00c84fab",
+      "function_info": "00db3c4c",
+      "unwind_map": "00db3c44",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00c84fa0"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00c84fab",
+          "instruction": "mov eax, 0xdb3c4c"
+        },
+        {
+          "site": "00c84fb0",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "00b88260",
+      "handler": "00cc2598",
+      "function_info": "00dfb9f4",
+      "unwind_map": "00dfb9ec",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc2590"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00cc2598",
+          "instruction": "mov eax, 0xdfb9f4"
+        },
+        {
+          "site": "00cc259d",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "owner": "00b88340",
+      "handler": "00cc25bb",
+      "function_info": "00dfba20",
+      "unwind_map": "00dfba18",
+      "magic": "19930522",
+      "max_state": 1,
+      "rows": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc25b0"
+        }
+      ],
+      "handler_instructions": [
+        {
+          "site": "00cc25bb",
+          "instruction": "mov eax, 0xdfba20"
+        },
+        {
+          "site": "00cc25c0",
+          "instruction": "jmp 0xbf6b43"
+        }
+      ]
+    }
+  ],
+  "exception_actions": [
+    {
+      "entry": "00c84f70",
+      "matched_span": "00c84f70-00c84f77",
+      "instructions": [
+        {
+          "site": "00c84f70",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f73",
+          "instruction": "jmp 0xb88430"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f70",
+          "address": "00c84f73",
+          "native": "00b88430",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84f78",
+      "matched_span": "00c84f78-00c84f82",
+      "instructions": [
+        {
+          "site": "00c84f78",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f7b",
+          "instruction": "add ecx, 0x44"
+        },
+        {
+          "site": "00c84f7e",
+          "instruction": "jmp 0x7180e0"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f78",
+          "address": "00c84f7e",
+          "native": "007180e0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84f83",
+      "matched_span": "00c84f83-00c84f8d",
+      "instructions": [
+        {
+          "site": "00c84f83",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84f86",
+          "instruction": "add ecx, 0x54"
+        },
+        {
+          "site": "00c84f89",
+          "instruction": "jmp 0x718110"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84f83",
+          "address": "00c84f89",
+          "native": "00718110",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00c84fa0",
+      "matched_span": "00c84fa0-00c84faa",
+      "instructions": [
+        {
+          "site": "00c84fa0",
+          "instruction": "mov eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00c84fa3",
+          "instruction": "push eax"
+        },
+        {
+          "site": "00c84fa4",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "site": "00c84fa9",
+          "instruction": "pop ecx"
+        },
+        {
+          "site": "00c84faa",
+          "instruction": "ret "
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00c84fa0",
+          "address": "00c84fa4",
+          "native": "00bf65ac"
+        }
+      ],
+      "ghidra_boundary_note": "Current Ghidra funclet ends at the CALL, omitting trailing POP ECX;RET (two bytes). PE+live auxiliary span proves return. Read-only discovery made no repair."
+    },
+    {
+      "entry": "00cc2590",
+      "matched_span": "00cc2590-00cc2597",
+      "instructions": [
+        {
+          "site": "00cc2590",
+          "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc2593",
+          "instruction": "jmp 0xbd30f0"
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc2590",
+          "address": "00cc2593",
+          "native": "00bd30f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "entry": "00cc25b0",
+      "matched_span": "00cc25b0-00cc25ba",
+      "instructions": [
+        {
+          "site": "00cc25b0",
+          "instruction": "mov eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "site": "00cc25b3",
+          "instruction": "push eax"
+        },
+        {
+          "site": "00cc25b4",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "site": "00cc25b9",
+          "instruction": "pop ecx"
+        },
+        {
+          "site": "00cc25ba",
+          "instruction": "ret "
+        }
+      ],
+      "direct_calls": [
+        {
+          "function": "00cc25b0",
+          "address": "00cc25b4",
+          "native": "00bf65ac"
+        }
+      ],
+      "ghidra_boundary_note": "Current Ghidra funclet ends at the CALL, omitting trailing POP ECX;RET (two bytes). PE+live auxiliary span proves return. Read-only discovery made no repair."
+    }
+  ],
+  "dependencies": [
+    {
+      "native": "0041dd40",
+      "source": "resize_native_string_header_0041dd40(void*,NativeStringRawPoolContext&,uint32_t,bool)",
+      "boundary": "Existing actual raw pool/publication/manager composition; no new production provider."
+    },
+    {
+      "native": "00bd30f0",
+      "source": "destroy_native_ref_counted_base_00bd30f0",
+      "boundary": "Existing actual seven-byte base-profile source body; sole base-construction cleanup."
+    },
+    {
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate",
+      "boundary": "Existing CRT source allocator boundary; exact44h/74h raw allocation; no new library algorithm."
+    },
+    {
+      "native": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "boundary": "Existing CRT free boundary; saved allocation only in outer construction catch."
+    },
+    {
+      "native": "00bf7680",
+      "source": "std::memmove",
+      "boundary": "Fixed existing CRT overlap policy for nonzero copies. Omit zero copies after all native header reads; original CRT invalid-pointer and register-return behavior unclaimed."
+    }
+  ],
+  "behavior_limits": [
+    "Incoming factory ECX is unused and omitted by the source create APIs. New raw pool context changes source ABI.",
+    "Both caller-owned construction APIs return the same raw allocation. Create APIs return refcount1 raw storage; no C++ owner or callable numeric native vtable is synthesized.",
+    "Base failed-name header/storage is not rolled back. Later object fields remain untouched; derived+44/+54/+64 are always untouched.",
+    "The original constructor state-1 is not replaced with imagined static-map cleanup. Source catches model reached C++ exception cleanup only, not original FH3/SEH runtime ABI."
+  ],
+  "integration_limits": [
+    "Successful-resource destruction718810/B88430 remains incomplete on actual manager/cacheB801C0, hierarchy-pool return, item scalar profiles and array unwind helpers.",
+    "Actual B80720 load/cache, raw reader/node storage and parser result ownership are not completed by creation. Existing typed reader/parsers/StructuredModel are retained and are not native storage.",
+    "No process success stub, dummy owning result, singleton registration or global resource publication introduced."
+  ],
+  "validation": {
+    "strict_win32_build": "local/resource-construction-development-build.log",
+    "ctests_passed": 2,
+    "verify_seeds": "local/resource-construction-verify-seeds.log",
+    "new_permanent_tests": 0,
+    "original_reference": {
+      "result": "local\\resource-construction-attempts\\attempt01-original\\result.json",
+      "result_sha256": "48b6fe9a9a52fc73d7eef4d2760f3187869c90e0f05175e00f9ea80ade97421e",
+      "status": "reference_frozen_no_source_execution",
+      "expected_sha256": "88cfba72c6e031659a3f222c458f2a17e31eba14e0ce74cc5cdf2a410a65405a"
+    },
+    "development_capsule": {
+      "result": "local\\resource-construction-attempts\\attempt02-source\\result.json",
+      "result_sha256": "1ee5b17b88e52a1dfa57770ab2706ea4cb6c0aa14ae02ecc23bf5a6bdeb80786",
+      "status": "passed",
+      "head": "b6d59f51feebc33c58ff3b5ff5d6351369b7a95d",
+      "tracked_content_clean": false,
+      "normal_observations": 8,
+      "source_only_exception_observations": 3,
+      "current_archive_members": [
+        {
+          "object": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-factory-create-bc\\build\\win32\\bsp_core.dir\\Release\\native_resource_construction.obj",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-factory-create-bc\\src\\native_resource_construction.cpp",
+          "sha256": "22adf8a974ea0d6109d07b701fa1e00cca190b88f91731f2c790ff268ee5facc",
+          "source_sha256": "d3330960bf189a12b7d03549f2d47058f6eade66a2bad420731548421d929fee",
+          "occurrences": 1
+        },
+        {
+          "object": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-factory-create-bc\\build\\win32\\bsp_core.dir\\Release\\native_ref_counted.obj",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-factory-create-bc\\src\\native_ref_counted.cpp",
+          "sha256": "d2867db0a6dbd7e3339fc08fa086c05e9bee988b54e2875104c0e940c2fd3cd1",
+          "source_sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+          "occurrences": 1
+        }
+      ],
+      "boundary": "Current construction and actual ref-base objects; shared test-only allocation and resize adapters, fixed CRT memmove; original normal bodies only, no original FH3 dispatch, actual pool runtime, resource teardown or gameplay proof"
+    },
+    "final_commit_validation": "Fresh build/check and unchanged-reference replay are retained under local/resource-construction-final after commit. The development capsule alone is not an exact final-commit claim.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence": [
+    "docs/NATIVE_GAME_RESOURCE_CREATE_FRONTIER_BC.md",
+    "reports/native_game_resource_create_frontier_bc.json",
+    "local/resource-create-frontier-bc",
+    "local/resource-construction-fixture-bc",
+    "local/resource-construction-attempts"
+  ],
+  "annotation_status": "Four reviewed names and evidence comments applied under root lease/write lock, prior comments preserved, saved and exports refreshed.",
+  "resolved_root_ghidra_repairs": [
+    {
+      "entry": "00c84fa0",
+      "returning_call": "00c84fa4",
+      "callee": "00bf65ac",
+      "current_body_end": "00c84fa8",
+      "verified_extra_span": "00c84fa9-00c84faa",
+      "bytes": "59 c3",
+      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation.",
+      "status": "saved_full_body_verified_names_and_comments_preserved"
+    },
+    {
+      "entry": "00cc25b0",
+      "returning_call": "00cc25b4",
+      "callee": "00bf65ac",
+      "current_body_end": "00cc25b8",
+      "verified_extra_span": "00cc25b9-00cc25ba",
+      "bytes": "59 c3",
+      "reason": "POP ECX;RET excluded after returning free. Verified in frontier auxiliary span; worker made no mutation.",
+      "status": "saved_full_body_verified_names_and_comments_preserved"
+    }
+  ],
+  "pending_root_ghidra_repairs": [],
+  "root_flow_repair_report": "reports/native_resource_construction_flow_repairs.json",
+  "worker_annotation_status": "Repository names and reconstruction rows only; original comments preserved via append-evidence. Root applies reviewed names/comments and returning-free-tail repairs under its write lock.",
+  "root_annotation_evidence": [
+    {
+      "path": "local/ghidra-annotations-20260913T165516Z.json",
+      "sha256": "0fdd02e44c0ed6901557902df9fb232df7189ded47b723527b5ad6888cb98bbe"
+    },
+    {
+      "path": "local/native-resource-construction-after-annotations.json",
+      "sha256": "94ee5a1796de47bd541a2c3be799ceedfe9730c49689f4f26f856fd973600684"
+    }
+  ]
+}
