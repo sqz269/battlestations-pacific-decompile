@@ -99,6 +99,21 @@ trace was frozen before any source execution; all six source traces match it.
 One separate source-only observation confirms allocation exceptions propagate
 without freeing or modifying the header. No original exception unwind is claimed.
 
+## Integrator correction: saved cleanup bodies
+
+The missing-tail notes above describe the worker snapshot. The integrator has
+now restored both complete 23-byte bodies through `B87B36` and `B87B56`.
+Clearing the erroneous free-call overrides decoded the tails but left the stored
+body ranges short; the supported locked definition tool then recreated the exact
+verified ranges. Six reviewed hypothesis names and evidence comments are saved,
+with prior names and comments retained in the
+[repair record](../reports/native_resource_pointer_array_flow_repairs.json).
+Fresh exports and follow-up scans show ten instructions and zero remaining call
+gaps in each cleanup body. This adds no source body or exception-unwind claim.
+Independent source review accepted `d67779eb`; fresh merged-candidate validation
+remains required. The earlier construction and frontier deliveries are retained
+in the integrator worktree, and the frontier document is now integrated.
+
 The capsule links the actual production object, verifies its unique identical
 member in the current `bsp_core.lib`, and retains the archive, object, compiler
 input groups, headers, link map, manifest and traces. Allocation/free adapters are
