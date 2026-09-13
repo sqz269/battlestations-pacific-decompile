@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_text_native_layout",
+  "status": "implemented_initial_Win32_build_passed_combined_fixture_pending",
+  "generated_utc": "2026-09-13T04:41:48.851753+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/gui_text_native_layout.cpp",
+  "native_abi": {
+    "00b48ce0": "ECX logical vertex owner; EAX actual declaration+68; RET; existing four-byte leaf reused",
+    "00b2f710": "unused renderer ECX; stack key of four declaration pointers and signed count; EAX owned layout; RET4",
+    "00b483f0": "ECX actual 0Ch declaration record; decrement actual+04; current virtual0 only at zero; clear record after return; RET",
+    "00b60770": "ECX hardware owner; stack flags; EAX original owner; RET4"
+  },
+  "behavior": [
+    "Concrete D61D6C current24 dispatch reuses B48CE0 and verifies existing canonical stream companion.",
+    "Concrete D5F0A8 current40 dispatch calls existing actual B2F710 tree/pool/constructor, preserving its cache-hit increment and miss creator without cache AddRef.",
+    "Optional B2F710 output exposes completed creator before insertion; insertion and canonical-bind failures retain acquired state without native rollback.",
+    "One host hardware companion borrows actual+04, returns slot through B60770 then unregisters without reading returned storage.",
+    "B483F0 connected domain resolves the already-decremented declaration terminal through its SAME companion; no second decrement or stale canonical registration.",
+    "Context checks enforce same renderer publication, table views, CPU declaration pool/type table, strings and geometry registration."
+  ],
+  "call_evidence": [
+    {
+      "address": "00b2f73b",
+      "native": "00b28220",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b2f78a",
+      "native": "00b606f0",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b2f7a0",
+      "native": "00b60cb0",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b2f7bd",
+      "native": "00b282b0",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b2f7c7",
+      "native": "00b25ef0",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b2f7db",
+      "native": "00b2f540",
+      "caller": "00b2f710"
+    },
+    {
+      "address": "00b60773",
+      "native": "00b60700",
+      "caller": "00b60770"
+    },
+    {
+      "address": "00b60785",
+      "native": "00b60110",
+      "caller": "00b60770"
+    }
+  ],
+  "indirect_evidence": [
+    {
+      "site": "00b2f77d",
+      "target": "CE221C InterlockedIncrement",
+      "evidence": "LEA ECX,[ESI+4]; PUSH ECX; CALL [CE221C]"
+    },
+    {
+      "site": "00b483fe",
+      "target": "CE2220 InterlockedDecrement",
+      "evidence": "LEA EAX,[ESI+4]; PUSH EAX; CALL [CE2220]"
+    },
+    {
+      "site": "00b4840e",
+      "target": "current declaration virtual0",
+      "evidence": "MOV EDX,[ESI]; MOV EAX,[EDX]; MOV ECX,ESI; CALL EAX; D61D1C/BD30E0/B48CA0 constrained"
+    },
+    {
+      "slot": "D5F0A8+40",
+      "target": "00b2f710"
+    },
+    {
+      "slot": "D61D6C+24",
+      "target": "00b48ce0"
+    }
+  ],
+  "validation": {
+    "initial_build": "local/text-native-layout-build.log: Win32 Release /W4 /WX, 2 existing tests passed",
+    "combined_exact_commit": null,
+    "hardware_fixture": null
+  },
+  "limits": [
+    "New C++ service ABI and host acquisition metadata; not a binary replacement or gameplay validation.",
+    "Numeric profiles are constrained to observed bodies, not callable replacements or support for arbitrary runtime classes.",
+    "Actual factory constructor domain retains native fixed scratch/key limits; no key/count clamping is added.",
+    "Failed operations retain native effects and are not resumable. Services and caller storage must remain alive.",
+    "Full Text still requires actual material renderer48 B318B0/effect-cache loading and canonical semantic property resolution."
+  ]
+}
