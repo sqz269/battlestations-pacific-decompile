@@ -2,6 +2,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include <algorithm>
 #include <cstring>
+#include <exception>
 #include <memory>
 #include <new>
 #include <stdexcept>
@@ -266,18 +267,71 @@ SceneNodeAttachment::SceneNodeAttachment(CameraTransform& node_transform, std::u
 SceneAttachmentRuntime::SceneAttachmentRuntime(std::uint32_t registry_token,
     std::array<std::uint32_t, 3> object_tokens)
     : registry_type_token(registry_token), object_type_tokens(object_tokens) {}
-void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {
+SceneAttachmentRuntime::BindingAdmission::BindingAdmission(BindingAdmission&& other) noexcept
+    : runtime_(other.runtime_) {
+    other.runtime_ = nullptr;
+}
+SceneAttachmentRuntime::BindingAdmission& SceneAttachmentRuntime::BindingAdmission::operator=(
+    BindingAdmission&& other) noexcept {
+    if (this != &other) {
+        cancel();
+        runtime_ = other.runtime_;
+        other.runtime_ = nullptr;
+    }
+    return *this;
+}
+SceneAttachmentRuntime::BindingAdmission::~BindingAdmission() noexcept { cancel(); }
+void SceneAttachmentRuntime::BindingAdmission::cancel() noexcept {
+    if (runtime_) {
+        --runtime_->pending_bindings_;
+        runtime_ = nullptr;
+    }
+}
+SceneAttachmentRuntime::~SceneAttachmentRuntime() noexcept {
+    if (pending_bindings_) std::terminate();
+}
+void SceneAttachmentRuntime::reserve_binding_capacity() {
+    // Subtraction is safe for a live vector; the comparison also checks +1.
+    if (pending_bindings_ >= bindings_.max_size() - bindings_.size())
+        throw std::length_error("scene binding admission exceeds maximum size");
+    const auto required = bindings_.size() + pending_bindings_ + 1;
+    if (required > bindings_.capacity()) bindings_.reserve(required);
+}
+SceneAttachmentRuntime::BindingAdmission SceneAttachmentRuntime::reserve_binding() {
+    reserve_binding_capacity();
+    ++pending_bindings_;
+    return BindingAdmission(*this);
+}
+bool SceneAttachmentRuntime::validate_binding(SceneNodeAttachment& node) const {
     if (node.transform.raw_node_key_) {
         if (node.transform.raw_node_key_ != node.pointer_key ||
             (node.transform.hierarchy_runtime_ && node.transform.hierarchy_runtime_ != this))
             throw std::invalid_argument("raw node binding requires its actual key and one live runtime");
     }
     for (const auto* binding : bindings_) {
-        if (binding == &node) return;
+        if (binding == &node) return true;
         if (&binding->transform == &node.transform || binding->pointer_key == node.pointer_key)
             throw std::invalid_argument("scene binding transform and pointer key must be unique");
     }
+    return false;
+}
+void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {
+    if (validate_binding(node)) return;
+    reserve_binding_capacity();
     bindings_.push_back(&node);
+    if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;
+}
+void SceneAttachmentRuntime::bind(SceneNodeAttachment& node, BindingAdmission&& admission) {
+    if (admission.runtime_ != this)
+        throw std::invalid_argument("scene binding requires an active admission for this runtime");
+    if (validate_binding(node)) {
+        admission.cancel();
+        return;
+    }
+    // An active credit proves size < capacity; pointer append cannot allocate.
+    bindings_.push_back(&node);
+    --pending_bindings_;
+    admission.runtime_ = nullptr;
     if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;
 }
 void SceneAttachmentRuntime::unbind(SceneNodeAttachment& node) {

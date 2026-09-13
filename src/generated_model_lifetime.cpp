@@ -39,13 +39,66 @@ void shrink_diagnostic_lights_to_zero(void* context) noexcept {
 }
 }
 
-void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {
+GeneratedModelLifetimeRuntime::BindingAdmission::BindingAdmission(BindingAdmission&& other) noexcept
+    : runtime_(other.runtime_) {
+    other.runtime_ = nullptr;
+}
+GeneratedModelLifetimeRuntime::BindingAdmission& GeneratedModelLifetimeRuntime::BindingAdmission::operator=(
+    BindingAdmission&& other) noexcept {
+    if (this != &other) {
+        cancel();
+        runtime_ = other.runtime_;
+        other.runtime_ = nullptr;
+    }
+    return *this;
+}
+GeneratedModelLifetimeRuntime::BindingAdmission::~BindingAdmission() noexcept { cancel(); }
+void GeneratedModelLifetimeRuntime::BindingAdmission::cancel() noexcept {
+    if (runtime_) {
+        --runtime_->pending_bindings_;
+        runtime_ = nullptr;
+    }
+}
+GeneratedModelLifetimeRuntime::~GeneratedModelLifetimeRuntime() noexcept {
+    if (pending_bindings_) std::terminate();
+}
+void GeneratedModelLifetimeRuntime::reserve_binding_capacity() {
+    if (pending_bindings_ >= nodes_.max_size() - nodes_.size())
+        throw std::length_error("generated model binding admission exceeds maximum size");
+    const auto required = nodes_.size() + pending_bindings_ + 1;
+    if (required > nodes_.capacity()) nodes_.reserve(required);
+}
+GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_binding() {
+    reserve_binding_capacity();
+    ++pending_bindings_;
+    return BindingAdmission(*this);
+}
+void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime& node) const {
     if (&node.scene_attachment().transform != &node.transform())
         throw std::invalid_argument("Generated model scene and hierarchy identities differ");
     for (auto* existing : nodes_)
         if (&existing->transform() == &node.transform())
             throw std::invalid_argument("Duplicate generated model lifetime binding");
+}
+void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {
+    validate_binding(node);
+    reserve_binding_capacity();
     nodes_.push_back(&node);
+}
+void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {
+    if (admission.runtime_ != this)
+        throw std::invalid_argument("generated model binding requires an active admission for this runtime");
+    validate_binding(node);
+    auto& attachment = node.scene_attachment();
+    if (&scenes.resolve_key(attachment.pointer_key) != &attachment)
+        throw std::invalid_argument("generated model binding requires its canonical scene attachment");
+    for (auto* existing : nodes_)
+        if (existing->scene_attachment().pointer_key == attachment.pointer_key)
+            throw std::invalid_argument("Duplicate generated model lifetime actual key");
+    // An active credit proves size < capacity; no callbacks follow validation.
+    nodes_.push_back(&node);
+    --pending_bindings_;
+    admission.runtime_ = nullptr;
 }
 void GeneratedModelLifetimeRuntime::unbind(GeneratedModelNodeLifetime& node) noexcept {
     const auto found = std::find(nodes_.begin(), nodes_.end(), &node);
