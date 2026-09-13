@@ -1,4 +1,5 @@
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -18,6 +19,28 @@ template<class T> T read_header(const void* header, std::size_t offset) noexcept
 template<class T> void write_header(void* header, std::size_t offset, T value) noexcept {
     std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));
 }
+
+class RawStringPoolAccess {
+public:
+    explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept
+        : context_(context) {}
+    char* allocate(std::uint32_t size) {
+        auto* const pool = current_pool();
+        return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));
+    }
+    void release(char* data, std::uint32_t size) {
+        auto* const pool = current_pool();
+        return_native_string_pool_00bd1510(pool, data, size,
+            context_.actual_small_returns_disabled_01090aa4);
+    }
+private:
+    NativeStringPoolStorage* current_pool() {
+        return native_string_pool_get_or_create_00419cc0(
+            context_.actual_published_01090aa8,
+            context_.actual_manager_publication_01090aa0);
+    }
+    NativeStringRawPoolContext& context_;
+};
 
 class CrtStringStorage final : public NativeStringStorage {
 public:
@@ -44,8 +67,10 @@ NativeStringStorage& crt_string_storage() noexcept {
     return storage;
 }
 
-void resize_native_string_header_0041dd40(void* actual_header,
-    NativeStringStorage& storage, std::uint32_t length, bool preserve) {
+namespace {
+template<bool NativeOverlap, class Storage>
+void resize_header(void* actual_header,
+    Storage& storage, std::uint32_t length, bool preserve) {
     const auto initial_length = read_header<std::uint32_t>(actual_header, 0);
     if (length == initial_length) return; // 0041dd4a does not read the pointer.
 
@@ -65,8 +90,12 @@ void resize_native_string_header_0041dd40(void* actual_header,
         const auto copied = length > current_length ? current_length : length;
         // Preserve the existing host policy: omit native memcpy with count 0,
         // which can pass a null source and is not a defined standard C++ call.
-        if (copied != 0)
-            std::memcpy(block, read_header<char*>(actual_header, 4), copied);
+        if (copied != 0) {
+            if constexpr (NativeOverlap)
+                std::memmove(block, read_header<char*>(actual_header, 4), copied);
+            else
+                std::memcpy(block, read_header<char*>(actual_header, 4), copied);
+        }
     }
     auto* const old_data = read_header<char*>(actual_header, 4); // 0041ddb9
     if (old_data != nullptr)
@@ -77,12 +106,34 @@ void resize_native_string_header_0041dd40(void* actual_header,
     // cleanup is added if the caller/storage contract cannot support the write.
     *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\0';
 }
+} // namespace
+
+void resize_native_string_header_0041dd40(void* actual_header,
+    NativeStringStorage& storage, std::uint32_t length, bool preserve) {
+    resize_header<false>(actual_header, storage, length, preserve);
+}
+
+void resize_native_string_header_0041dd40(void* actual_header,
+    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve) {
+    RawStringPoolAccess storage(context);
+    resize_header<true>(actual_header, storage, length, preserve);
+}
 
 void destroy_native_string_header_0041dd20(void* actual_header,
     NativeStringStorage& storage) noexcept {
     auto* const data = read_header<char*>(actual_header, 4);
     if (data != nullptr)
         storage.release(data, read_header<std::uint32_t>(actual_header, 0) + 1u);
+}
+
+void destroy_native_string_header_0041dd20(void* actual_header,
+    NativeStringRawPoolContext& context) {
+    auto* const data = read_header<char*>(actual_header, 4);
+    if (data != nullptr) {
+        const auto size = read_header<std::uint32_t>(actual_header, 0) + 1u;
+        RawStringPoolAccess storage(context);
+        storage.release(data, size);
+    }
 }
 
 void lowercase_native_string_header_004bcc00(void* actual_header) noexcept {
