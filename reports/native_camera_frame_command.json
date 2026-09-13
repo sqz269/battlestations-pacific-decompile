@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_camera_frame_av",
+  "worker": "agent/orch3-camera-frame-av",
+  "base": "4c97c137",
+  "owned_addresses": ["00b71360"],
+  "routine": {
+    "address": "00b71360",
+    "native": "00b71360",
+    "function": "00b71360",
+    "end_inclusive": "00b713c5",
+    "length": 102,
+    "coverage": "complete",
+    "source": "src/native_camera_frame_command.cpp",
+    "interface": "ECX actual camera, EDX added immutable context; RET; no semantic return",
+    "original_abi": "ECX actual camera; RET; ESI saved/restored; no semantic return",
+    "sha256": "6603fc600a4a90d69960a90aedf77607b56d1e6cdd36a8dd9be3d67b59aeb06f",
+    "no_ghidra_function": false
+  },
+  "host_steps": [
+    {"address":"00b7137b","native":"00b285a0","function":"00b71360","slot":"00d5f0a8+a0","coverage":"complete","contract":"current renderer prepares actual camera, RET4"},
+    {"address":"00b71392","native":"00b26770","function":"00b71360","slot":"00d5f0a8+a4","coverage":"complete","contract":"current renderer binds captured borrowed viewport, RET4"},
+    {"address":"00b713c2","native":"00b21430","function":"00b71360","slot":"00d5f0a8+08","coverage":"complete","contract":"current renderer receives count0/null/flags/color address/by-value x87 depth/stencil, RET18h"}
+  ],
+  "caller_steps": [
+    {"address":"00b15e81","native":"00b71360","function":"00b156c0","argument":"B1BF40 result EAX -> ECX"},
+    {"address":"00b161f0","native":"00b71360","function":"00b156c0","argument":"B1BF40 result EAX -> ECX"},
+    {"address":"00b4f2d6","native":"00b71360","function":"00b4f1c0","argument":"camera [ESI+34] -> ECX"},
+    {"address":"00b1d9a0","native":"00b71360","function":"00b1d950","argument":"EBP captured from context+08 -> ECX"}
+  ],
+  "producer": {
+    "function": "00b71a80",
+    "viewport": "00b71add",
+    "flags": "00b71c4b",
+    "stencil": "00b71c69",
+    "enabled": "00b71c6f",
+    "depth": "00b71c75",
+    "color": "00b71c8d",
+    "existing_layout": "include/bsp/native_camera_owner.hpp: NativeCameraTailStorage; src/native_camera_owner.cpp static offsets"
+  },
+  "evidence": {
+    "target_project": "C:/Users/sqz269/bsp.gpr",
+    "target_program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_equals_installed_PE": true,
+    "complete_spans": 5,
+    "complete_bytes": 1275,
+    "spans": [
+      {"start":"00b71360","end_inclusive":"00b713c5","length":102},
+      {"start":"00b285a0","end_inclusive":"00b287bf","length":544},
+      {"start":"00b26770","end_inclusive":"00b26891","length":290},
+      {"start":"00b21430","end_inclusive":"00b214da","length":171},
+      {"start":"00d5f0a8","end_inclusive":"00d5f14f","length":168}
+    ],
+    "Ghidra_mutations": false,
+    "fixture_directory": "J:/PROG/battlestations-pacific-decompile-orch3-camera-frame-av/local/native_camera_frame_command",
+    "pins": "local/native_camera_frame_command/pins.json"
+  },
+  "validation": {
+    "strict_MSVC_Win32_source_compile": "passed /MD /W4 /WX /fp:strict",
+    "verify_seeds": "passed eight installed/live seed ranges",
+    "repository_build": "passed scripts/build.ps1 with ignored CMAKE_PROJECT_INCLUDE_BEFORE target_sources registration; fresh Release libraries",
+    "existing_tests": "2/2 reconstructed_math and native_math_differential passed",
+    "report_call_verification": "7 call rows checked, 0 failures; 3 resolved indirect virtual calls",
+    "current_library_fixture": "passed 15 original/source pairs; probe.cpp only against current bsp_core,bsp_lua511,bsp_zlib121 libraries",
+    "fixture_flags": "/MD /W4 /WX /fp:strict /O2 /Oy- /EHsc /link /MANIFEST:EMBED",
+    "real_device": "NVIDIA GeForce RTX 5090 D3D9 HAL nvldumd.dll; hidden window; real COM forwarding and Win32 critical sections",
+    "pixel_readback": "passed RGB1256AB in selected viewport",
+    "scenarios": [
+      "finite Clear, flags-zero signaling NaN, flags-zero denormal: each CW007F/027F/067F/0E7F, MXCSR1F80/9FC0",
+      "disabled camera with inaccessible context, no dispatch",
+      "unmasked invalid CW027E: FSTP[ESP] raises C0000090 before Clear",
+      "C++ throw after real HAL Clear: guard drains, current receiver attempted counter remains0"
+    ],
+    "observations": [
+      "prepare callback changes current renderer and viewport; viewport callback changes current renderer, camera viewport and Clear fields; all current dispatches and field timing match",
+      "borrowed viewport published from captured pointer while camera now points elsewhere; ownership counts unchanged",
+      "incoming x87 stack value, CW, exact resulting SW and MXCSR match; HAL adds MXCSR precision status in both paths",
+      "flags0 still causes x87 invalid or denormal status; unmasked exception records match status/control/tag and live x87 data",
+      "full callback storage traces compare with only three declared reference receiver-vptr relocations normalized"
+    ],
+    "original_parent_relocations": "exactly3 F8D394 address operands at offsets14,31,66 -> actual fixture current-global slot2200D394; all other parent bytes unchanged",
+    "reference_profile_relocations": "slots+08/+A0/+A4 ->3 integer EDX-context tail bridges; reference receiver vptrs -> relocated profile23000000; source uses D5F0A8 native tag and original profile words",
+    "original_descendants_executed": false,
+    "gameplay_validated": false,
+    "fixture_artifacts": ["prepare.py","original.hpp","00b71360.bin","00b285a0.bin","00b26770.bin","00b21430.bin","00d5f0a8.bin","pins.json","original_assembly.txt","probe.cpp","run.ps1","build.ps1","extra.cmake","runtime.log","build.log","probe.map","traces.bin","frames.bin","manifest.json"]
+  },
+  "limits": [
+    "Explicit new source context; no drop-in binary caller ABI or semantic return promise.",
+    "Concrete D5F0A8 renderer and complete existing provider domains; unsupported profile traps.",
+    "Original parent fixture uses current-library descendants through three integer context bridges, not original descendant machine code.",
+    "Focused warm-cache camera; cold getter, clip and ambient behavior rely on complete provider evidence.",
+    "No gameplay, rendered game frame, or whole native descendant EH/SEH equivalence claim."
+  ]
+}
