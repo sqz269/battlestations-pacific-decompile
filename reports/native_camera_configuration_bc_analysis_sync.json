@@ -1,0 +1,64 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "005cc590",
+        "end_address": "005cc5de"
+      },
+      "result": {
+        "success": true,
+        "start_address": "005cc590",
+        "end_address": "005cc5dd",
+        "bytes_disassembled": 78,
+        "message": "Successfully disassembled 78 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "005cc590",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "005cc590",
+        "function_name": "FUN_005cc590",
+        "entry_point": "005cc590",
+        "body_size": 78,
+        "message": "Function created successfully at 005cc590"
+      }
+    },
+    {
+      "defined": "005cc590",
+      "end": "005cc5de",
+      "name": null,
+      "after": "Function: FUN_005cc590 at 005cc590\nSignature: undefined FUN_005cc590(void)\nEntry: 005cc590\nBody: 005cc590 - 005cc5dd"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "analysis_only": true,
+  "new_reconstructed_entry_count": 0,
+  "before": "No stored function at 005cc590; retained unnamed when defined.",
+  "boundary_evidence": "005cc570 helper returns with RET8 at005cc587 followed by CC padding through005cc58f. Separate005cc590 entry has incoming DATA pointer00cf1984, one internal branch to005cc5dd RET, then CC padding before known005cc5e0.",
+  "byte_verification": "The target-guarded define tool compared all78 live bytes against original PE before mutation.",
+  "full_stored_body_readback": "005cc590..005cc5dd;20 instructions; no gaps",
+  "export_refresh_passed": true,
+  "near_plane_caller": {
+    "address": "005cc5d8",
+    "native": "00b6fbf0",
+    "function": "005cc590",
+    "preparation": "005cc5c3 FLD CE3958, reload current E188A8, PUSH/FSTP one argument and ECX=[current owner+19fc]."
+  },
+  "uncertainty": "No descriptive rename or recovered source signature asserted; body definition permits accurate caller attribution only."
+}
