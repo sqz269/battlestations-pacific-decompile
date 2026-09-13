@@ -1,0 +1,2061 @@
+{
+  "packet": "orch5_native_system_fields",
+  "base_commit": "98fded2f",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_verified_bsp_wrappers"
+  },
+  "source": "src/native_shader_system_fields.cpp",
+  "header": "include/bsp/native_shader_system_fields.hpp",
+  "documentation": "docs/NATIVE_SHADER_SYSTEM_FIELDS.md",
+  "routines": [
+    {
+      "address": "00b35be0",
+      "end": "00b367fc",
+      "length": 3101,
+      "instructions": 985,
+      "sha256": "0674833722c637b132892595ad25af0026ac66f8aca987fd9469d06afe4ced98",
+      "symbol": "append_native_shader_vertex_system_fields_00b35be0",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures",
+      "original_abi": "ECX actualB0h builder, RET"
+    },
+    {
+      "address": "00b372d0",
+      "end": "00b37eea",
+      "length": 3099,
+      "instructions": 985,
+      "sha256": "120039c1824a7f7a52b722aa86cfd4f874fbedb5998a29b3cdd69036728dba48",
+      "symbol": "append_native_shader_pixel_system_fields_00b372d0",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures",
+      "original_abi": "ECX actualB0h builder, RET"
+    },
+    {
+      "address": "00b34e20",
+      "end": "00b34e84",
+      "length": 101,
+      "instructions": 36,
+      "sha256": "fc690345fb5f9323c25aa045fead940a1409829e4ad7e66e7a4e64a6394ef13d",
+      "symbol": "construct_native_shader_field_00b34e20",
+      "coverage": "complete_normal_readable_domain_body_with_retained_host_failures",
+      "original_abi": "ECX actual1Ch destination; name/scalar/width/semantic/index/mask stacked; EAX same; RET18h"
+    }
+  ],
+  "rows": [
+    {
+      "kind": "vertex",
+      "row": 0,
+      "name_address": "0xd5f514",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 0,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35c0c",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35c2e",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35c4f",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35c7d",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35cb9",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35cc0",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b35c8e",
+      "increment": "00b35c90",
+      "name": "ScreenSpacePos"
+    },
+    {
+      "kind": "vertex",
+      "row": 1,
+      "name_address": "0xd5f504",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 0,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35cc7",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35cea",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35d0c",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35d37",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35d73",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35d7a",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b35d48",
+      "increment": "00b35d4a",
+      "name": "ObjectSpacePos"
+    },
+    {
+      "kind": "vertex",
+      "row": 2,
+      "name_address": "0xd5f4f4",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 0,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35d81",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35da4",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35dc6",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35df1",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35e2d",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35e34",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b35e02",
+      "increment": "00b35e04",
+      "name": "WorldSpacePos"
+    },
+    {
+      "kind": "vertex",
+      "row": 3,
+      "name_address": "0xcecd20",
+      "scalar": 0,
+      "components": 3,
+      "semantic": 3,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35e3b",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35e5e",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35e80",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35eab",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35ee7",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35eee",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b35ebc",
+      "increment": "00b35ebe",
+      "name": "Normal"
+    },
+    {
+      "kind": "vertex",
+      "row": 4,
+      "name_address": "0xd5f4ec",
+      "scalar": 0,
+      "components": 3,
+      "semantic": 5,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35ef5",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35f18",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35f3a",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35f65",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35fa1",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35fa8",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b35f76",
+      "increment": "00b35f78",
+      "name": "Tangent"
+    },
+    {
+      "kind": "vertex",
+      "row": 5,
+      "name_address": "0xd5f4e0",
+      "scalar": 0,
+      "components": 3,
+      "semantic": 4,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b35faf",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35fd2",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b35ff4",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3601f",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3605b",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36062",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b36030",
+      "increment": "00b36032",
+      "name": "BiNormal"
+    },
+    {
+      "kind": "vertex",
+      "row": 6,
+      "name_address": "0xd5f4d0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36069",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3608c",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b360ad",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b360d8",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36114",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3611b",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b360e9",
+      "increment": "00b360eb",
+      "name": "CustomValue0"
+    },
+    {
+      "kind": "vertex",
+      "row": 7,
+      "name_address": "0xd5f4c0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36122",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36145",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36169",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36194",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b361d2",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b361d9",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b361a5",
+      "increment": "00b361a7",
+      "name": "CustomValue1"
+    },
+    {
+      "kind": "vertex",
+      "row": 8,
+      "name_address": "0xd5f4b0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b361e0",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36203",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36227",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36252",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36294",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3629b",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b36263",
+      "increment": "00b36265",
+      "name": "CustomValue2"
+    },
+    {
+      "kind": "vertex",
+      "row": 9,
+      "name_address": "0xd5f4a0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b362a2",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b362c5",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b362e9",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36314",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36356",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3635d",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b36325",
+      "increment": "00b36327",
+      "name": "CustomValue3"
+    },
+    {
+      "kind": "vertex",
+      "row": 10,
+      "name_address": "0xd5f490",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36364",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36387",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b363ac",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b363d7",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36419",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36420",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b363e8",
+      "increment": "00b363ea",
+      "name": "CustomVec2_0"
+    },
+    {
+      "kind": "vertex",
+      "row": 11,
+      "name_address": "0xd5f480",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36427",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3644a",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3646f",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3649a",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b364dc",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b364e3",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b364ab",
+      "increment": "00b364ad",
+      "name": "CustomVec2_1"
+    },
+    {
+      "kind": "vertex",
+      "row": 12,
+      "name_address": "0xd5f470",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b364ea",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3650d",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36532",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3655d",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3659f",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b365a6",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b3656e",
+      "increment": "00b36570",
+      "name": "CustomVec2_2"
+    },
+    {
+      "kind": "vertex",
+      "row": 13,
+      "name_address": "0xd5f460",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b365ad",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b365d0",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b365f5",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36620",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36662",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36669",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b36631",
+      "increment": "00b36633",
+      "name": "CustomVec2_3"
+    },
+    {
+      "kind": "vertex",
+      "row": 14,
+      "name_address": "0xd5f450",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36670",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36693",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b366b8",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b366e3",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36725",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3672c",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b366f4",
+      "increment": "00b366f6",
+      "name": "CustomVec4_0"
+    },
+    {
+      "kind": "vertex",
+      "row": 15,
+      "name_address": "0xd5f440",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b36733",
+          "native": "00bf681b",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b36756",
+          "native": "0041e870",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b3677b",
+          "native": "00b34e20",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b367a6",
+          "native": "00b34680",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b367de",
+          "native": "00419cc0",
+          "caller": "00b35be0"
+        },
+        {
+          "address": "00b367e5",
+          "native": "00bd1510",
+          "caller": "00b35be0"
+        }
+      ],
+      "publication": "00b367b7",
+      "increment": "00b367b9",
+      "name": "CustomVec4_1"
+    },
+    {
+      "kind": "pixel",
+      "row": 0,
+      "name_address": "0xd0d4cc",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b372fc",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3731e",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3733f",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3736d",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b373a9",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b373b0",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b3737e",
+      "increment": "00b37380",
+      "name": "DiffuseColor"
+    },
+    {
+      "kind": "pixel",
+      "row": 1,
+      "name_address": "0xd0d4bc",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b373b7",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b373da",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b373fc",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37427",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37463",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3746a",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37438",
+      "increment": "00b3743a",
+      "name": "SpecularColor"
+    },
+    {
+      "kind": "pixel",
+      "row": 2,
+      "name_address": "0xd5f6dc",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37471",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37494",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b374b6",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b374e1",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3751d",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37524",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b374f2",
+      "increment": "00b374f4",
+      "name": "EmissiveColor"
+    },
+    {
+      "kind": "pixel",
+      "row": 3,
+      "name_address": "0xd5f6cc",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b3752b",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3754e",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3756f",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3759a",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b375d6",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b375dd",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b375ab",
+      "increment": "00b375ad",
+      "name": "SpecularPower"
+    },
+    {
+      "kind": "pixel",
+      "row": 4,
+      "name_address": "0xcecd20",
+      "scalar": 0,
+      "components": 3,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b375e4",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37607",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37629",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37654",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37690",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37697",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37665",
+      "increment": "00b37667",
+      "name": "Normal"
+    },
+    {
+      "kind": "pixel",
+      "row": 5,
+      "name_address": "0xd5f6c4",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b3769e",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b376c1",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b376e2",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3770d",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37749",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37750",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b3771e",
+      "increment": "00b37720",
+      "name": "Depth"
+    },
+    {
+      "kind": "pixel",
+      "row": 6,
+      "name_address": "0xd5f4d0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37757",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3777a",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b3779b",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b377c6",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37802",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37809",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b377d7",
+      "increment": "00b377d9",
+      "name": "CustomValue0"
+    },
+    {
+      "kind": "pixel",
+      "row": 7,
+      "name_address": "0xd5f4c0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37810",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37833",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37857",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37882",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b378c0",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b378c7",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37893",
+      "increment": "00b37895",
+      "name": "CustomValue1"
+    },
+    {
+      "kind": "pixel",
+      "row": 8,
+      "name_address": "0xd5f4b0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b378ce",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b378f1",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37915",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37940",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37982",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37989",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37951",
+      "increment": "00b37953",
+      "name": "CustomValue2"
+    },
+    {
+      "kind": "pixel",
+      "row": 9,
+      "name_address": "0xd5f4a0",
+      "scalar": 0,
+      "components": 1,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37990",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b379b3",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b379d7",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37a02",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37a44",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37a4b",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37a13",
+      "increment": "00b37a15",
+      "name": "CustomValue3"
+    },
+    {
+      "kind": "pixel",
+      "row": 10,
+      "name_address": "0xd5f490",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37a52",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37a75",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37a9a",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37ac5",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37b07",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37b0e",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37ad6",
+      "increment": "00b37ad8",
+      "name": "CustomVec2_0"
+    },
+    {
+      "kind": "pixel",
+      "row": 11,
+      "name_address": "0xd5f480",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37b15",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37b38",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37b5d",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37b88",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37bca",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37bd1",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37b99",
+      "increment": "00b37b9b",
+      "name": "CustomVec2_1"
+    },
+    {
+      "kind": "pixel",
+      "row": 12,
+      "name_address": "0xd5f470",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37bd8",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37bfb",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37c20",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37c4b",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37c8d",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37c94",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37c5c",
+      "increment": "00b37c5e",
+      "name": "CustomVec2_2"
+    },
+    {
+      "kind": "pixel",
+      "row": 13,
+      "name_address": "0xd5f460",
+      "scalar": 0,
+      "components": 2,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37c9b",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37cbe",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37ce3",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37d0e",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37d50",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37d57",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37d1f",
+      "increment": "00b37d21",
+      "name": "CustomVec2_3"
+    },
+    {
+      "kind": "pixel",
+      "row": 14,
+      "name_address": "0xd5f450",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37d5e",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37d81",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37da6",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37dd1",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37e13",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37e1a",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37de2",
+      "increment": "00b37de4",
+      "name": "CustomVec4_0"
+    },
+    {
+      "kind": "pixel",
+      "row": 15,
+      "name_address": "0xd5f440",
+      "scalar": 0,
+      "components": 4,
+      "semantic": 2,
+      "index": 0,
+      "mask": 0,
+      "calls": [
+        {
+          "address": "00b37e21",
+          "native": "00bf681b",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37e44",
+          "native": "0041e870",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37e69",
+          "native": "00b34e20",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37e94",
+          "native": "00b34680",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37ecc",
+          "native": "00419cc0",
+          "caller": "00b372d0"
+        },
+        {
+          "address": "00b37ed3",
+          "native": "00bd1510",
+          "caller": "00b372d0"
+        }
+      ],
+      "publication": "00b37ea5",
+      "increment": "00b37ea7",
+      "name": "CustomVec4_1"
+    }
+  ],
+  "additional_calls": [
+    {
+      "address": "00b34e3e",
+      "native": "0041dd40",
+      "caller": "00b34e20"
+    },
+    {
+      "address": "00b34e53",
+      "native": "00bf7680",
+      "caller": "00b34e20"
+    },
+    {
+      "address": "00b3b515",
+      "native": "00b35be0",
+      "caller": "00b3b3c0"
+    },
+    {
+      "address": "00b3b531",
+      "native": "00b372d0",
+      "caller": "00b3b3c0"
+    },
+    {
+      "address": "00b3686b",
+      "native": "00b34e20",
+      "caller": "00b36800"
+    }
+  ],
+  "producer": {
+    "builder": "Existing actualB354D0 producer, B0h NativeMaterialProgramBuilderStorage; fields10/34 owning0Ch arrays",
+    "field": "B34E20 only clears00/04 before name copy; scalar writes08/0C/10/14/18 afterward; no refcount/vtable",
+    "registers": "EBP=1 atB35C20/B37310, no reassignment until epilogue; ESI fixed same array identity after first field construction",
+    "flags": "No descriptor/flag gating inside either appender; source globals gated only by B3B4FA..B3B50A"
+  },
+  "unwind": [
+    {
+      "info": "00df6af4",
+      "map": "00df6b18",
+      "entries": [
+        {
+          "to_state": -1,
+          "action": "00cbe1f0"
+        },
+        {
+          "to_state": 0,
+          "action": "00cbe1fb"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe1fb"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe214"
+        },
+        {
+          "to_state": 3,
+          "action": "00cbe21f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe21f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe238"
+        },
+        {
+          "to_state": 6,
+          "action": "00cbe243"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe243"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe25c"
+        },
+        {
+          "to_state": 9,
+          "action": "00cbe267"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe267"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe280"
+        },
+        {
+          "to_state": 12,
+          "action": "00cbe28b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe28b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2a4"
+        },
+        {
+          "to_state": 15,
+          "action": "00cbe2af"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2af"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2c8"
+        },
+        {
+          "to_state": 18,
+          "action": "00cbe2d3"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2d3"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2ec"
+        },
+        {
+          "to_state": 21,
+          "action": "00cbe2f7"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe2f7"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe315"
+        },
+        {
+          "to_state": 24,
+          "action": "00cbe320"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe320"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe33e"
+        },
+        {
+          "to_state": 27,
+          "action": "00cbe349"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe349"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe367"
+        },
+        {
+          "to_state": 30,
+          "action": "00cbe372"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe372"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe390"
+        },
+        {
+          "to_state": 33,
+          "action": "00cbe39b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe39b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe3b9"
+        },
+        {
+          "to_state": 36,
+          "action": "00cbe3c4"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe3c4"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe3e2"
+        },
+        {
+          "to_state": 39,
+          "action": "00cbe3ed"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe3ed"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe40b"
+        },
+        {
+          "to_state": 42,
+          "action": "00cbe416"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe416"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe434"
+        },
+        {
+          "to_state": 45,
+          "action": "00cbe43f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe43f"
+        }
+      ]
+    },
+    {
+      "info": "00df6d4c",
+      "map": "00df6d70",
+      "entries": [
+        {
+          "to_state": -1,
+          "action": "00cbe510"
+        },
+        {
+          "to_state": 0,
+          "action": "00cbe51b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe51b"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe534"
+        },
+        {
+          "to_state": 3,
+          "action": "00cbe53f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe53f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe558"
+        },
+        {
+          "to_state": 6,
+          "action": "00cbe563"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe563"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe57c"
+        },
+        {
+          "to_state": 9,
+          "action": "00cbe587"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe587"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5a0"
+        },
+        {
+          "to_state": 12,
+          "action": "00cbe5ab"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5ab"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5c4"
+        },
+        {
+          "to_state": 15,
+          "action": "00cbe5cf"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5cf"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5e8"
+        },
+        {
+          "to_state": 18,
+          "action": "00cbe5f3"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe5f3"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe60c"
+        },
+        {
+          "to_state": 21,
+          "action": "00cbe617"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe617"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe635"
+        },
+        {
+          "to_state": 24,
+          "action": "00cbe640"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe640"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe65e"
+        },
+        {
+          "to_state": 27,
+          "action": "00cbe669"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe669"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe687"
+        },
+        {
+          "to_state": 30,
+          "action": "00cbe692"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe692"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe6b0"
+        },
+        {
+          "to_state": 33,
+          "action": "00cbe6bb"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe6bb"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe6d9"
+        },
+        {
+          "to_state": 36,
+          "action": "00cbe6e4"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe6e4"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe702"
+        },
+        {
+          "to_state": 39,
+          "action": "00cbe70d"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe70d"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe72b"
+        },
+        {
+          "to_state": 42,
+          "action": "00cbe736"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe736"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe754"
+        },
+        {
+          "to_state": 45,
+          "action": "00cbe75f"
+        },
+        {
+          "to_state": -1,
+          "action": "00cbe75f"
+        }
+      ]
+    }
+  ],
+  "supporting_gaps": [
+    {
+      "address": "00cbe45d",
+      "end": "00cbe466",
+      "length": 10,
+      "no_ghidra_function": true,
+      "scope": "unowned handler evidence only"
+    },
+    {
+      "address": "00cbe77d",
+      "end": "00cbe786",
+      "length": 10,
+      "no_ghidra_function": true,
+      "scope": "unowned handler evidence only"
+    }
+  ],
+  "failure_contract": {
+    "native": "48 FH3 states per appender; raw free; temporary-name then raw free; temporary-name only triples; no catches",
+    "source": "Retained host failure, no native rollback; stable temporary header/current actual field/source/site and completed-row state; cannot replay/discard failed operation",
+    "ownership": "Same builder/string provider retained; outer compiler excludes builder retirement; no second registry",
+    "reserve": "Reuses B34680. Once allocation returns, valid pointer-copy/free/publication path has no throwing host provider. No replacement allocation hidden by a later throwing callback."
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/system-fields-build.log",
+      "exit_code": 0,
+      "ctest": "1/1 reconstructed_math passed",
+      "new_source_registered": true,
+      "flags": "MSVC Win32 Release /W4 /WX"
+    },
+    "fixture": {
+      "runner": "local/run_native_system_fields_probe.ps1",
+      "source": "local/native_system_fields_probe.cpp",
+      "case": "local/system_fields_case.hpp",
+      "log": "local/system-fields-probe.log",
+      "compile_log": "local/system-fields-probe-compile.log",
+      "exit_code": 0,
+      "result": "PASS",
+      "original_bytes": 6301,
+      "original_instructions": 2006,
+      "coverage": [
+        "actual installed debug/alpha descriptor and B35930 owning field prefix",
+        "both full original system appender bodies plus B34E20 constructor",
+        "all vertex/pixel names/scalars/widths/semantics/index/mask",
+        "capacity0->10->15->20 and repeated append without rebuilding earlier fields",
+        "unrelated builder bytes and same descriptor pointers preserved",
+        "normal actual B3A7E0 owning destruction",
+        "second-row name-copy allocation failure retains temporary8h header/raw1Ch field, first row still published"
+      ],
+      "not_executed": [
+        "native private exception handlers",
+        "native null operator-new branch (actual provider throws)",
+        "B36800/B34AA0 and full compiler/code-generation/pass/game success"
+      ]
+    },
+    "cmake_registration": "Appended only this new source while cmake/startup.cmake was unleased; no lease taken",
+    "fixture_dependencies": "Own bsp_core contains new system-fields source. Three unchanged production TUs remain unregistered at base: native_shader_descriptor_reader.cpp, native_vfs_name_resolution.cpp, native_material_program_compiler.cpp; runner compiles those alongside fixture, never copies definitions into fixture.",
+    "native_byte_comparison": "All6301 bytes: fresh verified Ghidra reads equal installed PE SHA256; local/check_system_live_bytes.py",
+    "call_report": {
+      "checked": 197,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/native_shader_system_fields.json"
+    }
+  },
+  "limitations": [
+    "New C++ ABI, not binary replacement",
+    "No native FH3 unwind parity; host failures retain acquisitions",
+    "Original normal-path instruction execution only",
+    "No full compiler/codegen/pass result; B36800/B34AA0 and subsequent reflection remain dependencies",
+    "No game/render validation"
+  ],
+  "artifacts": [
+    "local/extract_system_rows.py",
+    "local/vertex-system.asm.txt",
+    "local/pixel-system.asm.txt",
+    "local/system_fields_rows.json",
+    "local/pin_system_fields.py",
+    "local/system_fields_pin.json",
+    "local/system_fields_pin.log",
+    "local/vertex-unwind-map.txt",
+    "local/pixel-unwind-map.txt",
+    "local/make_system_fields_probe.py",
+    "local/system_fields_original.hpp",
+    "local/native_system_fields_probe.cpp",
+    "local/system_fields_case.hpp",
+    "local/run_native_system_fields_probe.ps1",
+    "local/system-fields-configure.log",
+    "local/system-fields-build.log",
+    "local/check_system_live_bytes.py",
+    "local/vertex-live-bytes.txt",
+    "local/pixel-live-bytes.txt",
+    "local/field-live-bytes.txt",
+    "local/system-fields-probe-precompile.log",
+    "local/system-fields-probe-compile.log",
+    "local/system-fields-probe.log",
+    "local/native_system_fields_probe.exe",
+    "local/system-field-custom-name-bytes.txt"
+  ],
+  "status": "actual_owner_normal_bodies_registered_Win32_and_original_source_fixture_checked",
+  "corrections": [
+    {
+      "was": "Existing semantic value-vector system-field projection, native ownership/failure unported",
+      "is": "Separate actual1Ch owning fields on same builder10/34 headers, persistent acquired caller frame",
+      "evidence": "Both complete native bodies and exact original/source fixture; semantic implementation remains unchanged"
+    }
+  ],
+  "artifact_sha256": {
+    "local/extract_system_rows.py": "04e495ae30dd1e37ef86f01d26dd282fd05f9d91d9d3aabc33e839077f1a4bbf",
+    "local/vertex-system.asm.txt": "34282e73841f4097562bb801031283a2e60e86bb9197759495fa12a98c84d0c2",
+    "local/pixel-system.asm.txt": "6f0432066e62c28ac94e061e3984b43c5d8583034fd9a1ac9d1d797ffad5949e",
+    "local/system_fields_rows.json": "7d035171e14d9d37ebe996e1c4fc931aefe7547ba8e74865459d589e227bfd78",
+    "local/pin_system_fields.py": "934531c57726835e62e5b754733f71fcfe0aca5bea68871a8fc32c92662824be",
+    "local/system_fields_pin.json": "b244c3ea48f9a103f84190b12e58e2006bf0ac2569dbd35d129efe37e39bb8d9",
+    "local/system_fields_pin.log": "85fdb2b544343445d79fb0f1a411edcabf76c0415dc33567e5c3a61ebbc6312e",
+    "local/vertex-unwind-map.txt": "0bbbe8ef6ff11955beed27a59c5a7f311c37f0b677fabf4a7d382dac7f2749da",
+    "local/pixel-unwind-map.txt": "eeffc53875a5444bd2346d5b6a5ade4363b17e5516e3cfc80af0fec512b0f62a",
+    "local/make_system_fields_probe.py": "36d2be90ef1f9d00615a93ea93b4d38b0a8168eed7c3245defecd8709d262f31",
+    "local/system_fields_original.hpp": "74d30ad39c32adfb8af38e8e3d63d8d7c0422c8891997e8fe2e2b86d9c8ea612",
+    "local/native_system_fields_probe.cpp": "95a5b7a2afb18fd2a895a22af92520c9798a241f8afc0e37b56180cd80f21474",
+    "local/system_fields_case.hpp": "8a48186d6e127c6060b8868e06ba7cfaf36526422de9d039eb7124a3ca2a911d",
+    "local/run_native_system_fields_probe.ps1": "32a86f2524f84a87edee420cc67412b298140b0b19a6a59f477efeeb0d320baf",
+    "local/system-fields-configure.log": "16260f4bc5f118cc1301810145245a5e30e4feba65288a40fb670f17c4345856",
+    "local/system-fields-build.log": "1810dd52db6503a9e2af14e208e3ccbe315afe00cb0b001006b7501964cb4387",
+    "local/check_system_live_bytes.py": "6e738f696c7491740c94979c658a36ecf9a4855a3a88b417884e99fc0792a50a",
+    "local/vertex-live-bytes.txt": "ba54117553bd00ad1f4c589bd587ad588cf6ed343637bd9e1e1a227e0f2d9dc2",
+    "local/pixel-live-bytes.txt": "0d90366d400ee1365592d738bfcc57494928fab30ea43594f482c92c097d8bfa",
+    "local/field-live-bytes.txt": "b43141fe6f9a80a79f022fbecfda65a88175c073085e98e982a91efe29e2b8d8",
+    "local/system-fields-probe-precompile.log": "4e70efea811494e018171b5dc0f303e8221cb370a2bf9841f550f4323e6a1c8a",
+    "local/system-fields-probe-compile.log": "4e70efea811494e018171b5dc0f303e8221cb370a2bf9841f550f4323e6a1c8a",
+    "local/system-fields-probe.log": "b98b5394a5e7576ddce1583e50700c1f8463529f9e1a5163665b347f3bd574e5",
+    "local/native_system_fields_probe.exe": "e5f36f587ec67c64ec921f831f9b6d79e2553b84fda9ff25d3ff945ff81469cc",
+    "local/system-field-custom-name-bytes.txt": "43000db3d729814f836d80e5f5e653ea48e0fee9196093a8656d4690d7943c36",
+    "src/native_shader_system_fields.cpp": "ae016299c5ec406164e038609e611a1f80e42b7b4d98ac954471a909eb38c313",
+    "include/bsp/native_shader_system_fields.hpp": "5789fd5e806b6f158a4c9f2ca49069c9666b147ef6c611fd2a3f7cd46e5b96b2",
+    "docs/NATIVE_SHADER_SYSTEM_FIELDS.md": "742a3d40fd7637e5c787c243a794f0d81c84344bd199d96c8a639448320fdca1",
+    "cmake/startup.cmake": "b79dc40b47f9109ff9025f35064c02ce29fd5379ecf2d3206888d48c39d95caa",
+    "src/native_material_program_compiler.cpp": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7",
+    "src/native_shader_descriptor_reader.cpp": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9",
+    "src/native_vfs_name_resolution.cpp": "3518ea9da4307dfe6f646f02ae77690577abf7e38d83811aa498e2cbd48acec5",
+    "build/win32/Release/bsp_core.lib": "672857c734684505a48acb1c8a7dadd57b7a7dccddf1b7cf126ea325ad92ae50",
+    "build/win32/Release/bsp_lua511.lib": "92b58a8417353e3f892f38d03ae407e33b5a3c2808ef0bc48451d41c9f545491",
+    "build/win32/Release/bsp_zlib121.lib": "f4e0b118128663ccd4dc649a3d458d6243ccf8147eec5d6f35f1842a19d1aa23"
+  }
+}

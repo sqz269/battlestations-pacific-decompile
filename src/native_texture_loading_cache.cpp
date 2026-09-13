@@ -13,6 +13,7 @@
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_physical_stream_open.hpp"
 #include "bsp/native_adopted_substream.hpp"
+#include "bsp/native_cube_texture_pool_allocate.hpp"
 #include "bsp/resource_load_events.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <d3dx9tex.h>
@@ -244,10 +245,7 @@ struct NativeTextureLoadOwners::Impl {
         void release_zero_references() noexcept override {
             auto& d = domain;
             const auto& r = d.geometry.registration();
-            if (field<std::uint32_t>(raw, 0) != 0x00d61948u ||
-                d.profile[0] != 0x00bd30e0u || d.profile[1] != 0x00b3f590u)
-                std::terminate();
-            try { delete_native_texture_2d_00b3f590(raw, 1, d.context); }
+            try { d.delete_current_owner(raw); }
             catch (...) { std::terminate(); }
             if (registered) r.unbind(r.context, raw, *this);
             for (auto i = d.entries.begin(); i != d.entries.end(); ++i) {
@@ -259,15 +257,55 @@ struct NativeTextureLoadOwners::Impl {
     GuiNativeGeometryOwners& geometry;
     NativeTexture2DOwnerContext& context;
     const volatile std::uint32_t* profile;
+    NativeTextureSpecialOwnerContexts* special;
     std::list<std::unique_ptr<Entry>> entries;
+    NativeTextureSpecialOwnerContexts& require_special() {
+        if (!special || !special->profile_00d61870 || !special->profile_00d618b0 ||
+            special->profile_00d61870[0] != 0x00bd30e0u ||
+            special->profile_00d61870[1] != 0x00b3f410u ||
+            special->profile_00d618b0[0] != 0x00bd30e0u ||
+            special->profile_00d618b0[1] != 0x00b3f430u ||
+            !special->cube.actual_cube_pool_0108db70 ||
+            &special->cube.renderer_notification != &context.renderer_notification ||
+            &special->volume.owner.renderer_notification != &context.renderer_notification ||
+            &special->cube.retained_memory != &context.retained_memory ||
+            &special->volume.owner.retained_memory != &context.retained_memory ||
+            &special->cube.actual_shared_serial_0108d6e8 != &context.actual_shared_serial_0108d6e8 ||
+            &special->volume.actual_shared_serial_0108d6e8 != &context.actual_shared_serial_0108d6e8 ||
+            special->cube.actual_renderer_profile_00d5f0a8 != context.actual_renderer_profile_00d5f0a8 ||
+            special->volume.owner.actual_renderer_profile_00d5f0a8 != context.actual_renderer_profile_00d5f0a8)
+            throw std::invalid_argument("special textures require the same actual owner domains and terminal tables");
+        return *special;
+    }
+    void require_current_profile(void* raw) {
+        switch (field<std::uint32_t>(raw, 0)) {
+        case 0x00d61948u:
+            if (profile[0] != 0x00bd30e0u || profile[1] != 0x00b3f590u)
+                throw std::invalid_argument("unsupported current 2D texture terminal");
+            return;
+        case 0x00d61870u: case 0x00d618b0u: (void)require_special(); return;
+        default: throw std::invalid_argument("unsupported current native texture profile");
+        }
+    }
+    void delete_current_owner(void* raw) {
+        require_current_profile(raw);
+        switch (field<std::uint32_t>(raw, 0)) {
+        case 0x00d61948u: delete_native_texture_2d_00b3f590(raw, 1, context); return;
+        case 0x00d61870u: delete_native_cube_texture_00b3f410(raw, 1, require_special().cube); return;
+        case 0x00d618b0u: delete_native_volume_texture_00b3f430(raw, 1, require_special().volume.owner); return;
+        default: throw std::invalid_argument("unsupported refreshed native texture profile");
+        }
+    }
 };
 NativeTextureLoadOwners::NativeTextureLoadOwners(GuiNativeGeometryOwners& geometry,
-    NativeTexture2DOwnerContext& context, const volatile std::uint32_t* profile)
-    : impl_(std::make_unique<Impl>(Impl{geometry, context, profile, {}})) {
+    NativeTexture2DOwnerContext& context, const volatile std::uint32_t* profile,
+    NativeTextureSpecialOwnerContexts* special)
+    : impl_(std::make_unique<Impl>(Impl{geometry, context, profile, special, {}})) {
     const auto& r = geometry.registration();
     if (!r.find || !r.bind || !r.unbind || !profile ||
         profile[0] != 0x00bd30e0u || profile[1] != 0x00b3f590u)
         throw std::invalid_argument("texture companions require the actual canonical registration/terminal");
+    if (special) (void)impl_->require_special();
 }
 NativeTextureLoadOwners::~NativeTextureLoadOwners() {
     if (!impl_->entries.empty()) std::terminate();
@@ -275,12 +313,16 @@ NativeTextureLoadOwners::~NativeTextureLoadOwners() {
 NativeTexture2DOwnerContext& NativeTextureLoadOwners::texture_context() noexcept {
     return impl_->context;
 }
+NativeTextureSpecialOwnerContexts& NativeTextureLoadOwners::special_contexts() {
+    return impl_->require_special();
+}
 void NativeTextureLoadOwners::register_completed_creator(NativeTextureLoadAcquired& a) {
     auto& s = *impl_;
     const auto& r = s.geometry.registration();
     if (!a.creator || !a.constructor_complete || a.owner_record || a.companion || a.registered ||
-        field<std::uint32_t>(a.creator, 0) != 0x00d61948u || r.find(r.context, a.creator))
+        r.find(r.context, a.creator))
         throw std::invalid_argument("new texture creator requires exactly one canonical identity");
+    s.require_current_profile(a.creator);
     auto entry = std::make_unique<Impl::Entry>(s, a.creator);
     s.entries.push_back(std::move(entry));
     auto& e = *s.entries.back();
@@ -411,7 +453,7 @@ void require_loading_domains(NativeTextureLoadingContext& c) {
         reinterpret_cast<const volatile void*>(&owner.surfaces.actual_renderer_00f8d394) !=
         reinterpret_cast<const volatile void*>(&c.current_renderer_00f8d394) ||
         &notification.synchronization != &c.synchronization_0108d6dc ||
-        !c.image_info_00c2dfec || !c.create_texture_00c2dfe6)
+        !c.image_info_00c2dfec)
         throw std::invalid_argument("texture loading requires the same actual strings/VFS/renderer/owner domains");
     require_domains(*c.cache);
 }
@@ -453,9 +495,71 @@ bool native_substring(const void* header, const char* needle) {
 std::uint32_t signed_minimum_one(std::uint32_t bits) {
     return signed_bits(bits) > 1 ? bits : 1u;
 }
+void load_special_texture_arm(const void* original, NativeTextureLoadingContext& c,
+    NativeTextureLoadAcquired& a) {
+    const bool cube = a.resource_type == D3DRTYPE_CUBETEXTURE;
+    auto& owners = c.owners.special_contexts();
+    a.native_site = cube ? 0x00b2c680u : 0x00b2c763u;
+    GuardScope guard{*c.cache};
+    const auto create = [&](std::uint32_t length_site, std::uint32_t data_site,
+        std::uint32_t call_site) {
+        a.native_site = length_site;
+        const auto size = current_memory_size(a.memory, c);
+        a.native_site = data_site;
+        auto* const data = native_memory_stream_data_00bef610(a.memory, nullptr);
+        a.native_site = call_site;
+        if (cube) {
+            if (!c.create_cube_texture_00c2dfe0)
+                throw std::invalid_argument("cube loading requires actual C2DFE0 D3DX import");
+            return c.create_cube_texture_00c2dfe0(a.captured_device, data, size, &a.cube_texture);
+        }
+        if (!c.create_volume_texture_00c2dfda)
+            throw std::invalid_argument("volume loading requires actual C2DFDA D3DX import");
+        return c.create_volume_texture_00c2dfda(a.captured_device, data, size, &a.volume_texture);
+    };
+    a.last_hresult = cube ? create(0x00b2c69a, 0x00b2c69f, 0x00b2c6a6) :
+        create(0x00b2c77d, 0x00b2c782, 0x00b2c789);
+    const auto has_output = [&]() { return cube ? a.cube_texture != nullptr : a.volume_texture != nullptr; };
+    if (!has_output() && a.last_hresult != 0 &&
+        static_cast<std::uint32_t>(a.last_hresult) != 0x8876017cu &&
+        static_cast<std::uint32_t>(a.last_hresult) != 0x8007000eu) {
+        a.native_site = cube ? 0x00b2c6d6u : 0x00b2c7adu;
+        if (!c.retry_device_00b29670)
+            throw std::invalid_argument("texture retry requires actual B29670 device recovery");
+        c.retry_device_00b29670(c.callback_context, c.current_renderer_00f8d394);
+        a.last_hresult = cube ? create(0x00b2c6e7, 0x00b2c6ec, 0x00b2c6f3) :
+            create(0x00b2c7be, 0x00b2c7c3, 0x00b2c7ca);
+    }
+    if (has_output()) {
+        a.native_site = cube ? 0x00b2c708u : 0x00b2c7dbu;
+        a.raw_slot = cube ? allocate_native_cube_texture_00b3f2c0(owners.cube.actual_cube_pool_0108db70) :
+            allocate_native_volume_texture_00b3f2d0(owners.volume.owner.actual_volume_pool_0108dba8);
+        if (!a.raw_slot)
+            throw std::invalid_argument("null special texture slot reaches native retained-source store");
+        a.native_site = cube ? 0x00b2c724u : 0x00b2c7f7u;
+        a.creator = cube ? construct_native_named_cube_texture_00b3ced0(a.raw_slot, original,
+            a.cube_texture, 0, owners.cube, &a.special_constructor) :
+            construct_native_named_volume_texture_00b3cfa0(a.raw_slot, original,
+                a.volume_texture, 0, owners.volume, &a.special_constructor);
+        a.constructor_complete = true;
+        a.native_site = 0x00b2c80e;
+        assign_native_retained_memory_slot_00b23640(plus(a.creator, cube ? 0x2cu : 0x30u),
+            &a.memory, c.conversion.memory_owners);
+        a.source_assigned = true;
+        // Canonical metadata only: one companion over the native creator count.
+        // Special arms never execute the 2D callback or accounted-size store.
+        c.owners.register_completed_creator(a);
+    }
+    a.native_site = 0x00b2c82e;
+    guard.finish();
+}
 }
 
-void* load_native_texture_2d_00b2c2d0(const void* original, std::uint32_t callback,
+void* allocate_native_volume_texture_00b3f2d0(D3D9SurfacePool& pool) {
+    return pool.allocate_raw_slot_00b3ed40();
+}
+
+void* load_native_texture_00b2c2d0(const void* original, std::uint32_t callback,
     NativeTextureLoadingContext& c, NativeTextureLoadAcquired& a) {
     if (a.phase != NativeTextureLoadAcquired::Phase::not_started)
         throw std::logic_error("texture loader cannot replay a retained operation");
@@ -492,89 +596,99 @@ void* load_native_texture_2d_00b2c2d0(const void* original, std::uint32_t callba
         if (FAILED(a.last_hresult))
             throw std::invalid_argument("unwritten D3DX image-info output is outside the source domain");
         a.resource_type = static_cast<std::uint32_t>(info.ResourceType);
-        if (info.ResourceType != D3DRTYPE_TEXTURE)
-            throw std::invalid_argument("B2C2D0 cube/volume named-owner arms require B3CED0/B3CFA0");
-        std::uint32_t width = 0xffffffffu, height = 0xffffffffu;
-        auto saved_width = info.Width;
-        auto saved_height = info.Height;
-        auto mips = info.MipLevels;
-        GuardScope guard{*c.cache};
-        if (mips > 1u && field<std::uint32_t>(c.current_renderer_00f8d394, 0x1d84) != 0) {
-            NativeString detail;
-            detail.assign_0041e870(c.strings, "detail.dds");
-            NameCleanup detail_cleanup{&detail, c.strings};
-            bool reduce = !string_equal(original, &detail, false);
-            if (reduce) {
-                reduce = !native_substring(original, "noseart") &&
-                    !native_substring(original, "interface/textures/gui/units");
+        if (info.ResourceType == D3DRTYPE_TEXTURE) {
+            if (!c.create_texture_00c2dfe6)
+                throw std::invalid_argument("2D loading requires actual C2DFE6 D3DX import");
+            std::uint32_t width = 0xffffffffu, height = 0xffffffffu;
+            auto saved_width = info.Width;
+            auto saved_height = info.Height;
+            auto mips = info.MipLevels;
+            GuardScope guard{*c.cache};
+            if (mips > 1u && field<std::uint32_t>(c.current_renderer_00f8d394, 0x1d84) != 0) {
+                NativeString detail;
+                detail.assign_0041e870(c.strings, "detail.dds");
+                NameCleanup detail_cleanup{&detail, c.strings};
+                bool reduce = !string_equal(original, &detail, false);
+                if (reduce) {
+                    reduce = !native_substring(original, "noseart") &&
+                        !native_substring(original, "interface/textures/gui/units");
+                }
+                detail_cleanup.armed = false;
+                destroy_native_string_header_0041dd20(&detail, c.strings);
+                if (reduce) {
+                    const auto quality = field<std::uint32_t>(c.current_renderer_00f8d394, 0x1d84);
+                    width = saved_width = signed_minimum_one(saved_width >> (quality & 31u));
+                    height = saved_height = signed_minimum_one(saved_height >> (quality & 31u));
+                    mips = signed_minimum_one(mips - quality);
+                }
             }
-            detail_cleanup.armed = false;
-            destroy_native_string_header_0041dd20(&detail, c.strings);
-            if (reduce) {
-                const auto quality = field<std::uint32_t>(c.current_renderer_00f8d394, 0x1d84);
-                width = saved_width = signed_minimum_one(saved_width >> (quality & 31u));
-                height = saved_height = signed_minimum_one(saved_height >> (quality & 31u));
-                mips = signed_minimum_one(mips - quality);
+            const auto format = info.Format == D3DFMT_R8G8B8 ? D3DFMT_A8R8G8B8 : D3DFMT_UNKNOWN;
+            const auto create = [&]() {
+                const auto size = current_memory_size(a.memory, c);
+                auto* const memory_data = native_memory_stream_data_00bef610(a.memory, nullptr);
+                return c.create_texture_00c2dfe6(a.captured_device, memory_data, size,
+                    width, height, mips, 0, format, D3DPOOL_MANAGED, 0x70004u,
+                    0xffffffffu, 0, nullptr, nullptr, &a.texture);
+            };
+            a.native_site = 0x00b2c565;
+            a.last_hresult = create();
+            if (!a.texture && a.last_hresult != 0 &&
+                static_cast<std::uint32_t>(a.last_hresult) != 0x8876017cu &&
+                static_cast<std::uint32_t>(a.last_hresult) != 0x8007000eu) {
+                a.native_site = 0x00b2c595;
+                if (!c.retry_device_00b29670)
+                    throw std::invalid_argument("texture retry requires actual B29670 device recovery");
+                c.retry_device_00b29670(c.callback_context, c.current_renderer_00f8d394);
+                a.native_site = 0x00b2c5cf;
+                a.last_hresult = create(); // SAME captured device, fresh stream reads.
             }
-        }
-        const auto format = info.Format == D3DFMT_R8G8B8 ? D3DFMT_A8R8G8B8 : D3DFMT_UNKNOWN;
-        const auto create = [&]() {
-            const auto size = current_memory_size(a.memory, c);
-            auto* const memory_data = native_memory_stream_data_00bef610(a.memory, nullptr);
-            return c.create_texture_00c2dfe6(a.captured_device, memory_data, size,
-                width, height, mips, 0, format, D3DPOOL_MANAGED, 0x70004u,
-                0xffffffffu, 0, nullptr, nullptr, &a.texture);
-        };
-        a.native_site = 0x00b2c565;
-        a.last_hresult = create();
-        if (!a.texture && a.last_hresult != 0 &&
-            static_cast<std::uint32_t>(a.last_hresult) != 0x8876017cu &&
-            static_cast<std::uint32_t>(a.last_hresult) != 0x8007000eu) {
-            a.native_site = 0x00b2c595;
-            if (!c.retry_device_00b29670)
-                throw std::invalid_argument("texture retry requires actual B29670 device recovery");
-            c.retry_device_00b29670(c.callback_context, c.current_renderer_00f8d394);
-            a.native_site = 0x00b2c5cf;
-            a.last_hresult = create(); // SAME captured device, fresh stream reads.
-        }
-        if (a.texture) {
-            a.native_site = 0x00b2c5e0;
-            a.raw_slot = allocate_d3d9_texture2d_slot_00b3f2b0();
-            if (!a.raw_slot)
-                throw std::invalid_argument("null texture slot reaches native null+4C store");
-            a.native_site = 0x00b2c60d;
-            a.creator = construct_native_texture_2d_00b3f930(a.raw_slot, original,
-                a.texture, saved_width, saved_height, 0, c.owners.texture_context());
-            a.constructor_complete = true; // Publish before any later call.
-            a.native_site = 0x00b2c624;
-            assign_native_retained_memory_slot_00b23640(plus(a.creator, 0x4c),
-                &a.memory, c.conversion.memory_owners);
-            a.source_assigned = true;
-            field<std::uint32_t>(a.creator, 0x3c) = mips;
-            c.owners.register_completed_creator(a);
-            if (callback != 0) {
-                a.native_site = 0x00b2c636;
-                if (!c.post_load_callback)
-                    throw std::invalid_argument("nonzero texture loader word requires its concrete ECX callback");
-                a.callback_started = true;
-                c.post_load_callback(c.callback_context, callback, a.creator);
+            if (a.texture) {
+                a.native_site = 0x00b2c5e0;
+                a.raw_slot = allocate_d3d9_texture2d_slot_00b3f2b0();
+                if (!a.raw_slot)
+                    throw std::invalid_argument("null texture slot reaches native null+4C store");
+                a.native_site = 0x00b2c60d;
+                a.creator = construct_native_texture_2d_00b3f930(a.raw_slot, original,
+                    a.texture, saved_width, saved_height, 0, c.owners.texture_context());
+                a.constructor_complete = true; // Publish before any later call.
+                a.native_site = 0x00b2c624;
+                assign_native_retained_memory_slot_00b23640(plus(a.creator, 0x4c),
+                    &a.memory, c.conversion.memory_owners);
+                a.source_assigned = true;
+                field<std::uint32_t>(a.creator, 0x3c) = mips;
+                c.owners.register_completed_creator(a);
+                if (callback != 0) {
+                    a.native_site = 0x00b2c636;
+                    if (!c.post_load_callback)
+                        throw std::invalid_argument("nonzero texture loader word requires its concrete ECX callback");
+                    a.callback_started = true;
+                    c.post_load_callback(c.callback_context, callback, a.creator);
+                }
+                a.native_site = 0x00b2c643;
+                const auto size = current_memory_size(a.memory, c);
+                field<std::uint32_t>(a.creator, 0x24) = size;
             }
-            a.native_site = 0x00b2c643;
-            const auto size = current_memory_size(a.memory, c);
-            field<std::uint32_t>(a.creator, 0x24) = size;
+            a.native_site = 0x00b2c82e;
+            guard.finish();
+        } else if (info.ResourceType == D3DRTYPE_CUBETEXTURE || info.ResourceType == D3DRTYPE_VOLUMETEXTURE) {
+            load_special_texture_arm(original, c, a);
         }
-        a.native_site = 0x00b2c82e;
-        guard.finish();
+        // Other image resource types bypass all optional guards and creation.
         a.native_site = 0x00b2c837;
         release_stream(a.memory, a.memory_release_started, c);
         destroy_native_string_header_0041dd20(&a.name, c.strings);
         a.name_retained = false;
         a.phase = NativeTextureLoadAcquired::Phase::complete;
-        return a.texture ? a.creator : nullptr;
+        return a.creator;
     } catch (...) {
         a.phase = NativeTextureLoadAcquired::Phase::failed;
         throw;
     }
+}
+
+void* load_native_texture_2d_00b2c2d0(const void* original, std::uint32_t callback,
+    NativeTextureLoadingContext& c, NativeTextureLoadAcquired& a) {
+    return load_native_texture_00b2c2d0(original, callback, c, a);
 }
 
 void* load_native_cached_texture_00b30b40(void* registry, const void* name,

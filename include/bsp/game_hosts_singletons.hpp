@@ -2,9 +2,11 @@
 #include "bsp/sound_lifetime_access.hpp"
 
 #include "bsp/native_singleton_destruction.hpp"
+#include <memory>
 
 namespace bsp::game {
 class GameHostLog;
+class GameObserverRuntime;
 
 // One application-owned raw14h manager and raw10h gameplay-effect owner.
 // Private publications outlive the menu and all shutdown calls. Admitted
@@ -33,6 +35,8 @@ public:
     // registers. Observer cleanup must finish before shutdown frees the owner;
     // its nativeE198E4 alias remains dangling after the drain.
     void bind_observer_dispatch_owner(NativeObserverDispatchOwner* volatile*) noexcept;
+    // One application observer context, with stable cells through raw drain.
+    GameObserverRuntime& observers() noexcept { return *observers_; }
     // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
     // then clear its actual publication, while all bindings remain alive.
     void shutdown();
@@ -42,5 +46,6 @@ private:
     void* volatile manager_publication_01090aa0_{nullptr};
     void* volatile effect_publication_00f87664_{nullptr};
     NativeSingletonDeletionBindings deletion_bindings_;
+    std::unique_ptr<GameObserverRuntime> observers_;
 };
 } // namespace bsp::game

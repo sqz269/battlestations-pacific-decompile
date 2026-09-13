@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_settings_lifetime_aq",
-  "status": "raw_settings_lifetime_and_manager_dispatch_strict_win32_fixture_passed_providers_and_saved_tail_ownership_pending",
+  "status": "raw_settings_lifetime_and_manager_dispatch_strict_win32_fixture_passed_saved_tail_repaired_production_providers_pending",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe"
@@ -3466,9 +3466,283 @@
       "address": "006ab810",
       "native": "00bf65ac",
       "evidence": "Original receiver, arguments, call site and live/disk bytes checked; full routine native differential fixture."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4ee",
+      "native": "006a6a20",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa4f7",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa51d",
+      "native": "0069fe70",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa526",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa547",
+      "native": "0069eea0",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa550",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa579",
+      "native": "006a6ee0",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa582",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5ab",
+      "native": "006a1aa0",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5b4",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5da",
+      "native": "00432050",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa5e3",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa60b",
+      "native": "006a7aa0",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
+    },
+    {
+      "function": "006aa460",
+      "address": "006aa614",
+      "native": "00bf65ac",
+      "evidence": "AS closeout: complete480-byte live/disk-equal destructor recreated through supported endpoints; saved body006AA460..006AA63F owns this direct CALL. Live ownership/instruction/callee audit recorded separately."
     }
   ],
-  "tail_calls_with_pending_ghidra_ownership": [
+  "tail_calls_with_pending_ghidra_ownership": [],
+  "indirect_calls": [
+    {
+      "function": "005547d0",
+      "call_site": "0055480f",
+      "instruction": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "005547d0",
+      "call_site": "00554875",
+      "instruction": "dword ptr [0xce2210]"
+    }
+  ],
+  "previous_library_span_evidence": "reports/native_input_settings_tables.json",
+  "flow_repair": "reports/native_input_settings_lifetime_aq_flow_repair.json",
+  "body_extension": "reports/native_input_settings_lifetime_aq_body_extension.json",
+  "limitations": [
+    "Production container providers and application construction/wiring remain required; raw-manager CF81CC dispatch is supplied and requires the borrowed settings context.",
+    "Original FH3/private-stack/hardware-fault behavior and gameplay remain unvalidated."
+  ],
+  "component_validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "words_equal": 122545,
+    "owned_call_rows_checked": 18,
+    "owned_call_rows_failed": 0,
+    "direct_tail_calls_pending_saved_ownership": 14,
+    "full_saved_call_ownership_verified": false,
+    "win32_import_calls": 2,
+    "seeds_equal": 8,
+    "fixture_source": "local/input_settings_lifetime_aq_probe.cpp",
+    "fixture_source_sha256": "fa0a33fe1502dd4375c02c3adce504d319809ec7fe5f785205941d462471b865",
+    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
+    "probe_log": "local\\input_settings_lifetime_aq_dispatch_probe.log",
+    "probe_log_sha256": "1c4febc632bfa9c818419c21d6b707344f2a504af84139a32bf5108fede417f1",
+    "native_spans": 418,
+    "actual_native_container_providers": true,
+    "actual_raw_manager": true,
+    "actual_win32_section": true,
+    "registration_identity_passed": true,
+    "flags_1_and_2_passed": true,
+    "fast_getters_passed": true,
+    "populated_source_constructor_unwind_passed": true,
+    "pooled_strings_all_released": true,
+    "original_fh3_executed": false,
+    "production_library_provider_supplied": false,
+    "raw_manager_settings_profile_dispatch_supplied": true,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "source_raw_manager_settings_drain_passed": true,
+    "raw_manager_pop_before_settings_close_verified": true,
+    "raw_manager_section_alive_at_settings_close_verified": true,
+    "differing_settings_publication_during_drain_passed": true,
+    "ownership_audit_is_historical": true,
+    "current_saved_ownership_record": "saved_body_repair_validation_as"
+  },
+  "installed_assets": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControlPresets.lua",
+      "bytes": 12999,
+      "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\KeyboardSetup.lua",
+      "bytes": 26367,
+      "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua",
+      "bytes": 71090,
+      "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControllerInputNames.lua",
+      "bytes": 12362,
+      "sha256": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
+    }
+  ],
+  "annotations": "reports/native_input_settings_lifetime_aq_annotations.json",
+  "new_function_definitions": [],
+  "native_profiles": {
+    "00cf81cc": "006ab800",
+    "00ce3818": "00412440"
+  },
+  "eh_tables": {
+    "getter": "00d97884 with unwind map00d97874; state0 C6D5B0->411EE0, state1 C6D5B8->BF65AC",
+    "constructor": "00dacf70 with ten-state unwind map00dacf94",
+    "destructor": "00dace7c with ten-state unwind map00dacea0",
+    "destructor_normal_states": [
+      9,
+      8,
+      7,
+      6,
+      5,
+      3,
+      2,
+      1,
+      0
+    ],
+    "pair_vector_state_5_retained": true,
+    "original_fh3_executed": false
+  },
+  "native_abi": {
+    "005547d0": "No arguments; EAX settings; RET; 192 bytes",
+    "006ab6b0": "ECX fresh540h; EAX original; RET; 332 bytes",
+    "006aa460": "ECX settings; void; RET; complete480-byte normal schedule; saved body006AA460..006AA63F repaired in AS",
+    "006ab800": "ECX settings, stack flags; EAX original bits; RET4; 30 bytes"
+  },
+  "functions": [
+    {
+      "address": "005547d0",
+      "source_entry": "get_native_input_settings_005547d0",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006ab6b0",
+      "source_entry": "construct_native_input_settings_006ab6b0",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006aa460",
+      "source_entry": "destroy_native_input_settings_006aa460",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    },
+    {
+      "address": "006ab800",
+      "source_entry": "scalar_delete_native_input_settings_006ab800",
+      "kind": "fragment",
+      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
+    }
+  ],
+  "manager_dispatch": {
+    "function": "00bd0400",
+    "call_site": "00bd0485",
+    "instruction": "CALL EDX",
+    "profile": "00cf81cc",
+    "slot": 0,
+    "native_target": "006ab800",
+    "source_binding": "NativeSingletonDeletionBindings::input_settings",
+    "source_target": "scalar_delete_native_input_settings_006ab800",
+    "profile_bytes_capture": "local/input_settings_lifetime_aq_profile.txt",
+    "profile_bytes_capture_sha256": "a9784b428e32e31efa44c8f739d2ed9aa4c0af40bfaeb91e62d8e91ad5b14513",
+    "source_integration_test_passed": true,
+    "additional_native_manager_execution": false
+  },
+  "final_validation": {
+    "utc": "2026-09-13T07:45:55.770598+00:00",
+    "source_revision": "1d25fd060a717a23fdb4bb2b64927053dd12bc11",
+    "merged_main_revision": "ca2ca6337d1d5114aa60484dfe063639e4a44b87",
+    "code_files": 2289,
+    "code_manifest": "local\\input_settings_lifetime_aq_source_manifest.json",
+    "code_manifest_sha256": "3f3785b780c97a4eb52d06ae7c00adce3d33e575c8e835340f552bd5a09f470a",
+    "core_archive_sha256": "0b37977947182061bde0616cbd0897a07ef10b884d3fcdc5058239c1635bca8d",
+    "game_executable_sha256": "350281af56bf667cf1b99a2c0ad812414073ad66eb1ce3b61b05e55d062ecbad",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local\\input_settings_lifetime_aq_combined_build.log",
+    "build_log_sha256": "4cce16a3122cc064ed9575bfde44f439571509705b8b25dd52d3ae14d4ec8cd1",
+    "fixture_log": "local\\input_settings_lifetime_aq_combined_probe.log",
+    "fixture_log_sha256": "1c4febc632bfa9c818419c21d6b707344f2a504af84139a32bf5108fede417f1",
+    "native_source_words_equal": 122545,
+    "owned_call_rows_checked": 18,
+    "owned_call_rows_failed": 0,
+    "direct_tail_calls_pending_saved_ownership": 14,
+    "full_saved_call_ownership_verified": false,
+    "disk_live_seeds_equal": 8,
+    "source_raw_manager_settings_drain_passed": true,
+    "raw_manager_settings_profile_dispatch_supplied": true,
+    "same_fixture_and_native_bytes_as_component_comparison": true,
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "no_subagents_dispatched": true,
+    "validated_code_revision": "c642f566ba589145b2e00905d1afe44473c13009",
+    "final_merge_changed_only_metadata": true,
+    "original_build_log": "local/input_settings_lifetime_aq_dispatch_build.log",
+    "original_fixture_log": "local/input_settings_lifetime_aq_dispatch_probe.log",
+    "ownership_audit_is_historical": true,
+    "current_saved_ownership_record": "saved_body_repair_validation_as"
+  },
+  "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
+  "fixture_runner_sha256": "f5f640c7b31761a015f399e030cb5d425af6a788fc149c3d9303ccbbc1c1c00b",
+  "saved_body_repair": "reports/native_input_settings_lifetime_as_body_repair.json",
+  "tail_ownership_before_as_repair": [
     {
       "function": "006aa460",
       "call_site": "006aa4ee",
@@ -3554,189 +3828,35 @@
       "evidence": "Direct CALL in live/disk-equal sequential tail; stored Ghidra function ownership remains incomplete. Excluded from ownership audit, not claimed passed."
     }
   ],
-  "indirect_calls": [
-    {
-      "function": "005547d0",
-      "call_site": "0055480f",
-      "instruction": "dword ptr [0xce2218]"
-    },
-    {
-      "function": "005547d0",
-      "call_site": "00554875",
-      "instruction": "dword ptr [0xce2210]"
-    }
-  ],
-  "previous_library_span_evidence": "reports/native_input_settings_tables.json",
-  "flow_repair": "reports/native_input_settings_lifetime_aq_flow_repair.json",
-  "body_extension": "reports/native_input_settings_lifetime_aq_body_extension.json",
-  "limitations": [
-    "Ghidra006AA460 tail ownership incomplete: bridge script execution is disabled; decoded full tail and native fixture do not establish saved body ownership.",
-    "Production container providers and application construction/wiring remain required; raw-manager CF81CC dispatch is supplied and requires the borrowed settings context.",
-    "Original FH3/private-stack/hardware-fault behavior and gameplay remain unvalidated."
-  ],
-  "component_validation": {
-    "strict_win32_build": true,
-    "ctests_passed": 2,
-    "words_equal": 122545,
-    "owned_call_rows_checked": 18,
-    "owned_call_rows_failed": 0,
-    "direct_tail_calls_pending_saved_ownership": 14,
-    "full_saved_call_ownership_verified": false,
-    "win32_import_calls": 2,
-    "seeds_equal": 8,
-    "fixture_source": "local/input_settings_lifetime_aq_probe.cpp",
-    "fixture_source_sha256": "fa0a33fe1502dd4375c02c3adce504d319809ec7fe5f785205941d462471b865",
-    "fixture_header_sha256": "c09d896ff6ed7fdf366fe7f95df2327584e5d370f59093a887e7aeda84b5307a",
-    "probe_log": "local\\input_settings_lifetime_aq_dispatch_probe.log",
-    "probe_log_sha256": "1c4febc632bfa9c818419c21d6b707344f2a504af84139a32bf5108fede417f1",
-    "native_spans": 418,
-    "actual_native_container_providers": true,
-    "actual_raw_manager": true,
-    "actual_win32_section": true,
-    "registration_identity_passed": true,
-    "flags_1_and_2_passed": true,
-    "fast_getters_passed": true,
-    "populated_source_constructor_unwind_passed": true,
-    "pooled_strings_all_released": true,
-    "original_fh3_executed": false,
-    "production_library_provider_supplied": false,
-    "raw_manager_settings_profile_dispatch_supplied": true,
-    "original_abi_compatible": false,
+  "saved_body_repair_validation_as": {
+    "status": "complete_saved_body_and_all_direct_call_rows_verified",
+    "saved_body_start": "006aa460",
+    "saved_body_end_inclusive": "006aa63f",
+    "byte_count": 480,
+    "instructions_owned": 169,
+    "direct_tail_calls_previously_pending": 14,
+    "source_changes": false,
+    "prior_build_and_fixture_evidence_retained_at_recorded_revisions": true,
+    "original_script_refusal_retained_as_history": true,
     "game_validated": false,
-    "source_raw_manager_settings_drain_passed": true,
-    "raw_manager_pop_before_settings_close_verified": true,
-    "raw_manager_section_alive_at_settings_close_verified": true,
-    "differing_settings_publication_during_drain_passed": true
-  },
-  "installed_assets": [
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
-      "bytes": 657,
-      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControlPresets.lua",
-      "bytes": 12999,
-      "sha256": "00a45b382f24ac93f93ab819dfcd74cd279917ca4e6cf99845ee82f057610f1f"
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\KeyboardSetup.lua",
-      "bytes": 26367,
-      "sha256": "072be115a8894cbb5461b275cd4257b3179f64e1bd66a9843e1fda677572b2bb"
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\Inputs.lua",
-      "bytes": 71090,
-      "sha256": "b9b3f16dd14f264fa055d84cd80b5adf02f3f2c90234d29025cb2af1dd622ac5"
-    },
-    {
-      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ControllerInputNames.lua",
-      "bytes": 12362,
-      "sha256": "2121cebe52239b965599a7e319429848b5910e90f53c551b43f84337cf93b5d1"
-    }
-  ],
-  "annotations": "reports/native_input_settings_lifetime_aq_annotations.json",
-  "new_function_definitions": [],
-  "native_profiles": {
-    "00cf81cc": "006ab800",
-    "00ce3818": "00412440"
-  },
-  "eh_tables": {
-    "getter": "00d97884 with unwind map00d97874; state0 C6D5B0->411EE0, state1 C6D5B8->BF65AC",
-    "constructor": "00dacf70 with ten-state unwind map00dacf94",
-    "destructor": "00dace7c with ten-state unwind map00dacea0",
-    "destructor_normal_states": [
-      9,
-      8,
-      7,
-      6,
-      5,
-      3,
-      2,
-      1,
-      0
-    ],
-    "pair_vector_state_5_retained": true,
-    "original_fh3_executed": false
-  },
-  "native_abi": {
-    "005547d0": "No arguments; EAX settings; RET; 192 bytes",
-    "006ab6b0": "ECX fresh540h; EAX original; RET; 332 bytes",
-    "006aa460": "ECX settings; void; RET; complete480-byte normal schedule; saved body remains107 bytes",
-    "006ab800": "ECX settings, stack flags; EAX original bits; RET4; 30 bytes"
-  },
-  "functions": [
-    {
-      "address": "005547d0",
-      "source_entry": "get_native_input_settings_005547d0",
-      "kind": "fragment",
-      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
-    },
-    {
-      "address": "006ab6b0",
-      "source_entry": "construct_native_input_settings_006ab6b0",
-      "kind": "fragment",
-      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
-    },
-    {
-      "address": "006aa460",
-      "source_entry": "destroy_native_input_settings_006aa460",
-      "kind": "fragment",
-      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
-    },
-    {
-      "address": "006ab800",
-      "source_entry": "scalar_delete_native_input_settings_006ab800",
-      "kind": "fragment",
-      "coverage": "Complete normal raw source composition; required native container providers and new source service ABI."
-    }
-  ],
-  "manager_dispatch": {
-    "function": "00bd0400",
-    "call_site": "00bd0485",
-    "instruction": "CALL EDX",
-    "profile": "00cf81cc",
-    "slot": 0,
-    "native_target": "006ab800",
-    "source_binding": "NativeSingletonDeletionBindings::input_settings",
-    "source_target": "scalar_delete_native_input_settings_006ab800",
-    "profile_bytes_capture": "local/input_settings_lifetime_aq_profile.txt",
-    "profile_bytes_capture_sha256": "a9784b428e32e31efa44c8f739d2ed9aa4c0af40bfaeb91e62d8e91ad5b14513",
-    "source_integration_test_passed": true,
-    "additional_native_manager_execution": false
-  },
-  "final_validation": {
-    "utc": "2026-09-13T07:45:55.770598+00:00",
-    "source_revision": "1d25fd060a717a23fdb4bb2b64927053dd12bc11",
-    "merged_main_revision": "ca2ca6337d1d5114aa60484dfe063639e4a44b87",
-    "code_files": 2289,
-    "code_manifest": "local\\input_settings_lifetime_aq_source_manifest.json",
-    "code_manifest_sha256": "3f3785b780c97a4eb52d06ae7c00adce3d33e575c8e835340f552bd5a09f470a",
-    "core_archive_sha256": "0b37977947182061bde0616cbd0897a07ef10b884d3fcdc5058239c1635bca8d",
-    "game_executable_sha256": "350281af56bf667cf1b99a2c0ad812414073ad66eb1ce3b61b05e55d062ecbad",
-    "strict_win32_build": true,
-    "ctests_passed": 2,
-    "build_log": "local\\input_settings_lifetime_aq_combined_build.log",
-    "build_log_sha256": "4cce16a3122cc064ed9575bfde44f439571509705b8b25dd52d3ae14d4ec8cd1",
-    "fixture_log": "local\\input_settings_lifetime_aq_combined_probe.log",
-    "fixture_log_sha256": "1c4febc632bfa9c818419c21d6b707344f2a504af84139a32bf5108fede417f1",
-    "native_source_words_equal": 122545,
-    "owned_call_rows_checked": 18,
-    "owned_call_rows_failed": 0,
-    "direct_tail_calls_pending_saved_ownership": 14,
-    "full_saved_call_ownership_verified": false,
-    "disk_live_seeds_equal": 8,
-    "source_raw_manager_settings_drain_passed": true,
-    "raw_manager_settings_profile_dispatch_supplied": true,
-    "same_fixture_and_native_bytes_as_component_comparison": true,
-    "game_validated": false,
-    "original_abi_compatible": false,
     "no_subagents_dispatched": true,
-    "validated_code_revision": "c642f566ba589145b2e00905d1afe44473c13009",
-    "final_merge_changed_only_metadata": true,
-    "original_build_log": "local/input_settings_lifetime_aq_dispatch_build.log",
-    "original_fixture_log": "local/input_settings_lifetime_aq_dispatch_probe.log"
-  },
-  "fixture_data_image_sha256": "9721bf146bb9ea9e290ccab5edda17f312d2294dbedbf194512973d9e68297be",
-  "fixture_runner_sha256": "f5f640c7b31761a015f399e030cb5d425af6a788fc149c3d9303ccbbc1c1c00b"
+    "utc": "2026-09-13T08:21:22.601201+00:00",
+    "direct_call_rows_checked": 32,
+    "direct_call_rows_failed": 0,
+    "direct_tail_calls_pending_saved_ownership": 0,
+    "full_saved_call_ownership_verified": true,
+    "win32_import_calls_recorded_separately": 2,
+    "call_audit_log": "local\\input_settings_body_as_calls.log",
+    "call_audit_log_sha256": "79a26213795ab502f97ed00568334506a37aba16cbfd3bd735242e1167eb94b6",
+    "repair_receipt": "reports/native_input_settings_lifetime_as_body_repair.json",
+    "repair_receipt_sha256": "5e902da4351544f816c4743a49c3c0ebf806bdf18950c153befb98f192773a04",
+    "publication_preparation": {
+      "utc": "2026-09-13T08:22:59.743856+00:00",
+      "closeout_revision": "677ca6d7f37aff0066cc179b2e89e390b002c093",
+      "merged_main_revision": "99cdd7fdfd48ff167cf8b13a17d9752a40a8d4fc",
+      "code_diff_from_merged_main": [],
+      "verification_scope": "Saved Ghidra body, all direct lifetime call sites, annotation preservation, refreshed export/snapshot and metadata. No C++ change from merged main; no new build or runtime execution claimed.",
+      "prior_cpp_validation": "component_validation and final_validation retain the AQ source/build/fixture revisions and historical ownership counts; saved_body_repair_validation_as supplies the current ownership result."
+    }
+  }
 }

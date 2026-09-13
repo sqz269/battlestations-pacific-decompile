@@ -25,6 +25,7 @@
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
@@ -989,8 +990,12 @@ struct GameStartupHost::InputServices {
 
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options) : log_(log), instance_(instance), options_(options) {
+    auto singletons = std::make_unique<GameSingletonHost>(log_);
+    // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.
+    // Keep context/publication cells alive if later source construction fails.
+    singletons->observers().initialize_dispatch_00ccd6a0();
     initialize_static_game_settings_00cd2d80(settings_);
-    singletons_ = new GameSingletonHost(log_);
+    singletons_ = singletons.release();
 }
 
 GameStartupHost::~GameStartupHost() {

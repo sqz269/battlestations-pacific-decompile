@@ -1,0 +1,2136 @@
+{
+  "packet": "orch6_observer_dispatch_schedule_r",
+  "base_commit": "bfef3a70",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_url": "http://127.0.0.1:8089",
+  "ghidra_access": "read-only, every live batch through project-verifying BSP CLI; root owns formal mutations",
+  "source": "src/observer_dispatch_schedule.cpp",
+  "header": "include/bsp/observer_dispatch_schedule.hpp",
+  "doc": "docs/OBSERVER_DISPATCH_SCHEDULE.md",
+  "routines": [
+    {
+      "address": "00695F90",
+      "native": "00695F90",
+      "proposed_name": "BSP_ObserverEdges_DispatchSchedule",
+      "previous_name": "FUN_00695f90",
+      "reconstruction": "bsp::dispatch_observer_edges_00695f90",
+      "source": "src/observer_dispatch_schedule.cpp",
+      "coverage": "complete normal behavior; existing canonical source reused for insertion instances",
+      "native_abi": "ECX=original first, EDX=callback; RET at00696112",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_bytes": {
+        "address": "00695F90",
+        "end_inclusive": "00696112",
+        "offset": 0,
+        "bytes": 387,
+        "instructions": 137,
+        "sha256": "62bbc0a9f9853aa088fce2fdf69f3c3379d10325d534ec70202ccbbb44ba3004"
+      },
+      "last_instruction": "00696112",
+      "last_instruction_length": 1,
+      "ghidra_body_membership": "entry and inclusive body envelope checked"
+    },
+    {
+      "address": "00695BC0",
+      "native": "00695BC0",
+      "proposed_name": "STL_inst_00695bc0",
+      "previous_name": "FUN_00695bc0",
+      "reconstruction": "bsp::insert_one_native_singleton_slots_checked_00bd08d0",
+      "source": "src/native_singleton_vector_registration_wrappers.cpp",
+      "coverage": "complete normal behavior; existing canonical source reused for insertion instances",
+      "native_abi": "ECX=vector; stack(output iterator, iterator owner, position, value-slot pointer); EAX=output; RET10h at00695C46",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_bytes": {
+        "address": "00695BC0",
+        "end_inclusive": "00695C48",
+        "offset": 416,
+        "bytes": 137,
+        "instructions": 56,
+        "sha256": "5e53dff30e859d704722e548e5be0d36f793e98dfd00cd4608676b68c046fa6c"
+      },
+      "last_instruction": "00695C46",
+      "last_instruction_length": 3,
+      "ghidra_body_membership": "entry and inclusive body envelope checked"
+    },
+    {
+      "address": "006959B0",
+      "native": "006959B0",
+      "proposed_name": "STL_inst_006959b0",
+      "previous_name": "FUN_006959b0",
+      "reconstruction": "bsp::insert_count_native_singleton_slots_00bd0700",
+      "source": "src/native_singleton_vector_insert_count.cpp",
+      "coverage": "complete normal behavior; existing canonical source reused for insertion instances",
+      "native_abi": "ECX=vector; stack(iterator owner, position, count, value-slot pointer); RET10h at00695AC9/00695B2E/00695B61",
+      "abi_compatible": false,
+      "game_validated": false,
+      "original_bytes": {
+        "address": "006959B0",
+        "end_inclusive": "00695B63",
+        "offset": 768,
+        "bytes": 436,
+        "instructions": 181,
+        "sha256": "826bfcf8841a2a9005fc86772399dc199487a0d7e9cba976194ae970c4874604"
+      },
+      "last_instruction": "00695B61",
+      "last_instruction_length": 3,
+      "ghidra_body_membership": "00695AB1..00695AB3 decoded but still outside containing body"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00695FB5",
+      "native": "00694280",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "NativeObserverLifetime::lock_owner_00694280; actual same manager/owner/section",
+      "fixture_binding": "NativeObserverLifetime::lock_owner_00694280; actual same manager/owner/section"
+    },
+    {
+      "address": "00696051",
+      "native": "00BF6713",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00696064",
+      "native": "00695BC0",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "bsp::insert_one_native_singleton_slots_checked_00bd08d0",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "006960B6",
+      "native": "00BF6713",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "006960E9",
+      "native": "00695D00",
+      "function": "00695F90",
+      "kind": "call",
+      "contract": "original STL resize retained only in native fixture; source private size-restoration adapter for valid vectors, not a library reconstruction",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695BE6",
+      "native": "00BF6713",
+      "function": "00695BC0",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695BF3",
+      "native": "00BF6713",
+      "function": "00695BC0",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695C10",
+      "native": "006959B0",
+      "function": "00695BC0",
+      "kind": "call",
+      "contract": "bsp::insert_count_native_singleton_slots_00bd0700",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695C1D",
+      "native": "00BF6713",
+      "function": "00695BC0",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695C33",
+      "native": "00BF6713",
+      "function": "00695BC0",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695D3B",
+      "native": "00BF6713",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695D4C",
+      "native": "006959B0",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "bsp::insert_count_native_singleton_slots_00bd0700",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695D71",
+      "native": "00BF6713",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695D7E",
+      "native": "00BF6713",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695D94",
+      "native": "00BF6713",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00695DA4",
+      "native": "00694CD0",
+      "function": "00695D00",
+      "kind": "call",
+      "contract": "original STL erase-range retained only in native fixture; source valid erase-to-end has no elements to copy, no library reconstruction",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "006959F9",
+      "native": "00695940",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "existing native_singleton_length_error_00bd0590; new source exception ABI",
+      "fixture_binding": "existing native_singleton_length_error_00bd0590; new source exception ABI"
+    },
+    {
+      "address": "00695A5B",
+      "native": "00693830",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer allocation instance; equivalent existing00BCFEB0",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695A6E",
+      "native": "00695230",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer copy instance; equivalent existing00BD0500",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695A7C",
+      "native": "00695730",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer fill instance; equivalent existing00BD0560",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695A8D",
+      "native": "00695230",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer copy instance; equivalent existing00BD0500",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695AAC",
+      "native": "00BF65AC",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "existing singleton_lifetime_free; current source CRT free",
+      "fixture_binding": "existing singleton_lifetime_free; current source CRT free"
+    },
+    {
+      "address": "00695AF0",
+      "native": "00695230",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer copy instance; equivalent existing00BD0500",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695B0A",
+      "native": "00695730",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer fill instance; equivalent existing00BD0560",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695B22",
+      "native": "006946B0",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer assignment instance; equivalent existing00BD0160",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695B38",
+      "native": "00695230",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer copy instance; equivalent existing00BD0500",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695B43",
+      "native": "006946D0",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer backward-copy instance; equivalent existing00BD0180",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00695B55",
+      "native": "006946B0",
+      "function": "006959B0",
+      "kind": "call",
+      "contract": "original pointer assignment instance; equivalent existing00BD0160",
+      "fixture_binding": "original relocated span"
+    },
+    {
+      "address": "00694CE3",
+      "native": "00BF6713",
+      "function": "00694CD0",
+      "kind": "call",
+      "contract": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained",
+      "fixture_binding": "actual SDK _invalid_parameter_noinfo; returning handler mutation order retained"
+    },
+    {
+      "address": "00694D0F",
+      "native": "00BF67A7",
+      "function": "00694CD0",
+      "kind": "call",
+      "contract": "actual SDK memmove_s",
+      "fixture_binding": "actual SDK memmove_s"
+    },
+    {
+      "address": "00693841",
+      "native": "00BF681B",
+      "function": "00693830",
+      "kind": "call",
+      "contract": "existing singleton_lifetime_allocate; current source CRT malloc/new-handler domain",
+      "fixture_binding": "existing singleton_lifetime_allocate; current source CRT malloc/new-handler domain"
+    },
+    {
+      "address": "00693869",
+      "native": "00BF6340",
+      "function": "00693830",
+      "kind": "call",
+      "contract": "original bad-allocation construction; native exceptional arm fenced and unexecuted",
+      "fixture_binding": "original bad-allocation construction; native exceptional arm fenced and unexecuted"
+    },
+    {
+      "address": "00693880",
+      "native": "00BF6885",
+      "function": "00693830",
+      "kind": "call",
+      "contract": "original throw transport; native exceptional arm fenced and unexecuted",
+      "fixture_binding": "original throw transport; native exceptional arm fenced and unexecuted"
+    },
+    {
+      "address": "00695252",
+      "native": "00BF67A7",
+      "function": "00695230",
+      "kind": "call",
+      "contract": "actual SDK memmove_s",
+      "fixture_binding": "actual SDK memmove_s"
+    },
+    {
+      "address": "006946F3",
+      "native": "00BF67A7",
+      "function": "006946D0",
+      "kind": "call",
+      "contract": "actual SDK memmove_s",
+      "fixture_binding": "actual SDK memmove_s"
+    },
+    {
+      "address": "00695FD4",
+      "native": "00CE2218+IAT",
+      "function": "00695F90",
+      "contract": "actual EnterCriticalSection on captured section"
+    },
+    {
+      "address": "006960D1",
+      "native": "callback+ECXfirst+EDXowner",
+      "function": "00695F90",
+      "contract": "original supplied callback with original first and freshly read edge+8"
+    },
+    {
+      "address": "006960FE",
+      "native": "00CE2210+IAT",
+      "function": "00695F90",
+      "contract": "actual LeaveCriticalSection after decrementing captured raw depth"
+    }
+  ],
+  "library_boundaries": [
+    {
+      "address": "00695D00",
+      "coverage": "not reconstructed; private schedule size-restoration adapter only",
+      "native_abi": "ECX=vector; EDX unconsumed; stack(count,fill); RET8",
+      "original_bytes": {
+        "address": "00695D00",
+        "end_inclusive": "00695DB2",
+        "offset": 576,
+        "bytes": 179,
+        "instructions": 78,
+        "sha256": "c340d33c75789e78c854a97cb46973c2c0fe68a97eae3fe60f0577b4ed25f574"
+      }
+    },
+    {
+      "address": "00694CD0",
+      "coverage": "not reconstructed; native-valid schedule erase-to-end needs no copy",
+      "native_abi": "ECX=vector; five stack arguments; RET14h",
+      "original_bytes": {
+        "address": "00694CD0",
+        "end_inclusive": "00694D29",
+        "offset": 1216,
+        "bytes": 90,
+        "instructions": 37,
+        "sha256": "c5299fc9036bf4a92d5323e007a0ef89e0e5c6c1ce0af1559216d55f51698dc8"
+      }
+    }
+  ],
+  "actual_storage": {
+    "publication": "00E198E4 actual dispatch-owner+4 alias from00CCD6A0",
+    "vector_layout": "+0 unconsumed;+4 begin;+8 end;+C capacity_end",
+    "endpoint_layout": "+4 data;+8 count;+C capacity",
+    "edge_layout": "+4 first;+8 callback owner;+C references",
+    "lock": "captured actual section at00694280 returned owner+4; real Win32 recursive critical section plus wrapping raw depth+18"
+  },
+  "ordered_schedule": [
+    "capture/enter actual shared observer section",
+    "capture current vector size",
+    "append endpoint edge pointers, preserve old cursor while reloading endpoint end and publication",
+    "capture stop index; reread slot each iteration, skip null, invoke original first/current callback owner",
+    "resize currently published vector to saved size with null fill",
+    "decrement/release captured section"
+  ],
+  "special_semantics": [
+    "Returning indexed-validation handler reloads publication but immediate slot lookup keeps captured begin-field address006960A5/006960BB/006960C1",
+    "Callbacks can nest, unregister or detach pending edges; saved stop is not extended for new registrations",
+    "No observer/edge retain or release; all callback endpoint storage must remain live",
+    "C++ exceptions unlock captured section without trimming the vector; original FH3 transport unproven"
+  ],
+  "template_equivalence": [
+    {
+      "observer": "00695BC0",
+      "canonical": "00BD08D0",
+      "bytes": 137,
+      "observer_sha256": "5e53dff30e859d704722e548e5be0d36f793e98dfd00cd4608676b68c046fa6c",
+      "canonical_sha256": "5fccfe9a8a8943194b628bf68f54086167e11bed3e8d6d45d4f62df026bba238",
+      "normalized_sha256": "ea6c14a82de01fac47289f18c13625997f5c9ee434465267853220681b6328e7",
+      "differences": [
+        {
+          "left_site": "00695BE6",
+          "left_target": "00BF6713",
+          "right_site": "00BD08F6",
+          "right_target": "00BF6713"
+        },
+        {
+          "left_site": "00695BF3",
+          "left_target": "00BF6713",
+          "right_site": "00BD0903",
+          "right_target": "00BF6713"
+        },
+        {
+          "left_site": "00695C10",
+          "left_target": "006959B0",
+          "right_site": "00BD0920",
+          "right_target": "00BD0700"
+        },
+        {
+          "left_site": "00695C1D",
+          "left_target": "00BF6713",
+          "right_site": "00BD092D",
+          "right_target": "00BF6713"
+        },
+        {
+          "left_site": "00695C33",
+          "left_target": "00BF6713",
+          "right_site": "00BD0943",
+          "right_target": "00BF6713"
+        }
+      ]
+    },
+    {
+      "observer": "006959B0",
+      "canonical": "00BD0700",
+      "bytes": 436,
+      "observer_sha256": "826bfcf8841a2a9005fc86772399dc199487a0d7e9cba976194ae970c4874604",
+      "canonical_sha256": "ce4e00c505c0a5ba1eac1a43c6a95c395e75e8484b94ecef5d114da75275ccfa",
+      "normalized_sha256": "79491542e596c58f8d83a8aac4f7987070dbbc22f9187d5b977edc0b09b66ca4",
+      "differences": [
+        {
+          "left_site": "006959F9",
+          "left_target": "00695940",
+          "right_site": "00BD0749",
+          "right_target": "00BD0590"
+        },
+        {
+          "left_site": "00695A5B",
+          "left_target": "00693830",
+          "right_site": "00BD07AB",
+          "right_target": "00BCFEB0"
+        },
+        {
+          "left_site": "00695A6E",
+          "left_target": "00695230",
+          "right_site": "00BD07BE",
+          "right_target": "00BD0500"
+        },
+        {
+          "left_site": "00695A7C",
+          "left_target": "00695730",
+          "right_site": "00BD07CC",
+          "right_target": "00BD0560"
+        },
+        {
+          "left_site": "00695A8D",
+          "left_target": "00695230",
+          "right_site": "00BD07DD",
+          "right_target": "00BD0500"
+        },
+        {
+          "left_site": "00695AAC",
+          "left_target": "00BF65AC",
+          "right_site": "00BD07FC",
+          "right_target": "00BF65AC"
+        },
+        {
+          "left_site": "00695AF0",
+          "left_target": "00695230",
+          "right_site": "00BD0840",
+          "right_target": "00BD0500"
+        },
+        {
+          "left_site": "00695B0A",
+          "left_target": "00695730",
+          "right_site": "00BD085A",
+          "right_target": "00BD0560"
+        },
+        {
+          "left_site": "00695B22",
+          "left_target": "006946B0",
+          "right_site": "00BD0872",
+          "right_target": "00BD0160"
+        },
+        {
+          "left_site": "00695B38",
+          "left_target": "00695230",
+          "right_site": "00BD0888",
+          "right_target": "00BD0500"
+        },
+        {
+          "left_site": "00695B43",
+          "left_target": "006946D0",
+          "right_site": "00BD0893",
+          "right_target": "00BD0180"
+        },
+        {
+          "left_site": "00695B55",
+          "left_target": "006946B0",
+          "right_site": "00BD08A5",
+          "right_target": "00BD0160"
+        }
+      ]
+    },
+    {
+      "observer": "00693830",
+      "canonical": "00BCFEB0",
+      "bytes": 85,
+      "observer_sha256": "4d769908fab1406364ddaf9a895c6d2983682790a6b455e182c42317834535b9",
+      "canonical_sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+      "normalized_sha256": "25ea1cbf3db7cd7771db6dc64c6c523d34dc8e9a53b2692c51b5e618bdc83d6f",
+      "differences": [
+        {
+          "left_site": "00693841",
+          "left_target": "00BF681B",
+          "right_site": "00BCFEC1",
+          "right_target": "00BF681B"
+        },
+        {
+          "left_site": "00693869",
+          "left_target": "00BF6340",
+          "right_site": "00BCFEE9",
+          "right_target": "00BF6340"
+        },
+        {
+          "left_site": "00693880",
+          "left_target": "00BF6885",
+          "right_site": "00BCFF00",
+          "right_target": "00BF6885"
+        }
+      ]
+    },
+    {
+      "observer": "00695230",
+      "canonical": "00BD0500",
+      "bytes": 48,
+      "observer_sha256": "582659f022a9ce619c56a374fe988406b964eb0f84a06921f3e6bf2369ea340e",
+      "canonical_sha256": "aaf6ebf1932295279fc1abd2df5897017f0ca40663e737300063d062019c057e",
+      "normalized_sha256": "63dabfc173270cd1e1ef7b378b1d90a2a5fc6c43a28f771ddca28ff15a10d7f3",
+      "differences": [
+        {
+          "left_site": "00695252",
+          "left_target": "00BF67A7",
+          "right_site": "00BD0522",
+          "right_target": "00BF67A7"
+        }
+      ]
+    },
+    {
+      "observer": "00695730",
+      "canonical": "00BD0560",
+      "bytes": 46,
+      "observer_sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "canonical_sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "normalized_sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "differences": []
+    },
+    {
+      "observer": "006946B0",
+      "canonical": "00BD0160",
+      "bytes": 30,
+      "observer_sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "canonical_sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "normalized_sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "differences": []
+    },
+    {
+      "observer": "006946D0",
+      "canonical": "00BD0180",
+      "bytes": 47,
+      "observer_sha256": "01e0311f6f6a8fb64d73988027972970016f7dec57153a05755a96f61c12b453",
+      "canonical_sha256": "4b8c14b908de6c06ebaeb098155441c2a640bcf7fc20578eecd9bf8580a8a58d",
+      "normalized_sha256": "e2bcf6a37680753a3e1b09e9dbac7c17eb7531d48a786e76824147bf50e8dcde",
+      "differences": [
+        {
+          "left_site": "006946F3",
+          "left_target": "00BF67A7",
+          "right_site": "00BD01A3",
+          "right_target": "00BF67A7"
+        }
+      ]
+    },
+    {
+      "observer": "00695940",
+      "canonical": "00BD0590",
+      "bytes": 105,
+      "observer_sha256": "9bd879151ffda3d7bc7f0c4cae429b385c682967e9ca4c3a78a25ca459a9dae9",
+      "canonical_sha256": "867e54dad740442bfe261cae2e65739d00a71fa4051273401505d399b436cde9",
+      "normalized_sha256": "c29ac82dc2fc193a7d6336aa7c3553f56fc355825b037badc2b0a8b9a4d87577",
+      "differences": [
+        {
+          "left_site": "00695942",
+          "left_handler": "0xc7eab8",
+          "right_handler": "0xcc5478",
+          "meaning": "distinct original FH3 handler identity, excluded source EH ABI"
+        },
+        {
+          "left_site": "00695978",
+          "left_target": "00408720",
+          "right_site": "00BD05C8",
+          "right_target": "00408720"
+        },
+        {
+          "left_site": "0069598D",
+          "left_target": "00411700",
+          "right_site": "00BD05DD",
+          "right_target": "00411700"
+        },
+        {
+          "left_site": "006959A4",
+          "left_target": "00BF6885",
+          "right_site": "00BD05F4",
+          "right_target": "00BF6885"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "00695AB1..00695AB3 undecoded after false-noreturn free",
+      "is": "83C404 instruction decoded; still outside Ghidra containing body",
+      "evidence": "root reports/observer_dispatch_schedule_flow_repair.json and local/observer_schedule_body_gap.txt"
+    },
+    {
+      "was": "00C7EB18 native EH handler missing",
+      "is": "root defined/saved exact00C7EB18..00C7EB21, MOV EAX,DAB804; JMPBF6B43",
+      "evidence": "local/observer_schedule_handler_body.txt and observer_schedule_eh_handler.txt"
+    },
+    {
+      "was": "fixture expected six fallback virtual deletion calls for knownCF7E64 edges",
+      "is": "known table directly calls source00693CA0; fallback count0 and all endpoint counts0",
+      "evidence": "src/observer_lifetime.cpp:248..251; preserved failed-run log/records, unchanged 61 matching native/source words"
+    },
+    {
+      "was": "draft ported full naked00695D00/00694CD0 STL bodies and claimed complete reconstruction",
+      "is": "both library copies/public resize API removed; source private schedule adapter only, valid erase-to-end domain, canonical count insertion on growth",
+      "evidence": "root no-STL-port review;16 prior artifacts retained in local/observer_schedule_prior_library_draft; final88-word fixture includes final callback shrink to exercise adapter growth"
+    }
+  ],
+  "native_exception_metadata": {
+    "handler": "00C7EB18..00C7EB21",
+    "descriptor": "00DAB804",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00DAB7FC: FFFFFFFF,00C7EB10",
+    "cleanup": "00C7EB10 LEA ECX,[EBP-1Ch]; JMP00411EE0; captured guard only, no vector resize",
+    "native_exception_executed": false
+  },
+  "native_fixture": {
+    "status": "passed",
+    "spans": 10,
+    "original_bytes": 1485,
+    "native_image": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00695F90",
+          "end_inclusive": "00696112",
+          "offset": 0,
+          "bytes": 387,
+          "instructions": 137,
+          "sha256": "62bbc0a9f9853aa088fce2fdf69f3c3379d10325d534ec70202ccbbb44ba3004"
+        },
+        {
+          "address": "00695BC0",
+          "end_inclusive": "00695C48",
+          "offset": 416,
+          "bytes": 137,
+          "instructions": 56,
+          "sha256": "5e53dff30e859d704722e548e5be0d36f793e98dfd00cd4608676b68c046fa6c"
+        },
+        {
+          "address": "00695D00",
+          "end_inclusive": "00695DB2",
+          "offset": 576,
+          "bytes": 179,
+          "instructions": 78,
+          "sha256": "c340d33c75789e78c854a97cb46973c2c0fe68a97eae3fe60f0577b4ed25f574"
+        },
+        {
+          "address": "006959B0",
+          "end_inclusive": "00695B63",
+          "offset": 768,
+          "bytes": 436,
+          "instructions": 181,
+          "sha256": "826bfcf8841a2a9005fc86772399dc199487a0d7e9cba976194ae970c4874604"
+        },
+        {
+          "address": "00694CD0",
+          "end_inclusive": "00694D29",
+          "offset": 1216,
+          "bytes": 90,
+          "instructions": 37,
+          "sha256": "c5299fc9036bf4a92d5323e007a0ef89e0e5c6c1ce0af1559216d55f51698dc8"
+        },
+        {
+          "address": "00693830",
+          "end_inclusive": "00693884",
+          "offset": 1312,
+          "bytes": 85,
+          "instructions": 25,
+          "sha256": "4d769908fab1406364ddaf9a895c6d2983682790a6b455e182c42317834535b9"
+        },
+        {
+          "address": "00695230",
+          "end_inclusive": "0069525F",
+          "offset": 1408,
+          "bytes": 48,
+          "instructions": 18,
+          "sha256": "582659f022a9ce619c56a374fe988406b964eb0f84a06921f3e6bf2369ea340e"
+        },
+        {
+          "address": "00695730",
+          "end_inclusive": "0069575D",
+          "offset": 1472,
+          "bytes": 46,
+          "instructions": 21,
+          "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e"
+        },
+        {
+          "address": "006946B0",
+          "end_inclusive": "006946CD",
+          "offset": 1536,
+          "bytes": 30,
+          "instructions": 13,
+          "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0"
+        },
+        {
+          "address": "006946D0",
+          "end_inclusive": "006946FE",
+          "offset": 1568,
+          "bytes": 47,
+          "instructions": 19,
+          "sha256": "01e0311f6f6a8fb64d73988027972970016f7dec57153a05755a96f61c12b453"
+        }
+      ],
+      "data_patches": [
+        {
+          "instruction": "00695FD4",
+          "native_data": "00CE2218",
+          "offset": 70,
+          "data_offset": 1640
+        },
+        {
+          "instruction": "00695FDE",
+          "native_data": "00E198E4",
+          "offset": 80,
+          "data_offset": 1648
+        },
+        {
+          "instruction": "00696076",
+          "native_data": "00E198E4",
+          "offset": 232,
+          "data_offset": 1648
+        },
+        {
+          "instruction": "006960BB",
+          "native_data": "00E198E4",
+          "offset": 301,
+          "data_offset": 1648
+        },
+        {
+          "instruction": "006960D5",
+          "native_data": "00E198E4",
+          "offset": 327,
+          "data_offset": 1648
+        },
+        {
+          "instruction": "006960FE",
+          "native_data": "00CE2210",
+          "offset": 368,
+          "data_offset": 1632
+        }
+      ],
+      "data": [
+        {
+          "address": "00CE2210",
+          "offset": 1632,
+          "bytes": 4
+        },
+        {
+          "address": "00CE2218",
+          "offset": 1640,
+          "bytes": 4
+        },
+        {
+          "address": "00E198E4",
+          "offset": 1648,
+          "bytes": 4
+        }
+      ],
+      "preserved_immediates": [
+        {
+          "instruction": "00695F92",
+          "value": "00C7EB18",
+          "meaning": "original profile/FH3/exception address data; native exception arms not executed"
+        },
+        {
+          "instruction": "00695FC5",
+          "value": "00CE37FC",
+          "meaning": "original profile/FH3/exception address data; native exception arms not executed"
+        },
+        {
+          "instruction": "0069386E",
+          "value": "00E03CC0",
+          "meaning": "original profile/FH3/exception address data; native exception arms not executed"
+        },
+        {
+          "instruction": "00693878",
+          "value": "00D6923C",
+          "meaning": "original profile/FH3/exception address data; native exception arms not executed"
+        }
+      ],
+      "live_equals_installed": true,
+      "image_sha256": "17cb56abf8cfb514dddf51e24fe219d61ffb6642021ad73424c4bb13af43797e"
+    },
+    "records": {
+      "native": [
+        1,
+        0,
+        1,
+        4,
+        4,
+        1,
+        1,
+        3,
+        1,
+        4,
+        5,
+        6,
+        6,
+        2,
+        2,
+        2,
+        1,
+        4,
+        6,
+        6,
+        6,
+        2,
+        2,
+        2,
+        1,
+        6,
+        0,
+        3,
+        1,
+        2,
+        0,
+        1,
+        4,
+        6,
+        1,
+        1,
+        3,
+        2,
+        0,
+        3,
+        4,
+        6,
+        1,
+        1,
+        3,
+        2,
+        0,
+        7,
+        4,
+        6,
+        1,
+        1,
+        3,
+        1,
+        6,
+        1,
+        1,
+        6,
+        0,
+        0,
+        2779096485,
+        4,
+        0,
+        1,
+        4,
+        6,
+        1,
+        1,
+        3,
+        4,
+        0,
+        3,
+        4,
+        6,
+        1,
+        1,
+        3,
+        4,
+        0,
+        7,
+        4,
+        6,
+        1,
+        1,
+        3,
+        1,
+        6,
+        1
+      ],
+      "source": [
+        1,
+        0,
+        1,
+        4,
+        4,
+        1,
+        1,
+        3,
+        1,
+        4,
+        5,
+        6,
+        6,
+        2,
+        2,
+        2,
+        1,
+        4,
+        6,
+        6,
+        6,
+        2,
+        2,
+        2,
+        1,
+        6,
+        0,
+        3,
+        1,
+        2,
+        0,
+        1,
+        4,
+        6,
+        1,
+        1,
+        3,
+        2,
+        0,
+        3,
+        4,
+        6,
+        1,
+        1,
+        3,
+        2,
+        0,
+        7,
+        4,
+        6,
+        1,
+        1,
+        3,
+        1,
+        6,
+        1,
+        1,
+        6,
+        0,
+        0,
+        2779096485,
+        4,
+        0,
+        1,
+        4,
+        6,
+        1,
+        1,
+        3,
+        4,
+        0,
+        3,
+        4,
+        6,
+        1,
+        1,
+        3,
+        4,
+        0,
+        7,
+        4,
+        6,
+        1,
+        1,
+        3,
+        1,
+        6,
+        1
+      ],
+      "failures": 0
+    },
+    "canonical_words": 88,
+    "native_vector_allocation_calls": 5,
+    "scenario": "one paired actual-owner/endpoint scenario: prefix, growth, nested dispatch, final deletion, nonfinal unregister, new registration, capacity reuse, empty endpoint, final-callback shrink requiring saved-size restoration growth",
+    "record_schema": "each of9 callback records: phase,first index,callback-owner index,size,capacity,raw depth,OS RecursionCount,first endpoint count;16 poststate words per local fixture source",
+    "source_only_exception": "PASS thrown int27 propagated; copied vector size4 remains; actual section raw/OS depth0",
+    "teardown": "actual detach and direct known-edge deleting provider; all9 endpoint counts0, fallback virtual calls0; free endpoint arrays, dispatch owner, manager registrations/storage, both real sections, native mapping",
+    "failure_evidence": [
+      "local/probe_build.log narrowing casts; fixed ignored fixture",
+      "local/observer_schedule_probe_run_failed_delete_counter.log and matching failed records; false hook expectation corrected"
+    ]
+  },
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build": "Win32 Release passed",
+    "ctest": "2/2 existing reconstructed_math/native_math_differential passed",
+    "new_tracked_tests": 0,
+    "call_site_gate": "35 direct call rows checked, 0 failed; 3 explicitly indirect rows not machine-resolved",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "new dispatcher function/context ABI, not drop-in binary replacement",
+    "00695D00/00694CD0 are library boundaries, not reconstructed routines; private restoration adapter guarantees only native-valid vectors and excludes returning invalid-handler storage mutation",
+    "native event-specific vtable delivery belongs to adjacent packet/provider",
+    "fixed current SDK/CRT services; original VS2005 CRT heap/errno/handler and exception internals not separately reproduced",
+    "allocation/validation failures and original FH3 exceptional transport unexecuted",
+    "arbitrary corrupt-pointer faults, asynchronous SEH, stack aliases and provider register internals unproven",
+    "00695AB1..00695AB3 decoded but absent from Ghidra body membership",
+    "inactive/freed storage, allocator/OS internal bytes and absolute pointers not compared",
+    "no mixed-profile shutdown, game host binding, or gameplay validation"
+  ],
+  "artifact_manifest": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r",
+    "base_commit": "bfef3a70",
+    "manifest_scope": "all task local evidence and source, final relevant build products, linked core objects, exact libraries and build records; unrelated preexisting artifacts excluded",
+    "linked_libraries": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Release\\bsp_core.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+    ],
+    "linked_core_objects": [
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_removal_reorder.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_tracked_critical_section_release.obj",
+      "observer_dispatch_owner.obj",
+      "observer_dispatch_schedule.obj",
+      "observer_edges.obj",
+      "observer_lifetime.obj",
+      "singleton_lifetime.obj",
+      "sound_lifetime_access.obj"
+    ],
+    "artifacts": [
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "kind": "exact linker searched input library",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\bsp_core.lastbuildstate",
+        "kind": "build compiler/librarian record",
+        "bytes": 336,
+        "sha256": "54e21d9578ff311805b59684cccf64674601c3a5253667753db4b3d5e8f72359"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 2138264,
+        "sha256": "6b76f296707b95b7e3742986cdf22da72e2ff2e7768528dcd253ade5cf40ad69"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Cl.items.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 261162,
+        "sha256": "f9fdd6414a36a034ea6c8f2741ce7e37d2d2076d726cb74e3feec6c6a085040e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 32753352,
+        "sha256": "bf2d3b518cbed33befbce7a3d8be2938a3ceb8b3531de59bd7423bc4aba522fd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 522838,
+        "sha256": "be58cbf9750893ec7baa1df3df05ed9b80256c743ae10904a208d3d2f2295391"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.command.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 699,
+        "sha256": "48826b5a125164cc2a5dee7b909ec46f37b1a94052037f743b67a0206b9a87eb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.read.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 6728,
+        "sha256": "eddfbddb3077bbbca5a17d63f0fe4f3f0533e4827fcc00e24831e9fcf1eb0dc6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CustomBuild.write.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 208,
+        "sha256": "a5ac07886ade968718f312e0d3dff67608bd3596e87e2292853ed3b72195dd6e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib-link.read.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 584726,
+        "sha256": "9ceed33c1e27754944691fd9c3e625968e6318b65939cbd2a45f860a20294a5d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib-link.write.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 291432,
+        "sha256": "e6ad272f80fcf7748c1051e3cd67f129fc612eeaf1c15fd4b303518418941f32"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\Lib.command.1.tlog",
+        "kind": "build compiler/librarian record",
+        "bytes": 396018,
+        "sha256": "130db53270d03e366a4731fe83d335d6c59bf42c6c73f050e8630be1872e6830"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 7108,
+        "sha256": "7f7ce27886e1ce21f957b42de9c5b8c56e303d0da3b0e9f0bc557b56b1e0e845"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_legacy_sbo_string.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 18686,
+        "sha256": "3ba4b14d558927cc06ba2cb89c0f94c6031847ed3d1cd01ee3ef1b3a98875745"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_renderer_worker_lifetime.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 6121,
+        "sha256": "1ae21c017412fdcfcc086461f5c61d9615bf7017726214090f59d59f3b2c90d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_publication.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 5059,
+        "sha256": "89f36335f518d1cc4aa9846fe4fc5de8f4c548c216ef0c6ae1b57adf5a08f705"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_removal_reorder.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 2591,
+        "sha256": "8f6666e708f546bedb992b5471fa57302107e068e02abc987b0898b4a3777fd6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 10592,
+        "sha256": "02cce8bf4fb1675e2af4639749dbd45bb4596bfcf66ee0cebc65a9b36b2df9eb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_insert_count.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 2221,
+        "sha256": "6fc2554792e0e1548fa3a857b4a6810e657b9f768d3085e0b16804f7b1965a0b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_leaves.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 2612,
+        "sha256": "f011aeea753788515cabae12851e71ebc8db7fa2482128cee611a9744743cdd3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_registration_wrappers.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 1886,
+        "sha256": "5d97344fafebfc5ef767bc339768e6f1b31ae73aacddc39f077f97a911bb53e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_reserve_construct.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 4205,
+        "sha256": "784a849e56d93240e1d67ea16aac03b763ffe9c1a0cd7ef638a080bb5a08b3e4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\native_tracked_critical_section_release.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 1423,
+        "sha256": "abd3cd163703381c4f6720f83ed3d308d87208c9fbde6c53e37e201214fef9cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\observer_dispatch_owner.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 5686,
+        "sha256": "fa06ea933e21d275a552ff0fed24df0dfdcb0fb02f8653912df3e103814081bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\observer_dispatch_schedule.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 5617,
+        "sha256": "d67d65d06d77b902483e73841ceaa58b9926d309072c6e5e74af316ef8c989a7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\observer_edges.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 6512,
+        "sha256": "3cfb79529f314e952034e431867b503cc448c279589bd021924dbff9469a3492"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\observer_lifetime.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 21199,
+        "sha256": "cf46bd706686663e4a0f454f164b54669ca96ff9e177108b48bacdd3632a76c6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 32975,
+        "sha256": "8997e581840554a071f194ca3d51a2d92e405744ab5e210d7d3675fbfb89f6ad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.dir\\Release\\sound_lifetime_access.obj",
+        "kind": "linked bsp_core object",
+        "bytes": 4006,
+        "sha256": "43aa750f13e1e5e80c76e504b630f1618da5041711d05192ebd60047d2d7a8c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\bsp_core.vcxproj",
+        "kind": "build product or configuration",
+        "bytes": 199136,
+        "sha256": "e857ca29ee98b6dc4c34e08187e8dcf4dbdf8088e31264ff1296c40871f957d6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\CMakeCache.txt",
+        "kind": "build product or configuration",
+        "bytes": 18999,
+        "sha256": "c54900c175a39fcfc163d9338ae74deb18a7f1fde71641091190fc4147b492ab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Release\\bsp_core.lib",
+        "kind": "exact linker searched input library",
+        "bytes": 54488770,
+        "sha256": "6c1f930e081e9e78778a9c152687992a1707f65d4451c69826cbbbbbc7370a76"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Release\\bsp_game.exe",
+        "kind": "build product or configuration",
+        "bytes": 2024448,
+        "sha256": "c2a5021aadde9dd23918d7fd101c6a6442b82ea2c8518915c6e4d47f3562a9fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Release\\bsp_math_tests.exe",
+        "kind": "build product or configuration",
+        "bytes": 530944,
+        "sha256": "c2f084dbff8372824d41fca582323c53b3e992494daabffa82f6b361c354ec25"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Release\\bsp_native_math_tests.exe",
+        "kind": "build product or configuration",
+        "bytes": 18432,
+        "sha256": "1c89a04277e758310a08357149bb8a4b8736624553f7aac1591d41d3dd64ba84"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\build\\win32\\Testing\\Temporary\\LastTest.log",
+        "kind": "build product or configuration",
+        "bytes": 1793,
+        "sha256": "66524b701ed0e9bb4aa43cf24b55e533b174902b071abcce59c7e790e31582d8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\cmake\\startup.cmake",
+        "kind": "tracked task source/config",
+        "bytes": 98193,
+        "sha256": "4b818fc9de193fa243a06fe3dd511abd760e1a9568fafab51d713cb22bff644e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\config\\target.json",
+        "kind": "tracked task source/config",
+        "bytes": 405,
+        "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\docs\\OBSERVER_DISPATCH_SCHEDULE.md",
+        "kind": "tracked task source/config",
+        "bytes": 11564,
+        "sha256": "6cddc2fae010951d84c54dea70a17e82bb9bc54381c1adc01050a8ffb71aac81"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\camera_projection.hpp",
+        "kind": "source dependency header",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\camera_transform.hpp",
+        "kind": "source dependency header",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\frame_clock.hpp",
+        "kind": "source dependency header",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\game_entry.hpp",
+        "kind": "source dependency header",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+        "kind": "source dependency header",
+        "bytes": 1471,
+        "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_legacy_exception_owner.hpp",
+        "kind": "source dependency header",
+        "bytes": 3232,
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_legacy_sbo_string.hpp",
+        "kind": "source dependency header",
+        "bytes": 2115,
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_renderer_worker_lifetime.hpp",
+        "kind": "source dependency header",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_resource_registry_construction.hpp",
+        "kind": "source dependency header",
+        "bytes": 2336,
+        "sha256": "50607201a87a306462eaba1a6dc83c733dd7307eb3078cf0966903b349a49cb3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_publication.hpp",
+        "kind": "source dependency header",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_removal_reorder.hpp",
+        "kind": "source dependency header",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_vector_allocation.hpp",
+        "kind": "source dependency header",
+        "bytes": 2149,
+        "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_vector_insert_count.hpp",
+        "kind": "source dependency header",
+        "bytes": 1212,
+        "sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_vector_leaves.hpp",
+        "kind": "source dependency header",
+        "bytes": 3101,
+        "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+        "kind": "source dependency header",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_singleton_vector_reserve_construct.hpp",
+        "kind": "source dependency header",
+        "bytes": 1845,
+        "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_string.hpp",
+        "kind": "source dependency header",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_string_pool_owner.hpp",
+        "kind": "source dependency header",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_string_pool_storage.hpp",
+        "kind": "source dependency header",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\native_tracked_critical_section_release.hpp",
+        "kind": "source dependency header",
+        "bytes": 794,
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\observer_dispatch_owner.hpp",
+        "kind": "source dependency header",
+        "bytes": 4437,
+        "sha256": "df1d3fa1f228d80e2103ef93f86305b2f076e39ba46d8f46e01f5f6649c46eba"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\observer_dispatch_schedule.hpp",
+        "kind": "source dependency header",
+        "bytes": 2017,
+        "sha256": "beeefe771d92181c3cd8c196da8f9328e61c865665da58a0c99175366b4a540a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\observer_edges.hpp",
+        "kind": "source dependency header",
+        "bytes": 1700,
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\observer_lifetime.hpp",
+        "kind": "source dependency header",
+        "bytes": 6326,
+        "sha256": "7621b1bbf7c011da694b58ee4592aa3249167ab70805e2567afdfe639644bd6b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\random.hpp",
+        "kind": "source dependency header",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\random_threads.hpp",
+        "kind": "source dependency header",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\render_tail.hpp",
+        "kind": "source dependency header",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\singleton_lifetime.hpp",
+        "kind": "source dependency header",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\sound_lifetime_access.hpp",
+        "kind": "source dependency header",
+        "bytes": 2344,
+        "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\storage_pool.hpp",
+        "kind": "source dependency header",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\include\\bsp\\system_time_constants.hpp",
+        "kind": "source dependency header",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\build.log",
+        "kind": "local proof/evidence",
+        "bytes": 41541,
+        "sha256": "be37733de1b2a9a47bd78e9220d3b88642ff3f37b266398558494a4a8ff0fd64"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\build_observer_schedule_probe.cmd",
+        "kind": "local proof/evidence",
+        "bytes": 409,
+        "sha256": "2e3ce74a3e98e876962b57da8fb4009e22d7be168a6a50e2c34ad1059deefb4a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00693830.txt",
+        "kind": "local proof/evidence",
+        "bytes": 418,
+        "sha256": "0cb69e71687fd0e8a4314e98c3a45f33f6d52aadf548ab89c649e6333a40c07f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_006946B0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 146,
+        "sha256": "39d7608bb629a9b67d0d886fc7b8f5e649d8af7a34a4fb61adc591f705289cc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_006946D0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 227,
+        "sha256": "90a2ecd255af5b11abc5d20c17bc2a4d561463864a13e7bc1d6930969551a9c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00694CD0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 438,
+        "sha256": "79991e1eeb713dbc1721500a540555cf604286f8193cc3e75f2698e6a9afef8b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695230.txt",
+        "kind": "local proof/evidence",
+        "bytes": 231,
+        "sha256": "5a35be990b2b2b974151e85939bb7d567ac1d7c95ba3b359d346094ba4468f2f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695730.txt",
+        "kind": "local proof/evidence",
+        "bytes": 223,
+        "sha256": "992ab568d44e00c12efcd582e3f908e3195eb248f5f6063c96d2fe7321844c69"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695940.txt",
+        "kind": "local proof/evidence",
+        "bytes": 511,
+        "sha256": "6f159bf8ca8f3cb7f6630275dc0a2125a075c07fb0e96f9b404e65bb36d586e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_006959B0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 2108,
+        "sha256": "2119e5d02fa2d05aa61fc495eddd667939834eb027dd68afbe13fd17f42e2ec4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695BC0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 665,
+        "sha256": "9eb92380e139a30e2f5ffe5486cdf30711750b6ac11ed5f656286684ef93d4cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695D00.txt",
+        "kind": "local proof/evidence",
+        "bytes": 872,
+        "sha256": "dc05037b6915dd9a0c6bc2741ca0fb60111f92dab808aba2068a727b2b4b322e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00695F90.txt",
+        "kind": "local proof/evidence",
+        "bytes": 1873,
+        "sha256": "7ab376bf37fbe155e653919d1c2fbceb719d1d49e8ba5398ff61cabb1b56823f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BCFEB0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 418,
+        "sha256": "8c660c4156e67b9d9373e281e37275d08fc77cae3d20a0e08debb50915a0cf73"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0160.txt",
+        "kind": "local proof/evidence",
+        "bytes": 146,
+        "sha256": "272b98c164f0b44c4b1b9c35f3b8681d967f175c81ade22c413fadd7c6575e02"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0180.txt",
+        "kind": "local proof/evidence",
+        "bytes": 227,
+        "sha256": "2e5dfe72cbd22bd7cd07f47c9f12f3cc8a4a62cf14286204e3f67c27afe464bf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0500.txt",
+        "kind": "local proof/evidence",
+        "bytes": 231,
+        "sha256": "0605c7a11fbd4eeed213ebcdb39df1cad797ccc7c47a57108b6767fcc54b0ade"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0560.txt",
+        "kind": "local proof/evidence",
+        "bytes": 223,
+        "sha256": "19392d0c527df6fd5b8a5ef19d360c5fd5eead6ab67a9a9ca210632b65639565"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0590.txt",
+        "kind": "local proof/evidence",
+        "bytes": 511,
+        "sha256": "b6e0dbb166f0b9b3625fbcbcd991f817b650e28405ac071fd2ec470d275e158c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD0700.txt",
+        "kind": "local proof/evidence",
+        "bytes": 2108,
+        "sha256": "1b79909d6d66d1e135634fa12c1410c3dfb8d7c7d3d56534925454869524df66"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00BD08D0.txt",
+        "kind": "local proof/evidence",
+        "bytes": 665,
+        "sha256": "0675253cbb626e11947fb6efbb61b08a0dab9b7f6e034dbc7618ff74315398ae"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00CE2210.txt",
+        "kind": "local proof/evidence",
+        "bytes": 29,
+        "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00CE2218.txt",
+        "kind": "local proof/evidence",
+        "bytes": 29,
+        "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\bytes_00E198E4.txt",
+        "kind": "local proof/evidence",
+        "bytes": 29,
+        "sha256": "0c87d9607402bb8e6c71f0e6eafa60de160953b249b08d2c553f2921e945667a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\finalize_observer_schedule_report.py",
+        "kind": "local proof/evidence",
+        "bytes": 16446,
+        "sha256": "127a8d8f28f82294f9f54f061dcaab2279ae5364bad76b5883b269c5a6c01998"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_body_gap.txt",
+        "kind": "local proof/evidence",
+        "bytes": 23,
+        "sha256": "d7dcafc5b244a38bbe81f93a94f3898162714fae6b63d21f707029fcddd7813c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_build.log",
+        "kind": "local proof/evidence",
+        "bytes": 2814,
+        "sha256": "d2062d653881d276e9550d527fab885ed9095ae7f6c888bcfc7e4d62160ae348"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_call_gate.log",
+        "kind": "local proof/evidence",
+        "bytes": 303,
+        "sha256": "bca1508f481e8ae2cf7b8c991e473283f8681da8b446f2097f0f015cd0c2c4fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_commit_message.txt",
+        "kind": "local proof/evidence",
+        "bytes": 588,
+        "sha256": "dd3f19ffd5763095c690a7d970491efd7e5dbc5800a2645cb422b37f722fa00a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_eh_cleanup.txt",
+        "kind": "local proof/evidence",
+        "bytes": 61,
+        "sha256": "a05f07bf67d0d43e9c2a9775bca61eddc93d43b47b97454f1cc1e241ab09edb9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_eh_descriptor.txt",
+        "kind": "local proof/evidence",
+        "bytes": 183,
+        "sha256": "6f0ef965ea41ca808d99669ca0153948ab84df4c4f22197c4cbc0c42452dad25"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_eh_handler.txt",
+        "kind": "local proof/evidence",
+        "bytes": 56,
+        "sha256": "84fd4afcd4dde65b49390854126a9d23f00b299804228af9067ad6d02165adf0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_eh_unwind_map.txt",
+        "kind": "local proof/evidence",
+        "bytes": 45,
+        "sha256": "ccb1e8136c08457f2ff604e70363736e4228e82923f8a950ad849c525bc9feda"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_handler_body.txt",
+        "kind": "local proof/evidence",
+        "bytes": 79,
+        "sha256": "9bf016533c2448b479417a2c85ff10dc84f10b0161a11617392e9674993f3f19"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_index.log",
+        "kind": "local proof/evidence",
+        "bytes": 142,
+        "sha256": "a8577a242d795d38c9f294bf317225668a496ad7005c069bcfb19b18f234cef1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_native_image.bin",
+        "kind": "local proof/evidence",
+        "bytes": 1656,
+        "sha256": "17cb56abf8cfb514dddf51e24fe219d61ffb6642021ad73424c4bb13af43797e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_native_manifest.json",
+        "kind": "local proof/evidence",
+        "bytes": 9767,
+        "sha256": "f9605ad059a3dbbc9c7c59dd33d6b4295da9e86e4681eaf27031e06ff7ee2889"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\bsp_core.lib",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 54489258,
+        "sha256": "cf79589bf4467f1040be806d6ae4d5ced0291bb2833486f25a3811c49a179762"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\finalize_observer_schedule_report.py",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 14427,
+        "sha256": "0c0484f4368923ecb80ae5496191437d6ef0fd7c4c3f0b50109bf29ecb6ba617"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_dispatch_schedule.cpp",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 8085,
+        "sha256": "cf0ffbe854b600d48c78743e7c25abf007cb7e896b589ad9fd13066b895f0cfa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_dispatch_schedule.hpp",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 2084,
+        "sha256": "93809b11c29c8f1403dacf8b573eb81bf6df174e769ccd7f936b1067f961b0cc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_dispatch_schedule.json",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 86266,
+        "sha256": "14f22f6fcf0c26e68a3c84ae310cbcfeaef2c296b416802df03e5dabed104a5a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\OBSERVER_DISPATCH_SCHEDULE.md",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 10686,
+        "sha256": "c4001cd66ad7a1809d0650023e7877b214489b8441475ed36a8e5ccc11781276"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_dispatch_schedule.obj",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 5984,
+        "sha256": "4f94b74d44ff67105fd16e0ae66231ffed73914e86d834e961db23f59e447418"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_artifact_manifest.json",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 48383,
+        "sha256": "081a2fd3897ae6f4ba442d5efd7911067debfe426f1f92600b297801269fe382"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_build.log",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 4532,
+        "sha256": "9fa68f90cfed016dc18b8a74fa16b94e7c41bdce4c05b7a67cb33dfe6a24f96c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe.cpp",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 11676,
+        "sha256": "c8042903535216743436a895a0a28b672a3cfd453217b33b2fcd78251c1f957f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe.exe",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 58368,
+        "sha256": "5064f6723554faecdb708511d4c9350e117e1b068d2c14e60b24293ea01ffc8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe.map",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 106144,
+        "sha256": "6df1a79c579c3db1521398944e2332cea3210625a27f3fc0871773a7e88cea61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe.obj",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 169165,
+        "sha256": "a98f86f6ce1bf9e55f2c73eef0d3bb3416412e9410e215331abdb5bbdfbc7627"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe_build.log",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 4573,
+        "sha256": "8ec44467ace2795dc90c944526a05e29c8f22288189c58456861fc0a790a3983"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe_records.json",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 300,
+        "sha256": "7dc05a6802d8e3c383db86fecb265ee1220430f6aaeb73a211774a5bd60aaa0d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_prior_library_draft\\observer_schedule_probe_run.log",
+        "kind": "historical superseded library-copy draft; not final evidence",
+        "bytes": 199,
+        "sha256": "a8d4f886fa24ba6e76eb6e06c394ba7a208858378cfb9013e84a88211b67306a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe.cpp",
+        "kind": "local proof/evidence",
+        "bytes": 12598,
+        "sha256": "a52c2713af87dafe31b91b5efd7e99097496059fd7725c1e30076dedcd9bd22e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe.exe",
+        "kind": "local proof/evidence",
+        "bytes": 58880,
+        "sha256": "9c86cd7ad24fdd92815d7df051e6e6e2a8b4ceefe2f1ce6dffc678649eb642cc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe.map",
+        "kind": "local proof/evidence",
+        "bytes": 106129,
+        "sha256": "426ac4e655a875f9479a629f1d928cb0bf18aa06405466a02a49b9a9925ae783"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe.obj",
+        "kind": "local proof/evidence",
+        "bytes": 170183,
+        "sha256": "e122ec6894317bf6237ae36451ce7e423964f6b89bf46c2c71c14f2873f0ce54"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_build.log",
+        "kind": "local proof/evidence",
+        "bytes": 4573,
+        "sha256": "8ec44467ace2795dc90c944526a05e29c8f22288189c58456861fc0a790a3983"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_patches.hpp",
+        "kind": "source dependency header",
+        "bytes": 1110,
+        "sha256": "d6e355ec7061038d9bbdfcb0a81f807b59e1b06c23d0f02fd51c61ae992af054"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_records.json",
+        "kind": "local proof/evidence",
+        "bytes": 408,
+        "sha256": "9077fe7376c36c807895c15b25e71ba5cd36bb3b01948ca77fd3ae23be0f4ceb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_records_failed_delete_counter.json",
+        "kind": "local proof/evidence",
+        "bytes": 300,
+        "sha256": "0258874da8d1880f0d9d01bc84abf28d0494859b4486ca49c8c7b52d5605e1cc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_run.log",
+        "kind": "local proof/evidence",
+        "bytes": 199,
+        "sha256": "ac8465e0565049c09d39ea23f541b802027d890279a48bcc619f37bcbfccb0fa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_schedule_probe_run_failed_delete_counter.log",
+        "kind": "local proof/evidence",
+        "bytes": 291,
+        "sha256": "9af743adce775a7a16ee2d0df5af95e4bfbc5b0bfb1ebf615bb25ced7c9910e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\observer_vector_equivalence.json",
+        "kind": "local proof/evidence",
+        "bytes": 7371,
+        "sha256": "b5115bd15ea2165068099d9f7d1e9b481847075717fde0363f0a6d4eed83ed0b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00693830.bin",
+        "kind": "local proof/evidence",
+        "bytes": 85,
+        "sha256": "4d769908fab1406364ddaf9a895c6d2983682790a6b455e182c42317834535b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_006946B0.bin",
+        "kind": "local proof/evidence",
+        "bytes": 30,
+        "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_006946D0.bin",
+        "kind": "local proof/evidence",
+        "bytes": 47,
+        "sha256": "01e0311f6f6a8fb64d73988027972970016f7dec57153a05755a96f61c12b453"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00694CD0.bin",
+        "kind": "local proof/evidence",
+        "bytes": 90,
+        "sha256": "c5299fc9036bf4a92d5323e007a0ef89e0e5c6c1ce0af1559216d55f51698dc8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00695230.bin",
+        "kind": "local proof/evidence",
+        "bytes": 48,
+        "sha256": "582659f022a9ce619c56a374fe988406b964eb0f84a06921f3e6bf2369ea340e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00695730.bin",
+        "kind": "local proof/evidence",
+        "bytes": 46,
+        "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_006959B0.bin",
+        "kind": "local proof/evidence",
+        "bytes": 436,
+        "sha256": "826bfcf8841a2a9005fc86772399dc199487a0d7e9cba976194ae970c4874604"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00695BC0.bin",
+        "kind": "local proof/evidence",
+        "bytes": 137,
+        "sha256": "5e53dff30e859d704722e548e5be0d36f793e98dfd00cd4608676b68c046fa6c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00695D00.bin",
+        "kind": "local proof/evidence",
+        "bytes": 179,
+        "sha256": "c340d33c75789e78c854a97cb46973c2c0fe68a97eae3fe60f0577b4ed25f574"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\original_00695F90.bin",
+        "kind": "local proof/evidence",
+        "bytes": 387,
+        "sha256": "62bbc0a9f9853aa088fce2fdf69f3c3379d10325d534ec70202ccbbb44ba3004"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\prepare_observer_schedule_probe.log",
+        "kind": "local proof/evidence",
+        "bytes": 71,
+        "sha256": "e0c3107100149dc3d8977c9f210b0f64eed0c5f43b3eabc3db259f364a9ac38a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\prepare_observer_schedule_probe.py",
+        "kind": "local proof/evidence",
+        "bytes": 6899,
+        "sha256": "bcb33795921c2c0f2967a463f3797334c12c0b2ab1a739fe9a71291a9e9bbeb1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\local\\probe_build.log",
+        "kind": "local proof/evidence",
+        "bytes": 514,
+        "sha256": "27ffe4567121ad239b3259f5c9df2d41967b04e1b23689bb7188ab77bd4a81fd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\scripts\\build.ps1",
+        "kind": "tracked task source/config",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_legacy_exception_owner.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 5121,
+        "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_legacy_sbo_string.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 7772,
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_renderer_worker_lifetime.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 6911,
+        "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_publication.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_removal_reorder.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_vector_allocation.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 1966,
+        "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_vector_insert_count.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 5712,
+        "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_vector_leaves.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 3538,
+        "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_vector_registration_wrappers.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_singleton_vector_reserve_construct.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 3731,
+        "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\native_tracked_critical_section_release.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 1637,
+        "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\observer_dispatch_owner.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 4287,
+        "sha256": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\observer_dispatch_schedule.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 6253,
+        "sha256": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\observer_edges.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 3890,
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\observer_lifetime.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 12341,
+        "sha256": "5d258582be7967e9665411cbe4998edaf2f03dd074838c1e6686fba5bcafab48"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\singleton_lifetime.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-observer-dispatch-schedule-r\\src\\sound_lifetime_access.cpp",
+        "kind": "linked existing source dependency",
+        "bytes": 2380,
+        "sha256": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a"
+      }
+    ]
+  }
+}
