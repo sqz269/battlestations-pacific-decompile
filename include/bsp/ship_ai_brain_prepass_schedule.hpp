@@ -22,8 +22,10 @@ class ShipAiBrainPrepassHost : public ShipAiNeighbourCandidateHost {
 public:
     virtual std::int32_t unit_level_390(const void*) const = 0;
     virtual const NavigatorBotParameters& navigator_parameters(std::int32_t level) const = 0;
-    virtual const void* world_list45_head_220() const = 0;
-    virtual std::int32_t world_list45_count_21c() const = 0;
+    // Actual world+21C/+220, zero-based slot43 in the18h/0Ch registry.
+    // Dummy list45 is a different triple at234h/238h.
+    virtual const void* world_torpedo_head_0220() const = 0;
+    virtual std::int32_t world_torpedo_count_021c() const = 0;
     virtual std::uint8_t unit_byte_5d(const void*) const = 0;
     virtual const void* unit_pointer_4f8(const void*) const = 0;
 

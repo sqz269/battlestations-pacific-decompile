@@ -143,8 +143,8 @@ void torpedo_candidates(float& period,ShipAiBrainPrepassHost& host,
     copy_bits(origin_x,initial.world_x_fc);
     copy_bits(origin_z,initial.world_z_104);
     horizon(time,period,tuning,literals.horizon_add_00d7a2b0);
-    const void* node=host.world_list45_head_220();
-    const std::int32_t count=host.world_list45_count_21c();
+    const void* node=host.world_torpedo_head_0220();
+    const std::int32_t count=host.world_torpedo_count_021c();
     if(count<=0)return;
     std::uint32_t remaining=static_cast<std::uint32_t>(count);
     do {
