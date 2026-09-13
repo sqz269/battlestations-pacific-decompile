@@ -1,0 +1,188 @@
+{
+  "packet": "orch6_unit_observer_binding_t",
+  "status": "source_binding_build_and_focused_fixture_tested",
+  "base_commit": "0e80ae553afca1e451d2a3cfc0bf8111a33b74c3",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "operations": "read_only_via_bsp_py_verified_client",
+    "mutations": []
+  },
+  "ownership": {
+    "canonical_unit": "existing stable GameUnitSlot; same identity as world-list payload",
+    "prefix": "NativeUnitObserverPrefixStorage embedded in that slot, no sidecar",
+    "runtime": "borrowed actual GameSingletonHost::observers() through mission/frame/units",
+    "application_wiring": "Primary integrator calls mission->bind_observer_runtime(singletons.observers()) after mission allocation in GameMenuHost constructor; absent from this worker commit"
+  },
+  "routines": [
+    {
+      "function": "00925ce0",
+      "coverage": "partial_projection",
+      "implemented": "existing S observed/callback initialization and scene table store projections",
+      "uncovered": "remaining complete scene constructor work"
+    },
+    {
+      "function": "00928630",
+      "coverage": "partial_projection",
+      "implemented": "existing S game table publication and existing 21 creator leaf table pairs",
+      "uncovered": "remaining game constructor and full leaf constructors"
+    },
+    {
+      "function": "00925780",
+      "coverage": "partial_projection",
+      "implemented": "callback +10h followed by observed +0h teardown on existing slot",
+      "uncovered": "00925780..00925896 preceding non-observer destructor work and complete native allocation/teardown ABI"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0092589d",
+      "native": "00695870",
+      "function": "00925780",
+      "method": "destroy_callback_owner_00695870",
+      "contract": "Read callee: native ECX=callback base; bare RET. Table stamp, nested lock/count, optional detach-all, free backing array retaining field bytes.",
+      "evidence": "0092579A ESI=ECX;0092579D EDI=ESI+10h;00925896 ECX=EDI before CALL"
+    },
+    {
+      "address": "009258ac",
+      "native": "00695760",
+      "function": "00925780",
+      "method": "destroy_observed_owner_00695760",
+      "contract": "Read callee: native ECX=observed base; bare RET. Table stamp, nested lock/count, optional observed detach, free backing array retaining field bytes.",
+      "evidence": "009258A2 ECX=ESI before CALL; follows callback destruction at0092589D"
+    }
+  ],
+  "source_lifetime": {
+    "alias": "optional borrowed alias; own live slot and live actual runtime only; expires before endpoint teardown",
+    "unknown_creator": "bound creation and late binding reject; unbound fixtures retain unavailable aliases",
+    "frame_release_order": [
+      "HUD detach",
+      "Lua script_orders=null",
+      "step subsystem units=null",
+      "units ship_ai=null",
+      "destroy ship_ai",
+      "destroy script_orders",
+      "destroy world",
+      "destroy units"
+    ],
+    "replacement": "release helper used at load_scene_contents replacement and frame destruction; existing mission resets frame before replacing Lua",
+    "application_order": "menu mission destroyed before HUD; existing startup deletes menu before raw singleton drain",
+    "state": "No load inventory or mission state changes"
+  },
+  "corrections": [
+    {
+      "was": "interrupted diff kept prior slot aliases visible throughout all endpoint destruction",
+      "is": "slot alias is withdrawn before its callback/observed teardown",
+      "evidence": "Native endpoint destructors free backing arrays but retain bytes; subsequent source reentry must not obtain an already-destroyed prefix"
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1; MSVC Win32 Release; exit0",
+    "ctest": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "fixture": "local/unit_observer_binding_probe.cpp",
+    "fixture_command": "./local/run_unit_observer_binding_probe.ps1",
+    "fixture_result": "PASS actual GameUnitsHost identities, native prefixes, binding guards, two endpoint roles, raw manager order",
+    "fixture_inputs": "VehicleClass[7]={Type='Destroyer',Name='fixture',Mass=1}; two created identity-pose source records plus unresolved creator guard inputs; actual CF7E64 native pair registration in both directions",
+    "fixture_toolchain": "Visual Studio2026 18.6.1; MSVC19.51.36244.0 x86; /std:c++17 /EHsc /O2 /MD; /link /MANIFEST:EMBED /MACHINE:X86 /SUBSYSTEM:CONSOLE",
+    "fixture_linked_application_objects": 38,
+    "fixture_manifest": "local/unit_observer_binding_probe_manifest.json",
+    "fixture_compile_log": "local/unit_observer_binding_probe_compile.log",
+    "fixture_run_log": "local/unit_observer_binding_probe_run.log",
+    "fixture_host_log": "local/unit_observer_binding_probe_host.log",
+    "build_log": "local/unit_observer_binding_build_resume.log",
+    "native_listing": "local/unit_observer_binding_native_teardown.txt",
+    "embedded_manifest": "local/unit_observer_binding_probe.embedded.manifest; extracted requestedExecutionLevel asInvoker",
+    "verify_report_calls": "PASS 2 direct call sites; local/unit_observer_binding_report_calls.log",
+    "verify_seeds": "PASS 8 seeds match installed binary; local/unit_observer_binding_seeds_resume.json",
+    "repeated_load": "source borrower order reviewed; no repeated installed-mission runtime claim",
+    "combined_application": "pending primary integrator menu setter wiring and 120-frame run",
+    "artifact_hashes": [
+      {
+        "path": "local/unit_observer_binding_probe_manifest.json",
+        "sha256": "b5feb4dcadbb7d42119a2f7e25adb07b24834b8f5c53e9341e3cd86df2e3300b",
+        "bytes": 17914
+      },
+      {
+        "path": "local/unit_observer_binding_probe.cpp",
+        "sha256": "72142db3e5b720c53f1aa9d483d92a66763233dadf7fae84fa5ca306f173c404",
+        "bytes": 6361
+      },
+      {
+        "path": "local/unit_observer_binding_probe.exe",
+        "sha256": "84d90c9b2001941b70b1bedd351cc40d42960c2b8a3c4945229c63e89981e505",
+        "bytes": 592896
+      },
+      {
+        "path": "local/unit_observer_binding_probe_compile.log",
+        "sha256": "e69f9e5f48d48a28112d6e0833b1acba0d3183ca8cff38dba87bedfee8152cea",
+        "bytes": 1798
+      },
+      {
+        "path": "local/unit_observer_binding_probe_run.log",
+        "sha256": "9118e2451c5b51e8372749200929797cc8f529dbe36d0d53aeafd2bc26aea2a7",
+        "bytes": 3390
+      },
+      {
+        "path": "local/unit_observer_binding_build_resume.log",
+        "sha256": "f0a72b89e852639a1a5276f825eaca8d097deafcf9ca2828ccaff11e84834fd2",
+        "bytes": 3015
+      },
+      {
+        "path": "local/unit_observer_binding_native_teardown.txt",
+        "sha256": "9eb80631015a07f7b5783e0e8d86fd95da222cac99390407a2610a5e5e36ec28",
+        "bytes": 407
+      },
+      {
+        "path": "local/unit_observer_binding_report_calls.log",
+        "sha256": "3ab22848a60752b3f12a75b4025bb60b4be071f0fb02b5c0303bc6d6506e1a7b",
+        "bytes": 72
+      },
+      {
+        "path": "local/unit_observer_binding_seeds_resume.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "bytes": 3034
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "sha256": "0eecdc71d3da5d8e3ba904ca5db76c98cb77f36fec4f7ac9328daa99372ed174",
+        "bytes": 2035712
+      }
+    ],
+    "compiled_source_hashes": [
+      {
+        "path": "include/bsp/game_hosts_units.hpp",
+        "sha256": "23c17c797f6eb5e3670a8389d072fbc3ee7fa6e6eb56d6466a0e3b9084629bf9"
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "sha256": "0c3f1bd7213ff71c430300b656e80ca91701c60f3a81c4a548aef924f6c11d22"
+      },
+      {
+        "path": "include/bsp/game_hosts_mission.hpp",
+        "sha256": "4cebb12d772c9281b00e1193116c8bae26e2f501f846de60f3d45d4157c40000"
+      },
+      {
+        "path": "src/game_hosts_mission.cpp",
+        "sha256": "ce44f9b419b276f2095965fccd326ef2aeeee173a7c94f8c9d9fc0a2ea15d65e"
+      },
+      {
+        "path": "include/bsp/game_hosts_mission_frame.hpp",
+        "sha256": "4cdf9718337f5f22e890cb00594de70d4c8327bcc10083f11236f050c3c3c72f"
+      },
+      {
+        "path": "src/game_hosts_mission_frame.cpp",
+        "sha256": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9"
+      }
+    ]
+  },
+  "limitations": [
+    "Source C++ interface only, not a drop-in native ABI or complete constructor/destructor",
+    "Native table identities are not process-callable vtables",
+    "No additional application unit/runtime, fake callback, event, notification or native deleting profile introduced",
+    "Fixture uses explicit source Lua data; unrelated gunnery/script flows are not validated",
+    "No original-game or gameplay validation"
+  ]
+}
