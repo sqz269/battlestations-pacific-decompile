@@ -736,6 +736,13 @@ def ghidra_cmd(args):
         cmd = [sys.executable, str(ROOT / 'tools/ghidra_flow_repair.py'), *[norm(v) for v in args.addresses]]
         run = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', errors='replace')
         cap((run.stdout + run.stderr).strip(), args.lines)
+    elif sub == 'flow-properties':
+        cmd = [sys.executable, str(ROOT / 'tools/ghidra_flow_properties.py'),
+               *[norm(v) for v in args.addresses], '--output', args.output]
+        run = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding='utf-8', errors='replace')
+        cap((run.stdout + run.stderr).strip(), args.lines)
+        if run.returncode:
+            raise SystemExit(run.returncode)
     elif sub in ('comments', 'documentation'):
         # Annotation readback often spans a batch. Persist complete records in
         # ignored local storage while keeping the interactive view bounded.
@@ -1037,6 +1044,7 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   ghidra ensure [--status] [--restart] [--wait 300]   start Ghidra when nothing answers on ghidra_url
   ghidra autostart [--remove]                        do that at every logon (Startup folder, no elevation)
       proto/flow/comments take several addresses; decompile/disasm take one plus --lines
+      flow-properties <addresses> --output local/response.json reads exact flow flags; needs bridge script capability
       bytes <addr> --length N (NOT --limit)
 
   snapshot [--force]             re-export only if Ghidra's function count moved
@@ -1118,6 +1126,7 @@ def main():
     gs.add_parser('count')
     q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20); q.add_argument('--brief', action='store_true', help='one line per address: name, signature, body span')
     q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
+    q = gs.add_parser('flow-properties', help='read exact current flow/no-return/thunk properties without analysis changes'); q.add_argument('addresses', nargs='+'); q.add_argument('--output', required=True); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
     q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     q = gs.add_parser('documentation', help='archive full function documentation before body repairs'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
