@@ -554,3 +554,271 @@ recovered only as far as "wrapped `atan2` of two orientation terms".
 them must refuse the yaw axis rather than pass zeros, because all three have a legitimate zero
 default and zeros would silently produce a plausible centred yaw. The roll, power and air-brake
 axes have no law here at all and must refuse.
+
+> **Superseded by the next section.** All three scratch inputs are now produced, so the yaw axis is
+> wirable apart from two opaque sources. The roll, power and air-brake stores turn out not to be
+> steering laws at all.
+
+# The yaw scratch producers, and what the other three stores actually are (packet `cc7_pilot_bot_axis_arms_2`)
+
+Addresses: `0099D602`-`0099D6C6`, `0099D8C1`-`0099D8EB`, `0099DC07`-`0099DC97`,
+`0099DDCA`, `0099DE8A`-`0099DF87`, `0099DFCC`-`0099E027`, `0099E5CB`-`0099E6D2`, `007D9A70`,
+`00415550`. Constants `00CE3D30`, `00D7A390`, `00D7A3A0`.
+
+Same method as the previous section: the full listing plus the reaching-definition walker.
+Ghidra read-only. **Exported, reconstructed, build-tested**; the existing `reconstructed_math`
+check still passes and no new tests were added. Not fixture-tested, not game-validated.
+
+## All three yaw scratch inputs are now produced
+
+### `[ESP+6Ch]`, the base numerator — a deadbanded, step-limited heading error
+
+`0099DE8A`-`0099DF87`, reached only when `task+2CCh == 2` (`0099DE8A CMP ECX,2`); on every other
+path it keeps the zero stored at `0099DDD0`.
+
+```
+h = unit->vtable[50h]()                                   ; 0099DE9E
+e = SubtractWrappedAngle(task+2C0h, h) * q                ; 0099DEB8, 0099DEBD
+                                                          ; q = 1 / max(unit[+340h] * 0.4, 1)
+e = (e >= D) ? e - D : (e <= -D) ? e + D : 0              ; D = tuning+3Ch, 0099DECC-0099DF03
+L = (class+1C8h + class+1ACh) * tuning+38h                ; 0099DF0F-0099DF24
+e = (L > |e|) ? tuning+34h * e
+              : (e > 0 ? e - (1-tuning+34h)*L : e + (1-tuning+34h)*L)
+```
+
+The middle case of the deadband zeroes the term outright (`0099DEFC XORPS XMM0,XMM0`). The two
+comparisons are `FCOMI`/`JC` at `0099DED4` and a `FLD ST1` / `FCHS` / `FCOMIP` against `-D` at
+`0099DEE6`-`0099DEEC`, read from the listing.
+
+### `[ESP+38h]`, the base gain — a bank fade
+
+`0099DFFB`-`0099E027`:
+
+```
+gain = InterpolateClamped(tuning+7Ch, 1.0f, tuning+80h, 0.0f, |bank|)
+```
+
+`0099E016 FLD1` supplies `y0 = 1` and `0099E006 FLDZ` supplies `y1 = 0`. This is the **reverse** of
+the blend fraction inside the yaw arm, which runs `0` to `3.0f` over the same `x` range — so the
+heading term carries full weight at low bank and fades to nothing at high bank, while the turn term
+fades in. That is the arm's whole shape: **steer by heading when level, by the pitch-derived term
+when banked.**
+
+### `[ESP+10h]`, the turn numerator — a pitch-arm side product
+
+`0099E69B`-`0099E6D2` (and the identical mirror at `0099E703`-`0099E729`):
+
+```
+p = sin(bank)^2 * cos(pitch) * class+1B8h * class+1B0h     ; SlideRatio, YawSpd
+X = class+1ACh * (R * 0.9 + 0.1) * cos(bank)               ; 0099E630-0099E64A
+k = inverted ? class+1D8h : 1.0f                           ; NegativePitchRatio
+[ESP+10h] = p - k * X                                      ; 0099E6CE FSUBR
+```
+
+`X` is the live x87 value the previous section could not trace. The stack walks: `0099E5D7` calls
+`007D9A70(unit+AB0h)` returning `R` in `ST0`; `0099E5DC`/`0099E5EE` form `R*0.9 + 0.1` (`00D7A390`
+= `0.9`, `00D7A3A0` = `0.1`) and `0099E5FC` stores it to `[ESP+54h]`, emptying the stack;
+`0099E630`-`0099E63A` push `class+1ACh * [ESP+54h] * cos(bank)` — **that** is `X`, and it survives
+the `FSTP` at `0099E64A` and the demand's `FSTP` at `0099E689` because both pop values pushed above
+it. All three pitch paths balance it: `0099E72F FSTP ST0` pops it on the unsaturated path.
+
+`inverted` is settled, not guessed. The predicate register `XMM1` is loaded once at `0099E5E5` from
+`[ESP+44h]`, and that slot has **exactly one** reaching definition, `0099DDCA` — which is
+`(float)sign(cos(bank))` from `0099DD9A`-`0099DDCA`. So `k` is `NegativePitchRatio` precisely when
+`cos(bank) < 0`, i.e. when the plane is inverted, and `1.0f` otherwise. The same predicate chooses
+`[ESP+40h]` at `0099E60C`.
+
+`R = 007D9A70(unit+AB0h)` was **not read**. It reads `[ECX+8]` then `[EAX+908h]` and runs a
+five-argument interpolation with `00CE6630` and `00CE3868`; `R*0.9 + 0.1` maps it onto `[0.1, 1.0]`,
+which is consistent with a normalised 0..1 factor, but this packet did not establish that.
+
+## The other three stores are not steering laws
+
+### `0099D6B7` (roll), and its yaw and pitch siblings, are a stick override
+
+`0099D602`-`0099D6C6` is one block of three identical arms that runs **before** any computed arm:
+
+| source | store | mode word cleared |
+| --- | --- | --- |
+| `unit+998h` (`0099D608`) | `slot(yaw).desired = clamp(v, -1, +1)`, active = 1 (`0099D63B`) | `task+2D4h` (`0099D64A`) |
+| `unit+99Ch` (`0099D656`) | `slot(pitch).desired = clamp(v, -1, +1)`, active = 1 (`0099D679`) | `task+2D0h` (`0099D688`) |
+| `unit+9A0h` (`0099D694`) | `slot(roll).desired = clamp(v, -1, +1)`, active = 1 (`0099D6B7`) | `task+2CCh` (`0099D6C6`) |
+
+The guard is MSVC's exact-equality idiom — `UCOMISS XMM0,XMM2` / `LAHF` / `TEST AH,44h` / `JNP` —
+which takes the skip branch only on an ordered compare equal to zero, so the arm runs whenever the
+field is non-zero (and also on NaN). `XMM1` and `XMM3` are `-1.0f` (`00D7A260`) and `1.0f`
+(`00D7A24C`) from `0099D610`/`0099D618`, so the clamp is to `[-1, +1]`.
+
+**This closes the mode words.** `task+2CCh`, `+2D0h` and `+2D4h` are per-axis enables for the
+computed arms, and a direct stick input cancels the one it overrides — which is why the yaw arm at
+`0099E81A` is reached only through `0099E75E JNZ` on a non-zero `task+2D4h`, and why `task+2CCh == 2`
+specifically is what enables the heading-hold base term. `unit+998h`/`+99Ch`/`+9A0h` sit alongside
+the `unit+994h` throttle that `docs/UNIT_STATE_MESSAGE.md:193` records.
+
+### `0099D8DD` (air brake) is the speed-hold arm's brake
+
+`0099D8C1`-`0099D8EB`, gated on `task+2D8h == 1` and a `COMISS` of `XMM0` against `task+2B4h`:
+
+```
+slot(power).desired = XMM0 ; active = 1        ; 0099D8CF
+slot(brake).desired = 1.0f ; active = 1        ; 0099D8DD, XMM3 = 00D7A24C
+task+2D8h = 0                                  ; 0099D8EB
+```
+
+Full air brake when the quantity in `XMM0` exceeds the target at `task+2B4h`. **`XMM0`'s provenance
+was not traced**, so the arm's trigger is unread; only its effect is established.
+
+The sibling pair at `0099DC31`/`0099DC4B` on the same mode writes
+`slot(power).desired = max(0.001f, [ESP+18h])` and `slot(brake).desired = max(0.0f, [ESP+44h])`
+through `00415550 BSP_Math_MaxFloatByRef`, then clears `task+2D8h`. `[ESP+18h]` there is the bank
+error `SubtractWrappedAngle(bank, [ESP+1Ch])` formed at `0099E554`-`0099E559` — reaching
+definitions confirm a single producer — but `[ESP+44h]` was not traced.
+
+### `0099DC8F` (power) is a ceiling, not a law
+
+`0099DC7A`-`0099DC97`:
+
+```
+if (slot(power).prev > 0.6f) { slot(power).desired = 0.6f ; active = 1 }   ; 00CE3D30 = 0.6f
+```
+
+It stores the constant itself, not the previous value. Nothing else in the block computes a power
+demand.
+
+## Rules added
+
+`yaw_base_numerator_0099de8a`, `yaw_base_gain_0099dffb`, `yaw_turn_numerator_0099e69b`,
+`stick_override_0099d620` and `power_ceiling_0099dc7a` in `src/plane_ai_control.cpp`.
+
+## Wiring contract
+
+The **yaw axis is now wirable**. A host needs, per tick: the plane's `unit+340h`, the class fields
+`+1ACh`, `+1B0h`, `+1B8h`, `+1C8h`, `+1D8h`, the tuning fields `+34h`, `+38h`, `+3Ch`, `+7Ch`,
+`+80h`, `+9Ch`, the attitude triple, `task+2C0h` and `task+2CCh` — plus the two sources this packet
+did not read, `unit->vtable[50h]()` and `007D9A70(unit+AB0h)`. Both are **required**: the heading
+getter is the base term's only input, and `R` scales the turn term. A host without them must still
+refuse the axis.
+
+The **stick override must be applied first**, and it must clear the mode word, or the computed arms
+will run on a tick the game would have given to the pilot's own input.
+
+The **pitch axis** remains `clamp(demand, -1, +1)` with its demand untraced; **roll** has no
+computed law here beyond the override; **power** has only the `0.6f` ceiling and the speed-hold
+pair; **air brake** has only the speed-hold pair, with its trigger unread.
+
+## What is still unread, named
+
+* `unit->vtable[50h]`, the heading getter (`0099DE9E`).
+* `007D9A70`, the speed factor `R` (`0099E5D7`).
+* The pitch demand `[ESP+44h]` at `0099E664`-`0099E689`. `[ESP+18h]` is the bank error
+  `SubtractWrappedAngle(bank, [ESP+1Ch])` (`0099E559`), scaled by `q` at `0099E600`-`0099E608`.
+  `0099E673 FDIVR [ESP+18h]` then divides that by the **signed** `k*X*tuning+A0h` — `0099E652`
+  keeps the signed value in `ST0` while `0099E656`-`0099E660` put only its magnitude in `[ESP+54h]`
+  for the `0.001f` test — and `0099E67B`-`0099E685` is the small-magnitude fallback
+  `[ESP+18h] * 100.0 * sign(cos(bank))` (`00D7A220` = 100.0, and `[ESP+44h]` there is still the old
+  sign value). The shape is now visible, but the arm that sets the bank target `[ESP+1Ch]` at
+  `0099E53D` was not read, so the demand is not closed.
+* `XMM0` at `0099D8C6`, the speed-hold trigger, and `[ESP+44h]` at `0099DC46`.
+* `task+2B4h`, `task+2C0h` and `task+2D8h`'s producers.
+
+# The yaw arm's last two inputs (packet `cc7_yaw_remaining_inputs`)
+
+Addresses: `0074E260`, `007D9A70`, `007D99C0`, `007C0F40`, `00419010`. Constants `00CE3854`,
+`00CE3868`, `00CE6630`, `00CE74F8`, `00CEFF98`, `00D7A24C`; globals `00F8731C`, `00F87320`.
+
+Ghidra read-only. **Exported, reconstructed, build-tested**; `reconstructed_math` still passes, no
+new tests. Not fixture-tested, not game-validated.
+
+## `unit->vtable[50h]` is the heading field, and every plane class agrees
+
+Enumerated rather than sampled: slot `+50h` read from the vtable of each of the nine plane classes
+in `docs/ENTITY_CLASS_IDS.md` — `00D05F20` (`0F`), `00D06638` (`10`), `00D1A000` (`11`),
+`00D19D28` (`12`), `00D06920` (`13`), `00D00070` (`14`), `00D0BA80` (`15`), `00D00308` (`16`),
+`00D1A2D8` (`17`). **All nine hold `0074E260`**, and its entire body is
+
+```
+0074e260  D9 81 6C 0C 00 00   FLD dword ptr [ECX + 0C6Ch]
+0074e266  C3                  RET
+```
+
+Other families override the slot — `0042B8C0` on `Path`, `006DFD60` on `MDestroyer` and
+`MTorpedoBoat`, `006D2040` on `MAirfield` — so this is the plane family's implementation, not a
+universal one. That is why the slot had to be enumerated before being named.
+
+So the base term's "current heading" is simply **`unit+C6Ch`**, the wrapped `atan2` that
+`007C1ACA` writes (previous section). The base numerator is
+`SubtractWrappedAngle(task+2C0h, unit+C6Ch) * q` with no dispatch involved, and `kUnitHeading` is
+added to `include/bsp/plane_ai_control.hpp`.
+
+## `007D9A70` — the speed factor `R`
+
+`__thiscall(sub)` where `sub` is `unit+AB0h` (`0099E5D1 ADD ECX,0AB0h`), returning in `ST0`:
+
+```
+a      = InterpolateClamped(3.0f, 0, 6.0f, 0.25f, [[sub+8h]+908h])        ; 007D9AA9
+ratio  = BSP_PlaneFlight_ForwardSpeed(sub) / class+184h                    ; 007D9AB4, 007D9ABC
+c      = InterpolateClamped([00F8731C], 0, [00F87320], 1.0f, ratio)        ; 007D9AF0
+v      = c + [[sub+10h]+C0h] * 0.6                                         ; 007D9B02, 00CEFF98
+result = (a > v) ? a : min(v, 1.0f)                                        ; 007D9B1C / 007D9B55
+R      = 007C0F40(sub+8h) * result * result                                ; 007D9B3F, 007D9B45
+```
+
+`007D99C0` is already named `BSP_PlaneFlight_ForwardSpeed`, and `class+184h` is in the speed block
+`+184h`..`+1A4h` that `docs/VEHICLE_CLASS_FIELDS.md` records, so `ratio` is a speed fraction.
+`007D9B3F FMUL ST0` squares `result` (`D8 C8`), the same encoding as `0099E69F`; the bomb-load
+factor is multiplied in separately at `007D9B45` from memory.
+
+### `007C0F40`, the bomb-load factor
+
+```
+m = 1.0f                                                       ; 007C0F41
+for each weapon slot at plane+974h, count plane+994h:
+    if (slot->vtable[210h](2Ah, 0)) {                          ; 007C0F72, 2Ah = MBomb
+        w = slot->vtable[214h]()                               ; 007C0F9D
+        m = InterpolateClamped(0, 1.0f, 0.8f, class+15Ch, w)   ; 007C0FC5, 00CE74F8 = 0.8f
+        break                                                  ; 007C0F76
+    }
+if (plane+BC8h) m *= class+608h                                ; 007C0FCF, 007C0FE4
+```
+
+The `+974h`/`+994h` slot array and the `2Ah` kind are the same ones
+`docs/ORDNANCE_KIND_IDENTITY.md` established, so this is literally "is the plane still carrying
+bombs". `class+608h` is the top of the turbo block `+5FCh`..`+608h`, so turbo scales the result.
+
+### The range, which matters as much as the formula
+
+`R` is **non-negative and bounded by the bomb-load factor**, and this holds whatever the two
+unidentified fields and the two runtime globals turn out to be:
+
+* `a = InterpolateClamped(3, 0, 6, 0.25, ...)` has both y-endpoints in `[0, 0.25]`, so `a ∈ [0, 0.25]`
+  for any input.
+* `result = max(a, min(v, 1))`. Since `a ≥ 0`, `result ≥ 0` even if `v` is negative; since
+  `a ≤ 0.25` and `min(v, 1) ≤ 1`, `result ≤ 1`. So **`result ∈ [0, 1]` unconditionally**, and
+  `result² ∈ [0, 1]`.
+* Therefore `R ∈ [0, m]`, and the yaw turn term's remap `R*0.9 + 0.1` lies in `[0.1, 0.9m + 0.1]`
+  — that is `[0.1, 1.0]` for a clean plane with no turbo, where `m = 1`.
+
+`c` and hence `v` depend on the two globals, but they cannot move the bound, because `result` is
+pinned by `a` from below and by the explicit `1.0f` cap from above.
+
+## What is still unread, named
+
+* **`00F8731C` and `00F87320`**, the `ratio` interpolation's x-endpoints. Both read **zero in the
+  image on disk**, so they are initialised at runtime and their values are not established. They
+  affect `c`, not the bound above. If they really are equal at runtime the interpolation degenerates
+  at `x0 == x1`; `00419010`'s body was not re-read, so that case is not characterised here.
+* **`[[sub+8h]+908h]`** (the `a` input) and **`[[sub+10h]+C0h]`** (the `v` addend): the sub-object
+  fields at `unit+AB0h+8h` and `+10h` were not identified.
+* **`slot->vtable[214h]`**, the per-slot weight `007C0F40` interpolates on.
+* Everything the previous section listed as open is still open: the pitch demand's bank target, the
+  speed-hold trigger, and the producers of `task+2B4h`/`+2C0h`/`+2D8h`.
+
+## Wiring contract
+
+The heading getter needs no host hook at all — read `unit+C6Ch`. `R` needs
+`BSP_PlaneFlight_ForwardSpeed`, `class+184h`, `class+15Ch`, `class+608h`, the ordnance query the
+host already has from `docs/ORDNANCE_KIND_IDENTITY.md`, the turbo byte `plane+BC8h`, and the four
+quantities named above as unread. A host that supplies the unread four as zero gets `a` from a zero
+altitude term and `c` from a zero ratio — a **legal** result, not an obviously wrong one, so this
+is another place to refuse rather than default. The bound `R ∈ [0, m]` is what a host can assert
+against if it wires the axis and wants a cheap sanity check.

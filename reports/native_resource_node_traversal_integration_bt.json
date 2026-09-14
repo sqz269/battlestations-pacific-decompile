@@ -1,0 +1,213 @@
+{
+  "batch": "orch4_native_resource_node_traversal_integration_bt",
+  "state": "integrated_build_and_actual_service_fixture_passed",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "7c43760ce89b5483ad327416eca39bc05e60bdbf",
+  "code_revision": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+  "packets": [
+    {
+      "packet": "orch4_native_resource_node_traversal_bt",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "routines": 7,
+      "ordinary_bytes": 582
+    }
+  ],
+  "new_ordinary_routines": 7,
+  "new_ordinary_bytes": 582,
+  "ordinary_instruction_starts": 203,
+  "support_instruction_starts": 16,
+  "direct_transfer_rows": 18,
+  "indirect_calls": 2,
+  "incoming_main_review": {
+    "pinned_revision": "a1ea289c63eb30ba637af4338bba1953637397ef",
+    "scope": "Actual unit-part storage allocation/cleanup and concrete constructor defaults; correction to stale script-order diagnostic text.",
+    "observations": "Incoming code is disjoint from BT dependencies. Storage report explicitly retains three incomplete Ghidra body memberships and source private-stack/FH3/fault limits. Selected-set and final-entry providers remain open. Its native fixture and 120-frame compatibility claims were reviewed as borrowed evidence, not independently rerun by this integrator.",
+    "independently_rerun": false,
+    "combined_build": "passed",
+    "merged_revision": "ec3b1f8bf2c833d72244a68a20b6bb3adc6b0c31",
+    "merge": "clean",
+    "subsequent_review": "ec3b1f8b adds partial pilot yaw-input producers, stick override and power ceiling. Required heading/speed inputs remain explicit. No BT dependency changed. This integrator reviewed source boundaries but did not independently establish x87/NaN parity or rerun incoming gameplay/native-oracle claims.",
+    "borrowed_claims_independently_rerun": false
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "source_exception_fixture": "one injected source exception passed",
+    "all_18_direct_transfer_rows": "passed",
+    "all_219_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for13 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false,
+    "combined_fixture_modes": 1,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_node_traversal_bt/build.log",
+      "sha256": "3a6466d392fb9a0dd5e85e66326d1414df6fd1e4c9d61e5ed1fa4bd0233de589",
+      "bytes": 2498
+    },
+    "core_sha256": "39e2db1a9ddb52619cb1aac25c26b571eb0602792862db958380751961f0d171",
+    "game_sha256": "6af802cdafab7827061e7af795adb05edcd22176c0ed07951013645c3c5c55fc"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_node_traversal_bt.json",
+      "sha256": "c1a5ee15a32a2a6de9e10846d22237dee7a10461b4be515e674343bc0b6d57ad",
+      "bytes": 41004
+    },
+    {
+      "path": "reports/native_resource_node_traversal_flow_bt.json",
+      "sha256": "7cc6b0dfc7931b41b207b78b69efc07e89484af25a66e8547c02a289689b9f38",
+      "bytes": 5879
+    },
+    {
+      "path": "reports/native_resource_node_traversal_definitions_bt.json",
+      "sha256": "96e3095e0c6a75c06a72013ee93b20e3dea9886658e23b1fa14d2460a701b633",
+      "bytes": 3416
+    },
+    {
+      "path": "reports/native_resource_node_traversal_annotations_bt.json",
+      "sha256": "898d079d3dfce05eabb5aca728dac2f3e364c3c6f7557a1097f63eec0ddae462",
+      "bytes": 91601
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_resource_node_traversal_bt/combined/source_manifest.json",
+    "sha256": "dbf5c41c7805fe1a67a0b66df3215eb9bab47e8482792dd8b8baacd159eaa971",
+    "bytes": 287831,
+    "files": 2635
+  },
+  "limitations": [
+    "New C++ interfaces; original private stack/EH-spill aliases, native CRT/FH3/SEH and hardware faults unproved.",
+    "Fixture uses concrete existing memory-stream/pool/reader/root/ref services; two forwarding mutation hooks and one source exception injection are not native original-body oracles.",
+    "Allocation-null, path-copy failure and secondary-cleanup termination paths were inspected but not exercised.",
+    "Raw root/item/hierarchy dispatch, manager/factory/parser owners, B80720 loading and queue/worker shutdown remain incomplete."
+  ],
+  "first_source_revision": "620f4b13b1eb04583af458f67d2a21ef9794c53a",
+  "primary_build": {
+    "log": {
+      "path": "local/native_resource_node_traversal_bt/combined_build.log",
+      "sha256": "74e85ce6bd4e1a4fe8366d8f5ca8f55293597bede7d6d1bb773229c2fe454a4a",
+      "bytes": 2484
+    },
+    "core_sha256": "c1aefcbbb2d91df5646f51b79cf781faf533bb22cd6f5e609a523d50f9033b0c",
+    "game_sha256": "480aef2b0c56146720a9e88d604c105b6adea35176466a6e6667ad902be2a80b",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+    "modes": 1,
+    "passed": true,
+    "controlled_child_exit": 0,
+    "note": "Nested actual-service traversal with two forwarding-call mutation checks and one injected source exception after actual payload-header read; original native bodies/FH3 not executed.",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/libraries.json",
+        "sha256": "14818095355b37785e064d418aa290805457cad693de12544aef4a3600dd400f",
+        "bytes": 707
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/probe.cpp",
+        "sha256": "70c858f7e12a29fde80547f7893378b24f86146c2ff9d34c2ca23fd4fe309cfd",
+        "bytes": 15166
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/compile.cmd",
+        "sha256": "093d82187693f2efd9dece8f81f0b0fb40e4409c17bf60c83fee8da7ca50f1b2",
+        "bytes": 720
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/probe.obj",
+        "sha256": "0f882de9a684a3c477a9cda95bfb61dab2c046626d43d77339ccc0b62927f0a5",
+        "bytes": 98366
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/probe.exe",
+        "sha256": "61234f0fa103bcf284547f39f478c2753f656e7086aabd3052f207c5fad453c3",
+        "bytes": 151040
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/probe.log",
+        "sha256": "0cb07066cf5d3f2b85cfe4cee4d0a4d3c89fbf507e603ed12470c9b2c47e1750",
+        "bytes": 410
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/child_probe.log",
+        "sha256": "24a0ea4b87a08238617bf37a9ad2ee81e0b2a4306dbd42807cb784b45bed14e9",
+        "bytes": 370
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/combined/source_manifest.json",
+        "sha256": "dbf5c41c7805fe1a67a0b66df3215eb9bab47e8482792dd8b8baacd159eaa971",
+        "bytes": 287831
+      }
+    ],
+    "earlier_source_commit": "21d35aaa5106b94a297a3911fcfa0fd705ca53d1",
+    "earlier_local_artifacts": [
+      {
+        "path": "local/native_resource_node_traversal_bt/final/libraries.json",
+        "sha256": "483b78049412bf8d01c782f78cc8cb30e23413676a964b8f46b5c25f28f6fd17",
+        "bytes": 698
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/probe.cpp",
+        "sha256": "b3f5736480ad1b0161a3661800dfd1494ec126a719f305ec2f76f62547900607",
+        "bytes": 15160
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/compile.cmd",
+        "sha256": "8701f056ce544c77a14c3dfc9eeca5a9f019901e27ecc974cf83ee5b1c2d1931",
+        "bytes": 702
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/probe.obj",
+        "sha256": "dd8e8db1f99f17a71d9741e46341147ee68a9fbfc080a30a78a1209183186093",
+        "bytes": 98362
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/probe.exe",
+        "sha256": "11dec10e063a961c1504572b6d7c156984276d179524718ac2da50234900544c",
+        "bytes": 151040
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/probe.log",
+        "sha256": "b0f490c6570847f22d935102730e4023b65aa0d23bcfe97b4637cf465945c711",
+        "bytes": 410
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/child_probe.log",
+        "sha256": "24a0ea4b87a08238617bf37a9ad2ee81e0b2a4306dbd42807cb784b45bed14e9",
+        "bytes": 370
+      },
+      {
+        "path": "local/native_resource_node_traversal_bt/final/source_manifest.json",
+        "sha256": "af89d8c17c1107ef7ead59d1e2dad262b65cbe218f514ffa65fc3714202ac5da",
+        "bytes": 287831
+      }
+    ],
+    "earlier_build_log": {
+      "path": "local/native_resource_node_traversal_bt/final_build.log",
+      "sha256": "32d4f18a483ab3cf2eb8fc27559a1659129f1500822960365ed720dcf891db89",
+      "bytes": 2614
+    }
+  }
+}
