@@ -1,0 +1,66 @@
+{
+  "packet": "orch4_game_native_vfs_read_adapter_bh",
+  "base_commit": "bf478455030453d9e37eecb4e08d0b60be302031",
+  "api": "bsp::game::GameNativeVfsRuntime::read_all(const char*) -> std::optional<std::vector<std::uint8_t>>",
+  "contract": {
+    "raw_manager": "same manager, retained services, and open mode 2 as exists/read",
+    "missing_open": "nullopt",
+    "opened_empty": "engaged empty vector",
+    "length": "64-bit +30h stream dispatch; reject above Win32 size_t/count or vector max_size before allocation",
+    "read": "retry positive partial reads to length; throw on zero progress or returned count above request",
+    "failure": "path/core/unsupported/length/allocation/read/release exceptions propagate; release during unwinding preserves the original exception",
+    "release": "one reference decrement after each non-null open; zero-reference dispatch when the decrement reaches zero"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed, MSVC Win32 Release including bsp_core and bsp_game",
+      "core_sha256": "DA273D28A1788EBFD17BE31E4AA462AF33485733082C912E7B5DBC969EAD4F02"
+    },
+    "ctest": "reconstructed_math passed, 1/1",
+    "linked_local_probe": {
+      "source": "local/game_native_vfs_runtime_bh_probe.cpp (ignored worktree-local copy)",
+      "runner": "local/run_game_native_vfs_runtime_bh_probe.ps1 (ignored worktree-local copy)",
+      "executable_sha256": "C7A061E79AF212C2C1E2CD94117C538DB489413CABACA3880295551B9DDB4FB9",
+      "compile_link": "passed, /MD /link /MANIFEST:EMBED",
+      "run": "stopped before raw VFS startup; new read checks not reached",
+      "error": "Required native data band is unavailable in this process",
+      "detail": "RequiredBand=00d10000 AllocationBase=00D10000 RegionBytes=36864 State=00001000 Type=00020000 Protection=00000004 ProcessHeap=00710000",
+      "intended_checks": [
+        "installed scripts/fundamentals.lua equals 657-byte disk file twice",
+        "missing stream returns nullopt",
+        "locally mounted empty file returns engaged empty vector",
+        "shared manager drains without retained objects"
+      ]
+    },
+    "installed_reference": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20E128EBE9A1CB7678E3324B0BAAE93ADAB4F34F4D96BD081FB7B86505F63526"
+    },
+    "static_review": "zero-progress failure and exactly-once release guard inspected; no injected fault proof",
+    "diff_check": "passed"
+  },
+  "migration": {
+    "direct_read_consumers": [
+      "src/game_hosts_vfs.cpp",
+      "src/game_hosts_fonts.cpp",
+      "src/game_hosts_frontend.cpp",
+      "src/game_hosts_init_tail.cpp",
+      "src/game_hosts_mission.cpp",
+      "src/game_hosts_scene_contents.cpp"
+    ],
+    "context_consumers": [
+      "src/game_hosts.cpp",
+      "src/game_hosts_lua.cpp",
+      "src/game_hosts_scene_contents.cpp"
+    ],
+    "lifetime": "Retire raw VFS immediately after shared shutdown while deletion bindings/publication references live; physical-provider pool0109DBF0 and type descriptors require process/CRT storage."
+  },
+  "limitations": [
+    "No consumer migration in this packet",
+    "No new original ABI or game-process validation claim",
+    "Short-read and exception cleanup not dynamically fault-injected",
+    "Raw full-file runtime checks blocked by numeric data band occupancy"
+  ]
+}
