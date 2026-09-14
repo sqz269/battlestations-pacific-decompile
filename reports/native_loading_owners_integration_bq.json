@@ -1,12 +1,12 @@
 {
   "packet": "orch4_native_loading_owners_integration_bq",
   "generated_utc": "2026-09-14T15:59:52.444405+00:00",
-  "code_revision": "3948a176b7693bd5bae3287e9bdf5297937264f2",
+  "code_revision": "fa879ae60afb839ac011dbc11c29c4830ea1cd81",
   "source_manifest": {
-    "path": "local/native_loading_owners_bq/source_3948a176b769.json",
-    "sha256": "a2db17c686802bcf1389a17e1f540b3247d69e139f24651764b7654912ce8187",
-    "bytes": 283170,
-    "files": 2617
+    "path": "local/native_loading_owners_bq/source_fa879ae60afb.json",
+    "sha256": "d134e5eb0cc0b82fdca666ddbbe39a00c9c860590ddc79beb86aead68c05d362",
+    "bytes": 283268,
+    "files": 2618
   },
   "source_routines": [
     {
@@ -93,6 +93,11 @@
       "path": "local/native_loading_owners_bq/frozen_inputs.json",
       "sha256": "0fb74dff77d0b9cd14a75b9ffebd6453de3ff9ff532867dba05d04c902d39ffb",
       "bytes": 1681
+    },
+    "duplicate_header_definitions": {
+      "passed": true,
+      "receipt": "local/native_loading_owners_bq/duplicate_names.json",
+      "note": "Read-only namespace-aware checker extracted with AST; integrator CLI not imported for this successful check."
     }
   },
   "primary_build": {
@@ -101,12 +106,12 @@
     "passed": true,
     "existing_ctests_passed": 2,
     "log": {
-      "path": "local/native_loading_owners_bq/build.log",
-      "sha256": "0722f81b7f255cb9a77ea3dcf5b3406972efb424f4e6f6485a476c4c43b47963",
-      "bytes": 2549
+      "path": "local/native_loading_owners_bq/combined_build.log",
+      "sha256": "f6ee6b1fa5002695ae4e3c34f50bc4ab2e2a1889ae661e9c824b23228f6c8b72",
+      "bytes": 2486
     },
     "core_sha256": "78835ac05ce149c015c3b5fd7d8d27e43b433ee09f7d81375585a98359e9c6b2",
-    "game_sha256": "9fefc95ca0b3ca2e76ca86d0dc6d494c150febe7af5804afd3f48c0f301f4cda"
+    "game_sha256": "e8b5f6ee4ed482ed8407d80d3fb2b781025e91cd6a973dd19162d35b625c87e1"
   },
   "ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -131,7 +136,11 @@
     ],
     "owned_source_overlap": [],
     "borrowed_source_inputs_unchanged": 18,
-    "source_review": "Read the gunnery delta admitting authored non-traversing platforms and the separate clean-build script. Other-owner numbering/gameplay evidence remains separate. Primary will merge and rerun its normal build; clean_verify.ps1 was not executed here."
+    "source_review": "Read the gunnery delta admitting authored non-traversing platforms and the separate clean-build script. Other-owner numbering/gameplay evidence remains separate. Primary will merge and rerun its normal build; clean_verify.ps1 was not executed here.",
+    "merged_commit": "01e5f4f9cfb05f8887ba12ea185c293dd75fdf0c",
+    "merge": "clean",
+    "combined_win32_build": "passed",
+    "existing_ctests_passed": 2
   },
   "recovery": {
     "tree_worker": "Two stopped-worker source drafts recovered byte-for-byte and completed with evidence/fixture/build.",
@@ -144,5 +153,27 @@
     "Actual resource-manager construction, parser registration and complete native loader dispatch remain incomplete.",
     "Production loading-queue prepare/delete bindings have not been connected to these new FileBlock bodies.",
     "Original ABI/CRT/FH3/TLS/CLR and gameplay validation are not established; no game run for BQ."
-  ]
+  ],
+  "first_source_validation": {
+    "code_revision": "3948a176b7693bd5bae3287e9bdf5297937264f2",
+    "source_manifest": {
+      "path": "local/native_loading_owners_bq/source_3948a176b769.json",
+      "sha256": "a2db17c686802bcf1389a17e1f540b3247d69e139f24651764b7654912ce8187",
+      "bytes": 283170,
+      "files": 2617
+    },
+    "primary_build": {
+      "command": "./scripts/build.ps1",
+      "platform": "MSVC Win32",
+      "passed": true,
+      "existing_ctests_passed": 2,
+      "log": {
+        "path": "local/native_loading_owners_bq/build.log",
+        "sha256": "0722f81b7f255cb9a77ea3dcf5b3406972efb424f4e6f6485a476c4c43b47963",
+        "bytes": 2549
+      },
+      "core_sha256": "78835ac05ce149c015c3b5fd7d8d27e43b433ee09f7d81375585a98359e9c6b2",
+      "game_sha256": "9fefc95ca0b3ca2e76ca86d0dc6d494c150febe7af5804afd3f48c0f301f4cda"
+    }
+  }
 }
