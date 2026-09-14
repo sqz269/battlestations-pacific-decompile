@@ -204,4 +204,58 @@ float axis_urgency_0099e996(float urgency, float reference, float committed) {
     return urgency;                                 // 0099EA17 JBE leaves it alone
 }
 
+float yaw_base_numerator_0099de8a(const PilotBotHeadingTerm& in) {
+    float e = in.heading_error * in.speed_scale;  // 0099DEBD FMUL [ESP+28h]
+
+    // 0099DECC-0099DF03: a symmetric deadband of half-width tuning+3Ch. The middle case
+    // zeroes the term outright (0099DEFC XORPS).
+    if (e >= in.deadband) {
+        e -= in.deadband;  // 0099DED8 FSUBRP
+    } else if (e <= -in.deadband) {
+        e += in.deadband;  // 0099DEEE FADDP
+    } else {
+        return 0.0f;
+    }
+
+    // 0099DF09-0099DF87: below the limit the term is scaled by tuning+34h; at or above it
+    // the term is instead moved toward zero by (1 - tuning+34h) * limit.
+    const float limit = (in.rate_a + in.rate_b) * in.rate_scale;  // 0099DF1B, 0099DF21
+    const float mag = e > 0.0f ? e : -e;                          // 0099DF28 / 0099DF3A
+    if (limit > mag) return in.keep * e;                          // 0099DF54, 0099DF57
+    const float step = (1.0f - in.keep) * limit;                  // 0099DF63 FLD1 / FSUBRP
+    return e > 0.0f ? e - step : e + step;                        // 0099DF6F / 0099DF79
+}
+
+float yaw_base_gain_0099dffb(const PilotBotTuning& tuning, float abs_bank) {
+    // 0099E016 pushes 1.0f as y0 and 0099E006 pushes 0.0f as y1 — the reverse of the
+    // blend fraction's 0 -> 3 inside plan_yaw_0099e81a, over the same x range.
+    return interpolate_clamped(tuning.blend_x0, 1.0f, tuning.blend_x1, 0.0f, abs_bank);
+}
+
+float yaw_turn_numerator_0099e69b(const PilotBotTurnTerm& in) {
+    // 0099E69B-0099E6AE. sin(bank) is squared by FMUL ST0 against itself.
+    const float p = in.sin_bank * in.sin_bank * in.cos_pitch * in.slide_ratio * in.yaw_spd;
+    // 0099E630-0099E64A. The live x87 term the FMULP at 0099E6CC consumes; 00D7A390 = 0.9
+    // and 00D7A3A0 = 0.1, so the speed factor is remapped onto [0.1, 1.0].
+    const float x = in.rate_b * (in.speed_factor * 0.9f + 0.1f) * in.cos_bank;
+    // 0099E6BA / 0099E6D8: NegativePitchRatio only when the plane is inverted.
+    const float k = in.inverted ? in.negative_pitch_ratio : 1.0f;
+    return p - k * x;  // 0099E6CE FSUBR
+}
+
+bool stick_override_0099d620(float stick_axis, float* out) {
+    if (stick_axis == 0.0f) return false;  // 0099D620 UCOMISS / 0099D627 JNP
+    *out = clamp_unit(stick_axis);         // 0099D629-0099D638, bounds -1.0f and 1.0f
+    return true;
+}
+
+float power_ceiling_0099dc7a(float previous_power, float desired, bool* wrote) {
+    if (previous_power > 0.6f) {  // 0099DC8A COMISS against 00CE3D30, 0099DC8D JBE
+        if (wrote != nullptr) *wrote = true;
+        return 0.6f;              // 0099DC8F stores the constant itself, not the previous
+    }
+    if (wrote != nullptr) *wrote = false;
+    return desired;
+}
+
 }  // namespace bsp
