@@ -575,7 +575,10 @@
       "bytes": 2590
     },
     "native_binary_abi_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "build_source_commit": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+    "combined_fixture_modes": "passed against integrated libraries, hash-identical to final build",
+    "integration_report": "reports/native_loading_queue_integration_br.json"
   },
   "evidence_limits": [
     "New explicit C++ interfaces over actual storage. Original CRT/FH3/SEH identity, native stack and EH-spill aliasing, hardware fault cleanup, callee-internal exception boundaries and gameplay are unverified.",

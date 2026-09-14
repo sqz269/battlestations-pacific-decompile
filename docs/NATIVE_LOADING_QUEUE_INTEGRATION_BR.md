@@ -46,3 +46,5 @@ sequence is introduced. The queue fixture never starts a worker. New source
 interfaces and source C++ failure boundaries are not native FH3/SEH/CRT ABI or
 gameplay proof. Retirement inherits BQ's explicit retained FileBlock outer
 failure model. Overall game reconstruction is still incomplete.
+
+Final code revision `35c9b762a12bca1ab24972ffae5cebfa349c9ced` includes published main `b1ee148fdcaad58ae76382db10bc0d63a4f91085`. The clean combined build and both tests passed. All three fixture modes also passed linked only to the integrated library; the copied core/Lua/zlib libraries are byte-identical to this final build. The source manifest records 2625 exact build inputs. Incoming diagnostic target-classifier projections were reviewed for integration, not independently revalidated as native x87 or gameplay parity.
