@@ -241,5 +241,74 @@
     "manifest_resource_id": 24,
     "freeze_driver_log_sha256": "70e866e1248811062ee718fdfc0d334d5342562a0831206bb5afac5dd85183c8",
     "final_metadata_scope": "Report-only archive pins after frozen source commit; fixture, production source, binary and all frozen inputs remain unchanged."
+  },
+  "parent_integration": {
+    "source_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_matched": 8,
+    "numeric_rows": 50,
+    "numeric_failures": 0,
+    "indirect_rows_not_mechanically_proved": 7,
+    "fresh_live_PE_spans": 21,
+    "fresh_live_PE_bytes": 2848,
+    "debug_fixture": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "libraries_before_after": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "6b3f2bfb634fa9c5f4e30d4d138adf40bd62a1b26ae824b6755384c2b108f8d0",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+      },
+      "source_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+      "scope": "Existing original/source zero, skipped and negative-count parent, literal 38-vertex interior across four rounding modes, raw local matrix/notification and source unsupported-target retention. Full active/cold parent and FH3/game remain unexecuted."
+    },
+    "sampler_fixture": {
+      "source_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+      "build_exit": 0,
+      "run_exit": 0,
+      "inputs_before_after": {
+        "library": "6b3f2bfb634fa9c5f4e30d4d138adf40bd62a1b26ae824b6755384c2b108f8d0",
+        "compiler_object": "174f6f04cdfa588e2b0478d700cd7aa4a2e40829a3658f934a8032b6ac09ff16",
+        "compiler_source": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111"
+      },
+      "executed_compiler_source": "CMake-produced bsp_core.lib member; no explicit compiler TU override",
+      "map_members": [
+        "0001:00012d30       ?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00413d30 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:00013c79       __catch$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$0 00414c79 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004d600       __unwindfunclet$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$8 0044e600 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004d612       __unwindfunclet$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$2 0044e612 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004d61f       __ehhandler$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 0044e61f f   bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00018104       __catchsym$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$13 00468104     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00018114       __tryblocktable$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00468114     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00018128       __unwindtable$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00468128     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00018148       __ehfuncinfo$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00468148     bsp_core:native_material_program_compiler_actual.obj"
+      ],
+      "fixture_executable_sha256": "e3e50507d0544a3360bc5983766c1ef6e799a3989168ea0e23fcbee15d83f442",
+      "scope": "Full cached source B3C3A0/B3B3C0 with one source-zero sampler, actual D3DX/HAL shaders and reflection, state override, nine owners and hot white acquisition. Original B3B280/B5F100 executes only no-growth source-zero append with an explicit scratch preimage. Scalar effect and online-null borrowed platform receiver remain supplied inputs. No source1, cold source branch, original whole compiler, teardown/FH3/drawing/game."
+    },
+    "generated_vertex_instructions_compared": 123,
+    "debug_worker_manifest_sha256": "06ef765287f55e831b35e380d898f6e447ab5f90fa063efdc5f7395cf6c13269",
+    "sampler_worker_and_review_archive_sha256": "bfdcf03baf52e873beaa48f3d53a491be1f7ac0833847b0e69a87bede0dc32a6",
+    "independent_debug_review_sha256": "1fda4538b252b9c45b5fdd256d605a21d262500dc722030d20d62c0b562488aa",
+    "independent_sampler_review_sha256": "1811db4aa47d798b6d2487dfca5e00cab9af016f87c06e74d184c0f208dfff6a",
+    "saved_annotations": 4,
+    "new_descriptive_names": 1,
+    "limits": [
+      "Active/cold B2BB90 parent",
+      "Original whole compiler/FH3/private aliases",
+      "Cold source and VFS path",
+      "Full platform/effect construction",
+      "Source1 and original sampler growth",
+      "Teardown/drawing/game"
+    ],
+    "immutable_checkpoint": {
+      "path": "local/checkpoints/a6b2884f/native-debug24-sampler-wave/validation.json",
+      "sha256": "0afd95f27697cdf1ad50bef6242a70c851079aca5a42e53c24dbff3c6178937e",
+      "source_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+      "artifacts": 3602,
+      "runtime_module_observations": 95,
+      "unique_runtime_modules": 82
+    }
   }
 }

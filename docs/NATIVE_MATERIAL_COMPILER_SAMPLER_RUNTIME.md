@@ -1,5 +1,7 @@
 # Cached compiler with one source-zero sampler
 
+Addresses: 00B3B280, 00B5F100.
+
 This fixture extends the completed cached compiler runtime with one root
 descriptor sampler: pixel `Diffuse`, source0, index0, and empty sampler/state
 lists. The mode descriptor remains empty. It changes no production source,
@@ -89,3 +91,20 @@ no platform construction or publication replacement. All contexts and acquired
 objects remain held to process exit, with no acknowledgement or fake retirement.
 Source1/source3 samplers, cold loading, generated-source compilation, original
 growth/FH3, terminal teardown, drawing and gameplay remain unvalidated.
+
+
+## Combined-library validation (2026-09-14)
+
+The unchanged behavioral fixture passes against source a6b2884f's CMake-built
+bsp_core.lib without a compiler translation-unit override. The map resolves
+the actual compiler archive member. Source-zero row0/7B295400 agrees with the
+separate original no-growth observation; the mode scratch192EF0C3 remains
+unconsumed. Real HAL shaders/reflection, six slot-zero defaults, nine canonical
+owners, state override and hot white acquisition pass. Only a physical mapped
+module observer was added to the retained fixture.
+
+The independent review and all worker artifacts were copied and hash-verified.
+Parent integration records the combined-library result separately. Supplied
+descriptor/cache rows, scalar effect and online-null platform receiver retain
+their earlier limits; canonical effect preparation, source1, original growth,
+whole original compiler/FH3, teardown, drawing and gameplay remain unproved.

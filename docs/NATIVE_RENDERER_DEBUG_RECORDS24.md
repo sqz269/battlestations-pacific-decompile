@@ -1,5 +1,7 @@
 # Native renderer debug records
 
+Addresses: 00B2BB90, 00B6DB10, 00B6DA30, 00B6DBC0.
+
 `src/native_renderer_debug_records24.cpp` reconstructs the full normal B2BB90 schedule;
 `src/native_renderer_debug_records24_leaves.cpp` holds its x87 vertex interior and
 raw local-matrix notification closure. These are new
@@ -167,3 +169,20 @@ outstanding optional-index creator reference. Full game setup, original active
 unwind/runtime behavior, arbitrary current virtual targets, private scratch alias
 and x87 stack-fault ABI, and visual parity remain open. An executable link alone
 does not establish those behaviors.
+
+
+## Combined-library validation (2026-09-14)
+
+Source a6b2884f preserves the newer integrated gather, constant builder and pass
+implementations while adding this complete debug source schedule. The retained
+fixture now links against the combined CMake library. Original/source zero,
+skipped and negative-count parent cases, eight vertex comparisons across four
+x87 rounding modes, raw matrix/notification and unsupported-target retained
+effects pass. All 123 vertex interior instructions match the generated COFF
+after only the documented step-address and branch-target normalization.
+
+The batch passed strict Win32, both existing CTests, eight native seeds, 50
+numeric call rows and 21 live/installed-PE spans totaling 2,848 bytes. Seven
+indirect sites retain explicit contracts. Four Ghidra annotations were saved
+and read back, including BSP_Renderer_DrawDebugSphereRecords at B2BB90.
+The active/cold parent, native FH3 and game drawing remain unexecuted.
