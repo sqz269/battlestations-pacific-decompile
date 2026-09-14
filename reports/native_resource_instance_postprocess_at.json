@@ -1161,5 +1161,22 @@
       "name": "BSP_ResourceInstance_BindAnimatorsSkinAndCameraTargets",
       "evidence": "ANALYZED ONLY: complete3613-byte ECXinstance/RET caller; not source-reconstructed. Five phases: compact-track registry/38h animators; track registry/30h animators and name slots; skin60h bindings or copied-matrix defaults (gated by nonempty track range); current animator slot20 finalize; camera named target438 and current FOV/aspect. First-name/identity matches, current containers, x87 transport, callback mutation and distinct retain/release schedules matter. Pseudocode removes reachable blocks. Missing track key becomes -1 before raw store. Camera release-before-publish differs from node animator publish-before-release; no same-pointer shortcut. Complete registry/factories/skin finalizer/B630F0/native exception ABI and graph admission remain required."
     }
-  ]
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\resource_instance_postprocess_at\\manifest.json",
+      "bytes": 120410,
+      "sha256": "3ea5fd2a4a687c0f311602484080c8d660c076983722df7a8d41621b806675bd"
+    },
+    "source_commit": "d2fc4adc222f2d9b7172d352bc98c2bfb44fb250",
+    "inputs": 244,
+    "artifacts": 91,
+    "fixture_production_objects": 1,
+    "paired_helper_cases": 20,
+    "source_failure_cases": 1,
+    "saved_annotations": 13,
+    "complete_helper_or_reuse_bodies": 12,
+    "complete_helper_bytes": 929,
+    "analyzed_caller_bytes": 3613
+  }
 }
