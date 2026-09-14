@@ -32,7 +32,13 @@
     "combined_build": "passed",
     "merged_revision": "d697a0f68b42afa69d44d9f7c2ed9c554fc2a0ca",
     "merge": "clean",
-    "borrowed_claims_independently_rerun": false
+    "borrowed_claims_independently_rerun": false,
+    "documentation_only_followup": {
+      "revision": "73c7fc052b6a5c1e0e51375fcac75b0e435d429d",
+      "merge_revision": "9fc99c82755c27829df22412c14aa44d837370e8",
+      "source_inputs_unchanged": true,
+      "observations": "Later documentation traces the part-shape source through class+50h slot8. Live disassembly at87BDF5..87BE02 confirms a null class-field guard branches to87BF5B before this producer call. This sample does not establish absence of writers, whole-program second-vector nonpopulation, or faithful zero part damage. No build inputs changed from the tested revision."
+    }
   },
   "validation": {
     "strict_msvc_win32": "passed",
