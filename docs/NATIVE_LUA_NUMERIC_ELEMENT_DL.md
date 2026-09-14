@@ -38,3 +38,5 @@ VM or its private register ABI. Any local comparison that executes relocated
 native bytes uses explicit C API bridges and must be labelled accordingly.
 Full game execution, original Lua error/longjmp paths, unmasked x87 faults,
 hardware exceptions, and native unwind compatibility remain unvalidated.
+
+Validation at exact source `61fc799eb36dfb3f33762b3bc08cd34c7e2262ca` passed MSVC Win32 Release and both existing CTests with 2619 unchanged tracked build inputs. The complete generated body is89 bytes: all native noncall instruction bytes are identical, with only four explicit Lua C call bridges. One ignored local differential fixture compared source and relocated original body through those C API bridges. Both INT32_MIN/min-subnormal and -1/signalling-NaN cases matched exact binary64 bits and x87 status flags (0002 and0001), retained control word037F, balanced both stacks and preserved actual owner/object storage. No repository tests were added. The four original native call displacements were patched for this probe; the original game Lua implementation and unmasked faults remain outside that evidence.
