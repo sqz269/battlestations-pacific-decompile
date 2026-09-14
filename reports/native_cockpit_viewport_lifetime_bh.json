@@ -1,0 +1,507 @@
+{
+  "packet": "orch3_cockpit_viewport_lifetime_bh",
+  "date": "2026-09-13",
+  "status": "design_only_registry_ready_for_review_runtime_borrow_quiescence_unproven",
+  "worker_base": "58145d55",
+  "bg_contract_commit": "ff8e720f",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "bridge": "http://127.0.0.1:8089",
+    "verification": "BSP CLI Client.verify on live batches; read only"
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "new_native_bytes": 0,
+    "cpp_changes": 0,
+    "builds": 0,
+    "new_tests": 0,
+    "ghidra_mutations": 0
+  },
+  "routines": [
+    {
+      "address": "00B71A80",
+      "end_inclusive": "00B71CDB",
+      "bytes": 604,
+      "coverage": "complete normal assembly; scoped viewport allocation/unwind; dependency contracts not reimplemented"
+    },
+    {
+      "address": "00B3C800",
+      "end_inclusive": "00B3C952",
+      "bytes": 339,
+      "coverage": "complete normal assembly; full constructor/EH contract remains BG"
+    },
+    {
+      "address": "00B1F850",
+      "end_inclusive": "00B1F8EB",
+      "bytes": 156,
+      "coverage": "complete normal assembly and base unwind"
+    },
+    {
+      "address": "00B71990",
+      "end_inclusive": "00B719D0",
+      "bytes": 65,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00BD30E0",
+      "end_inclusive": "00BD30ED",
+      "bytes": 14,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00BD30F0",
+      "end_inclusive": "00BD30F6",
+      "bytes": 7,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B1F8F0",
+      "end_inclusive": "00B1F913",
+      "bytes": 36,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B71F10",
+      "end_inclusive": "00B71FD1",
+      "bytes": 194,
+      "coverage": "complete normal assembly; nonviewport dependency contracts not expanded"
+    },
+    {
+      "address": "00B71FE0",
+      "end_inclusive": "00B71FFF",
+      "bytes": 32,
+      "coverage": "complete assembly; B711E0 inherited source contract"
+    },
+    {
+      "address": "00B26770",
+      "end_inclusive": "00B26891",
+      "bytes": 290,
+      "coverage": "complete assembly; no viewport retain/release"
+    },
+    {
+      "address": "00B71360",
+      "end_inclusive": "00B713C5",
+      "bytes": 102,
+      "coverage": "complete assembly; actual viewport rather than semantic view"
+    },
+    {
+      "address": "00B1D120",
+      "end_inclusive": "00B1D1C7",
+      "bytes": 168,
+      "coverage": "complete normal assembly"
+    },
+    {
+      "address": "00CBCCB0",
+      "end_inclusive": "00CBCCB7",
+      "bytes": 8,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00CC1AD0",
+      "end_inclusive": "00CC1AD7",
+      "bytes": 8,
+      "coverage": "complete assembly; node destructor callee not reaudited"
+    },
+    {
+      "address": "00CC1AD8",
+      "end_inclusive": "00CC1AE2",
+      "bytes": 11,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00CC1AE3",
+      "end_inclusive": "00CC1AF0",
+      "bytes": 14,
+      "coverage": "complete assembly; 605FD0 callee not reaudited"
+    },
+    {
+      "address": "00CBED09",
+      "end_inclusive": "00CBED13",
+      "bytes": 11,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B1F730",
+      "end_inclusive": "00B1F733",
+      "bytes": 4,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B1F740",
+      "end_inclusive": "00B1F743",
+      "bytes": 4,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B1F7D0",
+      "end_inclusive": "00B1F7D3",
+      "bytes": 4,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B1F7B0",
+      "end_inclusive": "00B1F7B3",
+      "bytes": 4,
+      "coverage": "complete assembly"
+    },
+    {
+      "address": "00B29430",
+      "end_inclusive": "00B295B5",
+      "bytes": 390,
+      "coverage": "complete assembly; native cache+18D0 zero proof"
+    },
+    {
+      "address": "00B241C0",
+      "end_inclusive": "00B24457",
+      "bytes": 664,
+      "coverage": "complete normal decompilation, terminal assembly B2434E..B24457; no full EH claim"
+    },
+    {
+      "address": "00B339F0",
+      "end_inclusive": "00B33A0D",
+      "bytes": 30,
+      "coverage": "complete assembly; renderer destructor dependency only"
+    },
+    {
+      "address": "00B32920",
+      "end_inclusive": "00B32D72",
+      "bytes": 1107,
+      "coverage": "partial: complete top-level decompilation and prefix assembly through B329DA; remaining assembly B329DD..B32D72, EH and indirect cleanup dependencies not audited"
+    },
+    {
+      "address": "00B24BF0",
+      "end_inclusive": "00B24DB4",
+      "bytes": 453,
+      "coverage": "partial: top-level decompilation only; assembly/register provenance, nested providers and EH not audited"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00B71ABA",
+      "native": "00BF681B",
+      "function": "00B71A80",
+      "contract": "Actual34h allocation; PUSH34h; ADD ESP,4 at B71ABF"
+    },
+    {
+      "address": "00B71AD1",
+      "native": "00B1F850",
+      "function": "00B71A80",
+      "contract": "Construct exact saved raw allocation; RET; first +180 publication B71ADD"
+    },
+    {
+      "address": "00B3C8F8",
+      "native": "00BF681B",
+      "function": "00B3C800",
+      "contract": "Actual replacement34h allocation; ADD ESP,4 at B3C8FD"
+    },
+    {
+      "address": "00B3C90F",
+      "native": "00B1F850",
+      "function": "00B3C800",
+      "contract": "Construct exact replacement allocation; EDI result at B3C914; RET"
+    },
+    {
+      "address": "00B3C923",
+      "native": "00B71990",
+      "function": "00B3C800",
+      "contract": "Current helper+0C reloaded B3C91A; local EDI actual viewport; RET4"
+    },
+    {
+      "address": "00B1F8F9",
+      "native": "00BD30F0",
+      "function": "00B1F8F0",
+      "contract": "Restore base before physical free"
+    },
+    {
+      "address": "00B1F906",
+      "native": "00BF65AC",
+      "function": "00B1F8F0",
+      "contract": "Same actual pointer iff flags&1; ADD ESP,4 B1F90B"
+    },
+    {
+      "address": "00CC1ADC",
+      "native": "00BF65AC",
+      "function": "00CC1AD8",
+      "contract": "First raw allocation free on construction failure; POP ECX CC1AE1"
+    },
+    {
+      "address": "00CBED0D",
+      "native": "00BF65AC",
+      "function": "00CBED09",
+      "contract": "Replacement raw allocation free on construction failure; POP ECX CBED12"
+    },
+    {
+      "address": "00B71FE3",
+      "native": "00B71F10",
+      "function": "00B71FE0",
+      "contract": "Camera actual destructor before conditional pool return"
+    },
+    {
+      "address": "00B1D1B0",
+      "native": "00BD30F0",
+      "function": "00B1D120",
+      "contract": "Context base after camera/scene/target release"
+    },
+    {
+      "address": "00B267B0",
+      "native": "00B1F730",
+      "function": "00B26770",
+      "contract": "Address actual owner+08; caller reads x; RET"
+    },
+    {
+      "address": "00B267BD",
+      "native": "00B1F730",
+      "function": "00B26770",
+      "contract": "Address actual owner+08; caller reads y; RET"
+    },
+    {
+      "address": "00B267CB",
+      "native": "00B1F740",
+      "function": "00B26770",
+      "contract": "Address actual owner+10; caller reads width; RET"
+    },
+    {
+      "address": "00B267D8",
+      "native": "00B1F740",
+      "function": "00B26770",
+      "contract": "Address actual owner+10; caller reads height; RET"
+    },
+    {
+      "address": "00B26820",
+      "native": "00B1F7D0",
+      "function": "00B26770",
+      "contract": "Read actual byte20 after SetViewport; RET"
+    },
+    {
+      "address": "00B26837",
+      "native": "00B1F7D0",
+      "function": "00B26770",
+      "contract": "Reread actual byte20 after B24460; RET"
+    },
+    {
+      "address": "00B2684B",
+      "native": "00B1F7B0",
+      "function": "00B26770",
+      "contract": "Return actual owner+24 rectangle address; RET"
+    },
+    {
+      "address": "00B329CA",
+      "native": "00B241C0",
+      "function": "00B32920",
+      "contract": "ECX renderer+34 from B329C7; cache+18D0 is actual renderer+1904 and is preserved"
+    },
+    {
+      "address": "00B339F3",
+      "native": "00B32920",
+      "function": "00B339F0",
+      "contract": "Call existing renderer destructor body; nested teardown contracts partial"
+    },
+    {
+      "address": "00B295AC",
+      "native": "00B241C0",
+      "function": "00B29430",
+      "contract": "Reset actual cache after constructor initialized cache+18D0 B294E4"
+    }
+  ],
+  "eh_steps": [
+    {
+      "address": "00CBCCB3",
+      "native": "00BD30F0",
+      "function": "00CBCCB0",
+      "kind": "tail_jump",
+      "contract": "Unconstructed viewport base cleanup; no registration or physical free"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00B1F8BB",
+      "native": "00F8D394+vtable30",
+      "function": "00B1F850",
+      "kind": "indirect",
+      "contract": "Fresh first renderer publication, width; concrete binding B1FF60"
+    },
+    {
+      "address": "00B1F8CE",
+      "native": "00F8D394+vtable30",
+      "function": "00B1F850",
+      "kind": "indirect",
+      "contract": "Fresh second renderer publication, height; concrete binding B1FF60"
+    },
+    {
+      "address": "00B719AD",
+      "native": "00CE221C+IAT",
+      "function": "00B71990",
+      "kind": "indirect",
+      "contract": "Current actual incoming+04 increment after +180 publication"
+    },
+    {
+      "address": "00B719BB",
+      "native": "00CE2220+IAT",
+      "function": "00B71990",
+      "kind": "indirect",
+      "contract": "Current actual captured old+04 decrement"
+    },
+    {
+      "address": "00B719CB",
+      "native": "captured_old+vtable00",
+      "function": "00B71990",
+      "kind": "indirect",
+      "contract": "Current captured old profile slot0 iff decrement zero"
+    },
+    {
+      "address": "00B3C92C",
+      "native": "00CE2220+IAT",
+      "function": "00B3C800",
+      "kind": "indirect",
+      "contract": "Local EDI+04 decrement, never camera+180 reload"
+    },
+    {
+      "address": "00B3C93C",
+      "native": "local_EDI+vtable00",
+      "function": "00B3C800",
+      "kind": "indirect",
+      "contract": "Current local profile slot0 iff decrement zero"
+    },
+    {
+      "address": "00B71F54",
+      "native": "00CE2220+IAT",
+      "function": "00B71F10",
+      "kind": "indirect",
+      "contract": "Captured camera viewport+04 decrement; EBP captured IAT at B71F3C"
+    },
+    {
+      "address": "00B71F60",
+      "native": "captured_viewport+vtable00",
+      "function": "00B71F10",
+      "kind": "indirect",
+      "contract": "Current slot0 iff zero; clear camera+180 only B71F62"
+    },
+    {
+      "address": "00BD30EB",
+      "native": "current_owner+vtable04",
+      "function": "00BD30E0",
+      "kind": "indirect",
+      "contract": "PUSH1, ECX same; concrete D5E5F8 slot B1F8F0"
+    },
+    {
+      "address": "00B2680F",
+      "native": "current_device+vtableBC",
+      "function": "00B26770",
+      "kind": "indirect",
+      "contract": "SetViewport then publish actual owner+1904 B2681A"
+    },
+    {
+      "address": "00B2685E",
+      "native": "current_device+vtable12C",
+      "function": "00B26770",
+      "kind": "indirect",
+      "contract": "Actual+24 rectangle; viewport owner borrowed"
+    },
+    {
+      "address": "00B71392",
+      "native": "current_renderer+vtableA4",
+      "function": "00B71360",
+      "kind": "indirect",
+      "contract": "Captured current camera+180 at B71385; concrete B26770"
+    },
+    {
+      "address": "00B1D15D",
+      "native": "00CE2220+IAT",
+      "function": "00B1D120",
+      "kind": "indirect",
+      "contract": "Captured context.camera+04 decrement"
+    },
+    {
+      "address": "00B1D169",
+      "native": "captured_camera+vtable00",
+      "function": "00B1D120",
+      "kind": "indirect",
+      "contract": "Zero path; context+08 cleared only B1D16B"
+    }
+  ],
+  "identity_evidence": {
+    "viewport_table": "D5E5F8 eight live bytes E0 30 BD 00 F0 F8 B1 00",
+    "renderer_table": "D5F0A8 slot0 B339F0",
+    "first_publication": "B71ADD",
+    "helper_camera_publication": "B3C892",
+    "replacement_current_camera_reload": "B3C91A",
+    "replacement_local_identity": "EDI captured B3C914 and unchanged through B3C93C",
+    "cache_offset_correction": "renderer+1904 = (renderer+34 cache)+18D0; B241C0 preserves18D0; B294E4 initializes18D0"
+  },
+  "design": {
+    "files_new": [
+      "include/bsp/native_viewport_registry.hpp",
+      "src/native_viewport_registry.cpp",
+      "include/bsp/native_cockpit_construction_runtime.hpp",
+      "src/native_cockpit_construction_runtime.cpp"
+    ],
+    "files_coordinated_edits": [
+      "include/bsp/native_viewport_owner.hpp",
+      "src/native_viewport_owner.cpp",
+      "include/bsp/native_camera_owner.hpp",
+      "src/native_camera_owner.cpp"
+    ],
+    "optional_host_semantic_borrow_files": [
+      "include/bsp/camera_frame_state.hpp",
+      "src/camera_frame_state.cpp"
+    ],
+    "records": "Exactly two caller-owned stable records embedded in persistent construction block; host allocation/admission before native events; runtime explicitly retains failure-survivor blocks",
+    "registration": "Noalloc/no callback after successful B1F850 before camera publication; two explicit attempt-specific admissions; no ambient next-admission field",
+    "lookup": "One intrusive actual-address registry; pure lookup only; no copy, retain, dimensions or fallback",
+    "routing": "One module-scoped host borrowed registry binding prepared before construction. Multiple construction runtimes share it. B1F8F0 common source entry retires actual identity for flags0 and flags1; no native owner metadata/native global",
+    "retirement": "Unlink live key before native destructor/free; keep inert never-rebound host records until explicit host quiescence, then forget and reclaim construction storage. No shadow count or delayed native free",
+    "constructor_failure": "B1F850 failure was never registered; raw free unchanged. B71A80 late failure preserves first registry/native owner. B3C800 late failure preserves camera and companions. Cancel only unused credits",
+    "queue": "Camera/reference/environment/registry/construction block survive helper free while actual queued camera count remains. Queue camera reference does not retain an earlier viewport snapshot",
+    "unsupported": "Competing registry installation, bypass direct free, arbitrary native profiles, concurrent publication without actual scheduling contract; no blanket ban on field mutation/helper-camera replacement/nested preparation"
+  },
+  "all_callers": {
+    "b1f850_direct_xref_count": 20,
+    "b71990_direct_xref_count": 28,
+    "inspected_b1f850_sites": [
+      "00B71AD1",
+      "00B3C90F"
+    ],
+    "inspected_b71990_sites": [
+      "00B3C923"
+    ],
+    "limit": "Other setup sites enumerated but not audited; no universal all-callers contract. B1F8F0 and B26770 indirect graph absence is not no-use proof."
+  },
+  "remaining_blockers": [
+    "Current semantic raw-pointer viewport() API exposes host view indefinitely; explicit host borrow end/cache detachment must precede construction-block reclamation.",
+    "No runtime evidence establishes captured viewport survival if device/state callback terminally frees it during B26770. Native raw code has same late reads; registry cannot repair it by extra retention or delayed native free.",
+    "Cross-thread lookup/retirement and actual camera publication require concrete scheduler/provider evidence, not a lookup mutex alone.",
+    "Full renderer destructor EH/nested callback domain and other viewport producer caller setup remain unexpanded; no gameplay or ABI/runtime validation."
+  ],
+  "corrections": [
+    {
+      "was": "One optional prebound probe view could supply production resolver",
+      "is": "Both actual first and replacement viewport need independently preadmitted persistent records",
+      "evidence": "native_camera_probe.cpp33/94; native_camera_owner.cpp280; B3C90F"
+    },
+    {
+      "was": "Camera preparation cancellation can discard all associated views",
+      "is": "Late B71A80 failure preserves already published first viewport independently",
+      "evidence": "B71ADD; CC1AD0/CC1AD8/CC1AE3; native_camera_owner.cpp329"
+    },
+    {
+      "was": "Renderer wrapper cache implies native renderer owns or retains that wrapper",
+      "is": "Native B26770 stores borrowed actual owner at+1904; semantic CameraViewport pointer is additional host state",
+      "evidence": "B2681A; camera_frame_state.cpp1113; native_renderer_viewport_clear.cpp113"
+    },
+    {
+      "was": "ClearBindingCache +1904 zero could clear actual renderer viewport",
+      "is": "ECX is renderer+34, actual viewport is cache+18D0 and is preserved",
+      "evidence": "B329C7/B329CA; B24366..B24457; B294E4"
+    }
+  ],
+  "verification": {
+    "report_calls": "PASS: 22 exact direct/tail call rows checked, 0 failed; 15 indirect rows manually inspected in complete containing listings and excluded by the mechanical checker",
+    "build": "not run; documentation/report-only scope",
+    "tests": "not added or run",
+    "missing_scoped_native_bodies": [],
+    "native_runtime_or_gameplay": "not claimed"
+  }
+}

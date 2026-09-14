@@ -1,6 +1,7 @@
 #include "bsp/native_camera_reference.hpp"
 #include <exception>
 #include <stdexcept>
+#include <utility>
 
 namespace bsp {
 namespace {
@@ -17,6 +18,12 @@ void require_camera_slot(NativeCameraOwner& owner, std::uint32_t offset,
 
 NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,
     NativeCameraCompanionDisposal disposal)
+    : NativeCameraReference(owner, disposal, nullptr) {}
+NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,
+    NativeCameraCompanionDisposal disposal, GeneratedModelLifetimeRuntime::BindingAdmission&& admission)
+    : NativeCameraReference(owner, disposal, &admission) {}
+NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,
+    NativeCameraCompanionDisposal disposal, GeneratedModelLifetimeRuntime::BindingAdmission* admission)
     : RenderCommandReference(owner.storage.node.references_04), owner_(owner),
       runtime_(owner.environment.nodes.attachments), disposal_(disposal) {
     if (owner.phase != NativeCameraOwner::Phase::live || !disposal.retire ||
@@ -25,7 +32,8 @@ NativeCameraReference::NativeCameraReference(NativeCameraOwner& owner,
     require_camera_slot(owner, 0, 0x00bd30e0u);
     require_camera_slot(owner, 4, 0x00b71fe0u);
     // Uniqueness uses this same transform identity. This association adds no ref.
-    runtime_.bind(*this);
+    if (admission) runtime_.bind(*this, std::move(*admission));
+    else runtime_.bind(*this);
 }
 NativeCameraReference::~NativeCameraReference() {
     // Removing an outstanding interface would leave queued/child references

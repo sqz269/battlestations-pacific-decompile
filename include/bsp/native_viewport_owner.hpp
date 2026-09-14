@@ -11,6 +11,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bsp/native_viewport_registry.hpp"
+
 namespace bsp {
 class D3D9StateCache;
 
@@ -84,6 +86,12 @@ NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
 // Shared ordinary CRT allocation, 34h bytes; no zero initialization. Frees the
 // allocation on constructor failure (the native caller's new-expression role).
 NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment&);
+// Prepared host association only: validate the admission before native allocation,
+// then register the successful owner without allocation before returning it.
+// Takes the token before native callbacks. Constructor failure cancels its record;
+// the caller must forget that cancelled storage after host quiescence.
+NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment&,
+    NativeViewportRegistry::Admission&&);
 
 // Concrete D5E5F8 profile only. These operate on the actual +04 count and
 // BD30E0 -> B1F8F0(flag1) final-zero path, without an auxiliary reference count.

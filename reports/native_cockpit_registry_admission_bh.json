@@ -1,0 +1,106 @@
+{
+  "packet": "orch3_cockpit_registry_admission_bh",
+  "status": "host_registration_design_only",
+  "reviewed_date": "2026-09-13",
+  "source_pin": "58145d5526c832581d6ef11edd95f8f8db7ecdfb",
+  "branch": "agent/orch3-cockpit-registry-admission-bh",
+  "coverage": "complete scoped admission design; implementation absent",
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "native_body_credit_bytes": 0,
+  "native_calls": [],
+  "corrections": [
+    {"was": "Draft imposed an additional raw-key reuse restriction for the pool-return-before-lifetime-unbind window.", "is": "Concrete serialized provider has no callback or allocation in that window, so ordinary reuse after terminal release is supported without a new restriction.", "evidence": "src/native_camera_pool.cpp:26-40,149-170; src/native_camera_reference.cpp:78-83. Concurrent mutation and artificial API-hook reentry are already unsupported."}
+  ],
+  "native_context_only": ["00B3C800", "00B71A80", "00B71990", "00B71FE0"],
+  "ghidra": {
+    "queries_run": false,
+    "mutations": false,
+    "reason": "Host registry design uses current source; inherited native sequence remains in separately reviewed BG evidence."
+  },
+  "prerequisite_evidence": {
+    "commit": "ff8e720f4e0f01aca0760a51d0b2fae3ae721369",
+    "path": "docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md",
+    "lines": [[101, 117], [147, 199], [209, 215]],
+    "read_from": "J:/PROG/battlestations-pacific-decompile-orch3-cockpit-construction-bg",
+    "merged_at_worker_pin": false,
+    "use": "Native ordering, unwind and persistent companion requirements; no new native semantics inferred."
+  },
+  "source_anchors": [
+    {"path": "include/bsp/scene_attachment.hpp", "lines": [120, 145], "evidence": "Stable scene/transform bindings, serialized reentry domain, explicit unbound lookup and canonical vector."},
+    {"path": "src/scene_attachment.cpp", "lines": [269, 281], "evidence": "Raw identity/runtime check, same-binding idempotence, transform/key uniqueness, allocating pointer append."},
+    {"path": "src/scene_attachment.cpp", "lines": [283, 311], "evidence": "Detach precondition, dead-backing-safe companion forgetting, explicit unbound and missing-light rejection."},
+    {"path": "include/bsp/generated_model_lifetime.hpp", "lines": [41, 61], "evidence": "Canonical node lifetime vector, borrowed scene runtime, separate attachment vector."},
+    {"path": "src/generated_model_lifetime.cpp", "lines": [42, 63], "evidence": "Identity comparison, duplicate-transform rejection, allocating append, interface-identity unbind, actual-key lookup."},
+    {"path": "src/generated_model_lifetime.cpp", "lines": [239, 241], "evidence": "Diagnostic model cleanup unbinds scene then lifetime before storage disposal."},
+    {"path": "src/native_camera_owner.cpp", "lines": [148, 174], "evidence": "Owner preparation binds scene; catch/abandoned-preparation cleanup."},
+    {"path": "src/native_camera_owner.cpp", "lines": [117, 133], "evidence": "End tail forgets the scene binding and sets dead phase following node cleanup."},
+    {"path": "src/native_camera_owner.cpp", "lines": [328, 335], "evidence": "Raw constructor catch runs existing node cleanup; only success sets live phase."},
+    {"path": "src/native_camera_owner.cpp", "lines": [368, 372], "evidence": "Native deletion performs destruction before raw pool return."},
+    {"path": "src/native_camera_pool.cpp", "lines": [26, 40], "evidence": "Section, read/write and recursion helpers use casts, memcpy and arithmetic only; no callback."},
+    {"path": "src/native_camera_pool.cpp", "lines": [149, 170], "evidence": "Concrete raw return uses actual Win32 section entry/exit and scalar/free-index/count stores, with no allocator or host callback before returning to lifetime unbind."},
+    {"path": "include/bsp/native_camera_reference.hpp", "lines": [7, 34], "evidence": "Disposal lifetime, canonical stable adapter, no extra reference, nonallocating leaf identity accessors."},
+    {"path": "src/native_camera_reference.cpp", "lines": [18, 33], "evidence": "Live owner/count/disposal/profile validation followed by lifetime bind; destructor forbids premature retirement."},
+    {"path": "src/native_camera_reference.cpp", "lines": [68, 83], "evidence": "Terminal deletion and pool return precede identity-only lifetime unbind and final companion disposal."},
+    {"path": "src/native_node_construction.cpp", "lines": [315, 320], "evidence": "Preconstruction binding uses actual node address as scene key without reading native scene word."},
+    {"path": "src/native_node_destruction.cpp", "lines": [60, 74], "evidence": "Semantic/raw node runtimes require the same scene runtime as their lifetime runtime."},
+    {"path": "src/native_cockpit_helper_lifetime.cpp", "lines": [13, 17], "evidence": "Helper member release resolves actual key in canonical lifetime runtime; missing binding throws."}
+  ],
+  "design": {
+    "representation": "Each existing node vector gains one size_t pending counter; nested move-only BindingAdmission holds only its concrete runtime pointer.",
+    "invariant": "L + P <= C, where L is node vector size, P is outstanding token count and C is capacity; exactly one active token per unit of P.",
+    "reserve": "Checked L+P+1; vector reserve before counter increment; token return is nonthrowing.",
+    "legacy_bind": "Existing validation/idempotence retained; every fresh append ensures capacity for L+P+1, preserving outstanding credits.",
+    "consume": "Validate token/runtime/identity first; append pointer within proven capacity; decrement pending; empty token; no callback between append and decrement.",
+    "cancel": "No native/object/vector-element access; decrement one active credit, empty token; no unbind, release, shrink or allocation.",
+    "moves": "Noexcept transfer; move assignment first cancels destination credit; self-move no-op; source empty.",
+    "scene_identity": "Existing raw-key/runtime validation and canonical transform/key uniqueness, with same-object idempotence consuming an unused credit by cancellation.",
+    "lifetime_identity": "Existing scene/transform equality and duplicate transform checks; admitted overload additionally requires exact canonical scene attachment lookup and rejects duplicate actual key. Legacy identity checks are unchanged.",
+    "failed_consume": "Check token activity/runtime before node identity getters. The rvalue reference aliases the caller token; std::move alone does not consume. Validation and diagnostic-exception construction precede mutation; failure leaves token active. Only successful append/commit or idempotent scene cancellation empties it; overload is not noexcept.",
+    "allocation_failure": "Reserve or ordinary bind failure leaves bindings, pending count and tokens unchanged; earlier successful capacity increases may remain.",
+    "runtime_lifetime": "Stable runtime address, delete copy/move; destructor terminates on outstanding tokens without visiting bindings; runtime outlives tokens and registered objects.",
+    "token_lifetime": "Consumed/empty token may outlive runtime; active token may not. Tokens never own or borrow native storage or bound nodes.",
+    "reentrancy": "Single owning thread; callbacks between completed operations may consume independently prepared credits. No reentry inside vector mutation, allocator reserve or identity getters. Ordinary callback bind can still allocate.",
+    "new_framework": false,
+    "new_identity_registry": false,
+    "attachment_link_reservations": false
+  },
+  "camera_handoff": {
+    "preflight": "Allocate persistent companion storage; reserve one scene and one lifetime credit before B3C800 native events; second-reserve failure cancels first credit.",
+    "owner_overload": "NativeCameraOwner(void*, size_t, NativeCameraEnvironment&, SceneAttachmentRuntime::BindingAdmission&&); same placement preparation/cleanup, admitted scene bind only.",
+    "reference_overload": "NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal, GeneratedModelLifetimeRuntime::BindingAdmission&&); existing validation and no added retain, admitted lifetime bind only.",
+    "construction": "Consume scene credit after actual slot allocation and before native camera construction; consume lifetime credit after successful live camera construction and before helper camera publication.",
+    "failure": "Unused credits cancel only host reservations. Existing native cleanup and exact raw-slot-return duties remain explicit; published camera and companions survive later helper failure.",
+    "retirement": "Preserve native cleanup/scene forget, raw pool return, lifetime unbind, companion disposal. Ticket destruction after consume does not unregister.",
+    "reuse_contract": "Concrete pool return has no allocator/host callback; serialized terminal release completes lifetime unbind before a caller can reuse the slot. Normal immediate reuse after release is supported. No extra restriction is invented for already-unsupported concurrency or artificial API hooks; actual stale aliases still fail admitted duplicate-key validation.",
+    "early_borrow_limit": "Callbacks before reference bind cannot use a lifetime interface; existing unbound validation remains and an early-borrow provider requires separate evidence.",
+    "viewport_boundary": "Parallel viewport worker reports two persistent view slots per attempt, separate actual identity publication and terminal retirement. Node cancellation never retires views; viewport borrow proof is outside this packet."
+  },
+  "implementation_packet": {
+    "first_files": ["include/bsp/scene_attachment.hpp", "src/scene_attachment.cpp", "include/bsp/generated_model_lifetime.hpp", "src/generated_model_lifetime.cpp"],
+    "later_camera_files": ["include/bsp/native_camera_owner.hpp", "src/native_camera_owner.cpp", "include/bsp/native_camera_reference.hpp", "src/native_camera_reference.cpp"],
+    "coordination": "Registry implementation first, reviewed before narrow camera overloads. Persistent cockpit provider and viewport lifecycle remain separate packets.",
+    "source_compatibility": "Existing construction and bind/unbind signatures retained; runtime copy/move becomes explicitly unsupported and requires repository compile verification.",
+    "validation": "Run scripts/build.ps1 and applicable existing checks after C++ implementation; this packet changes no C++.",
+    "focused_regression_if_needed": "One credit-isolation scenario per concrete registry: reserve two credits, ordinary binds force capacity growth, move/cancel one token, then forbid host allocations while consuming surviving token and verify canonical identity. No new framework."
+  },
+  "verification": {
+    "worker_checklist_reviewed": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "source_review": true,
+    "json_parse": "passed: 18 source anchors, zero native call rows, four registry implementation files",
+    "git_diff_check": "passed for the two owned staged files",
+    "native_call_row_verifier": "not applicable: no numeric native call rows or new native semantics",
+    "tests_added": 0,
+    "build_run": false,
+    "fixtures_run": false,
+    "runtime_or_game_validation": false
+  },
+  "partial_limits": [
+    "Design only; registry APIs and camera overloads are absent at the source pin.",
+    "No readiness credit merely from API availability; concrete persistent companions and viewport provider remain required.",
+    "No guarantee for throwing contract diagnostics, arbitrary callback allocation, allocator reentry, concurrency or cross-thread token movement.",
+    "No active token may survive its runtime or explicit storage-lifetime violation; guard detects ordinary destructor ordering only.",
+    "No early lifetime borrow or fabricated unbound identity; normal serialized raw-key reuse after terminal release remains supported.",
+    "No native-body, original ABI, FH3/SEH equivalence, executable-path or game-validation claim."
+  ]
+}
