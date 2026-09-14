@@ -167,6 +167,42 @@ struct PilotBotYawScratch {
 float plan_yaw_0099e81a(const PilotBotFrame& frame, const PilotBotTuning& tuning,
                         const PilotBotYawScratch& scratch, float yaw_spd);
 
+// 0099E490-0099E689 (packet cc7-pitchroll, docs/PILOT_PLANNER_PITCH_ROLL.md): the
+// demand `plan_pitch_0099e68d` was declared against, and the nose-up floor that
+// is the only thing keeping a planned bot from following its pitch target into
+// the ground. There is NO altitude term anywhere in this chain - nothing reads a
+// world position, a Y coordinate or a sea height - so what holds the nose up is
+// an attitude floor that rises with bank and with heading error.
+struct PilotBotPitchInputs {
+    float bank = 0.0f;         // unit+C68h
+    float pitch = 0.0f;        // unit+C64h
+    float held_pitch = 0.0f;   // slot 12: unit+C84h in mode 2, else unit+C64h
+    float pitch_target = 0.0f; // plan+2BCh on entry; the floor can only raise it
+    float heading_error = 0.0f;  // the yaw arm's base numerator, |h| drives the ramp
+    float control_authority = 0.0f;  // 007D9A70's return, through unit+AB0h
+    float dt_scale = 1.0f;     // 1 / max(unit+340h * 0.4, 1.0)
+    // Class fields.
+    float turn_roll = 0.0f;            // class+25Ch TurnRoll, the bank normaliser
+    float pitch_spd = 0.0f;            // class+1ACh
+    float yaw_spd = 0.0f;              // class+1B0h
+    float slide_ratio = 0.0f;          // class+1B8h
+    float negative_pitch_ratio = 0.0f; // class+1D8h
+    // Tuning, all Pilot/General/*.
+    float pitch_turn_max_pitch = 0.0f;   // tuning+88h, singleton +5C0h
+    float pitch_turn_hdg_range_1 = 0.0f; // tuning+8Ch, +5C4h
+    float pitch_turn_hdg_range_2 = 0.0f; // tuning+90h, +5C8h
+    float pitch_ctrl_set_time_mul = 0.0f;  // tuning+A0h, +5D8h
+};
+
+struct PilotBotPitchResult {
+    float floored_target = 0.0f;  // plan+2BCh after 0099E512
+    float demand = 0.0f;          // [ESP+44h] at 0099E689
+};
+
+// The demand, and the floor that is applied to the target on the way.
+// `plan_pitch_0099e68d(result.demand)` is then the stored `desired`.
+PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in);
+
 // 0099E68D-0099E752. The pitch arm's terminal law: a plain saturation of its demand.
 // `demand` is [ESP+44h], formed at 0099E664-0099E689 from x87-stack values this packet did
 // not trace; it is an input for the same reason.
@@ -293,7 +329,13 @@ float bomb_load_fraction_006e4130(const BombLoadFraction& in);
 
 // The pilot bot's target/mode pairs, all set by the bot state machine.
 namespace pilot_task_off {
-inline constexpr int kBankTargetLimited = 0x2BC;  // the slewed bank target, 0099DD4E
+// CORRECTED (packet cc7-pitchroll): plan+2BCh is the **pitch** target, not a
+// bank target. Its arm is gated on task+2D0h - which this same header calls
+// kPitchMode - and it terminates at the pitch slot's desired at +29Ch. The
+// algebra docs/PILOT_BOT_PLAN_CONTROLS.md recorded for the "bank-target arm" is
+// right; only the axis was wrong. The bank target is plan+2C4h (0099E23E).
+inline constexpr int kPitchTargetFloored = 0x2BC;  // the pitch target, 0099DD4E / 0099E512
+inline constexpr int kBankTargetLimited = 0x2C4;   // the bank target, 0099E23E
 inline constexpr int kSpeedTarget = 0x2B4;        // read at 0099D8C6
 inline constexpr int kHeadingTarget = 0x2C0;      // read at 0099DEAF; valid when mode 2CCh == 2
 inline constexpr int kRollMode = 0x2CC;           // 0, 1 or 2; 2 means "hold kHeadingTarget"

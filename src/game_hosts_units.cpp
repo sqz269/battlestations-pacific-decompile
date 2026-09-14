@@ -288,6 +288,11 @@ struct GameUnitSlot {
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
+    float plane_class_turn_roll{0.0f};       // desc+25Ch TurnRoll
+    // plan+2BCh. The pitch target, which the arm's floor can only raise. The
+    // header that called +2BCh a bank target was wrong; packet cc7-pitchroll
+    // settled it on the gate (task+2D0h) and the terminating store (+29Ch).
+    float plan_pitch_target_2bc{0.0f};
     // The range to the commanded target the first time the yaw arm planned for
     // this unit, and the last. Two numbers, so the run can say whether an
     // ordered aircraft actually closed on what it was ordered at.
@@ -1534,6 +1539,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_class.yaw_accel = lua_row.yaw_accel;
             slot->plane_class.negative_pitch_ratio = lua_row.negative_pitch_ratio;
             slot->plane_class_turn_roll_spd = lua_row.turn_roll_spd;
+            slot->plane_class_turn_roll = lua_row.turn_roll;
             if (lua_row.plane_stall_spd > 0.0f) {
                 // desc+184h. PlaneFreeFlightClass keeps 17.5f as its fallback;
                 // an authored row wins.
@@ -2467,6 +2473,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             frame, tuning, scratch, unit_.plane_class.yaw_spd);
                         unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+
+                        // 0099E490-0099E739, the pitch arm. Without it a planned
+                        // bot follows whatever plan+2BCh was last set to, which
+                        // is downward: a measured run with only the yaw arm
+                        // wired turned correctly toward its target and reached
+                        // a 63-degree dive doing it. The floor inside
+                        // pilot_pitch_demand_0099e490 is the whole of what stops
+                        // that, and it is an ATTITUDE floor - nothing in this
+                        // chain reads an altitude.
+                        bsp::PilotBotPitchInputs pin;
+                        pin.bank = unit_.plane_bank_angle_c68;
+                        pin.pitch = unit_.plane_pitch_angle_c64;
+                        // Mode 2 holds unit+C84h; this host does not model that
+                        // arm, so the measured angle is the live pitch, which is
+                        // what the native's own `else` branch at 0099DD54 uses.
+                        pin.held_pitch = unit_.plane_pitch_angle_c64;
+                        pin.pitch_target = unit_.plan_pitch_target_2bc;
+                        pin.heading_error = term.heading_error;
+                        pin.control_authority = control_authority(
+                            unit_.plane_world_velocity[0] * unit_.motion.pose_row2[0] +
+                            unit_.plane_world_velocity[1] * unit_.motion.pose_row2[1] +
+                            unit_.plane_world_velocity[2] * unit_.motion.pose_row2[2]);
+                        pin.dt_scale = 1.0f;
+                        pin.turn_roll = unit_.plane_class_turn_roll;
+                        pin.pitch_spd = unit_.plane_class.pitch_spd;
+                        pin.yaw_spd = unit_.plane_class.yaw_spd;
+                        pin.slide_ratio = unit_.plane_class.slide_ratio;
+                        pin.negative_pitch_ratio = unit_.plane_class.negative_pitch_ratio;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.pitch_turn_max_pitch = g.pilot_general_pitch_turn_max_pitch;
+                            pin.pitch_turn_hdg_range_1 = g.pilot_general_pitch_turn_hdg_range_1;
+                            pin.pitch_turn_hdg_range_2 = g.pilot_general_pitch_turn_hdg_range_2;
+                            pin.pitch_ctrl_set_time_mul = g.pilot_general_pitch_ctrl_set_time_mul;
+                        }
+                        const bsp::PilotBotPitchResult pitch =
+                            bsp::pilot_pitch_demand_0099e490(pin);
+                        unit_.plan_pitch_target_2bc = pitch.floored_target;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                            bsp::plan_pitch_0099e68d(pitch.demand);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
                         owner_.record("PilotBot::plan_controls", 0x0099d300u);
                         return true;
                     }

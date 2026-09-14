@@ -115,6 +115,7 @@ struct GameVehicleClassRow {
     float negative_pitch_ratio{0.0f}; // desc+1D8h
     float plane_stall_spd{0.0f};      // desc+184h, 007D2351
     float turn_roll_spd{0.0f};        // desc+1C8h, 007D25DB
+    float turn_roll{0.0f};            // desc+25Ch, 007D289B - the bank normaliser
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.
