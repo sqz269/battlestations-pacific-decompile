@@ -45,3 +45,9 @@ describes its effect on image, heap and stack randomization. The
 [process-creation attribute documentation](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute)
 describes mandatory relocation and bottom-up policy. Neither Windows policy nor
 process-creation mitigation attributes are modified by this change.
+
+## Final verification
+
+Compiled `e123041f4169e51caf052e09ecc93e501e964aca` has image base `10000000`, image size `0020c000`, DLL characteristics `8100` and 71648 bytes of relocation data. The four requested native-data bands are outside the rebuilt image. All four independently created production children reported ASLR flags 0 and passed reservation/resume.
+
+The Win32 build and both existing CTests pass. The normal USN01 launch maps the verified original read-only data, runs 120 mission frames, exits 0 in 9.848 seconds, and produces 18,557 finite trajectory rows. World registration, observer lifetime and pending-queue checks pass. The final executable SHA-256 is `6d96913c9aa58ea507dbeaf83fb5d45163307121b6e18d35aaad85a6dff0312a`. The report records the separate manifest of 42 retained artifacts. These checks establish the tested local layout and mission compatibility, not original-game gameplay parity.
