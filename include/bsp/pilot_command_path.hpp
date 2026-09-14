@@ -186,7 +186,14 @@ public:
     virtual void* first_task() = 0;                  // 0099AE72 / 0099AE89, bot+58h[0]
     virtual void release_stale_tasks(void* head) = 0;  // 0099AE7E, 0099A4C0(bot, head)
     virtual void on_task_head_changed(void* head) = 0;  // 0099AE96-0099AEBD
-    virtual bool task_step_flag_clear(void* task) = 0;  // 0099AEDB, [[task+274h]+idx*8+9C2h]
+    // 0099AEDB, [[task+274h] + idx*8 + 9C2h]. `idx` is NOT a parameter and must
+    // not be chosen by the host: it is the global word at 00F876B8, which
+    // 009998B7 reads here and 0099D316 reads again inside the planner. Both
+    // sides scale it by 8. A host that supplies its own index desynchronises
+    // this early-out from the planner's own gate, which would look like a
+    // sporadically skipped plan rather than an error.
+    // docs/PILOT_BOT_TASK_OBJECT.md.
+    virtual bool task_step_flag_clear(void* task) = 0;
     virtual void set_think_timer(float value) = 0;    // 0099AEBD / 0099AEED / 0099AF45, bot+74h
     virtual float think_timer() = 0;                  // 0099AEF2
     virtual void update_task(void* task, float dt) = 0;  // 0099AF1C, 009998A0
