@@ -1,4 +1,5 @@
 #include "bsp/native_shader_descriptor_owner.hpp"
+#include "bsp/native_material_effect_descriptor.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <exception>
 #include <new>
@@ -25,7 +26,8 @@ void destroy_array(NativeShaderDescriptorArray& rows,std::int32_t minimum,std::u
         rows.data_00=data;rows.capacity_08=minimum;
     }
     while(rows.count_04>0)--rows.count_04;
-    rows.count_04=0;singleton_lifetime_free(rows.data_00);
+    void* const captured_data=rows.data_00;
+    rows.count_04=0;singleton_lifetime_free(captured_data);
 }
 struct Members {
     NativeShaderDescriptorStorage& owner;NativeStringStorage& strings;int state=12;
@@ -69,26 +71,45 @@ NativeShaderDescriptorStorage* initialize_native_shader_descriptor_00b43700(void
     owner->string_owners_d0={nullptr,0,0};owner->string_owners_dc={nullptr,0,0};
     return owner;
 }
-void destroy_native_shader_descriptor_00b458a0(NativeShaderDescriptorStorage& owner,NativeStringStorage& strings) {
+static void destroy_descriptor_body(NativeShaderDescriptorStorage& owner,NativeStringStorage& strings,
+    NativeMaterialEffectDescriptorContext* actual) {
     owner.vtable_00=0x00d61a44;Members members{owner,strings};
     auto& rows=owner.virtual_owners_c4;
     for(std::uint32_t i=0;i<static_cast<std::uint32_t>(rows.count_04);++i) {
         auto** const entry=static_cast<void**>(rows.data_00)+i;
         void* const child=*entry;
         if(child) {
-            const auto* const table=*static_cast<const std::uintptr_t* const*>(child);
-            using Delete=void* (__thiscall*)(void*,std::uint32_t);
-            reinterpret_cast<Delete>(table[0])(child,1);*entry=nullptr;
+            if(actual)invoke_native_shader_sampler_terminal(child,*actual);
+            else {
+                const auto* const table=*static_cast<const std::uintptr_t* const*>(child);
+                using Delete=void* (__thiscall*)(void*,std::uint32_t);
+                reinterpret_cast<Delete>(table[0])(child,1);
+            }
+            *entry=nullptr;
         }
     }
     destroy_string_owners(owner.string_owners_d0,strings);
     destroy_string_owners(owner.string_owners_dc,strings);
     members.finish();
 }
+void destroy_native_shader_descriptor_00b458a0(NativeShaderDescriptorStorage& owner,NativeStringStorage& strings) {
+    destroy_descriptor_body(owner,strings,nullptr);
+}
+void destroy_native_shader_descriptor_00b458a0(NativeShaderDescriptorStorage& owner,NativeMaterialEffectDescriptorContext& context) {
+    destroy_descriptor_body(owner,context.strings,&context);
+}
+template<class Access> static NativeShaderDescriptorStorage* delete_descriptor_body(
+    NativeShaderDescriptorStorage* owner,Access& access,std::uint32_t flags) {
+    destroy_native_shader_descriptor_00b458a0(*owner,access);
+    if(flags&1)singleton_lifetime_free(owner);return owner;
+}
 NativeShaderDescriptorStorage* delete_native_shader_descriptor_00b46930(
     NativeShaderDescriptorStorage* owner,NativeStringStorage& strings,std::uint32_t flags) {
-    destroy_native_shader_descriptor_00b458a0(*owner,strings);
-    if(flags&1)singleton_lifetime_free(owner);return owner;
+    return delete_descriptor_body(owner,strings,flags);
+}
+NativeShaderDescriptorStorage* delete_native_shader_descriptor_00b46930(
+    NativeShaderDescriptorStorage* owner,NativeMaterialEffectDescriptorContext& context,std::uint32_t flags) {
+    return delete_descriptor_body(owner,context,flags);
 }
 NativeShaderDescriptorCallableBinding::NativeShaderDescriptorCallableBinding(
     NativeShaderDescriptorStorage& owner,NativeStringStorage& strings)

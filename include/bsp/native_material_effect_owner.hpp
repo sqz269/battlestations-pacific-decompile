@@ -6,6 +6,7 @@
 #include <type_traits>
 
 namespace bsp {
+struct NativeMaterialEffectDescriptorContext;
 
 // Exact C4h base and178h derived storage. No semantic effect/cache copy.
 // Unwritten bytes and fields intentionally have no default initializers.
@@ -69,6 +70,9 @@ struct NativeMaterialEffectConstructionAccess {
 struct NativeMaterialEffectDestructionAccess {
     NativeStringStorage& strings;
     NativeRenderActualOwners& retained_owners;
+    // Optional raw numeric-profile path. Its strings must be this SAME service.
+    // Null retains the existing explicitly callable descriptor-table API.
+    NativeMaterialEffectDescriptorContext* actual_descriptor{};
 };
 
 // Original ECX fresh storage, EAX same storage, RET. Aligned C4h/178h storage
@@ -100,6 +104,8 @@ void release_native_material_effect_base_owners_00b187a0(
 // fourteen+C8, fourteen+100 and+138 identities, clearing after each callback.
 void release_native_material_effect_owners_00b41b10(
     NativeMaterialEffectStorage&, NativeRenderActualOwners&);
+void release_native_material_effect_owners_00b41b10(
+    NativeMaterialEffectStorage&, NativeRenderActualOwners&, NativeMaterialEffectDescriptorContext&);
 
 // Complete normal/member-unwind resource ordering, not native SEH encoding.
 // Base releases fallback, then arrays, then+B8 name, reverse eleven names,
