@@ -290,6 +290,17 @@ float plane_speed_factor_007d9a70(const PlaneSpeedFactor& in) {
     return in.bomb_load * result * result;
 }
 
+SpeedHoldResult speed_hold_0099d8c1(int speed_mode, float speed_target) {
+    SpeedHoldResult out;
+    if (speed_mode != 1) return out;  // 0099D8C1 CMP ECX,1 / 0099D8C4 JNZ
+    // 0099D8C6 COMISS XMM0,[ESI+2B4h] with XMM0 = 0.001f, 0099D8CD JBE skips.
+    if (!(0.001f > speed_target)) return out;
+    out.fired = true;
+    out.power = 0.001f;     // 0099D8CF stores XMM0, the same constant
+    out.air_brake = 1.0f;   // 0099D8DD stores XMM3
+    return out;             // the caller also clears the mode word, 0099D8EB
+}
+
 float bomb_load_fraction_006e4130(const BombLoadFraction& in) {
     if (in.single && in.capacity == 0) return 0.0f;  // 006E4134 / 006E413D FLDZ
     const int numerator = in.single ? in.remaining + in.pending : in.remaining;  // 006E414E
