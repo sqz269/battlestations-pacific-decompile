@@ -1,0 +1,660 @@
+{
+  "packet": "orch2_native_crt_locale_reference_source_bo",
+  "base": "52efcfc1f9e87d10cbf8149a9ecc8bdae347e5e8",
+  "status": "complete_bounded_borrowed_locale_reference_source_win32_build_and_archive_checked",
+  "source": "src/native_crt_locale_reference_acquire.cpp",
+  "header": "include/bsp/native_crt_locale_reference_acquire.hpp",
+  "documentation": "docs/NATIVE_CRT_LOCALE_REFERENCE_ACQUIRE_BO.md",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_evidence": {
+    "pinned_commit": "f56cf12b4992af1137fa3ab49685de02ce6171f3",
+    "pinned_inventory_verified": 129,
+    "current_spans": [
+      {
+        "address": "00c0190b",
+        "length": 134,
+        "live_pe_equal": true,
+        "pinned_equal": true,
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "address": "00e161d0",
+        "length": 8,
+        "live_pe_equal": true,
+        "pinned_equal": true,
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      }
+    ],
+    "installed_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "import": {
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    "native_iat_load_offset": 8,
+    "native_sentinel_comparison_offset": 75,
+    "native_indirect_call_offsets": [
+      15,
+      28,
+      41,
+      54,
+      67,
+      91,
+      107,
+      127
+    ]
+  },
+  "original": {
+    "entry": "00c0190b",
+    "end_exclusive": "00c01991",
+    "name": "___addlocaleref",
+    "bytes": 134,
+    "abi": "cdecl one pointer at entry ESP+4; EBX/EBP/ESI/EDI preserved; plain RET; no owned EH frame.",
+    "source_symbol": "bsp::acquire_native_crt_locale_references_00c0190b"
+  },
+  "source_abi": {
+    "parameters": [
+      "void* actual_locale_record",
+      "const void* actual_narrow_c_sentinel"
+    ],
+    "convention": "cdecl",
+    "record_slot": "Original argument remains at entry ESP+4.",
+    "added_binding": "Actual sentinel pointer at entry ESP+8, loaded from ESP+18h after four native register saves.",
+    "native_sentinel_identity": "00e161d0",
+    "requirements": "Borrow actual record/count memory and actual sentinel from the same locale domain; added argument remains stable. Record reads through D7h and selected LONG targets are valid for real InterlockedIncrement.",
+    "qualification": "Added argument, ECX use, stack access and new code addresses preclude native entry/volatile-register/stack-alias/fault-continuation identity claims."
+  },
+  "operation_order": {
+    "import_cache": "Load actual InterlockedIncrement pointer once into EDI from imported slot.",
+    "root": "InterlockedIncrement(actual_locale_record).",
+    "optional_fields_in_order": [
+      "b0",
+      "b8",
+      "b4",
+      "c0"
+    ],
+    "optional_rule": "Load each pointer after the preceding call; increment when nonnull.",
+    "categories": {
+      "iterations": 6,
+      "q": "50h+10h*i",
+      "first": "If [record+q-8] differs from actual sentinel and [record+q] is nonnull, increment*[record+q].",
+      "second": "If [record+q-4] and [record+q+4] are nonnull, increment*[record+q+4]."
+    },
+    "last": "Reload [record+d4], then unconditionally InterlockedIncrement(pointed_object+b4).",
+    "aliasing": "Repeated targets receive repeated increments; mutations can affect later pointer loads. No field snapshot or pointer deduplication.",
+    "guards": "Only original optional guards. No root/time null check, overflow repair, private count storage, locking/release or error policy."
+  },
+  "actual_api_boundary": {
+    "dll": "KERNEL32.dll",
+    "api": "InterlockedIncrement",
+    "native_iat": "00ce221c",
+    "source_declaration": "extern C dllimport long stdcall InterlockedIncrement(volatile long*); Win32 4-byte LONG and pointers statically asserted.",
+    "compiler_relocation": {
+      "offset": 10,
+      "symbol": "__imp__InterlockedIncrement@4",
+      "type": 6
+    },
+    "intrinsic_substitution": false,
+    "generic_callback": false,
+    "native_and_source_indirect_sites": [
+      {
+        "native_site": "00c0191a",
+        "source_offset": 15,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c01927",
+        "source_offset": 28,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c01934",
+        "source_offset": 41,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c01941",
+        "source_offset": 54,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c0194e",
+        "source_offset": 67,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c01966",
+        "source_offset": 91,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c01976",
+        "source_offset": 107,
+        "target": "EDI cached real import"
+      },
+      {
+        "native_site": "00c0198a",
+        "source_offset": 127,
+        "target": "EDI cached real import"
+      }
+    ],
+    "dynamic_call_count": "Eight static sites; the two category sites can repeat in the six-iteration loop.",
+    "qualification": "Indirect API sites are validated by native bytes/import table and compiled relocation/call instructions, not by direct-call checker successes."
+  },
+  "calls": [],
+  "direct_call_validation": {
+    "rows": 0,
+    "failures": 0,
+    "log": "local/native_crt_locale_reference_acquire_bo/verify_calls.txt"
+  },
+  "compiler_evidence": {
+    "compiler": {
+      "binary": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "size": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+      },
+      "version": "19.51.36244.0",
+      "architecture": "X86"
+    },
+    "traces": {
+      "command": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\local\\native_crt_locale_reference_acquire_bo\\CL.command_target.txt",
+          "size": 1086,
+          "sha256": "c910becf1f281352e0d59383ca6bc95d20de5639e24b842e5ad0b636d7f23109",
+          "sha512": "accffbbc7aa1203048b97e5ffc2c63f339f59ae973186b335aff31d962dff4534908d29c5f839fabb41e1c4d7cdc3e8edceb2ea8a508e6234a3bb1d1499dcf0f"
+        },
+        "lines": 2
+      },
+      "read": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\local\\native_crt_locale_reference_acquire_bo\\CL.read_target.txt",
+          "size": 269,
+          "sha256": "60699a71134f6d12be4fc6e6c5e479fa6d42cac63528c01547589d2c966de8db",
+          "sha512": "3ec14207e6664f4eb284988bacab7fd125fe373b205422ce09776c568e22a2e97bbcfbb171ba6c7ca9b7aecdc30f008425d9ce4cf3fb464e3e10019810b3a17f"
+        },
+        "lines": 2
+      },
+      "write": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\local\\native_crt_locale_reference_acquire_bo\\CL.write_target.txt",
+          "size": 316204,
+          "sha256": "750885701cb7cffbfb6e819ca1daaf83a9801ee535281a97a1171f76315072fc",
+          "sha512": "cff95e546d8f1fad09a63364abe2897b949b16ffebf58d572739d8241f26e1da399570da4c5df3ac5cf34245514a6314e8d9c085127d031934cf9d7283c55aec"
+        },
+        "lines": 1204
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\build\\win32\\bsp_core.dir\\Release\\native_crt_locale_reference_acquire.obj",
+      "size": 957,
+      "sha256": "0bfeddbc3e0dfa3191582ad3477b83ebba2b899d74077d3ea3b0a76fa7e49aa6",
+      "sha512": "26594f5d767dee3b8f8132f9f8e00bd9d1ee86365371c003b20b726844eb9773a1c155e49a03e5e29057edc9d1afba279a105f175a7abe8ec3c967970bac7c5f"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\build\\win32\\Release\\bsp_core.lib",
+      "size": 57374898,
+      "sha256": "ba78122573031e1dc2f64cbee9b4380c521e1bb2fc6f895cd5ec9738734e1cc7",
+      "sha512": "c27d84bd7f7fc0a3c2a642c25fece28e0d0eb95d8a3b9e28da7e8fd49e1915a4e8ae43bac63d871dec80cad4a289f3d8191414fc667d66a832658e6f1409bd98"
+    },
+    "archive_member": "bsp_core.dir\\Release\\native_crt_locale_reference_acquire.obj",
+    "matching_archive_members": 1,
+    "matching_archive_symbol_definitions": [
+      "bsp_core.dir\\Release\\native_crt_locale_reference_acquire.obj"
+    ],
+    "object_archive_equal": true,
+    "object_writable_sections": [],
+    "function": {
+      "symbol": "?acquire_native_crt_locale_references_00c0190b@bsp@@YAXPAXPBX@Z",
+      "bytes": 134,
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-locale-reference-source-bo\\local\\native_crt_locale_reference_acquire_bo\\native_crt_locale_reference_acquire.bin",
+        "size": 134,
+        "sha256": "3acbcde9496fae1313816ea69fb47d1b9a5772b2c2f640efdad9c70ce05e19cc",
+        "sha512": "2ae3858561fd428a8d19c15840d34c333f2a33348389ae7d0c7f8fc6f78f8578e0c2b65b6ec570fb4ef39e7c821fbe368d2c5fdab2fd6ba33e5ff19a292fd77b"
+      },
+      "relocations": [
+        {
+          "offset": 10,
+          "symbol": "__imp__InterlockedIncrement@4",
+          "type": 6
+        }
+      ],
+      "indirect_call_sites": [
+        {
+          "offset": 15,
+          "operand": "edi"
+        },
+        {
+          "offset": 28,
+          "operand": "edi"
+        },
+        {
+          "offset": 41,
+          "operand": "edi"
+        },
+        {
+          "offset": 54,
+          "operand": "edi"
+        },
+        {
+          "offset": 67,
+          "operand": "edi"
+        },
+        {
+          "offset": 91,
+          "operand": "edi"
+        },
+        {
+          "offset": 107,
+          "operand": "edi"
+        },
+        {
+          "offset": 127,
+          "operand": "edi"
+        }
+      ],
+      "native_instructions": 57,
+      "source_instructions": 58
+    },
+    "native_byte_comparison": {
+      "equal_after_two_explicit_substitutions": true,
+      "substitutions": [
+        {
+          "offset": 10,
+          "length": 4,
+          "reason": "Original IAT address becomes a COFF import relocation."
+        },
+        {
+          "offset": 75,
+          "length": 7,
+          "native": "817bf8d061e100",
+          "source": "8b4c2418394bf8",
+          "reason": "Actual sentinel identity comes from added second cdecl argument via ECX, then pointer comparison."
+        }
+      ],
+      "all_other_bytes_identical": true
+    }
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "compiler_version": "19.51.36244.0",
+    "required_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "verify_seeds_matched": 8,
+    "verify_seeds_mismatched": 0,
+    "ctests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "new_tests": 0,
+    "qualification": "Existing math CTests do not exercise this routine. No source/helper/native body execution was used for runtime or game validation.",
+    "source_body_executed": false,
+    "original_owned_body_executed": false,
+    "original_helper_body_executed": false,
+    "ghidra_mutated": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": "Full C050F8/C051B7/BFFB8B closure still needs canonical PTD/TLS/errno/locale state, actual lock initialization, heap and matching release/cleanup/frame ownership.",
+  "local_inventory": {
+    "directory": "local/native_crt_locale_reference_acquire_bo",
+    "files": 48,
+    "bytes": 58025723,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass then independent chunked reads; report outside local directory avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00c0190b_asm.txt",
+        "size": 1515,
+        "sha256": "4d40d714ea3949b045f69cbe224ab2eb392a61e32aa2822c8b09ce88b15fe208",
+        "sha512": "b95545eeff65550bf9d720bc639ca3628a55b54d13a2292c17974e147e87a4bf7e1980a6c01346407f029efe19068a66725e8cf85b69afd97f1cf8757248b4bf"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00c0190b_bytes.txt",
+        "size": 653,
+        "sha256": "117eb9e087348854c4475c5a3e352622fb77b15b91af95232bd5f135944ae87d",
+        "sha512": "d84e1a05cff0050286e33dc0a4c306186da392922d0af437d70002ce2956bf40a4c53d37b03dccd6561ad5af38c0c5e4b00574e92afb084e929c897241d4253f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00c0190b_live.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00c0190b_pe.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00c0190b_proto.txt",
+        "size": 287,
+        "sha256": "979e3af3e3475d9d66132f429c66945ff0a3c73b901024e8cfdb32171eec2280",
+        "sha512": "8df99891c938d7dbf2a2c30611be6517e1ba3b442fcbb57af54a9c2bac6785f4ace4e66768aa19a2e3978f348f3d9e6ed1562202001f50f1c90c119e52e63000"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00e161d0_bytes.txt",
+        "size": 45,
+        "sha256": "d882f464a426a73f642ea8b0793fe20edb63fc8c3280c2e39ad578ba0453146c",
+        "sha512": "56c77babda82a2dd44a222993a82423ccc83ef4ec0fb945f95c4b0e8304db00e555409c2e7561a4f1f340c2b8c4a666f80c1134ea180c22ba02e5bcdfc7637ed"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00e161d0_live.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/00e161d0_pe.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/bsp_core_build.lib",
+        "size": 57374898,
+        "sha256": "ba78122573031e1dc2f64cbee9b4380c521e1bb2fc6f895cd5ec9738734e1cc7",
+        "sha512": "c27d84bd7f7fc0a3c2a642c25fece28e0d0eb95d8a3b9e28da7e8fd49e1915a4e8ae43bac63d871dec80cad4a289f3d8191414fc667d66a832658e6f1409bd98"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/build.log",
+        "size": 46865,
+        "sha256": "3f7a8d07fad1e31d563b0503fa4347a07ccc4eb2dab8cf598d2c75d4b54d8266",
+        "sha512": "9507ecf6b6509fc0bf421d5eaac8c063fd81f1c9b7ac2e4bf0a07de0f3d382eda1aefa0171d2610fd93fcaf1a1db894aefab959a16e7d2d72213f3ba71147420"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/capture.py",
+        "size": 4413,
+        "sha256": "c9344ea09d699cfe6a9e765a1c4e2a8a3a40ea4c068822c2e45fd30352151ae3",
+        "sha512": "d36df305101c1e01d6cdf53b4fe6a05986e829e6251faee33e6cc12a0e0b4f68b59773953ea86616af0f4be16515539ad7d7534ef604688ca08f76e92891341e"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/CL.command_target.txt",
+        "size": 1086,
+        "sha256": "c910becf1f281352e0d59383ca6bc95d20de5639e24b842e5ad0b636d7f23109",
+        "sha512": "accffbbc7aa1203048b97e5ffc2c63f339f59ae973186b335aff31d962dff4534908d29c5f839fabb41e1c4d7cdc3e8edceb2ea8a508e6234a3bb1d1499dcf0f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/CL.read_target.txt",
+        "size": 269,
+        "sha256": "60699a71134f6d12be4fc6e6c5e479fa6d42cac63528c01547589d2c966de8db",
+        "sha512": "3ec14207e6664f4eb284988bacab7fd125fe373b205422ce09776c568e22a2e97bbcfbb171ba6c7ca9b7aecdc30f008425d9ce4cf3fb464e3e10019810b3a17f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/CL.write_object_line.txt",
+        "size": 159,
+        "sha256": "cb0a92cc6b385c9abbff079835782fd11d78b441234d33f1369be0aad35c5001",
+        "sha512": "291c3601a3ddafdf4f0eec5074ef2fdf59a9ec6c20a0c1693855b290534ec3585a3f1c60f6bec0f7791b971fd529d9751337b5e45402f67deef4c40f722beaea"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/CL.write_target.txt",
+        "size": 316204,
+        "sha256": "750885701cb7cffbfb6e819ca1daaf83a9801ee535281a97a1171f76315072fc",
+        "sha512": "cff95e546d8f1fad09a63364abe2897b949b16ffebf58d572739d8241f26e1da399570da4c5df3ac5cf34245514a6314e8d9c085127d031934cf9d7283c55aec"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/CMakeCXXCompiler.cmake",
+        "size": 6498,
+        "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+        "sha512": "6c66a6c1d55b9d08e5d9146d3f528cdf35f924a22d34e058f3d96ea306fc5923add11ac2d9866e14df89001b24172e45a8eb740b830b547c3f79e8e64aba4ff7"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/commit_message.txt",
+        "size": 541,
+        "sha256": "c8c5fd351a5818af8a40addb69ff1f84239df7e89085ca9c892f62065a2b741a",
+        "sha512": "c6255422546ae77b866d99a79f5f08033e76c7c89789986146c14255ca13bcbe419308d055181c97c538e65f463053e83d3985287fa3b8b3e1c81aa5058deb0e"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/compiler.py",
+        "size": 8146,
+        "sha256": "3b8805022a3f86f0daaab3d87e584a27ced6ec93e68c248bec39cfb4303fd5cf",
+        "sha512": "083fb2c0e75989090acd6a6cd380237ef2770f72c3c2eb45113fc5ab6f7fbc54fb77047baacb2bf5869c30ce5a2827df562f222892b49f47cbcf49e516341fa3"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/compiler_evidence.json",
+        "size": 5166,
+        "sha256": "0b84720dc6cc14477d8d82269e48a4daaab8c6f97499d6bdd3734d65cf7fff4e",
+        "sha512": "3e028d6592f1f1cdb329a06da3b9875b853832c48714fb517dc4dd7cb99d6b3052d369888161e39f6e1dbf5f4d856b893942f6bc3b8e32a1059230bc36734113"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/inventory.py",
+        "size": 2762,
+        "sha256": "49bb1308a1d58c49180b05a8074ea1aa4f1c8bb99e624c6ebb10c424c8291156",
+        "sha512": "2ce3544f8c5619e887b781925f81baf255a131f66af07afa5dfd618273bcc49e49a71610de12c3026391320149023d263e133f664ca98b66f9446b77b0b050bb"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/native_crt_locale_reference_acquire.bin",
+        "size": 134,
+        "sha256": "3acbcde9496fae1313816ea69fb47d1b9a5772b2c2f640efdad9c70ce05e19cc",
+        "sha512": "2ae3858561fd428a8d19c15840d34c333f2a33348389ae7d0c7f8fc6f78f8578e0c2b65b6ec570fb4ef39e7c821fbe368d2c5fdab2fd6ba33e5ff19a292fd77b"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/native_crt_locale_reference_acquire_archive.obj",
+        "size": 957,
+        "sha256": "0bfeddbc3e0dfa3191582ad3477b83ebba2b899d74077d3ea3b0a76fa7e49aa6",
+        "sha512": "26594f5d767dee3b8f8132f9f8e00bd9d1ee86365371c003b20b726844eb9773a1c155e49a03e5e29057edc9d1afba279a105f175a7abe8ec3c967970bac7c5f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/native_crt_locale_reference_acquire_build.obj",
+        "size": 957,
+        "sha256": "0bfeddbc3e0dfa3191582ad3477b83ebba2b899d74077d3ea3b0a76fa7e49aa6",
+        "sha512": "26594f5d767dee3b8f8132f9f8e00bd9d1ee86365371c003b20b726844eb9773a1c155e49a03e5e29057edc9d1afba279a105f175a7abe8ec3c967970bac7c5f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/native_evidence.json",
+        "size": 1570,
+        "sha256": "21ce8906c7f952582e07346c6bfccaad85a3880ffbb1df34583d2ff24e3e42e4",
+        "sha512": "6aff2d8a2e4bd9d7798f87651ba282a0b2584d7df9ed8e203780b7d5f7afbadc7c8675f26510028e60c6d9be7f03489f63f6084a44ad0a958ecd4c2c69676c6e"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_asm.txt",
+        "size": 1515,
+        "sha256": "4d40d714ea3949b045f69cbe224ab2eb392a61e32aa2822c8b09ce88b15fe208",
+        "sha512": "b95545eeff65550bf9d720bc639ca3628a55b54d13a2292c17974e147e87a4bf7e1980a6c01346407f029efe19068a66725e8cf85b69afd97f1cf8757248b4bf"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_bytes.txt",
+        "size": 653,
+        "sha256": "117eb9e087348854c4475c5a3e352622fb77b15b91af95232bd5f135944ae87d",
+        "sha512": "d84e1a05cff0050286e33dc0a4c306186da392922d0af437d70002ce2956bf40a4c53d37b03dccd6561ad5af38c0c5e4b00574e92afb084e929c897241d4253f"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_decompile.txt",
+        "size": 1094,
+        "sha256": "be80ae558aedcfe9287c049a4d89ed72ad8887267dead693df81cd9ac427bd8d",
+        "sha512": "9f1ea2fd65834a448ee877184b1e586339ee353dfada5baa54f0fecd46bd6e0f1eca95cfa11698f9a7330f89f639798df689c4e49029669b1c088b9166c86ca3"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_live.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_pe.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_proto.txt",
+        "size": 287,
+        "sha256": "979e3af3e3475d9d66132f429c66945ff0a3c73b901024e8cfdb32171eec2280",
+        "sha512": "8df99891c938d7dbf2a2c30611be6517e1ba3b442fcbb57af54a9c2bac6785f4ace4e66768aa19a2e3978f348f3d9e6ed1562202001f50f1c90c119e52e63000"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00c0190b_raw.txt",
+        "size": 1520,
+        "sha256": "6b55150ac2226803e91c2e86e270c2d9edd48f238597b4438831fac283b8e2d1",
+        "sha512": "a7672d37f27acf7e277932386fbae4dfdde63bb16fd27a4accb7ae1c0c65aaaddcabeb70a54b10f666f2b98eb495d5dcb61eece6aec91ce3ca10112ed3a28245"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00e161d0_bytes.txt",
+        "size": 45,
+        "sha256": "d882f464a426a73f642ea8b0793fe20edb63fc8c3280c2e39ad578ba0453146c",
+        "sha512": "56c77babda82a2dd44a222993a82423ccc83ef4ec0fb945f95c4b0e8304db00e555409c2e7561a4f1f340c2b8c4a666f80c1134ea180c22ba02e5bcdfc7637ed"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00e161d0_live.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned/00e161d0_pe.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/pinned_discovery_report.json",
+        "size": 84708,
+        "sha256": "fd41b5d16ed432590059212f216675a0a36bd57f1b54e97fb65af717d3219823",
+        "sha512": "5b344a961ad4f95e40201fb8dee8147c3654b4b1b28e03c0ebcbebd3923ed91af0755c3e4e8c1ec6a97f9d9723235eda2fffabe998d6e2fa29f912c8ec0c4568"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/reconstruction_record.json",
+        "size": 1122,
+        "sha256": "8dd1f784735c5656d63fa41a516c48aa16fc2e390d30104dbce1fa307d78a522",
+        "sha512": "9ef4a7bd40acd7073f43d2303bcdfcf4cf20e087ef66a8b073672041803998d89460d3d40103b73d7d054739e67dfdbb9ab26d9febc331a0383c040b75a2ed49"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/report.py",
+        "size": 6302,
+        "sha256": "225d45b616b75f06b1d926019e37d0f899635630ada3675e8559c8b66ea30201",
+        "sha512": "e3adb85d050327688e332d98272dff28b198a7c767a9cd4022a9d965cce93ab84438bb5125a2d172f3aa94c65dc3b15313c68c0bf8b032d443d1bddce86f056c"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source/cmake/startup.cmake",
+        "size": 113598,
+        "sha256": "14d77ac98a945af12b3cbca3c8002e167657d7b1b2c5820b5adc707ed14046b2",
+        "sha512": "ba71c1beb0d269c558cab14e079173b640f33efb8123d433d0fd94b738783a8cbd7a60e97aea72f578a19c9dc72a34b593913060a2ab3ada43778f006cee2ec6"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source/CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source/docs/NATIVE_CRT_LOCALE_REFERENCE_ACQUIRE_BO.md",
+        "size": 4936,
+        "sha256": "e778df3a4fe3ed492192b3d228b694a431bc1c70fc9e64495378f973d4049ba0",
+        "sha512": "d1c83cc87e6e9675a66d311b48aa18025902496866792aff1d7e54a32f40b0ec0c5294bd1ebaf0556091ebb9855c82692d9d357fae169e83cfb2dbb2d42c4b22"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source/include/bsp/native_crt_locale_reference_acquire.hpp",
+        "size": 1602,
+        "sha256": "8f8b49a58a0cad2a7bbb622e7055a91728fcee38b7fc4ffb0285d675e2302541",
+        "sha512": "a0e91930dce895b6534f03f78e821c46492cb827b59ea9f3a85a3cb8e2ba1ebe5ed29fc931cadef20a8aa18ebb15798257fac9915380756ac72e829d9195e893"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source/src/native_crt_locale_reference_acquire.cpp",
+        "size": 2195,
+        "sha256": "6896add3328e9346ef3e7b5079f190f27eaa146ff44ae447f0b8b7b3ffac6886",
+        "sha512": "26e24a54e289649525620f0b412973a3c29421d5d499f2502b37d6e5635f0156b8735a90d926e19cd76198db0905af0a79a96a7f8887d9a7ec8401b4b1e9c7d5"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source_object_dump.txt",
+        "size": 7110,
+        "sha256": "8605aff7ae32f7174e79da635e53169d367bdd660820bcab0d1a6795f9b2dea2",
+        "sha512": "5e30f8efc30cde30970e170c5226716abeea0cf2957bacabf4205d712895c7ceeb4ea2d1d7df8ea00f063ce4e100db8fb9c76b7186b64d9fcbcbc054bf7beb01"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/source_object_preview.txt",
+        "size": 3906,
+        "sha256": "2647e814c5c33c22471a0946799e56ce40d5e9de145944b7618a0981154d971a",
+        "sha512": "862a162895956c8a99f4e32fb5446554be800d75517a0c5f9d6c58fa8f90be05977af80d6de9d104f16f80ae775cf01cc9bdfc5bd1eee1c78bc2eb73788530e2"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/verify_calls.txt",
+        "size": 84,
+        "sha256": "98497dc2ffd53d74ac8bd8bd48192809a49c76e6426d7b0086b39f839a36c42f",
+        "sha512": "6e1f3d255bf943f06c95e8b0551f8489f36e77c0a057e78f98ac9052e6d94a3271529cb874b8adfeab0931488a758acdc5a129bfa0dedc4967ec03ec8130c057"
+      },
+      {
+        "path": "local/native_crt_locale_reference_acquire_bo/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      }
+    ]
+  },
+  "current_source_hashes": [
+    {
+      "path": "src/native_crt_locale_reference_acquire.cpp",
+      "size": 2195,
+      "sha256": "6896add3328e9346ef3e7b5079f190f27eaa146ff44ae447f0b8b7b3ffac6886",
+      "sha512": "26e24a54e289649525620f0b412973a3c29421d5d499f2502b37d6e5635f0156b8735a90d926e19cd76198db0905af0a79a96a7f8887d9a7ec8401b4b1e9c7d5"
+    },
+    {
+      "path": "include/bsp/native_crt_locale_reference_acquire.hpp",
+      "size": 1602,
+      "sha256": "8f8b49a58a0cad2a7bbb622e7055a91728fcee38b7fc4ffb0285d675e2302541",
+      "sha512": "a0e91930dce895b6534f03f78e821c46492cb827b59ea9f3a85a3cb8e2ba1ebe5ed29fc931cadef20a8aa18ebb15798257fac9915380756ac72e829d9195e893"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 113598,
+      "sha256": "14d77ac98a945af12b3cbca3c8002e167657d7b1b2c5820b5adc707ed14046b2",
+      "sha512": "ba71c1beb0d269c558cab14e079173b640f33efb8123d433d0fd94b738783a8cbd7a60e97aea72f578a19c9dc72a34b593913060a2ab3ada43778f006cee2ec6"
+    },
+    {
+      "path": "docs/NATIVE_CRT_LOCALE_REFERENCE_ACQUIRE_BO.md",
+      "size": 4936,
+      "sha256": "e778df3a4fe3ed492192b3d228b694a431bc1c70fc9e64495378f973d4049ba0",
+      "sha512": "d1c83cc87e6e9675a66d311b48aa18025902496866792aff1d7e54a32f40b0ec0c5294bd1ebaf0556091ebb9855c82692d9d357fae169e83cfb2dbb2d42c4b22"
+    }
+  ]
+}
