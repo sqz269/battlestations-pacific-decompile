@@ -12225,8 +12225,8 @@
     },
     {
       "id": "orch4_native_resource_cache_erase_bp",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "integrated_reviewed_win32_build_and_focused_fixture_checked",
       "owner": "agent/orch4-resource-cache-erase-bp",
       "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-erase-bp",
       "base_commit": "ba1f9a6c4b9d8a524dd6f74ad0a1e8096bdb94ae",
@@ -12245,12 +12245,15 @@
       ],
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
-      "ghidra_mutations": false
+      "ghidra_mutations": false,
+      "code_revision": "f056f33b14bb18da1c228d326b1374c43af38cb6",
+      "integration_report": "reports/native_loading_owners_integration_bp.json",
+      "game_validated": false
     },
     {
       "id": "orch4_native_resource_reader_owner_bp",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "integrated_reviewed_win32_build_and_focused_fixture_checked",
       "owner": "agent/orch4-resource-reader-owner-bp",
       "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-reader-owner-bp",
       "base_commit": "ba1f9a6c4b9d8a524dd6f74ad0a1e8096bdb94ae",
@@ -12268,12 +12271,15 @@
       ],
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
-      "ghidra_mutations": false
+      "ghidra_mutations": false,
+      "code_revision": "f056f33b14bb18da1c228d326b1374c43af38cb6",
+      "integration_report": "reports/native_loading_owners_integration_bp.json",
+      "game_validated": false
     },
     {
       "id": "orch4_native_vfs_fileblock_scope_bp",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "integrated_reviewed_win32_build_and_focused_fixture_checked",
       "owner": "agent/orch4-vfs-fileblock-scope-bp",
       "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-vfs-fileblock-scope-bp",
       "base_commit": "b080eef49f801de99fd4edf07a5b36cc83edbd9c",
@@ -12289,7 +12295,74 @@
       ],
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
-      "ghidra_mutations": false
+      "ghidra_mutations": false,
+      "code_revision": "f056f33b14bb18da1c228d326b1374c43af38cb6",
+      "integration_report": "reports/native_loading_owners_integration_bp.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_loading_owners_integration_bp",
+      "done": true,
+      "state": "integrated_reviewed_win32_build_and_focused_fixture_checked",
+      "code_revision": "f056f33b14bb18da1c228d326b1374c43af38cb6",
+      "owner": "agent/orch4-20260910",
+      "addresses": [
+        "00b7cb70",
+        "00b7cb90",
+        "00b7ce80",
+        "00b7fa60",
+        "00b801c0",
+        "00be0980",
+        "00bdc9b0",
+        "00bf0980",
+        "00bf09b0",
+        "00bea150",
+        "00be9f10"
+      ],
+      "report": "reports/native_loading_owners_integration_bp.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_resource_manager_trees_bq",
+      "done": false,
+      "state": "worker_stopped_usage_limit_draft_retained",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-manager-trees-bq",
+      "addresses": [
+        "00b7e000",
+        "00b7e050",
+        "00b7df40",
+        "00b7e740",
+        "00b7cef0"
+      ],
+      "retained_files": [
+        {
+          "path": "include/bsp/native_resource_manager_trees.hpp",
+          "sha256": "f902776e422a0e7269b6df6bc84adc883a7875aac632e21416cf5e462590db7c",
+          "bytes": 2629
+        },
+        {
+          "path": "src/native_resource_manager_trees.cpp",
+          "sha256": "a6c64f744d5d4aff05f7485e9d399d63d7e29a7822927aa299ce261f29eedfd3",
+          "bytes": 4062
+        }
+      ],
+      "worker_active": false,
+      "report": "reports/native_loading_owners_integration_bp.json"
+    },
+    {
+      "id": "orch4_native_fileblock_owner_bq",
+      "done": false,
+      "state": "worker_stopped_usage_limit_analysis_only",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-fileblock-owner-bq",
+      "addresses": [
+        "00be0a30",
+        "00bdcb30",
+        "00bdebe0",
+        "00504790"
+      ],
+      "retained_files": [],
+      "worker_active": false,
+      "report": "reports/native_loading_owners_integration_bp.json"
     }
   ],
   "snapshot_after_analysis": {

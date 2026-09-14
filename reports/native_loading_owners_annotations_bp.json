@@ -1,0 +1,1314 @@
+{
+  "source_functions": [
+    {
+      "address": "00b7cb70",
+      "function": "maximum_native_resource_cache_node_00b7cb70",
+      "source": "src/native_resource_cache_erase.cpp",
+      "report": "reports/native_resource_cache_erase_bp.json",
+      "original_abi": "ECX node; EAX maximum node; RET",
+      "bytes": 28
+    },
+    {
+      "address": "00b7cb90",
+      "function": "minimum_native_resource_cache_node_00b7cb90",
+      "source": "src/native_resource_cache_erase.cpp",
+      "report": "reports/native_resource_cache_erase_bp.json",
+      "original_abi": "ECX node; EAX minimum node; RET",
+      "bytes": 27
+    },
+    {
+      "address": "00b7ce80",
+      "function": "increment_native_resource_cache_iterator_00b7ce80",
+      "source": "src/native_resource_cache_erase.cpp",
+      "report": "reports/native_resource_cache_erase_bp.json",
+      "original_abi": "ECX actual iterator; RET; no uniform EAX result",
+      "bytes": 99
+    },
+    {
+      "address": "00b7fa60",
+      "function": "erase_native_resource_cache_iterator_00b7fa60",
+      "source": "src/native_resource_cache_erase.cpp",
+      "report": "reports/native_resource_cache_erase_bp.json",
+      "original_abi": "ECX actual tree; stack(output,input owner,input node); EAX output; RET0Ch at B7FD29",
+      "bytes": 716
+    },
+    {
+      "address": "00b801c0",
+      "function": "erase_native_resource_manager_name_00b801c0",
+      "source": "src/native_resource_cache_erase.cpp",
+      "report": "reports/native_resource_cache_erase_bp.json",
+      "original_abi": "ECX actual manager; stack(name header); RET4 at B8020A; no EAX result contract",
+      "bytes": 77
+    },
+    {
+      "address": "00be0980",
+      "function": "enter_native_vfs_fileblock_00be0980",
+      "source": "src/native_vfs_fileblock_scope.cpp",
+      "report": "reports/native_vfs_fileblock_scope_bp.json",
+      "original_abi": "ECX captured manager; stack name/gate low byte; RET8; no stable semantic result",
+      "bytes": 169
+    },
+    {
+      "address": "00bdc9b0",
+      "function": "leave_native_vfs_fileblock_00bdc9b0",
+      "source": "src/native_vfs_fileblock_scope.cpp",
+      "report": "reports/native_vfs_fileblock_scope_bp.json",
+      "original_abi": "ECX captured manager; stack name; RET4; no stable semantic result",
+      "bytes": 197
+    },
+    {
+      "address": "00bf0980",
+      "function": "destroy_native_resource_reader_buffer_00bf0980",
+      "source": "src/native_resource_reader_owner.cpp",
+      "report": "reports/native_resource_reader_owner_bp.json",
+      "original_abi": "ECX actual0Ch header, RET, no stable result",
+      "bytes": 23
+    },
+    {
+      "address": "00bf09b0",
+      "function": "destroy_native_resource_reader_00bf09b0",
+      "source": "src/native_resource_reader_owner.cpp",
+      "report": "reports/native_resource_reader_owner_bp.json",
+      "original_abi": "ECX actual10h reader, RET, no stable result",
+      "bytes": 120
+    },
+    {
+      "address": "00bea150",
+      "function": "construct_native_structured_resource_reader_00bea150",
+      "source": "src/native_resource_reader_owner.cpp",
+      "report": "reports/native_resource_reader_owner_bp.json",
+      "original_abi": "ECX actual70h reader, EAX same reader, RET",
+      "bytes": 101
+    },
+    {
+      "address": "00be9f10",
+      "function": "destroy_native_structured_resource_reader_00be9f10",
+      "source": "src/native_resource_reader_owner.cpp",
+      "report": "reports/native_resource_reader_owner_bp.json",
+      "original_abi": "ECX actual70h reader, RET, no stable result",
+      "bytes": 120
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7cb70",
+      "name": "BSP_ResourceCacheNode_Maximum",
+      "before_comment": {
+        "address": "00b7cb70",
+        "function_name": "FUN_00b7cb70"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 28 bytes; ECX node; EAX maximum node; RET; reports/native_resource_cache_erase_bp.json.",
+      "before_documentation": {
+        "hash": "90fd23ca2f0f5b4c0b872e489386086bbf4b1c41b1dedfe0a0b4827bc875ffd0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7cb70",
+        "function_name": "FUN_00b7cb70",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b7cb80"
+          },
+          {
+            "relative_offset": 27,
+            "name": "LAB_00b7cb8b"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceCacheNode_Maximum(void* node, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7cb70 with __fastcall calling convention",
+      "ledger_name_output": "00b7cb70 -> BSP_ResourceCacheNode_Maximum\n",
+      "ledger_function_output": "00b7cb70 function maximum_native_resource_cache_node_00b7cb70\n",
+      "after_comment": {
+        "address": "00b7cb70",
+        "function_name": "BSP_ResourceCacheNode_Maximum",
+        "comment": "[BSP reconstruction 00b7cb70]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 28 bytes; ECX node; EAX maximum node; RET; reports/native_resource_cache_erase_bp.json."
+      }
+    },
+    {
+      "address": "00b7cb90",
+      "name": "BSP_ResourceCacheNode_Minimum",
+      "before_comment": {
+        "address": "00b7cb90",
+        "function_name": "FUN_00b7cb90"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 27 bytes; ECX node; EAX minimum node; RET; reports/native_resource_cache_erase_bp.json.",
+      "before_documentation": {
+        "hash": "9dcef434184ca3a40c7bfd38727217e469976a2c3bf2faf537f40d105d2fd8c2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7cb90",
+        "function_name": "FUN_00b7cb90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b7cba0"
+          },
+          {
+            "relative_offset": 26,
+            "name": "LAB_00b7cbaa"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceCacheNode_Minimum(void* node, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7cb90 with __fastcall calling convention",
+      "ledger_name_output": "00b7cb90 -> BSP_ResourceCacheNode_Minimum\n",
+      "ledger_function_output": "00b7cb90 function minimum_native_resource_cache_node_00b7cb90\n",
+      "after_comment": {
+        "address": "00b7cb90",
+        "function_name": "BSP_ResourceCacheNode_Minimum",
+        "comment": "[BSP reconstruction 00b7cb90]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 27 bytes; ECX node; EAX minimum node; RET; reports/native_resource_cache_erase_bp.json."
+      }
+    },
+    {
+      "address": "00b7ce80",
+      "name": "BSP_ResourceCacheIterator_Increment",
+      "before_comment": {
+        "address": "00b7ce80",
+        "function_name": "FUN_00b7ce80"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 99 bytes; ECX actual iterator; RET; no uniform EAX result; reports/native_resource_cache_erase_bp.json.",
+      "before_documentation": {
+        "hash": "fdd23820dad27985f02081b50817555a4424a889dc2cd8f89d0a818f41e5235b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7ce80",
+        "function_name": "FUN_00b7ce80",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(unique, 0x10000045, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 13,
+            "name": "LAB_00b7ce8d"
+          },
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b7ce9c"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00b7ceb0"
+          },
+          {
+            "relative_offset": 58,
+            "name": "LAB_00b7ceba"
+          },
+          {
+            "relative_offset": 63,
+            "name": "LAB_00b7cebf"
+          },
+          {
+            "relative_offset": 72,
+            "name": "LAB_00b7cec8"
+          },
+          {
+            "relative_offset": 94,
+            "name": "LAB_00b7cede"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceCacheIterator_Increment(void* iterator, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7ce80 with __fastcall calling convention",
+      "ledger_name_output": "00b7ce80 -> BSP_ResourceCacheIterator_Increment\n",
+      "ledger_function_output": "00b7ce80 function increment_native_resource_cache_iterator_00b7ce80\n",
+      "after_comment": {
+        "address": "00b7ce80",
+        "function_name": "BSP_ResourceCacheIterator_Increment",
+        "comment": "[BSP reconstruction 00b7ce80]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 99 bytes; ECX actual iterator; RET; no uniform EAX result; reports/native_resource_cache_erase_bp.json."
+      }
+    },
+    {
+      "address": "00b7fa60",
+      "name": "BSP_ResourceNameTree_EraseIterator",
+      "before_comment": {
+        "address": "00b7fa60",
+        "function_name": "BSP_ResourceNameTree_EraseIterator",
+        "comment": "[BSP reconstruction 00b7fa60]\nECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Reject sentinel iterator using invalid map/set<T> iterator exception. Compute successor through00b7ce80, relink/rebalance tree, tear down erased key via00419cc0/00bd1510, free erased node, decrement nonzero tree size, return successor iterator. Matched body never reads/releases mapped value at node+14. Min/max/rotation helpers and exception allocation internals remain external. Full PE-matched body00b7fa60-00b7fd2b. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 716 bytes; ECX actual tree; stack(output,input owner,input node); EAX output; RET0Ch at B7FD29; reports/native_resource_cache_erase_bp.json.",
+      "before_documentation": {
+        "hash": "3a20fb16a42a1c67190e0f05e137f0d520fdc453f56e8687097083211899a540",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7fa60",
+        "function_name": "BSP_ResourceNameTree_EraseIterator",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7fa60]\nECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Reject sentinel iterator using invalid map/set<T> iterator exception. Compute successor through00b7ce80, relink/rebalance tree, tear down erased key via00419cc0/00bd1510, free erased node, decrement nonzero tree size, return successor iterator. Matched body never reads/releases mapped value at node+14. Min/max/rotation helpers and exception allocation internals remain external. Full PE-matched body00b7fa60-00b7fd2b. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "int *",
+            "storage": "(unique, 0x1000025d, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "node",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff98, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b7fad6"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b7faf1"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b7fafe"
+          },
+          {
+            "relative_offset": 169,
+            "name": "LAB_00b7fb09"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b7fb15"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00b7fb22"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_00b7fb2a"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00b7fb2d"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00b7fb3e"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b7fb45"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00b7fb47"
+          },
+          {
+            "relative_offset": 256,
+            "name": "LAB_00b7fb60"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00b7fb6c"
+          },
+          {
+            "relative_offset": 285,
+            "name": "LAB_00b7fb7d"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00b7fb89"
+          },
+          {
+            "relative_offset": 311,
+            "name": "LAB_00b7fb97"
+          },
+          {
+            "relative_offset": 324,
+            "name": "LAB_00b7fba4"
+          },
+          {
+            "relative_offset": 335,
+            "name": "LAB_00b7fbaf"
+          },
+          {
+            "relative_offset": 338,
+            "name": "LAB_00b7fbb2"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00b7fbc4"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b7fbe2"
+          },
+          {
+            "relative_offset": 430,
+            "name": "LAB_00b7fc0e"
+          },
+          {
+            "relative_offset": 451,
+            "name": "LAB_00b7fc23"
+          },
+          {
+            "relative_offset": 481,
+            "name": "LAB_00b7fc41"
+          },
+          {
+            "relative_offset": 504,
+            "name": "LAB_00b7fc58"
+          },
+          {
+            "relative_offset": 529,
+            "name": "LAB_00b7fc71"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b7fc86"
+          },
+          {
+            "relative_offset": 554,
+            "name": "LAB_00b7fc8a"
+          },
+          {
+            "relative_offset": 573,
+            "name": "LAB_00b7fc9d"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00b7fcba"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b7fcce"
+          },
+          {
+            "relative_offset": 625,
+            "name": "LAB_00b7fcd1"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00b7fcec"
+          },
+          {
+            "relative_offset": 680,
+            "name": "LAB_00b7fd08"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceNameTree_EraseIterator(void* tree, void* unused_edx, void* output, void* input_owner, void* input_node)",
+      "prototype_result": "Successfully set prototype for function at 00b7fa60 with __fastcall calling convention",
+      "ledger_name_output": "00b7fa60 -> BSP_ResourceNameTree_EraseIterator\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7fa60\", \"name\": \"BSP_ResourceNameTree_EraseIterator\", \"evidence\": \"ECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Reject sentinel iterator using invalid map/set<T> iterator exception. Compute successor through00b7ce80, relink/rebalance tree, tear down erased key via00419cc0/00bd1510, free erased node, decrement nonzero tree size, return successor iterator. Matched body never reads/releases mapped value at node+14. Min/max/rotation helpers and exception allocation internals remain external. Full PE-matched body00b7fa60-00b7fd2b. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7fa60 function erase_native_resource_cache_iterator_00b7fa60\n",
+      "after_comment": {
+        "address": "00b7fa60",
+        "function_name": "BSP_ResourceNameTree_EraseIterator",
+        "comment": "[BSP reconstruction 00b7fa60]\nECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Reject sentinel iterator using invalid map/set<T> iterator exception. Compute successor through00b7ce80, relink/rebalance tree, tear down erased key via00419cc0/00bd1510, free erased node, decrement nonzero tree size, return successor iterator. Matched body never reads/releases mapped value at node+14. Min/max/rotation helpers and exception allocation internals remain external. Full PE-matched body00b7fa60-00b7fd2b. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator pointer, input iterator owner, input node; RET12; EAX output iterator pointer; x86 SEH prologue. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b7fa60] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 716 bytes; ECX actual tree; stack(output,input owner,input node); EAX output; RET0Ch at B7FD29; reports/native_resource_cache_erase_bp.json."
+      }
+    },
+    {
+      "address": "00b801c0",
+      "name": "BSP_ResourceManager_EraseCachedName",
+      "before_comment": {
+        "address": "00b801c0",
+        "function_name": "BSP_ResourceManager_EraseCachedName",
+        "comment": "[BSP reconstruction 00b801c0]\nECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Find name in tree at manager+14; validate returned iterator owner; if result != sentinel, erase exactly that iterator through00b7fa60. No loop, expected mapped-pointer argument, or mapped-value comparison. Full PE-matched body00b801c0-00b8020c. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 77 bytes; ECX actual manager; stack(name header); RET4 at B8020A; no EAX result contract; reports/native_resource_cache_erase_bp.json.",
+      "before_documentation": {
+        "hash": "3739826d764a0aad176f6861c1c496abf7916600012f4e74f6df85c608e85253",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b801c0",
+        "function_name": "BSP_ResourceManager_EraseCachedName",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b801c0]\nECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Find name in tree at manager+14; validate returned iterator owner; if result != sentinel, erase exactly that iterator through00b7fa60. No loop, expected mapped-pointer argument, or mapped-value comparison. Full PE-matched body00b801c0-00b8020c. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "tree",
+            "type": "void *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 41,
+            "name": "LAB_00b801e9"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b801ee"
+          },
+          {
+            "relative_offset": 68,
+            "name": "LAB_00b80204"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_ResourceManager_EraseCachedName(void* manager, void* unused_edx, void* name)",
+      "prototype_result": "Successfully set prototype for function at 00b801c0 with __fastcall calling convention",
+      "ledger_name_output": "00b801c0 -> BSP_ResourceManager_EraseCachedName\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b801c0\", \"name\": \"BSP_ResourceManager_EraseCachedName\", \"evidence\": \"ECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Find name in tree at manager+14; validate returned iterator owner; if result != sentinel, erase exactly that iterator through00b7fa60. No loop, expected mapped-pointer argument, or mapped-value comparison. Full PE-matched body00b801c0-00b8020c. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b801c0 function erase_native_resource_manager_name_00b801c0\n",
+      "after_comment": {
+        "address": "00b801c0",
+        "function_name": "BSP_ResourceManager_EraseCachedName",
+        "comment": "[BSP reconstruction 00b801c0]\nECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Find name in tree at manager+14; validate returned iterator owner; if result != sentinel, erase exactly that iterator through00b7fa60. No loop, expected mapped-pointer argument, or mapped-value comparison. Full PE-matched body00b801c0-00b8020c. docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; no native ABI or runtime claim. Original ABI: ECX manager; stack pointer to native name length/data pair; RET4; no meaningful result. Evidence: docs/RESOURCE_CLASSIFICATION_AND_CACHE_ERASE.md; reports/resource_classification_cache_erase_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b801c0] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 77 bytes; ECX actual manager; stack(name header); RET4 at B8020A; no EAX result contract; reports/native_resource_cache_erase_bp.json."
+      }
+    },
+    {
+      "address": "00be0980",
+      "name": "BSP_VFS_EnterFileBlock",
+      "before_comment": {
+        "address": "00be0980",
+        "function_name": "BSP_VFS_EnterFileBlock",
+        "comment": "[BSP reconstruction 00be0980]\nComplete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional. Original ABI: ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 169 bytes; ECX captured manager; stack name/gate low byte; RET8; no stable semantic result; reports/native_vfs_fileblock_scope_bp.json.",
+      "before_documentation": {
+        "hash": "4a20d1b43111b3f421fd4a3596c7a7c9e992532ed11300de68c490450cdb5bca",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be0980",
+        "function_name": "BSP_VFS_EnterFileBlock",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be0980]\nComplete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional. Original ABI: ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "next",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 84,
+            "name": "LAB_00be09d4"
+          },
+          {
+            "relative_offset": 131,
+            "name": "LAB_00be0a03"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00be0a14"
+          },
+          {
+            "relative_offset": 162,
+            "name": "LAB_00be0a22"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_VFS_EnterFileBlock(void* manager, void* unused_edx, void* name, unsigned int gate)",
+      "prototype_result": "Successfully set prototype for function at 00be0980 with __fastcall calling convention",
+      "ledger_name_output": "00be0980 -> BSP_VFS_EnterFileBlock\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be0980\", \"name\": \"BSP_VFS_EnterFileBlock\", \"evidence\": \"Complete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional. Original ABI: ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00be0980 function enter_native_vfs_fileblock_00be0980\n",
+      "after_comment": {
+        "address": "00be0980",
+        "function_name": "BSP_VFS_EnterFileBlock",
+        "comment": "[BSP reconstruction 00be0980]\nComplete169-byte PE-matched body. Distinct receiver from00bdf950: ECX globalVFS manager. Order: node construction with address+79h; checked list+7Ch size growth; linkage; gateAND; optional manager+88h observer virtual+8(name) if+78h; depth+14h++; name copy+0Ch/+10h; diagnostic +FileBlock %s ifgate. No direct observer/input wrapper retain, stream range or reads. Paired leave remains unreviewed; descriptive name is provisional. Original ABI: ECX VFS manager; stack name-wrapper pointer, low gate byte; RET8; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0980] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 169 bytes; ECX captured manager; stack name/gate low byte; RET8; no stable semantic result; reports/native_vfs_fileblock_scope_bp.json."
+      }
+    },
+    {
+      "address": "00bdc9b0",
+      "name": "BSP_VFS_LeaveFileBlock",
+      "before_comment": {
+        "address": "00bdc9b0",
+        "function_name": "BSP_VFS_LeaveFileBlock",
+        "comment": "[BSP reconstruction 00bdc9b0]\nComplete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path. Original ABI: ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 197 bytes; ECX captured manager; stack name; RET4; no stable semantic result; reports/native_vfs_fileblock_scope_bp.json.",
+      "before_documentation": {
+        "hash": "088e41c7cc33f1715400d9b0265ac3decf34bb8faaba7a12053ad887ebbf6007",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdc9b0",
+        "function_name": "BSP_VFS_LeaveFileBlock",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bdc9b0]\nComplete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path. Original ABI: ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "auStack_8",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "node",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 39,
+            "name": "LAB_00bdc9d7"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00bdc9e0"
+          },
+          {
+            "relative_offset": 86,
+            "name": "LAB_00bdca06"
+          },
+          {
+            "relative_offset": 108,
+            "name": "LAB_00bdca1c"
+          },
+          {
+            "relative_offset": 122,
+            "name": "LAB_00bdca2a"
+          },
+          {
+            "relative_offset": 143,
+            "name": "LAB_00bdca3f"
+          },
+          {
+            "relative_offset": 153,
+            "name": "LAB_00bdca49"
+          },
+          {
+            "relative_offset": 174,
+            "name": "LAB_00bdca5e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_VFS_LeaveFileBlock(void* manager, void* unused_edx, void* name)",
+      "prototype_result": "Successfully set prototype for function at 00bdc9b0 with __fastcall calling convention",
+      "ledger_name_output": "00bdc9b0 -> BSP_VFS_LeaveFileBlock\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdc9b0\", \"name\": \"BSP_VFS_LeaveFileBlock\", \"evidence\": \"Complete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path. Original ABI: ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bdc9b0 function leave_native_vfs_fileblock_00bdc9b0\n",
+      "after_comment": {
+        "address": "00bdc9b0",
+        "function_name": "BSP_VFS_LeaveFileBlock",
+        "comment": "[BSP reconstruction 00bdc9b0]\nComplete197-byte body. Observer+88h virtual+0Ch if+78h, explicit name unlessempty then manager currentname+0Ch; callback precedes mutations. Clear currentname, depth+14h--, diagnostic under currentgate+79h, restoregate from last list node+8, erase node via00bdaf40. Parent name is not restored. Empty-stack validation happens after name/depth mutations; matching live node required for normal path. Original ABI: ECX VFS manager; stack name-wrapper pointer; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bdc9b0] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 197 bytes; ECX captured manager; stack name; RET4; no stable semantic result; reports/native_vfs_fileblock_scope_bp.json."
+      }
+    },
+    {
+      "address": "00bf0980",
+      "name": "BSP_ResourceReaderBuffer_Destroy",
+      "before_comment": {
+        "address": "00bf0980",
+        "function_name": "FUN_00bf0980",
+        "comment": ""
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 23 bytes; ECX actual0Ch header, RET, no stable result; reports/native_resource_reader_owner_bp.json.",
+      "before_documentation": {
+        "hash": "83d4e6d066dec83d15aa991f19c19b24ace7a1100be9ab352be37961410bbd74",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0980",
+        "function_name": "FUN_00bf0980",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "buffer",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 70.0
+      },
+      "prototype": "void __fastcall BSP_ResourceReaderBuffer_Destroy(void* header, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00bf0980 with __fastcall calling convention",
+      "ledger_name_output": "00bf0980 -> BSP_ResourceReaderBuffer_Destroy\n",
+      "ledger_function_output": "00bf0980 function destroy_native_resource_reader_buffer_00bf0980\n",
+      "after_comment": {
+        "address": "00bf0980",
+        "function_name": "BSP_ResourceReaderBuffer_Destroy",
+        "comment": "[BSP reconstruction 00bf0980]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 23 bytes; ECX actual0Ch header, RET, no stable result; reports/native_resource_reader_owner_bp.json."
+      }
+    },
+    {
+      "address": "00bf09b0",
+      "name": "BSP_StreamReader_Destroy",
+      "before_comment": {
+        "address": "00bf09b0",
+        "function_name": "BSP_StreamReader_Destroy",
+        "comment": "[BSP reconstruction 00bf09b0]\nBSP reconstruction hypothesis: Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified. ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 120 bytes; ECX actual10h reader, RET, no stable result; reports/native_resource_reader_owner_bp.json.",
+      "before_documentation": {
+        "hash": "10ecdd769b8b07cf221e8ddc69fd391a195801537f5fb9da4b3a3a78e5387862",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf09b0",
+        "function_name": "BSP_StreamReader_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf09b0]\nBSP reconstruction hypothesis: Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified. ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 66,
+            "name": "LAB_00bf09f2"
+          },
+          {
+            "relative_offset": 72,
+            "name": "LAB_00bf09f8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StreamReader_Destroy(void* reader, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00bf09b0 with __fastcall calling convention",
+      "ledger_name_output": "00bf09b0 -> BSP_StreamReader_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf09b0\", \"name\": \"BSP_StreamReader_Destroy\", \"evidence\": \"BSP reconstruction hypothesis: Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified. ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bf09b0 function destroy_native_resource_reader_00bf09b0\n",
+      "after_comment": {
+        "address": "00bf09b0",
+        "function_name": "BSP_StreamReader_Destroy",
+        "comment": "[BSP reconstruction 00bf09b0]\nBSP reconstruction hypothesis: Release attached stream reference and null pointer, call00bf0700 on base+4 with zero, free remaining buffer pointer. Optional buffer internals deferred. Stale CALL_RETURN at00bf0a0f truncated saved function; full120-byte body verified. ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader base; no stack arguments; plain RET at00bf0a27. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf09b0] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 120 bytes; ECX actual10h reader, RET, no stable result; reports/native_resource_reader_owner_bp.json."
+      }
+    },
+    {
+      "address": "00bea150",
+      "name": "BSP_StructuredReader_Construct",
+      "before_comment": {
+        "address": "00bea150",
+        "function_name": "BSP_StructuredReader_Construct",
+        "comment": "[BSP reconstruction 00bea150]\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea150] update\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BM/BN reviewed source evidence: Complete101B: ECX fresh caller-owned writable70h reader, EAX same, plainRET. Construct BF09A0 base, then ten actual415270 eight-byte path headers at+10h, stride8; only after all complete publish +60=0,+64=FFFFFFFF,+68=0,+6C=0. Base and concrete actual header provider are call-free/no-throw within valid nonfaulting storage, closing this complete construction through a direct ten-call specialization without invented allocator, pool, stream, unwind or terminate callbacks. Native generic BF7CD1/BF7D1E/BF7C10 and outer EHFlags1 fault eligibility remain separately documented; no catch-all replacement or native FH3/SEH claim. Source cdecl entry differs from native ECX ABI; fresh bytes are overwritten without releasing old contents. See reports/native_raw_reader_construction_bn.json and reports/native_raw_reader_vector_unwind_bm.json. Worker strict build, eight PE/live seeds and existing CTests passed; combined current candidate acceptance is recorded separately. Descriptive names remain hypotheses; gameplay unclaimed."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 101 bytes; ECX actual70h reader, EAX same reader, RET; reports/native_resource_reader_owner_bp.json.",
+      "before_documentation": {
+        "hash": "3cce7b53d5d261e3998dc0c432c6c279e9616bd2668351f5f87c9b28eb767dc2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bea150",
+        "function_name": "BSP_StructuredReader_Construct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bea150]\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea150] update\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BM/BN reviewed source evidence: Complete101B: ECX fresh caller-owned writable70h reader, EAX same, plainRET. Construct BF09A0 base, then ten actual415270 eight-byte path headers at+10h, stride8; only after all complete publish +60=0,+64=FFFFFFFF,+68=0,+6C=0. Base and concrete actual header provider are call-free/no-throw within valid nonfaulting storage, closing this complete construction through a direct ten-call specialization without invented allocator, pool, stream, unwind or terminate callbacks. Native generic BF7CD1/BF7D1E/BF7C10 and outer EHFlags1 fault eligibility remain separately documented; no catch-all replacement or native FH3/SEH claim. Source cdecl entry differs from native ECX ABI; fresh bytes are overwritten without releasing old contents. See reports/native_raw_reader_construction_bn.json and reports/native_raw_reader_vector_unwind_bm.json. Worker strict build, eight PE/live seeds and existing CTests passed; combined current candidate acceptance is recorded separately. Descriptive names remain hypotheses; gameplay unclaimed.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredReader_Construct(void* reader, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00bea150 with __fastcall calling convention",
+      "ledger_name_output": "00bea150 -> BSP_StructuredReader_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bea150\", \"name\": \"BSP_StructuredReader_Construct\", \"evidence\": \"BSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bea150 function construct_native_structured_resource_reader_00bea150\n",
+      "after_comment": {
+        "address": "00bea150",
+        "function_name": "BSP_StructuredReader_Construct",
+        "comment": "[BSP reconstruction 00bea150]\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea150] update\nBSP reconstruction hypothesis: Initialize base16-byte stream holder, ten native strings at+10, path index0, controlFFFFFFFF, separate name string+68/+6C zero. ABI: ECX reader; EAX reader; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; EAX reader; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BM/BN reviewed source evidence: Complete101B: ECX fresh caller-owned writable70h reader, EAX same, plainRET. Construct BF09A0 base, then ten actual415270 eight-byte path headers at+10h, stride8; only after all complete publish +60=0,+64=FFFFFFFF,+68=0,+6C=0. Base and concrete actual header provider are call-free/no-throw within valid nonfaulting storage, closing this complete construction through a direct ten-call specialization without invented allocator, pool, stream, unwind or terminate callbacks. Native generic BF7CD1/BF7D1E/BF7C10 and outer EHFlags1 fault eligibility remain separately documented; no catch-all replacement or native FH3/SEH claim. Source cdecl entry differs from native ECX ABI; fresh bytes are overwritten without releasing old contents. See reports/native_raw_reader_construction_bn.json and reports/native_raw_reader_vector_unwind_bm.json. Worker strict build, eight PE/live seeds and existing CTests passed; combined current candidate acceptance is recorded separately. Descriptive names remain hypotheses; gameplay unclaimed.\n\n[BSP reconstruction 00bea150] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 101 bytes; ECX actual70h reader, EAX same reader, RET; reports/native_resource_reader_owner_bp.json."
+      }
+    },
+    {
+      "address": "00be9f10",
+      "name": "BSP_StructuredReader_Destroy",
+      "before_comment": {
+        "address": "00be9f10",
+        "function_name": "BSP_StructuredReader_Destroy",
+        "comment": "[BSP reconstruction 00be9f10]\nBSP reconstruction hypothesis: Destroy separate name string, ten path strings, then base reader00bf09b0. ABI: ECX reader; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 120 bytes; ECX actual70h reader, RET, no stable result; reports/native_resource_reader_owner_bp.json.",
+      "before_documentation": {
+        "hash": "b5b5d5f26ea707f6c6b2e59a05da3f966a4eddf88643aa2da9ae79f6e4e5fd93",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be9f10",
+        "function_name": "BSP_StructuredReader_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be9f10]\nBSP reconstruction hypothesis: Destroy separate name string, ten path strings, then base reader00bf09b0. ABI: ECX reader; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 66,
+            "name": "LAB_00be9f52"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredReader_Destroy(void* reader, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00be9f10 with __fastcall calling convention",
+      "ledger_name_output": "00be9f10 -> BSP_StructuredReader_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be9f10\", \"name\": \"BSP_StructuredReader_Destroy\", \"evidence\": \"BSP reconstruction hypothesis: Destroy separate name string, ten path strings, then base reader00bf09b0. ABI: ECX reader; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be9f10 function destroy_native_structured_resource_reader_00be9f10\n",
+      "after_comment": {
+        "address": "00be9f10",
+        "function_name": "BSP_StructuredReader_Destroy",
+        "comment": "[BSP reconstruction 00be9f10]\nBSP reconstruction hypothesis: Destroy separate name string, ten path strings, then base reader00bf09b0. ABI: ECX reader; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9f10] update\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native span 120 bytes; ECX actual70h reader, RET, no stable result; reports/native_resource_reader_owner_bp.json."
+      }
+    },
+    {
+      "address": "00cc2118",
+      "name": "EH_handler_00cc2118",
+      "before_comment": {
+        "address": "00cc2118",
+        "function_name": "FUN_00cc2118"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only.",
+      "ledger_name_output": "00cc2118 -> EH_handler_00cc2118\n",
+      "after_comment": {
+        "address": "00cc2118",
+        "function_name": "EH_handler_00cc2118",
+        "comment": "[BSP reconstruction 00cc2118]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only."
+      }
+    },
+    {
+      "address": "00cc70d3",
+      "name": "EH_handler_00cc70d3",
+      "before_comment": {
+        "address": "00cc70d3",
+        "function_name": "FUN_00cc70d3"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only.",
+      "ledger_name_output": "00cc70d3 -> EH_handler_00cc70d3\n",
+      "after_comment": {
+        "address": "00cc70d3",
+        "function_name": "EH_handler_00cc70d3",
+        "comment": "[BSP reconstruction 00cc70d3]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only."
+      }
+    },
+    {
+      "address": "00cc7138",
+      "name": "EH_handler_00cc7138",
+      "before_comment": {
+        "address": "00cc7138",
+        "function_name": "FUN_00cc7138"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only.",
+      "ledger_name_output": "00cc7138 -> EH_handler_00cc7138\n",
+      "after_comment": {
+        "address": "00cc7138",
+        "function_name": "EH_handler_00cc7138",
+        "comment": "[BSP reconstruction 00cc7138]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only."
+      }
+    },
+    {
+      "address": "00cc781b",
+      "name": "EH_handler_00cc781b",
+      "before_comment": {
+        "address": "00cc781b",
+        "function_name": "FUN_00cc781b"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only.",
+      "ledger_name_output": "00cc781b -> EH_handler_00cc781b\n",
+      "after_comment": {
+        "address": "00cc781b",
+        "function_name": "EH_handler_00cc781b",
+        "comment": "[BSP reconstruction 00cc781b]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler; evidence only."
+      }
+    },
+    {
+      "address": "00cc2110",
+      "name": "Unwind@00cc2110",
+      "before_comment": {
+        "address": "00cc2110",
+        "function_name": "Unwind@00cc2110"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. State0 to -1 destroys the completed owning invalid-iterator message via 4072D0.",
+      "ledger_name_output": "00cc2110 -> Unwind@00cc2110\n",
+      "after_comment": {
+        "address": "00cc2110",
+        "function_name": "Unwind@00cc2110",
+        "comment": "[BSP reconstruction 00cc2110]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. State0 to -1 destroys the completed owning invalid-iterator message via 4072D0."
+      }
+    },
+    {
+      "address": "00cc70c0",
+      "name": "Unwind@00cc70c0",
+      "before_comment": {
+        "address": "00cc70c0",
+        "function_name": "Unwind@00cc70c0"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h destructor state0 to -1 destroys base through BF09B0.",
+      "ledger_name_output": "00cc70c0 -> Unwind@00cc70c0\n",
+      "after_comment": {
+        "address": "00cc70c0",
+        "function_name": "Unwind@00cc70c0",
+        "comment": "[BSP reconstruction 00cc70c0]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h destructor state0 to -1 destroys base through BF09B0."
+      }
+    },
+    {
+      "address": "00cc70c8",
+      "name": "Unwind@00cc70c8",
+      "before_comment": {
+        "address": "00cc70c8",
+        "function_name": "Unwind@00cc70c8"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h destructor state1 to 0 destroys ten strings through BE9F00.",
+      "ledger_name_output": "00cc70c8 -> Unwind@00cc70c8\n",
+      "after_comment": {
+        "address": "00cc70c8",
+        "function_name": "Unwind@00cc70c8",
+        "comment": "[BSP reconstruction 00cc70c8]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h destructor state1 to 0 destroys ten strings through BE9F00."
+      }
+    },
+    {
+      "address": "00cc7130",
+      "name": "Unwind@00cc7130",
+      "before_comment": {
+        "address": "00cc7130",
+        "function_name": "Unwind@00cc7130"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h constructor state0 to -1 destroys completed base through BF09B0.",
+      "ledger_name_output": "00cc7130 -> Unwind@00cc7130\n",
+      "after_comment": {
+        "address": "00cc7130",
+        "function_name": "Unwind@00cc7130",
+        "comment": "[BSP reconstruction 00cc7130]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader70h constructor state0 to -1 destroys completed base through BF09B0."
+      }
+    },
+    {
+      "address": "00cc7810",
+      "name": "Unwind@00cc7810",
+      "before_comment": {
+        "address": "00cc7810",
+        "function_name": "Unwind@00cc7810"
+      },
+      "evidence": "BP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader10h destructor state0 to -1 destroys buffer at reader+4 through BF0980.",
+      "ledger_name_output": "00cc7810 -> Unwind@00cc7810\n",
+      "after_comment": {
+        "address": "00cc7810",
+        "function_name": "Unwind@00cc7810",
+        "comment": "[BSP reconstruction 00cc7810]\nBP actual-storage cache erase, VFS FileBlock scope and resource reader owner reconstruction. Primary reviewed source and native evidence, verified artifact/dependency hashes, reran five existing fixture modes, registered three TUs and passed the combined Win32 build and both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; C++ interfaces add explicit services. Reader normal lifetime fixture passed; getter-failure, remaining-element unwind and secondary-termination execution remain untested. Reader source models the recovered cleanup order but does not replace original CRT/FH3/TLS/CLR identity. VFS scope retains outer storage across escaping observer calls with BO dependency-internal lifetime limits; no automatic compensating exit. Native binary compatibility, production loader binding and gameplay remain unproved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BP.md and reports/native_loading_owners_integration_bp.json. Native unwind evidence, existing compiler name preserved. Reader10h destructor state0 to -1 destroys buffer at reader+4 through BF0980."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7cb70",
+        "prototype": "void* __fastcall BSP_ResourceCacheNode_Maximum(void* node, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7cb70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7cb90",
+        "prototype": "void* __fastcall BSP_ResourceCacheNode_Minimum(void* node, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7cb90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7ce80",
+        "prototype": "void __fastcall BSP_ResourceCacheIterator_Increment(void* iterator, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7ce80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7fa60",
+        "prototype": "void* __fastcall BSP_ResourceNameTree_EraseIterator(void* tree, void* unused_edx, void* output, void* input_owner, void* input_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7fa60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b801c0",
+        "prototype": "void __fastcall BSP_ResourceManager_EraseCachedName(void* manager, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b801c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be0980",
+        "prototype": "void __fastcall BSP_VFS_EnterFileBlock(void* manager, void* unused_edx, void* name, unsigned int gate)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be0980 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdc9b0",
+        "prototype": "void __fastcall BSP_VFS_LeaveFileBlock(void* manager, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdc9b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf0980",
+        "prototype": "void __fastcall BSP_ResourceReaderBuffer_Destroy(void* header, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf0980 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf09b0",
+        "prototype": "void __fastcall BSP_StreamReader_Destroy(void* reader, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf09b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bea150",
+        "prototype": "void* __fastcall BSP_StructuredReader_Construct(void* reader, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bea150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be9f10",
+        "prototype": "void __fastcall BSP_StructuredReader_Destroy(void* reader, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be9f10 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}
