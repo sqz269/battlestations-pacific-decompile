@@ -1,0 +1,251 @@
+{
+  "packet": "orch5_native_online_achievements",
+  "base_commit": "5eb0e80001128cde0ac0cdc55d601d6798fd5a38",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_achievements.cpp",
+  "header": "include/bsp/native_online_achievements.hpp",
+  "ghidra_writes": false,
+  "ghidra_saves": false,
+  "functions": [
+    {
+      "address": "00a3fa70",
+      "inclusive_end": "00a3fd1f",
+      "byte_length": 688,
+      "byte_sha256": "8a2107c9bab7455bed8fffda8ea34b71d60c64cb74385b34f635ecb0092beedd",
+      "matches_installed_executable": true,
+      "name": "pump_native_online_achievements_00a3fa70",
+      "name_hypothesis": "BSP_XLiveSystem_PumpAchievements",
+      "native_abi": "ECX manager; low force byte in DWORD stack slot; RET 4",
+      "coverage": "complete normal control flow against actual NativeOnlineManagerStorage",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Full listing, producer A410A0/A41030, actual CRT BF6713/BF66EF/BF67A7; wrapped SAR count, unsigned saturated allocation, signed iteration, current storage reloads and cleanup."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a3fafa",
+      "native": "00bf6989",
+      "function": "00a3fa70",
+      "contract": "release current buffer before submission"
+    },
+    {
+      "address": "00a3fb32",
+      "native": "00bf55be",
+      "function": "00a3fa70",
+      "contract": "allocate saturated unsigned count times eight"
+    },
+    {
+      "address": "00a3fb65",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "snapshot first index check"
+    },
+    {
+      "address": "00a3fbb6",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "snapshot diagnostic index check"
+    },
+    {
+      "address": "00a3fbc9",
+      "native": "004254b0",
+      "function": "00a3fa70",
+      "contract": "single RET diagnostic"
+    },
+    {
+      "address": "00a3fbf5",
+      "native": "00a4d596",
+      "function": "00a3fa70",
+      "contract": "stdcall write count pairs overlap, 12 bytes callee cleanup"
+    },
+    {
+      "address": "00a3fc24",
+      "native": "00a4d42e",
+      "function": "00a3fa70",
+      "contract": "stdcall result overlap null TRUE, 12 bytes callee cleanup"
+    },
+    {
+      "address": "00a3fc49",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "begin greater than end"
+    },
+    {
+      "address": "00a3fc58",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "reloaded begin greater than end"
+    },
+    {
+      "address": "00a3fc61",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "unreachable after CMP ESI,ESI / JZ A3FC66"
+    },
+    {
+      "address": "00a3fc6f",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "current pointer not below current end"
+    },
+    {
+      "address": "00a3fc8b",
+      "native": "00bf6713",
+      "function": "00a3fa70",
+      "contract": "increment guard current pointer not below end"
+    },
+    {
+      "address": "00a3fcac",
+      "native": "00bf67a7",
+      "function": "00a3fa70",
+      "contract": "memmove_s exact destination capacity equals count, cdecl ADD ESP,10h"
+    },
+    {
+      "address": "00a3fce2",
+      "native": "00bf6989",
+      "function": "00a3fa70",
+      "contract": "free current completed batch"
+    },
+    {
+      "address": "00a3fcff",
+      "native": "00a4d422",
+      "function": "00a3fa70",
+      "contract": "stdcall error overlap, 4 bytes callee cleanup"
+    },
+    {
+      "address": "00a3fd10",
+      "native": "004254b0",
+      "function": "00a3fa70",
+      "contract": "single RET diagnostic"
+    }
+  ],
+  "analyzed_dependencies": [
+    {
+      "address": "00a410a0",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00a41030",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf55be",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf6989",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf6713",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf66ef",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf67a7",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "004254b0",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00a4d596",
+      "coverage": "analyzed only; not reconstructed or annotated here"
+    },
+    {
+      "address": "00bf65bb",
+      "coverage": "analyzed only; GetCurrentProcess/TerminateProcess imports confirmed from installed PE"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Prior vector projection limited allocation to valid positive sizes and omitted CRT checked-iterator behavior.",
+      "is": "Actual raw pointer subtraction/SAR, unsigned multiplication overflow saturation, signed loops, returning CRT guards and ignored memmove_s errors retained.",
+      "evidence": "A3FB13..A3FB32, A3FB52..A3FBB6, A3FC41..A3FCD1; BF6713/BF66EF/BF67A7 listing."
+    },
+    {
+      "was": "Removing unreachable A3FC61 could suggest damaged flow.",
+      "is": "A3FC61 is unreachable in the original body; no repair needed.",
+      "evidence": "A3FC5D CMP ESI,ESI; A3FC5F JZ A3FC66. Current function flow has 207 instructions and zero gaps."
+    }
+  ],
+  "root_ghidra_repairs_needed": [],
+  "root_ghidra_annotation_needed": "Optional update existing A3FA70 evidence comment/name ledger to refer to actual-storage implementation; preserve existing comment. No required listing repair. Worker made no mutation.",
+  "validation": {
+    "status": "reconstructed_build_and_native_boundary_fixture_tested",
+    "build": "scripts/build.ps1 Win32 Release, /W4 /WX /fp:strict",
+    "ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "verify_seeds": {
+      "compared_ranges": 8,
+      "all_match": true
+    },
+    "call_check": {
+      "checked": 16,
+      "failed": 0
+    },
+    "focused_fixture": {
+      "executables": 1,
+      "differential_scenarios": 13,
+      "passed": 13,
+      "failed": 0,
+      "compiler_flags": "/std:c++20 /EHsc /W4 /WX /O2 /MD",
+      "link_flags": "/MANIFEST:EMBED /VERBOSE:LIB /MAP",
+      "source_library": "build/win32/Release/bsp_core.lib",
+      "original_span": "00a3fa70..00a3fd1f",
+      "direct_calls_redirected": 16,
+      "comparisons": [
+        "all 3F0h raw manager bytes",
+        "entire queue backing array",
+        "retained and newly allocated pair buffers",
+        "ordered SDK/CRT/allocation boundary trace"
+      ],
+      "cases": [
+        "initial three-pair snapshot and preserved overlap tail",
+        "empty queue bypass with retained pending batch",
+        "force 100h ignored while pending",
+        "force 101h replacing pending batch",
+        "remove first current matches per pair amid duplicates and later arrivals",
+        "failed completed result retains batch",
+        "pending extended error overwrites result",
+        "negative SAR count saturates allocation to FFFFFFFF",
+        "allocator mutation reloads current queue count and selected user",
+        "returning invalid handler repairs queue fields",
+        "ignored memmove_s error still decrements current end",
+        "release mutation changes count after its zero store",
+        "wrapped positive pointer difference requests 40000000 bytes"
+      ]
+    },
+    "saved_disk_span_match": true,
+    "original_import_ordinals_verified": true,
+    "actual_runtime_modules_captured": "probe_run.log MODULE_MAPPED paths from K32GetMappedFileNameW, resolves actual SysWOW64 files",
+    "artifact_manifest": "local/native_online_achievements/final_manifest.json",
+    "retained_commands": [
+      "python tools/ghidra_export.py verify-seeds",
+      "./scripts/build.ps1",
+      "python tools/verify_report_calls.py reports/native_online_achievements.json",
+      "cmd /d /c .\\local\\native_online_achievements\\build_probe.cmd"
+    ],
+    "evidence_directory": "local/native_online_achievements"
+  },
+  "uncertainty": [
+    "New C++ interface; not fixed-address ABI replacement.",
+    "SDK, allocator and CRT bodies are external dependencies; valid storage and matching lifetime/heap policy required.",
+    "One fixture redirects original direct calls; it does not run actual XLive DLL or original CRT failure paths.",
+    "No account, network, FH3/SEH, asynchronous race, hardware fault or gameplay validation."
+  ]
+}
