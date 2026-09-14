@@ -347,31 +347,31 @@
       {
         "case": 0,
         "words": 23360,
-        "sha256": "f271e956480f288d786f1d901f706f29f949ebd7c487245349a6b39add5a20b4",
+        "sha256": "be0e4f8a5d595607d8255c9ed65aec2ab385a70c0c182a39f9cd936aeca8d9b2",
         "equal": true
       },
       {
         "case": 1,
         "words": 23362,
-        "sha256": "d880f6cc5ed601abf87115cd17b019fc9277b91f1182eff1c8dc5571157e1ab0",
+        "sha256": "da189327824a16e27da974bc107d38aecf8ad35c4b197fd618a7adb3f76b78f4",
         "equal": true
       },
       {
         "case": 2,
         "words": 23367,
-        "sha256": "d61af3cecca9977a1251096c4c00728b71c2ef659d894069a37d5937176791ad",
+        "sha256": "fda95bf36a11fb0e4b78dea335afc2610388913a720fa77b44426e217dfde5f8",
         "equal": true
       },
       {
         "case": 3,
         "words": 23357,
-        "sha256": "ab9a282f6692c1031fa450a6659fdaa68118bc0e903e1d406f2ab920a3824e66",
+        "sha256": "49eac6bce78c232778055530627f72e54e7c8295d69d8f9a7f40fb1aa40b3466",
         "equal": true
       },
       {
         "case": 4,
         "words": 23361,
-        "sha256": "99b896d14975a5385a044123485154a10d128433a73b12660dfd817e979c08d2",
+        "sha256": "ad1da84b4c2a8caeed17e5d6200c3674da770f01cf1f15c848ab611bf14b0445",
         "equal": true
       },
       {
@@ -705,13 +705,25 @@
         "equal": true
       }
     ],
-    "results_sha256": "a0c3d13144d7e697e20e2b318f5e1a3f1a594e6690ad4906d0095a855d436f74",
+    "results_sha256": "271abac9f0aae48d4c80b13e0cff3970998a27c470cd688f4fcfdd4fab3fba2b",
     "owned_direct_call_rows": 29,
     "indirect_sites": 7,
     "native_seed_matches": 8,
     "compiled_review": "Retained spatial/part object disassembly and relocations: current field/target reloads, capacity-before-allocation, raw providers, duplicate parent calls, captured pose/index, three branches, source access-stack adjustments and final flags.",
     "source_floor_boundary": "Same real SDK floor callback used by original reference and source; original CRT dispatch and internals are not reimplemented or proved.",
     "source_constructor_scope": "Existing constructor attachment override executed. No new whole constructor comparison with nonempty collision source vector.",
-    "flow_repair": "reports/native_spatial_attachment_flow_am.json"
+    "flow_repair": "reports/native_spatial_attachment_flow_am.json",
+    "fixture_normalization": {
+      "scope": "Only the three actual unit fixture table targets receive stable numeric identities. Raw data-owner pointers retain their bounded allocation normalization.",
+      "virtual_target_ids": {
+        "type_target": "71000001",
+        "collision_first": "71000002",
+        "collision_second": "71000003"
+      },
+      "normalized_result_sha256": "271abac9f0aae48d4c80b13e0cff3970998a27c470cd688f4fcfdd4fab3fba2b",
+      "verified_separate_runs": 2,
+      "earlier_unnormalized_result_sha256": "92aefd4ba700911672766abc46507615f7885118c3e60384c2c1c717aa8b8384",
+      "source_or_native_behavior_changed": false
+    }
   }
 }

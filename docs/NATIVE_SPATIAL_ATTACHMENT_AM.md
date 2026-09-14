@@ -123,7 +123,7 @@ bounds, index publication and source CRT/SDK boundaries. The fixture supplies
 real callable unit targets in its own tables and an SDK floor binding; these
 are explicit fixture services, not evidence of actual game-unit dispatch or
 original floor internals. Pointer identities are normalized in the retained
-whole-storage images; native/source branch traces and floating status agree.
+whole-storage images, and the three actual fixture virtual targets receive stable identities. Two separate runs produce the same normalized result hash; native/source branch traces and floating status agree.
 The constructor's new attachment override is executed, but this packet does
 not claim another complete constructor comparison with nonempty collision data.
 
