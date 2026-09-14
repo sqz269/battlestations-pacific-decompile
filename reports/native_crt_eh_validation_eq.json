@@ -1,0 +1,542 @@
+{
+  "packet": "EQ",
+  "status": "complete_C168A0_source_build_static_proof_C16960_readiness_only",
+  "base": "700564653f19b80db9d30f81897d483352e5ea21",
+  "base_qualification": "Source-merged primary candidate under validation at start; no publication/runtime claim.",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq",
+  "owned_reconstructed_address": "00c168a0",
+  "owned_bytes": 177,
+  "owned_instructions": 70,
+  "unreconstructed_readiness_address": "00c16960",
+  "source": "src/native_crt_eh_validation.cpp",
+  "header": "include/bsp/native_crt_eh_validation.hpp",
+  "documentation": "docs/NATIVE_CRT_EH_VALIDATION_EQ.md",
+  "abi": "Raw ECX=scope index,EDI=actual borrowed image base,[entryESP+4]=table. Naked cdecl int32(const void*) describes only original stacked word. No extra/dummyEDX/binding/callback/owner; ordinary C++ calls insufficient. PlainRET leaves argument; preserveEBX/EBP/ESI/EDI, EAX0/1, ECX/EDX path effects, DF unchanged.",
+  "original": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "executable": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "owned_bytes": 177,
+    "owned_instructions": 70,
+    "full_original_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\original_review.json",
+      "size": 107544,
+      "sha256": "564b221a31fbf6bdff18d1365db18583c2d94be6a7f396c76a4fa69b3a75b781",
+      "sha512": "a5336939987413fab70ff5dd426b6e814b297489c49c7a3074887d8e068faf195db254b59d6a277015823f2ed1c74f18279efb764f1d1f187073e811c0346fe0"
+    }
+  },
+  "source_pins": {
+    "src/native_crt_eh_validation.cpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\src\\native_crt_eh_validation.cpp",
+      "size": 2456,
+      "sha256": "661bbc5d82d3e4937875ea7de2f505c912d7bc9c4cfd2a9adbe5cfc0fd6be1da",
+      "sha512": "1a219cdbe145b649fb1d0bf1248773560b7227423d9735b5274d665f1338e962c6cad65e0ae2690c55d41bf677e4113f4dd830931e86f3a05acfedc5400d8837"
+    },
+    "include/bsp/native_crt_eh_validation.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\include\\bsp\\native_crt_eh_validation.hpp",
+      "size": 1530,
+      "sha256": "71668bbf5deb7b013dd8c3b7f968e592fc677512f3d478de4f5f4ac8b45e2cb2",
+      "sha512": "513824c54d21a3b4766ce6cdeb77d8e733aaa66e792fec27c19ee4218ef5d83fdb26e250f6eae71d5fb222f77375e77f5930cb92da6ce0abbdc2046189222a88"
+    },
+    "docs/NATIVE_CRT_EH_VALIDATION_EQ.md": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\docs\\NATIVE_CRT_EH_VALIDATION_EQ.md",
+      "size": 5050,
+      "sha256": "e6b6a707fbeec6a772328a0640f72787097dd77d3d195b8eae12f3984531c03c",
+      "sha512": "3d00d2aef982226e079a090c6326294374b48c755e9908d1ba8a83ef648f1bae3be8654dba141738ca2022fb24bd6f393b7c2894d45e1f22ef98dcc37079b29d"
+    },
+    "cmake/startup.cmake": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\cmake\\startup.cmake",
+      "size": 124122,
+      "sha256": "6b3621a98ed9a149f8395eb9e0ec5168a1f0684c529d96a00f562ef80c4d2576",
+      "sha512": "9d4cd74ea1798ee51017688533b72dc2bff66270821824cbd606dbf2f293f58931a1065c7032e11333e90c3aaf85251cbd2f705778769cc44a3f3c550bffb0f8"
+    },
+    "config/names/00c10000.jsonl": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\config\\names\\00c10000.jsonl",
+      "size": 30305,
+      "sha256": "37db79d04ad55afd1b211c424d5ca2bfedb3133c573b7b2404a30366dd659b7d",
+      "sha512": "20353e19226e5dab1307a722a241b4ed57f3d3c4a5db4461a78b614a933f8e0746e27bb15501e8cc65524291ac32abafef6fb166ade34bec5311fd01872bf1ad"
+    },
+    "config/reconstruction/00c10000.jsonl": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\config\\reconstruction\\00c10000.jsonl",
+      "size": 37609,
+      "sha256": "2a7d5bfe4c1762698a07ed038913d5d58394f3d7b1cbe9f2b44a35f995ac13d2",
+      "sha512": "5bec14100e76868707b7239ea3f965420153409deed3fc7038acf13403748489b5609a21f2f9cc31b60b94873981ebb21ae60e83b5dd87a3e6241df9215a625a"
+    }
+  },
+  "strict_build_returncodes": [
+    0,
+    0
+  ],
+  "seeds": 8,
+  "existing_ctests": [
+    "reconstructed_math",
+    "native_math_differential"
+  ],
+  "protected_build_inputs": 2704,
+  "protected_build_input_definition": "Recursive files under src/, include/, cmake/, scripts/ with suffix .cpp, .c, .h, .hpp, .cmake or .ps1, plus root CMakeLists.txt. Includes new EQ cpp/hpp. Exact2704-path enumerations before_final/after_final match; not a claim to equal a differently scoped root guard. Compiler consumed-header reads are separately captured in full.",
+  "compiler_unit_count": 2,
+  "complete_read_input_count": 12,
+  "current_compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+  "write_history_qualification": "EQ has the original shared1285-source write record plus final single-source write record after the documented incremental rebuild. Both are retained and each binds exactly the same current Fo object path. EK retains one shared record. No historic write group is silently discarded; command/read groups are unique and consumed headers/current objects are hashed.",
+  "current_compile_toolchain": {
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe": {
+      "version": "19.51.36244.0",
+      "copy": "actual_toolchain/0_cl.exe",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1.dll": {
+      "version": "19.51.36244.0",
+      "copy": "actual_toolchain/1_c1.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1.dll",
+      "size": 3734840,
+      "sha256": "a27ae108def6aaf96d0f0ba76ffe8d63fbe09c59e92ce24a3ce3dda7402fd3db",
+      "sha512": "d83942e8b371e3397eb2ee46616e54e1b8427b2db98ea4259f02cb086c9454d0b2a2b6fcefd96ae024604ca421f7d4881d1b1199536bb64b9aa9c78320cf79b1"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll": {
+      "version": "19.51.36244.0",
+      "copy": "actual_toolchain/4_c1xx.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+      "size": 13321528,
+      "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2",
+      "sha512": "d355195dd6a84159d8e4348db441042f73d8b3c51afadf9ebd8433b6dfbf706c43d0ef2522cb88657f43971331e7609af9665d49ce4da1938f0137091d5e90ff"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll": {
+      "version": "19.51.36244.0",
+      "copy": "actual_toolchain/3_c2.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+      "size": 10542392,
+      "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0",
+      "sha512": "090a11d6c45de407c8a9e217ee0c15222c5caa0cff2122d2e9a86cb0784f2e16bd0e07dee97ac4ea648d729cbaec94293f952a1d6cdcbed9b3696f7fd8f1df8c"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe": {
+      "version": "14.51.36244.0",
+      "copy": "actual_toolchain/4_link.exe",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "size": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "sha512": "d776e7d4f15344ea5a447e82c1b16be097c371fdb116ee6806eaa4ba2af483bd6155e10fd2d81e576a1bcbb01dd8e695e7da827bc6951a4359f8c34103a46f3a"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdb140.dll": {
+      "version": "14.51.36244.0",
+      "copy": "actual_toolchain/5_mspdb140.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdb140.dll",
+      "size": 386872,
+      "sha256": "e4a77d56915522b874b682f5e33af3b40bee20b3e58e4efb139d84f05e1b22b9",
+      "sha512": "13895b5780846a5bc57d79196b701bbbc250e1e52d47f8e085810458b3e296dc83f05cc11938aa2d5776ffb2370076e23b3bf3d92e3e67e17ac3df04a719e087"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\1033\\clui.dll": {
+      "version": "19.51.36244.0",
+      "copy": "actual_toolchain/6_clui.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\1033\\clui.dll",
+      "size": 630072,
+      "sha256": "23f3df83f28342595d8126d830fc07c80e2dca5b5ef9fccac6590b2036bcb5a5",
+      "sha512": "7427fec3fab1df7627ea74a50cc1ae6dfeeff6466fefbb075c6ef4eeab908bd4e72779512e79610fb901c8b4cb11014b671c1e2fe8a53743892764f89cc2d5a0"
+    }
+  },
+  "static_link_libraries": [
+    {
+      "copy": "actual_link_libraries/000_bsp_core.lib",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58831572,
+      "sha256": "5c9215c55994efc7d670b9f3a2d566a1e376ae7d61d8c1bba99ff67dacf59448",
+      "sha512": "1f637d778cfb7080287b48ef45689b5e1ce29ceac3d28385685c099037f95678d238f72f6186f29ab4cb80cac037dd4bd5b6c9f983afd758e322335673319ccd"
+    },
+    {
+      "copy": "actual_link_libraries/001_MSVCRT.lib",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+      "size": 8263656,
+      "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha512": "82980c74e99a4687d359ad15ff454048fd5813d2928927289d7ad467d9e5323270c03d21e306efbbbf85ddf0d6a39285adc611b75eba98ba5090efd901b708b5"
+    },
+    {
+      "copy": "actual_link_libraries/002_OLDNAMES.lib",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+      "size": 158090,
+      "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha512": "531df12a3c347db0a36290d980dfa78f605be57cc617d0e6db0bbce99200309d424327c48ae830eeae3d739f4bba4beefc1a5db2860400de6374ca3cb8cec85e"
+    },
+    {
+      "copy": "actual_link_libraries/003_kernel32.lib",
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+      "size": 329914,
+      "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha512": "d9fb6913f1f0426931db230926d8c544c531dd7e2e6fbe1d04d6acd47467dfd0bf1f7598023d68c58cb8dfcb3b8a65d75a6402743631a35545c674c65874a64d"
+    },
+    {
+      "copy": "actual_link_libraries/004_vcruntime.lib",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "size": 400312,
+      "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha512": "7ef3fcb9046cffff2298444a81584ba2f175c38a216c5e45afd7adad87c22e9d781caac4536f088a24bbdad6124b7bd170451d3a309266f59bc2524e2be24231"
+    },
+    {
+      "copy": "actual_link_libraries/005_ucrt.lib",
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "size": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha512": "3629dcd54676924f6578b75103a916af4602bc95271c8ef8e31119c1b334588a3b9f9ad83c5513d86a027f1df542ea5c78de254cf291a56676ae6af00f51c8b9"
+    }
+  ],
+  "linked_summary": {
+    "native": [
+      {
+        "address": "0xc168a0",
+        "symbol": "?validate_native_crt_scope_handlers_00c168a0@bsp@@YAHPBX@Z",
+        "native": {
+          "size": 177,
+          "sha256": "c0393666687f1ae59cc3ae517fe6647d1d2de597f4fd4f8680a7366026e77bab",
+          "sha512": "d3bac9f469bb5fe63dad702450b4ed3b35e27f5b94d2ed60dc34c4a9c9ebacced70e7413bd233852a7ae6e96fa316ecbec1f2fff54f9e83280be266e6afa1ca2"
+        },
+        "emitted": {
+          "size": 177,
+          "sha256": "a050a36b40f41ecc41995fc860f27608b40abf822a668da598a322c8f5dc3056",
+          "sha512": "8916cd9988c4fb059aefe4a6f7d7ef9e71cf96b2d79d2f7867dc952904a014ec81cc4df07e425b4e65bbfb3504e135d10db12a1915a1cfa617a0f03c7624df3c"
+        },
+        "relocations": [
+          {
+            "offset": 67,
+            "target": {
+              "index": 9,
+              "name": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux": 0
+            },
+            "kind": 20
+          },
+          {
+            "offset": 129,
+            "target": {
+              "index": 9,
+              "name": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux": 0
+            },
+            "kind": 20
+          }
+        ],
+        "forced": {
+          "stem": "native_crt_eh_validation",
+          "symbol": "?validate_native_crt_scope_handlers_00c168a0@bsp@@YAHPBX@Z",
+          "image": "forced",
+          "va": "0x10001010",
+          "code": {
+            "size": 177,
+            "sha256": "8021b6103814fa8e6f644e76d451bbc1120e3c5be8963a8560307644d89b0e07",
+            "sha512": "6ac0e55d7b0eec5abcaeb18b3ace27dc7055b8c3dc2e168aa56310e0acd2e1f8111a947168be8f48f9e7f3abd20719a56178af78c0ac3c83d3cf87b3be087778"
+          },
+          "relocations": [
+            {
+              "offset": 67,
+              "kind": 20,
+              "symbol": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+              "target_va": "0x100010d0"
+            },
+            {
+              "offset": 129,
+              "kind": 20,
+              "symbol": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+              "target_va": "0x100010d0"
+            }
+          ]
+        },
+        "ordinary_game_symbol_present": false
+      },
+      {
+        "address": "0xc16d50",
+        "symbol": "?validate_native_crt_image_base_00c16d50@bsp@@YAHPBX@Z",
+        "native": {
+          "size": 41,
+          "sha256": "9a53b7881f3d303824b2fcb04c9a07c71b06cbe26fc450a72ae33fdd691fec72",
+          "sha512": "227ea4da74ff213f68c8dcce253f715a00a887b178662b80187539b3cc97b5cbf3047bc2b0ebafec0adbcd51d4dcd93f601ceb36119b0dbff9d551eff889d90d"
+        },
+        "emitted": {
+          "size": 41,
+          "sha256": "9a53b7881f3d303824b2fcb04c9a07c71b06cbe26fc450a72ae33fdd691fec72",
+          "sha512": "227ea4da74ff213f68c8dcce253f715a00a887b178662b80187539b3cc97b5cbf3047bc2b0ebafec0adbcd51d4dcd93f601ceb36119b0dbff9d551eff889d90d"
+        },
+        "relocations": [],
+        "forced": {
+          "stem": "native_crt_pe_image_queries",
+          "symbol": "?validate_native_crt_image_base_00c16d50@bsp@@YAHPBX@Z",
+          "image": "forced",
+          "va": "0x10001120",
+          "code": {
+            "size": 41,
+            "sha256": "9a53b7881f3d303824b2fcb04c9a07c71b06cbe26fc450a72ae33fdd691fec72",
+            "sha512": "227ea4da74ff213f68c8dcce253f715a00a887b178662b80187539b3cc97b5cbf3047bc2b0ebafec0adbcd51d4dcd93f601ceb36119b0dbff9d551eff889d90d"
+          },
+          "relocations": []
+        },
+        "ordinary_game_symbol_present": false
+      },
+      {
+        "address": "0xc16d80",
+        "symbol": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+        "native": {
+          "size": 66,
+          "sha256": "f175fc56ebd0e0eff6cda2a6bcc51b203877c16815a774a2028210e06d400fcd",
+          "sha512": "0081a46d6b994b2eafd083354353683084b216f47f5529e901d72b9c9a52ec8514a3273ebec3408e4a8a7a612a4087a8b256d6a4ec30280d096f51f51d23d7cb"
+        },
+        "emitted": {
+          "size": 66,
+          "sha256": "f175fc56ebd0e0eff6cda2a6bcc51b203877c16815a774a2028210e06d400fcd",
+          "sha512": "0081a46d6b994b2eafd083354353683084b216f47f5529e901d72b9c9a52ec8514a3273ebec3408e4a8a7a612a4087a8b256d6a4ec30280d096f51f51d23d7cb"
+        },
+        "relocations": [],
+        "forced": {
+          "stem": "native_crt_pe_image_queries",
+          "symbol": "?find_native_crt_pe_section_00c16d80@bsp@@YAPBXPBXI@Z",
+          "image": "forced",
+          "va": "0x100010d0",
+          "code": {
+            "size": 66,
+            "sha256": "f175fc56ebd0e0eff6cda2a6bcc51b203877c16815a774a2028210e06d400fcd",
+            "sha512": "0081a46d6b994b2eafd083354353683084b216f47f5529e901d72b9c9a52ec8514a3273ebec3408e4a8a7a612a4087a8b256d6a4ec30280d096f51f51d23d7cb"
+          },
+          "relocations": []
+        },
+        "ordinary_game_symbol_present": false
+      }
+    ],
+    "unique_archive_members": [
+      {
+        "stem": "native_crt_eh_validation",
+        "name": "bsp_core.dir\\Release\\native_crt_eh_validation.obj",
+        "offset": 12734082,
+        "size": 1009,
+        "sha256": "ca1e242e4d2563e1a5447bdc05bbe36f53ab5e563e40835aa5e66c6c5af05a18",
+        "sha512": "a94de2417e8b6e227481ce3646489371ac75974336acd4275751d1427735768ca87cfc041cf334a355b89d972c7d3ae861f9d9e5315e2db357c2df4027a9fd49"
+      },
+      {
+        "stem": "native_crt_pe_image_queries",
+        "name": "bsp_core.dir\\Release\\native_crt_pe_image_queries.obj",
+        "offset": 12735152,
+        "size": 999,
+        "sha256": "e99d474db355332851af705ca05b7f6738dfa925d88454db9b3761730cf26ed6",
+        "sha512": "a23198ae8662ed06b166ad07b7aa3ec969f9868686939f3c5aeba71a9b7fb86d8248ad43c832a6cf194905b11512788d6d69b40154787bacd4fdefd10e6b1565"
+      }
+    ],
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58831572,
+      "sha256": "5c9215c55994efc7d670b9f3a2d566a1e376ae7d61d8c1bba99ff67dacf59448",
+      "sha512": "1f637d778cfb7080287b48ef45689b5e1ce29ceac3d28385685c099037f95678d238f72f6186f29ab4cb80cac037dd4bd5b6c9f983afd758e322335673319ccd"
+    },
+    "provider_sources": [
+      {
+        "path": "src/native_crt_pe_image_queries.cpp",
+        "size": 1724,
+        "sha256": "0d5c2486c3dd6e424fe2c6b043c072c353186396c62bd32d3d213777e21b81ce",
+        "sha512": "86e11fa31fe61f25142a106bdba33fb09afc26ad5c2ffd10845792afce8eed7469372942da44856d39701d19e247350e8b038456d3aabf2c847257744d4d20b4",
+        "base_unchanged": true
+      },
+      {
+        "path": "include/bsp/native_crt_pe_image_queries.hpp",
+        "size": 1768,
+        "sha256": "e17f8be40a45e8ee27af3f239549277902c5f95d36c8bbc29275e78502a20337",
+        "sha512": "e76dc2c20c85717305cb9d543fdb5195590fafda4efb87be9b38036d8c619233769cc61254ac7f84314b59c28d474d9f32372209a3cafcb1cfe46ac47626d824",
+        "base_unchanged": true
+      }
+    ],
+    "linked_row_count": 3,
+    "linked_byte_count": 284,
+    "resolved_relocations": 2,
+    "unresolved_relocations": 0,
+    "embedded_manifest": [
+      {
+        "size": 381,
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "sha512": "8c290919e456a80d87dd6d243e4713945432b9a2bc158bfa5b81ae9fed1a8dd693da51914fa4014c5b8596e36186a9c891741c3b9011958c7ac240b7d818f815"
+      }
+    ],
+    "no_extra_writable_state": true,
+    "images": {
+      "game": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\build\\win32\\Release\\bsp_game.exe",
+        "size": 2169344,
+        "sha256": "b0f799700381a81a93a6d0fd624ff2b9a5abaac9e38b4e1735947e402499c491",
+        "sha512": "26dbf512c9764ea1c5a94084c7d7f941c301b9a14759d4e77a921a7526234f3e135cfeddefdfb5a6d3326d530e4d8433c32f1249377bef51be27875e8b9d91c5",
+        "map": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\build\\win32\\bsp_game.map",
+          "size": 3961910,
+          "sha256": "1a8ce4305350afeb869fec481d00fba928f82cd4780409ade61ababd35e695e6",
+          "sha512": "6bc1829b1975164d3226c175c3b2c88315da51519c9c243d545b14d4c5bb82a061bdf894ff0d7bcad62c0d8b642c373a102a0c103d8864d377165de2d01f7fcf"
+        }
+      },
+      "forced": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\static_link_probe.exe",
+        "size": 9216,
+        "sha256": "ab67291a00679b778a1514dd8e32d0b01d4143ae428c3a728c20f671d8cd2167",
+        "sha512": "865c05507b1539b1b80cc41e45420e2dd937316ef5c6944e72a0f5f89e0ce4885bfccca3afd6e78a2baa4b8f6779bab2b366da6a94f11f217c67070b9c3a01c1",
+        "map": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\static_link_probe.map",
+          "size": 22345,
+          "sha256": "3dc3a2fb1b897c183671cb99dc23252593251c2d5b25991981a486ac3356f4f8",
+          "sha512": "2e5588fd50c6d7a04edbed65351a925f14d01895f83c66b246741627d264e41c6edae2b320de54bba06fda9fe3ee5cf71d8749bd71ab594bc120995a7c5be8e7"
+        }
+      }
+    }
+  },
+  "readiness": {
+    "address": "00c16960",
+    "status": "NOT_RECONSTRUCTED",
+    "physical_span": "C16960..C16D01",
+    "physical_bytes": 930,
+    "linear_decoded_instructions": 287,
+    "scope_words": [
+      "FFFFFFFE",
+      "00000000",
+      "FFFFFFB0",
+      "00000000",
+      "FFFFFFFE",
+      "00C16B4C",
+      "00C16B60"
+    ],
+    "caller": "Physical BFB924 CALL after BFB923 PUSH EBX; BFB929 ADD ESP,4. Ghidra xref exists despite coarse callers summary zero and enclosing candidate _strncat; no caller metadata/body repaired.",
+    "abi": "cdecl actual EH3 registration pointer [ESP+4], normal EAX=0/1/FFFFFFFF; preserve EBX/ESI/EDI/EBP. Prologue creates SEH4 native frame, encodes E03718 with E15590 cookie, writes FS:[0], uses FS:[18] TIB stack bounds. Only the cache validation interval has try-state0; other reads/updates retain original fault exposure.",
+    "native_paths": [
+      "Reject unaligned scope-table pointer, or table pointer within current TIB stack interval. Initial try-level FFFFFFFF succeeds.",
+      "Validate parent links for every table entry 0..try-level: parent is -1 or unsigned parent<entry index. Any nonzero filter requires registration[-2] within [StackLimit,registration). No wrap/count/cycle guards beyond original comparisons.",
+      "Page-align scope-table address; scan signed cache count and compare page. Cache hit validates borrowed image, scope handlers and registration handler RVA via EK/EQ; index0 succeeds without locking.",
+      "Try-state0 cache interval uses actual E03718 filter C16B4C: dereference native [EBP-14] exception pointers, return1 only for C0000005. Landing C16B60 restores ESP from [EBP-18], then shared B63 fallback. Other exception codes continue search; native frame required.",
+      "Try-acquire cache XCHG sets lock1 atomically; old nonzero returns1 without spinning or clearing another owner lock. Successful acquisition updates/moves actual cache entries and releases by XCHG0; faults can expose partial writes or retained lock.",
+      "VirtualQuery(scope,local MEMORY_BASIC_INFORMATION,1C) returning0 succeeds. MEM_IMAGE accepted for image validation; types other than MEM_PRIVATE returnFFFFFFFF. MEM_PRIVATE has original GetVersionExA state/platform gate, including failure-with-uninitialized-flag fallthrough.",
+      "Validate returned AllocationBase through EK. Failure returnsFFFFFFFF. If protection byte has maskCC bits, scope-table PE section must exist and lack WRITE80000000. Scope handler/filter and registration-handler section checks reject with0.",
+      "Cache insertion/update caps normal insertion to16, but existing signed count/races/corrupt state follow raw arithmetic and reads; no invented bounds or synchronization. True, zero and FFFFFFFF epilogues restore FS:[0] and original stack. Final flags differ by exit path; raw assembly retained."
+    ],
+    "providers": [
+      {
+        "addresses": [
+          "00c16d50",
+          "00c16d80"
+        ],
+        "provider": "accepted EK",
+        "status": "real source/native instruction leaves; borrowed image pointers, no owner"
+      },
+      {
+        "addresses": [
+          "00c168a0"
+        ],
+        "provider": "EQ",
+        "status": "complete scoped leaf in this packet"
+      },
+      {
+        "addresses": [
+          "00e15590",
+          "0109e318",
+          "0109e31c",
+          "0109e320",
+          "0109e324",
+          "0109e3a0",
+          "0109e3a8",
+          "0109e3b8"
+        ],
+        "provider": "accepted DD canonical pages",
+        "status": "actual E15000 and109E000 page commit/initialization/process lifetime already supplied; no missing-cache-storage claim. Native cache behavior belongs to C16960 and is not reconstructed."
+      },
+      {
+        "addresses": [
+          "00ce2070",
+          "00ce2298"
+        ],
+        "provider": "original KERNEL32 imports",
+        "status": "VirtualQuery/GetVersionExA identified statically; no OS/runtime equivalence claimed"
+      },
+      {
+        "addresses": [
+          "00e03718",
+          "00c16b4c",
+          "00c16b60",
+          "00c07c90"
+        ],
+        "provider": "native SEH4 scope/frame/funclet/dispatcher",
+        "status": "unavailable complete execution domain; blocker"
+      },
+      {
+        "addresses": [
+          "00d6a618",
+          "00c06ac8"
+        ],
+        "provider": "dispatcher destructor boundary",
+        "status": "retained upstream unowned dependency; not expanded or implemented"
+      }
+    ],
+    "next_bounded_candidate": {
+      "address": "00c16b4c",
+      "bytes": 20,
+      "contract": "Pure access-violation filter entry; raw inherited EBP points at actual native frame, [EBP-14] points to exception pointers. EAX/ECX/EDX read chain, compare C0000005, EAX0/1, plain RET. No calls/globals, but no frame owner supplied.",
+      "qualification": "Candidate only, not newly defined/annotated/reconstructed by EQ. Check exact listing ownership/entry before leasing. C16B60 is not a standalone returning helper: its MOV ESP falls into parent fallback, so do not isolate three bytes as a complete function."
+    },
+    "remaining": "Native scope E03718 and actual C07C90 dispatcher/frame/funclet execution context remain blockers. DD physical page coverage is real; fixed00400000 C16DD0 is a separate readiness cycle, not called directly by these entries."
+  },
+  "readiness_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\eh3_readiness.json",
+    "size": 5255,
+    "sha256": "d003b94717ab1424a78f5a3f7b2e8567aef591f5329fdb67b5ef24f72095707c",
+    "sha512": "aec4352120df39e76e8c1a10b271538471962e7527b2e33ef175884174425bc7ceeada9a679a131dea7fbf01c1dbb00c27ced7f4b74b5bd0e47bd97174936d36"
+  },
+  "saved_annotations_preserve_original": true,
+  "c16960_annotations_unchanged": true,
+  "annotation_prior_values": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\annotation_prior_values.json",
+    "size": 1652,
+    "sha256": "5576fc589bd96940d9b264b1c64448531cacdbfe650adec9bac7c1e1966ba7cf",
+    "sha512": "509c79a739f02c22b3484a61e4c3400d3df3c46ee415894393fe722d3d4bbbaf1a9c2d246ea6a883dfee27519f79bb0b8d70cfcd2dd8caf3757beeff4a229077"
+  },
+  "exports": {
+    "metadata.json": {
+      "copy": "refreshed_exports/metadata.json",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\refreshed_exports\\metadata.json",
+      "size": 274,
+      "sha256": "d2d6e34a3070d4069794d44e299bce873b42e7982d3071570201a3e81baf620f",
+      "sha512": "1461890b35f0197e52d0731e69bc330715afb68b20d227c682440ffc21cb64d2db6601acc06561d00a95e81648918afbd36464a5f8a1fdfb3616991e28810e3f"
+    },
+    "decompiled.c": {
+      "copy": "refreshed_exports/decompiled.c",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\refreshed_exports\\decompiled.c",
+      "size": 2721,
+      "sha256": "3b91d94548a3599e8fcd2985aac3bb16e47504dfcf9f35e007427e7e74fe8703",
+      "sha512": "f721ea50140ce18c327109c0ef6d9d55acb8b17b797ca4688f022c22754e22477a501d3d0bba536e939deac755612e302fc525203380a3e5602cf6c9ce8141d8"
+    },
+    "assembly.txt": {
+      "copy": "refreshed_exports/assembly.txt",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh-validation-eq\\local\\native_crt_eh_validation_eq\\refreshed_exports\\assembly.txt",
+      "size": 1838,
+      "sha256": "e79e2c16294d6e6ded36b4eaf69ffc91ab8855ef985bee21daaa797969c212d7",
+      "sha512": "9a9aa7f5857b65d0cced6b2c146eb5f986c8d201fa5c161d9abd28d76037b3591c850e5d328bdd1ba7ae42f2df95ae7a2bc9214f97be1d28c7a5ab566ac2d5bd"
+    }
+  },
+  "actual_game_target_read_record_count": 10358,
+  "actual_game_target_read_qualification": "All retained game-target *read*.tlog records, including C++ and linker input records and repeated paths; not a linker-only input count.",
+  "retained_attempts": [
+    "Stored C16960 disassembly request at C16A28 was not an instruction boundary; error retained, correct C16A2C page used.",
+    "Initial assumption that109E318 cache storage was unowned corrected after DD complete109E000 page initialization/lifetime inspection; readiness distinguishes available storage from missing scope/frame behavior.",
+    "First strict build passed. One appended CMake CRLF normalized to repository LF, and readiness-only header comment corrected; prescribed strict build/tests passed again. Initial guards and CMake bytes retained.",
+    "First current-input capture required one matching write group and rejected the retained original shared group plus final single-source EQ write group. Failure log, rejected script and partial capture retained. Final capture checks unique current command/read/Fo plus ALL matching writes, each binding the same exact object path."
+  ],
+  "limitations": [
+    "Only C168A0 reconstructed; C16960 physical930B plus filter/landing/readiness not source implementation.",
+    "Actual native ECX/EDI and borrowed table/header domain must be supplied; no ordinary C++ caller adoption or owner.",
+    "Existing math CTests and8seedcomparisons do not exercise EQ helper.",
+    "No helper/native/exception/forced-image/game execution. Forced image only parsed; actual manifest verified.",
+    "Original ABI instruction preservation with relocations is not binary placement/drop-in/faultPC/OS/debugger/gameplay proof.",
+    "Historical DD runtime evidence is not replayed or reclassified."
+  ],
+  "local_evidence": "local/native_crt_eh_validation_eq",
+  "inventory_contract": "Complete recursive packet plus exact external path rows/physical identities/size/SHA256/SHA512 twice after final commit/release capture; failures retained."
+}
