@@ -392,6 +392,11 @@
       "was": "Potential native table pointer execution in a host process",
       "evidence": "D68D50/D5B5D8/D61948 livePE table spans and source dispatch helpers",
       "is": "Numeric profile addresses are validated via borrowed current profile views; never directly dereferenced/called"
+    },
+    {
+      "was": "The naked caller captured each native owner profile but the private bridge discarded it and re-read owner[0].",
+      "is": "Each of five original captures is forwarded as a private third fastcall stack word; the bridge checks that captured token and reads its current borrowed table slot without another owner-profile read.",
+      "evidence": "Original B46CFF, B4753A, B47543, B47565 and B4756E listings; private bridge stack argument is removed by RET4 and caller context loads account for the extra pushed word."
     }
   ],
   "scratch": "Caller supplies initialized1232-byte prefix preimage, copied bitwise before native writes; unwritten words remain. No original unknown private stack preimage is invented.",
@@ -437,5 +442,10 @@
     "Current A0 model notification and parent debug path are separate dependencies.",
     "Native cold sampler creation, profile-failure unwind and CRT invalid-parameter path are source-composed but not exercised by this fixture.",
     "Original private stack aliases, FH3/asynchronous hardware faults, active EndFrame, gameplay and visual parity are unproved."
-  ]
+  ],
+  "primary_capture_correction": {
+    "worker_source": "8002713741ec755683789c72c635240f1cf66e0f",
+    "public_API_changed": false,
+    "validation": "Combined-library build and real-provider fixture follow this source correction; worker frozen validation describes original80027137 source."
+  }
 }

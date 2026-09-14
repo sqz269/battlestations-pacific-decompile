@@ -101,3 +101,8 @@ ABI, native private stack aliases, asynchronous faults/FH3 unwind, nonreturning
 or throwing profile alternatives, active EndFrame and game/visual validation
 remain unproved. The report carries exact logs, manifest hashes and the final
 immutable compiler/link/tool/runtime artifact closure.
+
+
+## Primary captured-profile correction
+
+The original reads each owner profile once at B46CFF, B4753A, B47543, B47565 and B4756E. Integration forwards those captured values into the private dispatch bridges; it removes the extra owner[0] reads previously made inside the bridges. The current borrowed table slot is still read at dispatch. Each private fastcall bridge consumes its added stack word with RET4; the public gather interface and prefix layout are unchanged. The original80027137 worker archive remains frozen, and combined-library validation follows this correction.

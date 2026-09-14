@@ -37,23 +37,23 @@ void* __fastcall particle_bridge(const Context* c,Frame* frame) {
     return get_native_sampler_loader_singleton_004de4b0(*c->actual_manager_01090aa0,
         *c->actual_sampler_00f8d420,frame->sampler);
 }
-const void* __fastcall timer_bridge(const void* timer,const Context* c) {
-    require(*static_cast<const volatile std::uint32_t*>(timer)==0x00d68d50 &&
+const void* __fastcall timer_bridge(const void* timer,const Context* c,std::uint32_t captured_profile) {
+    require(captured_profile==0x00d68d50 &&
         c->actual_timer_profile_00d68d50 && c->actual_timer_profile_00d68d50[7]==0x00bee070);
     return get_raw_timer_interval_00bee070(timer);
 }
-void* __fastcall shadow_bridge(const void* shadow,const Context* c) {
-    require(*static_cast<const volatile std::uint32_t*>(shadow)==0x00d5b5d8 &&
+void* __fastcall shadow_bridge(const void* shadow,const Context* c,std::uint32_t captured_profile) {
+    require(captured_profile==0x00d5b5d8 &&
         c->actual_shadow_profile_00d5b5d8 && c->actual_shadow_profile_00d5b5d8[2]==0x00a8fcf0);
     return get_raw_shadow_depth_texture_00a8fcf0(shadow,c->actual_shadow_target_00f8bbf0);
 }
-std::uint32_t __fastcall width_bridge(const void* texture,const Context* c) {
-    require(*static_cast<const volatile std::uint32_t*>(texture)==0x00d61948 &&
+std::uint32_t __fastcall width_bridge(const void* texture,const Context* c,std::uint32_t captured_profile) {
+    require(captured_profile==0x00d61948 &&
         c->actual_texture_profile_00d61948 && c->actual_texture_profile_00d61948[15]==0x00b3ce50);
     return get_raw_texture_width_00b3ce50(texture);
 }
-std::uint32_t __fastcall height_bridge(const void* texture,const Context* c) {
-    require(*static_cast<const volatile std::uint32_t*>(texture)==0x00d61948 &&
+std::uint32_t __fastcall height_bridge(const void* texture,const Context* c,std::uint32_t captured_profile) {
+    require(captured_profile==0x00d61948 &&
         c->actual_texture_profile_00d61948 && c->actual_texture_profile_00d61948[16]==0x00b3ce60);
     return get_raw_texture_height_00b3ce60(texture);
 }
@@ -350,7 +350,8 @@ __declspec(naked) void __fastcall gather_native_system_constants_00b46a70(void*,
         mov ecx,dword ptr [ecx+0] // 00b46cf9
         mov edx,dword ptr [ecx] // 00b46cff
         // Numeric table target is read and checked through the borrowed profile in the following bridge. // 00b46d01
-        mov edx,dword ptr [esp+4e8h]
+        push edx // Preserve the original one-time profile capture; bridge RET4.
+        mov edx,dword ptr [esp+4ech]
         call timer_bridge // 00b46d04
         fild qword ptr [eax] // 00b46d06
         fild qword ptr [eax + 0x8] // 00b46d08
@@ -703,12 +704,14 @@ __declspec(naked) void __fastcall gather_native_system_constants_00b46a70(void*,
         mov edx,dword ptr [esi] // 00b4753a
         // Numeric table target is read and checked through the borrowed profile in the following bridge. // 00b4753c
         mov ecx,esi // 00b4753f
-        mov edx,dword ptr [esp+4e8h]
+        push edx // Captured at B4753A; do not reload shadow[0].
+        mov edx,dword ptr [esp+4ech]
         call shadow_bridge // 00b47541
         mov edx,dword ptr [eax] // 00b47543
         mov ecx,eax // 00b47545
         // Numeric table target is read and checked through the borrowed profile in the following bridge. // 00b47547
-        mov edx,dword ptr [esp+4e8h]
+        push edx // Captured at B47543; do not reload texture[0].
+        mov edx,dword ptr [esp+4ech]
         call width_bridge // 00b4754a
         test eax,eax // 00b4754c
         mov dword ptr [esp + 0x10],eax // 00b4754e
@@ -724,12 +727,14 @@ __declspec(naked) void __fastcall gather_native_system_constants_00b46a70(void*,
         mov edx,dword ptr [esi] // 00b47565
         // Numeric table target is read and checked through the borrowed profile in the following bridge. // 00b47567
         mov ecx,esi // 00b4756a
-        mov edx,dword ptr [esp+4e8h]
+        push edx // Captured at B47565; do not reload shadow[0].
+        mov edx,dword ptr [esp+4ech]
         call shadow_bridge // 00b4756c
         mov edx,dword ptr [eax] // 00b4756e
         mov ecx,eax // 00b47570
         // Numeric table target is read and checked through the borrowed profile in the following bridge. // 00b47572
-        mov edx,dword ptr [esp+4e8h]
+        push edx // Captured at B4756E; do not reload texture[0].
+        mov edx,dword ptr [esp+4ech]
         call height_bridge // 00b47575
         test eax,eax // 00b47577
         mov dword ptr [esp + 0x10],eax // 00b47579
