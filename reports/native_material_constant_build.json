@@ -534,5 +534,15 @@
     "no terminal texture owner or game integration/render/gameplay proof",
     "parent captured-gather-profile correction1bbc1662 is outside this source snapshot; reached raw shadow/light leaf bodies unchanged"
   ],
-  "immutable_closure": "See final handoff manifest and sibling ZIP. No mutable log in captured folder is modified."
+  "immutable_closure": "See final handoff manifest and sibling ZIP. No mutable log in captured folder is modified.",
+  "primary_descriptor_capture_correction": {
+    "worker_source": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+    "sites": [
+      "00b42421",
+      "00b42449"
+    ],
+    "change": "Read shader+7C count before shader+78 base once at initial search; after each match reload current shader, count, base and end before advancing current descriptor. Remove extra initial base read and unspecified function argument ordering.",
+    "public_API_changed": false,
+    "validation": "Combined-library validation follows this correction; frozen worker fixture describes6336f486."
+  }
 }

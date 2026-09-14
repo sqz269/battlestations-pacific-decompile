@@ -181,16 +181,21 @@ void build_native_material_constants_00b42350(void* pass, void* entry,
         if (static_cast<Signed>(vertex_register) > -1) {
             if (byte(parameter, 0x10) != 0) {
                 void* shader = ptr(pass, 0x70);
+                Word constant_count = word(shader, 0x7c);
                 void* constant = ptr(shader, 0x78);
+                void* constant_end = at(constant, constant_count * 32);
                 Word rows = 0;
-                while (constant != at(ptr(shader, 0x78), word(shader, 0x7c) * 32)) {
+                while (constant != constant_end) {
                     reached(frame, 0x00b42437);
                     if (static_cast<Word>(native_shader_constant_register_00b5b870(constant)) == vertex_register) {
                         reached(frame, 0x00b42442);
                         rows = native_shader_constant_register_count_00b5b880(constant);
                     }
-                    constant = at(constant, 32);
                     shader = ptr(pass, 0x70);
+                    constant_count = word(shader, 0x7c);
+                    void* const current_base = ptr(shader, 0x78);
+                    constant_end = at(current_base, constant_count * 32);
+                    constant = at(constant, 32);
                 }
                 parameter = ptr(parameter_slot);
                 transpose(reg(c.bank0108EBF4, vertex_register), ptr(parameter, 8), rows);

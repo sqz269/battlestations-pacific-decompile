@@ -138,3 +138,7 @@ and does not change those reached leaf bodies or this public API.
 The immutable archive, its manifest hash, exact build/link/runtime closure and
 source hashes are identified by the final handoff, not by a mutable log inside
 the captured folder. The report contains the exact numeric native callsite rows.
+
+## Primary descriptor-search capture correction
+
+The original B42421..B42431 reads shader+7C count before its+78 descriptor base and captures that initial end without another base read. B42449..B4245A reloads the current shader, count and base after each match check. The primary source now makes these reads explicit, removing the extra initial base read and dependence on C++ function-argument evaluation order. Frozen worker source6336f486 remains unchanged; combined validation follows the correction.
