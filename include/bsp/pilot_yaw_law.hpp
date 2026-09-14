@@ -23,6 +23,20 @@ namespace bsp {
 // `SoftHdgLimit`; a bank-angle blend range is called `YawTurnRollRange`. Two
 // independent sources agreeing term for term is the evidence here, not the
 // listing alone.
+//
+// The authored comments beside those keys go further and settle what the listing
+// cannot - see docs/PILOT_YAW_LAW_AUTHORED.md. Two that change how this code
+// should be read:
+//
+// * `SoftHdgLimit`'s comment calls the limit "the angle a pulled turn covers in
+//   this many seconds", so `(TurnRollSpd + PitchSpd) * SoftHdgLimit` is a turn
+//   RATE times a TIME. The sum is the plane's combined turn rate; the product is
+//   an angle in the heading error's own units.
+// * `YawCtrlSetTimeMul`'s comment says the control is set "so that in theory
+//   this many seconds are needed to reach the wanted position". So
+//   `error / (YawSpd * cos(bank) * mul)` is a **time-to-target** controller, not
+//   a proportional gain with a tuning constant. Treating the divisor as a gain
+//   gives the right numbers today and the wrong ones the moment YawSpd changes.
 
 // `0042E740 BSP_GameTuning_GetSingleton() + 538h` is the block the arm indexes,
 // so `tuning+34h` is singleton `+56Ch` and so on.
