@@ -1,0 +1,382 @@
+{
+  "packet": "orch2_native_crt_osplatform_bl",
+  "address": "00bfbab2",
+  "status": "complete_qualified_source_strict_win32_build_two_ctests",
+  "base": "45980f8a3a0512d10cf4f874fff2fde1eb59ee5e",
+  "native_end_exclusive": "00bfbae9",
+  "coverage": "Complete55-byte BFBAB2 within valid borrowed context/provider source domain",
+  "comparison": {
+    "PE_live_equal": true,
+    "length": 55,
+    "native": {
+      "path": "local\\native_crt_osplatform_bl\\native_live.bin",
+      "size": 55,
+      "sha256": "0f8a7f1d1ce56c8afa364d7cd692b0310ecbbef2c3ed08c54572b9a7d6ed4720",
+      "sha512": "417f832c07ab713a7a2f3f6631e10d15ae7993e9442d328b0cca0f985f58a0f2062edff975cd6acac56f90221a599e735dd86bc18e05db170346767b958336b1"
+    },
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source": [
+    {
+      "path": "include\\bsp\\native_crt_osplatform_getter.hpp",
+      "size": 1250,
+      "sha256": "70f8cfe604f464af3b9aa3e54f008beb546343d58f1c1e41b25b9fc64bb34f18",
+      "sha512": "50df571d151044050bd341893057ddaf1372f9a5d76d79e55ed360ab37eb696bde0eefe1acbeaf29b1dd265e9416719e78c4d9a44d23457ee31be58b747155ca"
+    },
+    {
+      "path": "src\\native_crt_osplatform_getter.cpp",
+      "size": 965,
+      "sha256": "c1cddc1b6bc3781c40a8f3313ce602f10c80d7306c35b99545420758ed10cfba",
+      "sha512": "23f7d5dcf2a9ef611beb7505652d43408a43cdf2c17f8c613eebd14e953555b6cc9d0b3720c2aa779a52b723ea8fedb310fb0eb0fb5b7e7c912e724579ec1c21"
+    },
+    {
+      "path": "include\\bsp\\native_crt_pointer_decode_support.hpp",
+      "size": 2673,
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "sha512": "3741b65ae831f4b48124d394c923a9d4cb2ec9469c29824a2674d56cca878aa9662a83afeda486bbb1286c9131186262f8c0f6b62e476bc6f76eb959adcf2d96"
+    },
+    {
+      "path": "src\\native_crt_pointer_decode_support.cpp",
+      "size": 4315,
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "sha512": "8314158c43543e6f136a40536004e45a9da4b79d94a701ebf89fa8948e6d4b7602914d50d5fd78c5f57f5b6c2b9fd2915e939b6d298ae87071fecbda5faa22bb"
+    },
+    {
+      "path": "include\\bsp\\legacy_crt_math.hpp",
+      "size": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "sha512": "f22e83e4a862abdedb8e3fd67ecf367110756276327fd4e1955d7f1898bff1079f53b4da92b65d58160fa35460b5f5a425c381c5dcf691c3dffb4e15bb8d29f9"
+    },
+    {
+      "path": "include\\bsp\\singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "sha512": "69ff3092368688faa17f4a42070f57d2bfb2843462fb31af4c3a0116e459b23c3cf315b89e3df6a5ac8f49be7d7ff5bae25a57a926c183ab3975c2b0a051e6fe"
+    },
+    {
+      "path": "config\\target.json",
+      "size": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bfbabd",
+      "native": "00bffb8b",
+      "function": "00bfbab2",
+      "abi": "cdecl no stack words; ESI zero, ECX captured output; EAX points to owning errno cell. No caller cleanup. Source may propagate actual service exceptions.",
+      "listing_window": [
+        "00bfbab2: MOV ECX,dword ptr [ESP + 0x4] ",
+        "00bfbab6: PUSH ESI ",
+        "00bfbab7: XOR ESI,ESI ",
+        "00bfbab9: CMP ECX,ESI ",
+        "00bfbabb: JNZ 0x00bfbada ",
+        "00bfbabd: CALL 0x00bffb8b ",
+        "00bfbac2: PUSH ESI ",
+        "00bfbac3: PUSH ESI ",
+        "00bfbac4: PUSH ESI ",
+        "00bfbac5: PUSH ESI ",
+        "00bfbac6: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbacd",
+      "native": "00bf66ef",
+      "function": "00bfbab2",
+      "abi": "cdecl five DWORD zeros pushed from ESI at BFBAC2..C6; errno [EAX]=22 at BFBAC7 before call; BFBAD2 ADD ESP14h; return22 only if service returns. Source composes existing invalid_parameter(context) service, not native outgoing stack ABI.",
+      "listing_window": [
+        "00bfbab7: XOR ESI,ESI ",
+        "00bfbab9: CMP ECX,ESI ",
+        "00bfbabb: JNZ 0x00bfbada ",
+        "00bfbabd: CALL 0x00bffb8b ",
+        "00bfbac2: PUSH ESI ",
+        "00bfbac3: PUSH ESI ",
+        "00bfbac4: PUSH ESI ",
+        "00bfbac5: PUSH ESI ",
+        "00bfbac6: PUSH ESI ",
+        "00bfbac7: MOV dword ptr [EAX],0x16 ",
+        "00bfbacd: CALL 0x00bf66ef ",
+        "00bfbad2: ADD ESP,0x14 ",
+        "00bfbad5: PUSH 0x16 ",
+        "00bfbad7: POP EAX ",
+        "00bfbad8: POP ESI ",
+        "00bfbad9: RET "
+      ]
+    }
+  ],
+  "original_abi": "cdecl DWORD* output; EAX0or22; plain RET; output captured before platform access",
+  "source_abi": "additional const NativeCrtPointerDecodeSupportContext reference, existing all-zero invalid service; no native outgoing five-word stack/register/fault identity",
+  "schedule": [
+    "capture output",
+    "null skips platform read",
+    "nonnull loads current109DD84 once",
+    "nonzero stores same captured platform then returns0",
+    "failure owning BFFB8B errno accessor, write22, BF66EF five-zero service, return22 if service returns; no output store/retry/catch"
+  ],
+  "provider_qualification": {
+    "context": "Existing NativeCrtPointerDecodeSupportContext used by BFBB61; winmajor field unused",
+    "errno": "Actual owning LegacyCrtMathRuntime accessor required; original BFFB8B uses C051B7 PTD+8 or E159E8 fallback. No private errno allocated here. Host _errno is a qualified rebuilt-runtime binding, not original TLS/PTD identity.",
+    "invalid": "Established SingletonLifetimeCallbacks invalid_parameter service must represent all-five-zero validation operation; original BF66EF decodes109DD64 then dispatches or Watson. No new callback/global state supplied; host UCRT handler domain is not original encoded handler ownership.",
+    "not_claimed": [
+      "native ABI/FH3/asynchronous faults",
+      "original PTD/error/handler ownership creation",
+      "Watson/cookie/termination implementation",
+      "heap selector/allocator ownership",
+      "gameplay"
+    ]
+  },
+  "compiler_evidence": {
+    "binding": "local/native_crt_osplatform_bl/compiler_binding.json",
+    "object": {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_crt_osplatform_getter.obj",
+      "size": 2453,
+      "sha256": "cb3d2831b49dbd5828aed1761711feabfab6f743fb5a045c5d80f5ab176a2a36",
+      "sha512": "2434baf3f495213a64e261b10300ef210d652c4ca84cb7a07616c3b01fada84061353b49dd37df5990aff2daf89f684622995f2b335bdd2f0f56f5c140e16f78"
+    },
+    "archive": {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "size": 57356296,
+      "sha256": "562e8d2c6e9622a2fa211ddf45c02d8350cc3aa28ea8cf44e966bd4121ba0c50",
+      "sha512": "7031a4aadde8102262e72602e7e7d3205aeaa858bd24b5266bef8b8a0d3f3b3da33d6815eb902f8804a49f02256d522ff55cef38167b3e59f3c092737389fe05"
+    },
+    "member": {
+      "name": "bsp_core.dir\\Release\\native_crt_osplatform_getter.obj",
+      "offset": 12542604,
+      "unique": true,
+      "equal": true
+    },
+    "copied_member": {
+      "path": "local\\native_crt_osplatform_bl\\unique_archive_member.obj",
+      "size": 2453,
+      "sha256": "cb3d2831b49dbd5828aed1761711feabfab6f743fb5a045c5d80f5ab176a2a36",
+      "sha512": "2434baf3f495213a64e261b10300ef210d652c4ca84cb7a07616c3b01fada84061353b49dd37df5990aff2daf89f684622995f2b335bdd2f0f56f5c140e16f78"
+    },
+    "selected_compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec",
+      "selection": "Current CMakeCXXCompiler.cmake; Win32 VS generator; retained build log and compiler command/read/write groups"
+    }
+  },
+  "validation": {
+    "strict_full_build": "./scripts/build.ps1",
+    "build_passed": true,
+    "verify_seeds_passed": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "new_tests": false,
+    "Ghidra_mutation": false,
+    "gameplay": false,
+    "native_call_rows_checked": 2,
+    "native_call_rows_failed": 0
+  },
+  "evidence_inventory": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-osplatform-bl\\local\\native_crt_osplatform_bl",
+    "count": 32,
+    "bytes": 780727,
+    "audit_passes": 2,
+    "algorithms": [
+      "SHA256",
+      "SHA512"
+    ],
+    "files": [
+      {
+        "path": "local/native_crt_osplatform_bl/binding_helper.py",
+        "size": 29545,
+        "sha256": "841db335532c96c787592cb3686dd9a7a872215dd0e6dd7064d8025338871aaf",
+        "sha512": "4bb8056b2726af8694bf216d352eddd5b58296ae12511a60c81b317fce70a30478b5931a8969d0bb7f20d598a81fadaa679e2e049000b8bd1440af79c84cac51"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/build.txt",
+        "size": 4433,
+        "sha256": "6d735abb7653a28121c09793b0d5feeca07ac73ee1100ef712aed43ddc365b9d",
+        "sha512": "d0680158f7bc1a0f3ea6ca4bdf0f01c16066eb3c27b50d99e2f4ef7b12ce434b76b2e898228ad5a8fa444bbd9fa83f727a21d6f035f562bb22f260e0129cffa7"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/build_first_one_ctest.txt",
+        "size": 45954,
+        "sha256": "c3198882676bd8545593c24530c131d215ee6bd08a91a77727451e389d6cf01f",
+        "sha512": "e829e90565a860ac634d92d3d5103dcd510d3e6d8b9a80445c58c5458d7927e9b8e0deb758c0869d0fb2e573266cdc8db637d0063bff4cf3581b4f11639fa678"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/bytes.txt",
+        "size": 272,
+        "sha256": "69684c846c1a7113f6634bbe4c73afd7baef3610acb4fac06a8314fbf36ee513",
+        "sha512": "c9277009349b20045924e1349621e4bdf4b435f6400774ba260a0b957ae737d6f68f6adfce7f2f24caea8de86266edf2b77351361b9d6906f703aa4f9d9e1c5a"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/cheatsheet.txt",
+        "size": 2291,
+        "sha256": "f1c470f0e0e13d38334026f9c21074155695985a217b2db1ecdc79dcb8312c36",
+        "sha512": "0954fcba69446bcad8da8a1c1bf8e2e1472c0b19045a65dfd0413121ed6a562bc93f6a005d011199d8f8da6b4231d5871b3b2a360d0d5d0d4db4bcb01a298276"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/CMakeCXXCompiler.cmake",
+        "size": 6498,
+        "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+        "sha512": "6c66a6c1d55b9d08e5d9146d3f528cdf35f924a22d34e058f3d96ea306fc5923add11ac2d9866e14df89001b24172e45a8eb740b830b547c3f79e8e64aba4ff7"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/commit_message.txt",
+        "size": 429,
+        "sha256": "71c5f3ca25b3b8a1857630df2b7ed1de44d416aa2edd9442e31069b120435d83",
+        "sha512": "66da38012a337e59c567b59b34c7aafd1c8a0e6e11fa6cb17320512fba70ea94ae223441287369dc6d27a3e2077dd0c95058622a8ccc9cab23f697645154ed41"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/compiler_binding.json",
+        "size": 655587,
+        "sha256": "bc758da467be4ea277f0e93fd5617b8b3403326d3fcf55229448d5b4c3d2b393",
+        "sha512": "ba62914ce5a22040892f4f5cf27d81c8d096d003a58476bd051512a52ca3afbc1dd73570f972d0839ac81fe2b8cfc20537241f2a452ccd5269899bfc716d668a"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/current_object.obj",
+        "size": 2453,
+        "sha256": "cb3d2831b49dbd5828aed1761711feabfab6f743fb5a045c5d80f5ab176a2a36",
+        "sha512": "2434baf3f495213a64e261b10300ef210d652c4ca84cb7a07616c3b01fada84061353b49dd37df5990aff2daf89f684622995f2b335bdd2f0f56f5c140e16f78"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/disasm.txt",
+        "size": 618,
+        "sha256": "267bfffc87ea02f250a6e2004f4d6b12a96ba4e16c7ed764b5e69697beb267ec",
+        "sha512": "f21a583b294870169fd656ae659c2ca77d3d6f257e09188fae281eb4d01a970961a963a1f5832c205219d7f3ea43e628f40882392db6180803f5c595ff1e4010"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/errno_body.txt",
+        "size": 165,
+        "sha256": "1a5fe9df3df70541aef8ea38a2f6173e6e2b8ca836a264f03ed4aa1aa462cb01",
+        "sha512": "db9d39956ddee4458e385a362ab80bf85703e8e2b05455b775de0c8264dbf340b0cc7d578ab752c65142f5e4b2aa0ad96c0e3e709dca251daea9dc1492d0b274"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/evidence.py",
+        "size": 6064,
+        "sha256": "230521ccc840a7dafdfef66fa7e798f6c49594cd8c494a3d6f1338ce3d5ac2d5",
+        "sha512": "5eaf23089f3667a53cac527553f315adaa32d1fa8b08d37d30648e71e1e5add559a6678d27597e536fde32c43c3ce04ac93f21b0d18f0849ff8adbfb479f2815"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/evidence_run.txt",
+        "size": 116,
+        "sha256": "d1fc6c52e55f40bc91d12d8d74f4f5f14414494063ea09a9c33e3a2e8d11d090",
+        "sha512": "ecd37161b04c6d5ce7b71225186e7ebf1be38d7be47ea368283f0d3159a72b101d29dca4b54d3ba73b646c901a54cd7bcdbfaa95173a53a864b95aa1aa56f7af"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/failure_history.txt",
+        "size": 772,
+        "sha256": "ae56b57fb87e65f4495f92ca81b73fdb21d93d17f329036d653e47201f8fc9ff",
+        "sha512": "c6ac095e70b362b39d8b5b74df7e8c6e2fcd3b8226371595117c9524f653dc227d11c1440b9f036b196a787f737e090f6ae9779f5cad7b1ab106248eeb832b2a"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/finalize.py",
+        "size": 2970,
+        "sha256": "5967ff30b13b4a8f8795f1ba6fe174c721d5081a560d2a849b6ca0335ad349e6",
+        "sha512": "211e3626244726cab167b8626b18046590cd77fd021d15eaed0852d9ca6eaf1b8ea12453ae6f88208ed31a08848ae647ca132ceb4795b7fe9925eb7673baa235"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/invalid_body.txt",
+        "size": 340,
+        "sha256": "2d4c2f2774ec3cb90f9803b6a12306506b8ab39ebb10d33f8ae2b5c1a809048b",
+        "sha512": "b954fb323a5f3d7ea9a97c5415d1b41250707b20664ae9ae5506e6089852a7ca992bda016ba0ec4ba00a4669285c0f1a6bd2f86143a1cb8e66c910cb5dacc125"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/ledger_record.json",
+        "size": 1057,
+        "sha256": "5766313ab7473b3237fc06a92df03f48ff6531d9b37f05d65d9babb9854c1ad0",
+        "sha512": "d6311f4a4c59fec112155ca5c5a4401bb9e73b75778ba460bd887efd9760e0266b94760892695708af93cd962527c1e3c1e99d977f90436098ca75b7f01d35c2"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/ledger_result.txt",
+        "size": 54,
+        "sha256": "5d88b01c9ffed2927d697f1857c6b857f7411284b264c35e1c02c7f29b4cce29",
+        "sha512": "1e72660c1d738e49d89799e23025ec813abe9376fe813faca60afca18e22285e9e608b4866f3dcb5cf55f25bc4288341612a1943785ee35c7213257f535c4aff"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/native_live.bin",
+        "size": 55,
+        "sha256": "0f8a7f1d1ce56c8afa364d7cd692b0310ecbbef2c3ed08c54572b9a7d6ed4720",
+        "sha512": "417f832c07ab713a7a2f3f6631e10d15ae7993e9442d328b0cca0f985f58a0f2062edff975cd6acac56f90221a599e735dd86bc18e05db170346767b958336b1"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/native_pe.bin",
+        "size": 55,
+        "sha256": "0f8a7f1d1ce56c8afa364d7cd692b0310ecbbef2c3ed08c54572b9a7d6ed4720",
+        "sha512": "417f832c07ab713a7a2f3f6631e10d15ae7993e9442d328b0cca0f985f58a0f2062edff975cd6acac56f90221a599e735dd86bc18e05db170346767b958336b1"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/proto.txt",
+        "size": 87,
+        "sha256": "ced01ec9790f660d5c20d75aec2b5819315df0b45747df0b2b0db3bc6c445dd5",
+        "sha512": "ceb6d1ebfc32e9f35651525a09a123050e51e399a31178cae9cd27443be52c2d9066ec1fa91bffbc177188cb3c472ce78e4467c50be61cd9e15cab6970efc3f3"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/provider_protos.txt",
+        "size": 210,
+        "sha256": "3431a3bd320619c13edcf58fde0f69afb14c93c7f21f7581a4ca40acd5529383",
+        "sha512": "6ac74f9e712a506182bb9e849fa238353749427fe1eaa893f075320c57b7a0005da9718de23b746582c184084a7e4638d0503150af728daf65033fedbdb308f8"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_config_target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_include_bsp_legacy_crt_math.hpp",
+        "size": 1108,
+        "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "sha512": "f22e83e4a862abdedb8e3fd67ecf367110756276327fd4e1955d7f1898bff1079f53b4da92b65d58160fa35460b5f5a425c381c5dcf691c3dffb4e15bb8d29f9"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_include_bsp_native_crt_osplatform_getter.hpp",
+        "size": 1250,
+        "sha256": "70f8cfe604f464af3b9aa3e54f008beb546343d58f1c1e41b25b9fc64bb34f18",
+        "sha512": "50df571d151044050bd341893057ddaf1372f9a5d76d79e55ed360ab37eb696bde0eefe1acbeaf29b1dd265e9416719e78c4d9a44d23457ee31be58b747155ca"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_include_bsp_native_crt_pointer_decode_support.hpp",
+        "size": 2673,
+        "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+        "sha512": "3741b65ae831f4b48124d394c923a9d4cb2ec9469c29824a2674d56cca878aa9662a83afeda486bbb1286c9131186262f8c0f6b62e476bc6f76eb959adcf2d96"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_include_bsp_singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "sha512": "69ff3092368688faa17f4a42070f57d2bfb2843462fb31af4c3a0116e459b23c3cf315b89e3df6a5ac8f49be7d7ff5bae25a57a926c183ab3975c2b0a051e6fe"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_src_native_crt_osplatform_getter.cpp",
+        "size": 965,
+        "sha256": "c1cddc1b6bc3781c40a8f3313ce602f10c80d7306c35b99545420758ed10cfba",
+        "sha512": "23f7d5dcf2a9ef611beb7505652d43408a43cdf2c17f8c613eebd14e953555b6cc9d0b3720c2aa779a52b723ea8fedb310fb0eb0fb5b7e7c912e724579ec1c21"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/source_src_native_crt_pointer_decode_support.cpp",
+        "size": 4315,
+        "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+        "sha512": "8314158c43543e6f136a40536004e45a9da4b79d94a701ebf89fa8948e6d4b7602914d50d5fd78c5f57f5b6c2b9fd2915e939b6d298ae87071fecbda5faa22bb"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/unique_archive_member.obj",
+        "size": 2453,
+        "sha256": "cb3d2831b49dbd5828aed1761711feabfab6f743fb5a045c5d80f5ab176a2a36",
+        "sha512": "2434baf3f495213a64e261b10300ef210d652c4ca84cb7a07616c3b01fada84061353b49dd37df5990aff2daf89f684622995f2b335bdd2f0f56f5c140e16f78"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/verify_calls.txt",
+        "size": 77,
+        "sha256": "323e356c86f9a6ac360090522dc721379295d9aff0fd84d50b37c55401dcba34",
+        "sha512": "da44595d0abde72be89a64cb5c2bc93ff7638971614ae36c62f1093e937215fe544b5b2b8818ee93a4f30e0763ace8a30074848a009524df9924dc98f99a35f2"
+      },
+      {
+        "path": "local/native_crt_osplatform_bl/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      }
+    ]
+  }
+}
