@@ -86,3 +86,7 @@ and fixture evidence, not native ABI replacement, unmasked exception-delivery
 equivalence, model-numbering runtime admission or game/render parity. Exact
 artifacts and final integration evidence are in
 `reports/native_vertex_attribute_read_ad.json`.
+
+## Integrated compatibility validation
+
+Combined commit `1e7b4f15bce679619b1bb6a5397c464ca19abe1e` passes the Win32 build and both existing CTests. Its preserved executable has SHA-256 `f32cad0dd51e9aff3f2ed69043ba0add8ed3343322d0043b5290f43a5d619612`. The existing 120-frame USN01 check exits successfully in 9.747 seconds, with 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 10,080 generic ticks, 420 world-list nodes and the existing observer/pending-owner teardown checks. The production reader object remains byte-identical to the native fixture object. This mission check establishes compatibility of the combined build; execution of these new readers through a complete model-numbering owner is not established. The report retains separate immutable native-fixture and integration manifests. No workers were dispatched for this closeout.
