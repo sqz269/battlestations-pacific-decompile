@@ -57,11 +57,26 @@
     "build_log": "local/orch6_bootstrap_diagnostic_build3_ab.log"
   },
   "behavior": "Only the failure message gains captured diagnostics; reservations, resume, rollback, termination and mapping protocol remain unchanged",
-  "runtime_status": "Failed before the normal mission log; no AB mission compatibility or gameplay pass",
-  "follow_up": "Shared native-data entry owner must establish child address placement and repeat mission compatibility; no worker dispatched",
+  "runtime_status": "Initial integrated builds failed before the mission log; final integrated build completed one 120-frame USN01 compatibility run. Reliable startup remains unproved.",
+  "follow_up": "Shared native-data entry owner must establish reliable child address placement; no worker dispatched",
   "limits": [
     "Queried ASLR flags do not establish a placement fix.",
     "Successful standalone reservations are not a full application launch.",
     "The initial stack and rebuilt image were observed overlapping required data bands in separate launches."
-  ]
+  ],
+  "final_closeout": {
+    "compiled_commit": "f6d65fd8e450039d575b1bff7379b17a95e743b1",
+    "exe_sha256": "d6aadec418c7086f4c0446e1ccfbbdb4e6d1473823385645671efbb12c94b3e1",
+    "exit": 0,
+    "seconds": 10.122311115264893,
+    "trajectory_audit": {
+      "rows": 18557,
+      "nonfinite_rows": 0,
+      "nonfinite_units": [],
+      "airfield_samples": 241,
+      "airfield_unchanged": true
+    },
+    "manifest": "local\\part_vector_closeout_ab\\manifest.json",
+    "manifest_sha256": "b6daadc2237a94f0e015fde4f64bddfe3bb1d9423cb7dd5cadc5622e0df336f2"
+  }
 }

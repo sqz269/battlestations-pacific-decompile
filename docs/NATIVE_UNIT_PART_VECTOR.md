@@ -60,3 +60,7 @@ Catch_All@87B0A1, separately from the surrounding insertion function. The
 decoded rethrow87B0B1..87B0B5 remains outside its truncated stored body and is
 recorded separately. The flow tool refuses to extend a tail ending in a
 no-return throw; no function was recreated and no no-return flags were changed.
+
+## Integrated AB closeout
+
+The final build at `f6d65fd8e450039d575b1bff7379b17a95e743b1` passes Win32 compilation and both existing CTests. All eight native seeds match; the original fixture proof retains 365 inputs and 157 artifacts, and its five production objects match this build. The closeout run exits 0 after 120 USN01 mission frames with 18,557 finite trajectory rows. This is one compatibility run, not proof that the new health-to-resize binding executes in gameplay. Earlier native-data stack and image collisions remain a startup reliability limitation; see `docs/ORCH6_BOOTSTRAP_DIAGNOSTIC_AB.md`. No workers were dispatched for AB.

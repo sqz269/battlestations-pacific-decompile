@@ -29,9 +29,17 @@ fix. ASLR was enabled in the queried parent and child. Disabling ASLR, moving th
 image, moving a live stack, releasing foreign allocations or retrying until a
 launch happens to succeed was not used as validation.
 
-The existing batch is closed with startup compatibility explicitly incomplete.
-The owner of the shared native-data entry path needs to establish a child memory
-placement strategy and repeat the mission compatibility run. This is recorded
+The final integrated build at `f6d65fd8e450039d575b1bff7379b17a95e743b1`
+subsequently completed its normal closeout run: USN01 ran 120 mission frames,
+returned 0 in 10.122 seconds, and produced 18,557 finite trajectory rows. The
+existing world registration, observer teardown and pending-queue checks passed.
+The final executable SHA-256 is
+`d6aadec418c7086f4c0446e1ccfbbdb4e6d1473823385645671efbb12c94b3e1`.
+
+That one successful run does not repair or invalidate the earlier collisions.
+The batch is closed with a compatibility pass for that exact build and an open
+startup reliability limitation. The owner of the shared native-data entry path
+still needs to establish a child memory placement strategy. This is recorded
 as follow-up evidence; no worker or new reconstruction packet was dispatched.
 See `reports/orch6_bootstrap_diagnostic_ab.json` for the exact observations and
 `reports/native_unit_part_vector.json` for the reconstruction's separate proof.

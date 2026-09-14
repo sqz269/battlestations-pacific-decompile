@@ -483,5 +483,123 @@
     "native_seed_matches": 8,
     "annotations": 14,
     "call_checks": "26 passed; one decoded rethrow explicitly outside stored function ownership"
+  },
+  "closeout_ab": {
+    "compiled_commit": "f6d65fd8e450039d575b1bff7379b17a95e743b1",
+    "exe_sha256": "d6aadec418c7086f4c0446e1ccfbbdb4e6d1473823385645671efbb12c94b3e1",
+    "build": "Win32 build and both existing CTests passed",
+    "native_seed_matches": 8,
+    "native_fixture": "8 original-pointer/source cases and 8 existing DWORD regression cases; 24 result images",
+    "evidence_audit": {
+      "retained_inputs_verified": 365,
+      "artifacts_verified": 157,
+      "production_objects": [
+        {
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_input_settings_vector_storage.obj",
+          "fixture_sha256": "4772e597114090cf8f8986610ec4981f1e09cef88b9b0ec5f2a28f68b38d10bb",
+          "current_sha256": "4772e597114090cf8f8986610ec4981f1e09cef88b9b0ec5f2a28f68b38d10bb",
+          "identical": true
+        },
+        {
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+          "fixture_sha256": "12a7e321ac196567ae0a2f8631b4657185af29c4033f0a25a7a2affa8084f250",
+          "current_sha256": "12a7e321ac196567ae0a2f8631b4657185af29c4033f0a25a7a2affa8084f250",
+          "identical": true
+        },
+        {
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_unit_health_parts.obj",
+          "fixture_sha256": "0416df06b61e61640746da7599b5622f8c2de9617bb3828987fb45da46e527d7",
+          "current_sha256": "0416df06b61e61640746da7599b5622f8c2de9617bb3828987fb45da46e527d7",
+          "identical": true
+        },
+        {
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_unit_part_vector.obj",
+          "fixture_sha256": "6e88e4832d40a5458c7e631b2714f7ddd3a9e523f475a56d80edf96afba15e42",
+          "current_sha256": "6e88e4832d40a5458c7e631b2714f7ddd3a9e523f475a56d80edf96afba15e42",
+          "identical": true
+        },
+        {
+          "path": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "fixture_sha256": "29e31bd012cafae67e21551798e19888fa7f1cd58ec40d3fdfa3ee1e5f51347b",
+          "current_sha256": "29e31bd012cafae67e21551798e19888fa7f1cd58ec40d3fdfa3ee1e5f51347b",
+          "identical": true
+        }
+      ]
+    },
+    "mission_compatibility": {
+      "exit": 0,
+      "seconds": 10.122311115264893,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      }
+    },
+    "startup_reliability": "Unresolved: prior stack, private-region and rebuilt-image collisions remain documented despite this successful final run",
+    "original_fixture_manifest": "local/part_vector_ab/manifest.json",
+    "original_fixture_manifest_sha256": "daffe9a4b04b3c37cf406291d72afc56c6495f7b2b2276461172ae176e768dca",
+    "closeout_manifest": "local\\part_vector_closeout_ab\\manifest.json",
+    "closeout_manifest_sha256": "b6daadc2237a94f0e015fde4f64bddfe3bb1d9423cb7dd5cadc5622e0df336f2",
+    "retained_closeout_files": 29,
+    "workers_dispatched": 0,
+    "limits": [
+      "Process-run evidence, not original-game visual or gameplay parity.",
+      "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+      "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+      "Untouched native cache bounds are preserved; original allocation history is not reproduced.",
+      "Earlier builds failed native-data reservation due to stack, private-region and image collisions. This one successful run does not establish reliable startup.",
+      "The new unit-part resize provider is fixture-tested; mission execution of its new health binding is not established."
+    ]
   }
 }
