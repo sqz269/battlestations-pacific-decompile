@@ -478,3 +478,33 @@ for native behaviour.
 2. **`plane_pose_integration`** - the pose is read at spawn but never updated afterwards, so a
    plane's orientation is frozen at its authored value for the whole mission. A turning plane needs
    the angular half of the flight law folded back into `pose_row0/1/2`.
+
+### No run length reaches air combat, and that is now measured rather than argued
+
+The obvious objection to the 500-tick result is that 25 s is simply not long enough. It is not the
+reason. `IJN01` re-run at 3000 mission ticks, 150 s:
+
+```
+plane step:   steps=99000 free_flight=99000 ground_roll=0 surface=0 none=0
+plane motion: distance_moved=699761.95 m
+  0  PLANEGUN         82    0    0  246000   0
+  1  AAMACHINEGUN    295  148    0   63000   0
+  5  FLAK             60    0    0       0   0
+```
+
+699761.95 m against a level-flight ideal of `141.666672 x 150 x 33 = 701250 m`, again 0.2% under for
+the non-level pose. Each aircraft covers **21.2 km**, against a spawn separation of 4582 m.
+
+And every plane's `nearest` is unchanged to the metre from the 25 s run - 4582, 4733, 4820, 4895.
+Since `row.nearest_enemy` is a running minimum over the whole mission, a plane that closed at any
+point in those 150 s would have driven it down. None did. **Both authored headings lead away from
+the fleet, and no run length will change that.**
+
+`AAMACHINEGUN` assignments scale with tick count and nothing else: 26 at 500 ticks, 148 at 3000,
+against 156 for exact proportionality. Shots stay at 0 throughout. The guns are being handed plane
+targets and correctly refusing them, because the targets are five kilometres outside an 800 m
+weapon.
+
+This retires the run-length hypothesis. What remains is `plane_ai`: with no steering, aircraft fly
+straight lines from authored placements, and **air combat cannot be validated in this mission at any
+run length.**
