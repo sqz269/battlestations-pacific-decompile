@@ -2,6 +2,7 @@
 #include "bsp/native_render_state_leaves.hpp"
 #include "bsp/native_renderer_cached_states.hpp"
 #include "bsp/native_renderer_frame_statistics.hpp"
+#include "bsp/native_occlusion_query_poll.hpp"
 #include "bsp/xlive_library.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -190,7 +191,11 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
         Word index = 0;
         do {
             auto* const callback = pointer(word(pointer(word(renderer, 0x19a0)), index * 4u));
-            if (word(callback, 8) == 0) c.remaining.invoke_current_pending_callback_10(callback);
+            if (word(callback, 8) == 0) {
+                require_profile(word(callback) == 0x00d62ad0u);
+                require_profile(word(c.actual_query_profile_00d62ad0, 0x10) == 0x00b5fca0u);
+                (void)poll_native_occlusion_query_00b5fca0(callback);
+            }
             ++index;
         } while (index < word(renderer, 0x19a4));
     }

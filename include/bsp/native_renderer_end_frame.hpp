@@ -47,7 +47,6 @@ struct NativeRendererEndFrameRemaining {
     virtual void render_00b2bb90(void* actual_renderer) = 0;
     virtual void renderer_virtual_c4_00b28d00(void* actual_renderer) = 0;
     virtual void render_00b2b580(void* actual_renderer) = 0;
-    virtual void invoke_current_pending_callback_10(void* actual_callback) = 0;
 };
 
 struct NativeRendererEndFrameContext {
@@ -63,6 +62,9 @@ struct NativeRendererEndFrameContext {
     volatile std::uint8_t& actual_clear_request_00e1306c;
     volatile std::uint8_t& actual_present_failure_0108d4b9;
     void* const volatile& actual_counter_0108fe88;
+    // Current numeric query table, borrowed through slot +10. Eligible pending
+    // D62AD0 owners dispatch the complete raw B5FCA0 body directly.
+    const volatile std::uint32_t* actual_query_profile_00d62ad0;
 };
 
 // Complete B2D8E0 call schedule through B2DBCC, with the required frontier above.
