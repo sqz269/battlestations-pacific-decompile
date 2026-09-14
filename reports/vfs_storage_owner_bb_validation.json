@@ -1,0 +1,106 @@
+{
+  "packet": "orch4_vfs_storage_owner_bb_integration",
+  "status": "type_counter_native_audit",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md",
+  "annotations": "reports/type_counter_raw_lifetime_bb_annotations.json",
+  "worker_reports": [
+    "reports/native_type_counter_raw_lifetime_bb.json",
+    "reports/native_vfs_owner_services_bb.json",
+    "reports/native_mpak_storage_services_bb.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "006fac20",
+      "bytes": 181,
+      "end_inclusive": "006facd4",
+      "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_TypeId_GetCounterSingleton at 006fac20\nSignature: undefined BSP_TypeId_GetCounterSingleton(void)\nEntry: 006fac20\nBody: 006fac20 - 006facd4",
+      "instructions": 48,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "006facd4",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "006fad40",
+      "bytes": 41,
+      "end_inclusive": "006fad68",
+      "sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: void * __fastcall BSP_TypeIdCounter_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "instructions": 12,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "006fad66",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "006fac20",
+      "address": "006fac46",
+      "native": "00415350",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac7c",
+      "native": "00bf681b",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac9e",
+      "native": "00415350",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006facac",
+      "native": "00bd0c30",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fad40",
+      "address": "006fad5b",
+      "native": "00bf65ac",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "006fac20",
+      "call_site": "006fac5f",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "006fac20",
+      "call_site": "006facba",
+      "operand": "dword ptr [0xce2210]"
+    }
+  ],
+  "instruction_ownership_failures": [],
+  "table_data_spans": [
+    {
+      "address": "00cfb6c4",
+      "bytes": 4,
+      "hex": "40ad6f00",
+      "sha256": "177b648fbc3c235dd9eb88ca22452350e22943faf064857f5ed5cf830b4f9a6f",
+      "live_disk_equal": true
+    }
+  ],
+  "body_repairs": [
+    "reports/type_counter_raw_lifetime_bb_body_repair.json"
+  ]
+}

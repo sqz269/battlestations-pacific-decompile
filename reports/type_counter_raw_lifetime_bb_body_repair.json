@@ -1,0 +1,185 @@
+{
+  "reason": "Restore shared type-counter scalar destructor saved instruction ownership; verify complete bytes and preserve existing names, comments, labels and callee flags.",
+  "entries": [
+    {
+      "address": "006fad40",
+      "end_exclusive": "006fad69",
+      "bytes": 41,
+      "sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "before": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: undefined BSP_TypeIdCounter_DeletingDestructor(void)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "before_documentation": {
+        "hash": "738619cf05143bd5831f39549ff2fa362c3cd470ee03e307fd19bffd780163fb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006fad40",
+        "function_name": "BSP_TypeIdCounter_DeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 006fad40]\nNative [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 35,
+            "name": "LAB_006fad63"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "006fad40",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad45",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad46",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad48",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad52",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad58",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad5a",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad5b",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad60",
+          "owner": null
+        },
+        {
+          "address": "006fad63",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad65",
+          "owner": "006fad40"
+        },
+        {
+          "address": "006fad66",
+          "owner": "006fad40"
+        }
+      ],
+      "after": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: void * __fastcall BSP_TypeIdCounter_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "after_documentation": {
+        "hash": "f5b7afae52aed0702f58da20dd9c0cdc2dea2fcf70f54267ae339edd5b6fb906",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "006fad40",
+        "function_name": "BSP_TypeIdCounter_DeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 006fad40]\nNative [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 35,
+            "name": "LAB_006fad63"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 12
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "006fad5b"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 006fad5b (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "006fad40"
+      },
+      "result": "{\"success\": true, \"address\": \"006fad40\", \"deleted_function\": \"BSP_TypeIdCounter_DeletingDestructor\", \"body_size\": 38, \"message\": \"Function 'BSP_TypeIdCounter_DeletingDestructor' deleted at 006fad40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "006fad40",
+        "end_address": "006fad69"
+      },
+      "result": "{\"success\": true, \"start_address\": \"006fad40\", \"end_address\": \"006fad68\", \"bytes_disassembled\": 41, \"message\": \"Successfully disassembled 41 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "006fad40",
+        "name": "BSP_TypeIdCounter_DeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"006fad40\", \"function_name\": \"BSP_TypeIdCounter_DeletingDestructor\", \"entry_point\": \"006fad40\", \"body_size\": 41, \"message\": \"Function created successfully at 006fad40\", \"warnings\": [\"Function name 'BSP_TypeIdCounter_DeletingDestructor' \\u2014 main part 'TypeIdCounter_DeletingDestructor' is not PascalCase. Expected: TypeidcounterDeletingdestructor\", \"Function name 'BSP_TypeIdCounter_DeletingDestructor' \\u2014 main part 'TypeIdCounter_DeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_TypeIdCounter_DeletingDestructor' does not start with a recognized verb. First word 'Type' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006fad40",
+        "prototype": "void* __fastcall BSP_TypeIdCounter_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006fad40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006fad40",
+        "comment": "[BSP reconstruction 006fad40]\nNative [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006fad40\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "006fad40"
+  ]
+}
