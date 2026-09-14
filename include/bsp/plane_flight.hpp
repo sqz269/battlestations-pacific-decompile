@@ -10,9 +10,12 @@
 // binary-compatible layout: the offset constants are the native ones, the structs are not.
 //
 // Contracts named but not reconstructed: the routine that writes the local player's stick or
-// the bot's five planned axes into unit+9E4h (contract: unread; the remaining candidate sites
-// are 007CA509 and 007D1333, since 007CB185 and 007CB3CE belong to the clamp and reset in
-// 007CAF10 and 007BB75D / 007C2B11 / 007D1676 are the network paths);
+// the bot's five planned axes into unit+9E4h (contract: unread; the candidate sites are
+// 007CA509, 007D1333 and - found by packet cc7_plane_advance_pose and missing from this list
+// until then - 007C6587..007C65CC, which drives the block from unit+894h, since 007CB185 and
+// 007CB3CE belong to the clamp and reset in 007CAF10 and 007BB75D / 007C2B11 / 007D1676 are
+// the network paths). Treat "the remaining candidates are" lists here as incomplete: this one
+// said two and there are at least three;
 // the matrix composition that turns the controller's state into unit+74h / unit+674h
 // (docs/ENTITY_LOCAL_MATRIX.md, docs/DYN_PHYSICS_SUBSTEP.md); the 0D0h sub-object at
 // controller+10h; the water arm 007DCDD0 and the ground arm 007DCCF0; the catapult and
