@@ -1,0 +1,91 @@
+{
+  "batch": "orch4_native_game_resource_classification_integration_bx",
+  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "ae6dbac70f9d9ef5bf619d0fef8f72ad99f8e301",
+  "code_revision": null,
+  "packets": [
+    {
+      "packet": "orch4_native_game_resource_classification_bx",
+      "report": "reports/native_game_resource_classification_bx.json",
+      "routines": 4,
+      "ordinary_bytes": 231
+    },
+    {
+      "packet": "orch4_native_game_resource_lists_bx",
+      "report": "reports/native_game_resource_lists_bx.json",
+      "routines": 24,
+      "ordinary_bytes": 2802
+    }
+  ],
+  "new_ordinary_routines": 28,
+  "new_ordinary_bytes": 3033,
+  "ordinary_instruction_starts": 1223,
+  "support_instruction_starts": 0,
+  "direct_transfer_rows": 78,
+  "indirect_calls": 3,
+  "incoming_main_review": {
+    "pinned_revision": "d697a0f68b42afa69d44d9f7c2ed9c554fc2a0ca",
+    "scope": "Actual raw unit-part/spatial attachment, plane timed-direction-hold projections, and model/shape reachability evidence.",
+    "observations": "Source additions were read and do not change BX dependencies. Spatial attachment uses explicit pose/current unit targets/floor/CRT services and source x87 kernels. Its60 paired cases, allocation failure and compatibility runs remain borrowed claims; actual unit/floor/native exception/gameplay parity was not independently certified. Plane timed-hold functions are scalar projections; native x87/COMISS exception and store-order equivalence remain unverified here. Model/shape negative reachability claims were not independently re-established.",
+    "independently_rerun": false,
+    "combined_build": "pending"
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "original_list_bodies": 24,
+    "paired_list_cases": 24,
+    "original_direct_call_relocations": 72,
+    "source_exception_boundaries": "predicate, length-error and allocation overflow passed",
+    "direct_transfer_rows": "78 passed",
+    "instruction_owners": "1223 passed",
+    "prior_ghidra_comments": "verified preserved for28 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_classifier_original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_game_resource_classification_bx/build.log",
+      "sha256": "4ef694ce7e34fd5bcc1a8b55747c6eb2299a0e8d630818c3384a8b7698aef1fd",
+      "bytes": 2559
+    },
+    "core_sha256": "c1b298febc1c332ca696965377464111f855505749a831cbadfbe09201db1a17",
+    "game_sha256": "abac039d0dc1c9751541ed40ab8b5461e63d23e7929c7a88956fcde512f9533f"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_game_resource_classification_bx.json",
+      "sha256": "ec2477d9dc79b4180e41c7fb4719421e0e0c198a9cb884c6820c5e0b3dacce4a",
+      "bytes": 23453
+    },
+    {
+      "path": "reports/native_game_resource_lists_bx.json",
+      "sha256": "6e4657ae8a068837e4cab0afc570f1e4095a5791ae6a4ee769398a96c7b1557d",
+      "bytes": 155490
+    },
+    {
+      "path": "reports/native_game_resource_classification_annotations_bx.json",
+      "sha256": "3c278a844c9043211ebc9967c3353f56ad40719537c704fc98e2e364ac96796f",
+      "bytes": 233044
+    },
+    {
+      "path": "reports/native_game_resource_classification_flow_bx.json",
+      "sha256": "7bbb76020da9ac9abe6aef14ac05e1b5bf29fd6bf830d9d73431a8f30e2c245c",
+      "bytes": 200343
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "New C++ interfaces and actual borrowed storage/token cells, not original binary ABI or production publication.",
+    "Current CRT memmove_s, invalid-parameter callback, allocation and C++ exceptions are library boundaries, not native exception/handler ownership emulation.",
+    "Original oracle exercises normal list paths only; native classifier/FH3, private spills, corrupt ranges, hardware faults and gameplay untested.",
+    "Fixture parser and alternate type predicates are explicit boundary probes. Actual manager/parser/loader composition and queue shutdown remain open."
+  ]
+}
