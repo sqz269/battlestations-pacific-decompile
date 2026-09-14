@@ -147,10 +147,36 @@ so the yaw path runs through at least one more step before reaching its store.
 ## Still not established
 
 The **step term's arithmetic**, and therefore the law. `[ESP+14h]` resolves to `frame=-80` at the
-`007DACC5` multiply, and that slot's producer has not been traced.
+`007DACC5` multiply. Traced one level further: the slot is initialised at `007DA983` from
+**`[EDI+0BC4h]`**, then reshaped (a multiply by the double at `00D7A280`, a subtract, a comparison
+against `1.0`) and clamped at `007DAC30`-`007DAC53` before it multiplies into the step.
 
-**Which of `ctl+4Ch` and `ctl+50h` is yaw and which is roll.** The pitch identification is solid;
-the other two are not, and guessing them would swap two axes of a flight model.
+`+BC4h` is **not a field this repo has recorded**. It sits between `kLatchedAirBrake = 0xBC0` and
+the latched bytes at `0xBC8`..`0xBCA` in `plane_flight.hpp`'s latched block, which names nothing
+there. So the step term is now blocked on one named unknown field rather than on an untraced slot -
+a smaller and better-posed gap, but still a gap, and still not guessed.
+
+~~**Which of `ctl+4Ch` and `ctl+50h` is yaw and which is roll.**~~ **CLOSED - all three axes are
+identified, each by its own class constants and then confirmed as a set by the body-axis
+convention.**
+
+| store | axis | evidence |
+| --- | --- | --- |
+| `ctl+48h` | **pitch** | `PitchSpd +1ACh` (`007DA8EB`), `kLatchedPitch +BB4h` (`007DA8F1`), and `NegativePitchRatio +1D8h` (`007DA918`) applied exactly when the latched pitch is negative |
+| `ctl+4Ch` | **yaw** | `YawSpd +1B0h` (`007DA926`) times `kLatchedYaw +BB0h` (`007DA934`) into `frame=-64`, which `007DAA8D` negates against the `-0.0f` at `00D7A208` and `007DAA97` stores to `frame=-8`, this axis's target |
+| `ctl+50h` | **roll** | `RollSpd +1A8h` (`007DA7C2`) multiplied into `frame=-76` at `007DA7D6`, and `YawRollRatio +1B4h` (`007DAA68`) added into the same slot at `007DAA70` |
+
+The independent check is that this is exactly the body-axis order. `include/bsp/plane_flight.hpp`
+records the body frame as `(x lateral, y up, z forward)`, so angular velocity about x, y and z is
+pitch, yaw and roll in that order - which is what the class constants independently say. Two
+unrelated lines of evidence agreeing is what makes this safe to state; either alone would not be.
+
+`YawRollRatio` appearing in the **roll** target rather than the yaw one is the coupling a
+coordinated turn needs, and it is consistent with `docs/PILOT_BOT_PLAN_CONTROLS.md`, where the
+planner's yaw arm blends by bank angle.
+
+The **yaw target is negated** on its way to the store. That sign is recorded rather than smoothed
+over: it is a real `(-0.0f) - value` at `007DAA8D`, and anything wiring this axis has to carry it.
 
 The region before `007DAB3A` is read only where it writes the three target slots.
 
