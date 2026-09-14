@@ -1,6 +1,6 @@
 # Actual renderer bridges for effect admission
 
-Addresses: `00B18D60`, `00B407A0`, `00B5F160`, caller adaptation at `00B2ED43`.
+Addresses: `00B18D60`, `00B407A0`, `00B5F160`, caller adaptations at `00B2EBB0`/`00B2ED43` and `00B5F6A0`/`00B5F6A3`.
 
 The active B2BB90 fixture investigation found two callable-table assumptions in
 the canonical effect preparation path. The new overloads consume the existing
@@ -99,3 +99,28 @@ pass slots, draw callback, native scratch default or cold loader shortcut is
 introduced. Original constructor FH3, full B2 invocation, teardown and gameplay
 remain unproved. Parent integration preserves its newer descriptor teardown
 interfaces independently of this narrow patch.
+
+
+## Combined-library validation (2026-09-14)
+
+Root source57f813e3 applies the four non-owner source changes exactly and adds
+the owner overloads while preserving the newer actual descriptor teardown
+interfaces. The exact released compiler and platform providers were already
+present. The retained fixture passes against the combined CMake library;
+only a physical mapped-module observer was added after its behavior checks.
+
+Real HAL hot error.tga acquisition, base/derived construction, reference
+transfer, serial wrap, untouched preimages and retained outer/inner failures
+pass. Both pruning branches agree with the explicitly relocated original
+profile/getter observation. Its one renderer-global relocation and33source
+B5EE00 child bridges remain part of the evidence boundary.
+
+Strict Win32, both existing CTests and eight native seeds pass. The report's
+45 call rows include43 numeric direct calls and two indirect sites resolved
+separately by source/listing/runtime evidence. All17 current live/installed-PE
+spans,4822bytes, match. Five existing Ghidra names were retained while evidence
+comments were saved and read back. The independent review found no unresolved
+defect and its complete artifact closure was copied and hash-verified.
+
+Canonical B46950/B2 loading, active debug drawing, cold loading, original
+constructor FH3, teardown and gameplay remain unexecuted in this fixture.

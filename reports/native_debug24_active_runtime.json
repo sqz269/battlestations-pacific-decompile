@@ -1184,5 +1184,64 @@
     "manifest_sha256": "c35babd56c91400576d390765d310b6349b68adb124e60d8fd72885f3682a759",
     "artifacts": 4995,
     "bytes": 540527827
+  },
+  "parent_integration": {
+    "source_commit": "57f813e3a17c744887cd936ca54012f0e9ead29c",
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_matched": 8,
+    "reported_call_rows": 45,
+    "direct_numeric_call_rows": 43,
+    "numeric_failures": 0,
+    "indirect_rows_not_mechanically_proved": 2,
+    "fresh_live_PE_spans": 17,
+    "fresh_live_PE_bytes": 4822,
+    "actual_source_fixture": {
+      "source_commit": "57f813e3a17c744887cd936ca54012f0e9ead29c",
+      "build_exit": 0,
+      "run_exit": 0,
+      "library_before_after": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "7a45bb6e460ac6a068fbffeccee28762e892baeee6ef0753f1c4c92dc6333610",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+      },
+      "map_members": [
+        "0001:0000baf0       ?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 0040caf0 f   bsp_core:native_material_effect_owner.obj",
+        "0001:0000bdd8       __catch$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z$0 0040cdd8 f   bsp_core:native_material_effect_owner.obj",
+        "0001:0003c8f0       __unwindfunclet$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z$3 0043d8f0 f   bsp_core:native_material_effect_owner.obj",
+        "0001:0003c907       __ehhandler$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 0043d907 f   bsp_core:native_material_effect_owner.obj",
+        "0002:00012c58       __catchsym$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z$5 00451c58     bsp_core:native_material_effect_owner.obj",
+        "0002:00012c68       __tryblocktable$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 00451c68     bsp_core:native_material_effect_owner.obj",
+        "0002:00012c7c       __unwindtable$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 00451c7c     bsp_core:native_material_effect_owner.obj",
+        "0002:00012c94       __ehfuncinfo$?initialize_native_material_effect_base_00b18d60@bsp@@YAPAUNativeMaterialEffectBaseStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 00451c94     bsp_core:native_material_effect_owner.obj",
+        "0001:0000ba50       ?initialize_native_material_effect_00b407a0@bsp@@YAPAUNativeMaterialEffectStorage@1@PAXAAUNativeMaterialEffectConstructionAccess@1@AAUNativeMaterialEffectConstructionFrame@1@@Z 0040ca50 f   bsp_core:native_material_effect_owner.obj",
+        "0001:0000c100       ?prune_native_material_pass_states_00b5f160@bsp@@YAXAAUNativeMaterialPassBaseStorage@1@ADSAXPDI@Z 0040d100 f   bsp_core:native_material_effect_programs.obj"
+      ],
+      "fixture_executable_sha256": "f5226ea87b2e28567282d6aefd3132cb5dbf599dd8ad45c5a5bb7374ef5f48c4",
+      "scope": "Actual-source real-HAL hot error.tga base/derived constructors, serial/reference/unwritten-field behavior and retained outer/inner failures; relocated original B5F160 profile/getter with one renderer-global and33sourceB5EE00child bridges, both capability branches and unsupported-target prior writes. Online-null platform input. No original constructor/FH3, canonicalB46950, activeB2, teardown or game."
+    },
+    "worker_archive_sha256": "e3befd3c6d4f009cc2108986de49565926e9cebb3fb26d965f30cb12e85c21d1",
+    "independent_review_archive_sha256": "77b7c1e7b4503f2670625f2b5fd4fa31fd1397c7049c938e3f1459c8f5546256",
+    "independent_review_final_commit": "330302251648fb805f0ecf802898177154e4ed16",
+    "independent_review_report_sha256": "a8d4fba8904cbaaadb23e700856104f72417da987086e2ae547ba1515b3ad1b3",
+    "saved_annotations": 5,
+    "new_descriptive_names": 0,
+    "preserved_newer_actual_descriptor_teardown": true,
+    "limits": [
+      "Original constructor FH3 and private aliases",
+      "Full canonical B46950/B2 loader",
+      "Active B2 draw",
+      "Cold resource loading",
+      "Non-null online platform branch",
+      "Teardown and game validation"
+    ],
+    "immutable_checkpoint": {
+      "path": "local/checkpoints/57f813e3/native-effect-renderer-bridges-wave/validation.json",
+      "sha256": "be24e4db37a9109b3f4b063b93a0a3f026bf76ced11828a6c638094566a2fb8b",
+      "source_commit": "57f813e3a17c744887cd936ca54012f0e9ead29c",
+      "artifacts": 3490,
+      "runtime_module_observations": 81,
+      "unique_runtime_modules": 81
+    }
   }
 }
