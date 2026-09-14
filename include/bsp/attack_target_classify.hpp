@@ -91,4 +91,57 @@ inline bool entity_surface_target_tail_00922c80(const EntityTargetFacts& e, bool
     return e.is_land_fort && e.land_fort_faked_type == 0x1b;
 }
 
+// ---------------------------------------------------------------------------
+// 009229F0 and its tail 00922990 (packet cc7_target_still_attackable).
+//
+// `src/game_hosts_commands.cpp` calls 009229F0 `target_still_attackable` and
+// `docs/ATTACK_CAPABILITY_INPUTS.md` called it "the shared target still attackable
+// test". **It is not a liveness test.** The body is 33 instructions and contains no
+// `+5Dh` read, no timer and nothing temporal: it is a class test with a LandFort
+// `FakedType` fallback. Nothing in it needs live state, so a host with the class-id
+// parent table and the authored `FakedType` can answer it outright.
+
+// 00922990, reached by the tail JMP at 00922A2A. A hand-written membership table over
+// the faked type - **not** a parent-chain walk, and it disagrees with one: the ship arm
+// omits 09h MMothership and 0Ch MLandingShip, which `Entity_IsKindOf(faked, 6)` would
+// include. Answering this with the parent table would get those two wrong.
+inline bool faked_family_00922990(int faked_type, int kind) {
+    if (kind == 0x06) {  // 00922990; the listing tests 8, 7, 0Dh, 0Bh, 0Ah, 0Eh in that order
+        return faked_type == 0x07 || faked_type == 0x08 || faked_type == 0x0A ||
+               faked_type == 0x0B || faked_type == 0x0D || faked_type == 0x0E;
+    }
+    if (kind == 0x0F) {  // 009229BC; 13h, 11h, 12h, 10h, 14h, 15h, 16h, 17h - all eight
+        return faked_type >= 0x10 && faked_type <= 0x17;
+    }
+    return false;  // 009229EC, every other kind
+}
+
+// 009229F0 __fastcall(entity ECX, int kind EDX).
+//   `is_kind`      = entity->vtable[5Ch](kind)   at 009229FC
+//   `is_land_fort` = entity->vtable[5Ch](1Bh)    at 00922A0D
+//   `faked_type`   = entity[+538h][+178h]        at 00922A1A/00922A20, the authored
+//                    `FakedType` key whose producer is BSP_StructureClass_ReadLuaFields
+//                    (docs/ATTACK_GATE_TAILS.md), default 1Bh.
+inline bool entity_kind_or_faked_009229f0(bool entity_present, bool is_kind,
+                                          bool is_land_fort, int faked_type, int kind) {
+    if (!entity_present) return false;           // 009229F3 / 009229F8
+    if (is_kind) return true;                    // 00922A04
+    if (!is_land_fort) return false;             // 00922A18
+    return faked_family_00922990(faked_type, kind);
+}
+
+// 007AC9D0 BSP_Entity_PathInterfaceForKind(entity), the sibling at the non-torpedo
+// branch of the same call site. Not a predicate: it selects a sub-object by class and
+// returns its address, or null. Returns the byte offset, or -1 for null.
+inline int path_interface_offset_007ac9d0(bool entity_present, int class_id_matches_47,
+                                          int class_id_matches_48, int class_id_matches_49,
+                                          int class_id_matches_4a) {
+    if (!entity_present) return -1;              // 007AC9D5
+    if (class_id_matches_47) return 0x1E4;       // 007AC9E4
+    if (class_id_matches_48) return 0x170;       // 007AC9FB
+    if (class_id_matches_49) return 0x310;       // 007ACA12
+    if (class_id_matches_4a) return 0x1E4;       // 007ACA27 jumps back to 007AC9E4
+    return -1;                                   // 007ACA29
+}
+
 }  // namespace bsp
