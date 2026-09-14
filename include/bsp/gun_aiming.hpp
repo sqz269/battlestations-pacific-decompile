@@ -87,6 +87,14 @@ inline constexpr float kGunAimPi = 3.1415927410125732f;      // 00D7A264 (+), 00
 inline constexpr float kGunAimTwoPi = 6.2831854820251465f;   // 00CE3828
 inline constexpr float kGunAimArcEpsilon = 0.008726646192371845f; // 00D08B88, half a degree
 inline constexpr float kGunAimDeadBand = 0.0001745329354889691f;  // 00CFAA48, 0.01 degree
+// The FIRE gate is a different, looser test and a different constant. 006DF520
+// step 12 (006DFB8C, 006DFBB6) arms the trigger when 006DEE40 reports both axes
+// inside *00CF9054 = 0.0017453 rad, 0.1 degree - ten times the stepper's dead
+// band above. Using kGunAimDeadBand to decide whether a gun may fire makes the
+// host ten times stricter per axis than the native. Verified: 00CF9054 reads
+// 89 c3 e4 3a = 0.0017453293548896909 = 0.1 deg exactly.
+// docs/GUN_SHOT_CADENCE.md divergence 2.
+inline constexpr float kGunFireSettleBand = 0.0017453293548896909f;  // 00CF9054, 0.1 degree
 inline constexpr float kGunAimSoftApproachSpan = 0.1745329350233078f; // 00CE3990, ten degrees
 inline constexpr float kGunAimSoftApproachFloor = 0.5f;      // 00CE3800
 inline constexpr float kGunAimSnapThreshold = 0.800000011920929f; // 00CE3D40, used by 0085B0F0

@@ -1,0 +1,539 @@
+{
+  "packet": "orch4_native_resource_cache_insert_bo",
+  "worker_base": "44eed0a86fdaa52e82326cbfb58154b28ccd588a",
+  "branch": "agent/orch4-resource-cache-insert-bo",
+  "frontier": "docs/NATIVE_RESOURCE_LOADING_FRONTIER_BN.md and integrated resource-cache node/lookup/links contracts",
+  "timestamp_utc": "2026-09-14T07:19:47.610605+00:00",
+  "status": "complete_source_strict_win32_actual_storage_fixture_passed_pending_integration",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verification": "Every live query uses bsp.py ghidra and client.verify; autostart disabled; read-only, no scripts or mutations.",
+  "identity_output": "00b7ff80 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b803b0 BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00cc2150 Unwind@00cc2150  undefined Unwind@00cc2150(void)  body 00cc2150 - 00cc2157\n00cc2158 ?  ?  body ?\n",
+  "call_membership_output": "00b7ffc3 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b7ffd5 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b7ffec BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b80004 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b80095 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b800b3 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b800e1 BSP_ResourceNameTree_InsertAt  undefined BSP_ResourceNameTree_InsertAt(void)  body 00b7ff80 - 00b8016b\n00b803f6 BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00b80438 BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00b8045f BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00b8046f BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00b80486 BSP_ResourceNameTree_InsertUnique  undefined BSP_ResourceNameTree_InsertUnique(void)  body 00b803b0 - 00b804c3\n00cc2153 Unwind@00cc2150  undefined Unwind@00cc2150(void)  body 00cc2150 - 00cc2157\n",
+  "installed_image": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "image_base": "00400000"
+  },
+  "routines": [
+    {
+      "address": "00b7ff80",
+      "inclusive_end": "00b8016b",
+      "byte_count": 492,
+      "sha256": "241b4d35914163b66596758f66fb44384bbefc43ac123bbd01defe0ce49249c7",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00b7ff80.txt",
+      "evidence_sha256": "7be5fd514b14110c113497f2534747eb8f3efa74e0a27dea30d65c59290f4eca",
+      "source": "insert_native_resource_cache_at_00b7ff80",
+      "source_file": "src/native_resource_cache_insert.cpp",
+      "existing_ghidra_name": "BSP_ResourceNameTree_InsertAt",
+      "native_abi": "ECX actual tree; stack output iterator,insert-left DWORD lowbyte,parent,source pair; EAX output; RET10h",
+      "coverage": "complete actual-storage source",
+      "annotations_applied": false
+    },
+    {
+      "address": "00b803b0",
+      "inclusive_end": "00b804c3",
+      "byte_count": 276,
+      "sha256": "03bd52e0758cb7dcf130301acf0d449b18ed8ed8ef42b6d11796954c47b2927f",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00b803b0.txt",
+      "evidence_sha256": "241c947b7d7dc6ada13f739e79f37330f0bcc0fc049f0d290e5d0b975889ffd2",
+      "source": "insert_native_resource_cache_unique_00b803b0",
+      "source_file": "src/native_resource_cache_insert.cpp",
+      "existing_ghidra_name": "BSP_ResourceNameTree_InsertUnique",
+      "native_abi": "ECX actual tree; stack actual result,source pair; EAX result; RET8",
+      "coverage": "complete actual-storage source",
+      "annotations_applied": false
+    }
+  ],
+  "support_spans": [
+    {
+      "address": "00cc2150",
+      "inclusive_end": "00cc2157",
+      "byte_count": 8,
+      "sha256": "a66a962a03e2b57bdf790a23c57515b839e008c75278ad9a48027b5b41e2d30a",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00cc2150.txt",
+      "evidence_sha256": "f474ae7ffb880d931a4b333e7412d42b0304d6753ed8c43579939301aaf36b92"
+    },
+    {
+      "address": "00cc2158",
+      "inclusive_end": "00cc2161",
+      "byte_count": 10,
+      "sha256": "a76977ba0e5e2194a9fc31773b2b4d95508c1e69362ef4939f861d23335e4c39",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00cc2158.txt",
+      "evidence_sha256": "17805fcb58a302dccbc4c76406bbc43de060c7f76e0866ba508e0f7de282a9d8"
+    },
+    {
+      "address": "00dfb398",
+      "inclusive_end": "00dfb3bb",
+      "byte_count": 36,
+      "sha256": "fc97ce114743a4dac9b3d82f81780a91cca8ee6f96c7be9e7e57722dc31b0959",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00dfb398.txt",
+      "evidence_sha256": "8754ddd1ebc36bda629b37057340b29725298f2b59aace86d0b73abd3145e597"
+    },
+    {
+      "address": "00dfb390",
+      "inclusive_end": "00dfb397",
+      "byte_count": 8,
+      "sha256": "caed7492e1da6bc5883b3ebfe9f9c72ef19bf8fca5fe9f2fa463858e1995937c",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00dfb390.txt",
+      "evidence_sha256": "fc56311e78b4d3037c4dca2661eef9b307515586b88749962d57c0915b5554e4"
+    },
+    {
+      "address": "00ce47bc",
+      "inclusive_end": "00ce47cf",
+      "byte_count": 20,
+      "sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00ce47bc.txt",
+      "evidence_sha256": "234d6dafeb0a5327c5f031a67ef5cb6f0a4da460eb9e9cb2ce628b6d790f329a"
+    },
+    {
+      "address": "00d83f98",
+      "inclusive_end": "00d83fa7",
+      "byte_count": 16,
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_insert_bo/00d83f98.txt",
+      "evidence_sha256": "d14955d784aa545f76a7fea4a4c94f6fd2bf79bb9fa0e4c8f25c7e006c8ac0ea"
+    }
+  ],
+  "native_byte_parity": {
+    "complete_routine_bytes": 768,
+    "support_bytes": 98,
+    "total_bytes": 866,
+    "spans": 8,
+    "all_live_ghidra_matches_installed_pe": true
+  },
+  "host_steps": [
+    {
+      "address": "00b7ffc3",
+      "native": "00408720",
+      "function": "00b7ff80",
+      "instruction": "CALL 0x408720",
+      "kind": "call",
+      "source_operation": "native_legacy_sbo_string_assign_counted_00408720",
+      "argument_cleanup_evidence": "ECX fresh message; literal CE47BC,count19; RET8"
+    },
+    {
+      "address": "00b7ffd5",
+      "native": "00411700",
+      "function": "00b7ff80",
+      "instruction": "CALL 0x411700",
+      "kind": "call",
+      "source_operation": "NativeAliasListLengthError constructor -> construct_native_legacy_logic_error_00411700",
+      "argument_cleanup_evidence": "ECX28h exception owner; stack source SBO; RET4"
+    },
+    {
+      "address": "00b7ffec",
+      "native": "00bf6885",
+      "function": "00b7ff80",
+      "instruction": "CALL 0xbf6885",
+      "kind": "call",
+      "source_operation": "throw owning NativeAliasListLengthError",
+      "argument_cleanup_evidence": "payload and D83F98; native exception path"
+    },
+    {
+      "address": "00b80004",
+      "native": "00b7f6a0",
+      "function": "00b7ff80",
+      "instruction": "CALL 0xb7f6a0",
+      "kind": "call",
+      "source_operation": "allocate_native_resource_cache_node_00b7f6a0",
+      "argument_cleanup_evidence": "initial head,parent,same head,pair,color0; RET14h"
+    },
+    {
+      "address": "00b80095",
+      "native": "00b7d5f0",
+      "function": "00b7ff80",
+      "instruction": "CALL 0xb7d5f0",
+      "kind": "call",
+      "source_operation": "rotate_native_resource_cache_left_00b7d5f0",
+      "argument_cleanup_evidence": "ECX tree; stack captured working node; RET4"
+    },
+    {
+      "address": "00b800b3",
+      "native": "00b7cbd0",
+      "function": "00b7ff80",
+      "instruction": "CALL 0xb7cbd0",
+      "kind": "call",
+      "source_operation": "rotate_native_resource_cache_right_00b7cbd0",
+      "argument_cleanup_evidence": "ECX tree; stack reloaded grandparent; RET4"
+    },
+    {
+      "address": "00b800e1",
+      "native": "00b7cbd0",
+      "function": "00b7ff80",
+      "instruction": "CALL 0xb7cbd0",
+      "kind": "call",
+      "source_operation": "rotate_native_resource_cache_right_00b7cbd0",
+      "argument_cleanup_evidence": "ECX tree; stack captured working node; RET4"
+    },
+    {
+      "address": "00b803f6",
+      "native": "00bf7fbf",
+      "function": "00b803b0",
+      "instruction": "CALL 0xbf7fbf",
+      "kind": "call",
+      "source_operation": "inlined comparison schedule via less_native_string_headers_00443d00",
+      "argument_cleanup_evidence": "right data read before left; cdecl left/right strings; B803FB ADD ESP8"
+    },
+    {
+      "address": "00b80438",
+      "native": "00b7ff80",
+      "function": "00b803b0",
+      "instruction": "CALL 0xb7ff80",
+      "kind": "call",
+      "source_operation": "insert_native_resource_cache_at_00b7ff80",
+      "argument_cleanup_evidence": "ECX tree; iterator output,1,parent,pair; RET10h"
+    },
+    {
+      "address": "00b8045f",
+      "native": "00b7cdf0",
+      "function": "00b803b0",
+      "instruction": "CALL 0xb7cdf0",
+      "kind": "call",
+      "source_operation": "decrement_native_resource_cache_iterator_00b7cdf0",
+      "argument_cleanup_evidence": "ECX actual local8h iterator; no stacked args; RET or returning invalid handler"
+    },
+    {
+      "address": "00b8046f",
+      "native": "00443d00",
+      "function": "00b803b0",
+      "instruction": "CALL 0x443d00",
+      "kind": "call",
+      "source_operation": "less_native_string_headers_00443d00",
+      "argument_cleanup_evidence": "candidate key,input key; RET8"
+    },
+    {
+      "address": "00b80486",
+      "native": "00b7ff80",
+      "function": "00b803b0",
+      "instruction": "CALL 0xb7ff80",
+      "kind": "call",
+      "source_operation": "insert_native_resource_cache_at_00b7ff80",
+      "argument_cleanup_evidence": "ECX tree; iterator output,captured side,parent,pair; RET10h"
+    },
+    {
+      "address": "00cc2153",
+      "native": "004072d0",
+      "function": "00cc2150",
+      "instruction": "JMP 0x4072d0",
+      "kind": "tail_jump",
+      "source_operation": "CompletedLengthMessage -> native_legacy_sbo_string_destroy_004072d0",
+      "argument_cleanup_evidence": "ECX EBP-50h current completed message; tail JMP"
+    }
+  ],
+  "decoded_only_transfers": [
+    {
+      "instruction_address": "00cc215d",
+      "decoded_target": "00bf6b43",
+      "intended_function": "00cc2158",
+      "instruction": "JMP 0xbf6b43",
+      "kind": "tail_jump",
+      "evidence_status": "decoded only; no current Ghidra handler function"
+    }
+  ],
+  "direct_xrefs": {
+    "00b7ff80": "From 00b80438 in BSP_ResourceNameTree_InsertUnique [UNCONDITIONAL_CALL]\nFrom 00b80486 in BSP_ResourceNameTree_InsertUnique [UNCONDITIONAL_CALL]\n",
+    "00b803b0": "From 00b80975 in BSP_ResourceManager_LoadAndCache [UNCONDITIONAL_CALL]\n"
+  },
+  "inline_equivalences": [
+    {
+      "span": "00b803d1..00b80400",
+      "source_helper": "less_native_string_headers_00443d00",
+      "contract": "Current left length0/then right length0 predicates; otherwise right data then left data before CRT_stricmp; Boolean signed-negative result",
+      "native_transfer": "Only direct native CALL here is BF7FBF atB803F6; no fabricated native call to443D00"
+    },
+    {
+      "span": "00b800f6..00b80132",
+      "source_helper": "rotate_native_resource_cache_left_00b7d5f0",
+      "contract": "Same pivot/right-child/current-moved-child/parent/current-head/parent-branch stores as complete existing left rotation",
+      "native_transfer": "Inline listing, no native CALL at this span"
+    }
+  ],
+  "actual_storage": {
+    "tree": {
+      "00": "untouched allocator word until an explicitly aliased output",
+      "04": "current head pointer",
+      "08": "DWORD count"
+    },
+    "head_links": {
+      "00": "minimum",
+      "04": "root",
+      "08": "maximum"
+    },
+    "node": "actual1Ch: left0,parent4,right8,owning keyC/10,borrowed raw resource14,color18,nil19",
+    "pair": "actual0Ch: key length0/data4/raw resource8",
+    "iterator_output": "actual8h: captured inserted node+4 stored before tree+0",
+    "unique_output": "node+4, inserted byte+8, owner+0 in that order; remaining bytes untouched",
+    "resource_reference_operations": "none"
+  },
+  "material_contracts": [
+    "Initial unsigned count>=15555554h throws before head read/node allocation; no alias-list subtraction growth predicate is substituted.",
+    "Initial head is captured once and supplies both child links to actual B7F6A0; parent and source pointers remain captured inputs.",
+    "After node construction, capture current head before incrementing current count with DWORD wrap; no second bound check.",
+    "Root insertion writes captured postallocation head.root, then independently reloads current head for min and max stores.",
+    "Other insertion writes captured parent child first, then reads current head for min/max maintenance; low insert-left byte only.",
+    "Retain inserted node separately from rebalancing working node; reread parent/grandparent across recoloring and rotations.",
+    "Blacken current root before iterator output; iterator stores node then owner.",
+    "Unique walk uses actual current links, stored-length0 empty rule and current case-insensitive C-string comparison without length tie-break.",
+    "Keep last descent parent separately from predecessor iterator. Direct-leftmost case uses current head.minimum; other left paths use actual predecessor with returning invalid service.",
+    "Equivalent key leaves existing raw resource and count unchanged, no replacement/AddRef/release. Source resource pointer need not be read on that branch.",
+    "Unique result captures owner/node before node,inserted-byte,owner stores; equivalent branch obtains current local iterator owner.",
+    "Node construction failure propagates its integrated outer-only free/rethrow and skips insertion count/link/result stores; no added rollback after successful insertion."
+  ],
+  "length_error": {
+    "count_limit_inclusive": "15555554h",
+    "comparison": "unsigned initial_count >= limit",
+    "literal": "map/set<T> too long",
+    "literal_address": "00ce47bc",
+    "counted_bytes": 19,
+    "temporary_initialization": "capacity15,length0,inline first byte0; leading word/unused storage untouched",
+    "constructor": "00411700",
+    "profile": "00d69260",
+    "throw_info": "00d83f98",
+    "transport": "existing owning NativeAliasListLengthError",
+    "reuse_evidence": "4CE780 and B7FF80 use same411700 owner ctor, D69260 overwrite and D83F98 ThrowInfo; only recovered message/count and count predicate differ",
+    "native_storage_bytes": 40,
+    "copy_source": "00411940",
+    "destroy_source": "00411780",
+    "limit": "New C++ catch/exception ABI; legacy owner storage and owned message preserved"
+  },
+  "fh3": {
+    "handler": "00cc2158",
+    "func_info": "00dfb398",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00dfb390",
+    "try_blocks": 0,
+    "flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc2150",
+        "effect": "LEA ECX,[EBP-50h]; JMP004072D0 destroys completed legacy message"
+      }
+    ],
+    "message_state_armed": "00b7ffd1 after00408720 returns",
+    "native_insert_cleanup": "none; normal insertion remains state-1",
+    "source_guard": "CompletedLengthMessage created after counted assignment, owns only message cleanup",
+    "handler_membership": "CC2158 has no current function; decoded tail atCC215D kept separate"
+  },
+  "repair_proposals": [
+    {
+      "was": "CC2158..CC2161 decoded FH3 handler has no current function",
+      "is": "Optional primary creation/annotation of existing handler span",
+      "evidence": "B7FF88 prologue handler reference; complete10-byte live/PE parity MOV EAX,DFB398; JMP BF6B43",
+      "applied": false,
+      "scope": "No source branch or supported CALL ownership depends on this metadata function creation"
+    }
+  ],
+  "dependencies": [
+    {
+      "entry": "00b7f6a0",
+      "source": "native_resource_cache_node.cpp",
+      "role": "Actual node allocation/construction and captured-outer catch cleanup"
+    },
+    {
+      "entries": [
+        "00b7d5f0",
+        "00b7cbd0",
+        "00b7cdf0"
+      ],
+      "source": "native_resource_cache_links.cpp",
+      "role": "Actual rotations/predecessor; callback belongs only to existing returning invalid-parameter service"
+    },
+    {
+      "entry": "00443d00",
+      "source": "native_vfs_date_leaf_providers.cpp",
+      "role": "Exact shared comparison used by existing actual cache lookup, inline walk and direct uniqueness comparison"
+    },
+    {
+      "entry": "NativeAliasListLengthError",
+      "source": "native_alias_count_growth.cpp",
+      "role": "Existing owning40-byte legacy length-error transport, with recovered19-byte payload"
+    },
+    {
+      "entries": [
+        "00408720",
+        "00411700",
+        "004072d0"
+      ],
+      "source": "native_legacy_sbo_string.cpp and native_legacy_exception_owner.cpp",
+      "role": "Actual message/owner allocation/copy/cleanup under the existing host CRT boundary"
+    },
+    {
+      "entry": "NativeStringRawPoolContext",
+      "source": "native_string and actual native pool owners",
+      "role": "Borrow actual pool publication/gate/raw lifetime cells; no private allocator or tree context"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_resource_cache_insert.hpp": "641d2241c71fad769bbed289bcafd226a60a9661ad764c6a10477273d54713d6",
+    "src/native_resource_cache_insert.cpp": "29510379e666b815ad5dea929756d54006e17243483cbb93123dd2fe1c082b41",
+    "src/native_resource_cache_node.cpp": "fa360b416710ec09af95657cd67324006d797fce55db6cd7874477f5313c555b",
+    "src/native_resource_cache_links.cpp": "286266e2aa4bdd38e3468fc54d8c162649fbefc86faff02061a9178c1c5cdbb5",
+    "src/native_resource_cache_lookup.cpp": "1d35c1ba8450bd6a18efc052d5d7a8515fd2c746d00010d74aa0f427de49027f",
+    "src/native_vfs_date_leaf_providers.cpp": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+    "src/native_alias_count_growth.cpp": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43",
+    "src/native_legacy_exception_owner.cpp": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "dependency_git_matches_frozen_commit": {
+    "src/native_resource_cache_node.cpp": {
+      "blob": "0dfa5b490b2abffc94744bbc0f6a45715ac4b81d",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_resource_cache_links.cpp": {
+      "blob": "7d071a411d2f87428a47975ed36c210991730b51",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_resource_cache_lookup.cpp": {
+      "blob": "3148cb5732e78f39122f16d7da326959214c5a2b",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_vfs_date_leaf_providers.cpp": {
+      "blob": "4b778abcba06244a8c68eaaa3ccb38e7750fde7e",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_alias_count_growth.cpp": {
+      "blob": "667ff6e497ee0294ed612f8c281d61da2b1b022e",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_legacy_exception_owner.cpp": {
+      "blob": "40bba5339f57a50f769b6143085bd62062250094",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_legacy_sbo_string.cpp": {
+      "blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string.cpp": {
+      "blob": "34ce8c6ac275d705a53096ddd7a80ed4ee71010f",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string_pool_owner.cpp": {
+      "blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "matches_frozen_source_commit": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_frozen_source_commit": true
+    }
+  },
+  "validation": {
+    "strict_win32_tu": {
+      "passed": true,
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict /Iinclude /c"
+    },
+    "actual_storage_fixture": {
+      "passed": true,
+      "source": "local/resource_cache_insert_bo/probe.cpp",
+      "new_insertion_object_explicitly_linked": true,
+      "actual_pool_and_raw_nodes": true,
+      "checks": [
+        "successful insertion and min/max/count",
+        "both rotation families with independent red-black invariants after each insert",
+        "equivalent keys leave resource value and references intact",
+        "case-insensitive equivalence",
+        "zero stored length ignores invalid data pointer",
+        "output/source alias and result padding",
+        "captured initial head versus current postallocation head",
+        "current count wraps after allocation mutation",
+        "owning exact length-error payload copy survives temporary unwind",
+        "node failure frees captured outer exactly once and skips insertion writes"
+      ],
+      "instrumentation": "Probe-only current-process malloc/free imports and new-handler observations, restored before exit",
+      "manifest": "/MANIFEST:EMBED",
+      "permanent_test_added": false,
+      "original_native_execution": false
+    },
+    "frozen_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "frozen": "local/resource_cache_insert_bo/bsp_core_bn_frozen.lib",
+      "source_commit": "9673354d1a985c46c83a8226caa7a54e0290328b",
+      "sha256": "D9947AE6D8E55C2903641262080C16B543DF87EB1519DF37D932B1824A9030F0",
+      "source_copy_source_match": true
+    },
+    "artifact_sha256": {
+      "local/resource_cache_insert_bo/probe.cpp": "1b64cd8026e9ba7fcf62dc05398405f184671d7821fee53cb11382ea916e6c15",
+      "local/resource_cache_insert_bo/compile.ps1": "9ff050b5130f3614c54b234bfb8a71140b74a5208dc6696bbbe7b2f8ca420740",
+      "local/resource_cache_insert_bo/compile.log": "cde42c3f53373abc3d3eea0cf76a30fecb4004a20b07d080551c89d837fdb788",
+      "local/resource_cache_insert_bo/insert.obj": "a039016f812261c65d5d716826323576193ed6dac9268ddc5d42a0f1922f1988",
+      "local/resource_cache_insert_bo/probe.exe": "8b326fabb81fb4de1d485eac02db090b8591caf981e6e6fe17680861d96640d8"
+    },
+    "call_report_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_resource_cache_insert_bo.json",
+      "pending_execution": false,
+      "checked": 13,
+      "failed": 0,
+      "exit_code": 0,
+      "log": "local/resource_cache_insert_bo/call_verifier.log",
+      "log_sha256": "171b33511e7d159345112fdabeb621892b33a16e3d58b79f6ab75a98581ab484",
+      "scope": "Twelve owned CALLs plus one owned unwind tail JMP; one unowned handler tail JMP is decoded-only evidence"
+    },
+    "integrated_build_run_by_worker": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_verification_checklist": {
+    "1_callee_before_contract": "Native comparison, allocation, rotations, predecessor, legacy string/exception and unwind bodies reviewed before naming operations.",
+    "2_boundary_before_attribution": "Every supported site has live containing function evidence; unownedCC215D separate from supported table.",
+    "3_all_call_sites": "InsertAt two caller sites and InsertUnique one caller site read; all native arguments retained.",
+    "4_producer_before_layout": "Reuse integrated actual1Ch node constructor layout and tree/head contracts; no new projection.",
+    "5_complete_coverage": "Complete492/276-byte source bodies; metadata-only missing handler membership identified separately.",
+    "6_runtime_frame_claim": "No frame/game claim or production binding; focused native-storage fixture only.",
+    "7_argument_cleanup": "Each direct transfer has native argument and cleanup evidence; tail jumps declared explicitly.",
+    "8_register_provenance": "Full listings read: EDI tree, EBP inserted node or captured parent, ESI working/candidate, EAX current parent-slot; distinct captures preserved.",
+    "9_lease_scope": "Only requested insertion entries and four output files leased; existing dependencies/support read only.",
+    "10_report_schema": "Supported rows use address/native/function/kind; decoded-only handler has instruction_address/decoded_target/intended_function/kind; repair proposal has was/is/evidence."
+  },
+  "known_unknowns": [
+    "No original register/stack spill aliases, hardware SEH/FH3 or legacy exception-object ABI equivalence.",
+    "Valid native storage and current CRT locale required; arbitrary invalid/overlapping layouts and concurrent mutation unproved.",
+    "Controlled fixture field replacement proves scheduling only, not concurrency or reentrancy safety.",
+    "Native allocator null branch remains unguarded after existing dependency returns; fixture does not force unsafe null continuation.",
+    "No cache manager, resource lifetime, production glue, CMake/shared metadata/Ghidra changes or integrated gameplay claim."
+  ],
+  "primary_integration_review": {
+    "worker_report_preimage": "local\\native_resource_cache_insert_bo_worker_preimage.json",
+    "sha256": "cd389ed5164f2a585549cfe76ccfea223a02673f6dc44a415016f214bf2886d3",
+    "definition_report": "reports/native_loading_storage_definitions_bo.json",
+    "annotation_report": "reports/native_loading_storage_annotations_bo.json",
+    "note": "Earlier worker observations are retained as historical evidence. Primary defined and verified complete handler instruction membership, saved names/comments and refreshed exports."
+  },
+  "primary_repaired_transfers": [
+    {
+      "address": "00cc215d",
+      "native": "00bf6b43",
+      "function": "00cc2158",
+      "kind": "tail_jump",
+      "evidence": "Primary verified two-instruction handler membership after definition; native MOV EAX,FuncInfo and tail JMP."
+    }
+  ]
+}

@@ -64,6 +64,7 @@
 #include <vector>
 
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_pending_timers.hpp"
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
@@ -92,6 +93,15 @@ struct GameBulletClassRow {
     float blast_damage_max{0.0f};// "Blast.BlastDamageMax"
     float blast_range{0.0f};     // "Blast.BlastRange"
     float mass{0.0f};            // "Mass"
+    // MTorpedo only. 008566B0 reads "WaterTravelSpeed" into classDesc+0E4h, and
+    // it is a different quantity from V0 at +50h: the torpedo bot's intercept
+    // solver takes +0E4h at 0090022B while the AA flak bot's call at 009031CF
+    // takes +50h, so the choice is deliberate. The swim speed is that value
+    // scaled by the double at 00D0C5E0 (0.5999994277954102), stored into the
+    // torpedo record's +470h at 0085786D..00857875.
+    // docs/TORPEDO_LAUNCH_ACCURACY.md.
+    float water_travel_speed{0.0f};   // "WaterTravelSpeed", classDesc+0E4h
+    float swim_speed{0.0f};           // record+470h = WaterTravelSpeed * 0.6
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -127,6 +137,14 @@ struct GameGunRow {
     int bullet_class{-1};
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
+    float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0
+    float swim_speed{0.0f};           // record+470h, WaterTravelSpeed * 0.6
+    // gun+120h/+124h, the list 0072AD40 ages at the top of every fixed step.
+    // Nothing in this reconstruction pushes to it yet - the producer was not
+    // found - so it stays empty and the aging sweep is a no-op. It is carried
+    // rather than omitted so the shape is in place, and so the counter below
+    // would notice the moment a producer does appear.
+    std::vector<bsp::GunPendingTimerRecord> pending_timers;
     std::vector<bsp::GunFiringArc> arcs;   // platform+3Ch, from `Windows`
     float rest_horz{0.0f};            // "RestAngles[1]", platform+94h
     float rest_vert{0.0f};            // "RestAngles[2]", platform+90h
@@ -166,6 +184,7 @@ struct GameProjectileRow {
     float position[3]{};
     float life{0.0f};
     bool alive{false};
+    bool swimming{false};             // past the water crossing, on the swim
 };
 
 // Per unit, what the chain did to it and what it did with its guns.
@@ -234,7 +253,29 @@ struct GameGunnerySummary {
     // Guns whose engagement range came from 00855A90's water-travel rule rather
     // than the authored `Range`. Zero here means the Bullets table was not
     // reachable and category 7 is still refused on the 10.0f seed.
+    // Which gate the recon-contact stand-in drops a unit at, so a zero contact
+    // count can be attributed instead of guessed.
+    // Ticks on which the gun actually held a target, split out of the
+    // per-gun-per-tick angle tallies which carry no target information.
+    unsigned long long angle_refusals_targeted{0};
+    unsigned long long want_fire_no_accept{0};
+    unsigned long long want_fire_no_settle{0};
+    unsigned long long want_fire_no_window{0};
+    unsigned long long contact_considered{0};
+    unsigned long long contact_reject_side{0};
+    unsigned long long contact_reject_visible{0};
+    unsigned long long contact_reject_dead{0};
+    unsigned long long contact_reject_kind{0};
+    unsigned long long contact_admit_ship{0};
+    unsigned long long contact_admit_plane{0};
+    unsigned long long bullet_ranges_derived{0};   // 006E9890 gave the gun a range
+    // 0072AD40's sweep. Both stay 0 while no producer fills gun+120h; a
+    // non-zero `live` is the first sign that one has appeared.
+    unsigned long long gun_pending_timers_expired{0};
+    unsigned long long gun_pending_timers_live{0};
     unsigned long long torpedo_ranges_derived{0};
+    unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
+    unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
     unsigned long long aim_steps{0};

@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/plane_flight.hpp"
+#include "bsp/plane_pose_commit.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -235,6 +237,23 @@ struct GameUnitSlot {
     float generic_timer_6f8{0.0f};             //0095CF50
     float generic_timer_6fc{0.0f};             //0095CF58
     bool generic_suppress_520{false};         //0095CDD7
+
+    // Plane control state. 007CFD20 zeroes unit+900h (XOR EBX,EBX); the
+    // free-flight arm needs 7, which 007C6340's fall-through sets at 007C6481
+    // alongside unit+908h = 3600. All three inputs of select_motion_arm_007ce040
+    // derive from this one field: the gate (*(unit+72Ch))->vtable[+38h] is
+    // BSP_PlaneControlMode_IsFreeFlight, `+1D4h == 7`, and 310h+41Ch+1D4h = 900h.
+    // docs/PLANE_FLIGHT_CORE_LAW.md, docs/PLANE_UNIT_TICK.md.
+    std::int32_t plane_control_mode_900{0};
+    float plane_airborne_908{0.0f};
+    bool plane_airborne_frozen_9e0{false};
+    // Free-flight motion. 007DB680 is an ACCUMULATOR pass, not an integrator:
+    // it leaves four accumulators for 007D8470 to fold, and the caller applies
+    // the result. The integration below is therefore the host's, not a
+    // reconstruction of native code. docs/PLANE_FREE_FLIGHT_PHYSICS.md.
+    float plane_world_velocity[3]{0.0f, 0.0f, 0.0f};
+    float plane_lost_drag_timer_c3c{0.0f};
+    bool plane_velocity_seeded{false};
     volatile float generic_input_63c{1.0f};   //0095CD9E
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
@@ -1411,6 +1430,53 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         const bsp::VehicleClassDescriptorRow* kind = lua_row.found
             ? bsp::vehicle_class_kind_row(lua_row.type.c_str()) : nullptr;
         slot->motion_dispatch = unit_motion_dispatch(kind);
+        if (slot->motion_dispatch.entry == 0x007ce040u) {
+            // 007C6340's fall-through at 007C6481 sets unit+900h = 7 and
+            // unit+908h = 3600 together, and one call satisfies both of the
+            // free-flight arm's requirements. 007CFD20 leaves +900h at 0, which
+            // selects no arm at all - which is why a freshly created plane is
+            // correctly motionless until something seeds it.
+            // docs/PLANE_FLIGHT_CORE_LAW.md.
+            slot->plane_control_mode_900 = 7;
+            slot->plane_airborne_908 = 3600.0f;
+            // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
+            // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
+            // pins lift against gravity at exactly that value and at
+            // 1.8 * StallSpd.
+            //
+            // It is an AIRSPEED, so it goes along the plane's own forward axis,
+            // not along a world axis. That axis is pose_row2 - the frame
+            // 0046cf40 composed from the authored placement, which the loop
+            // above already copied in, and which 00521374's camera path reads
+            // the same way (src/system_camera_axes.cpp:387 takes world[8..10]
+            // as forward). An earlier revision seeded world +Z instead, on the
+            // unchecked assumption that a placement carries no rotation; that
+            // flew every plane in the same arbitrary direction.
+            {
+                const float* const fwd = slot->motion.pose_row2;
+                const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] +
+                                            fwd[2] * fwd[2]);
+                if (len > 1e-6f) {
+                    for (int i = 0; i < 3; ++i) {
+                        slot->plane_world_velocity[i] = 141.666672f * fwd[i] / len;
+                    }
+                } else {
+                    // A degenerate authored frame keeps the old world-+Z seed
+                    // rather than propagating a NaN through every lift term.
+                    slot->plane_world_velocity[2] = 141.666672f;
+                }
+            }
+            slot->plane_velocity_seeded = true;
+            host.log.notef("plane spawn: unit=%s heading=%.2f deg forward=(%.4f %.4f %.4f)"
+                " seed=(%.2f %.2f %.2f)", row.name.c_str(),
+                static_cast<double>(row.heading_degrees),
+                static_cast<double>(slot->motion.pose_row2[0]),
+                static_cast<double>(slot->motion.pose_row2[1]),
+                static_cast<double>(slot->motion.pose_row2[2]),
+                static_cast<double>(slot->plane_world_velocity[0]),
+                static_cast<double>(slot->plane_world_velocity[1]),
+                static_cast<double>(slot->plane_world_velocity[2]));
+        }
         bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
         slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
             slot->observer_prefix, slot->motion_dispatch.creator);
@@ -1723,7 +1789,7 @@ bool GameUnitsHost::issue_player_command(const std::string& token,
         target.position[0] = point[0];
         target.position[1] = point[1];
         target.position[2] = point[2];
-        target.reserved = 0.0f;       // 0088A8C7
+        target.trailing = 0.0f;       // 0088A8C7
         char label[64];
         std::snprintf(label, sizeof(label), "(%.1f, %.1f)",
             static_cast<double>(point[0]), static_cast<double>(point[2]));
@@ -1971,6 +2037,147 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     continue;
                 }
                 ++host.summary.generic_tick_unavailable;
+            }
+            if (slot.motion_dispatch.entry == 0x007ce040u) {
+                // The plane fixed step. docs/PLANE_FLIGHT_CORE_LAW.md proves the
+                // arm selection is reachable: seed unit+900h to 7 as 007C6481
+                // does and the free-flight arm runs. The arms themselves are not
+                // wired here - this binds the sequence and reports which arm the
+                // native would take, so the next step has a harness and the
+                // selection is measurable before any motion is claimed.
+                class PlaneBinding final : public bsp::PlaneFlightHost {
+                public:
+                    PlaneBinding(GameUnitsHost::Impl& owner, GameUnitSlot& unit)
+                        : owner_(owner), unit_(unit) {}
+                    bool unit_game_object_tick_00953cc0(float) override {
+                        return unit_.generic_suppress_520;
+                    }
+                    void class_input_poll_0095dc40(float) override {}
+                    void out_of_action_countdown_007c6c30(float) override {}
+                    bool free_flight_gate_00d06130_38() override {
+                        // 0074E210 BSP_PlaneControlMode_IsFreeFlight: +1D4h == 7.
+                        return unit_.plane_control_mode_900 == 7;
+                    }
+                    void accumulate_airborne_time(float step) override {
+                        unit_.plane_airborne_908 += step;   // 007CEC4E
+                    }
+                    void free_flight_007cc2f0(float step) override {
+                        ++owner_.summary.plane_arm_free_flight;
+                        // The class field the law actually depends on. StallSpd
+                        // is the only authored one; everything else is a
+                        // PlaneGlobals default the mirror fills at load.
+                        bsp::PlaneFreeFlightClass cls;
+                        bsp::PlaneFreeFlightTuning tuning;
+                        bsp::PlaneFreeFlightState state;
+                        for (int i = 0; i < 3; ++i) {
+                            state.world_velocity[i] = unit_.plane_world_velocity[i];
+                        }
+                        // ctl+0B0h, row-major, body = M * world. The pose rows
+                        // ARE that matrix: row i is body axis i expressed in
+                        // world, so dot(row_i, world_vec) is the body component.
+                        // The frame comes from the authored placement through
+                        // 0046cf40; nothing here invents a rotation.
+                        const float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                state.world_to_body[r * 3 + c] = rows[r][c];
+                            }
+                            // ctl+3Ch..44h, which 007D9C39 rebuilds from the
+                            // world velocity through this same matrix each step.
+                            state.body_velocity[r] =
+                                rows[r][0] * unit_.plane_world_velocity[0] +
+                                rows[r][1] * unit_.plane_world_velocity[1] +
+                                rows[r][2] * unit_.plane_world_velocity[2];
+                        }
+                        // ctl+44h, the body forward component. The carrier term
+                        // 007D99C0 adds to it is zero off a deck. Under the
+                        // identity frame this is the world +Z the previous
+                        // revision took, so the acceptance test is unmoved.
+                        state.forward_speed = state.body_velocity[2];
+                        state.world_altitude = unit_.motion.position[1];
+                        state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
+                        state.airborne_time = unit_.plane_airborne_908;
+                        const bsp::PlaneDynAccumulators acc =
+                            bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
+                        const bsp::PlaneBodyAcceleration body =
+                            bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.plane_world_velocity[i] += body.total[i] * step;
+                            unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                        }
+                        // The 3D step length. The seed no longer lies along
+                        // world +Z, so one component would understate it.
+                        const float* const wv = unit_.plane_world_velocity;
+                        owner_.summary.plane_distance_moved +=
+                            std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
+                        owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
+                    }
+                    void ground_roll_007cbfa0(float) override {
+                        ++owner_.summary.plane_arm_ground_roll;
+                    }
+                    void surface_007cba50(float) override {
+                        ++owner_.summary.plane_arm_surface;
+                    }
+                    // 007CECBA on unit+674h. Not a pose *commit* despite the
+                    // name this interface inherited from a doc annotation that
+                    // turned out to be wrong: 0085DC80 is
+                    // BSP_Matrix_OrthonormalizeBasisRows, a general Gram-Schmidt
+                    // with 54 callers that takes no step, no velocity and no
+                    // control axis. docs/PLANE_POSE_COMMIT.md.
+                    //
+                    // On an already-orthonormal basis it is a no-op, and the
+                    // host's pose is orthonormal because it comes from the
+                    // authored placement and nothing rotates it yet. So this
+                    // changes nothing today and is wired for faithfulness, not
+                    // effect - it is the drift tidy-up that will matter once
+                    // something actually turns a plane.
+                    //
+                    // No zero-length guard: the native has none, and a zero or
+                    // NaN forward silently collapses the basis there too. The
+                    // counter below records it instead of hiding it.
+                    void commit_step_pose_0085dc80() override {
+                        bsp::PoseBasis in;
+                        for (int i = 0; i < 3; ++i) {
+                            in.row0[i] = unit_.motion.pose_row0[i];
+                            in.row1[i] = unit_.motion.pose_row1[i];
+                            in.row2[i] = unit_.motion.pose_row2[i];
+                        }
+                        const bsp::PoseOrthonormalizeResult r =
+                            bsp::orthonormalize_basis_rows_0085dc80(in);
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.motion.pose_row0[i] = r.basis.row0[i];
+                            unit_.motion.pose_row1[i] = r.basis.row1[i];
+                            unit_.motion.pose_row2[i] = r.basis.row2[i];
+                        }
+                        if (r.branch == bsp::PoseOrthonormalizeBranch::RightReference)
+                            ++owner_.summary.plane_pose_right_reference;
+                        if (!(r.forward_length > 0.0f))
+                            ++owner_.summary.plane_pose_collapsed;
+                        owner_.done("PlaneMotion::commit_step_pose_0085dc80", 0x0085dc80u);
+                    }
+                    void latch_control_input_007b9770() override {}
+                    bool airborne_time_frozen() override {
+                        return unit_.plane_airborne_frozen_9e0;
+                    }
+                    int ground_water_mode() override {
+                        return unit_.plane_control_mode_900;
+                    }
+                    int surface_mode() override {
+                        // The surface arm's documented unit+5F0h is the same
+                        // field: 007CEC39's LEA proves unit+72Ch is embedded.
+                        return unit_.plane_control_mode_900;
+                    }
+                private:
+                    GameUnitsHost::Impl& owner_;
+                    GameUnitSlot& unit_;
+                } plane_calls(host, slot);
+                const bsp::PlaneMotionArm arm =
+                    bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
+                if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
+                ++host.summary.plane_steps;
+                host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
+                continue;
             }
             if (slot.motion_dispatch.entry != 0) {
                 host.record_motion_phase("unreconstructed_phase", slot.motion_dispatch.entry);
@@ -2876,6 +3083,16 @@ void GameUnitsHost::report() {
         "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
         host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
         generic_units, generic_input_one);
+    host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
+        "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
+        host.summary.plane_steps, host.summary.plane_arm_free_flight,
+        host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
+        host.summary.plane_arm_none);
+    host.log.notef("summary mission plane motion: distance_moved=%.2f m "
+        "pose_right_reference=%llu pose_collapsed=%llu",
+        host.summary.plane_distance_moved,
+        host.summary.plane_pose_right_reference,
+        host.summary.plane_pose_collapsed);
     host.commands.report();
 }
 

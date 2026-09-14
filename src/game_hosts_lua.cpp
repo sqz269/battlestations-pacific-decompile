@@ -982,6 +982,31 @@ float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
     return value;
 }
 
+std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* key) {
+    // The string companion of read_bullet_class_number. `Type` is what
+    // 006EA910's case-insensitive name chain switches on to pick a weapon
+    // class, and bsp::weapon_class_sub_type_for_lua_type maps it to the
+    // constructor sub-type that 006E9890 derives the engagement range from.
+    // docs/BULLET_ENGAGEMENT_RANGE.md.
+    std::string value;
+    if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(state_, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
     std::vector<bsp::LuaGlobalEntry> entries;
     if (state_ == nullptr) return entries;
@@ -1340,7 +1365,13 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
     summary_.self_table_entities = made;
-    log_.unimplemented("MissionLua::entity_lua_attach", "00928a00");
+    // Was `unimplemented`, which the header defines as "the caller receives a
+    // neutral value". That is not what happens here: the loop above builds the
+    // slot and all four of its fields, `00928A00` is `coverage: complete` in
+    // docs/MISSION_ENTITY_LUA_ATTACH.md, and `self_table_entities` counts real
+    // work. The wrong marker had a cost - it was read as "no Lua order can name
+    // a unit", which is false and was reported as a blocker.
+    log_.implemented("MissionLua::entity_lua_attach", "00928a00");
     log_.notef("thisTable: %zu per-entity slot(s) built for the created scene instances, "
         "%zu of them with the installed `VehicleClass` row as their `Class` field. 00928a00 "
         "and its caller 0077e830 are records, and so is the per-kind `Class` setter that "

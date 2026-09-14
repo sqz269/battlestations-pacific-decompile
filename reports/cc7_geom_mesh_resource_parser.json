@@ -1,0 +1,445 @@
+{
+  "packet": "cc7_geom_mesh_resource_parser",
+  "owner": "agent/cc7-geom-mesh-parser",
+  "date": "2026-09-14",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only for analysis; the only writes were the ledger records listed under `ledger`, applied through tools/bsp.py ledger add-name",
+  "docs": [
+    "docs/GEOM_MESH_RESOURCE.md"
+  ],
+  "sources": [
+    "include/bsp/geom_mesh_resource.hpp",
+    "src/geom_mesh_resource.cpp",
+    "cmake/startup.cmake"
+  ],
+  "subject": "Verify the GeomMesh payload format recorded in docs/PART_DAMAGE_REACHABILITY.md section 1e step by step against 00727310's listing, correct what does not hold, and reconstruct the parser as a StructuredResourceParser so a host can decode an authored element's (kind, index) pair - the value docs/PART_DAMAGE_REACHABILITY.md proved rule R1 is missing.",
+  "reuses": [
+    "docs/PART_DAMAGE_REACHABILITY.md for the two element-field writes, the 00E08138 table and the R1/R4 gates; cited, not restated",
+    "include/bsp/part_damage_reachability.hpp for kMeshCategoryNames, mesh_category_from_name_007149d0 and geom_mesh_element_kind_00727310; reused, not redeclared",
+    "include/bsp/structured_resource_registry.hpp for the StructuredResourceParser base and dispatch_items_00b7e970; derived from and driven, not edited",
+    "include/bsp/structured_reader.hpp for StructuredNode's read_u32 / read_float / read_string / remaining / skip_00be9c40",
+    "docs/GAME_RESOURCE_PARSER_REGISTRATION.md for the GeomMesh parser singleton 00716FE0 and its slots"
+  ],
+  "payload_parser_steps": [
+    {
+      "address": "00727336",
+      "native": "00be9b20",
+      "function": "00727310",
+      "note": "remaining-bytes probe. CMP EAX,4 / JNC 0072735a: under four bytes the parser bails."
+    },
+    {
+      "address": "00727342",
+      "native": "00be9c40",
+      "function": "00727310",
+      "note": "BSP_StructuredNode_SkipAndDetach on the undersized payload, then RET 4 at 00727357."
+    },
+    {
+      "address": "0072735c",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 elementCount into EDI. Stored to the incoming argument slot at 00727369 (MOV [ESP+8ch],EDI with ESP = ESP0-88h), which is reused as scratch for the rest of the body."
+    },
+    {
+      "address": "00727370",
+      "native": "00726d80",
+      "function": "00727310",
+      "note": "reserve on mesh+8h (00727363 ADD ESI,8). Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "0072738a",
+      "native": "00bea010",
+      "function": "00727310",
+      "note": "the element name: u32 byte length then the raw characters, no NUL."
+    },
+    {
+      "address": "007273a3",
+      "native": "007149d0",
+      "function": "00727310",
+      "note": "kind = table index of the name. ECX is the character pointer at [ESP+34h], or the empty literal 00E19BF4 when that pointer is null (0072739e)."
+    },
+    {
+      "address": "007273ac",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 element index into EAX, read immediately after the name."
+    },
+    {
+      "address": "007273fa",
+      "native": "00727260",
+      "function": "00727310",
+      "note": "push_back of the 2Ch-byte temporary at [ESP+4ch]. Contract inferred from the call site; body unread, but 00727277/0072727e's 0x2E8BA2E9 / SAR EDX,3 is division by 0x2C per docs/PART_DAMAGE_REACHABILITY.md."
+    },
+    {
+      "address": "00727410",
+      "native": "00bf6989",
+      "function": "00727310",
+      "note": "the temporary's teardown frees [ESP+6ch] = element+20h when nonzero."
+    },
+    {
+      "address": "00727421",
+      "native": "00bf6989",
+      "function": "00727310",
+      "note": "and [ESP+70h] = element+24h."
+    },
+    {
+      "address": "00727432",
+      "native": "00bf65ac",
+      "function": "00727310",
+      "note": "and [ESP+60h] = element+14h, the ordinal vector's storage."
+    },
+    {
+      "address": "00727471",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 vertexCount into EDI."
+    },
+    {
+      "address": "00727482",
+      "native": "00725b40",
+      "function": "00727310",
+      "note": "reserve on mesh+18h (0072747c ADD EBX,18h). Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "00727492",
+      "native": "00be99d0",
+      "function": "00727310",
+      "note": "vertex x, FSTP [ESP+40h]."
+    },
+    {
+      "address": "0072749d",
+      "native": "00be99d0",
+      "function": "00727310",
+      "note": "vertex y, FSTP [ESP+44h]."
+    },
+    {
+      "address": "007274a8",
+      "native": "00be99d0",
+      "function": "00727310",
+      "note": "vertex z, FSTP [ESP+48h]."
+    },
+    {
+      "address": "007274b8",
+      "native": "004215d0",
+      "function": "00727310",
+      "note": "MSVC_Vector12_PushBack of the 12-byte vertex into mesh+18h."
+    },
+    {
+      "address": "007274c4",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "the count of the pair block."
+    },
+    {
+      "address": "007274d7",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "first value of the pair, into the scratch slot [ESP+1ch]."
+    },
+    {
+      "address": "007274e3",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "second value of the pair, into the SAME scratch slot: both are discarded."
+    },
+    {
+      "address": "007274ef",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 triangleCount, saved to [ESP+18h] at 007274fd."
+    },
+    {
+      "address": "00727543",
+      "native": "00725aa0",
+      "function": "00727310",
+      "note": "per element, reserve element[i]+10h with triangleCount / elementCount (00727503 CDQ / 00727504 IDIV [ESP+88h]). Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "00727563",
+      "native": "007262a0",
+      "function": "00727310",
+      "note": "reserve on mesh+28h with triangleCount. Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "00727599",
+      "native": "00726670",
+      "function": "00727310",
+      "note": "append a zeroed 6-byte record to mesh+28h; 007275ab LEA EAX,[EDI-6] confirms the 6-byte stride. Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "007275d9",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "the triangle's element index, into [ESP+1ch]; bounds-checked against the element vector at 007275e6..00727612."
+    },
+    {
+      "address": "00727612",
+      "native": "00bf6713",
+      "function": "00727310",
+      "note": "the out-of-range throw the element-index bounds check falls into."
+    },
+    {
+      "address": "0072766b",
+      "native": "007263b0",
+      "function": "00727310",
+      "note": "the grow path of the ordinal append when the fast path at 00727643 has no capacity. Contract inferred from the call site; body unread."
+    },
+    {
+      "address": "00727672",
+      "native": "00be9b20",
+      "function": "00727310",
+      "note": "per-triangle remaining probe. CMP EAX,7 / JC 00727683 skips the next read when under seven bytes remain."
+    },
+    {
+      "address": "0072767e",
+      "native": "00be99e0",
+      "function": "00727310",
+      "note": "the guarded read. Byte-identical thunk to 00be9a00; its EAX result is never stored, so the value is consumed and dropped."
+    },
+    {
+      "address": "00727694",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "triangle corner 0, into [ESP+24h]; stored as a word at 007276d4."
+    },
+    {
+      "address": "0072769b",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "triangle corner 1, into [ESP+28h]; ECX comes from the previous call's EAX, which 00be9a97 sets to the node handle."
+    },
+    {
+      "address": "007276a2",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "triangle corner 2, into [ESP+2ch]; stored as a word at 007276e5."
+    },
+    {
+      "address": "007276ae",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "first trailing value, into the scratch slot [ESP+14h]: discarded."
+    },
+    {
+      "address": "007276ba",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "second trailing value, into the same slot: discarded."
+    },
+    {
+      "address": "007276c6",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "third trailing value, into the same slot: discarded."
+    },
+    {
+      "address": "0072796b",
+      "native": "007263b0",
+      "function": "00727310",
+      "note": "the merge pass's grow path when appending a merged element's ordinals."
+    },
+    {
+      "address": "00727a76",
+      "native": "00725380",
+      "function": "00727310",
+      "note": "a finalizer on the mesh, called once after the merge pass. Body unread; named by address only."
+    }
+  ],
+  "read_helpers": [
+    {
+      "address": "00be99e9",
+      "native": "00bf0280",
+      "function": "00be99e0",
+      "note": "e8 92 68 00 00 at 00be99e9, next instruction 00be99ee, target 00bf0280 BSP_StreamReader_ReadDwordSlot34AndDebit."
+    },
+    {
+      "address": "00be9a09",
+      "native": "00bf0280",
+      "function": "00be9a00",
+      "note": "e8 72 68 00 00 at 00be9a09, next instruction 00be9a0e, target 00bf0280. 00be99e0 and 00be9a00 are byte-identical apart from this displacement."
+    },
+    {
+      "address": "00be9a8c",
+      "native": "00bf0280",
+      "function": "00be9a80",
+      "note": "the same DWORD primitive; 00be9a95 MOV dword ptr [EDX],EAX stores it through the out-parameter and 00be9a97 MOV EAX,ESI returns the node handle, which is what makes the 00727694/0072769b/007276a2 chain work. RET 4 at 00be9a9a."
+    },
+    {
+      "address": "00be99d9",
+      "native": "00bf02c0",
+      "function": "00be99d0",
+      "note": "e8 e2 68 00 00, target 00bf02c0 BSP_StreamWrapper_ReadFloatAndAccount - the float primitive, slot +44h, distinct from the integer slot +34h."
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "docs/PART_DAMAGE_REACHABILITY.md section 1e, the helper legend and the n2 block",
+      "was": "`00BE9A80 a u16` and `007274c4 u32 n2 ; repeat n2: two u16 reads (00be9a80 x2)`.",
+      "is": "00BE9A80 reads a DWORD. Its body calls 00BF0280, the same primitive 00BE9A00 (BSP_StructuredNode_ReadU32) and 00BE99E0 call, already recorded in the ledger as BSP_StreamReader_ReadDwordSlot34AndDebit; 00be9a95 stores a dword through the out-parameter. The pair block is therefore two u32 per entry, eight bytes, and every triangle read through 00BE9A80 is four bytes wide.",
+      "evidence": "00be9a80's disassembly and bytes (8b 01 ... e8 ... c2 04 00), 00bf0280's existing ledger record, and the decode: with 00BE9A80 at four bytes Farragut_1934.MMOD's chunk at 0x1587DF consumes exactly its declared 0x1C5BA payload with zero leftover; at two bytes it stops 70104 bytes short and produces nonsense triangles ((829,0,829,0), (0,830,0,826))."
+    },
+    {
+      "subject": "docs/PART_DAMAGE_REACHABILITY.md section 1f, the file offset of the Farragut chunk",
+      "was": "`models/ships/us/Farragut_1934.MMOD`, `GeomMesh` chunk at file offset `0x1587E3` (`08 00 00 00 \"GeomMesh\"` counted tag ...)",
+      "is": "0x1587E3 is where the eight characters `GeomMesh` begin. The counted tag, that is the `08 00 00 00` length prefix the reader consumes first, starts at 0x1587DF; the u32 payload size 0x1C5BA is at 0x1587EB and the payload body at 0x1587EF.",
+      "evidence": "hexdump of 0x1587D0..0x15782F of this installation's file; the host StructuredReader reads a root at 0x1587DF and reports tag GeomMesh with declared_payload 0x1C5BA."
+    },
+    {
+      "subject": "docs/PART_DAMAGE_REACHABILITY.md section 1e, coverage of 00727580 to the end",
+      "was": "`coverage: partial` - the triangle decode `was read only far enough to see that it fills element+10h's vector`, and `the n2 section at 007274C4 and the element fields +20h/+24h/+28h were not decoded`.",
+      "is": "The wire format from 00727580 to the last read at 007276c6 is now fully decoded (eight u32 per triangle), and 00727704..00727a6d, which reads nothing from the stream, is decoded as a same-kind merge-and-erase pass. element+20h/+24h/+28h remain undecoded: 00727310 only zeroes them.",
+      "evidence": "the listing 00727580..00727a8d and a nine-chunk decode across five files with zero bytes left over in every chunk."
+    }
+  ],
+  "format": {
+    "element_stride": "0x2C, from 00727260's 0x2E8BA2E9 / SAR EDX,3 division and from the temporary's extent [ESP+4ch]..[ESP+74h]",
+    "element_layout": {
+      "+00h": "vtable 00CFDBC8, whose slot 0 is 00725880 (called at 00727a48 as the erase teardown)",
+      "+04h": "kind, 007149D0's index with 7 -> 9 (007273db)",
+      "+08h": "node index, a raw u32 (007273df)",
+      "+0Ch": "the owning mesh (007273e3)",
+      "+10h": "MSVC vector<u16>: proxy +10h, begin +14h, end +18h, capacity +1Ch",
+      "+20h": "zeroed at 007273d3, freed as a heap pointer by the temporary's teardown",
+      "+24h": "zeroed at 007273d7, freed likewise",
+      "+28h": "zeroed at 007273e7, not freed"
+    },
+    "wire": [
+      "u32 elementCount",
+      "elementCount x { u32 nameLength, nameLength characters, u32 index }",
+      "u32 vertexCount, vertexCount x 3 floats",
+      "u32 pairCount, pairCount x 2 u32",
+      "u32 triangleCount",
+      "triangleCount x { u32 elementIndex, u32 (guarded by remaining >= 7), u32 v0, u32 v1, u32 v2, u32, u32, u32 }"
+    ],
+    "triangle_bytes": 32,
+    "observation_not_proven_by_the_code": "In this installation's data the pairCount block is a list of distinct undirected vertex-index pairs (an edge list) and the three trailing u32 of each triangle index it, each naming an edge of its own triangle. 00727310 discards all of them, so the parser proves only that they are consumed."
+  },
+  "installation_files": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/us/Farragut_1934.MMOD",
+      "mtime": "2024-07-13 11:24:44 -0700",
+      "size": 18201279,
+      "note": "chunks at 0x1587DF and 0xEEB3F3; both decode with zero leftover"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/us/North_Carolina.mmod",
+      "mtime": "2024-07-13 11:24:54 -0700",
+      "size": 29328089,
+      "note": "one chunk at 0x1BEFC64"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/japan/yamato.mmod",
+      "mtime": "2024-07-13 11:23:20 -0700",
+      "note": "three chunks; the first is seven fizika elements with indices 0..6"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/japan/Yamato1945.mmod",
+      "mtime": "2024-07-13 11:22:10 -0700",
+      "note": "one chunk; the only merge case found - steering 0 remaps to kind 9 and merges into body 0"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/us/Colorado.MMOD",
+      "mtime": "2024-07-13 11:24:44 -0700",
+      "note": "one chunk at 0x3AA55B4"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/us/Essex.mmod",
+      "mtime": "2024-07-13 11:24:44 -0700",
+      "note": "one chunk at 0x71"
+    }
+  ],
+  "installation_note": "This installation is modded (BSPRM/AlterBSP). Every file above was opened read-only; nothing under I:/SteamLibrary was written. The mtimes are this installation's, not a retail distribution's.",
+  "acceptance": {
+    "driver": "local/geom_mesh_probe.cpp, compiled ad hoc with cl /MD /link /MANIFEST:EMBED against build/win32/Release/bsp_core.lib; not part of the CMake build",
+    "method": "the real chunk bytes are copied into a synthetic `Resource` container and decoded through the peer's unmodified StructuredResourceRegistry::dispatch_items_00b7e970 with GeomMeshStructuredResourceParser registered",
+    "Farragut_1934.MMOD@0x1587DF": "{body 0, underwater 0, fizika 0, magazine 0, fizika 1, engineroom 0, fizika 2} - reproduces docs/PART_DAMAGE_REACHABILITY.md section 1f exactly; 1394 vertices, 3565 pairs, 2212 triangles, root remaining 0",
+    "Farragut_1934.MMOD@0xEEB3F3": "{body 1, underwater 1, fueltank 0, fizika 3}; 630 vertices, 1540 pairs, 940 triangles",
+    "North_Carolina.mmod@0x1BEFC64": "{fizika 0, fizika 1, magazine 0, body 0, engineroom 0, fueltank 0}; 208 vertices, 538 pairs, 339 triangles",
+    "Yamato1945.mmod@0x2C111": "authored {underwater 0, magazine 0, body 0, engineroom 0, fueltank 0, steering 0}; after the merge five elements, body's ordinal list growing from 1381 to 1393 - the 7 -> 9 remap and the merge pass observed together",
+    "edge_cross_check": "across all nine chunks of docs/GEOM_MESH_RESOURCE.md section 5, 62349 of 62349 trailing triangle words name an edge of their own triangle; 0 failures",
+    "yamato.mmod@0x246EEE": "authored {engineroom 0, body 0, fueltank 0, underwater 0, steering 0, magazine 0}; the second merge case, body's ordinal list growing 151 -> 162",
+    "chunks_decoded": "9 chunks across 5 files; every one leaves the container node with remaining = 0"
+  },
+  "coverage": [
+    {
+      "routine": "00727310",
+      "coverage": "complete for the stream reads and the element/vertex/pair/triangle decode; the merge pass 00727704..00727a6d is complete as to which elements survive and where their ordinals go, partial as to the element-shifting instructions at 00727982..00727a4f, which were read but not transcribed"
+    },
+    {
+      "routine": "00be9a80",
+      "coverage": "complete, 12 instructions"
+    },
+    {
+      "routine": "00be99e0",
+      "coverage": "complete, 6 instructions"
+    },
+    {
+      "routine": "00be9b20",
+      "coverage": "complete, 4 instructions"
+    },
+    {
+      "routine": "00727a90",
+      "coverage": "not read in this packet; cited from docs/PART_DAMAGE_REACHABILITY.md"
+    },
+    {
+      "routine": "00726d80 00727260 00725b40 00725aa0 007262a0 00726670 007263b0 00725380",
+      "coverage": "unread. Their contracts in this document are inferred from 00727310's call sites and from the vector arithmetic inline at those sites, never from their bodies. They are named by address only."
+    }
+  ],
+  "negative_results": [
+    "The 0072767e read is not a float: 00be99e0 calls 00bf0280 (slot +34h, integer), not 00bf02c0 (slot +44h, float). Its value is 0 for every triangle of every chunk decoded here, so its purpose is not established.",
+    "No caller of 00727310 other than 00727a90 was found; that is from the call graph, which the checklist records as capped at 25 rows for xrefs. The count here is 1, below the cap.",
+    "Nothing links the geometry element's +8h to the Lua descriptor's `Index` at 0087cf60. The two producers write the same shape of pair; that they share one index space is still not established.",
+    "North_Carolina.mmod carries 46 occurrences of the string `fizika`, as docs/PART_DAMAGE_REACHABILITY.md notes, but only two of them are GeomMesh elements. The rest are elsewhere in the file; a string count is not an element count.",
+    "element+20h, +24h and +28h remain undecoded. 00727310 only zeroes them, so this packet adds nothing to docs/HIT_HULL_SEGMENT.md's reading of +24h."
+  ],
+  "host_interface_limit": {
+    "issue": "StructuredResourceParser::decode writes into StructuredResourcePayload, a closed std::variant of MeshResourcePayload / NoteResourcePayload / GroupParamsResourcePayload declared in include/bsp/structured_resource_registry.hpp, which this packet does not own and did not edit.",
+    "resolution": "GeomMeshStructuredResourceParser derives from the base and registers normally; its decode leaves the variant argument untouched and delivers the payload through a caller-supplied sink and last_payload(). Deriving needed no change to the peer's header. Adding a fourth alternative to the variant is the coordination change that would remove the seam, and it belongs to the registry's owner."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "bsp_core, bsp_game and the probes built; ctest 1/1 reconstructed_math passed",
+    "registration": "one line appended to cmake/startup.cmake, target bsp_game, next to src/part_damage_reachability.cpp which supplies the 00E08138 lookups",
+    "tests_added": "none. bsp_math_tests links bsp_core only and cannot reach a bsp_game source, and the acceptance case needs a 116 KB authored payload; the ad hoc probe carries it instead."
+  },
+  "ledger": [
+    {
+      "address": "00727310",
+      "action": "append-evidence",
+      "note": "the verified wire format, the 32-byte triangle record, the merge pass and the explicit refutation of the u16 clause"
+    },
+    {
+      "address": "00be9a80",
+      "name": "BSP_StructuredNode_ReadU32ToOutParam",
+      "action": "add-name"
+    },
+    {
+      "address": "00be99e0",
+      "name": "BSP_StructuredNode_ReadU32Discarded",
+      "action": "add-name"
+    },
+    {
+      "address": "00be9b20",
+      "name": "BSP_StructuredNode_RemainingBytes",
+      "action": "add-name"
+    }
+  ],
+  "lease": {
+    "packet": "cc7_geom_mesh_resource_parser",
+    "addresses": [
+      "00727310",
+      "007149d0",
+      "00be9a80",
+      "00be99e0",
+      "00be9b20"
+    ],
+    "files": [
+      "docs/GEOM_MESH_RESOURCE.md",
+      "reports/cc7_geom_mesh_resource_parser.json",
+      "include/bsp/geom_mesh_resource.hpp",
+      "src/geom_mesh_resource.cpp"
+    ],
+    "note": "00723E90, 00724510, 006D2E30, 0092D1F0 and 00937C90 were read as contracts from merged packets and deliberately not leased."
+  }
+}
