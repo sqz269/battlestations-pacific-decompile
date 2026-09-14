@@ -1,0 +1,192 @@
+{
+  "packet": "orch3_post_effect_frame_binding_bu_primary",
+  "status": "source_reconstructed_independent_review_and_build_pending",
+  "source_parent_commit": "b777b58b0c115ac52e3fc8d76d1ba3e4127bf743",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 63,
+  "routines": [
+    {
+      "address": "00b4e3d0",
+      "inclusive_end": "00b4e40a",
+      "bytes": 59,
+      "instructions": 24,
+      "cpp_symbol": "set_native_post_effect_frame_target_00b4e3d0",
+      "proposed_name": "BSP_PostEffect_SetFrameTarget",
+      "original_abi": "ECX receiver; one stacked incoming frame pointer; RET4; preserves ESI; no specified result."
+    },
+    {
+      "address": "00b4cc00",
+      "inclusive_end": "00b4cc03",
+      "bytes": 4,
+      "instructions": 2,
+      "cpp_symbol": "get_native_post_effect_count_00b4cc00",
+      "proposed_name": "BSP_PostEffect_GetCount",
+      "original_abi": "ECX actual24h receiver; EAX current DWORD+20; RET; no ownership effect."
+    }
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "name": "setter",
+      "address": "00b4e3d0",
+      "bytes": 59,
+      "inclusive_end": "00b4e40a",
+      "sha256": "693f73fefb97d376ef6417ba3cfe243d6e052fba6fe1c4dc1e659231e00ee161",
+      "live_PE_equal": true
+    },
+    {
+      "name": "count_getter",
+      "address": "00b4cc00",
+      "bytes": 4,
+      "inclusive_end": "00b4cc03",
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_PE_equal": true
+    },
+    {
+      "name": "frame_profile",
+      "address": "00d5e600",
+      "bytes": 8,
+      "inclusive_end": "00d5e607",
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "live_PE_equal": true
+    },
+    {
+      "name": "virtual_zero_provider",
+      "address": "00bd30e0",
+      "bytes": 14,
+      "inclusive_end": "00bd30ed",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_PE_equal": true
+    },
+    {
+      "name": "frame_deleting_provider",
+      "address": "00b1fcf0",
+      "bytes": 30,
+      "inclusive_end": "00b1fd0d",
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "live_PE_equal": true
+    },
+    {
+      "name": "atomic_IAT_cells",
+      "address": "00ce221c",
+      "bytes": 8,
+      "inclusive_end": "00ce2223",
+      "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b53fe1",
+      "native": "00b4e3d0",
+      "function": "00b529a0",
+      "contract": "Current child after geometry population; captured common frame argument; concrete assignment followed by draw helper."
+    },
+    {
+      "address": "00b5400d",
+      "native": "00b4e3d0",
+      "function": "00b529a0",
+      "contract": "Current child after geometry population; captured common frame argument; concrete assignment followed by draw helper."
+    },
+    {
+      "address": "00b54034",
+      "native": "00b4e3d0",
+      "function": "00b529a0",
+      "contract": "Current child after geometry population; captured common frame argument; concrete assignment followed by draw helper."
+    },
+    {
+      "address": "00b54074",
+      "native": "00b4e3d0",
+      "function": "00b529a0",
+      "contract": "Current child after geometry population; captured common frame argument; concrete assignment followed by draw helper."
+    },
+    {
+      "address": "00b5318c",
+      "native": "00b4cc00",
+      "function": "00b529a0",
+      "contract": "Read current child +20; caller shifts returned DWORD right by one."
+    },
+    {
+      "address": "00b53b73",
+      "native": "00b4cc00",
+      "function": "00b529a0",
+      "contract": "Read current child +20; caller shifts returned DWORD right by one."
+    },
+    {
+      "address": "00b4e3e7",
+      "kind": "indirect",
+      "native": "InterlockedIncrement",
+      "function": "00b4e3d0",
+      "contract": "Current CE221C IAT target after parent publication; captured incoming +04."
+    },
+    {
+      "address": "00b4e3f5",
+      "kind": "indirect",
+      "native": "InterlockedDecrement",
+      "function": "00b4e3d0",
+      "contract": "Fresh current CE2220 target after incoming retain; captured old +04."
+    },
+    {
+      "address": "00b4e405",
+      "kind": "indirect",
+      "native": "frame+vtable00",
+      "function": "00b4e3d0",
+      "contract": "At zero current old vtable+0; concrete D5E600 resolves BD30E0, whose fresh deleting+4 is B1FCF0 with flags1.",
+      "resolved_native": "00bd30e0"
+    }
+  ],
+  "imports": {
+    "00ce221c": {
+      "library": "KERNEL32.dll",
+      "symbol": "InterlockedIncrement"
+    },
+    "00ce2220": {
+      "library": "KERNEL32.dll",
+      "symbol": "InterlockedDecrement"
+    }
+  },
+  "source_sha256": {
+    "include/bsp/native_post_effect_frame_binding.hpp": "866a583058bdbfd4056fb0dfbda3bac79a973b97bd3f44d897f8769ca8e7e43f",
+    "src/native_post_effect_frame_binding.cpp": "a9d352b589251ccd80c435e35d658af15c30d3379d4a767a36a707ae5abcf809"
+  },
+  "provider_sha256": {
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "include/bsp/native_frame_target_vector.hpp": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e",
+    "src/native_frame_target_vector.cpp": "4be91f26effbf619545dfc59a624488e8361aca47264d6af67bae33e3932b39d",
+    "include/bsp/native_surface_owner.hpp": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "review": {
+    "author": "primary integrator",
+    "independent_review": "pending",
+    "source_and_full_normal_bodies_reviewed": true,
+    "provider": "Existing D5E600 NativeFrameTargetOwnerStorage and B1FCF0 deleting provider. No new companion, registry, callable substitute or allocation domain.",
+    "observations": [
+      "Identity returns before publication or IAT/profile access. Distinct incoming is published before retention.",
+      "Only nonnull incoming reads CE221C; only nonnull captured old reads CE2220, after incoming retention.",
+      "At zero, old profile and virtual0 are current; BD30E0 then reloads profile and deleting+4. Full existing B1FCF0 provider is called with flags1.",
+      "Native has no local cleanup handler. Provider/diagnostic C++ exceptions propagate after already-completed effects; no rollback, final clear or old access is added."
+    ]
+  },
+  "validation": {
+    "build": "pending exact committed combined BT/BU build",
+    "new_tests": 0,
+    "native_fixture": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Only the existing concrete D5E600 final-zero frame profile and its shared surface/CRT domains are admitted.",
+    "Atomic cells must be the real current callable targets over live native +04 counters. Invalid storage, unsupported virtuals, private-frame aliases and hardware faults are outside this source domain.",
+    "No new native/source setter execution, final-zero fixture, injected callback/provider failure, drop-in ABI, SEH or game validation is claimed."
+  ]
+}
