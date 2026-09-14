@@ -246,6 +246,13 @@ struct GameUnitSlot {
     std::int32_t plane_control_mode_900{0};
     float plane_airborne_908{0.0f};
     bool plane_airborne_frozen_9e0{false};
+    // Free-flight motion. 007DB680 is an ACCUMULATOR pass, not an integrator:
+    // it leaves four accumulators for 007D8470 to fold, and the caller applies
+    // the result. The integration below is therefore the host's, not a
+    // reconstruction of native code. docs/PLANE_FREE_FLIGHT_PHYSICS.md.
+    float plane_world_velocity[3]{0.0f, 0.0f, 0.0f};
+    float plane_lost_drag_timer_c3c{0.0f};
+    bool plane_velocity_seeded{false};
     volatile float generic_input_63c{1.0f};   //0095CD9E
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
@@ -1431,6 +1438,13 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // docs/PLANE_FLIGHT_CORE_LAW.md.
             slot->plane_control_mode_900 = 7;
             slot->plane_airborne_908 = 3600.0f;
+            // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
+            // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
+            // pins lift against gravity at exactly that value and at
+            // 1.8 * StallSpd. Seeded along +Z, the body forward axis, which the
+            // identity orientation below makes world forward too.
+            slot->plane_world_velocity[2] = 141.666672f;
+            slot->plane_velocity_seeded = true;
         }
         bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
         slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
@@ -2016,8 +2030,42 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void accumulate_airborne_time(float step) override {
                         unit_.plane_airborne_908 += step;   // 007CEC4E
                     }
-                    void free_flight_007cc2f0(float) override {
+                    void free_flight_007cc2f0(float step) override {
                         ++owner_.summary.plane_arm_free_flight;
+                        // The class field the law actually depends on. StallSpd
+                        // is the only authored one; everything else is a
+                        // PlaneGlobals default the mirror fills at load.
+                        bsp::PlaneFreeFlightClass cls;
+                        bsp::PlaneFreeFlightTuning tuning;
+                        bsp::PlaneFreeFlightState state;
+                        for (int i = 0; i < 3; ++i) {
+                            state.world_velocity[i] = unit_.plane_world_velocity[i];
+                        }
+                        // Level flight: the body frame agrees with the world, so
+                        // the identity matrix the struct defaults to is correct
+                        // and body velocity is world velocity. A real orientation
+                        // needs the pose the model supplies, which this process
+                        // does not build - flagged rather than invented.
+                        for (int i = 0; i < 3; ++i) {
+                            state.body_velocity[i] = unit_.plane_world_velocity[i];
+                        }
+                        const float vx = unit_.plane_world_velocity[0];
+                        const float vz = unit_.plane_world_velocity[2];
+                        state.forward_speed = std::sqrt(vx * vx + vz * vz);
+                        state.world_altitude = unit_.motion.position[1];
+                        state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
+                        state.airborne_time = unit_.plane_airborne_908;
+                        const bsp::PlaneDynAccumulators acc =
+                            bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
+                        const bsp::PlaneBodyAcceleration body =
+                            bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.plane_world_velocity[i] += body.total[i] * step;
+                            unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                        }
+                        owner_.summary.plane_distance_moved +=
+                            std::fabs(unit_.plane_world_velocity[2]) * step;
+                        owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
                     void ground_roll_007cbfa0(float) override {
                         ++owner_.summary.plane_arm_ground_roll;
@@ -2958,6 +3006,8 @@ void GameUnitsHost::report() {
         host.summary.plane_steps, host.summary.plane_arm_free_flight,
         host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
         host.summary.plane_arm_none);
+    host.log.notef("summary mission plane motion: distance_moved=%.2f m",
+        host.summary.plane_distance_moved);
     host.commands.report();
 }
 

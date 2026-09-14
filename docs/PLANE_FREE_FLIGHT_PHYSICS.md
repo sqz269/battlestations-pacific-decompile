@@ -389,3 +389,48 @@ One case was added to `tests/math_tests.cpp` covering rows 1, 4 and the `-10` pe
    retire a whole class of mirror-offset confusion, and the `+494h` row of
    `docs/GAME_TUNING_SINGLETON.md` should be re-derived from its writer rather than from
    `mirror_base + offset`.
+
+## Integration result: the planes fly, and they fly the wrong way
+
+The rule is wired into `src/game_hosts_units.cpp`'s free-flight arm. Measured on `IJN01`, 500
+mission ticks:
+
+```
+plane step:   steps=16500 free_flight=16500 ground_roll=0 surface=0 none=0
+plane motion: distance_moved=116875.00 m
+```
+
+**116875.00 m is exactly `141.666672 m/s x 25 s x 33 planes`**, predicted before the run. The planes
+hold the seeded airspeed for the whole mission, which means lift cancels gravity in the running
+process exactly as the acceptance test pins it. The physics is confirmed end to end, from the
+listing through the pure rule to a live run.
+
+**And it changes nothing about air combat, because the direction is fabricated.** AAMACHINEGUN is
+still 26 assignments and FLAK still 0. The `JudySpawn` aircraft now report `nearest` distances of
+4582 to 5068 m where the closest aircraft was previously 2950 m: the planes are flying **away** from
+the fleet.
+
+That is a limitation of the wiring, not of the recovered law. Two pieces are missing and neither is
+invented here:
+
+1. **Orientation.** `PlaneFreeFlightState::world_to_body` is left at the identity, which is correct
+   only for level flight along the world axes. A real orientation is the plane's pose, which this
+   process does not build - it is the same model and scene territory that blocks part damage. Lift
+   and both drag terms are body-frame quantities, so every one of them is only as good as that
+   matrix.
+2. **A direction to fly.** The host seeds `141.666672 m/s` along world `+Z` because that is the body
+   forward axis under an identity orientation. The native takes the spawn heading from the placement
+   and then steers with a plane AI, of which `docs/PLANE_UNIT_TICK.md` records that nothing exists in
+   the ledger.
+
+**The integration step is the host's own, not recovered code.** `007DB680` is an accumulator pass:
+it leaves four accumulators for `007D8470` to fold and the caller applies them. The
+`v += a*dt; p += v*dt` in the binding is the host's, and is commented as such so it is not mistaken
+for native behaviour.
+
+### Follow-up packets
+
+1. **`plane_spawn_orientation`** - where a placed aircraft's heading comes from, and what the host
+   must hold to give `world_to_body` a real value. Until this lands, the flight direction is
+   arbitrary and any measurement that depends on where a plane goes is meaningless.
+2. **`plane_ai`** - the steering above it. Nothing in the ledger names one.

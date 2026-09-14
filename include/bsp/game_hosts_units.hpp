@@ -162,6 +162,9 @@ struct GameUnitsSummary {
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
     unsigned long long plane_arm_none{0};
+    // Metres of forward travel summed over every free-flight step; zero means
+    // the arm ran but the plane did not move.
+    double plane_distance_moved{0.0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};
