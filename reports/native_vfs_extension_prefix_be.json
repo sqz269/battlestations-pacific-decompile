@@ -160,5 +160,12 @@
     "original FH3/SEH and legacy exception identity",
     "provider resolution and game execution"
   ],
-  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 23/23 direct CALL rows verified; 286 disk/live bytes and 85/85 saved instructions owned. No native fixture, archive or game execution."
+  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 23/23 direct CALL rows verified; 286 disk/live bytes and 85/85 saved instructions owned. No native fixture, archive or game execution.",
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  }
 }

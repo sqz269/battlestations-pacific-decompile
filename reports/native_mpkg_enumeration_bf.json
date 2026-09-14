@@ -87,5 +87,12 @@
     "original FH3/SEH failure identity",
     "game or authentic archive execution"
   ],
-  "validation": "explicit MSVC Win32 translation-unit compilation passed; no shared CMake registration or full build"
+  "validation": "explicit MSVC Win32 translation-unit compilation passed; no shared CMake registration or full build",
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  }
 }

@@ -23,8 +23,8 @@
   },
   "helper": {
     "entry": "00557a90",
-    "exclusive_end": "00557b2e",
-    "bytes": 158,
+    "exclusive_end": "00557b2f",
+    "bytes": 159,
     "original_abi": "ECX actual list, stack output native string header, EAX same header, RET4",
     "source_coverage": "complete normal path with actual pool and existing 004D0990 erase; native FH3 unwind excluded",
     "abi_compatible": false,
@@ -241,8 +241,8 @@
   },
   "lookup": {
     "entry": "00bdb120",
-    "exclusive_end": "00bdb1dc",
-    "bytes": 188,
+    "exclusive_end": "00bdb1de",
+    "bytes": 190,
     "original_abi": "ECX actual manager, stack actual8h system-name header, EAX first matching provider/null, RET4",
     "source_coverage": "complete normal path through existing 00BD97E0 actual mount iterator",
     "abi_compatible": false,
@@ -258,5 +258,30 @@
     "exceptional dependency throw cleanup can differ from original FH3",
     "huge signed-wrap header lengths and returning invalid-parameter repair not fixture-proven",
     "no authentic installed archive/runtime game proof"
+  ],
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  },
+  "primary_range_corrections": [
+    {
+      "address": "0073cb10",
+      "change": "Restored22-byte saved tail through RET0073CE15 with all prior names, comments, labels and _Str storage retained; callee no-return flags unchanged."
+    },
+    {
+      "address": "00557a90",
+      "prior_exclusive_end": "00557b2e",
+      "exclusive_end": "00557b2f",
+      "bytes": 159
+    },
+    {
+      "address": "00bdb120",
+      "prior_exclusive_end": "00bdb1dc",
+      "exclusive_end": "00bdb1de",
+      "bytes": 190
+    }
   ]
 }

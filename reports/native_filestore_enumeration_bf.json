@@ -69,5 +69,12 @@
     "direct_source_compile": "MSVC 19.51 x86 /std:c++20 /EHsc /MD /W4 passed",
     "call_verifier": "7/7 direct CALL rows accepted",
     "source_sha256": "7778b20056e47f86347535c562b8e42ab2d9c3edeb76354704d062f611b03499"
+  },
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
   }
 }

@@ -5667,5 +5667,12 @@
         "reason": "Saved assembly pushes 00cfed0c for entry 54; installed PE and live memory contain pfv followed by the separate pfx string at 00cfed10. Existing pseudocode-derived report and source incorrectly duplicated pfx."
       }
     ]
+  },
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
   }
 }

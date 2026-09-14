@@ -38,8 +38,8 @@
       "address": "00be1130",
       "name": "enumerate matching mount provider",
       "original_abi": "ECX visitor; stack mount payload,suffix; RET8",
-      "coverage": "current captured provider+14 dispatch through required source interface, vector names to result list; provider target source limited by caller binding; 205 disk/live bytes, 71/71 saved instructions owned",
-      "sha256": "f41f1e72b61c26757484e4c150635c1737164f923418c539fbe10a9716fa52e6"
+      "coverage": "current captured provider+14 dispatch through required source interface, vector names to result list; provider target source limited by caller binding; 229 disk/live bytes, 80/80 saved instructions owned",
+      "sha256": "8ff18707b0dc279b87eaab60a5a6505a20bf87664bc7a684d1d05fe04c451909"
     },
     {
       "address": "00be0fc0",
@@ -342,5 +342,29 @@
     "original FH3/SEH and returning-invalid-parameter failure identity",
     "game or archive execution"
   ],
-  "validation": "explicit MSVC Win32 /c of src/native_vfs_enumeration.cpp passed; no CMake registration or full build in worker; no native fixture/game execution"
+  "validation": "explicit MSVC Win32 /c of src/native_vfs_enumeration.cpp passed; no CMake registration or full build in worker; no native fixture/game execution",
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  },
+  "primary_prior_callback_root": {
+    "address": "00be1130",
+    "name": "enumerate matching mount provider",
+    "original_abi": "ECX visitor; stack mount payload,suffix; RET8",
+    "coverage": "current captured provider+14 dispatch through required source interface, vector names to result list; provider target source limited by caller binding; 205 disk/live bytes, 71/71 saved instructions owned",
+    "sha256": "f41f1e72b61c26757484e4c150635c1737164f923418c539fbe10a9716fa52e6"
+  },
+  "primary_range_corrections": [
+    {
+      "address": "00be1130",
+      "prior_bytes": 205,
+      "bytes": 229,
+      "prior_owned_instructions": 71,
+      "owned_instructions": 80,
+      "change": "Restored24-byte saved epilogue through RET8 ending00BE1214; prior propagated _Size/name_data variables, names, comments and labels retained. Source already performed cleanup. Final5831-instruction count replaces preliminary5822."
+    }
+  ]
 }
