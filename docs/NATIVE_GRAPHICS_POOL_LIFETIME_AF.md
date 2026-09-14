@@ -81,3 +81,7 @@ direct transfer rows and exact fixture hashes are in
 `local/graphics_pool_af/`. Native FH3 fault delivery and allocation-failure
 reentry were not executed. No D3D9 renderer composition or full numbering caller
 was run in this batch, and these checks do not establish game or rendering parity.
+
+## Integrated compatibility validation
+
+Commit `45db6dace12fc42f37d24094a2dee9c0d6a58bb4` passes the Win32 build and both existing CTests. Its preserved executable has SHA-256 `b53b15d1ee7d6d53d307dc5132b178e659e645ff5127ccb3247bd17c83e6a042`. The existing 120-frame USN01 check exits successfully with 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 10,080 generic ticks, 420 world-list nodes and the existing observer/pending-owner teardown checks. The lifecycle probe was rebuilt against this integrated library and its 31 comparisons pass. This mission check establishes combined-build compatibility; it does not exercise the new graphics pool bindings. The report records the immutable manifest of fixture, compiler, linked-object and mission artifacts. No workers were dispatched.

@@ -813,10 +813,10 @@
     "seed_byte_checks_passed": 8
   },
   "artifacts": {
-    "local/graphics_pool_af/probe.cpp": "852506084f1bf5524045c03fb50459295a1e2b6fbbd6190bf677d163519dfadb",
-    "local/graphics_pool_af/original.hpp": "93a4946dfe78be04c119dafbd17dcdc619e7303acba8e0bbc6451250c692e8cb",
-    "local/graphics_pool_af/probe.exe": "e46d0b7ce692de9f8d58836cac717fe18b3f5e2962fae56e795735414a31952d",
-    "local/graphics_pool_af/probe_result.json": "84a291d691e7eb98c024969c808105910a731735cb6698499c9675cbc2619d80"
+    "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\original.hpp": "93a4946dfe78be04c119dafbd17dcdc619e7303acba8e0bbc6451250c692e8cb",
+    "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\probe.cpp": "852506084f1bf5524045c03fb50459295a1e2b6fbbd6190bf677d163519dfadb",
+    "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\probe.exe": "564772bdb7438bc7108d302f46222b966913bae82239e76fe73ef52ebca6dd96",
+    "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\probe_result.json": "84a291d691e7eb98c024969c808105910a731735cb6698499c9675cbc2619d80"
   },
   "limits": [
     "New C++ interfaces, not binary ABI/FH3 replacements.",
@@ -824,5 +824,187 @@
     "Allocation new-handler mutation and constructor failure cleanup are source/evidence reviewed, not native differential fault-tested.",
     "No source success fallback for invalid storage, duplicate native initialization or mismatched pool profiles.",
     "This batch does not compose a D3D9 renderer or execute the full model-numbering caller, and establishes no gameplay/render parity."
-  ]
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\manifest.json",
+      "bytes": 186455,
+      "sha256": "9260749287d0f5b77bec359ab576b5a2867cceff95ca6272ebdfe173a99e2c99"
+    },
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\graphics_pool_af\\probe.exe",
+      "bytes": 33280,
+      "sha256": "564772bdb7438bc7108d302f46222b966913bae82239e76fe73ef52ebca6dd96"
+    },
+    "production_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_graphics_pool_lifetime.obj",
+      "bytes": 21862,
+      "sha256": "5223d6343cb281650475fe3ae7fed2106aaa865d50f11ef54aaf126f6e2524db"
+    },
+    "retained_inputs": 385,
+    "artifacts": 162,
+    "archive_members": 3,
+    "native_seed_matches": 8,
+    "saved_annotations": 27,
+    "unique_direct_call_rows": 43
+  },
+  "integration": {
+    "compiled_commit": "45db6dace12fc42f37d24094a2dee9c0d6a58bb4",
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "runtime": {
+      "compiled_commit": "45db6dace12fc42f37d24094a2dee9c0d6a58bb4",
+      "run_commit": "45db6dace12fc42f37d24094a2dee9c0d6a58bb4",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_45db6dac.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_af.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_af.csv"
+      ],
+      "exe_sha256": "b53b15d1ee7d6d53d307dc5132b178e659e645ff5127ccb3247bd17c83e6a042",
+      "preserved_executable": "local\\orch6_combined_45db6dac.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "8fa1b10c5ec619eed01084fa168cabeb6880fc6e651b39ee4890c7cc0e86f883",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 10.684364795684814,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "workers_dispatched": 0,
+    "scope": "120-frame USN01 compatibility; this mission does not exercise the newly reconstructed graphics pool bindings"
+  }
 }
