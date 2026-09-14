@@ -637,7 +637,7 @@
       "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
     ]
   },
-  "latest_integration": "raw_online_lifetime_integration",
+  "latest_integration": "raw_online_client_integration",
   "raw_online_procedural_integration": {
     "validated_code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
     "checkpoint": {
@@ -924,6 +924,44 @@
       "IPC immutable process service binding and timeout lifetime remain explicit source boundaries",
       "game startup renderer/pool/profile/cursor/provider composition remains incomplete",
       "gameplay unvalidated"
+    ],
+    "publication_branch": "agent/orch5-20260911",
+    "main_integration_claimed": false
+  },
+  "raw_online_client_integration": {
+    "code_commit": "a602d7cd3f6a728beda3645e8b807ba7f7d6cc71",
+    "checkpoint": {
+      "path": "local/checkpoints/a602d7cd/native-online-client-default/validation.json",
+      "sha256": "d726eb0a1cfaf1be7f8cdfa588f8c0432fe91fd88ccb5947f44ede10a0b3fdc7",
+      "code_commit": "a602d7cd3f6a728beda3645e8b807ba7f7d6cc71",
+      "artifacts": 3206
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "original_source_cases": 10,
+    "normal_bodies": 4,
+    "direct_call_rows_checked": 22,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 4,
+    "stored_function_definitions": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "registered_sources": [
+      "native_online_client_leaves"
+    ],
+    "worker_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\compiler-path-workers\\raw-online-client-leaves\\manifest.json",
+      "sha256": "c508250e4ca80ac03853b73ffacd47071650359becfcdb95b69912fb792b36d2",
+      "artifacts": 3240,
+      "worker_commit": "8d00a22ec69ec00fc8905cf29e6c1fcd457ace8d"
+    },
+    "limits": [
+      "Required771630 session and voice implementation remains unresolved",
+      "Whole2218h client, raw game construction and application adoption not supplied",
+      "SDK tests use deterministic providers; no live account/session/voice operations",
+      "Source interfaces are not original ABI replacements; no game validation"
     ],
     "publication_branch": "agent/orch5-20260911",
     "main_integration_claimed": false

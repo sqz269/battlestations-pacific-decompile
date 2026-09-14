@@ -18,10 +18,11 @@
       "name": "refresh_native_online_client_records_00a43180",
       "native_abi": "ECX client, RET",
       "coverage": "complete normal source body; dependent771630 remains explicit unresolved boundary",
-      "no_ghidra_function": true,
       "matches_installed_executable": true,
       "binary_drop_in": false,
-      "game_validated": false
+      "game_validated": false,
+      "worker_no_ghidra_function": true,
+      "no_ghidra_function": false
     },
     {
       "address": "00a430e0",
@@ -31,10 +32,11 @@
       "name": "query_native_online_client_00a430e0",
       "native_abi": "ECX client; low/high stack DWORDs, RET8; AL return",
       "coverage": "complete normal source body",
-      "no_ghidra_function": true,
       "matches_installed_executable": true,
       "binary_drop_in": false,
-      "game_validated": false
+      "game_validated": false,
+      "worker_no_ghidra_function": true,
+      "no_ghidra_function": false
     },
     {
       "address": "00a3e510",
@@ -44,10 +46,11 @@
       "name": "native_online_selected_byte_00a3e510",
       "native_abi": "ECX raw manager, RET; AL return",
       "coverage": "complete normal source body",
-      "no_ghidra_function": false,
       "matches_installed_executable": true,
       "binary_drop_in": false,
-      "game_validated": false
+      "game_validated": false,
+      "worker_no_ghidra_function": false,
+      "no_ghidra_function": false
     },
     {
       "address": "00a3eac0",
@@ -57,10 +60,11 @@
       "name": "native_online_active_user_00a3eac0",
       "native_abi": "ECX raw manager, RET; EAX return",
       "coverage": "complete normal source body",
-      "no_ghidra_function": false,
       "matches_installed_executable": true,
       "binary_drop_in": false,
-      "game_validated": false
+      "game_validated": false,
+      "worker_no_ghidra_function": false,
+      "no_ghidra_function": false
     }
   ],
   "host_steps": [
@@ -68,37 +72,37 @@
       "address": "00a43198",
       "native": "00a3e510",
       "function": "00a43180",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     },
     {
       "address": "00a431fb",
       "native": "00771630",
       "function": "00a43180",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     },
     {
       "address": "00a430e7",
       "native": "00a3eac0",
       "function": "00a430e0",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     },
     {
       "address": "00a430f2",
       "native": "00a3eac0",
       "function": "00a430e0",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     },
     {
       "address": "00a43110",
       "native": "00a3eac0",
       "function": "00a430e0",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     },
     {
       "address": "00a43116",
       "native": "00a4d5e4",
       "function": "00a430e0",
-      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+      "contract": "Exact direct CALL in retained original bytes and the restored saved Ghidra function body; verified in the integrated 22-row call gate."
     }
   ],
   "indirect_calls": [
@@ -290,28 +294,6 @@
     "binding": "already-loaded-module GetProcAddress ordinal5314; native query status ignored",
     "live_sdk_invoked": false
   },
-  "required_root_definitions": [
-    {
-      "address": "00a43180",
-      "inclusive_end": "00a43213",
-      "status": "no_ghidra_function",
-      "call_sites": [
-        "00a43198",
-        "00a431fb"
-      ]
-    },
-    {
-      "address": "00a430e0",
-      "inclusive_end": "00a4312b",
-      "status": "no_ghidra_function",
-      "call_sites": [
-        "00a430e7",
-        "00a430f2",
-        "00a43110",
-        "00a43116"
-      ]
-    }
-  ],
   "uncertainties": [
     "771630 source body and its privilege/friendship/session-message/voice child operations are not supplied.",
     "Observed primary vtable is tied to992A50/A47EE0; no other2218h client implementation or whole owner is inferred.",
@@ -337,5 +319,52 @@
     "path": "local/native_online_client_leaves/final_manifest.json",
     "hash": "external final handoff; self and SHA sidecar excluded to avoid circular hash",
     "scope": "all source/header/report/ledger and build/probe cpp/inc/bin/obj/exe input/output/commands, actual compiler dependencies/libraries/toolchain, actual mapped runtime files and full original PE/spans"
-  }
+  },
+  "integrated_validation": {
+    "code_commit": "a602d7cd3f6a728beda3645e8b807ba7f7d6cc71",
+    "checkpoint": {
+      "path": "local/checkpoints/a602d7cd/native-online-client-default/validation.json",
+      "sha256": "d726eb0a1cfaf1be7f8cdfa588f8c0432fe91fd88ccb5947f44ede10a0b3fdc7",
+      "code_commit": "a602d7cd3f6a728beda3645e8b807ba7f7d6cc71",
+      "artifacts": 3206
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "original_source_cases": 10,
+    "normal_bodies": 4,
+    "direct_call_rows_checked": 22,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 4,
+    "stored_function_definitions": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_required_root_definitions": [
+    {
+      "address": "00a43180",
+      "inclusive_end": "00a43213",
+      "status": "no_ghidra_function",
+      "call_sites": [
+        "00a43198",
+        "00a431fb"
+      ]
+    },
+    {
+      "address": "00a430e0",
+      "inclusive_end": "00a4312b",
+      "status": "no_ghidra_function",
+      "call_sites": [
+        "00a430e7",
+        "00a430f2",
+        "00a43110",
+        "00a43116"
+      ]
+    }
+  ],
+  "required_root_definitions": [],
+  "root_ghidra_writes": true,
+  "root_ghidra_saves": true,
+  "root_function_definition_record": "reports/native_online_client_function_definitions.json"
 }
