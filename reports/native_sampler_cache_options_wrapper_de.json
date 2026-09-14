@@ -1,7 +1,7 @@
 {
   "packet": "orch3_sampler_options_wrapper_de",
   "base_commit": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
-  "status": "source_implemented_win32_build_and_existing_ctest_passed_pending_primary_review",
+  "status": "exact_committed_build_generated_review_link_saved_annotation_passed_sealed",
   "address": "00b1b400",
   "inclusive_end": "00b1b4c0",
   "native_bytes": 193,
@@ -161,5 +161,111 @@
     "Temporary header resides in a persistent source frame rather than native EBP-14h. Native FH3/SEH, hardware faults, exact CRT/IAT exception identity and game execution remain unproven.",
     "A source failure retains its child/partial-header diagnostic obligations until the caller explicitly resolves them; no automatic acknowledgement or rollback is performed."
   ],
-  "source_copy_domain": "Original BF7680 is native _memcpy; this source follows orch5 std::memmove host CRT, compared only on valid nonoverlapping ranges."
+  "source_copy_domain": "Original BF7680 is native _memcpy; this source follows orch5 std::memmove host CRT, compared only on valid nonoverlapping ranges.",
+  "tested_commit": "77a235e2627d973cde1956870827a9a2bf108615",
+  "primary_generated_review": "local/de-primary-object-review.json",
+  "external_duplicate_audit": "local/de-worker-dd/dd-particle-cache-provider-audit.json",
+  "unique_native_body_credit": 1,
+  "new_native_bytes": 193,
+  "primary_validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exact_commit": "77a235e2627d973cde1956870827a9a2bf108615",
+    "ctests": [
+      "reconstructed_math"
+    ],
+    "ctests_passed": 1,
+    "tracked_build_inputs": 2600,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "link_only_probe": "local/de-link-probe.json",
+    "source_entry_executed": false,
+    "native_parent_bytes_executed": false,
+    "game_validated": false
+  },
+  "primary_call_audit": {
+    "direct_rows": 6,
+    "failed": 0,
+    "log": "local/de-call-audit.log",
+    "private_cleanup_tail": {
+      "address": "00cbc733",
+      "target": "0041dd20",
+      "kind": "E9 tail, separately pinned in native spans"
+    }
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/de-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b1b400"
+    ],
+    "original_abi_signatures": true
+  },
+  "source_sha256_basis": "Exact committed worker source 77a235e2627d973cde1956870827a9a2bf108615; subsequent documentation/ledger/report validation metadata is separately archived.",
+  "incoming_caller_admission_audit": "local/de-worker-df/df-sampler-wrapper-callers-audit.json",
+  "artifact_sha256": {
+    "build/win32/CTestTestfile.cmake": "01788180a871f4cf20e510ed7ad328871726c62d4aecf4fe771d98d0da0df562",
+    "build/win32/Testing/Temporary/LastTest.log": "ff2c4bf8ab2688e6cef9d6b282ab4678297789a3acbae328dd51c854f786380a",
+    "build/win32/bsp_core.dir/Release/native_sampler_cache_options_wrapper.obj": "aa7eb45e18d3e014c57b9626c2983dfe21256539f5e5e877fdffc3953e319707",
+    "local/annotate_de.py": "b940214785ed7b13ca364e6a4c5cfab6c76fd5c6d5acbd351a3f3a3849e76cb4",
+    "local/build_final_de.py": "bf72e4d0dc35a4e440ae39f1e0bd6093b2aab4a833ebdd4d64b55ec3e00cc845",
+    "local/check_de_link.py": "2508c4cc27efaaf5bccd8b4dbf8c2287955595bbbb18af2bec96b34b6b4bd46c",
+    "local/de-annotation.log": "8033c8d4b0b7ee66c043b32853ea45fbf9f9ff7c45523b689825a79659f523c9",
+    "local/de-call-audit.log": "b0dac370089552a098d5cc26d94b6a7ce305b8b470253e68fb2925d18e0c9125",
+    "local/de-comments-after.json": "709ad4c81c46443fe85925e7e623f37fda835c347a1ffd34ca7efcf7c3dba249",
+    "local/de-comments-before.json": "3d00a8683f520d5f7e580e1164a554ebd88163df776ff801d58126de5ed5bde6",
+    "local/de-export-refresh.log": "ff3c4a9f59c8436e9351db84d866f4eb340074a42fc21662e9017f7efe0e49a5",
+    "local/de-final-build-stamp.json": "ebd67e4573428fe74a689292a11b26297de8dd8f31a70f113952bb82a7160fb4",
+    "local/de-final-combined-build.log": "58dc2d9821df0f556d95f71f9902154859ec450a16afaaf3047de7ec1f818abe",
+    "local/de-function-records.json": "7c4fad9d5e701942312b55efdab876fa076d501e09a3dc134f27b219826f87d7",
+    "local/de-generated-acknowledge.asm": "9e83684aeeb2d3a34f8cd56df7ea3e4be70de9179f4cfa02169bd3a5f1ae97ac",
+    "local/de-generated-adapter.asm": "bc3e5c590bfa573cf90e1be135f6fc89a1f3e4e2f91d412872efa76c06891b39",
+    "local/de-generated-body.asm": "b6f54aa946b89fc4837e0c79e739000bfda0d20aab17dfa1526e19db69b3d5ac",
+    "local/de-generated-destructor.asm": "99339f5dcce9050343f859011ca34f5b8adb50b9835f6fac8ebe83ab8849cc74",
+    "local/de-ghidra-annotation-record.json": "94220d63702e2b07c17f04ba324041bce70d74c187f2e6f01d352dacbdfc94f2",
+    "local/de-ledger-before.json": "7ad1f096535b23866b7f682b3cba2bdab3e05831be002ddf4d9ba25abcce52e7",
+    "local/de-link-probe-build.cmd": "170eae229b453e1a2e32376f596cd96313f939c9d66bc7cf7d7883d17a9b3dfd",
+    "local/de-link-probe-build.log": "37886f550d174131b008d84b7f0d9e81613874f107c98dd4b024436c9ee64364",
+    "local/de-link-probe-initial-launch-error.json": "178eb32dc7e12f2eafcb45472dab05cfa545836cc5c85cad701fa5936a559051",
+    "local/de-link-probe-initial-launch-error.log": "b9aad066b1b8b2cb9ae40f33ecc5c0018dfce42575377474db8bc4d6ab0fc6ee",
+    "local/de-link-probe.json": "2010f717ef5753ead9ee90f8889d829f6584ec4dacd837493df347e017372a1a",
+    "local/de-metadata-order-first-seal.json": "0438cace8c5af32c5b6e8d284101385fab8d6e64640d987a597ef7093b9e1607",
+    "local/de-primary-object-review.json": "87262cd931c1925df0116ae85916cad35327f5016c959e1325e705e9af5f5fc4",
+    "local/de-sampler-name-options-evidence.json": "8026f96a39411edd63834ff279b1c231d8e2ad877066fa231f2f65450c61a67b",
+    "local/de-sampler-options-wrapper-de-commit-message.txt": "a37a9b38b942aadfbe4942d94d430c4f9401fb94d13b7f3f103d64e9acf53256",
+    "local/de-sampler-options-wrapper-de-disasm.txt": "b3448cb57865b23269f30c3b3167cec8a910fbce31dbc3c41b5189d23b1fadb3",
+    "local/de-sampler-options-wrapper-de-relocs.txt": "b9abe7dbdbfad68fe1c7dc6815cf5d098f53e88dda8c2f9fef41ddde93ec6a39",
+    "local/de-sampler-options-wrapper-de-symbols.txt": "9219ab5f5bb4ca11cdf01652353abef9f9bbd0cb29088ca85e8f3f78bf399c7e",
+    "local/de-worker-dd/dd-particle-cache-provider-audit.json": "a30a2118a33a74ba1f65a8ad96aa008ec2ec955c4a189686b995771f8895fddb",
+    "local/de-worker-dd/dd-particle-cache-provider-audit.md": "8c4fb773773b65d7e999b2dbf96acbb74604b28a148a7d99e480d438c37fb233",
+    "local/de-worker-df/df-sampler-wrapper-callers-audit.json": "28f01a94cc599de59d6574c01e848261ce547fcce6fd772f295172f0827b3171",
+    "local/de-worker-df/df-sampler-wrapper-callers-audit.md": "a2ebf1ddea3f2937c6bc49e5db9d995e6ea53d09e8e14ee01324c5ad444c7ec4",
+    "local/de_link_probe.cpp": "9170d0e370cb7ae3c340c64a3e01fe3b0fa2f414dbaeae7cf29c0abee953322c",
+    "local/de_link_probe.exe": "966032191f0b85cf795cb03ff86e3fe814b8a8c665c6696a4e5988376b33d458",
+    "local/de_link_probe.map": "876a36fa7910994c550c61ef5df0dcabeeab7b9a47940cc8657bf7702af5062b",
+    "local/de_link_probe.obj": "4d3dd77a6dc72c6b9def459c4532d7efb15f0be3318408f208968723fee087a9",
+    "local/finish_de.py": "eb3655a56b3d4d5d59cba9733d0ae8439dc70e51cc2e19e304ec6cb9b4550bd1",
+    "local/prepare_de_evidence.py": "ccbf560e9f291a4418d549b9dbc2cd627b48c6249d83c6fded907317cac96b3e",
+    "local/publish_de.py": "45fa05bcd6e56d6bde2f23439632fd327a9bd6e1c814c8130c762575e8083e95",
+    "local/review_de_object.py": "38e520b886dc37d3be2bdd23ff1a5a552578b09b85725625963a703dde8d044e",
+    "local/seal_de.py": "c1e25f4a8c6abed08df44d3a604ebc130ad2f6343e8b266aac0f433acbe3e9e9"
+  },
+  "sealed_attempt": {
+    "tested_commit": "77a235e2627d973cde1956870827a9a2bf108615",
+    "provider_base": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-sampler-options-wrapper-de\\local\\de-validated-attempt-77a235e2-v2.zip",
+    "sha256": "75949cf02239f4af7f847c0f4d4e73b19ea6851f29e927ddae30bfe708538aba",
+    "payload_members": 2655,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "45fa670a8424209c1f4f5ec877034c77409b0924fcad98484b3ddffccc1f19d3",
+      "bsp_lua511.lib": "28b217574904a4ffad59458d3317fb55e2c65a9bc8ece70158be41fb20ac74d1",
+      "bsp_zlib121.lib": "3688432a2649cf88764eeec95ba63b8e2e6b4b3b5682ca0dd39d06a7075fb9fa"
+    },
+    "tracked_build_inputs": 2600
+  }
 }
