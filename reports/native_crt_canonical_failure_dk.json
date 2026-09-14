@@ -1,0 +1,1370 @@
+{
+  "packet": "orch2_native_crt_canonical_failure_dk",
+  "base_commit": "6c44a02505c4fff9faf5e8b2d01a70697cc2f1ba",
+  "branch": "agent/orch2-native-crt-canonical-failure-dk",
+  "session": "01a08db7-951a-7110-a1fc-c27ce3f611af",
+  "status": "complete_original_entry_canonical_variant_build_and_static_link_audited_not_runtime_validated",
+  "owned_native_bytes": 535,
+  "owned_native_instructions": 124,
+  "functions": [
+    {
+      "address": "00bf65bb",
+      "length": 252,
+      "instruction_count": 65,
+      "original_hex": "558dac2458fdffff81ec28030000a19055e10033c58985a402000056898588000000898d84000000899580000000895d7c897578897d74668c95a0000000668c8d94000000668c5d70668c456c668c6568668c6d649c8f85980000008bb5ac0200008d85ac02000089859c000000c745d80100010089b5900000008b40fc6a5089858c0000008d45806a0050e8a41300008d45808945d08d45d883c40cc745800d0000c089758c8945d4ff150821ce006a008bf0ff152c22ce008d45d050ff150c21ce0085c0750c85f675086a02e865e8000059680d0000c0ff152822ce0050ff152422ce008b8da402000033cd5ee8717a000081c5a8020000c9c3",
+      "original_sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "original_sha512": "08901dd93270f1001494bf06305234995b43373ba20a0cdcbcf838fe4dfae953c685c3b8d3555d0b40f4763e9eecb6dbb2c6d30a2581891b68d292634b6022c7",
+      "original_abi": "Original five ignored cdecl words; no sixth binding. Biased EBP/native328h allocation, cookie XOR capture, partial segments, local record/pair/context, real zero-fill count50h original3-word CL path and ADD ESP,Ch, real imports, reason2 hook and returned-termination checker/epilog preserved.",
+      "source_name": "invoke_native_crt_canonical_watson_00bf65bb",
+      "current_symbol": "?invoke_native_crt_canonical_watson_00bf65bb@bsp@@YAXPB_W00II@Z",
+      "linked_va": "10001040",
+      "object_section": 9,
+      "map_line": " 0001:00000040       ?invoke_native_crt_canonical_watson_00bf65bb@bsp@@YAXPB_W00II@Z 10001040 f   bsp_core:native_crt_canonical_failure.obj",
+      "relocations": [
+        {
+          "offset": 141,
+          "symbol": "?fill_native_crt_bytes_00bf79f0@bsp@@YAPAXPAXHIADI@Z",
+          "type": 20
+        },
+        {
+          "offset": 172,
+          "symbol": "__imp__IsDebuggerPresent@0",
+          "type": 6
+        },
+        {
+          "offset": 182,
+          "symbol": "__imp__SetUnhandledExceptionFilter@4",
+          "type": 6
+        },
+        {
+          "offset": 192,
+          "symbol": "__imp__UnhandledExceptionFilter@4",
+          "type": 6
+        },
+        {
+          "offset": 207,
+          "symbol": "?clear_native_crt_canonical_debugger_hook_00c04ef3@bsp@@YAXI@Z",
+          "type": 20
+        },
+        {
+          "offset": 219,
+          "symbol": "__imp__GetCurrentProcess@0",
+          "type": 6
+        },
+        {
+          "offset": 226,
+          "symbol": "__imp__TerminateProcess@8",
+          "type": 6
+        },
+        {
+          "offset": 240,
+          "symbol": "?check_native_crt_canonical_cookie_00bfe120@bsp@@YAXXZ",
+          "type": 20
+        }
+      ]
+    },
+    {
+      "address": "00bfe120",
+      "length": 15,
+      "instruction_count": 4,
+      "original_hex": "3b0d9055e1007502f3c3e975a40100",
+      "original_sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "original_sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4",
+      "original_abi": "Raw ECX cookie; NO stack arguments. Exact CMP ECX,[E15590], JNZ, F3C3, real tail to complete canonical reporter. No EAX scratch or stack binding; equal preserves all registers and CMP flags. C0DC54 relies on EAX=registration after this call.",
+      "source_name": "check_native_crt_canonical_cookie_00bfe120",
+      "current_symbol": "?check_native_crt_canonical_cookie_00bfe120@bsp@@YAXXZ",
+      "linked_va": "10001020",
+      "object_section": 7,
+      "map_line": " 0001:00000020       ?check_native_crt_canonical_cookie_00bfe120@bsp@@YAXXZ 10001020 f   bsp_core:native_crt_canonical_failure.obj",
+      "relocations": [
+        {
+          "offset": 11,
+          "symbol": "?report_native_crt_canonical_gsfailure_00c185a4@bsp@@YAXXZ",
+          "type": 20
+        }
+      ]
+    },
+    {
+      "address": "00c185a4",
+      "length": 260,
+      "instruction_count": 53,
+      "original_hex": "558bec81ec28030000a370e60901890d6ce60901891568e60901891d64e60901893560e60901893d5ce60901668c1588e60901668c0d7ce60901668c1d58e60901668c0554e60901668c2550e60901668c2d4ce609019c8f0580e609018b4500a374e609018b4504a378e609018d4508a384e609018b85e0fcffffc705c0e5090101000100a178e60901a374e50901c70568e50901090400c0c7056ce5090101000000a19055e1008985d8fcffffa19455e1008985dcfcffffff150821ce00a3b8e509016a01e884c8feff596a00ff152c22ce0068cce1d600ff150c21ce00833db8e509010075086a01e860c8feff5968090400c0ff152822ce0050ff152422ce00c9c3",
+      "original_sha256": "685aa7bdbbc2b0cb5d77dd66bc24c7aa380ac1fc205423d95c08664d5ccd891e",
+      "original_sha512": "d4639e47c013579efd01d09725116a5e787d560a9cfab6f3808fc225a9d79632b561ec6cff270ac6395c208d93874f50c84f30e1f50eed7d2e05ca7de939968d",
+      "original_abi": "NO stack arguments. Original PUSH EBP/MOV/SUB328h and raw EAX/ECX capture, all ordered integer/WORD segment/SUB-flags stores, unused local read and current cookie/complement/EIP/debugger reloads. Actual D6E1CC pair and actual shared109E568/109E5C0 records. Both reason1 hook calls, actual APIs and returned LEAVE/RET retained; no extra scratch.",
+      "source_name": "report_native_crt_canonical_gsfailure_00c185a4",
+      "current_symbol": "?report_native_crt_canonical_gsfailure_00c185a4@bsp@@YAXXZ",
+      "linked_va": "10001140",
+      "object_section": 10,
+      "map_line": " 0001:00000140       ?report_native_crt_canonical_gsfailure_00c185a4@bsp@@YAXXZ 10001140 f   bsp_core:native_crt_canonical_failure.obj",
+      "relocations": [
+        {
+          "offset": 187,
+          "symbol": "__imp__IsDebuggerPresent@0",
+          "type": 6
+        },
+        {
+          "offset": 199,
+          "symbol": "?clear_native_crt_canonical_debugger_hook_00c04ef3@bsp@@YAXI@Z",
+          "type": 20
+        },
+        {
+          "offset": 208,
+          "symbol": "__imp__SetUnhandledExceptionFilter@4",
+          "type": 6
+        },
+        {
+          "offset": 219,
+          "symbol": "__imp__UnhandledExceptionFilter@4",
+          "type": 6
+        },
+        {
+          "offset": 235,
+          "symbol": "?clear_native_crt_canonical_debugger_hook_00c04ef3@bsp@@YAXI@Z",
+          "type": 20
+        },
+        {
+          "offset": 247,
+          "symbol": "__imp__GetCurrentProcess@0",
+          "type": 6
+        },
+        {
+          "offset": 254,
+          "symbol": "__imp__TerminateProcess@8",
+          "type": 6
+        }
+      ]
+    },
+    {
+      "address": "00c04ef3",
+      "length": 8,
+      "instruction_count": 2,
+      "original_hex": "8325a8ee090100c3",
+      "original_sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "original_sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1",
+      "original_abi": "Original ignored reason word/cdecl caller cleanup. Exact AND DWORD[109EEA8],0;RET. All registers preserved;CF/OF/SF0,ZF/PF1,AF undefined. No second binding. Existing descriptive name stays provisional, not a recovered library name.",
+      "source_name": "clear_native_crt_canonical_debugger_hook_00c04ef3",
+      "current_symbol": "?clear_native_crt_canonical_debugger_hook_00c04ef3@bsp@@YAXI@Z",
+      "linked_va": "10001030",
+      "object_section": 8,
+      "map_line": " 0001:00000030       ?clear_native_crt_canonical_debugger_hook_00c04ef3@bsp@@YAXI@Z 10001030 f   bsp_core:native_crt_canonical_failure.obj",
+      "relocations": []
+    }
+  ],
+  "ownership_extension": {
+    "initial_packet": "BF65BB[252],BFE120[15],C185A4[260], original no-extra-binding entries",
+    "reported_provider_gap": "Original C04EF3[8] directly clears109EEA8. Existing two-word source reads an added binding and cannot serve unchanged calls.",
+    "root_authorized_extension": "C04EF3..C04EFA8 bytes in the same canonical failure source/header/doc/report; retain all initial ownership and preserve the borrowed helper and old ledger record.",
+    "memset_gate_correction": "Root initially summarized80h. Fresh complete PE/live/source proves zero low fill byte AND count>=100h gates the fourth binding load; root explicitly accepted100h correction.",
+    "bounded_memset_authorization": "Verify whole actual emitted count50h scalar path, cdecl return and every call operand before using the existing completeCL body with original three words. No general original-entry memset ABI closure claim.",
+    "data_metadata": "DD canonical data addresses remain root-owned and read-only in DK metadata.",
+    "no_execution": "No owned/original Watson, checker, reporter, hook, failure, termination, cleanup, unwind or game entry; inert static-link artifact never executed. Existing requested math tests only.",
+    "sealed_dj": "DJ worktree and all239 payload files plus2 manifest self-files and60 external artifacts remain unchanged; DN independently accepted DJ with no corrections."
+  },
+  "original_pe": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "fresh_span_count": 15,
+  "fresh_total_bytes": 1611,
+  "fresh_spans": [
+    {
+      "address": "00bf65bb",
+      "length": 252,
+      "pe_initialized_bytes": 252,
+      "loader_zero_fill_bytes": 0,
+      "hex": "558dac2458fdffff81ec28030000a19055e10033c58985a402000056898588000000898d84000000899580000000895d7c897578897d74668c95a0000000668c8d94000000668c5d70668c456c668c6568668c6d649c8f85980000008bb5ac0200008d85ac02000089859c000000c745d80100010089b5900000008b40fc6a5089858c0000008d45806a0050e8a41300008d45808945d08d45d883c40cc745800d0000c089758c8945d4ff150821ce006a008bf0ff152c22ce008d45d050ff150c21ce0085c0750c85f675086a02e865e8000059680d0000c0ff152822ce0050ff152422ce008b8da402000033cd5ee8717a000081c5a8020000c9c3",
+      "pe_live_equal": true,
+      "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "sha512": "08901dd93270f1001494bf06305234995b43373ba20a0cdcbcf838fe4dfae953c685c3b8d3555d0b40f4763e9eecb6dbb2c6d30a2581891b68d292634b6022c7",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00bfe120",
+      "length": 15,
+      "pe_initialized_bytes": 15,
+      "loader_zero_fill_bytes": 0,
+      "hex": "3b0d9055e1007502f3c3e975a40100",
+      "pe_live_equal": true,
+      "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00c185a4",
+      "length": 260,
+      "pe_initialized_bytes": 260,
+      "loader_zero_fill_bytes": 0,
+      "hex": "558bec81ec28030000a370e60901890d6ce60901891568e60901891d64e60901893560e60901893d5ce60901668c1588e60901668c0d7ce60901668c1d58e60901668c0554e60901668c2550e60901668c2d4ce609019c8f0580e609018b4500a374e609018b4504a378e609018d4508a384e609018b85e0fcffffc705c0e5090101000100a178e60901a374e50901c70568e50901090400c0c7056ce5090101000000a19055e1008985d8fcffffa19455e1008985dcfcffffff150821ce00a3b8e509016a01e884c8feff596a00ff152c22ce0068cce1d600ff150c21ce00833db8e509010075086a01e860c8feff5968090400c0ff152822ce0050ff152422ce00c9c3",
+      "pe_live_equal": true,
+      "sha256": "685aa7bdbbc2b0cb5d77dd66bc24c7aa380ac1fc205423d95c08664d5ccd891e",
+      "sha512": "d4639e47c013579efd01d09725116a5e787d560a9cfab6f3808fc225a9d79632b561ec6cff270ac6395c208d93874f50c84f30e1f50eed7d2e05ca7de939968d",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00c04ef3",
+      "length": 8,
+      "pe_initialized_bytes": 8,
+      "loader_zero_fill_bytes": 0,
+      "hex": "8325a8ee090100c3",
+      "pe_live_equal": true,
+      "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00bf79f0",
+      "length": 122,
+      "pe_initialized_bytes": 122,
+      "loader_zero_fill_bytes": 0,
+      "hex": "8b54240c8b4c240485d2746933c08a44240884c0751681fa00010000720e833da4ee0901007405e9494f0100578bf983fa047231f7d983e103740c2bd1880783c70183e90175f68bc8c1e00803c18bc8c1e01003c18bca83e203c1e9027406f3ab85d2740a880783c70183ea0175f68b4424085fc38b442404c3",
+      "pe_live_equal": true,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00e15590",
+      "length": 8,
+      "pe_initialized_bytes": 8,
+      "loader_zero_fill_bytes": 0,
+      "hex": "4ee640bbb119bf44",
+      "pe_live_equal": true,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    {
+      "address": "0109e568",
+      "length": 256,
+      "pe_initialized_bytes": 0,
+      "loader_zero_fill_bytes": 256,
+      "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "pe_live_equal": true,
+      "sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "sha512": "693f95d58383a6162d2aab49eb60395dcc4bb22295120caf3f21e3039003230b287c566a03c7a0ca5accaed2133c700b1cb3f82edf8adcbddc92b4f9fb9910c6"
+    },
+    {
+      "address": "0109e668",
+      "length": 256,
+      "pe_initialized_bytes": 0,
+      "loader_zero_fill_bytes": 256,
+      "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "pe_live_equal": true,
+      "sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "sha512": "693f95d58383a6162d2aab49eb60395dcc4bb22295120caf3f21e3039003230b287c566a03c7a0ca5accaed2133c700b1cb3f82edf8adcbddc92b4f9fb9910c6"
+    },
+    {
+      "address": "0109e768",
+      "length": 292,
+      "pe_initialized_bytes": 0,
+      "loader_zero_fill_bytes": 292,
+      "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "pe_live_equal": true,
+      "sha256": "3453f578e4f10a1cafd84b6500620ae42aeb9b31d700b3b9c3ef5498062a25d4",
+      "sha512": "1eef4f134dbd60a46fbc3b3472dc574cb9cdb6ebe8d8aa73550eea55b888f549bb538fb1f58c8003fdda994142bb37f5de27474ba657e56ea00f962097eb7675"
+    },
+    {
+      "address": "0109eea4",
+      "length": 8,
+      "pe_initialized_bytes": 0,
+      "loader_zero_fill_bytes": 8,
+      "hex": "0000000000000000",
+      "pe_live_equal": true,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+    },
+    {
+      "address": "00d6e1cc",
+      "length": 8,
+      "pe_initialized_bytes": 8,
+      "loader_zero_fill_bytes": 0,
+      "hex": "68e50901c0e50901",
+      "pe_live_equal": true,
+      "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+      "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+    },
+    {
+      "address": "00ce2108",
+      "length": 8,
+      "pe_initialized_bytes": 8,
+      "loader_zero_fill_bytes": 0,
+      "hex": "d876a000bc76a000",
+      "pe_live_equal": true,
+      "sha256": "2836e34236a60d103e4723224ae7af96f7853b1dc62d8e1e0bb5c7846b61b86b",
+      "sha512": "99cf6b01ea43a31a2859d32b1c605e611798bc697d9b2c7a508c137e4af7d5ea00d11eed177e0940b02912a95469c49ca89cb408227cf1152e42374fb71ade49"
+    },
+    {
+      "address": "00ce2224",
+      "length": 12,
+      "pe_initialized_bytes": 12,
+      "loader_zero_fill_bytes": 0,
+      "hex": "0057a0001457a0002857a000",
+      "pe_live_equal": true,
+      "sha256": "af3018322959962254332fe94027bf167d10790e0e3e848ceb72fc5bec4dee24",
+      "sha512": "20c4310f42915eaed990f91baacafc49d45de01acc4f56fd7c1b47b3f0c731c4ee095bf2d71397c8d59068072241d90440dc3bac94417814616a7c2d59eed93b"
+    },
+    {
+      "address": "00bf66ef",
+      "length": 36,
+      "pe_initialized_bytes": 36,
+      "loader_zero_fill_bytes": 0,
+      "hex": "558becff3564dd0901e8e1e8000085c05974035dffe06a02e8e7e70000595de9a8feffff",
+      "pe_live_equal": true,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "sha512": "2cdbf93fc19552e5eb77b027824b8fb969a621ec285d55311d7b5d1a5bd42be4675b8300587fc7d4b5d885e754d5aecc94a932be53bf1b20b295489c06275b50",
+      "full_live_listing_address_sequence_equal": true
+    },
+    {
+      "address": "00c0dc54",
+      "length": 70,
+      "pe_initialized_bytes": 70,
+      "loader_zero_fill_bytes": 0,
+      "hex": "8b4c2404f7410406000000b80100000074338b4424088b480833c8e8ac04ffff558b6818ff700cff7010ff7014e83effffff83c40c5d8b4424088b5424108902b803000000c3",
+      "pe_live_equal": true,
+      "sha256": "7b09843c270771434b8a7f5e731034df340859c4919184ce2465848741c55c11",
+      "sha512": "4772ebaaa4bad1906c2a77921d24f6dafab516c79685c519d4621b6f7d07e6ab4a49881dbb81834e433c474fc41c6bddae154e7f108d664b457d27d8348844cd"
+    }
+  ],
+  "original_actual_calls": [
+    {
+      "site": "00bf6647",
+      "mnemonic": "call",
+      "bytes": "e8a4130000",
+      "kind": "relative32",
+      "target": "00bf79f0"
+    },
+    {
+      "site": "00bf6665",
+      "mnemonic": "call",
+      "bytes": "ff150821ce00",
+      "kind": "iat32",
+      "iat": "00ce2108",
+      "dll": "KERNEL32.dll",
+      "name": "IsDebuggerPresent"
+    },
+    {
+      "site": "00bf666f",
+      "mnemonic": "call",
+      "bytes": "ff152c22ce00",
+      "kind": "iat32",
+      "iat": "00ce222c",
+      "dll": "KERNEL32.dll",
+      "name": "SetUnhandledExceptionFilter"
+    },
+    {
+      "site": "00bf6679",
+      "mnemonic": "call",
+      "bytes": "ff150c21ce00",
+      "kind": "iat32",
+      "iat": "00ce210c",
+      "dll": "KERNEL32.dll",
+      "name": "UnhandledExceptionFilter"
+    },
+    {
+      "site": "00bf6689",
+      "mnemonic": "call",
+      "bytes": "e865e80000",
+      "kind": "relative32",
+      "target": "00c04ef3"
+    },
+    {
+      "site": "00bf6694",
+      "mnemonic": "call",
+      "bytes": "ff152822ce00",
+      "kind": "iat32",
+      "iat": "00ce2228",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcess"
+    },
+    {
+      "site": "00bf669b",
+      "mnemonic": "call",
+      "bytes": "ff152422ce00",
+      "kind": "iat32",
+      "iat": "00ce2224",
+      "dll": "KERNEL32.dll",
+      "name": "TerminateProcess"
+    },
+    {
+      "site": "00bf66aa",
+      "mnemonic": "call",
+      "bytes": "e8717a0000",
+      "kind": "relative32",
+      "target": "00bfe120"
+    },
+    {
+      "site": "00bfe12a",
+      "mnemonic": "jmp",
+      "bytes": "e975a40100",
+      "kind": "relative32",
+      "target": "00c185a4"
+    },
+    {
+      "site": "00c1865d",
+      "mnemonic": "call",
+      "bytes": "ff150821ce00",
+      "kind": "iat32",
+      "iat": "00ce2108",
+      "dll": "KERNEL32.dll",
+      "name": "IsDebuggerPresent"
+    },
+    {
+      "site": "00c1866a",
+      "mnemonic": "call",
+      "bytes": "e884c8feff",
+      "kind": "relative32",
+      "target": "00c04ef3"
+    },
+    {
+      "site": "00c18672",
+      "mnemonic": "call",
+      "bytes": "ff152c22ce00",
+      "kind": "iat32",
+      "iat": "00ce222c",
+      "dll": "KERNEL32.dll",
+      "name": "SetUnhandledExceptionFilter"
+    },
+    {
+      "site": "00c1867d",
+      "mnemonic": "call",
+      "bytes": "ff150c21ce00",
+      "kind": "iat32",
+      "iat": "00ce210c",
+      "dll": "KERNEL32.dll",
+      "name": "UnhandledExceptionFilter"
+    },
+    {
+      "site": "00c1868e",
+      "mnemonic": "call",
+      "bytes": "e860c8feff",
+      "kind": "relative32",
+      "target": "00c04ef3"
+    },
+    {
+      "site": "00c18699",
+      "mnemonic": "call",
+      "bytes": "ff152822ce00",
+      "kind": "iat32",
+      "iat": "00ce2228",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcess"
+    },
+    {
+      "site": "00c186a0",
+      "mnemonic": "call",
+      "bytes": "ff152422ce00",
+      "kind": "iat32",
+      "iat": "00ce2224",
+      "dll": "KERNEL32.dll",
+      "name": "TerminateProcess"
+    }
+  ],
+  "original_actual_imports": {
+    "00ce2108": {
+      "dll": "KERNEL32.dll",
+      "name": "IsDebuggerPresent"
+    },
+    "00ce210c": {
+      "dll": "KERNEL32.dll",
+      "name": "UnhandledExceptionFilter"
+    },
+    "00ce2224": {
+      "dll": "KERNEL32.dll",
+      "name": "TerminateProcess"
+    },
+    "00ce2228": {
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcess"
+    },
+    "00ce222c": {
+      "dll": "KERNEL32.dll",
+      "name": "SetUnhandledExceptionFilter"
+    }
+  },
+  "native_instruction_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\native_verification.json",
+    "size": 47603,
+    "sha256": "0db1a7c82ee4008b68d969375dbc7569db7fe1bf114f5c75e95cf1070e1f1fa9",
+    "sha512": "7ec04afd4eff6e86c220db0892f5097bb6044ac14465832afab66fe3cf51951cab81689864270aedfd5a29885344dc62d08ed75ec339fd05d105c91188a054c3"
+  },
+  "full_current_instruction_relocation_context_provider_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_verification.json",
+    "size": 83837,
+    "sha256": "b96c85b7a49612f7f2802b0e313d6217c96e32616c2feee85465768703b4c0a3",
+    "sha512": "825bb2001b394f19716afcc7c9dc8497ab5f660809ff57d2bf5de4a38b521bd2496993b0faba1ee1d4790c8e6fa85b88b3330ed61a7fef4b06167936a08cbf5f"
+  },
+  "scalar_memset": {
+    "original_body": 122,
+    "current_body": 127,
+    "current_instruction_count": 49,
+    "all_native_groups_mapped": true,
+    "original_stack_words": 3,
+    "source_declared_stack_words": 4,
+    "actual_call": "BF6647(record,0,50h), original ADD ESP,Ch; no added word",
+    "gate": "zero low fill byte AND count>=100h reaches the fourth feature-binding load",
+    "correction": "Earlier80h summary rejected; actual threshold100h verified and root acknowledged",
+    "complete_reached_scalar_addresses": [
+      "00bf79f0",
+      "00bf79f4",
+      "00bf79f8",
+      "00bf79fa",
+      "00bf79fc",
+      "00bf79fe",
+      "00bf7a02",
+      "00bf7a04",
+      "00bf7a06",
+      "00bf7a0c",
+      "00bf7a1c",
+      "00bf7a1d",
+      "00bf7a1f",
+      "00bf7a22",
+      "00bf7a24",
+      "00bf7a26",
+      "00bf7a29",
+      "00bf7a2b",
+      "00bf7a2d",
+      "00bf7a2f",
+      "00bf7a32",
+      "00bf7a35",
+      "00bf7a37",
+      "00bf7a39",
+      "00bf7a3c",
+      "00bf7a3e",
+      "00bf7a40",
+      "00bf7a43",
+      "00bf7a45",
+      "00bf7a47",
+      "00bf7a4a",
+      "00bf7a4d",
+      "00bf7a4f",
+      "00bf7a51",
+      "00bf7a53",
+      "00bf7a55",
+      "00bf7a57",
+      "00bf7a5a",
+      "00bf7a5d",
+      "00bf7a5f",
+      "00bf7a63",
+      "00bf7a64"
+    ],
+    "reached_native_instruction_count": 42,
+    "all_reached_linked_bytes_equal_object": true,
+    "reached_fourth_argument_access": false,
+    "reached_feature_read": false,
+    "reached_sse2": false,
+    "reached_nested_call": false,
+    "df_zero_required": true,
+    "general_original_three_argument_abi_claimed": false,
+    "map_line": " 0001:00002280       ?fill_native_crt_bytes_00bf79f0@bsp@@YAPAXPAXHIADI@Z 10003280 f   bsp_core:native_crt_memset.obj"
+  },
+  "context_contract": {
+    "watson_frame": "EBP=entryESP-2ACh; record S-32Ch[50h]; pair S-2DCh[8]; CONTEXT S-2D4h[2CCh]; guard S-8; saved EBP S-4; ESI S-330h",
+    "watson_capture": "cookie XOR biasedEBP as EAX and XOR flags; other integer inputs; six low16 segment stores; EBP=[S-4],EIP=[S],ESP=S; only exception record cleared",
+    "checker": "Raw ECX, zero stack args; all registers/CMP flags survive equal F3C3; same native stack and raw registers tail to reporter on mismatch",
+    "reporter_frame": "EBP=S-4; original SUB ESP,328h; no extra scratch; captures raw EAX/ECX and SUB flags; EBP=[S-4],EIP=[S],ESP=S+4",
+    "reporter_memory": "actual109E568 record /109E5C0 CONTEXT /109E5B8 debugger /E15590,E15594 cookiepair /actualRO D6E1CC pair",
+    "reporter_partial_state": "Unused EBP-320h read and ordered current EIP/debugger/cookie/complement reloads retained; shared untouched bytes and segment high16 halves retained",
+    "returned_termination": "Watson keeps guard checker/ADD EBP/LEAVE/RET; reporter retains LEAVE/RET with returned BOOL in EAX; no noreturn source contract",
+    "hook": "Exact AND DWORD[109EEA8],0;RET with original ignored reason word; registers unchanged,CF/OF/SF0,ZF/PF1,AF undefined"
+  },
+  "validation": {
+    "strict_build_passed": true,
+    "settled_build": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk",
+      "started": "2026-09-14T19:16:34.727615+00:00",
+      "finished": "2026-09-14T19:16:41.186336+00:00",
+      "returncode": 0
+    },
+    "seed_comparisons_passed": 8,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "existing_ctests_passed": 2,
+    "new_runtime_tests_added": 0,
+    "owned_instructions_audited": 124,
+    "owned_bytes_audited": 535,
+    "direct_tail_relocations": 6,
+    "actual_win32_iat_relocations": 10,
+    "all_owned_nonrelocated_bytes_equal_native_object_linked": true,
+    "exact_archive_member_objects": 6,
+    "compiler_source_object_bindings": 6,
+    "consumed_input_dependencies": 243,
+    "actual_linker_libraries": 10,
+    "current_sdk_layout_and_api_static_assertions_passed": true,
+    "compiler_bindings_and_dependencies": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\compiler_bindings.json",
+      "size": 226224,
+      "sha256": "0460812cbf0906910396f63015ed6e48abf5cb27f780d2bef33114127cb5208c",
+      "sha512": "ea3cc2acc960a73e5d6f28c137cd0395af151bd5e894cee2cb9974ccf84c38e80916cacf84c032e87d675eb22e7468c5c44431ae4b9f13fa76b536997a00f42f"
+    },
+    "owned_or_original_helper_execution": false,
+    "audit_executable_executed": false,
+    "canonical_owner_runtime_probe_repeated": false,
+    "game_validated": false
+  },
+  "compiler_bindings": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_canonical_failure.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_CANONICAL_FAILURE.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_CANONICAL_FAILURE.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_failure.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_failure.obj",
+        "size": 5072,
+        "sha256": "cc3a5c002b173b2fa8c77604de35a2576eccd927722db6be220a4a8087c70be7",
+        "sha512": "36ff515b234c6a53146e5fc8fd4a46f5924741217b3279567ca16818bde3ed4dd331184009a033a8db6bd0199fe5e7021b0ac89ea5b854cbb227f5c146030e1a"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": false
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_memset.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_MEMSET.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_MEMSET.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_memset.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_memset.obj",
+        "size": 1432,
+        "sha256": "dcf26dd5ad4ccaa5fbe680803a4e2ba19de44905075b4296e076097923fcf5a7",
+        "sha512": "b0f2ad020ce1d0e82f66df85eb8531fbf0863f3908956ad9789391a46634f62985c25ca5ae1d7278f167afa1f6e7382570943c2fa8e7dba45254093236aa9b77"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": true
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_mutable_crt_data.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_MUTABLE_CRT_DATA.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_MUTABLE_CRT_DATA.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_mutable_crt_data.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_mutable_crt_data.obj",
+        "size": 122646,
+        "sha256": "e58dc47a831ea83829fc6ef94c184f81735011c70a065a98b48f0480892610a3",
+        "sha512": "c9214e5f2a5816b02a1869ec7e67a3d4737d9ac51bd0718cc54f7e6d563b16a8d8ac63d671f13fc2325e9c889ddb1c0ff74b4c1d108d9bb29c3bce4d9e3db901"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": true
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_readonly_data.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_READONLY_DATA.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_READONLY_DATA.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_readonly_data.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_readonly_data.obj",
+        "size": 104018,
+        "sha256": "f0e6c95c87823eee87683d2ce04331a723c44ffa53569167e6df7c43fdedd3be",
+        "sha512": "025a15c018ab351de1057921e58b0822c17b87ff78b595e0110f26b6aeb629cba9d2d06ea2731b70bc1c13fd887742442762c88f23fbbf1662e404dbde2b9d23"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": true
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_data_bootstrap.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_DATA_BOOTSTRAP.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\GAME_NATIVE_DATA_BOOTSTRAP.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_data_bootstrap.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_data_bootstrap.obj",
+        "size": 161669,
+        "sha256": "10614a3dce967573b6f3ef4a860758738e7f1591868a0dcfa1a4be31426584f2",
+        "sha512": "e3a39c6b9444e5269a40331e1b805f53ea33585afefc65c27f3d5880058c4ba93a603e9a5576eca86cd0d4e749fa924a81f2116909051b706f3b6b4f737643a6"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": true
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_cookie_initialization.cpp",
+      "source_identity_from_read_record_header": true,
+      "command": {
+        "sources": [
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_COOKIE_INITIALIZATION.CPP"
+        ],
+        "lines": [
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-CANONICAL-FAILURE-DK\\SRC\\NATIVE_CRT_COOKIE_INITIALIZATION.CPP"
+        ]
+      },
+      "current_written_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+        "size": 1403,
+        "sha256": "4604b17dee20a93083d8849f16fef1424819549b9a538cbb941721a21cb17019",
+        "sha512": "92e143b12ee362da65e8db1123cfb5d1ba7fd9c31ea2a537a0d0985243d64f8e96dc3620c70a7935cc200dccf2d9c897f50c91a302c8c7c8d4faea13a4b0bf2e"
+      },
+      "fo_binding_exact": true,
+      "write_candidates": [
+        {
+          "source_count": 1270,
+          "output_count": 1269,
+          "contains_current_output": true
+        },
+        {
+          "source_count": 1,
+          "output_count": 1,
+          "contains_current_output": true
+        }
+      ],
+      "write_qualification": "The first failed1270-source batch contains no canonical-failure output; only the later single-source successful write binds that object. Unchanged providers may occur in duplicate retained batch records, all referring to the same exact absolute output identity. Current command/read records, unchanged source pins and archive equality are checked; complete raw tlogs are frozen."
+    }
+  ],
+  "current_sdk_header_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+      "size": 876258,
+      "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "sha512": "f601afdb6a9dd3ce915cd13d0146fe2f742ce4805422afe001a049d48d15712775f92d4570da0af3b3497e932f5b0148dbf6470abcd56c8e54223f82faadbecf"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\debugapi.h",
+      "size": 3591,
+      "sha256": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "sha512": "d724763b2da8c0fbe81d365ce995d9bb0cebf6420f75a0f0ffaf39aa9fc7f6597c1497ded5ce4fd06be8578d12c7c6ea9c4da7acbf4ce0643735be8ab7793d91"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\errhandlingapi.h",
+      "size": 6566,
+      "sha256": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "sha512": "793e2207c6bd6347d652974de675d5f3741d112f75ac4b337916222874587c3b8b2f69b29b4baa0d53bc1cb96492e77fa3d3381b65b3b597ab34bf82e4aab127"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processthreadsapi.h",
+      "size": 37180,
+      "sha256": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "sha512": "589f1edbeeb434a1b7cb02fb14d8046b0b978e650de3197ffd5e30c41a9baab7feac1a0328609e67b3c83e2e280dfea9b107c7245ea1c2f2897d8fdb9205b16b"
+    }
+  ],
+  "exact_link_library_pins": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "size": 5365666,
+      "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "sha512": "26299c7e2fbff58521f93f92e47f76f76e38460e6862eb12a489111c12cbf1aa16cf6f4c45cd645f80f8070d976f4573783bbcfc4593e14e144b6af3b58f03db"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "size": 8263656,
+      "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "sha512": "82980c74e99a4687d359ad15ff454048fd5813d2928927289d7ad467d9e5323270c03d21e306efbbbf85ddf0d6a39285adc611b75eba98ba5090efd901b708b5"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "size": 158090,
+      "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "sha512": "531df12a3c347db0a36290d980dfa78f605be57cc617d0e6db0bbce99200309d424327c48ae830eeae3d739f4bba4beefc1a5db2860400de6374ca3cb8cec85e"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "size": 400312,
+      "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "sha512": "7ef3fcb9046cffff2298444a81584ba2f175c38a216c5e45afd7adad87c22e9d781caac4536f088a24bbdad6124b7bd170451d3a309266f59bc2524e2be24231"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "size": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "sha512": "3629dcd54676924f6578b75103a916af4602bc95271c8ef8e31119c1b334588a3b9f9ad83c5513d86a027f1df542ea5c78de254cf291a56676ae6af00f51c8b9"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\AdvAPI32.Lib",
+      "size": 192644,
+      "sha256": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "sha512": "d98a518aefb0877d9b124d0e7615b94d8f5aadde0309c2b1d2e41d72b3b530dce2a396b72ce39eb7346a1034ebe1a29c40fe345b246720c76a6335d44f9b2dd4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "size": 329914,
+      "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "sha512": "d9fb6913f1f0426931db230926d8c544c531dd7e2e6fbe1d04d6acd47467dfd0bf1f7598023d68c58cb8dfcb3b8a65d75a6402743631a35545c674c65874a64d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\shell32.lib",
+      "size": 280164,
+      "sha256": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "sha512": "bc10ff8edecd38eb5319bacad4e80b5ccb547e53eaffaddb21c84ea095ed6788f42eda07b733b4527b96ab1d87e71359bd34c5222535a0f5b8e20a2ce6d555aa"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\User32.Lib",
+      "size": 179898,
+      "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "sha512": "4144f8a06db3fe94a8e914e8f63c383c1e25149aeb9414a3d81dd6959abde6d408cb2ec6471d30ff351f2d2bbc9c1db8e1e032a4ff0f271cdcda06565e208627"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58696818,
+      "sha256": "d7b364656691b18c20eb0f559e0bfd414581291566a7b3b9d1df9b89072fb0ed",
+      "sha512": "f4c81468651e910eb7a50ecc99a0cf5c35ddb152b4f581ad483837cb1557cb10e860eafc4ac32673642dd26a57e9f08df02a4552dbc85b361b08c25d96a5e62c"
+    }
+  ],
+  "ghidra": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "x86_win32_base": "00400000",
+    "every_cli_batch_verifies_identity": true,
+    "correct_library_names_preserved": true,
+    "hook_descriptive_name_still_provisional": true,
+    "prior_comments_preserved_as_exact_prefix": true,
+    "old_values_retained": true,
+    "write_locked": true,
+    "saved": true,
+    "read_back": true,
+    "all_four_exports_refreshed": true,
+    "no_data_metadata_mutations": true,
+    "existing_noreturn_metadata_not_used_to_prune_source_returns": true
+  },
+  "prior_reconstruction_rows": [
+    {
+      "path": "config/reconstruction/00bf0000.jsonl",
+      "old_records_preserved": 108,
+      "new_records": 2,
+      "all_old_row_bytes_preserved": true,
+      "serializer_churn_removed": true
+    },
+    {
+      "path": "config/reconstruction/00c00000.jsonl",
+      "old_records_preserved": 29,
+      "new_records": 1,
+      "all_old_row_bytes_preserved": true,
+      "serializer_churn_removed": false
+    },
+    {
+      "path": "config/reconstruction/00c10000.jsonl",
+      "old_records_preserved": 25,
+      "new_records": 1,
+      "all_old_row_bytes_preserved": true,
+      "serializer_churn_removed": false
+    }
+  ],
+  "rejected_attempts": [
+    {
+      "id": "build_01",
+      "reason": "MSVC C2415 for bare absolute memory operands",
+      "source": "rejected_source_attempt01.cpp",
+      "header": "rejected_source_attempt01.hpp",
+      "generator": "rejected_generate_source_attempt01.py",
+      "full_outputs": "build_01.stdout.txt/build_01.stderr.txt",
+      "accepted": false
+    },
+    {
+      "id": "build_02/emission_verification_01",
+      "reason": "ExplicitDS emitted redundant3E prefixes:253/16/285/9 bytes; strict native byte audit rejected it",
+      "complete_source_object_archive_game_snapshot": "rejected_build02/",
+      "complete_static_link_attempt": "root-level static_link_probe.exe/.map, archive_* objects, object_dump, toolchain and all capture files",
+      "accepted": false
+    },
+    {
+      "id": "freeze_inputs_01",
+      "reason": "Overstrict unique-write-record assumption; initial failed1270-source batch and later single-source record coexist",
+      "parser": "rejected_freeze_inputs01.py",
+      "full_outputs": "freeze_inputs_01.stdout.txt/freeze_inputs_01.stderr.txt"
+    },
+    {
+      "id": "freeze_inputs_02",
+      "reason": "Primary source belongs in read-record header and need not repeat in read payload",
+      "parser": "rejected_freeze_inputs02.py",
+      "full_outputs": "freeze_inputs_02.stdout.txt/freeze_inputs_02.stderr.txt"
+    },
+    {
+      "id": "freeze_inputs_03",
+      "reason": "Unchanged providers have duplicate retained batch/single-source write records for the same exact output",
+      "parser": "rejected_freeze_inputs03.py",
+      "full_outputs": "freeze_inputs_03.stdout.txt/freeze_inputs_03.stderr.txt"
+    },
+    {
+      "id": "ledger serializer churn",
+      "reason": "Supported add-function reserialized102 old BF rows; semantic equality verified and all original row bytes restored",
+      "artifact": "ledger_serializer_attempt_00bf0000.jsonl",
+      "accepted": false
+    }
+  ],
+  "qualifications": [
+    "Fixed-address instruction bytes are explicitly emitted with decoded mnemonic/operand comments to avoid MSVC redundant DS prefixes; calls and branches remain symbolic assembly.",
+    "Full535 native source bytes are matched allowing only six real direct/tail and ten actual IAT operands to relocate; code PCs belong to rebuilt source.",
+    "Existing CT six-word Watson, extra-stack checker/reporter and two-word hook remain separate and unchanged; all prior reconstruction rows are preserved verbatim.",
+    "The source-declared four-word CL memset is called through original three words only in the completely audited zero-fill/count50h scalar domain; no general original memset ABI claim.",
+    "No original or owned Watson, checker, reporter, hook, failure, termination, cleanup, unwind or game entry was executed; only requested existing math tests ran.",
+    "The never-executed force-link image includes the real canonical owner and providers; ordinary rebuilt game retains the owner and omits all four uncalled new entries.",
+    "SDK-generated unused COMDAT state may occur in the full object; all four owned functions have only the sixteen audited code/import relocations and no shadow-data references.",
+    "DD canonical owner remains accepted source/controlled-probe evidence; native caller/frame/SEH closure, async/debugger integration and gameplay remain unvalidated."
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\native_crt_canonical_failure.hpp",
+      "size": 3183,
+      "sha256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+      "sha512": "09c5eba78b52836b55581fa355df5105efba4c753ca0f2e1e788df1337b45dc92c860966cad90457a4b4f8fc674392de3e2ae4f6e0e5438231f41c3bf91a5c7f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_canonical_failure.cpp",
+      "size": 15102,
+      "sha256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+      "sha512": "53b49e883b21bb2c2bc0f00a489bec48a559a2210ee4393115dbb0d6492419de03bb23b3ec6c623e7fd61969fef865838c6b7de681115d8e2acfdf67aee02c3a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\docs\\NATIVE_CRT_CANONICAL_FAILURE_DK.md",
+      "size": 11103,
+      "sha256": "5bc5edc9309ab310de44e7dd13774a18db45ddc55d8bd8005503a0813f0adaec",
+      "sha512": "ac60690135a1bf009fcabef59a05d759ed025f440c04d5c7e94acb6ddde532c1a8de01195d107f1d916047ae3c17db54a88f8bf159ac4a4fb7d52a5f60499374"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\cmake\\startup.cmake",
+      "size": 122239,
+      "sha256": "be98132bd754e622cee63d45288ad819d724daf65e291091a769c1364fbf3b40",
+      "sha512": "658696281f0de8aa40e5afd69b7873bf4e4215671d18526b7d0c8636336ff63b31104f2be7d947e843202df0eb4b58d1ab15b1f81bce3d4e92859424a2507a97"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\names\\00bf0000.jsonl",
+      "size": 101716,
+      "sha256": "e6f107792a2fae45e9168f98b42ec841b6922ef7b37dd927fba3281bf788cae0",
+      "sha512": "a0375ddb0e5efee7adee6b6812812cf19c7ef0a39a77d18b46300cc56d21aa4043632be65f1df893f8f0be3fede2814db58480679c3704fa1aaae62702e7beb5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\names\\00c00000.jsonl",
+      "size": 28926,
+      "sha256": "23103b3125a23b86af5d00c1fa7629b3de302f5cdccf1d49022dde5bee40a74f",
+      "sha512": "6a65572ac08d66c176b65dab9fdfe54f8fa6219122edb472ccd51445f6c859ac9adab860c0ffbb65fe0ac3f13f65d618dd3277374bc39b9b36ab23b486ff4eaa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\names\\00c10000.jsonl",
+      "size": 25361,
+      "sha256": "8d2c9377cfd3eb7fb645cd3d8a8b2d4b7738918f5518d3d669eeec0971481ff1",
+      "sha512": "f9632216ea27e51acd86e3a915eecf54c04d9d8fbaeef022be82528c024ddfa90d7fd07a819d7f9e4c16390d765a949df928c2eac347481c6c45ec056072e1f9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\reconstruction\\00bf0000.jsonl",
+      "size": 93178,
+      "sha256": "dd0bf27076a6947622e1036dc37e367e4d6c2c4b0a7b46ebbb233a6620e19ce1",
+      "sha512": "933cc5c59bdd6451c1b9da6eb17d46e6fce7cd455c4b835dafc0d16fec887869e39f5ff5076c4a16d810dd93f96697198baec96e382a47aa3360816188ea6da0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\reconstruction\\00c00000.jsonl",
+      "size": 34929,
+      "sha256": "587cebd833f4c84432ad8856401656b2152a4beedf18c713df4fedb95ee7f3c9",
+      "sha512": "8693ee4359b5f0e2e66db222ce151d7b7f852d2a42f117906b9375e8cd9edc08364871137ced2dced542a5296b13ec0861a5f97c3f6da6f6d3e1bf6191b69a4c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\config\\reconstruction\\00c10000.jsonl",
+      "size": 28696,
+      "sha256": "853d3770948896675a869406b1f2c7a086839e687449789613eda64faefad6d3",
+      "sha512": "c13dad9321fefe3c9746c3da6eee7b0e8b16f384b7ff9edd03ade741f7f5328f376c66c11baa911c10566445f7f3e6bbca0989e64a7e48b60eec961da156c5a1"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_watson_failure.cpp",
+      "size": 10110,
+      "sha256": "20e77ac28cf945d47302576c923e6ccc83043dfeae817349ddd434658ae3ae2b",
+      "sha512": "41a10c66ea9a406447b2df21d02cff32e3a95de0b85ac8a533179d039ddf5c2a65bb662f348dbc377b5822da3555ef3022655bf0b91eb06d4bad44ebe8f45bf7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\native_crt_watson_failure.hpp",
+      "size": 4638,
+      "sha256": "a46a37f7b069bcd2dd68696de222922ac04da572d456255af851d945263c4432",
+      "sha512": "85d251473ab7a94860e1e5a57262d93f7bc9be9dbd57e0b8a7d236f10f500896a080d87fa7880b048f1076b2f64877471f3a6ee5c0c56ce8791cf57764bba8e1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_cookie_initialization.cpp",
+      "size": 2651,
+      "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+      "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\native_crt_cookie_initialization.hpp",
+      "size": 1913,
+      "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+      "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\native_crt_memset.cpp",
+      "size": 8332,
+      "sha256": "d40837c0989ddb2e0958deec750c0b264e6475e8febaad590c5a4f35db55a0d9",
+      "sha512": "23387d5155f66bc4928fb25c80378bdc125aa43bafc33ec36e76006c7475863ae705c9fe01294ff16c2914ff9decef27fa83e534aa94f87357e5e11a2479b096"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\native_crt_memset.hpp",
+      "size": 2568,
+      "sha256": "82636e0cffb8c123053bd7e9778be85837d5f2bfae142bc8d788a089defcea1e",
+      "sha512": "4bec35b05ea95be0f660b496700548bf9d4071b9af6733822374663a1f2eafea7925daa3489c06d1a79fd6ee7b0491e2e282101c402d0031e479f90a6638eef9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_mutable_crt_data.cpp",
+      "size": 10222,
+      "sha256": "b3b051403470750469b166046530d948e7ed1285368ddaf151ad02bcf982dd2b",
+      "sha512": "bfa96fde1455368cac1f5188b1a192b71948c034c6d91a71fe48c52c3b7692fd2ce67bd794cff0680e6b2aefecdf370b59c06aec1e145f80da2ed23039f60c5b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\game_native_mutable_crt_data.hpp",
+      "size": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "sha512": "549be6810d0eb815b01126e8c3d2447a678fa717176d35259f5a839ec867f66baa61a03c30bc0802f8929a3953e28fa753f4fa05a3ed70183058d89b586a48c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_readonly_data.cpp",
+      "size": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "sha512": "96a5f416a9565a9c252ea8891bf7a36a91d815fb9c693655279d4bb44fcc46047356705032cefdc84d3f4e8552e7ff4172be3c3822b6eba1a73a168d3c111259"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\game_native_readonly_data.hpp",
+      "size": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "sha512": "df25379cefcd79f915e5581921d36a417255e8d51c3e801dfeac5293c9d8eebf5a84fb203183d5666783302c825ed664fa2c0a1194d3708dd94388c87a5c8e93"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\src\\game_native_data_bootstrap.cpp",
+      "size": 22823,
+      "sha256": "af130d4ab94e06923b5795d0fdb8e64c93182d8c4c732fac85f40181c9bd22c9",
+      "sha512": "612ec4702a978a9fe18c657e2716da0da7eebb620be33586e7930b55a4c53d7de29f6cad803012e3235be3b01b4b2eb1c291e53226cf0ce204d0d546602d171c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\include\\bsp\\game_native_data_bootstrap.hpp",
+      "size": 4111,
+      "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "sha512": "804360b66b49136c2f8dda3f9f2e64cdf6a021f1ebc56c48f9c1e477db55f1eb6efa76e82c69868dd2867c6f9af17d8279f503ee29c6c46d238c27e16d81a486"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\docs\\NATIVE_CRT_CANONICAL_OWNER_DD.md",
+      "size": 5553,
+      "sha256": "598cd32385172851584269181016135ffd0e12126b3a319498af96a75e80603b",
+      "sha512": "58e8e93b50317bab73249b216acd00a1d0d17f4d1db333f1a01839557b7caff0fabb1bcc6d6b9eadc25c9baa270a6a639803046e8a8eeea05e1da3ce362eb671"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\reports\\native_crt_canonical_owner_dd.json",
+      "size": 5202,
+      "sha256": "162af941fd252554d7ad9dd4006d8a676c8c5695bf577a949ada5d3f9f84ec12",
+      "sha512": "748aec61dce609d6194b751a13303b1f823fd3405f3b6b0a16b475465cc054271f9f65a8d6a2cd64ccb007e0b3099051e3bf51652863dbcce58b542f18f060ba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\docs\\NATIVE_CRT_WATSON_FAILURE_CT.md",
+      "size": 5403,
+      "sha256": "9eb47e2d0b8e81d77a8ea5a867624f45e4b3de02f9762d6c20b12cf391ba8014",
+      "sha512": "7d94391cf216ff4bcab8a5a2784c842e8999b9076a151a4e54bbb29a887f0ab14c1a8f9b6acc7afcaced4cb2c6ab928baf5ca67ede0bd623b994479fc7893c6c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\reports\\native_crt_watson_failure_ct.json",
+      "size": 262940,
+      "sha256": "3c4b060ddcba0429457e9674914c0beff10b2d61b8796a740417123c4ab407cd",
+      "sha512": "dff953a1d647a27828f799eb30baacffd3e13a29f0310c5c6b9d0fc7e8f7676d0d8fcbac576d45f728eb1766fb0ca2e4daf6e84b115e4b82276193d014611f73"
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_failure.obj",
+      "size": 5072,
+      "sha256": "cc3a5c002b173b2fa8c77604de35a2576eccd927722db6be220a4a8087c70be7",
+      "sha512": "36ff515b234c6a53146e5fc8fd4a46f5924741217b3279567ca16818bde3ed4dd331184009a033a8db6bd0199fe5e7021b0ac89ea5b854cbb227f5c146030e1a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_memset.obj",
+      "size": 1432,
+      "sha256": "dcf26dd5ad4ccaa5fbe680803a4e2ba19de44905075b4296e076097923fcf5a7",
+      "sha512": "b0f2ad020ce1d0e82f66df85eb8531fbf0863f3908956ad9789391a46634f62985c25ca5ae1d7278f167afa1f6e7382570943c2fa8e7dba45254093236aa9b77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_mutable_crt_data.obj",
+      "size": 122646,
+      "sha256": "e58dc47a831ea83829fc6ef94c184f81735011c70a065a98b48f0480892610a3",
+      "sha512": "c9214e5f2a5816b02a1869ec7e67a3d4737d9ac51bd0718cc54f7e6d563b16a8d8ac63d671f13fc2325e9c889ddb1c0ff74b4c1d108d9bb29c3bce4d9e3db901"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_readonly_data.obj",
+      "size": 104018,
+      "sha256": "f0e6c95c87823eee87683d2ce04331a723c44ffa53569167e6df7c43fdedd3be",
+      "sha512": "025a15c018ab351de1057921e58b0822c17b87ff78b595e0110f26b6aeb629cba9d2d06ea2731b70bc1c13fd887742442762c88f23fbbf1662e404dbde2b9d23"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\game_native_data_bootstrap.obj",
+      "size": 161669,
+      "sha256": "10614a3dce967573b6f3ef4a860758738e7f1591868a0dcfa1a4be31426584f2",
+      "sha512": "e3a39c6b9444e5269a40331e1b805f53ea33585afefc65c27f3d5880058c4ba93a603e9a5576eca86cd0d4e749fa924a81f2116909051b706f3b6b4f737643a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+      "size": 1403,
+      "sha256": "4604b17dee20a93083d8849f16fef1424819549b9a538cbb941721a21cb17019",
+      "sha512": "92e143b12ee362da65e8db1123cfb5d1ba7fd9c31ea2a537a0d0985243d64f8e96dc3620c70a7935cc200dccf2d9c897f50c91a302c8c7c8d4faea13a4b0bf2e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58696818,
+      "sha256": "d7b364656691b18c20eb0f559e0bfd414581291566a7b3b9d1df9b89072fb0ed",
+      "sha512": "f4c81468651e910eb7a50ecc99a0cf5c35ddb152b4f581ad483837cb1557cb10e860eafc4ac32673642dd26a57e9f08df02a4552dbc85b361b08c25d96a5e62c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\Release\\bsp_game.exe",
+      "size": 2168832,
+      "sha256": "1cf899cf8c983ea6833c6771c87d066edf782dbbc3953f6e191557958c583992",
+      "sha512": "e4207bdab617d8b273787a47100c2d52b07f02a77eb4dbff002214e060e8ba3755d993241ebb5a9e12661b658e92b6b9657bb657969113bffea5029d884305e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\build\\win32\\bsp_game.map",
+      "size": 3960749,
+      "sha256": "376324dd3de831e29d53d46d61435263b52a83286e1416e067fc02fae18b21ae",
+      "sha512": "33c311af4761356a6387842f166b0a1dbc287bf741b8b420ea4d3286726a3e03904edf41ac6d9ffb058f8ff65d810c5cdb9cddffe635435d3f1021e5fdd88788"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_link_probe.cpp",
+      "size": 162,
+      "sha256": "52fe17c97ee78ea4978b53c82fbb60edabdf5932e59574e240041259bcc77d73",
+      "sha512": "b4bcae70b20e96b9d430d0d9f9adbe899f61db9336dfcae63a5954c5273e87a88620e18c98497188ce489f040652d1b312420320ebffd228219d0a85c2a4c2a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_link_probe.obj",
+      "size": 802,
+      "sha256": "789d3a1d737acd24f4101ab1573360d6fd960a7189fe85c01cc2ec6345923e99",
+      "sha512": "5b3319b75bfa78a8827f628ea1550a0b8f30895eff56ead62a0c4501642e91014ca97075f0b4a93a617afc7c3bd03a95666a8bf254821019dcc71dafeaf30010"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_link_probe.exe",
+      "size": 34304,
+      "sha256": "79bb63a66b163c35c5d0ea8bd396c70f1e27cd5eb596765b0926b80653a897a2",
+      "sha512": "44d789f49c1c0eb74a3804fb4cdc96262234080afd16b5c6fecb67539cc6e0af357d6c8ac9459eec7424cd5e473e4fbb1a7773ce8a02ea4125d918b57a96d990"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_link_probe.map",
+      "size": 78148,
+      "sha256": "d28cab3b47909887daac6f3784c9fed9f86d6b322baf2ad761bbff164a3823dc",
+      "sha512": "84845c3e3a8d2ffe5a97e4c4becd97b719b6b1025515d087609fb79fd588236e0be754ddbb3cf98a1d8dc9b42aa192300bcfb9e59f7e270847ec009dd34748dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\static_verification.json",
+      "size": 83837,
+      "sha256": "b96c85b7a49612f7f2802b0e313d6217c96e32616c2feee85465768703b4c0a3",
+      "sha512": "825bb2001b394f19716afcc7c9dc8497ab5f660809ff57d2bf5de4a38b521bd2496993b0faba1ee1d4790c8e6fa85b88b3330ed61a7fef4b06167936a08cbf5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\audit_02\\toolchain.json",
+      "size": 3128,
+      "sha256": "409081d4418e179811d91fdbf6cbe8b46b3b34210f35409b50ff5eb7480580b7",
+      "sha512": "87ed83b3074bbd2dffa002be334a3a34baabdbc91ecd86c195edb971d98ce603c0a89aeeba1063ac5d503c40b97e69983e54bc57b9b91619c92929a989f4e51b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\native_verification.json",
+      "size": 47603,
+      "sha256": "0db1a7c82ee4008b68d969375dbc7569db7fe1bf114f5c75e95cf1070e1f1fa9",
+      "sha512": "7ec04afd4eff6e86c220db0892f5097bb6044ac14465832afab66fe3cf51951cab81689864270aedfd5a29885344dc62d08ed75ec339fd05d105c91188a054c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\compiler_bindings.json",
+      "size": 226224,
+      "sha256": "0460812cbf0906910396f63015ed6e48abf5cb27f780d2bef33114127cb5208c",
+      "sha512": "ea3cc2acc960a73e5d6f28c137cd0395af151bd5e894cee2cb9974ccf84c38e80916cacf84c032e87d675eb22e7468c5c44431ae4b9f13fa76b536997a00f42f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\ledger_preservation.json",
+      "size": 611,
+      "sha256": "e331614f1c8b05bc1e600cdf360b387952c6b331cd27f2041e1da31f56d7a314",
+      "sha512": "512eee30f5ab8dfe7f09daf6eb2b4807c68648fb55ea0fd4ddcc40d5f78781d822622bf22db01c9322d87c479b09155cb5b3a5dc07fced4d7b984ec458da4316"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\scope_decisions.json",
+      "size": 1373,
+      "sha256": "8d1a0a47e9c3fad21da630571cf2d100e20ba38ca20ae2e70c4f06aa6af83ca0",
+      "sha512": "9bccc0ad7a71d24f364ee3b4357deeb281704a2d6938e775e5abdc2195927702f27433b841cb283b602eff8a4c0ee0b88b97b44196ed4987e118cefe21448938"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk\\reconstruction_records.json",
+      "size": 8185,
+      "sha256": "7b8a06ff3b2dc486d75e809e2fac0b3ab3f7d28eee2917ec2ea8239a85648165",
+      "sha512": "c24c84e29a1fd0f02b8877d84ffecfbb571f99e9db41b983748e4d6c884841421967f045180351d449b4b1e4c2b6007275937d65bda4c2c805524e9de9459e77"
+    }
+  ],
+  "compiler_binary_pins": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\c1xx.dll",
+      "size": 13321528,
+      "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2",
+      "sha512": "d355195dd6a84159d8e4348db441042f73d8b3c51afadf9ebd8433b6dfbf706c43d0ef2522cb88657f43971331e7609af9665d49ce4da1938f0137091d5e90ff"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\c2.dll",
+      "size": 10542392,
+      "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0",
+      "sha512": "090a11d6c45de407c8a9e217ee0c15222c5caa0cff2122d2e9a86cb0784f2e16bd0e07dee97ac4ea648d729cbaec94293f952a1d6cdcbed9b3696f7fd8f1df8c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+      "size": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "sha512": "d776e7d4f15344ea5a447e82c1b16be097c371fdb116ee6806eaa4ba2af483bd6155e10fd2d81e576a1bcbb01dd8e695e7da827bc6951a4359f8c34103a46f3a"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+      "size": 23424,
+      "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+      "sha512": "833c7a807038a1afde490dc6efff43228c6701c2174b52f93f49779f692debdad7ac815f9451f5f9784d0241f6db9367d5e075034370b3b0f8390f2a71bed46c"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\dumpbin.exe",
+      "size": 23424,
+      "sha256": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c",
+      "sha512": "021477ba6fa91c7f18c7a559cec9e6ad0e2f6c0c301b5e3017783c5b4faec991d8bf0249b950f0cad2cc38af9903c14129d819327cfa09f55e36e56532df68d7"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\mspdb140.dll",
+      "size": 386872,
+      "sha256": "e4a77d56915522b874b682f5e33af3b40bee20b3e58e4efb139d84f05e1b22b9",
+      "sha512": "13895b5780846a5bc57d79196b701bbbc250e1e52d47f8e085810458b3e296dc83f05cc11938aa2d5776ffb2370076e23b3bf3d92e3e67e17ac3df04a719e087"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe",
+      "size": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "sha512": "8d5361b3cefe1ec60d684b9f7283338ee7d6114a141b855177fb2222cac132021b878636b417ffbc482a267b53a1d64452148b58f67abdaeb0878ae9ef57f27a"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll",
+      "size": 11055928,
+      "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc",
+      "sha512": "b2d3c6d8e8e39706b5ee13bee3302805b82be8dcb4f15c6d807aee9d938faefea56a228431a940ab23ebc13813a9c62b956f050f6165550a546c6acd8cf1c9fe"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll",
+      "size": 8720696,
+      "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0",
+      "sha512": "4ce31c99f5a104cbaf2883f8f99c33942993fc936139d51a89520c2ef91bcd6a2b8d9f42febaa6037c5b6126038da4a0eb4102526aaa4b45eb8d528be9c5be3f"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe",
+      "size": 3208544,
+      "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+      "sha512": "e0bd8aa59e0c96b8c94e7b78510ebb9640615fea63862a179313b53f248bf5a0af69db9d2357a465faa520a9aaac597827d12c4c213c31b055ad5e02455d45c4"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\lib.exe",
+      "size": 21376,
+      "sha256": "06da7daac5e297ba314d41b9930495b17fe9f43a3ffc6b4c3c542af2803451bd",
+      "sha512": "b0034a5e08cb91881902dee08767bf23889ff547fe724b1e436f50930abaa5edfe01e27ef9ae4d6e9040ce5355e11bb733bf26f805564793cf5d8bb0488a9a91"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\dumpbin.exe",
+      "size": 21336,
+      "sha256": "61954eaf4559430bbee7429b6dc63457fdf42e1f6a3949ac6eabdc6590738410",
+      "sha512": "89baf7e29a95ac5605521602fb89df203622cdd577f49299320bd4b5388137c5e592b98fa03683a3a4c7ae77779b8196639969196ad204e6ca316787883af292"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll",
+      "size": 378720,
+      "sha256": "558b54f4881fd2a85c48c44928291bcd38a3fe132a552adfd76e5398ad1c112c",
+      "sha512": "7e8ac853bd4ded5a9dfd5d9a693a4ea69adc21126f1a2d2a8055dd0a50e5b8035c9503bcc38901dce893857f5b28cc5f8adc8bfefcd230a6e7cff8d0565b9cb9"
+    }
+  ],
+  "evidence_root": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-canonical-failure-dk\\local\\native_crt_canonical_failure_dk",
+  "inventories": {
+    "pass1": "local/native_crt_canonical_failure_dk/inventory_pass1.json",
+    "pass2": "local/native_crt_canonical_failure_dk/inventory_pass2.json",
+    "scope": "All recursive local files except only the two inventory self-files; plus exact external_artifact_paths.json file set. Both SHA256/SHA512 and sizes must agree twice; manifest self-files are separately pinned in delivery."
+  }
+}
