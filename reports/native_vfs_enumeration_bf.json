@@ -1,0 +1,346 @@
+{
+  "packet": "orch4_native_vfs_enumeration_bf",
+  "status": "bounded enumeration-profile actual-storage source; required provider operations incomplete",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_vfs_enumeration.cpp",
+  "header": "include/bsp/native_vfs_enumeration.hpp",
+  "documentation": "docs/NATIVE_VFS_ENUMERATION_BF.md",
+  "roots": [
+    {
+      "address": "00bdd990",
+      "name": "enumerate_native_vfs_resources_00bdd990",
+      "original_abi": "ECX actual manager; stack directory,extension,flags,output list; RET10h",
+      "coverage": "complete supported enumeration visitor construction/traversal/destruction; 113 disk/live bytes, 32/32 saved instructions owned",
+      "sha256": "1085b6f58d29be12200ad20d4f2fe09b7ae0ce85113d8d6fe0167572e4361209"
+    },
+    {
+      "address": "00bdbe20",
+      "name": "construct enumeration visitor",
+      "original_abi": "ECX visitor; stack extension,flag,output,unused; EAX visitor; RET10h",
+      "coverage": "valid actual14h construction; 141 disk/live bytes, 46/46 saved instructions owned",
+      "sha256": "0eda5efd9dd51e24a62d10ce90d7c86ebf0046f24446cdbcd5937c263542d226"
+    },
+    {
+      "address": "00bdd0a0",
+      "name": "visit_native_vfs_enumeration_mounts_00bdd0a0",
+      "original_abi": "ECX actual manager; stack directory,visitor; RET8",
+      "coverage": "enumeration D6846C profile only, actual matching tree traversal and callback ordering; other native visitor profiles remain in existing dedicated sources; 672 disk/live bytes, 226/226 saved instructions owned",
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397"
+    },
+    {
+      "address": "00bdb6e0",
+      "name": "destroy enumeration visitor",
+      "original_abi": "ECX visitor; RET0",
+      "coverage": "valid extension release and base identity; 88 disk/live bytes, 27/27 saved instructions owned",
+      "sha256": "1d049dbf7ee8321d2c5ee6b0419460fa73db7df59ce06340b6a7d8b026adc701"
+    },
+    {
+      "address": "00be1130",
+      "name": "enumerate matching mount provider",
+      "original_abi": "ECX visitor; stack mount payload,suffix; RET8",
+      "coverage": "current captured provider+14 dispatch through required source interface, vector names to result list; provider target source limited by caller binding; 205 disk/live bytes, 71/71 saved instructions owned",
+      "sha256": "f41f1e72b61c26757484e4c150635c1737164f923418c539fbe10a9716fa52e6"
+    },
+    {
+      "address": "00be0fc0",
+      "name": "append unique enumerated name",
+      "original_abi": "ECX actual result list; by-value two-DWORD string stack; RET8",
+      "coverage": "valid equal-length case-insensitive dedup, first spelling append, diagnostic and by-value release; 224 disk/live bytes, 79/79 saved instructions owned",
+      "sha256": "13cf039ad8981332ca3ec05d2c082ff855ea0fb37901bcde3ccb195abec0d1a4"
+    }
+  ],
+  "calls": [
+    {
+      "function": "0055e3a0",
+      "address": "0055f033",
+      "native": "00bdd990"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cbcf",
+      "native": "00bdd990"
+    },
+    {
+      "function": "00886280",
+      "address": "00886324",
+      "native": "00bdd990"
+    },
+    {
+      "function": "00bdb6e0",
+      "address": "00bdb716",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdb6e0",
+      "address": "00bdb71d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdbe20",
+      "address": "00bdbe6c",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdbe20",
+      "address": "00bdbe81",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdc0e0",
+      "address": "00bdc0e3",
+      "native": "00bdb6e0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd0ec",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd103",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd130",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd141",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd14b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd16c",
+      "native": "00469840"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd179",
+      "native": "00435c40"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd1b3",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd1ba",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd1df",
+      "native": "00469840"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd20d",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd224",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd253",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd25a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd26c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd2a8",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd2af",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd2b8",
+      "native": "00bd97e0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd2dd",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd2e4",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd320",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bdd0a0",
+      "address": "00bdd327",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bdd340",
+      "address": "00bdd3d5",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd440",
+      "address": "00bdd4d1",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd520",
+      "address": "00bdd5b1",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd600",
+      "address": "00bdd64a",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd6e0",
+      "address": "00bdd775",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd850",
+      "address": "00bdd8e5",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd990",
+      "address": "00bdd9c0",
+      "native": "00bdbe20"
+    },
+    {
+      "function": "00bdd990",
+      "address": "00bdd9d9",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdd990",
+      "address": "00bdd9ea",
+      "native": "00bdb6e0"
+    },
+    {
+      "function": "00bdda10",
+      "address": "00bdda67",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00bdf310",
+      "address": "00bdf3ac",
+      "native": "00bdd0a0"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be0ffb",
+      "native": "00bdbfd0"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be1009",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be1019",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be1037",
+      "native": "004254b0"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be1050",
+      "native": "004ce6f0"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be105b",
+      "native": "004ce780"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be107f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00be0fc0",
+      "address": "00be1086",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00be1130",
+      "address": "00be11b0",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00be1130",
+      "address": "00be11c4",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00be1130",
+      "address": "00be11d3",
+      "native": "00be0fc0"
+    },
+    {
+      "function": "00be1130",
+      "address": "00be11ee",
+      "native": "00427110"
+    },
+    {
+      "function": "00be1130",
+      "address": "00be11f8",
+      "native": "00bf6989"
+    }
+  ],
+  "call_scope": {
+    "within_claimed_bodies": 42,
+    "external_direct_callers": 12,
+    "total": 54
+  },
+  "indirect_evidence": [
+    "00D6846C table +4=00BE1130 and +8=00BDBEB0",
+    "BE1130 captures current provider numeric table+14; D641F8 MPAK=00BB5F40, D69168 physical=00BF47E0, D689E8 FileStore=00BE6480, D64390 MPKG=00BB98F0"
+  ],
+  "missing_provider_source": [
+    "00BF47E0 actual physical provider enumeration (projected physical_directory.cpp exists)",
+    "00BE6480 actual FileStore enumeration (projected file_store.cpp exists)",
+    "00BB98F0 actual MPKG enumeration"
+  ],
+  "exclusions": [
+    "0073CB10 result-list owner/pop and startup scan",
+    "general BDD0A0 visitor profiles other than D6846C",
+    "unsupported provider+14 entries",
+    "original FH3/SEH and returning-invalid-parameter failure identity",
+    "game or archive execution"
+  ],
+  "validation": "explicit MSVC Win32 /c of src/native_vfs_enumeration.cpp passed; no CMake registration or full build in worker; no native fixture/game execution"
+}

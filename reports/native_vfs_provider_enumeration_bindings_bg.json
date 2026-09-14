@@ -1,0 +1,49 @@
+{
+  "packet": "orch4_native_vfs_provider_enumeration_bindings_bg",
+  "kind": "source composition; zero native address ownership",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_vfs_provider_enumeration_bindings.cpp",
+  "header": "include/bsp/native_vfs_provider_enumeration_bindings.hpp",
+  "captured_provider_entries": [
+    {
+      "native": "00bf47e0",
+      "provider": "physical",
+      "source": "enumerate_native_physical_names_00bf47e0"
+    },
+    {
+      "native": "00be6480",
+      "provider": "FileStore",
+      "source": "enumerate_native_filestore_names_00be6480"
+    },
+    {
+      "native": "00bb98f0",
+      "provider": "MPKG",
+      "source": "enumerate_native_mpkg_names_00bb98f0"
+    },
+    {
+      "native": "00bb5f40",
+      "provider": "MPAK",
+      "source": "NativeMpakRuntime::enumerate_entry"
+    }
+  ],
+  "calls": [],
+  "dependencies": [
+    "NativePhysicalEnumerationContext",
+    "FileStore NativeStringStorage and SingletonLifetimeCallbacks",
+    "NativeMpkgDirectoryContext and original null-pattern bytes",
+    "NativeMpakRuntime",
+    "outer NativeVfsEnumerationDuplicateLog and numeric visitor data"
+  ],
+  "exclusions": [
+    "GameNativeVfsRuntime construction",
+    "0073cb10 package result-list ownership",
+    "original native failure identity",
+    "game and authentic archive execution"
+  ],
+  "validation": "explicit MSVC Win32 translation-unit compilation passed after merging both provider dependency commits; no BG CMake registration or combined source build",
+  "dependency_commits": {
+    "physical": "37f9fc6e8a1ce64618690e78e54fa1428a0c7b71",
+    "filestore": "861ed9c1ec12fea1d422982c82b6e5c4fef5940c",
+    "mpkg": "9b62daa5bcdea54f669cce04c2f1f1406558fac2"
+  }
+}

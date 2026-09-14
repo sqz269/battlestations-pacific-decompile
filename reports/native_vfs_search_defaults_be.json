@@ -1,0 +1,4685 @@
+{
+  "packet": "orch4_native_vfs_search_defaults_be",
+  "status": "complete ordered source reconstruction; strict existing Win32 build/CTest and standalone source translation-unit compile passed",
+  "program": "/battlestationspacific.exe",
+  "root": {
+    "address": "00738360",
+    "end_inclusive": "0073bad4",
+    "length": 14197,
+    "sha256_disk_live": "69fee27dbfafde84f1de4c8debe61839d9b25b82d6cc3b6771828d039174e0da",
+    "saved_instructions": 4310,
+    "unowned_instructions": [],
+    "original_abi": "__cdecl-like no argument stack: raw global manager and pool singleton; RET at 0073bad4; exact calling convention uncertain",
+    "coverage": "78/78 normal ordered registrations with native raw manager/string headers; exception EH ABI and earlier manager startup not reconstructed here"
+  },
+  "registrations": [
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "dds",
+        "length": 3,
+        "source": "&DAT_00cff084",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 44,
+      "address": "00738401",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "tga",
+        "length": 3,
+        "source": "&DAT_00cff074",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 75,
+      "address": "007384d2",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "textures\\",
+        "length": 9,
+        "source": "\"textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 106,
+      "address": "007385a1",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "models\\textures\\",
+        "length": 16,
+        "source": "\"models\\\\textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 137,
+      "address": "00738670",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "models\\textures\\noseart\\",
+        "length": 24,
+        "source": "\"models\\\\textures\\\\noseart\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 168,
+      "address": "0073873f",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "models\\gui\\map\\units\\",
+        "length": 21,
+        "source": "\"models\\\\gui\\\\map\\\\units\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 199,
+      "address": "0073880e",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "models\\gui\\map\\icons\\",
+        "length": 21,
+        "source": "\"models\\\\gui\\\\map\\\\icons\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 230,
+      "address": "007388dd",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "interface\\textures\\mainmenu\\",
+        "length": 28,
+        "source": "\"interface\\\\textures\\\\mainmenu\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 261,
+      "address": "007389ac",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "interface\\textures\\",
+        "length": 19,
+        "source": "\"interface\\\\textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 292,
+      "address": "00738a7b",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Particles\\Textures\\",
+        "length": 19,
+        "source": "\"Particles\\\\Textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 323,
+      "address": "00738b4a",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Particles\\Textures\\anims\\fragments\\",
+        "length": 35,
+        "source": "\"Particles\\\\Textures\\\\anims\\\\fragments\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 354,
+      "address": "00738c19",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Flares\\Textures\\",
+        "length": 24,
+        "source": "\"Effects\\\\Flares\\\\Textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 385,
+      "address": "00738ce8",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Fonts\\",
+        "length": 6,
+        "source": "\"Fonts\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 416,
+      "address": "00738db7",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Weather\\",
+        "length": 8,
+        "source": "\"Weather\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 447,
+      "address": "00738e86",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Terrain\\",
+        "length": 8,
+        "source": "\"Terrain\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 478,
+      "address": "00738f55",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\",
+        "length": 8,
+        "source": "\"Effects\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 509,
+      "address": "00739024",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Coast\\",
+        "length": 14,
+        "source": "\"Effects\\\\Coast\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 540,
+      "address": "007390f3",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\WaterTracer\\",
+        "length": 20,
+        "source": "\"Effects\\\\WaterTracer\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 571,
+      "address": "007391c2",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Foam\\",
+        "length": 13,
+        "source": "\"Effects\\\\Foam\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 602,
+      "address": "00739291",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Caustics\\",
+        "length": 17,
+        "source": "\"Effects\\\\Caustics\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 633,
+      "address": "00739360",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Lightning\\",
+        "length": 18,
+        "source": "\"Effects\\\\Lightning\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 664,
+      "address": "0073942f",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Traceline\\",
+        "length": 18,
+        "source": "\"Effects\\\\Traceline\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 695,
+      "address": "007394fe",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\Foliage\\",
+        "length": 16,
+        "source": "\"Effects\\\\Foliage\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 726,
+      "address": "007395cd",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "Effects\\postprocess\\",
+        "length": 20,
+        "source": "\"Effects\\\\postprocess\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 757,
+      "address": "0073969c",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "textures",
+        "length": 8,
+        "source": "\"textures\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "interface\\textures\\terkep\\",
+        "length": 26,
+        "source": "\"interface\\\\textures\\\\terkep\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 788,
+      "address": "0073976b",
+      "native": "00be2600"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "lua",
+        "length": 3,
+        "source": "&DAT_00cfeecc",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "interface\\",
+        "length": 10,
+        "source": "\"interface\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 819,
+      "address": "0073983a",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "mmod",
+        "length": 4,
+        "source": "&DAT_00cfeebc",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "models\\",
+        "length": 7,
+        "source": "\"models\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 850,
+      "address": "00739909",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "dat",
+        "length": 3,
+        "source": "&DAT_00cfeeb0",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fonts\\",
+        "length": 6,
+        "source": "\"fonts\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 881,
+      "address": "007399d8",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "dat",
+        "length": 3,
+        "source": "&DAT_00cfeeb0",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "textures\\",
+        "length": 9,
+        "source": "\"textures\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 912,
+      "address": "00739aa7",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "shbin",
+        "length": 5,
+        "source": "\"shbin\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\bin\\",
+        "length": 13,
+        "source": "\"shaderfx\\\\bin\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 943,
+      "address": "00739b76",
+      "native": "00be1480"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shfx",
+        "length": 4,
+        "source": "&DAT_00cfee90",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 974,
+      "address": "00739c45",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\",
+        "length": 9,
+        "source": "\"shaderfx\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1005,
+      "address": "00739d14",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\plane\\",
+        "length": 15,
+        "source": "\"shaderfx\\\\plane\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1036,
+      "address": "00739de3",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\ship\\",
+        "length": 14,
+        "source": "\"shaderfx\\\\ship\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1067,
+      "address": "00739eb2",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\common\\",
+        "length": 16,
+        "source": "\"shaderfx\\\\common\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1098,
+      "address": "00739f81",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\particles\\",
+        "length": 19,
+        "source": "\"shaderfx\\\\particles\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1129,
+      "address": "0073a050",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\terrain\\",
+        "length": 17,
+        "source": "\"shaderfx\\\\terrain\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1160,
+      "address": "0073a11f",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\ocean\\",
+        "length": 15,
+        "source": "\"shaderfx\\\\ocean\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1191,
+      "address": "0073a1ee",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\lights\\",
+        "length": 16,
+        "source": "\"shaderfx\\\\lights\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1222,
+      "address": "0073a2bd",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\postprocess\\",
+        "length": 21,
+        "source": "\"shaderfx\\\\postprocess\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1253,
+      "address": "0073a38c",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "shaderfx",
+        "length": 8,
+        "source": "\"shaderfx\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaderfx\\gui\\",
+        "length": 13,
+        "source": "\"shaderfx\\\\gui\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1284,
+      "address": "0073a45b",
+      "native": "00be2600"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "pso",
+        "length": 3,
+        "source": "&PTR_LAB_006f736e_2_00cfedc0",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaders\\",
+        "length": 8,
+        "source": "\"shaders\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1315,
+      "address": "0073a52a",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "vso",
+        "length": 3,
+        "source": "&PTR_PTR_00cfedbc",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "shaders\\",
+        "length": 8,
+        "source": "\"shaders\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1346,
+      "address": "0073a5f9",
+      "native": "00be1480"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "mshd",
+        "length": 4,
+        "source": "&DAT_00cfedb4",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1377,
+      "address": "0073a6c8",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\",
+        "length": 9,
+        "source": "\"fshaders\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1408,
+      "address": "0073a797",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\plane\\",
+        "length": 15,
+        "source": "\"fshaders\\\\plane\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1439,
+      "address": "0073a866",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\ship\\",
+        "length": 14,
+        "source": "\"fshaders\\\\ship\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1470,
+      "address": "0073a935",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\common\\",
+        "length": 16,
+        "source": "\"fshaders\\\\common\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1501,
+      "address": "0073aa04",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\particles\\",
+        "length": 19,
+        "source": "\"fshaders\\\\particles\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1532,
+      "address": "0073aad3",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\terrain\\",
+        "length": 17,
+        "source": "\"fshaders\\\\terrain\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1563,
+      "address": "0073aba2",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "fshaders",
+        "length": 8,
+        "source": "\"fshaders\"",
+        "mode": "ResizeMemcpy"
+      },
+      "second": {
+        "text": "fshaders\\ocean\\",
+        "length": 15,
+        "source": "\"fshaders\\\\ocean\\\\\"",
+        "mode": "ResizeMemcpy"
+      },
+      "decompiled_line": 1594,
+      "address": "0073ac71",
+      "native": "00be2600"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "pel",
+        "length": 3,
+        "source": "\"pel\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "effects\\postprocess\\",
+        "length": 20,
+        "source": "\"effects\\\\postprocess\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1615,
+      "address": "0073acf6",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "pfx",
+        "length": 3,
+        "source": "\"pfx\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "effects\\postprocess\\",
+        "length": 20,
+        "source": "\"effects\\\\postprocess\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1636,
+      "address": "0073ad7b",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "pfx",
+        "length": 3,
+        "source": "\"pfx\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "effects\\postprocess\\",
+        "length": 20,
+        "source": "\"effects\\\\postprocess\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1657,
+      "address": "0073ae00",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "raw",
+        "length": 3,
+        "source": "\"raw\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "Weather\\",
+        "length": 8,
+        "source": "\"Weather\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1678,
+      "address": "0073ae85",
+      "native": "00be1480"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "pes",
+        "length": 3,
+        "source": "\"pes\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "particles\\",
+        "length": 10,
+        "source": "\"particles\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1699,
+      "address": "0073af0a",
+      "native": "00be1480"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "fsb",
+        "length": 3,
+        "source": "\"fsb\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1720,
+      "address": "0073af8f",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\events\\",
+        "length": 13,
+        "source": "\"sound\\\\events\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1741,
+      "address": "0073b014",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\engines\\",
+        "length": 14,
+        "source": "\"sound\\\\engines\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1762,
+      "address": "0073b099",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\explosions\\",
+        "length": 17,
+        "source": "\"sound\\\\explosions\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1783,
+      "address": "0073b11e",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\weapons\\",
+        "length": 14,
+        "source": "\"sound\\\\weapons\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1804,
+      "address": "0073b1a3",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\messages\\",
+        "length": 15,
+        "source": "\"sound\\\\messages\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1825,
+      "address": "0073b228",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\messages\\warning",
+        "length": 22,
+        "source": "\"sound\\\\messages\\\\warning\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1846,
+      "address": "0073b2ad",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\environment\\",
+        "length": 18,
+        "source": "\"sound\\\\environment\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1867,
+      "address": "0073b332",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\music\\",
+        "length": 12,
+        "source": "\"sound\\\\music\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1888,
+      "address": "0073b3b7",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\muzzle\\",
+        "length": 13,
+        "source": "\"sound\\\\muzzle\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1909,
+      "address": "0073b43c",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\impact\\",
+        "length": 13,
+        "source": "\"sound\\\\impact\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1930,
+      "address": "0073b4c1",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "sound",
+        "length": 5,
+        "source": "\"sound\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\splash\\",
+        "length": 13,
+        "source": "\"sound\\\\splash\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1951,
+      "address": "0073b546",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "events",
+        "length": 6,
+        "source": "\"events\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "fev",
+        "length": 3,
+        "source": "\"fev\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1972,
+      "address": "0073b5cb",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "events",
+        "length": 6,
+        "source": "\"events\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "sound\\events\\",
+        "length": 13,
+        "source": "\"sound\\\\events\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 1993,
+      "address": "0073b650",
+      "native": "00be2600"
+    },
+    {
+      "kind": "ExtensionPrefix",
+      "first": {
+        "text": "bik",
+        "length": 3,
+        "source": "\"bik\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "movies",
+        "length": 6,
+        "source": "\"movies\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2014,
+      "address": "0073b6d5",
+      "native": "00be1480"
+    },
+    {
+      "kind": "SearchExtension",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak",
+        "length": 4,
+        "source": "\"mpak\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2035,
+      "address": "0073b75a",
+      "native": "00be25e0"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak\\classes\\",
+        "length": 13,
+        "source": "\"mpak\\\\classes\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2056,
+      "address": "0073b7df",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak\\scenes\\",
+        "length": 12,
+        "source": "\"mpak\\\\scenes\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2077,
+      "address": "0073b864",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak\\global\\",
+        "length": 12,
+        "source": "\"mpak\\\\global\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2098,
+      "address": "0073b8e9",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak_pc\\classes\\",
+        "length": 16,
+        "source": "\"mpak_pc\\\\classes\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2119,
+      "address": "0073b96e",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak_pc\\scenes\\",
+        "length": 15,
+        "source": "\"mpak_pc\\\\scenes\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2140,
+      "address": "0073b9f3",
+      "native": "00be2600"
+    },
+    {
+      "kind": "SearchDirectory",
+      "first": {
+        "text": "mpaks",
+        "length": 5,
+        "source": "\"mpaks\"",
+        "mode": "Assign"
+      },
+      "second": {
+        "text": "mpak_pc\\global\\",
+        "length": 15,
+        "source": "\"mpak_pc\\\\global\\\\\"",
+        "mode": "Assign"
+      },
+      "decompiled_line": 2161,
+      "address": "0073ba78",
+      "native": "00be2600"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00738360",
+      "address": "00738392",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007383ad",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007383c9",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007383e4",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738401",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073841d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738424",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738443",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073844a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073845f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073847a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073849a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007384b5",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007384d2",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "007384ef",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007384f6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738512",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738519",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073852e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738549",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738569",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738584",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007385a1",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007385be",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007385c5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007385e1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007385e8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007385fd",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738618",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738638",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738653",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738670",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073868d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738694",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007386b0",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007386b7",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007386cc",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007386e7",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738707",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738722",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073873f",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073875c",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738763",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073877f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738786",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073879b",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007387b6",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007387d6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007387f1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073880e",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073882b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738832",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073884e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738855",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073886a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738885",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007388a5",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007388c0",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007388dd",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007388fa",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738901",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073891d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738924",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738939",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738954",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738974",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073898f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007389ac",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007389c9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007389d0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007389ec",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007389f3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a08",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a23",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a43",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a5e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a7b",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a98",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a9f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738abb",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ac2",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ad7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738af2",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b12",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b2d",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b4a",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b67",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b6e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b8a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b91",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ba6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738bc1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738be1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738bfc",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c19",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c36",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c3d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c59",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c60",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c75",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c90",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738cb0",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ccb",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ce8",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d05",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d0c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d28",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d2f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d44",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d5f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d7f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738d9a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738db7",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738dd4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ddb",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738df7",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738dfe",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e13",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e2e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e4e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e69",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e86",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ea3",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738eaa",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ec6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ecd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ee2",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738efd",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f1d",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f38",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f55",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f72",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f79",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f95",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f9c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00738fb1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00738fcc",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00738fec",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739007",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739024",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739041",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739048",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739064",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073906b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739080",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073909b",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007390bb",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007390d6",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007390f3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739110",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739117",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739133",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073913a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073914f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073916a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073918a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007391a5",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007391c2",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007391df",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007391e6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739202",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739209",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073921e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739239",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739259",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739274",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739291",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007392ae",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007392b5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007392d1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007392d8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007392ed",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739308",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739328",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739343",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739360",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073937d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739384",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007393a0",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007393a7",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007393bc",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007393d7",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007393f7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739412",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073942f",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073944c",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739453",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073946f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739476",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073948b",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007394a6",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007394c6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007394e1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007394fe",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073951b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739522",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073953e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739545",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073955a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739575",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739595",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007395b0",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007395cd",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007395ea",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007395f1",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073960d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739614",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739629",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739644",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739664",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073967f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073969c",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007396b9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007396c0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007396dc",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007396e3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007396f8",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739713",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739733",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073974e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073976b",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739788",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073978f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007397ab",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007397b2",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "007397c7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007397e2",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739802",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073981d",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073983a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739857",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073985e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073987a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739881",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739896",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007398b1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007398d1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007398ec",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739909",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739926",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073992d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739949",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739950",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739965",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739980",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007399a0",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "007399bb",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "007399d8",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "007399f5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "007399fc",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a18",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a1f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a34",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a4f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a6f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739a8a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739aa7",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ac4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739acb",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ae7",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739aee",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b03",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b1e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b3e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b59",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b76",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b93",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b9a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739bb6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739bbd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739bd2",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739bed",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c0d",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c28",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c45",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c62",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c69",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c85",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c8c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ca1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739cbc",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739cdc",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739cf7",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d14",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d31",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d38",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d54",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d5b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d70",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d8b",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739dab",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739dc6",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739de3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e00",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e07",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e23",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e2a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e3f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e5a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e7a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739e95",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739eb2",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ecf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ed6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ef2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ef9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f0e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f29",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f49",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f64",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f81",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739f9e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739fa5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739fc1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739fc8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "00739fdd",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "00739ff8",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a018",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a033",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a050",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a06d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a074",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a090",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a097",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a0ac",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a0c7",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a0e7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a102",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a11f",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a13c",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a143",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a15f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a166",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a17b",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a196",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a1b6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a1d1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a1ee",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a20b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a212",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a22e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a235",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a24a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a265",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a285",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a2a0",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a2bd",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a2da",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a2e1",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a2fd",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a304",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a319",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a334",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a354",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a36f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a38c",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a3a9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a3b0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a3cc",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a3d3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a3e8",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a403",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a423",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a43e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a45b",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a478",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a47f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a49b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a4a2",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a4b7",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a4d2",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a4f2",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a50d",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a52a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a547",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a54e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a56a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a571",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a586",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a5a1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a5c1",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a5dc",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a5f9",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a616",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a61d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a639",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a640",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a655",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a670",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a690",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a6ab",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a6c8",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a6e5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a6ec",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a708",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a70f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a724",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a73f",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a75f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a77a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a797",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a7b4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a7bb",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a7d7",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a7de",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a7f3",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a80e",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a82e",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a849",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a866",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a883",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a88a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a8a6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a8ad",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a8c2",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a8dd",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a8fd",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a918",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a935",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a952",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a959",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a975",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a97c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a991",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a9ac",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a9cc",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a9e7",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa04",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa21",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa28",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa44",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa4b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa60",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa7b",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aa9b",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aab6",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aad3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aaf0",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aaf7",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab13",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab1a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab2f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab4a",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab6a",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ab85",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aba2",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073abbf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073abc6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073abe2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073abe9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073abfe",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac19",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac39",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac54",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac71",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac8e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ac95",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acb1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acb8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acc6",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acdc",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acf6",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad13",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad1a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad36",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad3d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad4b",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad61",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad7b",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad98",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad9f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073adbb",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073adc2",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073add0",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ade6",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae00",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae1d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae24",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae40",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae47",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae55",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae6b",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae85",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aea2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aea9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aec5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aecc",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aeda",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073aef0",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af0a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af27",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af2e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af4a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af51",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af5f",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af75",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af8f",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073afac",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073afb3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073afcf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073afd6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073afe4",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073affa",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b014",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b031",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b038",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b054",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b05b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b069",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b07f",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b099",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b0b6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b0bd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b0d9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b0e0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b0ee",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b104",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b11e",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b13b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b142",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b15e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b165",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b173",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b189",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1a3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1c0",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1c7",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1e3",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1ea",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b1f8",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b20e",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b228",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b245",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b24c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b268",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b26f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b27d",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b293",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b2ad",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b2ca",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b2d1",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b2ed",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b2f4",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b302",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b318",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b332",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b34f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b356",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b372",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b379",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b387",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b39d",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b3b7",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b3d4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b3db",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b3f7",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b3fe",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b40c",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b422",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b43c",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b459",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b460",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b47c",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b483",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b491",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b4a7",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b4c1",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b4de",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b4e5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b501",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b508",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b516",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b52c",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b546",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b563",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b56a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b586",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b58d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b59b",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b5b1",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b5cb",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b5e8",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b5ef",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b60b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b612",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b620",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b636",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b650",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b66d",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b674",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b690",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b697",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6a5",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6bb",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6d5",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6f2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6f9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b715",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b71c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b72a",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b740",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b75a",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b777",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b77e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b79a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b7a1",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b7af",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b7c5",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b7df",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b7fc",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b803",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b81f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b826",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b834",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b84a",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b864",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b881",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b888",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b8a4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b8ab",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b8b9",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b8cf",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b8e9",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b906",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b90d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b929",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b930",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b93e",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b954",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b96e",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b98b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b992",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b9ae",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b9b5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b9c3",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b9d9",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b9f3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba10",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba17",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba33",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba3a",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba48",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba5e",
+      "native": "0041e870"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba78",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba95",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ba9c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00738360",
+      "address": "0073bab8",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073babf",
+      "native": "00bd1510"
+    }
+  ],
+  "calls_excluded": [],
+  "source": "src/native_vfs_search_defaults.cpp",
+  "header": "include/bsp/native_vfs_search_defaults.hpp",
+  "dependencies": [
+    "BE25E0",
+    "BE2600",
+    "BE1480",
+    "41DD40",
+    "41E870",
+    "41DD20",
+    "actual pooled string storage"
+  ],
+  "uncertainty": [
+    "The source interface receives the actual manager and borrowed storage explicitly; original global lookup and binary/EH ABI are outside this module.",
+    "No runtime game startup proof; the caller must provide the already constructed actual manager and all retained deletion bindings."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release and CTest reconstructed_math passed; BE source not registered in cmake/startup.cmake and therefore not in this archive",
+    "direct_source_compile": "MSVC 19.51 x86 /std:c++20 /EHsc /MD /W4 passed against merged BE1480 header",
+    "report_calls": "726/726 rows accepted; 648 unique direct native CALL sites plus 78 registration classification rows",
+    "source_sha256": "3785eaa3cae696a1da54708f27e50e5743ec6358fe8b0f55f7b5a63c92541074"
+  }
+}
