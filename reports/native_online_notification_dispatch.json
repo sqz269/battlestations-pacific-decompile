@@ -1,0 +1,318 @@
+{
+  "packet": "orch5_raw_online_dispatch_pump",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_notification_dispatch.cpp",
+  "header": "include/bsp/native_online_notification_dispatch.hpp",
+  "functions": [
+    {
+      "address": "00a40110",
+      "name": "drain_native_online_notifications_00a40110",
+      "inclusive_end": "00a404f3",
+      "byte_length": 996,
+      "byte_sha256": "f8ba5024e2b3987ca70c7b973a2b32e19693ff6ad9502f5f088ba4dc3fa33cf7",
+      "matches_installed_executable": true,
+      "native_abi": "ECX captured actual3F0 manager, no stack args, RET",
+      "coverage": "complete normal schedule over required actual-storage/external-call interfaces",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a40143",
+      "native": "00a4d5b4",
+      "function": "00a40110",
+      "contract": "Create listener with uint64 areas2F; retain returned null/invalid handle"
+    },
+    {
+      "address": "00a4014d",
+      "native": "00a3f3e0",
+      "function": "00a40110",
+      "contract": "Same captured raw manager sign-in debounce"
+    },
+    {
+      "address": "00a40161",
+      "native": "00a4d5ae",
+      "function": "00a40110",
+      "contract": "Current listener every iteration, filter0, reused explicit id/parameter output cells"
+    },
+    {
+      "address": "00a4017f",
+      "native": "004254b0",
+      "function": "00a40110",
+      "contract": "Verified bare RET diagnostic"
+    },
+    {
+      "address": "00a401b9",
+      "native": "eax",
+      "function": "00a40110",
+      "indirect": true,
+      "contract": "Current callback, clock virtual20, client virtual28, or Sleep IAT; see native-site table and source"
+    },
+    {
+      "address": "00a401cf",
+      "native": "00a3f440",
+      "function": "00a40110",
+      "contract": "Same raw manager sign-in toggle"
+    },
+    {
+      "address": "00a401e0",
+      "native": "00a3e600",
+      "function": "00a40110",
+      "contract": "Same raw manager profile-name refresh, low parameter byte"
+    },
+    {
+      "address": "00a401f7",
+      "native": "eax",
+      "function": "00a40110",
+      "indirect": true,
+      "contract": "Current callback, clock virtual20, client virtual28, or Sleep IAT; see native-site table and source"
+    },
+    {
+      "address": "00a40218",
+      "native": "00a3ff20",
+      "function": "00a40110",
+      "contract": "Title update into actual header20 through same current raw pool"
+    },
+    {
+      "address": "00a4022c",
+      "native": "0041dd40",
+      "function": "00a40110",
+      "contract": "Actual8h header resize through current raw pool"
+    },
+    {
+      "address": "00a40247",
+      "native": "00bf7680",
+      "function": "00a40110",
+      "contract": "Original CRT memcpy body admits overlap; copy captured byte count"
+    },
+    {
+      "address": "00a4026e",
+      "native": "00bf7fbf",
+      "function": "00a40110",
+      "contract": "Native case-insensitive CRT byte-string comparison"
+    },
+    {
+      "address": "00a40286",
+      "native": "00419cc0",
+      "function": "00a40110",
+      "contract": "Reload/create actual pool from canonical raw publications for this return"
+    },
+    {
+      "address": "00a4028d",
+      "native": "00bd1510",
+      "function": "00a40110",
+      "contract": "Return captured pointer/size through actual pool and current small-return gate"
+    },
+    {
+      "address": "00a402b4",
+      "native": "00419cc0",
+      "function": "00a40110",
+      "contract": "Reload/create actual pool from canonical raw publications for this return"
+    },
+    {
+      "address": "00a402bb",
+      "native": "00bd1510",
+      "function": "00a40110",
+      "contract": "Return captured pointer/size through actual pool and current small-return gate"
+    },
+    {
+      "address": "00a402d5",
+      "native": "00a4d5ae",
+      "function": "00a40110",
+      "contract": "Current listener every iteration, filter0, reused explicit id/parameter output cells"
+    },
+    {
+      "address": "00a40328",
+      "native": "00a4d5a8",
+      "function": "00a40110",
+      "contract": "Ignore SDK result and copy84 scratch bytes including untouched preimage"
+    },
+    {
+      "address": "00a40358",
+      "native": "004254b0",
+      "function": "00a40110",
+      "contract": "Verified bare RET diagnostic"
+    },
+    {
+      "address": "00a40391",
+      "native": "00a3fa70",
+      "function": "00a40110",
+      "contract": "Same raw manager achievement pump; force1 from connection, force0 from parent"
+    },
+    {
+      "address": "00a403c2",
+      "native": "004254b0",
+      "function": "00a40110",
+      "contract": "Verified bare RET diagnostic"
+    },
+    {
+      "address": "00a403f9",
+      "native": "eax",
+      "function": "00a40110",
+      "indirect": true,
+      "contract": "Current callback, clock virtual20, client virtual28, or Sleep IAT; see native-site table and source"
+    },
+    {
+      "address": "00a40409",
+      "native": "004254b0",
+      "function": "00a40110",
+      "contract": "Verified bare RET diagnostic"
+    },
+    {
+      "address": "00a4041f",
+      "native": "0041e870",
+      "function": "00a40110",
+      "contract": "Construct actual8h suffix header before append; no projected string owner"
+    },
+    {
+      "address": "00a40446",
+      "native": "0041dd40",
+      "function": "00a40110",
+      "contract": "Actual8h header resize through current raw pool"
+    },
+    {
+      "address": "00a40454",
+      "native": "00bf7680",
+      "function": "00a40110",
+      "contract": "Original CRT memcpy body admits overlap; copy captured byte count"
+    },
+    {
+      "address": "00a40473",
+      "native": "00419cc0",
+      "function": "00a40110",
+      "contract": "Reload/create actual pool from canonical raw publications for this return"
+    },
+    {
+      "address": "00a4047a",
+      "native": "00bd1510",
+      "function": "00a40110",
+      "contract": "Return captured pointer/size through actual pool and current small-return gate"
+    },
+    {
+      "address": "00a40492",
+      "native": "00a3e560",
+      "function": "00a40110",
+      "contract": "Actual update launcher boundary; production ShellExecuteExA; result ignored"
+    },
+    {
+      "address": "00a4049c",
+      "native": "dword ptr [0xce2230]",
+      "function": "00a40110",
+      "indirect": true,
+      "contract": "Current callback, clock virtual20, client virtual28, or Sleep IAT; see native-site table and source"
+    },
+    {
+      "address": "00a404a4",
+      "native": "00bfbdbb",
+      "function": "00a40110",
+      "contract": "Actual _exit(0), nonreturning with no FH3 cleanup"
+    },
+    {
+      "address": "00a404bf",
+      "native": "00a3fde0",
+      "function": "00a40110",
+      "contract": "System executable path into actual header28"
+    },
+    {
+      "address": "00a404d6",
+      "native": "004c5e60",
+      "function": "00a40110",
+      "contract": "Actual8h wide header20, unsigned byte widening through NUL"
+    },
+    {
+      "address": "00a404e9",
+      "native": "00a4d5a2",
+      "function": "00a40110",
+      "contract": "XLiveUpdateSystem borrowed UTF16 pointer, ignored result, then _exit"
+    },
+    {
+      "address": "00a404ef",
+      "native": "00bfbdbb",
+      "function": "00a40110",
+      "contract": "Actual _exit(0), nonreturning with no FH3 cleanup"
+    }
+  ],
+  "original_evidence": {
+    "drain": {
+      "name": "drain",
+      "address": "00a40110",
+      "inclusive_end": "00a404f3",
+      "bytes": 996,
+      "sha256": "f8ba5024e2b3987ca70c7b973a2b32e19693ff6ad9502f5f088ba4dc3fa33cf7",
+      "saved_disk_equal": true
+    },
+    "pump": {
+      "name": "pump",
+      "address": "00a409f0",
+      "inclusive_end": "00a40acf",
+      "bytes": 224,
+      "sha256": "da0b7bb8db11c9b511ad82497dd71b80661504deb1189dcafde962c08c9da445",
+      "saved_disk_equal": true
+    },
+    "switch": {
+      "name": "switch",
+      "address": "00a404f4",
+      "inclusive_end": "00a4050b",
+      "bytes": 24,
+      "sha256": "dea429e136844a28c2f0e5c837ee6e4b3f6ccd5c6dbf00480f62f2374e525370",
+      "saved_disk_equal": true
+    },
+    "unwind": {
+      "name": "unwind",
+      "address": "00de9e84",
+      "inclusive_end": "00de9ebf",
+      "bytes": 60,
+      "sha256": "d7529bbce23d5a82a8a2ebab1583eeb7b7ce426425488f55861980a470e626d9",
+      "saved_disk_equal": true
+    },
+    "funclets": {
+      "name": "funclets",
+      "address": "00cb41c0",
+      "inclusive_end": "00cb41d7",
+      "bytes": 24,
+      "sha256": "5bfc94ac5c368f356c18642572dc622bb21efb9ad86dafb3005c8c00d6e30e04",
+      "saved_disk_equal": true
+    },
+    "handler": {
+      "name": "handler",
+      "address": "00cb41d8",
+      "inclusive_end": "00cb41e1",
+      "bytes": 10,
+      "sha256": "ff29751d01319e8bec2df77118c7998c9a32858e38b26bc20091b1a90e60467c",
+      "saved_disk_equal": true
+    },
+    "two": {
+      "name": "two",
+      "address": "00d7a308",
+      "inclusive_end": "00d7a30f",
+      "bytes": 8,
+      "sha256": "3f710ac088db33363087de2b9a657541fe5447821debaa9fe5cbd538eb1a5f29",
+      "saved_disk_equal": true
+    }
+  },
+  "ghidra_repairs_needed": [],
+  "validation": {
+    "status": "strict source compilation and provisional fixture passed; exact registered-library integration pending",
+    "fixture": "local/native_online_drain_probe.cpp",
+    "original_pump_cases": 10,
+    "source_invite_partial_failure": true,
+    "source_state0_cleanup_and_replay_guard": true,
+    "child_exit_cases": 2,
+    "child_external_sdk_and_shell": "fake calls only; actual _exit(0) in isolated child",
+    "new_cmake_tests": 0
+  },
+  "uncertainty": [
+    "Explicit semantic C++ interfaces over borrowed actual storage, not original ABI/FH3/SEH substitution or game validation.",
+    "No original DLL/account/network request, live installer/process launch, or actual owner construction/lifetime was validated.",
+    "NativeOnlineSigninRuntime clock provider retains its explicit failed-QPC boundary; UI locale resolver retains its valid-text semantic domain.",
+    "F8ABF0 is established only null in the image; nonnull C++ hooks require a caller-supplied normalized cdecl thunk.",
+    "Nonnull F8A2FC calls the actual current vtable28. Native A43180/A430E0 and their gameplay dependencies remain external.",
+    "Original A409F0 fixture redirects five direct children to the same reconstructed raw child functions. Original A40110 and native FH3 delivery are not executed.",
+    "Actual pool NativeStringStorage adapter retains its documented noexcept-release/getter exception boundary. Root inline returns use throwing raw pool composition.",
+    "Source retains failed operation headers and refuses replay; a second cleanup exception is recorded, not claimed to reproduce native EH dispatch."
+  ]
+}
