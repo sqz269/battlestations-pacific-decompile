@@ -55,3 +55,7 @@ The reference includes B89980,711080 and BD30E0 in addition to the nine new bodi
 Evidence: `reports/native_model_admission_ap.json`, `reports/native_resource_instance_flow_ap.json`, and local retained inputs under `local/resource_instance_ap/`.
 
 The next required work is B891A0's actual graph construction, 71B710's typed instance publication, complete external resource terminal ownership, and the live class+50 writer. The conditional null-model behavior of87BCC0 does not establish populated admission or gameplay parity.
+
+## Integrated validation
+
+Commit `0dfaba808cf21fd76108aa625f8d888e994ce992` passes the strict Win32 build and both existing CTests. All five paired resource-instance cases, three source failure-cleanup cases and the six-pair/one-unwind part-destruction regression pass against that library with repeat-stable normalized images. The 120-frame USN01 compatibility run passes finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `0b3217ac7ff704229e3b516907f7bd07c9253786525c027adf3c047a5fad3476`. An immutable manifest retains 863 inputs, 223 artifacts and the union of 90 linked production objects for both probes, including compiler/header/library inputs, original bytes, exception maps, saved Ghidra receipts and mission artifacts. B89DB0 has a decoded physical tail outside its stored function body. Graph construction, typed publication, the external game-resource terminal, class+50 admission, native FH3 and gameplay remain open.
