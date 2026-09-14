@@ -1,0 +1,574 @@
+{
+  "packet": "orch4_native_resource_cache_erase_bp",
+  "base_commit": "ba1f9a6c4b9d8a524dd6f74ad0a1e8096bdb94ae",
+  "status": "complete_source_strict_win32_tu_and_focused_actual_storage_fixture_passed",
+  "scope": {
+    "owned_addresses": [
+      "00b7cb70",
+      "00b7cb90",
+      "00b7ce80",
+      "00b7fa60",
+      "00b801c0"
+    ],
+    "owned_files": [
+      "include/bsp/native_resource_cache_erase.hpp",
+      "src/native_resource_cache_erase.cpp",
+      "docs/NATIVE_RESOURCE_CACHE_ERASE_BP.md",
+      "reports/native_resource_cache_erase_bp.json"
+    ],
+    "excluded": [
+      "CMake/shared metadata/runtime",
+      "Ghidra mutations",
+      "resource ownership policy",
+      "manager lifetime",
+      "range erase",
+      "game integration"
+    ]
+  },
+  "timestamp_utc": "2026-09-14T07:44:54.215934+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verification": "Each live query uses bsp.py ghidra/client.verify, expected bsp.gpr and /battlestationspacific.exe; autostart disabled, read-only, no scripts or mutations.",
+  "installed_pe": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "image_base": "00400000"
+  },
+  "routines": [
+    {
+      "address": "00b7cb70",
+      "inclusive_end": "00b7cb8b",
+      "byte_count": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00b7cb70.txt",
+      "evidence_sha256": "326c3a36eb34c75130b162d1720fb0b8edfa940b691c522406158480fefad0da",
+      "source_name": "maximum_native_resource_cache_node_00b7cb70",
+      "original_abi": "ECX node; EAX maximum node; RET",
+      "coverage": "complete",
+      "contract": "Follow current right child while its nil byte is zero; return last node; no validation."
+    },
+    {
+      "address": "00b7cb90",
+      "inclusive_end": "00b7cbaa",
+      "byte_count": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00b7cb90.txt",
+      "evidence_sha256": "21bc79f17cdc4bd4265035f7fc281c62dc21a7839fae6293fadfbecd80e7ea31",
+      "source_name": "minimum_native_resource_cache_node_00b7cb90",
+      "original_abi": "ECX node; EAX minimum node; RET",
+      "coverage": "complete",
+      "contract": "Follow current left child while its nil byte is zero; return last node; no validation."
+    },
+    {
+      "address": "00b7ce80",
+      "inclusive_end": "00b7cee2",
+      "byte_count": 99,
+      "sha256": "e36873f3689d34df83899b48f6f37b08b91504b3f5a58bae226b910203339707",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00b7ce80.txt",
+      "evidence_sha256": "c4497933127be926dfcfc01379a0ef2ca78aef77ba652b4029860f5a6c1cff17",
+      "source_name": "increment_native_resource_cache_iterator_00b7ce80",
+      "original_abi": "ECX actual iterator; RET; no uniform EAX result",
+      "coverage": "complete",
+      "contract": "Returning null-owner CRT call before node reload; nil-node CRT tail then return; minimum-right or current-iterator ancestor climb."
+    },
+    {
+      "address": "00b7fa60",
+      "inclusive_end": "00b7fd2b",
+      "byte_count": 716,
+      "sha256": "f88f7cd65d18de123407204a7059666c3f09b52d695428619c25d480c7ecf504",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00b7fa60.txt",
+      "evidence_sha256": "30722ac761861715d42b23649800426016193ef24af8d3ced64027e13d7bebb7",
+      "source_name": "erase_native_resource_cache_iterator_00b7fa60",
+      "original_abi": "ECX actual tree; stack(output,input owner,input node); EAX output; RET0Ch at B7FD29",
+      "coverage": "complete",
+      "contract": "Capture original; nil throws before owner validation; advance local input; transplant successor and swap colors without payload copy; exact RB repair; return key, free original, decrement current nonzero count, publish owner/node."
+    },
+    {
+      "address": "00b801c0",
+      "inclusive_end": "00b8020c",
+      "byte_count": 77,
+      "sha256": "b5e1b4dfeaedea32b6006a25acb02eaa02e60992f0dc5d0e8ebe5f376e84d188",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00b801c0.txt",
+      "evidence_sha256": "4026b063db618968514fd3b045aeb64387a4101435088a2b3105267ded6b6956",
+      "source_name": "erase_native_resource_manager_name_00b801c0",
+      "original_abi": "ECX actual manager; stack(name header); RET4 at B8020A; no EAX result contract",
+      "coverage": "complete",
+      "contract": "Find at manager+14; capture owner/current head before returning validation; reload local node, compare captured head, erase one equivalent key; no resource match or release."
+    }
+  ],
+  "supporting_spans": [
+    {
+      "address": "00cc2110",
+      "inclusive_end": "00cc2117",
+      "byte_count": 8,
+      "sha256": "a10532978f8544e5cfb01f7fdde9193b3b09d72d73d04c33ea7b8bfa35b5dc1b",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00cc2110.txt",
+      "evidence_sha256": "2973cdd08a499fba01d9ab3e5c41fb3fad176ac80e102d719f0b4ae6ee410348"
+    },
+    {
+      "address": "00cc2118",
+      "inclusive_end": "00cc2121",
+      "byte_count": 10,
+      "sha256": "ea05b89945b7d646306b7cabb6fb6b19d02c993a59e77c5b3fb5741842c38b71",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00cc2118.txt",
+      "evidence_sha256": "db4ad2dab1cb1c25fccf424fbdb9a0cc5ab7cbbc62868685ed8f0889ed6857d9"
+    },
+    {
+      "address": "00dfb338",
+      "inclusive_end": "00dfb33f",
+      "byte_count": 8,
+      "sha256": "f75c93cab4648144072bde53e7c0252e6ee2d692896fe897d7fc428ae5b334a2",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00dfb338.txt",
+      "evidence_sha256": "a353aea7b062676942362eadcd552fec9a12e7430270bb9f1e6247c82382a33d"
+    },
+    {
+      "address": "00dfb340",
+      "inclusive_end": "00dfb363",
+      "byte_count": 36,
+      "sha256": "913f9b80a6ebd62c0660f1f56dd7d075980b334cf3138f8411ceea98739f9f6e",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00dfb340.txt",
+      "evidence_sha256": "f3c19f236e7ac80de82e1764ed2736c4485ccca1a01bcfbb2b225e386fc62b83"
+    },
+    {
+      "address": "00ce44e0",
+      "inclusive_end": "00ce44fb",
+      "byte_count": 28,
+      "sha256": "387b22ed15414573376a51110369e1e2d9cb942aba048a9573ab1b21f0286a39",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00ce44e0.txt",
+      "evidence_sha256": "6645e265b274ef6923433427574350999139cd9656a079fbf92894a5c77db00f"
+    },
+    {
+      "address": "00d863a8",
+      "inclusive_end": "00d863b7",
+      "byte_count": 16,
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00d863a8.txt",
+      "evidence_sha256": "9c8f96636214bd4cb93cfaae32d355781245a60a1f19c607f96bd6f43320906f"
+    },
+    {
+      "address": "00d863e4",
+      "inclusive_end": "00d863f3",
+      "byte_count": 16,
+      "sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00d863e4.txt",
+      "evidence_sha256": "1a6ba1b82bfde2bdfc369ea028ee24c18b03a6c40b1975a99717fe345003c9be"
+    },
+    {
+      "address": "00d863f4",
+      "inclusive_end": "00d8640f",
+      "byte_count": 28,
+      "sha256": "e1aebe4960e79465b8a8c1d8c2a99283f539f102dbadd4d46767c6dcf00d888f",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_erase_bp/00d863f4.txt",
+      "evidence_sha256": "9bc1a2298754dfd72eaf81e9a0fe8ea658e6c4cedb2ad3f5e710126644183c71"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b7ce88",
+      "native": "00bf6713",
+      "function": "00b7ce80",
+      "kind": "call"
+    },
+    {
+      "address": "00b7ce97",
+      "native": "00bf6713",
+      "function": "00b7ce80",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b7faa8",
+      "native": "00408720",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7faba",
+      "native": "00411700",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fad1",
+      "native": "00bf6885",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fade",
+      "native": "00b7ce80",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fb40",
+      "native": "00b7cb90",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fb62",
+      "native": "00b7cb70",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fc02",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fc35",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fc51",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fc66",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fcaf",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fcc9",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fce0",
+      "native": "00419cc0",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fce7",
+      "native": "00bd1510",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b7fced",
+      "native": "00bf65ac",
+      "function": "00b7fa60",
+      "kind": "call"
+    },
+    {
+      "address": "00b801d5",
+      "native": "00b7e7b0",
+      "function": "00b801c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b801e9",
+      "native": "00bf6713",
+      "function": "00b801c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b801ff",
+      "native": "00b7fa60",
+      "function": "00b801c0",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2113",
+      "native": "004072d0",
+      "function": "00cc2110",
+      "kind": "tail_jump"
+    }
+  ],
+  "decoded_only_transfers": [
+    {
+      "instruction_address": "00cc211d",
+      "decoded_target": "00bf6b43",
+      "intended_function": "00cc2118",
+      "kind": "tail_jump",
+      "evidence_status": "decoded only; no current Ghidra function"
+    }
+  ],
+  "layout": {
+    "tree": {
+      "head": 4,
+      "unsigned_count": 8
+    },
+    "manager_tree": 20,
+    "iterator": {
+      "owner": 0,
+      "node": 4,
+      "size": 8
+    },
+    "node": {
+      "size": 28,
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "key_length": 12,
+      "key_data": 16,
+      "borrowed_resource": 20,
+      "color": 24,
+      "nil": 25
+    },
+    "producer": "B7F220 integrated actual node constructor; raw mapped resource has no AddRef"
+  },
+  "native_eh": {
+    "function": "00b7fa60",
+    "handler": "00cc2118",
+    "func_info": "00dfb340",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00dfb338",
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00cc2110",
+        "contract": "LEA ECX,[EBP-50]; tail JMP4072D0; arm only after counted string assignment succeeds"
+      }
+    ],
+    "message": "invalid map/set<T> iterator",
+    "message_length": 27,
+    "message_address": "00ce44e0",
+    "constructor": "00411700",
+    "profile": "00d6926c",
+    "throw_info": "00d863a8",
+    "throw_helper": "00bf6885",
+    "catchable_array": "00d863e4",
+    "primary_catchable": "00d863f4",
+    "payload_size": 40,
+    "copy": "00441760",
+    "destructor": "004412b0",
+    "source_transport": "Existing NativeHardwareLayoutInvalidIterator; only native payload ownership reused",
+    "normal_path": "No key/node cleanup state; pool getter failure after unlink propagates before free/count/output without rollback",
+    "limits": [
+      "host C++ RTTI and exception runtime differ",
+      "no original FH3/SEH or native catch ABI bridge"
+    ]
+  },
+  "current_read_contracts": [
+    "Successor reloads node after returning null-owner CRT; sentinel tail performs no later store.",
+    "Erase captures original before advancing by-value input; two-child transplant reads advanced current local node.",
+    "Minimum and maximum maintenance use separately reloaded heads, captured across each extrema call.",
+    "Fixup reloads sibling after rotations and parent even after reaching root.",
+    "Capture key data then current length+1 before current pool getter; original node free precedes current count read.",
+    "Capture advanced owner and node before output owner then node writes.",
+    "Manager captures returned owner and current head before CRT, reloads local node afterward; captured owner is passed onward."
+  ],
+  "corrections": [
+    {
+      "was": "Decompiler may eliminate two-child transplant by treating mutable stack input node as unchanged",
+      "is": "FADE mutates local iterator; FB02 reloads advanced node, FB07 selects full FB6C..FBC1 transplant",
+      "evidence": "Complete native B7FA60 listing and full live/PE parity"
+    },
+    {
+      "was": "Historical CALL_RETURN override truncated erase after B7FCED free",
+      "is": "Current B7FCF2..FD2B belongs to B7FA60 and performs count/output/RET0Ch work",
+      "evidence": "Current live proto membership plus full span and transfer checks"
+    }
+  ],
+  "primary_analysis_proposals": [
+    {
+      "address": "00cc2118",
+      "inclusive_end": "00cc2121",
+      "was": "No Ghidra function",
+      "is": "Define exact ten-byte compiler FH3 handler; preserve compiler identity, save/export, then promote decoded-only tail row",
+      "evidence": "Live/PE matched MOV EAX,DFB340; JMP BF6B43; B7FA62 handler registration",
+      "worker_mutation": false
+    }
+  ],
+  "instruction_membership": {
+    "owned_tails": "B7FCF2..FD2B fully owned; no executable owned tail gap",
+    "unreachable_alignment": "B7CB7D..7F LEA ECX,[ECX] skipped by JMP; full span captured, no repair required",
+    "support_gap": "CC2118..2121 decoded-only; CC2110 is defined"
+  },
+  "xrefs": {
+    "00b7cb70": "From 00b7fb62 in BSP_ResourceNameTree_EraseIterator [UNCONDITIONAL_CALL]\n",
+    "00b7cb90": "From 00b7fb40 in BSP_ResourceNameTree_EraseIterator [UNCONDITIONAL_CALL]\n",
+    "00b7ce80": "From 00b7fade in BSP_ResourceNameTree_EraseIterator [UNCONDITIONAL_CALL]\nFrom 00b80669 in BSP_ResourceNameTree_EraseRange [UNCONDITIONAL_CALL]\nFrom 00b813bb in FUN_00b811c0 [UNCONDITIONAL_CALL]\nFrom 00b7d8b3 in FUN_00b7d8b0 [UNCONDITIONAL_CALL]\nFrom 00b7ded3 in FUN_00b7ded0 [UNCONDITIONAL_CALL]\n",
+    "00b7fa60": "From 00b801ff in BSP_ResourceManager_EraseCachedName [UNCONDITIONAL_CALL]\nFrom 00b80677 in BSP_ResourceNameTree_EraseRange [UNCONDITIONAL_CALL]\n",
+    "00b801c0": "From 00b8849c in BSP_Resource_Destroy [UNCONDITIONAL_CALL]\n"
+  },
+  "call_membership_output": "00b7ce88 FUN_00b7ce80  undefined FUN_00b7ce80(void)  body 00b7ce80 - 00b7cee2\n00b7ce97 FUN_00b7ce80  undefined FUN_00b7ce80(void)  body 00b7ce80 - 00b7cee2\n00b7faa8 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7faba BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fad1 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fade BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fb40 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fb62 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fc02 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fc35 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fc51 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fc66 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fcaf BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fcc9 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fce0 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fce7 BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b7fced BSP_ResourceNameTree_EraseIterator  undefined BSP_ResourceNameTree_EraseIterator(void)  body 00b7fa60 - 00b7fd2b\n00b801d5 BSP_ResourceManager_EraseCachedName  undefined BSP_ResourceManager_EraseCachedName(void)  body 00b801c0 - 00b8020c\n00b801e9 BSP_ResourceManager_EraseCachedName  undefined BSP_ResourceManager_EraseCachedName(void)  body 00b801c0 - 00b8020c\n00b801ff BSP_ResourceManager_EraseCachedName  undefined BSP_ResourceManager_EraseCachedName(void)  body 00b801c0 - 00b8020c\n00cc2113 Unwind@00cc2110  undefined Unwind@00cc2110(void)  body 00cc2110 - 00cc2117\n",
+  "source_sha256": {
+    "include/bsp/native_resource_cache_erase.hpp": "feeda214709ffcbe56d11d9040206c5be56fc96821b45550b145529fb826ba9a",
+    "src/native_resource_cache_erase.cpp": "a09470a9b40cc3584dfef8a8b1c152bab0ea85857f1f87a42e52a34ac14abeab",
+    "src/native_resource_cache_insert.cpp": "29510379e666b815ad5dea929756d54006e17243483cbb93123dd2fe1c082b41",
+    "src/native_resource_cache_node.cpp": "fa360b416710ec09af95657cd67324006d797fce55db6cd7874477f5313c555b",
+    "src/native_resource_cache_links.cpp": "286266e2aa4bdd38e3468fc54d8c162649fbefc86faff02061a9178c1c5cdbb5",
+    "src/native_resource_cache_lookup.cpp": "1d35c1ba8450bd6a18efc052d5d7a8515fd2c746d00010d74aa0f427de49027f",
+    "src/native_vfs_date_leaf_providers.cpp": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+    "src/native_hardware_layout_tree.cpp": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6",
+    "src/native_alias_count_growth.cpp": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43",
+    "src/native_legacy_exception_owner.cpp": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "dependency_git_matches_frozen_commit": {
+    "src/native_resource_cache_insert.cpp": {
+      "blob": "9ac864d7c13354746d39aa4b12e74a8dd16f0829",
+      "validation": "separately strict-compiled from BP base; absent from frozen BN library"
+    },
+    "src/native_resource_cache_node.cpp": {
+      "blob": "0dfa5b490b2abffc94744bbc0f6a45715ac4b81d",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_resource_cache_links.cpp": {
+      "blob": "7d071a411d2f87428a47975ed36c210991730b51",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_resource_cache_lookup.cpp": {
+      "blob": "3148cb5732e78f39122f16d7da326959214c5a2b",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_vfs_date_leaf_providers.cpp": {
+      "blob": "4b778abcba06244a8c68eaaa3ccb38e7750fde7e",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_hardware_layout_tree.cpp": {
+      "blob": "d9f714ecba374a12afbf61d2b33ee71baa15131b",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_alias_count_growth.cpp": {
+      "blob": "667ff6e497ee0294ed612f8c281d61da2b1b022e",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_legacy_exception_owner.cpp": {
+      "blob": "40bba5339f57a50f769b6143085bd62062250094",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_legacy_sbo_string.cpp": {
+      "blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string.cpp": {
+      "blob": "34ce8c6ac275d705a53096ddd7a80ed4ee71010f",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string_pool_owner.cpp": {
+      "blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "matches_frozen_source_commit": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "blob": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "matches_frozen_source_commit": true
+    },
+    "src/singleton_lifetime.cpp": {
+      "blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_frozen_source_commit": true
+    }
+  },
+  "validation": {
+    "strict_win32_tu": {
+      "status": "passed",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict /Iinclude /c"
+    },
+    "focused_fixture": {
+      "status": "passed",
+      "path": "local/resource_cache_erase_bp/probe.cpp",
+      "permanent_test_added": false,
+      "cases": [
+        "62 erasures across mirrored orders; independent RB/order/parent/identity/successor/extrema invariants",
+        "borrowed arbitrary resource pointer and nonmatching iterator owner",
+        "returning CRT repairs survive reload/tail",
+        "owning invalid-iterator copy survives original catch",
+        "manager missing/equivalent key",
+        "key return before node free; count reload after free changed to0/FFFFFFFF",
+        "pool recreation failure after unlink: no node free/count/output writes or rollback"
+      ],
+      "link": "/MACHINE:X86 /MANIFEST:EMBED; safe probe.exe name"
+    },
+    "frozen_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "frozen": "J:/PROG/battlestations-pacific-decompile-orch4-resource-cache-insert-bo/local/resource_cache_insert_bo/bsp_core_bn_frozen.lib",
+      "source_commit": "9673354d1a985c46c83a8226caa7a54e0290328b",
+      "sha256": "D9947AE6D8E55C2903641262080C16B543DF87EB1519DF37D932B1824A9030F0",
+      "source_copy_source_match": true
+    },
+    "separately_compiled_dependency": "src/native_resource_cache_insert.cpp",
+    "installed_pe_live_parity_bytes": 1097,
+    "owned_live_parity_bytes": 947,
+    "ignored_artifact_sha256": {
+      "local/resource_cache_erase_bp/probe.cpp": "4702ba1b882fc34a96b9f3025b8edfa8199aa88be831096f5ac1378e87496b00",
+      "local/resource_cache_erase_bp/compile.ps1": "2296ca2114edb8840a3314c5c36ed0ff00e808fbf3000e0ad65b1f50345fa723",
+      "local/resource_cache_erase_bp/compile.log": "542acf96728b9bed85269ad9d3bf76cfd35f1323a263544154557ebe3c5e19d0",
+      "local/resource_cache_erase_bp/erase.obj": "5e9056da97a6fc1e87f29f65f424192f18fea4fe778f47f20bdd019e1d457f52",
+      "local/resource_cache_erase_bp/insert.obj": "09f9df385f1414febe513e6039ba20c1a69e50eefea19fcb8bf8bdcd802b94a5",
+      "local/resource_cache_erase_bp/probe.obj": "f25743a42e33cffb61f94da330a5dae46d719b32e43b9433b56db5c8606dcaee",
+      "local/resource_cache_erase_bp/probe.exe": "55d1455d136c3b4e761827484c3365b853ea313f888bd3464cf0d0c882977746",
+      "local/resource_cache_erase_bp/evidence.py": "e50400e3fd8526d370ffab5736c541b01e52821d68048937df0fb43bbecd021c"
+    },
+    "call_report_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_resource_cache_erase_bp.json",
+      "status": "passed",
+      "expected_supported_rows": 21,
+      "decoded_only_rows_excluded": 1,
+      "checked": 21,
+      "failed": 0,
+      "log": "local/resource_cache_erase_bp/call_verifier.log",
+      "log_sha256": "88e5255f073df99bef4dee8e4a57eb78537f8216529e229b0913ab2739ae07c9"
+    },
+    "baseline_build": "not run; forbidden for worker",
+    "game_validation": "not performed",
+    "native_abi_differential": "not performed",
+    "documentation_sha256": "4895cbea8338ac4344aadc7ad70ff828f08b71cbd889cc1a1a435d2f70d3c31b"
+  },
+  "checklist": {
+    "1_callee_before_contract": "Integrated raw string, lifetime, lookup, rotations and owning exception bodies checked; owned extrema fully read.",
+    "2_boundary_before_attribution": "All supported sites matched live containing bodies; CC2118 decoded tail kept separate.",
+    "3_all_call_sites": "All ten current inbound call sites reviewed including successor wrappers/range/construction loop and B8849C destructor manager lookup/name push.",
+    "4_producer_before_layout": "Actual B7F220 node and integrated tree producers define raw offsets; no duplicate projected schema.",
+    "5_partial_projection": "All five owned functions complete; native ABI/SEH limits explicit.",
+    "6_runtime_evidence": "No runtime integration or gameplay claim; fixture evidence only.",
+    "7_argument_counts": "RET/RET0Ch/RET4 and supporting callee cleanup preserved in native ABI records.",
+    "8_register_provenance": "Complete listings traced original EBP, current/transplant ECX, replacement EDI, parent ESI, saved tree and advanced stack input.",
+    "9_lease_only_owned": "Five reconstructed addresses and four files only; compiler support and called dependencies not leased.",
+    "10_report_evidence": "Every supported CALL/external JMP has address/native/function/kind; decoded-only handler transfer separately classified."
+  },
+  "export_sha256": {
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7cb70\\assembly.txt": "a3d09919b145ed0c6ce6a2d70275761fc645c50beafa522aafa14fdf0ada2648",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7cb90\\assembly.txt": "2cbc17008a23ad12707c8cf4ebbece4c313a4ad1bd2ff6b76dc581b1e6204cbd",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7ce80\\assembly.txt": "bf482b0307bef366d3c1f671cc5527a66b0da0ae99378d9a97a9af99ef28a6fb",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7fa60\\assembly.txt": "6eebc686d30203c6607eacf81c19f397a90ad6d9de714ad88c35d66c7b8bf4ae",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b801c0\\assembly.txt": "cb5f09cb0ae4b30cacc1de7178ee289e3511be2f44cf043d94b2176ead472a99"
+  }
+}
