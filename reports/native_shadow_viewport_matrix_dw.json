@@ -1,7 +1,7 @@
 {
   "packet": "orch3_shadow_viewport_matrix_dw",
   "base_commit": "b6f509c5f9cacd4536513e5fdb0a9bf27c4d3247",
-  "status": "complete_source_validation_pending",
+  "status": "exact_build_instruction_identity_matrix_differential_saved_annotation_sealed",
   "source": "src/native_shadow_viewport_matrix.cpp",
   "header": "include/bsp/native_shadow_viewport_matrix.hpp",
   "doc": "docs/NATIVE_SHADOW_VIEWPORT_MATRIX_DW.md",
@@ -197,8 +197,441 @@
     "Whole constructors/world-builder, aliases, hardware faults, unmasked exceptions and gameplay are unvalidated."
   ],
   "new_repository_tests": 0,
-  "build_tested": false,
-  "fixture_tested": false,
+  "build_tested": true,
+  "fixture_tested": true,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "tested_commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+  "validation": {
+    "build": {
+      "commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "passed": true,
+      "pending": false,
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "all_build_inputs_unchanged": true,
+      "libraries": {
+        "bsp_core.lib": "6a3d6b48365bfa05940fac0e533e12cc66650758464dc2f64985d06f76e86d65",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "8a92e86d80d38e197f21fd15a3a5bfdb116b76076eb1e68f34d0df9b189170fa"
+    },
+    "tracked_build_inputs": 2625,
+    "full_build_stamp": {
+      "path": "local/dw-final-build-stamp.json",
+      "sha256": "1ed7d37cfe034d8dd62252c6405198005177dc23b6d6481863a1ff8e8d0b63f8"
+    },
+    "generated_code": {
+      "primary_review_passed": true,
+      "tested_commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "object_path": "build/win32/bsp_core.dir/Release/native_shadow_viewport_matrix.obj",
+      "object_sha256": "ed42acb681753075306d3006c7e7c34fb085893bb32c17281533302b7ace5ed4",
+      "code": [
+        {
+          "address": "00a8aaa0",
+          "symbol": "?build_native_shadow_viewport_matrix_00a8aaa0@bsp@@YIPAXPBXPAX10@Z",
+          "bytes": 351,
+          "hex": "83ec1056578b7c24208bf18bcfe800000000db008b8688030000db868803000085c07d06d80500000000def98bcfd95c2420e800000000db40048b8e8c030000db868c03000085c97d06d80500000000def98bcfd95c240ce800000000db86880300008b968803000085d27d06d80500000000d95c2408d9442420dd0500000000dcc9d9c9dd542410db008b868c03000085c0d9442408d9c0defad9c9dec2defadec1d95c2408db868c0300007d06d805000000008bcfd95c2420e800000000db4004d94424208b44241cd9c00f57c0defaf30f10542408f30f100d00000000f30f1150305ff30f114004f30f114008f30f11400cf30f114010f30f114018f30f11401cf30f114020f30f114024f30f114828f30f11402cf30f114038f30f11483c5ed9442404d9c0dd0500000000dcc9d9ccdec1d9c3def3dec2d9c9d95c2418dd442408f30f10542418d918f30f115034d9e0dec9d9581483c410c20800",
+          "sha256": "32da0811a91e4c501f93b3d0d8f7e329479e0b33a237053c7419564607a14ece",
+          "relocations": [
+            {
+              "offset": 14,
+              "type": 20,
+              "symbol": "?native_viewport_size_00b1f740@bsp@@YIPBXPBX@Z"
+            },
+            {
+              "offset": 38,
+              "type": 6,
+              "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB"
+            },
+            {
+              "offset": 51,
+              "type": 20,
+              "symbol": "?native_viewport_size_00b1f740@bsp@@YIPBXPBX@Z"
+            },
+            {
+              "offset": 76,
+              "type": 6,
+              "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB"
+            },
+            {
+              "offset": 89,
+              "type": 20,
+              "symbol": "?native_viewport_origin_00b1f730@bsp@@YIPBXPBX@Z"
+            },
+            {
+              "offset": 111,
+              "type": 6,
+              "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB"
+            },
+            {
+              "offset": 125,
+              "type": 6,
+              "symbol": "?half_00d7a280@?A0x0f2a6452@bsp@@3_KB"
+            },
+            {
+              "offset": 177,
+              "type": 6,
+              "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB"
+            },
+            {
+              "offset": 188,
+              "type": 20,
+              "symbol": "?native_viewport_origin_00b1f730@bsp@@YIPBXPBX@Z"
+            },
+            {
+              "offset": 220,
+              "type": 6,
+              "symbol": "?one_00d7a24c@?A0x0f2a6452@bsp@@3IB"
+            },
+            {
+              "offset": 299,
+              "type": 6,
+              "symbol": "?half_00d7a280@?A0x0f2a6452@bsp@@3_KB"
+            }
+          ],
+          "all_nonbinding_native_bytes_equal": true
+        },
+        {
+          "address": "00a8fda0",
+          "symbol": "?native_shadow_target_field14_00a8fda0@bsp@@YIPAXPBX@Z",
+          "bytes": 4,
+          "hex": "8b4114c3",
+          "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+          "relocations": [],
+          "all_nonbinding_native_bytes_equal": true
+        },
+        {
+          "address": "00a8fdc0",
+          "symbol": "?native_shadow_target_field1c_00a8fdc0@bsp@@YIPAXPBX@Z",
+          "bytes": 4,
+          "hex": "8b411cc3",
+          "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+          "relocations": [],
+          "all_nonbinding_native_bytes_equal": true
+        }
+      ],
+      "complete_source_bodies": 3,
+      "native_bytes": 359,
+      "all_nonbinding_instruction_bytes_equal": true,
+      "call_bindings": 4,
+      "constant_address_bindings": 7,
+      "existing_raw_getter_bodies_equal": [
+        {
+          "address": "00b1f730",
+          "symbol": "?native_viewport_origin_00b1f730@bsp@@YIPBXPBX@Z",
+          "bytes": 4,
+          "hex": "8d4108c3",
+          "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+          "relocations": []
+        },
+        {
+          "address": "00b1f740",
+          "symbol": "?native_viewport_size_00b1f740@bsp@@YIPBXPBX@Z",
+          "bytes": 4,
+          "hex": "8d4110c3",
+          "sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+          "relocations": []
+        }
+      ],
+      "constant_bits_verified": [
+        {
+          "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB",
+          "target": "00ce3978",
+          "hex": "0000804f"
+        },
+        {
+          "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB",
+          "target": "00ce3978",
+          "hex": "0000804f"
+        },
+        {
+          "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB",
+          "target": "00ce3978",
+          "hex": "0000804f"
+        },
+        {
+          "symbol": "?half_00d7a280@?A0x0f2a6452@bsp@@3_KB",
+          "target": "00d7a280",
+          "hex": "000000000000e03f"
+        },
+        {
+          "symbol": "?unsigned_correction_00ce3978@?A0x0f2a6452@bsp@@3IB",
+          "target": "00ce3978",
+          "hex": "0000804f"
+        },
+        {
+          "symbol": "?one_00d7a24c@?A0x0f2a6452@bsp@@3IB",
+          "target": "00d7a24c",
+          "hex": "0000803f"
+        },
+        {
+          "symbol": "?half_00d7a280@?A0x0f2a6452@bsp@@3_KB",
+          "target": "00d7a280",
+          "hex": "000000000000e03f"
+        }
+      ],
+      "source_sha256": {
+        "src/native_shadow_viewport_matrix.cpp": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd",
+        "include/bsp/native_shadow_viewport_matrix.hpp": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac"
+      },
+      "limits": "All instruction bytes and all local branches unchanged after zeroing only verified relocation operands; no exception or game execution claim. Existing raw getters receive no new body credit."
+    },
+    "focused_probe": {
+      "tested_commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "build_exit_code": 0,
+      "passed": true,
+      "game_validated": false,
+      "run_exit_code": 0,
+      "stdout": "matrix source/native raw bits: 34a2a000/34a2a000 00000000/00000000 00000000/00000000 00000000/00000000 00000000/00000000 b3c24000/b3c24000 00000000/00000000 00000000/00000000 00000000/00000000 00000000/00000000 3f800000/3f800000 00000000/00000000 349e8000/349e8000 33ce0000/33ce0000 00000000/00000000 3f800000/3f800000\nstatus=0020/0020 control=037f/037f tag=ffff/ffff mxcsr=00001f80/00001f80\nPASS: source and relocated original matrix match all16 words, output guards, input storage and FPU state.\n",
+      "stderr": "",
+      "source_entry_executed": "00a8aaa0",
+      "relocated_original_body_executed": "00a8aaa0",
+      "native_code_relocations": 11,
+      "other_two_entries_executed": false,
+      "source_symbol_map": [
+        "0001:000005e0       ?build_native_shadow_viewport_matrix_00a8aaa0@bsp@@YIPAXPBXPAX10@Z 004015e0 f   bsp_core:native_shadow_viewport_matrix.obj"
+      ],
+      "artifacts": {
+        "local/dw_probe.cpp": "c78697ca076cfcd562a70b438ad906c190d26c339e76d9624037d819db89f231",
+        "local/dw_native_body.hpp": "95457e98bd01402e5afd1fefde96f6b7d6bb05999b40d742c18765a51113316c",
+        "local/dw-probe-build.cmd": "14467f9ee45b6ef01811ef7410b11c2f2fba799afba5dfcece4a93e5ad144f76",
+        "local/dw_probe.exe": "cfcfa99ec7d628d85dbf632196135aadaf85c47b45f89d8c5ef87cb0ccfd72ab",
+        "local/dw_probe.obj": "28749e8db83c7a1444e66d4d76750f3d0c3cb7e7ecdbf079063cadcb1807727b",
+        "local/dw_probe.map": "574f502af6b46fd4a1ab5aa7389517f6b6fa0f4197b2fd9dd49c8e28e06925d8"
+      },
+      "all_build_inputs_and_libraries_preserved": true,
+      "libraries": {
+        "bsp_core.lib": "6a3d6b48365bfa05940fac0e533e12cc66650758464dc2f64985d06f76e86d65",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "limits": "One ignored source/relocated-original differential case with high-bit unsigned dimensions, asymmetric signed origins and positive viewport dimensions. Original351-byte body has4 CALL displacements and7 constant addresses rebound to copied unmodified4-byte getters and exact original constant bits. No provider callbacks. Checks all16 output words, output guards, unchanged inputs, original output identity, x87 status/control/empty-stack tag and unchanged MXCSR. Raw4-byte target getters are generated-byte checked but not executed. No owner construction, output aliasing, other rounding modes, unmasked exceptions or gameplay validation."
+    },
+    "game_validated": false
+  },
+  "independent_review": {
+    "accepted": true,
+    "status": "no_concrete_findings",
+    "tested_commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+    "review_sha256": "25156315ef0ba8ee21faa071a2f8ec805055911def0f4d30268469dc1af49eba",
+    "markdown_sha256": "caa78fcb383f81be51d31e5e1742950d6092d47afd0de37d1fd8e7525e802f1e",
+    "reviewed_inputs": 24,
+    "reviewed_input_sha256": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_viewport_matrix.hpp": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_shadow_viewport_matrix.cpp": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_viewport_clear.hpp": "4b1e2fa732403372571bc71b0e589a07141c4bb175245e1f75a37a544da03a4b",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_viewport_clear.cpp": "d9c1c037daf55a08e7eeab51dffe88b613bfae745204bfec3f974daed315525f",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-primary-object-review.json": "5cc8ba5f16e18b356bb037540356f5bf6671ff11aba7ee2dbaefcbcb75415ddc",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-native-evidence.json": "e7a07e97e088fde9c0450daa25d71fbee89d833f921c008c0172e123e847b22c",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\review_dw_object.py": "eafd2ce7682afb48576e5a6cda8615b6eb7dfec7599252160ace792fac998d85",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_coff.py": "5749d811f28bc812ff4c66c129000f0ad8a5a95eabf91e29005b23188ec5ca43",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.cpp": "c78697ca076cfcd562a70b438ad906c190d26c339e76d9624037d819db89f231",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_native_body.hpp": "95457e98bd01402e5afd1fefde96f6b7d6bb05999b40d742c18765a51113316c",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe.json": "ded482ff66ed21e0f689ff30630375902eb138ca995cdbf0b204fe2ffc1234ae",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe-build.cmd": "14467f9ee45b6ef01811ef7410b11c2f2fba799afba5dfcece4a93e5ad144f76",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.exe": "cfcfa99ec7d628d85dbf632196135aadaf85c47b45f89d8c5ef87cb0ccfd72ab",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.obj": "28749e8db83c7a1444e66d4d76750f3d0c3cb7e7ecdbf079063cadcb1807727b",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.map": "574f502af6b46fd4a1ab5aa7389517f6b6fa0f4197b2fd9dd49c8e28e06925d8",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-final-build-stamp.json": "1ed7d37cfe034d8dd62252c6405198005177dc23b6d6481863a1ff8e8d0b63f8",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-reviewed-report.json": "722e33ec990fc03985f43062a2496d4df133793b8dfb7b8d1d93ec26f75494aa",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_shadow_viewport_matrix.obj": "ed42acb681753075306d3006c7e7c34fb085893bb32c17281533302b7ace5ed4",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_renderer_viewport_clear.obj": "f6f54a132ec53b03e5c3447de1ed36707f846b3e6ccc0370ea023b4885b9f339",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "6a3d6b48365bfa05940fac0e533e12cc66650758464dc2f64985d06f76e86d65",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "original_reviewed_inputs": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_viewport_matrix.hpp": {
+        "sha256": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_viewport_matrix.hpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_shadow_viewport_matrix.cpp": {
+        "sha256": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_shadow_viewport_matrix.cpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_viewport_clear.hpp": {
+        "sha256": "4b1e2fa732403372571bc71b0e589a07141c4bb175245e1f75a37a544da03a4b",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_renderer_viewport_clear.hpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_viewport_clear.cpp": {
+        "sha256": "d9c1c037daf55a08e7eeab51dffe88b613bfae745204bfec3f974daed315525f",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_renderer_viewport_clear.cpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-primary-object-review.json": {
+        "sha256": "5cc8ba5f16e18b356bb037540356f5bf6671ff11aba7ee2dbaefcbcb75415ddc",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-primary-object-review.json"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-native-evidence.json": {
+        "sha256": "e7a07e97e088fde9c0450daa25d71fbee89d833f921c008c0172e123e847b22c",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-native-evidence.json"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\review_dw_object.py": {
+        "sha256": "eafd2ce7682afb48576e5a6cda8615b6eb7dfec7599252160ace792fac998d85",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\review_dw_object.py"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_coff.py": {
+        "sha256": "5749d811f28bc812ff4c66c129000f0ad8a5a95eabf91e29005b23188ec5ca43",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_coff.py"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.cpp": {
+        "sha256": "c78697ca076cfcd562a70b438ad906c190d26c339e76d9624037d819db89f231",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.cpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_native_body.hpp": {
+        "sha256": "95457e98bd01402e5afd1fefde96f6b7d6bb05999b40d742c18765a51113316c",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_native_body.hpp"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe.json": {
+        "sha256": "ded482ff66ed21e0f689ff30630375902eb138ca995cdbf0b204fe2ffc1234ae",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe.json"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe-build.cmd": {
+        "sha256": "14467f9ee45b6ef01811ef7410b11c2f2fba799afba5dfcece4a93e5ad144f76",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-probe-build.cmd"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.exe": {
+        "sha256": "cfcfa99ec7d628d85dbf632196135aadaf85c47b45f89d8c5ef87cb0ccfd72ab",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.exe"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.obj": {
+        "sha256": "28749e8db83c7a1444e66d4d76750f3d0c3cb7e7ecdbf079063cadcb1807727b",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.obj"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.map": {
+        "sha256": "574f502af6b46fd4a1ab5aa7389517f6b6fa0f4197b2fd9dd49c8e28e06925d8",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw_probe.map"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-final-build-stamp.json": {
+        "sha256": "1ed7d37cfe034d8dd62252c6405198005177dc23b6d6481863a1ff8e8d0b63f8",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-final-build-stamp.json"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\reports\\native_shadow_viewport_matrix_dw.json": {
+        "sha256": "722e33ec990fc03985f43062a2496d4df133793b8dfb7b8d1d93ec26f75494aa",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-reviewed-report.json"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_shadow_viewport_matrix.obj": {
+        "sha256": "ed42acb681753075306d3006c7e7c34fb085893bb32c17281533302b7ace5ed4",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_shadow_viewport_matrix.obj"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_renderer_viewport_clear.obj": {
+        "sha256": "f6f54a132ec53b03e5c3447de1ed36707f846b3e6ccc0370ea023b4885b9f339",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_renderer_viewport_clear.obj"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": {
+        "sha256": "6a3d6b48365bfa05940fac0e533e12cc66650758464dc2f64985d06f76e86d65",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": {
+        "sha256": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": {
+        "sha256": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib"
+      },
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\xlive_stub.lib": {
+        "sha256": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\xlive_stub.lib"
+      },
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": {
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "retained_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe"
+      }
+    },
+    "scope": "Independent source, full object/relocation/constant/provider identity, linked probe and recorded numerical evidence review; no rerun or game proof."
+  },
+  "producer_admission": {
+    "retained": true,
+    "input_pins_rechecked": 34,
+    "original_pe_spans_rechecked": 18,
+    "original_pe_bytes_rechecked": 3184,
+    "artifact_sha256": {
+      "json": "750b0355bd81eff0c8bd128bb5898df56a973169161661eec4b240c529331fe1",
+      "md": "0e912d02db68c0102a3c15127fa470d78225d9e93eb8dc4e541102b0d20e4870"
+    },
+    "source_refs": {
+      "initial_root": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+      "final_root": "b6f509c5f9cacd4536513e5fdb0a9bf27c4d3247",
+      "main_and_origin_main": "41c3e8ac46e75bcc0c061a8cc97272f100ef376b",
+      "orch5": "ad598d83d380089f7326a4056aa289ff0f0234ba",
+      "orch5_shadow_source": "790cc4b00498e97b82aaec44a257fd03e1fbbe3d"
+    },
+    "source_prerequisite": "DW A8AAA0/A8FDA0/A8FDC0 now exact-build and isolated differential tested; metadata integration underway",
+    "next_required_work": "Producer persistent admissions, native survivor ownership and host quiescence; do not substitute temporary companions or incomplete cleanup",
+    "native_body_credit": 0
+  },
+  "annotation": {
+    "saved": true,
+    "original_signature_verified": true,
+    "prior_comments_preserved": true,
+    "force_exported": true,
+    "record": "local/dw-ghidra-annotation-record.json"
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_shadow_viewport_matrix.obj": "ed42acb681753075306d3006c7e7c34fb085893bb32c17281533302b7ace5ed4",
+    "local/annotate_dw.py": "6755b1eaa8cb3aaac5ccd1fcd2c28b23757c369cbed604af535ae4d5369bf3f6",
+    "local/build_final_dw.py": "2bbcecedf5a3e8765c7e96635ae408d99c67351f5d443f67b5b8b87ca7ee72b8",
+    "local/check_dw_probe.py": "a46ec75f393a056302f56ca3b29d4af12ab9ccbe7c453d348db206f9f427bae8",
+    "local/dl_coff.py": "5749d811f28bc812ff4c66c129000f0ad8a5a95eabf91e29005b23188ec5ca43",
+    "local/dw-annotation.log": "267c908ddc4e31aea2372fc664a10036a1981497c18cb3e247ec400cf76a89b7",
+    "local/dw-comments-after.json": "1f346731dc48c0dc9ad9c250f0213fccac62fc81701f153d6f377ebda10e0dec",
+    "local/dw-comments-before.json": "9693233d37faf0f93c46db086f70b0dadb4e7dae914ff1f75761e5f2963cb63a",
+    "local/dw-dv-retention.json": "651426a3343ac9eccf5af3549e5679695a12076a5908b4feac5cc085d1f36906",
+    "local/dw-dv-shadow-owner-producer-admission.json": "750b0355bd81eff0c8bd128bb5898df56a973169161661eec4b240c529331fe1",
+    "local/dw-dv-shadow-owner-producer-admission.md": "0e912d02db68c0102a3c15127fa470d78225d9e93eb8dc4e541102b0d20e4870",
+    "local/dw-export-refresh.log": "4d046d7f5c79bdf9af98ca0136d59bc979275884bea4e4fe9b924bcd5cdc3f6f",
+    "local/dw-final-build-stamp.json": "1ed7d37cfe034d8dd62252c6405198005177dc23b6d6481863a1ff8e8d0b63f8",
+    "local/dw-final-build.log": "8a92e86d80d38e197f21fd15a3a5bfdb116b76076eb1e68f34d0df9b189170fa",
+    "local/dw-final-call-audit.log": "392c071d3fa14ac7d811267113265ab53297228d953ade1ad36d8f4ab03ce6a4",
+    "local/dw-function-records.json": "5698b03bcbfdd8b26908b9192a6b6104eb9e4d7f68158c5b59c50668b2c61e2f",
+    "local/dw-generated-capstone.txt": "d1396bba31047b680bb2008bd13c50fbb86a02c65f4a903de5baca9fb6129185",
+    "local/dw-ghidra-annotation-record.json": "88961c8a70aa2d765c98cd30d240e16dadc9e0684083a49cd090d446083ab073",
+    "local/dw-independent-matrix-review.json": "25156315ef0ba8ee21faa071a2f8ec805055911def0f4d30268469dc1af49eba",
+    "local/dw-independent-matrix-review.md": "caa78fcb383f81be51d31e5e1742950d6092d47afd0de37d1fd8e7525e802f1e",
+    "local/dw-independent-review-acceptance.json": "bf20d7fe675203dcfbb1cd8c7e2e5fc856846fb51b50fa1b6f6443aa05ad90ed",
+    "local/dw-ledger-before.json": "ba33ba93b5714ef8e3099e0908443641eb17f49de472a3c98c553b016e9b0364",
+    "local/dw-names-00a80000-before.jsonl": "c7ea3582ff60e6e1cd218821e855b4af7f91b7f97d6f3ffbab66f629eaf68499",
+    "local/dw-native-capstone.txt": "24418a126854b14ec1fffce6cc56f69b4c735bf126eb518fa6fca4f5a2faf2d3",
+    "local/dw-native-evidence.json": "e7a07e97e088fde9c0450daa25d71fbee89d833f921c008c0172e123e847b22c",
+    "local/dw-primary-object-review.json": "5cc8ba5f16e18b356bb037540356f5bf6671ff11aba7ee2dbaefcbcb75415ddc",
+    "local/dw-probe-build.cmd": "14467f9ee45b6ef01811ef7410b11c2f2fba799afba5dfcece4a93e5ad144f76",
+    "local/dw-probe-build.log": "45face12dd22f443c7fcd18647a69a6124fdc4ea05225746008efbfd498bb0b1",
+    "local/dw-probe.json": "ded482ff66ed21e0f689ff30630375902eb138ca995cdbf0b204fe2ffc1234ae",
+    "local/dw-reconstruction-00a80000-before.jsonl": "fbb6dbed582f8b958421e7dcc060929334c0ec661c02a6ae6b0bcb155ae08eb7",
+    "local/dw-reviewed-report.json": "722e33ec990fc03985f43062a2496d4df133793b8dfb7b8d1d93ec26f75494aa",
+    "local/dw-source-commit.txt": "861a96b60ea058fd084d5da5b76fc10d2207d26d8b402cde032fa6cd26c6ed6d",
+    "local/dw_native_body.hpp": "95457e98bd01402e5afd1fefde96f6b7d6bb05999b40d742c18765a51113316c",
+    "local/dw_probe.cpp": "c78697ca076cfcd562a70b438ad906c190d26c339e76d9624037d819db89f231",
+    "local/dw_probe.exe": "cfcfa99ec7d628d85dbf632196135aadaf85c47b45f89d8c5ef87cb0ccfd72ab",
+    "local/dw_probe.map": "574f502af6b46fd4a1ab5aa7389517f6b6fa0f4197b2fd9dd49c8e28e06925d8",
+    "local/dw_probe.obj": "28749e8db83c7a1444e66d4d76750f3d0c3cb7e7ecdbf079063cadcb1807727b",
+    "local/finish_dw.py": "632f2db01b8dcecdfd69f9a8a89203f9f39125725bb1a274ddf51134c1e90dcd",
+    "local/prepare_dw_evidence.py": "094b1673d351e5d70956fa838d83b6de25d93913fd9efc1d5c7e29d27fc6f177",
+    "local/prepare_dw_seal.py": "9460305d7bf9d34fc58330eb4a58e7c994172b0fbee78a8a7ff98b85d1ce18da",
+    "local/publish_dw.py": "9334ae9d564b0e61093808ce64827bceb9a52bcd713fad53e15c6b585cdec1f6",
+    "local/retain_dv.py": "1071ff8dfbeb3f73d58a25cf0cac94324f809ee53148186b3c4813f92a37ff5d",
+    "local/review_dw_object.py": "eafd2ce7682afb48576e5a6cda8615b6eb7dfec7599252160ace792fac998d85",
+    "local/seal_dw.py": "6afd2751a97211977e06f3c9c067ea6c150560db43b838e3e8d1ca9768af4dfa"
+  },
+  "sealed_attempt": {
+    "tested_commit": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dw-validated-attempt-37b47a7e.zip",
+    "sha256": "4a17d0123af2b64246b34fdbe966b7afe806b6805286e32784f2e0423bb411b8",
+    "payload_members": 2686,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "6a3d6b48365bfa05940fac0e533e12cc66650758464dc2f64985d06f76e86d65",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+      "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "tracked_build_inputs": 2625
+  }
 }

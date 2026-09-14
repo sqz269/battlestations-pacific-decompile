@@ -32,5 +32,9 @@ allocation. Output aliasing and hardware-fault behavior follow the instruction
 schedule but have not been separately exercised. No original owner constructor,
 whole world-builder, unmasked FPU exception or gameplay proof is claimed.
 
-Validation is pending at this source commit. Evidence is retained in
+Source implementation evidence is retained in
 `reports/native_shadow_viewport_matrix_dw.json` and ignored local artifacts.
+
+Primary validation at exact clean source `37b47a7eae7bafd0d4487655d870ac6c022f24c1` passed MSVC Win32 Release and both existing CTests with 2625 unchanged tracked inputs. All351 generated matrix bytes agree with the original after zeroing only the four CALL and seven constant-address operands; every rebound constant bit and both existing four-byte viewport getter bodies also agree. Both new target getter bodies match all four native bytes exactly.
+
+One ignored local differential case executed source and the relocated original351-byte matrix body. The latter called copied unmodified viewport getter bytes and used copied original constants. Unsigned owner dimensions80000003/FFFFFFFB, viewport origin-17/23 and dimensions1301/777 matched all16 output words, surrounding guards, unchanged owner/viewport input storage, output identity, x87 status0020/control037F/empty-stack tagFFFF and unchanged MXCSR1F80. The two new target getters were not executed. No repository tests were added.
