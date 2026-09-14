@@ -92,3 +92,7 @@ and00711000 at00711011. Their complete decoded spans are explicit above and in
 the report. No function recreation or callee no-return change was attempted.
 Names are descriptive hypotheses, not recovered symbols. Source C++ interfaces
 have a new ABI; native exception/fault delivery and gameplay remain unproved.
+
+## Integrated validation
+
+Commit `71166c4b05755047de125713075df87677b031df` passes the Win32 build and both existing CTests. The storage fixture and all six existing AI group/collision scenarios pass against that library; the latter retains its exact previous result hash. The 120-frame USN01 compatibility run passes the finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `f126c8e2d3a65394bd77c316e350a16f2c19321a793bfeb384f1dcfd16549d00`. An immutable manifest retains native references, raw results, linked objects, compilation dependencies and mission artifacts. This is compatibility evidence, not unit-part game admission or gameplay parity.
