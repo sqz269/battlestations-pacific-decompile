@@ -1,0 +1,861 @@
+{
+  "packet": "orch5_native_d3d9_renderer_lifetime",
+  "status": "full_parent_bodies_restored_and_unwind_evidence_reviewed_source_incomplete",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b32410",
+      "end_inclusive": "00b328f7",
+      "bytes": 1256,
+      "sha256": "9357f4654cbb09c9e68a77f2cae9fb45c11b2f2025dc2f5dfc50d2c3770f9746",
+      "live_matches_immutable_and_installed_PE": true,
+      "linear_instruction_count": 244,
+      "status": "body_and_unwind_evidence_only",
+      "source_complete": false
+    },
+    {
+      "address": "00b32920",
+      "end_inclusive": "00b339c0",
+      "bytes": 4257,
+      "sha256": "8e7c2d6cae2f0b7c11d839f36a140faa1cf71fd02302092ef1073e5537e35d87",
+      "live_matches_immutable_and_installed_PE": true,
+      "linear_instruction_count": 1255,
+      "status": "body_and_unwind_evidence_only",
+      "source_complete": false
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00b32410",
+      "address": "00b32434",
+      "native": "00b283f0",
+      "instruction_bytes": "e8b75fffff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b3246c",
+      "native": "00b29430",
+      "instruction_bytes": "e8bf6fffff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32479",
+      "native": "00a4c2a8",
+      "instruction_bytes": "e82a9ef1ff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32503",
+      "native": "indirect dword ptr [0xce220c]",
+      "instruction_bytes": "ff150c22ce00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32709",
+      "native": "00b0cce0",
+      "instruction_bytes": "e8d2a5fdff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32764",
+      "native": "00b5e270",
+      "instruction_bytes": "e807bb0200"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b327e1",
+      "native": "00bf681b",
+      "instruction_bytes": "e835400c00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b327fb",
+      "native": "00b1bb90",
+      "instruction_bytes": "e89093feff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b3280a",
+      "native": "00bf681b",
+      "instruction_bytes": "e80c400c00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32824",
+      "native": "00b585a0",
+      "instruction_bytes": "e8775d0200"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32833",
+      "native": "00bf681b",
+      "instruction_bytes": "e8e33f0c00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b3284d",
+      "native": "00b5bf70",
+      "instruction_bytes": "e81e970200"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b3285c",
+      "native": "00b27d80",
+      "instruction_bytes": "e81f55ffff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32874",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b32883",
+      "native": "00bf9440",
+      "instruction_bytes": "e8b86b0c00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b3289b",
+      "native": "00b2c8e0",
+      "instruction_bytes": "e840a0ffff"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b328a2",
+      "native": "00bf681b",
+      "instruction_bytes": "e8743f0c00"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b328bc",
+      "native": "00b33da0",
+      "instruction_bytes": "e8df140000"
+    },
+    {
+      "function": "00b32410",
+      "address": "00b328d3",
+      "native": "00bd1860",
+      "instruction_bytes": "e888ef0900"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3295d",
+      "native": "0041cc80",
+      "instruction_bytes": "e81ea38eff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32974",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3297e",
+      "native": "00b24bf0",
+      "instruction_bytes": "e86d22ffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b329a4",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b329b4",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b329ca",
+      "native": "00b241c0",
+      "instruction_bytes": "e8f117ffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b329eb",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b329fb",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32a1a",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32a2a",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32a5c",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32a6c",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32abc",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32acc",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32b1c",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32b2c",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32b5b",
+      "native": "00b6dfa0",
+      "instruction_bytes": "e840b40300"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32b74",
+      "native": "00b6dfa0",
+      "instruction_bytes": "e827b40300"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32b8d",
+      "native": "00b6dfa0",
+      "instruction_bytes": "e80eb40300"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32ba4",
+      "native": "00b31630",
+      "instruction_bytes": "e887eaffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32baf",
+      "native": "00b31750",
+      "instruction_bytes": "e89cebffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32bba",
+      "native": "00b316c0",
+      "instruction_bytes": "e801ebffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32bcf",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32be1",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32bf3",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c05",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c0d",
+      "native": "indirect ecx",
+      "instruction_bytes": "ffd1"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c1f",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c27",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c35",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c47",
+      "native": "indirect ecx",
+      "instruction_bytes": "ffd1"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c4f",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c61",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c69",
+      "native": "indirect ecx",
+      "instruction_bytes": "ffd1"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c77",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c89",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32c91",
+      "native": "indirect ecx",
+      "instruction_bytes": "ffd1"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32ca3",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32cab",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32cbb",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32ccb",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32ce1",
+      "native": "indirect dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32cf1",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d09",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d11",
+      "native": "indirect ecx",
+      "instruction_bytes": "ffd1"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d23",
+      "native": "indirect eax",
+      "instruction_bytes": "ffd0"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d2b",
+      "native": "indirect edx",
+      "instruction_bytes": "ffd2"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d38",
+      "native": "00b5e2f0",
+      "instruction_bytes": "e8b3b50200"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d53",
+      "native": "00b22a70",
+      "instruction_bytes": "e818fdfeff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d6e",
+      "native": "00bf6989",
+      "instruction_bytes": "e8163c0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32d89",
+      "native": "00b229d0",
+      "instruction_bytes": "e842fcfeff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32da1",
+      "native": "00bf6989",
+      "instruction_bytes": "e8e33b0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32dbc",
+      "native": "00b22940",
+      "instruction_bytes": "e87ffbfeff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32dd4",
+      "native": "00bf6989",
+      "instruction_bytes": "e8b03b0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32def",
+      "native": "00b228b0",
+      "instruction_bytes": "e8bcfafeff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32e0e",
+      "native": "00bf6989",
+      "instruction_bytes": "e8763b0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32e2b",
+      "native": "00b2ae20",
+      "instruction_bytes": "e8f07fffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32e34",
+      "native": "00bf6989",
+      "instruction_bytes": "e8503b0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32e53",
+      "native": "00bf55be",
+      "instruction_bytes": "e866270c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32e81",
+      "native": "00bf6989",
+      "instruction_bytes": "e8033b0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32ed0",
+      "native": "00bf6989",
+      "instruction_bytes": "e8b43a0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32eed",
+      "native": "00bf55be",
+      "instruction_bytes": "e8cc260c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32f26",
+      "native": "00bf6989",
+      "instruction_bytes": "e85e3a0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32f8c",
+      "native": "00bf6989",
+      "instruction_bytes": "e8f8390c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32fa9",
+      "native": "00bf55be",
+      "instruction_bytes": "e810260c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b32fe3",
+      "native": "00bf6989",
+      "instruction_bytes": "e8a1390c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3304c",
+      "native": "00bf6989",
+      "instruction_bytes": "e838390c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33069",
+      "native": "00bf55be",
+      "instruction_bytes": "e850250c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b330a3",
+      "native": "00bf6989",
+      "instruction_bytes": "e8e1380c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3310c",
+      "native": "00bf6989",
+      "instruction_bytes": "e878380c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33129",
+      "native": "00bf55be",
+      "instruction_bytes": "e890240c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33163",
+      "native": "00bf6989",
+      "instruction_bytes": "e821380c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b331cc",
+      "native": "00bf6989",
+      "instruction_bytes": "e8b8370c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b331e9",
+      "native": "00bf55be",
+      "instruction_bytes": "e8d0230c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33223",
+      "native": "00bf6989",
+      "instruction_bytes": "e861370c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3328c",
+      "native": "00bf6989",
+      "instruction_bytes": "e8f8360c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b332a9",
+      "native": "00bf55be",
+      "instruction_bytes": "e810230c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b332e3",
+      "native": "00bf6989",
+      "instruction_bytes": "e8a1360c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3334c",
+      "native": "00bf6989",
+      "instruction_bytes": "e838360c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33369",
+      "native": "00bf55be",
+      "instruction_bytes": "e850220c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b333a3",
+      "native": "00bf6989",
+      "instruction_bytes": "e8e1350c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3340c",
+      "native": "00bf6989",
+      "instruction_bytes": "e878350c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33429",
+      "native": "00bf55be",
+      "instruction_bytes": "e890210c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33463",
+      "native": "00bf6989",
+      "instruction_bytes": "e821350c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b334cc",
+      "native": "00bf6989",
+      "instruction_bytes": "e8b8340c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b334e9",
+      "native": "00bf55be",
+      "instruction_bytes": "e8d0200c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33523",
+      "native": "00bf6989",
+      "instruction_bytes": "e861340c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3358c",
+      "native": "00bf6989",
+      "instruction_bytes": "e8f8330c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b335ab",
+      "native": "00b31750",
+      "instruction_bytes": "e8a0e1ffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b335bb",
+      "native": "00b30410",
+      "instruction_bytes": "e850ceffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b335c3",
+      "native": "00bf6989",
+      "instruction_bytes": "e8c1330c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b335d6",
+      "native": "00b32370",
+      "instruction_bytes": "e895edffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b335f2",
+      "native": "00b31630",
+      "instruction_bytes": "e839e0ffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33602",
+      "native": "00b30270",
+      "instruction_bytes": "e869ccffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3360a",
+      "native": "00bf6989",
+      "instruction_bytes": "e87a330c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33628",
+      "native": "indirect ebp",
+      "instruction_bytes": "ffd5"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33630",
+      "native": "indirect dword ptr [0xce2214]",
+      "instruction_bytes": "ff151422ce00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3364c",
+      "native": "00bf55be",
+      "instruction_bytes": "e86d1f0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33686",
+      "native": "00bf6989",
+      "instruction_bytes": "e8fe320c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b336eb",
+      "native": "00bf6989",
+      "instruction_bytes": "e899320c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33709",
+      "native": "00bf55be",
+      "instruction_bytes": "e8b01e0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33744",
+      "native": "00bf6989",
+      "instruction_bytes": "e840320c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b337ab",
+      "native": "00bf6989",
+      "instruction_bytes": "e8d9310c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b337c9",
+      "native": "00bf55be",
+      "instruction_bytes": "e8f01d0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33804",
+      "native": "00bf6989",
+      "instruction_bytes": "e880310c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3386b",
+      "native": "00bf6989",
+      "instruction_bytes": "e819310c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33886",
+      "native": "00bf55be",
+      "instruction_bytes": "e8331d0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b338bb",
+      "native": "00bf6989",
+      "instruction_bytes": "e8c9300c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33902",
+      "native": "00bf6989",
+      "instruction_bytes": "e882300c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3391d",
+      "native": "00bf55be",
+      "instruction_bytes": "e89c1c0c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b33957",
+      "native": "00bf6989",
+      "instruction_bytes": "e82d300c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3397f",
+      "native": "00bf6989",
+      "instruction_bytes": "e805300c00"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b3399e",
+      "native": "00b25fe0",
+      "instruction_bytes": "e83d26ffff"
+    },
+    {
+      "function": "00b32920",
+      "address": "00b339a9",
+      "native": "00b33d90",
+      "instruction_bytes": "e8e2030000"
+    }
+  ],
+  "unwind_evidence": "reports/native_d3d9_renderer_unwind_evidence.json",
+  "flow_repair": "reports/native_d3d9_renderer_flow_repair.json",
+  "function_definition": "reports/native_d3d9_renderer_function_definitions.json",
+  "remaining_boundaries": [
+    "Actual B5BF70 source failure retains an operation and ownership incompatible with parent state27 direct free; inner callee unwind requires reconstruction",
+    "Parent constructor and destructor have no full C++ implementation; existing constructor source fragments remain partial",
+    "Several actual member destruction entries and active-frame providers are being reconstructed independently",
+    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated"
+  ],
+  "integrator_validation": {
+    "direct_call_rows": 91,
+    "direct_call_failures": 0,
+    "indirect_call_rows_not_mechanically_verified": 42,
+    "live_original_parent_bytes": 5513,
+    "saved_annotation_addresses": [
+      "00b32410",
+      "00b32920"
+    ],
+    "annotation_journal": "local/ghidra-annotations-20260914T071222Z.json",
+    "full_destructor_body_verified_through": "00b339c0",
+    "source_complete": false,
+    "new_tests": 0,
+    "game_validated": false
+  },
+  "evidence_checkpoint": {
+    "path": "local/checkpoints/renderer-parent-evidence-20260914T071222Z/manifest.json",
+    "sha256": "dfa6ea3e2c1fb9946aefb49229265990659a39559291daf0d2e32d7a32ae7244",
+    "artifacts": 83
+  }
+}

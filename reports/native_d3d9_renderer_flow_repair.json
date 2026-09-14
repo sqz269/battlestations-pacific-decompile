@@ -1,0 +1,305 @@
+{
+ "repairs": [
+  {
+   "function": "00b32920",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T06:41:21Z",
+   "decompile_lines_before": 213,
+   "gaps": [
+    {
+     "site": "00b32d6e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b32d73",
+     "gap_end_exclusive": "00b339c1",
+     "bytes": 3150,
+     "after_call": true,
+     "sha256": "c5067147a18dfb65d25bbc12d8c747d9fc09786d2b532b72fd678934d84aa61d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b32d6e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b32d73",
+      "gap_end_exclusive": "00b339c1",
+      "bytes": 3150,
+      "after_call": true,
+      "sha256": "c5067147a18dfb65d25bbc12d8c747d9fc09786d2b532b72fd678934d84aa61d"
+     },
+     "clear": "Success: Cleared flow override at 00b32d6e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3150 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b32d6e",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32d6e (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32da1",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32da1 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32dd4",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32dd4 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32e0e",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32e0e (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32e34",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32e34 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32e81",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32e81 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32ed0",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32ed0 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32f26",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32f26 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32f8c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32f8c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b32fe3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b32fe3 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3304c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3304c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b330a3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b330a3 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3310c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3310c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33163",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33163 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b331cc",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b331cc (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33223",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33223 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3328c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3328c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b332e3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b332e3 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3334c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3334c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b333a3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b333a3 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3340c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3340c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33463",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33463 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b334cc",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b334cc (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33523",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33523 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3358c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3358c (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b335c3",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b335c3 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3360a",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3360a (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33686",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33686 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b336eb",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b336eb (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33744",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33744 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b337ab",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b337ab (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33804",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33804 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3386b",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3386b (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b338bb",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b338bb (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33902",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33902 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b33957",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33957 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b3397f",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b3397f (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b339c1",
+   "explicit_body_sha256": "8e7c2d6cae2f0b7c11d839f36a140faa1cf71fd02302092ef1073e5537e35d87",
+   "body_before": "Function: FUN_00b32920 at 00b32920\nSignature: undefined FUN_00b32920(void)\nEntry: 00b32920\nBody: 00b32920 - 00b32d72",
+   "decompile_lines_after": 781,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00b32920 at 00b32920\nSignature: undefined FUN_00b32920(void)\nEntry: 00b32920\nBody: 00b32920 - 00b32d72",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
