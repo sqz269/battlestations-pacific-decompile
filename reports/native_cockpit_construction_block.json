@@ -1,0 +1,88 @@
+{
+  "packet": "orch3_cockpit_block_impl_bj",
+  "status": "host_block_implemented_strict_translation_unit_compile_passed",
+  "source_base": "eba2b75696b382f216b23f22d49ca22236d7a00f",
+  "design_commit": "7b2c2a539c13fe384f47b1fac29ef8197c481786",
+  "requested_bi_merge": "20ace1358700e43c75035b55e6b8b0a0c68ee520",
+  "branch": "agent/orch3-cockpit-block-bj",
+  "coverage": "complete scoped host storage/admission/settlement/retirement/reset implementation; native constructor body absent",
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "native_body_credit_bytes": 0,
+  "native_calls": [],
+  "ghidra": {"reads_in_this_packet": false, "mutations": false, "reason": "Host-only implementation reuses current source and the reviewed BJ native-context evidence; no native address credit."},
+  "upstream_bi_validation": {
+    "published_commit_reported_by_parent": "9442ed648ee8f3cfda0c95d4b38e394384790fa2",
+    "tested_source": "0307b963f66a80caa7f9308cecbfc2d5d6b780da",
+    "evidence_archive": "local/bi-validated-attempt-0307b963.zip",
+    "evidence_sha256": "742ea7fd3ff2d8d1e0a8094691b71c97410e5c8cfde7b1bd2795de58326f9318",
+    "scope": "Parent reports full build, two existing CTests, eight seeds, coupled BI fixtures and independent review passed. Dependency validation only; this new block was not in those results.",
+    "worker_action": "Merged only requested 20ace135, not moving main. Verified current owner header/source diff from reviewed 5f2574ac is empty."
+  },
+  "implementation": {
+    "files": ["include/bsp/native_cockpit_construction_block.hpp", "src/native_cockpit_construction_block.cpp"],
+    "native_storage_owned": false,
+    "viewport_records": 2,
+    "camera_storage": "Two in-place optionals, emplaced only by the future friend constructor; no host allocation at emplacement on the valid admitted path.",
+    "phases": ["idle", "preparing", "prepared", "executing", "settled"],
+    "tokens": "One scene credit, one lifetime credit, two exact viewport admissions in a movable per-attempt capability.",
+    "prepare": "Validate current raw/provider domain, reserve node capacities, admit both records before native effects; RAII cancels acquired reservations and forgets unexposed records on failure.",
+    "prepared_move_cancel": "Moves transfer exact tokens and empty source; assignment cancels its old prepared destination, self-move no-op. Prepared/preparing cancellation returns idle.",
+    "executing": "Outer capability cannot move after entry. Its destruction cancels only unused reservations and sets settled; no native cleanup, optional reset, record forgetting or free.",
+    "retirement": "Fixed callback verifies exact block reference/owner and dead owner phase after native terminal callback, then sets one host bit only.",
+    "reset": "Caller-proven host quiescence plus settled state, absent/retired reference, absent/dead owner and no live/reserved record. Destroy reference before owner, forget eligible records, return idle.",
+    "destructor": "Fail fast unless idle/empty/unused, before implicit member destruction.",
+    "orphan_gate": "Only Storage::phase is read. A live record prohibits reset, with no private-key accessor, dead-camera read or automatic orphan release.",
+    "canonical_pool": "Caller must wire the actual same 0108FFB0 owner for static allocation/raw return and environment terminal return; no fabricated identity test or allocator probe."
+  },
+  "friend_interface": {
+    "signature": "void* construct_native_cockpit_helper_00b3c800(void*, size_t, const volatile uint32_t&, const volatile uint32_t&, const NativeCockpitViewportReleaseContext&, NativeCockpitConstructionBlock::Admission&&)",
+    "entry_protocol": ["Validate actual helper/release inputs and admission.validate_prepared before native stores", "Move caller capability once to local attempt", "attempt.begin_execution", "Consume the four private tokens at their evidenced callee boundaries", "Local capability settles host state after native normal/EH work"],
+    "private_admission_members": ["block_", "camera_environment_", "node_constants_", "scene_admission_", "lifetime_admission_", "viewport_admissions_[2]"],
+    "private_block_members": ["viewport_records_[2]", "camera_owner_", "camera_reference_", "viewport_registry_", "phase_", "camera_retired_"],
+    "retirement_callback": "NativeCockpitConstructionBlock::record_camera_retirement",
+    "release_context": "Forward-declared only; definition and current CE2220/D5E5F8 input validation belong to constructor worker. No ambient binding or block field added."
+  },
+  "approved_design_adjustments": [
+    {"was": "Reviewed BJ example friend signature ended with near/far references and Admission&&.", "is": "Added const NativeCockpitViewportReleaseContext& immediately before Admission&& in both friends and namespace declaration.", "evidence": "Parent/constructor-worker source review found no actual current CE2220 IAT cell or D5E5F8 table input in existing viewport environment; parent approved explicit constructor-owned context instead of ambient state or a fixed-call substitution."}
+  ],
+  "source_anchors": [
+    {"path": "include/bsp/native_cockpit_construction_block.hpp", "lines": [14, 46], "evidence": "Stable block phase enum and move-only capability with private constructor friendship, input pointers and four reservations."},
+    {"path": "include/bsp/native_cockpit_construction_block.hpp", "lines": [48, 89], "evidence": "Nonmovable block API, two stable records, optional companions and exact context-bearing friend declaration; no native body stub."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [8, 32], "evidence": "Private capability construction and exact prepared-token moves; executing moves terminate."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [34, 68], "evidence": "Distinct unused-preparation rollback and executing settlement; no native cleanup."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [70, 106], "evidence": "Concrete raw/provider validation, phase-before-allocation and acquisition of all four reservations."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [108, 122], "evidence": "Prepared entry validation and explicit executing phase transition."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [124, 134], "evidence": "Identity-only terminal companion notification after native death; host bit only."},
+    {"path": "src/native_cockpit_construction_block.cpp", "lines": [136, 164], "evidence": "Explicit quiescent reset, reference-before-owner teardown, live record gate and idle destructor guard."},
+    {"path": "src/scene_attachment.cpp", "lines": [270, 336], "evidence": "Existing movable/cancellable capacity credits, protected reservations and successful nonallocating admitted binding."},
+    {"path": "src/generated_model_lifetime.cpp", "lines": [42, 117], "evidence": "Existing node lifetime admission/cancel/canonical identity checks and interface-identity unbind."},
+    {"path": "src/native_viewport_registry.cpp", "lines": [14, 116], "evidence": "Existing Storage/Admission lifetime checks, installed-domain reservation, cancellation, stable inline view construction, retirement and quiescent forgetting."},
+    {"path": "src/native_node_destruction.cpp", "lines": [68, 81], "evidence": "Existing raw domain constructor requires one scene runtime/type predicate and raw-name accessor rejects wrong mode."},
+    {"path": "src/native_camera_owner.cpp", "lines": [57, 70], "evidence": "Existing preparation requires actual CRT/table bindings and aligned actual slot; block checks available provider conditions without allocating a slot."},
+    {"path": "src/native_camera_owner.cpp", "lines": [149, 181], "evidence": "Existing admitted owner preparation and prepared-only destructor; dead-owner companion destruction has no native cleanup."},
+    {"path": "src/native_camera_owner.cpp", "lines": [266, 299], "evidence": "BI raw-domain/shared-cell/current installed resolver checks and first viewport admission consumption before native publication."},
+    {"path": "src/native_camera_reference.cpp", "lines": [19, 41], "evidence": "Existing reference constructor requires valid live/count/profile/retirement inputs; admitted binding adds no retain; premature destructor terminates."},
+    {"path": "src/native_camera_reference.cpp", "lines": [76, 91], "evidence": "Actual terminal callback destroys/returns camera, unbinds lifetime, marks retired then invokes fixed companion disposal."}
+  ],
+  "verification": {
+    "worker_checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md retained and applied",
+    "strict_win32_compile": {"result": "passed", "compiler": "MSVC from Visual Studio 18 Community, x86 target", "flags": ["/c", "/std:c++17", "/EHsc", "/MD", "/W4", "/WX", "/permissive-"], "artifact": "local/native_cockpit_construction_block.obj", "command_file": "local/compile-cockpit-block-bj.cmd", "scope": "New translation unit only; no link, executable or runtime test."},
+    "report_calls": "not applicable: native_calls is empty; no new native behavior or address credit",
+    "json_parse": "passed: 17 source anchors, exactly two viewport records, no native call rows or body credit",
+    "git_diff_check": "passed for the four owned staged files",
+    "tests_added": 0,
+    "tests_run_by_worker": false,
+    "full_build_by_worker": false,
+    "combined_registration_build_and_fixtures": "Parent-owned integration step, not yet evidence for this source packet."
+  },
+  "domain_limits": [
+    "Actual B3C800 normal/EH sequence, x87 materialization and final current-IAT/profile release are a separate worker's body/context.",
+    "Actual 24h helper ownership and separately preallocated stable helper companions remain caller integration responsibilities; bind them only after native success.",
+    "Caller-owned block/provider lifetimes survive helper failure/deletion, queued camera references, foreign-camera viewport ownership and orphaned live records.",
+    "Reset requires actual semantic host-view/cache quiescence; stable inert records do not make dead native fields readable or prove arbitrary destructive renderer callbacks safe.",
+    "Only serialized owning-thread operation is supported; no allocator/identity-getter reentry during registry mutation or active tokens outliving runtimes/blocks.",
+    "No automatic orphan release, native retain, native release, delayed native free, pool probing, renderer preflight call, fabricated input or duplicate identity registry.",
+    "No linking, runtime, original binary ABI, unrestricted FH3/SEH or game-validation claim from the worker's object compilation."
+  ]
+}
