@@ -926,3 +926,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_contai
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_storage_services.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_services.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_search_groups.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_extension_prefix.cpp)
