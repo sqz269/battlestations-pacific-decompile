@@ -11747,7 +11747,7 @@
       "parent_integration": "orch4_native_vfs_pending_integration_bk",
       "worker_commit": "af26d6b12444f7ab852190cb1876c79002951491",
       "integration": "reports/native_vfs_pending_integration_bk.json",
-      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d"
     },
     {
       "id": "orch4_native_physical_pending_bk",
@@ -11773,7 +11773,7 @@
       "parent_integration": "orch4_native_vfs_pending_integration_bk",
       "worker_commit": "faa5a58711ecf586393084852b8ae05d3b5c5ae1",
       "integration": "reports/native_vfs_pending_integration_bk.json",
-      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d"
     },
     {
       "id": "orch4_native_filestore_request_bk",
@@ -11797,7 +11797,7 @@
       "parent_integration": "orch4_native_vfs_pending_integration_bk",
       "worker_commit": "21581aad90ce0ecd1a1f11dcd0063ebf2470c32e",
       "integration": "reports/native_vfs_pending_integration_bk.json",
-      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d"
     },
     {
       "id": "orch4_native_filestore_completion_bk",
@@ -11822,7 +11822,7 @@
       ],
       "parent_integration": "orch4_native_vfs_pending_integration_bk",
       "integration": "reports/native_vfs_pending_integration_bk.json",
-      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d"
     },
     {
       "id": "orch4_native_filestore_resident_insert_bk",
@@ -11844,7 +11844,79 @@
       ],
       "parent_integration": "orch4_native_vfs_pending_integration_bk",
       "integration": "reports/native_vfs_pending_integration_bk.json",
-      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d"
+    },
+    {
+      "id": "orch4_native_loading_queue_owner_bl",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-loading-owner-bl",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-loading-owner-bl",
+      "base_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
+      "addresses": [
+        "004fde20",
+        "004fdba0",
+        "00504850",
+        "00bd1920"
+      ],
+      "files": [
+        "include/bsp/native_loading_queue_owner.hpp",
+        "src/native_loading_queue_owner.cpp",
+        "docs/NATIVE_LOADING_QUEUE_OWNER_BL.md",
+        "reports/native_loading_queue_owner_bl.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Actual loader owner, current-publication getter/front callback and raw-AL event poll; production lifetime registration remains gated.",
+      "frontier": "reports/native_loading_queue_frontier_bk.json"
+    },
+    {
+      "id": "orch4_native_loading_queue_storage_bl",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-loading-storage-bl",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-loading-storage-bl",
+      "base_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
+      "addresses": [
+        "004fb310",
+        "004fb4b0",
+        "00501670",
+        "005018a0",
+        "005019d0",
+        "005051a0",
+        "00505530",
+        "005055c0"
+      ],
+      "files": [
+        "include/bsp/native_loading_queue_work_items.hpp",
+        "src/native_loading_queue_work_items.cpp",
+        "docs/NATIVE_LOADING_QUEUE_WORK_ITEMS_BL.md",
+        "reports/native_loading_queue_work_items_bl.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Actual pointer arrays, 10h owning-name work records and 24h jobs; preserve raw result/context and inspect returning-free continuations.",
+      "frontier": "reports/native_loading_queue_frontier_bk.json"
+    },
+    {
+      "id": "orch4_native_fileblock_frontier_bl",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-filestore-request-bk",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-filestore-request-bk",
+      "base_commit": "c2da6ab4d304fa7c9ee5488239312abb15e9feda",
+      "addresses": [],
+      "files": [
+        "docs/NATIVE_FILEBLOCK_FRONTIER_BL.md",
+        "reports/native_fileblock_frontier_bl.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Read-only FileBlock preparation/construction/deletion and VFS block lifetime dependency audit.",
+      "frontier": "reports/native_loading_queue_frontier_bk.json"
     }
   ],
   "snapshot_after_analysis": {

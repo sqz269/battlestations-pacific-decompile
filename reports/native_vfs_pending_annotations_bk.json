@@ -1,0 +1,1120 @@
+{
+  "packet": "orch4_native_vfs_pending_annotations_bk",
+  "entries": [
+    {
+      "address": "00bdda10",
+      "name": "BSP_VFS_OpenFileOverlapped",
+      "before_comment": {
+        "address": "00bdda10",
+        "function_name": "BSP_VFS_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bdda10]\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bdda10] update\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX manager; firstName,secondName,callback,flags stack; AL; RET10h. manager pending dispatcher. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body135 bytes; ECX captured manager; stack first-header,second-header,callback,flags; RET10h; raw AL. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdda10 -> BSP_VFS_OpenFileOverlapped\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdda10\", \"name\": \"BSP_VFS_OpenFileOverlapped\", \"evidence\": \"ECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX manager; firstName,secondName,callback,flags stack; AL; RET10h. manager pending dispatcher. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\"})\n",
+      "ledger_function_output": "00bdda10 function submit_native_vfs_pending_00bdda10\n",
+      "after_comment": {
+        "address": "00bdda10",
+        "function_name": "BSP_VFS_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bdda10]\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bdda10] update\nECX manager; first name, second name, callback and flags stack; AL acceptance; RET 10h. The cFileSystem::OpenFileOverlapped diagnostic identifies this dispatcher. Passes all four arguments unchanged to 00bdc100; traverses matching mounts with the SECOND name argument through 00bdd0a0, saves visitor acceptance byte +14h, destroys the visitor through 00bdb740, and returns that byte. Provider dispatch and asynchronous lifetime remain outside this reconstruction. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX manager; firstName,secondName,callback,flags stack; AL; RET10h. manager pending dispatcher. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 00bdda10] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body135 bytes; ECX captured manager; stack first-header,second-header,callback,flags; RET10h; raw AL. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bdb0b0",
+      "name": "BSP_VFS_TickProviders",
+      "before_comment": {
+        "address": "00bdb0b0",
+        "function_name": "BSP_VFS_TickProviders",
+        "comment": "[BSP reconstruction 00bdb0b0]\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bdb0b0] update\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json ECX manager; RET. pump every mount record. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body108 bytes; ECX manager; RET; no specified result. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdb0b0 -> BSP_VFS_TickProviders\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdb0b0\", \"name\": \"BSP_VFS_TickProviders\", \"evidence\": \"ECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json ECX manager; RET. pump every mount record. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\"})\n",
+      "ledger_function_output": "00bdb0b0 function pump_native_vfs_pending_00bdb0b0\n",
+      "after_comment": {
+        "address": "00bdb0b0",
+        "function_name": "BSP_VFS_TickProviders",
+        "comment": "[BSP reconstruction 00bdb0b0]\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bdb0b0] update\nECX VFS manager; no stack arguments; RET Walk manager provider tree descriptor+3Ch/sentinel+40h, provider=node+18h, invoke virtual+28h before advancing existing iterator. No per-call provider reference, snapshot or lock in inspected routine; registered physical table maps slot to00bf46b0. Direct callers00737b7f and0050932a. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json ECX manager; RET. pump every mount record. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 00bdb0b0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body108 bytes; ECX manager; RET; no specified result. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bdc100",
+      "name": "BSP_VFS_OverlappedVisitor_Construct",
+      "before_comment": {
+        "address": "00bdc100",
+        "function_name": "BSP_VFS_OverlappedVisitor_Construct",
+        "comment": "[BSP reconstruction 00bdc100]\nECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h. Constructs visitor table 00d68478, copies first and second names to +4/+8 and +0Ch/+10h, clears acceptance byte +14h, stores flags unchanged at +18h and callback at +1Ch. Table visit +4 is 00bdc1e0 and acceptance +8 is 00bdc1d0; their dispatch semantics were not expanded. This name is a descriptive reconstruction hypothesis. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body195 bytes; ECX actual20h visitor; stack first-header,second-header,callback,flags; RET10h; EAX visitor. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdc100 -> BSP_VFS_OverlappedVisitor_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdc100\", \"name\": \"BSP_VFS_OverlappedVisitor_Construct\", \"evidence\": \"ECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h. Constructs visitor table 00d68478, copies first and second names to +4/+8 and +0Ch/+10h, clears acceptance byte +14h, stores flags unchanged at +18h and callback at +1Ch. Table visit +4 is 00bdc1e0 and acceptance +8 is 00bdc1d0; their dispatch semantics were not expanded. This name is a descriptive reconstruction hypothesis. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\"})\n",
+      "ledger_function_output": "00bdc100 function construct_native_vfs_pending_visitor_00bdc100\n",
+      "after_comment": {
+        "address": "00bdc100",
+        "function_name": "BSP_VFS_OverlappedVisitor_Construct",
+        "comment": "[BSP reconstruction 00bdc100]\nECX visitor; first name, second name, callback and flags stack; EAX visitor; RET 10h. Constructs visitor table 00d68478, copies first and second names to +4/+8 and +0Ch/+10h, clears acceptance byte +14h, stores flags unchanged at +18h and callback at +1Ch. Table visit +4 is 00bdc1e0 and acceptance +8 is 00bdc1d0; their dispatch semantics were not expanded. This name is a descriptive reconstruction hypothesis. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00bdc100] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body195 bytes; ECX actual20h visitor; stack first-header,second-header,callback,flags; RET10h; EAX visitor. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bdb740",
+      "name": "BSP_VFS_OverlappedVisitor_Destroy",
+      "before_comment": {
+        "address": "00bdb740",
+        "function_name": "BSP_VFS_OverlappedVisitor_Destroy",
+        "comment": "[BSP reconstruction 00bdb740]\nECX visitor; RET. Destroys copied second and first names at +0Ch/+10h and +4/+8, then installs base table00d68380. Does not cancel provider work or release stream/I/O resources. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body122 bytes; ECX visitor; RET; no specified result. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdb740 -> BSP_VFS_OverlappedVisitor_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdb740\", \"name\": \"BSP_VFS_OverlappedVisitor_Destroy\", \"evidence\": \"ECX visitor; RET. Destroys copied second and first names at +0Ch/+10h and +4/+8, then installs base table00d68380. Does not cancel provider work or release stream/I/O resources. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\"})\n",
+      "ledger_function_output": "00bdb740 function destroy_native_vfs_pending_visitor_00bdb740\n",
+      "after_comment": {
+        "address": "00bdb740",
+        "function_name": "BSP_VFS_OverlappedVisitor_Destroy",
+        "comment": "[BSP reconstruction 00bdb740]\nECX visitor; RET. Destroys copied second and first names at +0Ch/+10h and +4/+8, then installs base table00d68380. Does not cancel provider work or release stream/I/O resources. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bdb740] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body122 bytes; ECX visitor; RET; no specified result. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bdc1d0",
+      "name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+      "before_comment": {
+        "address": "00bdc1d0",
+        "function_name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+        "comment": "[BSP reconstruction 00bdc1d0]\nECX visitor; AL acceptance; RET. Reads visitor acceptance byte +14h. Missing function definition at audit time; exact body is MOV AL,[ECX+14h]; RET. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body4 bytes; ECX visitor; RET; raw AL=current byte14. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdc1d0 -> BSP_VFS_OverlappedVisitor_IsAccepted\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdc1d0\", \"name\": \"BSP_VFS_OverlappedVisitor_IsAccepted\", \"evidence\": \"ECX visitor; AL acceptance; RET. Reads visitor acceptance byte +14h. Missing function definition at audit time; exact body is MOV AL,[ECX+14h]; RET. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\"})\n",
+      "ledger_function_output": "00bdc1d0 function read_native_vfs_pending_result_00bdc1d0\n",
+      "after_comment": {
+        "address": "00bdc1d0",
+        "function_name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+        "comment": "[BSP reconstruction 00bdc1d0]\nECX visitor; AL acceptance; RET. Reads visitor acceptance byte +14h. Missing function definition at audit time; exact body is MOV AL,[ECX+14h]; RET. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bdc1d0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body4 bytes; ECX visitor; RET; raw AL=current byte14. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bdc1e0",
+      "name": "BSP_VFS_OverlappedVisitor_VisitMount",
+      "before_comment": {
+        "address": "00bdc1e0",
+        "function_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+        "comment": "[BSP reconstruction 00bdc1e0]\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bdc1e0] update\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX visitor; mount,suffix stack; RET8. provider pending dispatch; suffix unused. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body40 bytes; ECX visitor; stack payload,unused-suffix; RET8; provider AL stored at14. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00bdc1e0 -> BSP_VFS_OverlappedVisitor_VisitMount\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdc1e0\", \"name\": \"BSP_VFS_OverlappedVisitor_VisitMount\", \"evidence\": \"ECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX visitor; mount,suffix stack; RET8. provider pending dispatch; suffix unused. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\"})\n",
+      "ledger_function_output": "00bdc1e0 function read_native_vfs_pending_provider_00bdc1e0\n",
+      "after_comment": {
+        "address": "00bdc1e0",
+        "function_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+        "comment": "[BSP reconstruction 00bdc1e0]\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bdc1e0] update\nECX visitor; mount record and traversal suffix stack; RET 8. Reads provider from matched mount+8, calls provider virtual+0Ch with pointers to visitor first name+4, second name+0Ch, callback+1Ch and flags+18h. Traversal suffix is unused. Stores provider AL into visitor acceptance byte+14h. Missing function definition at audit time. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX visitor; mount,suffix stack; RET8. provider pending dispatch; suffix unused. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 00bdc1e0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body40 bytes; ECX visitor; stack payload,unused-suffix; RET8; provider AL stored at14. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00be7cb0",
+      "name": "BSP_FileStore_RejectPendingOpen",
+      "before_comment": {
+        "address": "00be7cb0",
+        "function_name": "BSP_FileStore_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00be7cb0]\nMissing5-byte body. FileStore table00d689e8+0Ch. XOR AL,AL; RET10h. Never queues/calls callback. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body5 bytes; ECX and four stack arguments unread; XOR AL,AL; RET10h. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00be7cb0 -> BSP_FileStore_RejectPendingOpen\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7cb0\", \"name\": \"BSP_FileStore_RejectPendingOpen\", \"evidence\": \"Missing5-byte body. FileStore table00d689e8+0Ch. XOR AL,AL; RET10h. Never queues/calls callback. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00be7cb0 function decline_native_filestore_pending_00be7cb0\n",
+      "after_comment": {
+        "address": "00be7cb0",
+        "function_name": "BSP_FileStore_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00be7cb0]\nMissing5-byte body. FileStore table00d689e8+0Ch. XOR AL,AL; RET10h. Never queues/calls callback. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00be7cb0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body5 bytes; ECX and four stack arguments unread; XOR AL,AL; RET10h. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00be7cc0",
+      "name": "BSP_FileStore_TickNoOp",
+      "before_comment": {
+        "address": "00be7cc0",
+        "function_name": "BSP_FileStore_TickNoOp",
+        "comment": "[BSP reconstruction 00be7cc0]\nMissing1-byte RET. FileStore table00d689e8+28h. No pending processing. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body1 bytes; ECX unread; RET. reports/native_vfs_pending_routes_bk.json",
+      "ledger_name_output": "00be7cc0 -> BSP_FileStore_TickNoOp\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7cc0\", \"name\": \"BSP_FileStore_TickNoOp\", \"evidence\": \"Missing1-byte RET. FileStore table00d689e8+28h. No pending processing. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00be7cc0 function tick_native_filestore_pending_00be7cc0\n",
+      "after_comment": {
+        "address": "00be7cc0",
+        "function_name": "BSP_FileStore_TickNoOp",
+        "comment": "[BSP reconstruction 00be7cc0]\nMissing1-byte RET. FileStore table00d689e8+28h. No pending processing. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00be7cc0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body1 bytes; ECX unread; RET. reports/native_vfs_pending_routes_bk.json"
+      }
+    },
+    {
+      "address": "00bf43b0",
+      "name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+      "before_comment": {
+        "address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body759 bytes; ECX provider; stack first header, second header, callback DWORD, flags DWORD; AL acceptance; RET 10h. reports/native_physical_pending_io_bk.json",
+      "ledger_name_output": "00bf43b0 -> BSP_PhysicalDirectory_OpenFileOverlapped\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf43b0\", \"name\": \"BSP_PhysicalDirectory_OpenFileOverlapped\", \"evidence\": \"ECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md.\"})\n",
+      "ledger_function_output": "00bf43b0 function submit_native_physical_pending_io_00bf43b0\n",
+      "after_comment": {
+        "address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md.\n\n[BSP reconstruction 00bf43b0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body759 bytes; ECX provider; stack first header, second header, callback DWORD, flags DWORD; AL acceptance; RET 10h. reports/native_physical_pending_io_bk.json"
+      }
+    },
+    {
+      "address": "00bf46b0",
+      "name": "BSP_PhysicalDirectory_PollReadCompletions",
+      "before_comment": {
+        "address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body299 bytes; ECX provider; no stack arguments; RET. reports/native_physical_pending_io_bk.json",
+      "ledger_name_output": "00bf46b0 -> BSP_PhysicalDirectory_PollReadCompletions\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf46b0\", \"name\": \"BSP_PhysicalDirectory_PollReadCompletions\", \"evidence\": \"ECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md.\"})\n",
+      "ledger_function_output": "00bf46b0 function pump_native_physical_pending_io_00bf46b0\n",
+      "after_comment": {
+        "address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md.\n\n[BSP reconstruction 00bf46b0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body299 bytes; ECX provider; no stack arguments; RET. reports/native_physical_pending_io_bk.json"
+      }
+    },
+    {
+      "address": "00bf4240",
+      "name": "BSP_PhysicalPendingQueue_Erase",
+      "before_comment": {
+        "address": "00bf4240",
+        "function_name": "BSP_PhysicalPendingQueue_Erase",
+        "comment": "[BSP reconstruction 00bf4240]\nECX queue descriptor; valid index stack; RET4 Assign each later38h record to its predecessor, destroy final names, decrement count. Complete96-byte body absent from Ghidra at audit; raw call at00bf47b9 lies after misleading no-return free. No capacity shrink or I/O resource release. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body96 bytes; ECX queue; stack signed index; RET 4. reports/native_physical_pending_io_bk.json",
+      "ledger_name_output": "00bf4240 -> BSP_PhysicalPendingQueue_Erase\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf4240\", \"name\": \"BSP_PhysicalPendingQueue_Erase\", \"evidence\": \"ECX queue descriptor; valid index stack; RET4 Assign each later38h record to its predecessor, destroy final names, decrement count. Complete96-byte body absent from Ghidra at audit; raw call at00bf47b9 lies after misleading no-return free. No capacity shrink or I/O resource release. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\"})\n",
+      "ledger_function_output": "00bf4240 function erase_native_physical_pending_record_00bf4240\n",
+      "after_comment": {
+        "address": "00bf4240",
+        "function_name": "BSP_PhysicalPendingQueue_Erase",
+        "comment": "[BSP reconstruction 00bf4240]\nECX queue descriptor; valid index stack; RET4 Assign each later38h record to its predecessor, destroy final names, decrement count. Complete96-byte body absent from Ghidra at audit; raw call at00bf47b9 lies after misleading no-return free. No capacity shrink or I/O resource release. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf4240] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body96 bytes; ECX queue; stack signed index; RET 4. reports/native_physical_pending_io_bk.json"
+      }
+    },
+    {
+      "address": "00bf41c0",
+      "name": "BSP_PhysicalReadQueue_Append",
+      "before_comment": {
+        "address": "00bf41c0",
+        "function_name": "BSP_PhysicalReadQueue_Append",
+        "comment": "[BSP reconstruction 00bf41c0]\nECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf41c0] update\nECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX queue descriptor; source record stack; RET4 Reverified append: count==capacity grows to max(1,2*capacity), copy-construct at count, increment count. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body122 bytes; ECX queue; stack source record; RET 4. reports/native_physical_pending_io_bk.json",
+      "ledger_name_output": "00bf41c0 -> BSP_PhysicalReadQueue_Append\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf41c0\", \"name\": \"BSP_PhysicalReadQueue_Append\", \"evidence\": \"ECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX queue descriptor; source record stack; RET4 Reverified append: count==capacity grows to max(1,2*capacity), copy-construct at count, increment count. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\"})\n",
+      "ledger_function_output": "00bf41c0 function append_native_physical_pending_record_00bf41c0\n",
+      "after_comment": {
+        "address": "00bf41c0",
+        "function_name": "BSP_PhysicalReadQueue_Append",
+        "comment": "[BSP reconstruction 00bf41c0]\nECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf41c0] update\nECX queue descriptor; source request stack; RET 4. Appends a 38h-stride record using00bf3c10, doubles capacity through00bf3da0 when needed, then increments count. Growth/error internals are not reconstructed. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX queue descriptor; source record stack; RET4 Reverified append: count==capacity grows to max(1,2*capacity), copy-construct at count, increment count. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf41c0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body122 bytes; ECX queue; stack source record; RET 4. reports/native_physical_pending_io_bk.json"
+      }
+    },
+    {
+      "address": "00bf3d00",
+      "name": "BSP_PhysicalPendingRecord_Assign",
+      "before_comment": {
+        "address": "00bf3d00",
+        "function_name": "BSP_PhysicalPendingRecord_Assign",
+        "comment": "[BSP reconstruction 00bf3d00]\nECX destination; source record stack; EAX destination; RET4 Copies stable I/O pointer/scalar values and deep-copies both owned strings; does not copy offsets14h/34h. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body159 bytes; ECX destination; stack source record; EAX destination; RET 4. reports/native_physical_pending_io_bk.json",
+      "ledger_name_output": "00bf3d00 -> BSP_PhysicalPendingRecord_Assign\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf3d00\", \"name\": \"BSP_PhysicalPendingRecord_Assign\", \"evidence\": \"ECX destination; source record stack; EAX destination; RET4 Copies stable I/O pointer/scalar values and deep-copies both owned strings; does not copy offsets14h/34h. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\"})\n",
+      "ledger_function_output": "00bf3d00 function assign_native_physical_pending_record_00bf3d00\n",
+      "after_comment": {
+        "address": "00bf3d00",
+        "function_name": "BSP_PhysicalPendingRecord_Assign",
+        "comment": "[BSP reconstruction 00bf3d00]\nECX destination; source record stack; EAX destination; RET4 Copies stable I/O pointer/scalar values and deep-copies both owned strings; does not copy offsets14h/34h. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf3d00] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body159 bytes; ECX destination; stack source record; EAX destination; RET 4. reports/native_physical_pending_io_bk.json"
+      }
+    },
+    {
+      "address": "00bd9e30",
+      "name": "BSP_NotifyNativeVfsRequestFailure",
+      "before_comment": {
+        "address": "00bd9e30",
+        "function_name": "FUN_00bd9e30"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body11 bytes; ECX manager; discarded DWORD stack; RET4; CALL current manager+90 without stack arguments. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00bd9e30 -> BSP_NotifyNativeVfsRequestFailure\n",
+      "ledger_function_output": "00bd9e30 function notify_native_vfs_request_failure_00bd9e30\n",
+      "after_comment": {
+        "address": "00bd9e30",
+        "function_name": "BSP_NotifyNativeVfsRequestFailure",
+        "comment": "[BSP reconstruction 00bd9e30]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body11 bytes; ECX manager; discarded DWORD stack; RET4; CALL current manager+90 without stack arguments. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be4db0",
+      "name": "BSP_DecrementNativeFileStorePendingIterator",
+      "before_comment": {
+        "address": "00be4db0",
+        "function_name": "FUN_00be4db0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body137 bytes; ECX iterator; RET or BF6713 tail. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be4db0 -> BSP_DecrementNativeFileStorePendingIterator\n",
+      "ledger_function_output": "00be4db0 function decrement_native_file_store_pending_iterator_00be4db0\n",
+      "after_comment": {
+        "address": "00be4db0",
+        "function_name": "BSP_DecrementNativeFileStorePendingIterator",
+        "comment": "[BSP reconstruction 00be4db0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body137 bytes; ECX iterator; RET or BF6713 tail. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be5530",
+      "name": "BSP_LowerBoundNativeFileStorePendingName",
+      "before_comment": {
+        "address": "00be5530",
+        "function_name": "FUN_00be5530"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body83 bytes; ECX tree; name stack; EAX node; RET4. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be5530 -> BSP_LowerBoundNativeFileStorePendingName\n",
+      "ledger_function_output": "00be5530 function lower_bound_native_file_store_pending_name_00be5530\n",
+      "after_comment": {
+        "address": "00be5530",
+        "function_name": "BSP_LowerBoundNativeFileStorePendingName",
+        "comment": "[BSP reconstruction 00be5530]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body83 bytes; ECX tree; name stack; EAX node; RET4. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be5630",
+      "name": "BSP_UpperBoundNativeFileStorePendingName",
+      "before_comment": {
+        "address": "00be5630",
+        "function_name": "FUN_00be5630"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body84 bytes; ECX tree; name stack; EAX node; RET4. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be5630 -> BSP_UpperBoundNativeFileStorePendingName\n",
+      "ledger_function_output": "00be5630 function upper_bound_native_file_store_pending_name_00be5630\n",
+      "after_comment": {
+        "address": "00be5630",
+        "function_name": "BSP_UpperBoundNativeFileStorePendingName",
+        "comment": "[BSP reconstruction 00be5630]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body84 bytes; ECX tree; name stack; EAX node; RET4. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be5750",
+      "name": "BSP_DistanceNativeFileStorePendingIterators",
+      "before_comment": {
+        "address": "00be5750",
+        "function_name": "FUN_00be5750"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body57 bytes; cdecl six stack DWORDs; last ignored; RET; caller BE7A0B ADD ESP,18h. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be5750 -> BSP_DistanceNativeFileStorePendingIterators\n",
+      "ledger_function_output": "00be5750 function distance_native_file_store_pending_iterators_00be5750\n",
+      "after_comment": {
+        "address": "00be5750",
+        "function_name": "BSP_DistanceNativeFileStorePendingIterators",
+        "comment": "[BSP reconstruction 00be5750]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body57 bytes; cdecl six stack DWORDs; last ignored; RET; caller BE7A0B ADD ESP,18h. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be5f00",
+      "name": "BSP_FindNativeFileStorePendingName",
+      "before_comment": {
+        "address": "00be5f00",
+        "function_name": "FUN_00be5f00"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body102 bytes; ECX tree; output,name stack; EAX output; RET8. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be5f00 -> BSP_FindNativeFileStorePendingName\n",
+      "ledger_function_output": "00be5f00 function find_native_file_store_pending_name_00be5f00\n",
+      "after_comment": {
+        "address": "00be5f00",
+        "function_name": "BSP_FindNativeFileStorePendingName",
+        "comment": "[BSP reconstruction 00be5f00]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body102 bytes; ECX tree; output,name stack; EAX output; RET8. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be6120",
+      "name": "BSP_ConstructNativeFileStorePendingPair",
+      "before_comment": {
+        "address": "00be6120",
+        "function_name": "FUN_00be6120"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body75 bytes; ECX output; name,callback-word-pointer stack; EAX output; RET8. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be6120 -> BSP_ConstructNativeFileStorePendingPair\n",
+      "ledger_function_output": "00be6120 function construct_native_file_store_pending_pair_00be6120\n",
+      "after_comment": {
+        "address": "00be6120",
+        "function_name": "BSP_ConstructNativeFileStorePendingPair",
+        "comment": "[BSP reconstruction 00be6120]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body75 bytes; ECX output; name,callback-word-pointer stack; EAX output; RET8. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be62e0",
+      "name": "BSP_CopyNativeFileStorePendingPair",
+      "before_comment": {
+        "address": "00be62e0",
+        "function_name": "FUN_00be62e0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body72 bytes; ECX output; source pair stack; EAX output; RET4. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be62e0 -> BSP_CopyNativeFileStorePendingPair\n",
+      "ledger_function_output": "00be62e0 function copy_native_file_store_pending_pair_00be62e0\n",
+      "after_comment": {
+        "address": "00be62e0",
+        "function_name": "BSP_CopyNativeFileStorePendingPair",
+        "comment": "[BSP reconstruction 00be62e0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body72 bytes; ECX output; source pair stack; EAX output; RET4. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be63e0",
+      "name": "BSP_ConstructNativeFileStorePendingNode",
+      "before_comment": {
+        "address": "00be63e0",
+        "function_name": "FUN_00be63e0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body112 bytes; ECX node; left,parent,right,pair,color stack; EAX node; RET14h. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be63e0 -> BSP_ConstructNativeFileStorePendingNode\n",
+      "ledger_function_output": "00be63e0 function construct_native_file_store_pending_node_00be63e0\n",
+      "after_comment": {
+        "address": "00be63e0",
+        "function_name": "BSP_ConstructNativeFileStorePendingNode",
+        "comment": "[BSP reconstruction 00be63e0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body112 bytes; ECX node; left,parent,right,pair,color stack; EAX node; RET14h. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be6630",
+      "name": "BSP_AllocateNativeFileStorePendingNode",
+      "before_comment": {
+        "address": "00be6630",
+        "function_name": "FUN_00be6630"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body114 bytes; five stack DWORDs left,parent,right,pair,color; EAX node; RET14h. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be6630 -> BSP_AllocateNativeFileStorePendingNode\n",
+      "ledger_function_output": "00be6630 function allocate_native_file_store_pending_node_00be6630\n",
+      "after_comment": {
+        "address": "00be6630",
+        "function_name": "BSP_AllocateNativeFileStorePendingNode",
+        "comment": "[BSP reconstruction 00be6630]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body114 bytes; five stack DWORDs left,parent,right,pair,color; EAX node; RET14h. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be6ee0",
+      "name": "BSP_LinkNativeFileStorePendingNode",
+      "before_comment": {
+        "address": "00be6ee0",
+        "function_name": "FUN_00be6ee0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body492 bytes; ECX tree; output,left-byte,parent,pair stack; EAX output; RET10h. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be6ee0 -> BSP_LinkNativeFileStorePendingNode\n",
+      "ledger_function_output": "00be6ee0 function link_native_file_store_pending_node_00be6ee0\n",
+      "after_comment": {
+        "address": "00be6ee0",
+        "function_name": "BSP_LinkNativeFileStorePendingNode",
+        "comment": "[BSP reconstruction 00be6ee0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body492 bytes; ECX tree; output,left-byte,parent,pair stack; EAX output; RET10h. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be7460",
+      "name": "BSP_InsertNativeFileStorePendingPair",
+      "before_comment": {
+        "address": "00be7460",
+        "function_name": "FUN_00be7460"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body276 bytes; ECX tree; output,pair stack; EAX output; RET8. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be7460 -> BSP_InsertNativeFileStorePendingPair\n",
+      "ledger_function_output": "00be7460 function insert_native_file_store_pending_pair_00be7460\n",
+      "after_comment": {
+        "address": "00be7460",
+        "function_name": "BSP_InsertNativeFileStorePendingPair",
+        "comment": "[BSP reconstruction 00be7460]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body276 bytes; ECX tree; output,pair stack; EAX output; RET8. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be79c0",
+      "name": "BSP_EraseNativeFileStorePendingName",
+      "before_comment": {
+        "address": "00be79c0",
+        "function_name": "FUN_00be79c0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body107 bytes; ECX pending TREE; name stack; EAX erased count; RET4. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be79c0 -> BSP_EraseNativeFileStorePendingName\n",
+      "ledger_function_output": "00be79c0 function erase_native_file_store_pending_name_00be79c0\n",
+      "after_comment": {
+        "address": "00be79c0",
+        "function_name": "BSP_EraseNativeFileStorePendingName",
+        "comment": "[BSP reconstruction 00be79c0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body107 bytes; ECX pending TREE; name stack; EAX erased count; RET4. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be7cd0",
+      "name": "BSP_FileStore_RequestFile",
+      "before_comment": {
+        "address": "00be7cd0",
+        "function_name": "BSP_FileStore_RequestFile",
+        "comment": "[BSP reconstruction 00be7cd0]\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00be7cd0] update\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX store; originalName,userCallback stack; AL; RET8. FileStore request. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body672 bytes; ECX actual store; original-name-header,callback DWORD stack; AL boolean; RET8. reports/native_filestore_request_bk.json",
+      "ledger_name_output": "00be7cd0 -> BSP_FileStore_RequestFile\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7cd0\", \"name\": \"BSP_FileStore_RequestFile\", \"evidence\": \"ECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX store; originalName,userCallback stack; AL; RET8. FileStore request. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\"})\n",
+      "ledger_function_output": "00be7cd0 function request_native_file_store_00be7cd0\n",
+      "after_comment": {
+        "address": "00be7cd0",
+        "function_name": "BSP_FileStore_RequestFile",
+        "comment": "[BSP reconstruction 00be7cd0]\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json.\n\n[BSP reconstruction 00be7cd0] update\nECX store; name and completion callback stack; AL boolean; RET 8. The cFileStore::RequestFile diagnostics identify this operation. Normalizes/resolves a local name, returns true for resident or pending duplicates without another submission or callback invocation in this body, then inserts a pending callback record before calling 00bdda10(local resolved name, original name, 00be7b20, 2). There is no public flags parameter. Rejected submission invokes 00be79c0 cleanup and 00bd9e30(-1), then returns false. Accepted submission is not proof of completed population. Callback lifecycle and full provider async dispatch remain unimplemented. Evidence: docs/VFS_PROVIDER_FLAGS.md and reports/vfs_provider_flags_audit.json. ECX store; originalName,userCallback stack; AL; RET8. FileStore request. Implemented bounded manager/FileStore request route with both original full names, per-mount pumps, stable factory, flags2 request dedup, pending erase before AddFile/two-name user callback. Terminal physical failure has no callback and leaves pending key; explicit stop/drain, no cancellation or thread-affinity claim. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 00be7cd0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body672 bytes; ECX actual store; original-name-header,callback DWORD stack; AL boolean; RET8. reports/native_filestore_request_bk.json"
+      }
+    },
+    {
+      "address": "00be4d20",
+      "name": "BSP_DecrementNativeFileStoreResidentIterator",
+      "before_comment": {
+        "address": "00be4d20",
+        "function_name": "FUN_00be4d20"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body137 bytes; ECX iterator {owner,node}; RET or BF6713 tail. reports/native_filestore_resident_insert_bk.json",
+      "ledger_name_output": "00be4d20 -> BSP_DecrementNativeFileStoreResidentIterator\n",
+      "ledger_function_output": "00be4d20 function decrement_native_file_store_resident_iterator_00be4d20\n",
+      "after_comment": {
+        "address": "00be4d20",
+        "function_name": "BSP_DecrementNativeFileStoreResidentIterator",
+        "comment": "[BSP reconstruction 00be4d20]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body137 bytes; ECX iterator {owner,node}; RET or BF6713 tail. reports/native_filestore_resident_insert_bk.json"
+      }
+    },
+    {
+      "address": "00be6cf0",
+      "name": "BSP_LinkNativeFileStoreResidentNode",
+      "before_comment": {
+        "address": "00be6cf0",
+        "function_name": "FUN_00be6cf0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body492 bytes; ECX tree; stack output,left-byte DWORD slot,parent,pair; EAX output; RET10. reports/native_filestore_resident_insert_bk.json",
+      "ledger_name_output": "00be6cf0 -> BSP_LinkNativeFileStoreResidentNode\n",
+      "ledger_function_output": "00be6cf0 function link_native_file_store_resident_node_00be6cf0\n",
+      "after_comment": {
+        "address": "00be6cf0",
+        "function_name": "BSP_LinkNativeFileStoreResidentNode",
+        "comment": "[BSP reconstruction 00be6cf0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body492 bytes; ECX tree; stack output,left-byte DWORD slot,parent,pair; EAX output; RET10. reports/native_filestore_resident_insert_bk.json"
+      }
+    },
+    {
+      "address": "00be6590",
+      "name": "BSP_AllocateNativeFileStoreResidentNode",
+      "before_comment": {
+        "address": "00be6590",
+        "function_name": "FUN_00be6590"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body126 bytes; five stack words left,parent,right,pair,color; EAX node; RET14; ECX unused. reports/native_filestore_resident_insert_bk.json",
+      "ledger_name_output": "00be6590 -> BSP_AllocateNativeFileStoreResidentNode\n",
+      "ledger_function_output": "00be6590 function allocate_native_file_store_resident_node_00be6590\n",
+      "after_comment": {
+        "address": "00be6590",
+        "function_name": "BSP_AllocateNativeFileStoreResidentNode",
+        "comment": "[BSP reconstruction 00be6590]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body126 bytes; five stack words left,parent,right,pair,color; EAX node; RET14; ECX unused. reports/native_filestore_resident_insert_bk.json"
+      }
+    },
+    {
+      "address": "00be6170",
+      "name": "BSP_CopyNativeFileStoreResidentPair",
+      "before_comment": {
+        "address": "00be6170",
+        "function_name": "FUN_00be6170"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body129 bytes; ECX output; stack pair; EAX output; RET4. reports/native_filestore_resident_insert_bk.json",
+      "ledger_name_output": "00be6170 -> BSP_CopyNativeFileStoreResidentPair\n",
+      "ledger_function_output": "00be6170 function copy_native_file_store_resident_pair_00be6170\n",
+      "after_comment": {
+        "address": "00be6170",
+        "function_name": "BSP_CopyNativeFileStoreResidentPair",
+        "comment": "[BSP reconstruction 00be6170]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body129 bytes; ECX output; stack pair; EAX output; RET4. reports/native_filestore_resident_insert_bk.json"
+      }
+    },
+    {
+      "address": "00be7760",
+      "name": "BSP_FileStore_AddFile",
+      "before_comment": {
+        "address": "00be7760",
+        "function_name": "BSP_FileStore_AddFile",
+        "comment": "[BSP reconstruction 00be7760]\nECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md.\n\n[BSP reconstruction 00be7760] update\nECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md. ECX FileStore provider; stack name,source; RET8; no semantic return Normalize insertion key; first duplicate wins, retain stream only on new insert. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body321 bytes; ECX store; stack name,stream; RET8. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be7760 -> BSP_FileStore_AddFile\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7760\", \"name\": \"BSP_FileStore_AddFile\", \"evidence\": \"ECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md. ECX FileStore provider; stack name,source; RET8; no semantic return Normalize insertion key; first duplicate wins, retain stream only on new insert. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\"})\n",
+      "ledger_function_output": "00be7760 function add_native_file_store_file_00be7760\n",
+      "after_comment": {
+        "address": "00be7760",
+        "function_name": "BSP_FileStore_AddFile",
+        "comment": "[BSP reconstruction 00be7760]\nECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md.\n\n[BSP reconstruction 00be7760] update\nECX store; name/stream stack RET8. Copiedname normalized00bee780/00bee690; primarytree+14 lookup. Firstduplicate logs/returnswithoutretainingreplacement. Newentry retains suppliedstream wrapper, theninserts/balancestemporaryrefs. TypedMemoryStream-only map ownership testedwithinstalledDAT; no secondarytree/batch behavior. docs/ARCHIVE_PROVIDER_ENTRY.md. ECX FileStore provider; stack name,source; RET8; no semantic return Normalize insertion key; first duplicate wins, retain stream only on new insert. Preserve existing FileStore name. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be7760] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body321 bytes; ECX store; stack name,stream; RET8. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be78b0",
+      "name": "BSP_FileStore_CompletePendingRequest",
+      "before_comment": {
+        "address": "00be78b0",
+        "function_name": "BSP_FileStore_CompletePendingRequest",
+        "comment": "[BSP reconstruction 00be78b0]\nNormalizes firstName for pending lookup; saves node+14 callback, erases pending key, calls AddFile, then caller callback(firstName,secondName), no stream argument. ECX store, three stack arguments, RET0Ch. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body207 bytes; ECX store; stack first,second,stream; RET0C. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be78b0 -> BSP_FileStore_CompletePendingRequest\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be78b0\", \"name\": \"BSP_FileStore_CompletePendingRequest\", \"evidence\": \"Normalizes firstName for pending lookup; saves node+14 callback, erases pending key, calls AddFile, then caller callback(firstName,secondName), no stream argument. ECX store, three stack arguments, RET0Ch. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00be78b0 function complete_native_file_store_file_00be78b0\n",
+      "after_comment": {
+        "address": "00be78b0",
+        "function_name": "BSP_FileStore_CompletePendingRequest",
+        "comment": "[BSP reconstruction 00be78b0]\nNormalizes firstName for pending lookup; saves node+14 callback, erases pending key, calls AddFile, then caller callback(firstName,secondName), no stream argument. ECX store, three stack arguments, RET0Ch. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00be78b0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body207 bytes; ECX store; stack first,second,stream; RET0C. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be7b20",
+      "name": "BSP_FileStore_CompletePendingRequestAdapter",
+      "before_comment": {
+        "address": "00be7b20",
+        "function_name": "BSP_FileStore_CompletePendingRequestAdapter",
+        "comment": "[BSP reconstruction 00be7b20]\nMissing31-byte body. Calls004fc150, reads current factory+8, rearranges(stream,first,second) to ECX-store completion(first,second,stream). RET0Ch. Does not capture an originating store. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body31 bytes; stack stream,first,second; RET0C; calls current factory getter. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be7b20 -> BSP_FileStore_CompletePendingRequestAdapter\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7b20\", \"name\": \"BSP_FileStore_CompletePendingRequestAdapter\", \"evidence\": \"Missing31-byte body. Calls004fc150, reads current factory+8, rearranges(stream,first,second) to ECX-store completion(first,second,stream). RET0Ch. Does not capture an originating store. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00be7b20 function dispatch_native_file_store_completion_00be7b20\n",
+      "after_comment": {
+        "address": "00be7b20",
+        "function_name": "BSP_FileStore_CompletePendingRequestAdapter",
+        "comment": "[BSP reconstruction 00be7b20]\nMissing31-byte body. Calls004fc150, reads current factory+8, rearranges(stream,first,second) to ECX-store completion(first,second,stream). RET0Ch. Does not capture an originating store. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00be7b20] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body31 bytes; stack stream,first,second; RET0C; calls current factory getter. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be5cf0",
+      "name": "BSP_DestroyNativeFileStoreResidentPair",
+      "before_comment": {
+        "address": "00be5cf0",
+        "function_name": "FUN_00be5cf0"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body127 bytes; ECX actual0Ch pair; RET. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be5cf0 -> BSP_DestroyNativeFileStoreResidentPair\n",
+      "ledger_function_output": "00be5cf0 function destroy_native_file_store_resident_pair_00be5cf0\n",
+      "after_comment": {
+        "address": "00be5cf0",
+        "function_name": "BSP_DestroyNativeFileStoreResidentPair",
+        "comment": "[BSP reconstruction 00be5cf0]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body127 bytes; ECX actual0Ch pair; RET. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be6090",
+      "name": "BSP_ConstructNativeFileStoreResidentPair",
+      "before_comment": {
+        "address": "00be6090",
+        "function_name": "FUN_00be6090"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body132 bytes; ECX pair; stack name,stream-pointer-cell; RET8; EAX pair. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be6090 -> BSP_ConstructNativeFileStoreResidentPair\n",
+      "ledger_function_output": "00be6090 function construct_native_file_store_resident_pair_00be6090\n",
+      "after_comment": {
+        "address": "00be6090",
+        "function_name": "BSP_ConstructNativeFileStoreResidentPair",
+        "comment": "[BSP reconstruction 00be6090]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body132 bytes; ECX pair; stack name,stream-pointer-cell; RET8; EAX pair. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be6250",
+      "name": "BSP_CopyNativeFileStoreResidentPair",
+      "before_comment": {
+        "address": "00be6250",
+        "function_name": "FUN_00be6250"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body129 bytes; ECX pair; stack source-pair; RET4; EAX pair. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be6250 -> BSP_CopyNativeFileStoreResidentPair\n",
+      "ledger_function_output": "00be6250 function copy_native_file_store_resident_pair_00be6250\n",
+      "after_comment": {
+        "address": "00be6250",
+        "function_name": "BSP_CopyNativeFileStoreResidentPair",
+        "comment": "[BSP reconstruction 00be6250]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body129 bytes; ECX pair; stack source-pair; RET4; EAX pair. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00be7340",
+      "name": "BSP_InsertNativeFileStoreResidentPair",
+      "before_comment": {
+        "address": "00be7340",
+        "function_name": "FUN_00be7340"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body276 bytes; ECX tree; stack output,pair; RET8; EAX output. reports/native_filestore_completion_review_bk.json",
+      "ledger_name_output": "00be7340 -> BSP_InsertNativeFileStoreResidentPair\n",
+      "ledger_function_output": "00be7340 function insert_native_file_store_resident_pair_00be7340\n",
+      "after_comment": {
+        "address": "00be7340",
+        "function_name": "BSP_InsertNativeFileStoreResidentPair",
+        "comment": "[BSP reconstruction 00be7340]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body276 bytes; ECX tree; stack output,pair; RET8; EAX output. reports/native_filestore_completion_review_bk.json"
+      }
+    },
+    {
+      "address": "00bb9d30",
+      "name": "BSP_MPKG_RejectPendingOpen",
+      "before_comment": {
+        "address": "00bb9d30",
+        "function_name": "BSP_MPKG_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00bb9d30]\nMissing5-byte body. MPKG table00d64390+0Ch. XOR AL,AL; RET10h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body5 bytes; ECX/stack arguments unused; raw AL0 RET10h or no-op RET. reports/native_vfs_pending_integration_bk.json",
+      "ledger_name_output": "00bb9d30 -> BSP_MPKG_RejectPendingOpen\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bb9d30\", \"name\": \"BSP_MPKG_RejectPendingOpen\", \"evidence\": \"Missing5-byte body. MPKG table00d64390+0Ch. XOR AL,AL; RET10h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00bb9d30 function decline_native_mpkg_pending_00bb9d30\n",
+      "after_comment": {
+        "address": "00bb9d30",
+        "function_name": "BSP_MPKG_RejectPendingOpen",
+        "comment": "[BSP reconstruction 00bb9d30]\nMissing5-byte body. MPKG table00d64390+0Ch. XOR AL,AL; RET10h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00bb9d30] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body5 bytes; ECX/stack arguments unused; raw AL0 RET10h or no-op RET. reports/native_vfs_pending_integration_bk.json"
+      }
+    },
+    {
+      "address": "00bb9d40",
+      "name": "BSP_MPKG_TickNoOp",
+      "before_comment": {
+        "address": "00bb9d40",
+        "function_name": "BSP_MPKG_TickNoOp",
+        "comment": "[BSP reconstruction 00bb9d40]\nMissing1-byte RET. MPKG table00d64390+28h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body1 bytes; ECX/stack arguments unused; raw AL0 RET10h or no-op RET. reports/native_vfs_pending_integration_bk.json",
+      "ledger_name_output": "00bb9d40 -> BSP_MPKG_TickNoOp\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bb9d40\", \"name\": \"BSP_MPKG_TickNoOp\", \"evidence\": \"Missing1-byte RET. MPKG table00d64390+28h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\"})\n",
+      "ledger_function_output": "00bb9d40 function tick_native_mpkg_pending_00bb9d40\n",
+      "after_comment": {
+        "address": "00bb9d40",
+        "function_name": "BSP_MPKG_TickNoOp",
+        "comment": "[BSP reconstruction 00bb9d40]\nMissing1-byte RET. MPKG table00d64390+28h. docs/VFS_PENDING_MANAGER_INTEGRATION.md; reports/vfs_pending_manager_integration_audit.json.\n\n[BSP reconstruction 00bb9d40] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Full body1 bytes; ECX/stack arguments unused; raw AL0 RET10h or no-op RET. reports/native_vfs_pending_integration_bk.json"
+      }
+    },
+    {
+      "address": "00bdd0a0",
+      "name": "BSP_VFS_VisitMatchingMounts",
+      "before_comment": {
+        "address": "00bdd0a0",
+        "function_name": "BSP_VFS_VisitMatchingMounts",
+        "comment": "[BSP reconstruction 00bdd0a0]\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md.\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nComplete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nAdditional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json | Additional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json | Additional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json | Complete actual-storage consumer at 00bdd0a0; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bdd0a0] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX manager; RET8. New source specializes the existing generic traversal to D6846C enumeration visitor: current+3C mount tree, normalized prefix/suffix selection, current callback slots and false continuation. Other visitor profiles remain separate implementations; this is profile-bounded reconstruction. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.\n\n[BSP reconstruction 00bdd0a0] update\nBG final evidence correction: prior primary count5822 and worker205-byte BE1130 envelope omitted24 reachable epilogue bytes after00BE11F8. Saved callback body is now229 live/disk-matching bytes through RET8 at00BE1212..1214,80 owned instructions. Final16-root envelope total5831 owned instructions and799 direct CALLs. Prior names, comments, labels, propagated variable names/storage and callee no-return flags retained. This corrects analysis boundaries; source already performed vector cleanup and return. See reports/native_vfs_phase2_bg_body_repair.json and reports/native_vfs_phase2_bg_validation.json."
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. BDD0A0 now admits currentD68478 pending visitor profile alongside existing profiles.",
+      "ledger_name_output": "00bdd0a0 -> BSP_VFS_VisitMatchingMounts\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdd0a0\", \"name\": \"BSP_VFS_VisitMatchingMounts\", \"evidence\": \"ECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json | Additional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json | Complete actual-storage consumer at 00bdd0a0; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md. | Hypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX manager; RET8. New source specializes the existing generic traversal to D6846C enumeration visitor: current+3C mount tree, normalized prefix/suffix selection, current callback slots and false continuation. Other visitor profiles remain separate implementations; this is profile-bounded reconstruction. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed. | BG final evidence correction: prior primary count5822 and worker205-byte BE1130 envelope omitted24 reachable epilogue bytes after00BE11F8. Saved callback body is now229 live/disk-matching bytes through RET8 at00BE1212..1214,80 owned instructions. Final16-root envelope total5831 owned instructions and799 direct CALLs. Prior names, comments, labels, propagated variable names/storage and callee no-return flags retained. This corrects analysis boundaries; source already performed vector cleanup and return. See reports/native_vfs_phase2_bg_body_repair.json and reports/native_vfs_phase2_bg_validation.json.\"})\n",
+      "after_comment": {
+        "address": "00bdd0a0",
+        "function_name": "BSP_VFS_VisitMatchingMounts",
+        "comment": "[BSP reconstruction 00bdd0a0]\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md.\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nComplete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nAdditional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json | Additional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json\n\n[BSP reconstruction 00bdd0a0] update\nECX manager; name/callback stack args RET8. Sets manager+18=-1, walks mount tree+40 in iterator order. Empty prefix matches all; nonempty requires shorter name, equal-length _stricmp prefix and following slash. Callback+4 receives mount/suffix; callback+8 success stops. No longest-prefix sorting. Native insertion/priority unported; docs/VFS_MOUNT_LOOKUP.md. ECX manager; stack path,callback; RET8 Visit ordered matching mounts, pass provider-relative suffix; no query normalization or aliases. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete 672-byte traversal qualified to actual D683B0 date visitor. Status+18=-1 before copy; actual tree+3C/current head+40/mount payload node+10. Current head captured before returning CRT owner check, current node/end validation, strict shorter prefix/equals/slash match and refreshed prefix/data. Preserve returned substring pointers, captured payload across strings/cleanup, temporary ownership timing, current visitor+4 then refreshed+8 dispatch, callback name free before stop/advance. Other visitor domains explicit SOURCE boundary. Primary strict main Win32/two existing CTests and8 seeds passed. Verified34 worker pins/20literal current files/33fresh guarded spans4101bytes. Unchanged probe links actual main library and passes11original route compositions over13unchanged original bodies1642bytes (all6owned plus7comparators/leaves),22528same-address arena bytes and100082092actual owning-pool prefix bytes, output pointers/returning CRT counts. Covers real fixed-UTC file and separate current physical manager, normalization+alias, zero-provider continuation, post-MPKG returning CRT head repair, stop/reset. Original string/pool/physical edges share complete rebuilt providers through ABI bridges; not independent original dependency proof. Profile tables use translated native words versus original selector words and are setup outside byte comparison. Nine exact main archive objects and255complete COFF sections22431bytes922relocations verified;4owned separate entries retained, iterator/provider reader inline into retained traversal; full object frozen. No native SEH/throwing unwind, visitor-slot mutation fixture, unknown providers, mount population, runtime code postimages, binary ABI or game claim. reports/native_vfs_date_route_audit.json | Additional distinct full672-byte source implementation qualified to D68398/E8 membership/name visitors, preserving prior D683B0 date implementation and generic savedname. Actualmanager+18 publication, fullcurrentmounttree/prefixsubstring/comparator/CRT checks andtemporaryownership/nativecleanup ordering. Each visit andstop rereads currentvisitoridentity/boundactualprofile+4/+8; no cachedstopafterprovider. Capturedpayload retained acrossstrings; callbacknamefreebeforestop/advance. Unknown currentselector/profile is explicitSOURCEboundary, notgeneralnativeerror. StrictmainWin32/twoCTests/eightseeds;51workerpins24literalcurrentfiles53freshspans4397bytes. Unchanged24routepairs plus1destructorpoolpair,2raw80getterpairs,2no-readfalseleafpairs and1directbaseresetpair pass. All11ownedbodies execute;23originalbodies2230bytes installed but existingBD90B0 is notcalled (normalresetinlined;EHstatic).51200sameaddressarenabytes plus227459300actualpoolprefixbytes,16-bytebaseresetheader andreturns agree; realphysicalfile removed, returningCRT headrepair covered. Currentprovider/visitor selector tables translateoriginaladdresses for native execution outsidearena comparison; string/pool/normalization/physical/CRT dependencies are actualfull rebuilt bridges, notoriginalinternals.11exactarchiveobjects289fullCOFFsections24270bytes990relocations;9owned separateentriesretained,BD90D0/BDBC00 inlinedintofulltraversal, fullobjectsretained. No runtimepostimages, injectedthrowingnativeEH, unknownprofiles, archivepopulation, fullcallerABI/gameclaim. reports/native_vfs_lookup_routes_audit.json | Complete actual-storage consumer at 00bdd0a0; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bdd0a0] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX manager; RET8. New source specializes the existing generic traversal to D6846C enumeration visitor: current+3C mount tree, normalized prefix/suffix selection, current callback slots and false continuation. Other visitor profiles remain separate implementations; this is profile-bounded reconstruction. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.\n\n[BSP reconstruction 00bdd0a0] update\nBG final evidence correction: prior primary count5822 and worker205-byte BE1130 envelope omitted24 reachable epilogue bytes after00BE11F8. Saved callback body is now229 live/disk-matching bytes through RET8 at00BE1212..1214,80 owned instructions. Final16-root envelope total5831 owned instructions and799 direct CALLs. Prior names, comments, labels, propagated variable names/storage and callee no-return flags retained. This corrects analysis boundaries; source already performed vector cleanup and return. See reports/native_vfs_phase2_bg_body_repair.json and reports/native_vfs_phase2_bg_validation.json.\n\n[BSP reconstruction 00bdd0a0] update\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. BDD0A0 now admits currentD68478 pending visitor profile alongside existing profiles."
+      }
+    },
+    {
+      "address": "00cc6173",
+      "name": "EH_handler_00cc6173",
+      "before_comment": {
+        "address": "00cc6173",
+        "function_name": "FUN_00cc6173"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed.",
+      "ledger_name_output": "00cc6173 -> EH_handler_00cc6173\n",
+      "after_comment": {
+        "address": "00cc6173",
+        "function_name": "EH_handler_00cc6173",
+        "comment": "[BSP reconstruction 00cc6173]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed."
+      }
+    },
+    {
+      "address": "00cc6083",
+      "name": "EH_handler_00cc6083",
+      "before_comment": {
+        "address": "00cc6083",
+        "function_name": "FUN_00cc6083"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed.",
+      "ledger_name_output": "00cc6083 -> EH_handler_00cc6083\n",
+      "after_comment": {
+        "address": "00cc6083",
+        "function_name": "EH_handler_00cc6083",
+        "comment": "[BSP reconstruction 00cc6083]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed."
+      }
+    },
+    {
+      "address": "00cc63e8",
+      "name": "EH_handler_00cc63e8",
+      "before_comment": {
+        "address": "00cc63e8",
+        "function_name": "FUN_00cc63e8"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed.",
+      "ledger_name_output": "00cc63e8 -> EH_handler_00cc63e8\n",
+      "after_comment": {
+        "address": "00cc63e8",
+        "function_name": "EH_handler_00cc63e8",
+        "comment": "[BSP reconstruction 00cc63e8]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed."
+      }
+    },
+    {
+      "address": "00cc7b9c",
+      "name": "EH_handler_00cc7b9c",
+      "before_comment": {
+        "address": "00cc7b9c",
+        "function_name": "FUN_00cc7b9c"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed.",
+      "ledger_name_output": "00cc7b9c -> EH_handler_00cc7b9c\n",
+      "after_comment": {
+        "address": "00cc7b9c",
+        "function_name": "EH_handler_00cc7b9c",
+        "comment": "[BSP reconstruction 00cc7b9c]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed."
+      }
+    },
+    {
+      "address": "00cc7bd8",
+      "name": "EH_handler_00cc7bd8",
+      "before_comment": {
+        "address": "00cc7bd8",
+        "function_name": "FUN_00cc7bd8"
+      },
+      "evidence": "BK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed.",
+      "ledger_name_output": "00cc7bd8 -> EH_handler_00cc7bd8\n",
+      "after_comment": {
+        "address": "00cc7bd8",
+        "function_name": "EH_handler_00cc7bd8",
+        "comment": "[BSP reconstruction 00cc7bd8]\nBK actual native pending-I/O/FileStore source integration. Descriptive name is a hypothesis, not a recovered symbol. Full ordinary source body over actual Win32 storage; original ABI and current-field/callback ordering are recorded in the packet report. Strict compilation, focused actual-storage fixtures and combined Win32 build passed. Native ABI/FH3/private-stack/hardware-fault parity and complete gameplay remain unproved. See docs/NATIVE_VFS_PENDING_INTEGRATION_BK.md and reports/native_vfs_pending_integration_bk.json. Defined the complete ten-byte MOV EAX,FH3-metadata / JMP BF6B43 handler from verified live/PE bytes; source EH ABI is not reconstructed."
+      }
+    }
+  ],
+  "source_functions": [
+    {
+      "address": "00bdda10",
+      "function": "submit_native_vfs_pending_00bdda10",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX captured manager; stack first-header,second-header,callback,flags; RET10h; raw AL",
+      "bytes": 135,
+      "native_sha256": "863787e64da8b336a152f22c9d18308bc82758c060a228f532d8d9b5d1e29465"
+    },
+    {
+      "address": "00bdb0b0",
+      "function": "pump_native_vfs_pending_00bdb0b0",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX manager; RET; no specified result",
+      "bytes": 108,
+      "native_sha256": "244d6db8597f8891403e5d462c09bc3dfd0d90932678a0c7e835c77d61f8b8be"
+    },
+    {
+      "address": "00bdc100",
+      "function": "construct_native_vfs_pending_visitor_00bdc100",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX actual20h visitor; stack first-header,second-header,callback,flags; RET10h; EAX visitor",
+      "bytes": 195,
+      "native_sha256": "19f017079835b48e6cffabe76353218ac0cbb009cef4887cd4a8a96b5fa9bf29"
+    },
+    {
+      "address": "00bdb740",
+      "function": "destroy_native_vfs_pending_visitor_00bdb740",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX visitor; RET; no specified result",
+      "bytes": 122,
+      "native_sha256": "9c2e4ef6534e8ddb679a2d558bc03220c5ff47b5cc38831f50364dee95f0572c"
+    },
+    {
+      "address": "00bdc1d0",
+      "function": "read_native_vfs_pending_result_00bdc1d0",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX visitor; RET; raw AL=current byte14",
+      "bytes": 4,
+      "native_sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499"
+    },
+    {
+      "address": "00bdc1e0",
+      "function": "read_native_vfs_pending_provider_00bdc1e0",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX visitor; stack payload,unused-suffix; RET8; provider AL stored at14",
+      "bytes": 40,
+      "native_sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc"
+    },
+    {
+      "address": "00be7cb0",
+      "function": "decline_native_filestore_pending_00be7cb0",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX and four stack arguments unread; XOR AL,AL; RET10h",
+      "bytes": 5,
+      "native_sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9"
+    },
+    {
+      "address": "00be7cc0",
+      "function": "tick_native_filestore_pending_00be7cc0",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_routes_bk.json",
+      "original_abi": "ECX unread; RET",
+      "bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+    },
+    {
+      "address": "00bf43b0",
+      "function": "submit_native_physical_pending_io_00bf43b0",
+      "source": "src/native_physical_pending_io.cpp",
+      "report": "reports/native_physical_pending_io_bk.json",
+      "original_abi": "ECX provider; stack first header, second header, callback DWORD, flags DWORD; AL acceptance; RET 10h",
+      "bytes": 759,
+      "native_sha256": "e3d4fe8318b182106310ccbf6a02ca6fc3aa201188d41b43ee18af10591237b7"
+    },
+    {
+      "address": "00bf46b0",
+      "function": "pump_native_physical_pending_io_00bf46b0",
+      "source": "src/native_physical_pending_io.cpp",
+      "report": "reports/native_physical_pending_io_bk.json",
+      "original_abi": "ECX provider; no stack arguments; RET",
+      "bytes": 299,
+      "native_sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d"
+    },
+    {
+      "address": "00bf4240",
+      "function": "erase_native_physical_pending_record_00bf4240",
+      "source": "src/native_physical_pending_io.cpp",
+      "report": "reports/native_physical_pending_io_bk.json",
+      "original_abi": "ECX queue; stack signed index; RET 4",
+      "bytes": 96,
+      "native_sha256": "bc0c95c4ad21d9695b899b5c41da11f7691f380f10fc88735386040e4136d604"
+    },
+    {
+      "address": "00bf41c0",
+      "function": "append_native_physical_pending_record_00bf41c0",
+      "source": "src/native_physical_pending_io.cpp",
+      "report": "reports/native_physical_pending_io_bk.json",
+      "original_abi": "ECX queue; stack source record; RET 4",
+      "bytes": 122,
+      "native_sha256": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3"
+    },
+    {
+      "address": "00bf3d00",
+      "function": "assign_native_physical_pending_record_00bf3d00",
+      "source": "src/native_physical_pending_io.cpp",
+      "report": "reports/native_physical_pending_io_bk.json",
+      "original_abi": "ECX destination; stack source record; EAX destination; RET 4",
+      "bytes": 159,
+      "native_sha256": "55f3b7b479030636e6015ec3c1508dbbca54df6379ee91d307c3d94345e78da4"
+    },
+    {
+      "address": "00bd9e30",
+      "function": "notify_native_vfs_request_failure_00bd9e30",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX manager; discarded DWORD stack; RET4; CALL current manager+90 without stack arguments",
+      "bytes": 11,
+      "native_sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c"
+    },
+    {
+      "address": "00be4db0",
+      "function": "decrement_native_file_store_pending_iterator_00be4db0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX iterator; RET or BF6713 tail",
+      "bytes": 137,
+      "native_sha256": "7ada8abd822c59ea4709510f4a4631181dca74b2181c4151fe84c03788d3d101"
+    },
+    {
+      "address": "00be5530",
+      "function": "lower_bound_native_file_store_pending_name_00be5530",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX tree; name stack; EAX node; RET4",
+      "bytes": 83,
+      "native_sha256": "611b49942a288502702a6e57dd247b25d6abb0bd49027751b741639dea52ecd7"
+    },
+    {
+      "address": "00be5630",
+      "function": "upper_bound_native_file_store_pending_name_00be5630",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX tree; name stack; EAX node; RET4",
+      "bytes": 84,
+      "native_sha256": "c7d96d173cfa63f9492e08539be6f81862b945086782bc0201f4dca47ac2c830"
+    },
+    {
+      "address": "00be5750",
+      "function": "distance_native_file_store_pending_iterators_00be5750",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "cdecl six stack DWORDs; last ignored; RET; caller BE7A0B ADD ESP,18h",
+      "bytes": 57,
+      "native_sha256": "92c0678fd573c9bef4d72a58efe85808460abc62e9462178e8aeed56614be78c"
+    },
+    {
+      "address": "00be5f00",
+      "function": "find_native_file_store_pending_name_00be5f00",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX tree; output,name stack; EAX output; RET8",
+      "bytes": 102,
+      "native_sha256": "965d5fa887b093dec04c5837d26a11096598857850170ddc86c552a002d4f0ab"
+    },
+    {
+      "address": "00be6120",
+      "function": "construct_native_file_store_pending_pair_00be6120",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX output; name,callback-word-pointer stack; EAX output; RET8",
+      "bytes": 75,
+      "native_sha256": "8f5c5eea9511bd990f3c28e22b50abfda4850139cd7dc921e5acf6dda846f5d0"
+    },
+    {
+      "address": "00be62e0",
+      "function": "copy_native_file_store_pending_pair_00be62e0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX output; source pair stack; EAX output; RET4",
+      "bytes": 72,
+      "native_sha256": "dcd0d14732ce66667d507dfbc36975f0b591a7cc63214f35722d724f163a216f"
+    },
+    {
+      "address": "00be63e0",
+      "function": "construct_native_file_store_pending_node_00be63e0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX node; left,parent,right,pair,color stack; EAX node; RET14h",
+      "bytes": 112,
+      "native_sha256": "751e2618515e6814a6cc32b3ad157f14c6bc2daab5a15b8a275d2366cbac1261"
+    },
+    {
+      "address": "00be6630",
+      "function": "allocate_native_file_store_pending_node_00be6630",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "five stack DWORDs left,parent,right,pair,color; EAX node; RET14h",
+      "bytes": 114,
+      "native_sha256": "af3ee505ec310369270659a58525ce666dfec20a70637d4e1339ef43503900b8"
+    },
+    {
+      "address": "00be6ee0",
+      "function": "link_native_file_store_pending_node_00be6ee0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX tree; output,left-byte,parent,pair stack; EAX output; RET10h",
+      "bytes": 492,
+      "native_sha256": "b5bd58396caf5463589ba47645f98cf7f943cdd141ea2ec0d90fe39f52d8d2ac"
+    },
+    {
+      "address": "00be7460",
+      "function": "insert_native_file_store_pending_pair_00be7460",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX tree; output,pair stack; EAX output; RET8",
+      "bytes": 276,
+      "native_sha256": "76ff99c73f44034330927ffc32fe434b22e17508a6ac22d7695edce3755b5196"
+    },
+    {
+      "address": "00be79c0",
+      "function": "erase_native_file_store_pending_name_00be79c0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX pending TREE; name stack; EAX erased count; RET4",
+      "bytes": 107,
+      "native_sha256": "6e84d6d945e7e641738f42f388c83b11b0baee8ab60f57e16930969deb721b50"
+    },
+    {
+      "address": "00be7cd0",
+      "function": "request_native_file_store_00be7cd0",
+      "source": "src/native_filestore_request.cpp",
+      "report": "reports/native_filestore_request_bk.json",
+      "original_abi": "ECX actual store; original-name-header,callback DWORD stack; AL boolean; RET8",
+      "bytes": 672,
+      "native_sha256": "b3c3de9393c34484889ba7b9a69049ec9007839098ff1c877a09435fa32f3593"
+    },
+    {
+      "address": "00be4d20",
+      "function": "decrement_native_file_store_resident_iterator_00be4d20",
+      "source": "src/native_filestore_resident_insert.cpp",
+      "report": "reports/native_filestore_resident_insert_bk.json",
+      "original_abi": "ECX iterator {owner,node}; RET or BF6713 tail",
+      "bytes": 137,
+      "native_sha256": "45ec301efd0bd7553524a9f4caa08f1bb2fcd482f08b5be0aa741a7ca22ffe5c"
+    },
+    {
+      "address": "00be6cf0",
+      "function": "link_native_file_store_resident_node_00be6cf0",
+      "source": "src/native_filestore_resident_insert.cpp",
+      "report": "reports/native_filestore_resident_insert_bk.json",
+      "original_abi": "ECX tree; stack output,left-byte DWORD slot,parent,pair; EAX output; RET10",
+      "bytes": 492,
+      "native_sha256": "47cf03cbcf9991e3bcb548debbd25e08b6c76ed9a15defda7d83c9fb5f43277e"
+    },
+    {
+      "address": "00be6590",
+      "function": "allocate_native_file_store_resident_node_00be6590",
+      "source": "src/native_filestore_resident_insert.cpp",
+      "report": "reports/native_filestore_resident_insert_bk.json",
+      "original_abi": "five stack words left,parent,right,pair,color; EAX node; RET14; ECX unused",
+      "bytes": 126,
+      "native_sha256": "a0a92412cb26018aa7f2a10a9f3662274b265d481897225b0f227095673b056f"
+    },
+    {
+      "address": "00be6170",
+      "function": "copy_native_file_store_resident_pair_00be6170",
+      "source": "src/native_filestore_resident_insert.cpp",
+      "report": "reports/native_filestore_resident_insert_bk.json",
+      "original_abi": "ECX output; stack pair; EAX output; RET4",
+      "bytes": 129,
+      "native_sha256": "e78d0aa99d3d82d7fa6a5ea264fba1314d2d250796a88e4d212d460158689a1f"
+    },
+    {
+      "address": "00be7760",
+      "function": "add_native_file_store_file_00be7760",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX store; stack name,stream; RET8",
+      "bytes": 321,
+      "native_sha256": "fb66b79def9ea3bc9074aea57a4247c7de99d13de973dbd498a5f83cd727f143"
+    },
+    {
+      "address": "00be78b0",
+      "function": "complete_native_file_store_file_00be78b0",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX store; stack first,second,stream; RET0C",
+      "bytes": 207,
+      "native_sha256": "ffe366b168f1c38effdc9a28ae7aaa25bc5e572ecebc697798d72f56a2bb5f90"
+    },
+    {
+      "address": "00be7b20",
+      "function": "dispatch_native_file_store_completion_00be7b20",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "stack stream,first,second; RET0C; calls current factory getter",
+      "bytes": 31,
+      "native_sha256": "c56e6b6237f5e7eeb68b08e3bd1d07a0391ca67dc4ceaf01e8b66ff77a403d08"
+    },
+    {
+      "address": "00be5cf0",
+      "function": "destroy_native_file_store_resident_pair_00be5cf0",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX actual0Ch pair; RET",
+      "bytes": 127,
+      "native_sha256": "2f452dfed0e1ba6f8838fc5231fd6faf46e9ba3a4c21067111d099e535e81819"
+    },
+    {
+      "address": "00be6090",
+      "function": "construct_native_file_store_resident_pair_00be6090",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX pair; stack name,stream-pointer-cell; RET8; EAX pair",
+      "bytes": 132,
+      "native_sha256": "0e010a5c1d7a10592a15ae97a3d21a783dbf72d0978d440625af7b4871923452"
+    },
+    {
+      "address": "00be6250",
+      "function": "copy_native_file_store_resident_pair_00be6250",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX pair; stack source-pair; RET4; EAX pair",
+      "bytes": 129,
+      "native_sha256": "360894560babad5ef68a14e3db56e3283d95ea1a949b9565f6afa6e60eb45a55"
+    },
+    {
+      "address": "00be7340",
+      "function": "insert_native_file_store_resident_pair_00be7340",
+      "source": "src/native_filestore_completion.cpp",
+      "report": "reports/native_filestore_completion_review_bk.json",
+      "original_abi": "ECX tree; stack output,pair; RET8; EAX output",
+      "bytes": 276,
+      "native_sha256": "d849a4cb9b61ac269fac7f0ba2695920ccd890b595fcf776c51143ff2c229340"
+    },
+    {
+      "address": "00bb9d30",
+      "function": "decline_native_mpkg_pending_00bb9d30",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_integration_bk.json",
+      "original_abi": "ECX/stack arguments unused; raw AL0 RET10h or no-op RET",
+      "bytes": 5,
+      "native_sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9"
+    },
+    {
+      "address": "00bb9d40",
+      "function": "tick_native_mpkg_pending_00bb9d40",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "report": "reports/native_vfs_pending_integration_bk.json",
+      "original_abi": "ECX/stack arguments unused; raw AL0 RET10h or no-op RET",
+      "bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+    }
+  ],
+  "lookup_fragment_output": "00bdd0a0 fragment native_vfs_pending_profile_bk\n",
+  "state": "names_and_evidence_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

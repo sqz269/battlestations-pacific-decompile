@@ -62,3 +62,30 @@ These changes do not establish full native ABI/FH3 parity, arbitrary archive
 payload loading, asynchronous gameplay loading or game fidelity. The original
 physical ReadFile failure's aligned-pointer free and leaked OVERLAPPED remain
 documented native behavior, not newly invented ownership cleanup.
+
+## Combined publication evidence
+
+The reviewed merge of main `8cd145e0` is source revision `96d910d5`.
+Its complete Win32 build and both existing CTests passed. The bounded USN01
+run completed 360 frames, including 120 mission frames, with 360 concrete
+native provider pumps and normal exit. The installed executable, live options
+and saves were unchanged. This run exercises provider pumping; asynchronous
+request completion is separately covered by the actual-storage fixture.
+
+The incoming image policy uses base `0x10000000`, disables executable ASLR,
+and retains relocations. The merge preserves the linker map and all five new
+source registrations. Final PE fields were inspected. The combined runner
+changes only its two pinned image-base literals; the prior runner's rejection
+occurred before process launch. Both validation receipts and source manifests
+remain recorded in the integration report.
+
+Forty source functions, the pending visitor binding, and five FH3 evidence
+handlers now have saved Ghidra annotations and refreshed exports. Earlier
+comments and annotation preimages are retained. The final 185 direct call
+rows passed after the physical and FileStore catch-body membership repairs;
+imported and indirect calls remain separately qualified listing evidence.
+
+The concurrent main review also identified a preexisting gunnery diagnostic
+limitation: arm membership is recorded before candidate capacity admission,
+so the arm/recon counters do not prove the selected candidate's route at
+capacity. Target assignment behavior is unaffected by that diagnostic.
