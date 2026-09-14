@@ -144,13 +144,19 @@ struct UnitInitialCondition {
     std::size_t part_count{0}; // (desc+20h - desc+1Ch) / 30h
 };
 
-// 0087BCF4..0087BD19 plus the part-count divide at 0087BD20..0087BD43.
+// partial_projection: values from 0087BCF4..0087BD19 and the part count at
+// 0087BD20..0087BD43 only. Omits activation, actual field stores/vector fill,
+// parents, construction, properties and numbering. Its reversed-range clamp
+// also differs from native signed DWORD division. Full caller and coverage:
+// bsp/native_unit_health_parts.hpp and docs/NATIVE_UNIT_HEALTH_PARTS.md.
 UnitInitialCondition unit_initial_condition_0087bcc0(float class_hit_points,
                                                      float class_armour,
                                                      std::size_t part_vector_begin,
                                                      std::size_t part_vector_end) noexcept;
 
-// 0087BE0D..0087BE8E: the detail value handed to vtable[190h].
+// partial_projection: detail choice only. The float is the SECOND argument of
+// part-set virtual+8; unit virtual+190 takes no stack argument and returns the
+// first argument (selector). No dispatch, allocation, x87 or EH is modelled.
 float unit_part_detail_0087bcc0(bool is_kind_1b) noexcept;
 
 // ---------------------------------------------------------------------------
