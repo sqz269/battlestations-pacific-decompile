@@ -1,0 +1,34 @@
+{
+  "packet": "orch4_entry_native_data_handoff_bj",
+  "base_commit": "63889c8a",
+  "owned_source": "src/game_main.cpp",
+  "original_image": {
+    "name": "battlestationspacific.exe",
+    "size_bytes": 12223752,
+    "sha256": "B682A82C52F81F957B2C70222077305A933F72481686C88843077F714B956DD6",
+    "identity_check": "Parent preflights size and SHA-256 for a clear error; GameNativeReadOnlyData independently checks the complete file before publishing mapped bytes"
+  },
+  "reserved_bands": ["00CF0000", "00D10000", "00D50000", "00D60000"],
+  "entry_contract": [
+    "Public options parse before parent startup and after removal of the child's final inherited handoff token",
+    "Windows argument quoting preserves public token boundaries through self-launch",
+    "The parent preflights original PE identity and the bootstrap creates and reserves its own suspended bsp_game child; occupied bands fail closed",
+    "The child maps verified original read-only data before GameStartupHost construction",
+    "The mapped data outlives GameStartupHost destruction and the parent returns the child's real exit code",
+    "The child attaches to the parent console and opens its own log before changing current directory"
+  ],
+  "pre_integration_bsp_game_pe": {
+    "path": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_game.exe",
+    "image_base": "00400000",
+    "size_of_image": "001F6000",
+    "image_end": "005F6000",
+    "dynamic_base": true,
+    "conclusion": "Preferred image avoids data bands; ASLR placement still needs an integrator-owned linker decision"
+  },
+  "verification": {
+    "compile": "PASS: MSVC x86 cl /nologo /c /std:c++17 /EHsc /W4 /WX /fp:strict /Iinclude src/game_main.cpp",
+    "diff_check": "PASS: git diff --check",
+    "full_link": "integrator-owned",
+    "runtime": "not run; raw host admission and integration remain pending"
+  }
+}
