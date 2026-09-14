@@ -1,0 +1,240 @@
+{
+  "packet": "orch6_unit_group_state_aa",
+  "functions": [
+    {
+      "address": "00876ec0",
+      "name": "BSP_UnitInstance_SetModelGroupState",
+      "body_inclusive": [
+        "00876ec0",
+        "00876f83"
+      ],
+      "bytes": 196,
+      "coverage": "complete caller",
+      "native_abi": "ECX actual unit; stack signed state; RET4",
+      "source": "src/native_unit_group_state.cpp"
+    }
+  ],
+  "existing_provider_extension": {
+    "address": "0049c940",
+    "body_inclusive": [
+      "0049c940",
+      "0049c9b8"
+    ],
+    "bytes": 121,
+    "source": "src/point_effect_owner.cpp",
+    "change": "Actual-manager overload defers manager+08 load until successful allocation; canonical shared wrapper retained"
+  },
+  "calls": [
+    {
+      "address": "00876efd",
+      "native": "00414db0",
+      "function": "00876ec0"
+    },
+    {
+      "address": "00876f61",
+      "native": "0049c940",
+      "function": "00876ec0"
+    },
+    {
+      "address": "00876f77",
+      "native": "00710bb0",
+      "function": "00876ec0"
+    },
+    {
+      "address": "0087becb",
+      "native": "00876ec0",
+      "function": "0087bcc0"
+    },
+    {
+      "address": "0087bed9",
+      "native": "00876ec0",
+      "function": "0087bcc0"
+    },
+    {
+      "address": "0087c044",
+      "native": "00876ec0",
+      "function": "0087bf80"
+    },
+    {
+      "address": "00747546",
+      "native": "00876ec0",
+      "function": "007474e0"
+    },
+    {
+      "address": "00877b29",
+      "native": "00876ec0",
+      "function": "00877b00"
+    },
+    {
+      "address": "0049c963",
+      "native": "00bf681b",
+      "function": "0049c940"
+    },
+    {
+      "address": "0049c98c",
+      "native": "0049c000",
+      "function": "0049c940"
+    },
+    {
+      "address": "00876f61",
+      "native": "0049c940",
+      "function": "00876ec0"
+    },
+    {
+      "address": "00851afa",
+      "native": "0049c940",
+      "function": "00851850"
+    },
+    {
+      "address": "00956870",
+      "native": "0049c940",
+      "function": "00956600"
+    }
+  ],
+  "evidence": {
+    "spans": {
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00876ec0",
+          "length": 196,
+          "sha256": "510df028ccd2a1db2170d0bfd59002fbfee98210895754c42aeeded9fdedb770",
+          "live_disk_equal": true,
+          "hex": "83ec1856578b7c24248bf13bbe580300000f8e8f000000833da888e100000f84820000008b865403000085c07478837840007c7280bec8000000007505e8aedeb9fff30f1086fc0000008b8654030000f30f11442414f30f108600010000f30f11442418f30f108604010000f30f1144241c0f57c0f30f11442408f30f1144240cf30f114424108b4840518b0da888e1008b89d02100008d54240c528d44241c50e8da59c2ff8b8e6003000085c989be58030000740657e8349ce9ff5f5e83c418c20400"
+        },
+        {
+          "address": "0049c940",
+          "length": 121,
+          "sha256": "24da8b1b364b73aa99839b001bd2cbf8ebb077066c479d0b89734837bb022e3e",
+          "live_disk_equal": true,
+          "hex": "64a1000000006aff683b33c600506489250000000056578b7c242085ff8bf17c436a30e8b39e750083c4048944242085c0c74424100000000074298b4c241c8b54241857518b4e0852518bc8e86ff6ffff8b4c240864890d000000005f5e83c40cc20c008b4c24085f33c064890d000000005e83c40cc20c00"
+        },
+        {
+          "address": "00c63330",
+          "length": 11,
+          "sha256": "f57d050536e9088399d82e89ebb8b78734e37c73e87ba2107fe0f716088843ae",
+          "live_disk_equal": true,
+          "hex": "8b450c50e87332f9ff59c3"
+        },
+        {
+          "address": "00c6333b",
+          "length": 10,
+          "sha256": "fa3dbd1e831f807690133b46dd65110bf19a7edd526fcf61d28cf1d55c4686dc",
+          "live_disk_equal": true,
+          "hex": "b888b4d800e9fe37f9ff"
+        },
+        {
+          "address": "00414db0",
+          "length": 89,
+          "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175",
+          "live_disk_equal": true,
+          "hex": "83ec40568bf180bec80000000075458b4e3c85c97405e8e5ffffff8b463c85c0741505cc000000508d442408508d4e74e83bebffffeb038d4674508d8ecc000000e8fae6ffffc686c800000001c6860c010000005e83c440c3"
+        }
+      ]
+    },
+    "manifest": {
+      "path": "local/group_state_aa/manifest.json",
+      "bytes": 153449,
+      "sha256": "3d8b0eaf3627a4b6a1ae1cf260fe93111a6a8a0c6c4091d90d7e1c700ced7b6e"
+    },
+    "relocations": [
+      {
+        "body": "state",
+        "base": 14942208,
+        "bytes": 196,
+        "operand_relocations": [
+          {
+            "offset": 62,
+            "original": 4290371246,
+            "replacement": 4289863310,
+            "target": 9838288,
+            "relative": true
+          },
+          {
+            "offset": 162,
+            "original": 4290927066,
+            "replacement": 4294901594,
+            "target": 14876672,
+            "relative": true
+          },
+          {
+            "offset": 184,
+            "original": 4293499956,
+            "replacement": 4289862292,
+            "target": 9837392,
+            "relative": true
+          },
+          {
+            "offset": 25,
+            "original": 14780584,
+            "replacement": 10026516,
+            "target": 10026516,
+            "relative": false
+          },
+          {
+            "offset": 141,
+            "original": 14780584,
+            "replacement": 10026516,
+            "target": 10026516,
+            "relative": false
+          }
+        ],
+        "unchanged_bytes": 176,
+        "instruction_replacements": 0
+      },
+      {
+        "body": "announcement",
+        "base": 14876672,
+        "bytes": 121,
+        "operand_relocations": [
+          {
+            "offset": 36,
+            "original": 7708339,
+            "replacement": 4289927800,
+            "target": 9837216,
+            "relative": true
+          },
+          {
+            "offset": 77,
+            "original": 4294964847,
+            "replacement": 4289927871,
+            "target": 9837328,
+            "relative": true
+          }
+        ],
+        "unchanged_bytes": 113,
+        "instruction_replacements": 0
+      }
+    ],
+    "optimized_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_unit_group_state.obj",
+      "bytes": 3410,
+      "sha256": "e392ae8f66d97d23e350d2a50c13ccf1a16b8fa840b4ece19c760cd3a4f00358"
+    },
+    "codegen": "X MOVSS69, descriptor reload71, Y MOVSS7F, Z MOVSS8F, selector B3, world BA, manager C2; model E1 before state store E6 and selection F0"
+  },
+  "validation": {
+    "native_caller_source_pairs": 7,
+    "paired_images": 14,
+    "source_constructor_unwind": true,
+    "guarded_null_manager_variants": 2,
+    "old_view_raw_late_owner_parity": true,
+    "win32_build": "passed",
+    "existing_ctests": "2/2 passed",
+    "new_repository_tests": 0,
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\group_state_aa\\probe.exe",
+      "bytes": 185856,
+      "sha256": "ca05c4e91bfd7a8d8007d5823eef663636ae253a3f65a137b1d5685877e86c1a"
+    },
+    "seed_verification": "8 live/disk seed checks passed",
+    "mechanical_direct_calls": "13 checked; zero failures"
+  },
+  "limits": [
+    "Full196-byte caller and121-byte announcement wrapper execute as relocated originals; pose and model-group edges use canonical source ABI bridges on the original side.",
+    "Announcement allocator and full49C000 constructor are explicit fixture bindings, not reconstructed native implementations.",
+    "Source constructor failure is checked; original FH3/SEH, hardware-fault timing, private stack aliases and concurrent mutation remain unproved.",
+    "Actual unit/world bindings and gameplay execution of these paths remain unproved."
+  ]
+}

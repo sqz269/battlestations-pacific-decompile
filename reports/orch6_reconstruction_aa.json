@@ -1,0 +1,514 @@
+{
+  "batch": "orch6_reconstruction_aa",
+  "status": "reviewed_integrated_build_fixture_and_mission_compatibility_verified_workers_removed",
+  "dispatch": "Finished the existing three workers; no new packets dispatched during closeout.",
+  "root_commit": "ec2497c5",
+  "functions": [
+    {
+      "address": "0077f0e0",
+      "bytes": 365
+    },
+    {
+      "address": "004cee30",
+      "bytes": 147
+    },
+    {
+      "address": "00710bb0",
+      "bytes": 593
+    },
+    {
+      "address": "00b6da70",
+      "bytes": 60
+    },
+    {
+      "address": "007135c0",
+      "bytes": 356
+    },
+    {
+      "address": "00876ec0",
+      "bytes": 196
+    }
+  ],
+  "new_complete_body_bytes": 1717,
+  "existing_wrapper_extension": {
+    "address": "0049c940",
+    "bytes": 121
+  },
+  "workers": [
+    {
+      "packet": "unit-activation",
+      "commit": "3094b1d0826228927f63320a6718eafb6fdb2f2b",
+      "report": {
+        "path": "reports/native_unit_activation.json",
+        "bytes": 14068,
+        "sha256": "f60763242a6867c77575a13e9a7b21b1d0a5956060d22c125aea4d7096335ce6"
+      },
+      "archived_manifest": {
+        "path": "local/worker_evidence_aa/orch6-unit-activation-aa/local/activation_review_manifest.json",
+        "bytes": 198975,
+        "sha256": "5e881b332ecb1f1fa7fa6ca1271019b6937c8ca925746cfb83e9cd051d8a0907"
+      },
+      "manifest_hashes_verified": 523,
+      "native_source_variants": 6,
+      "direct_call_rows": 40,
+      "worktree_removed": true
+    },
+    {
+      "packet": "model-group-selection",
+      "commit": "c1ec3c2be8ce71612dd63adea928d844785daf5c",
+      "report": {
+        "path": "reports/native_model_group_selection.json",
+        "bytes": 60354,
+        "sha256": "f18f2520289987111753108fa833bcc08705368e5c9736b49ab5077fa66193cc"
+      },
+      "archived_manifest": {
+        "path": "local/worker_evidence_aa/orch6-model-group-selection-aa/local/model_group_review_manifest.json",
+        "bytes": 201718,
+        "sha256": "d3ec768d231bffe1753ba29aa6f9ccdb30e15a2bea2765fd3486e3b76c3c4bdc"
+      },
+      "manifest_hashes_verified": 609,
+      "native_source_variants": 23,
+      "direct_call_rows": 197,
+      "worktree_removed": true
+    },
+    {
+      "packet": "unit-part-construction",
+      "commit": "ec26e4fabc714b514c55d883a6369a50e59a2f26",
+      "report": {
+        "path": "reports/native_unit_part_construction.json",
+        "bytes": 15737,
+        "sha256": "e88fb44fdd6ab25fab014b4a5c688bde4aa95302ae770b4f51d292363348a620"
+      },
+      "archived_manifest": {
+        "path": "local/worker_evidence_aa/orch6-unit-part-construction-aa/local/part_construction_retained/manifest.json",
+        "bytes": 190747,
+        "sha256": "3296cb9148d0c8ad6e4567a6074785681d64116a3d7847cb107b103a521fbc3b"
+      },
+      "manifest_hashes_verified": 559,
+      "native_source_variants": 3,
+      "direct_call_rows": 30,
+      "worktree_removed": true
+    }
+  ],
+  "root_group_state": {
+    "report": {
+      "path": "reports/native_unit_group_state.json",
+      "bytes": 8066,
+      "sha256": "f74e03d90b8b5d1ac66f3b165ccba3812937f8b6ec5ecdad1f413ba40ec2d9cd"
+    },
+    "manifest": {
+      "path": "local/group_state_aa/manifest.json",
+      "bytes": 153449,
+      "sha256": "3d8b0eaf3627a4b6a1ae1cf260fe93111a6a8a0c6c4091d90d7e1c700ced7b6e"
+    },
+    "native_source_pairs": 7,
+    "null_manager_variants": 2,
+    "source_constructor_cleanup": true,
+    "old_view_raw_parity": true
+  },
+  "validation": {
+    "compiled": {
+      "compiled_commit": "07a1ffad31f8aa39d8250297103c9dc98e5cf3c2",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-unit-activation-aa",
+        "agent/orch6-model-group-selection-aa",
+        "agent/orch6-unit-part-construction-aa",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_aa_20260913T212639.log"
+    },
+    "compiled_input_drift": [],
+    "existing_ctests": "2/2 passed",
+    "seed_matches": 8,
+    "mechanical_direct_rows": 280,
+    "mechanical_failures": 0,
+    "mission_compatibility": {
+      "compiled_commit": "07a1ffad31f8aa39d8250297103c9dc98e5cf3c2",
+      "run_commit": "07a1ffad31f8aa39d8250297103c9dc98e5cf3c2",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_07a1ffad.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_aa.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_aa.csv"
+      ],
+      "exe_sha256": "a18c97b648c0fce9fb1b26e4562b89c4b3690ee0db7f2a057679874e5ccc1da3",
+      "preserved_executable": "local\\orch6_combined_07a1ffad.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 11.45630669593811,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "proof_audit": {
+      "root_inputs_verified": 368,
+      "root_artifacts_verified": 74,
+      "root_production_object_comparisons": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_model_group_selection.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "c8a4e8d43a11cc01322df37c97c1af0bcc8b182e838ce6bf2601ca353b649c85",
+          "current_sha256": "c8a4e8d43a11cc01322df37c97c1af0bcc8b182e838ce6bf2601ca353b649c85"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_node_visibility_factor.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "f98ba2dd1648f67e2d0ef862f40c36fbfe436f3169efc28288794f1729ba7248",
+          "current_sha256": "f98ba2dd1648f67e2d0ef862f40c36fbfe436f3169efc28288794f1729ba7248"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_update.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "24c6b73693c3daa157ffe821a356f28720195570ea1cf21d0c82a19a1a333964",
+          "current_sha256": "24c6b73693c3daa157ffe821a356f28720195570ea1cf21d0c82a19a1a333964"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_unit_group_state.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "e392ae8f66d97d23e350d2a50c13ccf1a16b8fa840b4ece19c760cd3a4f00358",
+          "current_sha256": "e392ae8f66d97d23e350d2a50c13ccf1a16b8fa840b4ece19c760cd3a4f00358"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\point_effect_owner.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "5c8e4fa11a6d0879b62459afdd34c2a288ddc8cce158f1e20bae4efafcfb8a8b",
+          "current_sha256": "5c8e4fa11a6d0879b62459afdd34c2a288ddc8cce158f1e20bae4efafcfb8a8b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\pose_refresh.obj",
+          "identical_to_final_build": true,
+          "fixture_sha256": "9c8a15a98dce927bc1842d622e27c7dc606b19c3240184317fac9f26ea2a37ba",
+          "current_sha256": "9c8a15a98dce927bc1842d622e27c7dc606b19c3240184317fac9f26ea2a37ba"
+        }
+      ],
+      "worker_artifacts_verified": 2232,
+      "worker_source_header_comparisons": [
+        {
+          "worker": "unit-activation",
+          "path": "include/bsp/native_alias_count_growth.hpp",
+          "sha256": "78f5a43d626bb1e93bbb9e5d16249830fe5d00a8ef384619269d957c7bbcafd9",
+          "integrated_sha256": "78f5a43d626bb1e93bbb9e5d16249830fe5d00a8ef384619269d957c7bbcafd9",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "ea981173e3c65edc69fb26ef7ceac81767375eeb",
+          "match": true
+        },
+        {
+          "worker": "unit-activation",
+          "path": "include/bsp/native_unit_activation.hpp",
+          "sha256": "baddf6ea25b5151d5958ee00353e92aa228e1b94bf71be39ddd12778694c2357",
+          "integrated_sha256": "baddf6ea25b5151d5958ee00353e92aa228e1b94bf71be39ddd12778694c2357",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "6971f40206fedfb401dd200b02cd03a6669536a2",
+          "match": true
+        },
+        {
+          "worker": "unit-activation",
+          "path": "src/native_alias_count_growth.cpp",
+          "sha256": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43",
+          "integrated_sha256": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "667ff6e497ee0294ed612f8c281d61da2b1b022e",
+          "match": true
+        },
+        {
+          "worker": "unit-activation",
+          "path": "src/native_unit_activation.cpp",
+          "sha256": "b79ad8793f4e9a9010bdac72def802ee2e305c54dc5e7f7056c40563a5ad9b29",
+          "integrated_sha256": "b79ad8793f4e9a9010bdac72def802ee2e305c54dc5e7f7056c40563a5ad9b29",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "6b48cfbd3afb2384a5092988a956db219aa2fb06",
+          "match": true
+        },
+        {
+          "worker": "model-group-selection",
+          "path": "include/bsp/native_model_group_selection.hpp",
+          "sha256": "fc169386f0eceb8b2f383a27c831b5c1b83b6e95b74493536a524024b0438a35",
+          "integrated_sha256": "fc169386f0eceb8b2f383a27c831b5c1b83b6e95b74493536a524024b0438a35",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "9d9f7472c461573ef0386bfbeaaf83b62b4942a2",
+          "match": true
+        },
+        {
+          "worker": "model-group-selection",
+          "path": "include/bsp/native_node_visibility_factor.hpp",
+          "sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b",
+          "integrated_sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "7558f743057f32c926a71246c823b7b4480df797",
+          "match": true
+        },
+        {
+          "worker": "model-group-selection",
+          "path": "src/native_model_group_selection.cpp",
+          "sha256": "0d41010f7156a214456cb69048ca7849705480060decb0941ef54ff9c16a9808",
+          "integrated_sha256": "0246a75fce908bfecb2c0dffa6ea33517eb3b642097e66d42402c8ecb849c3ca",
+          "exact_byte_match": false,
+          "line_endings_only": true,
+          "git_blob": "de7b838fa3d8e279ab4112c90745e76a39c32b65",
+          "match": true
+        },
+        {
+          "worker": "model-group-selection",
+          "path": "src/native_node_visibility_factor.cpp",
+          "sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd",
+          "integrated_sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "c8c7227766bef0ccb77d47061bacc236e48e7514",
+          "match": true
+        },
+        {
+          "worker": "unit-part-construction",
+          "path": "include/bsp/native_unit_part_construction.hpp",
+          "sha256": "8acea34ae74404c6527d17e3a3444df61e8951c0670e709f62d0a86a10423b42",
+          "integrated_sha256": "8acea34ae74404c6527d17e3a3444df61e8951c0670e709f62d0a86a10423b42",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "3e545c7192893ef5b4b05ad9f74561dbe6bd20ae",
+          "match": true
+        },
+        {
+          "worker": "unit-part-construction",
+          "path": "src/native_unit_part_construction.cpp",
+          "sha256": "88143e992e1573c8a8e0c7fcef0e7b8e9b9d02f289a47aa5a446519524cd12df",
+          "integrated_sha256": "88143e992e1573c8a8e0c7fcef0e7b8e9b9d02f289a47aa5a446519524cd12df",
+          "exact_byte_match": true,
+          "line_endings_only": false,
+          "git_blob": "5d240d708eb9f8c29dd2211978449a2b080b08d5",
+          "match": true
+        }
+      ]
+    }
+  },
+  "ghidra": {
+    "annotations_saved": 9,
+    "affected_exports_refreshed": 14,
+    "definitions": {
+      "path": "reports/orch6_aa_function_definitions.json",
+      "bytes": 2917,
+      "sha256": "4902b34147d1a1799372820739c2e42bea9fc70195bc3a830181ff1e66326eba"
+    },
+    "flow_repair": {
+      "path": "reports/orch6_aa_flow_repair.json",
+      "bytes": 8741,
+      "sha256": "d55d960437cb39682599dae56d523024bdbbdd3db83e60b05ffae03a7dda1375"
+    }
+  },
+  "retention": {
+    "worker_artifacts": 2232,
+    "root_inputs": 368,
+    "root_artifacts": 74,
+    "worker_manifest_hashes": 1691,
+    "metadata": [
+      {
+        "path": "local/orch6_compiled_aa.json",
+        "bytes": 393,
+        "sha256": "f50a0c6630d4b3c36b7dad7669cdf209622e977ebcdc34380fcaabd7fe5ccfb6"
+      },
+      {
+        "path": "local/orch6_integrate_aa.log",
+        "bytes": 1404,
+        "sha256": "c10144d55c3fae1cc9323b1a442ff9707d267bf94c080a105ffab3d4ccd19a47"
+      },
+      {
+        "path": "local/orch6_combined_aa.json",
+        "bytes": 5511,
+        "sha256": "807cc4093defb6df9758792b52d6375f087412e4caf182f6f60256cd5bb7acbd"
+      },
+      {
+        "path": "local/orch6_proof_audit_aa.json",
+        "bytes": 6955,
+        "sha256": "37f390a610f9299b883ff53f4735eca117618a922fbbc7fd5cc334a9ff0f6aad"
+      },
+      {
+        "path": "local/orch6_worker_archive_aa.json",
+        "bytes": 997409,
+        "sha256": "202d073865c3f5685ae1389628251d4747d8eaf0f2f9d74701141c63d04cc3cf"
+      },
+      {
+        "path": "local/orch6_cleanup_aa.json",
+        "bytes": 736,
+        "sha256": "680e28adb4bffa85aa007ec5cefbc6284e0579e1b23c745c23a6415971dd1770"
+      },
+      {
+        "path": "local/orch6_annotations_aa.txt",
+        "bytes": 567,
+        "sha256": "d1d875681570edb28cec7c2f4eb2b41120d754e210921a136c53ef3e02d127c5"
+      },
+      {
+        "path": "local/orch6_snapshot_aa.txt",
+        "bytes": 294,
+        "sha256": "8fcdcd8c4eb5fd201d9d43a8615cbd6931b7a859528cd7423eaca541c5fc51fc"
+      }
+    ]
+  },
+  "cleanup": [
+    {
+      "name": "orch6-unit-activation-aa",
+      "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-activation-aa",
+      "commit": "3094b1d0826228927f63320a6718eafb6fdb2f2b",
+      "archived_artifacts": 856
+    },
+    {
+      "name": "orch6-model-group-selection-aa",
+      "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch6-model-group-selection-aa",
+      "commit": "c1ec3c2be8ce71612dd63adea928d844785daf5c",
+      "archived_artifacts": 614
+    },
+    {
+      "name": "orch6-unit-part-construction-aa",
+      "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-part-construction-aa",
+      "commit": "ec26e4fabc714b514c55d883a6369a50e59a2f26",
+      "archived_artifacts": 762
+    }
+  ],
+  "limits": [
+    "Actual unit/world runtime bindings and whole constructor/registry/collision/render providers remain required; these paths are not admitted as game-validated.",
+    "Original FH3/SEH and general hardware-fault, concurrency, private-frame and drop-in ABI equivalence remain unproved.",
+    "Ghidra post-free tails are decoded but stored ownership remains truncated for00710870,007108E0 and00711000.24 visibility caller spans retain explicitly missing enclosing bodies in the worker evidence.",
+    "The 120-frame mission run validates existing compatibility only; it does not establish gameplay execution of the new activation, part construction or group-state paths."
+  ]
+}

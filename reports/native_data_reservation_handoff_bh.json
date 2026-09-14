@@ -1,0 +1,80 @@
+{
+  "packet": "orch4_native_data_reservation_handoff_bh",
+  "status": "source_implemented_strict_win32_build_and_linked_probe_verified",
+  "base_commit": "bf478455030453d9e37eecb4e08d0b60be302031",
+  "documentation": "docs/NATIVE_DATA_RESERVATION_HANDOFF_BH.md",
+  "fixed_probe_bands": ["00cf0000", "00d10000", "00d50000", "00d60000"],
+  "supported_original": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "executed": false
+  },
+  "protocol": {
+    "parent": "CreateProcessW suspended with STARTUPINFOEXW handle list containing only the anonymous handoff section; fixed VirtualAllocEx reservations; ready before ResumeThread",
+    "child": "Inherited section handle argument, exact child PID and span-derived band mask, one-time atomic claim, exact allocation base/state/size/protection/type checks",
+    "transfer": "Move-only capability transfers all verified bands to GameNativeReadOnlyData; mapper completes original PE SHA-256, selected-page copy and PAGE_READONLY protection before mapped acknowledgement",
+    "failure": "Parent rolls back only its own pre-resume reservations; child capability or mapper releases only transferred bands; failed or early child is terminated or observed exited",
+    "wait_race_resolution": "After process signal re-read the final state; at timeout CAS the observed pending or claimed state to failed, while child ACK CAS only claimed to mapped or failed",
+    "direct_constructor": "Still makes its own reservations and rejects any occupied band"
+  },
+  "strict_win32_build": {
+    "compiler": "MSVC x86 /std:c++20 /W4 /WX /EHsc /MD",
+    "translation_units": ["src/game_native_readonly_data.cpp", "src/game_native_data_bootstrap.cpp"],
+    "result": "passed",
+    "focused_link": "/MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO /FIXED",
+    "focused_executable_pe": {"machine": "014c", "image_base": "30000000", "size_of_image": "00015000", "tls_directory": true, "manifest_resource_directory": true, "dynamic_crt_imports": true},
+    "vfs_graph_executable_pe": {"machine": "014c", "image_base": "30000000", "size_of_image": "00064000", "tls_directory": true, "manifest_resource_directory": true, "dynamic_crt_imports": true}
+  },
+  "focused_probe": {
+    "source": "local/native_data_bh_probe.cpp",
+    "executable": "local/native_data_bh_probe.exe",
+    "result_log": "local/native_data_bh_probe_result.txt",
+    "adopted_children": 8,
+    "adopted_children_exit_zero": 8,
+    "immediate_post_ack_exit_children": 12,
+    "immediate_post_ack_exit_children_exit_zero": 12,
+    "mapped_ack_accepted_after_process_exit": true,
+    "zero_millisecond_timeout_cancelled_delayed_child": true,
+    "tls_observed_preloader_d10000_reservation": 8,
+    "mapped_band_pages_read_only_nonexecutable_and_released": true,
+    "duplicate_claim_rejected": true,
+    "bad_original_image_rejected_and_reported": true,
+    "failed_ack_distinguished_after_process_exit": true,
+    "early_child_exit_reported": true,
+    "injected_d10000_rollback_released_owned_cf0000_and_preserved_competitor": true,
+    "direct_constructor_injected_d10000_rejected_rolled_back_cf0000_and_preserved_competitor": true,
+    "result": "passed"
+  },
+  "full_vfs_graph_probe": {
+    "adapted_from": "J:/PROG/battlestations-pacific-decompile-orch4-data-reservation-bg/local/native_data_bg_timing_probe.cpp",
+    "generator": "local/build_native_data_bh_vfs_probe.py",
+    "source": "local/native_data_bh_vfs_probe.cpp",
+    "executable": "local/native_data_bh_vfs_probe.exe",
+    "result_log": "local/native_data_bh_vfs_result.txt",
+    "linked_primary_core": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+    "linked_primary_core_sha256": "a38213fa1488744a7f413276543108d4cf467ab083f1ed90dd9019856c66a517",
+    "children": 1,
+    "child_exit_zero": 1,
+    "checks": "Four factories, three mounts, installed 657-byte member equals disk, two search groups, shared singleton and owner drain",
+    "result": "passed"
+  },
+  "artifact_sha256": {
+    "include/bsp/game_native_readonly_data.hpp": "8e751679e907c9471a6135b090ad5fe7d733cbaae5070484877138f3775fe96b",
+    "src/game_native_readonly_data.cpp": "efc2201294dd5b5a3364c611d45b3dbc1760aaa99985e86d947e0b060713dd16",
+    "include/bsp/game_native_data_bootstrap.hpp": "4ac5bb6e357c5e9007888bafcb8aae550c6cc5419d6ab417895d48656c403b40",
+    "src/game_native_data_bootstrap.cpp": "431ec3fb7d8fea7a2be496035d3653394d8296a3f45f3b57f4f5311eeb4f8844",
+    "local/native_data_bh_probe.cpp": "9d15b6f9f0d76c4b734588637b69d3ca26fb8f23709a64aefe1adc29faf6611f",
+    "local/native_data_bh_probe.exe": "1dbeccd46221abc5719a5ad4a38d21cc5793f4e98205d92e011644abb7f218bc",
+    "local/native_data_bh_probe_result.txt": "ca6dfaed5344ebe0e44b655a783578e4d96d16b9eed4c084bfcc7f35d29dad61",
+    "local/build_native_data_bh_vfs_probe.py": "bade2dc97a4c13baac56c16a0467a6c48337f9f0c23bcd23111f227d4e02e7ab",
+    "local/native_data_bh_vfs_probe.cpp": "297f35247a9881e7a57d0c553bfa6e25e0a6e2e0eff17469a4dfa72690ee3116",
+    "local/native_data_bh_vfs_probe.exe": "2dd85f5137c199278c4702e535c582b62ccba23414e6bcef2159e2950e3ee83f",
+    "local/native_data_bh_vfs_result.txt": "07f99feb2fa9befb26556f2a9f83efaee97db2a0cb11ad3cbd70e0fbf56ed1be"
+  },
+  "limits": [
+    "CMake and bsp_game entrypoint integration are owned by the primary agent; this packet did not change them.",
+    "The handoff is an accidental-adoption guard within a controlled process, not an adversarial authentication mechanism.",
+    "Eight mapped child starts and one full VFS graph run are finite fixture evidence, not arbitrary-launch reliability proof.",
+    "No gameplay validation or original executable launch was performed."
+  ]
+}

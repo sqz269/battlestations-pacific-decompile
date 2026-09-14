@@ -1,0 +1,101 @@
+{
+  "packet": "orch4_native_string_byte_append_bh",
+  "owner": "agent/orch4-string-byte-bh",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "127.0.0.1:8089",
+    "verified_function_count": 63954,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "entry": "00531030",
+      "exclusive_end": "005310aa",
+      "bytes": 122,
+      "sha256": "1ee19077aa6c9e7e114d55fbede11f2c147f4c2433c385ad995ed2229e70a8fa",
+      "matches_installed_pe": true,
+      "saved_owner": true,
+      "listed_instructions": 45,
+      "flow_gaps": 0,
+      "old_ghidra_name": "FUN_00531030",
+      "old_saved_signature": "undefined FUN_00531030(void)",
+      "return_address": "005310a7",
+      "original_abi": "ECX actual8h output header; stack DWORD low byte; EAX output; RET4",
+      "source_api": "construct_native_string_byte_00531030",
+      "proposed_ghidra_name": "BSP_NativeString_ConstructByte",
+      "coverage": "complete normal body in explicit-storage valid-memory domain; native zero-count memcpy omitted",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "0054aa70",
+      "exclusive_end": "0054ab03",
+      "bytes": 147,
+      "sha256": "bdc2da219594ab2e9be6d67a17b2068a3962515eeb3d0db93ab49dd107770f84",
+      "matches_installed_pe": true,
+      "saved_owner": true,
+      "listed_instructions": 51,
+      "flow_gaps": 0,
+      "old_ghidra_name": "FUN_0054aa70",
+      "old_saved_signature": "undefined FUN_0054aa70(void)",
+      "return_address": "0054ab00",
+      "original_abi": "ECX actual8h destination; stack DWORD passed through to byte constructor; RET4; no semantic result",
+      "source_api": "append_native_string_byte_0054aa70",
+      "proposed_ghidra_name": "BSP_NativeString_AppendByte",
+      "coverage": "complete normal body and captured temporary cleanup in explicit-storage valid-memory domain; existing0041DD40 preserve-overlap limit and FH3 excluded",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "direct_calls": [
+    {"function": "00531030", "address": "00531041", "native": "00419cc0", "role": "allocation getter after header clear"},
+    {"function": "00531030", "address": "0053104c", "native": "00bd1120", "role": "fixed size2 flag1 allocation"},
+    {"function": "00531030", "address": "00531060", "native": "00bf7680", "role": "zero-count preserve branch"},
+    {"function": "00531030", "address": "00531081", "native": "00419cc0", "role": "nonnull current-header return getter"},
+    {"function": "00531030", "address": "00531088", "native": "00bd1510", "role": "captured pointer/current length+1 flag1 return"},
+    {"function": "0054aa70", "address": "0054aa96", "native": "00531030", "role": "stack temporary construction"},
+    {"function": "0054aa70", "address": "0054aaba", "native": "0041dd40", "role": "resize old destination length plus captured temporary length preserve1"},
+    {"function": "0054aa70", "address": "0054aac7", "native": "00bf7680", "role": "captured temporary copy to reloaded destination data+old length"},
+    {"function": "0054aa70", "address": "0054aae3", "native": "00419cc0", "role": "captured nonnull temporary return getter"},
+    {"function": "0054aa70", "address": "0054aaea", "native": "00bd1510", "role": "captured temporary pointer/length+1 flag1 return"}
+  ],
+  "adopted_calls": [
+    {"function": "00bf47e0", "address": "00bf4835", "native": "0054aa70", "role": "backslash path separator"}
+  ],
+  "no_ghidra_function": [],
+  "missing_body_addresses": [],
+  "required_ghidra_repairs": [],
+  "ghidra_mutations": [],
+  "source_changes": ["include/bsp/native_string_byte_append.hpp", "src/native_string_byte_append.cpp", "src/native_physical_enumeration.cpp"],
+  "integration": {
+    "required_cmake_source": "src/native_string_byte_append.cpp",
+    "physical_enumeration_already_registered": true,
+    "parent_owns_ghidra_annotation_and_ledgers": true,
+    "star_branch": "Retains inlined C-string construction/append at00BF487F..00BF48FA; only BF4835 is a native0054AA70 call"
+  },
+  "validation": {
+    "strict_msvc_win32_tus": "passed /O2 /MD /EHsc /W4 /WX /std:c++17 /permissive- for new helper and updated enumeration",
+    "verify_seeds": "passed before native execution",
+    "private_fixture": "local/bh/byte_probe.cpp and byte_probe.exe; /MANIFEST:EMBED",
+    "fixture_case_count": 1,
+    "fixture_result": "native/source NUL-byte construction then append with allocator/return header mutations agree; six getter boundaries, three allocations, three returns, identical callback order and final state",
+    "fixture_native_bodies": ["00531030..005310A9", "0054AA70..0054AB02", "0041DD40..0041DDE3"],
+    "fixture_service_boundaries": ["00419CC0 recording getter", "00BD1120 recording allocator", "00BD1510 recording return", "00BF7680 host overlap-safe copy"],
+    "fixture_reused_source_library": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+    "full_build": "./scripts/build.ps1 passed, reconstructed_math CTest1/1 passed; changed enumeration TU included, new byte-helper source excluded pending parent CMake registration",
+    "full_build_log": "local/bh-full-build.log",
+    "verify_report_calls": "passed 11/11 rows, zero failures",
+    "read_only_flow_check": "00531030 45 instructions,0054AA70 51 instructions; both zero gaps"
+  },
+  "limits": [
+    "New explicit-storage C++ interfaces; original register/EH ABI and game execution not validated",
+    "Direct BF7680 append copy uses memmove based on observed backward-copy branch; reused generic0041DD40 still requires nonoverlapping nonzero preserve ranges",
+    "Zero-count native memcpy is omitted; valid headers, buffers and nonwrapping supported spans required; no malformed/huge-length recovery is invented",
+    "Constructor on an already-owned header discards prior ownership as native does; one-byte NUL is length1, never an empty C string",
+    "NativeStringStorage release remains noexcept; getter failure there retains the existing terminating source boundary",
+    "Native FH3/SEH and arbitrary aliases into compiler stack slots excluded; C++ scope cleanup on exceptions is not native unwind proof",
+    "Differential fixture uses explicit storage/CRT call boundaries and does not execute the original pool or exception handlers",
+    "Historical BF enumeration report remains unchanged; this packet closes only its byte-helper substitution, not all broader alias/FH3 gaps"
+  ]
+}

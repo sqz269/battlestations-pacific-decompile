@@ -1,0 +1,13 @@
+# Actual cockpit constructor fixture, BJ
+
+Exact combined source `dd86c2152a814a352ee0e2f3c3b503fc678b0008` passed the strict MSVC Win32 build and both existing CTests before this fixture. One probe translation unit links only the three current repository libraries; 2522 inputs including all tracked build sources, recipes, libraries and original PE stayed unchanged.
+
+One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.
+
+One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.
+
+The helper starts in caller-owned unconstructed24h storage with distinct sentinels at10/14/1C/20. Its persistent block and optional helper owner/reference storage exist before native events. B3C800 itself performs both viewport constructions, canonical camera binding, configuration and replacement; the fixture does not manually construct camera companions or register/replace views. Helper companions bind only after success and require zero guarded host allocations. Native terminal retirement precedes explicit host companion destruction and separate block quiescent reset.
+
+The normal comparison uses full original B3C800 and original B71930. Its B71770 target is an explicit concrete source-pool allocation boundary with checked original static pool identity. Existing raw-string/CRT/renderer hooks remain inherited from the sealed BI fixture. Ten added code spans612bytes and four data spans134bytes include the complete constructor, wrapper, scalar setters, raw strings and EH/literal data; nine absolute operands are relocated. Original EH metadata is present but original FH3 is never injected or executed.
+
+This covers one finite CW027F successful trace and one source-only early failure. Helper+08/+18 remain zero, and private source atomic startup is not native store-trace parity. It does not prove arbitrary callback mutation, concurrency, complete original-callee closure, replacement ABI, native FH3/SEH or gameplay. Independent review and immutable evidence are recorded by the parent in reports/native_cockpit_constructor_bj_validation.json. No repository test was added.

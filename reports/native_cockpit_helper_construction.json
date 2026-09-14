@@ -1,0 +1,492 @@
+{
+  "packet": "orch3_cockpit_constructor_impl_bj",
+  "status": "integrated_strict_win32_and_bounded_actual_constructor_fixture_passed",
+  "reviewed_date": "2026-09-13",
+  "source_base": "20ace1358700e43c75035b55e6b8b0a0c68ee520",
+  "branch": "agent/orch3-cockpit-constructor-bj",
+  "block_design_commit": "7b2c2a539c13fe384f47b1fac29ef8197c481786",
+  "block_dependency_worktree": "J:/PROG/battlestations-pacific-decompile-orch3-cockpit-block-bj",
+  "coverage": "Complete B3C800 normal sequence in the admitted nonnull concrete camera/viewport domain; explicit five-state C++ exception projection, not original FH3/SEH ABI",
+  "candidate_native_body_bytes": 339,
+  "native_body_credit_added_by_worker": 0,
+  "ledger_changes": false,
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "bridge": "http://127.0.0.1:8089",
+    "identity_guard": "Every bsp.py ghidra batch and verify_report_calls use Client.verify before analysis",
+    "writes": false,
+    "exports_written": false
+  },
+  "routines": [
+    {
+      "address": "00B3C800",
+      "end_inclusive": "00B3C952",
+      "bytes": 339,
+      "instructions": 108,
+      "abi": "ECX actual 24h helper; no stack arguments; EAX same; RET",
+      "coverage": "complete normal listing and source composition in admitted concrete domain; scoped five-state source EH"
+    },
+    {
+      "address": "00CBECE0",
+      "end_inclusive": "00CBECE7",
+      "coverage": "complete scoped base funclet listing"
+    },
+    {
+      "address": "00CBECE8",
+      "end_inclusive": "00CBECEF",
+      "coverage": "complete scoped raw camera return funclet listing"
+    },
+    {
+      "address": "00CBECF0",
+      "end_inclusive": "00CBED08",
+      "coverage": "complete scoped conditional string funclet listing"
+    },
+    {
+      "address": "00CBED09",
+      "end_inclusive": "00CBED13",
+      "coverage": "complete scoped raw viewport free funclet listing"
+    },
+    {
+      "address": "00CBED14",
+      "end_inclusive": "00CBED1D",
+      "coverage": "complete handler descriptor/tail-transfer listing; no FH3 runtime reconstruction"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00B3C84F",
+      "native": "00B71930",
+      "function": "00B3C800",
+      "contract": "Allocate actual 0108FFB0 camera slot at native event; no arguments"
+    },
+    {
+      "address": "00B3C86C",
+      "native": "0041E870",
+      "function": "00B3C800",
+      "contract": "Construct actual local 8h header from D6185C CockpitCamera literal before companion emplacement; RET4"
+    },
+    {
+      "address": "00B3C886",
+      "native": "00B71A80",
+      "function": "00B3C800",
+      "contract": "Actual slot and unchanged local raw header; explicit first viewport admission; RET4"
+    },
+    {
+      "address": "00B3C8AE",
+      "native": "00419CC0",
+      "function": "00B3C800",
+      "contract": "Current getter after captured data/length+1 return arguments; source uses exact raw41DD20 composition"
+    },
+    {
+      "address": "00B3C8B5",
+      "native": "00BD1510",
+      "function": "00B3C800",
+      "contract": "Captured data, wrapping length+1, unused1; returned current pool in ECX; RET0Ch"
+    },
+    {
+      "address": "00B3C8C7",
+      "native": "00B6FBF0",
+      "function": "00B3C800",
+      "contract": "Current D7A2F0 x87 materialization; freshly captured helper+0C canonical camera; RET4"
+    },
+    {
+      "address": "00B3C8D9",
+      "native": "00B6FC10",
+      "function": "00B3C800",
+      "contract": "Current CE38B8 x87 materialization; freshly captured helper+0C canonical camera; RET4"
+    },
+    {
+      "address": "00B3C8E3",
+      "native": "00B6FE10",
+      "function": "00B3C800",
+      "contract": "Fresh helper+0C, full DWORD6 flags; RET4"
+    },
+    {
+      "address": "00B3C8F1",
+      "native": "00B6FE20",
+      "function": "00B3C800",
+      "contract": "FLD1/FSTP32 before fresh helper+0C; RET4"
+    },
+    {
+      "address": "00B3C8F8",
+      "native": "00BF681B",
+      "function": "00B3C800",
+      "contract": "Replacement allocation through existing shared factory; PUSH34h; ADD ESP,4 at B3C8FD"
+    },
+    {
+      "address": "00B3C90F",
+      "native": "00B1F850",
+      "function": "00B3C800",
+      "contract": "Actual replacement construction; record1 registered before source factory return; no stack arguments"
+    },
+    {
+      "address": "00B3C923",
+      "native": "00B71990",
+      "function": "00B3C800",
+      "contract": "Fresh canonical current helper camera and saved local EDI viewport; state0 before call; RET4"
+    },
+    {
+      "address": "00B3C92C",
+      "native": "00CE2220+IAT",
+      "function": "00B3C800",
+      "kind": "indirect",
+      "contract": "Read current callable cell, decrement saved local EDI+4; never reload camera+180 receiver"
+    },
+    {
+      "address": "00B3C93C",
+      "native": "EDI+vtable00",
+      "function": "00B3C800",
+      "kind": "indirect",
+      "contract": "Only zero loads same local owner's current profile/slot0; supported D5E5F8/BD30E0"
+    },
+    {
+      "address": "00CBECE3",
+      "native": "00BD30F0",
+      "function": "00CBECE0",
+      "kind": "tail_jump",
+      "contract": "Restore helper base profile from EBP-1C"
+    },
+    {
+      "address": "00CBECEB",
+      "native": "00B71350",
+      "function": "00CBECE8",
+      "kind": "tail_jump",
+      "contract": "Return exact saved raw camera from EBP-18"
+    },
+    {
+      "address": "00CBED03",
+      "native": "0041DD20",
+      "function": "00CBECF0",
+      "kind": "tail_jump",
+      "contract": "Consume bit0 before actual local-header cleanup from EBP-14"
+    },
+    {
+      "address": "00CBED0D",
+      "native": "00BF65AC",
+      "function": "00CBED09",
+      "contract": "Free exact saved raw viewport; POP ECX at CBED12"
+    },
+    {
+      "address": "00CBED19",
+      "native": "00BF6B43",
+      "function": "00CBED14",
+      "kind": "tail_jump",
+      "contract": "Original handler loads DF74C4 then transfers to existing FH3 runtime; no source runtime substitute"
+    },
+    {
+      "address": "0041E8A0",
+      "native": "0041DD40",
+      "function": "0041E870",
+      "contract": "Actual cleared header, scanned length, preserve1; RET8"
+    },
+    {
+      "address": "0041E8B4",
+      "native": "00BF7680",
+      "function": "0041E870",
+      "contract": "Current data/current length+1 overlap-safe copy; ADD ESP,0Ch at41E8B9"
+    },
+    {
+      "address": "0041DD30",
+      "native": "00419CC0",
+      "function": "0041DD20",
+      "contract": "Get current actual pool after nonnull data and wrapping size capture"
+    },
+    {
+      "address": "0041DD37",
+      "native": "00BD1510",
+      "function": "0041DD20",
+      "contract": "Return captured raw data/size/unused1; header untouched"
+    },
+    {
+      "address": "00BD30EB",
+      "native": "ECX+vtable04",
+      "function": "00BD30E0",
+      "kind": "indirect",
+      "contract": "Current deleting slot receives flags1; source explicitly checks concrete B1F8F0 target before existing implementation"
+    }
+  ],
+  "native_eh": {
+    "func_info": "00DF74C4",
+    "magic": "19930522",
+    "max_state": 5,
+    "map_extent_inclusive": [
+      "00DF74E8",
+      "00DF750F"
+    ],
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00CBECE0",
+        "effect": "helper base only"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00CBECE8",
+        "effect": "return saved raw camera slot"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "funclet": "00CBECF0",
+        "effect": "consume live bit before string cleanup"
+      },
+      {
+        "state": 3,
+        "next": 0,
+        "funclet": "00CBECF0",
+        "effect": "conditional string cleanup; no native normal assignment and no source assignment"
+      },
+      {
+        "state": 4,
+        "next": 0,
+        "funclet": "00CBED09",
+        "effect": "free exact failed raw viewport"
+      }
+    ],
+    "factory_marker": "Source marks factory-owned state4 before invocation; native arms after BF681B. Shared factory alone owns raw allocation/free, so allocator throw adds no raw free and reaches only helper base; constructor throw has callee-base/free/helper-base order.",
+    "normal_string_return": "B3C895 state0 and source live-bit consumption precede raw41DD20; getter/return throw is not retried.",
+    "nested_cleanup": "Nested C++ cleanup throw terminates; no unrestricted native FH3/SEH claim.",
+    "post_camera_host_diagnostic": "A separate camera_completed boolean, not state3, preserves completed camera/slot if reference admission unexpectedly fails. Clean only live local string and helper base. Outside admitted equivalence, may indefinitely pin block pending external diagnostic recovery."
+  },
+  "host_contract": {
+    "entry": "Actual helper extent/alignment, table binding and capability validate before moving caller token or first native helper store; executing local attempt precedes callbacks.",
+    "storage": "Actual 24h helper starts its normal typed lifetime. Only untouched scalar words +10/+14/+1C/+20 are captured/restored; the atomic count is set by its store, with no atomic object-representation copy. Native profile/count/+08/+0C/+18 writes retain their order.",
+    "owner_timing": "Persistent camera optional emplaced only after local raw41E870 success; consumes scene credit without native retain.",
+    "reference_timing": "After successful BI raw camera using record0, persistent reference emplaced with lifetime credit and fixed block retirement callback before helper+0C publication.",
+    "current_camera": "Each later camera operation freshly loads helper+0C, uses canonical find_actual_node and checked dynamic_cast NativeCameraReference, validates host live phase and exact key/runtime, then uses that current owner.",
+    "final_release": "Explicit context binds current callable CE2220 cell and actual D5E5F8 words. Read callable only at saved local viewport decrement; on zero check current profile/slot0 BD30E0 and current slot4 B1F8F0 before concrete implementation. No retries or hidden decrements.",
+    "prepared_abandonment": "Only an owner still in prepared phase is reset before exact raw-slot return on early source rejection; dead/live companions remain persistent.",
+    "settlement": "Executing capability destructor only cancels unused tokens and marks block settled; no companion reset, record forgetting, native release, allocation free or pool return.",
+    "survivors": "Published camera/viewport records and native local replacement survive according to actual native paths. Never reread ended camera storage to recover an orphan; retain block until actual retirement and explicit host-quiescent reset.",
+    "reentry": "Different persistent block and independent already-prepared tokens may enter from callbacks; current canonical camera replacement is supported without ambient state or new registry.",
+    "helper_caller": "Caller separately owns actual24h allocation and stable helper companion storage, binds helper owner/reference only after constructor success, and publishes after success-only binding."
+  },
+  "x87_materializations": [
+    {
+      "native_load": "00B3C8BA",
+      "native_key_load": "00B3C8C1",
+      "native_spill": "00B3C8C4",
+      "source": "Explicit inline FLD32 current near cell, raw helper+0C capture, FSTP32 local word"
+    },
+    {
+      "native_load": "00B3C8CC",
+      "native_key_load": "00B3C8D3",
+      "native_spill": "00B3C8D6",
+      "source": "Explicit inline FLD32 current far cell, raw helper+0C capture, FSTP32 local word"
+    },
+    {
+      "native_load": "00B3C8E8",
+      "native_spill": "00B3C8EB",
+      "native_key_load": "00B3C8EE",
+      "source": "Explicit inline FLD1/FSTP32 then raw helper+0C capture"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_cockpit_helper_construction.hpp",
+      "source": "worker",
+      "sha256": "0b025465f114ed105d886b2d5963dc2e2e869dc4b46f02c1aae76b8846c07669"
+    },
+    {
+      "path": "src/native_cockpit_helper_construction.cpp",
+      "source": "worker",
+      "sha256": "0b32ce57bd8d34761c614e49ac3e0032b4a7d423d8da79bbeba71247ef2ed365"
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "source": "worker",
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "source": "worker",
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376"
+    },
+    {
+      "path": "include/bsp/native_camera_reference.hpp",
+      "source": "worker",
+      "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e"
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "source": "worker",
+      "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab"
+    },
+    {
+      "path": "include/bsp/native_camera_configuration_leaves.hpp",
+      "source": "worker",
+      "sha256": "4f7b909b3e879c5691b03b61d8ca99cfbeb7a16e98ad8c91b84e7bc5a2912892"
+    },
+    {
+      "path": "src/native_camera_configuration_leaves.cpp",
+      "source": "worker",
+      "sha256": "ee7c3048ec9b41077a3a9c71730330415efe00c9840c4f73626c0d38f355864d"
+    },
+    {
+      "path": "include/bsp/native_cockpit_helper_lifetime.hpp",
+      "source": "worker",
+      "sha256": "916ffb8d9eca76945cf942de85958589e150a0996144cc97bb7ad716ce858239"
+    },
+    {
+      "path": "src/native_cockpit_helper_lifetime.cpp",
+      "source": "worker",
+      "sha256": "6c418bf84029528abe82915e74ef4b61e3ac91bd5beed8cbe9126ce794d1f65f"
+    },
+    {
+      "path": "include/bsp/native_viewport_owner.hpp",
+      "source": "worker",
+      "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5"
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "source": "worker",
+      "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea"
+    },
+    {
+      "path": "include/bsp/native_viewport_registry.hpp",
+      "source": "worker",
+      "sha256": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486"
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "source": "worker",
+      "sha256": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289"
+    },
+    {
+      "path": "include/bsp/native_camera_pool.hpp",
+      "source": "worker",
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+    },
+    {
+      "path": "src/native_camera_pool.cpp",
+      "source": "worker",
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "source": "worker",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "source": "worker",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "source": "worker",
+      "sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "source": "worker",
+      "sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "source": "worker",
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "source": "worker",
+      "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269"
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "source": "worker",
+      "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "source": "worker",
+      "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64"
+    },
+    {
+      "path": "include/bsp/scene_attachment.hpp",
+      "source": "worker",
+      "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "source": "worker",
+      "sha256": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719"
+    },
+    {
+      "path": "config/target.json",
+      "source": "worker",
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "source": "worker",
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "source": "worker",
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "include/bsp/native_cockpit_construction_block.hpp",
+      "source": "block_commit_125e6c93",
+      "sha256": "f7d39d48cf096ef0fdc11d3aac49ba0f0dcfc8ab7d058961916a4fad3be3bb9d"
+    },
+    {
+      "path": "src/native_cockpit_construction_block.cpp",
+      "source": "block_commit_125e6c93",
+      "sha256": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1"
+    }
+  ],
+  "verification": {
+    "worker_checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md reviewed; callee/owner/producer/argument/register/evidence/coverage rules applied",
+    "report_calls": "passed: 21 direct/tail call rows checked, 0 failed; three indirect rows manually inspected at actual containing sites",
+    "git_diff_check": "passed for exactly four owned staged files",
+    "source_review": "Parent independently read full candidate header/source and found no blocking source issue; final acceptance remains at committed hashes",
+    "build_run": false,
+    "tests_run": false,
+    "fixtures_run": false,
+    "generated_x87_inspected": false,
+    "game_run": false,
+    "integration_boundary": "Block implementation is a coordinated sibling dependency absent from source base. Parent combines both packets and performs one fresh full Win32 build, applicable existing tests and minimal current-library actual-constructor fixture.",
+    "report_calls_log": "local/cockpit-constructor-bj/report-calls.log"
+  },
+  "limitations": [
+    "New C++ interface only: no original caller/register ABI, FH3/SEH or arbitrary unmasked floating exception equivalence.",
+    "No worker build/test/fixture execution or generated x87 inspection. Prior BI fixture covered raw B71A80 success/source failures, not this B3C800 body.",
+    "Nonnull concrete raw allocation domain. Native null camera/viewport branches do not return fabricated source success; missing canonical keys/null local viewport diagnose unsupported inputs.",
+    "Canonical static0108FFB0/environment pool identity is caller wiring, not proved by admission or an allocator probe. Raw pool, actual tables/CRT, shared cells and live renderer publications must remain valid.",
+    "The new final-release context preserves current IAT/profile/slot reads only at B3C92C/B3C93C and concrete BD30E0 forwarding. Existing internal B71990 and other callee operations retain their established concrete Win32/profile domains; no arbitrary patched-IAT/vtable support is added.",
+    "Unexpected host reference-admission failure after completed camera is outside admitted equivalence and may pin the block without an ordinary recovery path; no raw return or native camera deletion is invented.",
+    "Native camera late failure may orphan a live first viewport; B71990/final-release failure may preserve a local replacement. Neither source nor host settlement auto-releases these survivors.",
+    "Separate persistent caller ownership, helper companion success binding/retirement, actual24h allocation policy and external diagnostic recovery remain integration duties.",
+    "Semantic frame/cache borrow completion, destructive callback liveness, concurrent mutation, whole B14A10 render-service construction and game behavior are unproved."
+  ],
+  "block_implementation_commit": "125e6c93e07a527fb989a48142f546c7b3bb7461",
+  "integration_corrections": [
+    {
+      "problem": "MSVC rejected the whole NativeCockpitHelperStorage trivially-copyable assertion because it contains std::atomic<int>.",
+      "correction": "Capture/restore exactly the four untouched uint32_t words; establish atomic lifetime and assign its value normally. Added exact preserved-field offsets.",
+      "source": "src/native_cockpit_helper_construction.cpp",
+      "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
+      "worker_source_pins": "Historical worker inputs remain above; this integration source hash supersedes only the worker constructor cpp pin.",
+      "validation": "PASS at exact combined dd86c2152a814a352ee0e2f3c3b503fc678b0008; see reports/native_cockpit_constructor_bj_validation.json. Private atomic count-zero startup limit remains explicit."
+    }
+  ],
+  "integration_validation_bj": {
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "validation_report": "reports/native_cockpit_constructor_bj_validation.json",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "native_fixture_scope": "One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.",
+    "source_failure_scope": "One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.",
+    "game_validated": false,
+    "native_fh3_validated": false,
+    "original_binary_abi_validated": false
+  }
+}

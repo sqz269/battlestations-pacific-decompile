@@ -1,0 +1,445 @@
+{
+  "packet": "orch6_unit_part_construction_aa",
+  "base_commit": "51a1a931a5255bb775b6f8bc94f6724d5007a488",
+  "status": "reconstructed_complete_caller_required_providers_actual_library_native_byte_fixture_tested",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "worker_mode": "read only verified BSP CLI",
+    "worker_mutations": [],
+    "annotation_owner": "primary integrator",
+    "prior_metadata": "local/part_007135c0_proto.txt; existing name retained; eight cleanup thunks already defined in retained receipt"
+  },
+  "routines": [
+    {
+      "address": "007135c0",
+      "end_inclusive": "00713723",
+      "bytes": 356,
+      "name": "construct_native_unit_part_007135c0",
+      "source": "src/native_unit_part_construction.cpp",
+      "coverage": "complete caller with required complete providers and source cleanup",
+      "abi": "ECX=fresh1AC allocation; stack(unit,selected set); RET8; EAX=original allocation; saves EBX EBP ESI EDI",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "007135e8",
+      "native": "004e6480",
+      "function": "007135c0",
+      "contract": "Complete collision base fields and allocation; ECX=model; RET."
+    },
+    {
+      "address": "0071362f",
+      "native": "007103a0",
+      "function": "007135c0",
+      "contract": "Allocate circular30h list sentinel; incoming ECX=list is unused; RET."
+    },
+    {
+      "address": "0071364d",
+      "native": "007103c0",
+      "function": "007135c0",
+      "contract": "Allocate second circular30h sentinel; RET."
+    },
+    {
+      "address": "00713665",
+      "native": "007103c0",
+      "function": "007135c0",
+      "contract": "Allocate third circular30h sentinel; RET."
+    },
+    {
+      "address": "00713689",
+      "native": "00713380",
+      "function": "007135c0",
+      "contract": "Whole selected-set group construction, including checked-container and string processing; RET."
+    },
+    {
+      "address": "00713699",
+      "native": "unit+vtable10",
+      "function": "007135c0",
+      "indirect": true,
+      "contract": "Current unit table entry; ECX=original unit; zero stack args; EAX=C string. Concrete target unbound."
+    },
+    {
+      "address": "007136a0",
+      "native": "0041e870",
+      "function": "007135c0",
+      "contract": "Canonical actual CString construction; ECX=8-byte temporary, text; RET4. Source directly uses raw-pool implementation."
+    },
+    {
+      "address": "007136ba",
+      "native": "00b6f960",
+      "function": "007135c0",
+      "contract": "Whole canonical NativeNodeStorage name_54 setter; ECX=root, temporary header; RET4."
+    },
+    {
+      "address": "007136d7",
+      "native": "00419cc0",
+      "function": "007135c0",
+      "contract": "Canonical raw-pool getter; NO arguments; bare RET preserves pre-pushed release arguments."
+    },
+    {
+      "address": "007136de",
+      "native": "00bd1510",
+      "function": "007135c0",
+      "contract": "Canonical pool return; ECX=current pool, data,length+1,1; RET0C."
+    },
+    {
+      "address": "007136f2",
+      "native": "00712440",
+      "function": "007135c0",
+      "contract": "Whole collision-shape decode, list construction, publication and bounds; RET; result ignored."
+    },
+    {
+      "address": "00713701",
+      "native": "00710ad0",
+      "function": "007135c0",
+      "contract": "Whole kind-dependent spatial attachment and attached byte; RET."
+    },
+    {
+      "address": "00713708",
+      "native": "00711c60",
+      "function": "007135c0",
+      "contract": "Whole filtered tail pointer-array population; RET."
+    },
+    {
+      "address": "00c84b03",
+      "native": "004e6570",
+      "function": "00c84b00",
+      "end_inclusive": "00c84b07",
+      "kind": "tail_jump",
+      "state": 0,
+      "predecessor": -1,
+      "no_ghidra_function": false,
+      "contract": "ECX=model; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b11",
+      "native": "00711080",
+      "function": "00c84b08",
+      "end_inclusive": "00c84b15",
+      "kind": "tail_jump",
+      "state": 1,
+      "predecessor": 0,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+160; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b1f",
+      "native": "00712b40",
+      "function": "00c84b16",
+      "end_inclusive": "00c84b23",
+      "kind": "tail_jump",
+      "state": 2,
+      "predecessor": 1,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+168; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b2d",
+      "native": "00710f90",
+      "function": "00c84b24",
+      "end_inclusive": "00c84b31",
+      "kind": "tail_jump",
+      "state": 3,
+      "predecessor": 2,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+178; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b3b",
+      "native": "00710fc0",
+      "function": "00c84b32",
+      "end_inclusive": "00c84b3f",
+      "kind": "tail_jump",
+      "state": 4,
+      "predecessor": 3,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+188; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b49",
+      "native": "00710fc0",
+      "function": "00c84b40",
+      "end_inclusive": "00c84b4d",
+      "kind": "tail_jump",
+      "state": 5,
+      "predecessor": 4,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+194; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b57",
+      "native": "00711000",
+      "function": "00c84b4e",
+      "end_inclusive": "00c84b5b",
+      "kind": "tail_jump",
+      "state": 6,
+      "predecessor": 5,
+      "no_ghidra_function": false,
+      "contract": "ECX=model+1A0; whole required destructor. Source uses descending cleanup, returning providers."
+    },
+    {
+      "address": "00c84b5f",
+      "native": "0041dd20",
+      "function": "00c84b5c",
+      "end_inclusive": "00c84b63",
+      "kind": "tail_jump",
+      "state": 7,
+      "predecessor": 6,
+      "no_ghidra_function": false,
+      "contract": "ECX=temporary name header; whole required destructor. Source uses descending cleanup, returning providers."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00476c69",
+      "native": "007135c0",
+      "function": "00476bd0",
+      "unit": "EDI=current unit",
+      "allocation_site": "00476c33",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "00484825",
+      "native": "007135c0",
+      "function": "004847d0",
+      "unit": "EDI=current unit",
+      "allocation_site": "004847ef",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "0050734d",
+      "native": "007135c0",
+      "function": "005072c0",
+      "unit": "EBX=0 from005072DC",
+      "allocation_site": "0050731f",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "00681011",
+      "native": "007135c0",
+      "function": "00680db0",
+      "unit": "literal null",
+      "allocation_site": "00680fdd",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "006819ea",
+      "native": "007135c0",
+      "function": "00680db0",
+      "unit": "literal null",
+      "allocation_site": "006819ba",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "00850a62",
+      "native": "007135c0",
+      "function": "008509f0",
+      "unit": "EBX=current unit",
+      "allocation_site": "00850a2a",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "0085f227",
+      "native": "007135c0",
+      "function": "0085f1e0",
+      "unit": "ESI=current unit; selected set from+464",
+      "allocation_site": "0085f205",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "008830f1",
+      "native": "007135c0",
+      "function": "00882ac0",
+      "unit": "EBP=current unit restored00882E18; selected set from+420",
+      "allocation_site": "008830cf",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "0087be58",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "unit": "ESI=current unit",
+      "allocation_site": "0087be1c",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    },
+    {
+      "address": "0087be9b",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "unit": "ESI=current unit",
+      "allocation_site": "0087be5f",
+      "allocation_size": 428,
+      "stack_cleanup": "RET8 at00713721"
+    }
+  ],
+  "storage": {
+    "owner": "Borrowed actual fresh1AC allocation only; no padded owner or shadow fields",
+    "canonical_unit": "NativeUnitObserverAlias canonical identity; fixture uses NativeUnitObserverPrefixStorage",
+    "canonical_render": "NativeNodeStorage, producer B6F5A0, name_54 setter B6F960; selected-set root+0C provider required",
+    "canonical_tail": "NativeRenderPointerArrayStorage at model+1A0; data,count,capacity",
+    "group": "Checked16-byte record vector at+168; begin/end/capacity+16C/+170/+174; proxy untouched. Shared identity consumed by model-group-selection packet.",
+    "lists": "Three distinct checked lists at+178/+188/+194; untouched proxies,30h sentinel heads and following counts",
+    "strings": "Existing CString constructor and actual-header destructor with NativeStringRawPoolContext; actual shared singleton/getter/return operations"
+  },
+  "raw_fragments": [
+    {
+      "address": "00c84b64",
+      "end_inclusive": "00c84b6d",
+      "bytes": 10,
+      "no_ghidra_function": true,
+      "purpose": "FH3 handler metadata DB33F4",
+      "tail_transfer_site": "00c84b69",
+      "target": "00bf6b43",
+      "coverage": "evidence only; native EH not implemented"
+    },
+    {
+      "address": "00710898",
+      "end_inclusive": "007108a2",
+      "no_ghidra_function": true,
+      "purpose": "first-list post-free loop continuation"
+    },
+    {
+      "address": "007108ac",
+      "end_inclusive": "007108b7",
+      "no_ghidra_function": true,
+      "purpose": "first-list post-sentinel release clears head and returns"
+    },
+    {
+      "address": "00710908",
+      "end_inclusive": "00710912",
+      "no_ghidra_function": true,
+      "purpose": "second/third-list loop continuation"
+    },
+    {
+      "address": "0071091c",
+      "end_inclusive": "00710927",
+      "no_ghidra_function": true,
+      "purpose": "second/third-list post-sentinel release clears head and returns"
+    },
+    {
+      "address": "00711012",
+      "end_inclusive": "00711016",
+      "no_ghidra_function": true,
+      "purpose": "tail-array post-release ADDESP4 POPESI RET"
+    },
+    {
+      "address": "00712b62",
+      "end_inclusive": "00712b64",
+      "no_ghidra_function": true,
+      "purpose": "group-vector ADDESP4 before clearing words"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "8 constructor sites",
+      "evidence": "live xrefs and all ten saved caller allocation/setup spans",
+      "is": "10 sites across8 containing functions"
+    },
+    {
+      "was": "17C/18C/198 arbitrary allocated subobjects",
+      "evidence": "complete7103A0/C0 assembly and cleanup710870/7108E0",
+      "is": "three30h circular list sentinels; explicit container proxy/head/count layout"
+    },
+    {
+      "was": "first free ends list/vector destructor",
+      "evidence": "retained live/disk bytes and raw disassembly, complete list ranges710870..7108B7 and7108E0..710927",
+      "is": "post-free loops and field clearing continue through actual RET"
+    },
+    {
+      "was": "getter419CC0 consumes release args",
+      "evidence": "getter/callee bodies and ctor7136D0..DE",
+      "is": "no args; release args survive bareRET and BD1510 consumesRET0C"
+    }
+  ],
+  "source_exception_scope": {
+    "reached_states": [
+      -1,
+      2,
+      3,
+      4,
+      6,
+      7
+    ],
+    "map": "00DB3418; FuncInfo00DB33F4; eight predecessors descend by one",
+    "normal_name_release_state": 6,
+    "outer_allocation_free": false,
+    "source": "C++ provider failures with returning noexcept member/base cleanup; throwing raw-string cleanup during unwind terminates",
+    "excluded": [
+      "native FH3 and SEH identity",
+      "native hardware exceptions",
+      "Lua longjmp",
+      "asynchronous observations and fault-time local-state stores"
+    ]
+  },
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passes; local/part_construction_build_final.log",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "seed_verification": "8 existing live/disk seeds verified",
+    "differential": "3 original356-byte/source comparisons; source linked from actual rebuilt bsp_core.lib, not a copied implementation",
+    "source_cleanup": "6 cases cover reached distinct states -1,2,3,4,6,7; actual pooled-string cleanup at7",
+    "compared_bytes": {
+      "model": 428,
+      "sentinels": 144
+    },
+    "checked": [
+      "provider pre-call full-model hashes",
+      "exact provider order",
+      "owner/set rebindings",
+      "current190 gating",
+      "return identity",
+      "zero native ESP delta",
+      "canonical actual pooled-name allocation/release"
+    ],
+    "native_providers_executed": false,
+    "native_fh3_executed": false,
+    "results": "local/part_construction_probe_result.json",
+    "retained_manifest": "local/part_construction_retained/manifest.json",
+    "codegen": "actual main native_unit_part_construction.obj; ordered receiver stores41,6D,72,7B,82,87,90,99; owner reload193..19B; full COFF symbols/relocations/disassembly retained"
+  },
+  "remaining_required_providers": [
+    "004e6480",
+    "007103a0",
+    "007103c0",
+    "007103c0",
+    "00713380",
+    "00b6f960",
+    "00712440",
+    "00710ad0",
+    "00711c60",
+    "unit+vtable10",
+    "004e6570",
+    "00711080",
+    "00712b40",
+    "00710f90",
+    "00710fc0",
+    "00711000"
+  ],
+  "limits": [
+    "Complete caller only; transitive collision/STL/group/render/spatial providers remain required.",
+    "Selected-set producer/runtime binding unbound.",
+    "No1AC owner created; views require the same live actual backing and valid reached fields.",
+    "No native binary ABI or game-validation claim."
+  ],
+  "integration_review_aa": {
+    "direct_rows": 30,
+    "failed": 0,
+    "note": "The integrator defined C84B64..C84B6D and saved the FH3 selector name. Internal post-free listing gaps were repaired and exports refreshed. Explicit post-free tails were decoded, but Ghidra stored ownership remains truncated for710870,7108E0 and711000; these providers remain required whole bodies. The712B40 internal gap is repaired. All30 direct/tail/caller rows pass. Native unwind remains untested.",
+    "definitions": "reports/orch6_aa_function_definitions.json",
+    "flow": "reports/orch6_aa_flow_repair.json"
+  }
+}
