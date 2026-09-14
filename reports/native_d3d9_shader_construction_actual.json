@@ -1,0 +1,1294 @@
+{
+  "packet": "orch5_native_d3d9_shader_construction_actual",
+  "base_commit": "1e70442b46953b54737792ec4bfdbdb6057ba40d",
+  "status": "complete_actual_AA0_shared_constructor_and_native_cleanup_strict_build_bounded_fixture_passed",
+  "source": "src/native_d3d9_shader_construction_actual.cpp",
+  "header": "include/bsp/native_d3d9_shader_construction_actual.hpp",
+  "shared_sources": [
+    "include/bsp/native_d3d9_shader_construction.hpp",
+    "src/native_d3d9_shader_construction.cpp"
+  ],
+  "documentation": "docs/NATIVE_D3D9_SHADER_CONSTRUCTION_ACTUAL.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": 0,
+    "primary_handler_definitions": {
+      "record": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/reports/native_d3d9_shader_construction_actual_function_definitions.json",
+      "functions": [
+        "00cc1238",
+        "00cc1268"
+      ],
+      "scope": "Primary used official definition tools, saved and forced exports; worker did not mutate."
+    }
+  },
+  "routines": [
+    {
+      "address": "00b5f9b0",
+      "name": "construct_native_pixel_shader_00b5f9b0",
+      "bytes": 320,
+      "coverage": "complete",
+      "classification": "existing_body_actual_AA0_and_exception_integration",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction_actual.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b5faf0",
+      "name": "construct_native_vertex_shader_00b5faf0",
+      "bytes": 320,
+      "coverage": "complete",
+      "classification": "existing_body_actual_AA0_and_exception_integration",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction_actual.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b289a0",
+      "name": "register_native_vertex_shader_00b289a0",
+      "bytes": 73,
+      "coverage": "complete",
+      "classification": "existing_body_operation_free_shared_overload",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b289f0",
+      "name": "register_native_pixel_shader_00b289f0",
+      "bytes": 73,
+      "coverage": "complete",
+      "classification": "existing_body_operation_free_shared_overload",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b22dd0",
+      "name": "reserve_native_vertex_shader_registry_00b22dd0",
+      "bytes": 95,
+      "coverage": "complete",
+      "classification": "existing_body_operation_free_shared_overload",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b22e30",
+      "name": "reserve_native_pixel_shader_registry_00b22e30",
+      "bytes": 95,
+      "coverage": "complete",
+      "classification": "existing_body_operation_free_shared_overload",
+      "original_abi": "ECX owner/header/renderer, one stacked argument, RET4; constructors return EAX owner",
+      "source": "src/native_d3d9_shader_construction.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b5e720",
+      "name": "destroy_native_pixel_shader_base_00b5e720",
+      "bytes": 5,
+      "coverage": "complete",
+      "classification": "new_complete_native_cleanup_binding",
+      "original_abi": "ECX owner/header, RET",
+      "source": "src/native_d3d9_shader_construction_actual.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b5e7e0",
+      "name": "destroy_native_vertex_shader_base_00b5e7e0",
+      "bytes": 5,
+      "coverage": "complete",
+      "classification": "new_complete_native_cleanup_binding",
+      "original_abi": "ECX owner/header, RET",
+      "source": "src/native_d3d9_shader_construction_actual.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    },
+    {
+      "address": "00b3f4c0",
+      "name": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+      "bytes": 30,
+      "coverage": "complete",
+      "classification": "existing_diagnostic_record_body_raw_pool_overload_via_41dd20",
+      "original_abi": "ECX owner/header, RET",
+      "source": "src/native_d3d9_shader_construction_actual.cpp",
+      "uncertainty": "New C++ context/signatures and C++ exceptions; not original private FH3/SEH ABI. Native invalid memory and concurrent mutation outside qualified dependency contracts remain unproved."
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b5f9b0",
+      "length": 320,
+      "sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28",
+      "pe_raw_offset": 7731632,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b5faf0",
+      "length": 320,
+      "sha256": "eb4fa1ea8a2bf1e507457b08c7af5a2c7613cf3599e15cee06440e557fec932b",
+      "pe_raw_offset": 7731952,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b289a0",
+      "length": 73,
+      "sha256": "10b02dfeaedcd66ddc9da8db6f624b1ac21511147c3f9651b051c5957f10b278",
+      "pe_raw_offset": 7506336,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b289f0",
+      "length": 73,
+      "sha256": "144d6f5a1977d7e313a52b376393b639a3b359084624620824fcdebec1d9cf3c",
+      "pe_raw_offset": 7506416,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b22dd0",
+      "length": 95,
+      "sha256": "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1",
+      "pe_raw_offset": 7482832,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b22e30",
+      "length": 95,
+      "sha256": "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6",
+      "pe_raw_offset": 7482928,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b5e720",
+      "length": 5,
+      "sha256": "3de796f15636ab39430040addb59d1b4441df4ff300fe454aca5506a9be36847",
+      "pe_raw_offset": 7726880,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b5e7e0",
+      "length": 5,
+      "sha256": "092063dbe0fe720dedc06ddfbfcca08d916d3a1ff02f331fed43ef1ab1549022",
+      "pe_raw_offset": 7727072,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b3f4c0",
+      "length": 30,
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "pe_raw_offset": 7599296,
+      "live_equals_disk": true,
+      "scope": "owned"
+    },
+    {
+      "address": "00b253e0",
+      "length": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "pe_raw_offset": 7492576,
+      "live_equals_disk": true,
+      "scope": "read_only_dependency"
+    },
+    {
+      "address": "00b25450",
+      "length": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "pe_raw_offset": 7492688,
+      "live_equals_disk": true,
+      "scope": "read_only_dependency"
+    },
+    {
+      "address": "00cc1220",
+      "length": 34,
+      "sha256": "3d82630657fd2151ec6b278851c794730cef5c124a20e1396798ab7e547f5f2a",
+      "pe_raw_offset": 9179680,
+      "live_equals_disk": true,
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc1250",
+      "length": 34,
+      "sha256": "df05bd1a4fae1a304851e3a4a6084a2ebc73dd3c1fb3a373d8ff021815157c67",
+      "pe_raw_offset": 9179728,
+      "live_equals_disk": true,
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00df9f70",
+      "length": 120,
+      "sha256": "09627a62041b99e4b55c6d2d5b986deccfb3e4586af61138f9d259fff0d52839",
+      "pe_raw_offset": 10461040,
+      "live_equals_disk": true,
+      "scope": "read_only_metadata"
+    },
+    {
+      "address": "00d62a94",
+      "length": 25,
+      "sha256": "927dc8e5a29899daf909b4143fad66446c863a34ce6c7e655ded5bbf921256bf",
+      "pe_raw_offset": 9841300,
+      "live_equals_disk": true,
+      "scope": "read_only_literals"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b5fa26",
+      "native": "0041dd40",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fa41",
+      "native": "00bf7680",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fa64",
+      "native": "0041dd40",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fa7c",
+      "native": "00bf7680",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fa89",
+      "native": "00b3e730",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5faa2",
+      "native": "00419cc0",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5faa9",
+      "native": "00bd1510",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fac1",
+      "native": "00419cc0",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fac8",
+      "native": "00bd1510",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fad4",
+      "native": "00b289f0",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fb5d",
+      "native": "00b289a0",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fb72",
+      "native": "0041dd40",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fb8d",
+      "native": "00bf7680",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fbb0",
+      "native": "0041dd40",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fbc8",
+      "native": "00bf7680",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fbd5",
+      "native": "00b3e730",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fbee",
+      "native": "00419cc0",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fbf5",
+      "native": "00bd1510",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fc0d",
+      "native": "00419cc0",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5fc14",
+      "native": "00bd1510",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b289ae",
+      "native": "00b253e0",
+      "function": "00b289a0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b289ca",
+      "native": "00b22dd0",
+      "function": "00b289a0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b289fe",
+      "native": "00b25450",
+      "function": "00b289f0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b28a1a",
+      "native": "00b22e30",
+      "function": "00b289f0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22df0",
+      "native": "00bf55be",
+      "function": "00b22dd0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22e1c",
+      "native": "00bf6989",
+      "function": "00b22dd0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22e50",
+      "native": "00bf55be",
+      "function": "00b22e30",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22e7c",
+      "native": "00bf6989",
+      "function": "00b22e30",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5e720",
+      "native": "00bd30f0",
+      "function": "00b5e720",
+      "kind": "tail_jump",
+      "scope": "owned"
+    },
+    {
+      "address": "00b5e7e0",
+      "native": "00bd30f0",
+      "function": "00b5e7e0",
+      "kind": "tail_jump",
+      "scope": "owned"
+    },
+    {
+      "address": "00b3f4d1",
+      "native": "00419cc0",
+      "function": "00b3f4c0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00b3f4d8",
+      "native": "00bd1510",
+      "function": "00b3f4c0",
+      "kind": "call",
+      "scope": "owned"
+    },
+    {
+      "address": "00cc1223",
+      "native": "00b5e720",
+      "function": "00cc1220",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc122b",
+      "native": "0041dd20",
+      "function": "00cc1228",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc1233",
+      "native": "00b3f4c0",
+      "function": "00cc1230",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc1253",
+      "native": "00b5e7e0",
+      "function": "00cc1250",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc125b",
+      "native": "0041dd20",
+      "function": "00cc1258",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc1263",
+      "native": "00b3f4c0",
+      "function": "00cc1260",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3"
+    },
+    {
+      "address": "00cc123d",
+      "native": "00bf6b43",
+      "function": "00cc1238",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3_handler_defined_by_primary"
+    },
+    {
+      "address": "00cc126d",
+      "native": "00bf6b43",
+      "function": "00cc1268",
+      "kind": "tail_jump",
+      "scope": "read_only_fh3_handler_defined_by_primary"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b5fa08",
+      "native": "edx",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned",
+      "contract": "current captured incoming COM vslot4 AddRef"
+    },
+    {
+      "address": "00b5fa14",
+      "native": "ecx",
+      "function": "00b5f9b0",
+      "kind": "call",
+      "scope": "owned",
+      "contract": "native old-COM vslot8 Release unreachable: callee-saved EDI is literal zero"
+    },
+    {
+      "address": "00b5fb48",
+      "native": "edx",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned",
+      "contract": "current captured incoming COM vslot4 AddRef"
+    },
+    {
+      "address": "00b5fb54",
+      "native": "ecx",
+      "function": "00b5faf0",
+      "kind": "call",
+      "scope": "owned",
+      "contract": "native old-COM vslot8 Release unreachable: callee-saved EDI is literal zero"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow": {
+    "path": "local/shader_actual_flow.log",
+    "owned_functions": 9,
+    "gaps": 0,
+    "repairs_needed": []
+  },
+  "operand_evidence": {
+    "path": "local/shader_actual_operand_audit.json",
+    "full_blocks": [
+      {
+        "begin": "00b5f9c5",
+        "end_exclusive": "00b5fa16",
+        "bytes_hex": "83ec185355568bf1c70630b1ce005789742410c74604010000008b44243833db8bfb3bf8895c2430c706602ad600895e0c895e08741b3bc389460874088b088b510450ffd23bfb74088b078b480857ffd1",
+        "instructions": [
+          "00b5f9c5: sub esp, 0x18",
+          "00b5f9c8: push ebx",
+          "00b5f9c9: push ebp",
+          "00b5f9ca: push esi",
+          "00b5f9cb: mov esi, ecx",
+          "00b5f9cd: mov dword ptr [esi], 0xceb130",
+          "00b5f9d3: push edi",
+          "00b5f9d4: mov dword ptr [esp + 0x10], esi",
+          "00b5f9d8: mov dword ptr [esi + 4], 1",
+          "00b5f9df: mov eax, dword ptr [esp + 0x38]",
+          "00b5f9e3: xor ebx, ebx",
+          "00b5f9e5: mov edi, ebx",
+          "00b5f9e7: cmp edi, eax",
+          "00b5f9e9: mov dword ptr [esp + 0x30], ebx",
+          "00b5f9ed: mov dword ptr [esi], 0xd62a60",
+          "00b5f9f3: mov dword ptr [esi + 0xc], ebx",
+          "00b5f9f6: mov dword ptr [esi + 8], ebx",
+          "00b5f9f9: je 0xb5fa16",
+          "00b5f9fb: cmp eax, ebx",
+          "00b5f9fd: mov dword ptr [esi + 8], eax",
+          "00b5fa00: je 0xb5fa0a",
+          "00b5fa02: mov ecx, dword ptr [eax]",
+          "00b5fa04: mov edx, dword ptr [ecx + 4]",
+          "00b5fa07: push eax",
+          "00b5fa08: call edx",
+          "00b5fa0a: cmp edi, ebx",
+          "00b5fa0c: je 0xb5fa16",
+          "00b5fa0e: mov eax, dword ptr [edi]",
+          "00b5fa10: mov ecx, dword ptr [eax + 8]",
+          "00b5fa13: push edi",
+          "00b5fa14: call ecx"
+        ],
+        "source_contract": "Pixel: captured ECX owner; state0 after count1; derived stamp and +0C/+08 zero; publish captured COM before current vslot4 AddRef. EDI=0 is callee-saved, so vslot8 Release is dead."
+      },
+      {
+        "begin": "00b5fa16",
+        "end_exclusive": "00b5fa69",
+        "bytes_hex": "6a016a0b8d4c241c895c241c895c2420e815e38bff8b4424183bc38b7c241474128d57015268942ad60050e83a7c090083c40c8b46086a01578d4c2428c64424380189442424895c2428895c242ce8d7e28bff",
+        "instructions": [
+          "00b5fa16: push 1",
+          "00b5fa18: push 0xb",
+          "00b5fa1a: lea ecx, [esp + 0x1c]",
+          "00b5fa1e: mov dword ptr [esp + 0x1c], ebx",
+          "00b5fa22: mov dword ptr [esp + 0x20], ebx",
+          "00b5fa26: call 0x41dd40",
+          "00b5fa2b: mov eax, dword ptr [esp + 0x18]",
+          "00b5fa2f: cmp eax, ebx",
+          "00b5fa31: mov edi, dword ptr [esp + 0x14]",
+          "00b5fa35: je 0xb5fa49",
+          "00b5fa37: lea edx, [edi + 1]",
+          "00b5fa3a: push edx",
+          "00b5fa3b: push 0xd62a94",
+          "00b5fa40: push eax",
+          "00b5fa41: call 0xbf7680",
+          "00b5fa46: add esp, 0xc",
+          "00b5fa49: mov eax, dword ptr [esi + 8]",
+          "00b5fa4c: push 1",
+          "00b5fa4e: push edi",
+          "00b5fa4f: lea ecx, [esp + 0x28]",
+          "00b5fa53: mov byte ptr [esp + 0x38], 1",
+          "00b5fa58: mov dword ptr [esp + 0x24], eax",
+          "00b5fa5c: mov dword ptr [esp + 0x28], ebx",
+          "00b5fa60: mov dword ptr [esp + 0x2c], ebx",
+          "00b5fa64: call 0x41dd40"
+        ],
+        "source_contract": "Pixel first initialized then resized11/copied captured-length+1; current owner+08 snapshot; state1 armed after first copy; second initialized then resized captured first length."
+      },
+      {
+        "begin": "00b5fa69",
+        "end_exclusive": "00b5fa8e",
+        "bytes_hex": "3bfb8b6c242474138b4c24208b542418515255e8ff7b090083c40cc644243002e8a2ecfdff",
+        "instructions": [
+          "00b5fa69: cmp edi, ebx",
+          "00b5fa6b: mov ebp, dword ptr [esp + 0x24]",
+          "00b5fa6f: je 0xb5fa84",
+          "00b5fa71: mov ecx, dword ptr [esp + 0x20]",
+          "00b5fa75: mov edx, dword ptr [esp + 0x18]",
+          "00b5fa79: push ecx",
+          "00b5fa7a: push edx",
+          "00b5fa7b: push ebp",
+          "00b5fa7c: call 0xbf7680",
+          "00b5fa81: add esp, 0xc",
+          "00b5fa84: mov byte ptr [esp + 0x30], 2",
+          "00b5fa89: call 0xb3e730"
+        ],
+        "source_contract": "Pixel captured second data; copy uses current first data/current second length when captured first length nonzero; state2 arm follows copy; no arguments to support getter."
+      },
+      {
+        "begin": "00b5fa8e",
+        "end_exclusive": "00b5faed",
+        "bytes_hex": "3bebc64424300174178b4424206a0183c0015055e819a28bff8bc8e8621a07008b4424183bc3885c243074136a0183c7015750e8faa18bff8bc8e8431a07008b0d94d3f80056e8178ffcff8b4c24285f8bc65e5d5b64890d0000000083c424",
+        "instructions": [
+          "00b5fa8e: cmp ebp, ebx",
+          "00b5fa90: mov byte ptr [esp + 0x30], 1",
+          "00b5fa95: je 0xb5faae",
+          "00b5fa97: mov eax, dword ptr [esp + 0x20]",
+          "00b5fa9b: push 1",
+          "00b5fa9d: add eax, 1",
+          "00b5faa0: push eax",
+          "00b5faa1: push ebp",
+          "00b5faa2: call 0x419cc0",
+          "00b5faa7: mov ecx, eax",
+          "00b5faa9: call 0xbd1510",
+          "00b5faae: mov eax, dword ptr [esp + 0x18]",
+          "00b5fab2: cmp eax, ebx",
+          "00b5fab4: mov byte ptr [esp + 0x30], bl",
+          "00b5fab8: je 0xb5facd",
+          "00b5faba: push 1",
+          "00b5fabc: add edi, 1",
+          "00b5fabf: push edi",
+          "00b5fac0: push eax",
+          "00b5fac1: call 0x419cc0",
+          "00b5fac6: mov ecx, eax",
+          "00b5fac8: call 0xbd1510",
+          "00b5facd: mov ecx, dword ptr [0xf8d394]",
+          "00b5fad3: push esi",
+          "00b5fad4: call 0xb289f0",
+          "00b5fad9: mov ecx, dword ptr [esp + 0x28]",
+          "00b5fadd: pop edi",
+          "00b5fade: mov eax, esi",
+          "00b5fae0: pop esi",
+          "00b5fae1: pop ebp",
+          "00b5fae2: pop ebx",
+          "00b5fae3: mov dword ptr fs:[0], ecx",
+          "00b5faea: add esp, 0x24"
+        ],
+        "source_contract": "Pixel state2 disarm before captured second/current-length return; current first data captured before state1 disarm; captured first length return; current F8D394 after both returns; EAX owner and RET4."
+      },
+      {
+        "begin": "00b5faf0",
+        "end_exclusive": "00b5fb62",
+        "bytes_hex": "6aff686812cc0064a100000000506489250000000083ec185355568bf1c70630b1ce005789742410c74604010000008b44243833db8bfb3bf8895c2430c706702ad600895e0c895e08741b3bc389460874088b088b510450ffd23bfb74088b078b480857ffd18b0d94d3f80056e83e8efcff",
+        "instructions": [
+          "00b5faf0: push -1",
+          "00b5faf2: push 0xcc1268",
+          "00b5faf7: mov eax, dword ptr fs:[0]",
+          "00b5fafd: push eax",
+          "00b5fafe: mov dword ptr fs:[0], esp",
+          "00b5fb05: sub esp, 0x18",
+          "00b5fb08: push ebx",
+          "00b5fb09: push ebp",
+          "00b5fb0a: push esi",
+          "00b5fb0b: mov esi, ecx",
+          "00b5fb0d: mov dword ptr [esi], 0xceb130",
+          "00b5fb13: push edi",
+          "00b5fb14: mov dword ptr [esp + 0x10], esi",
+          "00b5fb18: mov dword ptr [esi + 4], 1",
+          "00b5fb1f: mov eax, dword ptr [esp + 0x38]",
+          "00b5fb23: xor ebx, ebx",
+          "00b5fb25: mov edi, ebx",
+          "00b5fb27: cmp edi, eax",
+          "00b5fb29: mov dword ptr [esp + 0x30], ebx",
+          "00b5fb2d: mov dword ptr [esi], 0xd62a70",
+          "00b5fb33: mov dword ptr [esi + 0xc], ebx",
+          "00b5fb36: mov dword ptr [esi + 8], ebx",
+          "00b5fb39: je 0xb5fb56",
+          "00b5fb3b: cmp eax, ebx",
+          "00b5fb3d: mov dword ptr [esi + 8], eax",
+          "00b5fb40: je 0xb5fb4a",
+          "00b5fb42: mov ecx, dword ptr [eax]",
+          "00b5fb44: mov edx, dword ptr [ecx + 4]",
+          "00b5fb47: push eax",
+          "00b5fb48: call edx",
+          "00b5fb4a: cmp edi, ebx",
+          "00b5fb4c: je 0xb5fb56",
+          "00b5fb4e: mov eax, dword ptr [edi]",
+          "00b5fb50: mov ecx, dword ptr [eax + 8]",
+          "00b5fb53: push edi",
+          "00b5fb54: call ecx",
+          "00b5fb56: mov ecx, dword ptr [0xf8d394]",
+          "00b5fb5c: push esi",
+          "00b5fb5d: call 0xb289a0"
+        ],
+        "source_contract": "Vertex same captured COM/base prefix; current F8D394 registration precedes first-name construction."
+      },
+      {
+        "begin": "00b5fb62",
+        "end_exclusive": "00b5fbb5",
+        "bytes_hex": "6a016a0c8d4c241c895c241c895c2420e8c9e18bff8b4424183bc38b7c241474128d57015268a02ad60050e8ee7a090083c40c8b46086a01578d4c2428c64424380189442424895c2428895c242ce88be18bff",
+        "instructions": [
+          "00b5fb62: push 1",
+          "00b5fb64: push 0xc",
+          "00b5fb66: lea ecx, [esp + 0x1c]",
+          "00b5fb6a: mov dword ptr [esp + 0x1c], ebx",
+          "00b5fb6e: mov dword ptr [esp + 0x20], ebx",
+          "00b5fb72: call 0x41dd40",
+          "00b5fb77: mov eax, dword ptr [esp + 0x18]",
+          "00b5fb7b: cmp eax, ebx",
+          "00b5fb7d: mov edi, dword ptr [esp + 0x14]",
+          "00b5fb81: je 0xb5fb95",
+          "00b5fb83: lea edx, [edi + 1]",
+          "00b5fb86: push edx",
+          "00b5fb87: push 0xd62aa0",
+          "00b5fb8c: push eax",
+          "00b5fb8d: call 0xbf7680",
+          "00b5fb92: add esp, 0xc",
+          "00b5fb95: mov eax, dword ptr [esi + 8]",
+          "00b5fb98: push 1",
+          "00b5fb9a: push edi",
+          "00b5fb9b: lea ecx, [esp + 0x28]",
+          "00b5fb9f: mov byte ptr [esp + 0x38], 1",
+          "00b5fba4: mov dword ptr [esp + 0x24], eax",
+          "00b5fba8: mov dword ptr [esp + 0x28], ebx",
+          "00b5fbac: mov dword ptr [esp + 0x2c], ebx",
+          "00b5fbb0: call 0x41dd40"
+        ],
+        "source_contract": "Vertex first resize12/copy then arm1 before second resize."
+      },
+      {
+        "begin": "00b5fbb5",
+        "end_exclusive": "00b5fbda",
+        "bytes_hex": "3bfb8b6c242474138b4c24208b542418515255e8b37a090083c40cc644243002e856ebfdff",
+        "instructions": [
+          "00b5fbb5: cmp edi, ebx",
+          "00b5fbb7: mov ebp, dword ptr [esp + 0x24]",
+          "00b5fbbb: je 0xb5fbd0",
+          "00b5fbbd: mov ecx, dword ptr [esp + 0x20]",
+          "00b5fbc1: mov edx, dword ptr [esp + 0x18]",
+          "00b5fbc5: push ecx",
+          "00b5fbc6: push edx",
+          "00b5fbc7: push ebp",
+          "00b5fbc8: call 0xbf7680",
+          "00b5fbcd: add esp, 0xc",
+          "00b5fbd0: mov byte ptr [esp + 0x30], 2",
+          "00b5fbd5: call 0xb3e730"
+        ],
+        "source_contract": "Vertex captured/current second-copy operands then arm2 before support getter."
+      },
+      {
+        "begin": "00b5fbda",
+        "end_exclusive": "00b5fc30",
+        "bytes_hex": "3bebc64424300174178b4424206a0183c0015055e8cda08bff8bc8e8161907008b4424183bc3885c243074136a0183c7015750e8aea08bff8bc8e8f71807008b4c24285f8bc65e5d5b64890d0000000083c424c20400",
+        "instructions": [
+          "00b5fbda: cmp ebp, ebx",
+          "00b5fbdc: mov byte ptr [esp + 0x30], 1",
+          "00b5fbe1: je 0xb5fbfa",
+          "00b5fbe3: mov eax, dword ptr [esp + 0x20]",
+          "00b5fbe7: push 1",
+          "00b5fbe9: add eax, 1",
+          "00b5fbec: push eax",
+          "00b5fbed: push ebp",
+          "00b5fbee: call 0x419cc0",
+          "00b5fbf3: mov ecx, eax",
+          "00b5fbf5: call 0xbd1510",
+          "00b5fbfa: mov eax, dword ptr [esp + 0x18]",
+          "00b5fbfe: cmp eax, ebx",
+          "00b5fc00: mov byte ptr [esp + 0x30], bl",
+          "00b5fc04: je 0xb5fc19",
+          "00b5fc06: push 1",
+          "00b5fc08: add edi, 1",
+          "00b5fc0b: push edi",
+          "00b5fc0c: push eax",
+          "00b5fc0d: call 0x419cc0",
+          "00b5fc12: mov ecx, eax",
+          "00b5fc14: call 0xbd1510",
+          "00b5fc19: mov ecx, dword ptr [esp + 0x28]",
+          "00b5fc1d: pop edi",
+          "00b5fc1e: mov eax, esi",
+          "00b5fc20: pop esi",
+          "00b5fc21: pop ebp",
+          "00b5fc22: pop ebx",
+          "00b5fc23: mov dword ptr fs:[0], ecx",
+          "00b5fc2a: add esp, 0x24",
+          "00b5fc2d: ret 4"
+        ],
+        "source_contract": "Vertex same captured/current normal returns, arm disarms before return; no later registration."
+      },
+      {
+        "begin": "00b22dd0",
+        "end_exclusive": "00b22e2f",
+        "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8c9270d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8683b0d0083c404891e897e085b5f5ec20400",
+        "instructions": [
+          "00b22dd0: push esi",
+          "00b22dd1: push edi",
+          "00b22dd2: mov edi, dword ptr [esp + 0xc]",
+          "00b22dd6: cmp edi, 1",
+          "00b22dd9: mov esi, ecx",
+          "00b22ddb: jge 0xb22de2",
+          "00b22ddd: mov edi, 1",
+          "00b22de2: cmp dword ptr [esi + 8], edi",
+          "00b22de5: jge 0xb22e2a",
+          "00b22de7: lea eax, [edi*4]",
+          "00b22dee: push ebx",
+          "00b22def: push eax",
+          "00b22df0: call 0xbf55be",
+          "00b22df5: mov ebx, eax",
+          "00b22df7: xor eax, eax",
+          "00b22df9: add esp, 4",
+          "00b22dfc: cmp dword ptr [esi + 4], eax",
+          "00b22dff: jle 0xb22e19",
+          "00b22e01: mov ecx, ebx",
+          "00b22e03: test ecx, ecx",
+          "00b22e05: je 0xb22e0e",
+          "00b22e07: mov edx, dword ptr [esi]",
+          "00b22e09: mov edx, dword ptr [edx + eax*4]",
+          "00b22e0c: mov dword ptr [ecx], edx",
+          "00b22e0e: add eax, 1",
+          "00b22e11: add ecx, 4",
+          "00b22e14: cmp eax, dword ptr [esi + 4]",
+          "00b22e17: jl 0xb22e03",
+          "00b22e19: mov eax, dword ptr [esi]",
+          "00b22e1b: push eax",
+          "00b22e1c: call 0xbf6989",
+          "00b22e21: add esp, 4",
+          "00b22e24: mov dword ptr [esi], ebx",
+          "00b22e26: mov dword ptr [esi + 8], edi",
+          "00b22e29: pop ebx",
+          "00b22e2a: pop edi",
+          "00b22e2b: pop esi",
+          "00b22e2c: ret 4"
+        ],
+        "source_contract": "Vertex reserve signed request>=1/capacity; DWORD byte-count; current signed count/base per iteration, destination null skip, current old base free, then data/capacity publication."
+      },
+      {
+        "begin": "00b22e30",
+        "end_exclusive": "00b22e8f",
+        "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e869270d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8083b0d0083c404891e897e085b5f5ec20400",
+        "instructions": [
+          "00b22e30: push esi",
+          "00b22e31: push edi",
+          "00b22e32: mov edi, dword ptr [esp + 0xc]",
+          "00b22e36: cmp edi, 1",
+          "00b22e39: mov esi, ecx",
+          "00b22e3b: jge 0xb22e42",
+          "00b22e3d: mov edi, 1",
+          "00b22e42: cmp dword ptr [esi + 8], edi",
+          "00b22e45: jge 0xb22e8a",
+          "00b22e47: lea eax, [edi*4]",
+          "00b22e4e: push ebx",
+          "00b22e4f: push eax",
+          "00b22e50: call 0xbf55be",
+          "00b22e55: mov ebx, eax",
+          "00b22e57: xor eax, eax",
+          "00b22e59: add esp, 4",
+          "00b22e5c: cmp dword ptr [esi + 4], eax",
+          "00b22e5f: jle 0xb22e79",
+          "00b22e61: mov ecx, ebx",
+          "00b22e63: test ecx, ecx",
+          "00b22e65: je 0xb22e6e",
+          "00b22e67: mov edx, dword ptr [esi]",
+          "00b22e69: mov edx, dword ptr [edx + eax*4]",
+          "00b22e6c: mov dword ptr [ecx], edx",
+          "00b22e6e: add eax, 1",
+          "00b22e71: add ecx, 4",
+          "00b22e74: cmp eax, dword ptr [esi + 4]",
+          "00b22e77: jl 0xb22e63",
+          "00b22e79: mov eax, dword ptr [esi]",
+          "00b22e7b: push eax",
+          "00b22e7c: call 0xbf6989",
+          "00b22e81: add esp, 4",
+          "00b22e84: mov dword ptr [esi], ebx",
+          "00b22e86: mov dword ptr [esi + 8], edi",
+          "00b22e89: pop ebx",
+          "00b22e8a: pop edi",
+          "00b22e8b: pop esi",
+          "00b22e8c: ret 4"
+        ],
+        "source_contract": "Pixel reserve identical current fields and native failure effects, no EH."
+      },
+      {
+        "begin": "00b289a0",
+        "end_exclusive": "00b289e9",
+        "bytes_hex": "568db1c41a00008d442408508bcee82dcaffff8b4608394604751403c083f8017f05b801000000508bcee801a4ffff8b4e048b168d048a85c074068b4c24088908834604015ec20400",
+        "instructions": [
+          "00b289a0: push esi",
+          "00b289a1: lea esi, [ecx + 0x1ac4]",
+          "00b289a7: lea eax, [esp + 8]",
+          "00b289ab: push eax",
+          "00b289ac: mov ecx, esi",
+          "00b289ae: call 0xb253e0",
+          "00b289b3: mov eax, dword ptr [esi + 8]",
+          "00b289b6: cmp dword ptr [esi + 4], eax",
+          "00b289b9: jne 0xb289cf",
+          "00b289bb: add eax, eax",
+          "00b289bd: cmp eax, 1",
+          "00b289c0: jg 0xb289c7",
+          "00b289c2: mov eax, 1",
+          "00b289c7: push eax",
+          "00b289c8: mov ecx, esi",
+          "00b289ca: call 0xb22dd0",
+          "00b289cf: mov ecx, dword ptr [esi + 4]",
+          "00b289d2: mov edx, dword ptr [esi]",
+          "00b289d4: lea eax, [edx + ecx*4]",
+          "00b289d7: test eax, eax",
+          "00b289d9: je 0xb289e1",
+          "00b289db: mov ecx, dword ptr [esp + 8]",
+          "00b289df: mov dword ptr [eax], ecx",
+          "00b289e1: add dword ptr [esi + 4], 1",
+          "00b289e5: pop esi",
+          "00b289e6: ret 4"
+        ],
+        "source_contract": "Vertex registry actual+1AC4; pointer-cell removal then current cap/count comparison; signed wrapped doubled clamp; current count then data capture; current count increment."
+      },
+      {
+        "begin": "00b289f0",
+        "end_exclusive": "00b28a39",
+        "bytes_hex": "568db1d01a00008d442408508bcee84dcaffff8b4608394604751403c083f8017f05b801000000508bcee811a4ffff8b4e048b168d048a85c074068b4c24088908834604015ec20400",
+        "instructions": [
+          "00b289f0: push esi",
+          "00b289f1: lea esi, [ecx + 0x1ad0]",
+          "00b289f7: lea eax, [esp + 8]",
+          "00b289fb: push eax",
+          "00b289fc: mov ecx, esi",
+          "00b289fe: call 0xb25450",
+          "00b28a03: mov eax, dword ptr [esi + 8]",
+          "00b28a06: cmp dword ptr [esi + 4], eax",
+          "00b28a09: jne 0xb28a1f",
+          "00b28a0b: add eax, eax",
+          "00b28a0d: cmp eax, 1",
+          "00b28a10: jg 0xb28a17",
+          "00b28a12: mov eax, 1",
+          "00b28a17: push eax",
+          "00b28a18: mov ecx, esi",
+          "00b28a1a: call 0xb22e30",
+          "00b28a1f: mov ecx, dword ptr [esi + 4]",
+          "00b28a22: mov edx, dword ptr [esi]",
+          "00b28a24: lea eax, [edx + ecx*4]",
+          "00b28a27: test eax, eax",
+          "00b28a29: je 0xb28a31",
+          "00b28a2b: mov ecx, dword ptr [esp + 8]",
+          "00b28a2f: mov dword ptr [eax], ecx",
+          "00b28a31: add dword ptr [esi + 4], 1",
+          "00b28a35: pop esi",
+          "00b28a36: ret 4"
+        ],
+        "source_contract": "Pixel registry same sequence at+1AD0."
+      },
+      {
+        "begin": "00b3f4c0",
+        "end_exclusive": "00b3f4de",
+        "bytes_hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+        "instructions": [
+          "00b3f4c0: mov edx, dword ptr [ecx + 8]",
+          "00b3f4c3: test edx, edx",
+          "00b3f4c5: je 0xb3f4dd",
+          "00b3f4c7: mov eax, dword ptr [ecx + 4]",
+          "00b3f4ca: push 1",
+          "00b3f4cc: add eax, 1",
+          "00b3f4cf: push eax",
+          "00b3f4d0: push edx",
+          "00b3f4d1: call 0x419cc0",
+          "00b3f4d6: mov ecx, eax",
+          "00b3f4d8: call 0xbd1510",
+          "00b3f4dd: ret "
+        ],
+        "source_contract": "Support temp captures current+08; only nonnull reads+04+1; pushes unused1/size/data before current pool getter; ignore COM+0; header unchanged."
+      }
+    ],
+    "fh3_states": [
+      {
+        "shader": "pixel",
+        "state": 0,
+        "next_state": -1,
+        "action": "00cc1220",
+        "target": "00b5e720",
+        "receiver": "captured owner [EBP-24]",
+        "bytes_hex": "8b4ddce9f8d4e9ff"
+      },
+      {
+        "shader": "pixel",
+        "state": 1,
+        "next_state": 0,
+        "action": "00cc1228",
+        "target": "0041dd20",
+        "receiver": "first header EBP-20",
+        "bytes_hex": "8d4de0e9f0ca75ff"
+      },
+      {
+        "shader": "pixel",
+        "state": 2,
+        "next_state": 1,
+        "action": "00cc1230",
+        "target": "00b3f4c0",
+        "receiver": "support temporary EBP-18; nested string EBP-14",
+        "bytes_hex": "8d4de8e988e2e7ff"
+      },
+      {
+        "shader": "vertex",
+        "state": 0,
+        "next_state": -1,
+        "action": "00cc1250",
+        "target": "00b5e7e0",
+        "receiver": "captured owner [EBP-24]",
+        "bytes_hex": "8b4ddce988d5e9ff"
+      },
+      {
+        "shader": "vertex",
+        "state": 1,
+        "next_state": 0,
+        "action": "00cc1258",
+        "target": "0041dd20",
+        "receiver": "first header EBP-20",
+        "bytes_hex": "8d4de0e9c0ca75ff"
+      },
+      {
+        "shader": "vertex",
+        "state": 2,
+        "next_state": 1,
+        "action": "00cc1260",
+        "target": "00b3f4c0",
+        "receiver": "support temporary EBP-18; nested string EBP-14",
+        "bytes_hex": "8d4de8e958e2e7ff"
+      }
+    ],
+    "func_info": [
+      {
+        "shader": "pixel",
+        "address": "00df9f88",
+        "map": "00df9f70",
+        "handler": "00cc1238"
+      },
+      {
+        "shader": "vertex",
+        "address": "00df9fc4",
+        "map": "00df9fac",
+        "handler": "00cc1268"
+      }
+    ]
+  },
+  "ownership": {
+    "actual_cells": [
+      "01090AA0 via NativeStringRawPoolContext",
+      "01090AA8",
+      "01090AA4",
+      "0108FEDC",
+      "00F8D394"
+    ],
+    "actual_owner_bytes": 16,
+    "operation_allocations_on_raw_route": 0,
+    "registry_pointees": "borrowed; no retain or delete",
+    "legacy_context": "SoundLifetimeAccess accepts existing SingletonLifetimeDomain& aggregate initializers or same actual AA0 cell",
+    "exception_schedule": "Only armed support temporary / first string / base cleanup. Arm after resize+copy; disarm before normal pool return. No COM release, registry removal, owner free or invented cleanup of unarmed allocations.",
+    "global_publications": "Successful vertex registration and early support publication survive later failure. No getter/domain gate before native effects."
+  },
+  "dependencies": [
+    {
+      "address": "0041dd40",
+      "provider": "existing NativeStringRawPoolContext overload; actual current pool getter/allocation/return; no rollback"
+    },
+    {
+      "address": "0041dd20",
+      "provider": "existing raw-pool header destructor; current data and current length"
+    },
+    {
+      "address": "00419cc0",
+      "provider": "actual AA8 getter borrowing same AA0; captured section and early publication"
+    },
+    {
+      "address": "00bd1510",
+      "provider": "existing raw sized pool return with current AA4"
+    },
+    {
+      "address": "00b3e730",
+      "provider": "existing SoundLifetimeAccess raw-AA0 support getter; actual early FEDC and current registration"
+    },
+    {
+      "address": "00bd30f0",
+      "provider": "existing actual reference base stamp only"
+    },
+    {
+      "address": "00b253e0",
+      "provider": "existing operation-free actual swap removal, read-only full103byte live=PE"
+    },
+    {
+      "address": "00b25450",
+      "provider": "existing operation-free actual swap removal, read-only full103byte live=PE"
+    },
+    {
+      "address": "00bf55be",
+      "provider": "existing singleton_lifetime_allocate CRT allocation/new-handler behavior"
+    },
+    {
+      "address": "00bf6989",
+      "provider": "existing singleton_lifetime_free genuine CRT free"
+    },
+    {
+      "address": "00bf7680",
+      "provider": "std::memmove; native overlap-capable body, not decompiler memcpy label"
+    }
+  ],
+  "limits": [
+    "Only source C++ exceptions mapped to native cleanup actions; native private FH3, collided-unwind and SEH not executed or binary-compatible.",
+    "No whole effect-compiler tail, shader caller allocation EH, full renderer lifecycle, draw/readback or gameplay closure.",
+    "Native unarmed allocations or partially acquired COM holds are not recovered. Original callers determine owner deallocation.",
+    "Retained legacy Operation interface deliberately retains failed temporary/registry state and its termination/replay guards.",
+    "Original normal fixture direct calls are relocated to concrete providers; original private exception handlers are not executed."
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release C++17 W4/WX",
+      "log": "local/shader_actual_build.log",
+      "passed": true,
+      "ctests_passed": 2,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "intermediate_build": {
+      "log": "local/shader_actual_build_intermediate.log",
+      "passed": true,
+      "scope": "Before final raw B3F4C0 overload naming/delegation"
+    },
+    "seeds": {
+      "log": "local/shader_actual_seeds.log",
+      "matched": 8
+    },
+    "numeric_calls": {
+      "log": "local/shader_actual_call_gate.log",
+      "checked": 40,
+      "failed": 0,
+      "indirect_documented": 4
+    },
+    "focused_probe": {
+      "source": "local/shader_actual_probe.cpp",
+      "runner": "local/shader_actual_probe.cmd",
+      "build_log": "local/shader_actual_probe_build.log",
+      "run_log": "local/shader_actual_probe_run.log",
+      "guard_log": "local/shader_actual_probe_guard.log",
+      "flags": "/MD /std:c++20 /EHsc /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED /MACHINE:X86",
+      "normal_original_source_comparisons": 2,
+      "real_hal_shader_inputs": true,
+      "actual_AA0_AA8_FEDC_and_manager_drain": true,
+      "source_only_exception_cases": 2,
+      "source_exception_trigger": "Current CRT invalid-parameter handler throws after support early publication at real BD0C30 malformed manager validation; native handlers not executed.",
+      "exception_assertions": [
+        "second then first pooled returns checked by actual class tail and slot identities",
+        "base CEB130 with +04/+08/+0C partial effects",
+        "real acquired COM AddRef hold retained",
+        "vertex registry identity survives; pixel remains absent",
+        "early FEDC survives, captured section depth/OS lock restored, warm getter does not retry failed registration"
+      ],
+      "legacy_retained_failure_and_replay": true,
+      "legacy_retirement_expected_exit": 77,
+      "legacy_failed_frame_retained_through_process_exit": true,
+      "probe_harness_correction": "Initial assertion incorrectly assumed every pool class started at index0; corrected to captured initial class indices. Production source unchanged by this probe correction.",
+      "linked_translation_units": 121,
+      "measured_i386_modules": 58
+    },
+    "original_relocation_checks": [
+      {
+        "address": "00b5f9b0",
+        "bytes": 320,
+        "changed_bytes": 40,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28",
+        "linked_sha256": "60fe579cf32b25bbb5d8818cfc073161c1843d90c877af4107f65f25269153b1"
+      },
+      {
+        "address": "00b5faf0",
+        "bytes": 320,
+        "changed_bytes": 40,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "eb4fa1ea8a2bf1e507457b08c7af5a2c7613cf3599e15cee06440e557fec932b",
+        "linked_sha256": "58aeba1440f74befcb26b07d69d674cdc786a84379085969b86ca7f9f1016837"
+      },
+      {
+        "address": "00b289a0",
+        "bytes": 73,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "10b02dfeaedcd66ddc9da8db6f624b1ac21511147c3f9651b051c5957f10b278",
+        "linked_sha256": "213c542556b30e1b82001cd46ce00739c8148db59d49c6bfa5db1e4ef821b37d"
+      },
+      {
+        "address": "00b289f0",
+        "bytes": 73,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "144d6f5a1977d7e313a52b376393b639a3b359084624620824fcdebec1d9cf3c",
+        "linked_sha256": "765b2bc27a41b8f3cbe91d752a25d4e1c6984e1741d265adc8aa3f661bb6c872"
+      },
+      {
+        "address": "00b253e0",
+        "bytes": 103,
+        "changed_bytes": 0,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "linked_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+      },
+      {
+        "address": "00b25450",
+        "bytes": 103,
+        "changed_bytes": 0,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+        "linked_sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0"
+      },
+      {
+        "address": "00b22dd0",
+        "bytes": 95,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1",
+        "linked_sha256": "a13cafc2b2729d96a2096f995c6933503732a2feb706359a95f6c5ba3e4efe83"
+      },
+      {
+        "address": "00b22e30",
+        "bytes": 95,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true,
+        "original_sha256": "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6",
+        "linked_sha256": "29e0ba9654668df5847dc105d2f0499c0e58ce818908e81ddf36e0960635ca75"
+      }
+    ],
+    "original_linked_bytes_capture": "Final guard invocation repeats both original/source normal comparisons before exercising legacy termination; linked captures from that same program/arguments are retained.",
+    "new_configured_tests": 0,
+    "new_local_probe_programs": 1,
+    "native_fh3_executed": false,
+    "seh_validated": false,
+    "game_validated": false
+  },
+  "immutable_evidence": {
+    "directory": "local/immutable/native_d3d9_shader_construction_actual_20260914T181052Z",
+    "manifest": "local/immutable/native_d3d9_shader_construction_actual_20260914T181052Z/manifest.json",
+    "manifest_sha256": "28b0d79e0f6f176cd40d4efb7225c0f7d5f91975c5f41744df6b11dac1ac651c",
+    "artifact_count": 981,
+    "all_frozen_hashes_reverified": true,
+    "all_original_inputs_reverified": true,
+    "report_closure": "local/immutable/native_d3d9_shader_construction_actual_20260914T181052Z/closure.json"
+  }
+}

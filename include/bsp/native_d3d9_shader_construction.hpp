@@ -43,7 +43,7 @@ struct NativeD3d9ShaderRegistryOperation final {
 struct NativeD3d9ShaderConstructionContext {
     NativeStringStorage& strings;
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime;
+    SoundLifetimeAccess actual_lifetime;
     void* const volatile& actual_renderer_00f8d394;
     NativeRenderActualOwners& owners;
 };
