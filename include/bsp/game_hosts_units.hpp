@@ -312,6 +312,15 @@ public:
     // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
     // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
     bool unit_flag_005d(std::size_t index) const;
+    // The unit's ordnance inventory, as the 007ED7E0 family aggregates it over
+    // the weapon controller's slots: the union of its guns' projectile
+    // descriptor answer sets. docs/ORDNANCE_KIND_IDENTITY.md. The gunnery host
+    // computes it at load and stores it here because it owns the guns, and the
+    // script-order host reads it because it owns 007EEC50's inputs; neither can
+    // see the other. Zero for a unit with no guns, which is also the correct
+    // answer for one whose guns carry nothing the family asks about.
+    void store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept;
+    std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the
     // trajectory dump's fwd_speed column carries.

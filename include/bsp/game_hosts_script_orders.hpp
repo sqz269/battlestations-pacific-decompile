@@ -327,6 +327,7 @@ private:
     unsigned long long pilot_set_target_calls_{0};
     unsigned long long pilot_set_target_unit_resolved_{0};
     unsigned long long pilot_set_target_target_resolved_{0};
+    unsigned long long pilot_set_target_issued_{0};
     std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
