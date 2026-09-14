@@ -262,3 +262,74 @@ numbers that look validated, without any of it being the game's behaviour.
 * **Inferred, not proved**: that `unit+C64h` is specifically *pitch* rather than another row's
   elevation, which depends on the forward-axis convention; that the `0052xxxx`/`005Fxxxx` callers
   of `0077D600` are the player order UI.
+
+## Where the orders actually come from: the scripts, not a native planner
+
+The packet above establishes that the bot is starved of orders: no command, no task, and
+`0099ACD0` returns without producing anything. This follows that chain out to its source, because
+the answer changes what "recover the plane AI" means.
+
+`0077D600 BSP_Entity_IssueCommand`'s caller set is nine Lua mission-script bindings plus four native
+callers. So the question "what orders a plane" is largely a question about the shipped scripts. They
+answer it plainly:
+
+```
+$ grep -rhoE "Pilot[A-Za-z]*" .../scripts | sort | uniq -c | sort -rn
+   1125 PilotSetTarget
+    328 PilotMoveTo
+    295 PilotMoveToRange
+    251 PilotFires
+    150 PilotRetreat
+     96 PilotMoveOnPath
+     78 PilotLand
+```
+
+197 script files call `PilotSetTarget`, and they are not only mission scripts:
+`scripts/global/commandhelpers.lua` carries 23 pilot-order lines of its own, and
+`scripts/global/luamw_init.lua` declares the binding surface. **A large part of what would be called
+the plane AI is authored in Lua on top of native bindings, not compiled into the executable.** That
+is why no native planner turns up: for the most part there is not one to find.
+
+### IJN01 is the wrong mission to validate air combat in
+
+This matters for the measurements in `docs/PLANE_FREE_FLIGHT_PHYSICS.md`. `IJN01` loads
+`Scripts/missions/ijn/ijn_1_pearl.lua`, and that script issues **no** targeting orders at all - one
+`PilotLand` and nothing else. It reaches its aircraft through `GenerateObject("JudySpawn1")` into
+`Mission.Backups` and `Mission.DiveTable`, and the only thing it later does with `DiveTable` is
+`Kill(unit, true)` cleanup.
+
+Which fits the mission: Pearl Harbor is the strike the **player** flies. Its AI aircraft were never
+scripted to prosecute an attack, so `AAMACHINEGUN` at 0 shots there is not only explained by the
+missing chain - it is close to the authored behaviour. A mission that scripts an air attack is the
+one to test against; `usn_19_coralus.lua` (23 lines) and `usn_1_marshall.lua` (15) are the densest
+users of `PilotSetTarget` among the mission scripts.
+
+**No claim is made here that those missions would produce air combat today.** They cannot: the chain
+below is unbuilt regardless of which mission runs. The point is narrower - that `IJN01`'s zero is
+weaker evidence than it looked, because that mission does not order its aircraft to attack in the
+first place.
+
+### The chain, end to end
+
+Each link is recovered, authored, or named; none of it needs inventing:
+
+| # | Link | State |
+| --- | --- | --- |
+| 1 | `00928A00` entity/Lua attach | **UNIMPLEMENTED** in the host. Until it runs, `GenerateObject("JudySpawn1")` cannot hand a script a usable entity, so no Lua order can name a unit. |
+| 2 | The `Pilot*` bindings -> `0077D600 BSP_Entity_IssueCommand` | Native, caller set enumerated in this doc. Not built. |
+| 3 | `008358D0` sets the director's command | Reached only through vtable slot `+60h`; Ghidra reports zero callers because the dispatch is purely by pointer. |
+| 4 | `0099A170 BSP_Bot_InstallCommandTask` | Recovered here: the only caller of all thirteen `BotTask_Make*` factories, and it takes its target from the command. |
+| 5 | `0099D300`'s five axis arms | One arm's structure recovered; its base term at `0099E884` unread; four arms unread. |
+| 6 | `007C6500 BSP_PlaneTickElement_AdvancePose` | The pose integrator, under recovery separately. Without it a plane cannot turn even when commanded. |
+
+Links 1 and 2 are the cheapest and gate everything after them. Recovering more of link 5 moves no
+measurement while 1-4 are missing, which is why that work was stopped.
+
+### What is not established
+
+Whether the host can run these scripts at all once the entity attach exists - the mission Lua state,
+`global_script_folders` and the entry-point calls are already concrete, but nothing has exercised an
+order path end to end. And the group-AI question is still open: `docs/AI_PLANNERS.md`'s planners
+write 8-byte objects with their own vtables into `group+564Ch`, a different family from the entity
+commands the director holds, and no planner address appears in `0077D600`'s caller set. How a group
+order reaches a member unit is unknown.
