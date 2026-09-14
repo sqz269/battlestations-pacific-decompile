@@ -8,6 +8,17 @@
 
 namespace bsp {
 struct NativeVertexDeclarationLoadingContext;
+struct NativeLogicalVertexOwnerContext;
+struct NativeLogicalIndexCreationContext;
+template<class Storage> struct GuiNativeCreatorAcquired {
+    Storage* creator{};
+    RenderCommandReference* companion{};
+    bool canonical_registration{};
+    bool factory_entered{};
+};
+using GuiNativeMaterialAcquired = GuiNativeCreatorAcquired<NativeMaterialStorage>;
+using GuiNativeMeshAcquired = GuiNativeCreatorAcquired<NativeMeshStorage>;
+using GuiNativeSectionAcquired = GuiNativeCreatorAcquired<NativeMeshSectionStorage>;
 struct GuiNativeDeclarationAcquired {
     void* reference{}; // Caller reference returned by the actual cache.
     RenderCommandReference* companion{}; // Borrows SAME actual+04.
@@ -47,6 +58,11 @@ public:
     // return ONE creator reference. Release through the canonical owners.
     NativeMeshStorage* create_mesh();
     NativeMeshSectionStorage* create_section();
+    // Raw caller variants publish completed creators BEFORE host companion
+    // allocation/binding; those failures retain the native owner without
+    // rollback. Existing no-argument callers keep their original host policy.
+    NativeMeshStorage* create_mesh(GuiNativeMeshAcquired&);
+    NativeMeshSectionStorage* create_section(GuiNativeSectionAcquired&);
 
     // B742A0 -> B73F50, Text flags26h or exactly3E when streams is supplied.
     // Source is a registered actual
@@ -73,6 +89,10 @@ public:
     // are resolved. A raw creator without companion still needs its real terminal
     // context. Never drop or retry the interrupted clone to perform cleanup.
     void register_stream_clone_creator(NativeStreamCloneAcquired&, NativeStreamCloneServices&);
+    // Same registration body without borrowing unrelated physical mapping or
+    // projected diagnostic contexts. No native operation or reference is added.
+    void register_stream_clone_creator(NativeStreamCloneAcquired&,
+        NativeLogicalVertexOwnerContext&, NativeLogicalIndexCreationContext&);
 
     // Register/reuse the cache-returned actual declaration without AddRef.
     // Cache creator and caller reference retain their native counts. On bind
@@ -96,6 +116,14 @@ public:
         void* const volatile& current_renderer_00f8d394,
         NativeMaterialDestructionAccess&,
         const volatile std::uint32_t* current_vtable_00d5e520);
+    // Raw renderer/cache route. Completed creators and companion registration
+    // survive host failures; no broad rollback beyond native535320's allocation
+    // cleanup. The caller-owned acquired frames must not be discarded/replayed.
+    NativeMaterialStorage* create_material_for_effect_00535320(NativeString&,
+        void* const volatile& current_renderer_00f8d394,
+        NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t* current_vtable_00d5e520,
+        NativeMaterialFactoryRawContext&, GuiNativeMaterialAcquired&);
 
     // Common +74 fragment AB2563..AB25C3 / ACF913..ACF973. Caller has
     // already tested widget+74==0 and selected its SAME widget+4C model.

@@ -174,14 +174,15 @@ struct GuiNativeGeometryOwners::Impl {
         it->registered = true;
         acquired.canonical_registration = true;
     }
-    void register_stream(NativeStreamCloneAcquired& acquired, NativeStreamCloneServices& services) {
+    void register_stream(NativeStreamCloneAcquired& acquired,
+        NativeLogicalVertexOwnerContext& vertices, NativeLogicalIndexCreationContext& indices) {
         require(acquired.creator && !acquired.companion && !acquired.canonical_registration,
             "stream registration requires one unbound actual creator");
         if (acquired.vertex) {
             auto it = vertex_entries.emplace(vertex_entries.end(), *this);
             it->raw = acquired.creator;
             try {
-                it->reference = std::make_unique<NativeLogicalVertexReference>(it->raw, services.vertices,
+                it->reference = std::make_unique<NativeLogicalVertexReference>(it->raw, vertices,
                     NativeLogicalVertexCompanionDisposal{&*it, retire_vertex});
             } catch (...) { vertex_entries.erase(it); throw; } // No native effect or creator release.
             acquired.companion = it->reference.get();
@@ -191,7 +192,7 @@ struct GuiNativeGeometryOwners::Impl {
             auto it = index_entries.emplace(index_entries.end(), *this);
             it->raw = acquired.creator;
             try {
-                it->reference = std::make_unique<NativeLogicalIndexReference>(it->raw, services.indices,
+                it->reference = std::make_unique<NativeLogicalIndexReference>(it->raw, indices,
                     NativeLogicalIndexCompanionDisposal{&*it, retire_index});
             } catch (...) { index_entries.erase(it); throw; }
             acquired.companion = it->reference.get();
@@ -199,6 +200,61 @@ struct GuiNativeGeometryOwners::Impl {
             it->registered = true;
         }
         acquired.canonical_registration = true;
+    }
+    void register_material(GuiNativeMaterialAcquired& acquired,
+        NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
+        require(acquired.creator && !acquired.companion && !acquired.canonical_registration &&
+            &access.retained_owners == &registration.owners,
+            "material registration requires an unbound creator in the same actual domain");
+        auto it = material_entries.emplace(material_entries.end(), *this);
+        it->raw = acquired.creator;
+        try {
+            it->reference = std::make_unique<NativeMaterialReference>(*it->raw,
+                access, profile, NativeMaterialCompanionDisposal{&*it, retire_material});
+        } catch (...) { material_entries.erase(it); throw; }
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.canonical_registration = true;
+    }
+    NativeMeshStorage* create_mesh(GuiNativeMeshAcquired& acquired) {
+        require(!acquired.creator && !acquired.companion && !acquired.canonical_registration &&
+            !acquired.factory_entered, "raw mesh creation requires fresh acquisition");
+        acquired.factory_entered = true;
+        void* const raw = meshes.pool_0108fff8.allocate_slot_00b73a10();
+        if (!raw) throw std::bad_alloc();
+        try { acquired.creator = construct_native_mesh_00b73d70(raw, constants); }
+        catch (...) { meshes.pool_0108fff8.return_slot_00b72da0(raw); throw; }
+        auto it = mesh_entries.emplace(mesh_entries.end(), *this);
+        it->raw = acquired.creator;
+        try {
+            it->reference = std::make_unique<NativeMeshReference>(*it->raw, meshes,
+                NativeMeshCompanionDisposal{&*it, retire_mesh});
+        } catch (...) { mesh_entries.erase(it); throw; }
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.canonical_registration = true;
+        return acquired.creator;
+    }
+    NativeMeshSectionStorage* create_section(GuiNativeSectionAcquired& acquired) {
+        require(!acquired.creator && !acquired.companion && !acquired.canonical_registration &&
+            !acquired.factory_entered, "raw section creation requires fresh acquisition");
+        acquired.factory_entered = true;
+        acquired.creator = create_native_mesh_section_00533fa0(
+            sections.pool_010901d4, constants.maximum_00ce4970);
+        if (!acquired.creator) throw std::bad_alloc();
+        auto it = section_entries.emplace(section_entries.end(), *this);
+        it->raw = acquired.creator;
+        try {
+            it->reference = std::make_unique<NativeMeshSectionReference>(*it->raw, sections,
+                NativeMeshSectionCompanionDisposal{&*it, retire_section});
+        } catch (...) { section_entries.erase(it); throw; }
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.canonical_registration = true;
+        return acquired.creator;
     }
     NativeMeshStorage* create_mesh() {
         auto it = mesh_entries.emplace(mesh_entries.end(), *this);
@@ -333,6 +389,12 @@ GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
 GuiNativeGeometryOwners::~GuiNativeGeometryOwners() = default;
 NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() { return impl_->create_mesh(); }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return impl_->create_section(); }
+NativeMeshStorage* GuiNativeGeometryOwners::create_mesh(GuiNativeMeshAcquired& acquired) {
+    return impl_->create_mesh(acquired);
+}
+NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section(GuiNativeSectionAcquired& acquired) {
+    return impl_->create_section(acquired);
+}
 NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,
     NativeMaterialDestructionAccess& materials,
@@ -363,7 +425,16 @@ void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcq
     NativeStreamCloneServices& services) {
     require(&services.geometry == this && &services.vertices.actual_owners == &impl_->registration.owners,
         "stream companion registration must use the same canonical owner domain");
-    impl_->register_stream(acquired, services);
+    impl_->register_stream(acquired, services.vertices, services.indices);
+}
+void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcquired& acquired,
+    NativeLogicalVertexOwnerContext& vertices, NativeLogicalIndexCreationContext& indices) {
+    require(&vertices.actual_owners == &impl_->registration.owners &&
+        &vertices.actual_physical == &indices.lifetime.actual_physical &&
+        &vertices.actual_renderer_00f8d394 == &indices.lifetime.actual_renderer_00f8d394 &&
+        &vertices.actual_synchronization_0108d6dc == &indices.lifetime.actual_synchronization_0108d6dc,
+        "stream companion registration requires the same actual owners and renderer services");
+    impl_->register_stream(acquired, vertices, indices);
 }
 void GuiNativeGeometryOwners::register_native_declaration_reference(GuiNativeDeclarationAcquired& acquired,
     NativeVertexDeclarationLoadingContext& loading) {
@@ -383,6 +454,20 @@ NativeMaterialStorage* GuiNativeGeometryOwners::create_material_for_effect_00535
     NativeString& name, void* const volatile& renderer,
     NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
     return impl_->create_material(name, renderer, access, profile);
+}
+NativeMaterialStorage* GuiNativeGeometryOwners::create_material_for_effect_00535320(
+    NativeString& name, void* const volatile& renderer,
+    NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile,
+    NativeMaterialFactoryRawContext& raw, GuiNativeMaterialAcquired& acquired) {
+    require(!acquired.creator && !acquired.companion && !acquired.canonical_registration &&
+        !acquired.factory_entered && &access.retained_owners == &impl_->registration.owners,
+        "raw material creation requires fresh acquisition in the same actual domain");
+    acquired.factory_entered = true;
+    (void)bsp::create_native_material_for_effect_00535320(name, renderer,
+        access.material_slots, access.retained_owners, raw, &acquired.creator);
+    if (!acquired.creator) throw std::bad_alloc();
+    impl_->register_material(acquired, access, profile);
+    return acquired.creator;
 }
 NativeRenderActualOwners& GuiNativeGeometryOwners::actual_owners() noexcept {
     return impl_->registration.owners;
