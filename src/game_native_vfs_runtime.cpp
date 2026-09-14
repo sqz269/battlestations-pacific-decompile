@@ -33,7 +33,11 @@
 #define NOMINMAX
 #include <Windows.h>
 
+#include <algorithm>
 #include <stdexcept>
+#include <limits>
+#include <utility>
+#include <vector>
 
 namespace bsp::game {
 namespace {
@@ -74,6 +78,31 @@ struct PooledHeader {
     ~PooledHeader() { value.release_to(strings); }
     PooledHeader(const PooledHeader&) = delete;
     PooledHeader& operator=(const PooledHeader&) = delete;
+};
+// The stream returned by the manager carries one caller reference. Keep its
+// release paired with that open even when length, allocation, or read throws.
+struct OpenedStream {
+    NativeVfsRuntimeBindings& bindings;
+    void* stream;
+    std::uintptr_t table;
+    OpenedStream(NativeVfsRuntimeBindings& source, void* value)
+        : bindings(source), stream(value), table(word(value)) {}
+    OpenedStream(const OpenedStream&) = delete;
+    OpenedStream& operator=(const OpenedStream&) = delete;
+    ~OpenedStream() {
+        // During unwinding, preserve the original failure. The successful
+        // path calls release explicitly so a release failure still propagates.
+        if (stream) {
+            try { release(); } catch (...) {}
+        }
+    }
+    void release() {
+        if (!stream) return;
+        void* const owned = std::exchange(stream, nullptr);
+        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
+                static_cast<std::byte*>(owned) + 4)) == 0)
+            bindings.zero_reference(table, owned);
+    }
 };
 }
 
@@ -348,19 +377,40 @@ bool GameNativeVfsRuntime::read(const char* path, void* output,
         name.value, 2);
     bytes_read = 0;
     if (!stream) return false;
-    const auto table = word(stream);
-    try {
-        impl_->bindings.read(table, stream, output, capacity, &bytes_read);
-    } catch (...) {
-        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
-                static_cast<std::byte*>(stream) + 4)) == 0)
-            impl_->bindings.zero_reference(table, stream);
-        throw;
-    }
-    if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
-            static_cast<std::byte*>(stream) + 4)) == 0)
-        impl_->bindings.zero_reference(table, stream);
+    OpenedStream opened(impl_->bindings, stream);
+    impl_->bindings.read(opened.table, stream, output, capacity, &bytes_read);
+    opened.release();
     return true;
+}
+std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
+    const char* path) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    PooledHeader name(impl_->inputs.owners.strings(), path);
+    void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
+        name.value, 2);
+    if (!stream) return std::nullopt;
+    OpenedStream opened(impl_->bindings, stream);
+    const std::uint64_t length = impl_->bindings.length(opened.table, stream);
+    std::vector<std::uint8_t> bytes;
+    const std::uint64_t win32_count_limit =
+        (std::min)(static_cast<std::uint64_t>((std::numeric_limits<std::size_t>::max)()),
+            static_cast<std::uint64_t>((std::numeric_limits<std::uint32_t>::max)()));
+    if (length > win32_count_limit || length > bytes.max_size())
+        throw std::length_error("Native VFS file exceeds Win32 read/allocation limit");
+    bytes.resize(static_cast<std::size_t>(length));
+    std::size_t offset = 0;
+    while (offset < bytes.size()) {
+        const auto requested = static_cast<std::uint32_t>(bytes.size() - offset);
+        std::uint32_t actual = 0;
+        impl_->bindings.read(opened.table, stream, bytes.data() + offset,
+            requested, &actual);
+        if (actual == 0 || actual > requested)
+            throw std::runtime_error("Native VFS full-file read was short or invalid");
+        offset += actual;
+    }
+    opened.release();
+    return std::move(bytes);
 }
 void GameNativeVfsRuntime::retire_after_shared_drain() noexcept {
     impl_->retire_after_drain();

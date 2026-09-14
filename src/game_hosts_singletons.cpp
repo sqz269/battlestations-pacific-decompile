@@ -1,6 +1,7 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
+#include "bsp/game_native_vfs_runtime.hpp"
 
 #include "bsp/native_gameplay_effect_construction.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
@@ -26,6 +27,14 @@ SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
 }
 void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
     deletion_bindings_.sound_runtime = runtime;
+}
+void GameSingletonHost::bind_vfs_runtime(GameNativeVfsRuntime* runtime) noexcept {
+    vfs_runtime_ = runtime;
+}
+void GameSingletonHost::retire_vfs_after_drain() noexcept {
+    auto* const runtime = vfs_runtime_;
+    vfs_runtime_ = nullptr;
+    if (runtime) runtime->retire_after_shared_drain();
 }
 void GameSingletonHost::bind_xlive_owner(XLiveOwnerAllocation* owner) noexcept {
     deletion_bindings_.xlive_owner = owner;
@@ -63,9 +72,13 @@ void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
 
 void GameSingletonHost::shutdown() {
     void* const manager = manager_publication_01090aa0_;
-    if (manager == nullptr) return;
+    if (manager == nullptr) {
+        retire_vfs_after_drain();
+        return;
+    }
     const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
     destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);
+    retire_vfs_after_drain();
     observers_->record_after_singleton_drain();
     singleton_lifetime_free(manager);
     manager_publication_01090aa0_ = nullptr;
