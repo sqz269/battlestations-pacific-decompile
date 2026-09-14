@@ -1,0 +1,285 @@
+{
+  "tested_commit": "b811585de88e3bf9a4f7f7bb8d5d15484dda8ae0",
+  "source_commit": "5f2574ac2b107f71002141afe52f938e8ef6edcd",
+  "accepted_design": "c01da19c3adb2fd8b09d06e85e300d172b04313f",
+  "passed": true,
+  "strict_msvc_win32_build_passed": true,
+  "existing_ctests_passed": 2,
+  "seed_spans_passed": 8,
+  "build_input_count": 2466,
+  "build_input_manifest_sha256": "1168f1d089c254a8a8b4860e28d35f026d7cd9d72e80274dbd33d2fbc0fece6d",
+  "build_input_scope": "All tracked src/include/tests/cmake/scripts/CMake inputs; system SDK/compiler and downloaded dependency trees outside tracked pins; three resulting libraries separately pinned.",
+  "source_header_sha256": {
+    "include/bsp/native_camera_owner.hpp": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+    "src/native_camera_owner.cpp": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376"
+  },
+  "libraries": {
+    "bsp_core.lib": "f2bebc31c2aad02dfe04a24a68608579c5854eae80f0fad40ce568584750ab00",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "build_log_sha256": "2817766e8335f0dbd018d57c81720f9c64d251a07d17b4ba49b2b008635fc510",
+  "fixture": {
+    "folder": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current",
+    "current_library_only": true,
+    "passed": true,
+    "input_pins_unchanged": 2462,
+    "compile_command": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 >nul\nif errorlevel 1 exit /b 1\ncl /nologo /std:c++17 /EHsc /O2 /Oy- /MD /fp:strict /W4 /WX /I\"J:/PROG/battlestations-pacific-decompile-orch3-20260910/include\" \"C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current/probe.cpp\" /Fe:\"C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current/probe.exe\" /link /MANIFEST:EMBED \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib\" \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_lua511.lib\" \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_zlib121.lib\" user32.lib d3d9.lib psapi.lib shell32.lib advapi32.lib /OPT:REF /INCREMENTAL:NO\nexit /b %errorlevel%\n",
+    "run_output": "PASS native cw027f liveone0 states15 raw_camera_bytes16740 events11\nPASS host cw027f liveone0 states15 raw_camera_bytes16740 events11\nPASS source camera admission failure at renderer2: unused record cancelled before publication; caller slot/name cleanup verified; no native FH3 execution\nPASS source camera admission failure at renderer3: published live viewport survives until explicit later release; caller slot/name cleanup verified; no native FH3 execution\nPASS immutable mapped original code 8880 bytes\nPASS first viewport admitted inside raw camera construction, source early/late failures, and admitted camera companions with zero guarded host new; focused cockpit helper actual24h terminal pair; pre-free36 bytes equal, camera count1-to0, name and pool returned, source companions retired after native free; +08/+18 zero; CW027F; no FH3 exception execution\n",
+    "artifacts": {
+      "build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "compile.cmd": "467ccfe850512d1f58c8f999a1f81b96f5576ab7eb2703cf78d2b96220f4be60",
+      "input-pins-before.json": "da11351e782f04fae9b82f66e711e582e544c31cb27357d6c5cce15bc4e41ee1",
+      "input-pins.json": "da11351e782f04fae9b82f66e711e582e544c31cb27357d6c5cce15bc4e41ee1",
+      "mapped_code_after.bin": "04b42a946b40730ca902b42b8461bdfa001d802b49ab21e3a121ca6e26a4af08",
+      "mapped_code_before.bin": "04b42a946b40730ca902b42b8461bdfa001d802b49ab21e3a121ca6e26a4af08",
+      "native_camera_owner_spans.hpp": "8f02440f6f7244b85b7f2c3e7f253c87b2189608bdcc5564d3da2632bf6e9fb8",
+      "original_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "original_snapshots.bin": "0ac0d705c3f0d5e7c1119884b848dc58cc131241f0d4bc6e9b8c6f7b5bf29ab4",
+      "probe.cpp": "dbdaa43cd1c0269fb53aa5a294d585c7bdc89dcdfb90bfe4a71503d14e76c5d5",
+      "probe.exe": "e8da4427ec136512c0f870d8db20356d481234793685138adbcdc17ad15102c5",
+      "probe.obj": "085469560490e66e96d92d7d14dcd400c889bfdebaefc574d7cffc969b92ef79",
+      "run.log": "cd5cc95a2118e6a8b3ac633addb652c40561a322b5cbd61d045af8ea02eb872a",
+      "run.ps1": "c809e4686947731f5b6aed9dc9dfd33dc947bdeb5a64ae4c8a26d930484da1aa",
+      "source_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "source_snapshots.bin": "0ac0d705c3f0d5e7c1119884b848dc58cc131241f0d4bc6e9b8c6f7b5bf29ab4"
+    }
+  },
+  "independent_source_review": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+    "base_commit": "9b890a53e587ae0c62bfbfdc10d3f1c9502cfad8",
+    "working_tree": [
+      " M include/bsp/native_camera_owner.hpp",
+      " M src/native_camera_owner.cpp"
+    ],
+    "reviewed_sources": [
+      {
+        "path": "include/bsp/native_camera_owner.hpp",
+        "sha256": "527C605FCC55EEDD421271A5C4B27D45947E325C391838F14F3CAB6D75E1F808",
+        "git_blob": "f712a8c1f2a9ed498c5471d84fbf27f0106a2fa3"
+      },
+      {
+        "path": "src/native_camera_owner.cpp",
+        "sha256": "51F7C97C40027337AF8D83B0A35613338A8963AD2664D0D6EAA220BE7D22F376",
+        "git_blob": "7e6b4f2123a44a559639f9f94221d310dc7bd4e9"
+      }
+    ],
+    "findings": [],
+    "review": "Preflight order, exact resolver, local token guard, publication point, return and exception behavior match BI design. Static comparison confirms semantic body unchanged and raw body unchanged except admission guard/factory selection.",
+    "scope": "Read-only source review; no build, runtime test or Ghidra write"
+  },
+  "independent_fixture_review": {
+    "packet": "orch3_camera_viewport_admission_bi_fixture_review",
+    "audit_kind": "Independent read-only source/artifact audit; no fixture execution, build, repository edit or Ghidra operation",
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910",
+    "root_commit": "b811585de88e3bf9a4f7f7bb8d5d15484dda8ae0",
+    "root_dirty": [],
+    "tested_build_commit": "b811585de88e3bf9a4f7f7bb8d5d15484dda8ae0",
+    "fixture": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current",
+    "findings": [],
+    "verdict": "No blocking findings for the stated successful comparison and two source-only admission-failure claims",
+    "baseline": {
+      "metadata": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bh-published-validation.json",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bh-validated-attempt-9cb8a3e1.zip",
+      "archive_sha256": "03F2015FA02E00F3AE0B3FC4568BD02122141FD07B28A2D964B4B96BA87D213D",
+      "probe_member": "fixtures/coupled/probe.cpp",
+      "probe_sha256": "1D0D47F00B485E88F31EE12F261A64C41084E5052494E8A6A058591EBD7146C8",
+      "reviewed_unified_diff_lines": 132
+    },
+    "reviewed_sources": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_owner.hpp",
+        "sha256": "527C605FCC55EEDD421271A5C4B27D45947E325C391838F14F3CAB6D75E1F808",
+        "matches_candidate_review": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_owner.cpp",
+        "sha256": "51F7C97C40027337AF8D83B0A35613338A8963AD2664D0D6EAA220BE7D22F376",
+        "matches_candidate_review": true
+      }
+    ],
+    "pin_verification": {
+      "before": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\input-pins-before.json",
+      "after": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\input-pins.json",
+      "row_count": 2462,
+      "before_after_rows_equal": true,
+      "before_after_files_equal": true,
+      "all_recorded_inputs_match_current_files": true,
+      "build_stamp": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bi-final-build-stamp.json",
+      "build_stamp_sha256": "1168F1D089C254A8A8B4860E28D35F026D7CD9D72E80274DBD33D2FBC0FECE6D",
+      "tracked_build_input_count": 2466,
+      "all_tracked_build_inputs_match_current_files": true,
+      "current_libraries_match_fixture_pins_and_whole_build_stamp": true,
+      "compile_uses_current_libraries_only": true,
+      "compile_flags": "/std:c++17 /EHsc /O2 /Oy- /MD /fp:strict /W4 /WX; Win32; /MANIFEST:EMBED"
+    },
+    "libraries": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "F2BEBC31C2AAD02DFE04A24A68608579C5854EAE80F0FAD40CE568584750AB00"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "71E114B0FF6244852D678A5779FCBF28589BDCECBAD811AFF228FFD5007FE8C7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+        "sha256": "F3F934925213A2FFB81F3AEC2AFBB065C1733CF43B28DDDF31DB6A69185C4102"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\probe.cpp",
+        "bytes": 33046,
+        "sha256": "DBDAA43CD1C0269FB53AA5A294D585C7BDC89DCDFB90BFE4A71503D14E76C5D5"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\run.ps1",
+        "bytes": 2604,
+        "sha256": "C809E4686947731F5B6AED9DC9DFD33DC947BDEB5A64AE4C8A26D930484DA1AA"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\compile.cmd",
+        "bytes": 810,
+        "sha256": "467CCFE850512D1F58C8F999A1F81B96F5576AB7EB2703CF78D2B96220F4BE60"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\build.log",
+        "bytes": 11,
+        "sha256": "25D4F66C7C01D5B35C220CB97FFDD1608405F4AB45160497E6CC7EA3079676CF"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\run.log",
+        "bytes": 871,
+        "sha256": "CD5CC95A2118E6A8B3AC633ADDB652C40561A322B5CBD61D045AF8EA02EB872A"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\input-pins-before.json",
+        "bytes": 498700,
+        "sha256": "DA11351E782F04FAE9B82F66E711E582E544C31CB27357D6C5CCE15BC4E41EE1"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\input-pins.json",
+        "bytes": 498700,
+        "sha256": "DA11351E782F04FAE9B82F66E711E582E544C31CB27357D6C5CCE15BC4E41EE1"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\probe.exe",
+        "bytes": 318976,
+        "sha256": "E8DA4427EC136512C0F870D8DB20356D481234793685138ADBCDC17AD15102C5"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\probe.obj",
+        "bytes": 334636,
+        "sha256": "085469560490E66E96D92D7D14DCD400C889BFDEBAEFC574D7CFFC969B92EF79"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\native_camera_owner_spans.hpp",
+        "bytes": 8422,
+        "sha256": "8F02440F6F7244B85B7F2C3E7F253C87B2189608BDCC5564D3DA2632BF6E9FB8"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\original_snapshots.bin",
+        "bytes": 17880,
+        "sha256": "0AC0D705C3F0D5E7C1119884B848DC58CC131241F0D4BC6E9B8C6F7B5BF29AB4"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\source_snapshots.bin",
+        "bytes": 17880,
+        "sha256": "0AC0D705C3F0D5E7C1119884B848DC58CC131241F0D4BC6E9B8C6F7B5BF29AB4"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\original_helper_pre_free.bin",
+        "bytes": 36,
+        "sha256": "CACB87F9BDBBB13506AB5376765813FC35591DB3AC6541F6C79A5206A689124D"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\source_helper_pre_free.bin",
+        "bytes": 36,
+        "sha256": "CACB87F9BDBBB13506AB5376765813FC35591DB3AC6541F6C79A5206A689124D"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\mapped_code_before.bin",
+        "bytes": 8880,
+        "sha256": "04B42A946B40730CA902B42B8461BDFA001D802B49AB21E3A121CA6E26A4AF08"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-bi-camera-viewport\\current\\mapped_code_after.bin",
+        "bytes": 8880,
+        "sha256": "04B42A946B40730CA902B42B8461BDFA001D802B49AB21E3A121CA6E26A4AF08"
+      }
+    ],
+    "reviewed_behavior": [
+      {
+        "claim": "No manual first registration",
+        "evidence": "probe.cpp:265-268 calls admitted raw B71A80 with std::move(first_view_admission); archived manual views.constructed call removed; no such call remains."
+      },
+      {
+        "claim": "Moved token and no early finished view",
+        "evidence": "probe.cpp:157-163 checks empty caller token, reserved record, one live native allocation and missing lookup at B1F850 renderer callbacks1/2."
+      },
+      {
+        "claim": "Post-publication exact live view",
+        "evidence": "probe.cpp:164-167 captures current camera+180 while typed storage is live and verifies live record, exact view.native_owner and actual count1 at callbacks3/4."
+      },
+      {
+        "claim": "Source early failure",
+        "evidence": "probe.cpp:269-277 checks renderer2 failure only on source, dead camera, empty admission, absent camera lifetime binding, cancelled first record and freed raw viewport."
+      },
+      {
+        "claim": "Source late survivor",
+        "evidence": "probe.cpp:278-285 uses observed_first_owner captured in callback3 before the injected throw; verifies separate live viewport count1 after camera ends, then explicitly releases that viewport and requires retirement/free."
+      },
+      {
+        "claim": "Cleanup ordering",
+        "evidence": "probe.cpp:287-291 cancels replacement and unused lifetime credit, forgets only cancelled/retired viewport records, returns camera raw slot exactly once, checks name return, then destroys string fixture state. Late survivor is retired before its record is forgotten."
+      },
+      {
+        "claim": "Successful original/source comparison preserved",
+        "evidence": "main runs original normal then source normal and compares events before running source failures; failure runs set comparison=false and return before writing normal snapshot artifacts."
+      },
+      {
+        "claim": "Failures do not execute original FH3",
+        "evidence": "main invokes fail_at2/3 only with native_path=false; catch checks !original and exact injected renderer error; run.log labels both source-only and no native FH3."
+      }
+    ],
+    "observed_artifact_results": {
+      "successful_checkpoints": 15,
+      "camera_bytes_compared": 16740,
+      "events": 11,
+      "original_source_snapshot_files_equal": true,
+      "snapshot_file_bytes": 17880,
+      "helper_pre_free_files_equal": true,
+      "helper_pre_free_bytes": 36,
+      "mapped_before_after_equal": true,
+      "selected_mapped_code_bytes": 8880,
+      "span_header_unchanged_from_BH": true,
+      "helper_pre_free_files_unchanged_from_BH": true,
+      "archived_to_current_snapshot_difference": "Five words only: camera+438 at three checkpoints and +43C at two. These are retained/context fixture-global pointers; current original/source files are exactly equal. Different fixture module locations explain the common address shift; no cross-run raw snapshot identity claim."
+    },
+    "limitations": [
+      "Audit read existing source, recipes, logs and artifacts only; it did not independently rerun the fixture or build.",
+      "Failure validation covers source renderer callbacks2 and3, not native FH3/SEH equivalence, all failure points, allocation failure or nested/concurrent construction.",
+      "Guarded host new covers NativeCameraOwner and NativeCameraReference companion construction; the fixture does not hold that guard over the entire raw B71A80 operation or its failure runs.",
+      "Successful snapshot equality uses fixture pointer normalization; archived-to-current fixture-global addresses differ. The 8880-byte code check covers selected relocated mapped spans after fixture setup, not the whole original PE.",
+      "run.ps1 pins source/include files, probe/span source, run recipe and three libraries before/after. Compiler/SDK/downloaded headers/native PE/probe executable/compile.cmd/logs are not part of that before/after list; this audit separately records current artifact hashes.",
+      "The late survivor release is explicit fixture cleanup after observing the surviving native outcome, not production camera unwind cleanup.",
+      "No full cockpit constructor, persistent construction-block lifetime, arbitrary destructive callback safety or game-validation claim."
+    ]
+  },
+  "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "live_prototype": "00b71a80 BSP_Camera_Construct  void * __thiscall BSP_Camera_Construct(void * this, void * name)  body 00b71a80 - 00b71cdb\n",
+  "ghidra_mutations": false,
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "native_differential_scope": "One unchanged successful original/source CW027F camera/helper terminal pair;15camera checkpoints,16740bytes/path,11events,36normalizedhelperbytes,8880mappedcode bytes unchanged.",
+  "source_failure_scope": "Renderer2 failure before viewport publication cancels/frees; renderer3 failure after publication preserves separately captured live viewport count1 until explicit later fixture release. No original FH3 execution.",
+  "game_validated": false,
+  "original_binary_abi_validated": false,
+  "native_fh3_validated": false,
+  "final_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bi-validated-attempt-b811585d.zip",
+    "sha256": "886a47cd19fd8cf986eb50d209aaf9a8619c601720da6867402fb1f6629c8abb",
+    "verified_members": 2500
+  }
+}
