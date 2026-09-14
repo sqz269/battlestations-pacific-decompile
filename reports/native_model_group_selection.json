@@ -1,0 +1,2074 @@
+{
+  "packet": "orch6_model_group_selection_aa",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00710bb0",
+      "end_inclusive": "00710e00",
+      "name": "select_native_model_group_00710bb0",
+      "source": "src/native_model_group_selection.cpp",
+      "coverage": "complete",
+      "native_abi": "thiscall ECX owner, stack(selected DWORD), RET4",
+      "new_abi": "fastcall ECX same actual owner, EDX borrowed stable access pointer, stack(selected DWORD), RET4"
+    },
+    {
+      "address": "00b6da70",
+      "end_inclusive": "00b6daab",
+      "name": "set_native_node_visibility_factor_00b6da70",
+      "source": "src/native_node_visibility_factor.cpp",
+      "coverage": "complete",
+      "native_abi": "thiscall ECX actual node, stack(float factor, recurse DWORD), RET8",
+      "new_abi": "fastcall ECX canonical NativeNodeStorage, unused EDX, same stack/RET8"
+    }
+  ],
+  "reused_provider": {
+    "entry": "00b6e0a0",
+    "end_inclusive": "00b6e0c0",
+    "source": "src/native_particle_model_update.cpp",
+    "coverage": "complete_existing_provider"
+  },
+  "incoming_calls": [
+    {
+      "address": "00876f77",
+      "native": "00710bb0",
+      "containing_function": "00876ec0",
+      "body_start": "00876ec0",
+      "body_end_inclusive": "00876f83",
+      "function": "00876ec0"
+    },
+    {
+      "address": "00447c6d",
+      "native": "00710bb0",
+      "containing_function": "00447b80",
+      "body_start": "00447b80",
+      "body_end_inclusive": "0044831c",
+      "function": "00447b80"
+    },
+    {
+      "address": "0050737b",
+      "native": "00710bb0",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "006810d0",
+      "native": "00710bb0",
+      "containing_function": "00680db0",
+      "body_start": "00680db0",
+      "body_end_inclusive": "00681b9a",
+      "function": "00680db0"
+    },
+    {
+      "address": "00681a93",
+      "native": "00710bb0",
+      "containing_function": "00680db0",
+      "body_start": "00680db0",
+      "body_end_inclusive": "00681b9a",
+      "function": "00680db0"
+    },
+    {
+      "address": "00748349",
+      "native": "00710bb0",
+      "containing_function": "007482b0",
+      "body_start": "007482b0",
+      "body_end_inclusive": "00748986",
+      "function": "007482b0"
+    },
+    {
+      "address": "00850acd",
+      "native": "00710bb0",
+      "containing_function": "008509f0",
+      "body_start": "008509f0",
+      "body_end_inclusive": "0085122d",
+      "function": "008509f0"
+    },
+    {
+      "address": "004d98bd",
+      "native": "00b6da70",
+      "containing_function": "004d9830",
+      "body_start": "004d9830",
+      "body_end_inclusive": "004d9b2f",
+      "function": "004d9830"
+    },
+    {
+      "address": "004d9b06",
+      "native": "00b6da70",
+      "containing_function": "004d9830",
+      "body_start": "004d9830",
+      "body_end_inclusive": "004d9b2f",
+      "function": "004d9830"
+    },
+    {
+      "address": "008d5f67",
+      "native": "00b6da70",
+      "containing_function": "008d5b50",
+      "body_start": "008d5b50",
+      "body_end_inclusive": "008d6166",
+      "function": "008d5b50"
+    },
+    {
+      "address": "00b103cf",
+      "native": "00b6da70",
+      "containing_function": "00b101c0",
+      "body_start": "00b101c0",
+      "body_end_inclusive": "00b104f2",
+      "function": "00b101c0"
+    },
+    {
+      "address": "00b6da9b",
+      "native": "00b6da70",
+      "containing_function": "00b6da70",
+      "body_start": "00b6da70",
+      "body_end_inclusive": "00b6daab",
+      "function": "00b6da70"
+    },
+    {
+      "address": "00b9cba0",
+      "native": "00b6da70",
+      "containing_function": "00b9cb80",
+      "body_start": "00b9cb80",
+      "body_end_inclusive": "00b9cf43",
+      "function": "00b9cb80"
+    },
+    {
+      "address": "00b9cca2",
+      "native": "00b6da70",
+      "containing_function": "00b9cb80",
+      "body_start": "00b9cb80",
+      "body_end_inclusive": "00b9cf43",
+      "function": "00b9cb80"
+    },
+    {
+      "address": "00b9f117",
+      "native": "00b6da70",
+      "containing_function": "00b9f0a0",
+      "body_start": "00b9f0a0",
+      "body_end_inclusive": "00b9fa52",
+      "function": "00b9f0a0"
+    },
+    {
+      "address": "00b9fa33",
+      "native": "00b6da70",
+      "containing_function": "00b9f0a0",
+      "body_start": "00b9f0a0",
+      "body_end_inclusive": "00b9fa52",
+      "function": "00b9f0a0"
+    },
+    {
+      "address": "00ba3062",
+      "native": "00b6da70",
+      "containing_function": "00ba2ff0",
+      "body_start": "00ba2ff0",
+      "body_end_inclusive": "00ba3a5e",
+      "function": "00ba2ff0"
+    },
+    {
+      "address": "00ba339f",
+      "native": "00b6da70",
+      "containing_function": "00ba2ff0",
+      "body_start": "00ba2ff0",
+      "body_end_inclusive": "00ba3a5e",
+      "function": "00ba2ff0"
+    },
+    {
+      "address": "00ba3a4f",
+      "native": "00b6da70",
+      "containing_function": "00ba2ff0",
+      "body_start": "00ba2ff0",
+      "body_end_inclusive": "00ba3a5e",
+      "function": "00ba2ff0"
+    },
+    {
+      "address": "00ba427f",
+      "native": "00b6da70",
+      "containing_function": "00ba40f0",
+      "body_start": "00ba40f0",
+      "body_end_inclusive": "00ba429d",
+      "function": "00ba40f0"
+    },
+    {
+      "address": "00ba4291",
+      "native": "00b6da70",
+      "containing_function": "00ba40f0",
+      "body_start": "00ba40f0",
+      "body_end_inclusive": "00ba429d",
+      "function": "00ba40f0"
+    },
+    {
+      "address": "00bbd006",
+      "native": "00b6da70",
+      "containing_function": "00bbcfe0",
+      "body_start": "00bbcfe0",
+      "body_end_inclusive": "00bbd05c",
+      "function": "00bbcfe0"
+    },
+    {
+      "address": "00bbd03c",
+      "native": "00b6da70",
+      "containing_function": "00bbcfe0",
+      "body_start": "00bbcfe0",
+      "body_end_inclusive": "00bbd05c",
+      "function": "00bbcfe0"
+    },
+    {
+      "address": "00ab8a65",
+      "native": "00b6da70",
+      "containing_function": "00ab8910",
+      "body_start": "00ab8910",
+      "body_end_inclusive": "00ab8c24",
+      "function": "00ab8910"
+    },
+    {
+      "address": "00711bb2",
+      "native": "00b6da70",
+      "containing_function": "00711a20",
+      "body_start": "00711a20",
+      "body_end_inclusive": "00711bd7",
+      "function": "00711a20"
+    },
+    {
+      "address": "00710cb0",
+      "native": "00b6da70",
+      "containing_function": "00710bb0",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d96",
+      "native": "00b6da70",
+      "containing_function": "00710bb0",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00476e08",
+      "native": "00b6da70",
+      "containing_function": "00476d80",
+      "body_start": "00476d80",
+      "body_end_inclusive": "00476e0e",
+      "function": "00476d80"
+    },
+    {
+      "address": "00477c13",
+      "native": "00b6da70",
+      "containing_function": "00477710",
+      "body_start": "00477710",
+      "body_end_inclusive": "00478a41",
+      "function": "00477710"
+    },
+    {
+      "address": "004786e6",
+      "native": "00b6da70",
+      "containing_function": "00477710",
+      "body_start": "00477710",
+      "body_end_inclusive": "00478a41",
+      "function": "00477710"
+    },
+    {
+      "address": "00484990",
+      "native": "00b6da70",
+      "containing_function": "00484940",
+      "body_start": "00484940",
+      "body_end_inclusive": "004849b4",
+      "function": "00484940"
+    },
+    {
+      "address": "004849ae",
+      "native": "00b6da70",
+      "containing_function": "00484940",
+      "body_start": "00484940",
+      "body_end_inclusive": "004849b4",
+      "function": "00484940"
+    },
+    {
+      "address": "0048b3f5",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "0048b420",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "004a7688",
+      "native": "00b6da70",
+      "containing_function": "004a7650",
+      "body_start": "004a7650",
+      "body_end_inclusive": "004a768e",
+      "function": "004a7650"
+    },
+    {
+      "address": "004ac0e8",
+      "native": "00b6da70",
+      "containing_function": "004ac0b0",
+      "body_start": "004ac0b0",
+      "body_end_inclusive": "004ac0ee",
+      "function": "004ac0b0"
+    },
+    {
+      "address": "0044823d",
+      "native": "00b6da70",
+      "containing_function": "00447b80",
+      "body_start": "00447b80",
+      "body_end_inclusive": "0044831c",
+      "function": "00447b80"
+    },
+    {
+      "address": "00af0d51",
+      "native": "00b6da70",
+      "containing_function": "00af0c50",
+      "body_start": "00af0c50",
+      "body_end_inclusive": "00af0f13",
+      "function": "00af0c50"
+    },
+    {
+      "address": "00b4efb9",
+      "native": "00b6da70",
+      "containing_function": "00b4ef90",
+      "body_start": "00b4ef90",
+      "body_end_inclusive": "00b4f018",
+      "function": "00b4ef90"
+    },
+    {
+      "address": "005074e0",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005075f7",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507682",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "0050775e",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507781",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005077ae",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507880",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005078a3",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005078d0",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005079a2",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005079c5",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "005079f2",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507ac4",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507ae7",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507b14",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507be6",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507c09",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00507e23",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00508250",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "00508320",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "0050912f",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "0050915a",
+      "native": "00b6da70",
+      "containing_function": "005072c0",
+      "body_start": "005072c0",
+      "body_end_inclusive": "00509189",
+      "function": "005072c0"
+    },
+    {
+      "address": "0051d1d4",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0051d934",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0051da1e",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0051dae0",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0051db56",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0051dc22",
+      "native": "00b6da70",
+      "containing_function": "0051cde0",
+      "body_start": "0051cde0",
+      "body_end_inclusive": "0051dcd6",
+      "function": "0051cde0"
+    },
+    {
+      "address": "0053a158",
+      "native": "00b6da70",
+      "containing_function": "00538f80",
+      "body_start": "00538f80",
+      "body_end_inclusive": "0053a4cd",
+      "function": "00538f80"
+    },
+    {
+      "address": "00538ddc",
+      "native": "00b6da70",
+      "containing_function": "00538d60",
+      "body_start": "00538d60",
+      "body_end_inclusive": "00538df3",
+      "function": "00538d60"
+    },
+    {
+      "address": "00ab9620",
+      "native": "00b6da70",
+      "containing_function": "00ab95f0",
+      "body_start": "00ab95f0",
+      "body_end_inclusive": "00ab964c",
+      "function": "00ab95f0"
+    },
+    {
+      "address": "00594d25",
+      "native": "00b6da70",
+      "containing_function": "00594bf0",
+      "body_start": "00594bf0",
+      "body_end_inclusive": "005966e4",
+      "function": "00594bf0"
+    },
+    {
+      "address": "00594d8e",
+      "native": "00b6da70",
+      "containing_function": "00594bf0",
+      "body_start": "00594bf0",
+      "body_end_inclusive": "005966e4",
+      "function": "00594bf0"
+    },
+    {
+      "address": "00594e22",
+      "native": "00b6da70",
+      "containing_function": "00594bf0",
+      "body_start": "00594bf0",
+      "body_end_inclusive": "005966e4",
+      "function": "00594bf0"
+    },
+    {
+      "address": "00594e55",
+      "native": "00b6da70",
+      "containing_function": "00594bf0",
+      "body_start": "00594bf0",
+      "body_end_inclusive": "005966e4",
+      "function": "00594bf0"
+    },
+    {
+      "address": "00596b29",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596b52",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596b6e",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596b8a",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596ccb",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596cf0",
+      "native": "00b6da70",
+      "containing_function": "005966f0",
+      "body_start": "005966f0",
+      "body_end_inclusive": "0059786c",
+      "function": "005966f0"
+    },
+    {
+      "address": "005a3fb2",
+      "native": "00b6da70",
+      "containing_function": "005a3ef0",
+      "body_start": "005a3ef0",
+      "body_end_inclusive": "005a401c",
+      "function": "005a3ef0"
+    },
+    {
+      "address": "005a4460",
+      "native": "00b6da70",
+      "containing_function": "005a4200",
+      "body_start": "005a4200",
+      "body_end_inclusive": "005a485d",
+      "function": "005a4200"
+    },
+    {
+      "address": "005a87f9",
+      "native": "00b6da70",
+      "containing_function": "005a8600",
+      "body_start": "005a8600",
+      "body_end_inclusive": "005a8bf1",
+      "function": "005a8600"
+    },
+    {
+      "address": "005ae56f",
+      "native": "00b6da70",
+      "containing_function": "005adda0",
+      "body_start": "005adda0",
+      "body_end_inclusive": "005b258d",
+      "function": "005adda0"
+    },
+    {
+      "address": "005ae5ab",
+      "native": "00b6da70",
+      "containing_function": "005adda0",
+      "body_start": "005adda0",
+      "body_end_inclusive": "005b258d",
+      "function": "005adda0"
+    },
+    {
+      "address": "005b3292",
+      "native": "00b6da70",
+      "containing_function": "005b2d70",
+      "body_start": "005b2d70",
+      "body_end_inclusive": "005b3463",
+      "function": "005b2d70"
+    },
+    {
+      "address": "005b32f1",
+      "native": "00b6da70",
+      "containing_function": "005b2d70",
+      "body_start": "005b2d70",
+      "body_end_inclusive": "005b3463",
+      "function": "005b2d70"
+    },
+    {
+      "address": "005b3352",
+      "native": "00b6da70",
+      "containing_function": "005b2d70",
+      "body_start": "005b2d70",
+      "body_end_inclusive": "005b3463",
+      "function": "005b2d70"
+    },
+    {
+      "address": "005b44bf",
+      "native": "00b6da70",
+      "containing_function": "005b3470",
+      "body_start": "005b3470",
+      "body_end_inclusive": "005b45b3",
+      "function": "005b3470"
+    },
+    {
+      "address": "00951f75",
+      "native": "00b6da70",
+      "containing_function": "00951f40",
+      "body_start": "00951f40",
+      "body_end_inclusive": "00951f7d",
+      "function": "00951f40"
+    },
+    {
+      "address": "0095e988",
+      "native": "00b6da70",
+      "containing_function": "0095e5b0",
+      "body_start": "0095e5b0",
+      "body_end_inclusive": "0095e99d",
+      "function": "0095e5b0"
+    },
+    {
+      "address": "006e0b78",
+      "native": "00b6da70",
+      "containing_function": "006e0b40",
+      "body_start": "006e0b40",
+      "body_end_inclusive": "006e0b7f",
+      "function": "006e0b40"
+    },
+    {
+      "address": "0087825e",
+      "native": "00b6da70",
+      "containing_function": "008781f0",
+      "body_start": "008781f0",
+      "body_end_inclusive": "00878293",
+      "function": "008781f0"
+    },
+    {
+      "address": "007297cd",
+      "native": "00b6da70",
+      "containing_function": "007297b0",
+      "body_start": "007297b0",
+      "body_end_inclusive": "0072986c",
+      "function": "007297b0"
+    },
+    {
+      "address": "0072980f",
+      "native": "00b6da70",
+      "containing_function": "007297b0",
+      "body_start": "007297b0",
+      "body_end_inclusive": "0072986c",
+      "function": "007297b0"
+    },
+    {
+      "address": "00729822",
+      "native": "00b6da70",
+      "containing_function": "007297b0",
+      "body_start": "007297b0",
+      "body_end_inclusive": "0072986c",
+      "function": "007297b0"
+    },
+    {
+      "address": "0072985f",
+      "native": "00b6da70",
+      "containing_function": "007297b0",
+      "body_start": "007297b0",
+      "body_end_inclusive": "0072986c",
+      "function": "007297b0"
+    },
+    {
+      "address": "00729882",
+      "native": "00b6da70",
+      "containing_function": "00729870",
+      "body_start": "00729870",
+      "body_end_inclusive": "007298cc",
+      "function": "00729870"
+    },
+    {
+      "address": "007298bf",
+      "native": "00b6da70",
+      "containing_function": "00729870",
+      "body_start": "00729870",
+      "body_end_inclusive": "007298cc",
+      "function": "00729870"
+    },
+    {
+      "address": "0072ef73",
+      "native": "00b6da70",
+      "containing_function": "0072e6d0",
+      "body_start": "0072e6d0",
+      "body_end_inclusive": "0072f053",
+      "function": "0072e6d0"
+    },
+    {
+      "address": "00938523",
+      "native": "00b6da70",
+      "containing_function": "00937c90",
+      "body_start": "00937c90",
+      "body_end_inclusive": "00939c8f",
+      "function": "00937c90"
+    },
+    {
+      "address": "00938a6c",
+      "native": "00b6da70",
+      "containing_function": "00937c90",
+      "body_start": "00937c90",
+      "body_end_inclusive": "00939c8f",
+      "function": "00937c90"
+    },
+    {
+      "address": "00938e5d",
+      "native": "00b6da70",
+      "containing_function": "00937c90",
+      "body_start": "00937c90",
+      "body_end_inclusive": "00939c8f",
+      "function": "00937c90"
+    },
+    {
+      "address": "007bac8e",
+      "native": "00b6da70",
+      "containing_function": "007bac80",
+      "body_start": "007bac80",
+      "body_end_inclusive": "007bacbf",
+      "function": "007bac80"
+    },
+    {
+      "address": "00b3c663",
+      "native": "00b6da70",
+      "containing_function": "00b3c650",
+      "body_start": "00b3c650",
+      "body_end_inclusive": "00b3c6b6",
+      "function": "00b3c650"
+    },
+    {
+      "address": "00b3c6af",
+      "native": "00b6da70",
+      "containing_function": "00b3c650",
+      "body_start": "00b3c650",
+      "body_end_inclusive": "00b3c6b6",
+      "function": "00b3c650"
+    },
+    {
+      "address": "007d0b1f",
+      "native": "00b6da70",
+      "containing_function": "007d0820",
+      "body_start": "007d0820",
+      "body_end_inclusive": "007d0b7d",
+      "function": "007d0820"
+    },
+    {
+      "address": "007ddf28",
+      "native": "00b6da70",
+      "containing_function": "007ddf10",
+      "body_start": "007ddf10",
+      "body_end_inclusive": "007ddf72",
+      "function": "007ddf10"
+    },
+    {
+      "address": "007ddf38",
+      "native": "00b6da70",
+      "containing_function": "007ddf10",
+      "body_start": "007ddf10",
+      "body_end_inclusive": "007ddf72",
+      "function": "007ddf10"
+    },
+    {
+      "address": "007ddf4c",
+      "native": "00b6da70",
+      "containing_function": "007ddf10",
+      "body_start": "007ddf10",
+      "body_end_inclusive": "007ddf72",
+      "function": "007ddf10"
+    },
+    {
+      "address": "007ddf60",
+      "native": "00b6da70",
+      "containing_function": "007ddf10",
+      "body_start": "007ddf10",
+      "body_end_inclusive": "007ddf72",
+      "function": "007ddf10"
+    },
+    {
+      "address": "007ec400",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec40a",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec41e",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec430",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec452",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec470",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "007ec486",
+      "native": "00b6da70",
+      "containing_function": "007ec3b0",
+      "body_start": "007ec3b0",
+      "body_end_inclusive": "007ec48e",
+      "function": "007ec3b0"
+    },
+    {
+      "address": "009373df",
+      "native": "00b6da70",
+      "containing_function": "009373c0",
+      "body_start": "009373c0",
+      "body_end_inclusive": "00937438",
+      "function": "009373c0"
+    },
+    {
+      "address": "00935db7",
+      "native": "00b6da70",
+      "containing_function": "00935d30",
+      "body_start": "00935d30",
+      "body_end_inclusive": "00936dbe",
+      "function": "00935d30"
+    },
+    {
+      "address": "009361df",
+      "native": "00b6da70",
+      "containing_function": "00935d30",
+      "body_start": "00935d30",
+      "body_end_inclusive": "00936dbe",
+      "function": "00935d30"
+    },
+    {
+      "address": "0093442f",
+      "native": "00b6da70",
+      "containing_function": "00934150",
+      "body_start": "00934150",
+      "body_end_inclusive": "0093553a",
+      "function": "00934150"
+    },
+    {
+      "address": "00934cfb",
+      "native": "00b6da70",
+      "containing_function": "00934150",
+      "body_start": "00934150",
+      "body_end_inclusive": "0093553a",
+      "function": "00934150"
+    },
+    {
+      "address": "0093521f",
+      "native": "00b6da70",
+      "containing_function": "00934150",
+      "body_start": "00934150",
+      "body_end_inclusive": "0093553a",
+      "function": "00934150"
+    },
+    {
+      "address": "00935477",
+      "native": "00b6da70",
+      "containing_function": "00934150",
+      "body_start": "00934150",
+      "body_end_inclusive": "0093553a",
+      "function": "00934150"
+    },
+    {
+      "address": "00815d95",
+      "native": "00b6da70",
+      "containing_function": "00815d20",
+      "body_start": "00815d20",
+      "body_end_inclusive": "00815e1d",
+      "function": "00815d20"
+    },
+    {
+      "address": "0081c5fe",
+      "native": "00b6da70",
+      "containing_function": "0081c550",
+      "body_start": "0081c550",
+      "body_end_inclusive": "0081c820",
+      "function": "0081c550"
+    },
+    {
+      "address": "0085371c",
+      "native": "00b6da70",
+      "containing_function": "00853630",
+      "body_start": "00853630",
+      "body_end_inclusive": "00853e0f",
+      "function": "00853630"
+    },
+    {
+      "address": "00853a01",
+      "native": "00b6da70",
+      "containing_function": "00853630",
+      "body_start": "00853630",
+      "body_end_inclusive": "00853e0f",
+      "function": "00853630"
+    },
+    {
+      "address": "006e2f7e",
+      "native": "00b6da70",
+      "containing_function": "006e2e10",
+      "body_start": "006e2e10",
+      "body_end_inclusive": "006e3254",
+      "function": "006e2e10"
+    },
+    {
+      "address": "00bc10b4",
+      "native": "00b6da70",
+      "containing_function": "00bc0d40",
+      "body_start": "00bc0d40",
+      "body_end_inclusive": "00bc1144",
+      "function": "00bc0d40"
+    },
+    {
+      "address": "00baad6e",
+      "native": "00b6da70",
+      "containing_function": "00baabb0",
+      "body_start": "00baabb0",
+      "body_end_inclusive": "00bab3e6",
+      "function": "00baabb0"
+    },
+    {
+      "address": "00bab38b",
+      "native": "00b6da70",
+      "containing_function": "00baabb0",
+      "body_start": "00baabb0",
+      "body_end_inclusive": "00bab3e6",
+      "function": "00baabb0"
+    },
+    {
+      "address": "00bab3d9",
+      "native": "00b6da70",
+      "containing_function": "00baabb0",
+      "body_start": "00baabb0",
+      "body_end_inclusive": "00bab3e6",
+      "function": "00baabb0"
+    },
+    {
+      "address": "00bc1402",
+      "native": "00b6da70",
+      "containing_function": "00bc12f0",
+      "body_start": "00bc12f0",
+      "body_end_inclusive": "00bc1841",
+      "function": "00bc12f0"
+    },
+    {
+      "address": "00bc1ab0",
+      "native": "00b6da70",
+      "containing_function": "00bc1a20",
+      "body_start": "00bc1a20",
+      "body_end_inclusive": "00bc1ee7",
+      "function": "00bc1a20"
+    },
+    {
+      "address": "00bc0897",
+      "native": "00b6da70",
+      "containing_function": "00bc0510",
+      "body_start": "00bc0510",
+      "body_end_inclusive": "00bc0d3c",
+      "function": "00bc0510"
+    },
+    {
+      "address": "00bc0ad0",
+      "native": "00b6da70",
+      "containing_function": "00bc0510",
+      "body_start": "00bc0510",
+      "body_end_inclusive": "00bc0d3c",
+      "function": "00bc0510"
+    },
+    {
+      "address": "00bc0cca",
+      "native": "00b6da70",
+      "containing_function": "00bc0510",
+      "body_start": "00bc0510",
+      "body_end_inclusive": "00bc0d3c",
+      "function": "00bc0510"
+    },
+    {
+      "address": "00bc0cde",
+      "native": "00b6da70",
+      "containing_function": "00bc0510",
+      "body_start": "00bc0510",
+      "body_end_inclusive": "00bc0d3c",
+      "function": "00bc0510"
+    },
+    {
+      "address": "00882599",
+      "native": "00b6da70",
+      "containing_function": "00882420",
+      "body_start": "00882420",
+      "body_end_inclusive": "00882618",
+      "function": "00882420"
+    },
+    {
+      "address": "008c335d",
+      "native": "00b6da70",
+      "containing_function": "008c3170",
+      "body_start": "008c3170",
+      "body_end_inclusive": "008c3405",
+      "function": "008c3170"
+    },
+    {
+      "address": "008c3393",
+      "native": "00b6da70",
+      "containing_function": "008c3170",
+      "body_start": "008c3170",
+      "body_end_inclusive": "008c3405",
+      "function": "008c3170"
+    },
+    {
+      "address": "0092bee8",
+      "native": "00b6da70",
+      "containing_function": "0092bec0",
+      "body_start": "0092bec0",
+      "body_end_inclusive": "0092befb",
+      "function": "0092bec0"
+    },
+    {
+      "address": "00935b75",
+      "native": "00b6da70",
+      "containing_function": "00935540",
+      "body_start": "00935540",
+      "body_end_inclusive": "00935c68",
+      "function": "00935540"
+    },
+    {
+      "address": "00956b25",
+      "native": "00b6da70",
+      "containing_function": "00956600",
+      "body_start": "00956600",
+      "body_end_inclusive": "00956b3e",
+      "function": "00956600"
+    },
+    {
+      "address": "00aa5579",
+      "native": "00b6da70",
+      "containing_function": "00aa5390",
+      "body_start": "00aa5390",
+      "body_end_inclusive": "00aa56eb",
+      "function": "00aa5390"
+    },
+    {
+      "address": "00aa568f",
+      "native": "00b6da70",
+      "containing_function": "00aa5390",
+      "body_start": "00aa5390",
+      "body_end_inclusive": "00aa56eb",
+      "function": "00aa5390"
+    },
+    {
+      "address": "00b10532",
+      "native": "00b6da70",
+      "containing_function": "00b10500",
+      "body_start": "00b10500",
+      "body_end_inclusive": "00b105af",
+      "function": "00b10500"
+    },
+    {
+      "address": "00b105a4",
+      "native": "00b6da70",
+      "containing_function": "00b10500",
+      "body_start": "00b10500",
+      "body_end_inclusive": "00b105af",
+      "function": "00b10500"
+    },
+    {
+      "address": "00b3c72f",
+      "native": "00b6da70",
+      "containing_function": "00b3c6e0",
+      "body_start": "00b3c6e0",
+      "body_end_inclusive": "00b3c7ff",
+      "function": "00b3c6e0"
+    },
+    {
+      "address": "00b3c779",
+      "native": "00b6da70",
+      "containing_function": "00b3c6e0",
+      "body_start": "00b3c6e0",
+      "body_end_inclusive": "00b3c7ff",
+      "function": "00b3c6e0"
+    },
+    {
+      "address": "00b3cb4a",
+      "native": "00b6da70",
+      "containing_function": "00b3c960",
+      "body_start": "00b3c960",
+      "body_end_inclusive": "00b3cc7d",
+      "function": "00b3c960"
+    },
+    {
+      "address": "00b4f485",
+      "native": "00b6da70",
+      "containing_function": "00b4f1c0",
+      "body_start": "00b4f1c0",
+      "body_end_inclusive": "00b4f530",
+      "function": "00b4f1c0"
+    },
+    {
+      "address": "00bbd32a",
+      "native": "00b6da70",
+      "containing_function": "00bbd310",
+      "body_start": "00bbd310",
+      "body_end_inclusive": "00bbd465",
+      "function": "00bbd310"
+    },
+    {
+      "address": "00bbe8f2",
+      "native": "00b6da70",
+      "containing_function": "00bbe8b0",
+      "body_start": "00bbe8b0",
+      "body_end_inclusive": "00bbf188",
+      "function": "00bbe8b0"
+    },
+    {
+      "address": "00bbea3f",
+      "native": "00b6da70",
+      "containing_function": "00bbe8b0",
+      "body_start": "00bbe8b0",
+      "body_end_inclusive": "00bbf188",
+      "function": "00bbe8b0"
+    },
+    {
+      "address": "00bc60bb",
+      "native": "00b6da70",
+      "containing_function": "00bc6060",
+      "body_start": "00bc6060",
+      "body_end_inclusive": "00bc6421",
+      "function": "00bc6060"
+    },
+    {
+      "address": "0048bcc5",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "0048bd1c",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "0048bdc6",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "0048be89",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "0048bee0",
+      "native": "00b6da70",
+      "containing_function": "0048b120",
+      "body_start": "0048b120",
+      "body_end_inclusive": "0048bf5f",
+      "function": "0048b120"
+    },
+    {
+      "address": "00825c0c",
+      "native": "00b6da70",
+      "containing_function": "008255b0",
+      "body_start": "008255b0",
+      "body_end_inclusive": "00825dd4",
+      "function": "008255b0"
+    },
+    {
+      "address": "00707c28",
+      "native": "00b6da70",
+      "containing_function": "00707b00",
+      "body_start": "00707b00",
+      "body_end_inclusive": "00708119",
+      "function": "00707b00"
+    },
+    {
+      "address": "00708108",
+      "native": "00b6da70",
+      "containing_function": "00707b00",
+      "body_start": "00707b00",
+      "body_end_inclusive": "00708119",
+      "function": "00707b00"
+    },
+    {
+      "address": "007bc6ca",
+      "native": "00b6da70",
+      "containing_function": "007bc690",
+      "body_start": "007bc690",
+      "body_end_inclusive": "007bc797",
+      "function": "007bc690"
+    },
+    {
+      "address": "007cacf9",
+      "native": "00b6da70",
+      "containing_function": "007caad0",
+      "body_start": "007caad0",
+      "body_end_inclusive": "007caf08",
+      "function": "007caad0"
+    },
+    {
+      "address": "007caed5",
+      "native": "00b6da70",
+      "containing_function": "007caad0",
+      "body_start": "007caad0",
+      "body_end_inclusive": "007caf08",
+      "function": "007caad0"
+    },
+    {
+      "address": "007d741e",
+      "native": "00b6da70",
+      "containing_function": "007d5d20",
+      "body_start": "007d5d20",
+      "body_end_inclusive": "007d771e",
+      "function": "007d5d20"
+    },
+    {
+      "address": "007d745d",
+      "native": "00b6da70",
+      "containing_function": "007d5d20",
+      "body_start": "007d5d20",
+      "body_end_inclusive": "007d771e",
+      "function": "007d5d20"
+    },
+    {
+      "address": "007d76d3",
+      "native": "00b6da70",
+      "containing_function": "007d5d20",
+      "body_start": "007d5d20",
+      "body_end_inclusive": "007d771e",
+      "function": "007d5d20"
+    },
+    {
+      "address": "0085481d",
+      "native": "00b6da70",
+      "containing_function": "00854650",
+      "body_start": "00854650",
+      "body_end_inclusive": "008551b9",
+      "function": "00854650"
+    },
+    {
+      "address": "00854852",
+      "native": "00b6da70",
+      "containing_function": "00854650",
+      "body_start": "00854650",
+      "body_end_inclusive": "008551b9",
+      "function": "00854650"
+    },
+    {
+      "address": "008548f9",
+      "native": "00b6da70",
+      "containing_function": "00854650",
+      "body_start": "00854650",
+      "body_end_inclusive": "008551b9",
+      "function": "00854650"
+    },
+    {
+      "address": "008549f0",
+      "native": "00b6da70",
+      "containing_function": "00854650",
+      "body_start": "00854650",
+      "body_end_inclusive": "008551b9",
+      "function": "00854650"
+    },
+    {
+      "address": "00854a1d",
+      "native": "00b6da70",
+      "containing_function": "00854650",
+      "body_start": "00854650",
+      "body_end_inclusive": "008551b9",
+      "function": "00854650"
+    },
+    {
+      "address": "00b8d3a1",
+      "native": "00b6da70",
+      "containing_function": "00b8d150",
+      "body_start": "00b8d150",
+      "body_end_inclusive": "00b8d57e",
+      "function": "00b8d150"
+    },
+    {
+      "address": "00b8d3f1",
+      "native": "00b6da70",
+      "containing_function": "00b8d150",
+      "body_start": "00b8d150",
+      "body_end_inclusive": "00b8d57e",
+      "function": "00b8d150"
+    },
+    {
+      "address": "00b8d570",
+      "native": "00b6da70",
+      "containing_function": "00b8d150",
+      "body_start": "00b8d150",
+      "body_end_inclusive": "00b8d57e",
+      "function": "00b8d150"
+    },
+    {
+      "address": "00aa858c",
+      "native": "00b6da70",
+      "containing_function": "00aa8530",
+      "body_start": "00aa8530",
+      "body_end_inclusive": "00aa85ae",
+      "function": "00aa8530"
+    },
+    {
+      "address": "00aa85a3",
+      "native": "00b6da70",
+      "containing_function": "00aa8530",
+      "body_start": "00aa8530",
+      "body_end_inclusive": "00aa85ae",
+      "function": "00aa8530"
+    }
+  ],
+  "outgoing_calls": [
+    {
+      "address": "00710c4d",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710c64",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710c78",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710c8a",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710cb0",
+      "containing_function": "00710bb0",
+      "native": "00b6da70",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710cbc",
+      "containing_function": "00710bb0",
+      "native": "00b6e0a0",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710cfd",
+      "containing_function": "00710bb0",
+      "indirect": "CURRENT node vtable+2C; ECX node; stack(position); RET4",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0",
+      "native": "node+vtable2c",
+      "kind": "indirect"
+    },
+    {
+      "address": "00710d04",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d39",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d51",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d5e",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d70",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710d96",
+      "containing_function": "00710bb0",
+      "native": "00b6da70",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710da2",
+      "containing_function": "00710bb0",
+      "native": "00b6e0a0",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00710de3",
+      "containing_function": "00710bb0",
+      "indirect": "CURRENT node vtable+2C; ECX node; stack(position); RET4",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0",
+      "native": "node+vtable2c",
+      "kind": "indirect"
+    },
+    {
+      "address": "00710dea",
+      "containing_function": "00710bb0",
+      "native": "00bf6713",
+      "body_start": "00710bb0",
+      "body_end_inclusive": "00710e00",
+      "function": "00710bb0"
+    },
+    {
+      "address": "00b6da9b",
+      "containing_function": "00b6da70",
+      "native": "00b6da70",
+      "body_start": "00b6da70",
+      "body_end_inclusive": "00b6daab",
+      "function": "00b6da70"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "004847ba",
+      "end_inclusive": "004847be",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_004847ba.txt"
+    },
+    {
+      "start": "0051b2b5",
+      "end_inclusive": "0051b2b9",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0051b2b5.txt"
+    },
+    {
+      "start": "0051b35f",
+      "end_inclusive": "0051b363",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0051b35f.txt"
+    },
+    {
+      "start": "0051b394",
+      "end_inclusive": "0051b398",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0051b394.txt"
+    },
+    {
+      "start": "0051b434",
+      "end_inclusive": "0051b438",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0051b434.txt"
+    },
+    {
+      "start": "0053b1ec",
+      "end_inclusive": "0053b1f0",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0053b1ec.txt"
+    },
+    {
+      "start": "006e0bb2",
+      "end_inclusive": "006e0bb6",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_006e0bb2.txt"
+    },
+    {
+      "start": "006e0bd5",
+      "end_inclusive": "006e0bd9",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_006e0bd5.txt"
+    },
+    {
+      "start": "0070082d",
+      "end_inclusive": "00700831",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0070082d.txt"
+    },
+    {
+      "start": "0074b25d",
+      "end_inclusive": "0074b261",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0074b25d.txt"
+    },
+    {
+      "start": "007ab5cc",
+      "end_inclusive": "007ab5d0",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007ab5cc.txt"
+    },
+    {
+      "start": "007e1c6f",
+      "end_inclusive": "007e1c73",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007e1c6f.txt"
+    },
+    {
+      "start": "007e1c83",
+      "end_inclusive": "007e1c87",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007e1c83.txt"
+    },
+    {
+      "start": "007e1c93",
+      "end_inclusive": "007e1c97",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007e1c93.txt"
+    },
+    {
+      "start": "007e1ca7",
+      "end_inclusive": "007e1cab",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007e1ca7.txt"
+    },
+    {
+      "start": "007ec0af",
+      "end_inclusive": "007ec0b3",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007ec0af.txt"
+    },
+    {
+      "start": "007ec0bf",
+      "end_inclusive": "007ec0c3",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007ec0bf.txt"
+    },
+    {
+      "start": "007ec0d3",
+      "end_inclusive": "007ec0d7",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007ec0d3.txt"
+    },
+    {
+      "start": "007ec0e7",
+      "end_inclusive": "007ec0eb",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_007ec0e7.txt"
+    },
+    {
+      "start": "00819da9",
+      "end_inclusive": "00819dad",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_00819da9.txt"
+    },
+    {
+      "start": "0084f017",
+      "end_inclusive": "0084f01b",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_0084f017.txt"
+    },
+    {
+      "start": "00855ba5",
+      "end_inclusive": "00855ba9",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_00855ba5.txt"
+    },
+    {
+      "start": "00855bc5",
+      "end_inclusive": "00855bc9",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_00855bc5.txt"
+    },
+    {
+      "start": "00baba7e",
+      "end_inclusive": "00baba82",
+      "native_target": "00b6da70",
+      "coverage": "no_ghidra_function",
+      "evidence": "local/model_group_unowned_site_00baba7e.txt"
+    }
+  ],
+  "call_audit": {
+    "incoming_xrefs": 206,
+    "incoming_with_live_body": 182,
+    "incoming_without_live_body": 24,
+    "outgoing_direct": 15,
+    "outgoing_indirect": 2,
+    "no_ghidra_scope": "Exact five-byte incoming visibility CALL spans only; no invented containing function."
+  },
+  "producer_evidence": [
+    {
+      "entry": "007135c0",
+      "writes": "owner+16c/+170/+174 zero"
+    },
+    {
+      "entry": "00713380",
+      "sites": [
+        "007134e4",
+        "0071351a",
+        "0071351d",
+        "00713520",
+        "00713523",
+        "00713548",
+        "0071354b",
+        "0071355e"
+      ],
+      "writes": "owner+168 checked16-byte vector; initialize inner begin/end/capacity, append actual node via00506dd0"
+    },
+    {
+      "entry": "00506dd0",
+      "writes": "row+04 begin,+08 end,+0c capacity; store actual pointer at end and increment4"
+    },
+    {
+      "entry": "00b6f5a0",
+      "sites": [
+        "00b6f5eb",
+        "00b6f5f1",
+        "00b6f68e"
+      ],
+      "writes": "canonical NativeNodeStorage first_child34,next_sibling3c,scalar_ac"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Pseudocode casts CF81F0 to float and hides x87 local spills.",
+      "is": "Read live double at native FADD/FSUB sites; preserve all x87 spills, current vtable capture order and exception scope.",
+      "evidence": "Live listing710CC1..710CFD,710DA7..710DE3;179-site compiled audit and unmasked overflow fixture."
+    },
+    {
+      "was": "Existing GUI visibility helper might be used for arbitrary native nodes.",
+      "is": "GUI provider requires its registry/companion graph; new raw provider uses existing NativeNodeStorage and actual+34/+3c.",
+      "evidence": "src/gui_widget_owner.cpp691..710;B6DA70..B6DAAB full listing and canonical producer."
+    },
+    {
+      "was": "BF6713 treated as an unconditional no-return bounds trap.",
+      "is": "Actual configured invalid-parameter handler may return; keep native continuations and reloads.",
+      "evidence": "BF6713..BF6722 andBF66EF..BF6712;returning-handler differential fixture."
+    }
+  ],
+  "verification": {
+    "seeds_verified": true,
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "ctest": "2/2 passed",
+    "native_body_matches": [
+      {
+        "address": "00710bb0",
+        "end": "00710e00",
+        "length": 593,
+        "sha256": "22ca7a3bdbfade72a92aea46701f3e27c3f3d9024bbc8139517755aca3fcf278",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b6da70",
+        "end": "00b6daab",
+        "length": 60,
+        "sha256": "475a1fa70e452bf277644bc875b64c8c3ffc9ab3420d3d9627be5a14a2ef7585",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b6e0a0",
+        "end": "00b6e0c0",
+        "length": 33,
+        "sha256": "403e620de6b1bd451a25a60930c35537c616fabc0af563224821cec05edcd4b6",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf6713",
+        "end": "00bf6722",
+        "length": 16,
+        "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf66ef",
+        "end": "00bf6712",
+        "length": 36,
+        "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cf81f0",
+        "length": 8,
+        "sha256": "f088acafbda82c9811822d560fddbb6092daba0acf4cb749b2709e6e7bc7df6a",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d7a218",
+        "length": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_disk": true
+      }
+    ],
+    "differential_groups": 8,
+    "differential_variants": 23,
+    "results": [
+      {
+        "case": "masked_x87_precision_and_rounding",
+        "match": true,
+        "variants": 12,
+        "events": 4,
+        "traps": 0,
+        "exception": "00000000",
+        "status": 32,
+        "control": 3967,
+        "mxcsr": 8064,
+        "target_captured": false
+      },
+      {
+        "case": "live_outer_inner_globals_and_current_target",
+        "match": true,
+        "variants": 1,
+        "events": 4,
+        "traps": 0,
+        "exception": "00000000",
+        "status": 32,
+        "control": 895,
+        "mxcsr": 8064,
+        "target_captured": false
+      },
+      {
+        "case": "returning_iterator_trap",
+        "match": true,
+        "variants": 1,
+        "events": 3,
+        "traps": 1,
+        "exception": "00000000",
+        "status": 32,
+        "control": 895,
+        "mxcsr": 8064,
+        "target_captured": false
+      },
+      {
+        "case": "signed_and_unsigned_selected_gate",
+        "match": true,
+        "variants": 3,
+        "events": 0,
+        "traps": 0,
+        "exception": "00000000",
+        "status": 0,
+        "control": 895,
+        "mxcsr": 8064,
+        "target_captured": false
+      },
+      {
+        "case": "ucomiss_snan_masked_and_unmasked",
+        "match": true,
+        "variants": 2,
+        "events": 0,
+        "traps": 0,
+        "exception": "c0000090",
+        "status": 0,
+        "control": 895,
+        "mxcsr": 7937,
+        "target_captured": false
+      },
+      {
+        "case": "unmasked_overflow_captures_target_before_float_spill",
+        "match": true,
+        "variants": 1,
+        "events": 0,
+        "traps": 0,
+        "exception": "c0000091",
+        "status": 47272,
+        "control": 887,
+        "mxcsr": 8064,
+        "target_captured": true
+      },
+      {
+        "case": "actual_node_hierarchy_recursive_snan_and_low_byte_gate",
+        "match": true,
+        "variants": 2,
+        "events": 0,
+        "traps": 0,
+        "exception": "00000000",
+        "status": 0,
+        "control": 895,
+        "mxcsr": 8064,
+        "target_captured": false
+      },
+      {
+        "case": "visibility_unmasked_recursive_float_load",
+        "match": true,
+        "variants": 1,
+        "events": 0,
+        "traps": 0,
+        "exception": "c0000090",
+        "status": 32897,
+        "control": 894,
+        "mxcsr": 8064,
+        "target_captured": false
+      }
+    ],
+    "compiled_original_sites_checked": 179,
+    "probe_cmake_code_identical": true,
+    "canonical_leaf_byte_matches": [
+      {
+        "address": "00b6da70",
+        "native_bytes": 60,
+        "compiled_bytes": 60,
+        "match_except_native_call_relocation": true,
+        "coff_relocations": {
+          "44": "?set_native_node_visibility_factor_00b6da70@bsp@@YIXPAUNativeNodeStorage@1@PAXMI@Z"
+        },
+        "object": "J:\\PROG\\battlestations-pacific-decompile-orch6-model-group-selection-aa\\build\\win32\\bsp_core.dir\\Release\\native_node_visibility_factor.obj",
+        "sha256": "379dd60ef0b74087f6b5a921231c997b6599ad297e2a8ba4338778663ce965e1"
+      },
+      {
+        "address": "00b6e0a0",
+        "native_bytes": 33,
+        "compiled_bytes": 33,
+        "match_except_native_call_relocation": true,
+        "coff_relocations": {},
+        "object": "J:\\PROG\\battlestations-pacific-decompile-orch6-model-group-selection-aa\\build\\win32\\bsp_core.dir\\Release\\native_particle_model_update.obj",
+        "sha256": "403e620de6b1bd451a25a60930c35537c616fabc0af563224821cec05edcd4b6"
+      }
+    ],
+    "compiled_selection_sha256": "8af1c22920972e748213263a785c5c75cbe33b8749465338c261d0eb125c6666",
+    "paired_output_images": 46,
+    "game_validated": false
+  },
+  "bindings_required": [
+    "Actual current D7A24C/D7A218 float and CF81F0 double locations",
+    "Actual BF6713 CRT handler domain including returning path",
+    "Dispatch supplied captured current native vtable+2C target; ECX node, stack(position), RET4"
+  ],
+  "limitations": [
+    "New access-augmented C++ interface requires application binding; not a drop-in binary replacement.",
+    "No game execution, arbitrary dispatch-target validation, Watson termination, or exhaustive exceptional-state proof.",
+    "24 incoming visibility xrefs lack Ghidra function bodies and remain explicitly unattributed."
+  ],
+  "artifacts": {
+    "byte_evidence": "local/model_group_byte_evidence.json",
+    "compiled_order": "local/model_group_compiled_order_proof.json",
+    "probe_manifest": "local/model_group_review_manifest.json",
+    "run": "local/model_group_probe_result.json",
+    "build": "local/model_group_build_final.log"
+  }
+}
