@@ -353,3 +353,79 @@ Contract items the host cannot satisfy from this packet alone:
   returns; whether `descriptor+14h` really means a range.
 * **Not ABI-compatible.** `PilotOrderHost` is a reconstruction seam, not the native
   call graph.
+
+## The last link: `007EEC50`'s feasibility inputs, and one contradiction to resolve first
+
+`PilotSetTarget`'s argument path is wired and measured (`src/game_hosts_script_orders.cpp`,
+`run_pilot_set_target`). On `USN01` it resolves five calls to real units and real targets:
+
+```
+PilotSetTarget: unit=Mav1 target_object_id=45 attack_type=1 prefer_ordnance=1 allow_guns=1
+PilotSetTarget: unit=Mav2 target_object_id=44 ...
+```
+
+It stops short of issuing, because the command class comes from `007EEC50` and its
+`AttackFeasibilityInputs` (`include/bsp/attack_commands.hpp`) need about a dozen per-class
+capability answers. Four of them are the ordnance inventory:
+
+```
+has_level_bomb_ordnance    007ED830 -> 007B9500, kind 31h
+has_general_bomb_ordnance  007ED7E0 -> 007B9320, kind 2Ah minus 2Ch/31h/2Bh/33h/2Dh
+has_drop_kamikaze_ordnance 007ED880 -> 007B93E0, kind 2Fh
+has_torpedo_ordnance       007ED8D0 -> 007B93F0, kind 2Bh
+```
+
+Each walks the weapon controller's `+994h` slots at `+974h`, takes `slot->vtable[220h](loadout)` and
+asks the descriptor `descriptor->vtable[8](kind)`.
+
+### The lead
+
+The host does not build those descriptors, but it may not need to. `GameGunRow::bullet_class`
+already indexes the authored bullet-class table, and `read_bullet_class_string(bullet_class, "Type")`
+already reads its `Type`. The shipped `bulletclasses.lua` carries exactly the right vocabulary:
+
+```
+Artillery  Bomb  Bullet  Depthcharge  DummyKamikazePlane  DummySubmarine
+DummyTarget  Flak  Kamikaze  Paratrooper  Rocket  Torpedo  WaterMine
+```
+
+And `docs/ENTITY_CLASS_IDS.md` gives ids that line up with the kind numbers almost exactly:
+
+| kind | `ENTITY_CLASS_IDS` | class used for |
+| --- | --- | --- |
+| `2Ah` | `MBomb` | general bomb |
+| `2Bh` | `MTorpedo` | torpedo |
+| `2Ch` | `MDepthCharge` | depth charge |
+| `2Fh` | `MDummyKamikazePlane` | drop kamikaze |
+| `33h` | `MRocket` | rocket |
+| **`31h`** | **`MParatrooper`** | **`007B9500` calls this `levelbomb`** |
+
+So the hypothesis is that the descriptor's `vtable[8]` kind *is* the projectile's entity class id,
+which would make the whole inventory readable from data the host already loads, through the same
+enum resolution that already turns `Type = E ShipClasses : <symbol>` into an id.
+
+### Why it is not being acted on
+
+**Five of six fit and the sixth contradicts.** `31h` is `MParatrooper`, and nothing about dropping
+paratroopers is a level bombing run. That is exactly the shape of mistake this project has made
+repeatedly - a census that fits most cases and is then assumed to fit the rest - and
+`docs/ATTACK_COMMANDS.md`'s `levelbomb` label is itself a hypothesis, so the contradiction could lie
+on either side.
+
+Building the ordnance inventory on an unproven correspondence would let `007EEC50` pick command
+classes, which would let orders issue, which would make every gunnery number downstream look
+validated. That is the one failure mode this reconstruction cannot afford, so the mapping gets
+proved before it gets used.
+
+### The packet
+
+**`ordnance_kind_identity`.** Read `007B91C0`'s `descriptor->vtable[8]` call and establish what
+enumeration its argument belongs to. Then resolve the `31h` case specifically: either `007B9500`'s
+kind is not `31h`, or `31h` is not `MParatrooper` in this context, or `levelbomb` is the wrong label
+for that helper. One of the three is wrong and the answer decides whether the host can read its
+ordnance inventory straight out of `bulletclasses.lua`.
+
+If it can, the remaining feasibility inputs are the `vt[5Ch](n)` capability queries
+(`self_is_level_bomber`, `target_is_submarine`, `target_is_bomb_excluded`,
+`target_is_strafe_fallback` and the rest), which are a second packet and a smaller one - several are
+already derivable from the unit-kind classification the gunnery contact path uses.
