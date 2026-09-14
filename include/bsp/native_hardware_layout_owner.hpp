@@ -22,7 +22,7 @@ struct NativeHardwareLayoutOwnerContext {
     void* actual_tree_0108d530;
     const SingletonLifetimeCallbacks& invalid_parameters;
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    SoundLifetimeAccess actual_lifetime_01090aa0;
     const volatile std::uint32_t* actual_declaration_profile_00d61d1c;
     const volatile std::uint32_t* actual_type_sizes_00d61cc0;
     void* actual_declaration_pool_0108fd38;
