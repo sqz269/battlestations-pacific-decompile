@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_material_compiler_sampler_runtime",
+  "status": "complete_one_source0_sampler_original_leaf_and_full_source_runtime_passed",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "base_commit": "09184cc3c38a0841ec63c8059b7b6dc0ba1d1478",
+    "production_source_changed": false,
+    "new_reconstruction_rows": 0,
+    "ghidra_mutations": false,
+    "fixture": "local/verification/material_compiler_sampler_runtime/compiler_sampler_runtime_probe.cpp",
+    "document": "docs/NATIVE_MATERIAL_COMPILER_SAMPLER_RUNTIME.md",
+    "leased_original_observation_entries": [
+      "00B3B280",
+      "00B5F100"
+    ],
+    "prior_runtime_tree_and_archive_unchanged": true
+  },
+  "prior_evidence": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime_frozen_20260914\\manifest.json",
+    "manifest_sha256": "21c0fb557abfcf55fb068e7eed86bce85340ab2a563790b6ce3a9c0caf2c3b98",
+    "input_copy_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\input_provenance.json",
+      "bytes": 30870,
+      "sha256": "f36890ef1eea1eab3313a6d9c5cbb7d23ebdec26c1cfeaf656087dcafe6f4f06"
+    },
+    "scope": "Inherited canonical cached compiler, hot white, D3DX/HAL and raw context setup; copied input hashes verified against immutable prior closure."
+  },
+  "calls": [
+    {
+      "address": "00B3B328",
+      "native": "00B5F100",
+      "function": "00B3B280",
+      "contract": "ECX actual pass footprint; stack index DWORD and stage argument, RET8. Original copied source0 sampler calls copied original B5F100. This selected observation has preallocated row capacity; source full parent separately reaches allocation growth."
+    }
+  ],
+  "coverage": {
+    "B3B280": "Existing complete source implementation; runtime now covers one source0 pixel sampler with empty sampler-state list and empty mode descriptor. Original selected source0 branch executes with copied B5F100.",
+    "B5F100": "Original no-growth append plus source full-compiler growth append; final row DWORD agrees. Original growth allocation branch unexecuted.",
+    "full_compiler": "Complete cached source B3C3A0 wrapper/persistent prefix/exact B3B536 continuation/normal cleanup, directly linked from fresh bsp_core archive.",
+    "source1_source3": "Unexecuted; no new loader, cold route or release scratch provider fabricated."
+  },
+  "stack_contract": {
+    "basis": "B equals B3B280 ESP after its five entry pushes. Two stack arguments plus return place B5F100 entry at B-12; its stage DWORD local is B-16.",
+    "low_byte_writer": "B5F10B writes only BYTE; B5F13C loads full DWORD; B5F142 stores row+4.",
+    "root_supplied": "7B2954AA",
+    "root_original_and_source_result": "7B295400",
+    "mode_supplied_and_unchanged": "192EF0C3",
+    "preimage_origin": "Explicit independent fixture call-entry inputs, not captures from original full compiler execution.",
+    "root_actual_word_identity": "Persistent source reference child retains exactly the address of World.root_residue.",
+    "source1_post_release_rows_consumed": 0,
+    "default_or_zeroed_scratch": false
+  },
+  "actual_inputs": {
+    "sampler": "Existing B57B50 allocation-initialization fragment, real pooled Diffuse name, source0/pixel/index0, separate B621A0 state-list headers from canonical 0108FEE4 pool. Lua parser is not executed; descriptor C4/count/capacity are explicit fixture inputs.",
+    "descriptors": "Root has exactly one sampler, mode none; existing root/mode render state inputs remain.",
+    "pixel_source": "sampler2D Diffuse : register(s0); float4 Tint; float4 main(float2 uv:TEXCOORD0):COLOR0{return tex2D(Diffuse,uv)*Tint;}",
+    "cache_input_blobs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\cache_input_vs.bin",
+        "bytes": 240,
+        "sha256": "49a35ea02909a4a3ee9977e6f5a627c2ac5dc8f8724815304dab2cee0f68762a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\cache_input_ps.bin",
+        "bytes": 244,
+        "sha256": "3d5ed017623616b3c04375ff70027a8f5517db803fdc16314dc3ae78179bb1cd"
+      }
+    ],
+    "texture_owner": "Same canonical real 1x1 white COM texture hot acquisition through existing B44B10/B319B0 pass constructor; source0 itself appends a reference route and does not load source1 texture."
+  },
+  "original_observation": {
+    "spans": [
+      {
+        "name": "descriptor_append",
+        "address": "00B3B280",
+        "bytes": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "live_equals_pe": true
+      },
+      {
+        "name": "texture_reference",
+        "address": "00B5F100",
+        "bytes": 81,
+        "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+        "live_equals_pe": true
+      }
+    ],
+    "span_count": 2,
+    "bytes": 387,
+    "live_equals_installed_pe": true,
+    "relocated_image": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\native_sampler_relocated.bin",
+      "bytes": 4096,
+      "sha256": "0763939580a8b8394e1f16e2e079eb74962fb0fe5c1a02603891ece091f96a77"
+    },
+    "relocation": "Only parent operand bytes A9..AC changed to signed relative153h, redirecting reached CALL B3B328 to copied original B5F100 at buffer+200. All other parent bytes and all leaf bytes remain exact.",
+    "call_interception_or_host_callback": false,
+    "input_storage": "Explicit patterned88h pass/B0h builder footprint. Only consumed pair header initialized and capacity prepared with actual source B40C80 reserve; no complete original pass owner constructed. Same actual produced descriptor and sampler are used.",
+    "results": [
+      "Pair0/7B295400, count0->1, original data/capacity preserved.",
+      "Counters8C/90/94:13/17/19->14/17/20.",
+      "Sentinel bytes outside pass24..2F and builder8C..97 unchanged.",
+      "Full supplied upper bytes preserved; empty-mode original call leaves separate192EF0C3 unchanged."
+    ],
+    "limit": "Original no-growth sampler/leaf observation is separate from source whole compiler and source growth behavior."
+  },
+  "source_results": [
+    "One actual pass+24 row equals original0/7B295400; initially empty source array grows through real existing B40C80.",
+    "Same caller operation/builder/local_name/tail_child; sampler step/reference frame exists before calls and retains exact sampler/scratch identities.",
+    "Builder8C/90/94=1/0/1; no load/binding/source1 release-scratch steps.",
+    "Real D3DX PS sampler mask1 keeps slot0 and its six default states; the other15 slots are pruned.",
+    "Nine canonical owners; real hot white reference1->2, returned pass references1, both shader wrappers references1, actual cache cursor2.",
+    "Both real COM GetFunction bytecodes equal cached inputs; VS semantic5/register0/count4, PS Tint material constant, and root/mode state override still pass.",
+    "Normal compiler/name/builder cleanup completes; all acquired owner/context domains remain held to process exit with no acknowledgement or fake retirement."
+  ],
+  "validation": {
+    "seeds_command": "python tools/ghidra_export.py verify-seeds *> local/verification/material_compiler_sampler_runtime/seeds.json",
+    "seed_count": 8,
+    "seed_matches": 8,
+    "build_command": "./scripts/build.ps1 *> local/verification/material_compiler_sampler_runtime/build.log",
+    "build": "fresh strict MSVC Win32 Release passed",
+    "ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "compile_command": "cmd /c local\\verification\\material_compiler_sampler_runtime\\build_probe.cmd *> local/verification/material_compiler_sampler_runtime/probe_build.log",
+    "exact_compile_driver": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /Bv /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I \"J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\build\\win32\\_deps\\dxsdk_d3dx-src\\build\\native\\include\" /sourceDependencies local\\verification\\material_compiler_sampler_runtime\\probe_dependencies.json local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /Folocal\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.obj /Felocal\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.exe /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF /MAP:local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.map kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib d3d9.lib\nexit /b %errorlevel%\n\n",
+    "run_command": "./local/verification/material_compiler_sampler_runtime/compiler_sampler_runtime_probe.exe *> local/verification/material_compiler_sampler_runtime/probe_run.log",
+    "exit_code": 0,
+    "final_link": "Fresh bsp_core archive directly, no standalone compiler object override.",
+    "defining_member_map_line": "0001:00012c00       ?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00413c00 f   bsp_core:native_material_program_compiler_actual.obj",
+    "fresh_libraries": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 58432842,
+        "sha256": "c4cb371fa3dca8818e9cf2e4556757f76c83bcd1803b698bbb9e619c13d1ac32"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455944,
+        "sha256": "b1b83d97a74de9dfb9c17c5ec4a97f90bd41d2269c793b27199a9efaf504fd3d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72166,
+        "sha256": "0d21fef5c7786a29444672015c1be1a4118a9af382d6b9963bda075c9f8db615"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.cpp",
+        "bytes": 29853,
+        "sha256": "98c765e180c409a38217d78bc1c6467762b4575db1886f5d3afa5a611950f766"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.exe",
+        "bytes": 455168,
+        "sha256": "1214f5d44a1cb83d30a9e52e8f1e69412055fc1f686b1e0fc3eeef817578dc3f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.obj",
+        "bytes": 378345,
+        "sha256": "610c0f6528ba819538d4ff9cd2d534485150f1d6c6a4b9dbd25c6bffccf5dfa5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\compiler_sampler_runtime_probe.map",
+        "bytes": 792008,
+        "sha256": "5e75dc5d379c8727c9ad9caa531cd5ad5a030ca967a8816f442182566a00120b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\probe_dependencies.json",
+        "bytes": 56877,
+        "sha256": "ad9510459cbaa087fb3c54dcf7d7e757009cc5eff295aeb0133cce76d760bf34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\probe_build.log",
+        "bytes": 1433,
+        "sha256": "b5ec74305e2a77029fe831f4c2818e61d00ba35048190fe9538fc991c95b5180"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\probe_run.log",
+        "bytes": 5339,
+        "sha256": "3290a00022bb25dd03067f66e97028240ef0b5457c89688d455425651bffaef5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\build.log",
+        "bytes": 47464,
+        "sha256": "05fc308a1003bed283f89cccb25b7a0fa58d2b9c3b5dbbc8e21ab17a614b72d2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime\\seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      }
+    ],
+    "run_lines": [
+      "ORIGINAL B3B280+B5F100 source0 no-growth: preimage=7B2954AA row=0/7B295400 count1 counters13/17/19->14/17/20",
+      "READY cache=2 registry=52 white=08C43E68 refs=1 canonical=1",
+      "SAMPLER source0 Diffuse: pair=0/7B295400 matches original; counters1/0/1 mask1 defaults6; mode preimage=192EF0C3 unconsumed",
+      "REFLECTION VS semantic5 register0/count4; PS Tint material1; root/mode state7=0/1 ->1; samplerrows6; root consumed/mode unconsumed=7B295400/192EF0C3",
+      "PASS full source B3C3A0/B3B3C0 cached source0 sampler route pass=08C45440 refs=1 shaderrefs=1/1 cachecursor=2 canonical=9",
+      "LIMIT source-only full path; real D3DX/COM and existing source child providers shared; one source0 sampler consumes supplied entry DWORD; original sampler/leaf no-growth only; no source1, original parent FH3, teardown or game claim"
+    ],
+    "loaded_module_count": 80,
+    "earlier_preliminary_check": "The initial sampler run used pinned prior runtime libraries plus an explicit strict compiler TU. Only the final direct fresh-archive run is claimed by final driver/map/executable pins; unused earlier local object/dependency artifacts are retained as historical outputs."
+  },
+  "limits": [
+    "No original complete compiler/FH3/SEH or original B5F100 growth execution.",
+    "No source1/source3 sampler path, captured post-release scratch, cold texture/VFS loading or generated-source compilation.",
+    "No platform construction/profile/current-publication replacement proof: inherited borrowed zeroed receiver takes online-null source BECB20 before platform/input/profile reads.",
+    "No terminal teardown, drawing, shader cross-stage draw compatibility or gameplay validation."
+  ],
+  "closure": {
+    "state": "awaiting immutable final archive after evidence commit",
+    "report_excluded_to_avoid_self_hash": true,
+    "freeze_command": "python local/verification/material_compiler_sampler_runtime/freeze.py *> local/verification/material_compiler_sampler_runtime_freeze.log",
+    "freeze_driver_log_outside_archive": "local/verification/material_compiler_sampler_runtime_freeze.log"
+  }
+}
