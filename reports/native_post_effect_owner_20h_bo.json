@@ -2,7 +2,7 @@
   "packet": "orch3_post_effect_owner20_bo",
   "created_utc": "2026-09-14T05:23:31.152184+00:00",
   "base_commit": "077cf16e67e65115700793e4adc9aad5b1225ffe",
-  "status": "source_reconstructed_combined_build_pending",
+  "status": "reconstructed_combined_build_tested_concrete_provider_domain",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -200,7 +200,13 @@
   ],
   "canonical_reference": "Externally stored unique companion in same GuiNativeGeometryRegistration and actual+04; current owner profile/slot checks, concrete material companion, actual node runtime, direct frame terminal. Destroy/free before unbind using captured identity; unbind preserves host companions until final disposal notification.",
   "validation": {
-    "build": "pending",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "report": "reports/native_post_effect_bn_bo_validation.json"
+    },
     "new_native_fixture": false,
     "native_FH3_SEH": false,
     "drop_in_ABI": false,
@@ -213,5 +219,13 @@
     "Direct destruction while canonical reference is bound is outside contract; no retry after failure.",
     "Canonical terminal inherits noexcept; direct C++ cleanup does not prove native FH3/SEH propagation.",
     "Existing nonnull material/frame/node/CRT providers must share actual owner and lifetime domains; no fallback terminal or synthetic owner."
-  ]
+  ],
+  "combined_integration_bn_bo": {
+    "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+    "report": "reports/native_post_effect_bn_bo_validation.json",
+    "ctests_passed": 2,
+    "new_native_fixture": false,
+    "provider_modules_integrated": true,
+    "main_integration_pending": true
+  }
 }

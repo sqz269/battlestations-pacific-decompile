@@ -16,6 +16,6 @@ The C++ exception projection restores only the base and marks the host owner dea
 
 ## Validation and remaining producer work
 
-The report pins seven live/original-PE spans, the complete189/30-byte bodies, provider sources and every direct call. The initial source commit precedes combined build validation; the final batch report records the tested commit. No new native fixture or gameplay claim is made.
+The report pins seven live/original-PE spans, the complete189/30-byte bodies, provider sources and every direct call. The combined Win32 build and both existing math CTests passed at `afee0acdebab4e3b8152159b83e13de51fb8068c`; [batch validation](NATIVE_POST_EFFECT_BN_BO_INTEGRATION.md) records the exact evidence. No new native fixture or gameplay claim is made.
 
 B4E470 must begin the actual atomic counter lifetime at its native count-one store when reconstructed. This terminal packet neither manufactures that constructor nor admits arbitrary failed initialization. In particular, service+70 is published after +1C4 becomes one. See [producer map](NATIVE_RENDER_RESOURCE_MEMBER_PRODUCERS_BM.md) and [source evidence](../reports/native_post_effect_owner_20h_bo.json).

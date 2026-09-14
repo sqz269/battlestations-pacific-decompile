@@ -1,6 +1,6 @@
 {
   "packet": "orch3_post_effect_draw_record_bn",
-  "status": "reconstructed_build_tested_static_instruction_equivalence_no_new_fixture",
+  "status": "reconstructed_combined_build_tested_concrete_provider_domain",
   "routine": {
     "address": "00b51bd0",
     "inclusive_end": "00b51c10",
@@ -202,5 +202,13 @@
       "is": "ECX raw allocation plus six stack words, EAX same allocation, RET18h",
       "evidence": "Complete24-instruction listing and both caller argument sequences; no Ghidra prototype mutation"
     }
-  ]
+  ],
+  "combined_integration_bn_bo": {
+    "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+    "report": "reports/native_post_effect_bn_bo_validation.json",
+    "ctests_passed": 2,
+    "new_native_fixture": false,
+    "provider_modules_integrated": true,
+    "main_integration_pending": true
+  }
 }
