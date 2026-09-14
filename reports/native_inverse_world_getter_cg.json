@@ -1,0 +1,80 @@
+{
+  "packet": "orch3_native_inverse_world_getter_cg",
+  "status": "raw_upgrade_release_build_ctest_full_coff_relocations_verified",
+  "source_parent_commit": "8382be3c07897e1db711ab391d7df6a3d185cc4f",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_upgrade_of_existing_typed_full_function": true,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64026,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routine": {
+    "address": "00b6e0d0",
+    "inclusive_end": "00b6e109",
+    "bytes": 58,
+    "native_bytes_hex": "83ec40568bf18b465ca8087525a8027505e88afaffff8d96f00000008d4c2404e83b5affff508d4e60e8f2538aff834e5c088d46605e83c440c3",
+    "native_sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+    "ghidra_name": "BSP_Node_GetInverseWorldMatrix",
+    "cpp_symbol": "get_native_node_inverse_world_00b6e0d0",
+    "source_signature": "void* __fastcall get_native_node_inverse_world_00b6e0d0(void* actual_node)",
+    "original_abi": "ECX actual node, EAX actual node+60h cache address, preserves ESI, plain RET",
+    "direct_builder_calls": ["00b4283a", "00b42f13"],
+    "original_calls": [
+      {"site": "00b6e0e1", "target": "00b6db70", "source_symbol": "refresh_native_camera_world_00b6db70"},
+      {"site": "00b6e0f0", "target": "00b63b30", "source_symbol": "invert_native_camera_scaled_affine_00b63b30"},
+      {"site": "00b6e0f9", "target": "004134f0", "source_symbol": "copy_native_camera_matrix_004134f0"}
+    ],
+    "storage_contract": "Capture one flags DWORD+5C; cache hit returns actual+60; on miss optionally refresh when captured bit2 clear, invert current world+F0 into 40h stack scratch, copy into actual+60, OR current flags DWORD with8 after calls; no typed cache or repair"
+  },
+  "provider_signatures": {
+    "00b6db70": "void __fastcall refresh_native_camera_world_00b6db70(void* actual_node)",
+    "00b63b30": "void* __fastcall invert_native_camera_scaled_affine_00b63b30(void* actual_destination, const void* actual_source)",
+    "004134f0": "void* __fastcall copy_native_camera_matrix_004134f0(void* destination, void* unused_edx, const void* source)",
+    "00b6fcb0_sibling": "void* __fastcall get_native_camera_view_00b6fcb0(void* actual_camera)",
+    "00b6e0d0_existing_typed": "const CameraMatrix& get_transform_inverse_world_00b6e0d0(CameraTransform&)"
+  },
+  "provider_sha256": {
+    "include/bsp/native_camera_world.hpp": "a6279c88e8efc27e2b81476385fd7f4269b444e17c824838a90a512b2fca3755",
+    "src/native_camera_world.cpp": "ce38ae3bb4fa869751c746092097ab4be1cf7b8947ce2ed2342da687d645563a",
+    "include/bsp/native_camera_matrix_math.hpp": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "include/bsp/native_camera_matrix_copy.hpp": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+    "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+    "include/bsp/native_camera_cache_getters.hpp": "6ed2ed227a3fb53db7a4b9d5890f241d1b011f3699eb0868733e312e3e3d813b",
+    "src/native_camera_cache_getters.cpp": "d4801cdeb8761b98399a111992f583f721b820c476174255ae037ae778e6c65f",
+    "include/bsp/material_transform_constants.hpp": "c08f7fdd5300130b13ee53bd09d880cc42b456468a9fa46ca5ca857e22cf5e47",
+    "src/material_transform_constants.cpp": "0e0a4caf7f924d5dd45601b8e78efa26e31f32b35ccdb6341a79a5a999b85fc4"
+  },
+  "source_sha256": {
+    "include/bsp/native_inverse_world_getter.hpp": "6bcdf46e55238626c84650479409479fb1d59f62571d0fcd0fade7693e444fa4",
+    "src/native_inverse_world_getter.cpp": "ee914cc413e979f03a4faab67ace45e6445dd7c82b910cb9c7f99f1fe9d8f6d5",
+    "cmake/startup.cmake": "7408ce2b79d297094c531bc18e6b64b833ac863055de747209b0d76aa5e82856"
+  },
+  "generated_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_inverse_world_getter.obj",
+    "sha256": "d4640cf4454cbf11e885892916414e57cebdbc676b21681f61b6c7de1805b087",
+    "machine": "i386",
+    "section": 3,
+    "section_bytes": 58,
+    "section_bytes_hex": "83ec40568bf18b465ca8087525a8027505e8000000008d96f00000008d4c2404e800000000508d4e60e800000000834e5c088d46605e83c440c3",
+    "whole_comdat_matches_native_except_call_displacements": true,
+    "relocations": [
+      {"offset": "12", "type": "REL32", "target_symbol": "refresh_native_camera_world_00b6db70"},
+      {"offset": "21", "type": "REL32", "target_symbol": "invert_native_camera_scaled_affine_00b63b30"},
+      {"offset": "2a", "type": "REL32", "target_symbol": "copy_native_camera_matrix_004134f0"}
+    ]
+  },
+  "validation": {
+    "original_pe_span_equal_live_ghidra_bytes": true,
+    "three_original_calls_resolve_to_expected_providers": true,
+    "both_direct_builder_call_sites_verified": true,
+    "coff_method": "dumpbin /DISASM:BYTES, /HEADERS, /SYMBOLS, /RELOCATIONS and full-section masking/symbol assertions in ignored local/output/verify-cg-coff.py",
+    "scripts_build_ps1_release": "passed",
+    "ctest": "1/1 reconstructed_math passed"
+  },
+  "limits": "Raw source/interface upgrade only; existing typed full-function record remains. No added native EH frame, full builder composition, or game validation."
+}
