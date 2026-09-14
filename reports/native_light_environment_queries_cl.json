@@ -1,6 +1,6 @@
 {
   "packet": "orch3_light_environment_leaves_cl",
-  "status": "source_build_native_comdat_equality_reviewed_pending_primary_integration",
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
   "source_parent_commit": "5472ae5a876db505f37f5784be4530e05a53f5aa",
   "native_body_credit": 0,
   "native_bytes_credit": 0,
@@ -13,55 +13,13 @@
     "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "live_function_count": 64029
   },
-  "routines": [
-    {
-      "address": "00b7aa20",
-      "inclusive_end": "00b7aa23",
-      "bytes": 4,
-      "original_name": "BSP_LightEnvironment_GetAmbientColor",
-      "cpp_symbol": "get_native_light_environment_ambient_00b7aa20",
-      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
-      "original_abi": "ECX actual environment; EAX=ECX+18h; plain RET",
-      "caller": "00b46a70 at 00b46f66; environment loaded from current lighting+10h",
-      "native_bytes_hex": "8d4118c3",
-      "native_sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
-      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair"
-    },
-    {
-      "address": "00b7aa30",
-      "inclusive_end": "00b7aa33",
-      "bytes": 4,
-      "original_name": "BSP_LightEnvironment_GetMode3AmbientColor",
-      "cpp_symbol": "get_native_light_environment_mode3_ambient_00b7aa30",
-      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
-      "original_abi": "ECX actual environment; EAX=ECX+28h; plain RET",
-      "caller": "00b46a70 at 00b46f0b; mode3 branch",
-      "native_bytes_hex": "8d4128c3",
-      "native_sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
-      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair"
-    },
-    {
-      "address": "00b7aa40",
-      "inclusive_end": "00b7aa4d",
-      "bytes": 14,
-      "original_name": "BSP_LightEnvironment_GetAmbientCubeFace",
-      "cpp_symbol": "get_native_light_environment_cube_face_00b7aa40",
-      "source_signature": "const void* __fastcall (const void* actual_environment, void* unused_edx, uint32_t index) noexcept",
-      "original_abi": "ECX actual environment; one stack DWORD index; EAX=ECX+38h+(index<<4) modulo32; RET4",
-      "caller": "00b46a70 at 00b47055; caller pushes indices 0..5 and copies four DWORDs from each returned address",
-      "native_bytes_hex": "8b442404c1e0048d440838c20400",
-      "native_sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
-      "storage_contract": "Unchecked wrapped address arithmetic, no pointer dereference; explicit unused EDX reserves original stack argument slot"
-    }
-  ],
   "typed_predecessor_sha256": {
     "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
     "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
   },
   "source_sha256": {
     "include/bsp/native_light_environment_queries.hpp": "0b77527ee3c746423c83c0d6299dcd5cf59d8ff47970d733d75386d19ededb85",
-    "src/native_light_environment_queries.cpp": "6a9d96926536f31922ffd73d57f1f100128b032befc895a298e0b4a60fa8dc50",
-    "cmake/startup.cmake": "10d9eafdb90fe401cadce9515e74c6829805f4cbec6a5e69e34f7fa5531e5710"
+    "src/native_light_environment_queries.cpp": "6a9d96926536f31922ffd73d57f1f100128b032befc895a298e0b4a60fa8dc50"
   },
   "generated_object": {
     "path": "build/win32/bsp_core.dir/Release/native_light_environment_queries.obj",
@@ -95,6 +53,71 @@
     ]
   },
   "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "628285793bebaa33ae913ef2a2b59f233ffcef7b",
+    "tracked_build_inputs": 2593,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 1,
+    "native_parent_bytes_executed": false,
+    "game_validated": false,
+    "source_raw_entry_executed": false,
+    "source_probe": null
+  },
+  "limits": "Raw address leaf bodies only. Existing typed full-function ledger entries remain; this is zero new native body/byte credit. No whole B46A70 source, game ABI or gameplay validation.",
+  "functions": [
+    {
+      "address": "00b7aa20",
+      "inclusive_end": "00b7aa23",
+      "bytes": 4,
+      "original_name": "BSP_LightEnvironment_GetAmbientColor",
+      "cpp_symbol": "get_native_light_environment_ambient_00b7aa20",
+      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
+      "original_abi": "ECX actual environment; EAX=ECX+18h; plain RET",
+      "caller": "00b46a70 at 00b46f66; environment loaded from current lighting+10h",
+      "native_bytes_hex": "8d4118c3",
+      "native_sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair",
+      "ghidra_name": "BSP_LightEnvironment_GetAmbientColor"
+    },
+    {
+      "address": "00b7aa30",
+      "inclusive_end": "00b7aa33",
+      "bytes": 4,
+      "original_name": "BSP_LightEnvironment_GetMode3AmbientColor",
+      "cpp_symbol": "get_native_light_environment_mode3_ambient_00b7aa30",
+      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
+      "original_abi": "ECX actual environment; EAX=ECX+28h; plain RET",
+      "caller": "00b46a70 at 00b46f0b; mode3 branch",
+      "native_bytes_hex": "8d4128c3",
+      "native_sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair",
+      "ghidra_name": "BSP_LightEnvironment_GetMode3AmbientColor"
+    },
+    {
+      "address": "00b7aa40",
+      "inclusive_end": "00b7aa4d",
+      "bytes": 14,
+      "original_name": "BSP_LightEnvironment_GetAmbientCubeFace",
+      "cpp_symbol": "get_native_light_environment_cube_face_00b7aa40",
+      "source_signature": "const void* __fastcall (const void* actual_environment, void* unused_edx, uint32_t index) noexcept",
+      "original_abi": "ECX actual environment; one stack DWORD index; EAX=ECX+38h+(index<<4) modulo32; RET4",
+      "caller": "00b46a70 at 00b47055; caller pushes indices 0..5 and copies four DWORDs from each returned address",
+      "native_bytes_hex": "8b442404c1e0048d440838c20400",
+      "native_sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+      "storage_contract": "Unchecked wrapped address arithmetic, no pointer dereference; explicit unused EDX reserves original stack argument slot",
+      "ghidra_name": "BSP_LightEnvironment_GetAmbientCubeFace"
+    }
+  ],
+  "worker_validation": {
     "installed_pe": "whole installed PE SHA-256 verified; all three complete span bytes and SHA-256 verified",
     "live_ghidra": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe live body ranges and exact bytes match PE; B46A70 sole live caller of each",
     "direct_caller_sites": "B46F0B, B46F66 and B47055 verified against original B46A70 assembly; actual ECX environment and stack index/RET4 order reviewed",
@@ -104,5 +127,228 @@
     "ctest": "existing reconstructed_math 1/1 passed (0.08 sec)",
     "new_tests": 0
   },
-  "limits": "Raw address leaf bodies only. Existing typed full-function ledger entries remain; this is zero new native body/byte credit. No whole B46A70 source, game ABI or gameplay validation."
+  "worker_source_sha256": {
+    "include/bsp/native_light_environment_queries.hpp": "0b77527ee3c746423c83c0d6299dcd5cf59d8ff47970d733d75386d19ededb85",
+    "src/native_light_environment_queries.cpp": "6a9d96926536f31922ffd73d57f1f100128b032befc895a298e0b4a60fa8dc50",
+    "cmake/startup.cmake": "10d9eafdb90fe401cadce9515e74c6829805f4cbec6a5e69e34f7fa5531e5710"
+  },
+  "provider_sha256": {
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
+  },
+  "call_steps": [
+    {
+      "address": "00b46f66",
+      "native": "00b7aa20",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46f0b",
+      "native": "00b7aa30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47055",
+      "native": "00b7aa40",
+      "function": "00b46a70"
+    }
+  ],
+  "primary_integration": {
+    "worker_commit": "34c5ce541f9b06de0ae976d2e3f3c9f14b796b35",
+    "source_header_unchanged": true,
+    "full_source_native_generated_review": true,
+    "worker_primary_whole_native_code_identity": true
+  },
+  "tested_commit": "628285793bebaa33ae913ef2a2b59f233ffcef7b",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CL_worker_review": true,
+    "independent_CN_worker_review": false,
+    "blocking_source_findings": [],
+    "CL": "All three complete4/4/14-byte COMDATs equal installed/live native spans and worker objects with zero relocations; actual ECX, unchecked wrapped cube index andRET4 retained.",
+    "CN_wrapper": "18-byte public adapter: actual six stack-slot address0h, context/vector pushes5h/6h, call7h, RET18h atFh.",
+    "CN_body": {
+      "bytes": 781,
+      "enable_byte": "3Dh",
+      "vector_begin": "59h",
+      "initial_end": "6Bh",
+      "current_loop_end_begin": [
+        "8Bh",
+        "95h"
+      ],
+      "current_effect_argument": "CAh",
+      "record_effect_read": "D4h",
+      "raw_insensitive_compare": "101h",
+      "last_match_assignment": "121h",
+      "iterator_advance": "13Bh",
+      "record_initializer": "15Ah",
+      "record_arm_flag": "165h",
+      "native_state0": "184h",
+      "append": "18Ch",
+      "fresh_end": "194h",
+      "captured_last": "1B2h",
+      "postappend_bounds": [
+        "1A6h",
+        "1C0h",
+        "1CFh",
+        "1E3h"
+      ],
+      "effect_argument": "1F4h",
+      "effect_publish": "203h",
+      "group_assign": "216h",
+      "effect_reload": "21Eh",
+      "raw_effect_name": "228h",
+      "concat": "237h",
+      "header_arm_flag": "254h",
+      "native_state1": "25Eh",
+      "combined_name_assign": "262h",
+      "temp_data_capture": "270h",
+      "header_disarm": "27Eh",
+      "current_temp_length": "292h",
+      "pool_getter": "29Fh",
+      "captured_block_return": "2AFh",
+      "record_disarm": "2BDh",
+      "normal_record_destroy": "2C6h",
+      "counter_helper": "2ECh"
+    },
+    "counters": "47-byte assembly helper captures mode3h; primitive load6h/ADD9h, vertex loadDh/ADD10h, VS load14h/drawADD17h/VSADD1Ch, PS load23h/ADD26h; five single raw memory RMW operations and original public argument-read order.",
+    "cleanup": "Both97-byte destructors test armed flag29h, call the correct raw cleanup3Bh, and terminate on escaping C++ unwind failure55h.69-byte EH COMDAT contains record/header cleanup prefixes and hostFH3 handler. Normal paths disarm flags before calls, avoiding cleanup retry despite host frame state remaining armed.",
+    "source_boundary": "Original inlined assignments are the existing425F40 raw overload schedule; private-frame alias, original CRT/FH3 and hardware exceptions remain outside the source-interface claim."
+  },
+  "generated_code": [
+    {
+      "module": "native_light_environment_queries",
+      "stem": "get_native_light_environment_ambient_00b7aa20",
+      "symbol": "?get_native_light_environment_ambient_00b7aa20@bsp@@YIPBXPBX@Z",
+      "section_offset": 0,
+      "bytes": 4,
+      "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_light_environment_queries.obj",
+      "object_sha256": "916d264cca38f6da006f301ae1129e4a6006cabd603414de4dde86b43d40c351",
+      "relocations": [],
+      "listing": "local/clcn-generated-get_native_light_environment_ambient_00b7aa20.asm",
+      "primary_worker_whole_native_code_identity": true
+    },
+    {
+      "module": "native_light_environment_queries",
+      "stem": "get_native_light_environment_mode3_ambient_00b7aa30",
+      "symbol": "?get_native_light_environment_mode3_ambient_00b7aa30@bsp@@YIPBXPBX@Z",
+      "section_offset": 0,
+      "bytes": 4,
+      "sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_light_environment_queries.obj",
+      "object_sha256": "916d264cca38f6da006f301ae1129e4a6006cabd603414de4dde86b43d40c351",
+      "relocations": [],
+      "listing": "local/clcn-generated-get_native_light_environment_mode3_ambient_00b7aa30.asm",
+      "primary_worker_whole_native_code_identity": true
+    },
+    {
+      "module": "native_light_environment_queries",
+      "stem": "get_native_light_environment_cube_face_00b7aa40",
+      "symbol": "?get_native_light_environment_cube_face_00b7aa40@bsp@@YIPBXPBXPAXI@Z",
+      "section_offset": 0,
+      "bytes": 14,
+      "sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_light_environment_queries.obj",
+      "object_sha256": "916d264cca38f6da006f301ae1129e4a6006cabd603414de4dde86b43d40c351",
+      "relocations": [],
+      "listing": "local/clcn-generated-get_native_light_environment_cube_face_00b7aa40.asm",
+      "primary_worker_whole_native_code_identity": true
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 3,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/clcn-call-audit-native_light_environment_queries_cl.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/clcn-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b7aa20",
+      "00b7aa30",
+      "00b7aa40"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b7aa20": "__thiscall",
+      "00b7aa30": "__thiscall",
+      "00b7aa40": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_light_environment_queries.obj": "916d264cca38f6da006f301ae1129e4a6006cabd603414de4dde86b43d40c351",
+    "build/win32/bsp_core.dir/Release/native_material_diagnostics_draw.obj": "7392319c85dddb34683135903afc940e72c050e09d6f87bbc891cc08765b7eea",
+    "local/adapt_clcn_seal.py": "d0ff1dd97310f2cd967cd23d25a763097992fffb68c65995cabb782994337e6d",
+    "local/annotate_clcn.py": "1c25c009dfd785eb402bb9328a5e84fc270cd1332bcd367533f1ab6e97c782fe",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_clcn.py": "9e97cf0c51b42747405dde8c79a66e20f6b3868fbaadb71103480ab77fed1866",
+    "local/clcn-annotation.log": "e321963bc776b90dc7abfc6b58c8d1604410b586cf96a318563f2250d45d3b08",
+    "local/clcn-call-audit-native_light_environment_queries_cl.log": "8e9cdd757179ecb164d49bf6d50e60bf70455e00e04a8d69180866a403fa6215",
+    "local/clcn-call-audit-native_material_diagnostics_draw_cn.log": "0bafbb2e82a8c43b43f09a246955e329eb2e823de85a48e944b672f96a47470c",
+    "local/clcn-comments-after.json": "f490b28bd0963cad622279d1fcb63c62da757754ae59daf46891d97015248550",
+    "local/clcn-comments-before.json": "e28d235d75e62e9363b15805440c606922bdfba82b7d70f6cf6ab7a2761286f3",
+    "local/clcn-export-refresh.log": "c9ebccfcb5ba0499febae6b3ab65cdfbefb6fbd3ac7fc59ffdd3a52b552dedf5",
+    "local/clcn-final-build-stamp.json": "78a9157d07dc63a6a35eb02b55f738c8b75c8b839ed79816091a3a2b74197f9f",
+    "local/clcn-final-combined-build.log": "2794f1b4d66984791d504da4fef0e9f1d95a7112c519b19297187ddc092a0780",
+    "local/clcn-function-records.json": "bee605b2b9a75f8c19a7e8cd117e0885bda2355251df6b766e1cf6f2f9c5ad23",
+    "local/clcn-generated-add_draw_counters.asm": "3f48b20eaa44e9ce9052d16a81707258c55fca5470639663dfca4a5b14416c7c",
+    "local/clcn-generated-dtor-CompletedHeader.asm": "b5ce01dbe4cb7ffffa3927616b4d709063557a59df8089eca6a404adfa6db2b4",
+    "local/clcn-generated-dtor-CompletedRecord.asm": "4be271a8897410fb727247728ba82ec1ff32510e32d8799c97effa387e12d9b4",
+    "local/clcn-generated-eh-record_draw_body.asm": "4a6d38a0f4658f29f3a206ba49a318a1cf17b52bc1f9a4322babd82046bdeaa2",
+    "local/clcn-generated-get_native_light_environment_ambient_00b7aa20.asm": "12eb630794f0ecc1ee3929635decfed5c5662f94e85b3f55be03ddee2642feeb",
+    "local/clcn-generated-get_native_light_environment_cube_face_00b7aa40.asm": "19741e0a0d2c7a8c3f2dc8fb4646d4939e5916816aefe737e5e6fc0b16ccbc0b",
+    "local/clcn-generated-get_native_light_environment_mode3_ambient_00b7aa30.asm": "d75dcd5ebdf67eb5a5ea7594dcbf89a885ecc48a51dc778e6bc7d92b10f56cdf",
+    "local/clcn-generated-invalid_parameter.asm": "38f7456b0ddb6448d1eaafb007cefa6e7a21acc8948f59f0353a55f26b9312bc",
+    "local/clcn-generated-load.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/clcn-generated-record_draw_body.asm": "618a30bc9b99f9dca6112d2d569398801e8c3661460a448665621b3a68b2f81a",
+    "local/clcn-generated-record_native_material_diagnostics_draw_00b16f80.asm": "0da4e0471d744815ee9d2f0c464af6d12a177b9dadaa79d6d82fb3a415d9f45b",
+    "local/clcn-generated-store.asm": "c893708af0f0724f42624c31921dffe24bde7058dcea720f25f3202ea7941fad",
+    "local/clcn-ghidra-annotation-record.json": "867e3119ac92112b49494a7d11fb5514829e278a1db9676558ddd4b4b59a0237",
+    "local/clcn-ledger-before.json": "b96273d78dac531c72fd5e36f0bfe81ae6a9906e90d27f3bba4fdbb035126e7c",
+    "local/clcn-live-00b16f80.txt": "fbc00a651ab6de839b2cf0533f682b0124469e667d2c138829b736961efb5bf1",
+    "local/clcn-live-00b7aa20.txt": "edca002f079b81521bddc52ee8e1347747d84dbd8e6ecc24869edd60669f7320",
+    "local/clcn-live-00b7aa30.txt": "136fca8898e9b6532a61a48eaf80350eb10f257647e7039673f744686892abaf",
+    "local/clcn-live-00b7aa40.txt": "5d3b7001659486c001a4f51682c3ce72e546effca98ea0dccd885e57a9a54573",
+    "local/clcn-live-00cbc4b0.txt": "d8d99966589d1aed1223321c1611fa3be97da3cfecd1a5c49285298e51ad6780",
+    "local/clcn-live-00cbc4bb.txt": "263517a8e483fd42e4ad4931e352fdd87fb62bca439ab9e8cb71a8644a325c2d",
+    "local/clcn-live-00cbc4c6.txt": "63270c4b0d758287588a3f7cfae4771485728da2b7b763e7105f12de0e05c52a",
+    "local/clcn-live-00df4704.txt": "e8447f84534a6aa43048b480ae235b5b0fa2c594562a501e4cc6d2ffb162f396",
+    "local/clcn-live-00df4714.txt": "7399d3dbf4f826b15f7887ddbde0a589fac93ce30ba90868a3f6b022f16b391b",
+    "local/clcn-live-incoming-B43410.txt": "6bb5d29c284d4c99ca7012e14c977e536d9ddb820c6b2c44263d7c781494dc90",
+    "local/clcn-object-review.json": "fe01bace80a94955c6f259d1611a44918eb81e181a4685f004c218dcf9c98eda",
+    "local/clcn-primary-review.json": "73e0dc9f85cd0d16da970d84f789f89e10fd05e265f6ba0219bd6334d09900a4",
+    "local/clcn-probe-build.cmd": "0734cb2be0e3549f95693f43165bc7fbdd30f94614b34fcd3aa0c75c4e04ad0d",
+    "local/clcn-probe-run.log": "d9c557b5a701ce094aadbe0d9538f99698c0a70d077c1e5705864ce06ee49b83",
+    "local/clcn-source-probe.json": "da4546b9db2eca3dcf3cbf1291ee55eb5fc03cd8019284d78e93d5c5271c2428",
+    "local/clcn-worker/cm-particle-singleton-provider-audit.json": "2ca07a7c9610935d81513552e12b05b400181d107b8f8420f691daba2caa268e",
+    "local/clcn-worker/cm-particle-singleton-provider-audit.md": "605fdaf3f4904708974de418c2aca84eb08af0d78501bccc71567bf25fc4e580",
+    "local/clcn-worker/native_light_environment_queries_cl.json": "9815e7287c76a5807a12acee4330da7791221c4ce6c20a4351fedb45404f912c",
+    "local/clcn_probe.cpp": "b1b078fc2d0837dc0213e263442cd98ef99efd791f585be316bd0a428e101aa0",
+    "local/clcn_probe.exe": "4d30b7fcc27b1289ecfd2ac4a1b24172d57a2577daee2ee001629f6ef2b77d93",
+    "local/clcn_probe.obj": "542ef8b673ee04ddeb1778411c9e66765e7dabeadf854d394435966015ce16e3",
+    "local/finish_clcn.py": "58f706f7d6503b93a23582181c82160bc99e907544fc390448b3553d575e4c13",
+    "local/prepare_clcn.py": "b951a14b104ab2455a8f49ea8762575a2c04aedbe72d2991d22c5e199e686732",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_clcn_objects.py": "585f1a68586847ccfb801e566ab89c53f8a3506f8f1a49f75d54cd3f5acdb283",
+    "local/seal_clcn.py": "15b1687e6f26350cf42e6ba21b38951abdc7f0263d0814f3e3c6a3755fb0c080"
+  },
+  "sealed_attempt": {
+    "tested_commit": "628285793bebaa33ae913ef2a2b59f233ffcef7b",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\clcn-validated-attempt-62828579.zip",
+    "sha256": "c76fbf68b1546891bf7cf7807681c517ba7e92c33988ae65c72fbf72f9d7af7d",
+    "payload_members": 2671,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "5042189e55f7027ce41cfeb630215602d6190371fc854bfbfa4510ce9fbe097f",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2593
+  }
 }

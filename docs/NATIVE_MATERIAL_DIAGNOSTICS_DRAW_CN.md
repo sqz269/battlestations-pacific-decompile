@@ -68,3 +68,13 @@ calls, concrete provider hashes, generated-code review, exact committed build
 and any focused source probe separately. Existing math CTests do not establish
 diagnostics behavior. B42350 system/material constants and the encompassing
 render-pass, geometry and submission paths still require raw composition.
+
+Exact source `628285793bebaa33ae913ef2a2b59f233ffcef7b` passed Win32 Release
+and both existing math CTests with 2,593 unchanged tracked build inputs. The
+primary reviewed the 781-byte body, 18-byte adapter, 47-byte counter helper,
+both cleanup destructors and the EH handler. One local probe with an actual
+BD1480-constructed pool passed the disabled gate, populated grouping/combined
+names, case-insensitive last-match selection, counter wrap and distinct-group
+creation. It released all headers and checked pool teardown. This is source
+execution evidence; native parent bytes and injected cleanup failures were
+not exercised.
