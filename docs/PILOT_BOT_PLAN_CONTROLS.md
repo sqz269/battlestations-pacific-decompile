@@ -28,7 +28,7 @@ Two results, and the second is the one that matters for gameplay.
    orientation matrix every plane step by `007C18B0`.
 2. **The AI is not missing a steering law so much as it is starved of orders.** The task the bot
    needs is built from a **command** on the unit, and a command is issued by exactly one routine,
-   `0077D600 BSP_Entity_IssueCommand`, whose callers are nine Lua mission-script bindings plus a
+   `0077D600 BSP_Entity_IssueCommand`, whose callers are Lua mission-script bindings plus a
    handful of native systems (air operations, the shipyard, and **the scene database's deferred
    reference resolution**). In the reconstructed host none of those runs, so no unit ever receives
    a command, so `0099A170` never builds a task, so `0099ACD0` returns before producing anything.
@@ -278,7 +278,8 @@ The packet above establishes that the bot is starved of orders: no command, no t
 `0099ACD0` returns without producing anything. This follows that chain out to its source, because
 the answer changes what "recover the plane AI" means.
 
-`0077D600 BSP_Entity_IssueCommand`'s caller set is nine Lua mission-script bindings plus four native
+`0077D600 BSP_Entity_IssueCommand`'s caller set (**undercounted here as 13; it is 47 callers over 62
+call sites, see the note at the top of this file**) is Lua mission-script bindings plus native
 callers. So the question "what orders a plane" is largely a question about the shipped scripts. They
 answer it plainly:
 
@@ -336,9 +337,35 @@ measurement while 1-4 are missing, which is why that work was stopped.
 
 ### What is not established
 
-Whether the host can run these scripts at all once the entity attach exists - the mission Lua state,
-`global_script_folders` and the entry-point calls are already concrete, but nothing has exercised an
-order path end to end. And the group-AI question is still open: `docs/AI_PLANNERS.md`'s planners
-write 8-byte objects with their own vtables into `group+564Ch`, a different family from the entity
-commands the director holds, and no planner address appears in `0077D600`'s caller set. How a group
-order reaches a member unit is unknown.
+~~Whether the host can run these scripts at all once the entity attach exists... And the group-AI
+question is still open: no planner address appears in `0077D600`'s caller set.~~
+
+**Both halves of that paragraph were wrong, and both were mine to check before publishing.**
+
+*The group-AI gap does not exist.* It was built on the same 25-row caller list the note at the top
+of this file supersedes. The planners `009FFEB0`, `00A02020`, `00A11FF0`, `00A13B60`, `00A14DD0` and
+`00A2F6F0` all issue commands through `0077D600`. There is no missing hand-off to find. The
+undercount also made me write "nine Lua mission-script bindings plus four native callers" twice in
+this document; `bsp.py callers` reports 47 and `ghidra xrefs` 62 call sites, and the one it omitted
+was `PilotSetTarget`, the most-used binding in the shipped scripts by an order of magnitude.
+
+*The scripts already run.* `USN01` at 3000 mission ticks shows the mission Lua layer working hard -
+`FindEntity`, `SetInvincible`, `UnitSetFireStance`, `NavigatorSetTorpedoEvasion`, `AddListener` and
+dozens more - and, decisively:
+
+```
+native PilotSetTarget  argc=2  phase=luaStageInit
+host MissionLuaNative::PilotSetTarget [008a4c90] UNIMPLEMENTED, returning a neutral value
+host WeaponDirector::issue_command [0071ecf0] concrete  calls=79
+host SceneCommand::issue_command  [0077d600] concrete
+```
+
+**The script issues the order and the host drops it on the floor.** Both ends of the chain are
+already built - the Lua layer above and the command path below, `0071ECF0` running 79 times from
+other callers - and the `Pilot*` bindings in between are stubs returning a neutral value. That is
+the whole of the remaining gap for directed air combat, and it is host wiring rather than recovery.
+
+The entity-attach row in the table above should be read the same way: `00928A00` is
+`coverage: complete` in `docs/MISSION_ENTITY_LUA_ATTACH.md` and `src/game_hosts_lua.cpp:1310` builds
+the slot's four fields, so the `log_.unimplemented` call at line 1368 overstates what is missing.
+Packet `cc7_pilot_order_bindings` recovers the five binding bodies.

@@ -1365,7 +1365,13 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
     summary_.self_table_entities = made;
-    log_.unimplemented("MissionLua::entity_lua_attach", "00928a00");
+    // Was `unimplemented`, which the header defines as "the caller receives a
+    // neutral value". That is not what happens here: the loop above builds the
+    // slot and all four of its fields, `00928A00` is `coverage: complete` in
+    // docs/MISSION_ENTITY_LUA_ATTACH.md, and `self_table_entities` counts real
+    // work. The wrong marker had a cost - it was read as "no Lua order can name
+    // a unit", which is false and was reported as a blocker.
+    log_.implemented("MissionLua::entity_lua_attach", "00928a00");
     log_.notef("thisTable: %zu per-entity slot(s) built for the created scene instances, "
         "%zu of them with the installed `VehicleClass` row as their `Class` field. 00928a00 "
         "and its caller 0077e830 are records, and so is the per-kind `Class` setter that "
