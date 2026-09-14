@@ -72,7 +72,9 @@ struct PlanSlot {
 
 // The six-dword buffer 0099ACD0 builds at [ESP+10h] and hands to 007B8C90. Field order is the
 // command order, which is why the slot array needs permuting into it.
-struct PilotCommandBlock {
+// This earlier projection has different axis labels and request-byte fields
+// from pilot_controls.hpp's PilotCommandBlock; keep their C++ identities distinct.
+struct PlaneAiCommandProjection {
     float yaw = 0.0f;        // cmd[0] -> unit+9FCh
     float pitch = 0.0f;      // cmd[1] -> unit+A00h
     float roll = 0.0f;       // cmd[2] -> unit+A04h
@@ -101,18 +103,18 @@ float slew_plan_slot_0099bb40(const PlanSlot& slot, float rate, float dt);
 // 0099BC00, __thiscall(slot_array, void* out, float rate, float dt). Slews all five slots,
 // clamps power and air brake to [0,1] and yaw/roll/pitch to [-1,1], and permutes the array
 // order into the command order. NaN is not filtered, matching the native COMISS behaviour.
-PilotCommandBlock evaluate_plan_slots_0099bc00(const PlanSlot slots[kPlanSlotCount],
+PlaneAiCommandProjection evaluate_plan_slots_0099bc00(const PlanSlot slots[kPlanSlotCount],
                                                float rate, float dt);
 
 // 0099BEE0, __thiscall(bot, void* out, float rate, float dt), RET 0Ch. 0099BC00 plus the three
 // request bytes. Note that only `byte14` has a reader anywhere in the image.
-PilotCommandBlock build_pilot_command_0099bee0(const PlanSlot slots[kPlanSlotCount],
+PlaneAiCommandProjection build_pilot_command_0099bee0(const PlanSlot slots[kPlanSlotCount],
                                                const PilotRequestBytes& requests,
                                                float rate, float dt);
 
 // 007B8C90, void __thiscall(unit, const void* cmd), RET 4. Copies the six dwords into
 // unit+9FCh..+A10h and sets the pending byte unit+A14h.
-void commit_pilot_command_007b8c90(const PilotCommandBlock& cmd, PilotCommandBlock& unit_block);
+void commit_pilot_command_007b8c90(const PlaneAiCommandProjection& cmd, PlaneAiCommandProjection& unit_block);
 
 // 0099B450, __thiscall(task+4h). Reseeds every slot's `current` half from the live control
 // block, in the array's own order. Call this before the task states write `desired`.

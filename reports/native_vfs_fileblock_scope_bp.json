@@ -1,0 +1,711 @@
+{
+  "packet": "orch4_native_vfs_fileblock_scope_bp",
+  "generated_utc": "2026-09-14T07:50:18.178542+00:00",
+  "branch": "agent/orch4-vfs-fileblock-scope-bp",
+  "base_commit": "b080eef49f801de99fd4edf07a5b36cc83edbd9c",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "bsp.py ghidra target verification before every live query; autostart disabled"
+  },
+  "functions": [
+    {
+      "address": "00be0980",
+      "inclusive_end": "00be0a28",
+      "byte_count": 169,
+      "cpp": "bsp::enter_native_vfs_fileblock_00be0980",
+      "coverage": "complete ordinary body",
+      "native_abi": "ECX captured manager; stack name/gate low byte; RET8; no stable semantic result",
+      "listed_instructions": 66,
+      "listing_gaps": 0,
+      "native_eh": "no local FH3 registration/map/cleanup handler in complete body"
+    },
+    {
+      "address": "00bdc9b0",
+      "inclusive_end": "00bdca74",
+      "byte_count": 197,
+      "cpp": "bsp::leave_native_vfs_fileblock_00bdc9b0",
+      "coverage": "complete ordinary body",
+      "native_abi": "ECX captured manager; stack name; RET4; no stable semantic result",
+      "listed_instructions": 72,
+      "listing_gaps": 0,
+      "native_eh": "no local FH3 registration/map/cleanup handler in complete body"
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00be0980",
+      "inclusive_end": "00be0a28",
+      "byte_count": 169,
+      "role": "complete scope entry",
+      "sha256": "e48a9ab2164469feefef20df977beed69de6e13ebebe2b2ea1915695e4d5fffe",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_be0980.txt",
+      "evidence_log_sha256": "d6a662a27e50445addd74a23a7e157388fa1677c0d2337fe4f64efe506306413",
+      "listed_instructions": 66,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00bdc9b0",
+      "inclusive_end": "00bdca74",
+      "byte_count": 197,
+      "role": "complete scope exit",
+      "sha256": "5180222dc5039a2d96794a6446a84b5b8b88c34531c3ed5103128559eceb185e",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_bdc9b0.txt",
+      "evidence_log_sha256": "557636a7447ddbc8fd39952d6c4d47d2b4f2b00d924e8736ffce352456e7c5b0",
+      "listed_instructions": 72,
+      "listing_gaps": 0
+    },
+    {
+      "address": "004254b0",
+      "inclusive_end": "004254b0",
+      "byte_count": 1,
+      "role": "RET-only diagnostic",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_4254b0.txt",
+      "evidence_log_sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+    },
+    {
+      "address": "00ce3a0c",
+      "inclusive_end": "00ce3a0f",
+      "byte_count": 4,
+      "role": "actual clear source",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_ce3a0c.txt",
+      "evidence_log_sha256": "b5168f3126c6e9de332447e1a3eec8d33b540fabde7c0dcf77fbb8cfd9cd9dfa"
+    },
+    {
+      "address": "00d64190",
+      "inclusive_end": "00d6419f",
+      "byte_count": 16,
+      "role": "concrete observer primary profile",
+      "sha256": "b3fcd7210a244010aeb08d14cc42d60e4f95ecca08d5a2954f9aa37be975aa55",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_d64190.txt",
+      "evidence_log_sha256": "7c4a251a833948f37c1418cd2b92639bdb3299b63f4c844c42364786b01d5f1f"
+    },
+    {
+      "address": "00d68530",
+      "inclusive_end": "00d6853d",
+      "byte_count": 14,
+      "role": "entry diagnostic literal",
+      "sha256": "de4e3b297a9049d539035148886c42b5f90b202325ac7c31cf5498b2def31eac",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_d68530.txt",
+      "evidence_log_sha256": "53e76b09bcc38e141973981e43a6c1c9eb3187fc76cada49277e5dedbd16a0d9"
+    },
+    {
+      "address": "00d68484",
+      "inclusive_end": "00d68491",
+      "byte_count": 14,
+      "role": "exit diagnostic literal",
+      "sha256": "1cdec1a6973a6613907c6a4a4a67408a9892c8cb8a32d7401757bed3d6c4cf11",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/scope_bp/bytes_d68484.txt",
+      "evidence_log_sha256": "f64a5d933b039f754c908b5eccf898759808e914be251ac3905b941195dc3b73"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00be099a",
+      "native": "007f8390",
+      "function": "00be0980",
+      "abi_or_cleanup": "ECX list unused by callee; stack captured head/previous/current gate address; RET0Ch; EAX node"
+    },
+    {
+      "address": "00be09a5",
+      "native": "007fa3a0",
+      "function": "00be0980",
+      "abi_or_cleanup": "ECX actual list; stack 1; RET4; EAX updated count"
+    },
+    {
+      "address": "00be09d2",
+      "native": "00d64190+vtable08",
+      "function": "00be0980",
+      "kind": "indirect",
+      "instruction": "CALL EDX",
+      "current_slot_offset": 8,
+      "concrete_target": "00bb5770",
+      "validation": "full live/PE-matched instruction, live containing body and concrete profile bytes; not a direct CALL edge",
+      "abi_or_cleanup": "ECX captured current observer; stacked original name; BB5770 RET4"
+    },
+    {
+      "address": "00be09e6",
+      "native": "0041dd40",
+      "function": "00be0980",
+      "abi_or_cleanup": "ECX actual manager current-name header; stack length/preserve; RET8"
+    },
+    {
+      "address": "00be09fb",
+      "native": "00bf7680",
+      "function": "00be0980",
+      "abi_or_cleanup": "cdecl destination/source/count; caller ADD ESP,0Ch"
+    },
+    {
+      "address": "00be0a1a",
+      "native": "004254b0",
+      "function": "00be0980",
+      "abi_or_cleanup": "cdecl format/name data; caller ADD ESP,8; callee RET only"
+    },
+    {
+      "address": "00bdc9d3",
+      "native": "00d64190+vtable0c",
+      "function": "00bdc9b0",
+      "kind": "indirect",
+      "instruction": "CALL EDX",
+      "current_slot_offset": 12,
+      "concrete_target": "00bb5910",
+      "validation": "full live/PE-matched instruction, live containing body and concrete profile bytes; not a direct CALL edge",
+      "abi_or_cleanup": "ECX captured current observer; stacked input or current manager name; BB5910 RET4"
+    },
+    {
+      "address": "00bdc9de",
+      "native": "00d64190+vtable0c",
+      "function": "00bdc9b0",
+      "kind": "indirect",
+      "instruction": "CALL EAX",
+      "current_slot_offset": 12,
+      "concrete_target": "00bb5910",
+      "validation": "full live/PE-matched instruction, live containing body and concrete profile bytes; not a direct CALL edge",
+      "abi_or_cleanup": "ECX captured current observer; stacked input or current manager name; BB5910 RET4"
+    },
+    {
+      "address": "00bdc9e9",
+      "native": "0041dd40",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "ECX actual manager current-name header; stack length/preserve; RET8"
+    },
+    {
+      "address": "00bdc9fe",
+      "native": "00bf7680",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "cdecl destination/source/count; caller ADD ESP,0Ch"
+    },
+    {
+      "address": "00bdca22",
+      "native": "004254b0",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "cdecl format/name data; caller ADD ESP,8; callee RET only"
+    },
+    {
+      "address": "00bdca3a",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "no stacked arguments; returning diagnostic callback allowed"
+    },
+    {
+      "address": "00bdca44",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "no stacked arguments; returning diagnostic callback allowed"
+    },
+    {
+      "address": "00bdca59",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "no stacked arguments; returning diagnostic callback allowed"
+    },
+    {
+      "address": "00bdca67",
+      "native": "00bdaf40",
+      "function": "00bdc9b0",
+      "abi_or_cleanup": "ECX actual list; stack stable output/list owner/captured node; RET0Ch; EAX output"
+    }
+  ],
+  "direct_incoming_calls": [
+    {
+      "address": "00be0abf",
+      "native": "00be0980",
+      "function": "00be0a30",
+      "setup": "current publication; EDI constructed name header; stacked flag loaded from caller ESP+28",
+      "callee_stack_cleanup": "RET8"
+    },
+    {
+      "address": "00be0b6f",
+      "native": "00be0980",
+      "function": "00be0ae0",
+      "setup": "current publication; EDI constructed name header; stacked flag loaded from caller ESP+28",
+      "callee_stack_cleanup": "RET8"
+    },
+    {
+      "address": "008c5943",
+      "native": "00be0980",
+      "function": "008c5820",
+      "setup": "current publication; stack temporary header; gate immediate1",
+      "callee_stack_cleanup": "RET8"
+    },
+    {
+      "address": "00bdcb66",
+      "native": "00bdc9b0",
+      "function": "00bdcb30",
+      "setup": "current publication; stack owner+14 name",
+      "callee_stack_cleanup": "RET4"
+    },
+    {
+      "address": "0088539b",
+      "native": "00bdc9b0",
+      "function": "00885350",
+      "setup": "current publication; stack constructed temporary name",
+      "callee_stack_cleanup": "RET4"
+    }
+  ],
+  "native_eh": {
+    "local_registration": false,
+    "local_unwind_map": null,
+    "local_cleanup_handlers": [],
+    "evidence": "both full bodies contain no FS exception registration and no local handler; dependency maps remain separate",
+    "no_ghidra_function": [],
+    "native_exception_equivalence_claimed": false
+  },
+  "storage": {
+    "producer": "existing native VFS manager lifetime",
+    "current_name_offsets": [
+      12,
+      16
+    ],
+    "depth_offset": 20,
+    "observe_offset": 120,
+    "gate_offset": 121,
+    "list_offset": 124,
+    "head_offset": 128,
+    "count_offset": 132,
+    "observer_offset": 136,
+    "node_size": 12,
+    "node_layout": {
+      "next": 0,
+      "previous": 4,
+      "saved_gate": 8
+    },
+    "projected_storage": false
+  },
+  "current_captured_contract": [
+    "captured manager stays the receiver across all observers and callbacks",
+    "capture head/previous before actual node allocation; allocator reads current gate after allocation",
+    "allocate before checked growth; no compensating node free on overflow",
+    "captured head previous link then current new-node.previous next link; AND current gate",
+    "current observe byte decides current observer/table/slot load; gate zero still allows observation",
+    "entry callback before depth increment and name copy; identity source skips copy; current post-resize fields reloaded",
+    "exit tests input length before observer load; empty passes actual manager current name",
+    "exit notification precedes current-name clear/depth decrement; no outer name restoration",
+    "RET-only diagnostic retains input-data read and null-to-empty selection",
+    "first last/head capture persists across first two returning checks and gate restore",
+    "current head/last captured again for third returning check and actual erase"
+  ],
+  "observer_dispatch": {
+    "interface": "NativeVfsFileBlockObserverDispatch",
+    "concrete": "NativePakRegistryFileBlockObserverDispatch",
+    "profile": "00d64190",
+    "entry_slot": 8,
+    "entry_target": "00bb5770",
+    "exit_slot": 12,
+    "exit_target": "00bb5910",
+    "unsupported_target": "known source invalid_argument only at reached virtual call after preceding native effects",
+    "production_wired": false
+  },
+  "failure_storage": {
+    "owner": "NativeVfsFileBlockScopeAcquired",
+    "stable": [
+      "node/head/restore/erase/observer captures",
+      "erase output iterator",
+      "nested BO invocation"
+    ],
+    "borrowed": [
+      "actual manager/current name storage",
+      "original input header/storage",
+      "contexts and their publications/services"
+    ],
+    "policy": "publish before call; retain failed state and borrowed storage; no replay/autoleave/rollback; active or failed destruction terminates",
+    "sites": [
+      {
+        "scope_sites": [
+          "00be099a"
+        ],
+        "dependency": "007f8390",
+        "boundary": "allocation failure before returned node; no invented cleanup for raw fault behavior"
+      },
+      {
+        "scope_sites": [
+          "00be09a5"
+        ],
+        "dependency": "007fa3a0",
+        "boundary": "known owning length-error after node allocation, before link/gate/depth/name effects; node retained"
+      },
+      {
+        "scope_sites": [
+          "00be09d2"
+        ],
+        "dependency": "observer+8 / 00bb5770",
+        "boundary": "gate linked and ANDed first; depth/name not advanced; unsupported entry rejects before BO, BO failures can follow borrowing"
+      },
+      {
+        "scope_sites": [
+          "00bdc9d3",
+          "00bdc9de"
+        ],
+        "dependency": "observer+C / 00bb5910",
+        "boundary": "before all scope mutation; empty input borrows actual current name; nested BO may already mutate"
+      },
+      {
+        "scope_sites": [
+          "00be09e6",
+          "00bdc9e9"
+        ],
+        "dependency": "0041dd40",
+        "boundary": "caller-owned header stable after preceding effects; existing noexcept storage release unchanged"
+      },
+      {
+        "scope_sites": [
+          "00bdca3a",
+          "00bdca44",
+          "00bdca59",
+          "00bdca67"
+        ],
+        "dependency": "BF6713 / BDAF40",
+        "boundary": "earlier name/depth effects retained; captured candidates separate; callbacks may return or escape"
+      }
+    ],
+    "nested_limit": "BO retains its outer headers/acquired objects only; BDD850/BE1740 stack locals and existing resolver freed backing are not retained by scope",
+    "native_limit": "known source exception tests do not establish original FH3/SEH, RTTI or arbitrary callback behavior"
+  },
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "log": "local/scope_bp/compile.log"
+    },
+    "fixture": {
+      "passed": true,
+      "frozen_input_count": 75,
+      "frozen_inputs": "local/scope_bp/frozen_inputs.json",
+      "executable": "local/scope_bp/scope_probe.exe",
+      "manifest_link_flag": "/MANIFEST:EMBED",
+      "original_code_executed": false,
+      "modes": [
+        {
+          "name": "normal",
+          "exit_code": 0,
+          "log": "local/scope_bp/probe_normal.log"
+        },
+        {
+          "name": "retained",
+          "exit_code": 0,
+          "log": "local/scope_bp/probe_retained.log"
+        },
+        {
+          "name": "overflow",
+          "exit_code": 0,
+          "log": "local/scope_bp/probe_overflow.log"
+        }
+      ],
+      "coverage": [
+        "real BO observer and FileStore deletion with actual pools/resolver/device42/resident stream/mount trees",
+        "current publication switches preserve captured scope receiver; gate zero still observes",
+        "empty input routes actual manager current name; nested gates restore without outer name restore; name identity input",
+        "returning first CRT check changes head, captured old gate restored, current last erased; all three checks plus erase check can return",
+        "known nested BB5A4D getter throw retained at scope BDC9DE before any scope exit mutation",
+        "known growth exception after actual allocation retains unlinked node without state advance"
+      ],
+      "not_exercised": [
+        "successful nonnull archive factory creation",
+        "unknown original provider/native exceptions",
+        "production route",
+        "original executable instructions"
+      ]
+    },
+    "library": {
+      "copy": "02B33F5248E04E595830D66C353883D0B9D66706E37F653A9D8D8F9545C22444",
+      "before": "02B33F5248E04E595830D66C353883D0B9D66706E37F653A9D8D8F9545C22444",
+      "after": "02B33F5248E04E595830D66C353883D0B9D66706E37F653A9D8D8F9545C22444",
+      "code_commit": "994e06289522017335e3438a0e499523a8777462",
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib"
+    },
+    "library_sha256": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444",
+    "library_scope": "registered primary BO code994e0628; contains concrete BO and gate-list dependencies; only new scope TU compiled separately",
+    "other_link_libraries": [
+      {
+        "name": "bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "copied_from": "J:/PROG/battlestations-pacific-decompile-orch4-pak-block-callbacks-bo/local/pak_callbacks_bo/bsp_lua511.lib"
+      },
+      {
+        "name": "bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "copied_from": "J:/PROG/battlestations-pacific-decompile-orch4-pak-block-callbacks-bo/local/pak_callbacks_bo/bsp_zlib121.lib"
+      }
+    ],
+    "full_integration_build": false,
+    "permanent_tests_added": false,
+    "game_validated": false
+  },
+  "checklist": {
+    "callee_before_contract": "actual gate-list/string/BO source and verified RET-only diagnostic body used",
+    "boundary_before_attribution": "full contiguous owned bodies; dependency handlers not attributed to scopes",
+    "all_call_sites": "all five direct caller setups inspected; all twelve direct and three indirect owned CALL sites enumerated",
+    "producer_before_layout": "existing manager lifetime and 7F8390 actual node producer reconciled",
+    "coverage": "complete ordinary bodies; no local FH3 registration; dependency failure limits explicit",
+    "runtime_frame_rule": "no production route or gameplay claim; actual-storage fixture only",
+    "argument_counts": "original entry RET8/exit RET4; every call carries original cleanup/ABI evidence",
+    "register_provenance": "complete listings preserve captured manager, current observer, distinct last/head captures and read ordering",
+    "lease": "only two reconstructed addresses and four owned files",
+    "report": "direct address/native rows for whole-report checker; indirect sites explicitly marked and byte/profile validated"
+  },
+  "corrections": [
+    {
+      "was": "empty exit list can be treated as an early no-op",
+      "is": "observer/name/depth/diagnostic effects precede three returning checks and actual erase",
+      "evidence": "BDC9B0 complete listing through BDCA67"
+    },
+    {
+      "was": "restored gate and erased node necessarily come from one captured last",
+      "is": "restore uses first captured last; current head/last are reloaded before erase",
+      "evidence": "BDCA2A..BDCA67; returning-handler head-repair fixture"
+    },
+    {
+      "was": "retaining scope frame retains all nested dependency storage",
+      "is": "BO outer frames retained, BDD850/BE1740 locals and resolver cleanup limits unchanged",
+      "evidence": "NATIVE_PAK_REGISTRY_BLOCK_CALLBACKS_BO.md exact escaping-site table"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "include/bsp/native_vfs_fileblock_scope.hpp",
+      "sha256": "08ae589b9c419e38ad47d4d2a1c768a24e4c0b4a2a402dd00f8994d88a678540"
+    },
+    {
+      "path": "src/native_vfs_fileblock_scope.cpp",
+      "sha256": "f71ac469ebfb309f280b3d73cdd353e8f50c84807d9180182afb2b40138bb353"
+    },
+    {
+      "path": "docs/NATIVE_VFS_FILEBLOCK_SCOPE_BP.md",
+      "sha256": "4db4210434231ca84a705e1fccec2530c5e63cd4eea882be4d125dd4b420d98a"
+    }
+  ],
+  "borrowed_source_receipts": [
+    {
+      "path": "src/native_fileblock_gate_list.cpp",
+      "sha256": "5020a60beb19e9f30692db33e3bea4dac9e4c3fb1bfc1e9bc8ff1d4ee9d31cff"
+    },
+    {
+      "path": "src/native_pak_registry_block_callbacks.cpp",
+      "sha256": "4693bc70131e15a1ad86543e34eef3211de89d14e5e50744bc4074f9e3b091a1"
+    },
+    {
+      "path": "src/native_vfs_device_route.cpp",
+      "sha256": "09bb76bd0bc6f98253f261c9f8280edcf489ec9718beef72273b6c47780888d8"
+    },
+    {
+      "path": "src/native_vfs_mount_registration.cpp",
+      "sha256": "c36a0b13398f2a0cc59a77e2398f79e8255de003a0752e4af07955a2c3876b36"
+    },
+    {
+      "path": "src/native_vfs_name_resolution.cpp",
+      "sha256": "898923fc270fcaeb5b81b0dc3bf624658868ae92370a36f65c283e8ff83e5615"
+    },
+    {
+      "path": "src/native_vfs_unmount_name.cpp",
+      "sha256": "9c71ab421401e8476b773d97fb8af604db69c18eb17051b10aabc684ed6bea73"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/scope_bp/bsp_core.lib",
+      "byte_count": 58143170,
+      "sha256": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444"
+    },
+    {
+      "path": "local/scope_bp/bsp_lua511.lib",
+      "byte_count": 455244,
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+    },
+    {
+      "path": "local/scope_bp/bsp_zlib121.lib",
+      "byte_count": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    },
+    {
+      "path": "local/scope_bp/bytes_4254b0.txt",
+      "byte_count": 17,
+      "sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+    },
+    {
+      "path": "local/scope_bp/bytes_bdc9b0.txt",
+      "byte_count": 957,
+      "sha256": "557636a7447ddbc8fd39952d6c4d47d2b4f2b00d924e8736ffce352456e7c5b0"
+    },
+    {
+      "path": "local/scope_bp/bytes_be0980.txt",
+      "byte_count": 819,
+      "sha256": "d6a662a27e50445addd74a23a7e157388fa1677c0d2337fe4f64efe506306413"
+    },
+    {
+      "path": "local/scope_bp/bytes_ce3a0c.txt",
+      "byte_count": 29,
+      "sha256": "b5168f3126c6e9de332447e1a3eec8d33b540fabde7c0dcf77fbb8cfd9cd9dfa"
+    },
+    {
+      "path": "local/scope_bp/bytes_d64190.txt",
+      "byte_count": 77,
+      "sha256": "7c4a251a833948f37c1418cd2b92639bdb3299b63f4c844c42364786b01d5f1f"
+    },
+    {
+      "path": "local/scope_bp/bytes_d68484.txt",
+      "byte_count": 69,
+      "sha256": "f64a5d933b039f754c908b5eccf898759808e914be251ac3905b941195dc3b73"
+    },
+    {
+      "path": "local/scope_bp/bytes_d68530.txt",
+      "byte_count": 69,
+      "sha256": "53e76b09bcc38e141973981e43a6c1c9eb3187fc76cada49277e5dedbd16a0d9"
+    },
+    {
+      "path": "local/scope_bp/compile.cmd",
+      "byte_count": 312,
+      "sha256": "6251d9967d1ac374a8e16dc4e32cbb9b163710be8529fda3b2dbd0a031d81589"
+    },
+    {
+      "path": "local/scope_bp/compile.log",
+      "byte_count": 32,
+      "sha256": "1b2a88d6457037a21cde2dc8b7000b50ad22b3a891e8f354b2d0da4ef937e519"
+    },
+    {
+      "path": "local/scope_bp/compile_probe.cmd",
+      "byte_count": 519,
+      "sha256": "13ba2572a308ce04f1117e32e4e96843d9458998edf06e115513c9ff07765e8e"
+    },
+    {
+      "path": "local/scope_bp/freeze_inputs.py",
+      "byte_count": 1105,
+      "sha256": "41e51059b10c9a858b51ec26988e2f3ff07442764c73730528472098f67f109f"
+    },
+    {
+      "path": "local/scope_bp/frozen_inputs.json",
+      "byte_count": 16528,
+      "sha256": "d9615efa61c0806d5ef76df85ea8bae51673c565ddffb8170ec41343ceefc873"
+    },
+    {
+      "path": "local/scope_bp/library_hash.json",
+      "byte_count": 412,
+      "sha256": "4deab8e3ae04dbaea39fc686eb5e5b5e926800b32423bc868448f65dd6ca0a8e"
+    },
+    {
+      "path": "local/scope_bp/listing_bdc9b0.txt",
+      "byte_count": 2090,
+      "sha256": "da73add768e35fbb31507c4b93cf1cffbde716a8c75a7fd3355c30262e44e464"
+    },
+    {
+      "path": "local/scope_bp/listing_be0980.txt",
+      "byte_count": 1908,
+      "sha256": "6486f2164ac836514c1ce32ee0c46c145f3540bef99ffa9fbd883f8562d42e9a"
+    },
+    {
+      "path": "local/scope_bp/make_report.py",
+      "byte_count": 16922,
+      "sha256": "fd31f0620ef8d58f414f9c84225098bbeeea9c211f38eba68ccc669184b35b1e"
+    },
+    {
+      "path": "local/scope_bp/membership.txt",
+      "byte_count": 289,
+      "sha256": "09ce269c10e4a364fe45581fa08bf161e415bf69e24ceb0cc39c15efb3b7aa3a"
+    },
+    {
+      "path": "local/scope_bp/native_vfs_fileblock_scope.obj",
+      "byte_count": 28975,
+      "sha256": "4e5b72a4fc629e6b71a25c3745d490ead03702219f234e00961c5c9dc8fee883"
+    },
+    {
+      "path": "local/scope_bp/prepare_probe.py",
+      "byte_count": 10871,
+      "sha256": "72188094ba9bf7e1cd2c19e84dfb6d7058291c9f1fa61dbc797eb957e892ad2d"
+    },
+    {
+      "path": "local/scope_bp/probe_compile.log",
+      "byte_count": 17,
+      "sha256": "b9294120a5aaf82c4be984c2339bad302a12177a1bc6ad67c4735861d2d72644"
+    },
+    {
+      "path": "local/scope_bp/probe_normal.log",
+      "byte_count": 691,
+      "sha256": "39a6c30e3f0c9f9dda66f8539c84750f980638f8bdab6b8f4d6aad615e104b89"
+    },
+    {
+      "path": "local/scope_bp/probe_overflow.log",
+      "byte_count": 118,
+      "sha256": "06ed421ecc30fcedffa4d662d04ace5f9559d29e8b3dccdc7a292888ccabe146"
+    },
+    {
+      "path": "local/scope_bp/probe_retained.log",
+      "byte_count": 143,
+      "sha256": "3dd64b800f788bcafc2d69cabcf3acab55639a627ad03cea51838af1bc81911a"
+    },
+    {
+      "path": "local/scope_bp/scope_probe.cpp",
+      "byte_count": 19966,
+      "sha256": "eca50757d7781d9c9ffbd0114f38a54ec687ea4431df9dd8bc16cb3acfd161a5"
+    },
+    {
+      "path": "local/scope_bp/scope_probe.exe",
+      "byte_count": 166912,
+      "sha256": "dc3cf8fa8856713d358102eca6025d70c701dd643802f60f9e4926b48cd2b906"
+    },
+    {
+      "path": "local/scope_bp/scope_probe.obj",
+      "byte_count": 184356,
+      "sha256": "efc479c08c796e82f6f9ecea7fa95f247adc979dab1d7cb1968ccb138ea055fa"
+    },
+    {
+      "path": "local/scope_bp/verify_calls.log",
+      "byte_count": 304,
+      "sha256": "cdbda0b10a677d98166346098137475780cc8b28a51837dd348b4a58042dce1c"
+    },
+    {
+      "path": "local/scope_bp/xrefs_bdc9b0.txt",
+      "byte_count": 131,
+      "sha256": "c8c3239925c6adddfeea191273a78e492533b299a87427c3cc95397ccc69b065"
+    },
+    {
+      "path": "local/scope_bp/xrefs_be0980.txt",
+      "byte_count": 167,
+      "sha256": "27c844fc5fa526327d28c1d5471e01a29e0862691393643455185dd2fd096523"
+    }
+  ],
+  "limitations": [
+    "explicit-service source ABI, original stack/register spill aliases unproved",
+    "raw pointer faults and concurrent data races not modeled",
+    "native FH3/SEH and nested unknown failure lifetime unproved",
+    "production observer/FileBlock ownership/preparation wiring separate",
+    "no automatic balanced leave or parent-name restoration",
+    "full integration build/gameplay remain primary work"
+  ],
+  "ghidra_mutations": false,
+  "requested_primary_annotations": [
+    {
+      "address": "00be0980",
+      "suggested_name": "BSP_VFS_EnterFileBlock"
+    },
+    {
+      "address": "00bdc9b0",
+      "suggested_name": "BSP_VFS_LeaveFileBlock"
+    }
+  ],
+  "call_site_validation": {
+    "checked_direct": 17,
+    "indirect_separately_verified": 3,
+    "failed": 0,
+    "exit_code": 0,
+    "tool": "tools/verify_report_calls.py",
+    "log": "local/scope_bp/verify_calls.log"
+  }
+}

@@ -73,9 +73,9 @@ float slew_plan_slot_0099bb40(const PlanSlot& slot, float rate, float dt) {
     return slot.current + static_cast<float>(sign) * step;
 }
 
-PilotCommandBlock evaluate_plan_slots_0099bc00(const PlanSlot slots[kPlanSlotCount],
+PlaneAiCommandProjection evaluate_plan_slots_0099bc00(const PlanSlot slots[kPlanSlotCount],
                                                float rate, float dt) {
-    PilotCommandBlock out;
+    PlaneAiCommandProjection out;
 
     // The walk order is the array order, and each result lands at a different command field.
     // 0099BC17 slot 0 -> 0099BC5D [ESI+0Ch]
@@ -101,17 +101,17 @@ PilotCommandBlock evaluate_plan_slots_0099bc00(const PlanSlot slots[kPlanSlotCou
     return out;
 }
 
-PilotCommandBlock build_pilot_command_0099bee0(const PlanSlot slots[kPlanSlotCount],
+PlaneAiCommandProjection build_pilot_command_0099bee0(const PlanSlot slots[kPlanSlotCount],
                                                const PilotRequestBytes& requests,
                                                float rate, float dt) {
-    PilotCommandBlock out = evaluate_plan_slots_0099bc00(slots, rate, dt);  // 0099BF01
+    PlaneAiCommandProjection out = evaluate_plan_slots_0099bc00(slots, rate, dt);  // 0099BF01
     out.request16 = requests.byte16;  // 0099BF0C, from bot+2DCh
     out.request15 = requests.byte15;  // 0099BF15, from bot+2E5h
     out.request14 = requests.byte14;  // 0099BF1E, from bot+2E4h
     return out;
 }
 
-void commit_pilot_command_007b8c90(const PilotCommandBlock& cmd, PilotCommandBlock& unit_block) {
+void commit_pilot_command_007b8c90(const PlaneAiCommandProjection& cmd, PlaneAiCommandProjection& unit_block) {
     unit_block.yaw = cmd.yaw;              // 007B8C96 -> unit+9FCh
     unit_block.pitch = cmd.pitch;          // 007B8C9F -> unit+A00h
     unit_block.roll = cmd.roll;            // 007B8CA8 -> unit+A04h

@@ -1,0 +1,173 @@
+{
+  "reason": "Restore BF0980 returning-free epilogue membership using supported endpoints; no inline scripts or callee no-return edits.",
+  "entries": [
+    {
+      "address": "00bf0980",
+      "end_exclusive": "00bf0997",
+      "bytes": 23,
+      "sha256": "773283e7cd4f034d0e92d3128a8206892b5828e4489a5df2172c7cc9bb4e7863",
+      "before_documentation": {
+        "hash": "d66c02ce3fbd5d6282313791cafe80a48a09dbbf66dd755d1c4bfd4b2d26e375",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0980",
+        "function_name": "FUN_00bf0980",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bf0980",
+          "mnemonic": "push",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00bf0981",
+          "mnemonic": "push",
+          "operands": "0",
+          "owned": true
+        },
+        {
+          "address": "00bf0983",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "owned": true
+        },
+        {
+          "address": "00bf0985",
+          "mnemonic": "call",
+          "operands": "0xbf0700",
+          "owned": true
+        },
+        {
+          "address": "00bf098a",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]",
+          "owned": true
+        },
+        {
+          "address": "00bf098c",
+          "mnemonic": "push",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00bf098d",
+          "mnemonic": "call",
+          "operands": "0xbf6989",
+          "owned": true
+        },
+        {
+          "address": "00bf0992",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "owned": false
+        },
+        {
+          "address": "00bf0995",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "owned": false
+        },
+        {
+          "address": "00bf0996",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": false
+        }
+      ],
+      "original_abi": "ECX actual 0Ch reader buffer header; no stack arguments; RET. Resize to zero then free current data, retaining stale data/capacity words; no semantic result.",
+      "prototype_note": "Corrects unknown zero-input prototype with explicit ECX and unused EDX source view; not a native binary replacement claim.",
+      "after_documentation": {
+        "hash": "83d4e6d066dec83d15aa991f19c19b24ace7a1100be9ab352be37961410bbd74",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0980",
+        "function_name": "FUN_00bf0980",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "buffer",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 70.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 10,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bf098d"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bf098d (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bf0980"
+      },
+      "result": "{\"success\": true, \"address\": \"00bf0980\", \"deleted_function\": \"FUN_00bf0980\", \"body_size\": 18, \"message\": \"Function 'FUN_00bf0980' deleted at 00bf0980\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bf0980",
+        "end_address": "00bf0997"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bf0980\", \"end_address\": \"00bf0996\", \"bytes_disassembled\": 23, \"message\": \"Successfully disassembled 23 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bf0980",
+        "name": "FUN_00bf0980",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bf0980\", \"function_name\": \"FUN_00bf0980\", \"entry_point\": \"00bf0980\", \"body_size\": 23, \"message\": \"Function created successfully at 00bf0980\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf0980",
+        "prototype": "void __fastcall FUN_00bf0980(void* buffer, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf0980 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bf0980",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bf0980\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}
