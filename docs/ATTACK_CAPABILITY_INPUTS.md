@@ -274,3 +274,74 @@ data; treating it as clear would make dead targets attackable.
   `[00E188A8] -> [+18ECh] -> [+ECX*4+21A4h]` that selects the set it tests.
 * The 74-vs-80 distinct-stamp-id discrepancy with `docs/ENTITY_CLASS_IDS.md`.
 * Nothing was compiled or run. No C++ was written for this packet.
+
+# `009229F0` is not a liveness test (packet `cc7_target_still_attackable`)
+
+Addresses: `009229F0` (body `009229F0`-`00922A33`, 33 instructions, read in full), `00922990`
+(body `00922990`-`009229EE`, read in full), `007AC9D0` `BSP_Entity_PathInterfaceForKind`
+(body `007AC9D0`-`007ACA2C`, read in full).
+
+Ghidra read-only. **Exported, reconstructed, build-tested**; `reconstructed_math` still passes, no
+new tests. Not fixture-tested, not game-validated. Mod-artefact caveat carried.
+
+## The correction
+
+`src/game_hosts_commands.cpp` calls it `target_still_attackable` and **this document** called it
+"the shared target still attackable test". Both are wrong. There is no `+5Dh` read, no timer and
+nothing temporal in the body. It is a **class test with a LandFort `FakedType` fallback**:
+
+```
+009229F3  if (!entity) return false
+009229FC  if (entity->vtable[5Ch](kind)) return true
+00922A0D  if (!entity->vtable[5Ch](1Bh)) return false          ; 1Bh = MLandFort
+00922A1A  EAX = entity[+538h]                                  ; the vehicle class descriptor
+00922A20  ECX = EAX[+178h]                                     ; FakedType
+00922A2A  JMP 00922990(fakedType, kind)                        ; tail call
+```
+
+`class+178h` is the authored `FakedType` recovered in `docs/ATTACK_GATE_TAILS.md` — key
+`"FakedType"` at `00CFF824`, written by `BSP_StructureClass_ReadLuaFields`, default `1Bh`.
+
+## `00922990` is a hand-written table, and it disagrees with the parent chain
+
+```
+kind == 06h  ->  fakedType in { 07h, 08h, 0Ah, 0Bh, 0Dh, 0Eh }
+kind == 0Fh  ->  fakedType in { 10h, 11h, 12h, 13h, 14h, 15h, 16h, 17h }
+otherwise    ->  false
+```
+
+The plane arm is complete: all eight plane classes. **The ship arm is not.** Part 3 of this document
+lists `vt[5Ch](6)` as nine classes — `06` plus `07 MDestroyer`, `08 MSubmarine`, `09 MMothership`,
+`0A MCruiser`, `0B MCargo`, `0C MLandingShip`, `0D MBattleship`, `0E MTorpedoBoat`. The table
+**omits `09 MMothership` and `0C MLandingShip`**.
+
+A host answering the fallback with `Entity_IsKindOf(fakedType, 6)` would count a fort faking a
+mothership or a landing ship as a ship target, and the game does not. Same hazard as the projectile
+descriptors in `docs/ORDNANCE_KIND_IDENTITY.md`: **copy the table, do not derive it.**
+
+## What this unblocks
+
+The torpedo arm of `0099A170` is gated on this routine and on nothing it did not already have:
+
+* the target's class id and the parent table — available through `unit_is_kind_of`;
+* `FakedType` on structure rows — authored, producer known;
+* **no live state at all.**
+
+`entity_kind_or_faked_009229f0` and `faked_family_00922990` are in
+`include/bsp/attack_target_classify.hpp`. **The torpedo arm can be wired.**
+
+## The sibling, also read
+
+`007AC9D0 BSP_Entity_PathInterfaceForKind(entity)` is a sub-object selector, not a predicate:
+
+```
+!entity        -> null
+IsKindOf(47h)  -> entity + 1E4h        ; Path
+IsKindOf(48h)  -> entity + 170h
+IsKindOf(49h)  -> entity + 310h
+IsKindOf(4Ah)  -> entity + 1E4h        ; 007ACA27 jumps back to the 47h arm
+otherwise      -> null
+```
+
+`path_interface_offset_007ac9d0` returns the offset or `-1`. Classes `48h`, `49h` and `4Ah` were
+**not** looked up in `docs/ENTITY_CLASS_IDS.md`, so only the `47h` arm is named.
