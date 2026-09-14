@@ -1,0 +1,387 @@
+{
+  "packet": "orch4_native_pak_block_helpers_bn",
+  "worker_base": "942f454c003868062d01e3320b2fb2e164b228cb",
+  "branch": "agent/orch4-pak-block-helpers-bn",
+  "timestamp_utc": "2026-09-14T06:44:47.940707+00:00",
+  "status": "five_complete_bodies_strict_win32_tu_and_focused_fixture_validated_pending_integration",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "ghidra_verification": "Every live query uses bsp.py ghidra -> client.verify; Ghidra autostart disabled; no scripts or writes.",
+  "ghidra_identity_output": "00bb5670 FUN_00bb5670  undefined FUN_00bb5670(void)  body 00bb5670 - 00bb5760\n00bd9200 FUN_00bd9200  undefined FUN_00bd9200(void)  body 00bd9200 - 00bd920e\n00bd9210 FUN_00bd9210  undefined FUN_00bd9210(void)  body 00bd9210 - 00bd9219\n00bd9220 FUN_00bd9220  undefined FUN_00bd9220(void)  body 00bd9220 - 00bd922a\n00bd9fa0 FUN_00bd9fa0  undefined FUN_00bd9fa0(void)  body 00bd9fa0 - 00bd9fab\n",
+  "installed_image": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "image_base": "00400000"
+  },
+  "routines": [
+    {
+      "address": "00bb5670",
+      "inclusive_end": "00bb5760",
+      "byte_count": 241,
+      "sha256": "6247435f6dd9d337501858133225fddcb34490d517d3d3f8561d9936849c1d64",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00bb5670.txt",
+      "evidence_sha256": "42d9d9b69f9082d6172800aa20ac4c4770055374a0f220d5fb10774268978272",
+      "direct_calls": [
+        {
+          "address": "00bb56a3",
+          "native": "00bf9440",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb56c9",
+          "native": "0041e870",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb56da",
+          "native": "004261a0",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb56fa",
+          "native": "00419cc0",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb5701",
+          "native": "00bd1510",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb5731",
+          "native": "0041dd40",
+          "function": "00bb5670"
+        },
+        {
+          "address": "00bb5746",
+          "native": "00bf7680",
+          "function": "00bb5670"
+        }
+      ],
+      "source_file": "src/native_pak_registry_block_helpers.cpp",
+      "source_symbol": "construct_native_pak_block_name_00bb5670",
+      "proposed_ghidra_name": "BSP_PakRegistry_ConstructBlockPackageName",
+      "original_ghidra_name": "FUN_00bb5670",
+      "native_abi": "ECX actual output8h header, EDX actual input8h header; EAX output; RET",
+      "contracts": [
+        "Actual uint32 length+0/data pointer+4 input and output headers; return exact captured output address.",
+        "First case-sensitive strstr of CEBA84 .mpak; null data/no match means FFFFFFFF. Successful hit subtracts current input data.",
+        "Compare DWORD position to current storedLength-5 with wrapping arithmetic. Length4/no match follows equality.",
+        "Equality clears output length then pointer before identity branch; nonidentity reuses complete actual00426060 equivalent inline copy schedule.",
+        "Append constructs suffix via0041E870, arms suffix cleanup, concatenates input/output/suffix via004261A0, disarms and releases current suffix.",
+        "Identity yields empty on equality or .mpak on append. Initial output clearing never releases preexisting output storage.",
+        "No cleanup after failed suffix construction or failed equality copy. Concat owns output cleanup only after initial copy completes; outer helper then cleans suffix."
+      ],
+      "coverage": "complete source body over actual storage, strict TU compiled, focused fixture passed",
+      "ghidra_annotation_applied": false
+    },
+    {
+      "address": "00bd9200",
+      "inclusive_end": "00bd920e",
+      "byte_count": 15,
+      "sha256": "7df78aa885350660ad63a28b457298fa6e7808d68d8d479b61b4898c27840eb4",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00bd9200.txt",
+      "evidence_sha256": "47abd07deb93c233dabba86c07e3913edab21e423d42e0e77eaa72a3a053e1bb",
+      "direct_calls": [],
+      "source_file": "src/native_pak_registry_block_helpers.cpp",
+      "source_symbol": "decrement_native_vfs_block_count_00bd9200",
+      "proposed_ghidra_name": "BSP_VfsProviderManager_DecrementBlockCount",
+      "original_ghidra_name": "FUN_00bd9200",
+      "native_abi": "ECX actual manager; AL signed-positive result, upper EAX unestablished; RET",
+      "contracts": [
+        "Wrapping DWORD+1C decrement; reread current DWORD+1C; byte+20=(0<count<80000000h)."
+      ],
+      "coverage": "complete source body over actual storage, strict TU compiled, focused fixture passed",
+      "ghidra_annotation_applied": false
+    },
+    {
+      "address": "00bd9210",
+      "inclusive_end": "00bd9219",
+      "byte_count": 10,
+      "sha256": "0f17c8cc2abd8887b7d48235ea79d6988fa447600d82263153032399570cfac0",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00bd9210.txt",
+      "evidence_sha256": "36242add8876ee03ca96fc2bda77149c9c09c9840753fe24c6cfb1762fa0b4c7",
+      "direct_calls": [],
+      "source_file": "src/native_pak_registry_block_helpers.cpp",
+      "source_symbol": "set_native_vfs_block_active_00bd9210",
+      "proposed_ghidra_name": "BSP_VfsProviderManager_SetBlockActiveByte",
+      "original_ghidra_name": "FUN_00bd9210",
+      "native_abi": "ECX actual manager; low byte of stack DWORD; AL copied byte, upper EAX unestablished; RET4",
+      "contracts": [
+        "Copy stack DWORD low byte to actual+20, retaining arbitrary byte values; no counter read/write."
+      ],
+      "coverage": "complete source body over actual storage, strict TU compiled, focused fixture passed",
+      "ghidra_annotation_applied": false
+    },
+    {
+      "address": "00bd9220",
+      "inclusive_end": "00bd922a",
+      "byte_count": 11,
+      "sha256": "fcf311d43d0c45ac9259462fb1d5e0d121123505c3fd1734b3100bd8649d503c",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00bd9220.txt",
+      "evidence_sha256": "a4562df2347ed922a9e33635da13a465556fd948add8be5c705b63d830231149",
+      "direct_calls": [],
+      "source_file": "src/native_pak_registry_block_helpers.cpp",
+      "source_symbol": "recompute_native_vfs_block_active_00bd9220",
+      "proposed_ghidra_name": "BSP_VfsProviderManager_RecomputeBlockActiveByte",
+      "original_ghidra_name": "FUN_00bd9220",
+      "native_abi": "ECX actual manager; AL signed-positive result, upper EAX unestablished; RET",
+      "contracts": [
+        "Read current actual DWORD+1C; byte+20=(0<count<80000000h); no counter write."
+      ],
+      "coverage": "complete source body over actual storage, strict TU compiled, focused fixture passed",
+      "ghidra_annotation_applied": false
+    },
+    {
+      "address": "00bd9fa0",
+      "inclusive_end": "00bd9fab",
+      "byte_count": 12,
+      "sha256": "a2ee6f94a4e6c564286a0b7a59b3c9cf08ed11ff8ce0b5eae2a2d0ff036470f2",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00bd9fa0.txt",
+      "evidence_sha256": "b989993faf7254907a15aaab483282ec04b2766f96b03f02b25c61f67e8bfbd3",
+      "direct_calls": [],
+      "source_file": "src/native_pak_registry_block_helpers.cpp",
+      "source_symbol": "increment_native_vfs_block_count_00bd9fa0",
+      "proposed_ghidra_name": "BSP_VfsProviderManager_IncrementBlockCount",
+      "original_ghidra_name": "FUN_00bd9fa0",
+      "native_abi": "ECX actual manager; EAX1; RET",
+      "contracts": [
+        "Wrapping DWORD+1C increment; unconditionally store byte+20=1, including zero/negative resulting counts."
+      ],
+      "coverage": "complete source body over actual storage, strict TU compiled, focused fixture passed",
+      "ghidra_annotation_applied": false
+    }
+  ],
+  "support_spans": [
+    {
+      "address": "00cc43c8",
+      "inclusive_end": "00cc43d1",
+      "byte_count": 10,
+      "sha256": "3edfff6894a341031cd68979dd8045b2f7a2216f3b9984cf028891e3e342b423",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00cc43c8.txt",
+      "evidence_sha256": "6844bed0f1b6a6fd7b2e5c2ae9427951769ea5a354d208edeb3ce0a1cee451e7"
+    },
+    {
+      "address": "00dfdcbc",
+      "inclusive_end": "00dfdcdf",
+      "byte_count": 36,
+      "sha256": "f78df66aef9e3221a00dd6cecbfedb2a73afbf1893ff3b43240eb3f50d575e29",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00dfdcbc.txt",
+      "evidence_sha256": "a2a97a48edaa6156c9e8791cf5aa413baf5f74234d5e039e16cb74ea707de035"
+    },
+    {
+      "address": "00dfdcb4",
+      "inclusive_end": "00dfdcbb",
+      "byte_count": 8,
+      "sha256": "9b94e615cd5a44bc9df6d95c90885b41f38da4666cb47ea522068a83bcf3bacd",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00dfdcb4.txt",
+      "evidence_sha256": "2e77feb839145ebaf6b85413d2a62d83d86ceb2d0e31dd2ba8bbcf56f15fcc3e"
+    },
+    {
+      "address": "00cc43c0",
+      "inclusive_end": "00cc43c7",
+      "byte_count": 8,
+      "sha256": "5760fbe0ee2858a81a41cb0f73ebb8b45693e7be9bbc6b5c3df97ba1ead17a0d",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00cc43c0.txt",
+      "evidence_sha256": "f46494ff329592a686915609e45112ef5f46c8268c9081eb6780449552f86c53"
+    },
+    {
+      "address": "00ceba84",
+      "inclusive_end": "00ceba89",
+      "byte_count": 6,
+      "sha256": "4623edb30de596aa2307f690abf5f43db4f76e98bb539c494d6899c1bfc809b1",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_block_helpers_bn/00ceba84.txt",
+      "evidence_sha256": "da3b9d8db30e086e7388729e4350c7ec852757f5b2a1060d9b6cc0a4e050999e"
+    }
+  ],
+  "byte_parity_totals": {
+    "routines": 5,
+    "routine_bytes": 289,
+    "support_spans": 5,
+    "support_bytes": 68,
+    "all_matches": true,
+    "direct_calls_in_complete_bodies": 7
+  },
+  "fh3": {
+    "function": "00bb5670",
+    "handler": "00cc43c8",
+    "handler_target": "00bf6b43",
+    "func_info": "00dfdcbc",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00dfdcb4",
+    "try_blocks": 0,
+    "flags": 1,
+    "unwind_entries": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cc43c0",
+        "decoded_action": "LEA ECX,[EBP-14h]; JMP0041DD20"
+      }
+    ],
+    "suffix_cleanup_armed_at": "00bb56d2",
+    "normal_disarm_at": "00bb56e5",
+    "source_transport": "catch/rethrow around completed suffix plus existing concat output cleanup; NativeStringStorage release is noexcept",
+    "limits": "Native FH3 registration, register/stack identities, hardware SEH and raw current-pool getter failures are not reproduced."
+  },
+  "dependencies": [
+    {
+      "entry": "00426060",
+      "source": "native_pooled_string_substring",
+      "role": "Complete existing source for equivalent inline BB5719..BB5746 copy-construction schedule; not an additional native direct call."
+    },
+    {
+      "entry": "0041e870",
+      "source": "native_physical_file_date",
+      "role": "Actual suffix cstring construction."
+    },
+    {
+      "entry": "004261a0",
+      "source": "native_physical_file_date",
+      "role": "Actual left/output/right concat and its existing output cleanup."
+    },
+    {
+      "entry": "0041dd20",
+      "source": "native_string",
+      "role": "Current native suffix header destruction; preserves header contents."
+    },
+    {
+      "entry": "0041dd40",
+      "source": "native_string",
+      "role": "Current actual-header resize behind copy and concat."
+    },
+    {
+      "entries": [
+        "00419cc0",
+        "00bd1510"
+      ],
+      "source": "NativeStringStorage",
+      "role": "Existing explicit bound storage boundary; this packet does not add raw pool singleton composition."
+    },
+    {
+      "entries": [
+        "00bf9440",
+        "00bf7680"
+      ],
+      "source": "host CRT and existing raw string helpers",
+      "role": "First case-sensitive strstr and existing header-copy semantics; unsupported overlap/omitted zero-byte calls remain boundaries."
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_pak_registry_block_helpers.hpp": "e1cadaaeb42cdd267539f347c3bec498bd386e563f4022db26ea2d8bd3d32acc",
+    "src/native_pak_registry_block_helpers.cpp": "582e92fd4f221f783b98503a0b0973e9e69b6901517e4e811110f93c6aad5dec",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_physical_file_date.hpp": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+    "src/native_physical_file_date.cpp": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+    "include/bsp/native_pooled_string_substring.hpp": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+    "src/native_pooled_string_substring.cpp": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+  },
+  "dependency_sources_match_primary_at_evidence_capture": {
+    "include/bsp/native_string.hpp": true,
+    "src/native_string.cpp": true,
+    "include/bsp/native_physical_file_date.hpp": true,
+    "src/native_physical_file_date.cpp": true,
+    "include/bsp/native_pooled_string_substring.hpp": true,
+    "src/native_pooled_string_substring.cpp": true
+  },
+  "dependency_source_primary_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910",
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "target": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict /Iinclude /c",
+      "source": "src/native_pak_registry_block_helpers.cpp"
+    },
+    "focused_actual_header_fixture": {
+      "passed": true,
+      "permanent_test_added": false,
+      "source": "local/pak_block_helpers_bn/probe.cpp",
+      "coverage": [
+        "first occurrence versus later suffix",
+        "case sensitivity",
+        "length4/no-match",
+        "null input data",
+        "both input/output identity branches",
+        "current source header changed during allocation",
+        "exact append allocation/release order",
+        "suffix construction failure without cleanup",
+        "concat initial-copy failure with suffix-only cleanup",
+        "concat append failure with output then suffix cleanup and stale header preservation",
+        "counter wrapping and signed boundaries",
+        "increment unconditional byte1",
+        "arbitrary setter low byte and surrounding storage preservation"
+      ],
+      "link": "/MACHINE:X86 /MANIFEST:EMBED /OPT:REF /OPT:ICF; fresh helper object plus frozen existing bsp_core.lib",
+      "pass_line": "PASS: actual headers, first-match/length4/case/identity, current copy reads, allocation/EH order, wrapping VFS storage"
+    },
+    "frozen_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "frozen": "local/pak_block_helpers_bn/bsp_core_orchestrator_frozen.lib",
+      "sha256": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "source_copy_source_hashes_agreed": true,
+      "boundary": "Existing primary artifact was frozen; matching current dependency source files do not reconstruct its entire build provenance."
+    },
+    "historical_main_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "frozen": "local/pak_block_helpers_bn/bsp_core_frozen.lib",
+      "sha256": "9BBAAF4D8A33F77388C2A8CFB41FA1A89E74744B7409CE8D8D8DDC243E4DDCC8",
+      "use": "Earlier fixture run only; retained distinct copy, receipt, compile script/log and executable. Final validation uses intended orchestrator library above."
+    },
+    "ignored_artifact_sha256": {
+      "local/pak_block_helpers_bn/probe.cpp": "d8ce4f118e83061d582ca656e8c127e780fe04bae3276bd24c60612f94d0eb75",
+      "local/pak_block_helpers_bn/compile.ps1": "a0c89f8a32fca041d0ebd5ea23d753040180a76e6bdc7bd3f62efdcbde46ed9d",
+      "local/pak_block_helpers_bn/compile.log": "f2a1d538221d5ad82394d6f9442b301b401b78d180d7f5ecfba572f85f497254",
+      "local/pak_block_helpers_bn/helpers.obj": "d01fa8a15360a532d1aa112998a2c82b7293a74904d6ffc7df7954e33362ef6d",
+      "local/pak_block_helpers_bn/probe.exe": "7de66c78b39e7d1435e1f23f52a99710b1581753686b0063f10fb13ec66b2e24",
+      "local/pak_block_helpers_bn/bsp_core_orchestrator_frozen.lib": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "integrated_build_run": false,
+    "native_original_differential_execution": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "integration_contract": [
+    "Include native_pak_registry_block_helpers.hpp and add only its source TU to the primary build.",
+    "Observers BB5770/BB5910 must reload actual0109CEEC separately before each of these manager calls.",
+    "Use actual8h header storage and NativeStringStorage; retain observer-owned mutable headers across nested resolver lifetime.",
+    "Primary integrator owns annotation/comments and address ledgers; suggested names are descriptive hypotheses.",
+    "BB5770, BB5910, BE0750, VFS gate-list, FileBlock lifecycle and production observer/runtime composition remain separate."
+  ],
+  "known_unknowns": [
+    "No native calling-convention bridge; void leaf interfaces omit AL/EAX residue even though storage effects are complete.",
+    "No native hardware-FH3/SEH or unsupported raw-pool failure equivalence claim.",
+    "The existing string dependency domain requires valid supported buffers; it omits zero-byte copies and does not establish all native overlapping memcpy behavior.",
+    "No projected manager, registry callback implementation, ledger/CMake/runtime mutation or complete game build was added by this worker."
+  ],
+  "primary_call_schema_correction": {
+    "original_whole_report_rows": 0,
+    "corrected_direct_rows": 7,
+    "source_changed": false,
+    "ghidra_changed": false,
+    "worker_preimage": "local/native_pak_block_helpers_bn_worker_preimage.json",
+    "worker_preimage_sha256": "94fc6614ef7b3b23ea54c5140e11b6579a8ff9b41b530fb26cce57407d8a432b",
+    "reason": "Use address/native/function fields so the whole-report verifier checks each recorded native CALL."
+  }
+}

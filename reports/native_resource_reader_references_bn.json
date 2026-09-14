@@ -1,0 +1,458 @@
+{
+  "packet": "orch4_native_resource_reader_references_bn",
+  "generated_utc": "2026-09-14T07:07:49.750677+00:00",
+  "worker_base_commit": "48b9789f677cd17bb2a51129b3b43ce864622b70",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Fresh bytes/proto/flow/disasm through tools/bsp.py ghidra; Client.verify before each live batch, autostart disabled; no inline querying or writes",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00bf09a0",
+      "start": "00bf09a0",
+      "inclusive_end": "00bf09af",
+      "byte_count": 16,
+      "sha256": "585eb39d0eb0963eb6c38bed4169fd672f7a11cb3c682b0f69e817c5bda8416b",
+      "native_abi": "ECX actual10h reader; EAX original reader; RET",
+      "actual_layout": "reader+0/+4/+8/+C DWORDs",
+      "source_symbol": "bsp::construct_native_resource_reader_00bf09a0",
+      "source_file": "src/native_resource_reader_references.cpp",
+      "source_status": "complete_actual_storage_body_new_cpp_interface",
+      "live_pe_bytes_match": true,
+      "live_pe_instruction_boundaries_match": true,
+      "instruction_count": 7,
+      "listed_body_gap_count": 0,
+      "direct_call_count": 0,
+      "indirect_call_count": 0,
+      "live_bytes_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\bytes_00bf09a0.txt",
+        "bytes": 77,
+        "sha256": "fe0c93d434b4dfe2e5892c8f24c33a8e75c940de98a295e760fdf01b0b6ad522"
+      },
+      "live_listing_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\disasm_00bf09a0.txt",
+        "bytes": 226,
+        "sha256": "c1edb5eb68a3c5cb164943cf1a1ee217e14a7f30c091edf6c63a24f428b3699f"
+      }
+    },
+    {
+      "address": "00bf0430",
+      "start": "00bf0430",
+      "inclusive_end": "00bf0468",
+      "byte_count": 57,
+      "sha256": "ed862bb9f36184e7b431951a72e753c3872da117d86073c6edced85eac13140c",
+      "native_abi": "ECX reader; stack new stream; RET4; no stable return contract",
+      "actual_layout": "reader+0 DWORD; new and captured old stream+4 LONG; current old+0 table and slot0 at zero",
+      "source_symbol": "bsp::assign_native_resource_reader_stream_00bf0430",
+      "source_file": "src/native_resource_reader_references.cpp",
+      "source_status": "complete_actual_storage_body_new_cpp_interface",
+      "live_pe_bytes_match": true,
+      "live_pe_instruction_boundaries_match": true,
+      "instruction_count": 24,
+      "listed_body_gap_count": 0,
+      "direct_call_count": 0,
+      "indirect_call_count": 3,
+      "live_bytes_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\bytes_00bf0430.txt",
+        "bytes": 280,
+        "sha256": "966fa159533ece857540e1947cea82c67d1cc5af394c54b96417e054463f8572"
+      },
+      "live_listing_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\disasm_00bf0430.txt",
+        "bytes": 674,
+        "sha256": "ada965c76990d2b65fbbc555bde78eb5ceaecda6d3d1f6665856af4ded5c0e9e"
+      }
+    },
+    {
+      "address": "00be9ed0",
+      "start": "00be9ed0",
+      "inclusive_end": "00be9ef8",
+      "byte_count": 41,
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "native_abi": "ECX actual4h handle; RET; no stable return contract",
+      "actual_layout": "captured EDI slot; captured ESI owner+4 LONG; current owner+0 table and slot0 at zero",
+      "source_symbol": "bsp::release_native_structured_node_handle_00be9ed0",
+      "source_file": "src/native_resource_reader_references.cpp",
+      "source_status": "complete_actual_storage_body_new_cpp_interface",
+      "live_pe_bytes_match": true,
+      "live_pe_instruction_boundaries_match": true,
+      "instruction_count": 19,
+      "listed_body_gap_count": 0,
+      "direct_call_count": 0,
+      "indirect_call_count": 2,
+      "live_bytes_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\bytes_00be9ed0.txt",
+        "bytes": 203,
+        "sha256": "b4b78f73e2953f8e99e5c4922cb89ef69853b3b1fe609e16760fee7851732379"
+      },
+      "live_listing_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\disasm_00be9ed0.txt",
+        "bytes": 507,
+        "sha256": "78285c2051b01a167c5c90ec7a083802d73e487ca353d33c65b3be76da5c54bf"
+      }
+    },
+    {
+      "address": "00483850",
+      "start": "00483850",
+      "inclusive_end": "0048387a",
+      "byte_count": 43,
+      "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+      "native_abi": "ECX actual4h resource slot; EAX captured slot; RET",
+      "actual_layout": "captured ESI slot; captured EDI owner+4 LONG; current owner+0 table and slot0 at zero",
+      "source_symbol": "bsp::release_native_resource_slot_00483850",
+      "source_file": "src/native_resource_reader_references.cpp",
+      "source_status": "complete_actual_storage_body_new_cpp_interface",
+      "live_pe_bytes_match": true,
+      "live_pe_instruction_boundaries_match": true,
+      "instruction_count": 20,
+      "listed_body_gap_count": 0,
+      "direct_call_count": 0,
+      "indirect_call_count": 2,
+      "live_bytes_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\bytes_00483850.txt",
+        "bytes": 211,
+        "sha256": "5f2cee62a6f997ef29e57ddb729d4c27a88344c07100058d224137386d2b05db"
+      },
+      "live_listing_evidence": {
+        "path": "local\\native_resource_reader_references_bn\\disasm_00483850.txt",
+        "bytes": 531,
+        "sha256": "6ea5cf01b268dc7f495143abdbf6e531980eb0415dd683904492325ec16fdbfb"
+      }
+    }
+  ],
+  "direct_call_rows": [],
+  "indirect_call_rows": [
+    {
+      "address": "00bf0445",
+      "function": "00bf0430",
+      "bytes": "ff 15 1c 22 ce 00",
+      "instruction": "CALL dword ptr [0x00ce221c]",
+      "kind": "indirect_import",
+      "native": "iat:00ce221c",
+      "iat": "00ce221c",
+      "imported_dll": "KERNEL32.dll",
+      "imported_name": "InterlockedIncrement",
+      "contract": "stdcall actual captured referent+4 LONG pointer; EAX new signed count",
+      "source_dependency": "InterlockedIncrement"
+    },
+    {
+      "address": "00bf0453",
+      "function": "00bf0430",
+      "bytes": "ff 15 20 22 ce 00",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "kind": "indirect_import",
+      "native": "iat:00ce2220",
+      "iat": "00ce2220",
+      "imported_dll": "KERNEL32.dll",
+      "imported_name": "InterlockedDecrement",
+      "contract": "stdcall actual captured referent+4 LONG pointer; EAX new signed count",
+      "source_dependency": "InterlockedDecrement"
+    },
+    {
+      "address": "00bf0463",
+      "function": "00bf0430",
+      "bytes": "ff d0",
+      "instruction": "CALL EAX",
+      "kind": "indirect_virtual",
+      "native": "captured-owner+vtable0",
+      "contract": "Current table/slot0 read only after decrement returned zero; ECX=captured owner, EDX=captured table; no stack args; ignored result",
+      "source_dependency": "NativeAdoptedSubstreamDispatch::source_zero_reference"
+    },
+    {
+      "address": "00be9ede",
+      "function": "00be9ed0",
+      "bytes": "ff 15 20 22 ce 00",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "kind": "indirect_import",
+      "native": "iat:00ce2220",
+      "iat": "00ce2220",
+      "imported_dll": "KERNEL32.dll",
+      "imported_name": "InterlockedDecrement",
+      "contract": "stdcall actual captured referent+4 LONG pointer; EAX new signed count",
+      "source_dependency": "InterlockedDecrement"
+    },
+    {
+      "address": "00be9eee",
+      "function": "00be9ed0",
+      "bytes": "ff d0",
+      "instruction": "CALL EAX",
+      "kind": "indirect_virtual",
+      "native": "captured-owner+vtable0",
+      "contract": "Current table/slot0 read only after decrement returned zero; ECX=captured owner, EDX=captured table; no stack args; ignored result",
+      "source_dependency": "NativeAdoptedSubstreamDispatch::source_zero_reference"
+    },
+    {
+      "address": "0048385e",
+      "function": "00483850",
+      "bytes": "ff 15 20 22 ce 00",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "kind": "indirect_import",
+      "native": "iat:00ce2220",
+      "iat": "00ce2220",
+      "imported_dll": "KERNEL32.dll",
+      "imported_name": "InterlockedDecrement",
+      "contract": "stdcall actual captured referent+4 LONG pointer; EAX new signed count",
+      "source_dependency": "InterlockedDecrement"
+    },
+    {
+      "address": "0048386e",
+      "function": "00483850",
+      "bytes": "ff d0",
+      "instruction": "CALL EAX",
+      "kind": "indirect_virtual",
+      "native": "captured-owner+vtable0",
+      "contract": "Current table/slot0 read only after decrement returned zero; ECX=captured owner, EDX=captured table; no stack args; ignored result",
+      "source_dependency": "NativeAdoptedSubstreamDispatch::source_zero_reference"
+    }
+  ],
+  "local_conditional_branches": [
+    {
+      "address": "00bf0439",
+      "function": "00bf0430",
+      "bytes": "74 2a",
+      "instruction": "JZ 0x00bf0465",
+      "kind": "local_conditional_branch",
+      "target": "00bf0465"
+    },
+    {
+      "address": "00bf043f",
+      "function": "00bf0430",
+      "bytes": "74 0a",
+      "instruction": "JZ 0x00bf044b",
+      "kind": "local_conditional_branch",
+      "target": "00bf044b"
+    },
+    {
+      "address": "00bf044d",
+      "function": "00bf0430",
+      "bytes": "74 16",
+      "instruction": "JZ 0x00bf0465",
+      "kind": "local_conditional_branch",
+      "target": "00bf0465"
+    },
+    {
+      "address": "00bf045b",
+      "function": "00bf0430",
+      "bytes": "75 08",
+      "instruction": "JNZ 0x00bf0465",
+      "kind": "local_conditional_branch",
+      "target": "00bf0465"
+    },
+    {
+      "address": "00be9ed8",
+      "function": "00be9ed0",
+      "bytes": "74 1c",
+      "instruction": "JZ 0x00be9ef6",
+      "kind": "local_conditional_branch",
+      "target": "00be9ef6"
+    },
+    {
+      "address": "00be9ee6",
+      "function": "00be9ed0",
+      "bytes": "75 08",
+      "instruction": "JNZ 0x00be9ef0",
+      "kind": "local_conditional_branch",
+      "target": "00be9ef0"
+    },
+    {
+      "address": "00483858",
+      "function": "00483850",
+      "bytes": "74 1c",
+      "instruction": "JZ 0x00483876",
+      "kind": "local_conditional_branch",
+      "target": "00483876"
+    },
+    {
+      "address": "00483866",
+      "function": "00483850",
+      "bytes": "75 08",
+      "instruction": "JNZ 0x00483870",
+      "kind": "local_conditional_branch",
+      "target": "00483870"
+    }
+  ],
+  "returns": [
+    {
+      "address": "00bf09af",
+      "function": "00bf09a0",
+      "bytes": "c3",
+      "instruction": "RET",
+      "kind": "return",
+      "stack_argument_bytes": 0
+    },
+    {
+      "address": "00bf0466",
+      "function": "00bf0430",
+      "bytes": "c2 04 00",
+      "instruction": "RET 0x4",
+      "kind": "return",
+      "stack_argument_bytes": 4
+    },
+    {
+      "address": "00be9ef8",
+      "function": "00be9ed0",
+      "bytes": "c3",
+      "instruction": "RET",
+      "kind": "return",
+      "stack_argument_bytes": 0
+    },
+    {
+      "address": "0048387a",
+      "function": "00483850",
+      "bytes": "c3",
+      "instruction": "RET",
+      "kind": "return",
+      "stack_argument_bytes": 0
+    }
+  ],
+  "external_jump_rows": [],
+  "local_eh_actions": [],
+  "ordinary_behavior": {
+    "construction": "Zero actual reader words 0/4/8/C in order, return original base; no release",
+    "assignment": "Capture old; equal pointers do nothing; publish new, increment new if nonnull, then decrement captured old if nonnull; current virtual0 only at zero; no later reader write",
+    "slot_release": "Capture slot and pointee; null does not write; otherwise decrement captured pointee, call current virtual0 at zero, then clear captured slot after normal return, including callback replacement; 483850 returns captured slot",
+    "terminal_call": "Reuse source_zero_reference; ECX=captured owner and EDX=current captured table; read current slot0 only at zero; no assumed concrete numeric-profile destructor",
+    "source_exception_behavior": "No catch or cleanup; completed reference/publication and callback writes persist; a throwing terminal skips the slot clear; no rollback or retry"
+  },
+  "dependency_contracts": {
+    "interlocked": "Real Win32 InterlockedIncrement/Decrement on aligned actual referent+4 LONG",
+    "terminal_dispatch": "Existing NativeAdoptedSubstreamDispatch::source_zero_reference; callable adapter only for actual host-callable entries, numeric profiles require reconstructed routing",
+    "actual_storage": "Live 10h reader and 4h slots, 32-bit pointers, valid aligned reference storage; current table must be readable only for a zero decrement; slot must survive any normal-return callback until its clear; ordinary pointer words are not made atomic",
+    "concrete_resource_owner": "718C20 -> 718810 -> B88430 and resource cache removal remain missing/gated; leaf reconstruction does not make that owner callable"
+  },
+  "source_and_dependency_artifacts": [
+    {
+      "path": "include\\bsp\\native_resource_reader_references.hpp",
+      "bytes": 2195,
+      "sha256": "f1d87cf080877afc8a4e8c690147c22a21fbfeac0786897d913e3604403d3fc3"
+    },
+    {
+      "path": "src\\native_resource_reader_references.cpp",
+      "bytes": 2504,
+      "sha256": "9255ab57bdccb91ab0b071f5c23e68d601352cf108677ceed520647a09c73e5d"
+    },
+    {
+      "path": "docs\\NATIVE_RESOURCE_READER_REFERENCES_BN.md",
+      "bytes": 6648,
+      "sha256": "006568df0fe61d6c9098d92588e0d0c4b60cc58413bb0225ba7046e5e5975ee6"
+    },
+    {
+      "path": "include\\bsp\\native_adopted_substream.hpp",
+      "bytes": 4690,
+      "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8"
+    },
+    {
+      "path": "src\\native_adopted_substream.cpp",
+      "bytes": 9011,
+      "sha256": "cc290d6afb33d1e3ee42455b2aa7a327e1c34d5eb12e3903f82c13caed15985a"
+    }
+  ],
+  "validation": {
+    "strict_msvc_win32_tu": "passed /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "fixture_output": "PASS actual 10h reader/4h slots: publication-retain-release, same pointer, null, zero-only dispatch, ECX/EDX, callback replacement and failure order",
+    "fixture_scope": "One ignored actual10h/4h reference-order fixture with actual callable ECX/EDX adapter, callback replacement and C++ throw effects; no original-body execution",
+    "live_pe_audit": "4 full spans/157 bytes/70 instruction boundaries match; zero listed gaps; all 7 indirect sites identified from matching live listing and PE import table",
+    "whole_report_verifier": {
+      "tool": "tools/verify_report_calls.py",
+      "direct_rows_checked": 0,
+      "failed": 0,
+      "indirect_rows_explicitly_skipped": 7,
+      "limitation": "All calls here are indirect; independently validated complete live listing/PE bytes and import directory establish those 7 site contracts"
+    },
+    "retained_artifacts": [
+      {
+        "path": "local\\native_resource_reader_references_bn\\audit.py",
+        "bytes": 12467,
+        "sha256": "77d074f2aeb6c17ea161749c04481a3feaa02833a64107fac4893f772f936af3"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\compile.cmd",
+        "bytes": 811,
+        "sha256": "7fbcb616c3f5aaac614cdf8407734a25c3862bc0dba1a3833e6c923ea8b43283"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\compile.txt",
+        "bytes": 50,
+        "sha256": "aa0738040d43df6ce9e43109e52f8fd2f6bff68efbc6e864d934fe974c85b2a6"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\native_resource_reader_references.obj",
+        "bytes": 2224,
+        "sha256": "fadb04b059d017f37b4f9eeb14217fb0b0f97bf53e324dde467679a6bb6b1548"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\probe.cpp",
+        "bytes": 3901,
+        "sha256": "92143dbd46a953dcda8c5ce815ab23357ee604836ba43d13a96b8df012754242"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\probe.obj",
+        "bytes": 6500,
+        "sha256": "e644abca4a12b49a2edac505accd5a79f3fe873c036ec96fa5966fb6eddc183d"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\probe.exe",
+        "bytes": 13824,
+        "sha256": "201e3fe5f373446273d1b88f1e4d4c102d7b9d16508e9cf8004ae214ba9ac018"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\probe.txt",
+        "bytes": 150,
+        "sha256": "b08425d7bc230e90d429804c2efdec80ae14ebec5175230731f957cbdfb1be46"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\proto.txt",
+        "bytes": 3099,
+        "sha256": "76be96a164f285bbc20610949c955995129b91ebb37d11aa3f2c6d4c3f07eaee"
+      },
+      {
+        "path": "local\\native_resource_reader_references_bn\\flow.txt",
+        "bytes": 259,
+        "sha256": "59681c1b588042f2cb05e191ff7dfe9bec300b686b06084c8482b6674b308ca9"
+      },
+      {
+        "path": "local/native_resource_reader_references_bn/verify_report_calls.txt",
+        "bytes": 665,
+        "sha256": "633e7c168920a0c51466c4c88702bc3aa20eb7e80b0755ff048bc68c7e0d1dab"
+      }
+    ],
+    "fixture_link": "/link /MANIFEST:EMBED; safe executable name probe.exe",
+    "frozen_library": {
+      "original_source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "copied_from": "J:/PROG/battlestations-pacific-decompile-orch4-fileblock-identifier-bm/local/native_fileblock_identifier_bm/bsp_core.frozen.lib",
+      "path": "local\\native_resource_reader_references_bn\\bsp_core.frozen.lib",
+      "bytes": 57996726,
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251",
+      "original_freeze_evidence": "reports/native_fileblock_identifier_bm.json at eaec86e6356471a43f2cc9bb84c976b84bb26d60",
+      "adapter_source_unchanged_between_original_packet_base_and_worker_base": true,
+      "source_hash_before_copy_and_destination_hash_checked": true
+    },
+    "repository_build": "Not run in worker; TU is unregistered and primary owns combined integration/build",
+    "native_binary_abi_compatible": false,
+    "original_body_differential_tested": false,
+    "game_validated": false
+  },
+  "uncertainty_and_limits": [
+    "Unknown terminal-failure ownership: skipped clear does not prove the referent survived or remains owned",
+    "No native CRT/FH3 exception interoperability or hardware-fault/invalid-storage proof",
+    "No full reader teardown, structured-node terminal, concrete game-resource destructor, manager or root dispatch",
+    "No arbitrary native compiler-stack aliases, concurrent pointer mutation, or whole-engine lifetime proof",
+    "Descriptive source names are hypotheses; Ghidra prototypes are incomplete and assembly establishes register ABI"
+  ],
+  "ghidra_mutations": [],
+  "body_repairs_required_for_owned_bodies": [],
+  "owned_files": [
+    "include/bsp/native_resource_reader_references.hpp",
+    "src/native_resource_reader_references.cpp",
+    "docs/NATIVE_RESOURCE_READER_REFERENCES_BN.md",
+    "reports/native_resource_reader_references_bn.json"
+  ]
+}
