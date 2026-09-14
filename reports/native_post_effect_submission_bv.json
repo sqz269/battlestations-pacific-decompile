@@ -1,0 +1,218 @@
+{
+  "packet": "orch3_post_effect_submission_bv_primary",
+  "status": "getter_source_reconstructed_committed_build_pending",
+  "source_parent_commit": "2c4fa5b7ba93a0639b3739e59107db161b7ad7ee",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 1,
+  "proposed_native_bytes": 7,
+  "completed_source": [
+    {
+      "address": "00b6fde0",
+      "inclusive_end": "00b6fde6",
+      "bytes": 7,
+      "source_name": "get_native_camera_viewport_00b6fde0",
+      "original_abi": "ECX actual camera; no stack arguments; EAX current borrowed pointer at +180h; RET; no ownership effect."
+    }
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "name": "getter",
+      "address": "00b6fde0",
+      "bytes": 7,
+      "inclusive_end": "00b6fde6",
+      "sha256": "569ab28f82993f07287833ff42b4deea118c1d42dd7987fabf11244144d9393e",
+      "live_PE_equal": true
+    },
+    {
+      "name": "unimplemented_submission",
+      "address": "00b4def0",
+      "bytes": 177,
+      "inclusive_end": "00b4dfa0",
+      "sha256": "d5d2cf887f1c62a6b7be73a8c279da8b7a9683e98776f903d3ce76b1d49065f7",
+      "live_PE_equal": true
+    },
+    {
+      "name": "unlisted_pass_wrapper",
+      "address": "00b454d0",
+      "bytes": 15,
+      "inclusive_end": "00b454de",
+      "sha256": "73a42931d4f4d385cbf29137d38a8c5ed4a17d34a9c11f217f5331b2636c84d8",
+      "live_PE_equal": true
+    },
+    {
+      "name": "pass_profile",
+      "address": "00d61be8",
+      "bytes": 12,
+      "inclusive_end": "00d61bf3",
+      "sha256": "a4e2528600ce20595019e1b537e6c517a62ee6e08ef00f344d1ffc8510b6d5f5",
+      "live_PE_equal": true
+    },
+    {
+      "name": "renderer_slots_98_a4",
+      "address": "00d5f140",
+      "bytes": 16,
+      "inclusive_end": "00d5f14f",
+      "sha256": "7a7d69d1552de0e02392e5bb21352ae5da9b916affa017d8e174fd8327b57b95",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_size_slots",
+      "address": "00d619bc",
+      "bytes": 8,
+      "inclusive_end": "00d619c3",
+      "sha256": "6f9e1b939db1bc8b5c044a73135f5a55d5faa1f04f34fbf85772916f8dea63d6",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b4defd",
+      "native": "00b1f6d0",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df09",
+      "native": "00b1f6d0",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df17",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df22",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df34",
+      "native": "00b6fde0",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df3b",
+      "native": "00b1f940",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df52",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df5f",
+      "native": "00b6fde0",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df6d",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df81",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    },
+    {
+      "address": "00b4df98",
+      "native": "current_profile_indirect",
+      "function": "00b4def0",
+      "contract": "Exact native schedule for the still-unimplemented submission; see packet document."
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_post_effect_submission.hpp": "d02c2462b9b31f49a94c1d22965fd27ce2619301d285fd4cf41dc42a0bb53736",
+    "src/native_post_effect_submission.cpp": "98923f8ae97437b0e5f931c2819ca0614f2ef48ff95e46883943946e855e9745"
+  },
+  "review": {
+    "author": "errored Astra BV worker; primary adopted unchanged source",
+    "independent_reviewer": "primary integrator",
+    "complete_getter_header_source_native_listing_reviewed": true,
+    "remaining_blocking_getter_findings": [],
+    "worker_terminal": "Agent errored at usage limit; no worker commit/final report/final input stamp. Worker build log ends with one passing CTest; this is not an exact committed validation.",
+    "copied_worker_artifacts": {
+      "local/bv-worker/bv-build-inputs-during.json": "ccdf235b46dc998f303bb4d428053d363adc738141399ccea7426d582fbff969",
+      "local/bv-worker/bv-build.log": "81ef11659ed61e58d43633fcb85d428e969749f042d95e042d6a162f12f5fad7",
+      "local/bv-worker/bv-current-main-provider-check.json": "44a27c2c7f5393aa93b05a706384da0da1b87af95e5d3834030d6ab1556c5c39",
+      "local/bv-worker/bv-dispatch-source-hits.txt": "29688a7d21966f085d22db2aefbd5dab4e53596333acce2f23c2ad199e21a4f1",
+      "local/bv-worker/bv-draw-provider-hits.txt": "33fdf5b4375d674ec41771763bcd96f8978e751f21aaeeca9d3ee9fb594a7045",
+      "local/bv-worker/bv-effect-provider-hits.txt": "93754f9df52c56f8d33f792f36e71718858eb8f6236017a3ed2ce593c39e14a8",
+      "local/bv-worker/bv-main-provider-search.txt": "33fdf5b4375d674ec41771763bcd96f8978e751f21aaeeca9d3ee9fb594a7045",
+      "local/bv-worker/bv-main-source-delta.txt": "8773d133235bc4da3ebc59b10afac224aac015d6f23110cb43dba38e514f0950",
+      "local/bv-worker/bv-nested-effect-hits.txt": "7feb77ae85b75d8db577c92551d2c4872688dff37c55b95a1c2d05619bcf7281",
+      "local/bv-worker/bv-parent-tail.txt": "9ad9fc62747b597d7f248c7fb25b9e41aa3320701885deee7b5bb2ded291166c",
+      "local/bv-worker/bv-pass-draw-provider.txt": "9db791ca6c35dee6e4b789eaed3183939b77d39a7e6bbe4a24907594f852d1bb",
+      "local/bv-worker/bv-queue-hits.txt": "fda7bdb6ab47c93d1e99c4f9f3328faf19b1e74fe5b2db6c2cfcf2849d7b25b9",
+      "local/bv-worker/bv-renderer-provider-hits.txt": "9323750d530ef9aeb9bd4de9cde1619ffaf98c9c44c5d616570e32153af4e6cd",
+      "local/bv-worker/bv-retained-proof-hits.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "frontier": {
+    "submission_address": "00b4def0",
+    "submission_bytes": 177,
+    "source_implemented": false,
+    "pass_wrapper_address": "00b454d0",
+    "pass_wrapper_bytes": 15,
+    "unlisted": true,
+    "wrapper_call_site": "00b454d7",
+    "wrapper_callee": "00b44750",
+    "geometry_provider": {
+      "address": "00b44750",
+      "inclusive_end": "00b44b03",
+      "bytes": 948,
+      "status": "semantic fragments only"
+    },
+    "nested_draw_provider": {
+      "address": "00b43410",
+      "inclusive_end": "00b43667",
+      "bytes": 600,
+      "status": "semantic fragments only"
+    },
+    "actual_storage_provider_missing": true,
+    "current_main_read_only_search_rechecked": true,
+    "current_main_head": "32dd35290e645c74a4af57f8eb87af751b2a44de",
+    "explicit_non_credit": [
+      "00b4def0",
+      "00b454d0",
+      "00b44750",
+      "00b43410"
+    ]
+  },
+  "validation": {
+    "build": "pending exact primary committed build",
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "submission_executed": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Only the seven-byte camera viewport getter is implemented; the native submission schedule is evidence for future dependency work.",
+    "No actual-pass/raw28h-entry geometry/draw provider, callback substitute, binary ABI, exception or game validation is claimed."
+  ]
+}
