@@ -94,29 +94,23 @@ void append(Array& a,const Record& source,NativeStringStorage& strings,ArrayOper
     if(op.current_record)copy_native_compiled_shader_constant_00b38310(op.current_record,source,strings);
     ++a.count_04;op.initialized_rows=1;op.current_record=nullptr;parent.current_copy_source=nullptr;
 }
-void release_section(SystemSingletonCriticalSection* section) noexcept {
-    if(section){--section->recursion_18;singleton_leave_critical_section(*section);}
-}
 void base_construct(Owner& owner,Binding& binding,Operation& op) {
     op.step=Operation::Step::base;owner.vtable_00=0x00d626f4;
-    auto* captured=binding.lifetime().get_manager_00415350()->system_owner().section_10;
-    if(captured){singleton_enter_critical_section(*captured);++captured->recursion_18;}
-    try {
+    {
+        CapturedSoundLifetimeSection captured(binding.lifetime_access());
         binding.publication()=&owner;op.base_published=true;
-        auto* manager=binding.lifetime().get_manager_00415350();
+        auto manager=binding.lifetime_access().get_manager_00415350();
         manager->register_object(binding.publication());
-    } catch(...) {release_section(captured);throw;}
-    release_section(captured);
+    }
 }
 void base_destroy(Owner& owner,Binding& binding,Operation& op) {
     op.step=Operation::Step::destroy_base;owner.vtable_00=0x00d626f4;
-    auto* captured=binding.lifetime().get_manager_00415350()->system_owner().section_10;
-    if(captured){singleton_enter_critical_section(*captured);++captured->recursion_18;}
-    try {
-        auto* manager=binding.lifetime().get_manager_00415350();
+    {
+        CapturedSoundLifetimeSection captured(binding.lifetime_access());
+        auto manager=binding.lifetime_access().get_manager_00415350();
         manager->unregister_object(binding.publication());binding.publication()=nullptr;
-    } catch(...) {release_section(captured);throw;}
-    release_section(captured);owner.vtable_00=0x00ce3818;
+    }
+    owner.vtable_00=0x00ce3818;
 }
 void registry_destroy(Owner& owner,Binding& binding,Operation& op) {
     owner.vtable_00=0x00d62a3c;op.step=Operation::Step::destroy_array;
@@ -228,14 +222,21 @@ Binding::NativeSystemConstantRegistryLifetimeBinding(void* volatile& published,S
     if(!next.destroy_registered || !next.invalid_parameter)
         throw std::invalid_argument("system constant lifetime needs other-owner callbacks");
 }
+Binding::NativeSystemConstantRegistryLifetimeBinding(void* volatile& published,
+    void* volatile& actual_manager,NativeStringStorage& strings)
+    :published_(published),next_{},actual_manager_(&actual_manager),strings_(&strings) {}
 Binding::~NativeSystemConstantRegistryLifetimeBinding(){if(guarded_)std::terminate();}
 SingletonLifetimeCallbacks Binding::callbacks() noexcept {return {this,&destroy_registered,&invalid_parameter};}
 void Binding::bind(SingletonLifetimeDomain& lifetime,NativeStringStorage& strings) {
-    if(lifetime_ || strings_)throw std::logic_error("system constant lifetime already bound");
+    if(lifetime_ || actual_manager_ || strings_)throw std::logic_error("system constant lifetime already bound");
     lifetime_=&lifetime;strings_=&strings;
 }
 SingletonLifetimeDomain& Binding::lifetime() {
     if(!lifetime_)throw std::logic_error("system constant lifetime not bound");return *lifetime_;
+}
+SoundLifetimeAccess Binding::lifetime_access() {
+    if(actual_manager_)return SoundLifetimeAccess(*actual_manager_);
+    return SoundLifetimeAccess(lifetime());
 }
 NativeStringStorage& Binding::strings() {
     if(!strings_)throw std::logic_error("system constant strings not bound");return *strings_;
@@ -243,7 +244,7 @@ NativeStringStorage& Binding::strings() {
 void Binding::begin(Owner& owner,Operation& op) {
     if(op.phase!=Operation::Phase::fresh || guarded_)
         throw std::logic_error("system constant operation is one-shot or another operation remains live");
-    (void)lifetime();(void)strings();
+    (void)lifetime_access();(void)strings();
     op.owner=&owner;op.binding=this;op.phase=Operation::Phase::running;guarded_=&op;
 }
 void Binding::complete(Operation& op) {
@@ -258,9 +259,14 @@ void Binding::destroy_registered(void* context,void* raw,std::uint32_t flags) no
         Operation op;
         if(owner->vtable_00==0x00d62a3c)delete_native_system_constant_registry_00b5df70(owner,self,flags,op);
         else delete_native_system_constant_base_00b5bb20(owner,self,flags,op);
-    } else self.next_.destroy_registered(self.next_.context,raw,flags);
+    } else {
+        if(!self.next_.destroy_registered)std::terminate();
+        self.next_.destroy_registered(self.next_.context,raw,flags);
+    }
 }
 void Binding::invalid_parameter(void* context) {
-    auto& self=*static_cast<Binding*>(context);self.next_.invalid_parameter(self.next_.context);
+    auto& self=*static_cast<Binding*>(context);
+    if(!self.next_.invalid_parameter)std::terminate();
+    self.next_.invalid_parameter(self.next_.context);
 }
 } // namespace bsp
