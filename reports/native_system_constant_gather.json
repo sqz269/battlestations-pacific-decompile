@@ -1,0 +1,441 @@
+{
+  "packet": "orch5_native_system_constant_gather",
+  "coverage": "complete within documented actual profile and storage domain",
+  "source": "src/native_system_constant_gather.cpp",
+  "header": "include/bsp/native_system_constant_gather.hpp",
+  "routines": [
+    {
+      "address": "00b46a70",
+      "name": "gather_native_system_constants_00b46a70",
+      "coverage": "complete",
+      "end_exclusive": "00b47639",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fcf0",
+      "name": "get_raw_shadow_depth_texture_00a8fcf0",
+      "coverage": "complete",
+      "end_exclusive": "00a8fd0f",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fd10",
+      "name": "get_raw_shadow_color_texture_00a8fd10",
+      "coverage": "complete",
+      "end_exclusive": "00a8fd2f",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fd90",
+      "name": "get_raw_shadow_target_color_00a8fd90",
+      "coverage": "complete",
+      "end_exclusive": "00a8fd94",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fdb0",
+      "name": "get_raw_shadow_target_depth_00a8fdb0",
+      "coverage": "complete",
+      "end_exclusive": "00a8fdb4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b3ce50",
+      "name": "get_raw_texture_width_00b3ce50",
+      "coverage": "complete",
+      "end_exclusive": "00b3ce54",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b3ce60",
+      "name": "get_raw_texture_height_00b3ce60",
+      "coverage": "complete",
+      "end_exclusive": "00b3ce64",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00af0460",
+      "name": "get_raw_foliage_manager_time_00af0460",
+      "coverage": "complete",
+      "end_exclusive": "00af0464",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00ad5700",
+      "name": "get_raw_foliage_time_00ad5700",
+      "coverage": "complete",
+      "end_exclusive": "00ad5704",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00ad5740",
+      "name": "get_raw_foliage_byte_00ad5740",
+      "coverage": "complete",
+      "end_exclusive": "00ad5744",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7aab0",
+      "name": "get_raw_light_shadow_00b7aab0",
+      "coverage": "complete",
+      "end_exclusive": "00b7aab7",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bee070",
+      "name": "get_raw_timer_interval_00bee070",
+      "coverage": "complete",
+      "end_exclusive": "00bee074",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b46a88",
+      "native": "00b0d100",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46a92",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46aa0",
+      "native": "00b6db70",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ad1",
+      "native": "00b6fcb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ade",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46aea",
+      "native": "00b6db70",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46afd",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b04",
+      "native": "00b70490",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b11",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b18",
+      "native": "00b6fcf0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b25",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b2c",
+      "native": "00b70510",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b39",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46c50",
+      "native": "00b70fe0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46c80",
+      "native": "00b70ea0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46cc2",
+      "native": "004de4b0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46cdb",
+      "native": "00af0460",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ced",
+      "native": "00ad5700",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d1a",
+      "native": "00b0cf30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d36",
+      "native": "00b0cf30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d74",
+      "native": "00ad5740",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d99",
+      "native": "00b84da0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46da7",
+      "native": "00b84db0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46db5",
+      "native": "00b84e20",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dc3",
+      "native": "00b84e30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dd1",
+      "native": "00b84e40",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ddf",
+      "native": "00b84cb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ded",
+      "native": "00b84cc0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dfb",
+      "native": "00b84ca0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e09",
+      "native": "00b84cd0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e17",
+      "native": "00b84ce0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e25",
+      "native": "00b84cf0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e43",
+      "native": "00b84fd0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e6f",
+      "native": "00b84c60",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ea1",
+      "native": "00b84c90",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46edb",
+      "native": "00b72110",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ef3",
+      "native": "00bf6713",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46f0b",
+      "native": "00b7aa30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46f66",
+      "native": "00b7aa20",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47055",
+      "native": "00b7aa40",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b4707d",
+      "native": "00b7aab0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b475b6",
+      "native": "00b6feb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b475c1",
+      "native": "00b6feb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47611",
+      "native": "00b21820",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47629",
+      "native": "00b218c0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00a8fd03",
+      "native": "00a8fdb0",
+      "function": "00a8fcf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a8fd23",
+      "native": "00a8fd90",
+      "function": "00a8fd10",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "site": "00b46d04",
+      "receiver": "CURRENT actual clock01090AB0",
+      "slot": "1c",
+      "accepted_profile": "00d68d50",
+      "provider": "00bee070",
+      "coverage": "complete for named current profile; other profiles explicit unsupported boundary"
+    },
+    {
+      "site": "00b47541",
+      "receiver": "captured shadow",
+      "slot": "08",
+      "accepted_profile": "00d5b5d8",
+      "provider": "00a8fcf0",
+      "coverage": "complete for named current profile; other profiles explicit unsupported boundary"
+    },
+    {
+      "site": "00b4754a",
+      "receiver": "returned current raw texture",
+      "slot": "3c",
+      "accepted_profile": "00d61948",
+      "provider": "00b3ce50",
+      "coverage": "complete for named current profile; other profiles explicit unsupported boundary"
+    },
+    {
+      "site": "00b4756c",
+      "receiver": "same captured shadow re-dispatched",
+      "slot": "08",
+      "accepted_profile": "00d5b5d8",
+      "provider": "00a8fcf0",
+      "coverage": "complete for named current profile; other profiles explicit unsupported boundary"
+    },
+    {
+      "site": "00b47575",
+      "receiver": "second returned raw texture",
+      "slot": "40",
+      "accepted_profile": "00d61948",
+      "provider": "00b3ce60",
+      "coverage": "complete for named current profile; other profiles explicit unsupported boundary"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Existing B46A70 interface required CameraFrameState/D3D9StateCache and typed shadow companions",
+      "evidence": "full519-line assembly and actual child bodies",
+      "is": "Raw actual owner/context and literal current profile dispatch; no typed overlay"
+    },
+    {
+      "was": "Potential native table pointer execution in a host process",
+      "evidence": "D68D50/D5B5D8/D61948 livePE table spans and source dispatch helpers",
+      "is": "Numeric profile addresses are validated via borrowed current profile views; never directly dereferenced/called"
+    }
+  ],
+  "scratch": "Caller supplies initialized1232-byte prefix preimage, copied bitwise before native writes; unwritten words remain. No original unknown private stack preimage is invented.",
+  "unwind": "No outer native gather cleanup. Raw sampler persistent operation and shader upload synchronization retain their existing schedules. Host CRT handler and C++ exceptions are separate from original FH3/SEH.",
+  "dependencies": {
+    "raw_light_environment_original_commit": "34c5ce54",
+    "narrow_cherry_pick": "c03a4cb0",
+    "generated_model_ancestry_dependency": "ca2fdcdd40f5218f9b5cc1a1b3cc7d9a58d2617c"
+  },
+  "ghidra": "Verified bsp.gpr /battlestationspacific.exe x86 LE32 base00400000 at8089 for each read batch; read-only, no annotation mutation",
+  "native_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_gather_native_inputs\\manifest.json",
+    "sha256": "71f2005eeaff39a28ce691befc120e587a5a9b1fc5447fd29531884e8ab303c4",
+    "spans": 21,
+    "bytes": 5135,
+    "all_live_equals_pe": true
+  },
+  "validation": {
+    "build": "local/gather_build_final.log",
+    "seeds": "local/gather_seeds.log",
+    "call_gate": "local/gather_call_gate.log",
+    "fixture_source": "local/gather_probe.cpp",
+    "fixture_build": "local/gather_probe_build_final.log",
+    "fixture_run": "local/gather_probe_run.log",
+    "strict_win32_build": true,
+    "verified_seeds": 8,
+    "ctests_passed": 2,
+    "numeric_calls_passed": 47,
+    "real_hal_cases": 2,
+    "original_leaf_comparisons": 2,
+    "restored_original_com_slots": true,
+    "immutable_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\gather_validated_artifacts\\manifest.json",
+      "sha256": "e49d9c2366cf7875b8d19856d02d0cce2c24a2c4792251a9b8b80d1d17d13bc3",
+      "artifacts": 4416,
+      "actually_loaded_modules": 57,
+      "bytes": 505900805
+    }
+  },
+  "evidence_limits": [
+    "Full original B46A70 was not executed; original execution only copied4-byte width/height leaves.",
+    "Complete source gather executes two cases using real HAL COM providers and supplied raw fixture storage, not complete game-created owners.",
+    "Current A0 model notification and parent debug path are separate dependencies.",
+    "Native cold sampler creation, profile-failure unwind and CRT invalid-parameter path are source-composed but not exercised by this fixture.",
+    "Original private stack aliases, FH3/asynchronous hardware faults, active EndFrame, gameplay and visual parity are unproved."
+  ]
+}
