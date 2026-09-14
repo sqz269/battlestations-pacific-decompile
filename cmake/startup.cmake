@@ -1010,3 +1010,5 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_entries.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_index_publication.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_attachment.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_attachment.cpp)
