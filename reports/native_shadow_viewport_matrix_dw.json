@@ -1,0 +1,204 @@
+{
+  "packet": "orch3_shadow_viewport_matrix_dw",
+  "base_commit": "b6f509c5f9cacd4536513e5fdb0a9bf27c4d3247",
+  "status": "complete_source_validation_pending",
+  "source": "src/native_shadow_viewport_matrix.cpp",
+  "header": "include/bsp/native_shadow_viewport_matrix.hpp",
+  "doc": "docs/NATIVE_SHADOW_VIEWPORT_MATRIX_DW.md",
+  "native_body_count": 3,
+  "native_bytes": 359,
+  "routines": [
+    {
+      "address": "00a8aaa0",
+      "end_inclusive": "00a8abfe",
+      "native_bytes": 351,
+      "native_hex": "83ec1056578b7c24208bf18bcfe88e4c0900db008b8688030000db868803000085c07d06d8057839ce00def98bcfd95c2420e8694c0900db40048b8e8c030000db868c03000085c97d06d8057839ce00def98bcfd95c240ce8334c0900db86880300008b968803000085d27d06d8057839ce00d95c2408d9442420dd0580a2d700dcc9d9c9dd542410db008b868c03000085c0d9442408d9c0defad9c9dec2defadec1d95c2408db868c0300007d06d8057839ce008bcfd95c2420e8d04b0900db4004d94424208b44241cd9c00f57c0defaf30f10542408f30f100d4ca2d700f30f1150305ff30f114004f30f114008f30f11400cf30f114010f30f114018f30f11401cf30f114020f30f114024f30f114828f30f11402cf30f114038f30f11483c5ed9442404d9c0dd0580a2d700dcc9d9ccdec1d9c3def3dec2d9c9d95c2418dd442408f30f10542418d918f30f115034d9e0dec9d9581483c410c20800",
+      "native_sha256": "2067f7776daee34316f7fc0fec90f0b3e976ae3d4999952c84d3b4b9649aad1a",
+      "source_function": "build_native_shadow_viewport_matrix_00a8aaa0",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a8fda0",
+      "end_inclusive": "00a8fda3",
+      "native_bytes": 4,
+      "native_hex": "8b4114c3",
+      "native_sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "source_function": "native_shadow_target_field14_00a8fda0",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a8fdc0",
+      "end_inclusive": "00a8fdc3",
+      "native_bytes": 4,
+      "native_hex": "8b411cc3",
+      "native_sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "source_function": "native_shadow_target_field1c_00a8fdc0",
+      "coverage": "complete"
+    }
+  ],
+  "original_abi": {
+    "00a8aaa0": "ECX actual shadow owner; public output then viewport stack pointers; EAX output; RET8. Captures viewport then uses its original public stack slot as scratch. x87 and SSE order/spills retained.",
+    "00a8fda0": "ECX actual receiver; EAX current pointer at+14h; RET.",
+    "00a8fdc0": "ECX actual receiver; EAX current pointer at+1Ch; RET."
+  },
+  "source_abi": "Naked MSVC Win32 fastcall. Matrix source adds unused EDX while retaining both original public stack words. Getter declarations use only ECX. No source C++ callback or invented owner type.",
+  "call_steps": [
+    {
+      "address": "00a8aaad",
+      "native": "00b1f740",
+      "function": "00a8aaa0"
+    },
+    {
+      "address": "00a8aad2",
+      "native": "00b1f740",
+      "function": "00a8aaa0"
+    },
+    {
+      "address": "00a8aaf8",
+      "native": "00b1f730",
+      "function": "00a8aaa0"
+    },
+    {
+      "address": "00a8ab5b",
+      "native": "00b1f730",
+      "function": "00a8aaa0"
+    }
+  ],
+  "source_bindings": [
+    {
+      "site": "00a8aaad",
+      "offset": 14,
+      "type": 20,
+      "target": "00b1f740",
+      "symbol": "native_viewport_size_00b1f740"
+    },
+    {
+      "site": "00a8aac4",
+      "offset": 38,
+      "type": 6,
+      "target": "00ce3978",
+      "symbol": "unsigned_correction_00ce3978"
+    },
+    {
+      "site": "00a8aad2",
+      "offset": 51,
+      "type": 20,
+      "target": "00b1f740",
+      "symbol": "native_viewport_size_00b1f740"
+    },
+    {
+      "site": "00a8aaea",
+      "offset": 76,
+      "type": 6,
+      "target": "00ce3978",
+      "symbol": "unsigned_correction_00ce3978"
+    },
+    {
+      "site": "00a8aaf8",
+      "offset": 89,
+      "type": 20,
+      "target": "00b1f730",
+      "symbol": "native_viewport_origin_00b1f730"
+    },
+    {
+      "site": "00a8ab0d",
+      "offset": 111,
+      "type": 6,
+      "target": "00ce3978",
+      "symbol": "unsigned_correction_00ce3978"
+    },
+    {
+      "site": "00a8ab1b",
+      "offset": 125,
+      "type": 6,
+      "target": "00d7a280",
+      "symbol": "half_00d7a280"
+    },
+    {
+      "site": "00a8ab4f",
+      "offset": 177,
+      "type": 6,
+      "target": "00ce3978",
+      "symbol": "unsigned_correction_00ce3978"
+    },
+    {
+      "site": "00a8ab5b",
+      "offset": 188,
+      "type": 20,
+      "target": "00b1f730",
+      "symbol": "native_viewport_origin_00b1f730"
+    },
+    {
+      "site": "00a8ab78",
+      "offset": 220,
+      "type": 6,
+      "target": "00d7a24c",
+      "symbol": "one_00d7a24c"
+    },
+    {
+      "site": "00a8abc9",
+      "offset": 299,
+      "type": 6,
+      "target": "00d7a280",
+      "symbol": "half_00d7a280"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce3978",
+      "bytes": 4,
+      "hex": "0000804f",
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00d7a280",
+      "bytes": 8,
+      "hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00d7a24c",
+      "bytes": 4,
+      "hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "live_installed_identity": true
+    }
+  ],
+  "providers": "Existing native_viewport_origin_00b1f730/native_viewport_size_00b1f740 from native_renderer_viewport_clear; no additional provider credit.",
+  "native_evidence": {
+    "path": "local/dw-native-evidence.json",
+    "sha256": "e7a07e97e088fde9c0450daa25d71fbee89d833f921c008c0172e123e847b22c",
+    "target": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "fresh_live_installed_bytes": 383
+  },
+  "prior_prototypes": "00a8aaa0 FUN_00a8aaa0  undefined FUN_00a8aaa0(void)  body 00a8aaa0 - 00a8abfe\n00a8fda0 TRIV_body_00a8fda0  undefined TRIV_body_00a8fda0(void)  body 00a8fda0 - 00a8fda3\n00a8fdc0 TRIV_body_00a8fdc0  undefined TRIV_body_00a8fdc0(void)  body 00a8fdc0 - 00a8fdc3\n",
+  "prior_comments": "[\n {\n  \"address\": \"00a8aaa0\",\n  \"annotation\": {\n   \"address\": \"00a8aaa0\",\n   \"function_name\": \"FUN_00a8aaa0\"\n  }\n },\n {\n  \"address\": \"00a8fda0\",\n  \"annotation\": {\n   \"address\": \"00a8fda0\",\n   \"function_name\": \"TRIV_body_00a8fda0\"\n  }\n },\n {\n  \"address\": \"00a8fdc0\",\n  \"annotation\": {\n   \"address\": \"00a8fdc0\",\n   \"function_name\": \"TRIV_body_00a8fdc0\"\n  }\n }\n]\n",
+  "source_sha256": {
+    "src/native_shadow_viewport_matrix.cpp": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd",
+    "include/bsp/native_shadow_viewport_matrix.hpp": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac"
+  },
+  "uncertainty": [
+    "Descriptive names are hypotheses.",
+    "Unsigned dimensions and signed viewport values are not validated or normalized.",
+    "The native body requires actual accessible backing and caller floating-point state.",
+    "Whole constructors/world-builder, aliases, hardware faults, unmasked exceptions and gameplay are unvalidated."
+  ],
+  "new_repository_tests": 0,
+  "build_tested": false,
+  "fixture_tested": false,
+  "abi_compatible": false,
+  "game_validated": false
+}
