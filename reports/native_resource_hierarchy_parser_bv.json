@@ -3136,7 +3136,10 @@
     "native_parser_original_body_oracle": false,
     "native_fh3_exception_fixture": false,
     "unmasked_x87_faults": false,
-    "game_validated": false
+    "game_validated": false,
+    "build_source_commit": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+    "combined_fixture": "passed with exact final libraries and controlled suspended-child data reservation",
+    "integration_report": "reports/native_resource_hierarchy_parser_integration_bv.json"
   },
   "evidence_limits": [
     "Raw parser integrates existing canonical pool, list, streams, string and pointer-array domains. No production bootstrap or resource load admission added.",

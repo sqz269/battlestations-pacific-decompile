@@ -20,3 +20,5 @@ for the detailed contract and evidence limits.
 The integration report records the exact final code revision, source manifest,
 combined build and final-library probe. Raw root/item dispatch, manager/factory
 and parser owners, B80720 loading and queue shutdown remain open.
+
+Final code revision `16a5f3d5d528c25fe9e6935f8c514d4b27116148` includes reviewed main `5e8a786760d4485c0e046f839790cfa3cf9bc4e9`. The combined Win32 build and both tests passed. The probe passed linked to copied, hash-verified libraries from this revision; its manifest records 2645 exact build inputs. All 377 ordinary and ten supporting instruction starts, 41 direct transfers and ten preserved Ghidra annotations are recorded. The final probe repeats the actual hierarchy scenarios and 576 original-math comparisons. Incoming spatial-publication and plane-control claims were not independently certified as native or gameplay parity by BV. The additional plane angular-velocity source is a portable arithmetic projection with documented omitted native tails; its original x87 and full-body equivalence remain unverified here.
