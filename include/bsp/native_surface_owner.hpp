@@ -71,7 +71,7 @@ struct NativeSurfaceOwnerContext {
     NativeSurfaceRendererStorage* volatile& actual_renderer_00f8d394;
     D3D9SurfacePool& actual_surface_pool_0108db00;
     NativeSurfaceStringPool actual_string_pool_00419cc0;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    SoundLifetimeAccess actual_lifetime_01090aa0;
     NativeResourceSupportStorage* volatile& actual_resource_support_0108fedc;
     std::uint32_t& actual_tracking_counter_0108dafc;
     const volatile std::uint32_t& actual_one_00d7a24c;

@@ -1,0 +1,365 @@
+{
+  "packet": "orch5_native_resource_support_actual",
+  "owned_addresses": [
+    "00b3e730"
+  ],
+  "base_commit": "d0df3b4ccc165a354c60d606eed3943813790c60",
+  "implementation_commit": "54c998f9cc71d57695c29182b28b3bc928f65581",
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-resource-support-actual\\local\\output\\resource_support_inputs\\manifest.json",
+    "sha256": "7391c10f0a6f8ccb7c7e44ab1d8404f29adf501f4c2aa7d0acc1583992645eae"
+  },
+  "native_identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "body": {
+    "start": "00b3e730",
+    "end_inclusive": "00b3e7ec",
+    "length": 189,
+    "instructions": 51,
+    "live_equals_pe": true,
+    "sha256": "7b9c8865a04b8c98121a241786a0d3703768772cb806f8f557b00270e77c81d9",
+    "native_abi": "No incoming arguments; EAX current support owner; plain RET; FH3 frame linked through FS:[0]. Source adds two borrowed arguments and is not ABI compatible."
+  },
+  "source_manifest": [
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "423543d5c26d5093e7b13ed37e4bff72476e61cf032ec43dff9a94ad541e7d78"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "6abb0b1aa17b6d0d55314e6c787a209a65928288ed1128af15ef7aafae277233"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "sha256": "56620d0a9d5dfabf951bf8775b1798394b3b5fbeb2eef911023e271e70c32b03"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "66bad829936e1e28d42bbd2cb108f97cd8e5c7e55fc36f76922e9f8ae22fa951"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "9e0f6271843abdcb202033284af0250339babef6534eaebd3525d7f6bc83fc9c"
+    },
+    {
+      "path": "include/bsp/native_d3d9_shader_lifetime.hpp",
+      "sha256": "ac203e0b91b330097d77a3c847af764dc83a5eaf018d46b268adfa06544c6a65"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "sha256": "7bc4d7ae8bd65df4a7a8c34f93ce354601fd4116a94089735fea8de2291e2514"
+    },
+    {
+      "path": "src/native_stream_clone.cpp",
+      "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b3e756",
+      "native": "00415350",
+      "function": "00b3e730",
+      "kind": "direct_call",
+      "bytes": "e8f56b8dff"
+    },
+    {
+      "address": "00b3e78c",
+      "native": "00bf681b",
+      "function": "00b3e730",
+      "kind": "direct_call",
+      "bytes": "e88a800b00"
+    },
+    {
+      "address": "00b3e7a3",
+      "native": "00b61d50",
+      "function": "00b3e730",
+      "kind": "direct_call",
+      "bytes": "e8a8350200"
+    },
+    {
+      "address": "00b3e7b6",
+      "native": "00415350",
+      "function": "00b3e730",
+      "kind": "direct_call",
+      "bytes": "e8956b8dff"
+    },
+    {
+      "address": "00b3e7c4",
+      "native": "00bd0c30",
+      "function": "00b3e730",
+      "kind": "direct_call",
+      "bytes": "e867240900"
+    },
+    {
+      "address": "00cbeda3",
+      "native": "00411ee0",
+      "function": "00cbeda0",
+      "parent": "00b3e730",
+      "kind": "tail_jump",
+      "state": 0
+    },
+    {
+      "address": "00cbedac",
+      "native": "00bf65ac",
+      "function": "00cbeda8",
+      "parent": "00b3e730",
+      "kind": "direct_call",
+      "state": 1
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b3e76f",
+      "native": "IAT dword ptr [0xce2218]",
+      "function": "00b3e730",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b3e7d2",
+      "native": "IAT dword ptr [0xce2210]",
+      "function": "00b3e730",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    }
+  ],
+  "handler_boundary": {
+    "entry": "00cbedb3",
+    "funcinfo": "00df75d0",
+    "jump_ip": "00cbedb8",
+    "target": "00bf6b43",
+    "live_equals_pe": true,
+    "mechanical_gate_excluded": "No saved Ghidra function at handler entry in captured snapshot; the complete10-byte handler is PE-disassembled and live-byte matched.",
+    "mutation_by_worker": false
+  },
+  "unwind": {
+    "magic": "19930522",
+    "max_state": 2,
+    "map": "00df75c0",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cbeda0",
+        "receiver": "ECX=FH3 adjusted EBP-14h guard; captured section stored at guard+4 / EBP-10h",
+        "target": "00411ee0",
+        "action": "Write CE37FC guard profile; if captured section nonnull, decrement captured+18h then LeaveCriticalSection IAT CE2210."
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cbeda8",
+        "receiver": "Captured allocation at adjusted EBP-18h, pushed as cdecl argument; no current publication reload",
+        "target": "00bf65ac",
+        "action": "Free captured allocation, POP ECX at CBEDB1 and RET at CBEDB2; then state0 unlock."
+      }
+    ],
+    "arming": [
+      {
+        "ip": "00b3e779",
+        "state": 0,
+        "meaning": "After first captured-section enter and depth increment; before recheck/allocation"
+      },
+      {
+        "ip": "00b3e79a",
+        "state": 1,
+        "meaning": "After raw allocation captured at ESP+4; before null branch/constructor"
+      },
+      {
+        "ip": "00b3e7ac",
+        "state": 0,
+        "meaning": "Before publication and second manager getter/registration"
+      }
+    ],
+    "registration_failure": "Keep published allocation; unlock captured section only. Warm getter returns it without retry or rollback.",
+    "source_boundary": "Recovered B61D50 leaf is noexcept; /EHsc source does not reproduce original FH3 dispatcher, mutable frame-spill aliases, SEH/hardware-fault cleanup or asynchronous exceptions. No second cleanup exception behavior is generalized."
+  },
+  "ordering": [
+    {
+      "ip": "00b3e745",
+      "effect": "Capture warm current support; no manager call when nonnull"
+    },
+    {
+      "ip": "00b3e756",
+      "effect": "First415350 getter; capture returned manager+10 at B3E75B"
+    },
+    {
+      "ip": "00b3e76f",
+      "effect": "Enter captured section through CE2218 then increment captured+18 at B3E775"
+    },
+    {
+      "ip": "00b3e781",
+      "effect": "Recheck current support"
+    },
+    {
+      "ip": "00b3e78c",
+      "effect": "Allocate8 via BF681B, captured at B3E794; B61D50 writes only profile"
+    },
+    {
+      "ip": "00b3e7b1",
+      "effect": "Publish constructed owner after disarming state1"
+    },
+    {
+      "ip": "00b3e7b6",
+      "effect": "Resolve second415350 manager BEFORE reading registration argument"
+    },
+    {
+      "ip": "00b3e7bb",
+      "effect": "Load current support argument; use second returned manager as ECX at B3E7C2"
+    },
+    {
+      "ip": "00b3e7c4",
+      "effect": "Actual BD0C30 register"
+    },
+    {
+      "ip": "00b3e7cd",
+      "effect": "Decrement first captured section; LeaveCriticalSection at B3E7D2"
+    },
+    {
+      "ip": "00b3e7d8",
+      "effect": "Reload current support AFTER guard destruction/unlock"
+    }
+  ],
+  "api": {
+    "common": "resource_support_singleton_00b3e730(NativeResourceSupportStorage* volatile&, SoundLifetimeAccess)",
+    "legacy": "Existing SingletonLifetimeDomain& overload delegates to common body; implicit aggregate conversion remains available.",
+    "identity": "SoundLifetimeAccess::borrows_same_domain(SoundLifetimeAccess) const noexcept compares stored semantic/raw publication addresses only. No getter or publication load; copied views admitted, distinct cells and raw/projected mixes rejected.",
+    "migrated_lifetime_fields": {
+      "NativePhysicalBufferOwnerContext": "actual_lifetime_01090aa0",
+      "NativeSurfaceOwnerContext": "actual_lifetime_01090aa0",
+      "NativeHardwareLayoutOwnerContext": "actual_lifetime_01090aa0",
+      "NativeD3d9ShaderLifetimeContext": "actual_lifetime"
+    },
+    "caller_domain": "Borrow identical actual AA0/support publications and owner services throughout construction, use and teardown; caller owns publication/domain lifetime. No new allocation domain or projected manager for raw route."
+  },
+  "retained_frontiers": [
+    "NativePhysicalBufferLockContext and NativeD3d9ShaderConstructionContext still require projected SingletonLifetimeDomain; raw owner/projected lock clone contexts are rejected before clone acquisition.",
+    "Canonical BD0400 dispatch in the captured base lacks D62B64 -> B61D60 with borrowed actual0108FEDC cell. This packet fixture explicitly unregisters BCFCA0 and invokes existing delete_native_resource_support_00b61d60 before empty-manager teardown; full AA0 drain is not claimed.",
+    "No original active-renderer, original FH3 execution, installed game, visual or drop-in binary replacement validation."
+  ],
+  "needed_root_repairs": [
+    "CBEDA8 saved body stops at returning BF65AC call CBEDAC; native POP ECX/RET CBEDB1..B2 must be included.",
+    "CBEDB3 handler lacks saved function in captured snapshot; complete10-byte handler MOV EAX,DF75D0 then JMP BF6B43 is pinned."
+  ],
+  "validation": {
+    "status": "strict_win32_eight_seeds_two_ctests_and_focused_source_fixture_passed",
+    "strict_build_exit": 0,
+    "strict_build_log_sha256": "95923d6e5d321995b61425a5b88da6b12297f2720b82ecf6a71a65f1773b7c54",
+    "seed_count": 8,
+    "seed_verification_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "call_rows_checked": 7,
+    "call_rows_failed": 0,
+    "indirect_rows_unproved": 2,
+    "call_gate_sha256": "adabac88186448acbd6a6528a5a88c37108b26dab3922d5abc91b599f36b990c",
+    "fixture": {
+      "source": "6fd7155412f8c657b8961f5300886bc769658a240ed98410b204e9aac9e95458",
+      "exe": "96b902af12b50808a7547b87be106bee85da201f1e9534160168dad428e64cc9",
+      "run_log": "3c53dc27a1e26b35f7af6da27601d8fdc9d7b49a7c4913d2e7e0bbee00ee6722",
+      "exit_code": 0,
+      "md": true,
+      "embedded_manifest": true,
+      "linkage": "Only complete rebuilt bsp_core.lib/bsp_lua511.lib/bsp_zlib121.lib plus platform libraries; no directly compiled production module.",
+      "cases": [
+        "Borrowed identity: copies admitted, distinct/mixed rejected without manager creation or publication load.",
+        "Actual cold/warm raw manager registration and explicit unregister/B61D60 deletion.",
+        "Actual CRT validation throws after publication: owner retained, first captured section depth/Win32 recursion return to0, no append or warm retry.",
+        "Existing Domain overload normal and injected registration failure have same retention/unlock/no-retry behavior."
+      ],
+      "original_fh3_executed": false,
+      "active_renderer_or_game_executed": false
+    },
+    "source_compiled_order": {
+      "object": "native_resource_support.obj",
+      "second_getter_offset": "8B",
+      "registration_argument_load_offset": "90",
+      "captured_guard_destructor_offset": "9E",
+      "final_publication_load_offset": "A3",
+      "listing_sha256": "97fc82890ce732b8da9fe9b2d5a15b878cb6ee95150d78916cc51ed56922a411"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-resource-support-actual\\local\\output\\resource_support_validated_artifacts\\manifest.json",
+      "sha256": "069ed6797ba2d68c2ab64b1a9d3b2a00ce64f7a40eeb8d8af5387dbc20b76495",
+      "artifacts": 4438,
+      "bytes": 321068660,
+      "actually_loaded_fixture_modules": 8,
+      "runtime_modules": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-resource-support-actual\\local\\output\\resource_support_probe.exe",
+          "machine": "014c",
+          "sha256": "96b902af12b50808a7547b87be106bee85da201f1e9534160168dad428e64cc9",
+          "frozen_path": "artifacts\\04399_96b902af12b5_resource_support_probe.exe",
+          "reported_final_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch5-native-resource-support-actual\\local\\output\\resource_support_probe.exe"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+          "machine": "014c",
+          "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+          "frozen_path": "artifacts\\04431_7e15bd30890e_ntdll.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "machine": "014c",
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "frozen_path": "artifacts\\04432_bafd9e061964_kernel32.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+          "machine": "014c",
+          "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+          "frozen_path": "artifacts\\04433_85ad413ff860_KernelBase.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+          "machine": "014c",
+          "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+          "frozen_path": "artifacts\\04434_a8109618c3bf_apphelp.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "machine": "014c",
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "frozen_path": "artifacts\\04435_60c5a497b52d_ucrtbase.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+          "machine": "014c",
+          "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+          "frozen_path": "artifacts\\04436_f0cda2a0cf1f_msvcp140.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+          "machine": "014c",
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "frozen_path": "artifacts\\04437_2fa6efc05320_vcruntime140.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll"
+        }
+      ],
+      "all_frozen_hashes_verified": true
+    },
+    "limits": [
+      "NativePhysicalBufferLockContext and NativeD3d9ShaderConstructionContext still require projected SingletonLifetimeDomain; raw owner/projected lock clone contexts are rejected before clone acquisition.",
+      "Canonical BD0400 dispatch in the captured base lacks D62B64 -> B61D60 with borrowed actual0108FEDC cell. This packet fixture explicitly unregisters BCFCA0 and invokes existing delete_native_resource_support_00b61d60 before empty-manager teardown; full AA0 drain is not claimed.",
+      "No original active-renderer, original FH3 execution, installed game, visual or drop-in binary replacement validation."
+    ]
+  }
+}

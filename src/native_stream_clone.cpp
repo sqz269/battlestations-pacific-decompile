@@ -58,7 +58,8 @@ void begin(void* source, bool vertex, NativeStreamCloneServices& s,
         &s.vertices.actual_synchronization_0108d6dc == &s.mapping.actual_synchronization_0108d6dc &&
         &s.vertices.actual_physical == &s.indices.lifetime.actual_physical &&
         &s.vertices.actual_physical_profiles == &s.mapping.actual_physical_profiles &&
-        &s.vertices.actual_physical.actual_lifetime_01090aa0 == &s.mapping.actual_physical_lock.actual_lifetime_01090aa0,
+        s.vertices.actual_physical.actual_lifetime_01090aa0.borrows_same_domain(
+            s.mapping.actual_physical_lock.actual_lifetime_01090aa0),
         "stream clone services must borrow the same actual owner and renderer domains");
     (void)stream_profile(source, vertex, s);
     auto& reference = s.geometry.actual_owners().resolve_actual(source);

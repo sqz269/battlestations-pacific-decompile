@@ -11,7 +11,7 @@ namespace bsp {
 struct NativePhysicalBufferOwnerContext {
     NativeStringStorage& actual_string_storage;
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    SoundLifetimeAccess actual_lifetime_01090aa0;
     void* actual_index_pool_0108fda8;
     void* actual_vertex_pool_0108fde0;
 };
