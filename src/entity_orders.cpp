@@ -133,7 +133,7 @@ SceneCommandTarget entity_order_retarget_0077d6ed(const SceneCommandTarget& targ
     out.position[0] = 0.0f;
     out.position[1] = 0.0f;
     out.position[2] = 0.0f;
-    out.reserved = 0.0f;
+    out.trailing = 0.0f;
     // position_valid (+1h) is not touched by the retarget; it keeps the value
     // the caller's descriptor had, which the builder then copies into +24h.
     return out;
@@ -174,7 +174,7 @@ EntityOrderMessage entity_order_build_message_007798d0(std::uint8_t command_ordi
     message.position[0] = target.position[0];
     message.position[1] = target.position[1];
     message.position[2] = target.position[2];
-    message.trailing = target.reserved;  // 00779929
+    message.trailing = target.trailing;  // 00779929
     return message;
 }
 

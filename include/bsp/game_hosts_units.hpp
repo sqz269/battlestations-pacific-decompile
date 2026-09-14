@@ -154,6 +154,24 @@ struct GameUnitsSummary {
     unsigned long long instance_updates{0};
     unsigned long long motion_ticks{0};
     unsigned long long motion_steps{0};   // fixed steps that ran the motion pass
+    // The plane fixed step 007CE040 and which arm select_motion_arm_007ce040
+    // chose. All three inputs derive from unit+900h, which 007CFD20 zeroes and
+    // 007C6481 sets to 7. docs/PLANE_FLIGHT_CORE_LAW.md.
+    unsigned long long plane_steps{0};
+    unsigned long long plane_arm_free_flight{0};
+    unsigned long long plane_arm_ground_roll{0};
+    unsigned long long plane_arm_surface{0};
+    unsigned long long plane_arm_none{0};
+    // Metres of forward travel summed over every free-flight step; zero means
+    // the arm ran but the plane did not move.
+    double plane_distance_moved{0.0};
+    // 0085DC80s two observable outcomes. Both stay 0 while nothing rotates
+    // a plane: the authored basis is already orthonormal, so the sweep is a
+    // no-op. A non-zero right_reference means a row 1 came within 2.56
+    // degrees of forward; a non-zero collapsed means a zero or NaN forward
+    // silently zeroed a basis, which the native does not guard either.
+    unsigned long long plane_pose_right_reference{0};
+    unsigned long long plane_pose_collapsed{0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};

@@ -17,6 +17,9 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gun_gravity_arc.hpp"
+#include "bsp/bullet_engagement_range.hpp"
+#include "bsp/gun_heading_snap.hpp"
+#include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -283,7 +286,16 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            f[q .. 'barrels'] = bn\n"
         "            if type(b1) == 'table' then\n"
         "              f[q .. 'bullet'] = num(b1.Bullet, 1) or -1\n"
-        "              f[q .. 'reload'] = num(b1.ReloadTime, 1000) or 0\n"
+        // LATENT GUARD. 007313E0 reads ReloadTime as a PAIR into +28h/+2Ch and
+        // 00BD2F10 draws between them per shot; when a row authors a scalar the
+        // reader writes it to both ends, which is every row in this installation.
+        // But num() returns nil for a table, so a paired ReloadTime would leave
+        // `reload` at 0 here and the gun would fire every fixed step. Nothing
+        // authors a pair today, so this changes no current behaviour.
+        // docs/GUN_SHOT_CADENCE.md divergence 9.
+        "              local rt1 = b1.ReloadTime\n"
+        "              if type(rt1) == 'table' then rt1 = rt1[1] end\n"
+        "              f[q .. 'reload'] = num(rt1, 1000) or 0\n"
         "              f[q .. 'bdelay'] = num(b1.BarrelDelayTime, 1000) or 0\n"
         "              f[q .. 'throw'] = num(b1.Throw, 1000000) or 0\n"
         // bulletclasses.lua publishes the arcade or realistic table under the
@@ -435,6 +447,57 @@ void GameGunneryHost::Impl::build_guns() {
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
+            // 006E8770 puts `Range` at +68h and never writes +60h. The finalise
+            // hook 006E9890 derives +60h from the class sub-type - artillery
+            // (4..7) keeps `Range`, the gun group (1,2,3,10h) takes FlyTime * V0,
+            // 0Bh takes 240 and everything else 3000 - and MTorpedo overrides it
+            // at 00855A90.
+            //
+            // Only 32 of the 119 bullet classes in this installation author a
+            // `Range` at all. The other 87 were reading 0, which collapsed their
+            // category to category_engagement_range_00956d63's 10.0f seed and made
+            // 00863990 refuse every candidate: on IJN01 that silenced 82 PLANEGUN,
+            // 295 AAMACHINEGUN, 60 FLAK, 12 TORPEDO and 10 DEPTHCHARGE guns.
+            // docs/BULLET_ENGAGEMENT_RANGE.md.
+            //
+            // Unauthored fields are left at the struct's defaults, which are the
+            // constructor's and the reader's, so filling only what the row
+            // authored reproduces native state. `FlyTime` defaults to FLT_MAX.
+            if (gun.bullet_class >= 0) {
+                bsp::WeaponClassFinaliseInput fin;
+                const std::string bullet_type =
+                    lua.read_bullet_class_string(gun.bullet_class, "Type");
+                fin.sub_type = bsp::weapon_class_sub_type_for_lua_type(bullet_type);
+                fin.range = lua.read_bullet_class_number(
+                    gun.bullet_class, "Range", 0.0f);
+                fin.muzzle_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "V0", 0.0f);
+                fin.fly_time = lua.read_bullet_class_number(
+                    gun.bullet_class, "FlyTime", bsp::kWeaponClassFlyTimeDefault);
+                fin.damage_min = lua.read_bullet_class_number(
+                    gun.bullet_class, "DamageMin", 0.0f);
+                fin.blast_damage_min = lua.read_bullet_class_number(
+                    gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
+                fin.name = lua.read_bullet_class_string(gun.bullet_class, "Name");
+                fin.water_travel_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "WaterTravelSpeed", 0.0f);
+                fin.max_fall = lua.read_bullet_class_number(
+                    gun.bullet_class, "MaxFall", 0.0f);
+                fin.flak_min_range = lua.read_bullet_class_number(
+                    gun.bullet_class, "MinRange", 0.0f);
+                const bsp::WeaponClassFinaliseResult finalised =
+                    bsp::weapon_class_derive_engagement_range(fin);
+                if (finalised.engagement_range > 0.0f) {
+                    gun.max_range = finalised.engagement_range;
+                    ++summary.bullet_ranges_derived;
+                }
+                if (finalised.swim_speed > 0.0f) {
+                    gun.water_travel_speed = fin.water_travel_speed;
+                    gun.swim_speed = finalised.swim_speed;
+                    ++summary.torpedo_ranges_derived;
+                }
+            }
             gun.rest_horz = flat_scaled(type_id, make("rh"), kAngleScale, 0.0f);
             gun.rest_vert = flat_scaled(type_id, make("rv"), kAngleScale, 0.0f);
 
@@ -444,6 +507,8 @@ void GameGunneryHost::Impl::build_guns() {
                 b.found = true;
                 b.muzzle_speed = gun.muzzle_speed;
                 b.range = gun.max_range;
+                b.water_travel_speed = gun.water_travel_speed;
+                b.swim_speed = gun.swim_speed;
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
                 b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
                 b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
@@ -711,12 +776,37 @@ public:
         const std::size_t count = owner_.units.count();
         for (std::size_t i = 0; i < count; ++i) {
             if (i == unit_) continue;
-            if (owner_.units.unit_side_0054(i) == own_side) continue;
+            ++owner_.summary.contact_considered;
+            if (owner_.units.unit_side_0054(i) == own_side) {
+                ++owner_.summary.contact_reject_side;
+                continue;
+            }
             // docs/RECON_SLOT_LISTS.md rule (a): the class must be one the scan
             // visits. rule (b): +5Ch set, +5Dh / +5Eh / +60h clear.
-            if (!owner_.units.unit_alive_and_visible(i)) continue;
-            if (i < owner_.unit_state.size() && owner_.unit_state[i].dead) continue;
-            if (!owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) continue;
+            if (!owner_.units.unit_alive_and_visible(i)) {
+                ++owner_.summary.contact_reject_visible;
+                continue;
+            }
+            if (i < owner_.unit_state.size() && owner_.unit_state[i].dead) {
+                ++owner_.summary.contact_reject_dead;
+                continue;
+            }
+            // Rule (a) is "a class the scan visits", and the native scan
+            // 00806480 visits seven PLANE leaf ids under IsKindOf(02h) as well
+            // as the ship bases. Admitting only ship bases is why nothing ever
+            // shot at an aircraft: on IJN01 the seven A7M fighters took zero
+            // hits and zero damage while 295 AAMACHINEGUN and 60 FLAK guns sat
+            // idle. docs/PLANE_UNIT_TICK.md.
+            const bool ship_base =
+                owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+            const bool plane_base =
+                owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase);
+            if (!ship_base && !plane_base) {
+                ++owner_.summary.contact_reject_kind;
+                continue;
+            }
+            if (plane_base) ++owner_.summary.contact_admit_plane;
+            else ++owner_.summary.contact_admit_ship;
             contacts_.push_back(i);
         }
         ++owner_.summary.recon_sweeps;
@@ -1071,8 +1161,17 @@ public:
         owner_.record("Gun::stop_firing_0072b4c0", 0x0072b4c0u);
     }
     void release_effect_ref() override {}
-    void base_tick_0072ad40(float) override {
-        owner_.record("Gun::base_tick_0072ad40", 0x0072ad40u);
+    // 0072D18C, the first thing the gun does each step: age the list at
+    // gun+120h and drop the records whose countdown has gone strictly negative.
+    // docs/GUN_BASE_TICK.md. The list has no producer in this reconstruction,
+    // so the sweep is a no-op today; the counter says so out loud rather than
+    // letting an always-zero look like a working path.
+    void base_tick_0072ad40(float dt) override {
+        GameGunRow& row = owner_.guns[gun_];
+        owner_.summary.gun_pending_timers_expired +=
+            bsp::gun_age_pending_timers_0072ad40(row.pending_timers, dt);
+        owner_.summary.gun_pending_timers_live += row.pending_timers.size();
+        owner_.done("Gun::base_tick_0072ad40", 0x0072ad40u);
     }
     void set_barrel_reload_timer_0072cf00(int index, float value) override {
         GameGunRow& row = owner_.guns[gun_];
@@ -1164,9 +1263,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                 // The torpedo bot runs its own intercept solver and its round
                 // does not fall, so no gravity term is added.
-                if (gun.muzzle_speed > 0.0f
+                // 0090022B loads [[gun+3F8h]+34h]+0E4h, WaterTravelSpeed, for
+                // the torpedo bot's solver, while the AA flak bot's call at
+                // 009031CF takes +50h (V0) - the choice is deliberate and the
+                // host had been passing V0. For the Mark 15 that is 13 against
+                // 51.444, and at 13 m/s the quadratic's leading coefficient
+                // turns positive and no aspect has a solution against an 18.78
+                // m/s destroyer, so the solver answered nothing on every launch.
+                // docs/TORPEDO_LAUNCH_ACCURACY.md.
+                const float solver_speed = gun.water_travel_speed > 0.0f
+                    ? gun.water_travel_speed : gun.muzzle_speed;
+                if (solver_speed > 0.0f
                     && bsp::torpedo_intercept_point_008fbb00(shooter, at,
-                        gun.muzzle_speed, v, lead)) {
+                        solver_speed, v, lead)) {
                     done("GunBot::intercept_point_008fbb00", 0x008fbb00u);
                 } else {
                     lead = at;
@@ -1237,6 +1346,37 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float vertical = std::max(-1.0f,
                     std::min(1.0f, dot3(unit_delta, up)));
                 want_vert = std::asin(vertical) + pitch;
+                if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
+                    // 008FFF20 step 8 at 00900380 does NOT refuse a heading that
+                    // falls outside a firing window: 0085AB50 -> 007F6190 snaps
+                    // it up to pi/4 onto the nearest window edge and fires along
+                    // that edge, abandoning the shot only when no window's
+                    // horizontal bounds hold the heading at all or the snap
+                    // exceeds the limit. The host had been handing the raw
+                    // heading to gun_set_target_angles_0085aba0, which refuses
+                    // outright, so a torpedo mount almost never opened a launch
+                    // window. docs/TORPEDO_LAUNCH_ACCURACY.md.
+                    const bsp::GunPlatformArcs snap_arcs{gun.arcs.data(),
+                        gun.arcs.size()};
+                    const float snapped = bsp::gun_snap_heading_to_fire_window_007f6190(
+                        snap_arcs, want_horz, kQuarterPi);
+                    if (bsp::gun_heading_snap_failed(snapped)) {
+                        have_target = false;          // 00900392..009003A2
+                    } else {
+                        want_horz = snapped;
+                        ++summary.torpedo_heading_snaps;
+                    }
+                    done("GunBot::snap_heading_to_fire_window_007f6190", 0x007f6190u);
+                    // 009003DD commands a hard 0.0f vertical for the torpedo bot.
+                    // Every torpedo platform in this installation's
+                    // vehicleclasses.lua authors its one window with
+                    // MinVertAngle == MaxVertAngle == 0, so any computed
+                    // depression is refused outright by
+                    // gun_set_target_angles_0085aba0 and the mount never opens a
+                    // launch window. docs/TORPEDO_LAUNCH_ACCURACY.md.
+                    want_vert = 0.0f;
+                }
+
                 done("GunBot::angles_from_world_direction_008fdaf0", 0x008fdaf0u);
             }
             if (!arc_solved) {
@@ -1256,6 +1396,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         } else {
             ++gun.angle_refusals;
             ++summary.angle_refusals;
+            // angle_sets + angle_refusals is exactly guns * mission_ticks - every
+            // gun, every tick, with no target gate - so the refusal count carries
+            // no information about targets and must never be read as one. Verified
+            // on IJN01: 230442 + 72558 = 303000 = 606 * 500 to the digit.
+            // docs/AA_VERTICAL_WINDOW.md. These split out the ticks where the gun
+            // actually held a target.
+            if (have_target) ++summary.angle_refusals_targeted;
         }
         done("GunBot::set_target_angles_0085aba0", 0x0085aba0u);
 
@@ -1269,7 +1416,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         done("Gun::step_aim_0085ad80", 0x0085ad80u);
 
-        const bool settled = bsp::gun_aim_settled_0085ae4a(gun.angles);
+        // 006DF520 step 12 arms the trigger through 006DEE40 against
+        // *00CF9054 = 0.1 degree, not the stepper's 0.01-degree dead band that
+        // gun_aim_settled_0085ae4a carries. Using the latter as a fire gate made
+        // the host ten times stricter per axis than the native.
+        // docs/GUN_SHOT_CADENCE.md divergence 2. This is a faithfulness fix and
+        // is NOT expected to raise the shot count materially: the packet measures
+        // it at 13% of targeted refusals, and the count is held down by the
+        // authored 17.5 s reload, not by the settle test.
+        // Only the CONSTANT differs from gun_aim_settled_0085ae4a: the wrapped
+        // difference and the strict comparison are kept, because a plain
+        // subtraction changes the semantics across the +/-pi wrap. An earlier
+        // revision of this line dropped the wrap and was wrong for that reason.
+        const bool settled =
+            std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                gun.angles.target_horz, gun.angles.horz)) < bsp::kGunFireSettleBand &&
+            std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                gun.angles.target_vert, gun.angles.vert)) < bsp::kGunFireSettleBand;
         const bool may_fire_here = bsp::gun_fire_allowed_007f60a0(arcs, gun.angles.horz,
             gun.angles.vert);
         done("Gun::fire_window_007f60a0", 0x007f60a0u);
@@ -1280,6 +1443,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // unit+634h, the scripted per-group fire inhibit. No mission-script
         // action in this mission writes it, so every bit is clear.
         const bool inhibited = false;
+        // Which conjunct of want_fire fails on a tick that had a target. A
+        // refusal here is not automatically a defect: a beam mount cannot train
+        // astern, so check the commanded bearing against the platform's windows
+        // before reading a non-zero want_fire_no_accept as one.
+        // DEFINITIONAL, not independent evidence: `accepted` is the return of the
+        // same call that increments angle_refusals, so on a targeted tick this is
+        // the same event as angle_refusals_targeted and the two always match. Kept
+        // only so the decomposition below reads completely; it is the counter to
+        // drop first. docs/AA_VERTICAL_WINDOW.md.
+        if (have_target && !accepted) ++summary.want_fire_no_accept;
+        if (have_target && accepted && !settled) ++summary.want_fire_no_settle;
+        if (have_target && accepted && settled && !may_fire_here) {
+            ++summary.want_fire_no_window;
+        }
         const bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
 
@@ -1559,6 +1736,39 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // behind it: open sea is height zero.
         if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
             ++summary.water_crossings;
+            // A torpedo does not die at the surface: it enters its swim. The
+            // round's record carries a swim speed at +470h, written at
+            // 0085786D..00857875 as WaterTravelSpeed * the double at 00D0C5E0
+            // (0.5999994277954102), and 00855A90 derives the engagement range as
+            // that speed times FlyTime - so the authored range only makes sense
+            // if the round actually travels at it underwater. Before this, every
+            // torpedo was killed on the frame it touched the sea and 12 of 16
+            // launches ended as `water`. docs/TORPEDO_LAUNCH_ACCURACY.md.
+            const GameBulletClassRow* const entry = bullet(shot.bullet_class);
+            const float swim = entry != nullptr ? entry->swim_speed : 0.0f;
+            if (swim > 0.0f && !shot.swimming) {
+                shot.swimming = true;
+                // Level the round onto the surface plane at the swim speed,
+                // keeping the heading the launch gave it. Gravity is turned off
+                // through the flight state's own classDesc[+20h] flag rather
+                // than by stepping the round outside the recovered
+                // projectile_flight_step, so the swim still runs through the
+                // reconstructed rule.
+                shot.flight.class_disables_gravity = true;
+                const float vx = shot.flight.velocity.x;
+                const float vz = shot.flight.velocity.z;
+                const float horizontal = std::sqrt(vx * vx + vz * vz);
+                if (horizontal > 0.0f) {
+                    shot.flight.velocity.x = vx / horizontal * swim;
+                    shot.flight.velocity.z = vz / horizontal * swim;
+                }
+                shot.flight.velocity.y = 0.0f;
+                shot.position[1] = 0.0f;
+                shot.flight.local_position.y = 0.0f;
+                shot.flight.snapshot_current.y = 0.0f;
+                ++summary.torpedo_swims_started;
+                continue;
+            }
             ++summary.impacts_static;
             done("Projectile::water_crossing_0078d1b0", 0x0078d1b0u);
             shot.alive = false;
@@ -1566,8 +1776,13 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         const GameBulletClassRow* row = bullet(shot.bullet_class);
         const float range = row != nullptr ? row->range : 0.0f;
-        const float speed = row != nullptr && row->muzzle_speed > 0.0f
-            ? row->muzzle_speed : 1.0f;
+        // Once swimming, the round travels at the swim speed, which is the
+        // speed 00855A90's range was derived against (swim * FlyTime), so the
+        // life bound only lands on FlyTime if the same speed is used here.
+        const float cruise = shot.swimming && row != nullptr && row->swim_speed > 0.0f
+            ? row->swim_speed
+            : (row != nullptr && row->muzzle_speed > 0.0f ? row->muzzle_speed : 1.0f);
+        const float speed = cruise;
         if (range > 0.0f && shot.life * speed > range) {
             ++summary.expired;
             shot.alive = false;
@@ -1954,6 +2169,20 @@ void GameGunneryHost::report() {
         s.assigns_from_arm ? s.arm_reach_fraction_sum / double(s.assigns_from_arm) : 0.0,
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
+    host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
+        "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu "
+        "base_tick_timers_live=%llu expired=%llu",
+        s.torpedo_ranges_derived, s.torpedo_swims_started,
+        s.torpedo_heading_snaps, s.bullet_ranges_derived,
+        s.gun_pending_timers_live, s.gun_pending_timers_expired);
+    host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
+        "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
+        s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
+        s.contact_reject_dead, s.contact_reject_kind, s.contact_admit_ship,
+        s.contact_admit_plane);
+    host.log.notef("summary mission gunnery targeted refusals=%llu no_accept=%llu "
+        "no_settle=%llu no_window=%llu", s.angle_refusals_targeted,
+        s.want_fire_no_accept, s.want_fire_no_settle, s.want_fire_no_window);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",

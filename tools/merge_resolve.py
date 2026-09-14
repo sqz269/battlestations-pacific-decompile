@@ -73,7 +73,23 @@ def resolve(worktree, path):
             changed = [l for l in lines_for if l != base_def.get(target)]
             keep[target] = (changed or lines_for)[-1]
         regs = [l for l in regs if not target_re.search(l) or keep[target_re.search(l).group(1)] == l]
-        (worktree / path).write_text('\n'.join(header + sorted(regs)) + '\n', encoding='utf-8', newline='\n')
+        # Sorting is safe for the target_sources / add_executable registrations, which
+        # are order-independent, but NOT for a deferred `include`. cmake/startup.cmake
+        # ends with
+        #   cmake_language(DEFER CALL include ".../cmake/native_data_placement.cmake")
+        # and that file runs target_link_options on bsp_game, so it has to be deferred
+        # AFTER the deferred add_executable that creates the target. "include" sorts
+        # before "target_sources" alphabetically, so a plain sorted() hoists it to the
+        # top of the registry and the next configure dies with
+        #   Cannot specify link options for target "bsp_game" which is not built by
+        #   this project
+        # which is what happened integrating agent/cc7-mount-frame-scale. Keep those
+        # lines pinned to the end, in their original relative order.
+        def order_dependent(line):
+            return 'CALL include ' in line
+        pinned = [l for l in regs if order_dependent(l)]
+        sortable = sorted(l for l in regs if not order_dependent(l))
+        (worktree / path).write_text('\n'.join(header + sortable + pinned) + '\n', encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):
         base_by = {json.loads(l)['address']: json.loads(l) for l in base.splitlines() if l.strip()}

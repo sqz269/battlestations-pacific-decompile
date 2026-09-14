@@ -8,7 +8,9 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
+#include "bsp/pilot_order_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 
 extern "C" {
@@ -31,6 +33,10 @@ struct ScriptOrderBinding {
 
 constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"NavigatorAttackMove", 0x008a30d0u},
+    // Packet cc7_pilot_order_bindings. The scripts' most-used order by an order
+    // of magnitude - 1125 lines across 197 shipped files - and the one USN01
+    // actually calls (`native PilotSetTarget argc=2 phase=luaStageInit`).
+    {"PilotSetTarget", 0x008a4c90u},
     {"NavigatorMoveToRange", 0x008a2f20u},
     {"NavigatorMoveToPos", 0x008a2bc0u},
     {"NavigatorDirectMoveToRange", 0x008a2d70u},
@@ -281,6 +287,55 @@ std::uint16_t GameScriptOrdersHost::entity_object_id(void* entity) {
     return static_cast<std::uint16_t>(index + 1);
 }
 
+// 008A4C90 `PilotSetTarget(unit, target [, attackType])`, the order the shipped
+// scripts use more than any other - 1125 lines across 197 files - and the only
+// `Pilot*` row USN01 calls. docs/PILOT_ORDER_BINDINGS.md has the recovered body.
+//
+// This resolves the call and reports it. **It deliberately does not issue the
+// command**, and the reason is worth stating plainly rather than hiding behind a
+// partial implementation: the command class comes from `007EEC50`, whose
+// `AttackFeasibilityInputs` (include/bsp/attack_commands.hpp) need about a dozen
+// per-class capability answers - is the unit a level bomber, is the target a
+// submarine or bomb-excluded, does the unit carry ordnance of kinds 31h/2Ah/2Fh/
+// 2Bh - each of which is a `vt[5Ch](n)` query on a class object this process does
+// not build. Guessing them would produce orders that look like they work, which
+// is worse than none.
+//
+// What it does prove is the argument path, which was the open question: the
+// native's `00888AA0` reads the Lua table's `Ptr` field and not its `ID`, and
+// this host seeds `Ptr` with the entity id (src/game_hosts_lua.cpp) and
+// represents an entity as that id cast to a pointer - so the native's own field
+// is the correct one to read here, and `entity_from_argument`'s `ID`-as-number
+// path is the odd one out.
+int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+
+    const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
+    const int attack_type = bsp::pilot_set_target_attack_type_008a4e0b(
+        argument_count_, argument_integer(2));
+    const bsp::PilotAttackSelectorFlags flags =
+        bsp::pilot_attack_selector_flags_008a4e54(attack_type);
+
+    log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
+        "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
+        "-> NOT ISSUED, 007EEC50 needs per-class capability inputs this host "
+        "does not build (docs/PILOT_ORDER_BINDINGS.md)",
+        row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
+        static_cast<unsigned>(target.object_id),
+        target.position_valid ? 1 : 0,
+        static_cast<double>(target.position[0]),
+        static_cast<double>(target.position[1]),
+        static_cast<double>(target.position[2]),
+        attack_type, flags.prefer_ordnance ? 1 : 0, flags.allow_guns ? 1 : 0);
+    ++pilot_set_target_calls_;
+    if (!row.unit.empty()) ++pilot_set_target_unit_resolved_;
+    if (target.object_id != 0 || target.position_valid) ++pilot_set_target_target_resolved_;
+    return 0;  // 00B66400: the binding pushes nothing.
+}
+
 int GameScriptOrdersHost::argument_integer(int index) {
     if (state_ == nullptr) return 0;
     const int slot = stack_slot(index);
@@ -511,7 +566,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     row.unit = name_of(subject);
 
     int results = 0;
-    if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
+    if (std::strcmp(binding->name, "PilotSetTarget") == 0) {
+        results = run_pilot_set_target(row);
+    } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "JoinFormation") == 0) {
         void* leader = entity_from_argument(1);

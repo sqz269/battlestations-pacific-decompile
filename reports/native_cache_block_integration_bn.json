@@ -1,0 +1,138 @@
+{
+  "packet": "orch4_native_cache_block_integration_bn",
+  "status": "integrated_independently_reviewed_win32_built_focused_actual_storage_fixtures_checked_full_loader_unbound",
+  "code_revision": "91db57c19f3134c5a3b0819ccb14744607dfdc77",
+  "first_build_revision": "9673354d1a985c46c83a8226caa7a54e0290328b",
+  "first_build_core_sha256": "d9947ae6d8e55c2903641262080c16b543df87eb1519df37d932b1824a9030f0",
+  "reviewed_incoming_main": "9af75431027fdaea91a5091d6cbdf487a8e784a6",
+  "worker_commits": {
+    "pak": "4f5cb80506ce6b0dbc1e039ceaa458d9e8a97947",
+    "lookup": "1dab1266b58fde57b30e3178b6e3ef59711eabcc",
+    "links": "08793c34d2ba308dd9578b7c0f3e0208b9f4f6b2",
+    "node": "e9c5d351fb177d5626442e739cd512ada1904caa",
+    "references": "28c105b5fadae3523cf9cd491d7b91202c2900c5"
+  },
+  "intermediate_combined_revision": "a13d918e798442ad04ac4fb67fde59d9535da0ed",
+  "intermediate_combined_build": "local/native_cache_block_integration_bn_model_build.log",
+  "source_manifest": {
+    "path": "local/native_cache_block_bn_source_91db57c19f31.json",
+    "files": 2578,
+    "sha256": "b22dc125d573ea477f521d8dc6b39ae4d96ec937be16e788b353a1567596e224",
+    "normalization": "Git diff checks repository-normalized source; manifest hashes actual build working bytes."
+  },
+  "primary_build": {
+    "command": "./scripts/build.ps1",
+    "win32": true,
+    "configuration": "Release",
+    "new_translation_units": 5,
+    "passed": true,
+    "existing_ctests_passed": 2,
+    "log": "local/native_cache_block_integration_bn_combined_build.log",
+    "first_log": "local/native_cache_block_integration_bn_build.log"
+  },
+  "source_artifact_review": {
+    "native_pak_registry_block_helpers_bn": {
+      "source_and_dependency_hashes": 8,
+      "ignored_artifact_hashes": 6,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_resource_cache_lookup_bn": {
+      "source_and_dependency_hashes": 3,
+      "ignored_artifact_hashes": 22,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_resource_cache_links_bn": {
+      "source_and_dependency_hashes": 3,
+      "ignored_artifact_hashes": 20,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_resource_cache_node_bn": {
+      "source_and_dependency_hashes": 10,
+      "ignored_artifact_hashes": 5,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_resource_reader_references_bn": {
+      "source_and_dependency_hashes": 5,
+      "ignored_artifact_hashes": 11,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "observation": "Worker source/fixture artifacts checked before primary documentation annotations. Frozen BL dependency libraries are distinct from the subsequently built BN library."
+  },
+  "call_checks": {
+    "report_rows": {
+      "native_pak_registry_block_helpers": 7,
+      "native_resource_cache_lookup": 6,
+      "native_resource_cache_links": 15,
+      "native_resource_cache_node": 8,
+      "native_resource_reader_references": 0
+    },
+    "total_direct_and_tail_rows": 36,
+    "reader_indirect_calls": 7,
+    "reader_native_bytes": 157,
+    "reader_instruction_boundaries": 70,
+    "scope": "36 function-owned direct/tail rows include packet support callees and native EH transfers. Reader calls are indirect and excluded from that count; independently reviewed listing, PE imports and callable-adapter fixture supply their evidence.",
+    "failed": 0,
+    "log": "local/native_cache_block_primary_calls_bn.log"
+  },
+  "ghidra_annotations": {
+    "report": "reports/native_cache_block_annotations_bn.json",
+    "source_bodies": 16,
+    "source_bytes": 1154,
+    "evidence_handlers": 2,
+    "allocation_catch_bytes": 21,
+    "placement_delete_unwind_bytes": 17,
+    "previous_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "final_flow": "local/native_cache_block_final_flow_bn.log"
+  },
+  "ghidra_repairs": [
+    "reports/native_resource_cache_catch_flow_bn.json",
+    "reports/native_cache_block_function_definitions_bn.json"
+  ],
+  "schema_corrections": [
+    "Package report target fields converted to native/function, changing skipped validation from0 rows to7 verified calls.",
+    "Node worker retained2 decoded-only transfers; primary repaired catch membership and defined handler, then verified both as owned transfers. Worker preimages and earlier failure receipts remain preserved."
+  ],
+  "incoming_review": {
+    "accepted": true,
+    "model_call_rows": 104,
+    "failed": 0,
+    "call_log": "local/native_cache_block_incoming_model_calls_bn.log",
+    "inspected": "Pinned source/header deltas, model behavior/evidence report, torpedo range/Lua accessor and documented installation-specific USN02 result; mount-frame diagnostic rule and live521370 clamp listing; registry-union fix that keeps deferred includes last.",
+    "limits": "Incoming native-loop fixture and torpedo gameplay run are recorded by their existing owners; this primary did not reexecute them."
+  },
+  "permanent_tests_added": false,
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "production_run": "No new game run for this BN integration. Incoming main includes its separately documented torpedo-range USN02 result; BN cache/reader leaves are not yet wired into full resource loading.",
+  "next_work": [
+    "Concrete PakRegistry block callbacks BB5770/BB5910.",
+    "Actual unique cache insertion B7FF80/B803B0.",
+    "Actual reader optional-buffer BF05D0/BF0700; complete reader/root dispatch remains separate.",
+    "FileBlock entry/exit, actual owner/preparation, resource manager/current metric and resource destruction remain necessary before full worker loading."
+  ],
+  "limits": [
+    "Actual-storage source fixtures are distinct from original-body execution, native ABI/FH3/SEH identity and gameplay validation.",
+    "Fixture libraries pin earlier BL134578; new BO workers separately freeze registered BN d9947ae6 before the later main merge.",
+    "Raw node cleanup frees only the captured outer allocation and adds no partial-key destruction or AddRef.",
+    "Reference leaves use explicit current terminal dispatch; concrete game-resource destruction and terminal-failure ownership remain external.",
+    "Native private-stack aliases, invalid-memory faults and asynchronous loading lifetime remain unproved."
+  ],
+  "artifacts": {
+    "local/native_cache_block_integration_bn_combined_build.log": "cd2ce9dbfe37203a99444d1caa453011b00f2e1f718ca154fcd187b5399c2b84",
+    "local/native_cache_block_integration_bn_build.log": "69be11b80a3e7d9674c254319a9387250ca2a6804ffe914cbdb824e27de3690e",
+    "local/native_cache_block_primary_calls_bn.log": "52fe4b89745302af77b662387f194d43ba7e180fd5818e87e1976c1301c9f8da",
+    "local/native_cache_block_incoming_model_calls_bn.log": "671da4e37f48fb8ee5e4a12ca8a2cb911fad6d5221c7a42f8e4259b7a32b9a39",
+    "local/native_cache_block_bn_source_91db57c19f31.json": "b22dc125d573ea477f521d8dc6b39ae4d96ec937be16e788b353a1567596e224",
+    "reports/native_cache_block_annotations_bn.json": "88cc0ce617495c4c993c4ee0cc038eeff2a64ee8044d7a5c1299a3b1a8b36051",
+    "local/native_cache_block_final_flow_bn.log": "da82d539b2568d8d871c76cc0527405c3de8dc607d365d10f6f7937f21f08b5f",
+    "reports/native_resource_cache_catch_flow_bn.json": "94d0ffb0299f16fc2fe18e6f53c655d28ab7abcb4fae836484e6ef5110f4fd75",
+    "reports/native_cache_block_function_definitions_bn.json": "5da31ff5c59bc4fcea641717b5024e954aea502b146fb52781049d67c4d0343f",
+    "build/win32/Release/bsp_core.lib": "4978eb34edc7d94737e9f8353117e3c1091ac6618a67bc5af85a5f259c554961",
+    "build/win32/Release/bsp_game.exe": "cf66de2e0fb5f8fe2804fd6585676771bb1889b33365ee7f6a7f45c15b944252",
+    "build/win32/bsp_game.map": "306911b78aeef84f36c42a8c5d10cb347d482c39b8aa5ea54422316db91c174f",
+    "local/native_cache_block_artifact_review_bn.json": "2a46eb09836fd956fdaa6389fb5066f0a569882e9f4de48922aaf3dfda6c8a30",
+    "local/native_cache_block_integration_bn_model_build.log": "100cf1e7001c7d41ca231c46f2ce1b4aa96d6d2c68e53f622eee38832bb3eb27"
+  }
+}

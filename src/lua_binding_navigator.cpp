@@ -62,7 +62,7 @@ SceneCommandTarget lua_read_command_target(LuaCommandTargetSource& source, int i
             // 0088A88B / 0088A88E / 0088A895, then the JMP at 0088A899 skips the tail.
             target.kind = 1;
             target.object_id = source.entity_object_id(object);
-            target.reserved = 0.0f;  // 0088A8C7 XORPS, reached by both paths
+            target.trailing = 0.0f;  // 0088A8C7 XORPS, reached by both paths
             return target;
         }
         // Null falls into the shared tail below with kind and object_id cleared again.
@@ -82,7 +82,7 @@ SceneCommandTarget lua_read_command_target(LuaCommandTargetSource& source, int i
     // 0088A8C1 and 0088A8C5: the shared tail both surviving paths reach.
     target.object_id = 0;
     target.kind = 0;
-    target.reserved = 0.0f;  // 0088A8C7 XORPS / 0088A8D6
+    target.trailing = 0.0f;  // 0088A8C7 XORPS / 0088A8D6
     return target;
 }
 

@@ -10,9 +10,12 @@
 // binary-compatible layout: the offset constants are the native ones, the structs are not.
 //
 // Contracts named but not reconstructed: the routine that writes the local player's stick or
-// the bot's five planned axes into unit+9E4h (contract: unread; the remaining candidate sites
-// are 007CA509 and 007D1333, since 007CB185 and 007CB3CE belong to the clamp and reset in
-// 007CAF10 and 007BB75D / 007C2B11 / 007D1676 are the network paths);
+// the bot's five planned axes into unit+9E4h (contract: unread; the candidate sites are
+// 007CA509, 007D1333 and - found by packet cc7_plane_advance_pose and missing from this list
+// until then - 007C6587..007C65CC, which drives the block from unit+894h, since 007CB185 and
+// 007CB3CE belong to the clamp and reset in 007CAF10 and 007BB75D / 007C2B11 / 007D1676 are
+// the network paths). Treat "the remaining candidates are" lists here as incomplete: this one
+// said two and there are at least three;
 // the matrix composition that turns the controller's state into unit+74h / unit+674h
 // (docs/ENTITY_LOCAL_MATRIX.md, docs/DYN_PHYSICS_SUBSTEP.md); the 0D0h sub-object at
 // controller+10h; the water arm 007DCDD0 and the ground arm 007DCCF0; the catapult and
@@ -26,21 +29,34 @@ namespace bsp {
 // which 007CFEB0 seeds with 1.0f from 00D7A24C.
 // ---------------------------------------------------------------------------
 namespace plane_control_off {
-inline constexpr int kLiveRoll = 0x9E4;      // 007CFE92 zero; 0099B476 reads it
+// CORRECTION: +9E4h is YAW and +9ECh is ROLL, not the other way round, and
+// +9F4h is the air brake rather than an unnamed auxiliary. Two independent
+// recoveries agree. docs/PILOT_COMMAND_PATH.md tables the Lua property readers
+// (007D69BA yawInput, 007D69F1 rollInput, 007D6A5F airBrakeInput), which carry
+// the original authored identifiers; docs/PLANE_AI_CONTROL.md reaches the same
+// assignment from the bot's own reads. The latch permutation 007B9770 confirms
+// it a third time. The offsets below were always right - only the names were
+// swapped, and nothing outside this header referenced them, so no behaviour
+// depended on the error.
+inline constexpr int kLiveYaw = 0x9E4;       // 007CFE92 zero; 0099B476 reads it
 inline constexpr int kLivePitch = 0x9E8;     // 007CFE98 zero; 0099B4B2 reads it
-inline constexpr int kLiveYaw = 0x9EC;       // 007CFE9E zero; 0099B494 reads it
+inline constexpr int kLiveRoll = 0x9EC;      // 007CFE9E zero; 0099B494 reads it
 inline constexpr int kLiveThrottle = 0x9F0;  // 007CFEB0 = 1.0f; 0099B456 reads it
-inline constexpr int kLiveAux = 0x9F4;       // 007CFEA4 zero; 0099B4D0 reads it
+inline constexpr int kLiveAirBrake = 0x9F4;  // 007CFEA4 zero; 0099B4D0 reads it
 inline constexpr int kLiveByteF8 = 0x9F8;    // 007CFEAA zero; 007DC860 copies it to ctl+5h
 inline constexpr int kLiveByteF9 = 0x9F9;    // 007DC84F copies it to ctl+4h
 inline constexpr int kLiveByteFA = 0x9FA;    // 007B977D latches it
 
 // The previous-step snapshot 007B9770 writes, read by the rate law 007DA710.
-inline constexpr int kLatchedRoll = 0xBB0;      // 007B9783
-inline constexpr int kLatchedPitch = 0xBB4;     // 007B979C
-inline constexpr int kLatchedYaw = 0xBB8;       // 007B97A8
-inline constexpr int kLatchedThrottle = 0xBBC;  // 007B97BA
-inline constexpr int kLatchedAux = 0xBC0;       // 007B97CC
+// Same correction as the live block above, and the latch is what proves it: it
+// copies +9E4h -> +BB0h straight through, and the Lua readers name +BB0h `yawF`
+// (007D6BB2) against +9E4h `yawInput` (007D69BA). A permutation that preserved
+// the order while swapping two names could not do that.
+inline constexpr int kLatchedYaw = 0xBB0;       // 007B9783, from +9E4h
+inline constexpr int kLatchedPitch = 0xBB4;     // 007B979C, from +9E8h
+inline constexpr int kLatchedRoll = 0xBB8;      // 007B97A8, from +9ECh
+inline constexpr int kLatchedThrottle = 0xBBC;  // 007B97BA, from +9F0h
+inline constexpr int kLatchedAirBrake = 0xBC0;  // 007B97CC, from +9F4h
 inline constexpr int kLatchedByteC8 = 0xBC8;    // 007B978F, from +9F8h
 inline constexpr int kLatchedByteC9 = 0xBC9;    // 007B97B4, from +9FAh
 inline constexpr int kLatchedByteCA = 0xBCA;    // 007B97C0, from +9F9h
@@ -345,5 +361,140 @@ public:
 // Everything between 007CE094 and 007CEC30 (damage, effects, collision, sound)
 // is not in the sequence: coverage is partial by construction.
 PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step);
+
+// ---------------------------------------------------------------------------
+// 007DB680 BSP_PlaneFlight_CoreLaw, the free-flight arm's physics.
+//
+// The native routine is an *accumulator* pass, not an integrator. 007DB6B6
+// 007D7C00 BSP_PlaneDynamics_BeginStep zeroes six 3-float accumulators in the
+// dynamics block at controller+10h (dyn+04h, +10h, +1Ch, +28h, +34h, +40h; the
+// stores are at 007D7C2A..007D7D0F, all from the read-only zero vector
+// 00F87574..7C) and copies the controller's world velocity ctl+18h into
+// dyn+4Ch and its body velocity ctl+3Ch into dyn+64h. 007DB680 then adds one
+// term per force into the accumulator that force is expressed in, and
+// 007DC6E6 007D8470 folds each *world* accumulator into its *body* partner
+// through ctl+0B0h before the unread tail integrates.
+//
+// Free flight writes four of the six:
+//   dyn+04h  body   lateral / vertical damping        (007DBD7D, 007DBD8A)
+//   dyn+10h  world  drag along the velocity direction (007DBBC6 onward)
+//   dyn+1Ch  body   +20h lift (007DB98D), +24h thrust (007DB80A),
+//                   +0Ch of the pair-1 partner takes the ceiling's push
+//   dyn+28h  world  +2Ch gravity (007DB9DB, 007DBA2F) and the ceiling (007DBE6B)
+//
+// docs/PLANE_FREE_FLIGHT_PHYSICS.md carries the per-term derivation, the
+// listing ranges and the provenance of every constant. Every name here is a
+// hypothesis, not a recovered symbol.
+// ---------------------------------------------------------------------------
+
+// The class-descriptor fields the free-flight law reads (unit+538h, also
+// controller+0Ch). 007D1F70 BSP_PlaneClass_ReadLuaFields is the producer; the
+// key strings it pushes before each FSTP name the two drag fields.
+struct PlaneFreeFlightClass {
+    float stall_spd{17.5f};  // desc+184h StallSpd, 007DB760 divides by it
+    float x_drag{0.0f};      // desc+174h XDrag, 007DBD3A lateral damping
+    float y_drag{0.0f};      // desc+170h YDrag, 007DBD50 vertical damping
+};
+
+// The Dynamics/* rows the law reads, every one inside the mirror window
+// 00F872F0..00F87427 that kDynamicsMirrorBase declares. The defaults are the
+// PlaneGlobals.lua values docs/GAME_TUNING_SINGLETON.md records; the image
+// bytes are zero because 007EAAE1 fills the mirror at load.
+struct PlaneFreeFlightTuning {
+    float ceiling{1500.0f};         // +210h, mirror 00F872F0, read 007DBE34
+    float ceiling_force{0.1f};      // +214h, mirror 00F872F4, read 007DBE42
+    float drag_func_power{1.8f};    // +228h, mirror 00F87308, read 007D9325
+    float drag_range_min{1.0f};     // +244h, mirror 00F87324, read 007D92D2
+    float drag_range_max{2.0f};     // +248h, mirror 00F87328, read 007D92C2
+    float level_flight{1.8f};       // +24Ch, mirror 00F8732C, read 007DB8C1
+    float lost_drag_time{5.0f};     // +264h, mirror 00F87344, read 007DB9B1
+    float extra_gravity_mul{1.5f};  // +268h, mirror 00F87348, read 007DB9A7
+    float accel_cheat_mul{1.5f};    // +31Ch, mirror 00F873FC, read 007DB931
+};
+
+// The plane's state as the law reads it. Body axes are (x lateral, y up,
+// z forward): 007DBD3A pairs ctl+3Ch with XDrag, 007DBD50 pairs ctl+40h with
+// YDrag, and 007DB760 divides 007D99C0's ctl+44h-derived speed by StallSpd.
+struct PlaneFreeFlightState {
+    float world_velocity[3]{};  // ctl+18h..20h, handed to 007D7C00 at 007DB6B5
+    float body_velocity[3]{};   // ctl+3Ch..44h, 007D9C10 rebuilds it each step
+    // ctl+0B0h, row-major, body = M * world. 007D9C39 writes ctl+3Ch from
+    // 0042D0D0(ctl+18h, ctl+0B0h), and 007DC6DA hands the same matrix to the
+    // fold, so the two uses share one convention.
+    float world_to_body[9]{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    float forward_speed{0.0f};    // 007D99C0's return; ctl+44h plus a carrier term
+    float world_altitude{0.0f};   // unit+100h, the ceiling's input
+    float lost_drag_timer{0.0f};  // unit+0C3Ch, the DeadMeat ramp's input
+    float airborne_time{3600.0f}; // unit+908h, the vertical-damping clamp's input
+    float pitch{0.0f};            // unit+0C64h, the drag ramp's input
+    float lift_ramp{99.0f};       // ctl+90h, the cap on the lift term
+    float roll_drag_scale{1.0f};  // ctl+98h, the extra world-x drag above 1.0
+    float lift_scale{1.0f};       // ctl+9Ch, the multiplier on q
+    bool extra_gravity{false};    // ctl+94h, gates the second gravity term
+    // Supplied by the host, not reconstructed here: see the doc's coverage table.
+    float thrust_accel{0.0f};  // 007D9050 * unit+0CC8h * the 008E6430 multiplier
+    float drag_accel{0.0f};    // 007D9140 * the 007DBB23 pitch ramp; negative forward
+};
+
+// The four accumulators free flight writes, in the order 007D7C00 clears them.
+struct PlaneDynAccumulators {
+    float body_damping[3]{};   // dyn+04h..0Ch
+    float world_drag[3]{};     // dyn+10h..18h
+    float body_lift[3]{};      // dyn+1Ch..24h
+    float world_gravity[3]{};  // dyn+28h..30h
+};
+
+// What 007D8470's first two folds leave in the body accumulators, and their sum.
+struct PlaneBodyAcceleration {
+    float pair_04[3]{};  // dyn+04h after 007D84B2 folds dyn+10h into it
+    float pair_1c[3]{};  // dyn+1Ch after 007D8487 folds dyn+28h into it
+    float total[3]{};    // pair_04 + pair_1c, the step's body-frame acceleration
+};
+
+// 007D92B0 BSP_PlaneFlight_AeroResponseCurve (RET 4, one float argument).
+// u = InterpolateClamped(DragRangeMin, 0, DragRangeMax, 1, ratio);
+// u == 0 -> 0, else pow(|u|, DragFuncPower) through FYL2X / F2XM1 / FSCALE.
+float aero_response_curve_007d92b0(float speed_ratio, const PlaneFreeFlightTuning& tuning);
+
+// 007DB8A7..007DB8B9. |vz| is formed as -0.0f - vz (00D7A208), so a zero vz
+// with either sign fails the >= 0.1f test (00D7A3A0, a double) and the angle is
+// exactly zero; otherwise -vy / vz, positive when the plane is sinking.
+float angle_of_attack_007db8b1(float body_vy, float body_vz);
+
+// 007DB875..007DB98D, the whole lift term in m/s^2 along body up, before it is
+// added into dyn+20h.
+float lift_accel_007db875(const PlaneFreeFlightState& state, const PlaneFreeFlightClass& cls,
+                          const PlaneFreeFlightTuning& tuning);
+
+// 007DB990..007DBA2F, the signed world-up gravity term (negative), including the
+// second application 007DB9E7 that ctl+94h gates.
+float gravity_accel_007db990(const PlaneFreeFlightState& state,
+                             const PlaneFreeFlightTuning& tuning);
+
+// 007DB80D..007DB874. ramp_reset is 007DB819's AL, the result of 007BBC50 on
+// the unit; it pins the cap at 3.0f. Otherwise the cap creeps: +step below 3,
+// +3*step below 6 (00D7A2B0, a double), and stops at 6 (00CE6630).
+float advance_lift_ramp_007db80d(float lift_ramp, float step, bool ramp_reset);
+
+// The free-flight arm as a pure rule: one native step of 007DB680 with ctl+FCh
+// clear, expressed as the four accumulators it leaves for the fold. The step
+// argument is used only where the native uses it, by 007DB80D's ramp.
+PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState& state,
+                                                     const PlaneFreeFlightClass& cls,
+                                                     const PlaneFreeFlightTuning& tuning,
+                                                     float step, bool ramp_reset = false);
+
+// 007D8470's first two folds and the 0.001f deadband at 007D8502..007D85A5.
+PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& acc,
+                                                    const float world_to_body[9]);
+
+// The quantity the acceptance test pins: the world-up component of one free
+// flight step's acceleration, with the body result rotated back through the
+// transpose of ctl+0B0h. At level flight the two frames agree and this is just
+// lift + gravity.
+float free_flight_world_up_acceleration(const PlaneFreeFlightState& state,
+                                        const PlaneFreeFlightClass& cls,
+                                        const PlaneFreeFlightTuning& tuning, float step,
+                                        bool ramp_reset = false);
 
 }  // namespace bsp

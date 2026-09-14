@@ -99,7 +99,7 @@ SceneCommandResolution resolve_scene_command_0046aab0(const SceneCommandRecord& 
         resolution.target.position[2] = 0.0f;
     }
 
-    resolution.target.reserved = 0.0f;  // XORPS XMM0 / MOVSS at 0046ABF8
+    resolution.target.trailing = 0.0f;  // XORPS XMM0 / MOVSS at 0046ABF8
     resolution.outcome = SceneCommandOutcome::kIssued;
     return resolution;
 }

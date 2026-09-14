@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074e210",
+    "end_address": "0074e21d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074e210",
+    "end_address": "0074e21c",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074e210",
+    "disassemble_first": false,
+    "name": "BSP_PlaneControlMode_IsFreeFlight"
+   },
+   "result": {
+    "success": true,
+    "address": "0074e210",
+    "function_name": "BSP_PlaneControlMode_IsFreeFlight",
+    "entry_point": "0074e210",
+    "body_size": 13,
+    "message": "Function created successfully at 0074e210",
+    "warnings": [
+     "Function name 'BSP_PlaneControlMode_IsFreeFlight' \u2014 main part 'PlaneControlMode_IsFreeFlight' is not PascalCase. Expected: PlanecontrolmodeIsfreeflight",
+     "Function name 'BSP_PlaneControlMode_IsFreeFlight' \u2014 main part 'PlaneControlMode_IsFreeFlight' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneControlMode_IsFreeFlight' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0074e210",
+   "end": "0074e21d",
+   "name": "BSP_PlaneControlMode_IsFreeFlight",
+   "after": "Function: BSP_PlaneControlMode_IsFreeFlight at 0074e210\nSignature: undefined BSP_PlaneControlMode_IsFreeFlight(void)\nEntry: 0074e210\nBody: 0074e210 - 0074e21c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

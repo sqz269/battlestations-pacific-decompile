@@ -43,6 +43,10 @@ def post(client, endpoint, **body):
 
 
 def main(argv):
+    allow_data = False
+    if '--data' in argv:
+        allow_data = True
+        argv = [a for a in argv if a != '--data']
     record = None
     if '--record' in argv:
         i = argv.index('--record')
@@ -66,7 +70,17 @@ def main(argv):
         entry = re.search(r'Entry:\s*([0-9a-fA-F]+)', text)
         named = re.search(r'Function:\s*(\S+)\s+at', text)
         if not entry:
-            raise SystemExit(f'{address}: not inside any function; refusing to label ({text[:120]})')
+            if allow_data:
+                # An authored data row in .rdata - a gunnery preference table, a
+                # name table - is legitimately in no function. Labelling one is
+                # the right annotation; defining a function there would not be.
+                planned.append({'address': address, 'name': name,
+                                'enclosing': None, 'enclosing_address': None,
+                                'kind': 'data'})
+                continue
+            raise SystemExit(
+                f'{address}: not inside any function ({text[:80]}). '
+                f'If this is an authored data row, pass --data.')
         start = entry.group(1).lower().rjust(8, '0')
         if start.lstrip('0') == address.lstrip('0'):
             raise SystemExit(
@@ -80,8 +94,9 @@ def main(argv):
     with ghidra_lock(purpose='ghidra_label_interior'):
         for row in planned:
             post(client, 'create_label', address=row['address'], name=row['name'])
-            print(f'{row["address"]} -> label {row["name"]}  '
-                  f'(interior of {row["enclosing"]} at {row["enclosing_address"]})')
+            where = ('data, in no function' if row.get('kind') == 'data'
+                     else f'interior of {row["enclosing"]} at {row["enclosing_address"]}')
+            print(f'{row["address"]} -> label {row["name"]}  ({where})')
         post(client, 'save_program')
     print('saved project')
 

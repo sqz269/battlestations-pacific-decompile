@@ -870,7 +870,7 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     view.target.object_id = message.target_id;
     view.target.object = const_cast<void*>(message.target_object);
     for (int lane = 0; lane < 3; ++lane) view.target.position[lane] = message.position[lane];
-    view.target.reserved = message.trailing;
+    view.target.trailing = message.trailing;
 
     const bsp::EntityOrderCommandClass* klass
         = bsp::entity_order_command_class_by_ordinal(

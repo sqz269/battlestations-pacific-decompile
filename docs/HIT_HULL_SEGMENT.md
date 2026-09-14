@@ -292,3 +292,35 @@ Negative results, stated as negative results:
 5. **`docs/UNIT_INSTANCE_LAYOUT.md` vs `docs/UNIT_FIRE_AND_REPAIR.md` on `+1018h`.** The first calls
    it "controller, `kUnitOffController`", the second "parts object". `00827026` on the ship entity
    agrees with the second. Not this packet's address.
+
+## Correction from docs/NARROWPHASE_UNIT_PART_SHAPE.md (packet cc7_narrowphase_unit_part_shape)
+
+- **Was:** `element+24h` published as `kGeomElementOffRejectScalar`, "fed to `0085BF90`, unread",
+  and `element+24h` noted as reading like a heap pointer versus a scalar - flagged unresolved.
+  **Is:** resolved, and it is a pointer. `element+20h` and `element+24h` are **pointers to parallel
+  float3 min/max arrays**: `007238E0` indexes both by `node*12`, and `00723B70` hands **both** to
+  `0085BF90`. The constant is now marked refuted in place in `include/bsp/hit_hull_segment.hpp`
+  rather than deleted, because a reader may still exist; the corrected offsets live in
+  `include/bsp/narrowphase_unit_part_shape.hpp`.
+
+- **The selection rule `00723D60`.** Every element is tested in index order against a far endpoint
+  that has already been pulled back to the closest hit so far, and the **last acceptor wins**. There
+  is no distance comparison and no bounds reject in the body - the shortening *is* the ordering, and
+  ties go to the later element. Below it, `00723AA0`'s whole `3Ch`-byte frame is one segment record
+  (`+18h` from, `+24h` to, `+30h` hit), and `007238E0` prunes through a per-element AABB tree with a
+  leaf threshold of `14h` while keeping the closest triangle. **So a host needs real triangles, not
+  per-element bounds.**
+
+- **The shape is a `28h`-byte value type, not a heap object**: `+0h` vtable, `+4h..+18h` two float3
+  bounds, `+1Ch` collision node, `+20h` transform, `+24h` the GeomMesh. It is built on the frame of
+  `00712440` and copied into an STL list node at `listNode+8`. Ghidra's `xrefs` reports two writers
+  of vtable `00CFD768`; a byte census finds **five** - `0070F6F7`, `0071067E` and `00710A2C` lie in
+  code Ghidra never defined. Their extents are deliberately **not** claimed.
+
+- **The index spaces are the same, with no mapping anywhere.** `0092D1F0` takes one index for both
+  the gate byte and the health vector: `0092D210 CMP byte ptr [EDI + EBX*1 + 34Ch]` with `EDI` the
+  index and `EBX` the parts object, and `0092D237 CMP EDI,EAX` bounds-checks that same index against
+  the `+30Ch` vector's count. Verified at integration. `00937C90` writes `parts+34Ch + NN` for the
+  `fizika_%02d` suffix, and `yamato.mmod`'s element order `1,2,5,6,0,4,3` rules out a sequential
+  counter. **Partial:** no model in this installation has a `fizika_NN` hole, so the gap case cannot
+  be separated by data.

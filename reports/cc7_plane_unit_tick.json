@@ -1,0 +1,277 @@
+{
+ "packet": "cc7_plane_unit_tick",
+ "owner": "agent/cc7-plane-tick",
+ "doc": "docs/PLANE_UNIT_TICK.md",
+ "header": null,
+ "source": null,
+ "published_module": false,
+ "published_module_reason": "include/bsp/plane_flight.hpp already declares PlaneFlightHost and run_plane_fixed_step_007ce040, and include/bsp/plane_ground_ops.hpp already declares select_motion_arm_007cec30 and run_ground_roll_step_007cbfa0. Every rule this packet could express is one of those; the single refinement found (the free-flight gate collapses to flight_state == 7) belongs to select_motion_arm_007cec30's owner, not to a second copy. The outcome is scoping evidence.",
+ "program": "/battlestationspacific.exe in C:/Users/sqz269/bsp.gpr",
+ "installation": {
+  "note": "This installation is modded (BSPRM/AlterBSP); it is not retail. No installation file was modified, and none was read by this packet: every fact below comes from the image, the Ghidra database, or repository source.",
+  "files_read": [],
+  "modified": false
+ },
+
+ "routines": [
+  {
+   "address": "007ce040",
+   "name_hypothesis": "BSP_PlaneTickElement_FixedStep",
+   "abi": "__thiscall void(TickNode* node, float step), RET 4; ESI is the node at unit+310h, EDI the unit (007CE0ED LEA EDI,[ESI-310h])",
+   "body": "007ce040-007cf172",
+   "instructions": 1095,
+   "coverage": "partial: 007CE040-007CE094 (the 00953CC0 call) and 007CEC30-007CECBF (the motion dispatch) read here; 007CE094-007CEC30 and 007CECBF-007CF172 (damage, fire, collision, sound, effects) unread",
+   "callers": "none in the call graph; reached only through tick-vtable slot +8h"
+  },
+  {
+   "address": "00727bd0",
+   "name_hypothesis": "BSP_GunneryTargetRanks_Build",
+   "abi": "__cdecl void(), RET 0",
+   "body": "00727bd0-00727c24",
+   "coverage": "complete; read as a contract, not leased",
+   "note": "Inverts the twelve authored rows at 00E092C8 into the rank table at 00E19BF8. Row 0 (PLANEGUN) ends the pass entirely zero."
+  },
+  {
+   "address": "0074e0f0",
+   "name_hypothesis": "BSP_ReconPlaneUnitInstance_Construct",
+   "abi": "__thiscall(this, arg), RET 4",
+   "body": "0074e0f0-0074e15e",
+   "coverage": "complete",
+   "class_id_00c4": "0x14 MReconPlane",
+   "tick_vtable_0310": "00d0002c"
+  },
+  {
+   "address": "0074e2d0",
+   "name_hypothesis": "BSP_LargeReconPlaneUnitInstance_Construct",
+   "abi": "__thiscall(this, arg), RET 4",
+   "body": "0074e2d0-0074e33c",
+   "coverage": "complete",
+   "class_id_00c4": "0x16 MLargeReconPlane",
+   "tick_vtable_0310": "00d002c4"
+  },
+  {
+   "address": "0084c920",
+   "name_hypothesis": "BSP_SmallReconPlaneUnitInstance_Construct",
+   "abi": "__thiscall(this, arg), RET 4",
+   "body": "0084c920-0084c98c",
+   "coverage": "complete",
+   "class_id_00c4": "0x15 MSmallReconPlane",
+   "tick_vtable_0310": "00d0ba3c"
+  },
+  {
+   "address": "0074e210",
+   "name_hypothesis": "BSP_PlaneControlMode_IsFreeFlight",
+   "abi": "__thiscall bool(this), RET 0, bool in AL; this is the embedded sub-object at unit+72Ch",
+   "body": "0074e210-0074e21c",
+   "coverage": "complete",
+   "no_ghidra_function": true,
+   "end_address_inclusive": "0074e21c",
+   "final_instruction": "0074e21c RET (c3), followed by cc cc cc padding; next entry 0074e220",
+   "rule": "return *(int*)(this + 0x1D4) == 7, and this+1D4h is unit+900h (310h + 41Ch + 1D4h = 900h)"
+  },
+  {
+   "address": "0087b670",
+   "name_hypothesis": "BSP_UnitTickableEntity_Construct",
+   "abi": "__thiscall(this, int flag), RET 4",
+   "body": "0087b670-0087b743",
+   "coverage": "read for the tick-node construction only; the rest is contract",
+   "note": "Level 3 of the unit constructor chain; builds the tick node at this+310h for every unit class, plane and ship alike."
+  }
+ ],
+
+ "native_call_sites": [
+  {"address": "0087b6a9", "native": "00875890", "function": "0087b670",
+   "what": "BSP_TickRegistration_Construct with ECX = this+310h (0087B69C LEA EBX), payload = this, group 0. The receiver a plane and a ship share."},
+  {"address": "007ce08f", "native": "00953cc0", "function": "007ce040",
+   "what": "the level-4 unit tick, which a generic unit uses as its whole +8h slot"},
+  {"address": "007cec6e", "native": "007cc2f0", "function": "007ce040",
+   "what": "free-flight arm; gate unit+900h == 7"},
+  {"address": "007cec92", "native": "007cbfa0", "function": "007ce040",
+   "what": "ground-roll arm; gate unit+900h in {4,5} (007CEC7B CMP EAX,4 / 007CEC80 CMP EAX,5)"},
+  {"address": "007cecaf", "native": "007cba50", "function": "007ce040",
+   "what": "water-surface arm; gate 007CEC99 CMP dword [ESI+5F0h],6, and ESI+5F0h is unit+900h"},
+  {"address": "007cecba", "native": "0085dc80", "function": "007ce040",
+   "what": "commit this step's pose, LEA ECX,[ESI+364h] = unit+674h; skipped entirely when no arm matched (007CECA0 JNZ 007CECBF)"},
+  {"address": "0074e0fa", "native": "007cfd20", "function": "0074e0f0",
+   "what": "MReconPlane's base construction; the recon tree derives from the plane base"},
+  {"address": "0074e2d8", "native": "0074e0f0", "function": "0074e2d0",
+   "what": "MLargeReconPlane derives from MReconPlane"},
+  {"address": "0084c928", "native": "0074e0f0", "function": "0084c920",
+   "what": "MSmallReconPlane derives from MReconPlane"}
+ ],
+
+ "indirect_dispatches": [
+  {"address": "007cec3f", "native": "00d06130+38", "function": "007ce040",
+   "resolves_to": "0074e210",
+   "what": "CALL EAX after 007CEC30 MOV EDX,[ESI+41Ch] / 007CEC36 MOV EAX,[EDX+38h] / 007CEC39 LEA ECX,[ESI+41Ch]. The LEA proves unit+72Ch is an embedded sub-object, so ECX is unit+72Ch. Both plane-tree +72Ch vtables resolve slot +38h to 0074E210: 00D06168 and 00D00020 each hold it."},
+  {"address": "007ce040", "native": "00d068dc+8", "function": "007ce040",
+   "what": "007CE040 itself is only ever reached through tick-vtable slot +8h; the call graph gives it zero direct callers and the image has no .text reference to the dword."}
+ ],
+
+ "vtable_slot_08h_census": {
+  "method": "whole-image byte scan for the dword `40 e0 7c 00` (007CE040) and for the pair `00 65 7c 00 40 e0 7c 00` (slot +4h then +8h). Both return the same nine hits, all in .rdata.",
+  "hits_at_slot_08h": ["00d00034", "00d002cc", "00d05ee4", "00d065fc", "00d068e4", "00d0ba44", "00d19cec", "00d19fc4", "00d1a29c"],
+  "text_references": 0,
+  "tables": [
+   {"vtable": "00d05edc", "ctor": "007cfd20", "install_site": "007cfda6", "class": "plane base", "class_id_00c4": null},
+   {"vtable": "00d065f4", "ctor": "007d7720", "install_site": "007d7757", "class": "MPlaneBomber", "class_id_00c4": "0x10", "allocator": "007d7850"},
+   {"vtable": "00d068dc", "ctor": "007dd9b0", "install_site": "007dd9e7", "class": "MPlaneFighter", "class_id_00c4": "0x13", "allocator": "007ddae0", "note": "the A7M's class"},
+   {"vtable": "00d19ce4", "ctor": "00951b60", "install_site": "00951b97", "class": "MPlaneDiveBomber", "class_id_00c4": "0x12", "allocator": "00956390"},
+   {"vtable": "00d19fbc", "ctor": "00951c40", "install_site": "00951c77", "class": "MPlaneTorpedoBomber", "class_id_00c4": "0x11", "allocator": "009564e0"},
+   {"vtable": "00d1a294", "ctor": "00951d20", "install_site": "00951d57", "class": "MPlaneKamikaze", "class_id_00c4": "0x17", "allocator": "00956240"},
+   {"vtable": "00d0002c", "ctor": "0074e0f0", "install_site": "0074e127", "class": "MReconPlane", "class_id_00c4": "0x14", "allocator": "008091d0", "new_in_this_packet": true},
+   {"vtable": "00d002c4", "ctor": "0074e2d0", "install_site": "0074e305", "class": "MLargeReconPlane", "class_id_00c4": "0x16", "allocator": "0074e540", "new_in_this_packet": true},
+   {"vtable": "00d0ba3c", "ctor": "0084c920", "install_site": "0084c955", "class": "MSmallReconPlane", "class_id_00c4": "0x15", "allocator": "0084ca50", "new_in_this_packet": true}
+  ]
+ },
+
+ "tick_vtable_slot_comparison": {
+  "source": "image bytes at each vtable; roles from include/bsp/tick_element_overrides.hpp",
+  "rows": [
+   {"slot": "+0h", "role": "Destroy", "generic_00d1a654": "00959c10", "ship_00cfc38c": "006fe510", "plane_00d068dc": "007dda60"},
+   {"slot": "+4h", "role": "PlacePose", "generic_00d1a654": "0042bb70 (base stub)", "ship_00cfc38c": "00811ab0", "plane_00d068dc": "007c6500"},
+   {"slot": "+8h", "role": "AdvanceSim", "generic_00d1a654": "00953cc0", "ship_00cfc38c": "00825f20", "plane_00d068dc": "007ce040"},
+   {"slot": "+0Ch", "role": "CommitPose", "generic_00d1a654": "006d1fc0", "ship_00cfc38c": "006d1fc0", "plane_00d068dc": "007beee0"},
+   {"slot": "+10h", "role": "unused", "generic_00d1a654": "0042bba0", "ship_00cfc38c": "0042bba0", "plane_00d068dc": "0042bba0"},
+   {"slot": "+14h", "role": "predicate", "generic_00d1a654": "0042bbb0", "ship_00cfc38c": "0042bbb0", "plane_00d068dc": "0042bbb0"}
+  ],
+  "conclusion": "a plane overrides three slots where a generic unit overrides one and a ship two"
+ },
+
+ "motion_arm_rule": {
+  "field": "unit+900h, the flight state",
+  "writers": [
+   {"address": "007c145b", "form": "MOV dword [ECX+900h],EAX", "function": "007c1430", "what": "BSP_Plane_SetFlightState, the general setter"},
+   {"address": "007c63f4", "form": "MOV dword [ESI+900h],6", "function": "007c6340", "what": "BSP_Plane_ChooseSpawnFlightState, the create path"},
+   {"address": "007c7183", "form": "MOV dword [ESI+900h],7", "function": "007c7110", "what": "BSP_Plane_BeginFlying; site taken from docs/PLANE_FLIGHT.md's .text scan, not re-read here"}
+  ],
+  "arms": [
+   {"state": 7, "arm": "free flight", "site": "007cec6e", "native": "007cc2f0"},
+   {"state": "4 or 5", "arm": "ground roll", "site": "007cec92", "native": "007cbfa0"},
+   {"state": 6, "arm": "water surface", "site": "007cecaf", "native": "007cba50"},
+   {"state": "0, 1, 2, 3", "arm": "none", "site": "007ceca0", "native": null,
+    "what": "007CECA0 JNZ 007CECBF jumps past the pose commit as well, so the committed pose is untouched for that step"}
+  ]
+ },
+
+ "host_drop_sites": [
+  {"file": "src/game_hosts_units.cpp", "lines": "94-116",
+   "what": "kUnitMotionDispatches: eight rows resolve to entry 0x007ce040 with UnitMotionCoverage::unresolved (creators 008091d0 0084ca50 0074e540 007ddae0 00956390 009564e0 00956240 007d7850)"},
+  {"file": "src/game_hosts_units.cpp", "line": 1926,
+   "what": "if (!slot.motion_dispatch.runs_ship_base()) - true for a plane, since `unresolved` is neither direct_ship_body nor ship_base_fragment"},
+  {"file": "src/game_hosts_units.cpp", "line": 1927,
+   "what": "if (entry == 0x00953cc0u) - false for a plane; the generic tick is not taken either"},
+  {"file": "src/game_hosts_units.cpp", "line": 1976,
+   "what": "host.record_motion_phase(\"unreconstructed_phase\", 0x007ce040); then line 1980 `continue`. THIS is where a plane unit stops being simulated."},
+  {"file": "src/game_hosts_gunnery.cpp", "line": 774,
+   "what": "recon_contact_count_008053c0's stand-in filters candidates to unit_is_kind_of(i, kUnitGunneryKindShipBase) = 06h, so no ship's AA gun ever sees a plane. Narrower than the native rule."},
+  {"file": "src/game_hosts_gunnery.cpp", "lines": "799-802, 821, 824",
+   "what": "the rank-0 rejection precedes both the `nearest` and the `best_range` writes, so both columns are structurally 0 for a unit whose guns are all category 0"},
+  {"file": "src/game_hosts_ship_ai.cpp", "lines": "61-77, 4187",
+   "what": "has_ship_navigation_class excludes VehicleClassKind 0Fh..17h. CORRECT, not a gap: planes do not use the ship-family brain."},
+  {"file": "src/plane_flight.cpp", "line": 150,
+   "what": "bsp::run_plane_fixed_step_007ce040 exists and has no caller; no class in src/ derives from PlaneFlightHost or PlaneGroundOpsHost"}
+ ],
+
+ "gunnery_category_0": {
+  "verdict": "native rule, not a host defect",
+  "preference_row_va": "00e092c8",
+  "row_bytes": "61 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 / 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+  "class_id_space": "0..0x60, so 0x61 is one past it and can match no unit",
+  "builder": "00727bd0",
+  "builder_rule": "rank_table[category*0x61 + id] = rank, rank starting at 1 and advancing only past a non-zero entry; the write at 00727BFB is unbounded, so category 0's 0x61 lands on row 1 index 0, and the REP STOSD at 00727BEC zeroes row 1 before filling it. Row 0 ends entirely zero.",
+  "consumer": "src/game_hosts_gunnery.cpp:799, from 00863990's chain: rank 0 rejects the candidate",
+  "corroboration": "008624C0's plane arm at 00862558 keeps a plane's categories 0 and 1 enabled whatever the director says, so the pass does attach to a plane and category 0 is enabled - the authored target list is deliberately empty. Category 1 AAMACHINEGUN (00E0944C) does list every plane class.",
+  "consequence": "the A7M's four guns are all category 0, so it has no AI-driven weapon at all; a PLANEGUN fires only under pilot control (00519520) or through a plane AI that points the airframe"
+ },
+
+ "recon_membership": {
+  "native_rule_source": "docs/RECON_SLOT_LISTS.md section 1(a) and 1(b)",
+  "singleton": "00806480 returns the lazily built 00F874C8, constructed by 00805F60",
+  "scanned_class_ids": 22,
+  "plane_ids_in_the_scan": ["0x10 MPlaneBomber", "0x11 MPlaneTorpedoBomber", "0x12 MPlaneDiveBomber", "0x13 MPlaneFighter", "0x15 MSmallReconPlane", "0x16 MLargeReconPlane", "0x17 MPlaneKamikaze"],
+  "class_test": "vtable[5Ch](2), IsKindOf(02h), the base of every scene entity",
+  "host_stand_in": "IsKindOf(06h) ship base, src/game_hosts_gunnery.cpp:774",
+  "verdict": "the stand-in is strictly narrower than the rule it stands in for; this is why the A7M's `taken` is 0",
+  "open": "0x14 MReconPlane is a concrete class with allocator 008091d0, constructor 0074e0f0 and tick vtable 00d0002c, and is NOT among the twenty-two. Not settled."
+ },
+
+ "host_prescription": [
+  {"step": 1, "change": "replace recon_contact_count_008053c0's IsKindOf(06h) stand-in with the native membership rule (leaf class id in 00806480's twenty-two, plus IsKindOf(02h))", "file": "src/game_hosts_gunnery.cpp:774", "size": "one predicate", "measurable": "the seven A7M become candidates for every category-1 and category-5 gun; taken, hits and the 295 AAMACHINEGUN / 60 FLAK guns' shots leave zero, and 008633D0's mask bit 0 and 00863990's loitering-plane penalty are exercised for the first time"},
+  {"step": 2, "change": "print row.category_ranges[] beside best_range", "file": "src/game_hosts_gunnery.cpp report tail", "size": "one log line", "measurable": "the A7M's PLANEGUN engagement range, settling whether 006E9890's kind table gives PLANEGUN a non-zero +60h. Today the column cannot distinguish that from the rank gate."},
+  {"step": 3, "change": "bind the eight 0x007ce040 dispatch rows to bsp::run_plane_fixed_step_007ce040 with a recording PlaneFlightHost, and seed unit+900h from 007C6340", "file": "src/game_hosts_units.cpp:94-116 and 1920-1980", "size": "a host binding over an existing module", "measurable": "which arm each plane takes and the count of 007CECBA pose commits. Until unit+900h is seeded the selector is provably None for every plane and even the pose commit is skipped."},
+  {"step": 4, "change": "give the ground-roll arm a body with the existing bsp::run_ground_roll_step_007cbfa0", "file": "src/game_hosts_units.cpp", "size": "a host binding over an existing module", "measurable": "the cheapest arm that moves a plane; still bottoms out in 007DB680"},
+  {"step": 5, "change": "read 007DB680's unread body 007DB760-007DC82A and 007DC830's 007DCA17-007DCB47", "file": "a packet, not a host change", "size": "large, x87 throughout", "measurable": "real altitude and speed. A plane cannot hold altitude until the core law is read, because every arm routes into it."},
+  {"step": 6, "change": "a plane AI", "file": "nothing exists", "size": "unscoped", "measurable": "nothing yet. 007F3BA0 BSP_PlaneSquadron_TickAdvance is reconstructed and also uncalled, and no Plane*Ai / Plane*Think name exists in the ledger at all."}
+ ],
+
+ "corrections": [
+  {
+   "target": "docs/PLANE_FLIGHT.md, 'The per-step law' and 'Coverage'",
+   "was": "the base plane table plus five derived tables carry 007C6500 at +4h and 007CE040 at +8h; 'complete: ... the five plane tick vtables and the proof that all share 007CE040'",
+   "is": "nine tables carry the pair. The three additional ones are 00D0002C (0074E0F0, MReconPlane 14h), 00D002C4 (0074E2D0, MLargeReconPlane 16h) and 00D0BA3C (0084C920, MSmallReconPlane 15h), a second class tree that calls 007CFD20 and then overrides +310h.",
+   "evidence": "whole-image byte census of the dword 40 e0 7c 00 returns exactly nine hits, all .rdata, all at a vtable +8h: 00d00034 00d002cc 00d05ee4 00d065fc 00d068e4 00d0ba44 00d19cec 00d19fc4 00d1a29c; the same nine for the pair 00 65 7c 00 40 e0 7c 00 at the +4h offsets. Installers: 0074E127 MOV dword [ESI+310h],0xd0002c after 0074E0FA CALL 007cfd20 and before 0074E145 MOV dword [ESI+0C4h],0x14; 0074E305/0074E323 = 0x16 after 0074E2D8 CALL 0074e0f0; 0084C955/0084C973 = 0x15 after 0084C928 CALL 0074e0f0. src/game_hosts_units.cpp's kUnitMotionDispatches independently carries all eight concrete plane rows."
+  },
+  {
+   "target": "docs/PLANE_FLIGHT.md, the motion dispatch table",
+   "was": "surface arm gate: unit+5F0h == 6",
+   "is": "unit+900h == 6. All three arms read one field.",
+   "evidence": "007CE0ED LEA EDI,[ESI-310h] makes ESI the node and EDI the unit, so 007CEC99 CMP dword [ESI+5F0h],6 is unit+310h+5F0h = unit+900h, the same field 007CEC75 MOV EAX,[EDI+900h] reads two instructions earlier. include/bsp/plane_ground_ops.hpp:136's select_motion_arm_007cec30 already carries the corrected single-input form; this is an independent confirmation from the listing."
+  },
+  {
+   "target": "docs/PLANE_FLIGHT.md's free-flight arm and include/bsp/plane_flight.hpp:313 free_flight_gate_00d06130_38",
+   "was": "the free-flight gate is an opaque virtual, (*(unit+72Ch))->vtable[+38h]()",
+   "is": "unit+72Ch is an embedded sub-object, not a pointer, and both +72Ch vtables in the plane trees resolve slot +38h to 0074E210, which is `return this->+1D4h == 7`, i.e. unit+900h == 7",
+   "evidence": "007CEC39 LEA ECX,[ESI+41Ch] is an LEA, so ECX is the sub-object's address, and 007CEC30 MOV EDX,[ESI+41Ch] loads its first dword as the vtable; 0074E13B MOV dword [ESI+72Ch],0xcfffe8 writes a vtable pointer directly into the field; 00D06168 and 00D00020 (both +38h) hold 0074E210; 0074E210's disk bytes are 33 c0 83 b9 d4 01 00 00 07 0f 94 c0 c3; and 310h + 41Ch + 1D4h = 900h."
+  },
+  {
+   "target": "the packet brief's reading of the A7M's `range 0` column",
+   "was": "their unit range still reads 0 even after a fix that gave 674 guns a derived engagement range",
+   "is": "the column is best_range, written at src/game_hosts_gunnery.cpp:824 only after the rank gate at 799, which a category-0 gun can never pass. It is structurally 0 for any unit whose guns are all category 0, regardless of category_ranges[0], which lines 634 and 655 do fill. This is NOT evidence that PLANEGUN failed to get a derived range.",
+   "evidence": "src/game_hosts_gunnery.cpp:799-802 returns false before line 821 (nearest) and line 824 (best_range) are reached; the same ordering makes `nearest 0` a consequence of the rank gate rather than a position problem."
+  }
+ ],
+
+ "run_evidence": {
+  "status": "negative result - no fresh run could be taken in this session",
+  "build": "./scripts/build.ps1 exit 0",
+  "attempts": [
+   "build/win32/Release/bsp_game.exe --frames 300 --press-start-frame 30 --menu-select IJN01 --mission-frames 120 --log local/plane_run.log --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+   "build/win32/Release/bsp_game.exe --frames 60 --log local/plane_run2.log --game-root \"<install>\"",
+   "same with --settings-personal-root pointed at an empty directory (local/plane_run3.log)"
+  ],
+  "result": "all three exit 0xC0000005 at the same point. The last log line is always `host Phase 5 load_game_settings [008d8190] concrete` followed by the settings resolution line, so the fault is in the next step, sound_->core.startup() / `Phase 5 sound_system_initialize 0073DAFD` at src/game_hosts.cpp:1378-1381.",
+  "isolation": "the MAIN checkout's own build/win32/Release/bsp_game.exe crashes identically at the same line, and no other bsp_game.exe process was running. This is the session environment, not this worktree and not this build.",
+  "substitute": "the packet brief's IJN01 measurement (78 units, 606 guns, seven A7M rows all zero, PLANEGUN 0 assignments over 82 guns), which is consistent with all four rows of the doc's summary table.",
+  "consequence": "every 'would become measurable' in host_prescription is a prediction, not an observation."
+ },
+
+ "proven": [
+  "the nine plane tick vtables and their nine installers, each with the class id it writes to unit+C4h",
+  "007CE040 has no direct caller and no .text reference; the nine .rdata slots are its only references",
+  "the three-way slot comparison of 00D1A654, 00CFC38C and 00D068DC, from image bytes",
+  "the motion dispatch 007CEC30-007CECBA in full from the listing, including that ESI is the node and EDI the unit, that the surface arm's ESI+5F0h is unit+900h, and that a plane in any other state runs no arm and skips the pose commit",
+  "0074E210 as the free-flight gate from its four instructions on disk, and ECX = unit+72Ch from 007CEC39's LEA, giving unit+900h == 7",
+  "00E092C8 row 0 and 00727BD0's full body, hence the empty category-0 rank row",
+  "every host site in host_drop_sites, from the source in this worktree"
+ ],
+
+ "assumed": [
+  "007C6500, 007CC2F0, 007CBFA0, 007CBA50, 0085DC80, 007DC830 and 007DB680 are read here as CONTRACTS only, from docs/PLANE_FLIGHT.md and docs/PLANE_GROUND_OPS.md; their bodies were not re-read in this packet",
+  "that 00D06130 is the base plane's unit+72Ch vtable is taken from include/bsp/plane_flight.hpp's free_flight_gate_00d06130_38. What was verified directly is that 00D06130+38h and 00CFFFE8+38h both hold 0074E210, and that 00CFFFE8 is what 0074E13B writes to unit+72Ch for the recon-plane tree.",
+  "008091D0, 0074E540, 0084CA50, 007DDAE0, 00956390, 009564E0, 00956240 and 007D7850 are taken as the eight descriptor allocate_instance thunks from kUnitMotionDispatches; only 007DDAE0's head was read (0E94h at 007DDAF8). The ctor-to-allocator pairing is inferred from the vtable each row names, which was verified.",
+  "007C7183's store of 7 to unit+900h is taken from docs/PLANE_FLIGHT.md's .text immediate scan, not re-read here",
+  "why 14h MReconPlane is absent from the twenty-two scanned ids: NOT ESTABLISHED",
+  "PLANEGUN's actual derived +60h from 006E9890: NOT ESTABLISHED - nothing in this process prints it",
+  "whether anything other than the pilot fires a PLANEGUN: NOT ESTABLISHED. No plane AI name exists in the ledger."
+ ],
+
+ "follow_up_packets": [
+  "plane_recon_contact_membership - replace the IsKindOf(06h) stand-in in recon_contact_count_008053c0 with 00806480's twenty-two-id membership plus IsKindOf(02h), and re-run IJN01. Coordinate with cc7-recon-slot / cc7-recon-finish, which own 008053C0's area.",
+  "plane_motion_arm_binding - bind the eight 0x007ce040 dispatch rows to bsp::run_plane_fixed_step_007ce040, seed unit+900h from 007C6340, report the arm. Needs no new reconstruction.",
+  "plane_flight_core_law_body - 007DB680's 007DB760-007DC82A and 007DC830's 007DCA17-007DCB47. The blocker for any real plane motion; x87 throughout, so gpt-6-astra.",
+  "plane_tick_effect_body - 007CE040's 007CE094-007CEC30 and 007CECBF-007CF172. Overlaps the cockpit/camera and resource territory the peer orchestrators hold.",
+  "plane_gun_trigger_producer - who writes unit+9F8h/+9F9h, the two bytes 007DC84F copies into the flight controller as ctl+4h/ctl+5h, and whether anything but 00519520 fires a PLANEGUN.",
+  "recon_plane_class_14h - why 14h MReconPlane has an allocator, a constructor and a tick vtable but is absent from 00806480's twenty-two scanned class ids."
+ ]
+}
