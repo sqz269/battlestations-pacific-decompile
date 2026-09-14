@@ -1,0 +1,186 @@
+{
+  "packet": "orch2_raw_sphere_box_wrapper_bh",
+  "base": "e55c2a254e08d8593ce868ddc07af66d09c57c47",
+  "functions": [
+    {
+      "address": "00b7d160",
+      "name": "project_native_sphere_bounds_00b7d160",
+      "ghidra_name": "BSP_Sphere_ToAxisAlignedBounds",
+      "coverage": "complete",
+      "end_inclusive": "00b7d21e",
+      "original_bytes": 191,
+      "original_abi": "ECX output24h, EDX input16h; EAX original output; RET. XMM0 and x87 schedule preserved.",
+      "pe_live_sha256": "cc5b5986a4c42e229bed1ab3441fc5e2504daa515c324c14415eaae1628665e6",
+      "source": "src/native_resource_sphere_box.cpp",
+      "header": "include/bsp/native_resource_sphere_box.hpp"
+    },
+    {
+      "address": "00b7d220",
+      "name": "set_native_bounds_from_sphere_00b7d220",
+      "ghidra_name": "BSP_Bounds_SetFromSphere",
+      "coverage": "complete",
+      "end_inclusive": "00b7d25d",
+      "original_bytes": 62,
+      "original_abi": "ECX output24h, input16h pointer at entry ESP+4; EAX original output; RET4; ESI preserved. C++ ignored EDX parameter aligns fastcall with native thiscall entry.",
+      "pe_live_sha256": "c250552e52d29a0b6a50f3564cb639b5d6fb48c02e41cdf6faaa4fa3c43208fa",
+      "source": "src/native_resource_sphere_box.cpp",
+      "header": "include/bsp/native_resource_sphere_box.hpp"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b7d22e",
+      "native": "00b7d160",
+      "function": "00b7d220",
+      "abi": "EDX from entry ESP+4, ECX local six-float output after SUB ESP18h/PUSH ESI; call plain RET; EAX temp. Then six x87 load/store copies to saved ESI output."
+    },
+    {
+      "address": "00b7edf6",
+      "native": "00b7d220",
+      "function": "00b7eb90",
+      "abi": "PUSH ESI=input at item+5Ch after B932E0 sphere read; LEA ECX,[ESP+24h]=local output; callee RET4; caller copies returned six floats to item+6Ch."
+    }
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "Verified BSP CLI read-only queries; existing correct descriptive names retained, no mutations."
+  },
+  "installed_executable": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_first": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_second": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "prior_projection": {
+    "source": "src/structured_hierarchy.cpp",
+    "name": "sphere_to_box_00b7d160",
+    "coverage": "typed full-read fragment retained",
+    "difference": "Typed helper has fewer x87 stores/reloads and a C++ array copy. It does not implement the exact raw x87/SSE instruction schedule."
+  },
+  "validation": {
+    "status": "strict_win32_build_and_two_existing_ctests_passed",
+    "build_log": "local/sphere_box_bh/build.log",
+    "build_log_sha256": "8717a34104935e1e445e1a677c4cb1ad80fc2db57706ffc8f4d289e242250512",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "compiler_flags": [
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/MD",
+      "/fp:strict"
+    ],
+    "compiler_input_object_bindings": "local/sphere_box_bh/compiler-bindings.json",
+    "object_sha256": "449c7969b30e20477bd91f57c657ecf5db7ef7929a53d1c50caba049a66ab4e7",
+    "archive_sha256": "efe811b635e94a93a7ad420fc1e3fe2f31a58aa95391cd8d13b9d0f56f5e5995",
+    "unique_current_and_copied_archive_member_matches": true,
+    "new_tests": 0,
+    "fixture_executed": false,
+    "game_validated": false
+  },
+  "uncertainty": "Bodies preserve native register/stack entry contracts, but linker names and placement differ. No patch/installation, original-vs-source execution, native exception-context identity, or gameplay validation is claimed. Raw storage and caller FP state are preconditions. The full hierarchy producer remains separate incomplete work.",
+  "compiled_body_comparison": {
+    "00b7d160": {
+      "symbol": {
+        "name": "?project_native_sphere_bounds_00b7d160@bsp@@YIPAMPAMPBM@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2
+      },
+      "section": {
+        "name": ".text$mn",
+        "size": 191,
+        "data": 487,
+        "relocs": 0,
+        "nrelocs": 0
+      },
+      "body_sha256": "cc5b5986a4c42e229bed1ab3441fc5e2504daa515c324c14415eaae1628665e6",
+      "comparison": "all 191 instruction bytes identical",
+      "relocations": []
+    },
+    "00b7d220": {
+      "symbol": {
+        "name": "?set_native_bounds_from_sphere_00b7d220@bsp@@YIPAMPAMPAXPBM@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2
+      },
+      "section": {
+        "name": ".text$mn",
+        "size": 62,
+        "data": 678,
+        "relocs": 740,
+        "nrelocs": 1
+      },
+      "body_sha256": "b3b3a0400f702c7a1dc4f21e5795346c00d42785e78d8556a6ab22fc603e70f4",
+      "comparison": "58 of 62 bytes identical; only CALL rel32 relocation differs and names reconstructed leaf",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "?project_native_sphere_bounds_00b7d160@bsp@@YIPAMPAMPBM@Z"
+        }
+      ]
+    }
+  },
+  "current_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\src\\native_resource_sphere_box.cpp",
+      "copy": "local/sphere_box_bh/current-artifacts/src/native_resource_sphere_box.cpp",
+      "bytes": 3071,
+      "sha256": "61885e349d7e374dd95e29ef26ade435856db403d2ffde328648af1dcc1face2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\include\\bsp\\native_resource_sphere_box.hpp",
+      "copy": "local/sphere_box_bh/current-artifacts/include/bsp/native_resource_sphere_box.hpp",
+      "bytes": 971,
+      "sha256": "60829256b7b41539a22602a0da46080bc79d7363b86f999c1ac8dbc010cf1ff8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\bsp_core.dir\\Release\\native_resource_sphere_box.obj",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/bsp_core.dir/Release/native_resource_sphere_box.obj",
+      "bytes": 1166,
+      "sha256": "449c7969b30e20477bd91f57c657ecf5db7ef7929a53d1c50caba049a66ab4e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\Release\\bsp_core.lib",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/Release/bsp_core.lib",
+      "bytes": 56766004,
+      "sha256": "efe811b635e94a93a7ad420fc1e3fe2f31a58aa95391cd8d13b9d0f56f5e5995"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\bsp_core.vcxproj",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/bsp_core.vcxproj",
+      "bytes": 264807,
+      "sha256": "777d0fb8b6116e45a557b85598b28f7f9544e642dad2d9dd0de74794c1319ed8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\CMakeCache.txt",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/CMakeCache.txt",
+      "bytes": 18975,
+      "sha256": "906d2d0a9fc194db6a1a6bb574f56eb5054fa9148d7a88bb843cd6dcb7485575"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 2281386,
+      "sha256": "a15b5338d59c51c1a691a8489faafb744b7e5d4668fb89dfba24a14b0e5d1c8d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.read.1.tlog",
+      "bytes": 35911486,
+      "sha256": "0b90c8bfaa25fe8bdc679a7037892e23c31de79dcef54f8530dc4cdb4e831058"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-sphere-box-wrapper-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+      "copy": "local/sphere_box_bh/current-artifacts/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.write.1.tlog",
+      "bytes": 557422,
+      "sha256": "922d68608d48ee0c1701a43f8f43573453d6cbbd5bcdd85e2b7e762eb8c5d364"
+    }
+  ]
+}

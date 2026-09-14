@@ -85,6 +85,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_st
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_stream_open.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_ref_counted.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_cache_pair.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_sphere_box.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_lifecycle_notify.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_shader_state_definitions.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_structured_node_predicate.cpp)
