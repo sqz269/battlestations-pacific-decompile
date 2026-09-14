@@ -60,6 +60,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_debug_featu
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_file_access_log_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_filestore_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_gamepad_force_requests.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_graphics_pool_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_action_deadlines.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_action_tick.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_backend_startup.cpp)
