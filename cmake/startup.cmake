@@ -1018,3 +1018,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_e
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_index_publication.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_attachment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_attachment.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_lifecycle.cpp)

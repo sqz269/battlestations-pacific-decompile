@@ -11,6 +11,7 @@
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/attack_commands.hpp"
+#include <vector>
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
@@ -310,6 +311,101 @@ std::uint16_t GameScriptOrdersHost::entity_object_id(void* entity) {
 // represents an entity as that id cast to a pointer - so the native's own field
 // is the correct one to read here, and `entity_from_argument`'s `ID`-as-number
 // path is the odd one out.
+// 0099A170 BSP_Bot_InstallCommandTask's host, satisfied from what this process
+// holds. src/attack_commands.cpp has the routine; this only supplies its reads.
+//
+// Entities are the id cast to a pointer throughout this host, so a `unit` or
+// `target` token here is that same id and `index_of` turns it back.
+//
+// Two methods answer a fixed refusal rather than a value, and both are on arms
+// the chooser does not reach for an aircraft attacking a ship:
+// `resolve_return_to_base` needs 007F16D0, which is not reconstructed, and
+// `land_group_available` needs the 009F3F50 group gate. They return 0/false so
+// the `returntobase` and `land` arms decline rather than inventing an order.
+class ScriptOrderAttackCommandHost final : public bsp::AttackCommandHost {
+public:
+    ScriptOrderAttackCommandHost(GameUnitsHost& units, GameHostLog& log,
+        std::uint32_t chosen, std::uint32_t target_id)
+        : units_(units), log_(log), chosen_(chosen), target_id_(target_id) {}
+
+    std::uint32_t unit_weapon_director(std::uint32_t unit) override {
+        // 0099A18B unit->vtable[114h](). This host has no separate director
+        // object; a unit that exists owns one, and the id stands for it.
+        return index_for(unit) < units_.count() ? unit : 0u;
+    }
+    std::uint32_t director_current_command(std::uint32_t director) override {
+        // 0071BE40, which GameUnitsHost already answers.
+        return units_.director_current_command_0071be40(index_for(director));
+    }
+    std::uint32_t director_current_params(std::uint32_t director) override {
+        return director;  // the params record is reached through the same unit
+    }
+    std::uint32_t resolve_target(std::uint32_t) override {
+        return target_id_;  // 00521EA0's answer for the command just issued
+    }
+    bool entity_is_kind(std::uint32_t entity, int kind) override {
+        return units_.unit_is_kind_of(index_for(entity), kind);
+    }
+    bool target_still_attackable(std::uint32_t target) override {
+        // 009229F0 with kind 6, read from the listing at 0099A2F7 `MOV EDX,6`.
+        // Not a temporal test despite the interface name: docs/ATTACK_CAPABILITY_INPUTS.md
+        // shows 33 instructions, no +5Dh read, a class test with a LandFort
+        // FakedType fallback. FakedType defaults to 1Bh, which is what a fort
+        // that authors none carries, and the fallback is unreached for anything
+        // that is not a fort.
+        const std::size_t i = index_for(target);
+        return bsp::entity_kind_or_faked_009229f0(
+            i < units_.count(), units_.unit_is_kind_of(i, 0x06),
+            units_.unit_is_kind_of(i, 0x1b), 0x1b, 0x06);
+    }
+    std::uint32_t choose_attack_command(std::uint32_t, std::uint32_t, bool, bool) override {
+        return chosen_;  // 007EEC50's answer, computed by the caller
+    }
+    std::uint32_t resolve_return_to_base(std::uint32_t) override {
+        ++refusals_;
+        return 0u;  // 007F16D0 unreconstructed
+    }
+    std::uint32_t create_bot_task(std::uint32_t unit, std::uint32_t command,
+                                  std::uint32_t target) override {
+        // The thirteen BotTask_Make* factories build a native task object this
+        // process does not have. What 0099A170 needs back is a non-zero handle
+        // it can install, so the host records the triple and hands out an index.
+        tasks_.push_back(BotTask{unit, command, target});
+        return static_cast<std::uint32_t>(tasks_.size());
+    }
+    void install_bot_task(std::uint32_t unit, std::uint32_t task) override {
+        installed_unit_ = unit;
+        installed_task_ = task;
+    }
+    bool land_group_available(std::uint32_t) override {
+        ++refusals_;
+        return false;  // the 009F3F50 group gate is not built
+    }
+
+    struct BotTask {
+        std::uint32_t unit{0};
+        std::uint32_t command{0};
+        std::uint32_t target{0};
+    };
+    const std::vector<BotTask>& tasks() const noexcept { return tasks_; }
+    std::uint32_t installed_task() const noexcept { return installed_task_; }
+    unsigned refusals() const noexcept { return refusals_; }
+
+private:
+    std::size_t index_for(std::uint32_t token) const noexcept {
+        return token > 0u ? static_cast<std::size_t>(token - 1u)
+                          : ~static_cast<std::size_t>(0);
+    }
+    GameUnitsHost& units_;
+    GameHostLog& log_;
+    std::uint32_t chosen_{0};
+    std::uint32_t target_id_{0};
+    std::vector<BotTask> tasks_;
+    std::uint32_t installed_unit_{0};
+    std::uint32_t installed_task_{0};
+    unsigned refusals_{0};
+};
+
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     void* unit = argument_ptr_field(0);
     if (unit == nullptr) unit = entity_from_argument(0);
@@ -425,6 +521,19 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     if (chosen != 0u && unit != nullptr) {
         entity_issue_command(unit, chosen, target, 1);
         ++pilot_set_target_issued_;
+        // 0099A170: the command the director now holds becomes a bot task. The
+        // routine is src/attack_commands.cpp's; this only feeds it.
+        const std::uint32_t unit_token =
+            static_cast<std::uint32_t>(row.unit_index + 1u);
+        const std::uint32_t target_token = target_index < units_.count()
+            ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+        ScriptOrderAttackCommandHost bot_host(units_, log_, chosen, target_token);
+        const std::uint32_t task =
+            bsp::bot_install_command_task_0099a170(unit_token, bot_host);
+        if (task != 0u) ++pilot_set_target_tasks_;
+        log_.notef("  PilotSetTarget task: 0099A170 -> %u (unit=%s command=%08lx "
+            "target_token=%u refusals=%u)", task, row.unit.c_str(),
+            static_cast<unsigned long>(chosen), target_token, bot_host.refusals());
     }
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
