@@ -1,0 +1,293 @@
+{
+  "packet": "orch4_native_mesh_scalar_fields_cf",
+  "state": "complete_source_worktree_override_build_and_paired_fixture_tracked_registration_pending",
+  "base_revision": "35a49082e2e5d94b4021ddcda61aa78de504141b",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2689,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64078,
+    "symbol_count": 144305,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 8,
+  "ordinary_bytes": 467,
+  "verified_instruction_owners": 152,
+  "preserved_live_comments": 10,
+  "source_inputs": 2675,
+  "source_manifest": {
+    "path": "local/native_mesh_scalar_fields_cf/worktree_override/source_manifest.json",
+    "sha256": "590bc30c91c47ea8e4bd3db5513fe7a27ac04e7032a10ab4761289af06aa178e",
+    "bytes": 289778
+  },
+  "configuration": {
+    "description": "Worktree-only deferred target_sources adds pending CC,CE,CF to actual bsp_core. Tracked startup.cmake excludes all three. No clean-checkout registry build or main integration is claimed.",
+    "hook": {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/extra_sources.cmake",
+      "sha256": "f1dd45e5aad3e0b151536ebb7c49d742ea315d0d01b15f79b13f54571ea63289",
+      "bytes": 227
+    },
+    "cache": {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/CMakeCache.txt",
+      "sha256": "dd12bf59d6326df82914b2e1f09fac260019afeab679408c623e6741b371914e",
+      "bytes": 19048
+    },
+    "command": "cmake -S . -B build/win32 -DCMAKE_PROJECT_INCLUDE_BEFORE=J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_mesh_scalar_fields_cf/extra_sources.cmake",
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "remove_when_registering": "Unset CMAKE_PROJECT_INCLUDE_BEFORE before rebuilding after tracked CC/CE/CF registration.",
+    "base_revision": "35a49082e2e5d94b4021ddcda61aa78de504141b",
+    "source_manifest": {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/source_manifest.json",
+      "sha256": "590bc30c91c47ea8e4bd3db5513fe7a27ac04e7032a10ab4761289af06aa178e",
+      "bytes": 289778
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "worktree_override_project_build": "Passed scripts/build.ps1 with strict MSVC Win32 compilation. Ignored CMAKE_PROJECT_INCLUDE_BEFORE hook registers CC,CE,CF in actual bsp_core while tracked startup registry is leased.",
+    "existing_ctests": "2/2 passed",
+    "tracked_project_registration": "pending cc7 startup.cmake lease release",
+    "paired_fixture": "Five source/original comparisons (ten executions) against eight copied bodies467B: bit-preserving LOD setter plus overlapping append; sphere/bounds discard; three-phase append and zero-phase count; five counted weight names including preexisting seed, empty, embedded NUL and180-byte allocation.",
+    "source_exception": "One injected read failure during second weight-name payload retains the first appended name and preexisting node budget8; no parent rollback. Reader/root and mesh name storage are then drained by established source owners.",
+    "fixture_composition_correction": "The initial fixture omitted NativeResourceRootDispatch in its stream/reference chain and terminated during Reader destruction after the native bounds comparison. Restoring that existing canonical binding made all comparisons pass; CF source was unchanged.",
+    "native_exception_paths_guarded_out": true
+  },
+  "startup_registry_lease": [
+    {
+      "id": "cc7:cc7_rate_wire",
+      "owner": "cc7",
+      "packet": "cc7_rate_wire",
+      "addresses": [
+        "007d9c80",
+        "007da710",
+        "0085e4d0"
+      ],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_control_rate.hpp",
+        "src/game_hosts_units.cpp",
+        "src/plane_control_rate.cpp"
+      ],
+      "claimed": "2026-09-14T21:01:36+00:00",
+      "expires": "2026-09-15T02:09:52+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+      "note": ""
+    },
+    {
+      "id": "cc7:cc7_attitude_wire",
+      "owner": "cc7",
+      "packet": "cc7_attitude_wire",
+      "addresses": [
+        "007c18a0",
+        "009ac190"
+      ],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_attitude_angles.hpp",
+        "src/game_hosts_units.cpp",
+        "src/plane_attitude_angles.cpp"
+      ],
+      "claimed": "2026-09-14T22:47:49+00:00",
+      "expires": "2026-09-15T03:47:49+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+      "note": ""
+    }
+  ],
+  "main_integration": "Not performed: cc7 holds shared registry and related flight control sources. CD proved two plane-control floor mismatches in reviewed23f78d03. Later36d87416 and41c3e8ac add unaccepted plan/attitude work; no owner correction or complete review of those deltas is claimed.",
+  "incoming_review": {
+    "reviewed_pin": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
+    "latest_observed_unaccepted_pin": "41c3e8ac46e75bcc0c061a8cc97272f100ef376b",
+    "confirmed_defects": "docs/NATIVE_PLANE_CONTROL_REVIEW_CD.md",
+    "review_report": "reports/native_plane_control_review_cd.json"
+  },
+  "next_native_mesh_dependencies": [
+    "00b93800 actual compressed vertex-format data",
+    "00b93aa0 actual index owner field",
+    "00b93e60 actual vertex-stream owner field",
+    "00b941d0 actual subset/material field",
+    "00b944e0 complete raw aggregate reader",
+    "00b94710 handle construction and registered mesh parser wrappers"
+  ],
+  "evidence_limits": [
+    "Source adds explicit context services; it is not a native register/stack ABI, FH3/SEH/private-frame or hardware-fault replacement. Original EH is guarded out; only source read failure is exercised.",
+    "Original CF-to-CF transfers execute copied code. Scalar/string/vector/pool dependencies and the BC constructor remain shared established source; this is not a full independent native mesh parser or allocator oracle.",
+    "Fixture float cases cover finite, signed zero, smallest subnormal, quiet NaN and infinities with the same underlying x87 reader. The setter/alias append preserve a signaling-NaN bit pattern as integer data. Native CPU/FPU exception policy is not certified.",
+    "Extreme count overflow/corrupt headers, short reads, all callback-driven pointer/count mutations, append-allocation failure and lazy pool recreation are not newly executed. Four-slot physical LOD capacity remains unchecked as in native code.",
+    "B73D50 uses the existing NativeStringStorage release-noexcept interface. Source failure while recreating a raw pool during that release terminates; no native EH-equivalence claim.",
+    "Full B944E0 native aggregate parsing and registered Mesh/SkinedMesh/MatrixIndexedMesh wrappers still need actual vertex-format, indices, vertex-stream and subset/material field paths. Tracked registration, reviewed main integration, executable admission and gameplay remain open."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/initial_audit.json",
+      "sha256": "f184ed52f9f4f20221df858a804a2040f4452c1e667fe198878c7c65d49b9fc9",
+      "bytes": 22614
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/final_audit.json",
+      "sha256": "9b47ed2ec6a835309ea1319491e318712240dda65548927dbdd4a5609740ce3f",
+      "bytes": 22372
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/build.log",
+      "sha256": "aa988bcec2fdda6b96584227b8a728d9ba9ed91c882872cf2ce4ade1c3f7dd55",
+      "bytes": 3945
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/configure.log",
+      "sha256": "3578e4314da6706eabdc54e3599c24675b077c6ae359144ba5014f26479cd9a5",
+      "bytes": 238
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/extra_sources.cmake",
+      "sha256": "f1dd45e5aad3e0b151536ebb7c49d742ea315d0d01b15f79b13f54571ea63289",
+      "bytes": 227
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.log",
+      "sha256": "b1f309d2b9ddafd5ac513e6dc614de8531e4e5343fc63959e3195651ecb8bc0d",
+      "bytes": 584
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/child_probe.log",
+      "sha256": "7247c9de4c4c3ecc71ce89bf9316b7b19f59ad84610d2348f5d570e041226d1a",
+      "bytes": 533
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/fixture_composition_failure.log",
+      "sha256": "6572e9bc68d94055f585c3150722416b5cd0e910eddf2fb7fe442fe33db496bf",
+      "bytes": 271
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.cpp",
+      "sha256": "601582b791f35a09f2268cf1b5f951643ed6178bb9a0b86ca2770d94f52d8125",
+      "bytes": 21337
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.exe",
+      "sha256": "c435d78d2985b02205ad15b5453adaf5f1a48c8585048cfa8dcf37a6c77923af",
+      "bytes": 160768
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.obj",
+      "sha256": "1a3cc2c6c8e7d1f1afe17b56dd3809e19231e1d13c3342b14a7ad8cde1a2f9f7",
+      "bytes": 330961
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.map",
+      "sha256": "a5ea590326e814231d5a2f8e39920688b9777cba2e642fe5f68fe5693dfc158d",
+      "bytes": 287725
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/original_bodies.hpp",
+      "sha256": "949cbaf3ba0d91af0ef8923aae6271a997fad5ab56f4cc5c19e6f551ae584289",
+      "bytes": 3159
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/original_bodies.json",
+      "sha256": "a6e95eb0d11a6d70de5e58c742b2d5c4d1843b6c9186d08ece1d1e08dc202beb",
+      "bytes": 2042
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/compile.cmd",
+      "sha256": "fe5fc6839affbe44079ea1747d51ffebab5e5b2aec8b2c541f386f1a157bc7ec",
+      "bytes": 685
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_core.lib",
+      "sha256": "b7ca8d8820f4c0bf7f0eb1c2ecbe1d0de70efa6cd92a85909b5c111b6a78abe7",
+      "bytes": 58798074
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/CMakeCache.txt",
+      "sha256": "dd12bf59d6326df82914b2e1f09fac260019afeab679408c623e6741b371914e",
+      "bytes": 19048
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_game.exe",
+      "sha256": "2ab9f7908f6873dd268c673a1e84561a1cdd4b42991699d1ee7b29c4a7295b92",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/source_manifest.json",
+      "sha256": "590bc30c91c47ea8e4bd3db5513fe7a27ac04e7032a10ab4761289af06aa178e",
+      "bytes": 289778
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/configuration.json",
+      "sha256": "59396e6872cc88a252f0c2b42f43bf0d05faf57dd96e85806ee4d10b09b8913a",
+      "bytes": 1502
+    },
+    {
+      "path": "reports/native_mesh_scalar_fields_flow_cf.json",
+      "sha256": "1e0dd91e2759274ed39d4fb0460660aac2cc8a7cd95c33d89eff0509aeaa55bd",
+      "bytes": 3652
+    },
+    {
+      "path": "reports/native_mesh_scalar_fields_annotations_cf.json",
+      "sha256": "6fda3417d727f0bfb3d2c61028f0913269d09b700b2422049eef155bec7d35a0",
+      "bytes": 110543
+    }
+  ]
+}

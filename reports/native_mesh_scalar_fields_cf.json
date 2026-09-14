@@ -1,0 +1,1718 @@
+{
+  "packet": "orch4_native_mesh_scalar_fields_cf",
+  "base_revision": "35a49082e2e5d94b4021ddcda61aa78de504141b",
+  "documentation": "docs/NATIVE_MESH_SCALAR_FIELDS_CF.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2688,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64078,
+    "symbol_count": 144278,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "routines": [
+    {
+      "address": "00b72710",
+      "bytes": 14,
+      "function": "set_native_mesh_lod_00b72710",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* actual_mesh, void* unused_edx, float value",
+      "original_abi": "ECX actual mesh; stacked float bits; RET4",
+      "sha256": "fac4786295985d4495e2e69ea49946f029fd389709175dbb0153e5fc4d07c1e2",
+      "instructions": [
+        [
+          12003088,
+          6,
+          "movss",
+          "xmm0, dword ptr [esp + 4]"
+        ],
+        [
+          12003094,
+          5,
+          "movss",
+          "dword ptr [ecx + 0xc], xmm0"
+        ],
+        [
+          12003099,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b73270",
+      "bytes": 47,
+      "function": "append_native_mesh_lod_phase_00b73270",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* actual_mesh, void* unused_edx, void* actual_value",
+      "original_abi": "ECX actual mesh; stacked actual four-DWORD record; RET4",
+      "sha256": "82ce57dab53136e8cf7c2088d2dc14199bfd50ffd8de2ccedb6caa9d94a1c8ca",
+      "instructions": [
+        [
+          12006000,
+          3,
+          "mov",
+          "eax, dword ptr [ecx + 0x50]"
+        ],
+        [
+          12006003,
+          4,
+          "mov",
+          "edx, dword ptr [esp + 4]"
+        ],
+        [
+          12006007,
+          3,
+          "add",
+          "ecx, 0x10"
+        ],
+        [
+          12006010,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12006011,
+          2,
+          "mov",
+          "esi, dword ptr [edx]"
+        ],
+        [
+          12006013,
+          3,
+          "shl",
+          "eax, 4"
+        ],
+        [
+          12006016,
+          3,
+          "mov",
+          "dword ptr [eax + ecx], esi"
+        ],
+        [
+          12006019,
+          3,
+          "mov",
+          "esi, dword ptr [edx + 4]"
+        ],
+        [
+          12006022,
+          2,
+          "add",
+          "eax, ecx"
+        ],
+        [
+          12006024,
+          3,
+          "mov",
+          "dword ptr [eax + 4], esi"
+        ],
+        [
+          12006027,
+          3,
+          "mov",
+          "esi, dword ptr [edx + 8]"
+        ],
+        [
+          12006030,
+          3,
+          "mov",
+          "dword ptr [eax + 8], esi"
+        ],
+        [
+          12006033,
+          3,
+          "mov",
+          "edx, dword ptr [edx + 0xc]"
+        ],
+        [
+          12006036,
+          3,
+          "mov",
+          "dword ptr [eax + 0xc], edx"
+        ],
+        [
+          12006039,
+          4,
+          "add",
+          "dword ptr [ecx + 0x40], 1"
+        ],
+        [
+          12006043,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12006044,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b73d50",
+      "bytes": 11,
+      "function": "append_native_mesh_weight_name_00b73d50",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* actual_mesh, void* unused_edx, void* actual_value",
+      "original_abi": "ECX actual mesh; stacked actual counted-string header; RET4",
+      "sha256": "1726f93b5f878f829b54076cd7d5acc5e3083e5399530fe06f4aa512d52502e8",
+      "instructions": [
+        [
+          12008784,
+          6,
+          "add",
+          "ecx, 0xb0"
+        ],
+        [
+          12008790,
+          5,
+          "jmp",
+          "0x4cdc20"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b93590",
+      "bytes": 45,
+      "function": "consume_native_mesh_sphere_00b93590",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle",
+      "original_abi": "Incoming ECX unused; stacked mesh and handle; RET8",
+      "sha256": "1839e33083e8f0d46b0a1b78669a9bbaa5f2d8099d2a1d9535ec0364a815233d",
+      "instructions": [
+        [
+          12137872,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12137873,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12137877,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137879,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137884,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137886,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137888,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137893,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137895,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137897,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137902,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137904,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137906,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137911,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137913,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12137914,
+          3,
+          "ret",
+          "8"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b935c0",
+      "bytes": 63,
+      "function": "consume_native_mesh_bounds_00b935c0",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle",
+      "original_abi": "Incoming ECX unused; stacked mesh and handle; RET8",
+      "sha256": "2ffc3c0c9cb06b002ed8dd6d5fcfd415d5a1a0b025842a3a0af2f6c531cd70de",
+      "instructions": [
+        [
+          12137920,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12137921,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12137925,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137927,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137932,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137934,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137936,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137941,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137943,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137945,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137950,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137952,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137954,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137959,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137961,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137963,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137968,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137970,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12137972,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12137977,
+          2,
+          "fstp",
+          "st(0)"
+        ],
+        [
+          12137979,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12137980,
+          3,
+          "ret",
+          "8"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b93710",
+      "bytes": 130,
+      "function": "read_native_mesh_lod_phases_00b93710",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle",
+      "original_abi": "Incoming ECX unused; stacked mesh and handle; RET8",
+      "sha256": "5730093b6e589e301d7837dcb0aad7189dfacdc5d9b098d0c3282d8bc00144fa",
+      "instructions": [
+        [
+          12138256,
+          3,
+          "sub",
+          "esp, 0x10"
+        ],
+        [
+          12138259,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12138260,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0x1c]"
+        ],
+        [
+          12138264,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12138266,
+          5,
+          "call",
+          "0xbe99f0"
+        ],
+        [
+          12138271,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12138273,
+          2,
+          "jbe",
+          "0xb9378b"
+        ],
+        [
+          12138275,
+          1,
+          "push",
+          "ebx"
+        ],
+        [
+          12138276,
+          4,
+          "mov",
+          "ebx, dword ptr [esp + 0x1c]"
+        ],
+        [
+          12138280,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          12138281,
+          2,
+          "mov",
+          "edi, eax"
+        ],
+        [
+          12138283,
+          2,
+          "jmp",
+          "0xb93730"
+        ],
+        [
+          12138285,
+          3,
+          "lea",
+          "ecx, [ecx]"
+        ],
+        [
+          12138288,
+          8,
+          "movss",
+          "xmm0, dword ptr [0xce4adc]"
+        ],
+        [
+          12138296,
+          6,
+          "movss",
+          "dword ptr [esp + 0xc], xmm0"
+        ],
+        [
+          12138302,
+          8,
+          "movss",
+          "xmm0, dword ptr [0xce4970]"
+        ],
+        [
+          12138310,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12138312,
+          6,
+          "movss",
+          "dword ptr [esp + 0x10], xmm0"
+        ],
+        [
+          12138318,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12138323,
+          4,
+          "fstp",
+          "dword ptr [esp + 0xc]"
+        ],
+        [
+          12138327,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12138329,
+          5,
+          "call",
+          "0xbe99d0"
+        ],
+        [
+          12138334,
+          4,
+          "fstp",
+          "dword ptr [esp + 0x10]"
+        ],
+        [
+          12138338,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12138340,
+          5,
+          "call",
+          "0xbe9a00"
+        ],
+        [
+          12138345,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12138347,
+          4,
+          "mov",
+          "dword ptr [esp + 0x14], eax"
+        ],
+        [
+          12138351,
+          5,
+          "call",
+          "0xbe9a00"
+        ],
+        [
+          12138356,
+          4,
+          "mov",
+          "dword ptr [esp + 0x18], eax"
+        ],
+        [
+          12138360,
+          4,
+          "lea",
+          "eax, [esp + 0xc]"
+        ],
+        [
+          12138364,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12138365,
+          2,
+          "mov",
+          "ecx, ebx"
+        ],
+        [
+          12138367,
+          5,
+          "call",
+          "0xb73270"
+        ],
+        [
+          12138372,
+          3,
+          "sub",
+          "edi, 1"
+        ],
+        [
+          12138375,
+          2,
+          "jne",
+          "0xb93730"
+        ],
+        [
+          12138377,
+          1,
+          "pop",
+          "edi"
+        ],
+        [
+          12138378,
+          1,
+          "pop",
+          "ebx"
+        ],
+        [
+          12138379,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12138380,
+          3,
+          "add",
+          "esp, 0x10"
+        ],
+        [
+          12138383,
+          3,
+          "ret",
+          "8"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b93f90",
+      "bytes": 142,
+      "function": "read_native_mesh_weight_names_00b93f90",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle",
+      "original_abi": "Incoming ECX unused; stacked mesh and handle; RET8",
+      "sha256": "ee0c9bb89bbda5c33c8057430f3cf2975b4699099abf0eeb96dea816de99bc78",
+      "instructions": [
+        [
+          12140432,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12140438,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12140440,
+          5,
+          "push",
+          "0xcc2e58"
+        ],
+        [
+          12140445,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12140446,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12140453,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12140456,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12140457,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0x20]"
+        ],
+        [
+          12140461,
+          2,
+          "mov",
+          "eax, dword ptr [esi]"
+        ],
+        [
+          12140463,
+          4,
+          "cmp",
+          "dword ptr [eax + 0x20], 0"
+        ],
+        [
+          12140467,
+          2,
+          "je",
+          "0xb9400c"
+        ],
+        [
+          12140469,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          12140470,
+          4,
+          "mov",
+          "edi, dword ptr [esp + 0x20]"
+        ],
+        [
+          12140474,
+          6,
+          "lea",
+          "ebx, [ebx]"
+        ],
+        [
+          12140480,
+          4,
+          "lea",
+          "eax, [esp + 8]"
+        ],
+        [
+          12140484,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12140485,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12140487,
+          5,
+          "call",
+          "0xbea010"
+        ],
+        [
+          12140492,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12140493,
+          2,
+          "mov",
+          "ecx, edi"
+        ],
+        [
+          12140495,
+          8,
+          "mov",
+          "dword ptr [esp + 0x1c], 0"
+        ],
+        [
+          12140503,
+          5,
+          "call",
+          "0xb73d50"
+        ],
+        [
+          12140508,
+          4,
+          "mov",
+          "eax, dword ptr [esp + 0xc]"
+        ],
+        [
+          12140512,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12140514,
+          8,
+          "mov",
+          "dword ptr [esp + 0x18], 0xffffffff"
+        ],
+        [
+          12140522,
+          2,
+          "je",
+          "0xb94003"
+        ],
+        [
+          12140524,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12140528,
+          2,
+          "push",
+          "1"
+        ],
+        [
+          12140530,
+          3,
+          "add",
+          "ecx, 1"
+        ],
+        [
+          12140533,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12140534,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12140535,
+          5,
+          "call",
+          "0x419cc0"
+        ],
+        [
+          12140540,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12140542,
+          5,
+          "call",
+          "0xbd1510"
+        ],
+        [
+          12140547,
+          2,
+          "mov",
+          "ecx, dword ptr [esi]"
+        ],
+        [
+          12140549,
+          4,
+          "cmp",
+          "dword ptr [ecx + 0x20], 0"
+        ],
+        [
+          12140553,
+          2,
+          "jne",
+          "0xb93fc0"
+        ],
+        [
+          12140555,
+          1,
+          "pop",
+          "edi"
+        ],
+        [
+          12140556,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 0xc]"
+        ],
+        [
+          12140560,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12140561,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12140568,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12140571,
+          3,
+          "ret",
+          "8"
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00be99f0",
+      "bytes": 15,
+      "function": "read_native_resource_node_control_dword_00be99f0",
+      "source": "src/native_mesh_scalar_fields.cpp",
+      "result": "uint",
+      "convention": "__fastcall",
+      "parameters": "void* actual_handle, void* unused_edx",
+      "original_abi": "ECX current node-handle; EAX DWORD; RET",
+      "sha256": "6d4ba81509a545e71f9fe3c689bd8d3a88c2c21063a789a39468a817fa7e48e8",
+      "instructions": [
+        [
+          12491248,
+          2,
+          "mov",
+          "eax, dword ptr [ecx]"
+        ],
+        [
+          12491250,
+          3,
+          "lea",
+          "ecx, [eax + 0x20]"
+        ],
+        [
+          12491253,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12491254,
+          3,
+          "mov",
+          "ecx, dword ptr [eax + 8]"
+        ],
+        [
+          12491257,
+          5,
+          "call",
+          "0xbf02a0"
+        ],
+        [
+          12491262,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "report": "reports/native_mesh_scalar_fields_cf.json",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "support": [
+    {
+      "address": "00cc2e50",
+      "bytes": 8,
+      "sha256": "a09a05e943b9d54bf0f737570004ca593d1ecbbd224ca5318cd52a9484d46e60",
+      "instructions": [
+        [
+          13381200,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13381203,
+          5,
+          "jmp",
+          "0x41dd20"
+        ]
+      ]
+    },
+    {
+      "address": "00cc2e58",
+      "bytes": 10,
+      "sha256": "ca046018ddf1f238b0a348cde31896cd2a8e83a49c180c0250cc4e7400ec45c1",
+      "instructions": [
+        [
+          13381208,
+          5,
+          "mov",
+          "eax, 0xdfc628"
+        ],
+        [
+          13381213,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    }
+  ],
+  "counts": {
+    "ordinary_bodies": 8,
+    "ordinary_bytes": 467,
+    "ordinary_decoded_instructions": 149,
+    "ordinary_owned_instructions": 148,
+    "support_bodies": 2,
+    "support_bytes": 18,
+    "support_instructions": 4,
+    "verified_instruction_owners": 152,
+    "direct_transfers": 24,
+    "indirect_calls": 0
+  },
+  "calls": [
+    {
+      "address": "00b73d56",
+      "native": "004cdc20",
+      "function": "00b73d50",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b93597",
+      "native": "00be99d0",
+      "function": "00b93590",
+      "kind": "call"
+    },
+    {
+      "address": "00b935a0",
+      "native": "00be99d0",
+      "function": "00b93590",
+      "kind": "call"
+    },
+    {
+      "address": "00b935a9",
+      "native": "00be99d0",
+      "function": "00b93590",
+      "kind": "call"
+    },
+    {
+      "address": "00b935b2",
+      "native": "00be99d0",
+      "function": "00b93590",
+      "kind": "call"
+    },
+    {
+      "address": "00b935c7",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b935d0",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b935d9",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b935e2",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b935eb",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b935f4",
+      "native": "00be99d0",
+      "function": "00b935c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b9371a",
+      "native": "00be99f0",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b9374e",
+      "native": "00be99d0",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b93759",
+      "native": "00be99d0",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b93764",
+      "native": "00be9a00",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b9376f",
+      "native": "00be9a00",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b9377f",
+      "native": "00b73270",
+      "function": "00b93710",
+      "kind": "call"
+    },
+    {
+      "address": "00b93fc7",
+      "native": "00bea010",
+      "function": "00b93f90",
+      "kind": "call"
+    },
+    {
+      "address": "00b93fd7",
+      "native": "00b73d50",
+      "function": "00b93f90",
+      "kind": "call"
+    },
+    {
+      "address": "00b93ff7",
+      "native": "00419cc0",
+      "function": "00b93f90",
+      "kind": "call"
+    },
+    {
+      "address": "00b93ffe",
+      "native": "00bd1510",
+      "function": "00b93f90",
+      "kind": "call"
+    },
+    {
+      "address": "00be99f9",
+      "native": "00bf02a0",
+      "function": "00be99f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2e53",
+      "native": "0041dd20",
+      "function": "00cc2e50",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2e5d",
+      "native": "00bf6b43",
+      "function": "00cc2e58",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [],
+  "data": [
+    {
+      "address": "00dfc620",
+      "bytes": 44,
+      "hex": "ffffffff502ecc00220593190100000020c6df00000000000000000000000000000000000000000001000000",
+      "sha256": "36990cf510b8874fef20f53ffd81cdf28d930c926ad8f8497ae3240aed3796ed"
+    },
+    {
+      "address": "00ce4adc",
+      "bytes": 4,
+      "hex": "f90215d0",
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+    },
+    {
+      "address": "00ce4970",
+      "bytes": 4,
+      "hex": "f9021550",
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+    }
+  ],
+  "excluded_unreachable_alignment": {
+    "00b9372d": "Three bytes between unconditional B9372B JMP B93730 and targetB93730; unreachable alignment. No ownership repair."
+  },
+  "exception_groups": [
+    {
+      "owner": "00b93f90",
+      "map": "00dfc620",
+      "info": "00dfc628",
+      "states": [
+        "0 -> -1: CC2E50, LEA ECX,[EBP-14] then tail41DD20"
+      ]
+    }
+  ],
+  "behavior": [
+    "BE99F0 captures current node, its+20 budget address and+8 reader, then invokes existing completeBF02A0/current stream slot38 without validating count/budget.",
+    "B72710 bit-copies stacked float to mesh+C. B73270 captures signed/wrapping count destination, then performs four current source-word loads and destination stores in order, incrementing current count after stores. No physical four-slot bounds check or memcpy snapshot is introduced.",
+    "B93710 reads unsigned count through BE99F0. Before each record it reads currentCE4ADC andCE4970, then replaces local words by direct FSTP32 from two BE99D0 reads, then reads twoBE9A00 DWORDs and appends. Each scalar rereads current handle/node; earlier appends survive failure.",
+    "B93590/B935C0 consume exactly four/six BE99D0 values, each FSTP ST0. No extra float memory store, publication, child skip/detach or early EOF guard.",
+    "B73D50 delegates actual mesh+B0 to existing4CDC20 deep-copy vector append with the same raw string-pool publication, shutdown gate and lifetime. Existing NativeStringStorage returning-getter failure boundary remains noexcept.",
+    "B93F90 loops on current node+20. BEA010 fills local8h; its returned pointer is passed to append. Completed-local state0 precedes append. Capture local data before state-1; current length+1 and current pool govern its normal return. On failure only a completed local name is owned; prior appended names remain. Secondary cleanup exception terminates."
+  ],
+  "validation": {
+    "worktree_override_project_build": "Passed scripts/build.ps1 with strict MSVC Win32 compilation. Ignored CMAKE_PROJECT_INCLUDE_BEFORE hook registers CC,CE,CF in actual bsp_core while tracked startup registry is leased.",
+    "existing_ctests": "2/2 passed",
+    "tracked_project_registration": "pending cc7 startup.cmake lease release",
+    "paired_fixture": "Five source/original comparisons (ten executions) against eight copied bodies467B: bit-preserving LOD setter plus overlapping append; sphere/bounds discard; three-phase append and zero-phase count; five counted weight names including preexisting seed, empty, embedded NUL and180-byte allocation.",
+    "source_exception": "One injected read failure during second weight-name payload retains the first appended name and preexisting node budget8; no parent rollback. Reader/root and mesh name storage are then drained by established source owners.",
+    "fixture_composition_correction": "The initial fixture omitted NativeResourceRootDispatch in its stream/reference chain and terminated during Reader destruction after the native bounds comparison. Restoring that existing canonical binding made all comparisons pass; CF source was unchanged.",
+    "native_exception_paths_guarded_out": true
+  },
+  "original_fixture": {
+    "specs": [
+      [
+        "00b72710",
+        14
+      ],
+      [
+        "00b73270",
+        47
+      ],
+      [
+        "00b73d50",
+        11
+      ],
+      [
+        "00b93590",
+        45
+      ],
+      [
+        "00b935c0",
+        63
+      ],
+      [
+        "00b93710",
+        130
+      ],
+      [
+        "00b93f90",
+        142
+      ],
+      [
+        "00be99f0",
+        15
+      ]
+    ],
+    "direct_relocations": [
+      [
+        12008784,
+        6,
+        5037088
+      ],
+      [
+        12137872,
+        7,
+        12491216
+      ],
+      [
+        12137872,
+        16,
+        12491216
+      ],
+      [
+        12137872,
+        25,
+        12491216
+      ],
+      [
+        12137872,
+        34,
+        12491216
+      ],
+      [
+        12137920,
+        7,
+        12491216
+      ],
+      [
+        12137920,
+        16,
+        12491216
+      ],
+      [
+        12137920,
+        25,
+        12491216
+      ],
+      [
+        12137920,
+        34,
+        12491216
+      ],
+      [
+        12137920,
+        43,
+        12491216
+      ],
+      [
+        12137920,
+        52,
+        12491216
+      ],
+      [
+        12138256,
+        10,
+        12491248
+      ],
+      [
+        12138256,
+        62,
+        12491216
+      ],
+      [
+        12138256,
+        73,
+        12491216
+      ],
+      [
+        12138256,
+        84,
+        12491264
+      ],
+      [
+        12138256,
+        95,
+        12491264
+      ],
+      [
+        12138256,
+        111,
+        12006000
+      ],
+      [
+        12140432,
+        55,
+        12492816
+      ],
+      [
+        12140432,
+        71,
+        12008784
+      ],
+      [
+        12140432,
+        103,
+        4299968
+      ],
+      [
+        12140432,
+        110,
+        12391696
+      ],
+      [
+        12491248,
+        9,
+        12518048
+      ]
+    ],
+    "absolute_relocations": [
+      [
+        12140432,
+        9
+      ]
+    ],
+    "native_exception_paths_guarded_out": true,
+    "floating_point": "Original BE99D0 calls use a naked forwarding shim to the same source reader, preserving ST0. ConstantsCE4ADC/CE4970 remain original mapped readonly data.",
+    "shared_dependencies": "Current raw reader/stream slot38/34, string reader/pool and4CDC20 vector copy are existing complete source. Original CF-to-CF calls/tail jump execute copied bodies."
+  },
+  "existing_dependencies": [
+    "NativeResourceStreamReadContext and actual structured reader/memory stream/root owners",
+    "BT completeBF02A0 control DWORD read and actual stream slot38",
+    "BV completeBE99D0/BE9A00/BEA010 scalar/string reads",
+    "Existing NativeMeshStorage/construct_native_mesh_00b73d70 actual BC layout and mesh name teardown",
+    "Existing4CDC20 native vector deep copy and actual raw pool adapter"
+  ],
+  "evidence": [
+    {
+      "path": "local/native_mesh_scalar_fields_cf/initial_audit.json",
+      "sha256": "f184ed52f9f4f20221df858a804a2040f4452c1e667fe198878c7c65d49b9fc9",
+      "bytes": 22614
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/final_audit.json",
+      "sha256": "9b47ed2ec6a835309ea1319491e318712240dda65548927dbdd4a5609740ce3f",
+      "bytes": 22372
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/build.log",
+      "sha256": "aa988bcec2fdda6b96584227b8a728d9ba9ed91c882872cf2ce4ade1c3f7dd55",
+      "bytes": 3945
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/configure.log",
+      "sha256": "3578e4314da6706eabdc54e3599c24675b077c6ae359144ba5014f26479cd9a5",
+      "bytes": 238
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/extra_sources.cmake",
+      "sha256": "f1dd45e5aad3e0b151536ebb7c49d742ea315d0d01b15f79b13f54571ea63289",
+      "bytes": 227
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/probe.log",
+      "sha256": "b1f309d2b9ddafd5ac513e6dc614de8531e4e5343fc63959e3195651ecb8bc0d",
+      "bytes": 584
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/child_probe.log",
+      "sha256": "7247c9de4c4c3ecc71ce89bf9316b7b19f59ad84610d2348f5d570e041226d1a",
+      "bytes": 533
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/fixture_composition_failure.log",
+      "sha256": "6572e9bc68d94055f585c3150722416b5cd0e910eddf2fb7fe442fe33db496bf",
+      "bytes": 271
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/probe.cpp",
+      "sha256": "601582b791f35a09f2268cf1b5f951643ed6178bb9a0b86ca2770d94f52d8125",
+      "bytes": 21337
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/probe.exe",
+      "sha256": "c435d78d2985b02205ad15b5453adaf5f1a48c8585048cfa8dcf37a6c77923af",
+      "bytes": 160768
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/probe.obj",
+      "sha256": "1a3cc2c6c8e7d1f1afe17b56dd3809e19231e1d13c3342b14a7ad8cde1a2f9f7",
+      "bytes": 330961
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/probe.map",
+      "sha256": "a5ea590326e814231d5a2f8e39920688b9777cba2e642fe5f68fe5693dfc158d",
+      "bytes": 287725
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/original_bodies.hpp",
+      "sha256": "949cbaf3ba0d91af0ef8923aae6271a997fad5ab56f4cc5c19e6f551ae584289",
+      "bytes": 3159
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/original_bodies.json",
+      "sha256": "a6e95eb0d11a6d70de5e58c742b2d5c4d1843b6c9186d08ece1d1e08dc202beb",
+      "bytes": 2042
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/compile.cmd",
+      "sha256": "fe5fc6839affbe44079ea1747d51ffebab5e5b2aec8b2c541f386f1a157bc7ec",
+      "bytes": 685
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/bsp_core.lib",
+      "sha256": "b7ca8d8820f4c0bf7f0eb1c2ecbe1d0de70efa6cd92a85909b5c111b6a78abe7",
+      "bytes": 58798074
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "reports/native_mesh_scalar_fields_flow_cf.json",
+      "sha256": "1e0dd91e2759274ed39d4fb0460660aac2cc8a7cd95c33d89eff0509aeaa55bd",
+      "bytes": 3652
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/initial_audit.json",
+      "sha256": "f184ed52f9f4f20221df858a804a2040f4452c1e667fe198878c7c65d49b9fc9",
+      "bytes": 22614
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/final_audit.json",
+      "sha256": "9b47ed2ec6a835309ea1319491e318712240dda65548927dbdd4a5609740ce3f",
+      "bytes": 22372
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/build.log",
+      "sha256": "aa988bcec2fdda6b96584227b8a728d9ba9ed91c882872cf2ce4ade1c3f7dd55",
+      "bytes": 3945
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/configure.log",
+      "sha256": "3578e4314da6706eabdc54e3599c24675b077c6ae359144ba5014f26479cd9a5",
+      "bytes": 238
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/extra_sources.cmake",
+      "sha256": "f1dd45e5aad3e0b151536ebb7c49d742ea315d0d01b15f79b13f54571ea63289",
+      "bytes": 227
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.log",
+      "sha256": "b1f309d2b9ddafd5ac513e6dc614de8531e4e5343fc63959e3195651ecb8bc0d",
+      "bytes": 584
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/child_probe.log",
+      "sha256": "7247c9de4c4c3ecc71ce89bf9316b7b19f59ad84610d2348f5d570e041226d1a",
+      "bytes": 533
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/fixture_composition_failure.log",
+      "sha256": "6572e9bc68d94055f585c3150722416b5cd0e910eddf2fb7fe442fe33db496bf",
+      "bytes": 271
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.cpp",
+      "sha256": "601582b791f35a09f2268cf1b5f951643ed6178bb9a0b86ca2770d94f52d8125",
+      "bytes": 21337
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.exe",
+      "sha256": "c435d78d2985b02205ad15b5453adaf5f1a48c8585048cfa8dcf37a6c77923af",
+      "bytes": 160768
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.obj",
+      "sha256": "1a3cc2c6c8e7d1f1afe17b56dd3809e19231e1d13c3342b14a7ad8cde1a2f9f7",
+      "bytes": 330961
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/probe.map",
+      "sha256": "a5ea590326e814231d5a2f8e39920688b9777cba2e642fe5f68fe5693dfc158d",
+      "bytes": 287725
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/original_bodies.hpp",
+      "sha256": "949cbaf3ba0d91af0ef8923aae6271a997fad5ab56f4cc5c19e6f551ae584289",
+      "bytes": 3159
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/original_bodies.json",
+      "sha256": "a6e95eb0d11a6d70de5e58c742b2d5c4d1843b6c9186d08ece1d1e08dc202beb",
+      "bytes": 2042
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/compile.cmd",
+      "sha256": "fe5fc6839affbe44079ea1747d51ffebab5e5b2aec8b2c541f386f1a157bc7ec",
+      "bytes": 685
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_core.lib",
+      "sha256": "b7ca8d8820f4c0bf7f0eb1c2ecbe1d0de70efa6cd92a85909b5c111b6a78abe7",
+      "bytes": 58798074
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/CMakeCache.txt",
+      "sha256": "dd12bf59d6326df82914b2e1f09fac260019afeab679408c623e6741b371914e",
+      "bytes": 19048
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/bsp_game.exe",
+      "sha256": "2ab9f7908f6873dd268c673a1e84561a1cdd4b42991699d1ee7b29c4a7295b92",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/source_manifest.json",
+      "sha256": "590bc30c91c47ea8e4bd3db5513fe7a27ac04e7032a10ab4761289af06aa178e",
+      "bytes": 289778
+    },
+    {
+      "path": "local/native_mesh_scalar_fields_cf/worktree_override/configuration.json",
+      "sha256": "59396e6872cc88a252f0c2b42f43bf0d05faf57dd96e85806ee4d10b09b8913a",
+      "bytes": 1502
+    },
+    {
+      "path": "reports/native_mesh_scalar_fields_annotations_cf.json",
+      "sha256": "6fda3417d727f0bfb3d2c61028f0913269d09b700b2422049eef155bec7d35a0",
+      "bytes": 110543
+    }
+  ],
+  "evidence_limits": [
+    "Source adds explicit context services; it is not a native register/stack ABI, FH3/SEH/private-frame or hardware-fault replacement. Original EH is guarded out; only source read failure is exercised.",
+    "Original CF-to-CF transfers execute copied code. Scalar/string/vector/pool dependencies and the BC constructor remain shared established source; this is not a full independent native mesh parser or allocator oracle.",
+    "Fixture float cases cover finite, signed zero, smallest subnormal, quiet NaN and infinities with the same underlying x87 reader. The setter/alias append preserve a signaling-NaN bit pattern as integer data. Native CPU/FPU exception policy is not certified.",
+    "Extreme count overflow/corrupt headers, short reads, all callback-driven pointer/count mutations, append-allocation failure and lazy pool recreation are not newly executed. Four-slot physical LOD capacity remains unchecked as in native code.",
+    "B73D50 uses the existing NativeStringStorage release-noexcept interface. Source failure while recreating a raw pool during that release terminates; no native EH-equivalence claim.",
+    "Full B944E0 native aggregate parsing and registered Mesh/SkinedMesh/MatrixIndexedMesh wrappers still need actual vertex-format, indices, vertex-stream and subset/material field paths. Tracked registration, reviewed main integration, executable admission and gameplay remain open."
+  ]
+}

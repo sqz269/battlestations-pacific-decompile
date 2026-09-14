@@ -1,0 +1,850 @@
+{
+  "packet": "orch4_native_mesh_scalar_fields_cf",
+  "entries": [
+    {
+      "address": "00b72710",
+      "name": "BSP_Mesh_SetLodValue",
+      "before_comment": {
+        "address": "00b72710",
+        "function_name": "BSP_Mesh_SetLodValue",
+        "comment": "[BSP reconstruction 00b72710]\nMOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "440fda1fdfbd9d171f2a64792155047f92908e33ed71c831003b6fc60a15dc4f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b72710",
+        "function_name": "BSP_Mesh_SetLodValue",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b72710]\nMOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 14B. ECX actual mesh; stacked float bits; RET4. Source set_native_mesh_lod_00b72710.",
+      "prototype": "void __fastcall BSP_Mesh_SetLodValue(void* actual_mesh, void* unused_edx, float value)",
+      "prototype_result": "Successfully set prototype for function at 00b72710 with __fastcall calling convention",
+      "ledger_name_output": "00b72710 -> BSP_Mesh_SetLodValue\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b72710\", \"name\": \"BSP_Mesh_SetLodValue\", \"evidence\": \"MOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b72710 function set_native_mesh_lod_00b72710\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b72710",
+        "function_name": "BSP_Mesh_SetLodValue",
+        "comment": "[BSP reconstruction 00b72710]\nMOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b72710] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 14B. ECX actual mesh; stacked float bits; RET4. Source set_native_mesh_lod_00b72710."
+      }
+    },
+    {
+      "address": "00b73270",
+      "name": "BSP_Mesh_AppendLodPhase",
+      "before_comment": {
+        "address": "00b73270",
+        "function_name": "BSP_Mesh_AppendLodPhase",
+        "comment": "[BSP reconstruction 00b73270]\nCopy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "8eb16cb5701e0cc02a698f51faef0a0f73f1d090deb59f60b0fefb42ef0556de",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b73270",
+        "function_name": "BSP_Mesh_AppendLodPhase",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b73270]\nCopy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 47B. ECX actual mesh; stacked actual four-DWORD record; RET4. Source append_native_mesh_lod_phase_00b73270.",
+      "prototype": "void __fastcall BSP_Mesh_AppendLodPhase(void* actual_mesh, void* unused_edx, void* actual_value)",
+      "prototype_result": "Successfully set prototype for function at 00b73270 with __fastcall calling convention",
+      "ledger_name_output": "00b73270 -> BSP_Mesh_AppendLodPhase\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b73270\", \"name\": \"BSP_Mesh_AppendLodPhase\", \"evidence\": \"Copy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b73270 function append_native_mesh_lod_phase_00b73270\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b73270",
+        "function_name": "BSP_Mesh_AppendLodPhase",
+        "comment": "[BSP reconstruction 00b73270]\nCopy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73270] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 47B. ECX actual mesh; stacked actual four-DWORD record; RET4. Source append_native_mesh_lod_phase_00b73270."
+      }
+    },
+    {
+      "address": "00b73d50",
+      "name": "BSP_Mesh_AppendWeightMapName",
+      "before_comment": {
+        "address": "00b73d50",
+        "function_name": "BSP_Mesh_AppendWeightMapName",
+        "comment": "[BSP reconstruction 00b73d50]\nADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "3f004e81498a01cd634543144a0e9acfb5650321b9be3f4879c2ec01514d7972",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b73d50",
+        "function_name": "BSP_Mesh_AppendWeightMapName",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b73d50]\nADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 11B. ECX actual mesh; stacked actual counted-string header; RET4. Source append_native_mesh_weight_name_00b73d50.",
+      "prototype": "void __fastcall BSP_Mesh_AppendWeightMapName(void* actual_mesh, void* unused_edx, void* actual_value)",
+      "prototype_result": "Successfully set prototype for function at 00b73d50 with __fastcall calling convention",
+      "ledger_name_output": "00b73d50 -> BSP_Mesh_AppendWeightMapName\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b73d50\", \"name\": \"BSP_Mesh_AppendWeightMapName\", \"evidence\": \"ADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b73d50 function append_native_mesh_weight_name_00b73d50\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b73d50",
+        "function_name": "BSP_Mesh_AppendWeightMapName",
+        "comment": "[BSP reconstruction 00b73d50]\nADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73d50] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 11B. ECX actual mesh; stacked actual counted-string header; RET4. Source append_native_mesh_weight_name_00b73d50."
+      }
+    },
+    {
+      "address": "00b93590",
+      "name": "BSP_Mesh_ConsumeBoundingSphereField",
+      "before_comment": {
+        "address": "00b93590",
+        "function_name": "BSP_Mesh_ConsumeBoundingSphereField",
+        "comment": "[BSP reconstruction 00b93590]\nFour ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "59adba9afc42779df37fdebd27e6b7b93879da540c0226e30fdc53bf8b96df14",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93590",
+        "function_name": "BSP_Mesh_ConsumeBoundingSphereField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93590]\nFour ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 45B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_sphere_00b93590.",
+      "prototype": "void __fastcall BSP_Mesh_ConsumeBoundingSphereField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b93590 with __fastcall calling convention",
+      "ledger_name_output": "00b93590 -> BSP_Mesh_ConsumeBoundingSphereField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93590\", \"name\": \"BSP_Mesh_ConsumeBoundingSphereField\", \"evidence\": \"Four ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93590 function consume_native_mesh_sphere_00b93590\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93590",
+        "function_name": "BSP_Mesh_ConsumeBoundingSphereField",
+        "comment": "[BSP reconstruction 00b93590]\nFour ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93590] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 45B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_sphere_00b93590."
+      }
+    },
+    {
+      "address": "00b935c0",
+      "name": "BSP_Mesh_ConsumeBoundingBoxField",
+      "before_comment": {
+        "address": "00b935c0",
+        "function_name": "BSP_Mesh_ConsumeBoundingBoxField",
+        "comment": "[BSP reconstruction 00b935c0]\nSix ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "d7eecfc82706a5610bebef03bb44c9e2b5d91740256e9d257205e6985cf65785",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b935c0",
+        "function_name": "BSP_Mesh_ConsumeBoundingBoxField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b935c0]\nSix ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 63B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_bounds_00b935c0.",
+      "prototype": "void __fastcall BSP_Mesh_ConsumeBoundingBoxField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b935c0 with __fastcall calling convention",
+      "ledger_name_output": "00b935c0 -> BSP_Mesh_ConsumeBoundingBoxField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b935c0\", \"name\": \"BSP_Mesh_ConsumeBoundingBoxField\", \"evidence\": \"Six ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b935c0 function consume_native_mesh_bounds_00b935c0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b935c0",
+        "function_name": "BSP_Mesh_ConsumeBoundingBoxField",
+        "comment": "[BSP reconstruction 00b935c0]\nSix ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b935c0] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 63B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_bounds_00b935c0."
+      }
+    },
+    {
+      "address": "00b93710",
+      "name": "BSP_Mesh_ReadLodPhasesField",
+      "before_comment": {
+        "address": "00b93710",
+        "function_name": "BSP_Mesh_ReadLodPhasesField",
+        "comment": "[BSP reconstruction 00b93710]\nUnsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "293aa2eabf2e8b2193be0bcdd5f915bcdfe5305c193857b0828e619bb9e0a95b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93710",
+        "function_name": "BSP_Mesh_ReadLodPhasesField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93710]\nUnsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "undefined4",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "float",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "float",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00b93730"
+          },
+          {
+            "relative_offset": 123,
+            "name": "LAB_00b9378b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 130B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_lod_phases_00b93710.",
+      "prototype": "void __fastcall BSP_Mesh_ReadLodPhasesField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b93710 with __fastcall calling convention",
+      "ledger_name_output": "00b93710 -> BSP_Mesh_ReadLodPhasesField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93710\", \"name\": \"BSP_Mesh_ReadLodPhasesField\", \"evidence\": \"Unsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93710 function read_native_mesh_lod_phases_00b93710\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93710",
+        "function_name": "BSP_Mesh_ReadLodPhasesField",
+        "comment": "[BSP reconstruction 00b93710]\nUnsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93710] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 130B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_lod_phases_00b93710."
+      }
+    },
+    {
+      "address": "00b93f90",
+      "name": "BSP_Mesh_ReadWeightMapNamesField",
+      "before_comment": {
+        "address": "00b93f90",
+        "function_name": "BSP_Mesh_ReadWeightMapNamesField",
+        "comment": "[BSP reconstruction 00b93f90]\nNo count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "2beeea9678618ede0a6476d1bc2daf104caf88b3795d362de6cf3abaacefc49c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93f90",
+        "function_name": "BSP_Mesh_ReadWeightMapNamesField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93f90]\nNo count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "ppvVar1",
+            "type": "void * *",
+            "storage": "(unique, 0x10000099, 4)"
+          },
+          {
+            "name": "actual_value",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00b93fc0"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00b94003"
+          },
+          {
+            "relative_offset": 124,
+            "name": "LAB_00b9400c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 142B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_weight_names_00b93f90.",
+      "prototype": "void __fastcall BSP_Mesh_ReadWeightMapNamesField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b93f90 with __fastcall calling convention",
+      "ledger_name_output": "00b93f90 -> BSP_Mesh_ReadWeightMapNamesField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93f90\", \"name\": \"BSP_Mesh_ReadWeightMapNamesField\", \"evidence\": \"No count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93f90 function read_native_mesh_weight_names_00b93f90\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93f90",
+        "function_name": "BSP_Mesh_ReadWeightMapNamesField",
+        "comment": "[BSP reconstruction 00b93f90]\nNo count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93f90] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 142B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_weight_names_00b93f90."
+      }
+    },
+    {
+      "address": "00be99f0",
+      "name": "BSP_StructuredNode_ReadDwordSlot38",
+      "before_comment": {
+        "address": "00be99f0",
+        "function_name": "BSP_StructuredNode_ReadDwordSlot38",
+        "comment": "[BSP reconstruction 00be99f0]\nBSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "9a87855dc6474041cce3f96e5c5944f2c27e8976666e47c01600250151f0449a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be99f0",
+        "function_name": "BSP_StructuredNode_ReadDwordSlot38",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be99f0]\nBSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 15B. ECX current node-handle; EAX DWORD; RET. Source read_native_resource_node_control_dword_00be99f0.",
+      "prototype": "uint __fastcall BSP_StructuredNode_ReadDwordSlot38(void* actual_handle, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00be99f0 with __fastcall calling convention",
+      "ledger_name_output": "00be99f0 -> BSP_StructuredNode_ReadDwordSlot38\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be99f0\", \"name\": \"BSP_StructuredNode_ReadDwordSlot38\", \"evidence\": \"BSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be99f0 function read_native_resource_node_control_dword_00be99f0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00be99f0",
+        "function_name": "BSP_StructuredNode_ReadDwordSlot38",
+        "comment": "[BSP reconstruction 00be99f0]\nBSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be99f0] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 15B. ECX current node-handle; EAX DWORD; RET. Source read_native_resource_node_control_dword_00be99f0."
+      }
+    },
+    {
+      "address": "00cc2e50",
+      "name": "Unwind@00cc2e50",
+      "before_comment": {
+        "address": "00cc2e50",
+        "function_name": "Unwind@00cc2e50"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e50",
+        "function_name": "Unwind@00cc2e50",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e50 -> Unwind@00cc2e50\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e50",
+        "function_name": "Unwind@00cc2e50",
+        "comment": "\n\n[BSP reconstruction 00cc2e50] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2e58",
+      "name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+      "before_comment": {
+        "address": "00cc2e58",
+        "function_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e58",
+        "function_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e58 -> BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e58",
+        "function_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+        "comment": "\n\n[BSP reconstruction 00cc2e58] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b72710",
+        "prototype": "void __fastcall BSP_Mesh_SetLodValue(void* actual_mesh, void* unused_edx, float value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b72710 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b72710",
+        "new_name": "BSP_Mesh_SetLodValue"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b72710 from 'BSP_Mesh_SetLodValue' to 'BSP_Mesh_SetLodValue'\", \"warnings\": [\"Function name 'BSP_Mesh_SetLodValue' \\u2014 main part 'Mesh_SetLodValue' is not PascalCase. Expected: MeshSetlodvalue\", \"Function name 'BSP_Mesh_SetLodValue' \\u2014 main part 'Mesh_SetLodValue' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_SetLodValue' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b72710",
+        "new_name": "BSP_Mesh_SetLodValue"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b72710 from 'BSP_Mesh_SetLodValue' to 'BSP_Mesh_SetLodValue'\", \"warnings\": [\"Function name 'BSP_Mesh_SetLodValue' \\u2014 main part 'Mesh_SetLodValue' is not PascalCase. Expected: MeshSetlodvalue\", \"Function name 'BSP_Mesh_SetLodValue' \\u2014 main part 'Mesh_SetLodValue' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_SetLodValue' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b72710",
+        "comment": "[BSP reconstruction 00b72710]\nMOVSS stack argument to mesh+0x0c. This function never reads a node. Original ABI: ECX mesh; stack float bits; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b72710] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 14B. ECX actual mesh; stacked float bits; RET4. Source set_native_mesh_lod_00b72710."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b72710\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b73270",
+        "prototype": "void __fastcall BSP_Mesh_AppendLodPhase(void* actual_mesh, void* unused_edx, void* actual_value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b73270 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73270",
+        "new_name": "BSP_Mesh_AppendLodPhase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73270 from 'BSP_Mesh_AppendLodPhase' to 'BSP_Mesh_AppendLodPhase'\", \"warnings\": [\"Function name 'BSP_Mesh_AppendLodPhase' \\u2014 main part 'Mesh_AppendLodPhase' is not PascalCase. Expected: MeshAppendlodphase\", \"Function name 'BSP_Mesh_AppendLodPhase' \\u2014 main part 'Mesh_AppendLodPhase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_AppendLodPhase' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73270",
+        "new_name": "BSP_Mesh_AppendLodPhase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73270 from 'BSP_Mesh_AppendLodPhase' to 'BSP_Mesh_AppendLodPhase'\", \"warnings\": [\"Function name 'BSP_Mesh_AppendLodPhase' \\u2014 main part 'Mesh_AppendLodPhase' is not PascalCase. Expected: MeshAppendlodphase\", \"Function name 'BSP_Mesh_AppendLodPhase' \\u2014 main part 'Mesh_AppendLodPhase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_AppendLodPhase' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b73270",
+        "comment": "[BSP reconstruction 00b73270]\nCopy16bytes to mesh+0x10+16*count_at_0x50, then increment count; unchecked four-slot physical capacity. Original ABI: ECX mesh; stack16-byte source; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73270] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 47B. ECX actual mesh; stacked actual four-DWORD record; RET4. Source append_native_mesh_lod_phase_00b73270."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b73270\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b73d50",
+        "prototype": "void __fastcall BSP_Mesh_AppendWeightMapName(void* actual_mesh, void* unused_edx, void* actual_value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b73d50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73d50",
+        "new_name": "BSP_Mesh_AppendWeightMapName"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73d50 from 'BSP_Mesh_AppendWeightMapName' to 'BSP_Mesh_AppendWeightMapName'\", \"warnings\": [\"Function name 'BSP_Mesh_AppendWeightMapName' \\u2014 main part 'Mesh_AppendWeightMapName' is not PascalCase. Expected: MeshAppendweightmapname\", \"Function name 'BSP_Mesh_AppendWeightMapName' \\u2014 main part 'Mesh_AppendWeightMapName' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_AppendWeightMapName' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73d50",
+        "new_name": "BSP_Mesh_AppendWeightMapName"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73d50 from 'BSP_Mesh_AppendWeightMapName' to 'BSP_Mesh_AppendWeightMapName'\", \"warnings\": [\"Function name 'BSP_Mesh_AppendWeightMapName' \\u2014 main part 'Mesh_AppendWeightMapName' is not PascalCase. Expected: MeshAppendweightmapname\", \"Function name 'BSP_Mesh_AppendWeightMapName' \\u2014 main part 'Mesh_AppendWeightMapName' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_AppendWeightMapName' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b73d50",
+        "comment": "[BSP reconstruction 00b73d50]\nADD ECX,0xb0; JMP004cdc20; no shared reference-counted string. Original ABI: ECX mesh; stack native counted string; tail RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73d50] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 11B. ECX actual mesh; stacked actual counted-string header; RET4. Source append_native_mesh_weight_name_00b73d50."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b73d50\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93590",
+        "prototype": "void __fastcall BSP_Mesh_ConsumeBoundingSphereField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93590 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93590",
+        "new_name": "BSP_Mesh_ConsumeBoundingSphereField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93590 from 'BSP_Mesh_ConsumeBoundingSphereField' to 'BSP_Mesh_ConsumeBoundingSphereField'\", \"warnings\": [\"Function name 'BSP_Mesh_ConsumeBoundingSphereField' \\u2014 main part 'Mesh_ConsumeBoundingSphereField' is not PascalCase. Expected: MeshConsumeboundingspherefield\", \"Function name 'BSP_Mesh_ConsumeBoundingSphereField' \\u2014 main part 'Mesh_ConsumeBoundingSphereField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ConsumeBoundingSphereField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93590",
+        "new_name": "BSP_Mesh_ConsumeBoundingSphereField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93590 from 'BSP_Mesh_ConsumeBoundingSphereField' to 'BSP_Mesh_ConsumeBoundingSphereField'\", \"warnings\": [\"Function name 'BSP_Mesh_ConsumeBoundingSphereField' \\u2014 main part 'Mesh_ConsumeBoundingSphereField' is not PascalCase. Expected: MeshConsumeboundingspherefield\", \"Function name 'BSP_Mesh_ConsumeBoundingSphereField' \\u2014 main part 'Mesh_ConsumeBoundingSphereField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ConsumeBoundingSphereField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93590",
+        "comment": "[BSP reconstruction 00b93590]\nFour ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93590] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 45B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_sphere_00b93590."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93590\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b935c0",
+        "prototype": "void __fastcall BSP_Mesh_ConsumeBoundingBoxField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b935c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b935c0",
+        "new_name": "BSP_Mesh_ConsumeBoundingBoxField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b935c0 from 'BSP_Mesh_ConsumeBoundingBoxField' to 'BSP_Mesh_ConsumeBoundingBoxField'\", \"warnings\": [\"Function name 'BSP_Mesh_ConsumeBoundingBoxField' \\u2014 main part 'Mesh_ConsumeBoundingBoxField' is not PascalCase. Expected: MeshConsumeboundingboxfield\", \"Function name 'BSP_Mesh_ConsumeBoundingBoxField' \\u2014 main part 'Mesh_ConsumeBoundingBoxField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ConsumeBoundingBoxField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b935c0",
+        "new_name": "BSP_Mesh_ConsumeBoundingBoxField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b935c0 from 'BSP_Mesh_ConsumeBoundingBoxField' to 'BSP_Mesh_ConsumeBoundingBoxField'\", \"warnings\": [\"Function name 'BSP_Mesh_ConsumeBoundingBoxField' \\u2014 main part 'Mesh_ConsumeBoundingBoxField' is not PascalCase. Expected: MeshConsumeboundingboxfield\", \"Function name 'BSP_Mesh_ConsumeBoundingBoxField' \\u2014 main part 'Mesh_ConsumeBoundingBoxField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ConsumeBoundingBoxField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b935c0",
+        "comment": "[BSP reconstruction 00b935c0]\nSix ReadFloat calls, each FSTP ST0; no mesh/section writes. Original ABI: Second stack argument child handle; other input ignored; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b935c0] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 63B. Incoming ECX unused; stacked mesh and handle; RET8. Source consume_native_mesh_bounds_00b935c0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b935c0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93710",
+        "prototype": "void __fastcall BSP_Mesh_ReadLodPhasesField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93710 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93710",
+        "new_name": "BSP_Mesh_ReadLodPhasesField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93710 from 'BSP_Mesh_ReadLodPhasesField' to 'BSP_Mesh_ReadLodPhasesField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadLodPhasesField' \\u2014 main part 'Mesh_ReadLodPhasesField' is not PascalCase. Expected: MeshReadlodphasesfield\", \"Function name 'BSP_Mesh_ReadLodPhasesField' \\u2014 main part 'Mesh_ReadLodPhasesField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadLodPhasesField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93710",
+        "new_name": "BSP_Mesh_ReadLodPhasesField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93710 from 'BSP_Mesh_ReadLodPhasesField' to 'BSP_Mesh_ReadLodPhasesField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadLodPhasesField' \\u2014 main part 'Mesh_ReadLodPhasesField' is not PascalCase. Expected: MeshReadlodphasesfield\", \"Function name 'BSP_Mesh_ReadLodPhasesField' \\u2014 main part 'Mesh_ReadLodPhasesField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadLodPhasesField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93710",
+        "comment": "[BSP reconstruction 00b93710]\nUnsigned count; each16-byte record float,float,U32,U32; append via00b73270. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93710] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 130B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_lod_phases_00b93710."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93710\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93f90",
+        "prototype": "void __fastcall BSP_Mesh_ReadWeightMapNamesField(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93f90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93f90",
+        "new_name": "BSP_Mesh_ReadWeightMapNamesField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93f90 from 'BSP_Mesh_ReadWeightMapNamesField' to 'BSP_Mesh_ReadWeightMapNamesField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadWeightMapNamesField' \\u2014 main part 'Mesh_ReadWeightMapNamesField' is not PascalCase. Expected: MeshReadweightmapnamesfield\", \"Function name 'BSP_Mesh_ReadWeightMapNamesField' \\u2014 main part 'Mesh_ReadWeightMapNamesField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadWeightMapNamesField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93f90",
+        "new_name": "BSP_Mesh_ReadWeightMapNamesField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93f90 from 'BSP_Mesh_ReadWeightMapNamesField' to 'BSP_Mesh_ReadWeightMapNamesField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadWeightMapNamesField' \\u2014 main part 'Mesh_ReadWeightMapNamesField' is not PascalCase. Expected: MeshReadweightmapnamesfield\", \"Function name 'BSP_Mesh_ReadWeightMapNamesField' \\u2014 main part 'Mesh_ReadWeightMapNamesField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadWeightMapNamesField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93f90",
+        "comment": "[BSP reconstruction 00b93f90]\nNo count; repeated counted strings while remaining!=0; independent append via00b73d50; temporary destroyed. Original ABI: Stack mesh,child handle; incoming ECX unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93f90] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 142B. Incoming ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_weight_names_00b93f90."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93f90\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be99f0",
+        "prototype": "uint __fastcall BSP_StructuredNode_ReadDwordSlot38(void* actual_handle, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be99f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00be99f0",
+        "new_name": "BSP_StructuredNode_ReadDwordSlot38"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00be99f0 from 'BSP_StructuredNode_ReadDwordSlot38' to 'BSP_StructuredNode_ReadDwordSlot38'\", \"warnings\": [\"Function name 'BSP_StructuredNode_ReadDwordSlot38' \\u2014 main part 'StructuredNode_ReadDwordSlot38' is not PascalCase. Expected: StructurednodeReaddwordslot38\", \"Function name 'BSP_StructuredNode_ReadDwordSlot38' \\u2014 main part 'StructuredNode_ReadDwordSlot38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_StructuredNode_ReadDwordSlot38' does not start with a recognized verb. First word 'Structured' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00be99f0",
+        "new_name": "BSP_StructuredNode_ReadDwordSlot38"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00be99f0 from 'BSP_StructuredNode_ReadDwordSlot38' to 'BSP_StructuredNode_ReadDwordSlot38'\", \"warnings\": [\"Function name 'BSP_StructuredNode_ReadDwordSlot38' \\u2014 main part 'StructuredNode_ReadDwordSlot38' is not PascalCase. Expected: StructurednodeReaddwordslot38\", \"Function name 'BSP_StructuredNode_ReadDwordSlot38' \\u2014 main part 'StructuredNode_ReadDwordSlot38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_StructuredNode_ReadDwordSlot38' does not start with a recognized verb. First word 'Structured' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be99f0",
+        "comment": "[BSP reconstruction 00be99f0]\nBSP reconstruction hypothesis: Forward node+8 reader and node+20 budget to00bf02a0, preserving returnedEAX. Existing nonnull actual-count slot+38 read/debit contract; no prefix value validation. ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX node wrapper; EAX raw DWORD; no stack arguments; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be99f0] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete 15B. ECX current node-handle; EAX DWORD; RET. Source read_native_resource_node_control_dword_00be99f0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be99f0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e50",
+        "new_name": "Unwind@00cc2e50"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e50 from 'Unwind@00cc2e50' to 'Unwind@00cc2e50'\", \"warnings\": [\"Function name 'Unwind@00cc2e50' \\u2014 main part 'Unwind@00cc2e50' is not PascalCase. Expected: Unwind@00cc2e50\", \"Function name 'Unwind@00cc2e50' does not start with a recognized verb. First word 'Unwind@00cc2e50' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e50",
+        "comment": "\n\n[BSP reconstruction 00cc2e50] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e50\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e58",
+        "new_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e58 from 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' to 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58'\", \"warnings\": [\"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' is not PascalCase. Expected: MeshweightnamesreadCompilerexceptionhandler00cc2e58\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e58",
+        "comment": "\n\n[BSP reconstruction 00cc2e58] CF update\nCF actual mesh scalar fields: eight complete ordinary bodies467bytes, two supports18bytes,152 executable instruction owners; unreachable B9372D alignment excluded.24 direct transfers, full saved/disk byte equality and one-state EH-map audit. Native LOD bit store and alias-sensitive four-word append, current-node slot38 count wrapper, unsigned phase reader with original FSTP32 stores, four/six x87 discards and actual counted-name vector append are source-backed. Weight-name cleanup uses BEA010 returned header for append but the captured local header for return; only completed local name is EH-owned, without prior-name rollback. Existing complete BF02A0, scalar/string/vector/pool dependencies and actual BC mesh storage are reused. Strict scripts/build.ps1 through an ignored worktree-only CC/CE/CF CMake include passed both CTests. One controlled-child fixture passed five source/original pairs (ten executions) and one retained-prefix source read failure. Original eight bodies have22 direct relocations and one EH guard; original-to-original CF calls execute copied code, lower dependencies share source. Fixed fixture root-reference composition, with no CF source change. Native ABI/FH3/SEH/private frame aliases, original FPU exception policy, hardware faults, extreme counts, all callbacks, append-allocation failure, lazy pools, remaining geometry fields, tracked registration, main integration and gameplay remain open. Names hypotheses; prior comments and correct compiler names preserved. docs/NATIVE_MESH_SCALAR_FIELDS_CF.md; reports/native_mesh_scalar_fields_cf.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e58\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

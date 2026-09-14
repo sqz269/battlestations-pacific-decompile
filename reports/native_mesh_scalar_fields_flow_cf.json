@@ -1,0 +1,64 @@
+{
+  "packet": "orch4_native_mesh_scalar_fields_cf",
+  "entries": [
+    {
+      "address": "00cc2e58",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2e58",
+        "function_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2e58",
+        "end_address": "00cc2e62"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2e58\", \"end_address\": \"00cc2e61\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2e58",
+        "name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2e58\", \"function_name\": \"BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58\", \"entry_point\": \"00cc2e58\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2e58\", \"warnings\": [\"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' is not PascalCase. Expected: MeshweightnamesreadCompilerexceptionhandler00cc2e58\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e58",
+        "new_name": "BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e58 from 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' to 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58'\", \"warnings\": [\"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' is not PascalCase. Expected: MeshweightnamesreadCompilerexceptionhandler00cc2e58\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' \\u2014 main part 'MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshWeightNamesRead_CompilerExceptionHandler_00cc2e58' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e58",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e58\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}
