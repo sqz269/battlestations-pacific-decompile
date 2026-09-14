@@ -937,3 +937,6 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_filestore_e
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpkg_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_provider_enumeration_bindings.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_string_byte_append.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_data_bootstrap.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_physical_pool.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_type_storage.cpp)
