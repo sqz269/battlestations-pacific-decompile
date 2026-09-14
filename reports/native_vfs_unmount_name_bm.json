@@ -1,0 +1,442 @@
+{
+  "packet": "orch4_native_vfs_unmount_name_bm",
+  "generated_utc": "2026-09-14T06:42:50.022992+00:00",
+  "base_commit": "942f454c003868062d01e3320b2fb2e164b228cb",
+  "branch": "agent/orch4-vfs-unmount-bm",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "bsp.py ghidra client verifies project/program/language/base before every live query"
+  },
+  "functions": [
+    {
+      "address": "00be0750",
+      "inclusive_end": "00be0915",
+      "byte_count": 454,
+      "name_hypothesis": "BSP_VFS_UnmountByName",
+      "cpp": "bsp::unmount_native_vfs_name_00be0750",
+      "native_abi": "ECX manager; stack(system name,mount prefix); AL success; RET8",
+      "coverage": "complete ordinary body with explicit source services and retained failure frame",
+      "native_exception_equivalence": false
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00be0750",
+      "inclusive_end": "00be0915",
+      "byte_count": 454,
+      "role": "complete ordinary body",
+      "sha256": "2a1e941a23daf6f58398c60e576c4a54a71d38766c50d6fd1cc6e009fa6e7db7",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00be0750.txt",
+      "evidence_log_sha256": "7cb397c4dee143b07f2ebc065d28b974fa940ecfe34caacc56028131ecea48f1"
+    },
+    {
+      "address": "00cc6720",
+      "inclusive_end": "00cc6731",
+      "byte_count": 18,
+      "role": "unwind action and decoded-only handler",
+      "sha256": "3e8edd03b96a5053469d6c353af1ee17b0f037a37645bc235f066f975e0ecbbb",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00cc6720.txt",
+      "evidence_log_sha256": "bb710ac07b6c032c5933e01ac84635401f888eb54a1ea503af115371dc3f936c"
+    },
+    {
+      "address": "00e00d74",
+      "inclusive_end": "00e00d9f",
+      "byte_count": 44,
+      "role": "unwind map and FuncInfo",
+      "sha256": "bf8387f57c1e3ce3a6d35aaa52f5f35229a7b2d063ce8827cb2fcbd26a86b43a",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00e00d74.txt",
+      "evidence_log_sha256": "d0931bbfca6efdd5d4f83b984c1bb65e366610fd5bfbcdf7c3984d8de16f275f"
+    },
+    {
+      "address": "00ce7898",
+      "inclusive_end": "00ce7899",
+      "byte_count": 2,
+      "role": "trim set",
+      "sha256": "ade0274f84b828b0980112609bb51775d0a4e39bf4728f21dcdd04a627abb92a",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00ce7898.txt",
+      "evidence_log_sha256": "b5e7a74a6d15b67529b0b6630af32a79595610873858986bf68e723b3375b447"
+    },
+    {
+      "address": "00d689e8",
+      "inclusive_end": "00d689ef",
+      "byte_count": 8,
+      "role": "FileStore profile",
+      "sha256": "38794dfadd99d1ac8e5c9911d56391061bace24c77cd4039a9a794596016599f",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00d689e8.txt",
+      "evidence_log_sha256": "90e3a88531aea667734a2d6c884d0342e6b4d53e4d3b8a2e7b177df3131681be"
+    },
+    {
+      "address": "00d69168",
+      "inclusive_end": "00d6916f",
+      "byte_count": 8,
+      "role": "physical profile",
+      "sha256": "8a0dbfcf8273cf96232be7450ff9fa79fcac02cb8a36fefa1fe0c247a7a36277",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00d69168.txt",
+      "evidence_log_sha256": "8600939767ca6dcdc986dd9361c4dfd6ff3f7f43ff9bb418a7487859450e2dca"
+    },
+    {
+      "address": "00d64390",
+      "inclusive_end": "00d64397",
+      "byte_count": 8,
+      "role": "MPKG profile",
+      "sha256": "15d016e90ceb9eb73cea1545c83f2f02bc1ef295b489c5a314f5321284794c51",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00d64390.txt",
+      "evidence_log_sha256": "e854991e3783dfd08d0078c8cdc446dd6ee401959afcd5faf093e48767e9e581"
+    },
+    {
+      "address": "00d641f8",
+      "inclusive_end": "00d641ff",
+      "byte_count": 8,
+      "role": "MPAK profile",
+      "sha256": "aa4c8132a2e7d5fdd890a82e93f5d879a45f27d8db1e5df3e74740fb2c841228",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/unmount_bm/live_00d641f8.txt",
+      "evidence_log_sha256": "f4de8ab747fb37e51a0228eb17fa2ae128a4c66eeb331a6e9ffe6d3f1af8ec64"
+    }
+  ],
+  "direct_and_tail_calls": [
+    {
+      "address": "00be0776",
+      "native": "00bee390",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be078c",
+      "native": "00584110",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be07ae",
+      "native": "00bf6713",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be07bf",
+      "native": "00bf6713",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be07c9",
+      "native": "00bf6713",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be07fe",
+      "native": "00bf7fbf",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be0814",
+      "native": "00bf6713",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be0842",
+      "native": "00bf7fbf",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be0857",
+      "native": "00bd97e0",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be086e",
+      "native": "00bf6713",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be0895",
+      "native": "00be0080",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be08b5",
+      "native": "00419cc0",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be08bc",
+      "native": "00bd1510",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be08f3",
+      "native": "00419cc0",
+      "function": "00be0750"
+    },
+    {
+      "address": "00be08fa",
+      "native": "00bd1510",
+      "function": "00be0750"
+    },
+    {
+      "address": "00cc6723",
+      "native": "0041dd20",
+      "function": "00cc6720",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00be087a",
+      "operand": "dword ptr [0xce2220]",
+      "meaning": "actual InterlockedDecrement import"
+    },
+    {
+      "address": "00be088a",
+      "operand": "edx",
+      "meaning": "captured current provider virtual0"
+    }
+  ],
+  "eh": {
+    "handler": "00cc6728",
+    "handler_has_ghidra_function": false,
+    "handler_decoded": "mov eax,00e00d7c; jmp 00bf6b43",
+    "func_info": "00e00d7c",
+    "magic": "19930522",
+    "max_state": 1,
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "unwind_map": "00e00d74",
+    "states": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00cc6720",
+        "body": "lea ecx,[ebp-1c]; jmp0041dd20"
+      }
+    ],
+    "source_failure_policy": "retain stable acquired frame and all borrowed context/input storage; no replay or guessed native unwind; failed-frame destruction terminates"
+  },
+  "provider_profiles": [
+    {
+      "table": "00d689e8",
+      "current_virtual0": "00bd30e0",
+      "current_virtual4": "00be8090"
+    },
+    {
+      "table": "00d69168",
+      "current_virtual0": "00bd30e0",
+      "current_virtual4": "00bf4dd0"
+    },
+    {
+      "table": "00d64390",
+      "current_virtual0": "00bd30e0",
+      "current_virtual4": "00bb9ee0"
+    },
+    {
+      "table": "00d641f8",
+      "current_virtual0": "00bd30e0",
+      "current_virtual4": "00bb7b80"
+    }
+  ],
+  "production_dispatch": "NativeAdoptedSubstreamDispatch::source_zero_reference; NativeVfsRuntimeBindings consumes BD30E0 then reloads current virtual4 with flag1",
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "log": "local/unmount_bm/compile.log"
+    },
+    "fixture": {
+      "passed": true,
+      "frozen_input_count": 39,
+      "frozen_inputs": "local/unmount_bm/frozen_inputs.json",
+      "exe": "local/unmount_bm/unmount_probe.exe",
+      "manifest_embedded": true,
+      "ordinary_exit_code": 0,
+      "failure_retention_exit_code": 0,
+      "logs": [
+        "local/unmount_bm/probe_normal.log",
+        "local/unmount_bm/probe_failure.log"
+      ],
+      "coverage": [
+        "actual string pool and priority tree",
+        "canonical/case-insensitive system and mount matching",
+        "first duplicate only",
+        "missing name and empty tree",
+        "surviving reference avoids table read with deliberately invalid table",
+        "zero-reference actual FileStore BD30E0/currentBE8090 destruction",
+        "unknown virtual0 failure after decrement retains node/header/iterator"
+      ],
+      "controlled_boundaries": [
+        "source CRT locale",
+        "unknown virtual0 deliberately supplied for failure-retention run"
+      ],
+      "cleanup": "ordinary run releases remaining actual nodes/providers and string pool; failed invocation retained to process termination"
+    },
+    "core_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "before": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "after": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "copy": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251"
+    },
+    "unused_earlier_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_core.lib",
+      "sha256": "9bbaaf4d8a33f77388c2a8cfb41fa1a89e74744b7409ce8d8d8ddc243e4ddcc8",
+      "receipt": "local/unmount_bm/library_hash.json",
+      "linked": false
+    },
+    "full_integration_build": false,
+    "permanent_tests_added": false,
+    "native_original_executable_run": false,
+    "game_validated": false
+  },
+  "source_files": [
+    {
+      "path": "src/native_vfs_unmount_name.cpp",
+      "sha256": "9c71ab421401e8476b773d97fb8af604db69c18eb17051b10aabc684ed6bea73"
+    },
+    {
+      "path": "include/bsp/native_vfs_unmount_name.hpp",
+      "sha256": "abc8e8f290fbcc62dd362f3b3e56acfa490aa93dd09091190fcb5f6fdac65c0a"
+    },
+    {
+      "path": "docs/NATIVE_VFS_UNMOUNT_NAME_BM.md",
+      "sha256": "3e921984e2e168a526fba2615b7e610e3286ee4d41db94c7255efd2565db9eb9"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/unmount_bm/bsp_core.lib",
+      "byte_count": 57726428,
+      "sha256": "9bbaaf4d8a33f77388c2a8cfb41fa1a89e74744b7409ce8d8d8ddc243e4ddcc8"
+    },
+    {
+      "path": "local/unmount_bm/bsp_lua511.lib",
+      "byte_count": 455244,
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+    },
+    {
+      "path": "local/unmount_bm/bsp_zlib121.lib",
+      "byte_count": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    },
+    {
+      "path": "local/unmount_bm/compile.cmd",
+      "byte_count": 313,
+      "sha256": "bf294a38761b6bd368bd5630f051287c2daacb0962922ecc97ef1ae4884094b4"
+    },
+    {
+      "path": "local/unmount_bm/compile.log",
+      "byte_count": 29,
+      "sha256": "54d9270420fb68c105afcb68646799f10bb4b9b28b075918ca2ff882060ab8a3"
+    },
+    {
+      "path": "local/unmount_bm/compile_probe.cmd",
+      "byte_count": 544,
+      "sha256": "0e54d7d585854141011abd1bb3190feb1c95d281db4b950936b18dc3d1e0c79a"
+    },
+    {
+      "path": "local/unmount_bm/dependent_library_hashes.jsonl",
+      "byte_count": 375,
+      "sha256": "a704ba1ef4d4a2efaf2e660c6d8f96faf4e225423d50b6962da930d7352ae8e9"
+    },
+    {
+      "path": "local/unmount_bm/freeze_inputs.py",
+      "byte_count": 1086,
+      "sha256": "71516b8cfec0c80a74c35cb1157055b727a6cb8583e1e91b063719582652c50d"
+    },
+    {
+      "path": "local/unmount_bm/frozen_inputs.json",
+      "byte_count": 8650,
+      "sha256": "68bbee425fb80c422677b4621f86cfcdcae3c3e3890b868ca22457a7b7259635"
+    },
+    {
+      "path": "local/unmount_bm/library_hash.json",
+      "byte_count": 245,
+      "sha256": "bd810cef7b02d82fdd6983f2e40aba8fa1e6dc24f96c3f8177654ee1e0de762f"
+    },
+    {
+      "path": "local/unmount_bm/make_report.py",
+      "byte_count": 7314,
+      "sha256": "4ced62a97682c9f34f03bfcbd8169811406ea791cb0987550d6757111343b6bd"
+    },
+    {
+      "path": "local/unmount_bm/native_vfs_unmount_name.obj",
+      "byte_count": 18520,
+      "sha256": "7d6cb5366c2ce46e678bb4ee5313fc320fbbb456e2444e6697afad200bb2adf5"
+    },
+    {
+      "path": "local/unmount_bm/orch4_bsp_core.lib",
+      "byte_count": 57996726,
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    {
+      "path": "local/unmount_bm/orch4_library_hash.json",
+      "byte_count": 350,
+      "sha256": "41216b566a2eb0d0562f5535d9b87609d6fd5933cb5c0d045073157b6dbfda15"
+    },
+    {
+      "path": "local/unmount_bm/probe_compile.log",
+      "byte_count": 19,
+      "sha256": "cf2283cf316690f3350f2713c9f5c273c895aeb4a71aee9728aa8f768ab29adc"
+    },
+    {
+      "path": "local/unmount_bm/probe_failure.log",
+      "byte_count": 128,
+      "sha256": "dc0bf4f3d6a0c71ab02218b775a0e059ce8bdf7bb2b098cc86065f3d9011f956"
+    },
+    {
+      "path": "local/unmount_bm/probe_normal.log",
+      "byte_count": 278,
+      "sha256": "d41d15c14a06eb6ebd661214705b45e8a4026026395903e76a0bf939951669e1"
+    },
+    {
+      "path": "local/unmount_bm/unmount_probe.cpp",
+      "byte_count": 8773,
+      "sha256": "329ecb08e1c7d6940e86ddb656c1be19170285b9c3c0ca7298bc7325868da69e"
+    },
+    {
+      "path": "local/unmount_bm/unmount_probe.exe",
+      "byte_count": 120832,
+      "sha256": "e4f148fb0eb7207ed6450e4ce05b3a4883e88ed9ce67fcf1505e19c0488c7db9"
+    },
+    {
+      "path": "local/unmount_bm/unmount_probe.obj",
+      "byte_count": 142249,
+      "sha256": "3b7e9092957b0054b3589fddca0dcc3f9586e39623c0b961894b45bae720e594"
+    },
+    {
+      "path": "local/unmount_bm/verify_calls.log",
+      "byte_count": 73,
+      "sha256": "d5d4ca649fb9c2274ef1a2224e8d9984f0eddc374c6beb481c36af4ebd446cee"
+    }
+  ],
+  "limitations": [
+    "explicit-service source ABI differs from native stack/FH3/SEH ABI",
+    "unknown callback/CRT/pool failures use retained source frames rather than modeled native unwind",
+    "trim/erase inherited string release remains noexcept",
+    "arbitrary original stack/register-spill aliasing and concurrency unproved",
+    "only FileStore concrete deletion fixture-tested",
+    "primary owns CMake/runtime/Ghidra annotation/shared ledgers and integration build"
+  ],
+  "call_site_validation": {
+    "tool": "tools/verify_report_calls.py",
+    "checked": 16,
+    "failed": 0,
+    "exit_code": 0,
+    "log": "local/unmount_bm/verify_calls.log"
+  },
+  "ghidra_mutations": false,
+  "requested_primary_annotation": {
+    "address": "00be0750",
+    "suggested_name": "BSP_VFS_UnmountByName",
+    "evidence_doc": "docs/NATIVE_VFS_UNMOUNT_NAME_BM.md",
+    "preserve_existing_comments": true
+  }
+}
