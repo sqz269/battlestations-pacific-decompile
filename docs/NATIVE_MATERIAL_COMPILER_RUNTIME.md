@@ -64,13 +64,13 @@ PASS full source B3C3A0/B3B3C0 cached route pass=<actual address> refs=1 shaderr
 
 The existing B319B0 source context still uses `ResourceLoadEventHost`. The
 fixture supplies a concrete adapter to real XLive ordinal5030 and existing raw
-BECB20. Each raw cursor operation is retained before invocation. The actual
-platform storage and original profile words are preserved. The chosen native
-online-null guard returns before input/online processing; it is an executed
-native branch, not a no-op replacement. This stable-platform case does not
-prove arbitrary replacement timing of the raw0109CF04 publication through that
-older host interface. A future raw texture-cache composition packet must close
-that separate interface frontier.
+BECB20. Each raw cursor operation is retained before invocation. The receiver
+is borrowed, zeroed fixture storage; no platform constructor or platform profile
+is installed. The online-null guard returns before platform, input or profile
+reads. This executes the existing source guard but proves no platform construction,
+current-profile dispatch or arbitrary replacement timing of raw0109CF04 through
+the older host interface. A future raw texture-cache composition packet must
+close that separate interface frontier.
 
 Two explicit scratch preimages are observed by executing the original copied
 306-byte B3B280 with empty sampler arrays. Its native empty branch leaves them
@@ -100,3 +100,11 @@ The original empty B3B280 and twenty profile spans (1,086 bytes total) match liv
 Ghidra and the read-only installed PE. The initial c43 run log/executable are
 kept distinctly from the corrected final run. The report records final build,
 CTests, immutable artifact closure and its manifest hash.
+
+The frozen input commit is `7da230dd`; the archive contains 7,720 artifacts,
+1,318 compiled translation units and 80 loaded modules, all PE machine014c.
+Its manifest SHA-256 is
+`21c0fb557abfcf55fb068e7eed86bce85340ab2a563790b6ce3a9c0caf2c3b98`.
+Final metadata narrows the earlier frozen document's platform-storage sentence
+as explained above. No fixture, production source, binary or archived byte was
+changed by that clarification.

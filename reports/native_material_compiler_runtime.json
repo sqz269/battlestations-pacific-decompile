@@ -194,7 +194,9 @@
       "LIMIT source-only full path; real D3DX/COM and existing source child providers shared; empty sampler lists consume no release residue; no original FH3, teardown or game claim"
     ],
     "loaded_module_count": 80,
-    "initial_c43_result": "Initial passing c43 log/executable preserved separately as probe_c43_initial_run.log and compiler_runtime_c43_initial_probe.exe. Initial source was later extended; no complete exact-source closure is claimed for that initial result."
+    "initial_c43_result": "Initial passing c43 log/executable preserved separately as probe_c43_initial_run.log and compiler_runtime_c43_initial_probe.exe. Initial source was later extended; no complete exact-source closure is claimed for that initial result.",
+    "loaded_module_machine": "All 80 actually loaded module files verified as PE machine014c.",
+    "explicit_compiler_object": "Intentional /std:c++17 /Oy- strict actual compiler TU override precedes fresh current library so the defining source object is explicit in the map; all other children come from current fresh libraries. The complete exact driver is preserved."
   },
   "original_evidence": {
     "provenance": {
@@ -361,7 +363,7 @@
     "canonical_domain": "One metadata registry, actual state/pass/compiled-shader/COM-wrapper owners, actual raw pool storage, current renderer publication and persistent context graph. Metadata registration does not mutate actual bytes or retain.",
     "failures": "World and all acquired operations remain allocated through process exit on success or caught failure; no acquired effects rolled back or forgotten.",
     "shutdown": "Completed pass and owner domains intentionally held to process exit; no native terminal retirement or teardown validation.",
-    "platform_frontier": "B319B0 still publishes ResourceLoadEventHost*. Concrete fixture adapter forwards to real XLive ordinal5030 and retained raw BECB20 with stable actual platform/profile. Arbitrary raw0109CF04 replacement timing through this old host interface remains unproved.",
+    "platform_frontier": "B319B0 still publishes ResourceLoadEventHost*. Concrete adapter forwards to real XLive ordinal5030 and retained source BECB20 using a borrowed zeroed fixture receiver. No platform constructor/profile is installed; online-null BECB20 returns before platform/input/profile reads. No platform construction, current-profile dispatch or arbitrary raw0109CF04 publication replacement timing is proved.",
     "cold_domains": "VFS type IDs, retry/postload and cold resolution callbacks remain explicitly unbound and unreached; no default-return provider is installed."
   },
   "limits": [
@@ -372,9 +374,29 @@
     "No terminal shutdown, drawing, gameplay or reset validation."
   ],
   "closure": {
-    "state": "awaiting immutable final archive after evidence commit",
+    "state": "complete_immutable_compiler_link_tool_runtime_closure",
     "report_excluded_to_avoid_self_hash": true,
     "freeze_command": "python local/verification/material_compiler_runtime/freeze.py *> local/verification/material_compiler_runtime_freeze.log",
-    "freeze_driver_log_outside_archive": "local/verification/material_compiler_runtime_freeze.log"
+    "freeze_driver_log_outside_archive": "local/verification/material_compiler_runtime_freeze.log",
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime_frozen_20260914\\manifest.json",
+    "sha256": "21c0fb557abfcf55fb068e7eed86bce85340ab2a563790b6ce3a9c0caf2c3b98",
+    "artifacts": 7720,
+    "total_bytes": 862425535,
+    "compiled_translation_units": 1318,
+    "actual_loaded_modules": 80,
+    "source_commit": "7da230dd8758d69c5547282c39e53df0c0aa761e",
+    "manifest_sha256": "21c0fb557abfcf55fb068e7eed86bce85340ab2a563790b6ce3a9c0caf2c3b98",
+    "recorded_read_path_occurrences": 229379,
+    "manifest_resource_id": 24,
+    "freeze_driver_log_sha256": "7b9ccc7e240955621f6dfc32d183b408c72b2831692597fd9668ae4b0c0c4c56",
+    "metadata_corrections_after_freeze": [
+      {
+        "was": "The frozen doc described actual platform storage and original profile words as preserved; initial report said stable actual platform/profile.",
+        "is": "The receiver is borrowed zeroed fixture storage with no platform constructor/profile installed; online-null BECB20 returns before platform/input/profile reads.",
+        "evidence": "Independent reviewer inspected World.platform_words and the existing BECB20 guard; no production or fixture defect was found.",
+        "frozen_inputs_changed": false
+      }
+    ],
+    "final_metadata_scope": "Only doc/report clarification and archive pins after frozen source commit; fixture, production source, binaries and archive remain unchanged."
   }
 }
