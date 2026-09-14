@@ -181,3 +181,52 @@ None of this is reconstructed yet beyond the payload decoder. `part=0 fires=0 fl
 no part data loaded, not because the damage path is wrong. It stops being faithful the moment a
 model is loaded and the count stays at zero. **Gameplay validation of part damage is unsatisfied and
 stays unsatisfied until then.**
+
+## The loop closes: the gate IS `class+50h`, and `0082FE30` was the wrong reader
+
+`docs/MODEL_REACHES_UNIT.md` traced `BuildShapes`' shape records to their producer:
+
+```
+node+160h  =  unit[+354h][+50h]->vtable[8h]()
+```
+
+and `docs/UNIT_INSTANCE_LAYOUT.md` line 129 names `unit+354h` as the **non-owning class
+back-pointer**, `kUnitOffDescriptor`, written at `006FE5FC`. So the producer is
+
+```
+classDescriptor[+50h]->vtable[8h]()
+```
+
+**That is `class+50h`** - the field this document chased through five independent negatives and then
+declared a red herring. It is not a red herring. It is exactly the gate.
+
+What was wrong was the *reader*, not the field. `0082FE30` reads `class+50h` thirteen times and is
+**dead code**: its vtable slot `+20h` is never invoked, and the one constructor that would put a
+decoded mesh into `shape+24h` (`0070F6B0`, defined and named in this session) is unreferenced
+anywhere in the image. The live reader is the `vtable[8h]()` call above, reached through
+`BSP_UnitPartInstance_Construct` -> `BuildShapes`, a chain whose four functions are already
+reconstructed in this repo.
+
+So the five negatives stand and now mean something sharper than they did:
+
+* `class+50h` is null-initialised at `0087C6A3` and **no writer has been found**, across `MOV`
+  register and immediate in both encodings, `LEA`, and `MOVSS`, over the vehicle-class region, the
+  ten scene creators, `BSP_SceneFile_Read` and the `MLandVehicle` override's region.
+* The forms never excluded remain: a `memcpy`/`REP MOVSD` covering the field, a SIB-indexed write, a
+  write on an object later aliased to the class, and a dispatch whose descriptor arrives as a
+  function parameter.
+
+**If `class+50h` is genuinely never written in this build, that is the answer to why `part` has
+always been zero** - not a missing host path, but a native field that stays null, so the producer
+returns nothing and `BuildShapes` has no records to copy. That would make `part=0` a faithful zero
+of a much stronger kind than this document originally claimed, and it is worth proving rather than
+inferring.
+
+The second vector `node+16Ch`..`+174h` is **never filled** on any path: the constructor zeroes it and
+the only other write in the part-collision region is a teardown loop that frees each element's `+4h`
+and re-zeroes the triple.
+
+Next, and narrow: the `memcpy`/`REP MOVSD` scan is the one byte-reachable form left, and it needs a
+different shape because the destination would be a `LEA` of a lower offset. Then the object at
+`class+50h` itself - what its `vtable[8h]` returns - which decides whether the records it produces
+carry a `GeomMesh` at all.
