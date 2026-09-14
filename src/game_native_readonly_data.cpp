@@ -1,4 +1,5 @@
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/game_native_data_bootstrap.hpp"
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -49,30 +50,31 @@ bool matches_image(const BYTE* bytes) {
 
 GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
     const GameNativeDataSpan* spans, std::size_t count) {
+    initialize(path,spans,count,nullptr);
+}
+
+GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
+    const GameNativeDataSpan* spans, std::size_t count,
+    GameNativeDataReservation&& reservation) {
+    initialize(path,spans,count,&reservation);
+}
+
+void GameNativeReadOnlyData::initialize(const std::filesystem::path& path,
+    const GameNativeDataSpan* spans, std::size_t count,
+    GameNativeDataReservation* reservation) {
     // Reserve requested bands before the large file buffer. Unrequested parts
     // of the original section may already contain unrelated process allocations.
-    if (!spans || count == 0)
-        throw std::invalid_argument("Native data requires explicit table or literal spans");
+    const auto mask=detail::native_data_band_mask(spans,count);
     constexpr std::uintptr_t reservation_begin = 0x00ce0000;
     constexpr std::uintptr_t band_size = 0x10000;
     constexpr std::uintptr_t section_end = begin_address + byte_count;
-    std::array<bool,19> selected{};
-    for (std::size_t i=0;i<count;++i) {
-        const auto address=spans[i].address;
-        const auto size=spans[i].bytes;
-        if (!size || address<begin_address || address-begin_address>=byte_count ||
-            size>byte_count-(address-begin_address))
-            throw std::out_of_range("Required native data is outside the read-only section");
-        const auto first=(address-reservation_begin)/band_size;
-        const auto last=(address+size-1-reservation_begin)/band_size;
-        for (auto band=first;band<=last;++band) selected[band]=true;
-    }
     SYSTEM_INFO system{};
     GetSystemInfo(&system);
     if (system.dwAllocationGranularity!=band_size || system.dwPageSize!=0x1000)
         throw std::runtime_error("Unsupported native-data allocation granularity");
     try {
-        for (std::size_t i=0;i<selected.size();++i) if (selected[i]) {
+        if (reservation) reservation->transfer_to(reservations_,mask);
+        for (std::size_t i=0;i<reservations_.size();++i) if (mask & (1u<<i) && !reservation) {
             void* const requested=reinterpret_cast<void*>(reservation_begin+i*band_size);
             reservations_[i]=VirtualAlloc(requested,band_size,MEM_RESERVE,PAGE_NOACCESS);
             if (reservations_[i]!=requested)
@@ -86,7 +88,7 @@ GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path
         if (!file.read(reinterpret_cast<char*>(bytes.data()),image_bytes) || !matches_image(bytes.data()))
             throw std::invalid_argument("Native data executable SHA-256 does not match the supported image");
 
-        for (std::size_t i=0;i<selected.size();++i) if (selected[i]) {
+        for (std::size_t i=0;i<reservations_.size();++i) if (mask & (1u<<i)) {
             const auto band_begin=reservation_begin+i*band_size;
             const auto first=std::max(band_begin,begin_address);
             const auto last=std::min(band_begin+band_size,section_end);
@@ -99,10 +101,12 @@ GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path
             if (!VirtualProtect(data,commit_end-first,PAGE_READONLY,&previous))
                 throw std::runtime_error("Cannot protect original read-only data pages");
         }
+        if (reservation) reservation->finish(true);
     } catch (...) {
-        for (auto& reservation:reservations_) if (reservation) {
-            VirtualFree(reservation,0,MEM_RELEASE);reservation=nullptr;
+        for (auto& owned_band:reservations_) if (owned_band) {
+            VirtualFree(owned_band,0,MEM_RELEASE);owned_band=nullptr;
         }
+        if (reservation) reservation->finish(false);
         throw;
     }
 }
