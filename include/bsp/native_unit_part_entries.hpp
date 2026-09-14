@@ -31,6 +31,11 @@ struct NativeUnitPartSelectedSetCallbacks {
     // Entry is the current native token read only AFTER the real decrement
     // reaches zero. It is not cast to process-callable code by the source.
     void (*dispatch_zero)(void*, std::uint32_t entry, void* captured_owner);
+    // Optional pure, nonthrowing slot lookup for a source-owned native profile.
+    // Called only at zero, after capturing the CURRENT profile. Null preserves
+    // the existing process-resident vtable domain. This resolves data, never
+    // executes an original numeric address or changes the reference/owner.
+    std::uint32_t (*read_slot_zero)(void*, std::uint32_t captured_profile) noexcept = nullptr;
 };
 // Complete00711080..007110A8. ECX=actual selected-set pointer cell, RET. Null
 // is inert; otherwise capture owner, InterlockedDecrement(owner+4), dispatch
