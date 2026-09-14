@@ -1,0 +1,372 @@
+{
+  "packet": "orch6_unit_part_destruction_ao",
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00712c80",
+        "end": "00712f18",
+        "size": 665,
+        "sha256": "1b099d5eb4805de5604338727a02d3465295d3ccfd51ff389f0e0ee111c78741",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "00712d7c",
+        "stored_body_complete": false
+      },
+      {
+        "address": "007112e0",
+        "end": "0071136b",
+        "size": 140,
+        "sha256": "5f1362f46dd5cc92acfa12562b29e5a03a884e37d48a5f28ada1e8304b2e77b0",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "00711357",
+        "stored_body_complete": false
+      },
+      {
+        "address": "00712fd0",
+        "end": "00712fed",
+        "size": 30,
+        "sha256": "58a98912265273288f26162b0cb4ba783db40614ff7a08a7936c2f77f85698d1",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "00712fed",
+        "stored_body_complete": true
+      },
+      {
+        "address": "007102a0",
+        "end": "007102fe",
+        "size": 95,
+        "sha256": "9f5fc7b23763f9cf111e4d7c531f8e60ea31ee2eff0779b0ed77115158316aba",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "007102fe",
+        "stored_body_complete": true
+      },
+      {
+        "address": "00710730",
+        "end": "0071077f",
+        "size": 80,
+        "sha256": "3215f4dd0fd326ec00f53a7895b16b651e2599516e44fd503a9c212897b8e1a9",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "0071077f",
+        "stored_body_complete": true
+      },
+      {
+        "address": "00711120",
+        "end": "00711136",
+        "size": 23,
+        "sha256": "30ae7e1e6f7c87428a4c18f60bd1ced1d0cc9815ea5ff6da68c47b822db6a1c9",
+        "live_disk_equal": true,
+        "kind": "complete_physical_function",
+        "stored_ghidra_end": "00711131",
+        "stored_body_complete": false
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00712c80",
+      "address": "00712cc2",
+      "native": "0042e630"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712cc9",
+      "native": "0098a500"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712cf6",
+      "native": "004bca80"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712d41",
+      "native": "007112e0"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712d47",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712d63",
+      "native": "00710420"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712d70",
+      "native": "00710420"
+    },
+    {
+      "function": "00712c80",
+      "address": "00712d78",
+      "native": "00bf6989"
+    },
+    {
+      "function": "007112e0",
+      "address": "00711320",
+      "native": "00867b10"
+    },
+    {
+      "function": "007112e0",
+      "address": "0071134b",
+      "native": "00710730"
+    },
+    {
+      "function": "007112e0",
+      "address": "00711353",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00712fd0",
+      "address": "00712fd3",
+      "native": "00712c80"
+    },
+    {
+      "function": "00712fd0",
+      "address": "00712fe0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "007102a0",
+      "address": "007102c0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "007102a0",
+      "address": "007102ec",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00710730",
+      "address": "0071073e",
+      "native": "007102a0"
+    },
+    {
+      "function": "00711120",
+      "address": "00711125",
+      "native": "00710730"
+    },
+    {
+      "function": "00711120",
+      "address": "0071112d",
+      "native": "00bf6989"
+    }
+  ],
+  "unowned_tail_calls": [
+    {
+      "physical_function": "00712c80",
+      "site": "00712da4",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712dbd",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712df3",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712e0c",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712e43",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712e5c",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712e88",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712ea9",
+      "target": "00bf65ac",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    },
+    {
+      "physical_function": "00712c80",
+      "site": "00712eff",
+      "target": "00bf6989",
+      "evidence": "Live/disk bytes and complete linear native control flow checked; stored Ghidra body excludes this decoded tail."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00712c80",
+      "site": "00712d09",
+      "operand": "dword ptr [0xce2220]"
+    },
+    {
+      "function": "00712c80",
+      "site": "00712d19",
+      "operand": "eax"
+    },
+    {
+      "function": "00712c80",
+      "site": "00712ed6",
+      "operand": "dword ptr [0xce2220]"
+    },
+    {
+      "function": "00712c80",
+      "site": "00712ee6",
+      "operand": "eax"
+    }
+  ],
+  "array_equivalence": [
+    {
+      "address": "007102a0",
+      "canonical": "00b1c500",
+      "size": 95,
+      "equal": true
+    },
+    {
+      "address": "00710730",
+      "canonical": "00b1c770",
+      "size": 80,
+      "equal": true
+    },
+    {
+      "address": "00711120",
+      "canonical": "00b1d1d0",
+      "size": 23,
+      "equal": true
+    }
+  ],
+  "worker_dispatches": 0,
+  "coverage": "Three complete physical destructor bodies and three reused canonical array specializations; compiled and fixture-tested, with three stored-body limits explicit.",
+  "limits": [
+    "Three stored Ghidra function bodies remain truncated despite decoded tails. Script execution is disabled; the attempted body-only extension was not applied.",
+    "Original FH3/fault delivery, selected-set terminal target, actual raw executable admission and gameplay remain unproved."
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "pairs": 6,
+      "paired_part_cases": 5,
+      "paired_array_cases": 1,
+      "source_nested_unwind_cases": 1,
+      "unreached_providers": 0
+    },
+    "comparisons": [
+      {
+        "case": 0,
+        "words": 23025,
+        "sha256": "19b9cd52899e34ba5faf0eac63a7baa9a67de54cfd756257ae1b534de3be8182",
+        "equal": true
+      },
+      {
+        "case": 1,
+        "words": 23172,
+        "sha256": "f37f9abd2cde56f7b8de22e8dff0a81d2b4bb692161970cceb16a2700722d5d3",
+        "equal": true
+      },
+      {
+        "case": 2,
+        "words": 23139,
+        "sha256": "bc880d7760f8bb0538d0710dcb16afa9ec4c70864410726ed9f6beae31ff1d66",
+        "equal": true
+      },
+      {
+        "case": 3,
+        "words": 23177,
+        "sha256": "156fa82c2c2893e3ef184480301cb7d2ef0a5d0c769bcc6fae116d6338762c12",
+        "equal": true
+      },
+      {
+        "case": 4,
+        "words": 23139,
+        "sha256": "7ecea9208af04cbf467048c73f714ab9f8bb3eba81bad611b7c5afa389137900",
+        "equal": true
+      },
+      {
+        "case": 5,
+        "words": 22997,
+        "sha256": "157e5f1d2d9aeb738ebc362d7163076f92570b22bf22f4a54a9b5653eec13744",
+        "equal": true
+      }
+    ],
+    "results_sha256": "60ca4da2d36f21a5940b93cd4336ec779f31c1672ccaadc1ea58668e8ffdb340",
+    "source_unwind_sha256": "3ec61f7246c9faa47a1ee15662d6afb867484b1289fb8a86fccf813c17b40c38",
+    "repeat_results_equal": true,
+    "native_seed_matches": 8,
+    "owned_direct_call_rows": 18,
+    "unowned_tail_call_rows": 9,
+    "indirect_sites": 4,
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "free_observer": "An isolated probe IAT observer records actual CRT free order and full allocation preimages before forwarding every free. Raw part/index/entry/effect images and ownership are compared; freed allocations are never read afterward.",
+    "dependencies": "Canonical source spatial detachment, selected-set release, listener publication/renderer, effect stop and real CRT/OS lock services are shared boundaries. The fixture selected-set terminal is explicitly fixture-owned; the game terminal target remains unproved.",
+    "unwind": "One source exception during child deactivation exercises nested entry-array cleanup and all seven part member unwind states; the deleting wrapper retains the part. Original FH3 handlers are guarded and unreached, so this does not prove native exception delivery.",
+    "source_abi": "Complete physical body behavior over actual storage and borrowed services; EDX adds access, not a drop-in binary replacement.",
+    "gameplay": "Not established; populated raw unit-part executable admission remains open.",
+    "compiled_review": "Reviewed object scalar wrapper call-before-bit0 and original-address RET4; owner/flag detach guard; selected root reread and second clear; live signed counts and backing reloads; captured effect+9 store then current slot clear; explicit resize followed by array destructor; member cleanup order and catch dispatch states6/5/0; entry member-live guard and seven descending cleanup cases."
+  },
+  "entries": [
+    {
+      "address": "00712c80",
+      "ghidra_name": "BSP_UnitPartInstance_Destroy",
+      "name": "destroy_native_unit_part_00712c80",
+      "source": "src/native_unit_part_destruction.cpp",
+      "evidence": "Complete physical 665-byte body through 712F18. ECX part, RET; source EDX adds access. Owner164/flag184 guarded canonical spatial detach; clear F8; clear matching actual controlled listener; atomic selected release and second unconditional clear160; live entry count/backing with captured entry destruction/free; double resize0/free; lists194/188/178, groups168, republished selected160 and collision base cleanup. Retain part allocation and native stale fields. Seven member unwind states recovered. Stored Ghidra body ends712D7C; nine tail calls explicitly lack stored function ownership."
+    },
+    {
+      "address": "007112e0",
+      "ghidra_name": "BSP_UnitPartEntry_Destroy",
+      "name": "destroy_native_unit_part_entry_007112e0",
+      "source": "src/native_unit_part_destruction.cpp",
+      "evidence": "Complete physical 140-byte body through71136B. ECX10h entry, RET; source EDX adds access. Live signed count/backing; test then reread effect; actual canonical stop, captured effect+9=1, reload backing and clear current slot; destroy array+4, retain entry/effect allocations and dangling data/capacity. Source exception during loop runs sole array member unwind. Stored body ends711357."
+    },
+    {
+      "address": "00712fd0",
+      "ghidra_name": "BSP_UnitPartInstance_DeletingDtor",
+      "name": "delete_native_unit_part_00712fd0",
+      "source": "src/native_unit_part_destruction.cpp",
+      "evidence": "Complete30-byte ECX part, stacked flags, EAX original pointer, RET4; source EDX adds access. Complete destructor precedes flag bit0 test and optional actual CRT free. Escaping destructor exception leaves allocation to caller."
+    },
+    {
+      "address": "007102a0",
+      "ghidra_name": "BSP_UnitPartEffectPointers_Reserve",
+      "name": "reserve_native_instance_entry_pointers_00b1c500",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "evidence": "Complete95-byte pointer-array specialization has equal normalized instruction graph to canonical B1C500. ECX header, stacked capacity, RET4. Signed min1/grow-only; allocate/copy livecount/freeold before publishing replacement/capacity. Canonical valid-storage/representable-allocation contract."
+    },
+    {
+      "address": "00710730",
+      "ghidra_name": "BSP_UnitPartEffectPointers_Resize",
+      "name": "resize_native_instance_entry_pointers_00b1c770",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "evidence": "Complete80-byte pointer-array specialization has equal normalized instruction graph to canonical B1C770. ECX header, stacked count, RET4. Reserve on growth, zero newly exposed slots, decrement current count on shrink, final count store. Canonical valid-storage contract."
+    },
+    {
+      "address": "00711120",
+      "ghidra_name": "BSP_UnitPartEffectPointers_Destroy",
+      "name": "destroy_native_instance_entry_pointers_00b1d1d0",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "evidence": "Complete physical23-byte specialization through711136 equals canonical B1D1D0. ECX header RET. Resize0 then free current data; retain dangling data/capacity. Stored body ends711131."
+    }
+  ]
+}
