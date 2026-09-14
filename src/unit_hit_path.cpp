@@ -51,6 +51,8 @@ float health_delta_to_damage_00879810(float delta) noexcept
     return kUnitHitNegativeZero - delta;
 }
 
+// Partial value projection only; see native_unit_health_parts.cpp for the
+// complete caller, actual borrowed fields, signed range rule and providers.
 UnitInitialCondition unit_initial_condition_0087bcc0(float class_hit_points,
                                                      float class_armour,
                                                      std::size_t part_vector_begin,
@@ -69,6 +71,8 @@ UnitInitialCondition unit_initial_condition_0087bcc0(float class_hit_points,
     return condition;
 }
 
+// Partial value choice; detail is part-set virtual+8 argument two, not a
+// parameter to unit virtual+190. Does not reproduce either x87 load/store.
 float unit_part_detail_0087bcc0(bool is_kind_1b) noexcept
 {
     return is_kind_1b ? kUnitPartDetailKind1B : 1.0f;
