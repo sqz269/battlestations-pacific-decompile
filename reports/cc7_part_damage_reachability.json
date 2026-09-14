@@ -1,0 +1,408 @@
+{
+  "packet": "cc7_part_damage_reachability",
+  "owner": "agent/cc7-part-damage-reach",
+  "date": "2026-09-14",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only; no renames, comments, prototypes, function creation or saves were made from this packet",
+  "docs": [
+    "docs/PART_DAMAGE_REACHABILITY.md"
+  ],
+  "sources": [
+    "include/bsp/part_damage_reachability.hpp",
+    "src/part_damage_reachability.cpp"
+  ],
+  "subject": "Close docs/HIT_HULL_SEGMENT.md's open item by finding the writer of the geometry element's +4h and +8h, establish what 0092D1F0 does with a real index and how many hull segments a unit has, read the fire and flood arms to their end, and state the reachability verdict for the rebuild's part=0 fires=0 floods=0.",
+  "reuses": [
+    "docs/SHIP_HIT_RECORD.md for rules R1..R12 and the 0092D1F0 call sites; cited, not restated",
+    "docs/HIT_HULL_SEGMENT.md for the 00724510 / 00723E90 / 00723D60 chain, the record field table and the part-hit array; cited, not restated",
+    "docs/HIT_NARROWPHASE.md for the three hard-coded shapes writing 0Ah and -1",
+    "docs/UNIT_PARTS.md for unit+1018h being the motion controller and the controller+310h / +34Ch layout",
+    "docs/UNIT_FIRE_AND_REPAIR.md for the repair task at unit+A20h and the five tick steps",
+    "docs/GAME_RESOURCE_PARSER_REGISTRATION.md for the GeomMesh parser singleton row"
+  ],
+  "geometry_element_producer": [
+    {
+      "address": "00727ad7",
+      "native": "00727310",
+      "function": "00727a90",
+      "note": "the GeomMesh parse slot calls the payload parser with ECX = the new 0x50 object and the node handle pushed at 00727acc; RET 4 at 00727aed"
+    },
+    {
+      "address": "00727aa9",
+      "native": "00bf681b",
+      "function": "00727a90",
+      "note": "operator new(0x50), the GeomMesh resource object"
+    },
+    {
+      "address": "00727ac1",
+      "native": "007268d0",
+      "function": "00727a90",
+      "note": "constructor; vtable 00CFDBD8, zeroes the element, vertex and triangle vectors"
+    },
+    {
+      "address": "00727336",
+      "native": "00be9b20",
+      "function": "00727310",
+      "note": "payload size probe; under 4 bytes the parser skips and detaches"
+    },
+    {
+      "address": "00727342",
+      "native": "00be9c40",
+      "function": "00727310",
+      "note": "BSP_StructuredNode_SkipAndDetach on the too-small payload"
+    },
+    {
+      "address": "0072735c",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 elementCount"
+    },
+    {
+      "address": "00727370",
+      "native": "00726d80",
+      "function": "00727310",
+      "note": "element-vector reserve, ECX = mesh+8h"
+    },
+    {
+      "address": "0072738a",
+      "native": "00bea010",
+      "function": "00727310",
+      "note": "BSP_StructuredNodeHandle_ReadString, the element's authored name"
+    },
+    {
+      "address": "007273a3",
+      "native": "007149d0",
+      "function": "00727310",
+      "note": "name -> kind index over the 00E08138 table; ECX falls back to 00E19BF4 at 0072739e when the string is empty"
+    },
+    {
+      "address": "007273ac",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 index; its result is element+8h"
+    },
+    {
+      "address": "007273fa",
+      "native": "00727260",
+      "function": "00727310",
+      "note": "push_back of the assembled element; stride 2Ch from the 0x2E8BA2E9 / SAR 3 magic at 00727277"
+    },
+    {
+      "address": "00727471",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 vertexCount"
+    },
+    {
+      "address": "00727482",
+      "native": "00725b40",
+      "function": "00727310",
+      "note": "vertex-vector reserve, ECX = mesh+18h"
+    },
+    {
+      "address": "00727492",
+      "native": "00be99d0",
+      "function": "00727310",
+      "note": "one vertex float; three per vertex at 00727492 / 0072749b / 007274a6"
+    },
+    {
+      "address": "007274b8",
+      "native": "004215d0",
+      "function": "00727310",
+      "note": "vertex push_back"
+    },
+    {
+      "address": "007274c4",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 count of the undecoded u16-pair section"
+    },
+    {
+      "address": "007274d7",
+      "native": "00be9a80",
+      "function": "00727310",
+      "note": "u16 read; two per iteration, section not decoded"
+    },
+    {
+      "address": "007274ef",
+      "native": "00be9a00",
+      "function": "00727310",
+      "note": "u32 triangleCount"
+    },
+    {
+      "address": "00727543",
+      "native": "00725aa0",
+      "function": "00727310",
+      "note": "per-element triangle-index reserve of triangleCount/elementCount; ECX = element[i]+10h, so the list begin is element+14h"
+    },
+    {
+      "address": "00727563",
+      "native": "007262a0",
+      "function": "00727310",
+      "note": "triangle-vector reserve, ECX = mesh+28h"
+    }
+  ],
+  "element_field_writes": [
+    {
+      "address": "007273bf",
+      "field": "element+0h",
+      "instruction": "MOV dword ptr [ESP + 0x4c],0xcfdbc8",
+      "note": "the element vtable"
+    },
+    {
+      "address": "007273db",
+      "field": "element+4h",
+      "instruction": "MOV dword ptr [ESP + 0x50],EDI",
+      "note": "the kind; EDI is 007149D0's result remapped 7 -> 9 at 007273b1/007273b6. This closes docs/HIT_HULL_SEGMENT.md's open item 1."
+    },
+    {
+      "address": "007273df",
+      "field": "element+8h",
+      "instruction": "MOV dword ptr [ESP + 0x54],EAX",
+      "note": "the segment index; EAX is 00BE9A00(node), a raw authored u32. This closes docs/HIT_HULL_SEGMENT.md's open item 2."
+    },
+    {
+      "address": "007273e3",
+      "field": "element+0Ch",
+      "instruction": "MOV dword ptr [ESP + 0x58],ECX",
+      "note": "the owning mesh; ECX = [ESP+0x10] = ESP0-0x74, the slot 00727332 filled with the incoming this"
+    }
+  ],
+  "mesh_category_table": {
+    "address": "00e08138",
+    "terminator": "00e08174",
+    "compare": "00438e10",
+    "entries": [
+      {"index": 0, "name": "lwing", "address": "00ce4454"},
+      {"index": 1, "name": "rwing", "address": "00ce444c"},
+      {"index": 2, "name": "fuselage", "address": "00ce4440"},
+      {"index": 3, "name": "engine", "address": "00ce4438"},
+      {"index": 4, "name": "underwater", "address": "00ce442c"},
+      {"index": 5, "name": "engineroom", "address": "00ce4420"},
+      {"index": 6, "name": "fueltank", "address": "00ce4414"},
+      {"index": 7, "name": "steering", "address": "00ce4408"},
+      {"index": 8, "name": "magazine", "address": "00ce43fc"},
+      {"index": 9, "name": "body", "address": "00ce43f4"},
+      {"index": 10, "name": "none", "address": "00ce43ec"},
+      {"index": 11, "name": "runway", "address": "00ce43e4"},
+      {"index": 12, "name": "hangar", "address": "00ce43dc"},
+      {"index": 13, "name": "fizika", "address": "00ce43d4"},
+      {"index": 14, "name": "bullet", "address": "00ce43cc"}
+    ]
+  },
+  "lua_descriptor_corroboration": [
+    {
+      "address": "0087cf57",
+      "native": "00bf7420",
+      "function": "0087ca80",
+      "note": "the Lua key \"Index\" (00CE55B4) to integer; stored at 0087cf60 into descriptor+8h"
+    },
+    {
+      "address": "0087cf7b",
+      "native": "007149d0",
+      "function": "0087ca80",
+      "note": "the Lua key \"MshCategory\" (00D0E190) to a kind; stored at 0087cf8e into descriptor+4h. Descriptor stride 30h from 0087ceae ADD ESI,-0x30."
+    }
+  ],
+  "hull_segment_count": [
+    {
+      "address": "00937ff9",
+      "native": "004a8f10",
+      "function": "00937c90",
+      "note": "resize the controller's per-part health vector to 0x14 with 0.0f; ECX = controller+30Ch (00937fef), so begin is +310h. A unit has exactly 20 hull segments."
+    },
+    {
+      "address": "00938054",
+      "native": "004f9a80",
+      "function": "00937c90",
+      "note": "format \"fizika_%02d\" (00CEB90C) with the outer counter [ESP+0x20]"
+    },
+    {
+      "address": "0093812f",
+      "native": "00b6f9a0",
+      "function": "00937c90",
+      "note": "the model node lookup by that name through [[controller+1Ch]+4A4h]; an empty result leaves controller+34Ch+i at -1 (0093813a) and a non-empty one overwrites it with the running counter (009381b5)"
+    }
+  ],
+  "hull_segment_count_evidence": [
+    {
+      "address": "00938d88",
+      "instruction": "CMP EAX,0x14",
+      "note": "with 00938d8f JL 0x00938042, the fizika_%02d loop runs indices 0..19"
+    },
+    {
+      "address": "0093840c",
+      "instruction": "CMP ESI,0x14",
+      "note": "the health init loop, health[i] = [[controller+1Ch]+538h]+48h / (float)(number of fizika_NN nodes found, converted at 009383a9)"
+    }
+  ],
+  "fire_and_flood": [
+    {
+      "address": "0080fa58",
+      "native": "0075b430",
+      "function": "0080fa50",
+      "note": "build message 9Eh (pushed at 0080fa51); msg+1Ch = value, msg+20h = flag, msg+24h = selector, vtable 00D0334C; RET 0Ch at 0080fa8f"
+    },
+    {
+      "address": "00827372",
+      "native": "0080fa50",
+      "function": "00826f10",
+      "note": "rule R7b, the flooding arm, selector 1"
+    },
+    {
+      "address": "0082740f",
+      "native": "0080fa50",
+      "function": "00826f10",
+      "note": "rule R7c, the fire arm, selector 0"
+    },
+    {
+      "address": "00827d9a",
+      "native": "0080fa50",
+      "function": "00827b90",
+      "note": "the third and only other call site; ghidra xrefs returned exactly three rows, well under the 25-row cap"
+    },
+    {
+      "address": "0082205c",
+      "native": "0093a4f0",
+      "function": "00821e80",
+      "note": "message 9Eh, selector 1 (water), flag set: adds the value to task+34h and mirrors it into task+40h"
+    },
+    {
+      "address": "00822076",
+      "native": "00939fa0",
+      "function": "00821e80",
+      "note": "message 9Eh, selector 1, flag clear: task+34h = value"
+    },
+    {
+      "address": "008220a3",
+      "native": "0093a470",
+      "function": "00821e80",
+      "note": "message 9Eh, selector 0 (fire), flag set: adds the value to task+38h and task+3Ch"
+    },
+    {
+      "address": "008220bd",
+      "native": "00939f90",
+      "function": "00821e80",
+      "note": "message 9Eh, selector 0, flag clear: task+38h = value"
+    },
+    {
+      "address": "0093a484",
+      "native": "00983780",
+      "function": "0093a470",
+      "note": "the fire notifier, called unconditionally; body contract: unread, reaches 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe"
+    },
+    {
+      "address": "0093a513",
+      "native": "009832f0",
+      "function": "0093a4f0",
+      "note": "the flooding notifier, called only when the value is above 0.0f (00D7A218 at 0093a4f6); body contract: unread"
+    },
+    {
+      "address": "0088e4b5",
+      "native": "0075b430",
+      "function": "0088e320",
+      "note": "BSP_LuaBinding_SetFireDamage builds message 9Eh inline; msg+24h = EBP at 0088e4e9 and EBP's only write in the function is 0088e343 XOR EBP,EBP, so selector 0 is fire"
+    },
+    {
+      "address": "0088e4ff",
+      "native": "0077c2a0",
+      "function": "0088e320",
+      "note": "routes that message with level 7"
+    }
+  ],
+  "message_dispatch": [
+    {
+      "address": "0082203d",
+      "function": "00821e80",
+      "note": "the message 9Eh arm. 0x9E-0x4B = 0x53; the byte at 00822453 is 0x17; dword 23 of the table at 00822394, i.e. 008223f0, is 0082203d. Reads msg+24h (selector) and msg+20h (flag) and passes msg+1Ch with ECX = unit+A20h."
+    }
+  ],
+  "contract_boundary": [
+    {
+      "address": "0087be58",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "note": "the part-set argument pushed at 0087be54 comes from EDI->vtable[8](unit->vtable[190h](float)) at 0087be4b / 0087be52, both contract: unread. Model and scene territory; not leased or reconstructed by this packet."
+    },
+    {
+      "address": "00713604",
+      "field": "node+160h",
+      "instruction": "MOV dword ptr [ESI + 0x160],EAX",
+      "function": "007135c0",
+      "note": "EAX = [ESP+0x30] = ESP0+8, the constructor's second stack argument; node+164h and node+4Ch take argument 1, the unit. 00712440 reads the {geometry*, transform*} pairs from [node+160h]+40h..+44h."
+    }
+  ],
+  "runtime_evidence": {
+    "command": "bsp_game.exe --frames 3200 --press-start-frame 30 --menu-select USN02 --mission-frames 3000 --mission-frame-seconds 0.05 --log local/out/usn02.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"<install>\"",
+    "exit": 0,
+    "summary": "summary mission gunnery damage queued_hits=163 dispatched=163 hit_records=163 hull=163 part=0 fires=0 floods=0 attributions=163 deaths=2 kill_credits=2 total_damage=14871.6 first_hit=49.55 s",
+    "reading": "part, fires and floods share one cause. src/ship_hit_record.cpp:189 encloses rules R2..R10 - including the flooding arm at :248 and the fire arm at :256 - in `if (hit.hull_segment != kHitRecordNoHullSegment)`, faithfully reproducing 00826F62. src/game_hosts_gunnery.cpp:1762 sets hit.hull_segment = kDirectHitHullSegment and :1772 sets view.segment_kind = 0x0A because the host models the three simple shapes. hull=163 and total_damage come from R12 apply_base_hit_record (008777D0) at src/game_hosts_gunnery.cpp:1718, which is outside the gate.",
+    "weapon_data": "The zeros are not a data problem. The log gives unit=Kortenaer type_id=265; VehicleClass[265]'s gun device ids are 54, 224, 228, 299, 342; DeviceClass[299] is the LIGHTARTILLERYFLAK that fired 96 of the shots with Bullet[1].Bullet = 30; gamemode.lua sets GameMode = 0 so the autoload selects ArcadeTable; ArcadeTable[30] \"Kuma 5.5'' Shell\" carries WaterDamage 1, FireChance 10, FireDamage 5. Those would flood on every hit and roll for fire, if R1 let the arm run."
+  },
+  "corrections": [
+    {
+      "subject": "docs/HIT_HULL_SEGMENT.md, element+4h and element+8h: \"producer-read, writer unread\"",
+      "was": "The loader that writes element+4h and element+8h was not found.",
+      "is": "00727310 writes both, at 007273db and 007273df. element+4h is 007149D0(name) over the 00E08138 table with a 7 -> 9 remap; element+8h is BSP_StructuredNode_ReadU32.",
+      "evidence": "The listing of 00727310 plus the GeomMesh chunks in models/ships/us/Farragut_1934.MMOD at file offsets 0x1587E3 and 0xEEB3F7."
+    },
+    {
+      "subject": "docs/UNIT_FIRE_AND_REPAIR.md, layout rows +2Ch and +30h",
+      "was": "fire damage per second | message 9Eh selector 0, handler unread; water damage per second | message 9Eh selector 1, handler unread",
+      "is": "The message 9Eh handler 0082203D writes only the seconds fields (+34h, +38h) and their companions (+40h, +3Ch). It never writes +2Ch or +30h, so those two per-second fields have no known writer.",
+      "evidence": "0082203D and the four setters 0093A470, 0093A4F0, 00939F90, 00939FA0, each of which has exactly one call site."
+    },
+    {
+      "subject": "docs/UNIT_FIRE_AND_REPAIR.md, which timer is fire and which is water (flagged provisional there)",
+      "was": "+34h fire seconds remaining, +38h water seconds remaining; section 4 \"Fire damage, 0093C120\", section 5 \"Water damage, 0093C210\"",
+      "is": "Selector 0 is fire and reaches +38h / +30h / +3Ch, stepped by 0093C210; selector 1 is water and reaches +34h / +2Ch / +40h, stepped by 0093C120. This confirms the cc2_settings_tail ledger renames (0093C120 = BSP_RepairTask_ApplyWaterDamage, 0093C210 = BSP_RepairTask_ApplyFireDamage) and leaves docs/UNIT_FIRE_AND_REPAIR.md stale; that doc belongs to a merged packet and was not edited.",
+      "evidence": "0088E320 BSP_LuaBinding_SetFireDamage stores msg+24h = EBP at 0088e4e9 and EBP's only write in the whole function is 0088e343 XOR EBP,EBP. The FPU order at 0093a4b7..0093a4c3 pairs (+34h,+2Ch) and (+38h,+30h)."
+    }
+  ],
+  "negative_results": [
+    "docs/HIT_HULL_SEGMENT.md's byte-scan negative stands: the kind code is never an immediate anywhere in the image. It always arrives as a table index from 00E08138. The producer was found through the resource-parser registration table, not through a byte scan.",
+    "No writer of task+2Ch or task+30h, the fire and water per-second rates, is known after the 9Eh handler is excluded.",
+    "element+24h: this packet finds the parser zeroes it and the element teardown frees it through 00BF6989 at 00727421, which makes it a heap pointer; docs/HIT_HULL_SEGMENT.md reads it as a scalar input to 0085BF90. 00723B70 and 0085BF90 were not read here, so this is unresolved rather than corrected.",
+    "Whether the Lua part descriptor's Index and the geometry element's +8h share one index space is not established."
+  ],
+  "coverage": [
+    {"routine": "00727310", "coverage": "partial: 00727580 to the end (the triangle decode), the u16-pair section at 007274C4, and element fields +20h/+24h/+28h were not decoded"},
+    {"routine": "007149d0", "coverage": "complete"},
+    {"routine": "00727a90", "coverage": "complete"},
+    {"routine": "007268d0", "coverage": "complete"},
+    {"routine": "00727260", "coverage": "complete for the stride and the vector offsets; the growth path was not followed"},
+    {"routine": "0082203d", "coverage": "complete for the arm (00822040-008220c2)"},
+    {"routine": "0080fa50", "coverage": "complete"},
+    {"routine": "0093a470", "coverage": "complete"},
+    {"routine": "0093a4f0", "coverage": "complete"},
+    {"routine": "00939f90", "coverage": "complete"},
+    {"routine": "00939fa0", "coverage": "complete"},
+    {"routine": "00937c90", "coverage": "partial: only the health-vector sizing, the fizika_%02d loop bounds and the health init loop were read"},
+    {"routine": "0087ca80", "coverage": "partial: only the MshCategory and Index fields"},
+    {"routine": "0088e320", "coverage": "partial: only the message build and the EBP provenance"},
+    {"routine": "00983780", "coverage": "contract: unread"},
+    {"routine": "009832f0", "coverage": "contract: unread"}
+  ],
+  "installation_files": [
+    {"path": "models/ships/us/Farragut_1934.MMOD", "mtime": "2024-07-13 11:24:44 -0700", "size": 18201279},
+    {"path": "models/ships/us/North_Carolina.mmod", "mtime": "2024-07-13 11:24:54 -0700", "size": 29328089},
+    {"path": "scripts/datatables/autoload/vehicleclasses.lua", "mtime": "2026-05-09 21:52:13 -0700", "size": 3349364},
+    {"path": "scripts/datatables/classtables/arcade/bulletclasses.lua", "mtime": "2026-05-09 23:04:46 -0700", "size": 75048},
+    {"path": "scripts/datatables/classtables/realistic/bulletclasses.lua", "mtime": "2025-06-02 10:26:31 -0700", "size": 64887},
+    {"path": "scripts/datatables/classtables/arcade/deviceclasses.lua", "mtime": "read for device ids 54/224/228/299/342", "size": 0},
+    {"path": "gamemode.lua", "mtime": "2024-07-13 11:27:48 -0700", "size": 229}
+  ],
+  "installation_note": "This installation is modded (BSPRM/AlterBSP); it is not retail. Nothing in it was modified - every access above was a read.",
+  "build": "scripts/build.ps1 Release Win32, clean, ctest reconstructed_math 1/1 passed. No test was added.",
+  "lease": {
+    "packet": "cc7_part_damage_reachability",
+    "addresses": ["0092d1f0", "00723d60", "00727310", "007149d0", "00727a90", "00726d80", "00727260", "0082203d"],
+    "files": [
+      "docs/PART_DAMAGE_REACHABILITY.md",
+      "reports/cc7_part_damage_reachability.json",
+      "include/bsp/part_damage_reachability.hpp",
+      "src/part_damage_reachability.cpp"
+    ]
+  }
+}
