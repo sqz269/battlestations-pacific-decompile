@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_shader_cache_parent_review",
+  "status": "unfinished_worker_source_reviewed_installed_cache_differential_passed_registration_pending",
+  "root_commit": "b8776857adfecbc0435fa8ba2c9854a63f182315",
+  "worker_base": "ca2e83f33817f9f6430a93fbf1f6a0e4bc89b0cc",
+  "worker_source_uncommitted": true,
+  "production_source_modified": false,
+  "production_pins": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-effect-program-admission\\include\\bsp\\native_shader_binary_cache_load.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\include\\bsp\\native_shader_binary_cache_load.hpp",
+      "sha256": "5177bf8d5ef9fdc3467feaa24453bff9a89924f8e012a706471daec917d9a5aa",
+      "bytes": 3475,
+      "production": true
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-effect-program-admission\\include\\bsp\\native_shader_binary_cache_stream.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\include\\bsp\\native_shader_binary_cache_stream.hpp",
+      "sha256": "418de7a4a82b3f6f0a6d2642b34cb99b23733611e60a298cf5761511b0a48e21",
+      "bytes": 3498,
+      "production": true
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-effect-program-admission\\src\\native_shader_binary_cache_load.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\src\\native_shader_binary_cache_load.cpp",
+      "sha256": "86f12ebc0043a6046ba08ff5b1b75d0835c1e067ce93b94044163b0d0342a3a2",
+      "bytes": 9794,
+      "production": true
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-effect-program-admission\\src\\native_shader_binary_cache_stream.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\src\\native_shader_binary_cache_stream.cpp",
+      "sha256": "b370d140e8d1f587b258184c80e02a4513505aad76362cd957e6d5a1ee56a4a7",
+      "bytes": 6153,
+      "production": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b3a600",
+      "bytes": 96,
+      "sha256": "d09e49d9c7b19df7e33eb3ae51e46288f1ba7b81a255b627a1361a346988c6f3",
+      "original_abi": "No consumed caller argument; allocates10h then publishes global. Plain RET.",
+      "coverage": "Statically reviewed and strictly compiled; linker removed unused entrypoint. Not executed."
+    },
+    {
+      "address": "00b38a70",
+      "bytes": 211,
+      "sha256": "a6ed35e72e736b9c0a77c00cd792d34dd082461de9bd54da9402e220bda66a42",
+      "original_abi": "ECX actual10h cache, EAX same cache; plain RET.",
+      "coverage": "Statically reviewed and strictly compiled; linker removed unused entrypoint. Not executed."
+    },
+    {
+      "address": "00b35340",
+      "bytes": 390,
+      "sha256": "a986cd7c975ed772e5ff134f784e9a7c704a909ba79e606d163bafdbe17d0a38",
+      "original_abi": "ECX actual10h cache; plain RET.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    },
+    {
+      "address": "00b34c70",
+      "bytes": 13,
+      "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+      "original_abi": "ECX actual10h row; EAX same row; plain RET.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    },
+    {
+      "address": "00b34c80",
+      "bytes": 56,
+      "sha256": "59e94e19db7c5f3b0ec6c3e36126aaf4c4cea61c692f1434c208ab2ac9ad3e74",
+      "original_abi": "ECX actual10h row; plain RET.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    },
+    {
+      "address": "00be4300",
+      "bytes": 26,
+      "sha256": "c7a6ad72a87a8ebe2d36e3aeb3f8bac796457b74b3d9ee5c5bf4e38c92b196bd",
+      "original_abi": "ECX stream, stacked optional actual-count pointer; EAX DWORD; RET4. Read buffer aliases native argument cell.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    },
+    {
+      "address": "00be45f0",
+      "bytes": 34,
+      "sha256": "4dab69f6b741c1aa801db623601ff948cdcc3589324411ffa2346dd7d95cc01c",
+      "original_abi": "ECX stream, stacked output header and optional count; EAX output; RET8.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    },
+    {
+      "address": "00be4620",
+      "bytes": 327,
+      "sha256": "5eb26b9caea8adcdf56cb7686c2579ce42e8e397d3e27e47bbb63939f1c1393f",
+      "original_abi": "ECX stream, stacked output header and optional count; EAX output; RET8.",
+      "coverage": "Full source and original normal installed-loader path exercised through explicitly relocated fixture."
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b3a600",
+      "address": "00b3a618",
+      "native": "00bf681b",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b3a600",
+      "address": "00b3a631",
+      "native": "00b38a70",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38aac",
+      "native": "0041e870",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38af6",
+      "native": "00419cc0",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38afd",
+      "native": "00bd1510",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38b2b",
+      "native": "00b35340",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3539c",
+      "native": "00bf55be",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b353c3",
+      "native": "00bf7cd1",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35412",
+      "native": "0041dd40",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35428",
+      "native": "00bf7680",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3544b",
+      "native": "00419cc0",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35452",
+      "native": "00bd1510",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35472",
+      "native": "00bf55be",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b34c80",
+      "address": "00b34c8b",
+      "native": "00bf6989",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b34c80",
+      "address": "00b34caa",
+      "native": "00419cc0",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b34c80",
+      "address": "00b34cb1",
+      "native": "00bd1510",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be468f",
+      "native": "0041dd40",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be46a1",
+      "native": "0041dd40",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be46b6",
+      "native": "00bf79f0",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be4713",
+      "native": "0041dd40",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be4724",
+      "native": "00bf7680",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be4744",
+      "native": "00419cc0",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be474b",
+      "native": "00bd1510",
+      "contract": "Direct call in complete live/installed-PE matched body; body interpretation and source review recorded below."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35378",
+      "native": "00d691b0+38",
+      "resolved_target": "00be4300",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b353f5",
+      "native": "00d691b0+60",
+      "resolved_target": "00be45f0",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35461",
+      "native": "00d691b0+38",
+      "resolved_target": "00be4300",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3549a",
+      "native": "00d691b0+24",
+      "resolved_target": "00bf5030",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38ad6",
+      "native": "00d685b4+04",
+      "resolved_target": "00bdf310",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38b14",
+      "native": "00d691b0+54",
+      "resolved_target": "00be40d0",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00be4300",
+      "address": "00be4311",
+      "native": "00d691b0+24",
+      "resolved_target": "00bf5030",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00be45f0",
+      "address": "00be4609",
+      "native": "00d691b0+48",
+      "resolved_target": "00be4620",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be4653",
+      "native": "00d691b0+38",
+      "resolved_target": "00be4300",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    },
+    {
+      "function": "00be4620",
+      "address": "00be46df",
+      "native": "00d691b0+24",
+      "resolved_target": "00bf5030",
+      "coverage": "Static current-profile resolution; B38A70 branches unexecuted."
+    }
+  ],
+  "source_findings": [],
+  "review_domain": "No identified normal-path source defect in eight reviewed routines. Constructor/acquisition are static review only; arbitrary aliasing, failures and unwind are outside runtime evidence.",
+  "source_order_review": [
+    "B3A600 retains constructor metadata before raw allocation and publishes global only after normal construction; previous cache is not retired.",
+    "B38A70 preserves cursor preimage, clears04/08/0C, samples source mode before open, computes flags2/5, publishes stream then releases path temporary and reloads variants.",
+    "B35340 gates before cache writes, zeros cursor, reads count, uses saturated count*16+4 allocation, constructs row00/04/08 only, and publishes array after construction.",
+    "Each row adopts persistent child before name read; copies current returned name, releases the same parent temporary, reads size, publishes blob, rereads row/table slots, then reads data.",
+    "BE4300 seeds its result with actual-count pointer bits, preserving unread bytes rather than zero filling.",
+    "BE4620 preserves requested length, fills temporary bytes with spaces, captures length/data across raw read/output resize, clears output header without prior release, and returns the captured temporary to the real raw pool.",
+    "B34C80 frees blob before clearing08 and releases captured name with current length+1, leaving stale name and count fields."
+  ],
+  "native_evidence": {
+    "native_spans": 8,
+    "native_bytes": 1153,
+    "profile_spans": 7,
+    "profile_bytes": 284,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_asset": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin",
+      "bytes": 2250700,
+      "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8"
+    },
+    "capture": "local/native_shader_cache_parent_review/native_audit.json",
+    "profile_address_corrections": {
+      "backing": "D641F8 in worker preparation script is wrong; copied eight bytes are D15AD8.",
+      "batch": "D60970 is wrong; copied sixteen bytes are D5E5AC.",
+      "open": "D685B4 is wrong; copied twelve bytes are D6838C.",
+      "exists": "D69168 is wrong; copied twelve bytes are D68398.",
+      "name_probe": "D68D04 is wrong; copied twelve bytes are D683E8."
+    }
+  },
+  "generated_code": {
+    "object_hashes": {
+      "native_shader_binary_cache_load": "be5a97dfdd2917a952cf0e133aadfacbecbde389e49406fda5cfcfa810df4943",
+      "native_shader_binary_cache_stream": "025cd846338e470c4f150afa2b4aa8b72285b8add525c031ba260778af71ddb0"
+    },
+    "compiled_functions_and_shared_body": 9,
+    "code_bytes": 3297,
+    "retained_separate_symbols": 5,
+    "audit": "local/native_shader_cache_parent_review/generated_code_audit.json"
+  },
+  "fixture_corrections": {
+    "production_modified": false,
+    "changes": [
+      "Correct B34C80 pool getter relocation from B34CA5 (ADD) to B34CAA (CALL).",
+      "Correct B34C80 pool return relocation from B34CAC (middle of CALL) to B34CB1 (CALL).",
+      "Append existing physical mapped-module observer after all runtime checks.",
+      "Include native_filestore_open.hpp for complete stored-stream conversion context.",
+      "Use existing unsuffixed ANSI Toolhelp API names; Windows provides no A-suffixed declarations.",
+      "Use reinterpret_cast for the two row-array cookie byte views.",
+      "Preferred B30000 and BE0000 ranges were occupied; prior probes refused them.",
+      "Relocate six original-side code/data islands into fresh allocations, the two row-constructor PUSH addresses, the source-mode gate and empty-string absolute operands.",
+      "Relocate four original-side stream table slots and the original-side stream table pointer; source-side numeric profile bytes remain unchanged.",
+      "Append physical mapped-module observer after all checks."
+    ],
+    "original_sha256": "f1baccfebd3064f4ad1b29e1dd527d5f11ea03a340d0607de4062fa9155aa6eb",
+    "corrected_sha256": "87322c99d0b763387037cc1386e929dfcd437ab16a8802607e2be4d6be4776b9",
+    "explicit_relocations": {
+      "direct_calls": 17,
+      "physical_read_entry_jumps": 1,
+      "row_constructor_push_immediates": 2,
+      "absolute_data_operands": 2,
+      "original_side_table_words": 4,
+      "original_side_stream_table_pointer": 1
+    }
+  },
+  "runtime": {
+    "utc": "2026-09-14T22:20:14.395209+00:00",
+    "run_exit": 0,
+    "executable_sha256": "ed0bad8e3c5dca8db274fa3258b92a73e1c9ea6865e7fe985b5cf324fb954870",
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "7a45bb6e460ac6a068fbffeccee28762e892baeee6ef0753f1c4c92dc6333610",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\cache_mapped_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace",
+    "original_executed_function_bytes": 846,
+    "relocated_direct_calls": 17,
+    "relocated_numeric_physical_provider": 1,
+    "serialized": {
+      "original_cache.bin": {
+        "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+        "bytes": 2250700
+      },
+      "source_cache.bin": {
+        "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+        "bytes": 2250700
+      }
+    },
+    "row_count": 1628,
+    "check_lines": [
+      "PASS original846-byte cache/read/row span plus explicit actual source providers; source full B35340; 1628 rows,2250700 bytes; EOF pointer preimage; normal row cleanup",
+      "LIMIT B3A600/B38A70 linked only; VFS manager/open and variants write branch not executed; no original FH3/allocation ABI/full compiler/draw/game proof"
+    ],
+    "explicit_relocations": {
+      "direct_calls": 17,
+      "physical_read_entry_jumps": 1,
+      "row_constructor_push_immediates": 2,
+      "absolute_data_operands": 2,
+      "original_side_table_words": 4,
+      "original_side_stream_table_pointer": 1
+    },
+    "printed_limit_correction": "The prepared fixture prints B3A600/B38A70 linked only. Both are compiled but their unused entrypoints are removed by OPT:REF, as shown by the final link map."
+  },
+  "fixture_findings": [
+    "Two prepared B34C80 CALL relocation sites were wrong; corrected to B34CAA/B34CB1.",
+    "Missing complete context include, nonexistent A-suffixed Toolhelp names, and invalid pointer static_cast prevented compilation; corrected in copied fixture only.",
+    "Five copied table captures were valid but the preparation script assigned incorrect addresses and lengths to them. Fresh captures verify their actual addresses/lengths.",
+    "The unused LoadContext manager_00d685b4 binding receives the open-visitor D6838C table, whose slot4 is BDA690. A future constructor fixture must bind actual D685B4 with slot4 BDF310 and create a real VFS manager; the current fixture does neither.",
+    "Preferred code ranges B30000 and BE0000 were occupied; failed probes refused them. Final probe relocates all six code/data islands and explicitly records every address adaptation.",
+    "The runtime LIMIT line overstates linked coverage for unused constructor/acquisition entrypoints; final map proves compilation only."
+  ],
+  "coverage": [
+    "Both original-side and source-side loads consume real read-only physical handles to the installed shaderfx/shaders.bin.",
+    "All1628 length-prefixed names and bytecode blobs serialize byte-for-byte to the entire2250700-byte installed asset.",
+    "Both array cookies, cursor publication, final physical positions and untouched stream0C preimages agree.",
+    "Both EOF DWORD reads preserve the optional count-pointer bit preimage while returning actual count0.",
+    "Normal row destruction frees3256 total blobs and releases3256 names across two caches; blob08 clears and stale name/count headers remain.",
+    "Full body byte inputs total846 bytes across six executed original functions. Seventeen direct-call relocations and one physical-read bridge use actual reconstructed raw pool/string/ReadFile services and explicit CRT/normal vector-loop boundaries."
+  ],
+  "limits": [
+    "Uncommitted worker source remains unregistered; strict explicit-object compilation and fixture link are not a default CMake build for this packet.",
+    "B3A600/B38A70 construction/open/variants branches are unexecuted; no canonical VFS-to-cache producer or global publication runtime proof.",
+    "Original-side execution has explicit code/data/table/stream-pointer relocations. Source-side numeric D691B0 profile remains original.",
+    "No original FH3/SEH, allocator ABI, failure rollback, arbitrary stack/header alias, short nonzero payload, malformed-count overflow, null allocation, full compiler/effect admission, active B2 drawing or game validation.",
+    "B34C80 saved-listing free fallthrough gap and address annotations remain deferred under worker address ownership. No Ghidra mutation was made."
+  ],
+  "follow_up": [
+    "Finish the stopped worker packet with actual VFS manager/table bindings and constructor/acquisition/variants evidence.",
+    "After address ownership is released, repair B34C80 fallthrough through the locked tool, annotate confirmed names, save/read back and refresh exports.",
+    "After startup.cmake is free, register the two unchanged source units, complete the standard Win32 build/checks and integrate."
+  ],
+  "immutable_review_closure": {
+    "path": "local/checkpoints/b8776857/shader-cache-review/validation.json",
+    "sha256": "778e470b4f5dfe359714b51b014a483fdf47b53cb410af48c4cf7e56db28febd",
+    "artifacts": 691,
+    "runtime_modules": 8,
+    "source_manifest_sha256": "77a73225374eff0c03115ea313081518dfa3cf9d3a7a04754e445755a2de973e"
+  },
+  "verification": {
+    "direct_call_rows_checked_live": 23,
+    "direct_call_failures": 0,
+    "indirect_rows_separately_resolved": 10,
+    "strict_win32_explicit_source_compile": true,
+    "strict_fixture_compile_and_link": true,
+    "installed_cache_differential_exit": 0,
+    "physical_mapped_x86_modules": 8,
+    "default_cmake_registration": false
+  }
+}
