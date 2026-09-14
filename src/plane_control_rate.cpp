@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "bsp/unit_rudder.hpp"
+
 namespace bsp {
 namespace {
 
@@ -95,6 +97,79 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
         return upper;
     }
     return candidate;
+}
+
+
+PlaneControlTargets plane_control_targets_007da710(const PlaneControlClass& cls,
+                                                   const PlaneControlUnitState& unit,
+                                                   float mode_factor_f1,
+                                                   float mode_factor_f2,
+                                                   bool slide_and_coupling_flag) noexcept {
+    PlaneControlTargets out;
+
+    // ---- roll, frame=-76, live at 007DAA78 (or 007DA8E5 when the flag is 0) --
+    // 007DA732..007DA74C: the base is unit+838h plus the latched roll.
+    float roll = unit.roll_base_838 + unit.latched_roll;
+    // 007DA750..007DA7B5: only flight state 6 engages the bank-angle factor.
+    // Free flight is 7, so this is 1.0 in the air and the branch is here for
+    // faithfulness rather than for effect.
+    float bank_factor = 1.0f;
+    if (unit.flight_state_900 == 6) {
+        bank_factor = clamped_interpolate_00419010(
+            0.0f, 1.0f, 0.10471976f, -0.1f, std::fabs(unit.bank_angle_c68));
+    }
+    // 007DA7C2..007DA7DA.
+    roll = cls.roll_spd * mode_factor_f1 * bank_factor * roll;
+    // 007DA7B9 / 007DA7DE: the out-of-action ramp and the spin term. This host
+    // does not model unit+5Dh, unit+C36h/C37h or the lost-drag timer's use here,
+    // so an undamaged plane takes neither, and the flag is carried in the input
+    // so that a host which does model them has somewhere to say so rather than
+    // this being silently absent.
+    //
+    // 007DA8D9..007DA8E5: zeroed on the ground. The sense is `mode == 1`, not
+    // `!= 1` - the Ghidra plate comment had it inverted for one packet.
+    if (unit.controller_mode_fc == 1) {
+        roll = 0.0f;
+    }
+
+    // ---- yaw, frame=-8, live at 007DAA97 -----------------------------------
+    // 007DA926..007DA953: the raw product, with unit+BC4h in it.
+    const float yaw_raw = cls.yaw_spd * unit.latched_yaw * unit.yaw_scale_bc4;
+    // 007DA957..007DA95F.
+    float yaw = yaw_raw * mode_factor_f2;
+
+    // 007DA9F5: one flag gates both the slide term and the yaw-roll coupling.
+    if (slide_and_coupling_flag) {
+        // 007DAA3B..007DAA58, SUBTRACTED (007DAA56 FSUBP, DE E9).
+        yaw -= cls.slide_ratio * cls.yaw_spd *
+               std::sin(unit.bank_angle_c68) * std::cos(unit.pitch_angle_c64);
+        // 007DAA5C..007DAA78, added to the ROLL target - the coupling a
+        // coordinated turn needs, and it uses the raw yaw product rather than
+        // the mode-scaled one.
+        roll += cls.yaw_roll_ratio * mode_factor_f1 * yaw_raw;
+    }
+    // 007DAA85..007DAA97: negated on the way to its slot, against the -0.0f at
+    // 00D7A208. A sign error here turns every aircraft the wrong way while every
+    // downstream number still looks validated.
+    const float yaw_target = -yaw;
+
+    // ---- pitch, frame=-72, live at 007DA912 / 007DA922 ---------------------
+    float pitch = cls.pitch_spd * mode_factor_f1 * unit.latched_pitch;
+    if (unit.latched_pitch < 0.0f) {          // 007DA8F9 / 007DA916
+        pitch *= cls.negative_pitch_ratio;
+    }
+
+    // The order is the one the axes sit in: ctl+48h pitch, +4Ch yaw, +50h roll.
+    out.target[0] = pitch;
+    out.target[1] = yaw_target;
+    out.target[2] = roll;
+
+    // 007DAA7F / 007DAAA1 / 007DAAB3. Symmetric; only the magnitude is used
+    // downstream, so the yaw term's negation does not survive into the rate.
+    out.accel[0] = cls.pitch_accel * mode_factor_f1;
+    out.accel[1] = cls.yaw_accel * -mode_factor_f2;
+    out.accel[2] = cls.roll_accel * mode_factor_f1;
+    return out;
 }
 
 }  // namespace bsp

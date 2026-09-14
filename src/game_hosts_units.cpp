@@ -269,6 +269,18 @@ struct GameUnitSlot {
     // simplification: docs/PLANE_CONTROL_RATE_LAW.md and
     // docs/PLANE_BOT_CONTROL_WRITEBACK.md.
     float plane_body_angular[3]{0.0f, 0.0f, 0.0f};
+    // unit+9E4h yaw, +9E8h pitch, +9ECh roll - the live pilot control block,
+    // and unit+BB0h/+BB4h/+BB8h, the previous-step snapshot 007B9770 latches
+    // from it. plane_flight.hpp owns the offsets and carries the correction
+    // note for the axis order; plane_advance_pose.hpp had it swapped until
+    // packet cc7_plane_control_targets.
+    float plane_live_controls[3]{0.0f, 0.0f, 0.0f};
+    float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
+    // The plane row's rate and acceleration keys, read once at creation.
+    bsp::PlaneControlClass plane_class;
+    // desc+184h StallSpd, the divisor the control authority ramp uses. The
+    // PlaneFreeFlightClass default stands in when the row does not carry it.
+    float plane_stall_spd{17.5f};
     // The union of this unit's guns' projectile descriptor answer sets, stored
     // by the gunnery host at load. docs/ORDNANCE_KIND_IDENTITY.md.
     std::uint64_t ordnance_mask{0};
@@ -1464,6 +1476,25 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // docs/PLANE_FLIGHT_CORE_LAW.md.
             slot->plane_control_mode_900 = 7;
             slot->plane_airborne_908 = 3600.0f;
+            // 007D1F70's rate and acceleration keys for this row. They are what
+            // the control targets and the rate law are built from, and they are
+            // per-class rather than global, so a Zero and a Dauntless turn at
+            // different speeds. Zero on a row that does not carry them, which
+            // is the right answer for a ship.
+            slot->plane_class.roll_spd = lua_row.roll_spd;
+            slot->plane_class.pitch_spd = lua_row.pitch_spd;
+            slot->plane_class.yaw_spd = lua_row.yaw_spd;
+            slot->plane_class.yaw_roll_ratio = lua_row.yaw_roll_ratio;
+            slot->plane_class.slide_ratio = lua_row.slide_ratio;
+            slot->plane_class.roll_accel = lua_row.roll_accel;
+            slot->plane_class.pitch_accel = lua_row.pitch_accel;
+            slot->plane_class.yaw_accel = lua_row.yaw_accel;
+            slot->plane_class.negative_pitch_ratio = lua_row.negative_pitch_ratio;
+            if (lua_row.plane_stall_spd > 0.0f) {
+                // desc+184h. PlaneFreeFlightClass keeps 17.5f as its fallback;
+                // an authored row wins.
+                slot->plane_stall_spd = lua_row.plane_stall_spd;
+            }
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
@@ -2154,6 +2185,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float* const wv = unit_.plane_world_velocity;
                         owner_.summary.plane_distance_moved +=
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
+                        control_step_007da710(step, state.forward_speed);
                         advance_pose_0085e4d0(step);
                         owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
@@ -2232,6 +2264,96 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return static_cast<float>(std::atan2(
                             static_cast<double>(forward[0]),
                             static_cast<double>(forward[2])));
+                    }
+
+                    // 007D9A70 BSP_PlaneFlight_ControlAuthority, the scalar that
+                    // scales all three rotation accelerations.
+                    // docs/PLANE_CONTROL_AUTHORITY.md has the derivation.
+                    //
+                    // Two of its inputs are not modelled and are passed as the
+                    // values they would take rather than approximated: the
+                    // damage scale 007C0F40 returns 1.0 for a plane with no
+                    // parts on unit+974h, which is every plane here, and
+                    // (ctl+10h)->+0C0h has no identified owner so its term is
+                    // zero. Both are named in the comment so a later packet can
+                    // find them; neither is a guess dressed as a value.
+                    float control_authority(float forward_speed) const {
+                        const float a = bsp::clamped_interpolate_00419010(
+                            3.0f, 0.0f, 6.0f, 0.25f, unit_.plane_airborne_908);
+                        const float stall = unit_.plane_stall_spd > 0.0f
+                            ? unit_.plane_stall_spd : 17.5f;
+                        const float s = forward_speed / stall;
+                        float range_min = 1.1f;
+                        float range_max = 1.7f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            range_min = g.dynamics_spd_multipliers_control_range_min;
+                            range_max = g.dynamics_spd_multipliers_control_range_max;
+                        }
+                        const float r = bsp::clamped_interpolate_00419010(
+                            range_min, 0.0f, range_max, 1.0f, s);
+                        const float b = r;   // + (ctl+10h)->+0C0h * 0.6, unmodelled
+                        // 007D9B10..007D9B6E, the literal three-way pick.
+                        float t = 0.0f;
+                        if (a > b) {
+                            t = a;
+                        } else {
+                            t = (b <= 1.0f) ? b : 1.0f;
+                        }
+                        return t * t;   // x 007C0F40, which is 1.0 here
+                    }
+
+                    // 007B9770 BSP_Plane_LatchControlInput, then 007DA710's
+                    // target build and rate law. This is the whole control half
+                    // of a plane's step, and it runs after the motion arm so the
+                    // forward speed it reads is this step's.
+                    //
+                    // docs/PLANE_BOT_CONTROL_WRITEBACK.md establishes that the
+                    // live block is written by the bot chain through
+                    // 007B8C90 -> 007BB920 -> 007BB6E0; none of that is built
+                    // here, so plane_live_controls stays zero and every target
+                    // is zero. The rate law then holds each axis at zero, which
+                    // is the correct behaviour for a plane with a centred stick
+                    // and is why nothing turns yet.
+                    void control_step_007da710(float step, float forward_speed) {
+                        // 007B9783 / 007B979C / 007B97A8: the previous-step
+                        // snapshot, +9E4h -> +BB0h and so on.
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.plane_latched_controls[i] = unit_.plane_live_controls[i];
+                        }
+
+                        bsp::PlaneControlUnitState state;
+                        state.latched_yaw = unit_.plane_latched_controls[0];
+                        state.latched_pitch = unit_.plane_latched_controls[1];
+                        state.latched_roll = unit_.plane_latched_controls[2];
+                        state.flight_state_900 = unit_.plane_control_mode_900;
+                        // 007DC841 zeroes ctl+FCh every step, so free flight is
+                        // mode 0 and the roll target is not zeroed.
+                        state.controller_mode_fc = 0;
+
+                        const float m = control_authority(forward_speed);
+                        // Free flight takes 007DA380's mode-0 arm, which writes
+                        // the same scalar to both outputs and sets the flag to 1.
+                        const bsp::PlaneControlTargets targets =
+                            bsp::plane_control_targets_007da710(
+                                unit_.plane_class, state, m, m, true);
+
+                        bsp::PlaneRotationFactors factors;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            factors.a = g.dynamics_rotation_factors_a;
+                            factors.b = g.dynamics_rotation_factors_b;
+                            factors.c = g.dynamics_rotation_factors_c;
+                        }
+                        for (int axis = 0; axis < 3; ++axis) {
+                            bsp::PlaneControlAxisState in;
+                            in.current = unit_.plane_body_angular[axis];
+                            in.target = targets.target[axis];
+                            in.accel = targets.accel[axis];
+                            unit_.plane_body_angular[axis] =
+                                bsp::plane_control_axis_step_007da710(factors, in, true, step);
+                        }
+                        owner_.record("PlaneFlight::control_rate_law", 0x007da710u);
                     }
 
                     void ground_roll_007cbfa0(float) override {

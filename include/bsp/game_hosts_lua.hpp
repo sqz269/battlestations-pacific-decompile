@@ -94,6 +94,26 @@ struct GameVehicleClassRow {
     // 1.0f. 00937C90 puts it in the body descriptor's +04h at 009399F7 and
     // 00937CF1 compares it against 100.0 to choose the physics material.
     float mass{0.0f};
+    // The plane rate and acceleration keys 007D1F70 reads into the plane class
+    // descriptor. src/plane_class_fields.cpp carries the store address for each
+    // one; the key spellings here are that reader's, not guesses. They are zero
+    // on a ship row, which is correct - only a plane row carries them.
+    //
+    // CAVEAT that has to travel with the numbers: vehicleclasses.lua is the one
+    // file in this installation's scripts/datatables that carries a local
+    // modification date, so these are this installation's plane rates and not
+    // provably retail. The tuning in planeglobals.lua is a separate question
+    // (docs/PLANE_CONTROL_RATE_LAW.md).
+    float roll_spd{0.0f};             // desc+1A8h, 007D2530
+    float pitch_spd{0.0f};            // desc+1ACh, 007D2569
+    float yaw_spd{0.0f};              // desc+1B0h, 007D25A2
+    float yaw_roll_ratio{0.0f};       // desc+1B4h
+    float slide_ratio{0.0f};          // desc+1B8h
+    float roll_accel{0.0f};           // desc+1BCh
+    float pitch_accel{0.0f};          // desc+1C0h, 007D2731
+    float yaw_accel{0.0f};            // desc+1C4h
+    float negative_pitch_ratio{0.0f}; // desc+1D8h
+    float plane_stall_spd{0.0f};      // desc+184h, 007D2351
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.
