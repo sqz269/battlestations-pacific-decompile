@@ -149,3 +149,15 @@ The integrated source at `33ac99a202f5630d2fe4e706609cb84fc7ffb7f9` passed the s
 The existing focused fixture was relinked against that exact `bsp_core.lib` with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest; loaded runtime module paths were measured.
 
 The packet passed 33 numeric direct-call checks. Reviewed names and evidence comments were applied, saved and read back in Ghidra while preserving previous comments. All 23 affected exports were forced after the snapshot refresh; eight repaired returning tails were checked in the live bodies and refreshed assembly. The combined checkpoint covers 22 new entry bodies including thunks and one overload of an existing body, with distinct per-entry validation scopes in the report. It retains 3390 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json` (SHA-256 `9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0`). Worker manifests and intermediate flow-repair reports remain historical inputs. Full renderer lifetime, active-frame execution, application adoption, native exception ABI and gameplay remain unvalidated.
+
+## Correction: actual debug-line provider integration
+
+The current +C4 slot is now bound to the complete B28D00 raw provider in
+`native_renderer_debug_lines`, after the existing current-profile/slot gate.
+The required callback for that body is removed. The remaining outer providers
+are actual queue B1EBE0, B2BB90 and B2B580. The new borrowed `actual_debug_lines`
+context must share the same renderer, synchronization, stream and profile
+domains; it may be null only when B28D00 sees zero current line count.
+Nonempty physical/surface/layout/shader terminal composition still needs the
+separate raw resource-support AA0 migration. Standalone debug-line fixtures
+and inactive EndFrame checks do not prove full active EndFrame or gameplay.

@@ -1,6 +1,6 @@
 {
   "packet": "orch5_native_d3d9_renderer_lifetime",
-  "status": "full_parent_bodies_restored_and_unwind_evidence_reviewed_source_incomplete",
+  "status": "full_parent_evidence_and_complete_constructor_source_integrated_destructor_and_adoption_incomplete",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "original_PE": {
@@ -833,9 +833,11 @@
   "flow_repair": "reports/native_d3d9_renderer_flow_repair.json",
   "function_definition": "reports/native_d3d9_renderer_function_definitions.json",
   "remaining_boundaries": [
-    "Actual B5BF70 source failure retains an operation and ownership incompatible with parent state27 direct free; inner callee unwind requires reconstruction",
-    "Parent constructor and destructor have no full C++ implementation; existing constructor source fragments remain partial",
-    "Several actual member destruction entries and active-frame providers are being reconstructed independently",
+    "Complete B32410 source is integrated; its link/import probe does not invoke the constructor or establish full parent lifetime execution",
+    "Full B32920/B339F0/B32900 destructor source and query terminal dependencies are being reconstructed separately",
+    "Physical/surface/layout/shader lifetime resource support still needs actual-AA0 manager access for full parent composition",
+    "Raw registry B5BF50 zero-resize requires nonnegative current count and capacity; caller supplied live subobjects, scratch preimages and control bindings remain required",
+    "EndFrame retains actual queue B1EBE0, B2BB90 and B2B580 providers after substantive B28D00 debug-line integration",
     "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated"
   ],
   "integrator_validation": {
@@ -857,5 +859,17 @@
     "path": "local/checkpoints/renderer-parent-evidence-20260914T071222Z/manifest.json",
     "sha256": "dfa6ea3e2c1fb9946aefb49229265990659a39559291daf0d2e32d7a32ae7244",
     "artifacts": 83
+  },
+  "remaining_boundaries_before_constructor_integration": [
+    "Actual B5BF70 source failure retains an operation and ownership incompatible with parent state27 direct free; inner callee unwind requires reconstruction",
+    "Parent constructor and destructor have no full C++ implementation; existing constructor source fragments remain partial",
+    "Several actual member destruction entries and active-frame providers are being reconstructed independently",
+    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated"
+  ],
+  "constructor_integration_correction": {
+    "source": "src/native_renderer_constructor.cpp",
+    "report": "reports/native_renderer_constructor.json",
+    "raw_registry_operation_conflict_resolved": true,
+    "constructor_executed": false
   }
 }

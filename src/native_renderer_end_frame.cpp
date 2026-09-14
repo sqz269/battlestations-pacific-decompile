@@ -3,6 +3,7 @@
 #include "bsp/native_renderer_cached_states.hpp"
 #include "bsp/native_renderer_frame_statistics.hpp"
 #include "bsp/native_occlusion_query_poll.hpp"
+#include "bsp/native_renderer_debug_lines.hpp"
 #include "bsp/xlive_library.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -168,7 +169,7 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
     }
     c.remaining.render_00b2bb90(renderer);
     renderer_slot(renderer, 0xc4, 0x00b28d00u, c.actual_bindings);
-    c.remaining.renderer_virtual_c4_00b28d00(renderer);
+    draw_native_renderer_debug_lines_00b28d00(renderer, c.actual_debug_lines);
     c.remaining.render_00b2b580(renderer);
     static constexpr Word states[][2] = {
         {0x1a, 0}, {0x1a, 0}, {0x1c, 0}, {7, 0}, {0x0e, 0}, {0x17, 2},

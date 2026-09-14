@@ -45,9 +45,10 @@ struct NativeRendererEndFrameRemaining {
     virtual ~NativeRendererEndFrameRemaining() = default;
     virtual void execute_queue_00b1ebe0(NativeRenderCommandQueueStorage&) = 0;
     virtual void render_00b2bb90(void* actual_renderer) = 0;
-    virtual void renderer_virtual_c4_00b28d00(void* actual_renderer) = 0;
     virtual void render_00b2b580(void* actual_renderer) = 0;
 };
+
+struct NativeRendererDebugLinesContext;
 
 struct NativeRendererEndFrameContext {
     NativeRenderBatchPreparationContext& actual_queue_getter;
@@ -65,6 +66,10 @@ struct NativeRendererEndFrameContext {
     // Current numeric query table, borrowed through slot +10. Eligible pending
     // D62AD0 owners dispatch the complete raw B5FCA0 body directly.
     const volatile std::uint32_t* actual_query_profile_00d62ad0;
+    // Substantive current +C4/B28D00 provider. Borrow the same actual renderer,
+    // synchronization, vertex/index and profile domains. May be null only when
+    // B28D00 observes an empty current +1D04 header and returns before use.
+    const NativeRendererDebugLinesContext* actual_debug_lines;
 };
 
 // Complete B2D8E0 call schedule through B2DBCC, with the required frontier above.

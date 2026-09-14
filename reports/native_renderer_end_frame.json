@@ -627,7 +627,6 @@
   "required_frontier": [
     "actual queue B1EBE0 (existing source is a projection)",
     "B2BB90 overlay 1765 bytes",
-    "current renderer+C4 B28D00 overlay 966 bytes",
     "B2B580 overlay 1549 bytes"
   ],
   "seh_evidence": [
@@ -830,5 +829,20 @@
     "current renderer+C4 B28D00 overlay 966 bytes",
     "B2B580 overlay 1549 bytes",
     "current pending query+10 D62AD0/B5FCA0 (existing source is a projection)"
-  ]
+  ],
+  "required_frontier_before_debug_line_integration": [
+    "actual queue B1EBE0 (existing source is a projection)",
+    "B2BB90 overlay 1765 bytes",
+    "current renderer+C4 B28D00 overlay 966 bytes",
+    "B2B580 overlay 1549 bytes"
+  ],
+  "debug_line_binding": {
+    "native_entry": "00b28d00",
+    "source": "src/native_renderer_debug_lines.cpp",
+    "cpp_symbol": "draw_native_renderer_debug_lines_00b28d00",
+    "dispatch": "current renderer profile and numeric +C4 gate retained before substantive provider call",
+    "borrowed_context": "NativeRendererEndFrameContext.actual_debug_lines; same current renderer/synchronization/vertex/index/profile domains; null admitted only by the callee empty-count return",
+    "unresolved_transitive_adoption": "Raw resource-support AA0 migration is still needed for nonempty physical/surface/layout/shader terminal domains; full active EndFrame and gameplay remain unvalidated",
+    "callback_removed": "NativeRendererEndFrameRemaining.renderer_virtual_c4_00b28d00"
+  }
 }
