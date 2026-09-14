@@ -146,5 +146,23 @@
     "Fixture name getters; actual parser singleton/body/manager bootstrap and successful destruction remain open",
     "No actual executable admission or gameplay claim"
   ],
-  "source_commit": "6c84eef6"
+  "source_commit": "6c84eef6",
+  "subsequent_documentation_merge": {
+    "pinned_revision": "2d8aedb5490a17f2029073a68ec257ef4a66363a",
+    "merge_revision": "6bb16dd61479fe5d6a6932549c3f0d6f75d76d68",
+    "files": [
+      "docs/GAME_EXECUTABLE.md",
+      "docs/MODEL_REACHES_UNIT.md",
+      "docs/PART_DAMAGE_WIRING_PLAN.md"
+    ],
+    "source_inputs_unchanged": true,
+    "review": "Read complete153-line additions. Borrowed USN02 command-target A/B reports14 targeted units,734 versus729 shots and18525.6 versus18490.1 modeled damage; not independently rerun. This does not prove directed air attack or original-game parity. Model-handle null branch is conditional: prior verified87BE02 branch plus fresh87BF5B MOV[ESI+360],EBX and87BF73 RET proves the zero publication for the null path. Scanned writer absence and untraced block copies do not establish shipped-game model-handle state or completed part-damage reconstruction.",
+    "independent_listing_sample": {
+      "program": "/battlestationspacific.exe",
+      "address": "0087bf5b",
+      "instruction": "MOV dword ptr [ESI+0x360],EBX",
+      "terminator": "0087bf73 RET"
+    },
+    "rebuild_required": false
+  }
 }
