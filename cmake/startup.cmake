@@ -47,6 +47,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_profile_scopes
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_world_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_input_settings_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_data_bootstrap.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_mutable_crt_data.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_physical_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_readonly_data.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_type_storage.cpp)

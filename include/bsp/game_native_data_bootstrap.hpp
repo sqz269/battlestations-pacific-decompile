@@ -7,6 +7,9 @@
 #include <string>
 
 namespace bsp::game {
+class GameNativeMutableCrtData;
+class GameNativeCanonicalDataOwner;
+enum class GameNativeDataPlan { ReadOnlyV1, CanonicalCrtV2 };
 namespace detail {
 std::uint32_t native_data_band_mask(const GameNativeDataSpan*, std::size_t);
 }
@@ -24,12 +27,17 @@ public:
 
 private:
     friend class GameNativeReadOnlyData;
+    friend class GameNativeMutableCrtData;
+    friend class GameNativeCanonicalDataOwner;
     friend GameNativeDataReservation accept_native_data_handoff(
-        const GameNativeDataSpan*, std::size_t);
+        const GameNativeDataSpan*, std::size_t, GameNativeDataPlan);
     void transfer_to(std::array<void*,19>& destination, std::uint32_t expected_mask);
-    void finish(bool mapped) noexcept;
-    std::array<void*,19> bands_{};
+    void transfer_ro_subset(std::array<void*,19>& destination, std::uint32_t expected_mask);
+    void transfer_mutable_subset(std::array<void*,2>& destination);
+    bool finish(bool mapped) noexcept;
+    std::array<void*,21> bands_{};
     std::uint32_t mask_ = 0;
+    GameNativeDataPlan plan_ = GameNativeDataPlan::ReadOnlyV1;
     void* handoff_view_ = nullptr;
     void* handoff_handle_ = nullptr;
 };
@@ -38,7 +46,8 @@ private:
 // exact requested band set and all 64-KB reservation states, then consumes its
 // record exactly once. A malformed or absent record is never adopted.
 GameNativeDataReservation accept_native_data_handoff(
-    const GameNativeDataSpan* required_spans, std::size_t span_count);
+    const GameNativeDataSpan* required_spans, std::size_t span_count,
+    GameNativeDataPlan plan = GameNativeDataPlan::ReadOnlyV1);
 
 // Owns a newly created suspended child. The child must be our Win32 program
 // and must call accept_native_data_handoff before constructing its mapper.
@@ -47,7 +56,8 @@ class GameNativeDataBootstrapChild final {
 public:
     GameNativeDataBootstrapChild(const std::filesystem::path& child_executable,
         const std::wstring& child_arguments,
-        const GameNativeDataSpan* required_spans, std::size_t span_count);
+        const GameNativeDataSpan* required_spans, std::size_t span_count,
+        GameNativeDataPlan plan = GameNativeDataPlan::ReadOnlyV1);
     ~GameNativeDataBootstrapChild() noexcept;
     GameNativeDataBootstrapChild(const GameNativeDataBootstrapChild&) = delete;
     GameNativeDataBootstrapChild& operator=(const GameNativeDataBootstrapChild&) = delete;
@@ -72,6 +82,7 @@ private:
     void* handoff_handle_ = nullptr;
     std::uint32_t process_id_ = 0;
     std::uint32_t mask_ = 0;
+    GameNativeDataPlan plan_ = GameNativeDataPlan::ReadOnlyV1;
     bool resumed_ = false;
     bool mapping_confirmed_ = false;
 };
