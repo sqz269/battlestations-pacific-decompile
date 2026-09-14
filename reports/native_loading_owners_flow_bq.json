@@ -1,0 +1,339 @@
+{
+  "reason": "Restore proven FileBlock scalar deletion and allocation-unwind returning-free membership; preserve every prior repair receipt.",
+  "entries": [
+    {
+      "address": "00c68f90",
+      "end_exclusive": "00c68f9b",
+      "bytes": 11,
+      "sha256": "f5b0831cb7b5369874a9202b5988a14cb56774fe06c22a29c683362fd0f7b876",
+      "before_documentation": {
+        "hash": "6b928312442a8310afffb4fb7e8e00b3c603345dec67a1179f7c0445f1fd7838",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c68f90",
+        "function_name": "Unwind@00c68f90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_ownership": [
+        {
+          "address": "00c68f90",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x18]",
+          "owned": true
+        },
+        {
+          "address": "00c68f93",
+          "mnemonic": "push",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00c68f94",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "owned": true
+        },
+        {
+          "address": "00c68f99",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "owned": false
+        },
+        {
+          "address": "00c68f9a",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": false
+        }
+      ],
+      "original_abi": "Compiler unwind action: EBP parent frame, captured allocation at EBP-18h; calls BF65AC then POP ECX/RET. No standalone ordinary C++ input ABI.",
+      "prototype_note": "Analysis-only void cdecl view; native compiler action consumes its parent EBP frame, not ordinary C++ arguments. Original Unwind name retained; no standalone ABI replacement claimed.",
+      "after_documentation": {
+        "hash": "2f263e170f32cd7949bd81de4c1cb5d8b7c33138b8e8a5d4e4dbeb46016ea4c1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c68f90",
+        "function_name": "Unwind@00c68f90",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 5,
+      "previous_evidence_preserved": true,
+      "previous_prototype_note": "Corrects unknown zero-input prototype with explicit ECX and unused EDX source view; not a native binary replacement claim."
+    },
+    {
+      "address": "00bdebe0",
+      "end_exclusive": "00bdebfe",
+      "bytes": 30,
+      "sha256": "1accffb7af988c5ca55165dcef27450014a2962a92708aa4d93aba33f95b41d9",
+      "before_documentation": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00bdebf8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bdebe0",
+          "mnemonic": "push",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00bdebe1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "owned": true
+        },
+        {
+          "address": "00bdebe3",
+          "mnemonic": "call",
+          "operands": "0xbdcb30",
+          "owned": true
+        },
+        {
+          "address": "00bdebe8",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1",
+          "owned": true
+        },
+        {
+          "address": "00bdebed",
+          "mnemonic": "je",
+          "operands": "0xbdebf8",
+          "owned": true
+        },
+        {
+          "address": "00bdebef",
+          "mnemonic": "push",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00bdebf0",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "owned": true
+        },
+        {
+          "address": "00bdebf5",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "owned": false
+        },
+        {
+          "address": "00bdebf8",
+          "mnemonic": "mov",
+          "operands": "eax, esi",
+          "owned": true
+        },
+        {
+          "address": "00bdebfa",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00bdebfb",
+          "mnemonic": "ret",
+          "operands": "4",
+          "owned": true
+        }
+      ],
+      "original_abi": "ECX actual1Ch owner; stack flags; EAX original owner; RET4. Free only flags bit0 after destructor returns; no reference decrement.",
+      "prototype_note": "Corrects unknown zero-input prototype with explicit ECX and unused EDX source view; not a native binary replacement claim.",
+      "after_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00bdebf8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 11,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00c68f94"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00c68f94 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c68f90"
+      },
+      "result": "{\"success\": true, \"address\": \"00c68f90\", \"deleted_function\": \"Unwind@00c68f90\", \"body_size\": 9, \"message\": \"Function 'Unwind@00c68f90' deleted at 00c68f90\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c68f90",
+        "end_address": "00c68f9b"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c68f90\", \"end_address\": \"00c68f9a\", \"bytes_disassembled\": 11, \"message\": \"Successfully disassembled 11 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c68f90",
+        "name": "Unwind@00c68f90",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c68f90\", \"function_name\": \"Unwind@00c68f90\", \"entry_point\": \"00c68f90\", \"body_size\": 11, \"message\": \"Function created successfully at 00c68f90\", \"warnings\": [\"Function name 'Unwind@00c68f90' \\u2014 main part 'Unwind@00c68f90' is not PascalCase. Expected: Unwind@00c68f90\", \"Function name 'Unwind@00c68f90' does not start with a recognized verb. First word 'Unwind@00c68f90' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00c68f90",
+        "prototype": "void __cdecl BSP_Analysis_C68F90(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00c68f90 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00c68f90",
+        "new_name": "Unwind@00c68f90"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00c68f90 from 'Unwind@00c68f90' to 'Unwind@00c68f90'\", \"warnings\": [\"Function name 'Unwind@00c68f90' \\u2014 main part 'Unwind@00c68f90' is not PascalCase. Expected: Unwind@00c68f90\", \"Function name 'Unwind@00c68f90' does not start with a recognized verb. First word 'Unwind@00c68f90' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00c68f90",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00c68f90\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bdebf0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bdebf0 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bdebe0"
+      },
+      "result": "{\"success\": true, \"address\": \"00bdebe0\", \"deleted_function\": \"CG_scalar_deleting_dtor_00bdebe0\", \"body_size\": 27, \"message\": \"Function 'CG_scalar_deleting_dtor_00bdebe0' deleted at 00bdebe0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bdebe0",
+        "end_address": "00bdebfe"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bdebe0\", \"end_address\": \"00bdebfd\", \"bytes_disassembled\": 30, \"message\": \"Successfully disassembled 30 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bdebe0",
+        "name": "CG_scalar_deleting_dtor_00bdebe0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bdebe0\", \"function_name\": \"CG_scalar_deleting_dtor_00bdebe0\", \"entry_point\": \"00bdebe0\", \"body_size\": 30, \"message\": \"Function created successfully at 00bdebe0\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00bdebe0' \\u2014 main part 'CG_scalar_deleting_dtor_00bdebe0' is not PascalCase. Expected: CgScalarDeletingDtor00bdebe0\", \"Function name 'CG_scalar_deleting_dtor_00bdebe0' \\u2014 main part 'CG_scalar_deleting_dtor_00bdebe0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdebe0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00bdebe0(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdebe0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bdebe0",
+        "comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bdebe0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}
