@@ -1,0 +1,181 @@
+{
+  "packet": "cc7_torpedo_launch_accuracy",
+  "owner": "agent/cc7-torpedo-accuracy",
+  "doc": "docs/TORPEDO_LAUNCH_ACCURACY.md",
+  "sources": [],
+  "classification": {
+    "exported": true,
+    "reconstructed": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "note": "Read-only analysis. No header and no source published: every finding is a defect localisation in existing host bindings plus a correction to two merged documents, and the only new pure rule (swim speed = WaterTravelSpeed * 0.6) is one multiply that src/game_hosts_gunnery.cpp already performs inline for the range. The project built and its single existing test passed, but nothing in this packet changed compiled code. NO RUN-TIME EVIDENCE: bsp_game.exe aborts with 0xC0000005 immediately after 'Phase 5 load_game_settings' on this machine this turn, for both this worktree's build and the main checkout's prebuilt binary, so docs/WORKER_VERIFICATION_CHECKLIST.md rule 6 is unsatisfied and every claim is static."
+  },
+  "question": "16 torpedoes launch on the 3200-frame USN02 mission and none hits; arc_blocked is 40017 on 71 mounts. What does 008FBB00 solve, with which speed, is the host passing the right one, is 40017 faithful, and is 0 of 16 faithful?",
+  "verdict": {
+    "faithful": false,
+    "what_008fbb00_solves": "a plain constant-velocity lead. 008FB8D0 solves the intercept quadratic for a projectile flying straight at a constant speed against a target extrapolated linearly from one velocity sample; 008FBB00 returns target + t * target_velocity. No turn rate, no acceleration, no gravity, no iteration. On failure it returns AL=0 and does not write the out vector; 00900263 checks it.",
+    "speed_it_uses": "descriptor+0E4h = WaterTravelSpeed (51.444 m/s for the Mark 15), loaded at 0090022B. NOT the muzzle V0 at descriptor+50h (13), which is what the AAFlakBot's solver call at 009031CF takes from the same node.",
+    "host_passes": "wrong. src/game_hosts_gunnery.cpp:1191 passes gun.muzzle_speed, which src/game_hosts_gunnery.cpp:436 fills from the flattened 'v0' key, which src/game_hosts_gunnery.cpp:296 fills from bc.V0 - the bullet class V0, i.e. descriptor+50h.",
+    "consequence_of_the_wrong_speed": "with s = 13 the quadratic coefficient a = |v|^2 - s^2 is positive and disc = b*b - 4ac >= 0 requires cos^2(theta) >= 4 - 4 s^2/u^2, which has no solution for any target faster than 2s/sqrt(3) = 15.01 m/s. A Fletcher at 18.777 m/s is past it, so 008FB8D0 answers 0 for every aspect, the host falls back to lead = at (src/game_hosts_gunnery.cpp:1194) and aims at the target's present position.",
+    "arc_blocked_40017": "not faithful, and not 40017 refused shots. It is a per-tick counter (src/game_hosts_gunnery.cpp:1294-1300) with a ceiling of 71*3200 = 227200. Every torpedo platform in vehicleclasses.lua authors exactly one window with MinVertAngle == MaxVertAngle == 0 and a 50-68 degree horizontal broadside sector, so a narrow window is real; but the refusals are dominated by two host modelling errors: the host commands a non-zero vertical where 009003DD passes 0.0f, and it lets gun_set_target_angles_0085aba0 refuse where the native first snaps the heading up to pi/4 onto the nearest firing-window edge through 0085AB50 -> 007F6190.",
+    "expected_hit_rate": "against a 110 m 18.777 m/s destroyer: about 7% of aspects at 637 m, 3% at 1000 m and 1.3% at 1852 m with the native solver and the native speed; 0% with the host's current s = 13. A few per cent, concentrated on near bow-on and stern-on aspects.",
+    "is_0_of_16_faithful": "no. It is numerically unsurprising - the shipped bot under-leads twice over, once from the half-b linear coefficient and once from leading at WaterTravelSpeed when the round swims at 0.6 * WaterTravelSpeed - but in this build no torpedo can reach any target at all: src/game_hosts_gunnery.cpp:1582 kills every projectile that crosses y = 0 downward, with no swim phase, which is the 'water' rising by 12 of 16. A correct solver would have changed nothing in this run."
+  },
+  "routines": [
+    {
+      "address": "008fbb00",
+      "native": "008fbb00",
+      "name": "BSP_Math_SolveInterceptPoint",
+      "abi": "__fastcall(ECX const float3* shooter, EDX const float3* target)(float speed, const float3* target_velocity, float3* out) -> bool in AL, RET 0Ch",
+      "body": "008fbb00-008fbc08",
+      "coverage": "complete",
+      "rule": "n = 008FB8D0(shooter, target, speed, target_velocity, &t1, &t2); n==0 -> false with out untouched (008FBC00); n==1 -> t = t1 (008FBB9E); n==2 -> t = t2 (008FBB3C); out = target + t * target_velocity; true",
+      "evidence": "the listing. The two out pointers at 008FBB0F and 008FBB14 are the caller's own argA and argB stack slots reused as scratch, both read into ST0 and EDI first."
+    },
+    {
+      "address": "008fb8d0",
+      "native": "008fb8d0",
+      "name": "BSP_Math_SolveInterceptTime",
+      "abi": "__fastcall(ECX const float3* shooter, EDX const float3* target)(float speed, const float3* v, float* t_far, float* t_near) -> int in EAX, RET 10h",
+      "body": "008fb8d0-008fbafb",
+      "coverage": "complete",
+      "rule": "d = shooter - target (008FB8D3..008FB8EF); a = dot(v,v) - speed*speed (008FB933..008FB945); b = dot(d,v) (008FB949..008FB96B); c = dot(d,d) (008FB96F..008FB97D). |a| <= 1e-4 (00D7A268 / 00D0D098): t = c/b, negative written back as 0.0f, answer 1 (008FB99C..008FB9F7). Otherwise disc = b*b - 4*a*c (008FBA02, the 4 at 00D7A328); disc < 0 -> 0 (008FBA1F); root = sqrt (008FBA21, 00BF7030); a > 0 (008FBA2C against 0.0f at 00D7A218): *t_far = (b+root)/(a+a), else *t_far = (b-root)/(a+a); *t_far < 0 -> 0 after the store (008FBA6D / 008FBABE); the other root into *t_near; answer 2 when *t_near >= 0, else 1 (008FBAE4).",
+      "note": "b is HALF the exact linear coefficient: the exact intercept is a t^2 - 2*dot(d,v) t + c = 0. docs/GUN_BOT_REMAINDER.md section 2 established this and tests/math_tests.cpp pins it; this packet re-read the listing and agrees. src/gun_bot_remainder.cpp:26-100 reproduces it faithfully."
+    },
+    {
+      "address": "0085ab50",
+      "native": "0085ab50",
+      "name": "BSP_TurningGun_FilterHeadingToTraverse",
+      "abi": "__thiscall(gun)(float horz, float limit) -> float in ST0, RET 8",
+      "body": "0085ab50-0085ab9a",
+      "coverage": "complete",
+      "rule": "grows the platform array through 005471B0 when [gun+38Ch] is past the count at [[[gun+3F0h]+538h]+94h]+4, then tail-calls 007F6190 on platform [[[gun+3F0h]+538h]+94h][gun+38Ch] with (horz, limit). Argument order confirmed by 0085AB7A/0085AB8A: [ESP+10h] (limit) lands at [ESP+4] and [ESP+14h] (horz) at [ESP].",
+      "note": "the existing ledger record already had this shape and named 007F6190 contract: unread."
+    },
+    {
+      "address": "007f6190",
+      "native": "007f6190",
+      "name": "BSP_GunPlatform_SnapHeadingToFireWindow",
+      "abi": "__thiscall(platform)(float horz, float limit) -> float in ST0",
+      "body": "007f6190-007f64eb",
+      "coverage": "complete",
+      "rule": "scan the arc array at [platform+3Ch], [platform+40h] records of 14h bytes, for the first record whose HORIZONTAL bounds (+4h min, +8h max, widened by 00D08B88 = half a degree) hold horz clamped to +/-pi - no flag test and no vertical test. None -> FLT_MAX (00D08B80). That record carries the fire bit (bit 1) -> horz unchanged. Otherwise walk backwards, then forwards, through records that carry the traverse bit (bit 0); at the first record on each side that also carries the fire bit take its nearer bound by BSP_Math_SubtractWrappedAngle, keep the nearer of the two candidates; no candidate, or |wrapped(candidate - horz)| > limit -> FLT_MAX; else the candidate.",
+      "note": "the native snaps a heading onto the nearest firing-window edge rather than refusing it. src/gun_aiming.cpp:120 refuses instead, and nothing in the host models the snap."
+    },
+    {
+      "address": "00857834",
+      "native": "00857834",
+      "name": "BSP_Torpedo_RecordInitSwimSpeed_fragment",
+      "abi": "fragment, no Ghidra function; ESI = the torpedo record, [ESI+314h] = the projectile class descriptor",
+      "body": "0085782e-00857875",
+      "coverage": "partial fragment: 0085782E..00857875 inclusive, final instruction FSTP float [ESI+470h]. The enclosing routine has no Ghidra function and was not read.",
+      "rule": "record+474h = 0.5999994f (00D0C5EC); record+478h = 3.0000007f (00D0C5E8); record+470h = classDesc[+0E4h] * 0.59999943 (00D0C5E0, double) = WaterTravelSpeed * 0.6",
+      "evidence": "tools/bsp.py scan-bytes 'D9 ?? E4 00 00 00' over .text, filtered to 0084xxxx-0086xxxx, then disasm-raw. 0085786F is mid-instruction; the stream resyncs at 0085786D."
+    }
+  ],
+  "host_calls": [
+    {
+      "address": "0090025e",
+      "native": "008fbb00",
+      "containing": "008fff20",
+      "what": "the torpedo bot's intercept call. ECX = ESP+3Ch (shooter point), EDX = ESP+28h (target point), arg1 = the float from [[gun+3F8h]+34h]+0E4h, arg2 = ESP+48h (the target velocity with y forced to 0.0f at 00900258), arg3 = ESP+64h (the out point). AL checked at 00900263."
+    },
+    {
+      "address": "008fbb20",
+      "native": "008fb8d0",
+      "containing": "008fbb00",
+      "what": "the root solve. ECX and EDX pass through unchanged; the two out pointers are the wrapper's own incoming argument slots."
+    },
+    {
+      "address": "008fba21",
+      "native": "00bf7030",
+      "containing": "008fb8d0",
+      "what": "sqrt of the discriminant"
+    },
+    {
+      "address": "00900380",
+      "native": "0085ab50",
+      "containing": "008fff20",
+      "what": "the heading filter, limit = pi/4 from 00E0B588. 0090038D stores the answer at bot+60h; 00900392..009003A2 compares it with FLT_MAX (00D7A278) and abandons the shot at 009003A6 when it matches."
+    },
+    {
+      "address": "0085ab91",
+      "native": "007f6190",
+      "containing": "0085ab50",
+      "what": "the delegate that does the snap"
+    },
+    {
+      "address": "0085ab75",
+      "native": "005471b0",
+      "containing": "0085ab50",
+      "what": "grows the platform array before the index is used"
+    },
+    {
+      "address": "009003dd",
+      "native": "0085aba0",
+      "containing": "008fff20",
+      "what": "the torpedo bot commands its angles. arg1 = bot+60h (the filtered heading) from the value left in ST0 across the 009003A2 branch; arg2 = 0.0f, pushed by the FLDZ at 009003CE and stored at 009003D6. THE VERTICAL IS HARD ZERO."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0085782e",
+      "end_inclusive": "00857875",
+      "final_instruction": "FSTP float ptr [ESI + 470h]",
+      "what": "the torpedo record's swim-speed and drag initialiser; read as a fragment only, its enclosing routine's bounds were not established"
+    }
+  ],
+  "installed_tables": [
+    {
+      "file": "scripts/datatables/classtables/arcade/bulletclasses.lua",
+      "mtime": "2026-05-09 23:04",
+      "note": "this installation is modded (BSPRM/AlterBSP); the untouched datatables bulk is 2024-07-13",
+      "record": "ArcadeTable[62] '21. Mark 15 ship torpedo': V0 = 13, WaterTravelSpeed = 51.444, FlyTime = 60, Range absent. Derived: swim speed 30.866 m/s, engagement range 1852.0 m."
+    },
+    {
+      "file": "scripts/datatables/classtables/arcade/deviceclasses.lua",
+      "mtime": "2026-05-09 22:37",
+      "note": "29 device classes carry Function = TORPEDO. The US double/triple/quintuple tubes (62, 63, 65) all fire bullet class 62 and all author HorzRotSpeed = VertRotSpeed = 0.7; the catapults (61, 66, 67, 73) author 0. No device class carries a Windows key."
+    },
+    {
+      "file": "scripts/datatables/autoload/vehicleclasses.lua",
+      "mtime": "2026-05-09 21:52",
+      "note": "205 ship platforms mount a torpedo device. Every one authors exactly ONE window and every one of those windows has MinVertAngle == MaxVertAngle == 0. Horizontal spans are one broadside sector: h[50,118], h[62,114], h[0,50], h[-118,-50] and similar, 50 to 68 degrees. Submarine catapults author h[0,0] v[0,0]. 96 of the 205 rest at (0,0). Fletcher class: Length 110, MaxSpeed 18.77722."
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/TORPEDO_TICK.md",
+      "was": "There is no thrust term here and none in 00856BB0, so WaterTravelSpeed (classDesc+E4h) does not reach the swim: the torpedo coasts on the velocity it entered the water with",
+      "is": "the clause 'WaterTravelSpeed (classDesc+E4h) does not reach the swim' is REFUTED. 00857834 loads classDesc+0E4h and 00857875 stores WaterTravelSpeed * 0.6 into record+470h, the field that document's own step 6 records the tick tail as reading. The coasting reading came from a listing window that did not contain the initialiser. What record+470h is used for inside the tick is still unread.",
+      "evidence": "0085782E MOV EAX,[ESI+314h]; 00857834 FLD float [EAX+0E4h]; 0085785D FMUL qword [00D0C5E0] = 0.59999943; 00857875 FSTP float [ESI+470h]. The identity descriptor+60h = (record+470h) * FlyTime is exact for the Mark 15: 30.866 * 60 = 1852.0, and 00855A90 uses the same 0.6 at 00CEFF98."
+    },
+    {
+      "document": "the brief that opened this packet",
+      "was": "arc_blocked = 40017 on 71 mounts means most launch windows never open; 2535 assignments produced 16 shots",
+      "is": "arc_blocked is a per-tick counter, not a refused-shot counter; its ceiling on this run is 71*3200 = 227200. Its value is dominated by mounts parked at their (0,0) rest angles outside a 50-68 degree broadside sector because gun_set_target_angles_0085aba0 refused their target angles on the vertical axis, not by the authored arcs refusing a bearing.",
+      "evidence": "src/game_hosts_gunnery.cpp:1294-1300 increments once per gun per tick on (have_target && settled && !may_fire_here); every torpedo window authors v[0,0]; src/game_hosts_gunnery.cpp:1272 passes a computed want_vert where 009003DD passes 0.0f."
+    },
+    {
+      "document": "the brief that opened this packet",
+      "was": "the lead comes from the reconstruction's torpedo_intercept_point_008fbb00, and if the solver should use the water speed then every lead is computed for a round travelling at the wrong speed, which would explain a systematic miss",
+      "is": "the solver's speed is indeed wrong, but it is not why the run scored zero. src/game_hosts_gunnery.cpp:1582 kills every projectile that crosses y = 0 downward and the host has no swim phase, so no torpedo reaches any target whatever the lead is. water = 12 of 16 shots is that gate.",
+      "evidence": "src/game_hosts_gunnery.cpp:1582; the launch vector at src/game_hosts_gunnery.cpp:1380-1397 uses gun.angles.vert, which the host drives from a depressed want_vert."
+    }
+  ],
+  "remaining": [
+    "No run-time evidence: bsp_game.exe aborts with 0xC0000005 after 'Phase 5 load_game_settings' for both this build and the main checkout's prebuilt binary. Every section 7 prescription is a prediction.",
+    "00857834's enclosing routine has no Ghidra function and its bounds were not established.",
+    "record+470h is inferred to be the swim speed from the exact identity descriptor+60h = (record+470h) * FlyTime; its consumer inside the tick was not read.",
+    "008FFF20's heading pipeline 00900328..00900380 (00414E10 derived affine inverse, 0042D0D0 transform, 00521370 to an angle pair, negate) was not compared with the host's use of 008FDAF0 for category 7. Only the 0085AB50 filter at its end was read.",
+    "The USN02 mission's actual target classes were not enumerated; the hit-rate table uses a Fletcher as the representative destroyer."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 in the worktree: bsp_game.exe linked, reconstructed_math 1/1 passed. No compiled code changed in this packet.",
+    "run": "FAILED TO START. bsp_game.exe --frames 60 and --frames 4000 --menu-select USN02 --mission-frames 3200 both exit -1073741819 (0xC0000005) with the log ending at 'settings resolution=2560x1440 index=24 fullscreen=0 vsync=1 antialias=0 shader_model=2 language=englishauthentic'. The main checkout's prebuilt bsp_game.exe fails identically, so the condition is environmental.",
+    "report_gate": "python tools/verify_report_calls.py reports/cc7_torpedo_launch_accuracy.json",
+    "arithmetic": "local/torp_hit_bound.py and local/torp_arcs.py, both read-only over the installation"
+  }
+}
