@@ -1,0 +1,733 @@
+{
+  "packet": "orch3_post_effect_bt_bu_integration",
+  "status": "independently_reviewed_combined_build_and_writer_fixture_passed_sealed",
+  "completed_utc": "2026-09-14T07:56:34.059252+00:00",
+  "tested_commit": "f6ab4a1ac5889c14888caaadb3c10badaf352f3d",
+  "worker_bt_commits": [
+    "8b4b9db7cc896dfd4381aa4062bd337b71d4cfea",
+    "099552aa162af138c1a05dcf92dbc8fca8a3375c"
+  ],
+  "root_source_commits": [
+    "9ac26670",
+    "f6ab4a1ac5889c14888caaadb3c10badaf352f3d"
+  ],
+  "root_doc_correction": "c0139fe8",
+  "native_body_credit": 4,
+  "native_bytes_credit": 605,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live native read/export uses BSP CLI target verification; PE hash independently recomputed."
+  },
+  "native_spans": [
+    {
+      "name": "writer",
+      "address": "00b4d2d0",
+      "inclusive_end": "00b4d4b2",
+      "bytes": 483,
+      "sha256": "973c4566c789877112af8bb25a7f1f571a384aa17c4efae6cbd4045c9064ac57",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "wrapper",
+      "address": "00b4d4c0",
+      "inclusive_end": "00b4d4fa",
+      "bytes": 59,
+      "sha256": "6ee86b95b2fded21ea376e008f341df31748621535965de42c932bcb9d7752d6",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "logical_profile",
+      "address": "00d61d6c",
+      "inclusive_end": "00d61d87",
+      "bytes": 28,
+      "sha256": "e063e41b192f122760c42fc351b6edac6d3a53814e3d8d2543c77985e5b5e21b",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "depth",
+      "address": "00ce3800",
+      "inclusive_end": "00ce3803",
+      "bytes": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "one",
+      "address": "00d7a24c",
+      "inclusive_end": "00d7a24f",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "existing_map_provider",
+      "address": "00b49980",
+      "inclusive_end": "00b49a7b",
+      "bytes": 252,
+      "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "existing_unmap_provider",
+      "address": "00b49a80",
+      "inclusive_end": "00b49b0a",
+      "bytes": 139,
+      "sha256": "16573b9f263996213c20821e791cd1e9a65c16de48cd9d388288308a3061eb6c",
+      "PE_live_equal": true,
+      "report": "reports/native_post_effect_stream_geometry_bt.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "setter",
+      "address": "00b4e3d0",
+      "bytes": 59,
+      "inclusive_end": "00b4e40a",
+      "sha256": "693f73fefb97d376ef6417ba3cfe243d6e052fba6fe1c4dc1e659231e00ee161",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "count_getter",
+      "address": "00b4cc00",
+      "bytes": 4,
+      "inclusive_end": "00b4cc03",
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "frame_profile",
+      "address": "00d5e600",
+      "bytes": 8,
+      "inclusive_end": "00d5e607",
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "virtual_zero_provider",
+      "address": "00bd30e0",
+      "bytes": 14,
+      "inclusive_end": "00bd30ed",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "frame_deleting_provider",
+      "address": "00b1fcf0",
+      "bytes": 30,
+      "inclusive_end": "00b1fd0d",
+      "sha256": "4e7470a32ffbfe8ddbf79d518924119d75acc1d13a6b987d9da1401f0bd70c0b",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "atomic_IAT_cells",
+      "address": "00ce221c",
+      "bytes": 8,
+      "inclusive_end": "00ce2223",
+      "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_frame_binding_bu.json",
+      "primary_rechecked_live_PE_equal": true
+    }
+  ],
+  "source_pin_checks": {
+    "reports/native_post_effect_stream_geometry_bt.json": {
+      "source_sha256": {
+        "count": 2,
+        "exact_matches": 2,
+        "line_ending_only_differences": {}
+      },
+      "provider_sha256": {
+        "count": 14,
+        "exact_matches": 14,
+        "line_ending_only_differences": {}
+      }
+    },
+    "reports/native_post_effect_frame_binding_bu.json": {
+      "source_sha256": {
+        "count": 2,
+        "exact_matches": 2,
+        "line_ending_only_differences": {}
+      },
+      "provider_sha256": {
+        "count": 8,
+        "exact_matches": 8,
+        "line_ending_only_differences": {}
+      }
+    }
+  },
+  "source_sha256": {
+    "include/bsp/native_post_effect_stream_geometry.hpp": "034ae3bb916456316e4aad0f365a3edbce0daf59334db39cf38980f2ab3bf5ba",
+    "src/native_post_effect_stream_geometry.cpp": "0fa880829244705f95d249da8965f533224ce5848c56e161be6d5a739c70a2f0",
+    "include/bsp/native_post_effect_frame_binding.hpp": "866a583058bdbfd4056fb0dfbda3bac79a973b97bd3f44d897f8769ca8e7e43f",
+    "src/native_post_effect_frame_binding.cpp": "a9d352b589251ccd80c435e35d658af15c30d3379d4a767a36a707ae5abcf809"
+  },
+  "review": {
+    "bt_reviewer": "primary integrator independent of worker author",
+    "bu_reviewer": "/root/render_resources_constructor_bk (Astra), independent of primary author",
+    "bt_complete_source_header_both_native_listings_probe_recipe_and_object_parser_reviewed": true,
+    "bu_complete_source_header_both_native_listings_and_concrete_provider_closure_reviewed": true,
+    "bu_peer_record": "local/bt-worker/local/bu-independent-review.json",
+    "remaining_blocking_source_findings": [],
+    "documentation_correction": "The final probe uses one code page and one shared constant page, with two cells. Worker corrected the wording and artifact pin without changing source/build/fixture inputs.",
+    "observations": [
+      "BT implements the original whole access sequence, including output/input aliasing, current written-destination x87 conversions, SUB/JNZ flags and the late color load/reverse stores.",
+      "B4D308..30F is an unreachable alignment gap after an unconditional jump; no listing repair or body credit beyond the original span.",
+      "Wrapper takes one original stacked source pointer and uses real B49980/B49A80 with fresh +20 after map and +18 after writing. No automatic unlock on failure.",
+      "BU preserves identity skip, publication before retain, fresh decrement target, captured old and double current-profile dispatch before complete B1FCF0 flags1. No post-free access or clear."
+    ]
+  },
+  "generated_code": {
+    "bt": {
+      "object_sha256": "9a6ef8f2d23313d56342360db11cde6625701ab7c2837f8d446a4c1d84fa161d",
+      "source_sha256": "0fa880829244705f95d249da8965f533224ce5848c56e161be6d5a739c70a2f0",
+      "functions": [
+        {
+          "role": "writer",
+          "symbol": "?write_native_post_effect_stream_geometry_00b4d2d0@bsp@@YAXPAXIIPBXABUNativePostEffectGeometryConstants@1@@Z",
+          "bytes": 477,
+          "sha256": "09755515be94cd5d9212d3cb0284960657b4b8d90644d1ccb52b015411410c21",
+          "relocations": [],
+          "loop_offset": 59,
+          "native_loop_address": "00b4d310",
+          "native_loop_inclusive_end": "00b4d4ad",
+          "loop_bytes": 414,
+          "loop_sha256": "695336baf725bc251f941bf55c99e3dde23a01e699c14f2028323b36c0441c9a",
+          "native_loop_byte_identical": true,
+          "x87_pairs": 8,
+          "no_callees": true,
+          "setup_review": "Output EBp+8, first+0C and count+10: modulo IMUL/ADD before zero test. Input+14 read and both constant loads occur only after nonzero branch. New constant context+18 is host ABI metadata."
+        },
+        {
+          "role": "wrapper",
+          "symbol": "?populate_native_post_effect_stream_geometry_00b4d4c0@bsp@@YAXPAXPBXAAUNativePostEffectStreamGeometryContext@1@@Z",
+          "bytes": 723,
+          "sha256": "59b63c949ac3fa0a38e2b2feeeae367cdc29563a03b8cd97cbebdd0ec2596af4",
+          "relocations": [
+            {
+              "offset": 119,
+              "kind": 20,
+              "symbol": "?lock_native_logical_vertex_stream_00b49980@bsp@@YIPAXPAXAAUNativeLogicalBufferMappingContext@1@IIE@Z"
+            },
+            {
+              "offset": 685,
+              "kind": 20,
+              "symbol": "?unlock_native_logical_vertex_stream_00b49a80@bsp@@YIXPAXAAUNativeLogicalBufferMappingContext@1@@Z"
+            },
+            {
+              "offset": 696,
+              "kind": 6,
+              "symbol": "??_C@_0EH@NHAJICOG@post?9effect?5geometry?5requires?5it@"
+            },
+            {
+              "offset": 704,
+              "kind": 20,
+              "symbol": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 709,
+              "kind": 6,
+              "symbol": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 718,
+              "kind": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "loop_offset": 204,
+          "native_loop_address": "00b4d310",
+          "native_loop_inclusive_end": "00b4d4ad",
+          "loop_bytes": 414,
+          "loop_sha256": "695336baf725bc251f941bf55c99e3dde23a01e699c14f2028323b36c0441c9a",
+          "native_loop_byte_identical": true,
+          "current_read_review": {
+            "stream_before_map": 16,
+            "count_before_map": 36,
+            "map_call": 118,
+            "fresh_count_after_map": 134,
+            "unsigned_shift": 143,
+            "inlined_loop": 204,
+            "fresh_stream_after_writer": 626,
+            "unmap_call": 684
+          }
+        }
+      ]
+    },
+    "bt_section_and_symbolic_relocation_identity_to_worker": true,
+    "bu": {
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_post_effect_frame_binding.obj",
+      "object_sha256": "96f72b83cab62a83910588788cd6ed964280c9456c3fbd228f0039537ce14fa1",
+      "functions": [
+        {
+          "role": "setter",
+          "symbol": "?set_native_post_effect_frame_target_00b4e3d0@bsp@@YAXPAX0AAUNativePostEffectFrameBindingContext@1@@Z",
+          "bytes": 287,
+          "sha256": "434d57df42bd47fbf8332b2a8a8adf078611bd6f88b4b52fca0c321b8a28d607",
+          "relocations": [
+            {
+              "offset": 98,
+              "type": 6,
+              "symbol": "??_C@_0EE@LOIIOHCI@post?9effect?5frame?5binding?5requir@"
+            },
+            {
+              "offset": 231,
+              "type": 20,
+              "symbol": "?delete_native_frame_target_owner_00b1fcf0@bsp@@YAPAUNativeFrameTargetOwnerStorage@1@AAU21@IAAUNativeFrameTargetOwnerContext@1@@Z"
+            },
+            {
+              "offset": 246,
+              "type": 6,
+              "symbol": "??_C@_0EM@FKEBFNNJ@post?9effect?5frame?5binding?5requir@"
+            },
+            {
+              "offset": 253,
+              "type": 6,
+              "symbol": "??_C@_0FD@JONNHOEL@post?9effect?5frame?5binding?5requir@"
+            },
+            {
+              "offset": 260,
+              "type": 6,
+              "symbol": "??_C@_0EE@CECLPCAD@post?9effect?5frame?5binding?5requir@"
+            },
+            {
+              "offset": 268,
+              "type": 20,
+              "symbol": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 273,
+              "type": 6,
+              "symbol": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 282,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "listing": "local/bu-setter-object.asm"
+        },
+        {
+          "role": "getter",
+          "symbol": "?get_native_post_effect_count_00b4cc00@bsp@@YIIPBX@Z",
+          "bytes": 4,
+          "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+          "relocations": [],
+          "listing": "local/bu-getter-object.asm"
+        }
+      ],
+      "scope": "Generated static inspection; exact native getter bytes, no setter execution or native EH/ABI claim."
+    },
+    "bu_manual_complete_generated_setter_review": true,
+    "bu_sequence": {
+      "publication": 51,
+      "increment_target": 64,
+      "increment_call": 78,
+      "fresh_decrement_target": 91,
+      "decrement_call": 111,
+      "current_old_profile": 125,
+      "virtual_zero_selector": 158,
+      "reloaded_old_profile": 181,
+      "deleting_selector": 210,
+      "flags1_delete_call": 230
+    },
+    "timing_limits": "The wrapper can defer/skip the unused original input stack-word read on zero records. The BU compiler reuses its incoming argument slot as a scratch word. Host ABI/private-frame and hardware-fault timing are not claimed."
+  },
+  "annotation": {
+    "record": "local/btbu-ghidra-annotation-record.json",
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "force_refreshed_exports": [
+      "00b4d2d0",
+      "00b4d4c0",
+      "00b4e3d0",
+      "00b4cc00"
+    ],
+    "conventions": "Writer __stdcall four words; wrapper/setter/getter __thiscall. The source count leaf fastcall has the original physical ECX/EAX/RET behavior.",
+    "EH_body_credit": 0
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "tracked_build_inputs": 2563,
+    "exact_commit": "f6ab4a1ac5889c14888caaadb3c10badaf352f3d",
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "call_audits": {
+      "bt": {
+        "report": "reports/native_post_effect_stream_geometry_bt.json",
+        "direct_tail_rows": 5,
+        "failed": 0,
+        "indirect_rows": 2,
+        "log": "local/btbu-bt-call-audit.log",
+        "sha256": "5c838ff2efd68d77f78e850bc0f8ba3a3beac6ef88766af18c3a6567379bf08f"
+      },
+      "bu": {
+        "report": "reports/native_post_effect_frame_binding_bu.json",
+        "direct_tail_rows": 6,
+        "failed": 0,
+        "indirect_rows": 3,
+        "log": "local/btbu-bu-call-audit.log",
+        "sha256": "04d361527942b08642ef83c70deec52d7b9eca6ebe18f034ee106f0e50670ce7"
+      }
+    },
+    "worker_ctests": 1,
+    "worker_input_count": 2565,
+    "worker_input_scope": "All tracked CMakeLists/cmake/include/src/tests/third_party/scripts/build.ps1 plus both new BT source files. Captured during the initial full build, then again after it; not a pre-build stamp.",
+    "worker_fixture_build_stamp_input_count": 2570,
+    "primary_writer_probe": {
+      "exit_code": 0,
+      "source_and_native_header_identical_to_worker": true,
+      "recipe_changes": "Only build-stamp filename and property name changed to consume the exact primary 2563-input stamp.",
+      "before_after_input_pins_equal": true,
+      "input_count": 11,
+      "embedded_asInvoker_manifest": true,
+      "case": {
+        "buffer_bytes_per_path": 768,
+        "output_base": 64,
+        "first_record": "20000001",
+        "wrapped_output_start": 232,
+        "input_start": 196,
+        "count": 2,
+        "overlap": "Iteration1 consumes original first record before overwriting record2; current input reads in iteration2 observe overwritten words.",
+        "x87_CW": "037f",
+        "x87_SW": "0003",
+        "MXCSR": "00001f80",
+        "all_buffer_bytes_equal": true,
+        "invalid_and_denormal_status_observed": true,
+        "guard_bytes_unchanged": 432,
+        "mapped_code_bytes_unchanged_after_rebasing": 483,
+        "constant_words_unchanged": true,
+        "snapshot_pair_sha256": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+        "snapshot_half_sha256": "83b0f7df14f6b50200b8efe9693197497332fd5be7abcaccfc8ce5c81003d369"
+      },
+      "root_snapshot_pair_equal_to_worker": true,
+      "original_header_matches_installed_PE": true,
+      "native_relocations": [
+        {
+          "instruction": "00b4d2f0",
+          "operand": "00b4d2f4",
+          "writer_offset": 36,
+          "original_cell": "00ce3800"
+        },
+        {
+          "instruction": "00b4d2f8",
+          "operand": "00b4d2fc",
+          "writer_offset": 44,
+          "original_cell": "00d7a24c"
+        }
+      ],
+      "scope": "One two-record overlap/wrapping/NaN/subnormal writer trajectory. Both original constant operands were rebased before execution; all other original code and relative control flow are unchanged."
+    },
+    "wrapper_mapping_executed": false,
+    "frame_setter_executed": false,
+    "injected_failure": false,
+    "native_FH3_SEH": false,
+    "drop_in_ABI": false,
+    "GPU_validated": false,
+    "game_validated": false
+  },
+  "worker_artifact_checks": {
+    "local/bt-build-attempt-1.log": {
+      "sha256": "a74641162fcccf12efe26a6b1a5bbaf43b0327b1f099ebcd4efa24aea352d9eb",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-build-attempt-1.log"
+    },
+    "local/bt-input-pins-during.json": {
+      "sha256": "a6b85f7c4001cca34a55d6a158a8b8dafde06e77c05993619d9812a340319f51",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-input-pins-during.json"
+    },
+    "local/bt-input-pins-after.json": {
+      "sha256": "2e66c431bda669c0e13cf0500fd50c010f06e4a61c82530afbf65db9b416c216",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-input-pins-after.json"
+    },
+    "local/bt-build-stamp.json": {
+      "sha256": "e3e55494e055178292a7a04c2f6f20c8b674950048cd5f98d8aa50c8860ecf4a",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-build-stamp.json"
+    },
+    "local/bt_object_review.py": {
+      "sha256": "aae883a19fd13902bed6cca0d8b2eb90372a9fd5ecbc29ba34ee4d04d6d3ad4d",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt_object_review.py"
+    },
+    "local/bt-object-review.json": {
+      "sha256": "0422820164d0fd41c2849d854bb7a844402cc71bdb94370411faa12cd924a736",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-object-review.json"
+    },
+    "local/bt-writer-object.asm": {
+      "sha256": "813a7dab3d8455def6374ed7b1232e47fbfd92febad3d83e23146a21519180f6",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-writer-object.asm"
+    },
+    "local/bt-wrapper-object.asm": {
+      "sha256": "cf4e65165ea221248ac8c7fab7d99d2e7d106710fcf4288eaff534b66ad39900",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-wrapper-object.asm"
+    },
+    "local/bt_probe.cpp": {
+      "sha256": "dbe6a763c2ed755ee8dbec39da66a1c43b690506d21ef015cac5160c983d13f7",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt_probe.cpp"
+    },
+    "local/run_bt_probe.ps1": {
+      "sha256": "adac24f3bdb25bd0032bc267e9ba7768f594f3f96b070841e983a0fba2df34b8",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/run_bt_probe.ps1"
+    },
+    "local/bt_native_writer_bytes.hpp": {
+      "sha256": "2e24c4a2b878bc0a7f652f592cc44c850316a77eb3a3eff7b8f401e1b03eaf64",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt_native_writer_bytes.hpp"
+    },
+    "local/bt-probe-build.cmd": {
+      "sha256": "fbe601b7194f233ad0a129d29dab8c152c9f5bd2f17b6cee5254a92fe025cc7b",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-build.cmd"
+    },
+    "local/bt-probe-build.log": {
+      "sha256": "9f9dfe3d3306e2218dbf8b82e8117316f20bbedb6872ec6fe95d167b857baab9",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-build.log"
+    },
+    "local/bt-probe-run.log": {
+      "sha256": "0f7016d2d01d8f175fbee79550865ad42b97426c4a6f8edd4400fc802af663cf",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-run.log"
+    },
+    "local/bt-probe-inputs-before.json": {
+      "sha256": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-inputs-before.json"
+    },
+    "local/bt-probe-inputs-after.json": {
+      "sha256": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-inputs-after.json"
+    },
+    "local/bt-probe-snapshots.bin": {
+      "sha256": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-snapshots.bin"
+    },
+    "local/bt_probe.exe": {
+      "sha256": "08f7774b923aa88d67d36e74232b7551462ab65688e01b72d82135f68c2a4921",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt_probe.exe"
+    },
+    "local/bt_probe.obj": {
+      "sha256": "8a15ae7e581c8ad0a1bd822ae3ebe05b893c2419d2613672ed5d2bfa71b1334a",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt_probe.obj"
+    },
+    "local/bt-probe-attempt-1-fixed-mapping.zip": {
+      "sha256": "4426146e080114fa02781d4a3e4096a09bde7e4db3aadcc0a25bb294cbe14632",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-attempt-1-fixed-mapping.zip"
+    },
+    "local/bt-probe-attempt-2-coverage-check.zip": {
+      "sha256": "5d55dff52136360b9bf31f33b4c11f2f41645b8d26180915fc6df0e34f8ef476",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-probe-attempt-2-coverage-check.zip"
+    },
+    "build/win32/bsp_core.dir/Release/native_post_effect_stream_geometry.obj": {
+      "sha256": "8ad23760a0db2368dafca8fb0eb5f839ea553f32434fac345e3dfddfb2290bd4",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/build/win32/bsp_core.dir/Release/native_post_effect_stream_geometry.obj"
+    },
+    "build/win32/Release/bsp_core.lib": {
+      "sha256": "86813a430647c5f9c90fba5912c2c19a6c68eb587f4b5b70ba5ef688bc7e0b47",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_lua511.lib": {
+      "sha256": "2b75f5ff1c8a70fdd11e97928bcc611f628bf3b7208fd8d42e8337c0a38c7b9f",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_zlib121.lib": {
+      "sha256": "9d88347acf5b29e877df2f1c8fb012e83d70466bdc713bf29f64222de37f5fd5",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_game.exe": {
+      "sha256": "1bd9df11cfb4a34ad47082526127256d3826a0db15efad56ab7e3d77f5ea0915",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_math_tests.exe": {
+      "sha256": "bb17b5f08b1935f05c77ec53e5ac265147060ae6834288529636f5bdd59892f1",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "cmake/startup.cmake": {
+      "sha256": "d4e1dd932ebaf6faf2f277d1660f78a00ecb6ac44b366566c8ff5ffa12dcd34a",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/cmake/startup.cmake"
+    },
+    "docs/NATIVE_POST_EFFECT_STREAM_GEOMETRY_BT.md": {
+      "sha256": "9de776fcc199988521efd6f5545d8680a36639d94c3d558e7dc215a97de41c1c",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/docs/NATIVE_POST_EFFECT_STREAM_GEOMETRY_BT.md"
+    },
+    "local/bt-call-audit.txt": {
+      "sha256": "5c838ff2efd68d77f78e850bc0f8ba3a3beac6ef88766af18c3a6567379bf08f",
+      "primary_rechecked": true,
+      "archived_as": "local/bt-worker/local/bt-call-audit.txt"
+    }
+  },
+  "worker_failed_attempts": [
+    {
+      "attempt": 1,
+      "archive": "local/bt-probe-attempt-1-fixed-mapping.zip",
+      "result": "Probe compiled but required fixed mapping unavailable; stopped before native execution. Changed only fixture to allocated pages and two verified operand relocations."
+    },
+    {
+      "attempt": 2,
+      "archive": "local/bt-probe-attempt-2-coverage-check.zip",
+      "result": "Native/source bytes and FP state matched but coverage assertion failed: initial same-start alias overwrote payloads before both intended FP exceptions occurred. Moved input one record before destination; source and native bodies unchanged."
+    }
+  ],
+  "worker_archive_scope": "25 worker artifacts plus independent BU review copied and hash checked, including both failed-attempt archives. Five worker libraries/executables are verified in its preserved worktree but not duplicated; exact primary libraries are archived.",
+  "limitations": [
+    "Only the one documented default nontrapping x87 writer trajectory has native/source execution coverage; zero count, other controls, other alias geometries and unmasked traps are not runtime-tested here.",
+    "Real current renderer/synchronization/physical mapping domains and valid mapped extent remain wrapper prerequisites; mapping wrapper/GPU execution is untested.",
+    "BU admits the concrete D5E600 frame final-zero profile and shared frame/surface/CRT domains. No setter identity/retain/final-zero execution or injected provider failure was added.",
+    "Private host/argument/EH-frame aliases, hardware fault timing, native exceptions and whole-program ABI/game validation are unclaimed.",
+    "B4DEF0/B6FDE0 submission work is active independently in BV; B529A0 update composition remains open and is excluded from this tested batch."
+  ],
+  "artifact_sha256": {
+    "local/btbu-final-build-stamp.json": "bb78b3f2031661952c9e6c04bf3b793f4fdc8e25fe4aed48cad0b03918f6ab8e",
+    "local/btbu-final-combined-build.log": "08be0d7092b98bf60945e80acd66d4e70fddb001dc144a2afdc125b9f866c032",
+    "local/build_final_btbu.py": "2496b1685ef36eefcc1e2c30dea693a9799fa32479af1216716440048a40a433",
+    "local/prepare_bu.py": "373dccbc7780b5d91235e93dfd8267ea2e94fd354c329ea21169dcb1d666365c",
+    "local/prepare_btbu.py": "d30b135e99306ff4a744e995d49a909dc6effe39136d9da8ebf28921dfeed989",
+    "local/annotate_btbu.py": "d8888987bdfb40ccb00b72d18a189ce6df1a4f1d5beaadecbd8da50381c6403e",
+    "local/record_btbu.py": "a6ff0b4afbdabae47ee7cc076c429090e04303c4fa888f886586b6feeeb07421",
+    "local/btbu-ledger-before.json": "830186d6281b0d8437270377a79e9c0d7037bf3036cc258859965822581f91ab",
+    "local/btbu-function-records.json": "97f5d4ef4c7cca0e8c58cb7c8ccf8643bf88f3692555e7a6d510419c68429ade",
+    "local/btbu-native-spans.json": "fa75cd0ecdd497014a7fa9d28aaa37714b40b62ca95063a2c39b502279f904c4",
+    "local/btbu-source-pins.json": "d1da7cfeb779e7b79266955c521c42cb7e786833eb22e5d34a917e06f615ed14",
+    "local/btbu-ghidra-annotation-record.json": "f050a80db8b0e8fd66624a4cc6c40ae1abfe6134906dfd17776f56e45dd58cb6",
+    "local/btbu-comments-before.json": "5b3c0b500dfcce620820b4d96c4df7c3c280920096b9681755b0566ecd388da7",
+    "local/btbu-comments-after.json": "701a6a9f4c1ef57ba02113b48f1739bcfbad3acbde534a51e72217f85732404d",
+    "local/btbu-annotation.log": "2787729f4a5d72492976e5b1baa2b1f9733b21e22e5af1118bab17aac98dbf4e",
+    "local/btbu-export-refresh.log": "2c10bf2472b68ca508a4a51d36051eb7ba5cb0bdfc2ba7584303904db0574838",
+    "local/btbu-bt-call-audit.log": "5c838ff2efd68d77f78e850bc0f8ba3a3beac6ef88766af18c3a6567379bf08f",
+    "local/btbu-bu-call-audit.log": "04d361527942b08642ef83c70deec52d7b9eca6ebe18f034ee106f0e50670ce7",
+    "local/bt_object_review.py": "aae883a19fd13902bed6cca0d8b2eb90372a9fd5ecbc29ba34ee4d04d6d3ad4d",
+    "local/bt-object-review.json": "4511dceb7a94aa7c0fec65a40439dcda66a710ac5efeff623d8475c57549584d",
+    "local/bt-writer-object.asm": "813a7dab3d8455def6374ed7b1232e47fbfd92febad3d83e23146a21519180f6",
+    "local/bt-wrapper-object.asm": "cf4e65165ea221248ac8c7fab7d99d2e7d106710fcf4288eaff534b66ad39900",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/bu_object_review.py": "8590262053ba353055165b2fdec7606c0a6ef72a1765fe7303be3ade85a1e32c",
+    "local/bu-object-review.json": "890bd4aae6747dcdcbf1994ed82e84f740e7900e3938c6fc8dc1efdefc9502dc",
+    "local/bu-setter-object.asm": "108d4dcf6974af7fc034f5a27069104298e4c7131a013dd1bce02abf21ebe945",
+    "local/bu-getter-object.asm": "bd1b86818cf20327bc11d509d3e329aaede31db081b5e29d41054814f2eb231d",
+    "local/bt_probe.cpp": "dbe6a763c2ed755ee8dbec39da66a1c43b690506d21ef015cac5160c983d13f7",
+    "local/bt_native_writer_bytes.hpp": "2e24c4a2b878bc0a7f652f592cc44c850316a77eb3a3eff7b8f401e1b03eaf64",
+    "local/run_bt_probe.ps1": "e25f7516f7effe7b35a1db536315f0dd238d210aaa46ded0352885b58fe6d41a",
+    "local/bt-probe-build.cmd": "1008fd4feea47d773d913bbe9f21fbdd497948712433f3cea057b2a0184c2a51",
+    "local/bt-probe-build.log": "58a3a55ecab397b8959c551265986a9c79d3f9eab339b713e82ac45a70c7bbf8",
+    "local/bt-probe-run.log": "395067e405d954a0902de792ac6a7684be536f7ded77ef22dcbebd631e8a0a31",
+    "local/bt-probe-inputs-before.json": "db83ef246ea3653a8dcc5d7e877e5172ae67f141fbfb37bc00461f029c1638de",
+    "local/bt-probe-inputs-after.json": "db83ef246ea3653a8dcc5d7e877e5172ae67f141fbfb37bc00461f029c1638de",
+    "local/bt-probe-snapshots.bin": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+    "local/bt_probe.exe": "588b90d88d0c276c23e87fa5842460c48a8d9cb9232826024ffa07bcd61cf20b",
+    "local/bt_probe.obj": "7bfd20576a80241a6e04cab921b660e42398143e5c9b6d229d758b1628aef602",
+    "build/win32/bsp_core.dir/Release/native_post_effect_stream_geometry.obj": "9a6ef8f2d23313d56342360db11cde6625701ab7c2837f8d446a4c1d84fa161d",
+    "build/win32/bsp_core.dir/Release/native_post_effect_frame_binding.obj": "96f72b83cab62a83910588788cd6ed964280c9456c3fbd228f0039537ce14fa1",
+    "reports/native_post_effect_stream_geometry_bt.json": "73e2ca7796ebb1dce3365ac8533a2bddf81aa1de7576e7c10a28176a14a766ca",
+    "reports/native_post_effect_frame_binding_bu.json": "6a35bfed548a18b334d6a4ea990344926711550d47a598e0cc1fe9bfd1c7f7af",
+    "local/bt-worker/local/bt-build-attempt-1.log": "a74641162fcccf12efe26a6b1a5bbaf43b0327b1f099ebcd4efa24aea352d9eb",
+    "local/bt-worker/local/bt-input-pins-during.json": "a6b85f7c4001cca34a55d6a158a8b8dafde06e77c05993619d9812a340319f51",
+    "local/bt-worker/local/bt-input-pins-after.json": "2e66c431bda669c0e13cf0500fd50c010f06e4a61c82530afbf65db9b416c216",
+    "local/bt-worker/local/bt-build-stamp.json": "e3e55494e055178292a7a04c2f6f20c8b674950048cd5f98d8aa50c8860ecf4a",
+    "local/bt-worker/local/bt_object_review.py": "aae883a19fd13902bed6cca0d8b2eb90372a9fd5ecbc29ba34ee4d04d6d3ad4d",
+    "local/bt-worker/local/bt-object-review.json": "0422820164d0fd41c2849d854bb7a844402cc71bdb94370411faa12cd924a736",
+    "local/bt-worker/local/bt-writer-object.asm": "813a7dab3d8455def6374ed7b1232e47fbfd92febad3d83e23146a21519180f6",
+    "local/bt-worker/local/bt-wrapper-object.asm": "cf4e65165ea221248ac8c7fab7d99d2e7d106710fcf4288eaff534b66ad39900",
+    "local/bt-worker/local/bt_probe.cpp": "dbe6a763c2ed755ee8dbec39da66a1c43b690506d21ef015cac5160c983d13f7",
+    "local/bt-worker/local/run_bt_probe.ps1": "adac24f3bdb25bd0032bc267e9ba7768f594f3f96b070841e983a0fba2df34b8",
+    "local/bt-worker/local/bt_native_writer_bytes.hpp": "2e24c4a2b878bc0a7f652f592cc44c850316a77eb3a3eff7b8f401e1b03eaf64",
+    "local/bt-worker/local/bt-probe-build.cmd": "fbe601b7194f233ad0a129d29dab8c152c9f5bd2f17b6cee5254a92fe025cc7b",
+    "local/bt-worker/local/bt-probe-build.log": "9f9dfe3d3306e2218dbf8b82e8117316f20bbedb6872ec6fe95d167b857baab9",
+    "local/bt-worker/local/bt-probe-run.log": "0f7016d2d01d8f175fbee79550865ad42b97426c4a6f8edd4400fc802af663cf",
+    "local/bt-worker/local/bt-probe-inputs-before.json": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+    "local/bt-worker/local/bt-probe-inputs-after.json": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+    "local/bt-worker/local/bt-probe-snapshots.bin": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+    "local/bt-worker/local/bt_probe.exe": "08f7774b923aa88d67d36e74232b7551462ab65688e01b72d82135f68c2a4921",
+    "local/bt-worker/local/bt_probe.obj": "8a15ae7e581c8ad0a1bd822ae3ebe05b893c2419d2613672ed5d2bfa71b1334a",
+    "local/bt-worker/local/bt-probe-attempt-1-fixed-mapping.zip": "4426146e080114fa02781d4a3e4096a09bde7e4db3aadcc0a25bb294cbe14632",
+    "local/bt-worker/local/bt-probe-attempt-2-coverage-check.zip": "5d55dff52136360b9bf31f33b4c11f2f41645b8d26180915fc6df0e34f8ef476",
+    "local/bt-worker/build/win32/bsp_core.dir/Release/native_post_effect_stream_geometry.obj": "8ad23760a0db2368dafca8fb0eb5f839ea553f32434fac345e3dfddfb2290bd4",
+    "local/bt-worker/cmake/startup.cmake": "d4e1dd932ebaf6faf2f277d1660f78a00ecb6ac44b366566c8ff5ffa12dcd34a",
+    "local/bt-worker/docs/NATIVE_POST_EFFECT_STREAM_GEOMETRY_BT.md": "9de776fcc199988521efd6f5545d8680a36639d94c3d558e7dc215a97de41c1c",
+    "local/bt-worker/local/bt-call-audit.txt": "5c838ff2efd68d77f78e850bc0f8ba3a3beac6ef88766af18c3a6567379bf08f",
+    "local/bt-worker/local/bu-independent-review.json": "b7d16c6503975c9ada07b0f6f041337b292fd0117068b1e2aae51f3070a0e127",
+    "local/btbu-live-00b1fcf0.txt": "1869915ed6874b1522c3e8488500e0018cedf8384049ef14df9e50d91bfd2b9f",
+    "local/btbu-live-00b49980.txt": "18fc90b0065c4f0d25d188e7a57e6dde95c86e5db346ce9dc30cde05114cc7d1",
+    "local/btbu-live-00b49a80.txt": "2f01a06d2c1fa16d8e9b251d38cf85e3399ae8191123b5137e70bc5ea8cc1558",
+    "local/btbu-live-00b4cc00.txt": "581a10dacd6f764b1589d453019c49b713385237b883ae231d32f11025941f2e",
+    "local/btbu-live-00b4d2d0.txt": "6670a77abe30827bebfa310c7ed95d6f26bcac7d11ff60cd248232a804a168e5",
+    "local/btbu-live-00b4d4c0.txt": "54b78c60d63f9db9652d4880dad88949c61b89633fa0f706b0835e70499e0fbe",
+    "local/btbu-live-00b4e3d0.txt": "fd2f998a8d6cad4b4c476b701ee84f892249da2d8a44749967443bf56856a539",
+    "local/btbu-live-00bd30e0.txt": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953",
+    "local/btbu-live-00ce221c.txt": "e4a85a1941ae5383d66311ac37b194b6add5de3630c37fedd001c752258529ce",
+    "local/btbu-live-00ce3800.txt": "a83a9c1098467bf8c93a91c60a1f74a0b20fbfea93a5ab30152439fd35fb57f8",
+    "local/btbu-live-00d5e600.txt": "136562a2d335258c3e9e18899c9b0f4c3cbb4e4e0478c5516ce2d56519eb2ab4",
+    "local/btbu-live-00d61d6c.txt": "ce736c0215f4ef6f5ebd9ae338c33497a17fb23dcad411fbb03d1ec99230ef2a",
+    "local/btbu-live-00d7a24c.txt": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+  },
+  "sealed_attempt": {
+    "tested_commit": "f6ab4a1ac5889c14888caaadb3c10badaf352f3d",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\btbu-validated-attempt-f6ab4a1a.zip",
+    "sha256": "ad83ed69301d4f7a2d0ed391d99f5e0a08aeea0ea84c8412f0bab5ecdf4d35a5",
+    "payload_members": 2666,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "8b86e4e256a34a3c4bf0c4671f34852834a5edc0abd1a0200a927ddeff19b0af",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2563
+  }
+}
