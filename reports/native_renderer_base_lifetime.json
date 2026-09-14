@@ -1,0 +1,833 @@
+{
+  "packet": "orch5_native_renderer_base",
+  "base_commit": "0ae102654222990b7a9648d3b3b992709cc84a95",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_renderer_base_lifetime.cpp",
+  "header": "include/bsp/native_renderer_base_lifetime.hpp",
+  "documentation": "docs/NATIVE_RENDERER_BASE_LIFETIME.md",
+  "ghidra_writes": false,
+  "ghidra_saves": false,
+  "functions": [
+    {
+      "address": "00b33a70",
+      "inclusive_end": "00b33a8c",
+      "byte_length": 29,
+      "byte_sha256": "70b8154d4318cd646764557c623558fdf8f4351d7c01404f2cc7ea0298314aee",
+      "matches_installed_executable": true,
+      "name": "construct_native_renderer_primary_base_00b33a70",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33d90",
+      "inclusive_end": "00b33d9d",
+      "byte_length": 14,
+      "byte_sha256": "aa162d48a96957a8074415cc267052a20110d3461f755ae7782dd806313f9d69",
+      "matches_installed_executable": true,
+      "name": "destroy_native_renderer_primary_base_00b33d90",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b33e10",
+      "inclusive_end": "00b33e36",
+      "byte_length": 39,
+      "byte_sha256": "a2065d36e166e05403d4edf6520e886c3b5ffb85802d61f7b46ebd7ab4e412b7",
+      "matches_installed_executable": true,
+      "name": "delete_native_renderer_primary_base_00b33e10",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b25f40",
+      "inclusive_end": "00b25fd7",
+      "byte_length": 152,
+      "byte_sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b",
+      "matches_installed_executable": true,
+      "name": "construct_native_renderer_singleton_subobject_00b25f40",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b25fe0",
+      "inclusive_end": "00b26082",
+      "byte_length": 163,
+      "byte_sha256": "b5f37e141e85f1bd744744cb5f7d2c1774491452db7d272ab9f5f9b5563f98a5",
+      "matches_installed_executable": true,
+      "name": "destroy_native_renderer_singleton_subobject_00b25fe0",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b26090",
+      "inclusive_end": "00b260ad",
+      "byte_length": 30,
+      "byte_sha256": "7f1092ea01aec8c34e3d6c54c90b64eb4db0b8dc147215248c5e607593ce0c74",
+      "matches_installed_executable": true,
+      "name": "delete_native_renderer_singleton_subobject_00b26090",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b283f0",
+      "inclusive_end": "00b2844e",
+      "byte_length": 95,
+      "byte_sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a",
+      "matches_installed_executable": true,
+      "name": "construct_native_renderer_base_00b283f0",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b284e0",
+      "inclusive_end": "00b28537",
+      "byte_length": 88,
+      "byte_sha256": "bbb5df13669089e320b2e517b8a5188acccb93bbdb031841d912344f5a95120c",
+      "matches_installed_executable": true,
+      "name": "destroy_native_renderer_base_00b284e0",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b28540",
+      "inclusive_end": "00b2855d",
+      "byte_length": 30,
+      "byte_sha256": "25ec71bd6b8a1d2114473b4caed5b5da7fd35e781291f407a7a8cb75b327a180",
+      "matches_installed_executable": true,
+      "name": "delete_native_renderer_base_00b28540",
+      "coverage": "complete native normal body and C++ EH cleanup behavior",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b33a81",
+      "native": "00bd1860",
+      "function": "00b33a70",
+      "contract": "allocate actual 1Ch tracked section"
+    },
+    {
+      "address": "00b33d99",
+      "native": "0041cc80",
+      "function": "00b33d90",
+      "contract": "release primary+4 after D5F1EC profile",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b33e1c",
+      "native": "0041cc80",
+      "function": "00b33e10",
+      "contract": "release primary+4 in standalone scalar"
+    },
+    {
+      "address": "00b33e29",
+      "native": "00bf65ac",
+      "function": "00b33e10",
+      "contract": "cdecl free when scalar flags bit0"
+    },
+    {
+      "address": "00b25f6e",
+      "native": "00415350",
+      "function": "00b25f40",
+      "contract": "first actual 01090AA0 getter"
+    },
+    {
+      "address": "00b25f87",
+      "native": "00ce2218+iat",
+      "function": "00b25f40",
+      "contract": "enter captured first-manager section"
+    },
+    {
+      "address": "00b25faa",
+      "native": "00415350",
+      "function": "00b25f40",
+      "contract": "second getter after primary F8D394 publication"
+    },
+    {
+      "address": "00b25fb1",
+      "native": "00bd0c30",
+      "function": "00b25f40",
+      "contract": "register locally calculated primary+0C subobject"
+    },
+    {
+      "address": "00b25fbf",
+      "native": "00ce2210+iat",
+      "function": "00b25f40",
+      "contract": "leave captured first section"
+    },
+    {
+      "address": "00b2600e",
+      "native": "00415350",
+      "function": "00b25fe0",
+      "contract": "first actual 01090AA0 getter"
+    },
+    {
+      "address": "00b26027",
+      "native": "00ce2218+iat",
+      "function": "00b25fe0",
+      "contract": "enter captured first-manager section"
+    },
+    {
+      "address": "00b26047",
+      "native": "00415350",
+      "function": "00b25fe0",
+      "contract": "second getter after current primary+0C capture"
+    },
+    {
+      "address": "00b2604e",
+      "native": "00bcfca0",
+      "function": "00b25fe0",
+      "contract": "unregister captured CURRENT F8D394+0C subobject"
+    },
+    {
+      "address": "00b26066",
+      "native": "00ce2210+iat",
+      "function": "00b25fe0",
+      "contract": "leave captured first section"
+    },
+    {
+      "address": "00b26093",
+      "native": "00b25fe0",
+      "function": "00b26090",
+      "contract": "subobject teardown before scalar free gate"
+    },
+    {
+      "address": "00b260a0",
+      "native": "00bf65ac",
+      "function": "00b26090",
+      "contract": "cdecl free captured subobject when flags bit0"
+    },
+    {
+      "address": "00b2840e",
+      "native": "00b33a70",
+      "function": "00b283f0",
+      "contract": "construct primary first"
+    },
+    {
+      "address": "00b28420",
+      "native": "00b25f40",
+      "function": "00b283f0",
+      "contract": "construct primary+0C singleton subobject"
+    },
+    {
+      "address": "00b28514",
+      "native": "00b25fe0",
+      "function": "00b284e0",
+      "contract": "teardown primary+0C singleton subobject"
+    },
+    {
+      "address": "00b28523",
+      "native": "00b33d90",
+      "function": "00b284e0",
+      "contract": "release primary tracked section after subobject"
+    },
+    {
+      "address": "00b28543",
+      "native": "00b284e0",
+      "function": "00b28540",
+      "contract": "full base teardown before scalar free gate"
+    },
+    {
+      "address": "00b28550",
+      "native": "00bf65ac",
+      "function": "00b28540",
+      "contract": "cdecl free captured primary when flags bit0"
+    },
+    {
+      "address": "00cbd0e3",
+      "native": "00412430",
+      "function": "00cbd0e0",
+      "contract": "B25F40 EH state0 subobject root profile",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbd0eb",
+      "native": "00411ee0",
+      "function": "00cbd0e8",
+      "contract": "B25F40 EH state1 captured guard",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbd103",
+      "native": "00412430",
+      "function": "00cbd100",
+      "contract": "B25FE0 EH state0 subobject root profile",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbd10b",
+      "native": "00411ee0",
+      "function": "00cbd108",
+      "contract": "B25FE0 EH state1 captured guard",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbd1e3",
+      "native": "00b33d90",
+      "function": "00cbd1e0",
+      "contract": "B283F0 EH state0 primary release",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbd203",
+      "native": "00b33d90",
+      "function": "00cbd200",
+      "contract": "B284E0 EH state0 primary release",
+      "kind": "tail_jump"
+    }
+  ],
+  "native_imports": [
+    {
+      "iat": "00ce2218",
+      "dll": "KERNEL32.dll",
+      "symbol": "EnterCriticalSection"
+    },
+    {
+      "iat": "00ce2210",
+      "dll": "KERNEL32.dll",
+      "symbol": "LeaveCriticalSection"
+    }
+  ],
+  "native_listing_gaps": [
+    {
+      "address": "00b260a5",
+      "inclusive_end": "00b260a7",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    },
+    {
+      "address": "00b28555",
+      "inclusive_end": "00b28557",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    },
+    {
+      "address": "00b33e2e",
+      "inclusive_end": "00b33e30",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    }
+  ],
+  "evidence": {
+    "bodies": "complete live read-only Ghidra listings and installed PE disasm-raw over scalar gaps",
+    "eh_func_info": [
+      "DF57BC/B25F40",
+      "DF57F0/B25FE0",
+      "DF5934/B283F0",
+      "DF5960/B284E0"
+    ],
+    "actual_providers": [
+      "00415350",
+      "00bd0c30",
+      "00bcfca0",
+      "00bd1860",
+      "0041cc80",
+      "00411ee0",
+      "00412430",
+      "00bf65ac"
+    ],
+    "publication_cells": [
+      "00f8d394",
+      "01090aa0"
+    ],
+    "identity": "F8D394 is primary; singleton list stores primary+0C; destructor reloads CURRENT primary before second getter",
+    "input_preimage": "B283F0 writes primary +0,+4,+8,+0C,+10,+18 through its callees; other renderer bytes remain preimage"
+  },
+  "validation": {
+    "status": "complete_base_subobject_body_reconstruction_build_and_focused_fixture_tested",
+    "seed_command": "python tools/ghidra_export.py verify-seeds > local/native_renderer_base_seed_stdout.txt",
+    "seed_exit": 0,
+    "seed_ranges_compared": 8,
+    "seed_ranges_matched": 8,
+    "build_command": "./scripts/build.ps1 *> local/native_renderer_base_build.log",
+    "build_exit": 0,
+    "ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "strict_fixture_command": "cmd /d /c .\\local\\build_native_renderer_base_probe.cmd *> local/native_renderer_base_fixture_build.log",
+    "strict_fixture_exit": 0,
+    "fixture_replay_command": ".\\local\\native_renderer_base_probe.exe *> local/native_renderer_base_fixture_run.log",
+    "fixture_replay_exit": 0,
+    "fixture_stdout": "native renderer base: primary publication, subobject registration and cleanup passed",
+    "strict_compile_flags": "/std:c++17 /EHsc /MD /W4 /WX /showIncludes",
+    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
+    "fixture_pe_machine": "014c",
+    "fixture_manifest_resource_id": 24,
+    "fixture_import_dlls": [
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll"
+    ],
+    "searched_linker_libraries": [
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/advapi32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/comdlg32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/d3d9.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/gdi32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/kernel32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/ole32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/oleaut32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/shell32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/user32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/uuid.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/winspool.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/MSVCRT.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/OLDNAMES.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+      "build/win32/Release/bsp_core.lib",
+      "build/win32/Release/bsp_lua511.lib",
+      "build/win32/Release/bsp_zlib121.lib"
+    ],
+    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_base_lifetime.json",
+    "call_check_exit": 0,
+    "call_check_direct_rows": 24,
+    "call_check_failures": 0,
+    "artifact_manifest": "local/native_renderer_base_final_manifest.json"
+  },
+  "original_pe": {
+    "machine": "014c",
+    "image_base": "00400000",
+    "spans": [
+      {
+        "address": "00b33a70",
+        "inclusive_end": "00b33a8c",
+        "sha256": "70b8154d4318cd646764557c623558fdf8f4351d7c01404f2cc7ea0298314aee"
+      },
+      {
+        "address": "00b33d90",
+        "inclusive_end": "00b33d9d",
+        "sha256": "aa162d48a96957a8074415cc267052a20110d3461f755ae7782dd806313f9d69"
+      },
+      {
+        "address": "00b33e10",
+        "inclusive_end": "00b33e36",
+        "sha256": "a2065d36e166e05403d4edf6520e886c3b5ffb85802d61f7b46ebd7ab4e412b7"
+      },
+      {
+        "address": "00b25f40",
+        "inclusive_end": "00b25fd7",
+        "sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b"
+      },
+      {
+        "address": "00b25fe0",
+        "inclusive_end": "00b26082",
+        "sha256": "b5f37e141e85f1bd744744cb5f7d2c1774491452db7d272ab9f5f9b5563f98a5"
+      },
+      {
+        "address": "00b26090",
+        "inclusive_end": "00b260ad",
+        "sha256": "7f1092ea01aec8c34e3d6c54c90b64eb4db0b8dc147215248c5e607593ce0c74"
+      },
+      {
+        "address": "00b283f0",
+        "inclusive_end": "00b2844e",
+        "sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a"
+      },
+      {
+        "address": "00b284e0",
+        "inclusive_end": "00b28537",
+        "sha256": "bbb5df13669089e320b2e517b8a5188acccb93bbdb031841d912344f5a95120c"
+      },
+      {
+        "address": "00b28540",
+        "inclusive_end": "00b2855d",
+        "sha256": "25ec71bd6b8a1d2114473b4caed5b5da7fd35e781291f407a7a8cb75b327a180"
+      }
+    ]
+  },
+  "artifact_inputs": [
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "kind": "linker_library_searched",
+      "bytes": 57547538,
+      "sha256": "1b17d5e18a3e084c8e9617f831803750cdd951ca53bdaa45c45bf179d60c625a"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "kind": "linker_library_searched",
+      "bytes": 455580,
+      "sha256": "92c25e1b10490f6a0150e4d868580708774df0ffa14eae385bb4f9fdd3e65078"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "kind": "linker_library_searched",
+      "bytes": 72026,
+      "sha256": "f23c284f0ddfaeb0de9f62b35a45fdcb05c27d939523a472f7ad7513a7fc4976"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+      "kind": "linker_library_searched",
+      "bytes": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/advapi32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 192644,
+      "sha256": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/comdlg32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 5842,
+      "sha256": "c88060dfdd74eb66de972f2462dfc1f909fb6b029ed6f5157f35c984cae4fb05"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/d3d9.lib",
+      "kind": "linker_library_searched",
+      "bytes": 5692,
+      "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/gdi32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 148980,
+      "sha256": "9455e9bd270bdfe2d159ae0750241c20c07e94b8962db91f18e24af0cf3ac30d"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/kernel32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 329914,
+      "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/ole32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 108518,
+      "sha256": "037effd2a291e69b7a6b310ca52c95dd7baed17b9bcd718967324e89730dfcc8"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/oleaut32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 86468,
+      "sha256": "b6cbdcc524e4948308c74206a351c90d5ba4e7de5687949ec846116405151ed4"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/shell32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 280164,
+      "sha256": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/user32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 179898,
+      "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/uuid.lib",
+      "kind": "linker_library_searched",
+      "bytes": 8973686,
+      "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/winspool.lib",
+      "kind": "linker_library_searched",
+      "bytes": 59378,
+      "sha256": "4e18ec5682ab14642352eaa2252f422a6b05de1d5a0a279d72e0ae009cc305ac"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+      "kind": "toolchain_binary",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/link.exe",
+      "kind": "toolchain_binary",
+      "bytes": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+      "kind": "linker_library_searched",
+      "bytes": 5365666,
+      "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/MSVCRT.lib",
+      "kind": "linker_library_searched",
+      "bytes": 8263656,
+      "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/OLDNAMES.lib",
+      "kind": "linker_library_searched",
+      "bytes": 158090,
+      "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+      "kind": "linker_library_searched",
+      "bytes": 400312,
+      "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "kind": "packet_source_or_document",
+      "bytes": 112645,
+      "sha256": "dc2f05c98e4b69fe3904db4157704d67a55f4fa4160bd1007a68f157903c364e"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_BASE_LIFETIME.md",
+      "kind": "packet_source_or_document",
+      "bytes": 6038,
+      "sha256": "3f3bb91625b6ab5931fdfb43baaf5ceeed8bccb441ebb7be6a0b5cc9eb6daa1d"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "kind": "installed_original_executable",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "kind": "repository_header_input",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "kind": "repository_header_input",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "kind": "repository_header_input",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "include/bsp/native_renderer_base_lifetime.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2561,
+      "sha256": "f9770340ccc9e6061f68546fc99f1d294bdfdb5c1bb31c3f6f1c5c7633847065"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "kind": "repository_header_input",
+      "bytes": 1705,
+      "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "kind": "repository_header_input",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "kind": "repository_header_input",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "kind": "repository_header_input",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_tracked_critical_section_release.hpp",
+      "kind": "repository_header_input",
+      "bytes": 794,
+      "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "kind": "repository_header_input",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "kind": "repository_header_input",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "kind": "repository_header_input",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "kind": "repository_header_input",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "kind": "repository_header_input",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "kind": "repository_header_input",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "local/build_native_renderer_base_probe.cmd",
+      "kind": "fixture_input_or_output",
+      "bytes": 925,
+      "sha256": "cbf42c257950df1a09d768ca6db58d7db381cdb88a3f455cea539791e2a22282"
+    },
+    {
+      "path": "local/native_renderer_base_build.log",
+      "kind": "fixture_input_or_output",
+      "bytes": 44333,
+      "sha256": "d9f04647d3117d1b0cdcae390c29daaeea725beaadf569e6512f4101ac589855"
+    },
+    {
+      "path": "local/native_renderer_base_call_check.log",
+      "kind": "fixture_input_or_output",
+      "bytes": 362,
+      "sha256": "f2a4023469e633be9780aa389725eda8b57f650b743e5a7cbecf675f8e9e484f"
+    },
+    {
+      "path": "local/native_renderer_base_fixture_build.log",
+      "kind": "fixture_input_or_output",
+      "bytes": 86,
+      "sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0"
+    },
+    {
+      "path": "local/native_renderer_base_fixture_includes.txt",
+      "kind": "fixture_input_or_output",
+      "bytes": 27947,
+      "sha256": "d63f996fcee7ea8157b575e9324e3566dd06597f78f83b8ecd6489d10565b62a"
+    },
+    {
+      "path": "local/native_renderer_base_fixture_run.log",
+      "kind": "fixture_input_or_output",
+      "bytes": 86,
+      "sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0"
+    },
+    {
+      "path": "local/native_renderer_base_probe.cpp",
+      "kind": "fixture_input_or_output",
+      "bytes": 3383,
+      "sha256": "4e21a713a8ff2ca197a05dcead57d93f4334b7541dd137c067e55746ade2e68b"
+    },
+    {
+      "path": "local/native_renderer_base_probe.exe",
+      "kind": "fixture_input_or_output",
+      "bytes": 23552,
+      "sha256": "ea5ff0a8eb5471e8fa1e19448ef28bd092f311667a9d42c460c2a35ecde025fb"
+    },
+    {
+      "path": "local/native_renderer_base_seed_stdout.txt",
+      "kind": "fixture_input_or_output",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/native_renderer_base_source_includes.txt",
+      "kind": "fixture_input_or_output",
+      "bytes": 24554,
+      "sha256": "92fdb4fa6678a19df51807995330c468f21534e3d724b3eda73cf0b8944dc9da"
+    },
+    {
+      "path": "local/native_renderer_base_strict.obj",
+      "kind": "fixture_input_or_output",
+      "bytes": 10656,
+      "sha256": "0d290ef8d28b479bb229e85e97370a19d4f555404fe74f0054abaf1ee589b4ea"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "kind": "fixture_input_or_output",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/write_native_renderer_base_report.py",
+      "kind": "fixture_input_or_output",
+      "bytes": 13433,
+      "sha256": "4d47f90b8b8ad1f30a1b488f547d64e66006a79ea273c9e68eefed74ef6b85f2"
+    },
+    {
+      "path": "src/native_renderer_base_lifetime.cpp",
+      "kind": "packet_source_or_document",
+      "bytes": 7565,
+      "sha256": "a502b2435a156dc7191469d893ddda190b30c35a18f1df9a202c9445efd96c5c"
+    }
+  ],
+  "root_interfaces_required": [
+    "Use identical F8D394 primary and 01090AA0 singleton-manager cells in full 1D94h renderer B32410/B32920/B339F0.",
+    "Derived secondary adjustor B32900 and shared singleton deletion must retain primary versus +0C subobject identity.",
+    "Repair three scalar ADD ESP,4 Ghidra listing gaps under write lock and refresh exports/ledger; this worker made no mutation."
+  ],
+  "uncertainty": [
+    "C++ source interfaces add cell references and are not original ECX/RET or SEH frame ABI replacements.",
+    "Host /MD allocator and returning CRT boundaries are not the game's static CRT identity.",
+    "Fixture uses synthetic raw singleton and actual raw providers; no GPU/rendering/gameplay validation."
+  ]
+}
