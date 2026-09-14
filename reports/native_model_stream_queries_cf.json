@@ -1,9 +1,9 @@
 {
   "packet": "orch3_native_model_stream_queries_cf",
-  "status": "source_reconstructed_release_build_ctest_full_coff_verified",
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
   "source_parent_commit": "234b8f5d4803ba4a11ba2b2c454d445188a1fd39",
-  "native_body_credit": 0,
-  "native_bytes_credit": 0,
+  "native_body_credit": 3,
+  "native_bytes_credit": 36,
   "proposed_native_bodies": 3,
   "proposed_native_bytes": 36,
   "target": {
@@ -13,7 +13,66 @@
     "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
     "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
-  "routines": [
+  "provider_sha256": {
+    "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+    "include/bsp/mesh_buffers.hpp": "93b99ea7c5d734071aaf95c92fec2014227bed1d9a1d8f235971cb3640d46c92",
+    "include/bsp/mesh_decode_bindings.hpp": "1be8f4525bfbd464e4c7fdacc5722d348d02a9e4102329b6cb970e2c8f2afa68",
+    "src/mesh_decode_bindings.cpp": "4944ba1a4282b6eb9daf94a60fdfda0d7d1a76d2b7c2ec4f801bbbd05cef2f8f",
+    "include/bsp/material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
+    "src/material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4"
+  },
+  "source_sha256": {
+    "include/bsp/native_model_stream_queries.hpp": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514",
+    "src/native_model_stream_queries.cpp": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed"
+  },
+  "generated_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_model_stream_queries.obj",
+    "sha256": "4faf64e45d74844e756ac11d06ec6112d53237477d9f96b551911ee741bff42",
+    "machine": "i386",
+    "sections": [
+      {
+        "address": "00b61e10",
+        "section": 5,
+        "bytes_hex": "8b442404c1e005034150c20400",
+        "relocations": 0,
+        "entire_comdat_equals_native": true
+      },
+      {
+        "address": "00b8ff00",
+        "section": 3,
+        "bytes_hex": "8b8188010000c3",
+        "relocations": 0,
+        "entire_comdat_equals_native": true
+      },
+      {
+        "address": "00b90620",
+        "section": 4,
+        "bytes_hex": "8b81840100008b4c24048b0488c20400",
+        "relocations": 0,
+        "entire_comdat_equals_native": true
+      }
+    ]
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "e54b51afb7a0bcc6ef6eacd41a30603711c2eec2",
+    "tracked_build_inputs": 2581,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entries_executed": false,
+    "game_validated": false
+  },
+  "limitations": "Three source interfaces retain raw leaf behavior; indexed free functions require an ignored EDX input. No complete actual-storage B42350 builder or game validation is implied.",
+  "functions": [
     {
       "address": "00b61e10",
       "inclusive_end": "00b61e1c",
@@ -22,7 +81,9 @@
       "native_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
       "ghidra_name": "BSP_LogicalVertexStream_GetDecodeRecord",
       "cpp_symbol": "get_native_stream_decode_record_00b61e10",
-      "direct_builder_calls": ["00b429cf"],
+      "direct_builder_calls": [
+        "00b429cf"
+      ],
       "original_abi": "ECX actual stream, index DWORD at [ESP+4], EAX address, RET4",
       "source_signature": "const void* __fastcall get_native_stream_decode_record_00b61e10(const void* actual_stream, uint32_t ignored_edx, uint32_t element_index) noexcept",
       "source_abi": "ECX stream, EDX ignored DWORD, stack index, EAX borrowed record address, RET4",
@@ -36,7 +97,9 @@
       "native_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
       "ghidra_name": "BSP_Model_GetBoneCount",
       "cpp_symbol": "get_native_model_bone_count_00b8ff00",
-      "direct_builder_calls": ["00b426a8"],
+      "direct_builder_calls": [
+        "00b426a8"
+      ],
       "original_abi": "ECX actual model, EAX DWORD+188h, plain RET",
       "source_signature": "int32_t __fastcall get_native_model_bone_count_00b8ff00(const void* actual_model) noexcept",
       "storage_contract": "Raw signed count bit pattern; direct builder uses signed JLE; no validation"
@@ -49,42 +112,226 @@
       "native_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
       "ghidra_name": "BSP_Model_GetBoneNode",
       "cpp_symbol": "get_native_model_bone_node_00b90620",
-      "direct_builder_calls": ["00b426d5"],
+      "direct_builder_calls": [
+        "00b426d5"
+      ],
       "original_abi": "ECX actual model, index DWORD at [ESP+4], EAX borrowed node, RET4",
       "source_signature": "void* __fastcall get_native_model_bone_node_00b90620(const void* actual_model, uint32_t ignored_edx, uint32_t bone_index) noexcept",
       "source_abi": "ECX model, EDX ignored DWORD, stack index, EAX borrowed node, RET4",
       "storage_contract": "Current [model+184h] table and unchecked DWORD-scaled index; no table/slot validation or retain"
     }
   ],
-  "provider_sha256": {
-    "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
-    "include/bsp/mesh_buffers.hpp": "93b99ea7c5d734071aaf95c92fec2014227bed1d9a1d8f235971cb3640d46c92",
-    "include/bsp/mesh_decode_bindings.hpp": "1be8f4525bfbd464e4c7fdacc5722d348d02a9e4102329b6cb970e2c8f2afa68",
-    "src/mesh_decode_bindings.cpp": "4944ba1a4282b6eb9daf94a60fdfda0d7d1a76d2b7c2ec4f801bbbd05cef2f8f",
-    "include/bsp/material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
-    "src/material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4"
-  },
-  "source_sha256": {
-    "include/bsp/native_model_stream_queries.hpp": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514",
-    "src/native_model_stream_queries.cpp": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed",
-    "cmake/startup.cmake": "3a816f0cfe42bdebb6ca66d0a33a03069887b9d7a79109fb4e8b8894502e0de7"
-  },
-  "generated_coff": {
-    "path": "build/win32/bsp_core.dir/Release/native_model_stream_queries.obj",
-    "sha256": "4faf64e45d74844e756ac11d06ec6112d53237477d9f96b551911ee741bff42",
-    "machine": "i386",
-    "sections": [
-      {"address": "00b61e10", "section": 5, "bytes_hex": "8b442404c1e005034150c20400", "relocations": 0, "entire_comdat_equals_native": true},
-      {"address": "00b8ff00", "section": 3, "bytes_hex": "8b8188010000c3", "relocations": 0, "entire_comdat_equals_native": true},
-      {"address": "00b90620", "section": 4, "bytes_hex": "8b81840100008b4c24048b0488c20400", "relocations": 0, "entire_comdat_equals_native": true}
-    ]
-  },
-  "validation": {
+  "worker_validation": {
     "original_pe_spans_equal_live_ghidra_bytes": true,
     "all_three_direct_call_sites_verified_in_00b42350_listing": true,
     "coff_method": "dumpbin /DISASM:BYTES, /HEADERS, /SYMBOLS and section-data/relocation assertions in ignored local/output/verify-cf-coff.py",
     "scripts_build_ps1_release": "passed",
     "ctest": "1/1 reconstructed_math passed"
   },
-  "limitations": "Three source interfaces retain raw leaf behavior; indexed free functions require an ignored EDX input. No complete actual-storage B42350 builder or game validation is implied."
+  "worker_source_sha256": {
+    "include/bsp/native_model_stream_queries.hpp": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514",
+    "src/native_model_stream_queries.cpp": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed",
+    "cmake/startup.cmake": "3a816f0cfe42bdebb6ca66d0a33a03069887b9d7a79109fb4e8b8894502e0de7"
+  },
+  "tested_commit": "e54b51afb7a0bcc6ef6eacd41a30603711c2eec2",
+  "native_spans": [
+    {
+      "address": "00b61e10",
+      "bytes": 13,
+      "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+      "live_PE_equal": true,
+      "hex": "8b442404c1e005034150c20400"
+    },
+    {
+      "address": "00b8ff00",
+      "bytes": 7,
+      "sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "live_PE_equal": true,
+      "hex": "8b8188010000c3"
+    },
+    {
+      "address": "00b90620",
+      "bytes": 16,
+      "sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "live_PE_equal": true,
+      "hex": "8b81840100008b4c24048b0488c20400"
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b429cf",
+      "native": "00b61e10",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b426a8",
+      "native": "00b8ff00",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b426d5",
+      "native": "00b90620",
+      "function": "00b42350"
+    }
+  ],
+  "raw_upgrade_addresses": [],
+  "primary_integration": {
+    "worker_commit": "1c35f43b39e13c0116c4aa9735d193204bb5a292",
+    "source_header_unchanged": true,
+    "complete_source_native_generated_review": true,
+    "independent_reviewer": "primary integrator",
+    "blocking_findings": []
+  },
+  "generated_code": [
+    {
+      "address": "00b61e10",
+      "cpp_symbol": "get_native_stream_decode_record_00b61e10",
+      "symbol": "?get_native_stream_decode_record_00b61e10@bsp@@YIPBXPBXII@Z",
+      "native_bytes": 13,
+      "native_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_model_stream_queries.obj",
+      "object_sha256": "a038997e479e1d3137d1c04f562e960fb5d9d84a643f3a816b0561adb8246a7e",
+      "source_bytes": 13,
+      "source_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+      "relocations": [],
+      "complete_native_byte_identity": true,
+      "worker_primary_code_identity": true,
+      "listing": "local/cecf-generated-00b61e10.asm"
+    },
+    {
+      "address": "00b8ff00",
+      "cpp_symbol": "get_native_model_bone_count_00b8ff00",
+      "symbol": "?get_native_model_bone_count_00b8ff00@bsp@@YIHPBX@Z",
+      "native_bytes": 7,
+      "native_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_model_stream_queries.obj",
+      "object_sha256": "a038997e479e1d3137d1c04f562e960fb5d9d84a643f3a816b0561adb8246a7e",
+      "source_bytes": 7,
+      "source_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "relocations": [],
+      "complete_native_byte_identity": true,
+      "worker_primary_code_identity": true,
+      "listing": "local/cecf-generated-00b8ff00.asm"
+    },
+    {
+      "address": "00b90620",
+      "cpp_symbol": "get_native_model_bone_node_00b90620",
+      "symbol": "?get_native_model_bone_node_00b90620@bsp@@YIPAXPBXII@Z",
+      "native_bytes": 16,
+      "native_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_model_stream_queries.obj",
+      "object_sha256": "a038997e479e1d3137d1c04f562e960fb5d9d84a643f3a816b0561adb8246a7e",
+      "source_bytes": 16,
+      "source_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "relocations": [],
+      "complete_native_byte_identity": true,
+      "worker_primary_code_identity": true,
+      "listing": "local/cecf-generated-00b90620.asm"
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 3,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/cecf-call-audit-native_model_stream_queries_cf.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cecf-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b61e10",
+      "00b8ff00",
+      "00b90620"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b61e10": "__thiscall",
+      "00b8ff00": "__thiscall",
+      "00b90620": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_constant_metadata.obj": "73bf8f59ff1cb08c1c4c2735775b058a712ad67aeefd4d8778106fdf962f6692",
+    "build/win32/bsp_core.dir/Release/native_model_stream_queries.obj": "a038997e479e1d3137d1c04f562e960fb5d9d84a643f3a816b0561adb8246a7e",
+    "local/adapt_cecf_seal.py": "3f39523e14ed291e6aa638e31a586a6fcee2fe158f6725f59ff90949e2f3193d",
+    "local/annotate_cecf.py": "b489c252fc9aff7d5f4f629980656d7d4fb3ce5921124a9b28df08e182d2f2b9",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cecf.py": "add2753ce645c4d6f80466522364105862ca747d0c9924a49b4037cfa7dba47b",
+    "local/cecf-annotation.log": "55edbb254b2fc050f3becd0e47fa6791baf94cb5da841ee9459a6edc8ca3ef82",
+    "local/cecf-call-audit-native_material_constant_metadata_ce.log": "30c7a6e40c88e9ec9ca6cc6aa49762c395edb4d1d2c960d312b0a6bb89aa1b96",
+    "local/cecf-call-audit-native_model_stream_queries_cf.log": "0a8d2008ea053498f4039c3401b41b7ec774111ddcbcf3c3aedb1369d11a7ea6",
+    "local/cecf-comments-after.json": "ba3c1555fc22a1445aa976c702c1a83715c7b868790acf19e8087bfe19bb74bd",
+    "local/cecf-comments-before.json": "b279a98a4f5f8b9705146d75acd2ce4722a844e436f06fa4c8fbb4b973dc9ef3",
+    "local/cecf-export-refresh.log": "8c261bb7217f367e39d0e779c51600bcdcc41d56c75c1150df96af259219d1e6",
+    "local/cecf-final-build-stamp.json": "9d81e862be4e33963b5b9af27f4c41035c38eb1a6f87791e4eba0d5e3d61f9de",
+    "local/cecf-final-combined-build.log": "15d5acf96dc10ab8b900e95caed65712749e0a780b5eb4661e4e4cf3edb18aa2",
+    "local/cecf-function-records.json": "94c8ebb11d54319e524df02cdec481c2b4172b04359ae2287a942888af5f557e",
+    "local/cecf-generated-00b17390.asm": "6f78d7bb74d48b48300507c1f6559af65de27a4be13efad3eb70a8f6fb4509ac",
+    "local/cecf-generated-00b47900.asm": "92a80e90e3a479224be2b64feea05c49e77ee4a1a4b3a30b4a843f9d5acf8b0d",
+    "local/cecf-generated-00b5b880.asm": "2dd231ddde0311108fc5b90eeb8b8e673c7a2d120a41fe095e8554405637c079",
+    "local/cecf-generated-00b61e10.asm": "ebcb0dfe1d4a273201a8e6b002d60376251e5052dce9f45b1f8bd608b97b7e22",
+    "local/cecf-generated-00b75e50.asm": "5bbeec22ec5e7e33654eceecfa7ae5abbac2f696769c81c70147d83b7688602e",
+    "local/cecf-generated-00b7aab0.asm": "85d9658d701a6bc09907e438eb175047cd476bdbce1aa23a4ec1d964480b0691",
+    "local/cecf-generated-00b8ff00.asm": "d37f29b335615359af70e539dd7da92b0041274960e9be96a39cb3d90f9da067",
+    "local/cecf-generated-00b90620.asm": "b52349e4e0e8a3ae44011eee32e48c8418f2f9bab00392738f2ad2bc7d75df7c",
+    "local/cecf-ghidra-annotation-record.json": "1ddd159a48828a9b0dcc192a1252e7f30e6b0d46aca7abe3ed638a485fb4d939",
+    "local/cecf-ledger-before.json": "4adb8a28a2e799b0a863b5143f454eee4c524e1051d79d3f83c6366173b3d650",
+    "local/cecf-live-00b17390.txt": "280a8b9ee970e8d7bf75fbcd05a6d9dcccd042df6c1c7a75178ba70753e97de8",
+    "local/cecf-live-00b47900.txt": "f87d08ce7a8464e0418ac98a9165fa61093999e80ac98a4308731239c156922d",
+    "local/cecf-live-00b5b880.txt": "0693cf35486fad6f97972e0a69d2eb69039fb38db4a62135b5d33dbd1b143b26",
+    "local/cecf-live-00b61e10.txt": "1abd59ba4a18c75ad5a07b76ec9108500997261999b32896aa622f0477e85174",
+    "local/cecf-live-00b75e50.txt": "49815351dce796472d23ec0cfe4e875655b3e109ff45e824dcf997a2b2b947ba",
+    "local/cecf-live-00b7aab0.txt": "bda44ba31c4c0c3c11506af5a11ae2e963aafb67b5ce506b8a97fd9150993cc7",
+    "local/cecf-live-00b8ff00.txt": "e6fae4a7c2fb2f6f0b2deb687c9bab3d36f87c55de006c00d190488b18089bcb",
+    "local/cecf-live-00b90620.txt": "3f61697bad0ff2e8fae6b2889a09c5109be21d2793603b2478884490dd4ff2c1",
+    "local/cecf-native-00b17390.asm": "f6de42215bb019feee5d3eb505a5ad7b19d25f2c364e648f25805d9c9e422f3c",
+    "local/cecf-native-00b47900.asm": "8f1c8a655bd1b968bb508d85978342e7d6e439d870a1aff325a392442dd9ad09",
+    "local/cecf-native-00b5b880.asm": "8f7459b79abf4134fcc67823429814e7e8bd22add1dd00f27e54e43996008b3a",
+    "local/cecf-native-00b61e10.asm": "4cc0f28cc2238ca81e1f0de26461c742ba3ea8d1ddb29f565e3cf89afecb1070",
+    "local/cecf-native-00b75e50.asm": "5bae0039ba2be51cbe65893776ff396a77eb5a524c482fc50a41e28149e0472a",
+    "local/cecf-native-00b7aab0.asm": "47857f6dc774006bc3c8745e8c82ff761e69ab66971783b9a881baec5036b8b2",
+    "local/cecf-native-00b8ff00.asm": "179335515389830ff725bf5afc84a709b0aa02d6d737f76463547ccb05dbf382",
+    "local/cecf-native-00b90620.asm": "18c01bec4cb2b6a96486a97f5c3de2c1eb94df77fef2e449813cb1e445057ab1",
+    "local/cecf-object-review.json": "df90a56190b1d5bf0bd6ed626e0b98aa25fbd4219cc0d92778e7edfa1b67bed7",
+    "local/cecf-primary-native-review.json": "b535cede896641823151e4e8e7b3b7811526df09b775267477f4774a9a428266",
+    "local/cecf-worker-ce/build-ce.log": "d213bd4411efeac34941cad5f2ffbc23bd2be13be8d5ba9f550b52bea7933c07",
+    "local/cecf-worker-ce/coff-ce-disasm.txt": "15a2504cf301d5b5315bbf0e5d766fcc23bad36176495acd6f9e62f7190814f5",
+    "local/cecf-worker-ce/coff-ce-headers.txt": "9cc15602fa9cd76cae2ffb83fdba2a0c67304b490b454af1262a42612d0ec094",
+    "local/cecf-worker-ce/coff-ce-relocs.txt": "6b2baf2c92d6a0610c6f8a3f75b2b00b18451654f34fb6ae577bc35a67cebf5a",
+    "local/cecf-worker-ce/coff-ce-symbols.txt": "994f0854006bb23c0409417125bd629b04ec1365ab7bf2f7dfb9a1616973830d",
+    "local/cecf-worker-ce/commit-ce.txt": "cea182c73828f894ad0aff43edb7c4b3a0a543c67979319a46ebd1df42e0f629",
+    "local/cecf-worker-ce/native_material_constant_metadata_ce.json": "d84a95645336e59a9ccab6b002b2baa9cd8605f362463d5578ce3a3310338bc6",
+    "local/cecf-worker-ce/verify-ce-coff.py": "f9c5a700b69591eeb06a5092c5512d0b0ef41c27e4c7b926a6116e01122b63d0",
+    "local/cecf-worker-ce/verify-ce-report.py": "933acb32322e01a7d4815b58e11fe5de19dbeb5dd8819fa71e64bc771b914f53",
+    "local/cecf-worker-cf/build-cf.log": "848bdadab96cdaf051eca84cc374ffe7ec6a3ea84319934260b08eae1e7beaa5",
+    "local/cecf-worker-cf/coff-cf-disasm.txt": "31c472390574f0e4cfca3a5ca32f81b402b89e70a38e710762212ee064265256",
+    "local/cecf-worker-cf/coff-cf-headers.txt": "66cc3b36fef0ac3f64f21119af762b351c6e84eef03886d98a7dec7606000b22",
+    "local/cecf-worker-cf/coff-cf-relocs.txt": "68f405d42cc336f89027512895b9c73b3ce107876076faedaff71339074d9aca",
+    "local/cecf-worker-cf/coff-cf-symbols.txt": "65925ce76b2f724d11332a9c31ab8c2010d329ce9aaac12f5f63e0843e66fa5f",
+    "local/cecf-worker-cf/commit-cf.txt": "c56463be4feb94812fcbe80f16eb8898e1dde7ba863dde18b2f6288fe90b52df",
+    "local/cecf-worker-cf/native_model_stream_queries_cf.json": "a5661e29cda371dfbe435ff33ae0415853ae77d28e31f043cb0622d9c9e02d35",
+    "local/cecf-worker-cf/verify-cf-coff.py": "8096e98d8f28b8606f9d9327f4d8673bf6482e44968f5e13c7c3a793fd941192",
+    "local/cecf-worker-cf/verify-cf-report.py": "8e9865091b45b16e7df9b8e552012862d385cbfc9fc4af9298028e4bc4f1e236",
+    "local/finish_cecf.py": "944ee5e6d83eaac7a927e05c61f0ebfa736de6a3a15aa2f62a78efe120fa523f",
+    "local/prepare_cecf.py": "2adada4d2e5e55c8dccf0c835301cee0652aac6a69d122b9f9833e82cdd83200",
+    "local/review_cecf_objects.py": "7631c77c0716828d5b657fdfe8bc2f89e1363eba35bcbc3c168a605ed0cc268f",
+    "local/seal_cecf.py": "499d0a35d6e9abde7de0826b224ef4d6b9d2494880a15024250756f0de059299"
+  },
+  "sealed_attempt": {
+    "tested_commit": "e54b51afb7a0bcc6ef6eacd41a30603711c2eec2",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cecf-validated-attempt-e54b51af.zip",
+    "sha256": "8f9acb2fba5650e8d8cc926f1244465af35290dfd30a228d71db5938e12b76db",
+    "payload_members": 2691,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "9d141f2f0f49669d3a55012004726c7bdf158a3e7c842d2672eb19a87b74b88c",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2581
+  }
 }
