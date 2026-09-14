@@ -1,0 +1,307 @@
+{
+  "packet": "cc7_torpedo_category_admission",
+  "owner": "agent/cc7-torpedo-admission",
+  "doc": "docs/TORPEDO_CATEGORY_ADMISSION.md",
+  "sources": [],
+  "classification": {
+    "exported": true,
+    "reconstructed": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "note": "Read-only analysis, no module published. The finding is a defect localisation in an existing host binding, not a new reconstruction. The only run data is the measured per-category table supplied with the packet; the max_range == 0 step is proven statically from the installed authored data plus the host's flatten chunk."
+  },
+  "question": "Category 7 (TORPEDO) has 71 guns and takes 0 assignments, 0 shots, 0 no_window and 0 arc_blocked in the rebuilt bsp_game.exe on the 3200-frame USN02 mission. Which gate refuses it, and is the zero faithful?",
+  "verdict": {
+    "faithful": false,
+    "refusing_gate_in_host": "the per-category engagement range at unit+430h+7*4, read by 00863990 at 00863A34 and by the host at src/unit_gunnery_pass.cpp:194",
+    "root_cause": "the host derives a mount's range from the Lua key Range (src/game_hosts_gunnery.cpp:296 and :437); no torpedo bullet class carries Range, so gun.max_range is 0.0f, category_ranges[7] is the bare 10.0f seed of 00956D63, and every candidate is refused. The native never reads Range for a torpedo: descriptor+60h is written by the finalise hook 006E9890 and overridden by 00855A90 as WaterTravelSpeed * FlyTime * 0.6.",
+    "native_category_7_range_metres": 1852.0,
+    "host_category_7_range_metres": 10.0,
+    "run_nearest_enemy_metres": 637.0,
+    "authored_rank_row": {
+      "address": "00e09d64",
+      "category": 7,
+      "function": "TORPEDO",
+      "class_ids_best_first": ["09h", "0Dh", "0Ah", "07h", "0Ch", "0Bh", "08h", "41h"],
+      "classes_best_first": ["MMothership", "MBattleship", "MCruiser", "MDestroyer", "MLandingShip", "MCargo", "MSubmarine", "NavPoint"],
+      "rank_of_mdestroyer": 4,
+      "note": "Not empty and not air-only. Unlike categories 1, 5, 8 and 11, the authored data does not explain the zero."
+    },
+    "separate_native_torpedo_feed": {
+      "found": false,
+      "note": "Negative result. 00727F10 has one direct caller, 00864FE0 at 00865833. Step 8.5 excludes category 7 at 008651F5, so step 8.7's director command target (008654D4) and fire target (00865626) are the only route. The torpedo bot at gun+39Ch sits behind 00729BC0's vtable[1Ch]; it is not an alternative feed."
+    }
+  },
+  "routines": [
+    {
+      "address": "006e9890",
+      "native": "006e9890",
+      "name": "BSP_ProjectileClass_DeriveEngagementRange",
+      "abi": "__fastcall(ProjectileClassDesc* this), RET 0, returns bool in AL",
+      "body": "006e9890-006e9a47",
+      "coverage": "partial: 006e9968-006e9a47 (the +8h sub-type rewrite arms) read from pseudocode only; 006e9890-006e9967 (the whole +60h computation) read in the listing",
+      "produces": ["classDesc+60h", "classDesc+64h", "classDesc+5Ch", "classDesc+50h", "classDesc+54h", "classDesc+8h"],
+      "rule": "if [+64h] return; [+64h]=1; kind=[+8h]; kind in {4,5,6,7}: [+60h]=[+68h] and [+50h]=sqrt([+68h]*9.81); kind in {1,2,3,10h}: if [+68h]>0 then [+54h]=[+68h]/[+50h], then [+60h]=[+54h]*[+50h]; kind==0Bh: [+60h]=00CFA428=240.0f; else [+60h]=00CFA424=3000.0f",
+      "note": "Installed at slot +10h of eleven class-descriptor tables and reached only through that slot; +64h is its once-only latch. Its invocation site is contract: unread."
+    },
+    {
+      "address": "00855a90",
+      "native": "00855a90",
+      "name": "BSP_TorpedoClass_DeriveEngagementRange",
+      "abi": "__thiscall(TorpedoClassDesc* this), RET 0, returns bool in AL",
+      "body": "00855a90-00855af5",
+      "coverage": "complete",
+      "produces": ["classDesc+60h", "classDesc+0ECh"],
+      "rule": "ok = 006E9890(this); [+60h] = [+0E4h] (WaterTravelSpeed) * [+54h] (FlyTime) * 0.6 (00CEFF98); [+0ECh] = sqrt(2 * [+0E0h] (MaxFall) * 9.81); return ok && [+0ECh] > 0.0f",
+      "note": "Slot +10h of the MTorpedo class-descriptor table 00CFA56C; 00CFA57C holds 00855A90. docs/TORPEDO_TICK.md reads the same body and calls the slot +0Ch, which is one slot short."
+    },
+    {
+      "address": "0070c0b0",
+      "native": "0070c0b0",
+      "name": "BSP_FlakBulletClass_DeriveEngagementRange",
+      "abi": "__thiscall(FlakBulletClassDesc* this), RET 0, returns void",
+      "body": "0070c0b0-0070c0c9",
+      "coverage": "complete",
+      "produces": ["classDesc+0D8h"],
+      "rule": "if (006E9890(this) == 1) [+0D8h] = [+58h] / [+50h]",
+      "note": "Does not touch +60h; the flak kind 10h takes the base arm's FlyTime * V0."
+    },
+    {
+      "address": "008633d0",
+      "native": "008633d0",
+      "name": "BSP_UnitGunneryAi_CategoryAcceptsTarget",
+      "abi": "__thiscall(gunneryAi)(int category, Entity* target), RET 8",
+      "body": "008633d0-00863427",
+      "coverage": "complete",
+      "rule": "00862820 first; then the mask word at this+80h+category*4: without bit 0 a target answering IsKindOf(0Fh) is refused, without bit 1 everything else is refused. mask[7] is 3 or 0, written whole by 00861D70.",
+      "verdict_for_category_7": "does not refuse; mask[7] defaults to 3 in both the native (director+222h defaults to 1) and the host (DirectorGunneryStance::torpedo = true)"
+    },
+    {
+      "address": "00862820",
+      "native": "00862820",
+      "name": "BSP_UnitGunneryAi_TargetClassAllowed",
+      "abi": "__thiscall(gunneryAi)(int category, Entity* target), RET 8",
+      "body": "00862820-008628cb",
+      "coverage": "complete",
+      "rule": "liveness bytes target+5Ch/+5Dh/+5Eh/+60h; the per-instance allow byte at this+0CCh+category*61h+classId; a non-zero rank in DAT_00E19BF8[classId + category*61h]; category 7 additionally requires IsKindOf(6) and not IsKindOf(0Eh); a class-8 target needs 00852820 for categories 8 and 9 inverted and for every category except 7",
+      "verdict_for_category_7": "does not refuse a destroyer. IsKindOf(6) is true for MDestroyer (chain 07,06,05,04,02,01,0). The arm's only live effect on row 00E09D64 is to exclude 41h NavPoint, whose parent is 01; the IsKindOf(0Eh) test is redundant with rank(7, 0Eh) == 0. Category 7's exemption from 00852820 lets a torpedo engage a submerged submarine."
+    }
+  ],
+  "host_calls": [
+    {
+      "address": "008633df",
+      "native": "00862820",
+      "function": "008633d0",
+      "note": "the class gate, step 1 of the mask test"
+    },
+    {
+      "address": "008639a2",
+      "native": "008633d0",
+      "function": "00863990",
+      "note": "score_candidate's first gate"
+    },
+    {
+      "address": "00865237",
+      "native": "00863990",
+      "function": "00864fe0",
+      "note": "step 8.5, the recon sweep; never runs for category 7 (008651F5 CMP ESI,7 / 008651F8 JZ 00865442)"
+    },
+    {
+      "address": "008654d4",
+      "native": "00863990",
+      "function": "00864fe0",
+      "note": "step 8.7 arm 1, the director's command target; the only route into category 7 together with 00865626"
+    },
+    {
+      "address": "00865626",
+      "native": "00863990",
+      "function": "00864fe0",
+      "note": "step 8.7 arm 2, the director's fire target"
+    },
+    {
+      "address": "008657c0",
+      "native": "005459e0",
+      "function": "00864fe0",
+      "note": "step 8.8 predicate 1; false for a category-7 gun because [[gun+3F4h]+80h] is 7"
+    },
+    {
+      "address": "008657e1",
+      "native": "00729b90",
+      "function": "00864fe0",
+      "note": "the air minimum range; not reached by a torpedo mount"
+    },
+    {
+      "address": "008657f7",
+      "native": "00729bc0",
+      "function": "00864fe0",
+      "note": "the gun's own slot test; rejects when the distance exceeds the same descriptor+60h, then dispatches projectile kind 0Ah to gun+39Ch"
+    },
+    {
+      "address": "00865833",
+      "native": "00727f10",
+      "function": "00864fe0",
+      "note": "the assignment; the only direct call site of 00727F10 in the call graph"
+    },
+    {
+      "address": "0086586c",
+      "native": "00728000",
+      "function": "00864fe0",
+      "note": "the clear arm of step 8.8, reached with an empty candidate list, including when step 8.4 refuses at 008651D1"
+    },
+    {
+      "address": "00956d9f",
+      "native": "00731020",
+      "function": "00956c20",
+      "note": "step 11 of the category index rebuild; the term the 10.0f seed is maxed against"
+    },
+    {
+      "address": "00862581",
+      "native": "00861d70",
+      "function": "008624c0",
+      "note": "bridge step 4; pushes director+222h into the whole mask word of every category in 00E0A520 = {7}"
+    },
+    {
+      "address": "00855a95",
+      "native": "006e9890",
+      "function": "00855a90",
+      "note": "the torpedo override calls the base finalise before replacing +60h"
+    },
+    {
+      "address": "0070c0b3",
+      "native": "006e9890",
+      "function": "0070c0b0",
+      "note": "the flak override calls the base finalise and leaves +60h alone"
+    },
+    {
+      "address": "006e951f",
+      "native": "00b66330",
+      "function": "006e8770",
+      "note": "reads the Lua key Range at 00CFA1A8 with the FLDZ default from 006E950F, storing to classDesc+68h at 006E9524 - not +60h"
+    },
+    {
+      "address": "006e9252",
+      "native": "00b66330",
+      "function": "006e8770",
+      "note": "reads FlyTime at 00CFA210 with the 00D7A248 = FLT_MAX default, storing to classDesc+54h at 006E9257"
+    },
+    {
+      "address": "006e94e6",
+      "native": "00b66330",
+      "function": "006e8770",
+      "note": "reads V0 at 00CFA1B0 with a 0.0f default, storing to classDesc+50h at 006E94EB"
+    },
+    {
+      "address": "0085675c",
+      "native": "00b66270",
+      "function": "008566b0",
+      "note": "reads WaterTravelSpeed at 00D0C5C4, storing to classDesc+0E4h at 00856761"
+    },
+    {
+      "address": "00856729",
+      "native": "00b66270",
+      "function": "008566b0",
+      "note": "reads MaxFall at 00CFBCC4, storing to classDesc+0E0h at 0085672E"
+    }
+  ],
+  "no_ghidra_function": [],
+  "record_layouts": [
+    {
+      "record": "projectile class descriptor (the ammunition record at [[gun+3F4h]+74h]+34h)",
+      "producer": "006E8770 for the Lua keys, 006E9890 / 00855A90 / 0070C0B0 for the derived fields",
+      "fields": [
+        {"offset": "+8h", "meaning": "projectile sub-type (1 Bullet, 4 Artillery, 0Ah Torpedo, 0Bh DepthCharge, 10h Flak)", "writer": "each derived constructor, then 006E9890's rewrite arms"},
+        {"offset": "+50h", "meaning": "V0; overwritten with sqrt(Range*9.81) for kinds 4..7", "writer": "006E94EB, 006E9905"},
+        {"offset": "+54h", "meaning": "FlyTime, default FLT_MAX; overwritten with Range/V0 for kinds 1,2,3,10h when Range > 0", "writer": "006E9257, 006E995x"},
+        {"offset": "+60h", "meaning": "the derived engagement range that 00731020 and 00729BC0 read", "writer": "006E98F0, 006E992B, 006E993A, 006E9965, 00855AAB"},
+        {"offset": "+64h", "meaning": "the finalise once-only latch", "writer": "006E98A7"},
+        {"offset": "+68h", "meaning": "the Lua key Range, default 0.0f - NOT the engagement range", "writer": "006E9524"},
+        {"offset": "+0ACh", "meaning": "DamageMin", "writer": "006E937C"},
+        {"offset": "+0B0h", "meaning": "DamageMax, defaulting to DamageMin", "writer": "006E93BC"},
+        {"offset": "+0E0h", "meaning": "MaxFall (torpedo)", "writer": "0085672E"},
+        {"offset": "+0E4h", "meaning": "WaterTravelSpeed (torpedo)", "writer": "00856761"},
+        {"offset": "+0ECh", "meaning": "sqrt(2 * MaxFall * 9.81), the water-entry terminal speed", "writer": "00855AD3"}
+      ]
+    }
+  ],
+  "installed_tables": {
+    "installation": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "modded": true,
+    "mod": "BSPRM / AlterBSP (the file header names \"Kantai Kessen\")",
+    "provenance": [
+      {"path": "gamemode.lua", "mtime": "2024-07-13 11:27", "note": "GameMode = 0, so the arcade tables load"},
+      {"path": "scripts/datatables/autoload/bulletclasses.lua", "mtime": "2024-07-13 08:26", "note": "loader only"},
+      {"path": "Scripts/datatables/classtables/arcade/bulletclasses.lua", "mtime": "2026-05-09 23:04", "note": "modded; the table actually read"},
+      {"path": "Scripts/datatables/classtables/arcade/deviceclasses.lua", "mtime": "2026-05-09 22:37", "note": "modded"},
+      {"path": "Scripts/datatables/classtables/realistic/bulletclasses.lua", "mtime": "2026-06-02", "note": "modded; also has no Range on any torpedo class"}
+    ],
+    "torpedo_bullet_classes": [
+      {"id": 4, "name": "Fido homing airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 30.8664, "derived_plus60h": 1111.2},
+      {"id": 27, "name": "17.7 Type 91 Mod3 airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 29, "name": "22.4 Mark 13 airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 61, "name": "21. Mark 14 submarine torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 62, "name": "21. Mark 15 ship torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 63, "name": "22.4 Mark 13 airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 64, "name": "19. Mark 24 airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 65, "name": "21. Mark 14 submarine torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 66, "name": "21. Type 95 Mod1 submarine torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 67, "name": "24. Type 93 Mod1 Long Lance ship torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 170.444, "derived_plus60h": 6136.0},
+      {"id": 69, "name": "17.7 Type 91 Mod3 airplane torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0},
+      {"id": 70, "name": "21. Type 95 Mod1 submarine torpedo", "range_key": null, "fly_time": 60.0, "water_travel_speed": 51.444, "derived_plus60h": 1852.0}
+    ]
+  },
+  "corrections": [
+    {
+      "where": "src/game_hosts_gunnery.cpp:560",
+      "was": "out.max_range = gun.max_range;  // 00731020 - the mount's range is the Lua key Range",
+      "is": "00731020 returns the derived field descriptor+60h. Range is at +68h and only reaches +60h for the gun kinds 1,2,3,10h (via the FlyTime round trip) and the bomb kinds 4..7. A torpedo's +60h is WaterTravelSpeed * FlyTime * 0.6 and a depth charge's is the constant 240.0f.",
+      "evidence": "006E9524 stores Range to +68h; 006E98F0 / 006E992B / 006E993A / 006E9965 and 00855AAB are the only writers of +60h",
+      "effect": "gun.max_range is 0.0f for all 71 torpedo mounts, so category_ranges[7] stays at the 10.0f seed and 00863990 refuses every candidate",
+      "owner": "not this packet"
+    },
+    {
+      "where": "src/unit_gunnery_pass.cpp:386-387",
+      "was": "\"A refused gate skips the gather and the assignment both: the native code jumps past 00865773 as well.\"",
+      "is": "008651D1 JZ 00865773 lands on the first instruction of step 8.8, which then walks the category's guns with an empty candidate list and clears each one through 00728000 at 0086586C.",
+      "evidence": "the listing at 008651C0-008651D1 and the step table's 8.8 range 00865773-0086587E",
+      "effect": "no change to the assignment count; the guns should be cleared rather than left alone",
+      "owner": "not this packet"
+    },
+    {
+      "where": "src/game_hosts_gunnery.cpp:562-564",
+      "was": "GunneryRebuildDevice::has_blast / blast_inner / blast_outer fed from the bullet row's blast_range",
+      "is": "00956C20's unit+460h+c*4 term is ([[d+34h]+0B0h] + [[d+34h]+0ACh]) * 0.5, and +0ACh is DamageMin and +0B0h is DamageMax, so the sum is average direct damage, not blast radius",
+      "evidence": "docs/WEAPON_CLASS_DESCRIPTOR.md key table; 006E937C and 006E93BC",
+      "effect": "unit+460h is unread by the gunnery pass, so nothing measured here changes",
+      "owner": "not this packet"
+    },
+    {
+      "where": "docs/TORPEDO_TICK.md line 22",
+      "was": "class descriptor 00CFA56C slot +0Ch, base 006E9890, MTorpedo 00855A90",
+      "is": "the slot is +10h: 00CFA57C holds 00855A90 and 00CFA578 holds 006EA520",
+      "evidence": "00CFA574 reads 50 A5 6E 00 20 A5 6E 00 90 5A 85 00 F0 97 6E 00; the same +10h offset holds 006E9890 in 00CFA138 and 00CFA440",
+      "effect": "none on that document's conclusions",
+      "owner": "not this packet"
+    }
+  ],
+  "dead_code": [
+    {
+      "address": "008651bd",
+      "field": "gunneryAi+7Ch",
+      "finding": "this+7Ch cannot affect category 7's gather. BL is loaded from it at 008651BD, tested once at 008651DB and overwritten by MOV EBX,[ESP+0Ch] at 008651DD; its JZ target 00865442 is the same target the unconditional CMP ESI,7 / JZ at 008651F5-008651F8 takes. The host's torpedo_category_enabled() is inert for the same reason."
+    }
+  ],
+  "remaining": [
+    "The finalise hook's invocation site: 006E9890 is installed at slot +10h of eleven descriptor tables and reached only through that slot. A byte scan for CALL dword ptr [reg+10h] found nothing in the weapon code, which is consistent with the mov-then-call encoding the checklist warns about. Contract: unread.",
+    "006E9968-006E9A47, the +8h sub-type rewrite arms, read from pseudocode only.",
+    "00729BC0's slot->vtable[1Ch] for the torpedo bot at gun+39Ch, and the torpedo bot's aim path.",
+    "Whether any consumer other than 00731020 and 00729BC0 reads descriptor+60h.",
+    "Which device classes the USN02 destroyers actually mount; the 1852 m figure assumes a Mark 15 round."
+  ],
+  "validation": {
+    "report_gate": "python tools/verify_report_calls.py reports/cc7_torpedo_category_admission.json",
+    "build": "not run; the packet publishes no source",
+    "tests": "none added"
+  }
+}

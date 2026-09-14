@@ -1,0 +1,1821 @@
+{
+  "packet": "orch4_native_loading_thread_lifetime_bl",
+  "generated_utc": "2026-09-14T06:24:43.764879+00:00",
+  "baseline_commit": "de1cb16c93d69da1ba015d79cfefe1600b51820d",
+  "owned_files": [
+    "docs/NATIVE_LOADING_THREAD_LIFETIME_BL.md",
+    "reports/native_loading_thread_lifetime_bl.json"
+  ],
+  "decision": "No loader-owned stop/wake/join/CloseHandle sequence found in bounded normal/EH/upstream domain; production worker lifetime remains unclosed",
+  "status": "read_only_evidence_audit_not_source_implementation_or_runtime_validation",
+  "target": {
+    "utc": "2026-09-14T06:20:38.291517+00:00",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live byte batch uses bsp.py ghidra -> Client.verify; BSP_GHIDRA_AUTOSTART=0; no mutation"
+  },
+  "source_snapshot": [
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+      "byte_count": 86804
+    },
+    {
+      "path": "src/marker_classes.cpp",
+      "sha256": "80d16e8a88c5c1d67e3a8df94756ecf755b0586a88504fa7f04b14c4bb4d8176",
+      "byte_count": 9182
+    },
+    {
+      "path": "include/bsp/marker_classes.hpp",
+      "sha256": "1ff4ce013dfbd9fdb5d38d7f11d83fdaae5ad8075d0f9ba9d41bd1d3fadb49d5",
+      "byte_count": 4253
+    },
+    {
+      "path": "src/native_loading_queue_owner.cpp",
+      "sha256": "2997044ef5a95f8ebd8cf5a1c0ecba1cd1b535790d1b7de074cc0eefe5936d15",
+      "byte_count": 5771
+    },
+    {
+      "path": "include/bsp/native_loading_queue_owner.hpp",
+      "sha256": "0d90e546031d90a1fbb48918a7dabfd5f5c05167c58d27a0144b0bf722d2e71d",
+      "byte_count": 3618
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00501510",
+      "inclusive_end": "00501615",
+      "byte_count": 262,
+      "role": "worker_complete",
+      "sha256": "e655c4a3dd52593bb0f9572a2a4fd9ea33110bf32b5b5c81717f7343821eac75",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00501510",
+      "evidence_log": "local/thread_lifetime_bl/00501510.txt"
+    },
+    {
+      "address": "00501620",
+      "inclusive_end": "0050165d",
+      "byte_count": 62,
+      "role": "start_complete",
+      "sha256": "d8b19c496902525aa9c88d6dd6c4a2081a67194bb87608f75aceac9ccffdd1a0",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00501620",
+      "evidence_log": "local/thread_lifetime_bl/00501620.txt"
+    },
+    {
+      "address": "005092e0",
+      "inclusive_end": "0050934c",
+      "byte_count": 109,
+      "role": "drain_complete",
+      "sha256": "c0ead2dcfbefc720daf91a0a91f7b567c7362659520d8a6d705d0553ca5831da",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "005092e0",
+      "evidence_log": "local/thread_lifetime_bl/005092e0.txt"
+    },
+    {
+      "address": "00509fd0",
+      "inclusive_end": "0050a052",
+      "byte_count": 131,
+      "role": "destroy_complete",
+      "sha256": "1cd7601ab5b28ec7e8ebd3d836c86e897c154b0205b3b163f3a41ab5a095fa15",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00509fd0",
+      "evidence_log": "local/thread_lifetime_bl/00509fd0.txt"
+    },
+    {
+      "address": "0050ace0",
+      "inclusive_end": "0050acfd",
+      "byte_count": 30,
+      "role": "scalar_destroy_complete",
+      "sha256": "88256eb09a9968ab96d8467a4b26810d9f7e016ac1b8c0ff51ed89155c2e7867",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "0050ace0",
+      "evidence_log": "local/thread_lifetime_bl/0050ace0.txt"
+    },
+    {
+      "address": "00509190",
+      "inclusive_end": "005092dc",
+      "byte_count": 333,
+      "role": "update_complete",
+      "sha256": "9477747f64bea79c866dacfe12add284bdf9cc5057b4f38374b3390691258614",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00509190",
+      "evidence_log": "local/thread_lifetime_bl/00509190.txt"
+    },
+    {
+      "address": "004faa90",
+      "inclusive_end": "004faaaa",
+      "byte_count": 27,
+      "role": "worker_context_event_cleanup_complete",
+      "sha256": "4d257e2b1d27a49f125f60534b9cbcbad1dc25c22a4f4e353e486a4e36e93f8c",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "004faa90",
+      "evidence_log": "local/thread_lifetime_bl/004faa90.txt"
+    },
+    {
+      "address": "004fcbc0",
+      "inclusive_end": "004fcbd6",
+      "byte_count": 23,
+      "role": "queue_cleanup_with_missing_return_tail",
+      "sha256": "bc493d39bac9da8d4ccbc8111db816a254c79d718a2e0db3cf4adcd4985b338d",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "004fcbc0",
+      "evidence_log": "local/thread_lifetime_bl/004fcbc0.txt"
+    },
+    {
+      "address": "004fb180",
+      "inclusive_end": "004fb188",
+      "byte_count": 9,
+      "role": "undefined_base_constructor",
+      "sha256": "36e523a793f4a7bdec01cfa0a194999aeb44749a5e3ad1f33d725568a7c1cdef",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/004fb180.txt"
+    },
+    {
+      "address": "004fb190",
+      "inclusive_end": "004fb1b8",
+      "byte_count": 41,
+      "role": "undefined_base_scalar_delete",
+      "sha256": "12ba0e382e8f8631326949f1ed19fccd5f4f01c15f7bacd2c5958e7fa1c6a43f",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/004fb190.txt"
+    },
+    {
+      "address": "004fde20",
+      "inclusive_end": "004fdedc",
+      "byte_count": 189,
+      "role": "getter_complete",
+      "sha256": "31f7c22b4c2a90490f79f0a62a3e685ac51097326553a91af70398c789f05490",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "004fde20",
+      "evidence_log": "local/thread_lifetime_bl/004fde20.txt"
+    },
+    {
+      "address": "004fdba0",
+      "inclusive_end": "004fdbf8",
+      "byte_count": 89,
+      "role": "constructor_complete",
+      "sha256": "d793f9eb7b5998be6333c6a9c52c1381004bc110f1d5cc694f5929873e61f170",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "004fdba0",
+      "evidence_log": "local/thread_lifetime_bl/004fdba0.txt"
+    },
+    {
+      "address": "004f93a0",
+      "inclusive_end": "004f93b0",
+      "byte_count": 17,
+      "role": "base_cleanup_complete",
+      "sha256": "bdaea14417fb32ce59b1992019e0aab02c8b0f2c74a0e5d7a641a20a6d223827",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "004f93a0",
+      "evidence_log": "local/thread_lifetime_bl/004f93a0.txt"
+    },
+    {
+      "address": "00504d20",
+      "inclusive_end": "00504df6",
+      "byte_count": 215,
+      "role": "append_work_loader_pointer_use_complete",
+      "sha256": "15beaf577a37512863c088d9c5ff17553ec29ee69de2353c3add79a01dabc3b7",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00504d20",
+      "evidence_log": "local/thread_lifetime_bl/00504d20.txt"
+    },
+    {
+      "address": "005055c0",
+      "inclusive_end": "00505651",
+      "byte_count": 146,
+      "role": "enqueue_loader_pointer_use_complete",
+      "sha256": "90e858c1f4fbc20733066b3b31d137af9e03d1fda90e0af7d4cf3cf22b71d5d4",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "005055c0",
+      "evidence_log": "local/thread_lifetime_bl/005055c0.txt"
+    },
+    {
+      "address": "007188a0",
+      "inclusive_end": "007188bb",
+      "byte_count": 28,
+      "role": "resource_wrapper_complete",
+      "sha256": "7d30e0392e2aec7290e2bca9dd78975e9a6f81b3820fa8f225d2baf3c11499a1",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "007188a0",
+      "evidence_log": "local/thread_lifetime_bl/007188a0.txt"
+    },
+    {
+      "address": "00bd1970",
+      "inclusive_end": "00bd19a6",
+      "byte_count": 55,
+      "role": "event_factory_complete",
+      "sha256": "208785e93ae3ac9f07070f7acbebce4c8e84fed6c7799f6b174d33a3886e0bd7",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bd1970",
+      "evidence_log": "local/thread_lifetime_bl/00bd1970.txt"
+    },
+    {
+      "address": "00bd19b0",
+      "inclusive_end": "00bd19de",
+      "byte_count": 47,
+      "role": "event_scalar_delete_complete",
+      "sha256": "28bf0f4a0c4d233f6fe31067375e5f8ee8cc1b7d9b8ec50aa346cf8624d22bb9",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bd19b0",
+      "evidence_log": "local/thread_lifetime_bl/00bd19b0.txt"
+    },
+    {
+      "address": "00bd0400",
+      "inclusive_end": "00bd04c4",
+      "byte_count": 197,
+      "role": "manager_destroy_complete",
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bd0400",
+      "evidence_log": "local/thread_lifetime_bl/00bd0400.txt"
+    },
+    {
+      "address": "00bd30d0",
+      "inclusive_end": "00bd30d9",
+      "byte_count": 10,
+      "role": "random_registry_teardown_complete",
+      "sha256": "88f830e08b6dfe080776ff61379c5a2042e8c5efacb239d015fa20597f1b7964",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bd30d0",
+      "evidence_log": "local/thread_lifetime_bl/00bd30d0.txt"
+    },
+    {
+      "address": "00b28450",
+      "inclusive_end": "00b28450",
+      "byte_count": 1,
+      "role": "undefined_renderer_loading_bracket_ret",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00b28450.txt"
+    },
+    {
+      "address": "00b28460",
+      "inclusive_end": "00b28460",
+      "byte_count": 1,
+      "role": "undefined_renderer_loading_bracket_ret",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00b28460.txt"
+    },
+    {
+      "address": "00b283f0",
+      "inclusive_end": "00b2844e",
+      "byte_count": 95,
+      "role": "renderer_base_constructor_complete",
+      "sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00b283f0",
+      "evidence_log": "local/thread_lifetime_bl/00b283f0.txt"
+    },
+    {
+      "address": "00b25f96",
+      "inclusive_end": "00b25f9f",
+      "byte_count": 10,
+      "role": "renderer_publication_adjustment",
+      "sha256": "29c16c57ba3541f3666e82e10fae559933f192940abbad599507cfb389c5d4dc",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00b25f40",
+      "evidence_log": "local/thread_lifetime_bl/00b25f96.txt"
+    },
+    {
+      "address": "00b32434",
+      "inclusive_end": "00b32447",
+      "byte_count": 20,
+      "role": "renderer_derived_profile_publication",
+      "sha256": "f28d653dfe33237f6e2566fe4f522a27e3e546f5c671bfd04b0722ace636c628",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00b32410",
+      "evidence_log": "local/thread_lifetime_bl/00b32434.txt"
+    },
+    {
+      "address": "00b33b50",
+      "inclusive_end": "00b33bb1",
+      "byte_count": 98,
+      "role": "distinct_renderer_worker_delete_complete",
+      "sha256": "3d7498deae37a0bc9cc66e51f05bf74244e57cfe8a063451e633478105c20945",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00b33b50",
+      "evidence_log": "local/thread_lifetime_bl/00b33b50.txt"
+    },
+    {
+      "address": "008f82f7",
+      "inclusive_end": "008f8310",
+      "byte_count": 26,
+      "role": "winmain_single_instance_mutex_capture",
+      "sha256": "95903c267d964e2c1a798ce0b62361b059e53bef188f6dadecf9499bfaeba8e8",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "008f81f0",
+      "evidence_log": "local/thread_lifetime_bl/008f82f7.txt"
+    },
+    {
+      "address": "008f8437",
+      "inclusive_end": "008f8498",
+      "byte_count": 98,
+      "role": "winmain_teardown_return",
+      "sha256": "65a6f29f715107928683b6c0da10fb5b96cf992d2488ea1b18dfc8cc2e104a24",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "008f81f0",
+      "evidence_log": "local/thread_lifetime_bl/008f8437.txt"
+    },
+    {
+      "address": "00bfd24f",
+      "inclusive_end": "00bfd267",
+      "byte_count": 25,
+      "role": "crt_winmain_return_dispatch",
+      "sha256": "b9723698e9e2c8537d06c7b523ebac456152d3ab7b2ff041ce805f1aa7cf3f49",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bfd0dd",
+      "evidence_log": "local/thread_lifetime_bl/00bfd24f.txt"
+    },
+    {
+      "address": "00bfbdbb",
+      "inclusive_end": "00bfbdcb",
+      "byte_count": 17,
+      "role": "crt_exit_wrapper_complete",
+      "sha256": "49ebfbe77de3ae9e338ad638d6198c8df5c649b344c0b9d8ab4abad653f567ae",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bfbdbb",
+      "evidence_log": "local/thread_lifetime_bl/00bfbdbb.txt"
+    },
+    {
+      "address": "00bfbd87",
+      "inclusive_end": "00bfbda2",
+      "byte_count": 28,
+      "role": "crt_exitprocess_branch",
+      "sha256": "78a0621d284213691704e8d8814bc77962842acc6adbd9bc1b5f4ee62e00e8f5",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bfbcd9",
+      "evidence_log": "local/thread_lifetime_bl/00bfbd87.txt"
+    },
+    {
+      "address": "00bfba53",
+      "inclusive_end": "00bfba66",
+      "byte_count": 20,
+      "role": "crt_exitprocess_complete",
+      "sha256": "51511657116042bdea58490004122f64fad6e4a39212044ef87d879c8a1ba864",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00bfba53",
+      "evidence_log": "local/thread_lifetime_bl/00bfba53.txt"
+    },
+    {
+      "address": "00c68c90",
+      "inclusive_end": "00c68c97",
+      "byte_count": 8,
+      "role": "worker_string_cleanup_funclet",
+      "sha256": "584c234a334bc2c423046e116a27071a88396b5ca73041ae469c58d5fe262016",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00c68c90",
+      "evidence_log": "local/thread_lifetime_bl/00c68c90.txt"
+    },
+    {
+      "address": "00c68c98",
+      "inclusive_end": "00c68ca1",
+      "byte_count": 10,
+      "role": "worker_handler",
+      "sha256": "661d8556fffb6ebc606a5f033b4873de789cab27c68271f02eafcf3e4a7b63b3",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00c68c98.txt"
+    },
+    {
+      "address": "00d91f60",
+      "inclusive_end": "00d91f8b",
+      "byte_count": 44,
+      "role": "worker_unwind_map_and_FuncInfo",
+      "sha256": "b136adf4840ebb45e4ba3d9314c2839dbdc288f54a3b5ac03a6cafc3096a2b2d",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00d91f60.txt"
+    },
+    {
+      "address": "00c69820",
+      "inclusive_end": "00c69827",
+      "byte_count": 8,
+      "role": "destroy_base_cleanup_funclet",
+      "sha256": "829782314a220c365952a3679a5cf3760858eeb1be7027583ad325edf0834a96",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00c69820",
+      "evidence_log": "local/thread_lifetime_bl/00c69820.txt"
+    },
+    {
+      "address": "00c69828",
+      "inclusive_end": "00c69832",
+      "byte_count": 11,
+      "role": "destroy_event_cleanup_funclet",
+      "sha256": "978a0e3cad77e800d1996b05d0a655c0797b121cc9561a619584d3dc7e034766",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00c69828",
+      "evidence_log": "local/thread_lifetime_bl/00c69828.txt"
+    },
+    {
+      "address": "00c69833",
+      "inclusive_end": "00c6983d",
+      "byte_count": 11,
+      "role": "destroy_queue_cleanup_funclet",
+      "sha256": "ecaae31101645eacd6ee8d7ba2c277ce9932b005964c71281796c542ba72b721",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00c69833",
+      "evidence_log": "local/thread_lifetime_bl/00c69833.txt"
+    },
+    {
+      "address": "00c6983e",
+      "inclusive_end": "00c69847",
+      "byte_count": 10,
+      "role": "destroy_handler",
+      "sha256": "d84c84ea3d5f51c9a66ea6c46fb6b086dbebbdf1247e51e3a1a0fde8cc4c3e24",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00c6983e.txt"
+    },
+    {
+      "address": "00d92d24",
+      "inclusive_end": "00d92d5f",
+      "byte_count": 60,
+      "role": "destroy_unwind_map_and_FuncInfo",
+      "sha256": "1cd3652e6df9871e012e21f210d5c034846dced0252f3b58bdb09e8254d3dacb",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00d92d24.txt"
+    },
+    {
+      "address": "00ceb15c",
+      "inclusive_end": "00ceb15f",
+      "byte_count": 4,
+      "role": "base_delete_table",
+      "sha256": "58149f4214522d504fba51acf5fdf97141f5a7d09bc415b1d74f7115b1b6c63b",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00ceb15c.txt"
+    },
+    {
+      "address": "00ceb198",
+      "inclusive_end": "00ceb19b",
+      "byte_count": 4,
+      "role": "loader_delete_table",
+      "sha256": "6509dd690c6f4f39a3c64e7a91a27e5c9cb1edf0f38c007e71dfa47ae1c6c8d0",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00ceb198.txt"
+    },
+    {
+      "address": "00d5f0a8",
+      "inclusive_end": "00d5f0c7",
+      "byte_count": 32,
+      "role": "concrete_renderer_first_eight_slots",
+      "sha256": "f5fe945dc39ff32da85d8c5b72e09929f3b789cc95a88d3e1f32246d81ea513c",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00d5f0a8.txt"
+    },
+    {
+      "address": "00d5e628",
+      "inclusive_end": "00d5e647",
+      "byte_count": 32,
+      "role": "base_renderer_first_eight_slots",
+      "sha256": "8c14c9e51a500c59d210d37f129dc9c6f0f3e7fdf80a986d72b697b0b2b2e694",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00d5e628.txt"
+    },
+    {
+      "address": "00d6821c",
+      "inclusive_end": "00d6822f",
+      "byte_count": 20,
+      "role": "event_five_slots",
+      "sha256": "94cea7a486ef65c7e8c86e9845299faf4d8b8e19a3e11ec1142bd25be4581a5b",
+      "installed_pe_matches_live_ghidra": true,
+      "function": null,
+      "evidence_log": "local/thread_lifetime_bl/00d6821c.txt"
+    },
+    {
+      "address": "0050ab97",
+      "inclusive_end": "0050abbd",
+      "byte_count": 39,
+      "role": "getter_enqueue_and_last_job_callback_uses",
+      "sha256": "f6d0f62ad50fe07501e24c6572d4dfe5a53fe6a5a9f7320f67a14068fca45987",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "0050aa10",
+      "evidence_log": "local/thread_lifetime_bl/0050ab97.txt"
+    },
+    {
+      "address": "0050ac73",
+      "inclusive_end": "0050ac7e",
+      "byte_count": 12,
+      "role": "getter_append_work_use",
+      "sha256": "024b6dfc7261432f4048c79fbf939c098743bbae131c1f504d28d0a8c49d5737",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "0050aa10",
+      "evidence_log": "local/thread_lifetime_bl/0050ac73.txt"
+    },
+    {
+      "address": "00508e27",
+      "inclusive_end": "00508e32",
+      "byte_count": 12,
+      "role": "getter_append_work_use",
+      "sha256": "a06fa023391308acce516df58486f1f6ab8afbd07b17d1d44919ea269bdaf445",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "005072c0",
+      "evidence_log": "local/thread_lifetime_bl/00508e27.txt"
+    },
+    {
+      "address": "0050a9e2",
+      "inclusive_end": "0050a9ed",
+      "byte_count": 12,
+      "role": "getter_drain_use",
+      "sha256": "b5ba9866ccbb0c6e58ef5b3a562dca8f3f4e4272c01dc8163a0b9fd6339a4493",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "0050a950",
+      "evidence_log": "local/thread_lifetime_bl/0050a9e2.txt"
+    },
+    {
+      "address": "0050b3f4",
+      "inclusive_end": "0050b3ff",
+      "byte_count": 12,
+      "role": "getter_drain_use",
+      "sha256": "926d1e8683eb5232208a2b85a2846a3b7fa8fed04644bc95cf6e6ca20fc58906",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "0050b2d0",
+      "evidence_log": "local/thread_lifetime_bl/0050b3f4.txt"
+    },
+    {
+      "address": "00515043",
+      "inclusive_end": "0051504f",
+      "byte_count": 13,
+      "role": "getter_drain_tail_use",
+      "sha256": "c7859e00919e4e61f4a17cfcc31741444d4fd1ac9b173a47434bd19995be5e59",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00514fb0",
+      "evidence_log": "local/thread_lifetime_bl/00515043.txt"
+    },
+    {
+      "address": "00516335",
+      "inclusive_end": "00516340",
+      "byte_count": 12,
+      "role": "getter_drain_use",
+      "sha256": "e69ccfe45ba173b987f6314e1c6b10141cbd19a8bcc1eeeab2532cbf6b1c7fbf",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "005162b0",
+      "evidence_log": "local/thread_lifetime_bl/00516335.txt"
+    },
+    {
+      "address": "00504850",
+      "inclusive_end": "00504862",
+      "byte_count": 19,
+      "role": "getter_current_front_callback_use",
+      "sha256": "78313f12a61614220bc80c3c3eb43959a79039ca4ab99466bbc12521b2b089b2",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00504850",
+      "evidence_log": "local/thread_lifetime_bl/00504850.txt"
+    },
+    {
+      "address": "00737b79",
+      "inclusive_end": "00737b8f",
+      "byte_count": 23,
+      "role": "current_vfs_and_loader_frame_edge",
+      "sha256": "770e34c6c4093dd068698d557a9cc83897ed719b08bd2045d79e1b2e08a9595c",
+      "installed_pe_matches_live_ghidra": true,
+      "function": "00737a50",
+      "evidence_log": "local/thread_lifetime_bl/00737b79.txt"
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": "00501582",
+      "native": "0041dd40",
+      "function": "00501510",
+      "kind": "call"
+    },
+    {
+      "address": "00501599",
+      "native": "00bf7680",
+      "function": "00501510",
+      "kind": "call"
+    },
+    {
+      "address": "005015b2",
+      "native": "007188a0",
+      "function": "00501510",
+      "kind": "call"
+    },
+    {
+      "address": "005015d5",
+      "native": "00419cc0",
+      "function": "00501510",
+      "kind": "call"
+    },
+    {
+      "address": "005015dc",
+      "native": "00bd1510",
+      "function": "00501510",
+      "kind": "call"
+    },
+    {
+      "address": "005092e8",
+      "native": "004254b0",
+      "function": "005092e0",
+      "kind": "call"
+    },
+    {
+      "address": "0050932a",
+      "native": "00bdb0b0",
+      "function": "005092e0",
+      "kind": "call"
+    },
+    {
+      "address": "00509331",
+      "native": "00509190",
+      "function": "005092e0",
+      "kind": "call"
+    },
+    {
+      "address": "00509ffd",
+      "native": "005092e0",
+      "function": "00509fd0",
+      "kind": "call"
+    },
+    {
+      "address": "0050a00f",
+      "native": "004fb4b0",
+      "function": "00509fd0",
+      "kind": "call"
+    },
+    {
+      "address": "0050a017",
+      "native": "00bf6989",
+      "function": "00509fd0",
+      "kind": "call"
+    },
+    {
+      "address": "0050ace3",
+      "native": "00509fd0",
+      "function": "0050ace0",
+      "kind": "call"
+    },
+    {
+      "address": "0050acf0",
+      "native": "00bf65ac",
+      "function": "0050ace0",
+      "kind": "call"
+    },
+    {
+      "address": "005091b4",
+      "native": "00506bf0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "00509200",
+      "native": "00483850",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "00509212",
+      "native": "00506bf0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "0050923a",
+      "native": "00501670",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "0050924a",
+      "native": "00506bf0",
+      "function": "00509190",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00509250",
+      "native": "00501620",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "0050925b",
+      "native": "00504790",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "00509269",
+      "native": "00501620",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "0050927e",
+      "native": "004fc150",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "00509290",
+      "native": "00be80b0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "00509297",
+      "native": "00be7cd0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "005092b2",
+      "native": "004fc150",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "005092c4",
+      "native": "00be80b0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "005092cb",
+      "native": "00be7cd0",
+      "function": "00509190",
+      "kind": "call"
+    },
+    {
+      "address": "004fcbc5",
+      "native": "004fb4b0",
+      "function": "004fcbc0",
+      "kind": "call"
+    },
+    {
+      "address": "004fcbcd",
+      "native": "00bf6989",
+      "function": "004fcbc0",
+      "kind": "call"
+    },
+    {
+      "address": "004fde46",
+      "native": "00415350",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fde7c",
+      "native": "00bf681b",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fde93",
+      "native": "004fdba0",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdea6",
+      "native": "00415350",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdeb4",
+      "native": "00bd0c30",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdbd2",
+      "native": "00bd1970",
+      "function": "004fdba0",
+      "kind": "call"
+    },
+    {
+      "address": "00504d7b",
+      "native": "0041dd40",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "00504d90",
+      "native": "00bf7680",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "00504d9c",
+      "native": "004fe700",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "00504db7",
+      "native": "005048f0",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "00504dd7",
+      "native": "00419cc0",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "00504dde",
+      "native": "00bd1510",
+      "function": "00504d20",
+      "kind": "call"
+    },
+    {
+      "address": "005055dc",
+      "native": "00bf681b",
+      "function": "005055c0",
+      "kind": "call"
+    },
+    {
+      "address": "005055fb",
+      "native": "00505530",
+      "function": "005055c0",
+      "kind": "call"
+    },
+    {
+      "address": "00505628",
+      "native": "004fb310",
+      "function": "005055c0",
+      "kind": "call"
+    },
+    {
+      "address": "007188a4",
+      "native": "007175d0",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "007188ab",
+      "native": "004c1400",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "007188b4",
+      "native": "00b80720",
+      "function": "007188a0",
+      "kind": "call"
+    },
+    {
+      "address": "00bd1976",
+      "native": "00bf681b",
+      "function": "00bd1970",
+      "kind": "call"
+    },
+    {
+      "address": "00bd19d1",
+      "native": "00bf65ac",
+      "function": "00bd19b0",
+      "kind": "call"
+    },
+    {
+      "address": "00bd0426",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd0438",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd044e",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd045b",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd0489",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd0496",
+      "native": "0041cc80",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd04a3",
+      "native": "00bf65ac",
+      "function": "00bd0400",
+      "kind": "call"
+    },
+    {
+      "address": "00bd30d5",
+      "native": "0041cc80",
+      "function": "00bd30d0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b2840e",
+      "native": "00b33a70",
+      "function": "00b283f0",
+      "kind": "call"
+    },
+    {
+      "address": "00b28420",
+      "native": "00b25f40",
+      "function": "00b283f0",
+      "kind": "call"
+    },
+    {
+      "address": "00b32434",
+      "native": "00b283f0",
+      "function": "00b32410",
+      "kind": "call"
+    },
+    {
+      "address": "008f843b",
+      "native": "00737f30",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8444",
+      "native": "007379a0",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8455",
+      "native": "00bd0400",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f845b",
+      "native": "00bf65ac",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8478",
+      "native": "00bd3050",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f847e",
+      "native": "00bf65ac",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "008f8486",
+      "native": "00bd30d0",
+      "function": "008f81f0",
+      "kind": "call"
+    },
+    {
+      "address": "00bfd24f",
+      "native": "008f81f0",
+      "function": "00bfd0dd",
+      "kind": "call"
+    },
+    {
+      "address": "00bfd25e",
+      "native": "00bfbdbb",
+      "function": "00bfd0dd",
+      "kind": "call"
+    },
+    {
+      "address": "00bfd263",
+      "native": "00bfbddd",
+      "function": "00bfd0dd",
+      "kind": "call"
+    },
+    {
+      "address": "00bfbdc3",
+      "native": "00bfbcd9",
+      "function": "00bfbdbb",
+      "kind": "call"
+    },
+    {
+      "address": "00bfbd95",
+      "native": "00c11b31",
+      "function": "00bfbcd9",
+      "kind": "call"
+    },
+    {
+      "address": "00bfbd9e",
+      "native": "00bfba53",
+      "function": "00bfbcd9",
+      "kind": "call"
+    },
+    {
+      "address": "00bfba57",
+      "native": "00bfba2d",
+      "function": "00bfba53",
+      "kind": "call"
+    },
+    {
+      "address": "00c68c93",
+      "native": "0041dd20",
+      "function": "00c68c90",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c69823",
+      "native": "004f93a0",
+      "function": "00c69820",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6982e",
+      "native": "004faa90",
+      "function": "00c69828",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c69839",
+      "native": "004fcbc0",
+      "function": "00c69833",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0050ab97",
+      "native": "004fde20",
+      "function": "0050aa10",
+      "kind": "call"
+    },
+    {
+      "address": "0050ab9e",
+      "native": "005055c0",
+      "function": "0050aa10",
+      "kind": "call"
+    },
+    {
+      "address": "0050aba3",
+      "native": "004fde20",
+      "function": "0050aa10",
+      "kind": "call"
+    },
+    {
+      "address": "0050ac73",
+      "native": "004fde20",
+      "function": "0050aa10",
+      "kind": "call"
+    },
+    {
+      "address": "0050ac7a",
+      "native": "00504d20",
+      "function": "0050aa10",
+      "kind": "call"
+    },
+    {
+      "address": "00508e27",
+      "native": "004fde20",
+      "function": "005072c0",
+      "kind": "call"
+    },
+    {
+      "address": "00508e2e",
+      "native": "00504d20",
+      "function": "005072c0",
+      "kind": "call"
+    },
+    {
+      "address": "0050a9e2",
+      "native": "004fde20",
+      "function": "0050a950",
+      "kind": "call"
+    },
+    {
+      "address": "0050a9e9",
+      "native": "005092e0",
+      "function": "0050a950",
+      "kind": "call"
+    },
+    {
+      "address": "0050b3f4",
+      "native": "004fde20",
+      "function": "0050b2d0",
+      "kind": "call"
+    },
+    {
+      "address": "0050b3fb",
+      "native": "005092e0",
+      "function": "0050b2d0",
+      "kind": "call"
+    },
+    {
+      "address": "00515043",
+      "native": "004fde20",
+      "function": "00514fb0",
+      "kind": "call"
+    },
+    {
+      "address": "0051504b",
+      "native": "005092e0",
+      "function": "00514fb0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00516335",
+      "native": "004fde20",
+      "function": "005162b0",
+      "kind": "call"
+    },
+    {
+      "address": "0051633c",
+      "native": "005092e0",
+      "function": "005162b0",
+      "kind": "call"
+    },
+    {
+      "address": "00504850",
+      "native": "004fde20",
+      "function": "00504850",
+      "kind": "call"
+    },
+    {
+      "address": "00737b7f",
+      "native": "00bdb0b0",
+      "function": "00737a50",
+      "kind": "call"
+    },
+    {
+      "address": "00737b84",
+      "native": "004fde20",
+      "function": "00737a50",
+      "kind": "call"
+    },
+    {
+      "address": "00737b8b",
+      "native": "00509190",
+      "function": "00737a50",
+      "kind": "call"
+    }
+  ],
+  "indirect_call_rows": [
+    {
+      "address": "0050153c",
+      "function": "00501510",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "005015e9",
+      "function": "00501510",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "005015f3",
+      "function": "00501510",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "0050163a",
+      "function": "00501620",
+      "instruction": "call dword ptr [0xce2238]",
+      "import_provider": "KERNEL32.dll!CreateThread"
+    },
+    {
+      "address": "00501658",
+      "function": "00501620",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "00509301",
+      "function": "005092e0",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "00509322",
+      "function": "005092e0",
+      "instruction": "call edi",
+      "import_provider": null
+    },
+    {
+      "address": "0050a030",
+      "function": "00509fd0",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "005091eb",
+      "function": "00509190",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "00509233",
+      "function": "00509190",
+      "instruction": "call ecx",
+      "import_provider": null
+    },
+    {
+      "address": "004faaa0",
+      "function": "004faa90",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "004fde5f",
+      "function": "004fde20",
+      "instruction": "call dword ptr [0xce2218]",
+      "import_provider": "KERNEL32.dll!EnterCriticalSection"
+    },
+    {
+      "address": "004fdec2",
+      "function": "004fde20",
+      "instruction": "call dword ptr [0xce2210]",
+      "import_provider": "KERNEL32.dll!LeaveCriticalSection"
+    },
+    {
+      "address": "00bd1994",
+      "function": "00bd1970",
+      "instruction": "call dword ptr [0xce22b8]",
+      "import_provider": "KERNEL32.dll!CreateEventA"
+    },
+    {
+      "address": "00bd19bd",
+      "function": "00bd19b0",
+      "instruction": "call dword ptr [0xce225c]",
+      "import_provider": "KERNEL32.dll!CloseHandle"
+    },
+    {
+      "address": "00bd0485",
+      "function": "00bd0400",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "00b33b65",
+      "function": "00b33b50",
+      "instruction": "call edx",
+      "import_provider": null
+    },
+    {
+      "address": "00b33b6d",
+      "function": "00b33b50",
+      "instruction": "call dword ptr [0xce22b0]",
+      "import_provider": "KERNEL32.dll!WaitForSingleObject"
+    },
+    {
+      "address": "00b33b77",
+      "function": "00b33b50",
+      "instruction": "call dword ptr [0xce225c]",
+      "import_provider": "KERNEL32.dll!CloseHandle"
+    },
+    {
+      "address": "00b33b91",
+      "function": "00b33b50",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "00b33ba7",
+      "function": "00b33b50",
+      "instruction": "call eax",
+      "import_provider": null
+    },
+    {
+      "address": "008f8301",
+      "function": "008f81f0",
+      "instruction": "call dword ptr [0xce228c]",
+      "import_provider": "KERNEL32.dll!CreateMutexA"
+    },
+    {
+      "address": "008f846e",
+      "function": "008f81f0",
+      "instruction": "call dword ptr [0xce225c]",
+      "import_provider": "KERNEL32.dll!CloseHandle"
+    },
+    {
+      "address": "00bfba61",
+      "function": "00bfba53",
+      "instruction": "call dword ptr [0xce20f0]",
+      "import_provider": "KERNEL32.dll!ExitProcess"
+    }
+  ],
+  "unowned_decoded_call_rows": [
+    {
+      "site": "004fb1ab",
+      "target": "00bf65ac",
+      "instruction": "CALL _free",
+      "verification": "Capstone over exact fresh live/PE span; no containing Ghidra function, not submitted as a direct verified row"
+    }
+  ],
+  "native_abis": {
+    "00501510": "one stack lpParameter=loader+4, EDI captures it; RET4/EAX1 at observed exit",
+    "00501620": "ECX loader, one stack job argument, RET4; no semantic return promised",
+    "005092e0": "ECX loader, RET or tail virtual call+1c; no stack arguments",
+    "00509fd0": "ECX loader, RET; original FH3 cleanup states tracked",
+    "0050ace0": "ECX loader, stacked flags lowbit0 optional free, EAX original pointer, RET4",
+    "004faa90": "ECX actual worker context=loader+4; current event atcontext+8; RET",
+    "004fb180": "ECX actual base owner, EAX same pointer; RET; undefined Ghidra entry",
+    "004fb190": "ECX actual base owner, stacked flags; EAX original pointer/RET4; undefined Ghidra entry",
+    "00b28450": "ECX external renderer unconsumed, plainRET; defined behavior has no operation",
+    "00b28460": "ECX external renderer unconsumed, plainRET; defined behavior has no operation"
+  },
+  "storage_domains": {
+    "loader_worker_stop": {
+      "offset": "04",
+      "width": "DWORD",
+      "producer": "004fdbcc writes0",
+      "consumers": [
+        "00501540",
+        "005015f5"
+      ],
+      "nonzero_producer_found": false
+    },
+    "job_stop": {
+      "offset": "04",
+      "width": "byte",
+      "producers": [
+        "00509308 writes1",
+        "005092aa writes1"
+      ],
+      "equivalent_to_worker_stop": false
+    },
+    "loader_thread_handle": {
+      "offset": "1c",
+      "width": "HANDLE32",
+      "constructor": "004fdbe7 writes0",
+      "test": "00501623",
+      "write": "00501640 CreateThread result",
+      "join_or_close_read_found": false
+    },
+    "loader_event": {
+      "offset": "0c",
+      "domain": "actualNativeEventOwnerStorage8h with ownHANDLE+4",
+      "delete_closes": "event+4, not loader+1c"
+    },
+    "queue_count": "loader+14 is independent of FileStore pending keys and physical reads"
+  },
+  "start_contract": [
+    "CreateThread only for current HANDLE0",
+    "CreateThread argument isactual loader+4, no projected context",
+    "CreateThread happens even when job workcount0",
+    "Store null/non-null HANDLE without status guard",
+    "Only workcount!=0 publishes loader+8 and signals currentevent",
+    "No automatic completion or rollback on CreateThread failure"
+  ],
+  "worker_read_schedule": [
+    "Captureactual argument loader+4 inEDI",
+    "Read currentevent+8 relative tocontext, infinitewait; ignore status",
+    "Check DWORD[context+0] afterwait",
+    "Read currentjob atcontext+4, firstwork, namestringdata; nulldata=>E18D78",
+    "Build owning C-string temporary through41DD40/memcpy",
+    "Reread currentjob atcontext+4 and capturecurrent workrecord aftercopy",
+    "Call7188A0 withECXtemporary; EAX notinput",
+    "Write returnedresource to capturedwork+0c",
+    "Release temporary",
+    "Reload currentevent and reset",
+    "Reload currentevent and wait",
+    "CheckworkerstopDWORD again"
+  ],
+  "drain_contract": [
+    "CurrentF8D394+18 before marking initial frontstopBYTE",
+    "Loop Sleep100/current0109CEEC BDB0B0/509190 while loadercount!=0",
+    "CurrentF8D394+1c tail dispatch afterloop",
+    "Never writes loaderstopDWORD or joins HANDLE"
+  ],
+  "renderer_brackets": {
+    "publication_chain": "B32410 -> B283F0 -> B25F40 atowner+0c; B25F9B publishes owner-0c; B2842F stampsbaseD5E628 andB3243B stampsderivedD5F0A8",
+    "base_profile": "00d5e628",
+    "concrete_profile": "00d5f0a8",
+    "slot18": "00b28450",
+    "slot1c": "00b28460",
+    "bodies": "both exactlyC3 RET",
+    "hidden_stop_action": false,
+    "qualification": "Calls remain current-owner/current-profile dispatch; unknown profile not proved noop"
+  },
+  "exception_maps": {
+    "worker": {
+      "handler": "00c68c98",
+      "FuncInfo": "00d91f68",
+      "map": "00d91f60",
+      "state0": {
+        "to": -1,
+        "funclet": "00c68c90",
+        "target": "0041dd20",
+        "argument": "temporary header[EBP-18h]"
+      },
+      "thread_cleanup": false
+    },
+    "destroy": {
+      "handler": "00c6983e",
+      "FuncInfo": "00d92d3c",
+      "map": "00d92d24",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "funclet": "00c69820",
+          "target": "004f93a0",
+          "action": "base publicationclear"
+        },
+        {
+          "state": 1,
+          "to": 0,
+          "funclet": "00c69828",
+          "target": "004faa90",
+          "action": "eventonly cleanup context=this+4"
+        },
+        {
+          "state": 2,
+          "to": 1,
+          "funclet": "00c69833",
+          "target": "004fcbc0",
+          "action": "queuecleanup context=this+10"
+        }
+      ],
+      "thread_stop_or_join": false
+    },
+    "runtime_equivalence": "Not implemented or executed; FH3 tables and decoded cleanup alone do not prove hardware/exception behavior"
+  },
+  "bounded_getter_uses": [
+    {
+      "site": "0050ab97",
+      "function": "0050aa10",
+      "consumer": "0050ab9e CALL5055C0 enqueue"
+    },
+    {
+      "site": "0050aba3",
+      "function": "0050aa10",
+      "consumer": "0050aba8..0050abb7 count/last job/current callback+1c assignment"
+    },
+    {
+      "site": "0050ac73",
+      "function": "0050aa10",
+      "consumer": "0050ac7a CALL504D20 append work"
+    },
+    {
+      "site": "00508e27",
+      "function": "005072c0",
+      "consumer": "00508e2e CALL504D20 append work"
+    },
+    {
+      "site": "0050a9e2",
+      "function": "0050a950",
+      "consumer": "0050a9e9 CALL5092E0 drain"
+    },
+    {
+      "site": "0050b3f4",
+      "function": "0050b2d0",
+      "consumer": "0050b3fb CALL5092E0 drain"
+    },
+    {
+      "site": "00515043",
+      "function": "00514fb0",
+      "consumer": "0051504b JMP5092E0 drain"
+    },
+    {
+      "site": "00516335",
+      "function": "005162b0",
+      "consumer": "0051633c CALL5092E0 drain"
+    },
+    {
+      "site": "00504850",
+      "function": "00504850",
+      "consumer": "current loader/front state2"
+    },
+    {
+      "site": "00737b84",
+      "function": "00737a50",
+      "consumer": "00737b8b CALL509190 update"
+    }
+  ],
+  "publication_reference_audit": {
+    "live_xref_query": "python tools/bsp.py ghidra xrefs 00e18d4c --limit80 --lines90",
+    "returned_count": 7,
+    "live_sites": [
+      "004f93a0",
+      "004fde35",
+      "004fde71",
+      "004fdea1",
+      "004fdeab",
+      "004fdec8",
+      "0050a039"
+    ],
+    "literal_scan": "python tools/bsp.py scan-bytes \"4c 8d e1 00\" --section .text --limit24",
+    "literal_occurrences": [
+      "004f93a2",
+      "004fb19a",
+      "004fde36",
+      "004fde73",
+      "004fdea2",
+      "004fdead",
+      "004fdec9",
+      "0050a03b"
+    ],
+    "new_missing_reference": {
+      "instruction": "004fb198",
+      "function_candidate": "004fb190",
+      "behavior": "clearcurrentE18D4C, stampCE3818, optionallyfree"
+    },
+    "base_profile_chain": {
+      "undefined_constructor": "004fb180",
+      "table": "00ceb15c",
+      "slot0": "004fb190"
+    },
+    "scope": "Complete returned current Ghidra references and literal scan below limits, not proof of all aliases/indirect machine code"
+  },
+  "import_reference_audit": [
+    {
+      "provider": "CloseHandle",
+      "iat_slot": "00ce225c",
+      "query_limit": 80,
+      "returned_count": 46,
+      "sites": [
+        "0045ca51",
+        "00c0d138",
+        "00a493af",
+        "00b5e0ab",
+        "008f846e",
+        "00a3b761",
+        "00a4c1d4",
+        "00a5e720",
+        "00a5eb23",
+        "00a5e4dd",
+        "00a5e6a2",
+        "00a5e6ab",
+        "00c1bd4f",
+        "00c1bfb2",
+        "00c2b810",
+        "00c2ba74",
+        "0045c51b",
+        "0045ca81",
+        "0045cb1b",
+        "004bc570",
+        "00be2e01",
+        "00c41020",
+        "00a4be07",
+        "00a52247",
+        "00a57ecd",
+        "00a5cef4",
+        "00a57f3d",
+        "00a5cc39",
+        "00a5cde9",
+        "00c20d03",
+        "00c20c73",
+        "00b33b77",
+        "00bd18fd",
+        "00bd19bd",
+        "00beb0a7",
+        "00beb160",
+        "00bf461b",
+        "00bf4f07",
+        "00bf4fcd",
+        "00bf509d",
+        "00a523f5",
+        "00beac5d",
+        "00bead3f",
+        "00beaedd",
+        "00beb00b",
+        "00bf47b0"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "WaitForSingleObject",
+      "iat_slot": "00ce22b0",
+      "query_limit": 80,
+      "returned_count": 12,
+      "sites": [
+        "00c3323f",
+        "00a4bdfe",
+        "00a5223d",
+        "00a5dcc6",
+        "00a5e216",
+        "00a5e2aa",
+        "00c20cb1",
+        "00b33b6d",
+        "00a57f00",
+        "00a57f1f",
+        "00bd17c6",
+        "00bd1926"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "WaitForMultipleObjects",
+      "iat_slot": "00ce21fc",
+      "query_limit": 30,
+      "returned_count": 6,
+      "sites": [
+        "00c376b3",
+        "00be2de5",
+        "00a5e79d",
+        "00a5e32f",
+        "00c375a2",
+        "00c3761f"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "CreateThread",
+      "iat_slot": "00ce2238",
+      "query_limit": 50,
+      "returned_count": 9,
+      "sites": [
+        "00427912",
+        "00a3d145",
+        "00a4c196",
+        "00a52486",
+        "00b33dee",
+        "00be2d24",
+        "00c03c43",
+        "0050163a",
+        "00b5e39b"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "ExitThread",
+      "iat_slot": "00ce22c8",
+      "query_limit": 30,
+      "returned_count": 4,
+      "sites": [
+        "00b33d7a",
+        "00a523fd",
+        "00c03b74",
+        "00c03afc"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "ResumeThread",
+      "iat_slot": "00ce22cc",
+      "query_limit": 18,
+      "returned_count": 3,
+      "sites": [
+        "00a524a1",
+        "00b33e04",
+        "00be3178"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    },
+    {
+      "provider": "ExitProcess",
+      "iat_slot": "00ce20f0",
+      "query_limit": 15,
+      "returned_count": 1,
+      "sites": [
+        "00bfba61"
+      ],
+      "hit_limit": false,
+      "verification": "live bsp.py ghidra xrefs; names matched installed PE imports; unrelated bodies not transitively audited"
+    }
+  ],
+  "absent_named_pe_imports": [
+    "TerminateThread",
+    "GetExitCodeThread",
+    "SuspendThread"
+  ],
+  "upstream_shutdown": {
+    "loader_manager_dispatch": "8F8455 -> BD0400 pops registeredpointer, current firstslot(flags1); CEB198[0]=50ACE0",
+    "winmain_CloseHandle": "8F846E consumes EBP fromCreateMutexA8F8301; single-instance mutex not loaderHANDLE",
+    "random_threads": "BD30D0 movesECX1090AC0 thenJMP41CC80; lock destruction, no workerjoin",
+    "separate_renderer_worker": "B33B50 sets ownstopBYTE+5, signalsown event+0c, waits/closes ownHANDLE+8; distinctlayout",
+    "external_exit": "BFD24F callsWinMain; conditional BFD25E callsBFBDBB -> BFBCD9; BFBD9E callsBFBA53 whose BFBA61 importsExitProcess",
+    "ordering_boundary": "Process exit path is not proof of loaderquiescence before event/context free; untraced exitcallbacks/virtualcalls/aliases remain"
+  },
+  "resource_boundary": {
+    "wrapper": "007188a0",
+    "calls": [
+      "007175d0",
+      "004c1400",
+      "00b80720"
+    ],
+    "source": "MarkerClassHost::load_and_cache_resource_00b80720 explicitly unreconstructed; wrapper/factory names do not establish runnable worker resource operation"
+  },
+  "ready_smallest_source_packet": {
+    "name": "native_loading_worker_context_event_cleanup",
+    "addresses": [
+      "004faa90"
+    ],
+    "proposed_files": [
+      "include/bsp/native_loading_worker_context.hpp",
+      "src/native_loading_worker_context.cpp"
+    ],
+    "contract": "Actual0Ch context at loader+4; capturecurrentevent+8, virtualdelete flags1 when nonnull using established actualevent provider, then clearcontext+8; no stop/wake/join/new lifetime policy; no productionthread wiring",
+    "note": "Proposed only; no lease or implementation created"
+  },
+  "other_source_candidates": [
+    {
+      "addresses": [
+        "00b28450",
+        "00b28460"
+      ],
+      "contract": "Actual singleRET renderer bracket leaves; preserve currentprofile dispatch context"
+    },
+    {
+      "addresses": [
+        "004fb180",
+        "004fb190"
+      ],
+      "contract": "Actual baseprofile construct/scalar delete; publication clear/current read/flag behavior, no invented worker cleanup"
+    }
+  ],
+  "production_worker_prerequisites": [
+    "Completed7188A0/B80720 actual resource/provider ownership and exception domain",
+    "Actualthread callbackABI and currentpointer reload schedule",
+    "Explicit recovered or externally guaranteed owner/event/HANDLE lifetime before production binding",
+    "Update/drain/FileBlock/resource domains; FileBlock is another packet, not duplicated"
+  ],
+  "needed_listing_work": [
+    {
+      "entry": "004fb180",
+      "inclusive_end": "004fb188",
+      "status": "no containing Ghidra function"
+    },
+    {
+      "entry": "004fb190",
+      "inclusive_end": "004fb1b8",
+      "status": "no containing Ghidra function; missed publicationwrite"
+    },
+    {
+      "entry": "00b28450",
+      "inclusive_end": "00b28450",
+      "status": "oneRET byte, no containing Ghidra function"
+    },
+    {
+      "entry": "00b28460",
+      "inclusive_end": "00b28460",
+      "status": "oneRET byte, no containing Ghidra function"
+    },
+    {
+      "entry": "00c68c98",
+      "inclusive_end": "00c68ca1",
+      "status": "FH3 handler undefined"
+    },
+    {
+      "entry": "00c6983e",
+      "inclusive_end": "00c69847",
+      "status": "FH3 handler undefined"
+    },
+    {
+      "entry": "004fcbc0",
+      "missing_continuation": "004fcbd2..004fcbd6",
+      "decoded": "ADD ESP4; POP ESI; RET",
+      "status": "no function at4FCBD2; originalbodyendsatfreecall"
+    }
+  ],
+  "validation": {
+    "fresh_spans": 54,
+    "all_spans_match_installed_pe": true,
+    "direct_call_rows": 97,
+    "direct_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_loading_thread_lifetime_bl.json",
+      "checked": 97,
+      "failed": 0
+    },
+    "new_tests": false,
+    "build": false,
+    "fixtures": false,
+    "instruction_execution": false,
+    "runtime_or_gameplay": false,
+    "ghidra_mutations": false,
+    "production_changes": false
+  },
+  "limitations": [
+    "Bounded static absence result, not a universal no-alias proof",
+    "Ghidra has missing functions and body continuations; literal scan exposed one additional owner reference",
+    "No safe original thread exit ordering or HANDLE cleanup established",
+    "Native process exit does not prove safe loader destruction earlier inWinMain",
+    "No stop protocol, wait status recovery or IOcancellation invented",
+    "No FileBlock audit duplication; provider/lifecycle dependencies remain explicit"
+  ],
+  "documentation": {
+    "path": "docs/NATIVE_LOADING_THREAD_LIFETIME_BL.md",
+    "sha256": "c369305be7ff06f24bff4ebdecd2a61cd2de7464abd50de56c2d54920d6d0106"
+  }
+}
