@@ -1,0 +1,1709 @@
+{
+  "packet": "orch5_native_system_registry_raw_terminal",
+  "status": "full_raw_terminal_canonical_profiles_strict_win32_two_ctests_actual_drain_source_fixture_passed",
+  "published_base": "a9160919ec13ed56bceaf4c8e36c2ea57b818be2",
+  "constructor_dependency": "5e35e5705960a127b321cc497d02d4767981a171",
+  "private_original_ancestry_merge": "21735e5f96bb2b6d0d33c74a1ebdd16d368d49d7",
+  "owned_addresses": [
+    "00b5df00",
+    "00b5df70",
+    "00b5bb20",
+    "00bd0400"
+  ],
+  "owned_files": [
+    "include/bsp/native_system_registry_raw_terminal.hpp",
+    "src/native_system_registry_raw_terminal.cpp",
+    "docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md",
+    "reports/native_system_registry_raw_terminal.json",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "coordination": {
+    "cmake_append": "src/native_system_registry_raw_terminal.cpp",
+    "cmake_lease": "Claimed only after prior orch3 lease released; append under orch5_native_system_registry_raw_terminal_cmake then immediately released.",
+    "constructor_and_compiled_record_sources_modified": false,
+    "ghidra_worker_writes": false
+  },
+  "native_identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_inputs\\manifest.json",
+    "sha256": "6598c0d69559ff991cd122cd3c530223c8a621fceb8a55f4008a156fa6bdc907",
+    "span_count": 10,
+    "total_bytes": 488,
+    "all_live_equals_pe": true,
+    "files": 37
+  },
+  "native_spans": [
+    {
+      "name": "registry_destructor",
+      "start": "00b5df00",
+      "end": "00b5df62",
+      "bytes": 99,
+      "sha256": "d9fb4a9503ea51485fe83763ee3f452eb648ddded48ca955f53429f00f38d38e",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00b5df00",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "ip": "00b5df02",
+          "bytes": "682811cc00",
+          "mnemonic": "push",
+          "operands": "0xcc1128"
+        },
+        {
+          "ip": "00b5df07",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "ip": "00b5df0d",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "ip": "00b5df0e",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "ip": "00b5df15",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "ip": "00b5df16",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5df17",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "ip": "00b5df19",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "ip": "00b5df1a",
+          "bytes": "89742408",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], esi"
+        },
+        {
+          "ip": "00b5df1e",
+          "bytes": "c7063c2ad600",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xd62a3c"
+        },
+        {
+          "ip": "00b5df24",
+          "bytes": "8d7e04",
+          "mnemonic": "lea",
+          "operands": "edi, [esi + 4]"
+        },
+        {
+          "ip": "00b5df27",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "ip": "00b5df29",
+          "bytes": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "ip": "00b5df2b",
+          "bytes": "c744241800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x18], 0"
+        },
+        {
+          "ip": "00b5df33",
+          "bytes": "e8d8deffff",
+          "mnemonic": "call",
+          "operands": "0xb5be10"
+        },
+        {
+          "ip": "00b5df38",
+          "bytes": "8b3f",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [edi]"
+        },
+        {
+          "ip": "00b5df3a",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "ip": "00b5df3b",
+          "bytes": "e8498a0900",
+          "mnemonic": "call",
+          "operands": "0xbf6989"
+        },
+        {
+          "ip": "00b5df40",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "ip": "00b5df43",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "ip": "00b5df45",
+          "bytes": "c7442414ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], 0xffffffff"
+        },
+        {
+          "ip": "00b5df4d",
+          "bytes": "e82edbffff",
+          "mnemonic": "call",
+          "operands": "0xb5ba80"
+        },
+        {
+          "ip": "00b5df52",
+          "bytes": "8b4c240c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "ip": "00b5df56",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "ip": "00b5df57",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5df58",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "ip": "00b5df5f",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "ip": "00b5df62",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "registry_scalar",
+      "start": "00b5df70",
+      "end": "00b5df8d",
+      "bytes": 30,
+      "sha256": "001d045678ce7fdf52e60c264b385a80e132f0d777a9b4bc4375d84b0288405e",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00b5df70",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5df71",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "ip": "00b5df73",
+          "bytes": "e888ffffff",
+          "mnemonic": "call",
+          "operands": "0xb5df00"
+        },
+        {
+          "ip": "00b5df78",
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "ip": "00b5df7d",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0xb5df88"
+        },
+        {
+          "ip": "00b5df7f",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5df80",
+          "bytes": "e827860900",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "ip": "00b5df85",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "ip": "00b5df88",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "ip": "00b5df8a",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5df8b",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "name": "base_scalar",
+      "start": "00b5bb20",
+      "end": "00b5bb3d",
+      "bytes": 30,
+      "sha256": "29a6dff18cbbb4780a00c76c70befb79444eeb28ed7684c672de8651921c7730",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00b5bb20",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5bb21",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "ip": "00b5bb23",
+          "bytes": "e858ffffff",
+          "mnemonic": "call",
+          "operands": "0xb5ba80"
+        },
+        {
+          "ip": "00b5bb28",
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "ip": "00b5bb2d",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0xb5bb38"
+        },
+        {
+          "ip": "00b5bb2f",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5bb30",
+          "bytes": "e877aa0900",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "ip": "00b5bb35",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "ip": "00b5bb38",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "ip": "00b5bb3a",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "ip": "00b5bb3b",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "name": "manager_destructor",
+      "start": "00bd0400",
+      "end": "00bd04c4",
+      "bytes": 197,
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00bd0400",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "ip": "00bd0402",
+          "bytes": "685854cc00",
+          "mnemonic": "push",
+          "operands": "0xcc5458"
+        },
+        {
+          "ip": "00bd0407",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "ip": "00bd040d",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "ip": "00bd040e",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "ip": "00bd0415",
+          "bytes": "83ec0c",
+          "mnemonic": "sub",
+          "operands": "esp, 0xc"
+        },
+        {
+          "ip": "00bd0418",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "ip": "00bd0419",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "ip": "00bd041a",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "ip": "00bd041c",
+          "bytes": "89742408",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], esi"
+        },
+        {
+          "ip": "00bd0420",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "ip": "00bd0422",
+          "bytes": "895c241c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x1c], ebx"
+        },
+        {
+          "ip": "00bd0426",
+          "bytes": "e8e5f4ffff",
+          "mnemonic": "call",
+          "operands": "0xbcf910"
+        },
+        {
+          "ip": "00bd042b",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "ip": "00bd042d",
+          "bytes": "7464",
+          "mnemonic": "je",
+          "operands": "0xbd0493"
+        },
+        {
+          "ip": "00bd042f",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "ip": "00bd0430",
+          "bytes": "8b7e08",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 8]"
+        },
+        {
+          "ip": "00bd0433",
+          "bytes": "397e04",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 4], edi"
+        },
+        {
+          "ip": "00bd0436",
+          "bytes": "7605",
+          "mnemonic": "jbe",
+          "operands": "0xbd043d"
+        },
+        {
+          "ip": "00bd0438",
+          "bytes": "e8d6620200",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "ip": "00bd043d",
+          "bytes": "8d47fc",
+          "mnemonic": "lea",
+          "operands": "eax, [edi - 4]"
+        },
+        {
+          "ip": "00bd0440",
+          "bytes": "3b4608",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [esi + 8]"
+        },
+        {
+          "ip": "00bd0443",
+          "bytes": "897c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], edi"
+        },
+        {
+          "ip": "00bd0447",
+          "bytes": "7705",
+          "mnemonic": "ja",
+          "operands": "0xbd044e"
+        },
+        {
+          "ip": "00bd0449",
+          "bytes": "3b4604",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "ip": "00bd044c",
+          "bytes": "7305",
+          "mnemonic": "jae",
+          "operands": "0xbd0453"
+        },
+        {
+          "ip": "00bd044e",
+          "bytes": "e8c0620200",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "ip": "00bd0453",
+          "bytes": "83c7fc",
+          "mnemonic": "add",
+          "operands": "edi, -4"
+        },
+        {
+          "ip": "00bd0456",
+          "bytes": "3b7e08",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [esi + 8]"
+        },
+        {
+          "ip": "00bd0459",
+          "bytes": "7205",
+          "mnemonic": "jb",
+          "operands": "0xbd0460"
+        },
+        {
+          "ip": "00bd045b",
+          "bytes": "e8b3620200",
+          "mnemonic": "call",
+          "operands": "0xbf6713"
+        },
+        {
+          "ip": "00bd0460",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "ip": "00bd0463",
+          "bytes": "3bc3",
+          "mnemonic": "cmp",
+          "operands": "eax, ebx"
+        },
+        {
+          "ip": "00bd0465",
+          "bytes": "8b0f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi]"
+        },
+        {
+          "ip": "00bd0467",
+          "bytes": "7412",
+          "mnemonic": "je",
+          "operands": "0xbd047b"
+        },
+        {
+          "ip": "00bd0469",
+          "bytes": "8b5608",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 8]"
+        },
+        {
+          "ip": "00bd046c",
+          "bytes": "8bfa",
+          "mnemonic": "mov",
+          "operands": "edi, edx"
+        },
+        {
+          "ip": "00bd046e",
+          "bytes": "2bf8",
+          "mnemonic": "sub",
+          "operands": "edi, eax"
+        },
+        {
+          "ip": "00bd0470",
+          "bytes": "c1ff02",
+          "mnemonic": "sar",
+          "operands": "edi, 2"
+        },
+        {
+          "ip": "00bd0473",
+          "bytes": "7406",
+          "mnemonic": "je",
+          "operands": "0xbd047b"
+        },
+        {
+          "ip": "00bd0475",
+          "bytes": "83c2fc",
+          "mnemonic": "add",
+          "operands": "edx, -4"
+        },
+        {
+          "ip": "00bd0478",
+          "bytes": "895608",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], edx"
+        },
+        {
+          "ip": "00bd047b",
+          "bytes": "3bcb",
+          "mnemonic": "cmp",
+          "operands": "ecx, ebx"
+        },
+        {
+          "ip": "00bd047d",
+          "bytes": "7408",
+          "mnemonic": "je",
+          "operands": "0xbd0487"
+        },
+        {
+          "ip": "00bd047f",
+          "bytes": "8b01",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]"
+        },
+        {
+          "ip": "00bd0481",
+          "bytes": "8b10",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax]"
+        },
+        {
+          "ip": "00bd0483",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "ip": "00bd0485",
+          "bytes": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "ip": "00bd0487",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "ip": "00bd0489",
+          "bytes": "e882f4ffff",
+          "mnemonic": "call",
+          "operands": "0xbcf910"
+        },
+        {
+          "ip": "00bd048e",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "ip": "00bd0490",
+          "bytes": "759e",
+          "mnemonic": "jne",
+          "operands": "0xbd0430"
+        },
+        {
+          "ip": "00bd0492",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "ip": "00bd0493",
+          "bytes": "8d4e10",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0x10]"
+        },
+        {
+          "ip": "00bd0496",
+          "bytes": "e8e5c784ff",
+          "mnemonic": "call",
+          "operands": "0x41cc80"
+        },
+        {
+          "ip": "00bd049b",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "ip": "00bd049e",
+          "bytes": "3bc3",
+          "mnemonic": "cmp",
+          "operands": "eax, ebx"
+        },
+        {
+          "ip": "00bd04a0",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0xbd04ab"
+        },
+        {
+          "ip": "00bd04a2",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "ip": "00bd04a3",
+          "bytes": "e804610200",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "ip": "00bd04a8",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "ip": "00bd04ab",
+          "bytes": "8b4c2414",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "ip": "00bd04af",
+          "bytes": "895e04",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], ebx"
+        },
+        {
+          "ip": "00bd04b2",
+          "bytes": "895e08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], ebx"
+        },
+        {
+          "ip": "00bd04b5",
+          "bytes": "895e0c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], ebx"
+        },
+        {
+          "ip": "00bd04b8",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "ip": "00bd04b9",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "ip": "00bd04ba",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "ip": "00bd04c1",
+          "bytes": "83c418",
+          "mnemonic": "add",
+          "operands": "esp, 0x18"
+        },
+        {
+          "ip": "00bd04c4",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "registry_funclet_handler",
+      "start": "00cc1120",
+      "end": "00cc1131",
+      "bytes": 18,
+      "sha256": "09e298d8fd869499deb69fc87bdf74e514a9fb510170d20bfbbcf8543a122902",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00cc1120",
+          "bytes": "8b4df0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "ip": "00cc1123",
+          "bytes": "e958a9e9ff",
+          "mnemonic": "jmp",
+          "operands": "0xb5ba80"
+        },
+        {
+          "ip": "00cc1128",
+          "bytes": "b8309edf00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdf9e30"
+        },
+        {
+          "ip": "00cc112d",
+          "bytes": "e9115af3ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "name": "registry_fh3_map_info",
+      "start": "00df9e28",
+      "end": "00df9e53",
+      "bytes": 44,
+      "sha256": "c873ad3476677eb1dd8fd476eefb6b87c979c9d10874c18f97d16586d7577b59",
+      "live_equals_pe": true,
+      "words": [
+        "ffffffff",
+        "00cc1120",
+        "19930522",
+        "00000001",
+        "00df9e28",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "name": "manager_funclet_handler",
+      "start": "00cc5450",
+      "end": "00cc5461",
+      "bytes": 18,
+      "sha256": "b3057c95e234f2b535f22984b13fa61b3bdcbaebc648fe2617928b907f5507ef",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "ip": "00cc5450",
+          "bytes": "8b4de8",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "ip": "00cc5453",
+          "bytes": "e9c8adf0ff",
+          "mnemonic": "jmp",
+          "operands": "0xbd0220"
+        },
+        {
+          "ip": "00cc5458",
+          "bytes": "b890f4df00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdff490"
+        },
+        {
+          "ip": "00cc545d",
+          "bytes": "e9e116f3ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "name": "manager_fh3_map_info",
+      "start": "00dff488",
+      "end": "00dff4b3",
+      "bytes": 44,
+      "sha256": "882a77c844b8b6a14a9182141d7bfff33172654799a2325d22e1f2fb68085312",
+      "live_equals_pe": true,
+      "words": [
+        "ffffffff",
+        "00cc5450",
+        "19930522",
+        "00000001",
+        "00dff488",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "name": "registry_profile",
+      "start": "00d62a3c",
+      "end": "00d62a3f",
+      "bytes": 4,
+      "sha256": "44649ce27cedb772f7bb8aadbf891ba7a8b8fe029f99a7d6f83c5ff7a7e41c66",
+      "live_equals_pe": true,
+      "slot_zero": "00b5df70"
+    },
+    {
+      "name": "base_profile",
+      "start": "00d626f4",
+      "end": "00d626f7",
+      "bytes": 4,
+      "sha256": "ec0a8618f0591e17d7b8ee4e4c8f5148b868d8801597ea1026d8544e1775a174",
+      "live_equals_pe": true,
+      "slot_zero": "00b5bb20"
+    }
+  ],
+  "native_abi": {
+    "B5DF00": "ECX actual10h registry, plainRET; 99bytes throughB5DF62",
+    "B5DF70": "ECX capturedowner, stackflags, EAX capturedpointer, RET4;30bytes throughB5DF8D",
+    "B5BB20": "ECX capturedowner, stackflags, EAX capturedpointer, RET4;30bytes throughB5BB3D",
+    "BD0400": "ECX actual14h manager, plainRET;197bytes throughBD04C4; source adds stable EDX bindings"
+  },
+  "terminal_schedule": {
+    "B5DF00": [
+      "B5DF1E writesD62A3C",
+      "B5DF2B armsstate0",
+      "B5DF33 callsB5BE10(array,0)",
+      "B5DF38 capturesCURRENTdata",
+      "B5DF3B callsBF6989 free",
+      "B5DF45 disarmsstate-1",
+      "B5DF4D callsB5BA80"
+    ],
+    "scalar": "Call respective raw destructor unconditionally. Test flags bit0 only after return, free captured owner iff1, return captured pointer bits. No scalar free on a throwing destructor.",
+    "source_composition": "Use raw B5BF50 zero-resize/current-free body and raw B5BA80 through constructor context; no retained Operation or binding."
+  },
+  "array_specialization_domain": "B5BF50 specializes B5BE10(array,0) only for constructor-produced nonnegative count AND capacity with valid current storage/extents. No general negative-count initialization or negative-capacity reserve-on-zero; no invented runtime guards.",
+  "raw_admission": "Owners must follow the raw lifetime contract. Do not use the raw context to retire an owner held by an unfinished legacy Operation; existing legacy bindings retain their admission/guard requirements.",
+  "fh3": [
+    {
+      "owner": "00b5df00",
+      "handler": "00cc1128",
+      "func_info": "00df9e30",
+      "map": "00df9e28",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cc1120",
+          "receiver": "ECX=[FH3 EBP-10h]",
+          "target": "00b5ba80"
+        }
+      ]
+    },
+    {
+      "owner": "00bd0400",
+      "handler": "00cc5458",
+      "func_info": "00dff490",
+      "map": "00dff488",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cc5450",
+          "receiver": "ECX=[FH3 EBP-18h]",
+          "target": "00bd0220"
+        }
+      ]
+    }
+  ],
+  "canonical_call_site_gate": {
+    "verified": true,
+    "owner_load": "00bd0465",
+    "pop_end_before_dispatch": "00bd0478",
+    "profile_load": "00bd047f",
+    "slot_zero_load": "00bd0481",
+    "flags_one_push": "00bd0483",
+    "indirect_call": "00bd0485",
+    "current_recount": "00bd0489",
+    "profiles": {
+      "00d62a3c": "00b5df70",
+      "00d626f4": "00b5bb20"
+    },
+    "data_live_equals_pe": true
+  },
+  "dispatch_contract": {
+    "field": "NativeSingletonDeletionBindings::system_constant_registry",
+    "type": "NativeSystemConstantRegistryRawContext*",
+    "offset": "0x60",
+    "old_size": 96,
+    "new_size": 100,
+    "existing_offsets_unchanged": true,
+    "cells": [
+      "0108fe94",
+      "01090aa0",
+      "01090aa8",
+      "01090aa4"
+    ],
+    "receiver": "Popped actual owner, independent of CURRENT registry publication identity.",
+    "ownership": "Borrowed stable context/cells only. No heap frame, Operation, cached pool or opaque destructor callback.",
+    "missing_binding": "Existing finite-profile contract error; no native arbitrary-vtable ABI claim.",
+    "legacy_interfaces_preserved": true
+  },
+  "pool_recreation": "With initially absent pool, registry is registered first and pool second. Reverse drain destroys old pool and setsAA4=1; registry419CC0 creates/registers a new pool.52small returns are suppressed by current gate. BD0400 current recount drains new pool before releasing own section/vector.",
+  "failure_ownership": "Array first-getter failure occurs after countpredecrement51. B5DF00 state0 base cleanup clearsCURRENTregistry and writesCE3818; scalar retains owner/array. BD0400 state0 clearscurrentvector but retainssection+10 and caller manager allocation/publication. No retry/rollback or retained source Operation.",
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "count": 8,
+      "all_live_equals_pe": true,
+      "before_configure": true
+    },
+    "preparation": "Existing bsp_core target prepared while shared CMake registration was leased; not accepted as final validation.",
+    "strict_build": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "exit_code": 0,
+      "after_legitimate_source_registration": true,
+      "ctests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "native_math_differential",
+          "passed": true
+        }
+      ]
+    },
+    "fixture": {
+      "source": "local/output/raw_terminal_probe.cpp",
+      "build_command": "local/output/build_raw_terminal_probe.cmd",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/link",
+        "/MANIFEST:EMBED"
+      ],
+      "exit_code": 0,
+      "final_link": "Only final fixture source plus complete rebuilt bsp_core/bsp_lua511/bsp_zlib121 libraries; no separately compiled terminal or dispatch replacement objects.",
+      "workflows": [
+        "CASE canonical_registry_and_base pass getters_during_drain=52 pools_constructed=2 disabled_returns=52 retained_registry=0 retained_array=0 retained_section=0 retained_manager=1",
+        "CASE state0_array_failure pass getters_during_drain=1 pools_constructed=1 disabled_returns=0 retained_registry=1 retained_array=1 retained_section=1 retained_manager=1"
+      ],
+      "normal": "Raw52recordconstructor, actual registry-before-pool order, baseflags2 nofree and canonical D626F4/D62A3C retirement, pool recreation,52disabled returns, only caller manager retained.",
+      "failure": "Single injected first string getter after old pool is destroyed; state0 child cleanup, count51, retained owner/data/section, cleared manager vector.",
+      "instrumentation": "Test-only5byte entry JMP hooks temporarily restore actual linked provider body for real calls. One injected source C++ getter exception. Assertions precede explicit diagnostic disposal; failed owner/manager not retried.",
+      "original_fh3_executed": false
+    }
+  },
+  "intermediate_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_intermediate_artifacts\\manifest.json",
+    "sha256": "b433080886b5139419837161e3ff0a42b86de8932fa9851045d4f59db290ec82",
+    "role": "Frozen earlier direct-module probe against constructor dependency library; no final CTest/build claim."
+  },
+  "validated_artifact_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\manifest.json",
+    "sha256": "2fe1504c57d0a12dc6f46ffbbca2d2b50d35d0d6530b5bb7a99907d0b75c4752",
+    "artifact_count": 73,
+    "loaded_module_count": 8
+  },
+  "source_build_fixture_tool_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_system_registry_raw_terminal.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1633,
+      "sha256": "fc3c48aa5cf0e965494aa99c8f8214e8c76e70f03259c3937d4bb4f0187e1143",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_system_registry_raw_terminal.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_system_registry_raw_terminal.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1747,
+      "sha256": "90860a4f3f03451487e574755d83f3706b6cfdc36d061e242d1752e4344532e0",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_system_registry_raw_terminal.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_singleton_destruction.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 8670,
+      "sha256": "8200bc14cfe9e23f5585fc04886c1e3b2dc2e8f9878f3498222cc60b881bd8a4",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_singleton_destruction.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_singleton_destruction.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 15428,
+      "sha256": "90d74784be8dc491c659fe511f114e21d0c742bcf75a5ed0037237a7fe660894",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_singleton_destruction.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_system_constant_registry.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 9485,
+      "sha256": "4a8b55e1032f17d19b9964d4e058db4641650f5ddb227243c58c8044ea586e10",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_system_constant_registry.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_system_constant_registry.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 24009,
+      "sha256": "30d189cb0ca66e14768fc5813f428e65e263c92d2639bde87ec5fdb8f1f4fdea",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_system_constant_registry.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_compiled_shader_owner.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 7737,
+      "sha256": "63c878ea70f397478a4b37a0405d9fbd7a462f5e7d5546f02c253a0bb9dfbd7b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_compiled_shader_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_compiled_shader_owner.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 11363,
+      "sha256": "0cae9e6766b659f5f496bada4dcdec8653ae6547f9152f6dcb6db6ddc09fae34",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_compiled_shader_owner.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\shader_system_registry.inc",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1772,
+      "sha256": "84b5c00d64b789455c0d964ca073fa255ded5c7205b11661d7b5894abcba2b0b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\shader_system_registry.inc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_string.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_string.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_string.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_string.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_string_pool_owner.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_string_pool_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_string_pool_owner.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_string_pool_owner.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\native_string_pool_storage.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\native_string_pool_storage.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_string_pool_storage.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_string_pool_storage.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_singleton_publication.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_singleton_publication.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_singleton_removal_reorder.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 7844,
+      "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_singleton_removal_reorder.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_singleton_vector_registration_wrappers.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_singleton_vector_registration_wrappers.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_singleton_vector_leaves.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 3538,
+      "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_singleton_vector_leaves.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_tracked_critical_section_release.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1637,
+      "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_tracked_critical_section_release.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_diagnostic_sink_lifetime.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 3472,
+      "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_diagnostic_sink_lifetime.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\native_render_service_base.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\native_render_service_base.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\src\\singleton_lifetime.cpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\src\\singleton_lifetime.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\include\\bsp\\singleton_lifetime.hpp",
+      "role": "source_build_or_analysis_input",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\include\\bsp\\singleton_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\CMakeLists.txt",
+      "role": "source_build_or_analysis_input",
+      "bytes": 14869,
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\CMakeLists.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\cmake\\startup.cmake",
+      "role": "source_build_or_analysis_input",
+      "bytes": 113841,
+      "sha256": "27a31ed35fa35594ac2a2e1087377c68fe76448c590f3e3c01b84b1fd3cde42f",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\cmake\\startup.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\scripts\\build.ps1",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\scripts\\build.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\config\\target.json",
+      "role": "source_build_or_analysis_input",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\config\\target.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\tools\\bsp.py",
+      "role": "source_build_or_analysis_input",
+      "bytes": 63768,
+      "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\tools\\bsp.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\tools\\ghidra_export.py",
+      "role": "source_build_or_analysis_input",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\tools\\ghidra_export.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\tools\\ledger.py",
+      "role": "source_build_or_analysis_input",
+      "bytes": 7610,
+      "sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\tools\\ledger.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\tools\\workspace.py",
+      "role": "source_build_or_analysis_input",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\tools\\workspace.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\tools\\coordination.py",
+      "role": "source_build_or_analysis_input",
+      "bytes": 16128,
+      "sha256": "109e148de66538b99c3440f42a5c404c8a7b19df130d0d83a84fd758d478e00d",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\tools\\coordination.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\docs\\NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md",
+      "role": "source_build_or_analysis_input",
+      "bytes": 10433,
+      "sha256": "ecdf457dd59ed02469d752dec30f74e27c9907c16145f7a3ec5af9ea45558ff3",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\docs\\NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_build.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 6693,
+      "sha256": "42d89e94bf139fa659ef5b349d2021b0f78b1503b34e69aceb3786f2e39d1f33",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_build.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_core_preparation.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 41154,
+      "sha256": "173e00468fd03e1d8c650277999e806b1a16a4df1088a5dd05665ebde10a633d",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_core_preparation.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\prepare_raw_terminal_core.ps1",
+      "role": "fixture_or_validation_capture",
+      "bytes": 688,
+      "sha256": "e0e666db83b8275483127472bb7f4a34e69b38d7ef272d9c3300610367167a76",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\prepare_raw_terminal_core.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_seed_verification.json",
+      "role": "fixture_or_validation_capture",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_seed_verification.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.cpp",
+      "role": "fixture_or_validation_capture",
+      "bytes": 10306,
+      "sha256": "32fbf9c2d87175201df6d951c8acc892da37f53d34bcc9e47f9855a2b86c85db",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\build_raw_terminal_probe.cmd",
+      "role": "fixture_or_validation_capture",
+      "bytes": 677,
+      "sha256": "8d4f76b09e3e7f10740826f67d827e8988b0ca78ad247d4f4cfbde2e2a2e9206",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\build_raw_terminal_probe.cmd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe_compile.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 531,
+      "sha256": "deefeca48b1e3de6e37d6c30d9c7f0770dae99d3cd07da0bb0c2b752ff81c69a",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe_compile.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe_run.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 1597,
+      "sha256": "65978b861ae3d5472bd74e5a0098a16414ac6076892d6c5ada2e15900121536f",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe_run.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.obj",
+      "role": "fixture_or_validation_capture",
+      "bytes": 93211,
+      "sha256": "71e8f515c2ca886f4977ba009e80602d43b6e828385c1a2b241a290dbf253ddd",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.exe",
+      "role": "fixture_or_validation_capture",
+      "bytes": 244224,
+      "sha256": "dbbd9288df890afb7c3f87b61ff286d0854c0905e9dbfe74effe1dcc29f639a9",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.map",
+      "role": "fixture_or_validation_capture",
+      "bytes": 381907,
+      "sha256": "927cc13b87e87b975e5ed7e3aa7ce490bf4dd2567ff3f4dcbcbb3f9001d146c1",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe.map"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\capture_raw_terminal_inputs.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 4118,
+      "sha256": "713f14c83c82e9ec40bfcf953a6adc425d89e252d9194148c7c67e0c971332cb",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\capture_raw_terminal_inputs.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\capture_raw_terminal_intermediate.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 3311,
+      "sha256": "197cb27e28f5e794487d740ecd7c1b4382cf4a86f040592b10e466b0aaea6f06",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\capture_raw_terminal_intermediate.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\record_raw_terminal_ledger.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 4546,
+      "sha256": "66ce3683b5c0023e787bdf89778a6baf0b77cc33cc98d3b4d2baf3470c7dad6b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\record_raw_terminal_ledger.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\finalize_raw_terminal_report.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 13429,
+      "sha256": "71d41e6ad7762b5aeecc0677b3130cdf0452cbe4e113a162622147cee1fa21af",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\finalize_raw_terminal_report.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_previous_ledger_rows.json",
+      "role": "fixture_or_validation_capture",
+      "bytes": 16794,
+      "sha256": "729bc6e32a607b54ef6419883153520e3e72d91f6fd7c533c320618bc29c6a91",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_previous_ledger_rows.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_ledger_receipts.txt",
+      "role": "fixture_or_validation_capture",
+      "bytes": 11398,
+      "sha256": "64c48297ce46316b1e92cfd5263e1bd86be25f209eda6f882d268bfee04f74ec",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_ledger_receipts.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\seed_reference.hpp",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\seed_reference.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Release\\bsp_core.lib",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 57729054,
+      "sha256": "6ce2fa906f6f402071c072d535438aa762b71d0c1fd55bc31af5865fa3a44c67",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Release\\bsp_core.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Release\\bsp_lua511.lib",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 456016,
+      "sha256": "63237f51a0dfbe162a87515deb74b8bfbfe5bf5c1784ab13d90ad0eaa82395ce",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Release\\bsp_lua511.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Release\\bsp_zlib121.lib",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 72178,
+      "sha256": "0d16003e1aded298fa14746edda76384dd5ec07e2c81625ee7942efe80d53cc9",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Release\\bsp_zlib121.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\bsp_core.dir\\Release\\native_system_registry_raw_terminal.obj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 7148,
+      "sha256": "a41c9f12379d22f229af50a5afcd0178001e557dfa53a139fa6c17ba49044ecc",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\bsp_core.dir\\Release\\native_system_registry_raw_terminal.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\bsp_core.dir\\Release\\native_singleton_destruction.obj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 17374,
+      "sha256": "0e7f89d4359f5a134752cfd6ca86bf7c4a79f8eb0ed25bf62cff348fcce573ce",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\bsp_core.dir\\Release\\native_singleton_destruction.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\bsp_core.dir\\Release\\native_system_constant_registry.obj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 85502,
+      "sha256": "75494ef71ae6c1f6b62d80bb644116f3460952e8a9080dd83ea771242b428038",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\bsp_core.dir\\Release\\native_system_constant_registry.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Release\\bsp_math_tests.exe",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 530944,
+      "sha256": "8f9de7e8d0fec42e9e4dd527d92d0ff26329a2352551fefe7a2b052ee29d2a9a",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Release\\bsp_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Release\\bsp_native_math_tests.exe",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 18432,
+      "sha256": "2e3832812bde75531fc5ef4bfd2a00b025d80642d4a1fb9b4125707f507dc78c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Release\\bsp_native_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\CMakeCache.txt",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 19055,
+      "sha256": "0ad5867af72ba65a12075c233e8f825b6e692b8df53614f5566d16012c7d4604",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\CMakeCache.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\bsp_core.vcxproj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 226433,
+      "sha256": "1ba456af188137c43ece35e3e5e288e8f84a36cb9f4d5bed2fa05f7c1d7edd84",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\bsp_core.vcxproj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\Testing\\Temporary\\LastTest.log",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 1821,
+      "sha256": "d21c7317db99dd6b4d14f0d42543d9f050d3165e4786e110e12bb3835f3d24bc",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\Testing\\Temporary\\LastTest.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\build\\win32\\CMakeFiles\\4.2.3-msvc3\\CMakeCXXCompiler.cmake",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\build\\win32\\CMakeFiles\\4.2.3-msvc3\\CMakeCXXCompiler.cmake"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\cl.exe-95db52a9c9bd"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\link.exe-36186698fc03"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\cl.exe-33ee095d6568"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 3208544,
+      "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\link.exe-b00f360e3739"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+      "role": "build_test_tool",
+      "bytes": 14060088,
+      "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\cmake.exe-d8173552e9d9"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+      "role": "build_test_tool",
+      "bytes": 15152224,
+      "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\ctest.exe-4d00d31a10d0"
+    },
+    {
+      "path": "C:\\ProgramData\\miniconda3\\python.exe",
+      "role": "python_analysis_tool",
+      "bytes": 104264,
+      "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\python.exe-ec0ea8d69077"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\pefile.py",
+      "role": "python_analysis_tool",
+      "bytes": 301767,
+      "sha256": "0d0eb68f0f169182613dc64b3ab50b20855508c1c1d2faafe8fccf23edb6a345",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\pefile.py-0d0eb68f0f16"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+      "role": "python_analysis_tool",
+      "bytes": 43729,
+      "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\__init__.py-0417ae554252"
+    }
+  ],
+  "actually_loaded_runtime_modules": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.exe",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 244224,
+      "sha256": "dbbd9288df890afb7c3f87b61ff286d0854c0905e9dbfe74effe1dcc29f639a9",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\local\\output\\raw_terminal_probe.exe",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.exe",
+      "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_probe.exe"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 1822400,
+      "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\ntdll.dll-7e15bd30890e",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 687472,
+      "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\kernel32.dll-bafd9e061964",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 2974168,
+      "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\KernelBase.dll-85ad413ff860",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 710832,
+      "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\apphelp.dll-a8109618c3bf",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\apphelp.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\ucrtbase.dll-60c5a497b52d",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 123328,
+      "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\vcruntime140.dll-2fa6efc05320",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "role": "actually_loaded_final_fixture_module",
+      "bytes": 618944,
+      "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-terminal\\local\\output\\raw_terminal_validated_artifacts\\external\\msvcp140.dll-f0cda2a0cf1f",
+      "loaded_machine": "014c",
+      "file_machine": "014c",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll"
+    }
+  ],
+  "runtime_distinction": "Static libraries are linked artifacts, not loaded modules. Module paths resolved inside32bit fixture and filePE014c checked against loaded image before hashing physicalSysWOW64 file.",
+  "remaining_boundaries": [
+    "Original FH3/SEH frames, arbitrary spill aliasing, hardware faults and CRT throw identity are not reproduced.",
+    "Second exception during noexcept B5DF00 base cleanup terminates; original secondary-exception behavior unproved.",
+    "Invalid owner/array/provider domains and missing canonical bindings are outside admitted interface.",
+    "Native partial cleanup/leaks are preserved; caller remains responsible for manager allocation/publication afterBD0400.",
+    "No original exception differential, drop-in ABI compatibility or game validation."
+  ],
+  "missing_native_tails_or_repairs": [],
+  "game_validated": false,
+  "abi_compatible": false
+}
