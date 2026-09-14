@@ -1,0 +1,77 @@
+{
+  "batch": "orch4_native_resource_value_reads_integration_bu",
+  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "024d18ed7bf59a6575f1997b2a7fcf793c2c4827",
+  "code_revision": null,
+  "packets": [
+    {
+      "packet": "orch4_native_resource_value_reads_bu",
+      "report": "reports/native_resource_value_reads_bu.json",
+      "routines": 9,
+      "ordinary_bytes": 318
+    }
+  ],
+  "new_ordinary_routines": 9,
+  "new_ordinary_bytes": 318,
+  "ordinary_instruction_starts": 124,
+  "support_instruction_starts": 0,
+  "direct_transfer_rows": 15,
+  "indirect_calls": 2,
+  "incoming_main_review": {
+    "pinned_revision": "7e1ae7a4dff882d6ce0f0a9683deb44cdc45899a",
+    "scope": "Plane heading/speed factor input identification and partial source laws; ship model-data binding evidence and correction of damage wiring dependencies.",
+    "observations": "Incoming source is disjoint from BU dependencies. The speed factor retains explicit unidentified fields and unestablished runtime interpolation globals. Ship binding changes are documentation only. This integrator reviewed these boundaries without certifying native x87/NaN parity or rerunning incoming native/game claims.",
+    "independently_rerun": false,
+    "combined_build": "pending"
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "original_float_bodies": 6,
+    "paired_cases": 612,
+    "x87_control_modes": 12,
+    "seed_aware_partial_cases": 60,
+    "source_exception_fixture": "one injected source exception passed",
+    "all_15_direct_transfer_rows": "passed",
+    "all_124_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for9 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_fh3_exception_fixture": false,
+    "unmasked_x87_faults": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_value_reads_bu/build.log",
+      "sha256": "704adbd81700212fdba5a0b6b8b6e871f9fcbe58bb2e4e846e74187ed000c9f9",
+      "bytes": 2495
+    },
+    "core_sha256": "7a002afd40a59f2656607f00aeb89c2ce2277222586ab3fa6c0958786cfafd3d",
+    "game_sha256": "1ac70ec0e33f15699b62c0ed33f4ced16d6179a68604e42db100312bd723c694"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_value_reads_bu.json",
+      "sha256": "0f9b8920b25eba0092a725aacca8c2c35ea06a4dcd52610b66b87fcff945a364",
+      "bytes": 31022
+    },
+    {
+      "path": "reports/native_resource_value_reads_annotations_bu.json",
+      "sha256": "702b09e51ec0b1fd6cda38ff002dc4ec9b683ac40dbdf8240face492a428b752",
+      "bytes": 96854
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "New source ABI and own stack addresses; original private aliases, general registers/EFLAGS, native CRT/FH3/SEH and hardware-fault delivery unproved.",
+    "Six relocated float bodies use an ABI adapter to actual source memory read. This is a bounded original-body oracle, not a whole original process.",
+    "Masked x87 exception status, control and stack balance checked; condition codes, instruction/data pointers and unmasked exceptions untested.",
+    "Short-read values are checked against each call own pointer seed, not equal raw pointer-derived bits across source and original stacks.",
+    "Only memory-stream family exercised here; raw hierarchy/root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open."
+  ]
+}
