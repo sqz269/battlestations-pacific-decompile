@@ -432,3 +432,52 @@ one edit.
 5. **`torpedo_bot_accept`** - read `00729BC0`'s `gun+39Ch` slot `vtable[1Ch]` and
    the torpedo bot's aim path, which is what decides whether an assignment turns
    into a shot.
+
+## Integration result: the torpedoes fire
+
+The fix this packet prescribed is implemented in `src/game_hosts_gunnery.cpp` and
+`src/game_hosts_lua.cpp`, and measured on the same 3200-frame USN02 line.
+
+A new accessor `GameMissionLuaHost::read_bullet_class_number(index, key, fallback)` reads
+`Bullets[index][key]` from the live Lua state - the global that
+`Scripts/datatables/autoload/bulletclasses.lua` publishes, assigning `Bullets = ArcadeTable` or
+`= RealisticTable` on the `GameMode` switch. The flattened per-platform `BSPGun` table the host had
+been using carries no `FlyTime` or `WaterTravelSpeed`, which is why the derived range was
+unreachable from it.
+
+Only the `00855A90` water-travel override is applied, not the whole `006E9890` kind table: for gun
+kinds the native rule round-trips to `Range`, which the existing code already reads correctly, so
+the narrower change is the falsifiable one. A `torpedo_ranges_derived` counter reports how many guns
+took the derived range, so a silent no-op - `Bullets` not reachable - is visible rather than being
+mistaken for faithful behaviour.
+
+```
+torpedo_ranges_derived=71
+  cat  Function        guns   assigns  shots  no_window  arc_blocked
+    7  TORPEDO           71      2535     16      37734        40017
+```
+
+All 71 torpedo guns took a derived range, and category 7 went from **0 assigns and 0 shots to 2535
+and 16**. This is the first torpedo launched in the rebuild.
+
+| counter | control | after the sub-entity fix | after this fix |
+| --- | --- | --- | --- |
+| shots | 234 | 227 | **241** |
+| entity impacts | 162 | 163 | **163** |
+| water / expired | 53 / 7 | 51 / 2 | **63 / 5** |
+| first shot | 35.60 s | 35.60 s | **21.80 s** |
+| deaths, damage | 2, 14762.6 | 2, 14826.4 | **2, 14871.6** |
+
+**The 16 torpedoes all miss.** Impacts stay at 163 while water rises by 12 and expiries by 3, so
+essentially every torpedo ends in the sea or times out. The gun hit rate is unchanged - 163 of the
+225 non-torpedo shells, 72.4% - and the apparent fall in the overall rate is only the larger
+denominator. Whether a torpedo *should* hit here is a separate question this packet does not answer:
+the lead comes from `torpedo_intercept_point_008fbb00`, a slow round against a manoeuvring
+destroyer, and `arc_blocked` of 40017 on 71 mounts says most launch windows never open at all. That
+is the next packet, not a defect this one introduced.
+
+**Provenance.** `classtables/arcade/bulletclasses.lua` has mtime 2026-05-09 and
+`classtables/realistic/bulletclasses.lua` 2025-06-02 - both later than the untouched datatables bulk
+at 2024-07-13 - so the `FlyTime` and `WaterTravelSpeed` values behind the 1852 m Mark 15 and 6136 m
+Long Lance figures describe **this installation**, which carries BSPRM/AlterBSP, and are not
+confirmed retail.
