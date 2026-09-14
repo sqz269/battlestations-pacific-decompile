@@ -1092,6 +1092,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
 
         float right[3], up[3], forward[3], origin[3];
         unit_pose(owner_unit, right, up, forward, origin);
+        // PLACEHOLDER with no native counterpart, and it is the reason the recovered
+        // ballistic arc 00955630 currently buys nothing. docs/GUN_MOUNT_POSITIONS.md:
+        // the native muzzle origin is
+        //   TransformAffinePoint(class->muzzleOffsets[gun+44Ch], gun[+3CCh]->worldMatrix)
+        // at 007307A0/007307D3, where gun+3CCh is the model node named "barrel" or
+        // "base" and the offsets come from the model's "fire" node group. `Height`
+        // (class+0A8h) is the HULL height - ship-motion draft and a hit-slab half
+        // extent - and nothing on the firing path reads it. Raising one shared origin
+        // by it gives a whole battery the same muzzle point and makes
+        // h = aim.y - muzzle.y near zero, which is exactly the case in which the arc
+        // degenerates to the asin(g*R/v^2)/2 pre-estimate it replaced
+        // (tools/gun_arc_pre_estimate_compare.py). Real per-gun origins need the model
+        // node transforms, which this process does not yet build.
         const float muzzle[3] = {origin[0], origin[1] + state.hull_height, origin[2]};
 
         bool arc_solved = true;
