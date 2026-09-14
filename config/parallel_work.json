@@ -11655,8 +11655,8 @@
     },
     {
       "id": "orch4_native_vfs_application_bj",
-      "done": false,
-      "state": "dispatched_bounded_source_integration",
+      "done": true,
+      "state": "integrated_native_vfs_frontend_two_frames_validated",
       "owner": "agent/orch4-vfs-application-bj",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-vfs-application-bj",
       "base_commit": "63889c8a2ef68d0202513ae9310a880dacbbff96",
@@ -11671,32 +11671,40 @@
       ],
       "contract": "Retain real application VFS cells, owner contexts, type state and runtime through same singleton host drain; separate construction from registration.",
       "ghidra_mutations": false,
-      "parent_integration": "orch4_game_native_vfs_admission_bj"
+      "parent_integration": "orch4_game_native_vfs_admission_bj",
+      "integration_report": "reports/game_native_vfs_admission_bj.json",
+      "validated_code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59"
     },
     {
       "id": "orch4_native_vfs_operations_bj",
-      "done": false,
-      "state": "dispatched_bounded_source_integration",
+      "done": true,
+      "state": "integrated_native_vfs_frontend_two_frames_validated",
       "owner": "agent/orch4-vfs-operations-bj",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-vfs-operations-bj",
       "base_commit": "63889c8a2ef68d0202513ae9310a880dacbbff96",
       "model": "gpt-6-astra",
       "reasoning_effort": "xhigh",
-      "addresses": [],
+      "addresses": [
+        "00bdd6e0"
+      ],
       "files": [
         "include/bsp/game_native_vfs_runtime.hpp",
         "src/game_native_vfs_runtime.cpp",
         "docs/GAME_NATIVE_VFS_OPERATIONS_BJ.md",
-        "reports/game_native_vfs_operations_bj.json"
+        "reports/game_native_vfs_operations_bj.json",
+        "include/bsp/native_vfs_name_resolution.hpp",
+        "src/native_vfs_name_resolution.cpp"
       ],
       "contract": "Expose actual native mutable-name resolution, enumeration and mode-preserving complete reads with explicit retained failure state.",
       "ghidra_mutations": false,
-      "parent_integration": "orch4_game_native_vfs_admission_bj"
+      "parent_integration": "orch4_game_native_vfs_admission_bj",
+      "integration_report": "reports/game_native_vfs_admission_bj.json",
+      "validated_code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59"
     },
     {
       "id": "orch4_entry_native_data_handoff_bj",
-      "done": false,
-      "state": "dispatched_bounded_source_integration",
+      "done": true,
+      "state": "integrated_native_vfs_frontend_two_frames_validated",
       "owner": "agent/orch4-entry-handoff-bj",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-entry-handoff-bj",
       "base_commit": "63889c8a2ef68d0202513ae9310a880dacbbff96",
@@ -11710,7 +11718,9 @@
       ],
       "contract": "Admit owned suspended-child numeric-data handoff in real WinMain and retain data beyond GameStartupHost destruction.",
       "ghidra_mutations": false,
-      "parent_integration": "orch4_game_native_vfs_admission_bj"
+      "parent_integration": "orch4_game_native_vfs_admission_bj",
+      "integration_report": "reports/game_native_vfs_admission_bj.json",
+      "validated_code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59"
     }
   ],
   "snapshot_after_analysis": {
