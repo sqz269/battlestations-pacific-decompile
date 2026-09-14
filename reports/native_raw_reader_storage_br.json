@@ -2,7 +2,7 @@
   "packet": "orch2_raw_reader_storage_br",
   "base": "27f97f574388ff576d57a25acd213560ec2ad434",
   "session": "01a08db7-951a-7110-a1fc-c27ce3f611af",
-  "utc": "2026-09-14T06:11:43.396919+00:00",
+  "utc": "2026-09-14T06:15:42.940600+00:00",
   "status": "complete_bounded_read_only_storage_discovery_with_explicit_inaccessible_flow_properties_and_conditional_repair",
   "identity": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
@@ -1721,7 +1721,7 @@
   "reserve_contract": {
     "capacity_test": "Clamp signed request then return if current signed capacity>=request.",
     "allocation": "BF55BE(wrapped12*request), forwarding to BF681B; keep caller header unpublished until after oldbuffer free.",
-    "copy_loop": "Current signed count each condition; current oldbuffer each iteration; candidate=newbase+wrapped12*index. Save candidate, arm state0, skip ifzero; otherwise zero first8bytes before identity branch, call actual41DD40(source.length,preserve1) when different, recheck current source.length, then copy current destination.length bytes from current source.data to current destination.data. Copy opaque thirdDWORD; increment, disarm, publish completed count.",
+    "copy_loop": "Current signed count each condition; current oldbuffer each iteration; candidate=newbase+wrapped12*index. Save candidate, arm state0, skip ifzero; otherwise zero first8bytes before identity branch, call actual41DD40(source.length,preserve1) when different, recheck current source.length, then copy current destination.length bytes from current source.data to current destination.data. Copy opaque thirdDWORD. BF0684 increments index; BF0687 compares index with current count while state0 is still armed; BF068A disarms; BF0692 publishes completed count; BF0696 JL consumes the preserved BF0687 flags.",
     "release_loop": "Current oldbuffer/count each iteration; capture nonnull data and wrapping length+1 before argumentless419CC0, thenBD1510(pool,data,size,unused1). Leave oldheaders unchanged.",
     "publication": "Reload current oldbuffer thenBF6989; after normal return ADDESP4, store newbuffer, POPEDI, store clamped/request-slot capacity, POPEBP. No count assignment.",
     "exceptions": "Allocation before armed state0. CC7790 action calls RET-only401130 and provides no cleanup. State-1 before oldstring release/free. Do not add prefix destruction, free, field clearing or rollback."
@@ -1902,9 +1902,9 @@
     },
     {
       "path": "docs/NATIVE_RAW_READER_STORAGE_BR.md",
-      "size": 12284,
-      "sha256": "72b95e7dd2442cb9fe9fc742fdbaa52f5250e706cde31fde05b56b529d5eed5c",
-      "sha512": "d713d0c9b57844c0bf35f6b7dab6894eac6d957463955b996a6780e43b9729c6ba0382d574f84e80d7ebe597e54a4121b7395cdf92214bd7b4c2f55436c26d8e"
+      "size": 12380,
+      "sha256": "cbd5286b7f3f4e720323257488525c5763e81c8762b1f2bedb4aa1e0e035bcf9",
+      "sha512": "8c0beb31000ca5525ec974a87895d9844eb8f62a57fe7ce119fb33f9d4a657ba6a2b64fb3f9d7cc15fb04afc6536cb0d7d3ff50091194d5ffb0b4db1ad483665"
     }
   ],
   "validation": {
@@ -1931,18 +1931,21 @@
   },
   "inventory_passes": {
     "equal": true,
-    "file_count_each": 744,
+    "file_count_each": 751,
     "pass1": {
-      "size": 272400,
-      "sha256": "e16c759d1bbc4db4db9238d374509e172af6b91144893a9a6bc458b50a628f4e",
-      "sha512": "226c407569ef950c52ff767ab5703197a8d7018bf2fb34885f8152b1340787a79b55ef0fd4886b25dab913f8c95c4e21d5fb569b6ca3fc578ef8998821684e66"
+      "path": "local/raw_reader_storage_br_review_fix/inventory_pass1.json",
+      "size": 274822,
+      "sha256": "e1f9cb6aff9a2ecb90f6d2be0d6e1da0e7cc53a44780d0c4efb5b1b1c0ecd7bc",
+      "sha512": "cd784e8e65977f09f1a2b9e51240c40be7bcef19760074d67e431e13d56f56efb9ab83eb0527963243a04fb84258f94f15f3c0503c647c0218a423e2f8ec2189"
     },
     "pass2": {
-      "size": 272400,
-      "sha256": "e16c759d1bbc4db4db9238d374509e172af6b91144893a9a6bc458b50a628f4e",
-      "sha512": "226c407569ef950c52ff767ab5703197a8d7018bf2fb34885f8152b1340787a79b55ef0fd4886b25dab913f8c95c4e21d5fb569b6ca3fc578ef8998821684e66"
+      "path": "local/raw_reader_storage_br_review_fix/inventory_pass2.json",
+      "size": 274822,
+      "sha256": "e1f9cb6aff9a2ecb90f6d2be0d6e1da0e7cc53a44780d0c4efb5b1b1c0ecd7bc",
+      "sha512": "cd784e8e65977f09f1a2b9e51240c40be7bcef19760074d67e431e13d56f56efb9ab83eb0527963243a04fb84258f94f15f3c0503c647c0218a423e2f8ec2189"
     },
-    "manifests_in_final_inventory": true
+    "manifests_in_final_inventory": true,
+    "original_manifests_unchanged": true
   },
   "local_artifacts": [
     {
@@ -6420,6 +6423,85 @@
       "size": 4705,
       "sha256": "7a7b269624187deaa8a43aab766b76e15d6ecf86087df08bb72c8ddb6c6abe73",
       "sha512": "5e6302f23b0b2273921732595668263f1b8e3d5d550a6eb443ff58677f7f8d03785f414457445bfc0377ae81b4748e4cfaef70c3282a3abaf8ef7e78bdadfcd3"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/commit_message.txt",
+      "size": 503,
+      "sha256": "78c5fea55eed0ee289ad4a65ba87070d0352f3c86d26fef9e080e0f81a8cea93",
+      "sha512": "b945c24eca5710e42975b067447c0bd5de93b19abd91f1bbddeed943400223456426a528a3cfaa6aaa6375e1f39759b0f49e52d33217f3e721d7c95073f12d5f"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/document_before.md",
+      "size": 12284,
+      "sha256": "72b95e7dd2442cb9fe9fc742fdbaa52f5250e706cde31fde05b56b529d5eed5c",
+      "sha512": "d713d0c9b57844c0bf35f6b7dab6894eac6d957463955b996a6780e43b9729c6ba0382d574f84e80d7ebe597e54a4121b7395cdf92214bd7b4c2f55436c26d8e"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/fix_report.py",
+      "size": 4258,
+      "sha256": "c75c377faf4d95eb25cbc89a9bb69fc9dfb67c4d4fe77c9d6b3b6355b932c609",
+      "sha512": "0b9a84f4928bc9d8ede7a9f58f551d5e2bed336e61585d4c784773e3f7ee334a0906a96b39b77dcbee1df9cd1b865cadbe5924c4f58fc6bcee7e756a7afc039f"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/inventory_pass1.json",
+      "size": 274822,
+      "sha256": "e1f9cb6aff9a2ecb90f6d2be0d6e1da0e7cc53a44780d0c4efb5b1b1c0ecd7bc",
+      "sha512": "cd784e8e65977f09f1a2b9e51240c40be7bcef19760074d67e431e13d56f56efb9ab83eb0527963243a04fb84258f94f15f3c0503c647c0218a423e2f8ec2189"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/inventory_pass2.json",
+      "size": 274822,
+      "sha256": "e1f9cb6aff9a2ecb90f6d2be0d6e1da0e7cc53a44780d0c4efb5b1b1c0ecd7bc",
+      "sha512": "cd784e8e65977f09f1a2b9e51240c40be7bcef19760074d67e431e13d56f56efb9ab83eb0527963243a04fb84258f94f15f3c0503c647c0218a423e2f8ec2189"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/report_before.json",
+      "size": 404382,
+      "sha256": "6d446e612e655a4156007f16e9cfeb81c10ad868b88e65c28f519b1af6437fcb",
+      "sha512": "33dd64948ef802445c8aea8cd278944b54cd2a8bbafd084cd56d2c5b5f1871dc31bdfdf038add80c788f02472278b85ce1a9ba7435ef2d7f75cbf5312e3b209c"
+    },
+    {
+      "path": "local/raw_reader_storage_br_review_fix/revision.json",
+      "size": 2854,
+      "sha256": "60d050a0f0751cfccb3ae4b2804223f56d290f47d2a8b625d2771e8490e02a29",
+      "sha512": "ca3bb76533870fb5780724d2b1924229570203e475f95394d88747a249acf1dcc15851d78601f514b8700e4d32be75dbedcf858ce63ed476242d5c646072006f"
     }
-  ]
+  ],
+  "review_revision": {
+    "original_commit": "da0255e726d761b8984b0f29382f2eed9eb7230f",
+    "original_report": {
+      "retained": "local/raw_reader_storage_br_review_fix/report_before.json",
+      "size": 404382,
+      "sha256": "6d446e612e655a4156007f16e9cfeb81c10ad868b88e65c28f519b1af6437fcb",
+      "sha512": "33dd64948ef802445c8aea8cd278944b54cd2a8bbafd084cd56d2c5b5f1871dc31bdfdf038add80c788f02472278b85ce1a9ba7435ef2d7f75cbf5312e3b209c"
+    },
+    "original_document": {
+      "retained": "local/raw_reader_storage_br_review_fix/document_before.md",
+      "size": 12284,
+      "sha256": "72b95e7dd2442cb9fe9fc742fdbaa52f5250e706cde31fde05b56b529d5eed5c",
+      "sha512": "d713d0c9b57844c0bf35f6b7dab6894eac6d957463955b996a6780e43b9729c6ba0382d574f84e80d7ebe597e54a4121b7395cdf92214bd7b4c2f55436c26d8e"
+    },
+    "reason": "Independent review corrected current-count load versus EH-state/publication order at BF0687/BF068A/BF0692.",
+    "old_copy_loop": "Current signed count each condition; current oldbuffer each iteration; candidate=newbase+wrapped12*index. Save candidate, arm state0, skip ifzero; otherwise zero first8bytes before identity branch, call actual41DD40(source.length,preserve1) when different, recheck current source.length, then copy current destination.length bytes from current source.data to current destination.data. Copy opaque thirdDWORD; increment, disarm, publish completed count.",
+    "new_copy_loop": "Current signed count each condition; current oldbuffer each iteration; candidate=newbase+wrapped12*index. Save candidate, arm state0, skip ifzero; otherwise zero first8bytes before identity branch, call actual41DD40(source.length,preserve1) when different, recheck current source.length, then copy current destination.length bytes from current source.data to current destination.data. Copy opaque thirdDWORD. BF0684 increments index; BF0687 compares index with current count while state0 is still armed; BF068A disarms; BF0692 publishes completed count; BF0696 JL consumes the preserved BF0687 flags.",
+    "original_local_files_verified_unchanged": 746,
+    "original_inventory_passes": {
+      "equal": true,
+      "file_count_each": 744,
+      "pass1": {
+        "size": 272400,
+        "sha256": "e16c759d1bbc4db4db9238d374509e172af6b91144893a9a6bc458b50a628f4e",
+        "sha512": "226c407569ef950c52ff767ab5703197a8d7018bf2fb34885f8152b1340787a79b55ef0fd4886b25dab913f8c95c4e21d5fb569b6ca3fc578ef8998821684e66"
+      },
+      "pass2": {
+        "size": 272400,
+        "sha256": "e16c759d1bbc4db4db9238d374509e172af6b91144893a9a6bc458b50a628f4e",
+        "sha512": "226c407569ef950c52ff767ab5703197a8d7018bf2fb34885f8152b1340787a79b55ef0fd4886b25dab913f8c95c4e21d5fb569b6ca3fc578ef8998821684e66"
+      },
+      "manifests_in_final_inventory": true
+    },
+    "source_or_tool_changes": false,
+    "native_evidence_changes": false,
+    "ghidra_changes": false
+  }
 }
