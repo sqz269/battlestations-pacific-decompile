@@ -554,3 +554,49 @@ game-validated. It is not a drop-in binary replacement.
 
 6. **`include/bsp/projectile_impact.hpp:27`** carries the wrong value for `00CF9058` (see the
    correction above). One-line fix for whoever owns that file.
+
+## Correction from docs/MATRIX_ORTHOGONAL_INVERSE.md (packet cc7_matrix_orthogonal_inverse)
+
+This document's own follow-up list named `00B63D50`'s interior as the one unverified link, with the
+note that "if it is not a true inverse, every mount-local pair is wrong". It has now been read in
+full. It **is** a true inverse, but the condition this document states for the round trip is wrong,
+and the correct condition is stricter.
+
+- **`00B63D50` is a true inverse, conditionally.** For `i,j < 3` it computes
+  `N[i][j] = M[j][i] / (M[j][0]^2 + M[j][1]^2 + M[j][2]^2)` at `00B63E3D..00B63E99` - destination
+  column `r` is source row `r` over that row's own squared length - then
+  `N[3][j] = -(M[3] . column j of N)` at `00B63E9A..00B63F03`, then forces column 3 to `(0,0,0,1)`.
+  Since `(M N)[j][k] = (row_j . row_k) / |row_k|^2`, it is `M^-1` **iff the three basis rows are
+  mutually orthogonal and non-zero**. The ledger name's "OrthogonalScaled" is accurate, and the
+  scale it tolerates is per-axis, not merely uniform. It is branch-free, so there is no guard: a
+  sheared basis silently returns a non-inverse and a zero row divides by zero. It is also **not
+  safe in place** - `00B63E52` writes `dest+10h` before `00B63E5E` reads `src+10h`.
+
+- **Was:** the frame-handling section reasons that the mount transform is "a similarity transform,
+  so a unit world direction stays unit".
+  **Is:** a similarity transform does **not** preserve unit length - it scales it. The conclusion
+  does not follow from the premise, and the round trip needs an **orthonormal** mount basis, not a
+  similarity. `0042D0D0` is called with `normalize = 0`, so the transformed direction keeps the
+  mount's scale, and `00521370` then takes `asin` of the raw `y`. Under a uniform scale `s` the
+  extracted pitch is `asin(y/s)`: a true 30 degree pitch reads as **14.478 degrees at s = 2** and
+  **saturates at 90 degrees at s = 0.5**. Yaw survives a uniform scale because `atan2` is
+  scale-invariant, but breaks when the x and z row scales differ (36.870 -> 14.036 degrees).
+
+- **Was:** the clamp at `00521370` attributed to a comparison against `dir.y`.
+  **Is:** `00521370`'s `FLD1` compares against the constant `-1.0`, so only the lower clamp belongs
+  to it; the upper bound is `0042CF10`'s `COMISS` at `0042CF19`.
+
+- **How much this matters in practice is not yet established.** The packet surveyed the producers of
+  a pose local `entity+74h` and found none that introduces scale: the interpolator `00904600`
+  composes rotations and a translation, `006E5D03` and `00925CE0` write identity, and `00825F20`
+  never writes it. `00414DB0` composes `world_child = local_child * world_parent` and never
+  normalizes, so nothing enforces the precondition, and a per-axis scale anywhere in an ancestor
+  chain breaks the inverse for every descendant with a non-axis-aligned rotation. One link is
+  unread: `009259C4` in `BSP_SceneNode_AttachToParents` copies a caller-supplied `localFrame` into
+  `+74h` unvalidated, and those callers were not enumerated. **This is a bounded negative result -
+  no producer read so far puts scale into a pose local - and not a proof.** Closing it is the
+  packet `scene_attach_local_frames`.
+
+- **Aliasing is not a risk here.** The arc's `0095579E LEA EDX,[ESI+0CCh]` and
+  `009557A4 LEA ECX,[ESI+110h]` are 68 bytes apart with 64-byte matrices, so they do not even
+  partially overlap, and none of the 71 direct call sites passes the same expression for both.
