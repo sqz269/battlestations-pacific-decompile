@@ -1,0 +1,181 @@
+{
+  "batch": "orch4_native_loading_queue_integration_br",
+  "state": "integrated_build_and_actual_service_fixtures_passed",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "86a14c7a2e4c08fda36a2a5fa9237b34ba539361",
+  "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+  "packets": [
+    {
+      "packet": "orch4_native_loading_queue_submission_br",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "routines": 5,
+      "ordinary_bytes": 591
+    },
+    {
+      "packet": "orch4_native_loading_queue_retirement_br",
+      "report": "reports/native_loading_queue_retirement_br.json",
+      "routines": 1,
+      "ordinary_bytes": 131
+    },
+    {
+      "packet": "orch4_native_fileblock_copy_br",
+      "report": "reports/native_fileblock_copy_br.json",
+      "routines": 1,
+      "ordinary_bytes": 171
+    }
+  ],
+  "new_ordinary_routines": 6,
+  "new_ordinary_bytes": 722,
+  "corrected_existing_ordinary_bytes": 171,
+  "ordinary_instruction_starts": 301,
+  "support_instruction_starts": 21,
+  "direct_transfer_rows": 31,
+  "incoming_main_review": {
+    "pinned_revision": "085b18dd527000239e823971291b2881be783bfe",
+    "scope": "Published actual unit-part collision source/count helper and bounds documentation; diagnostic class-capability logging in script orders.",
+    "observations": "Disjoint from BR storage services. Collision source preserves raw storage/x87 operations with explicit inputs; owner reports retain112 comparisons and120-frame compatibility checks. New class logging uses existing out-of-range guarded unit accessors and does not issue the refused order.",
+    "independent_native_oracle_or_game_rerun": false,
+    "combined_build": "passed",
+    "merged_revision": "b1ee148fdcaad58ae76382db10bc0d63a4f91085",
+    "merge": "clean",
+    "subsequent_review": "b1ee148f adds target-classifier projection and diagnostic-only script logging; no issued attack order or BR service changes. Submarine thresholds use projected defaults; this integration does not validate those projections against native x87/runtime data.",
+    "borrowed_native_oracle_and_game_claims_independently_rerun": false
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "initial_fixture_modes": 3,
+    "all_31_report_call_rows": "passed",
+    "all_301_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for13 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_binary_abi_compatible": false,
+    "production_queue_bound": false,
+    "game_validated": false,
+    "combined_fixture_modes": 3,
+    "final_library_hash_matches_tested_libraries": true
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_loading_queue_br/build.log",
+      "sha256": "dc74e0ecc1101e6d63b01180d4d3361f22bb5ba74516b5736a43861857846016",
+      "bytes": 2590
+    },
+    "core_sha256": "f2659c1ccb9c65e418e6e26e8be01dd69c0be6f41849ba29ea7d0253aa662c80",
+    "game_sha256": "fd461fd725be2e5c48d90ce185e1ee1c8e88857107e2a60dda7397102e3284b4"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_loading_queue_submission_br.json",
+      "sha256": "b07c45034b8740728787808cf985ab6b39e8099d10c52985f38cee54637c88ba",
+      "bytes": 38411
+    },
+    {
+      "path": "reports/native_loading_queue_retirement_br.json",
+      "sha256": "ba4904896b3f90ec5927d5b2a2dc507765f7c3071f315f36252fdcae53319a0f",
+      "bytes": 15675
+    },
+    {
+      "path": "reports/native_fileblock_copy_br.json",
+      "sha256": "a6bfc38bb7b0a8aa7903285634f88c577e81c9fb09f3be797e09fe66af659289",
+      "bytes": 37472
+    },
+    {
+      "path": "reports/native_loading_queue_flow_br.json",
+      "sha256": "6f098a1eb60306d13e57dc8781e029901ecd65f621eca16b48665a4c686c3829",
+      "bytes": 17148
+    },
+    {
+      "path": "reports/native_loading_queue_definitions_br.json",
+      "sha256": "c88326b76bd0cb0b0d55b3bfdd45f8e4d03fe615c31213f5254d6d4f6bef76df",
+      "bytes": 4978
+    },
+    {
+      "path": "reports/native_loading_queue_annotations_br.json",
+      "sha256": "ee6ed6d71323977867bbda9db97e9286f3d8aed9dec0b4911091ae8814d61180",
+      "bytes": 107428
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_loading_queue_br/source_35c9b762a12b.json",
+    "sha256": "5090cf89d9d2897d9f479d13d47e3ec18906e3098f6c68100ac0ddb7653299d2",
+    "bytes": 284072,
+    "files": 2625
+  },
+  "limitations": [
+    "No native queue worker execution or production update binding.",
+    "Retirement retains BQ outer failed FileBlock invocations; does not close original native unwind.",
+    "Native FH3/SEH/CRT identity, hardware faults, original stack aliases and gameplay remain unverified."
+  ],
+  "first_source_revision": "35284690be2b8b4d29d6e8c2092b2fb1b50984d2",
+  "primary_build": {
+    "log": {
+      "path": "local/native_loading_queue_br/final_build.log",
+      "sha256": "4b93d9f29246321d75d7bd0abca1f76ce82d243133dd3847dfe1a0a9ef0e4156",
+      "bytes": 2492
+    },
+    "core_sha256": "721e8b7ce6b673566bf9e582db3004016c13f2a2328e0bb9fdc325088650f74b",
+    "game_sha256": "4b19285a425b06d52a6420d56caf1414858ca469f647cc4421662c89dad2243a",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixtures": {
+    "source_commit": "6d63ce5b1a4563c1a056f7618f9852c4545d37cd",
+    "modes": 3,
+    "passed": true,
+    "same_libraries_as_final_code": true,
+    "local_artifacts": [
+      {
+        "path": "local/native_loading_queue_br/combined/libraries.json",
+        "sha256": "4133c16a8b9cd9b39542cf59b15da0022de433ef0ca1fe6c15bf0f9380b96ba1",
+        "bytes": 1213
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/compile.cmd",
+        "sha256": "778bced7ad851b708d1d96cd931439061d19365d566253c42bed4fc4aed9763e",
+        "bytes": 1152
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/compile.log",
+        "sha256": "d5e368a58c7851f3f108bcb55b471623221daa49e635dc7be69de1ddaef58fc9",
+        "bytes": 28
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/probe.obj",
+        "sha256": "25a44fb0d0a1bf13a17ccc457cb82f4dd78b2107f21b980917129e578666092c",
+        "bytes": 79984
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/probe.exe",
+        "sha256": "488bc65bd17c7a4eda6f907a0e0592d3c710a4d4c3c4d38f758e462fda85aad2",
+        "bytes": 131072
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/probe.log",
+        "sha256": "03185e35f049e655a6f513ab35a81a25ffb10fe24b4867484e74b71ea2894131",
+        "bytes": 202
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/owner_probe.obj",
+        "sha256": "382021027d71a98ef6caddcdb26c03ba9202796dd529c96fb6a204361c2815a8",
+        "bytes": 26368
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/owner_probe.exe",
+        "sha256": "2c605916c180bb283cddb8283b96ce77ec3ef9e0b89784e9da1b9b1d58868d70",
+        "bytes": 39424
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/owner_probe.log",
+        "sha256": "026ac28c61f8382b77c6383e8e2ce884c0227c0cfdcfaca19699a7d9ebed5d7b",
+        "bytes": 176
+      },
+      {
+        "path": "local/native_loading_queue_br/combined/owner_probe_retained.log",
+        "sha256": "670b98fcc7f91e9b72fac6bdf1f0fefe39d44feb0a57ac6ac4cc579f43026a2c",
+        "bytes": 167
+      }
+    ]
+  }
+}

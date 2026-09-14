@@ -1,0 +1,819 @@
+{
+  "source_functions": [
+    {
+      "address": "004fdc00",
+      "function": "destroy_native_loading_work_item_004fdc00",
+      "source": "src/native_loading_queue_submission.cpp",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "original_abi": "ECX actual10h work record; RET",
+      "bytes": 29
+    },
+    {
+      "address": "004fe700",
+      "function": "construct_native_loading_work_item_004fe700",
+      "source": "src/native_loading_queue_submission.cpp",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "original_abi": "ECX output; three stacked BY-VALUE name length/data/context words; EAX output; RET0C",
+      "bytes": 158
+    },
+    {
+      "address": "00501720",
+      "function": "copy_construct_native_loading_work_item_00501720",
+      "source": "src/native_loading_queue_submission.cpp",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "original_abi": "ECX output; stacked source record; EAX output; RET4",
+      "bytes": 78
+    },
+    {
+      "address": "005048f0",
+      "function": "append_native_loading_work_item_005048f0",
+      "source": "src/native_loading_queue_submission.cpp",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "original_abi": "ECX actual0Ch vector; stacked source record; RET4",
+      "bytes": 111
+    },
+    {
+      "address": "00504d20",
+      "function": "submit_native_loading_work_item_00504d20",
+      "source": "src/native_loading_queue_submission.cpp",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "original_abi": "ECX loader20h; stacked name/context; RET8",
+      "bytes": 215
+    },
+    {
+      "address": "00506bf0",
+      "function": "retire_native_loading_queue_front_00506bf0",
+      "source": "src/native_loading_queue_retirement.cpp",
+      "report": "reports/native_loading_queue_retirement_br.json",
+      "original_abi": "ECX actual20h loader; RET; no semantic return",
+      "bytes": 131
+    },
+    {
+      "address": "00be0a30",
+      "function": "construct_native_fileblock_00be0a30",
+      "source": "src/native_fileblock_owner.cpp",
+      "report": "reports/native_fileblock_copy_br.json",
+      "original_abi": "ECX actual1Ch owner; stacked name/gateDWORD; EAX owner; RET8",
+      "bytes": 171
+    }
+  ],
+  "entries": [
+    {
+      "address": "004fdc00",
+      "name": "BSP_LoadingWork_Destroy",
+      "before_comment": {
+        "address": "004fdc00",
+        "function_name": "FUN_004fdc00"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 29 bytes; ECX actual10h work record; RET; reports/native_loading_queue_submission_br.json.",
+      "before_documentation": {
+        "hash": "abccc4a57624ffd26380018c8df4b10608f27abdc02afa1c6e152bbc9aefcfc0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004fdc00",
+        "function_name": "FUN_004fdc00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_004fdc1c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall FUN_004fdc00(void* item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 004fdc00 with __fastcall calling convention",
+      "ledger_name_output": "004fdc00 -> FUN_004fdc00\n",
+      "ledger_function_output": "004fdc00 function destroy_native_loading_work_item_004fdc00\n",
+      "after_comment": {
+        "address": "004fdc00",
+        "function_name": "BSP_LoadingWork_Destroy",
+        "comment": "[BSP reconstruction 004fdc00]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 29 bytes; ECX actual10h work record; RET; reports/native_loading_queue_submission_br.json."
+      },
+      "before_reviewed_rename": {
+        "address": "004fdc00",
+        "function_name": "BSP_LoadingWork_Destroy",
+        "comment": "[BSP reconstruction 004fdc00]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 29 bytes; ECX actual10h work record; RET; reports/native_loading_queue_submission_br.json."
+      },
+      "reviewed_name": "BSP_LoadingWork_Destroy",
+      "reviewed_name_ledger": "004fdc00 -> BSP_LoadingWork_Destroy\nreplaced (previous record stays in git history): {\"address\": \"004fdc00\", \"name\": \"BSP_LoadingWork_Destroy\", \"evidence\": \"BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 29 bytes; ECX actual10h work record; RET; reports/native_loading_queue_submission_br.json.\"}\n",
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "004fe700",
+      "name": "BSP_LoadingWork_ConstructByValue",
+      "before_comment": {
+        "address": "004fe700",
+        "function_name": "FUN_004fe700"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 158 bytes; ECX output; three stacked BY-VALUE name length/data/context words; EAX output; RET0C; reports/native_loading_queue_submission_br.json. Three actual BY-VALUE stacked words: length,data,context, not a pointer to a name header. EBP+4 unwind addresses the current parameter header in synthetic parent frame. Normal final raw getter occurs after cleanup disarmed.",
+      "before_documentation": {
+        "hash": "cd1582e6d068a4ab9e2901dd87fee3fb4032c7a312906b5a7584c2b28e019ab4",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004fe700",
+        "function_name": "FUN_004fe700",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "_Src",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(unique, 0x10000099, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 91,
+            "name": "LAB_004fe75b"
+          },
+          {
+            "relative_offset": 136,
+            "name": "LAB_004fe788"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __fastcall FUN_004fe700(void* output, void* unused_edx, unsigned int by_value_name_length, void* by_value_name_data, void* context)",
+      "prototype_result": "Successfully set prototype for function at 004fe700 with __fastcall calling convention",
+      "ledger_name_output": "004fe700 -> FUN_004fe700\n",
+      "ledger_function_output": "004fe700 function construct_native_loading_work_item_004fe700\n",
+      "after_comment": {
+        "address": "004fe700",
+        "function_name": "BSP_LoadingWork_ConstructByValue",
+        "comment": "[BSP reconstruction 004fe700]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 158 bytes; ECX output; three stacked BY-VALUE name length/data/context words; EAX output; RET0C; reports/native_loading_queue_submission_br.json. Three actual BY-VALUE stacked words: length,data,context, not a pointer to a name header. EBP+4 unwind addresses the current parameter header in synthetic parent frame. Normal final raw getter occurs after cleanup disarmed."
+      },
+      "before_reviewed_rename": {
+        "address": "004fe700",
+        "function_name": "FUN_004fe700",
+        "comment": "[BSP reconstruction 004fe700]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 158 bytes; ECX output; three stacked BY-VALUE name length/data/context words; EAX output; RET0C; reports/native_loading_queue_submission_br.json. Three actual BY-VALUE stacked words: length,data,context, not a pointer to a name header. EBP+4 unwind addresses the current parameter header in synthetic parent frame. Normal final raw getter occurs after cleanup disarmed."
+      },
+      "reviewed_name": "BSP_LoadingWork_ConstructByValue",
+      "reviewed_name_ledger": "004fe700 -> BSP_LoadingWork_ConstructByValue\nreplaced (previous record stays in git history): {\"address\": \"004fe700\", \"name\": \"FUN_004fe700\", \"evidence\": \"BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 158 bytes; ECX output; three stacked BY-VALUE name length/data/context words; EAX output; RET0C; reports/native_loading_queue_submission_br.json. Three actual BY-VALUE stacked words: length,data,context, not a pointer to a name header. EBP+4 unwind addresses the current parameter header in synthetic parent frame. Normal final raw getter occurs after cleanup disarmed.\"}\n",
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00501720",
+      "name": "BSP_LoadingWork_CopyConstruct",
+      "before_comment": {
+        "address": "00501720",
+        "function_name": "FUN_00501720"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 78 bytes; ECX output; stacked source record; EAX output; RET4; reports/native_loading_queue_submission_br.json.",
+      "before_documentation": {
+        "hash": "5989685c78d071b2057884c1b3378fccdf176b45d8634a1307b42046f8199890",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00501720",
+        "function_name": "FUN_00501720",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 59,
+            "name": "LAB_0050175b"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __fastcall FUN_00501720(void* output, void* unused_edx, void* source)",
+      "prototype_result": "Successfully set prototype for function at 00501720 with __fastcall calling convention",
+      "ledger_name_output": "00501720 -> FUN_00501720\n",
+      "ledger_function_output": "00501720 function copy_construct_native_loading_work_item_00501720\n",
+      "after_comment": {
+        "address": "00501720",
+        "function_name": "BSP_LoadingWork_CopyConstruct",
+        "comment": "[BSP reconstruction 00501720]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 78 bytes; ECX output; stacked source record; EAX output; RET4; reports/native_loading_queue_submission_br.json."
+      },
+      "before_reviewed_rename": {
+        "address": "00501720",
+        "function_name": "FUN_00501720",
+        "comment": "[BSP reconstruction 00501720]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 78 bytes; ECX output; stacked source record; EAX output; RET4; reports/native_loading_queue_submission_br.json."
+      },
+      "reviewed_name": "BSP_LoadingWork_CopyConstruct",
+      "reviewed_name_ledger": "00501720 -> BSP_LoadingWork_CopyConstruct\nreplaced (previous record stays in git history): {\"address\": \"00501720\", \"name\": \"FUN_00501720\", \"evidence\": \"BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 78 bytes; ECX output; stacked source record; EAX output; RET4; reports/native_loading_queue_submission_br.json.\"}\n",
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "005048f0",
+      "name": "BSP_LoadingWorkVector_Append",
+      "before_comment": {
+        "address": "005048f0",
+        "function_name": "FUN_005048f0"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 111 bytes; ECX actual0Ch vector; stacked source record; RET4; reports/native_loading_queue_submission_br.json. Count==capacity invokes signed-max wrapped doubling reserve; current destination nonnull guards copy, but current count increment is unconditional afterward.",
+      "before_documentation": {
+        "hash": "4b6bd4be41f69a2bd0ec20ee0c9cf9dde6a1ef358a0829d3f40dfb7369e4d4b7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "005048f0",
+        "function_name": "FUN_005048f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "output",
+            "type": "void *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "requested_capacity",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 51,
+            "name": "LAB_00504923"
+          },
+          {
+            "relative_offset": 57,
+            "name": "LAB_00504929"
+          },
+          {
+            "relative_offset": 89,
+            "name": "LAB_00504949"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall FUN_005048f0(void* vector, void* unused_edx, void* source)",
+      "prototype_result": "Successfully set prototype for function at 005048f0 with __fastcall calling convention",
+      "ledger_name_output": "005048f0 -> FUN_005048f0\n",
+      "ledger_function_output": "005048f0 function append_native_loading_work_item_005048f0\n",
+      "after_comment": {
+        "address": "005048f0",
+        "function_name": "BSP_LoadingWorkVector_Append",
+        "comment": "[BSP reconstruction 005048f0]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 111 bytes; ECX actual0Ch vector; stacked source record; RET4; reports/native_loading_queue_submission_br.json. Count==capacity invokes signed-max wrapped doubling reserve; current destination nonnull guards copy, but current count increment is unconditional afterward."
+      },
+      "before_reviewed_rename": {
+        "address": "005048f0",
+        "function_name": "FUN_005048f0",
+        "comment": "[BSP reconstruction 005048f0]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 111 bytes; ECX actual0Ch vector; stacked source record; RET4; reports/native_loading_queue_submission_br.json. Count==capacity invokes signed-max wrapped doubling reserve; current destination nonnull guards copy, but current count increment is unconditional afterward."
+      },
+      "reviewed_name": "BSP_LoadingWorkVector_Append",
+      "reviewed_name_ledger": "005048f0 -> BSP_LoadingWorkVector_Append\nreplaced (previous record stays in git history): {\"address\": \"005048f0\", \"name\": \"FUN_005048f0\", \"evidence\": \"BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 111 bytes; ECX actual0Ch vector; stacked source record; RET4; reports/native_loading_queue_submission_br.json. Count==capacity invokes signed-max wrapped doubling reserve; current destination nonnull guards copy, but current count increment is unconditional afterward.\"}\n",
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00504d20",
+      "name": "BSP_LoadingQueue_SubmitWork",
+      "before_comment": {
+        "address": "00504d20",
+        "function_name": "FUN_00504d20"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 215 bytes; ECX loader20h; stacked name/context; RET8; reports/native_loading_queue_submission_br.json. First selection reads count then array; post-construction selection reads current array then count. Only initial job stop BYTE is tested. Completed temporary destroyed through4FDC00 on append escape.",
+      "before_documentation": {
+        "hash": "e9139e86892aee22addb0f9f87333b8c13137b991a498c94487b8dae22a80d54",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00504d20",
+        "function_name": "FUN_00504d20",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "_Dst",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 120,
+            "name": "LAB_00504d98"
+          },
+          {
+            "relative_offset": 195,
+            "name": "LAB_00504de3"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall FUN_00504d20(void* loader, void* unused_edx, void* name, void* context)",
+      "prototype_result": "Successfully set prototype for function at 00504d20 with __fastcall calling convention",
+      "ledger_name_output": "00504d20 -> FUN_00504d20\n",
+      "ledger_function_output": "00504d20 function submit_native_loading_work_item_00504d20\n",
+      "after_comment": {
+        "address": "00504d20",
+        "function_name": "BSP_LoadingQueue_SubmitWork",
+        "comment": "[BSP reconstruction 00504d20]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 215 bytes; ECX loader20h; stacked name/context; RET8; reports/native_loading_queue_submission_br.json. First selection reads count then array; post-construction selection reads current array then count. Only initial job stop BYTE is tested. Completed temporary destroyed through4FDC00 on append escape."
+      },
+      "before_reviewed_rename": {
+        "address": "00504d20",
+        "function_name": "FUN_00504d20",
+        "comment": "[BSP reconstruction 00504d20]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 215 bytes; ECX loader20h; stacked name/context; RET8; reports/native_loading_queue_submission_br.json. First selection reads count then array; post-construction selection reads current array then count. Only initial job stop BYTE is tested. Completed temporary destroyed through4FDC00 on append escape."
+      },
+      "reviewed_name": "BSP_LoadingQueue_SubmitWork",
+      "reviewed_name_ledger": "00504d20 -> BSP_LoadingQueue_SubmitWork\nreplaced (previous record stays in git history): {\"address\": \"00504d20\", \"name\": \"FUN_00504d20\", \"evidence\": \"BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 215 bytes; ECX loader20h; stacked name/context; RET8; reports/native_loading_queue_submission_br.json. First selection reads count then array; post-construction selection reads current array then count. Only initial job stop BYTE is tested. Completed temporary destroyed through4FDC00 on append escape.\"}\n",
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00506bf0",
+      "name": "BSP_LoadingQueue_RetireFront",
+      "before_comment": {
+        "address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 131 bytes; ECX actual20h loader; RET; no semantic return; reports/native_loading_queue_retirement_br.json. Repaired506C39 CALL_RETURN membership, including506C3E..46; all50 instruction starts verified. Reload current front only after initial FileBlock deletion and FileStore removal; captured slot clear, current-array/count shift, trailing slot unchanged.",
+      "before_documentation": {
+        "hash": "4d2e5269b52f99f0d45c83031435ad84913303651d66edfb71c9f2b8edcd6a8e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "loader",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00506c10"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00506c47"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00506c54"
+          },
+          {
+            "relative_offset": 124,
+            "name": "LAB_00506c6c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_LoadingQueue_RetireFront(void* loader, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00506bf0 with __fastcall calling convention",
+      "ledger_name_output": "00506bf0 -> BSP_LoadingQueue_RetireFront\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00506bf0\", \"name\": \"BSP_LoadingQueue_RetireFront\", \"evidence\": \"[BSP reconstruction 00506bf0] update\\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00506bf0 function retire_native_loading_queue_front_00506bf0\n",
+      "after_comment": {
+        "address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00506bf0] update\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 131 bytes; ECX actual20h loader; RET; no semantic return; reports/native_loading_queue_retirement_br.json. Repaired506C39 CALL_RETURN membership, including506C3E..46; all50 instruction starts verified. Reload current front only after initial FileBlock deletion and FileStore removal; captured slot clear, current-array/count shift, trailing slot unchanged."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00be0a30",
+      "name": "BSP_FileBlock_Construct",
+      "before_comment": {
+        "address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.\n\n[BSP reconstruction 00be0a30] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json."
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stacked name/gateDWORD; EAX owner; RET8; reports/native_fileblock_copy_br.json. Correction to BQ: BE0A9F calls correctly named _memcpy BF7680, whose complete869-byte body contains backward overlap handling. Source direct copy uses std::memmove; BQ historical artifacts preserved.",
+      "before_documentation": {
+        "hash": "2cdd2af3fa233d7e79bba574473e9ca028a4026154f031ffd9f545800f0f573a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.\n\n[BSP reconstruction 00be0a30] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "name",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "gate",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "this",
+            "type": "size_t *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 119,
+            "name": "LAB_00be0aa7"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_FileBlock_Construct(void* owner, void* unused_edx, void* name, unsigned int gate)",
+      "prototype_result": "Successfully set prototype for function at 00be0a30 with __fastcall calling convention",
+      "ledger_name_output": "00be0a30 -> BSP_FileBlock_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be0a30\", \"name\": \"BSP_FileBlock_Construct\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\"})\n",
+      "ledger_function_output": "00be0a30 function construct_native_fileblock_00be0a30\nreplaced (previous record stays in git history): {\"address\": \"00be0a30\", \"name\": \"construct_native_fileblock_00be0a30\", \"source\": \"src/native_fileblock_owner.cpp\", \"status\": \"reconstructed_complete_ordinary_source_build_and_focused_fixture_checked\", \"original_abi\": \"ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8\", \"documentation\": \"docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md\", \"report\": \"reports/native_fileblock_owner_bq.json\", \"abi_compatible\": false, \"game_validated\": false, \"evidence\": \"BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\", \"kind\": \"function\"}\n",
+      "after_comment": {
+        "address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.\n\n[BSP reconstruction 00be0a30] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated. | BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.\n\n[BSP reconstruction 00be0a30] update\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stacked name/gateDWORD; EAX owner; RET8; reports/native_fileblock_copy_br.json. Correction to BQ: BE0A9F calls correctly named _memcpy BF7680, whose complete869-byte body contains backward overlap handling. Source direct copy uses std::memmove; BQ historical artifacts preserved."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c688e8",
+      "name": "EH_handler_00c688e8",
+      "before_comment": {
+        "address": "00c688e8",
+        "function_name": "FUN_00c688e8"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00c688e8 -> EH_handler_00c688e8\n",
+      "after_comment": {
+        "address": "00c688e8",
+        "function_name": "EH_handler_00c688e8",
+        "comment": "[BSP reconstruction 00c688e8]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c6900c",
+      "name": "EH_handler_00c6900c",
+      "before_comment": {
+        "address": "00c6900c",
+        "function_name": "FUN_00c6900c"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00c6900c -> EH_handler_00c6900c\n",
+      "after_comment": {
+        "address": "00c6900c",
+        "function_name": "EH_handler_00c6900c",
+        "comment": "[BSP reconstruction 00c6900c]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c69088",
+      "name": "EH_handler_00c69088",
+      "before_comment": {
+        "address": "00c69088",
+        "function_name": "FUN_00c69088"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00c69088 -> EH_handler_00c69088\n",
+      "after_comment": {
+        "address": "00c69088",
+        "function_name": "EH_handler_00c69088",
+        "comment": "[BSP reconstruction 00c69088]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c688e0",
+      "name": "Unwind@00c688e0",
+      "before_comment": {
+        "address": "00c688e0",
+        "function_name": "Unwind@00c688e0"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 destroys current by-value parameter at synthetic parent EBP+4 via41DD20; not incomplete output cleanup.",
+      "ledger_name_output": "00c688e0 -> Unwind@00c688e0\n",
+      "after_comment": {
+        "address": "00c688e0",
+        "function_name": "Unwind@00c688e0",
+        "comment": "[BSP reconstruction 00c688e0]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 destroys current by-value parameter at synthetic parent EBP+4 via41DD20; not incomplete output cleanup."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c68ff0",
+      "name": "Unwind@00c68ff0",
+      "before_comment": {
+        "address": "00c68ff0",
+        "function_name": "Unwind@00c68ff0"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 reads current vector count/data, computes placement address, then calls RET-only401130 with original/current addresses. No key rollback or storage free.",
+      "ledger_name_output": "00c68ff0 -> Unwind@00c68ff0\n",
+      "after_comment": {
+        "address": "00c68ff0",
+        "function_name": "Unwind@00c68ff0",
+        "comment": "[BSP reconstruction 00c68ff0]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 reads current vector count/data, computes placement address, then calls RET-only401130 with original/current addresses. No key rollback or storage free."
+      },
+      "prior_comment_preservation_checked": true
+    },
+    {
+      "address": "00c69080",
+      "name": "Unwind@00c69080",
+      "before_comment": {
+        "address": "00c69080",
+        "function_name": "Unwind@00c69080"
+      },
+      "evidence": "BR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 invokes4FDC00 on completed temporary at synthetic parent EBP-1C.",
+      "ledger_name_output": "00c69080 -> Unwind@00c69080\n",
+      "after_comment": {
+        "address": "00c69080",
+        "function_name": "Unwind@00c69080",
+        "comment": "[BSP reconstruction 00c69080]\nBR actual loading-work submission and front retirement, plus BE0A30 copy semantics correction. Six new ordinary bodies total722bytes; existing171-byte constructor now uses overlap-capable memmove for BF7680. All301 ordinary instruction starts and complete FH3 support spans verified against installed PE/live Ghidra membership. Strict Win32 compilation, actual-service submission/FileStore-memory-stream/FileBlock retirement fixture, corrected BQ owner normal/retained modes, and whole build with both tests passed. Source interfaces are new C++ APIs; native stack/FH3/SEH/CRT identity and callee-internal exception limits remain. Retirement inherits BQ retained FileBlock failures instead of native outer unwind actions. No production queue/worker/drain/thread-shutdown or gameplay claim. Names are hypotheses; correct compiler/library names and previous comments retained. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md and reports/native_loading_queue_integration_br.json. Native unwind evidence. Native state0->-1 invokes4FDC00 on completed temporary at synthetic parent EBP-1C."
+      },
+      "prior_comment_preservation_checked": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004fdc00",
+        "prototype": "void __fastcall FUN_004fdc00(void* item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004fdc00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004fe700",
+        "prototype": "void* __fastcall FUN_004fe700(void* output, void* unused_edx, unsigned int by_value_name_length, void* by_value_name_data, void* context)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004fe700 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00501720",
+        "prototype": "void* __fastcall FUN_00501720(void* output, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00501720 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005048f0",
+        "prototype": "void __fastcall FUN_005048f0(void* vector, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005048f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00504d20",
+        "prototype": "void __fastcall FUN_00504d20(void* loader, void* unused_edx, void* name, void* context)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00504d20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00506bf0",
+        "prototype": "void __fastcall BSP_LoadingQueue_RetireFront(void* loader, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00506bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be0a30",
+        "prototype": "void* __fastcall BSP_FileBlock_Construct(void* owner, void* unused_edx, void* name, unsigned int gate)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be0a30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "004fdc00",
+        "new_name": "BSP_LoadingWork_Destroy"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 004fdc00 from 'BSP_LoadingWork_Destroy' to 'BSP_LoadingWork_Destroy'\", \"warnings\": [\"Function name 'BSP_LoadingWork_Destroy' \\u2014 main part 'LoadingWork_Destroy' is not PascalCase. Expected: LoadingworkDestroy\", \"Function name 'BSP_LoadingWork_Destroy' \\u2014 main part 'LoadingWork_Destroy' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingWork_Destroy' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "004fe700",
+        "new_name": "BSP_LoadingWork_ConstructByValue"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 004fe700 from 'FUN_004fe700' to 'BSP_LoadingWork_ConstructByValue'\", \"warnings\": [\"Function name 'BSP_LoadingWork_ConstructByValue' \\u2014 main part 'LoadingWork_ConstructByValue' is not PascalCase. Expected: LoadingworkConstructbyvalue\", \"Function name 'BSP_LoadingWork_ConstructByValue' \\u2014 main part 'LoadingWork_ConstructByValue' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingWork_ConstructByValue' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00501720",
+        "new_name": "BSP_LoadingWork_CopyConstruct"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00501720 from 'FUN_00501720' to 'BSP_LoadingWork_CopyConstruct'\", \"warnings\": [\"Function name 'BSP_LoadingWork_CopyConstruct' \\u2014 main part 'LoadingWork_CopyConstruct' is not PascalCase. Expected: LoadingworkCopyconstruct\", \"Function name 'BSP_LoadingWork_CopyConstruct' \\u2014 main part 'LoadingWork_CopyConstruct' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingWork_CopyConstruct' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "005048f0",
+        "new_name": "BSP_LoadingWorkVector_Append"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 005048f0 from 'FUN_005048f0' to 'BSP_LoadingWorkVector_Append'\", \"warnings\": [\"Function name 'BSP_LoadingWorkVector_Append' \\u2014 main part 'LoadingWorkVector_Append' is not PascalCase. Expected: LoadingworkvectorAppend\", \"Function name 'BSP_LoadingWorkVector_Append' \\u2014 main part 'LoadingWorkVector_Append' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingWorkVector_Append' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00504d20",
+        "new_name": "BSP_LoadingQueue_SubmitWork"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00504d20 from 'FUN_00504d20' to 'BSP_LoadingQueue_SubmitWork'\", \"warnings\": [\"Function name 'BSP_LoadingQueue_SubmitWork' \\u2014 main part 'LoadingQueue_SubmitWork' is not PascalCase. Expected: LoadingqueueSubmitwork\", \"Function name 'BSP_LoadingQueue_SubmitWork' \\u2014 main part 'LoadingQueue_SubmitWork' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingQueue_SubmitWork' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true,
+  "descriptive_names_saved": true
+}

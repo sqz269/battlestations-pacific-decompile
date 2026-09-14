@@ -1,0 +1,2134 @@
+{
+  "packet": "orch4_native_fileblock_copy_br",
+  "generated_utc": "2026-09-14T16:30:06.647210+00:00",
+  "identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00be0a30",
+      "bytes": 171,
+      "inclusive_end": "00be0ada",
+      "sha256": "81ab91212b2b6a54b8bc5752481109b794e1b6927c60d1cb5d25165628a81155",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 58,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12454448,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12454450,
+          5,
+          "push",
+          "0xcc6753"
+        ],
+        [
+          12454455,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12454461,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12454462,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12454469,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12454470,
+          1,
+          "push",
+          "ebx"
+        ],
+        [
+          12454471,
+          1,
+          "push",
+          "ebp"
+        ],
+        [
+          12454472,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12454473,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12454475,
+          6,
+          "mov",
+          "dword ptr [esi], 0xceb130"
+        ],
+        [
+          12454481,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          12454482,
+          4,
+          "mov",
+          "dword ptr [esp + 0x10], esi"
+        ],
+        [
+          12454486,
+          7,
+          "mov",
+          "dword ptr [esi + 4], 1"
+        ],
+        [
+          12454493,
+          4,
+          "mov",
+          "ebp, dword ptr [esp + 0x24]"
+        ],
+        [
+          12454497,
+          2,
+          "xor",
+          "ebx, ebx"
+        ],
+        [
+          12454499,
+          6,
+          "mov",
+          "dword ptr [esi], 0xd68494"
+        ],
+        [
+          12454505,
+          3,
+          "lea",
+          "edi, [esi + 0x14]"
+        ],
+        [
+          12454508,
+          2,
+          "cmp",
+          "edi, ebp"
+        ],
+        [
+          12454510,
+          3,
+          "mov",
+          "dword ptr [esi + 8], ebx"
+        ],
+        [
+          12454513,
+          3,
+          "mov",
+          "dword ptr [esi + 0xc], ebx"
+        ],
+        [
+          12454516,
+          3,
+          "mov",
+          "dword ptr [esi + 0x10], ebx"
+        ],
+        [
+          12454519,
+          4,
+          "mov",
+          "dword ptr [esp + 0x1c], ebx"
+        ],
+        [
+          12454523,
+          2,
+          "mov",
+          "dword ptr [edi], ebx"
+        ],
+        [
+          12454525,
+          3,
+          "mov",
+          "dword ptr [edi + 4], ebx"
+        ],
+        [
+          12454528,
+          2,
+          "je",
+          "0xbe0aa7"
+        ],
+        [
+          12454530,
+          3,
+          "mov",
+          "eax, dword ptr [ebp]"
+        ],
+        [
+          12454533,
+          2,
+          "push",
+          "1"
+        ],
+        [
+          12454535,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12454536,
+          2,
+          "mov",
+          "ecx, edi"
+        ],
+        [
+          12454538,
+          5,
+          "call",
+          "0x41dd40"
+        ],
+        [
+          12454543,
+          3,
+          "cmp",
+          "dword ptr [ebp], ebx"
+        ],
+        [
+          12454546,
+          2,
+          "je",
+          "0xbe0aa7"
+        ],
+        [
+          12454548,
+          2,
+          "mov",
+          "eax, dword ptr [edi]"
+        ],
+        [
+          12454550,
+          3,
+          "mov",
+          "ecx, dword ptr [edi + 4]"
+        ],
+        [
+          12454553,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12454554,
+          3,
+          "mov",
+          "eax, dword ptr [ebp + 4]"
+        ],
+        [
+          12454557,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12454558,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12454559,
+          5,
+          "call",
+          "0xbf7680"
+        ],
+        [
+          12454564,
+          3,
+          "add",
+          "esp, 0xc"
+        ],
+        [
+          12454567,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12454569,
+          5,
+          "mov",
+          "byte ptr [esp + 0x1c], 1"
+        ],
+        [
+          12454574,
+          5,
+          "call",
+          "0xbdf950"
+        ],
+        [
+          12454579,
+          4,
+          "mov",
+          "edx, dword ptr [esp + 0x28]"
+        ],
+        [
+          12454583,
+          6,
+          "mov",
+          "ecx, dword ptr [0x109ceec]"
+        ],
+        [
+          12454589,
+          1,
+          "push",
+          "edx"
+        ],
+        [
+          12454590,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          12454591,
+          5,
+          "call",
+          "0xbe0980"
+        ],
+        [
+          12454596,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 0x14]"
+        ],
+        [
+          12454600,
+          1,
+          "pop",
+          "edi"
+        ],
+        [
+          12454601,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12454603,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12454604,
+          1,
+          "pop",
+          "ebp"
+        ],
+        [
+          12454605,
+          1,
+          "pop",
+          "ebx"
+        ],
+        [
+          12454606,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12454613,
+          3,
+          "add",
+          "esp, 0x10"
+        ],
+        [
+          12454616,
+          3,
+          "ret",
+          "8"
+        ]
+      ],
+      "original_abi": "ECX actual1Ch owner; stacked name/gateDWORD; EAX owner; RET8",
+      "source_name": "construct_native_fileblock_00be0a30",
+      "coverage": "existing complete ordinary body; copy primitive corrected"
+    }
+  ],
+  "supporting_spans": [],
+  "eh_data": [],
+  "call_sites": [
+    {
+      "address": "00be0a8a",
+      "native": "0041dd40",
+      "function": "00be0a30",
+      "kind": "call",
+      "instruction": "call 0x41dd40",
+      "bytes": "e8b1d283ff"
+    },
+    {
+      "address": "00be0a9f",
+      "native": "00bf7680",
+      "function": "00be0a30",
+      "kind": "call",
+      "instruction": "call 0xbf7680",
+      "bytes": "e8dc6b0100"
+    },
+    {
+      "address": "00be0aae",
+      "native": "00bdf950",
+      "function": "00be0a30",
+      "kind": "call",
+      "instruction": "call 0xbdf950",
+      "bytes": "e89deeffff"
+    },
+    {
+      "address": "00be0abf",
+      "native": "00be0980",
+      "function": "00be0a30",
+      "kind": "call",
+      "instruction": "call 0xbe0980",
+      "bytes": "e8bcfeffff"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_fileblock_owner.hpp",
+      "sha256": "cffc8e01ec847d1825f8eeb2cd55d78a94ac231392d3de671f59379773e29296",
+      "bytes": 4616
+    },
+    {
+      "path": "src/native_fileblock_owner.cpp",
+      "sha256": "f5012c4ed979bb6b69bdc88665e113c75f08c5474812fe1db3ba11896ed34ac3",
+      "bytes": 9398
+    },
+    {
+      "path": "docs/NATIVE_FILEBLOCK_COPY_BR.md",
+      "sha256": "8324db745c2a3a2ae446e975e80bf565d554b4ba5bb3b30edf51ab85e9f918bf",
+      "bytes": 1217
+    }
+  ],
+  "borrowed_source_artifacts": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "bytes": 8019
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "bytes": 8311
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103
+    },
+    {
+      "path": "include/bsp/native_fileblock_identifier.hpp",
+      "sha256": "ed2fe358ffb60723c904ca7ab3c7abed58f3fb657ca4806365356d8ac8935bd2",
+      "bytes": 1399
+    },
+    {
+      "path": "src/native_fileblock_identifier.cpp",
+      "sha256": "a4f2a236adabe3010bd2ed332ef8e37c8e234ae06b8800d38b33c1cf3a2f3480",
+      "bytes": 8545
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+      "bytes": 1557
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+      "bytes": 5004
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "bytes": 1226
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "bytes": 822
+    },
+    {
+      "path": "include/bsp/native_vfs_fileblock_scope.hpp",
+      "sha256": "08ae589b9c419e38ad47d4d2a1c768a24e4c0b4a2a402dd00f8994d88a678540",
+      "bytes": 4675
+    },
+    {
+      "path": "src/native_vfs_fileblock_scope.cpp",
+      "sha256": "f71ac469ebfb309f280b3d73cdd353e8f50c84807d9180182afb2b40138bb353",
+      "bytes": 9399
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/native_loading_queue_br/compile.cmd",
+      "sha256": "5ec660507c262b7f8d96e5486296b78eff35358d925b2b67ee43749f3f4a3566",
+      "bytes": 1965
+    },
+    {
+      "path": "local/native_loading_queue_br/compile.log",
+      "sha256": "ce6785a0b05865fb70481e9311dd04e860b8050eac5eeafb2f69130d88aea23e",
+      "bytes": 130
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.cpp",
+      "sha256": "ea035f99ed7f775368d330b85e5e0e19011a54d52963458eeeba664d418b135c",
+      "bytes": 9237
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.obj",
+      "sha256": "dcee8b3b298114fe926469082452f8e901f6eab320595b609cb1bd7d4dcbb600",
+      "bytes": 79972
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.exe",
+      "sha256": "491a1bef2beae1a80443355638ae40e20592b6914c9eda0a83c1ab3c21a25d5b",
+      "bytes": 135680
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.log",
+      "sha256": "03185e35f049e655a6f513ab35a81a25ffb10fe24b4867484e74b71ea2894131",
+      "bytes": 202
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.cpp",
+      "sha256": "e2bf7da889ffc2337dc791b46c08169a20ff2f9e8a3382c6f4b9b972303f28f5",
+      "bytes": 6629
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.exe",
+      "sha256": "879b8fdf187dcdd0f807ade0011788ebc3d0936f84edc30e3aef1ce85859f255",
+      "bytes": 41472
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.log",
+      "sha256": "026ac28c61f8382b77c6383e8e2ce884c0227c0cfdcfaca19699a7d9ebed5d7b",
+      "bytes": 176
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe_retained.log",
+      "sha256": "670b98fcc7f91e9b72fac6bdf1f0fefe39d44feb0a57ac6ac4cc579f43026a2c",
+      "bytes": 167
+    },
+    {
+      "path": "local/native_loading_queue_br/native_fileblock_owner.obj",
+      "sha256": "2e7290dd589f1cc5a5e2ded47941b8d8d1d8dca784a9da86b5cf36a83bcaedc6",
+      "bytes": 30241
+    },
+    {
+      "path": "local/native_loading_queue_br/frozen_inputs.json",
+      "sha256": "75d1ca3cae2298f9e9f4514dea1f2b12b6428a15a6daccb3ca993ce1920a5b5e",
+      "bytes": 1183
+    }
+  ],
+  "frozen_inputs": {
+    "source_commit": "fa879ae60afb839ac011dbc11c29c4830ea1cd81",
+    "libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_core.lib",
+        "sha256": "78835ac05ce149c015c3b5fd7d8d27e43b433ee09f7d81375585a98359e9c6b2",
+        "bytes": 58341082
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "bytes": 455244
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "bytes": 71906
+      }
+    ]
+  },
+  "validation": {
+    "strict_msvc_win32": "passed /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "actual_service_fixture": "passed",
+    "corrected_owner_normal": "passed",
+    "corrected_owner_retained_failure": "passed",
+    "whole_report_verifier": "passed",
+    "combined_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "build_log": {
+      "path": "local/native_loading_queue_br/build.log",
+      "sha256": "dc74e0ecc1101e6d63b01180d4d3361f22bb5ba74516b5736a43861857846016",
+      "bytes": 2590
+    },
+    "native_binary_abi_compatible": false,
+    "game_validated": false,
+    "build_source_commit": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+    "combined_fixture_modes": "passed against integrated libraries, hash-identical to final build",
+    "integration_report": "reports/native_loading_queue_integration_br.json"
+  },
+  "evidence_limits": [
+    "New explicit C++ interfaces over actual storage. Original CRT/FH3/SEH identity, native stack and EH-spill aliasing, hardware fault cleanup, callee-internal exception boundaries and gameplay are unverified.",
+    "Queue update, resource-loading worker, full drain/destruction and safe thread shutdown are not supplied; production GameFrameHost queue hook remains unimplemented.",
+    "Retirement inherits retained BQ FileBlock outer frames instead of native FH3 cleanup; the deliberate observer fixture proves retention only."
+  ],
+  "copy_callee_evidence": {
+    "address": "00bf7680",
+    "bytes": 869,
+    "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+    "instructions": [
+      [
+        12547712,
+        1,
+        "push",
+        "ebp"
+      ],
+      [
+        12547713,
+        2,
+        "mov",
+        "ebp, esp"
+      ],
+      [
+        12547715,
+        1,
+        "push",
+        "edi"
+      ],
+      [
+        12547716,
+        1,
+        "push",
+        "esi"
+      ],
+      [
+        12547717,
+        3,
+        "mov",
+        "esi, dword ptr [ebp + 0xc]"
+      ],
+      [
+        12547720,
+        3,
+        "mov",
+        "ecx, dword ptr [ebp + 0x10]"
+      ],
+      [
+        12547723,
+        3,
+        "mov",
+        "edi, dword ptr [ebp + 8]"
+      ],
+      [
+        12547726,
+        2,
+        "mov",
+        "eax, ecx"
+      ],
+      [
+        12547728,
+        2,
+        "mov",
+        "edx, ecx"
+      ],
+      [
+        12547730,
+        2,
+        "add",
+        "eax, esi"
+      ],
+      [
+        12547732,
+        2,
+        "cmp",
+        "edi, esi"
+      ],
+      [
+        12547734,
+        2,
+        "jbe",
+        "0xbf76a0"
+      ],
+      [
+        12547736,
+        2,
+        "cmp",
+        "edi, eax"
+      ],
+      [
+        12547738,
+        6,
+        "jb",
+        "0xbf7844"
+      ],
+      [
+        12547744,
+        6,
+        "cmp",
+        "ecx, 0x100"
+      ],
+      [
+        12547750,
+        2,
+        "jb",
+        "0xbf76c7"
+      ],
+      [
+        12547752,
+        7,
+        "cmp",
+        "dword ptr [0x109eea4], 0"
+      ],
+      [
+        12547759,
+        2,
+        "je",
+        "0xbf76c7"
+      ],
+      [
+        12547761,
+        1,
+        "push",
+        "edi"
+      ],
+      [
+        12547762,
+        1,
+        "push",
+        "esi"
+      ],
+      [
+        12547763,
+        3,
+        "and",
+        "edi, 0xf"
+      ],
+      [
+        12547766,
+        3,
+        "and",
+        "esi, 0xf"
+      ],
+      [
+        12547769,
+        2,
+        "cmp",
+        "edi, esi"
+      ],
+      [
+        12547771,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12547772,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12547773,
+        2,
+        "jne",
+        "0xbf76c7"
+      ],
+      [
+        12547775,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12547776,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12547777,
+        1,
+        "pop",
+        "ebp"
+      ],
+      [
+        12547778,
+        5,
+        "jmp",
+        "0xc0c82b"
+      ],
+      [
+        12547783,
+        6,
+        "test",
+        "edi, 3"
+      ],
+      [
+        12547789,
+        2,
+        "jne",
+        "0xbf76e4"
+      ],
+      [
+        12547791,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12547794,
+        3,
+        "and",
+        "edx, 3"
+      ],
+      [
+        12547797,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12547800,
+        2,
+        "jb",
+        "0xbf7704"
+      ],
+      [
+        12547802,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12547804,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf77f4]"
+      ],
+      [
+        12547811,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12547812,
+        2,
+        "mov",
+        "eax, edi"
+      ],
+      [
+        12547814,
+        5,
+        "mov",
+        "edx, 3"
+      ],
+      [
+        12547819,
+        3,
+        "sub",
+        "ecx, 4"
+      ],
+      [
+        12547822,
+        2,
+        "jb",
+        "0xbf76fc"
+      ],
+      [
+        12547824,
+        3,
+        "and",
+        "eax, 3"
+      ],
+      [
+        12547827,
+        2,
+        "add",
+        "ecx, eax"
+      ],
+      [
+        12547829,
+        7,
+        "jmp",
+        "dword ptr [eax*4 + 0xbf7708]"
+      ],
+      [
+        12547836,
+        7,
+        "jmp",
+        "dword ptr [ecx*4 + 0xbf7804]"
+      ],
+      [
+        12547843,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12547844,
+        7,
+        "jmp",
+        "dword ptr [ecx*4 + 0xbf7788]"
+      ],
+      [
+        12547851,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12547852,
+        3,
+        "sbb",
+        "byte ptr [edi - 0x41], dh"
+      ],
+      [
+        12547855,
+        4,
+        "add",
+        "byte ptr [edi + esi*2 - 0x41], al"
+      ],
+      [
+        12547859,
+        3,
+        "add",
+        "byte ptr [eax + 0x77], ch"
+      ],
+      [
+        12547862,
+        5,
+        "mov",
+        "edi, 0x8ad12300"
+      ],
+      [
+        12547867,
+        1,
+        "push",
+        "es"
+      ],
+      [
+        12547868,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12547870,
+        3,
+        "mov",
+        "al, byte ptr [esi + 1]"
+      ],
+      [
+        12547873,
+        3,
+        "mov",
+        "byte ptr [edi + 1], al"
+      ],
+      [
+        12547876,
+        3,
+        "mov",
+        "al, byte ptr [esi + 2]"
+      ],
+      [
+        12547879,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12547882,
+        3,
+        "mov",
+        "byte ptr [edi + 2], al"
+      ],
+      [
+        12547885,
+        3,
+        "add",
+        "esi, 3"
+      ],
+      [
+        12547888,
+        3,
+        "add",
+        "edi, 3"
+      ],
+      [
+        12547891,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12547894,
+        2,
+        "jb",
+        "0xbf7704"
+      ],
+      [
+        12547896,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12547898,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf77f4]"
+      ],
+      [
+        12547905,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12547908,
+        2,
+        "and",
+        "edx, ecx"
+      ],
+      [
+        12547910,
+        2,
+        "mov",
+        "al, byte ptr [esi]"
+      ],
+      [
+        12547912,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12547914,
+        3,
+        "mov",
+        "al, byte ptr [esi + 1]"
+      ],
+      [
+        12547917,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12547920,
+        3,
+        "mov",
+        "byte ptr [edi + 1], al"
+      ],
+      [
+        12547923,
+        3,
+        "add",
+        "esi, 2"
+      ],
+      [
+        12547926,
+        3,
+        "add",
+        "edi, 2"
+      ],
+      [
+        12547929,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12547932,
+        2,
+        "jb",
+        "0xbf7704"
+      ],
+      [
+        12547934,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12547936,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf77f4]"
+      ],
+      [
+        12547943,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12547944,
+        2,
+        "and",
+        "edx, ecx"
+      ],
+      [
+        12547946,
+        2,
+        "mov",
+        "al, byte ptr [esi]"
+      ],
+      [
+        12547948,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12547950,
+        3,
+        "add",
+        "esi, 1"
+      ],
+      [
+        12547953,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12547956,
+        3,
+        "add",
+        "edi, 1"
+      ],
+      [
+        12547959,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12547962,
+        2,
+        "jb",
+        "0xbf7704"
+      ],
+      [
+        12547964,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12547966,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf77f4]"
+      ],
+      [
+        12547973,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12547976,
+        2,
+        "jmp",
+        "0xbf7801"
+      ],
+      [
+        12547978,
+        5,
+        "mov",
+        "edi, 0xbf77d800"
+      ],
+      [
+        12547983,
+        2,
+        "add",
+        "al, dl"
+      ],
+      [
+        12547985,
+        2,
+        "ja",
+        "0xbf7752"
+      ],
+      [
+        12547987,
+        2,
+        "add",
+        "al, cl"
+      ],
+      [
+        12547989,
+        2,
+        "ja",
+        "0xbf7756"
+      ],
+      [
+        12547991,
+        2,
+        "add",
+        "al, al"
+      ],
+      [
+        12547993,
+        2,
+        "ja",
+        "0xbf775a"
+      ],
+      [
+        12547995,
+        6,
+        "add",
+        "byte ptr [eax - 0x4fff4089], bh"
+      ],
+      [
+        12548001,
+        2,
+        "ja",
+        "0xbf7762"
+      ],
+      [
+        12548003,
+        6,
+        "add",
+        "byte ptr [eax - 0x74ff4089], ch"
+      ],
+      [
+        12548009,
+        1,
+        "inc",
+        "esp"
+      ],
+      [
+        12548010,
+        2,
+        "mov",
+        "fs, esp"
+      ],
+      [
+        12548012,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 0x1c], eax"
+      ],
+      [
+        12548016,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 0x18]"
+      ],
+      [
+        12548020,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 0x18], eax"
+      ],
+      [
+        12548024,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 0x14]"
+      ],
+      [
+        12548028,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 0x14], eax"
+      ],
+      [
+        12548032,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 0x10]"
+      ],
+      [
+        12548036,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 0x10], eax"
+      ],
+      [
+        12548040,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 0xc]"
+      ],
+      [
+        12548044,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 0xc], eax"
+      ],
+      [
+        12548048,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 8]"
+      ],
+      [
+        12548052,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 8], eax"
+      ],
+      [
+        12548056,
+        4,
+        "mov",
+        "eax, dword ptr [esi + ecx*4 - 4]"
+      ],
+      [
+        12548060,
+        4,
+        "mov",
+        "dword ptr [edi + ecx*4 - 4], eax"
+      ],
+      [
+        12548064,
+        7,
+        "lea",
+        "eax, [ecx*4]"
+      ],
+      [
+        12548071,
+        2,
+        "add",
+        "esi, eax"
+      ],
+      [
+        12548073,
+        2,
+        "add",
+        "edi, eax"
+      ],
+      [
+        12548075,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf77f4]"
+      ],
+      [
+        12548082,
+        2,
+        "mov",
+        "edi, edi"
+      ],
+      [
+        12548084,
+        2,
+        "add",
+        "al, 0x78"
+      ],
+      [
+        12548086,
+        5,
+        "mov",
+        "edi, 0xbf780c00"
+      ],
+      [
+        12548091,
+        2,
+        "add",
+        "byte ptr [eax], bl"
+      ],
+      [
+        12548093,
+        2,
+        "js",
+        "0xbf77be"
+      ],
+      [
+        12548095,
+        3,
+        "add",
+        "byte ptr [eax + edi*2], ch"
+      ],
+      [
+        12548098,
+        5,
+        "mov",
+        "edi, 0x8458b00"
+      ],
+      [
+        12548103,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12548104,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12548105,
+        1,
+        "leave",
+        ""
+      ],
+      [
+        12548106,
+        1,
+        "ret",
+        ""
+      ],
+      [
+        12548107,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12548108,
+        2,
+        "mov",
+        "al, byte ptr [esi]"
+      ],
+      [
+        12548110,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12548112,
+        3,
+        "mov",
+        "eax, dword ptr [ebp + 8]"
+      ],
+      [
+        12548115,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12548116,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12548117,
+        1,
+        "leave",
+        ""
+      ],
+      [
+        12548118,
+        1,
+        "ret",
+        ""
+      ],
+      [
+        12548119,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12548120,
+        2,
+        "mov",
+        "al, byte ptr [esi]"
+      ],
+      [
+        12548122,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12548124,
+        3,
+        "mov",
+        "al, byte ptr [esi + 1]"
+      ],
+      [
+        12548127,
+        3,
+        "mov",
+        "byte ptr [edi + 1], al"
+      ],
+      [
+        12548130,
+        3,
+        "mov",
+        "eax, dword ptr [ebp + 8]"
+      ],
+      [
+        12548133,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12548134,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12548135,
+        1,
+        "leave",
+        ""
+      ],
+      [
+        12548136,
+        1,
+        "ret",
+        ""
+      ],
+      [
+        12548137,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12548140,
+        2,
+        "mov",
+        "al, byte ptr [esi]"
+      ],
+      [
+        12548142,
+        2,
+        "mov",
+        "byte ptr [edi], al"
+      ],
+      [
+        12548144,
+        3,
+        "mov",
+        "al, byte ptr [esi + 1]"
+      ],
+      [
+        12548147,
+        3,
+        "mov",
+        "byte ptr [edi + 1], al"
+      ],
+      [
+        12548150,
+        3,
+        "mov",
+        "al, byte ptr [esi + 2]"
+      ],
+      [
+        12548153,
+        3,
+        "mov",
+        "byte ptr [edi + 2], al"
+      ],
+      [
+        12548156,
+        3,
+        "mov",
+        "eax, dword ptr [ebp + 8]"
+      ],
+      [
+        12548159,
+        1,
+        "pop",
+        "esi"
+      ],
+      [
+        12548160,
+        1,
+        "pop",
+        "edi"
+      ],
+      [
+        12548161,
+        1,
+        "leave",
+        ""
+      ],
+      [
+        12548162,
+        1,
+        "ret",
+        ""
+      ],
+      [
+        12548163,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12548164,
+        4,
+        "lea",
+        "esi, [ecx + esi - 4]"
+      ],
+      [
+        12548168,
+        4,
+        "lea",
+        "edi, [ecx + edi - 4]"
+      ],
+      [
+        12548172,
+        6,
+        "test",
+        "edi, 3"
+      ],
+      [
+        12548178,
+        2,
+        "jne",
+        "0xbf7878"
+      ],
+      [
+        12548180,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12548183,
+        3,
+        "and",
+        "edx, 3"
+      ],
+      [
+        12548186,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12548189,
+        2,
+        "jb",
+        "0xbf786c"
+      ],
+      [
+        12548191,
+        1,
+        "std",
+        ""
+      ],
+      [
+        12548192,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12548194,
+        1,
+        "cld",
+        ""
+      ],
+      [
+        12548195,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf7990]"
+      ],
+      [
+        12548202,
+        2,
+        "mov",
+        "edi, edi"
+      ],
+      [
+        12548204,
+        2,
+        "neg",
+        "ecx"
+      ],
+      [
+        12548206,
+        7,
+        "jmp",
+        "dword ptr [ecx*4 + 0xbf7940]"
+      ],
+      [
+        12548213,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12548216,
+        2,
+        "mov",
+        "eax, edi"
+      ],
+      [
+        12548218,
+        5,
+        "mov",
+        "edx, 3"
+      ],
+      [
+        12548223,
+        3,
+        "cmp",
+        "ecx, 4"
+      ],
+      [
+        12548226,
+        2,
+        "jb",
+        "0xbf7890"
+      ],
+      [
+        12548228,
+        3,
+        "and",
+        "eax, 3"
+      ],
+      [
+        12548231,
+        2,
+        "sub",
+        "ecx, eax"
+      ],
+      [
+        12548233,
+        7,
+        "jmp",
+        "dword ptr [eax*4 + 0xbf7894]"
+      ],
+      [
+        12548240,
+        7,
+        "jmp",
+        "dword ptr [ecx*4 + 0xbf7990]"
+      ],
+      [
+        12548247,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12548248,
+        1,
+        "movsb",
+        "byte ptr es:[edi], byte ptr [esi]"
+      ],
+      [
+        12548249,
+        2,
+        "js",
+        "0xbf785a"
+      ],
+      [
+        12548251,
+        2,
+        "add",
+        "al, cl"
+      ],
+      [
+        12548253,
+        2,
+        "js",
+        "0xbf785e"
+      ],
+      [
+        12548255,
+        2,
+        "add",
+        "al, dh"
+      ],
+      [
+        12548257,
+        2,
+        "js",
+        "0xbf7862"
+      ],
+      [
+        12548259,
+        6,
+        "add",
+        "byte ptr [edx - 0x2edcfcba], cl"
+      ],
+      [
+        12548265,
+        3,
+        "mov",
+        "byte ptr [edi + 3], al"
+      ],
+      [
+        12548268,
+        3,
+        "sub",
+        "esi, 1"
+      ],
+      [
+        12548271,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12548274,
+        3,
+        "sub",
+        "edi, 1"
+      ],
+      [
+        12548277,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12548280,
+        2,
+        "jb",
+        "0xbf786c"
+      ],
+      [
+        12548282,
+        1,
+        "std",
+        ""
+      ],
+      [
+        12548283,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12548285,
+        1,
+        "cld",
+        ""
+      ],
+      [
+        12548286,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf7990]"
+      ],
+      [
+        12548293,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12548296,
+        3,
+        "mov",
+        "al, byte ptr [esi + 3]"
+      ],
+      [
+        12548299,
+        2,
+        "and",
+        "edx, ecx"
+      ],
+      [
+        12548301,
+        3,
+        "mov",
+        "byte ptr [edi + 3], al"
+      ],
+      [
+        12548304,
+        3,
+        "mov",
+        "al, byte ptr [esi + 2]"
+      ],
+      [
+        12548307,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12548310,
+        3,
+        "mov",
+        "byte ptr [edi + 2], al"
+      ],
+      [
+        12548313,
+        3,
+        "sub",
+        "esi, 2"
+      ],
+      [
+        12548316,
+        3,
+        "sub",
+        "edi, 2"
+      ],
+      [
+        12548319,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12548322,
+        2,
+        "jb",
+        "0xbf786c"
+      ],
+      [
+        12548324,
+        1,
+        "std",
+        ""
+      ],
+      [
+        12548325,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12548327,
+        1,
+        "cld",
+        ""
+      ],
+      [
+        12548328,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf7990]"
+      ],
+      [
+        12548335,
+        1,
+        "nop",
+        ""
+      ],
+      [
+        12548336,
+        3,
+        "mov",
+        "al, byte ptr [esi + 3]"
+      ],
+      [
+        12548339,
+        2,
+        "and",
+        "edx, ecx"
+      ],
+      [
+        12548341,
+        3,
+        "mov",
+        "byte ptr [edi + 3], al"
+      ],
+      [
+        12548344,
+        3,
+        "mov",
+        "al, byte ptr [esi + 2]"
+      ],
+      [
+        12548347,
+        3,
+        "mov",
+        "byte ptr [edi + 2], al"
+      ],
+      [
+        12548350,
+        3,
+        "mov",
+        "al, byte ptr [esi + 1]"
+      ],
+      [
+        12548353,
+        3,
+        "shr",
+        "ecx, 2"
+      ],
+      [
+        12548356,
+        3,
+        "mov",
+        "byte ptr [edi + 1], al"
+      ],
+      [
+        12548359,
+        3,
+        "sub",
+        "esi, 3"
+      ],
+      [
+        12548362,
+        3,
+        "sub",
+        "edi, 3"
+      ],
+      [
+        12548365,
+        3,
+        "cmp",
+        "ecx, 8"
+      ],
+      [
+        12548368,
+        6,
+        "jb",
+        "0xbf786c"
+      ],
+      [
+        12548374,
+        1,
+        "std",
+        ""
+      ],
+      [
+        12548375,
+        2,
+        "rep movsd",
+        "dword ptr es:[edi], dword ptr [esi]"
+      ],
+      [
+        12548377,
+        1,
+        "cld",
+        ""
+      ],
+      [
+        12548378,
+        7,
+        "jmp",
+        "dword ptr [edx*4 + 0xbf7990]"
+      ],
+      [
+        12548385,
+        3,
+        "lea",
+        "ecx, [ecx]"
+      ],
+      [
+        12548388,
+        1,
+        "inc",
+        "esp"
+      ],
+      [
+        12548389,
+        2,
+        "jns",
+        "0xbf78e6"
+      ],
+      [
+        12548391,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], cl"
+      ],
+      [
+        12548395,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], dl"
+      ],
+      [
+        12548399,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], bl"
+      ],
+      [
+        12548403,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], ah"
+      ],
+      [
+        12548407,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], ch"
+      ],
+      [
+        12548411,
+        4,
+        "add",
+        "byte ptr [ecx + edi*2 - 0x41], dh"
+      ],
+      [
+        12548415,
+        6,
+        "add",
+        "byte ptr [edi - 0x74ff4087], al"
+      ],
+      [
+        12548421,
+        1,
+        "inc",
+        "esp"
+      ],
+      [
+        12548422,
+        3,
+        "mov",
+        "ds, word ptr [ecx + ecx*4]"
+      ],
+      [
+        12548425,
+        1,
+        "inc",
+        "esp"
+      ]
+    ],
+    "library_name_preserved": "_memcpy",
+    "source_operation": "std::memmove",
+    "overlap_fixture": "not independently added in BR; instruction evidence establishes callee backward path"
+  }
+}

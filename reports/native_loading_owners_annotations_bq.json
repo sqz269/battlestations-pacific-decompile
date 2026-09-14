@@ -1,0 +1,945 @@
+{
+  "source_functions": [
+    {
+      "address": "00b7e000",
+      "function": "allocate_native_resource_parser_head_storage_00b7e000",
+      "source": "src/native_resource_manager_trees.cpp",
+      "report": "reports/native_resource_manager_trees_bq.json",
+      "original_abi": "No consumed input; EAX allocation; RET",
+      "bytes": 55
+    },
+    {
+      "address": "00b7e050",
+      "function": "allocate_native_resource_cache_head_storage_00b7e050",
+      "source": "src/native_resource_manager_trees.cpp",
+      "report": "reports/native_resource_manager_trees_bq.json",
+      "original_abi": "No consumed input; EAX allocation; RET",
+      "bytes": 55
+    },
+    {
+      "address": "00b7df40",
+      "function": "lower_bound_native_resource_parser_name_00b7df40",
+      "source": "src/native_resource_manager_trees.cpp",
+      "report": "reports/native_resource_manager_trees_bq.json",
+      "original_abi": "ECX actual tree; stack query header; EAX node; RET4",
+      "bytes": 83
+    },
+    {
+      "address": "00b7e740",
+      "function": "find_native_resource_parser_name_00b7e740",
+      "source": "src/native_resource_manager_trees.cpp",
+      "report": "reports/native_resource_manager_trees_bq.json",
+      "original_abi": "ECX actual tree; stack output/query; EAX output; RET8",
+      "bytes": 102
+    },
+    {
+      "address": "00b7cef0",
+      "function": "decrement_native_resource_parser_iterator_00b7cef0",
+      "source": "src/native_resource_manager_trees.cpp",
+      "report": "reports/native_resource_manager_trees_bq.json",
+      "original_abi": "ECX actual owner/node iterator; RET; no uniform result",
+      "bytes": 137
+    },
+    {
+      "address": "00be0a30",
+      "function": "construct_native_fileblock_00be0a30",
+      "source": "src/native_fileblock_owner.cpp",
+      "report": "reports/native_fileblock_owner_bq.json",
+      "original_abi": "ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8",
+      "bytes": 171
+    },
+    {
+      "address": "00bdcb30",
+      "function": "destroy_native_fileblock_00bdcb30",
+      "source": "src/native_fileblock_owner.cpp",
+      "report": "reports/native_fileblock_owner_bq.json",
+      "original_abi": "ECX actual1Ch owner; RET; no semantic result",
+      "bytes": 124
+    },
+    {
+      "address": "00bdebe0",
+      "function": "delete_native_fileblock_00bdebe0",
+      "source": "src/native_fileblock_owner.cpp",
+      "report": "reports/native_fileblock_owner_bq.json",
+      "original_abi": "ECX actual1Ch owner; stack flags; EAX captured owner; RET4",
+      "bytes": 30
+    },
+    {
+      "address": "00504790",
+      "function": "ensure_native_loading_job_fileblock_00504790",
+      "source": "src/native_fileblock_owner.cpp",
+      "report": "reports/native_fileblock_owner_bq.json",
+      "original_abi": "ECX actual job; RET; no semantic result",
+      "bytes": 188
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7e000",
+      "name": "STL_ResourceParserMap_AllocateSentinel",
+      "before_comment": {
+        "address": "00b7e000",
+        "function_name": "STL_ResourceParserMap_AllocateSentinel",
+        "comment": "[BSP reconstruction 00b7e000]\nAllocate1Ch bytes, zero links, set black color and normal flag.00b81040 turns this into self-linked sentinel. Key/value slots are not constructed by this helper. Original ABI: No consumed input; EAX head allocation; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 55 bytes; No consumed input; EAX allocation; RET; reports/native_resource_manager_trees_bq.json.",
+      "before_documentation": {
+        "hash": "5a8c1a36b1913b1089e1ff6c24fa0004f706ff6139d3efce0dca3658b47d575e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e000",
+        "function_name": "STL_ResourceParserMap_AllocateSentinel",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7e000]\nAllocate1Ch bytes, zero links, set black color and normal flag.00b81040 turns this into self-linked sentinel. Key/value slots are not constructed by this helper. Original ABI: No consumed input; EAX head allocation; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 20,
+            "name": "LAB_00b7e014"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b7e021"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b7e02e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __cdecl STL_ResourceParserMap_AllocateSentinel(void)",
+      "prototype_result": "Successfully set prototype for function at 00b7e000 with __cdecl calling convention",
+      "ledger_name_output": "00b7e000 -> STL_ResourceParserMap_AllocateSentinel\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7e000\", \"name\": \"STL_ResourceParserMap_AllocateSentinel\", \"evidence\": \"Allocate1Ch bytes, zero links, set black color and normal flag.00b81040 turns this into self-linked sentinel. Key/value slots are not constructed by this helper. Original ABI: No consumed input; EAX head allocation; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7e000 function allocate_native_resource_parser_head_storage_00b7e000\n",
+      "after_comment": {
+        "address": "00b7e000",
+        "function_name": "STL_ResourceParserMap_AllocateSentinel",
+        "comment": "[BSP reconstruction 00b7e000]\nAllocate1Ch bytes, zero links, set black color and normal flag.00b81040 turns this into self-linked sentinel. Key/value slots are not constructed by this helper. Original ABI: No consumed input; EAX head allocation; plain RET. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7e000] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 55 bytes; No consumed input; EAX allocation; RET; reports/native_resource_manager_trees_bq.json."
+      }
+    },
+    {
+      "address": "00b7e050",
+      "name": "STL_ResourceCacheMap_AllocateSentinel",
+      "before_comment": {
+        "address": "00b7e050",
+        "function_name": "FUN_00b7e050"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 55 bytes; No consumed input; EAX allocation; RET; reports/native_resource_manager_trees_bq.json.",
+      "before_documentation": {
+        "hash": "5a8c1a36b1913b1089e1ff6c24fa0004f706ff6139d3efce0dca3658b47d575e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e050",
+        "function_name": "FUN_00b7e050",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 20,
+            "name": "LAB_00b7e064"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b7e071"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b7e07e"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __cdecl STL_ResourceCacheMap_AllocateSentinel(void)",
+      "prototype_result": "Successfully set prototype for function at 00b7e050 with __cdecl calling convention",
+      "ledger_name_output": "00b7e050 -> STL_ResourceCacheMap_AllocateSentinel\n",
+      "ledger_function_output": "00b7e050 function allocate_native_resource_cache_head_storage_00b7e050\n",
+      "after_comment": {
+        "address": "00b7e050",
+        "function_name": "STL_ResourceCacheMap_AllocateSentinel",
+        "comment": "[BSP reconstruction 00b7e050]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 55 bytes; No consumed input; EAX allocation; RET; reports/native_resource_manager_trees_bq.json."
+      }
+    },
+    {
+      "address": "00b7df40",
+      "name": "BSP_ResourceParserMap_LowerBound",
+      "before_comment": {
+        "address": "00b7df40",
+        "function_name": "BSP_ResourceParserMap_LowerBound",
+        "comment": "[BSP reconstruction 00b7df40]\nTree lower bound with key length/data+0C/+10; empty-name ordering avoids null dereference, nonempty comparison uses stricmp. Original ABI: ECX tree; name pointer stack; EAX lower-bound node; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 83 bytes; ECX actual tree; stack query header; EAX node; RET4; reports/native_resource_manager_trees_bq.json.",
+      "before_documentation": {
+        "hash": "27ac941d27fb18ee25fe42c0bde0c82ed299ef112fb2cb9dfc4d9c842e24d022",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7df40",
+        "function_name": "BSP_ResourceParserMap_LowerBound",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7df40]\nTree lower bound with key length/data+0C/+10; empty-name ordering avoids null dereference, nonempty comparison uses stricmp. Original ABI: ECX tree; name pointer stack; EAX lower-bound node; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar5",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined4 *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x10000050, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00b7df55"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b7df63"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00b7df78"
+          },
+          {
+            "relative_offset": 65,
+            "name": "LAB_00b7df81"
+          },
+          {
+            "relative_offset": 69,
+            "name": "LAB_00b7df85"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_00b7df8e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceParserMap_LowerBound(void* tree, void* unused_edx, void* query)",
+      "prototype_result": "Successfully set prototype for function at 00b7df40 with __fastcall calling convention",
+      "ledger_name_output": "00b7df40 -> BSP_ResourceParserMap_LowerBound\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7df40\", \"name\": \"BSP_ResourceParserMap_LowerBound\", \"evidence\": \"Tree lower bound with key length/data+0C/+10; empty-name ordering avoids null dereference, nonempty comparison uses stricmp. Original ABI: ECX tree; name pointer stack; EAX lower-bound node; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7df40 function lower_bound_native_resource_parser_name_00b7df40\n",
+      "after_comment": {
+        "address": "00b7df40",
+        "function_name": "BSP_ResourceParserMap_LowerBound",
+        "comment": "[BSP reconstruction 00b7df40]\nTree lower bound with key length/data+0C/+10; empty-name ordering avoids null dereference, nonempty comparison uses stricmp. Original ABI: ECX tree; name pointer stack; EAX lower-bound node; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b7df40] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 83 bytes; ECX actual tree; stack query header; EAX node; RET4; reports/native_resource_manager_trees_bq.json."
+      }
+    },
+    {
+      "address": "00b7e740",
+      "name": "BSP_ResourceParserMap_Find",
+      "before_comment": {
+        "address": "00b7e740",
+        "function_name": "BSP_ResourceParserMap_Find",
+        "comment": "[BSP reconstruction 00b7e740]\nFind case-insensitive equivalent key using lower bound00b7df40 and00443d00 comparator; output container/node iterator or sentinel. Original ABI: ECX tree; output iterator and name pointer stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 102 bytes; ECX actual tree; stack output/query; EAX output; RET8; reports/native_resource_manager_trees_bq.json.",
+      "before_documentation": {
+        "hash": "e32f985f3daf63d57955da361d86b98d3942931645dae9ae0934699548d3a31d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e740",
+        "function_name": "BSP_ResourceParserMap_Find",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7e740]\nFind case-insensitive equivalent key using lower bound00b7df40 and00443d00 comparator; output container/node iterator or sentinel. Original ABI: ECX tree; output iterator and name pointer stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_8",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "ppvVar3",
+            "type": "void * *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvVar2",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b7e761"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00b7e780"
+          },
+          {
+            "relative_offset": 79,
+            "name": "LAB_00b7e78f"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceParserMap_Find(void* tree, void* unused_edx, void* output, void* query)",
+      "prototype_result": "Successfully set prototype for function at 00b7e740 with __fastcall calling convention",
+      "ledger_name_output": "00b7e740 -> BSP_ResourceParserMap_Find\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7e740\", \"name\": \"BSP_ResourceParserMap_Find\", \"evidence\": \"Find case-insensitive equivalent key using lower bound00b7df40 and00443d00 comparator; output container/node iterator or sentinel. Original ABI: ECX tree; output iterator and name pointer stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7e740 function find_native_resource_parser_name_00b7e740\n",
+      "after_comment": {
+        "address": "00b7e740",
+        "function_name": "BSP_ResourceParserMap_Find",
+        "comment": "[BSP reconstruction 00b7e740]\nFind case-insensitive equivalent key using lower bound00b7df40 and00443d00 comparator; output container/node iterator or sentinel. Original ABI: ECX tree; output iterator and name pointer stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b7e740] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 102 bytes; ECX actual tree; stack output/query; EAX output; RET8; reports/native_resource_manager_trees_bq.json."
+      }
+    },
+    {
+      "address": "00b7cef0",
+      "name": "BSP_ResourceParserIterator_Decrement",
+      "before_comment": {
+        "address": "00b7cef0",
+        "function_name": "FUN_00b7cef0"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 137 bytes; ECX actual owner/node iterator; RET; no uniform result; reports/native_resource_manager_trees_bq.json.",
+      "before_documentation": {
+        "hash": "c03a3bcaac4bd61aefe80dd892f2b3f33591085f74709a181e7430677b2bdf34",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7cef0",
+        "function_name": "FUN_00b7cef0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x1000005e, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(unique, 0x10000059, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 13,
+            "name": "LAB_00b7cefd"
+          },
+          {
+            "relative_offset": 40,
+            "name": "LAB_00b7cf18"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00b7cf30"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00b7cf3b"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00b7cf40"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00b7cf50"
+          },
+          {
+            "relative_offset": 117,
+            "name": "LAB_00b7cf65"
+          },
+          {
+            "relative_offset": 132,
+            "name": "LAB_00b7cf74"
+          },
+          {
+            "relative_offset": 135,
+            "name": "LAB_00b7cf77"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceParserIterator_Decrement(void* iterator, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7cef0 with __fastcall calling convention",
+      "ledger_name_output": "00b7cef0 -> BSP_ResourceParserIterator_Decrement\n",
+      "ledger_function_output": "00b7cef0 function decrement_native_resource_parser_iterator_00b7cef0\n",
+      "after_comment": {
+        "address": "00b7cef0",
+        "function_name": "BSP_ResourceParserIterator_Decrement",
+        "comment": "[BSP reconstruction 00b7cef0]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 137 bytes; ECX actual owner/node iterator; RET; no uniform result; reports/native_resource_manager_trees_bq.json."
+      }
+    },
+    {
+      "address": "00be0a30",
+      "name": "BSP_FileBlock_Construct",
+      "before_comment": {
+        "address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json.",
+      "before_documentation": {
+        "hash": "2cdd2af3fa233d7e79bba574473e9ca028a4026154f031ffd9f545800f0f573a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 119,
+            "name": "LAB_00be0aa7"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_FileBlock_Construct(void* owner, void* unused_edx, void* name, unsigned int gate)",
+      "prototype_result": "Successfully set prototype for function at 00be0a30 with __fastcall calling convention",
+      "ledger_name_output": "00be0a30 -> BSP_FileBlock_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be0a30\", \"name\": \"BSP_FileBlock_Construct\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.\"})\n",
+      "ledger_function_output": "00be0a30 function construct_native_fileblock_00be0a30\n",
+      "after_comment": {
+        "address": "00be0a30",
+        "function_name": "BSP_FileBlock_Construct",
+        "comment": "[BSP reconstruction 00be0a30]\n[BSP reconstruction 00be0a30] update\nComplete 171-byte FileBlock construction. Final vtable 00d68494, +4=1, +8/+0Ch/+10h=0, owned name copy at +14h/+18h. Call 00bdf950 with ECX=this; then 00be0980 with ECX=global VFS 0109ceec and stack(&this+14h,flag). Return this. Vtable +4 maps to deleting destructor 00bdebe0, whose paired block-exit effects remain unaudited. Independent FILE_BLOCK_SETUP audit establishes identifier and VFS block-entry rules; no stream opening is implied.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX 28-byte object; name-wrapper pointer and flag stack arguments; EAX object; RET 8.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md.\n\n[BSP reconstruction 00be0a30] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers revisits this only for the embedded-string evidence; the object and VFS behaviour stay as established by docs/VFS_LOAD_PROCESSING_START.md. __thiscall, ECX 28-byte object, stack (const NativeString* name, uint flag), RET 8, returns this in EAX, SEH frame with handler 00cc6753. Layout: vtable +0 written twice (base 00ceb130 then 00d68494), refcount 1 at +4, three zeroed dwords +8/+0xc/+0x10, and an EMBEDDED 8-byte native string at +0x14 (length +0x14, data +0x18). The copy at 00be0a82 is the canonical string copy idiom: compare this+0x14 against the source to reject self-copy, BSP_NativeString_Resize(source->length, preserve=1), then memcpy of exactly length bytes over the terminator Resize already wrote. Then BSP_FileBlock_PrepareIdentifier 00bdf950 and BSP_VFS_EnterFileBlock 00be0980 on the singleton at DAT_0109ceec. Evidence: docs/APP_INIT_ALLOC_STRINGS.md; docs/VFS_LOAD_PROCESSING_START.md. | Existing embedded-string copy subexpression now accepts actual8h source/destination headers. Self-address guard; resize from initial source length; reload source length/data and destination length/data after allocation. No source header copy/reset/object initialization. Destination construction remains the owner responsibility; zero-byte memcpy omitted. Other FileBlock behavior unchanged. Packet orch3_gameplay_point_binding_ab: concrete gameplay-definition/point composition, strict Win32 and existing2 CTests passed; focused actual-storage chain and original36-byte definition fragment passed, existing full807-byte constructor differential/failure fixture repassed. docs/GAMEPLAY_POINT_BINDING.md; reports/gameplay_point_binding.json. New C++ ABI; application associations, remaining component implementations, native definition EH and gameplay unvalidated.\n\n[BSP reconstruction 00be0a30] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 171 bytes; ECX actual1Ch owner; stack name/gateDWORD; EAX owner; RET8; reports/native_fileblock_owner_bq.json."
+      }
+    },
+    {
+      "address": "00bdcb30",
+      "name": "BSP_FileBlock_Destroy",
+      "before_comment": {
+        "address": "00bdcb30",
+        "function_name": "BSP_FileBlock_Destroy",
+        "comment": "[BSP reconstruction 00bdcb30]\nInstall vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership. Original ABI: ECX FileBlock; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 124 bytes; ECX actual1Ch owner; RET; no semantic result; reports/native_fileblock_owner_bq.json.",
+      "before_documentation": {
+        "hash": "6d215d55e0dd59956552c78bd3e14af38673a62d50ed29c6853909ac7baebd55",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdcb30",
+        "function_name": "BSP_FileBlock_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bdcb30]\nInstall vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership. Original ABI: ECX FileBlock; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 92,
+            "name": "LAB_00bdcb8c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_FileBlock_Destroy(void* owner, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00bdcb30 with __fastcall calling convention",
+      "ledger_name_output": "00bdcb30 -> BSP_FileBlock_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdcb30\", \"name\": \"BSP_FileBlock_Destroy\", \"evidence\": \"Install vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership. Original ABI: ECX FileBlock; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bdcb30 function destroy_native_fileblock_00bdcb30\n",
+      "after_comment": {
+        "address": "00bdcb30",
+        "function_name": "BSP_FileBlock_Destroy",
+        "comment": "[BSP reconstruction 00bdcb30]\nInstall vtable00d68494; reload globalVFS[0109ceec], call00bdc9b0 with name at FileBlock+14h; only after leave returns destroy name allocation and base00bd30f0. Manager is read at destruction rather than captured from construction. Complete124-byte body. Constructor/unwind rollback not established; no stream range or ownership. Original ABI: ECX FileBlock; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bdcb30] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 124 bytes; ECX actual1Ch owner; RET; no semantic result; reports/native_fileblock_owner_bq.json."
+      }
+    },
+    {
+      "address": "00bdebe0",
+      "name": "CG_scalar_deleting_dtor_00bdebe0",
+      "before_comment": {
+        "address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 30 bytes; ECX actual1Ch owner; stack flags; EAX captured owner; RET4; reports/native_fileblock_owner_bq.json.",
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00bdebf8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall CG_scalar_deleting_dtor_00bdebe0(void* owner, void* unused_edx, unsigned int flags)",
+      "prototype_result": "Successfully set prototype for function at 00bdebe0 with __fastcall calling convention",
+      "ledger_name_output": "00bdebe0 -> CG_scalar_deleting_dtor_00bdebe0\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdebe0\", \"name\": \"CG_scalar_deleting_dtor_00bdebe0\", \"evidence\": \"Preserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bdebe0 function delete_native_fileblock_00bdebe0\n",
+      "after_comment": {
+        "address": "00bdebe0",
+        "function_name": "CG_scalar_deleting_dtor_00bdebe0",
+        "comment": "[BSP reconstruction 00bdebe0]\nPreserve compiler-generated name. Calls FileBlock destructor00bdcb30; frees object only for flags bit0; raw00bdebf8 restores EAX original storage after optionalfree. No object reference decrement here. Complete30-byte body; inspect optionalfree call00bdebf0 if correcting extraout_EAX pseudocode. Original ABI: ECX FileBlock; stack flags; EAX original object storage on both paths; RET4. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bdebe0] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 30 bytes; ECX actual1Ch owner; stack flags; EAX captured owner; RET4; reports/native_fileblock_owner_bq.json."
+      }
+    },
+    {
+      "address": "00504790",
+      "name": "BSP_LoadingJob_EnsureFileBlock",
+      "before_comment": {
+        "address": "00504790",
+        "function_name": "BSP_LoadingJob_EnsureFileBlock",
+        "comment": "[BSP reconstruction 00504790]\n[BSP reconstruction 00504790] update\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX job; no stack arguments; RET; no caller-tested success result.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 188 bytes; ECX actual job; RET; no semantic result; reports/native_fileblock_owner_bq.json.",
+      "before_documentation": {
+        "hash": "99c6b0ddde3c77d7f8fff9efa90f543b7bc78464688c155723d4c1a7cf8f7b18",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00504790",
+        "function_name": "BSP_LoadingJob_EnsureFileBlock",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00504790]\n[BSP reconstruction 00504790] update\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX job; no stack arguments; RET; no caller-tested success result.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "owner",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 122,
+            "name": "LAB_0050480a"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_0050483a"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_0050483b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_LoadingJob_EnsureFileBlock(void* job, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00504790 with __fastcall calling convention",
+      "ledger_name_output": "00504790 -> BSP_LoadingJob_EnsureFileBlock\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00504790\", \"name\": \"BSP_LoadingJob_EnsureFileBlock\", \"evidence\": \"[BSP reconstruction 00504790] update\\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX job; no stack arguments; RET; no caller-tested success result.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00504790 function ensure_native_loading_job_fileblock_00504790\n",
+      "after_comment": {
+        "address": "00504790",
+        "function_name": "BSP_LoadingJob_EnsureFileBlock",
+        "comment": "[BSP reconstruction 00504790]\n[BSP reconstruction 00504790] update\nComplete 188-byte job preparation. If job +20h is null and name length at +14h is nonzero, allocate 28 bytes; substring(name, start 13, requested length storedLength-18); construct 00be0a30(temporary,1); store at job +20h; destroy temporary name. Allocation-null stores null. Empty or missing FileBlock does not prevent caller 00509190 from setting state 3 and submitting work. No prefix/minimum-length validation is established; short-name unsigned behavior belongs to substring helper.\nEvidence: docs/VFS_LOAD_PROCESSING_START.md and reports/vfs_load_processing_start_audit.json. No new C++, native differential test, or runtime equivalence claim. Original ABI: ECX job; no stack arguments; RET; no caller-tested success result.. Evidence: docs/VFS_LOAD_PROCESSING_START.md; reports/vfs_load_processing_start_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00504790] update\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Full ordinary span 188 bytes; ECX actual job; RET; no semantic result; reports/native_fileblock_owner_bq.json."
+      }
+    },
+    {
+      "address": "00cc6753",
+      "name": "EH_handler_00cc6753",
+      "before_comment": {
+        "address": "00cc6753",
+        "function_name": "FUN_00cc6753"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc6753 -> EH_handler_00cc6753\n",
+      "after_comment": {
+        "address": "00cc6753",
+        "function_name": "EH_handler_00cc6753",
+        "comment": "[BSP reconstruction 00cc6753]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc6223",
+      "name": "EH_handler_00cc6223",
+      "before_comment": {
+        "address": "00cc6223",
+        "function_name": "FUN_00cc6223"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc6223 -> EH_handler_00cc6223\n",
+      "after_comment": {
+        "address": "00cc6223",
+        "function_name": "EH_handler_00cc6223",
+        "comment": "[BSP reconstruction 00cc6223]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00c68fb4",
+      "name": "EH_handler_00c68fb4",
+      "before_comment": {
+        "address": "00c68fb4",
+        "function_name": "FUN_00c68fb4"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00c68fb4 -> EH_handler_00c68fb4\n",
+      "after_comment": {
+        "address": "00c68fb4",
+        "function_name": "EH_handler_00c68fb4",
+        "comment": "[BSP reconstruction 00c68fb4]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc6740",
+      "name": "Unwind@00cc6740",
+      "before_comment": {
+        "address": "00cc6740",
+        "function_name": "Unwind@00cc6740"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00cc6740 -> Unwind@00cc6740\n",
+      "after_comment": {
+        "address": "00cc6740",
+        "function_name": "Unwind@00cc6740",
+        "comment": "[BSP reconstruction 00cc6740]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    },
+    {
+      "address": "00cc6748",
+      "name": "Unwind@00cc6748",
+      "before_comment": {
+        "address": "00cc6748",
+        "function_name": "Unwind@00cc6748"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00cc6748 -> Unwind@00cc6748\n",
+      "after_comment": {
+        "address": "00cc6748",
+        "function_name": "Unwind@00cc6748",
+        "comment": "[BSP reconstruction 00cc6748]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    },
+    {
+      "address": "00cc6210",
+      "name": "Unwind@00cc6210",
+      "before_comment": {
+        "address": "00cc6210",
+        "function_name": "Unwind@00cc6210"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00cc6210 -> Unwind@00cc6210\n",
+      "after_comment": {
+        "address": "00cc6210",
+        "function_name": "Unwind@00cc6210",
+        "comment": "[BSP reconstruction 00cc6210]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    },
+    {
+      "address": "00cc6218",
+      "name": "Unwind@00cc6218",
+      "before_comment": {
+        "address": "00cc6218",
+        "function_name": "Unwind@00cc6218"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00cc6218 -> Unwind@00cc6218\n",
+      "after_comment": {
+        "address": "00cc6218",
+        "function_name": "Unwind@00cc6218",
+        "comment": "[BSP reconstruction 00cc6218]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    },
+    {
+      "address": "00c68f90",
+      "name": "Unwind@00c68f90",
+      "before_comment": {
+        "address": "00c68f90",
+        "function_name": "Unwind@00c68f90",
+        "comment": ""
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00c68f90 -> Unwind@00c68f90\n",
+      "after_comment": {
+        "address": "00c68f90",
+        "function_name": "Unwind@00c68f90",
+        "comment": "[BSP reconstruction 00c68f90]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    },
+    {
+      "address": "00c68f9b",
+      "name": "Unwind@00c68f9b",
+      "before_comment": {
+        "address": "00c68f9b",
+        "function_name": "Unwind@00c68f9b"
+      },
+      "evidence": "BQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions.",
+      "ledger_name_output": "00c68f9b -> Unwind@00c68f9b\n",
+      "after_comment": {
+        "address": "00c68f9b",
+        "function_name": "Unwind@00c68f9b",
+        "comment": "[BSP reconstruction 00c68f9b]\nBQ actual resource-manager parser/cache head allocation, parser lookup/predecessor and FileBlock owner/job preparation source. Primary reviewed complete listings, current reads, byte spans and every instruction owner; 33 direct transfers verified, three focused fixture modes and combined Win32 build plus both tests passed. Complete ordinary bodies use new explicit-service C++ APIs. FileBlock outer frames retain partial state on escaping calls and do not implement native FH3 cleanup; normal owner fixture has observation disabled, deliberate observer failure tests retention only. Original maps document name/base/temp/allocation unwind order separately. Existing string/identifier/substring and BP/BO dependency-internal lifetime limits remain. Native CRT/locale/FH3/TLS/CLR ABI, production manager/loader binding and gameplay are not established. Names are descriptive hypotheses; existing compiler/library names are preserved. See docs/NATIVE_LOADING_OWNERS_INTEGRATION_BQ.md and reports/native_loading_owners_integration_bq.json. Native unwind evidence only. CC6740/CC6210 stamp base, CC6748/CC6218 destroy name, C68F90 frees captured allocation, C68F9B tests/clears temp flag then destroys temp. Source retained frames do not execute these outer actions."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e000",
+        "prototype": "void* __cdecl STL_ResourceParserMap_AllocateSentinel(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b7e000 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e050",
+        "prototype": "void* __cdecl STL_ResourceCacheMap_AllocateSentinel(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b7e050 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7df40",
+        "prototype": "void* __fastcall BSP_ResourceParserMap_LowerBound(void* tree, void* unused_edx, void* query)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7df40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e740",
+        "prototype": "void* __fastcall BSP_ResourceParserMap_Find(void* tree, void* unused_edx, void* output, void* query)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e740 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7cef0",
+        "prototype": "void __fastcall BSP_ResourceParserIterator_Decrement(void* iterator, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7cef0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be0a30",
+        "prototype": "void* __fastcall BSP_FileBlock_Construct(void* owner, void* unused_edx, void* name, unsigned int gate)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be0a30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdcb30",
+        "prototype": "void __fastcall BSP_FileBlock_Destroy(void* owner, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdcb30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdebe0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00bdebe0(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdebe0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00504790",
+        "prototype": "void __fastcall BSP_LoadingJob_EnsureFileBlock(void* job, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00504790 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

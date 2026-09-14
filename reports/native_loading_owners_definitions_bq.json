@@ -1,0 +1,148 @@
+{
+  "entries": [
+    {
+      "address": "00cc6753",
+      "func_info": "00e00db0",
+      "bytes": 10,
+      "sha256": "05ca9e44674cd8838dd36eb103ffdd3e17b8ebb2dc584bcc60a0ce048d4e9e40",
+      "before_owners": [
+        "No function found for 00cc6753",
+        "No function found for 00cc6758"
+      ],
+      "instructions": [
+        [
+          13395795,
+          5,
+          "mov",
+          "eax, 0xe00db0"
+        ],
+        [
+          13395800,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00cc6753 at 00cc6753\nSignature: undefined FUN_00cc6753(void)\nEntry: 00cc6753\nBody: 00cc6753 - 00cc675c",
+        "Function: FUN_00cc6753 at 00cc6753\nSignature: undefined FUN_00cc6753(void)\nEntry: 00cc6753\nBody: 00cc6753 - 00cc675c"
+      ],
+      "complete": true
+    },
+    {
+      "address": "00cc6223",
+      "func_info": "00e00650",
+      "bytes": 10,
+      "sha256": "e765ae920343103209ddf54e211476c757ab872e0aa88902d9a008f0a81af2eb",
+      "before_owners": [
+        "No function found for 00cc6223",
+        "No function found for 00cc6228"
+      ],
+      "instructions": [
+        [
+          13394467,
+          5,
+          "mov",
+          "eax, 0xe00650"
+        ],
+        [
+          13394472,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00cc6223 at 00cc6223\nSignature: undefined FUN_00cc6223(void)\nEntry: 00cc6223\nBody: 00cc6223 - 00cc622c",
+        "Function: FUN_00cc6223 at 00cc6223\nSignature: undefined FUN_00cc6223(void)\nEntry: 00cc6223\nBody: 00cc6223 - 00cc622c"
+      ],
+      "complete": true
+    },
+    {
+      "address": "00c68fb4",
+      "func_info": "00d922d0",
+      "bytes": 10,
+      "sha256": "2661a4a098ceeb1e4923321a9ee4e11dc578aaab86745a75bd66e30ffa245ac7",
+      "before_owners": [
+        "No function found for 00c68fb4",
+        "No function found for 00c68fb9"
+      ],
+      "instructions": [
+        [
+          13012916,
+          5,
+          "mov",
+          "eax, 0xd922d0"
+        ],
+        [
+          13012921,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00c68fb4 at 00c68fb4\nSignature: undefined FUN_00c68fb4(void)\nEntry: 00c68fb4\nBody: 00c68fb4 - 00c68fbd",
+        "Function: FUN_00c68fb4 at 00c68fb4\nSignature: undefined FUN_00c68fb4(void)\nEntry: 00c68fb4\nBody: 00c68fb4 - 00c68fbd"
+      ],
+      "complete": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc6753",
+        "end_address": "00cc675d"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc6753\", \"end_address\": \"00cc675c\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc6753",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc6753\", \"function_name\": \"FUN_00cc6753\", \"entry_point\": \"00cc6753\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc6753\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc6223",
+        "end_address": "00cc622d"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc6223\", \"end_address\": \"00cc622c\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc6223",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc6223\", \"function_name\": \"FUN_00cc6223\", \"entry_point\": \"00cc6223\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc6223\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c68fb4",
+        "end_address": "00c68fbe"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c68fb4\", \"end_address\": \"00c68fbd\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c68fb4",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c68fb4\", \"function_name\": \"FUN_00c68fb4\", \"entry_point\": \"00c68fb4\", \"body_size\": 10, \"message\": \"Function created successfully at 00c68fb4\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

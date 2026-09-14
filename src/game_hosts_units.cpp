@@ -254,6 +254,9 @@ struct GameUnitSlot {
     float plane_world_velocity[3]{0.0f, 0.0f, 0.0f};
     float plane_lost_drag_timer_c3c{0.0f};
     bool plane_velocity_seeded{false};
+    // The union of this unit's guns' projectile descriptor answer sets, stored
+    // by the gunnery host at load. docs/ORDNANCE_KIND_IDENTITY.md.
+    std::uint64_t ordnance_mask{0};
     volatile float generic_input_63c{1.0f};   //0095CD9E
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
@@ -2383,6 +2386,16 @@ bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_
         || role_index >= bsp::kUnitRoleTableEntries) return false;
     out = host.slots[index]->current_roles_01ac[role_index];
     return true;
+}
+
+void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->ordnance_mask = mask;
+}
+
+std::uint64_t GameUnitsHost::unit_ordnance(std::size_t index) const noexcept {
+    if (index >= impl_->slots.size()) return 0;
+    return impl_->slots[index]->ordnance_mask;
 }
 
 bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
