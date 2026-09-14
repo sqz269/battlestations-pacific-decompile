@@ -3,9 +3,12 @@
 #include "bsp/native_string.hpp"
 #include <array>
 #include <cstddef>
+#include <memory>
 #include <type_traits>
 
 namespace bsp {
+struct NativeTextureCacheContext;
+struct NativeTextureCacheAcquired;
 struct NativeMaterialEffectDescriptorContext;
 
 // Exact C4h base and178h derived storage. No semantic effect/cache copy.
@@ -66,6 +69,25 @@ struct NativeMaterialEffectConstructionAccess {
     NativeStringStorage& strings; // same actual00419CC0/BD1510 pool
     void* const volatile& current_renderer_00f8d394;
     volatile std::uint32_t& next_serial_00f8d3a8;
+    // Required only by the explicit actual overload. These borrow the same
+    // raw renderer publication, strings and canonical texture owner domains.
+    NativeTextureCacheContext* actual_texture_cache{};
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8{};
+};
+struct NativeMaterialEffectConstructionFrame final {
+    enum class Phase { fresh, running, complete, failed };
+    NativeMaterialEffectConstructionFrame();
+    ~NativeMaterialEffectConstructionFrame();
+    NativeMaterialEffectConstructionFrame(const NativeMaterialEffectConstructionFrame&) = delete;
+    NativeMaterialEffectConstructionFrame& operator=(const NativeMaterialEffectConstructionFrame&) = delete;
+    Phase phase{Phase::fresh};
+    std::uint32_t native_site{}, exception_state{0xffffffffu};
+    NativeMaterialEffectBaseStorage* storage{};
+    NativeString temporary;
+    bool temporary_live{}, fallback_published{};
+    void* captured_renderer{};
+    std::uint32_t captured_profile{}, captured_target{};
+    std::unique_ptr<NativeTextureCacheAcquired> texture;
 };
 struct NativeMaterialEffectDestructionAccess {
     NativeStringStorage& strings;
@@ -87,6 +109,18 @@ NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60
     void* actual_storage, NativeMaterialEffectConstructionAccess&);
 NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
     void* actual_storage, NativeMaterialEffectConstructionAccess&);
+
+// Complete normal actual B18D60/B407A0 route. Numeric D5F0A8+64 dispatches
+// real B319B0 using a child acquired before the call. Failed source frames,
+// temporary headers and partially constructed storage remain live; this is
+// an explicit source exception boundary, not a replacement for native FH3.
+// The returned owner transfers into+98 without another retain.
+NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
+    void* actual_storage, NativeMaterialEffectConstructionAccess&,
+    NativeMaterialEffectConstructionFrame&);
+NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
+    void* actual_storage, NativeMaterialEffectConstructionAccess&,
+    NativeMaterialEffectConstructionFrame&);
 
 // Full B18D50 helper: ECX first of eleven actual8h headers, RET. Destroy in
 // reverse order, leaving headers as the underlying0041DD20 release leaves them.

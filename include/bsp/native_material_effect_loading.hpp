@@ -29,6 +29,9 @@ struct NativeMaterialEffectLoadAcquired final {
     bool constructor_complete{};
     bool registered{};
     bool returned{};
+    // Adopted before raw allocation/constructor invocation. A source failure
+    // retains this exact temporary, B319B0 child and partially built raw slot.
+    std::unique_ptr<NativeMaterialEffectConstructionFrame> construction;
     NativeMaterialEffectLoadPhase phase{NativeMaterialEffectLoadPhase::not_started};
     std::uint32_t native_site{};
     // Actual8h argument at a stable address. Host program-child failures keep

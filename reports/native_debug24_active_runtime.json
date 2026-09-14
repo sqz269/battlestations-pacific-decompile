@@ -1,0 +1,1188 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_debug24_active_runtime",
+  "status": "reconstructed_build_and_focused_fixture_tested_active_B2_unproved",
+  "base_commit": "650d554919c3ba74c11eacb169fc2a8f1ec9466f",
+  "source_commit": "26f83bd6390dc51010c8f2eaf50cde8f7465ea3e",
+  "source": "src/native_material_effect_owner.cpp",
+  "sources": [
+    "include/bsp/native_material_effect_owner.hpp",
+    "include/bsp/native_material_effect_programs.hpp",
+    "include/bsp/native_material_effect_loading.hpp",
+    "src/native_material_effect_owner.cpp",
+    "src/native_material_effect_programs.cpp",
+    "src/native_material_effect_loading.cpp"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "bytes": 9555,
+      "compiled_bytes_sha256": "f9dd72afa2b02ab4fe195a7f06c5e390c66126ee20c09566d19832af24ae3e85",
+      "git_blob_sha256": "f9dd72afa2b02ab4fe195a7f06c5e390c66126ee20c09566d19832af24ae3e85",
+      "lf_sha256": "f9dd72afa2b02ab4fe195a7f06c5e390c66126ee20c09566d19832af24ae3e85"
+    },
+    {
+      "path": "include/bsp/native_material_effect_programs.hpp",
+      "bytes": 7805,
+      "compiled_bytes_sha256": "c9e9dab0b894e090badc76d1e6f8b941e5337f9efc29d8a4c30f9e972179c99c",
+      "git_blob_sha256": "c9e9dab0b894e090badc76d1e6f8b941e5337f9efc29d8a4c30f9e972179c99c",
+      "lf_sha256": "c9e9dab0b894e090badc76d1e6f8b941e5337f9efc29d8a4c30f9e972179c99c"
+    },
+    {
+      "path": "include/bsp/native_material_effect_loading.hpp",
+      "bytes": 5104,
+      "compiled_bytes_sha256": "26e167821b6ace2fab30bae3a9cabef467a6ec74f9c1a1de7d760d8b3a987230",
+      "git_blob_sha256": "26e167821b6ace2fab30bae3a9cabef467a6ec74f9c1a1de7d760d8b3a987230",
+      "lf_sha256": "26e167821b6ace2fab30bae3a9cabef467a6ec74f9c1a1de7d760d8b3a987230"
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "bytes": 14309,
+      "compiled_bytes_sha256": "2d896851cdbc49a97e1c02606d3ab44e31634add7ee4d1a3f75a11f6bc96d840",
+      "git_blob_sha256": "2d896851cdbc49a97e1c02606d3ab44e31634add7ee4d1a3f75a11f6bc96d840",
+      "lf_sha256": "2d896851cdbc49a97e1c02606d3ab44e31634add7ee4d1a3f75a11f6bc96d840"
+    },
+    {
+      "path": "src/native_material_effect_programs.cpp",
+      "bytes": 22872,
+      "compiled_bytes_sha256": "caaf7c831ec7716333441aff7014d4ee650ab4ef5e221d8fe4fea408f083a255",
+      "git_blob_sha256": "caaf7c831ec7716333441aff7014d4ee650ab4ef5e221d8fe4fea408f083a255",
+      "lf_sha256": "caaf7c831ec7716333441aff7014d4ee650ab4ef5e221d8fe4fea408f083a255"
+    },
+    {
+      "path": "src/native_material_effect_loading.cpp",
+      "bytes": 13725,
+      "compiled_bytes_sha256": "c7df1d28cd749da02522d1e52e2086aac4e472d15b1674963d4e6f4b74f478ee",
+      "git_blob_sha256": "c7df1d28cd749da02522d1e52e2086aac4e472d15b1674963d4e6f4b74f478ee",
+      "lf_sha256": "c7df1d28cd749da02522d1e52e2086aac4e472d15b1674963d4e6f4b74f478ee"
+    },
+    {
+      "path": "include/bsp/native_material_compiler_providers.hpp",
+      "bytes": 3050,
+      "compiled_bytes_sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+      "git_blob_sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+      "lf_sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c"
+    },
+    {
+      "path": "include/bsp/native_platform_load_messages.hpp",
+      "bytes": 2416,
+      "compiled_bytes_sha256": "a3ba0bcfa359c351acb648ac9b4e35b82d304367d6e8b8b77faa9973a2d73106",
+      "git_blob_sha256": "a3ba0bcfa359c351acb648ac9b4e35b82d304367d6e8b8b77faa9973a2d73106",
+      "lf_sha256": "a3ba0bcfa359c351acb648ac9b4e35b82d304367d6e8b8b77faa9973a2d73106"
+    },
+    {
+      "path": "src/native_material_compiler_providers.cpp",
+      "bytes": 4582,
+      "compiled_bytes_sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410",
+      "git_blob_sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410",
+      "lf_sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410"
+    },
+    {
+      "path": "src/native_platform_load_messages.cpp",
+      "bytes": 4918,
+      "compiled_bytes_sha256": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06",
+      "git_blob_sha256": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06",
+      "lf_sha256": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06"
+    }
+  ],
+  "dependency_commits": [
+    {
+      "local": "d10b8140d0dd0b9b9caf8c2126b7dd25658971b0",
+      "upstream": "03e003dca65be50f8bce2505362012ead9babeaa",
+      "scope": "Exact compiler provider header/cpp plus CMake registration; no provider edits."
+    },
+    {
+      "local": "0dfab46d4f63f84f48c79f24703bcf6333d327e0",
+      "upstream": "a234503d15531269cd5fefd1096e27f2888e2b7c",
+      "scope": "Exact platform message header/cpp plus CMake registration; no provider edits."
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b18d60",
+      "end_exclusive": "00b18e90",
+      "bytes": 304,
+      "coverage": "complete normal actual overload; retained source failure frame, not native FH3"
+    },
+    {
+      "address": "00b407a0",
+      "end_exclusive": "00b4081a",
+      "bytes": 122,
+      "coverage": "complete normal actual overload"
+    },
+    {
+      "address": "00b5f160",
+      "end_exclusive": "00b5f3ed",
+      "bytes": 653,
+      "coverage": "complete normal raw-profile route; reached unsupported profiles explicitly fail"
+    },
+    {
+      "address": "00b2ebb0",
+      "coverage": "existing normal body with narrow actual constructor/caller-frame adaptation; no whole-body new proof"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b18d60",
+      "address": "00b18da5",
+      "native": "00bf79f0",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18dbf",
+      "native": "00bf7cd1",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18dcc",
+      "native": "00bf79f0",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18dfb",
+      "native": "0041dd40",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18e16",
+      "native": "00bf7680",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18e54",
+      "native": "00419cc0",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18e5b",
+      "native": "00bd1510",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b407a0",
+      "address": "00b407a3",
+      "native": "00b18d60",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f191",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f19a",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f1a6",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f1e2",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f1ee",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f1fa",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f22c",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f235",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f26c",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f275",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2ac",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2b5",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2be",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2c7",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2d0",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2d9",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f2e2",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f314",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f320",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f349",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f355",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f361",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f36d",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f379",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f385",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f391",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f39d",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3a9",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3b5",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3c1",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3cd",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3d9",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f3e5",
+      "native": "00b5ee00",
+      "contract": "Existing substantive child or native constructor/library operation; no new callback substitute."
+    },
+    {
+      "function": "00b18d60",
+      "address": "00b18e34",
+      "native": "00b319b0",
+      "contract": "Indirect captured numeric D5F0A8 slot64, real texture cache with retained child."
+    },
+    {
+      "function": "00b5f160",
+      "address": "00b5f333",
+      "native": "00b1ff50",
+      "contract": "Indirect captured numeric D5F0A8 slot104; read returned byte3D."
+    },
+    {
+      "function": "00b2ebb0",
+      "address": "00b2ed43",
+      "native": "00b407a0",
+      "contract": "Actual overload with persistent constructor adopted before raw allocation."
+    },
+    {
+      "function": "00b5f6a0",
+      "address": "00b5f6a3",
+      "native": "00b5f160",
+      "contract": "Canonical finalization consumes explicit raw profile after prior native calls."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Canonical pruning treated renderer[0] as a host callable table.",
+      "evidence": "B5F325..B5F349; D5F1AC=00B1FF50.",
+      "is": "Capture current numeric profile/slot104 and dispatch existing B1FF50."
+    },
+    {
+      "was": "Canonical effect construction used the callable renderer+64 overload.",
+      "evidence": "B18E1E..B18E36; D5F10C=00B319B0; B2ED43.",
+      "is": "Explicit actual constructor overload captures profile/slot64 and calls real B319B0; B2EBB0 retains the constructor."
+    }
+  ],
+  "native_evidence": {
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "identity": "live function count 64069; snapshot 64069; same\n",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "commands": [
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f160",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f1e0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f260",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f2e0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f360",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f3e0",
+          "--length",
+          "13"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b18d60",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b18de0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b18e60",
+          "--length",
+          "48"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b407a0",
+          "--length",
+          "122"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b1ff50",
+          "--length",
+          "7"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00d5f0a8",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00d5f128",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00d5f1a8",
+          "--length",
+          "68"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00d61a2c",
+          "--length",
+          "24"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2ebb0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2ec30",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2ecb0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2ed30",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2edb0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2ee30",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b2eeb0",
+          "--length",
+          "35"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b5f6a0",
+          "--length",
+          "64"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b17dd0",
+          "--length",
+          "55"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b319b0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b31a30",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b31ab0",
+          "--length",
+          "1"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30b40",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30bc0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30c40",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30cc0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30d40",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30dc0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30e40",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30ec0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30f40",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b30fc0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b31040",
+          "--length",
+          "74"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00beccd0",
+          "--length",
+          "103"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00becb20",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00becba0",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00becc20",
+          "--length",
+          "128"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00becca0",
+          "--length",
+          "40"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cbc570",
+          "--length",
+          "51"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00df4808",
+          "--length",
+          "68"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cbd740",
+          "--length",
+          "85"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00df5fa0",
+          "--length",
+          "124"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "spans": [
+      {
+        "name": "prune",
+        "address": "00b5f160",
+        "bytes": 653,
+        "sha256": "44d7f7d371d5ae5b58e1627cc898c31437e752257ac065e9bdb8f07ed2fcf1f9",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "effect_base",
+        "address": "00b18d60",
+        "bytes": 304,
+        "sha256": "b7aa3f1e6a7a8f18575d4901439ba841e54aa873fb6a2b236dcc8ee7335ebebc",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "effect_derived",
+        "address": "00b407a0",
+        "bytes": 122,
+        "sha256": "0ea607c152952b26bda56dedd2848a6b7f48985e49bd194935b576bdcd25ce12",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "capabilities",
+        "address": "00b1ff50",
+        "bytes": 7,
+        "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "renderer",
+        "address": "00d5f0a8",
+        "bytes": 324,
+        "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "state_profiles",
+        "address": "00d61a2c",
+        "bytes": 24,
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "effect_load",
+        "address": "00b2ebb0",
+        "bytes": 803,
+        "sha256": "37f556ad7a43d3d46354018093dd878008b10fba5f01e75bf803a2f09327a725",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "finalize",
+        "address": "00b5f6a0",
+        "bytes": 64,
+        "sha256": "d36ded4aadb2f49529d8acfc9cdfa022cd39cffb73ac15f3174bd92b824a084d",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "retain_pass",
+        "address": "00b17dd0",
+        "bytes": 55,
+        "sha256": "c5a55d203122b73319596ff8f6b34b8bf1e7790d685ecf1b9497055cb3d6333f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "renderer_texture",
+        "address": "00b319b0",
+        "bytes": 257,
+        "sha256": "6f9a8dd2ce45b3b51b4d3efd4e61a6086783e229bcf5197544c882b76fb7c0a5",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "texture_cache",
+        "address": "00b30b40",
+        "bytes": 1354,
+        "sha256": "1c4c9c60bc969ad0138938021eb778691641af9659ee25fb9b9149c577848456",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "load_pump",
+        "address": "00beccd0",
+        "bytes": 103,
+        "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "load_cursor",
+        "address": "00becb20",
+        "bytes": 424,
+        "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "base_eh_thunks_handler",
+        "address": "00cbc570",
+        "bytes": 51,
+        "sha256": "fab77d698d5c25976b35bf01f47f5b6748013148ad99fbfeb7fe53f2baf46704",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "base_eh_map_info",
+        "address": "00df4808",
+        "bytes": 68,
+        "sha256": "1192e2682b41468277d37a361b453768e107ddf854a783f975abad4a6ce01704",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "loader_eh_thunks_handler",
+        "address": "00cbd740",
+        "bytes": 85,
+        "sha256": "d8b83dc47db4f40ba88ba6d84d7f817a517262227a109c611344c40163e8261f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "name": "loader_eh_info_map",
+        "address": "00df5fa0",
+        "bytes": 124,
+        "sha256": "39aecb63f54f1849edad03727932a87abec985fa1ca21e56f1a22a01250f9a41",
+        "live_equals_installed_pe": true
+      }
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "seeds_passed": 8,
+    "build_log": "local/debug24-active-runtime/build-platform.log",
+    "seeds_log": "local/debug24-active-runtime/verify-seeds.log",
+    "permanent_tests_added": 0,
+    "focused_fixture_count": 1,
+    "fixture_source": "local/debug24-active-runtime/effect_bridges_probe.cpp",
+    "fixture_log": "local/debug24-active-runtime/probe_run.log",
+    "fixture_exit_code": 0,
+    "source_constructor": [
+      "Real HAL/COM texture and canonical actual cache owner: refs1->2->3.",
+      "Base serial FFFFFFFF->0 and derived0->1; A5 unwritten fields retained.",
+      "Unknown renderer target and reached actual inner cache target preserve parent/child frames, live temporary, prior writes and unmodified fallback.",
+      "Three substantive BECCD0/BECB20 platform calls complete with actual online publication null."
+    ],
+    "pruning": [
+      "Full653 original instruction bytes, exact original seven-byte B1FF50, source both capability branches, same actual rows/order.",
+      "Relocated native receiver profile pointer and selected slot104 only; all other original profile words unchanged.",
+      "One renderer-global operand relocation and33 direct B5EE00 source-child call relocations; explicit ABI adapter.",
+      "Source uses original numeric D5F0A8 and unmodified profile bytes; unsupported current104 target preserves earlier removals."
+    ],
+    "allocation_refusal_log": "local/debug24-active-runtime/probe_fixed_region_unavailable.log",
+    "previous_fixture_fault": {
+      "log": "local/debug24-active-runtime/probe_before_platform_dependency.log",
+      "cause": "Reduced fixture incorrectly omitted the unconditionally reached B30B40 platform pump; restored exact established provider. No production behavior correction was inferred from this fixture fault."
+    },
+    "abi_compatible": false,
+    "original_constructor_fh3": false,
+    "nonnull_platform_input_device_route": false,
+    "active_B2": false,
+    "teardown": false,
+    "game_validated": false,
+    "numeric_call_gate": {
+      "checked": 45,
+      "failed": 0,
+      "indirect_targets_verified_separately": 2,
+      "log": "local/debug24-active-runtime/report-calls.log"
+    },
+    "final_artifact_hashes": {
+      "effect_bridges_probe.cpp": "2c1dbc08c514ffe50adb80d5cb809abdca7e740fde62ae8958112b1e0451996c",
+      "effect_bridges_probe.exe": "b0ab9c9a5406c24e6e02ca364a0fc8b6276978b97636402dec512dce8fdc25cf",
+      "probe_run.log": "0ee6a4ade7c6d0569babe37d06e212cec9d591d98dab23cf6a03656fcdf987ae",
+      "probe_compile.log": "1217a998c1f4c04460ca17501c6e170da08b253e37edd2e440d2bb0e2308b2c3",
+      "probe_link.log": "a69334e61c0cdcace7053546bebc111f6bbe2ce0506acb88b68040d04548b02a",
+      "effect_bridges_probe.map": "18b74314c009d7d02956306a14a263c751827d0c5c875df8dd09c8cac206200c"
+    }
+  },
+  "active_B2_boundary": {
+    "proven": false,
+    "contract": "B4C700 creates a new model per active record; warm renderer19E4 does not establish canonical effect/layout/declaration inputs.",
+    "effect_admission": "NativeMaterialEffectLoadOwners requires completed B46950 plus initialized C8/100 pass slots. The frozen compiler World contains scalar effect input only.",
+    "first_input_chain": [
+      "B45F5E -> B43B00",
+      "B43B4E -> B69D40 actual Lua/VFS script"
+    ],
+    "additional_confirmed_bridge": "B463B6 -> B45E00 still calls the old callable B44B10 for a present primaryC8. Existing actual compiler pass constructor can be reused in a separate retained-secondary-frame packet; this packet does not edit pass-copy.",
+    "no_shortcuts": "No invented effect metadata, manually initialized pass slots, draw callback, native scratch default, cold cache or VFS expansion."
+  },
+  "archive": {
+    "status": "frozen",
+    "report_excluded_to_avoid_self_hash": true,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-debug24-active-runtime\\local\\archives\\debug24-active-runtime-20260914-final",
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-debug24-active-runtime\\local\\archives\\debug24-active-runtime-20260914-final\\manifest.json",
+    "manifest_sha256": "c35babd56c91400576d390765d310b6349b68adb124e60d8fd72885f3682a759",
+    "artifacts": 4995,
+    "bytes": 540527827
+  }
+}
