@@ -45,8 +45,10 @@ inline constexpr int kPlanSlotBase = 0x274;   // 0099BEF7 LEA ECX,[ESI+274h]
 inline constexpr int kPlanSlotStride = 0x0C;  // 0099BC56 / BCA9 / BCFB / BD4E
 inline constexpr int kUnit = 0x2F0;           // 0099D31D; the plane unit
 inline constexpr int kRequestByte14 = 0x2E4;  // 0099BF18 -> buf+14h -> unit+A10h
-inline constexpr int kRequestByte15 = 0x2E5;  // 0099BF0F -> buf+15h, no reader
-inline constexpr int kRequestByte16 = 0x2DC;  // 0099BF06 -> buf+16h, no reader
+// CORRECTED (packet cc7-recon-slot): both have readers, in 007BB6E0's tail.
+inline constexpr int kRequestByte15 = 0x2E5;  // 0099BF0F -> buf+15h -> unit+9F9h, 007BB8D6
+inline constexpr int kRequestByte16 = 0x2DC;  // 0099BF06 -> buf+16h -> unit+9FAh, 007BB8C2,
+                                              // gated on unit+5Dh (out of action)
 }  // namespace pilot_bot_off
 
 // 00CE3D34, the slew rate 0099B0A0 pushes for all five axes.

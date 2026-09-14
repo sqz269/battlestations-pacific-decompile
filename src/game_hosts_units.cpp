@@ -291,6 +291,12 @@ struct GameUnitSlot {
     // that 007B8C90 sets and 007BB920 clears.
     float pilot_command_block[5]{0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
     bool pilot_command_pending_a14{false};
+    // The unit this one's current command names as its target, plus one, or 0
+    // for none. The gunnery host resolves the command row's target token against
+    // the unit table and pushes it here, because the plane's control path needs
+    // the same answer the weapon director already has rather than a second
+    // resolution of its own.
+    std::size_t command_target_plus_one{0};
     // The plane row's rate and acceleration keys, read once at creation.
     bsp::PlaneControlClass plane_class;
     // desc+184h StallSpd, the divisor the control authority ramp uses. The
@@ -2244,11 +2250,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     //   no-op until a planner exists.
                     // * **0099BF30's band repair**, which runs between the slew
                     //   and the command block and is the LAST WRITER of all five
-                    //   command floats (docs/PILOT_PLAN_SLOT_PIPELINE.md). Its
-                    //   body is unread, so this passes the slew result straight
-                    //   through - which is an assumption, not a recovered
-                    //   behaviour, and is the reason this pipeline is not yet
-                    //   claimed faithful end to end.
+                    //   command floats. Its body has since been read
+                    //   (docs/PILOT_COMMAND_BAND_REPAIR.md) and on a freshly
+                    //   constructed plan it writes NOTHING: the three band
+                    //   tables are constructed empty and the throttle ceiling
+                    //   1.0f, and both guards return early. So the pass-through
+                    //   here is well-founded rather than a placeholder - with
+                    //   the caveat that 0099B450 does not reset either field and
+                    //   no writer of them was found, by a scan blind to SIB and
+                    //   block copies.
                     // * **Eleven of the twelve gates** in
                     //   docs/PILOT_BOT_TICK_GATES.md. This host has no bot
                     //   object, no task vector and no per-slot state to gate on,
@@ -2732,6 +2742,12 @@ bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_
         || role_index >= bsp::kUnitRoleTableEntries) return false;
     out = host.slots[index]->current_roles_01ac[role_index];
     return true;
+}
+
+void GameUnitsHost::store_unit_command_target(std::size_t index,
+                                              std::size_t target_plus_one) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->command_target_plus_one = target_plus_one;
 }
 
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
