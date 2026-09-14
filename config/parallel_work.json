@@ -11561,6 +11561,64 @@
       "done": true,
       "state": "diagnostic_committed_ownership_handoff_pending",
       "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_data_reservation_handoff_bh",
+      "worker": "orch4-data-handoff-bh",
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "include/bsp/game_native_data_bootstrap.hpp",
+        "src/game_native_data_bootstrap.cpp",
+        "docs/NATIVE_DATA_RESERVATION_HANDOFF_BH.md",
+        "reports/native_data_reservation_handoff_bh.json"
+      ],
+      "contract": "Controlled suspended-child reservation and one-time proven ownership adoption by readonly-data mapper; preserve foreign allocations and readonly/noexecute hash checks; original game entrypoint remains integration.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
+    },
+    {
+      "id": "orch4_native_string_byte_append_bh",
+      "worker": "orch4-string-byte-bh",
+      "function_addresses": [
+        "00531030",
+        "0054aa70"
+      ],
+      "output_files": [
+        "include/bsp/native_string_byte_append.hpp",
+        "src/native_string_byte_append.cpp",
+        "src/native_physical_enumeration.cpp",
+        "include/bsp/native_physical_enumeration.hpp",
+        "docs/NATIVE_STRING_BYTE_APPEND_BH.md",
+        "reports/native_string_byte_append_bh.json"
+      ],
+      "contract": "Recover exact native byte append pool getter and temporary schedule and use in physical enumeration; source fidelity, native ABI/envelopes/call evidence.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
+    },
+    {
+      "id": "orch4_game_native_vfs_read_adapter_bh",
+      "worker": "orch4-vfs-read-adapter-bh",
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp",
+        "docs/GAME_NATIVE_VFS_READ_ADAPTER_BH.md",
+        "reports/game_native_vfs_read_adapter_bh.json"
+      ],
+      "contract": "Owned full-file reads on same raw VFS using captured length/read/release, explicit length/short-read/failure behavior; revalidate consumers for later coordinated host migration.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
     }
   ],
   "snapshot_after_analysis": {
