@@ -58,6 +58,9 @@
     x87, overlapping globals or a suspect no-return.
   - Live Ghidra questions go through `python tools/bsp.py ghidra count|proto|xrefs|callers|callees|bytes|comments|
     decompile|disasm|export` instead of inline Python; when a query repeats twice, add a subcommand.
+    If nothing answers (Ghidra closed, commonly after a reboot), `python tools/bsp.py ghidra ensure`
+    launches it with the project and program restored; live queries do that themselves unless
+    `BSP_GHIDRA_AUTOSTART=0`.
   - `python tools/bsp.py cheatsheet` is the argument reference. Do not spend a call on `--help`.
   - Take snapshots with `python tools/bsp.py snapshot` (skips unless Ghidra's function count changed).
   - Commit in batches and push once per batch, not per commit.
