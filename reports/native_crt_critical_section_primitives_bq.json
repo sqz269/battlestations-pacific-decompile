@@ -1,0 +1,863 @@
+{
+  "packet": "orch2_native_crt_critical_section_source_bq",
+  "base": "0b3bbf7e21a202d2a31dcaba3e6c2631737b415b",
+  "status": "complete_two_bounded_primitives_win32_build_two_ctests_pe_live_and_object_checked",
+  "source": "src/native_crt_critical_section_primitives.cpp",
+  "header": "include/bsp/native_crt_critical_section_primitives.hpp",
+  "documentation": "docs/NATIVE_CRT_CRITICAL_SECTION_PRIMITIVES_BQ.md",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_evidence": {
+    "pinned_commit": "01fc5c40538266cd29f1ab33e479401c70603be1",
+    "pinned_artifacts_verified": 80,
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "spans": [
+      {
+        "address": "00c17639",
+        "length": 10,
+        "kind": "complete function",
+        "live_pe_equal": true,
+        "size": 10,
+        "sha256": "e4dc9d41feca0018ac64ef60024b828daa0087f006e7983c25af0720d24a4558",
+        "sha512": "601dd3cba4be78707a5731be4e9a407ab1dd45bfa90cc421726408ed3697067f2f6e842d34349dedd0ed7fdff8ba04419a0e69fca0a2aa020be4db9f5ab4c07f"
+      },
+      {
+        "address": "00c17643",
+        "length": 16,
+        "kind": "complete function",
+        "live_pe_equal": true,
+        "size": 16,
+        "sha256": "144a185fa22fd36bfbc920117708d403bef6de76c98a2e0c7be727541ac52c0f",
+        "sha512": "51e95e26c76670224dc07993f6d06d60125e0b186719a5a6fd8795a4f1ef91511ab965a8e514ad0d187a04b1e60644f57f3c4c15bd6ced8dd3a65d88a339baaa"
+      },
+      {
+        "address": "0109e454",
+        "length": 4,
+        "kind": "borrowed encoded cache word",
+        "live_pe_equal": true,
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      }
+    ],
+    "direct_calls": [],
+    "indirect_calls": [
+      {
+        "caller": "00c17643",
+        "site": "00c17647",
+        "operand": "dword ptr [00ce220c]",
+        "import": {
+          "dll": "KERNEL32.dll",
+          "symbol": "InitializeCriticalSection"
+        },
+        "arguments": "one actual CRITICAL_SECTION pointer; Windows stdcall pops 4",
+        "return": "API has void result; native XOR EAX,EAX / INC EAX executes only on normal return"
+      }
+    ],
+    "wrapper_evidence": {
+      "entry": "00c17653",
+      "length": 197,
+      "pinned_only": true,
+      "pe": {
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      "status": "entire wrapper remains open; no source fragment included"
+    }
+  },
+  "functions": [
+    {
+      "address": "00c17643",
+      "name": "___crtInitCritSecNoSpinCount@8",
+      "native_end_exclusive": "00c17653",
+      "native_bytes": 16,
+      "source_symbol": "bsp::initialize_native_crt_critical_section_without_spin_00c17643",
+      "original_abi": "stdcall; entry ESP+4 actual CRITICAL_SECTION pointer, ESP+8 ignored spin DWORD; real stdcall API consumes forwarded 4-byte pointer; RET 8; EAX exactly 1 only after normal API return.",
+      "source_abi": "Same two stack slots and RET 8, descriptive C++ symbol. No borrowed context or alternate state.",
+      "ordered_behavior": [
+        "PUSH original actual pointer from entry ESP+4.",
+        "CALL real InitializeCriticalSection import; no local exception handler.",
+        "Only after normal API return: XOR EAX,EAX, INC EAX, RET 8."
+      ],
+      "flags": "Exact XOR/INC arithmetic flags and schedule: CF/PF/AF/ZF/SF/OF zero after INC from zero to one. No extra instructions outside the relocated import operand.",
+      "ownership": "Borrows actual caller-provided 24-byte Win32 CRITICAL_SECTION; no allocation or private lock storage.",
+      "exception_policy": "No catch, return normalization, LastError repair or invented policy. API exception/fault skips EAX=1 and RET8 sequence.",
+      "native_instruction_abi_preserved": true,
+      "abi_compatible": false
+    },
+    {
+      "address": "00c17639",
+      "name": "LIBCRT_unmatched_00c17639",
+      "native_end_exclusive": "00c17643",
+      "native_bytes": 10,
+      "source_symbol": "bsp::store_native_crt_encoded_critical_section_initializer_00c17639",
+      "original_abi": "cdecl; entry ESP+4 encoded DWORD; MOV EAX,input then MOV [0109E454],EAX; plain RET, EAX retains input bits; caller does not consume semantic return.",
+      "source_abi": "cdecl encoded DWORD at entry ESP+4 plus volatile uint32_t& actual_word_0109e454 at ESP+8; plain RET, EAX retains input.",
+      "ordered_behavior": [
+        "PUSH ECX.",
+        "MOV EAX,[ESP+8] captures original input before destination store.",
+        "MOV ECX,[ESP+0Ch] obtains the actual borrowed destination.",
+        "One MOV DWORD PTR [ECX],EAX preserves encoded input unchanged.",
+        "POP ECX; RET."
+      ],
+      "flags": "PUSH/MOV/MOV/MOV/POP/RET preserve arithmetic flags; ECX restored; other original nonvolatile/register effects retained.",
+      "ownership": "Actual stable writable original cache-word binding; no fabricated global, encoder, decoder, callback, or initialized owner.",
+      "alias_precondition": "Actual word must not alias this source entry stack frame or arguments; borrowed binding remains valid and stable.",
+      "qualification": "Extra argument and stack save/address load change original stack and fault domain. Source interface is not the original one-argument native binary entry.",
+      "native_instruction_abi_preserved": false,
+      "abi_compatible": false
+    }
+  ],
+  "direct_calls": [],
+  "indirect_call_qualification": [
+    {
+      "caller": "00c17643",
+      "site": "00c17647",
+      "operand": "dword ptr [00ce220c]",
+      "import": {
+        "dll": "KERNEL32.dll",
+        "symbol": "InitializeCriticalSection"
+      },
+      "arguments": "one actual CRITICAL_SECTION pointer; Windows stdcall pops 4",
+      "return": "API has void result; native XOR EAX,EAX / INC EAX executes only on normal return"
+    }
+  ],
+  "call_check_scope": "Zero direct-call instructions in the two owned bodies; verify_report_calls zero-row pass is not import closure. Complete bytes, installed PE IAT and actual current object relocation independently qualify the one indirect Windows API call.",
+  "provider_availability": {
+    "actual_import": "KERNEL32.dll!InitializeCriticalSection via PE IAT00CE220C and source __imp__InitializeCriticalSection@4.",
+    "qualified_existing": [
+      {
+        "address": "00bfbab2",
+        "source": "src/native_crt_osplatform_getter.cpp"
+      },
+      {
+        "address": "00c04f67",
+        "source": "src/native_crt_libm_callback_registration.cpp"
+      },
+      {
+        "address": "00c04fde",
+        "source": "src/native_crt_pointer_decode.cpp"
+      }
+    ],
+    "provenance": "Accepted0b3 base equals pinned discovery base; complete provider ownership context retained in pinned_lock_report.json.",
+    "next_boundary": "Full C17653 wrapper and actual native state/error/frame domain; primitives do not close PTD/errno/heap lock ownership."
+  },
+  "open_wrapper": {
+    "address": "00c17653",
+    "bytes": 197,
+    "source_supplied": false,
+    "retained_complete_body": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_pe.bin",
+    "retained_omitted_watson_continuation": "00c1768e ADD ESP,14h",
+    "retained_omitted_exception_path": "00c176d9..00c17707 includes filter C0000017, conditional SetLastError(8), result0.",
+    "scope": "Decode/platform/Watson/dynamic lookup/encode/cache store precede native try activation; no private source approximation."
+  },
+  "compiler_evidence": {
+    "compiler": {
+      "binary": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "size": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+      },
+      "version": "19.51.36244.0",
+      "architecture": "X86"
+    },
+    "traces": {
+      "command": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\local\\native_crt_critical_section_primitives_bq\\CL.command_target.txt",
+          "size": 1092,
+          "sha256": "dbde09eb63446474a955b876cbdcc388ca1504dd5aa1dcf0ee8b1a74815f74aa",
+          "sha512": "a4195d5ca61fc6542ab4baa525b8b78602100212c64462da054b4194484308fd9d1614eb22e23e243dedaf02d167dff466e218e205bef3a803afc843715ee4b1"
+        },
+        "lines": 2
+      },
+      "read": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\local\\native_crt_critical_section_primitives_bq\\CL.read_target.txt",
+          "size": 8259,
+          "sha256": "6923ee7df81ee21cb8c72429f0f5f4b88d2e6ee3f6dd81741add7370b278f09f",
+          "sha512": "0c1e784ddfbb858bc3802b68e215ca29907fcd8c53cae2e81c89d6e8e0f8af02e23603cdd89cab604cb1e7018a4037613201ab0c5635229093820655d6e8a5cf"
+        },
+        "lines": 101
+      },
+      "write": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\local\\native_crt_critical_section_primitives_bq\\CL.write_target.txt",
+          "size": 319746,
+          "sha256": "dbbafcfc68e7c4e5e5eefcb4aee05489aa22ef33004dde89aa0a4f7c929ca5c0",
+          "sha512": "bac407ed69ffeec520e940c9e3254a6919e3e06fc78d3d1bf8adb0dad8ab6ec43c03106df33c699a2405509e71f2ffe39ca289e7cef80f63659e21d475f8a291"
+        },
+        "lines": 1217
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\build\\win32\\bsp_core.dir\\Release\\native_crt_critical_section_primitives.obj",
+      "size": 1055,
+      "sha256": "ac418b02786c8b85faf3142da0e533c899f4c9d7febfecb2db43fc7fbe9991cd",
+      "sha512": "63ba8b3879e583ea36dc2e291dcd1d8625f40a3d7518fc004504224062a91131c3d6c9531ae833752122b9780a78c0673294d5ec5fc492cca6d5750fc7ac3420"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\build\\win32\\Release\\bsp_core.lib",
+      "size": 57735082,
+      "sha256": "24e199ebd21d800c52aa5fb374f1ef5524d7d2783798fabcf64f340cf2debb59",
+      "sha512": "89e27b9c9fc3ea3d54a819563545ed8447ed132c6f882d7ac75752217978dd6bfe717abf11d257795f38775cffa820e3b675e207044f7944cd6c0c67e9794271"
+    },
+    "archive_member": "bsp_core.dir\\Release\\native_crt_critical_section_primitives.obj",
+    "matching_archive_members": 1,
+    "object_archive_equal": true,
+    "object_writable_sections": [],
+    "functions": [
+      {
+        "address": "00c17643",
+        "symbol": "?initialize_native_crt_critical_section_without_spin_00c17643@bsp@@YGHPAXI@Z",
+        "bytes": 16,
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\local\\native_crt_critical_section_primitives_bq\\00c17643_compiled.bin",
+          "size": 16,
+          "sha256": "4f68b459a0bf6dc302cc4e384955857fb03c9f95aaf2975d96804d9a4f1869dd",
+          "sha512": "5a4932361fc20e6c9f13ce2b76c3992eb99ced061c20f0f9a25a49f26c2bc383338aa4378370dd153491403c6cf3b0b315d3c1fc77d32dcf31fca9df94347b29"
+        },
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__imp__InitializeCriticalSection@4",
+            "type": 6
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "ff742404",
+            "mnemonic": "push",
+            "operand": "dword ptr [esp + 4]"
+          },
+          {
+            "offset": 4,
+            "bytes": "ff1500000000",
+            "mnemonic": "call",
+            "operand": "dword ptr [0]"
+          },
+          {
+            "offset": 10,
+            "bytes": "33c0",
+            "mnemonic": "xor",
+            "operand": "eax, eax"
+          },
+          {
+            "offset": 12,
+            "bytes": "40",
+            "mnemonic": "inc",
+            "operand": "eax"
+          },
+          {
+            "offset": 13,
+            "bytes": "c20800",
+            "mnemonic": "ret",
+            "operand": "8"
+          }
+        ],
+        "native_instructions": 5,
+        "source_instructions": 5,
+        "archive_symbol_definitions": [
+          "bsp_core.dir\\Release\\native_crt_critical_section_primitives.obj"
+        ],
+        "comparison": {
+          "native_bytes": 16,
+          "source_bytes": 16,
+          "all_other_bytes_identical": true,
+          "substitutions": [
+            {
+              "offset": 6,
+              "length": 4,
+              "reason": "Original IAT address becomes real Windows import COFF DIR32 relocation."
+            }
+          ]
+        }
+      },
+      {
+        "address": "00c17639",
+        "symbol": "?store_native_crt_encoded_critical_section_initializer_00c17639@bsp@@YAIIACI@Z",
+        "bytes": 13,
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-critical-section-source-bq\\local\\native_crt_critical_section_primitives_bq\\00c17639_compiled.bin",
+          "size": 13,
+          "sha256": "44a3cf3713969ddebf2218d9def7c8b622c6d2245bf3dbf68bdc39b273029366",
+          "sha512": "6934c043edce5c7364d4af00e750b6a965da80c53771a42f5f74e2ec214b7032603347a0aa88e170155ba14cc51b0625f35d4ae18d2a129c1d6d352b2d7a53c1"
+        },
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operand": "ecx"
+          },
+          {
+            "offset": 1,
+            "bytes": "8b442408",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr [esp + 8]"
+          },
+          {
+            "offset": 5,
+            "bytes": "8b4c240c",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "offset": 9,
+            "bytes": "8901",
+            "mnemonic": "mov",
+            "operand": "dword ptr [ecx], eax"
+          },
+          {
+            "offset": 11,
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operand": "ecx"
+          },
+          {
+            "offset": 12,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operand": ""
+          }
+        ],
+        "native_instructions": 3,
+        "source_instructions": 6,
+        "archive_symbol_definitions": [
+          "bsp_core.dir\\Release\\native_crt_critical_section_primitives.obj"
+        ],
+        "comparison": {
+          "native_bytes": 10,
+          "source_bytes": 13,
+          "all_source_bytes_exact_expected": true,
+          "native_hex": "8b442404a354e40901c3",
+          "source_hex": "518b4424088b4c240c890159c3",
+          "qualification": "One new cdecl borrowed-word reference at entry ESP+8; PUSH ECX shifts input/binding to ESP+8/+C. Load input into EAX, load binding into ECX, single MOV [ECX],EAX, restore ECX, plain RET. Added stack save/load changes native stack/fault domain; no native binary drop-in claim."
+        }
+      }
+    ]
+  },
+  "validation": {
+    "native_seeds": 8,
+    "native_seed_matches": 8,
+    "strict_msvc_win32_build_exit_code": 0,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "new_tests": 0,
+    "owned_source_runtime_executed": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "artifacts": [
+      "local/native_crt_critical_section_primitives_bq/build.txt",
+      "local/native_crt_critical_section_primitives_bq/verify_seeds.txt"
+    ]
+  },
+  "limitations": [
+    "No native process/runtime, binary drop-in, canonical lock/cache owner, original EH-frame or gameplay equivalence established.",
+    "No original body or reconstructed primitive executed by this packet; existing math tests do not execute these routines.",
+    "C17653 entire197B wrapper remains open; no source fragments or callbacks approximate its native SEH4 scope, five-zero Watson path or cache owner.",
+    "BFBDFB init-pointers, C04FD5 encoded-null initializer, C11A93 static lock initialization, C07C00/C07C45 native frame providers and BF65BB Watson ownership are not supplied.",
+    "Existing qualified BFBAB2 OS getter, C04F67 encoder and C04FDE decoder source still require real borrowed errno/TLS/PTD/module-gate ownership.",
+    "Initial PE/database zero cache bytes are not evidence of runtime initialization; actual encoded-null publication is separate."
+  ],
+  "local_inventory": {
+    "directory": "local/native_crt_critical_section_primitives_bq",
+    "files": 71,
+    "bytes": 58379198,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass then independent chunked reads; report outside local directory avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_asm.txt",
+        "size": 91,
+        "sha256": "d6ad8a56bb4c2690815bf48a8ddf16929458b538e805a652f4f20f6ad6555126",
+        "sha512": "24ada28007c7eb91403b6acc4c0e629b5678535c7570f089f470eb279b0c23edf0347cee2c1a887fae9e49e850daa0f4c1dad9428b894f9b214a0fc77b36ef81"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_bytes.txt",
+        "size": 53,
+        "sha256": "afa0c2c54dcc0f79cd58ff90a981f314363f0c8b71e71d0d2e4d892f5c501912",
+        "sha512": "773c8c1a4ff8508baf266d3a6b1afc72a1bd302112301f50c91d51f567c0c45ce8036e63880cd77a34fcef5ed93cdd405f8281e438a8f6ccf9103926bf596876"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_compiled.bin",
+        "size": 13,
+        "sha256": "44a3cf3713969ddebf2218d9def7c8b622c6d2245bf3dbf68bdc39b273029366",
+        "sha512": "6934c043edce5c7364d4af00e750b6a965da80c53771a42f5f74e2ec214b7032603347a0aa88e170155ba14cc51b0625f35d4ae18d2a129c1d6d352b2d7a53c1"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_live.bin",
+        "size": 10,
+        "sha256": "e4dc9d41feca0018ac64ef60024b828daa0087f006e7983c25af0720d24a4558",
+        "sha512": "601dd3cba4be78707a5731be4e9a407ab1dd45bfa90cc421726408ed3697067f2f6e842d34349dedd0ed7fdff8ba04419a0e69fca0a2aa020be4db9f5ab4c07f"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_pe.bin",
+        "size": 10,
+        "sha256": "e4dc9d41feca0018ac64ef60024b828daa0087f006e7983c25af0720d24a4558",
+        "sha512": "601dd3cba4be78707a5731be4e9a407ab1dd45bfa90cc421726408ed3697067f2f6e842d34349dedd0ed7fdff8ba04419a0e69fca0a2aa020be4db9f5ab4c07f"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_proto.txt",
+        "size": 317,
+        "sha256": "b8af2c1b937d6917db0d5597ed8a8d2290ba5cf6e5f3c51ba15c2b9876675102",
+        "sha512": "b24b3213d3001881f41f61e87e9e45bacf355fd9b5e240a6bfd324649bbb9f0cf6d13e431f1e8f7c76bbb5cf8477c7ba5a37a8eae34c70174d455c68107fdf44"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17639_raw.txt",
+        "size": 181,
+        "sha256": "1a227c7886d16c4cc5685a0961f7ae94a6c19c1cd2e7de2fc6db760a1f92c5e2",
+        "sha512": "286e9a67cef49c6d53235be19aaea93b32f2db3b0ba66baec337a158e653de5bbc2443f1307e725959ea4a04e80275782d648bc387d361c1c2dd7103c25ca9b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_asm.txt",
+        "size": 143,
+        "sha256": "a3a879fa2ed4bf80ea5922f6e2d3c90cbde8f3f682a514850360410893c4acf7",
+        "sha512": "7219d4248f2589c93a2804a3869684d848c3afbe3712e1f75dab499099f1515d0d40b0196ed17cc91ffc3841a711bb88a26e333fe2d794d8d11235d0d2824460"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_bytes.txt",
+        "size": 77,
+        "sha256": "93724c9e3369af404fc130a584a6d689c059613f43c67782f91eae90bbf06581",
+        "sha512": "31b62694569d7ebf054d1fde7e7f527e96b79aff3b14f47747459516982d61f9f30273c1ca3534f6e0ae8e722ab9e52ac03a65f4d4d2f9ec113991063c32962c"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_compiled.bin",
+        "size": 16,
+        "sha256": "4f68b459a0bf6dc302cc4e384955857fb03c9f95aaf2975d96804d9a4f1869dd",
+        "sha512": "5a4932361fc20e6c9f13ce2b76c3992eb99ced061c20f0f9a25a49f26c2bc383338aa4378370dd153491403c6cf3b0b315d3c1fc77d32dcf31fca9df94347b29"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_live.bin",
+        "size": 16,
+        "sha256": "144a185fa22fd36bfbc920117708d403bef6de76c98a2e0c7be727541ac52c0f",
+        "sha512": "51e95e26c76670224dc07993f6d06d60125e0b186719a5a6fd8795a4f1ef91511ab965a8e514ad0d187a04b1e60644f57f3c4c15bd6ced8dd3a65d88a339baaa"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_pe.bin",
+        "size": 16,
+        "sha256": "144a185fa22fd36bfbc920117708d403bef6de76c98a2e0c7be727541ac52c0f",
+        "sha512": "51e95e26c76670224dc07993f6d06d60125e0b186719a5a6fd8795a4f1ef91511ab965a8e514ad0d187a04b1e60644f57f3c4c15bd6ced8dd3a65d88a339baaa"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_proto.txt",
+        "size": 332,
+        "sha256": "a37413f3ad6698960d0f63821c7ae6b500e46607867110f697f0551f3327bcbf",
+        "sha512": "78df49f1cf67c7c94abdb67585e2c790d8b2433281eb7a7634e7049bfd9bd355139dd1ca09eb5f5e60649b952c81e2a7450aa455f79290f37ad377ddc5e3f13a"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/00c17643_raw.txt",
+        "size": 221,
+        "sha256": "5ee2738a3adf4c5595e0f38fa07583b31cd20fa7d8d42da449c658847b6c5f78",
+        "sha512": "a10be7c183cfc580b6fb3ecc64bbbbdbca84ee4681aee60e634daee22ad24ed5a51b6ceb2790387ecc4170b5089f620bf1fb47d3d709e6974cff3ed61d5d9013"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/0109e454_bytes.txt",
+        "size": 29,
+        "sha256": "37f5eaa52ab0c1c6ceaedc61da819e61eccd841b05a2dbf862d06484581e213b",
+        "sha512": "e96763ae1dafeeb39c2bb8e3657b9ef4c865bb90a8a1a30981eec36d762c10724093672995cff3bbf852c42893be7b2a0865c73aaa15b1a62830d285000bfeef"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/0109e454_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/0109e454_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/bsp_core_build.lib",
+        "size": 57735082,
+        "sha256": "24e199ebd21d800c52aa5fb374f1ef5524d7d2783798fabcf64f340cf2debb59",
+        "sha512": "89e27b9c9fc3ea3d54a819563545ed8447ed132c6f882d7ac75752217978dd6bfe717abf11d257795f38775cffa820e3b675e207044f7944cd6c0c67e9794271"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/build.txt",
+        "size": 47413,
+        "sha256": "3da6efc7266b3555bc03a1c3b3c1ebb51ad4ccddd4ecf51276e837d6e40a145a",
+        "sha512": "c9d25085395f9c768d6184839c1b16b8d8d4941d80373645177c7464be7ad0028a831671a56b45ffa898bcd46642eb649116ca6f49a18605d061a22ba99f6c06"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/capture.py",
+        "size": 5399,
+        "sha256": "61d5baecd0af38de7197d32145fec00c92cc64a418fb2c96c12263777abcf8b1",
+        "sha512": "49dff0542caa890d7192ae7232565d2bbc600ad5bb62ae948a9ffb1196306090dd20540b57e667a0d78917f59c72243f9116df035efc57680a518d9f2bbd2132"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/capture_summary.json",
+        "size": 3068,
+        "sha256": "2d8bc24fc5d4750050b26367a0e0b53da674599092daef627279d63c5cc610bf",
+        "sha512": "02bba4ee6f5533299143fee8c6d72d38568979a96eb0631549c1d99e3d4399b57e336d9d995354a340bd5f5246ba7192304b5557fe89dfe196b3a5955faae2cb"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/CL.command_target.txt",
+        "size": 1092,
+        "sha256": "dbde09eb63446474a955b876cbdcc388ca1504dd5aa1dcf0ee8b1a74815f74aa",
+        "sha512": "a4195d5ca61fc6542ab4baa525b8b78602100212c64462da054b4194484308fd9d1614eb22e23e243dedaf02d167dff466e218e205bef3a803afc843715ee4b1"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/CL.read_target.txt",
+        "size": 8259,
+        "sha256": "6923ee7df81ee21cb8c72429f0f5f4b88d2e6ee3f6dd81741add7370b278f09f",
+        "sha512": "0c1e784ddfbb858bc3802b68e215ca29907fcd8c53cae2e81c89d6e8e0f8af02e23603cdd89cab604cb1e7018a4037613201ab0c5635229093820655d6e8a5cf"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/CL.write_object_line.txt",
+        "size": 162,
+        "sha256": "fbdd2f9a2189484994e50f8e771c79bc30858ee9463b7c3d5cd33849a6fdc2cc",
+        "sha512": "bf85997c73a8bdeb64ec3296f8783629129288cffcdc9db006105273fccf0ea984a97765166c7ba1ffa63a13b63974467aa1dbcfb986c01ed66eea3f871f457a"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/CL.write_target.txt",
+        "size": 319746,
+        "sha256": "dbbafcfc68e7c4e5e5eefcb4aee05489aa22ef33004dde89aa0a4f7c929ca5c0",
+        "sha512": "bac407ed69ffeec520e940c9e3254a6919e3e06fc78d3d1bf8adb0dad8ab6ec43c03106df33c699a2405509e71f2ffe39ca289e7cef80f63659e21d475f8a291"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/CMakeCXXCompiler.cmake",
+        "size": 6498,
+        "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+        "sha512": "6c66a6c1d55b9d08e5d9146d3f528cdf35f924a22d34e058f3d96ea306fc5923add11ac2d9866e14df89001b24172e45a8eb740b830b547c3f79e8e64aba4ff7"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/commit_message.txt",
+        "size": 437,
+        "sha256": "569f54462a4006369fb24c47efd066d634b3464ab6996860750ead089a91361d",
+        "sha512": "3dc36bd86bb190bd91053ce0a1d89e79d12f1fdc89397a2e835a2120615e1f811ad6ee3360d4e57298a7421ee11806e9a68f58f27f4f100c3e4a9f8af3f6df48"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/compiler.py",
+        "size": 8856,
+        "sha256": "edbdc13cb59f52d6c0ff66f4ab12f4e2b64dfcb8d8150309d994cec083855eb4",
+        "sha512": "fb7a7855a6f11c48ad1a014bdb852ed63e138638e8f28eb65673d69b7b7e4ee3c581b7e2b20023f02a847b91f5f12058d71a11c21e8834d927252978b1a3f857"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/compiler_evidence.json",
+        "size": 7512,
+        "sha256": "e304d52b94e2f7a21749f133ae61f07b9664bfacd35404b3e067f3773d50c723",
+        "sha512": "034c0f3a849ba2f0921c38574674ad8437ba5775d13fcad4cf350922ce7bbf321b95d6f3f0f5c83e039d356a22edfe61ff2c135a57b61aeaa030287fd0f6f548"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/inventory.py",
+        "size": 2825,
+        "sha256": "8b94a67d3bc3e7497398eae6f9162767b12fe45f6d847fec7b11cc28339ae857",
+        "sha512": "d7c325fb82e94be76a15a7f996f32e67cac5e4409f684dc7fb31bfeab76b05308a2f86a5cc1c75665619e98025bbd1e92a6b747021d8fb71aeed4b50058fbac2"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/ledger_records.json",
+        "size": 4524,
+        "sha256": "ef941c7667013bec0712e4bab13396c7393301506b309430aa43848a73a929d9",
+        "sha512": "87c39e29b448967bb0acb70c0aa6efffbf2e9d78205a8f7bdf438647daa1f498b4d0637216600aaae77a64c649729515ea4a6bc38858b4e0c761c59868fcf4e9"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/native_crt_critical_section_primitives_archive.obj",
+        "size": 1055,
+        "sha256": "ac418b02786c8b85faf3142da0e533c899f4c9d7febfecb2db43fc7fbe9991cd",
+        "sha512": "63ba8b3879e583ea36dc2e291dcd1d8625f40a3d7518fc004504224062a91131c3d6c9531ae833752122b9780a78c0673294d5ec5fc492cca6d5750fc7ac3420"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/native_crt_critical_section_primitives_build.obj",
+        "size": 1055,
+        "sha256": "ac418b02786c8b85faf3142da0e533c899f4c9d7febfecb2db43fc7fbe9991cd",
+        "sha512": "63ba8b3879e583ea36dc2e291dcd1d8625f40a3d7518fc004504224062a91131c3d6c9531ae833752122b9780a78c0673294d5ec5fc492cca6d5750fc7ac3420"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_asm.txt",
+        "size": 91,
+        "sha256": "d6ad8a56bb4c2690815bf48a8ddf16929458b538e805a652f4f20f6ad6555126",
+        "sha512": "24ada28007c7eb91403b6acc4c0e629b5678535c7570f089f470eb279b0c23edf0347cee2c1a887fae9e49e850daa0f4c1dad9428b894f9b214a0fc77b36ef81"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_bytes.txt",
+        "size": 53,
+        "sha256": "afa0c2c54dcc0f79cd58ff90a981f314363f0c8b71e71d0d2e4d892f5c501912",
+        "sha512": "773c8c1a4ff8508baf266d3a6b1afc72a1bd302112301f50c91d51f567c0c45ce8036e63880cd77a34fcef5ed93cdd405f8281e438a8f6ccf9103926bf596876"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_live.bin",
+        "size": 10,
+        "sha256": "e4dc9d41feca0018ac64ef60024b828daa0087f006e7983c25af0720d24a4558",
+        "sha512": "601dd3cba4be78707a5731be4e9a407ab1dd45bfa90cc421726408ed3697067f2f6e842d34349dedd0ed7fdff8ba04419a0e69fca0a2aa020be4db9f5ab4c07f"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_pe.bin",
+        "size": 10,
+        "sha256": "e4dc9d41feca0018ac64ef60024b828daa0087f006e7983c25af0720d24a4558",
+        "sha512": "601dd3cba4be78707a5731be4e9a407ab1dd45bfa90cc421726408ed3697067f2f6e842d34349dedd0ed7fdff8ba04419a0e69fca0a2aa020be4db9f5ab4c07f"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_proto.txt",
+        "size": 317,
+        "sha256": "b8af2c1b937d6917db0d5597ed8a8d2290ba5cf6e5f3c51ba15c2b9876675102",
+        "sha512": "b24b3213d3001881f41f61e87e9e45bacf355fd9b5e240a6bfd324649bbb9f0cf6d13e431f1e8f7c76bbb5cf8477c7ba5a37a8eae34c70174d455c68107fdf44"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17639_raw.txt",
+        "size": 181,
+        "sha256": "1a227c7886d16c4cc5685a0961f7ae94a6c19c1cd2e7de2fc6db760a1f92c5e2",
+        "sha512": "286e9a67cef49c6d53235be19aaea93b32f2db3b0ba66baec337a158e653de5bbc2443f1307e725959ea4a04e80275782d648bc387d361c1c2dd7103c25ca9b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_asm.txt",
+        "size": 143,
+        "sha256": "a3a879fa2ed4bf80ea5922f6e2d3c90cbde8f3f682a514850360410893c4acf7",
+        "sha512": "7219d4248f2589c93a2804a3869684d848c3afbe3712e1f75dab499099f1515d0d40b0196ed17cc91ffc3841a711bb88a26e333fe2d794d8d11235d0d2824460"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_bytes.txt",
+        "size": 77,
+        "sha256": "93724c9e3369af404fc130a584a6d689c059613f43c67782f91eae90bbf06581",
+        "sha512": "31b62694569d7ebf054d1fde7e7f527e96b79aff3b14f47747459516982d61f9f30273c1ca3534f6e0ae8e722ab9e52ac03a65f4d4d2f9ec113991063c32962c"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_live.bin",
+        "size": 16,
+        "sha256": "144a185fa22fd36bfbc920117708d403bef6de76c98a2e0c7be727541ac52c0f",
+        "sha512": "51e95e26c76670224dc07993f6d06d60125e0b186719a5a6fd8795a4f1ef91511ab965a8e514ad0d187a04b1e60644f57f3c4c15bd6ced8dd3a65d88a339baaa"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_pe.bin",
+        "size": 16,
+        "sha256": "144a185fa22fd36bfbc920117708d403bef6de76c98a2e0c7be727541ac52c0f",
+        "sha512": "51e95e26c76670224dc07993f6d06d60125e0b186719a5a6fd8795a4f1ef91511ab965a8e514ad0d187a04b1e60644f57f3c4c15bd6ced8dd3a65d88a339baaa"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_proto.txt",
+        "size": 332,
+        "sha256": "a37413f3ad6698960d0f63821c7ae6b500e46607867110f697f0551f3327bcbf",
+        "sha512": "78df49f1cf67c7c94abdb67585e2c790d8b2433281eb7a7634e7049bfd9bd355139dd1ca09eb5f5e60649b952c81e2a7450aa455f79290f37ad377ddc5e3f13a"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17643_raw.txt",
+        "size": 221,
+        "sha256": "5ee2738a3adf4c5595e0f38fa07583b31cd20fa7d8d42da449c658847b6c5f78",
+        "sha512": "a10be7c183cfc580b6fb3ecc64bbbbdbca84ee4681aee60e634daee22ad24ed5a51b6ceb2790387ecc4170b5089f620bf1fb47d3d709e6974cff3ed61d5d9013"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_asm.txt",
+        "size": 1423,
+        "sha256": "0a8c74f6d9c33f1ccab7920b468ea78aba0f470176a93d7552337f3803db63c7",
+        "sha512": "4453d4b669a0868450c87705772f6534ccdcd8aaaacc66c23d5bc11fad608d80d2fd834f467231f90c84a4008294d9c5f2d9460f42ea27bc0e5b7906a9faa924"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_bytes.txt",
+        "size": 957,
+        "sha256": "940f1dea04c8318f84ca044076f73e26616da7aa73db46072c3777cf21ae9328",
+        "sha512": "e794efb859c8688fd955040812903c9b03621216ef94f982eed2d70e6ffff3235c2855817d4b9b93941c04ba76dd9a157dea53873b38a24cf225d27e4143180e"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_decompile.txt",
+        "size": 1378,
+        "sha256": "0db823bbf07ed270d1a64d585ea077515985216ef1f81625a152d0761f98531f",
+        "sha512": "7dce977596ff9e016a0799fbbe1da1593beb58555da67e12283daa2eb8e636457f4d7fbf078c956e08c9b6ea0dfa451660bcf0e9840d7c8ec9bde1eb93a8e2de"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_live.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_pe.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_proto.txt",
+        "size": 329,
+        "sha256": "e17fbbec8256d05e0b93014e043b7172ccd346267deac8e79895e73edee2aeb4",
+        "sha512": "6cb316182b6b54d642006a99d9e3318db46d8afe699cfe9ca375f62dfd6b1ac8e5f0c5fbc1942e240e0e73d42c8b4e0419ea5ff5aff5c24d59dae6a7c0c768b5"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c17653_raw.txt",
+        "size": 1952,
+        "sha256": "1a174293f483efe89d803b95807ca2a5b6dc175e53abb4507735e7d41788f24c",
+        "sha512": "ea846c7e560e73717c70c4c420882e6ed6bb5bd2805c38cf102ff61eafb9cc089541e157263aaf848c36edde7ff29ee23e9cf6e1294a66849e9696fd287ad0ee"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c1768e_watson_return.txt",
+        "size": 82,
+        "sha256": "6f5a2eca1409f6cbbadb223cd4660a0b41df2b576061664a2c80ce687c0e3412",
+        "sha512": "a24af739d55a34183c2be178b20b27ea732352bf3260980073c6bb5b932af608b835a2fe87f6f04506e92ea7f99a9d76f130a1facdc7cdcf0fbcd41e6235cdc7"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00c176d9_exception_tail.txt",
+        "size": 542,
+        "sha256": "7d656cc72f632b2901f33ab2d47f728100e4755411148134612fe202bb022495",
+        "sha512": "19dd21cad5278f999cc060b602d93af4d2f250c97e92cc750b065bd4404109d6f59dd88871541187033787c3e78aa6709649d2f7a213becfa6b4c6d5fdb42abf"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00e037b8_bytes.txt",
+        "size": 138,
+        "sha256": "ddb0c1b00186c6e315e0493e6c493f2c0ea4e524391cf662a3575d68b6a05493",
+        "sha512": "adfbbceda4964261e034f8f501c5abd8cb8414a449c6f2a351347600708c7a3a4f762702954faaa856b7de722cc1da6981bebde25b9cab4dbeef81c9eb0d0901"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00e037b8_live.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/00e037b8_pe.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/0109e454_bytes.txt",
+        "size": 29,
+        "sha256": "37f5eaa52ab0c1c6ceaedc61da819e61eccd841b05a2dbf862d06484581e213b",
+        "sha512": "e96763ae1dafeeb39c2bb8e3657b9ef4c865bb90a8a1a30981eec36d762c10724093672995cff3bbf852c42893be7b2a0865c73aaa15b1a62830d285000bfeef"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/0109e454_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned/0109e454_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/pinned_lock_report.json",
+        "size": 56439,
+        "sha256": "7db29a0c93dce2d34bdd67b6e2d83048c3448d0d33fdb4e8e6f15ef8fa2fc939",
+        "sha512": "562f6f888839004aefa53beda374b3b097f66e3879e0f4035cf307ac015929165204b6efbd62a195372644a3f018f8c869d65514b5cc12c9a6456ab4b71f6c11"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/report.py",
+        "size": 7916,
+        "sha256": "d7aa720df3080796efcc578c074693fe37a1ade493ac2fe5bd4e280a7138d8e0",
+        "sha512": "e7276babd746ec75a33640497bba440c932797afa3354fbac0ac071870cdb847430ac8282d011476081b7055840344342cd8d09aef90e19bf18bfde98ee2e2fd"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source/cmake/startup.cmake",
+        "size": 115144,
+        "sha256": "6894f7bb4bc156129aafe8cfc74dd436686211f80c976a8d5688d4bc1fb0e128",
+        "sha512": "e3b44c601a151fed784c84736f9d3b82cf4c95aa0acbb9beaf2d2bb127c60f82626c1b6e868f8017f2aad764d382f9312107586dec35f23846ec2d1fe6b590ee"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source/CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source/docs/NATIVE_CRT_CRITICAL_SECTION_PRIMITIVES_BQ.md",
+        "size": 6844,
+        "sha256": "cebdfacc184c6be9374af25c01c9411662197a5917d7bf4f0c1c8a10bc07fbe7",
+        "sha512": "fd72128e1cb52bd24445e9fa4f5f8166a084e5004d80955f80f37fd47a3ce6780949e9e66ed8bf504087c53daf8a0b2372dee1162f0787d23bb7e7f7cf209dcb"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source/include/bsp/native_crt_critical_section_primitives.hpp",
+        "size": 1154,
+        "sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+        "sha512": "c6c5041b84ed8d1397d1780d3702eca96038ba88302d8338b2c1b2196281fda0431ba369288acb94b37968ba06dc7566f7bc593d690e3d28a085f1d0ce31653d"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source/src/native_crt_critical_section_primitives.cpp",
+        "size": 1449,
+        "sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+        "sha512": "740da4eec2240c8e8eec27ae6af5ae57bc91cb4b5583b33f462fe68cb5bdb1f535f7f9e8323837f98a57d3342aa7a864a7fda000cfc9b7ff595ce6e0e499d72f"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/source_object_dump.txt",
+        "size": 5996,
+        "sha256": "c320c474454898d8c5ec324c01fe3b420491550f6dbe2cb85a85cde294b2e1d1",
+        "sha512": "3ad6720c3c3ea749f3cb4617c3aafbed2fccc5140eeb422d4b2137005c29b01195e157b06351739b4e1ca3339bf5a147f4fd9af6c5e52292e1cc0087074d56b0"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/verify_calls.txt",
+        "size": 87,
+        "sha256": "4c2b87cd5210cd4d0aad1c920db8e397f9e372e672296453a66856935963951d",
+        "sha512": "c0d0b4324a1e031c7b55df5d1a685744aef686c9f3621dfd6a978fded9c3654ff7a87f2dc7fca1104ac99aa19d60b4c86a22a359a772c1094f8a42941660985d"
+      },
+      {
+        "path": "local/native_crt_critical_section_primitives_bq/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      }
+    ]
+  },
+  "current_source_hashes": [
+    {
+      "path": "src/native_crt_critical_section_primitives.cpp",
+      "size": 1449,
+      "sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+      "sha512": "740da4eec2240c8e8eec27ae6af5ae57bc91cb4b5583b33f462fe68cb5bdb1f535f7f9e8323837f98a57d3342aa7a864a7fda000cfc9b7ff595ce6e0e499d72f"
+    },
+    {
+      "path": "include/bsp/native_crt_critical_section_primitives.hpp",
+      "size": 1154,
+      "sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+      "sha512": "c6c5041b84ed8d1397d1780d3702eca96038ba88302d8338b2c1b2196281fda0431ba369288acb94b37968ba06dc7566f7bc593d690e3d28a085f1d0ce31653d"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 115144,
+      "sha256": "6894f7bb4bc156129aafe8cfc74dd436686211f80c976a8d5688d4bc1fb0e128",
+      "sha512": "e3b44c601a151fed784c84736f9d3b82cf4c95aa0acbb9beaf2d2bb127c60f82626c1b6e868f8017f2aad764d382f9312107586dec35f23846ec2d1fe6b590ee"
+    },
+    {
+      "path": "docs/NATIVE_CRT_CRITICAL_SECTION_PRIMITIVES_BQ.md",
+      "size": 6844,
+      "sha256": "cebdfacc184c6be9374af25c01c9411662197a5917d7bf4f0c1c8a10bc07fbe7",
+      "sha512": "fd72128e1cb52bd24445e9fa4f5f8166a084e5004d80955f80f37fd47a3ce6780949e9e66ed8bf504087c53daf8a0b2372dee1162f0787d23bb7e7f7cf209dcb"
+    }
+  ]
+}
