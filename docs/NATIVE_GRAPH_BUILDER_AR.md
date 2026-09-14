@@ -60,3 +60,7 @@ A read-only request to the supported inline-script endpoint still returned `Scri
 | 00B89DB0 | 00B89E32 | 00B89E8E |
 
 The earlier AO/AP/AQ proof archives remain tied to their original inputs and are unchanged. This batch supplies static byte/listing evidence and saved analysis; it does not add a native differential or gameplay validation claim. No new worker packets were dispatched.
+
+## Correction from NATIVE_RESOURCE_INSTANCE_BONES_AS.md
+
+AR step 1's statement about capturing the weight-name data and count was too broad. B87E80 captures the **header**: B87F14 re-reads its count after resizing, B87FFF re-reads it after each name, and B87F21 re-reads backing for every iteration. After mapping, B8808B captures the stream table before B8808F reads stride; the count slot is read afterward. AS preserves these timings and verifies callback mutations against the original caller. AS also reconstructs B6DC20's six-lane x87 bounds getter and the complete B87E80 caller; see [NATIVE_RESOURCE_INSTANCE_BONES_AS.md](NATIVE_RESOURCE_INSTANCE_BONES_AS.md). AR's sealed static evidence remains unchanged.
