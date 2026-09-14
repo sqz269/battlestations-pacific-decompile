@@ -1,0 +1,775 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_shader_binding",
+  "generated_utc": "2026-09-14T16:31:14.951722+00:00",
+  "source": "src/native_renderer_shader_binding.cpp",
+  "header": "include/bsp/native_renderer_shader_binding.hpp",
+  "status": "complete_actual_storage_strict_Win32_original_source_trace_and_source_exception_fixture_checked",
+  "base_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+  "dependency_merge": null,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00b21d10",
+      "end": "00b21df1",
+      "bytes": 226,
+      "bytes_hex": "64a1000000006aff6838cecb00506489250000000083ec08803ddcd608010056578bf174118bfe897c240ce8901d010088442408eb048b7c240c8b8e7017000085c98b442420c744241800000000740c85c074088b51083b5008745685c089867017000074178b8e101a00008b40088b1150518b8a70010000ffd1eb2e85c97517380ddcd60801c7442418ffffffff743e8b54240852eb308b86101a00008b088b91700100006a0050ffd28386c01b000001803ddcd6080100c7442418ffffffff740c8b442408508bcfe8211d01008b4c24105f5e64890d0000000083c414c20400",
+      "sha256": "bf5434109165dfa619784f62602c3e53b6e93a4475bb03fe3b9735998e74cf38",
+      "live_PE_match": true,
+      "role": "owned binder"
+    },
+    {
+      "address": "00b21c20",
+      "end": "00b21d01",
+      "bytes": 226,
+      "bytes_hex": "64a1000000006aff6818cecb00506489250000000083ec08803ddcd608010056578bf174118bfe897c240ce8801e010088442408eb048b7c240c8b8e6c17000085c98b442420c744241800000000740c85c074088b51083b5008745685c089866c17000074178b8e101a00008b40088b1150518b8aac010000ffd1eb2e85c97517380ddcd60801c7442418ffffffff743e8b54240852eb308b86101a00008b088b91ac0100006a0050ffd28386bc1b000001803ddcd6080100c7442418ffffffff740c8b442408508bcfe8111e01008b4c24105f5e64890d0000000083c414c20400",
+      "sha256": "283f873aca12e2de7ea0ce269eb5607c0f614cdb1adf397d868d3e70a7959125",
+      "live_PE_match": true,
+      "role": "owned binder"
+    },
+    {
+      "address": "00cbce38",
+      "end": "00cbce41",
+      "bytes": 10,
+      "bytes_hex": "b8f853df00e9019df3ff",
+      "sha256": "b9ff4fac7cc1f2bca5bca417a56e9d82d295892a988b03fcc60154e8b5c97383",
+      "live_PE_match": true,
+      "role": "FH3 handler thunk"
+    },
+    {
+      "address": "00df53f8",
+      "end": "00df541b",
+      "bytes": 36,
+      "bytes_hex": "2205931901000000f053df00000000000000000000000000000000000000000001000000",
+      "sha256": "3c98a01c6fe782db27ca7495792ebc07fba166867461d6509bd7d88fc2a8f94e",
+      "live_PE_match": true,
+      "role": "FH3 FuncInfo"
+    },
+    {
+      "address": "00df53f0",
+      "end": "00df53f7",
+      "bytes": 8,
+      "bytes_hex": "ffffffff30cecb00",
+      "sha256": "9633eb3d0aa5ca32f2f4b35ead6eef53eb0bec0f1a9a45f0c864f2da75252d1b",
+      "live_PE_match": true,
+      "role": "FH3 state0 row"
+    },
+    {
+      "address": "00cbce30",
+      "end": "00cbce37",
+      "bytes": 8,
+      "bytes_hex": "8d4dece9d842e6ff",
+      "sha256": "41636281322c845558ecbfdf79942368b8188a9982a44b5eff07a66d8834ef1c",
+      "live_PE_match": true,
+      "role": "FH3 cleanup action"
+    },
+    {
+      "address": "00cbce18",
+      "end": "00cbce21",
+      "bytes": 10,
+      "bytes_hex": "b8cc53df00e9219df3ff",
+      "sha256": "a029cfa75e98af1e5a994f5a9d81b101a2ec715efa721621b6494520c06be4b6",
+      "live_PE_match": true,
+      "role": "FH3 handler thunk"
+    },
+    {
+      "address": "00df53cc",
+      "end": "00df53ef",
+      "bytes": 36,
+      "bytes_hex": "2205931901000000c453df00000000000000000000000000000000000000000001000000",
+      "sha256": "5c14e6a9c349d70ca73995c2f3e759268a3fa957048d1eb3e4c368032d7176d6",
+      "live_PE_match": true,
+      "role": "FH3 FuncInfo"
+    },
+    {
+      "address": "00df53c4",
+      "end": "00df53cb",
+      "bytes": 8,
+      "bytes_hex": "ffffffff10cecb00",
+      "sha256": "abef67cddfa467b73afe164e7b28981a8468ee72d004abac343858cd3368e923",
+      "live_PE_match": true,
+      "role": "FH3 state0 row"
+    },
+    {
+      "address": "00cbce10",
+      "end": "00cbce17",
+      "bytes": 8,
+      "bytes_hex": "8d4dece9f842e6ff",
+      "sha256": "5f343126ce16f938f87a7162d990e5630a7543735c41a14d5eb33c57ab7900d6",
+      "live_PE_match": true,
+      "role": "FH3 cleanup action"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b21d10",
+      "name": "bind_native_renderer_vertex_shader_00b21d10",
+      "old_Ghidra_name": "BSP_D3D9Renderer_BindVertexShader",
+      "end": "00b21df1",
+      "bytes": 226,
+      "kind": "additional raw API fragment",
+      "source": "src/native_renderer_shader_binding.cpp",
+      "original_ABI": "ECX actual renderer; stack logical pointer; RET4. Source adds borrowed synchronization reference through new C++ interface.",
+      "cache": "1770",
+      "slot": "170",
+      "counter": "1bc0"
+    },
+    {
+      "address": "00b21c20",
+      "name": "bind_native_renderer_pixel_shader_00b21c20",
+      "old_Ghidra_name": "BSP_D3D9Renderer_BindPixelShader",
+      "end": "00b21d01",
+      "bytes": 226,
+      "kind": "additional raw API fragment",
+      "source": "src/native_renderer_shader_binding.cpp",
+      "original_ABI": "ECX actual renderer; stack logical pointer; RET4. Source adds borrowed synchronization reference through new C++ interface.",
+      "cache": "176c",
+      "slot": "1ac",
+      "counter": "1bbc"
+    }
+  ],
+  "reviewed_native_body_bytes": 452,
+  "reviewed_FH3_context_bytes": 124,
+  "new_function_bytes": 0,
+  "additional_raw_API_fragment_bytes": 452,
+  "template_equivalence": {
+    "masked_operands": [
+      {
+        "offset": "9",
+        "bytes": 4,
+        "role": "FH3 literal"
+      },
+      {
+        "offset": "2c",
+        "bytes": 4,
+        "role": "entry CALL"
+      },
+      {
+        "offset": "3c",
+        "bytes": 4,
+        "role": "cache load"
+      },
+      {
+        "offset": "60",
+        "bytes": 4,
+        "role": "cache publication"
+      },
+      {
+        "offset": "75",
+        "bytes": 4,
+        "role": "nonnull COM slot"
+      },
+      {
+        "offset": "a2",
+        "bytes": 4,
+        "role": "null COM slot"
+      },
+      {
+        "offset": "ad",
+        "bytes": 4,
+        "role": "counter"
+      },
+      {
+        "offset": "cb",
+        "bytes": 4,
+        "role": "leave CALL"
+      }
+    ],
+    "all_other_bytes_identical": true
+  },
+  "direct_calls": [
+    {
+      "function": "00b21d10",
+      "address": "00b21d3b",
+      "native": "00b33ad0",
+      "operation": "Actual optional guard entry before cached-logical capture"
+    },
+    {
+      "function": "00b21d10",
+      "address": "00b21dda",
+      "native": "00b33b00",
+      "operation": "Actual optional guard leave after current mode read/disarm"
+    },
+    {
+      "function": "00b21c20",
+      "address": "00b21c4b",
+      "native": "00b33ad0",
+      "operation": "Actual optional guard entry before cached-logical capture"
+    },
+    {
+      "function": "00b21c20",
+      "address": "00b21cea",
+      "native": "00b33b00",
+      "operation": "Actual optional guard leave after current mode read/disarm"
+    }
+  ],
+  "indirect_dispatch": [
+    {
+      "function": "00b21d10",
+      "site": "00b21d89",
+      "device_field": "1a10",
+      "vtable_slot": "170",
+      "target": "IDirect3DDevice9::SetVertexShader, nonnull logical path",
+      "ABI": "stdcall(actual device, actual shader COM pointer or0)",
+      "result": "HRESULT ignored; increment CURRENT wrapping counter only after return"
+    },
+    {
+      "function": "00b21d10",
+      "site": "00b21db9",
+      "device_field": "1a10",
+      "vtable_slot": "170",
+      "target": "IDirect3DDevice9::SetVertexShader, null transition",
+      "ABI": "stdcall(actual device, actual shader COM pointer or0)",
+      "result": "HRESULT ignored; increment CURRENT wrapping counter only after return"
+    },
+    {
+      "function": "00b21c20",
+      "site": "00b21c99",
+      "device_field": "1a10",
+      "vtable_slot": "1ac",
+      "target": "IDirect3DDevice9::SetPixelShader, nonnull logical path",
+      "ABI": "stdcall(actual device, actual shader COM pointer or0)",
+      "result": "HRESULT ignored; increment CURRENT wrapping counter only after return"
+    },
+    {
+      "function": "00b21c20",
+      "site": "00b21cc9",
+      "device_field": "1a10",
+      "vtable_slot": "1ac",
+      "target": "IDirect3DDevice9::SetPixelShader, null transition",
+      "ABI": "stdcall(actual device, actual shader COM pointer or0)",
+      "result": "HRESULT ignored; increment CURRENT wrapping counter only after return"
+    }
+  ],
+  "borrowed_context": "Same actual NativeRendererSynchronizationGlobals storage0108D6DC..E3 as parent/EndFrame. Existing substantive B33AD0/B33B00/B21110 raw providers are called directly. Valid actual renderer/logical extents and callable actual COM vtables required; no refcounting.",
+  "access_order": [
+    "Read current entry mode; if enabled save renderer then guard-provider returned AL. Capture cached logical only after optional entry returns; arm cleanup before COM field comparison.",
+    "If both logical pointers nonnull, read old+8 before incoming+8. Equal values retain old logical identity and skip publication/COM/counter, including equal null COM pointers.",
+    "Other paths publish incoming into actual cache first. Null-null writes0 but skips device/counter.",
+    "Nonnull incoming: capture current device+1A10, reload incoming+8, read captured device current table then bind slot. Null transition: capture current device/table/slot and pass0.",
+    "Ignore returned HRESULT. Increment CURRENT counter with DWORD wrapping; callback cache/device/counter mutations remain.",
+    "Read current exit mode; disarm then optionally leave through saved renderer. Native ignored padding DWORD reduced to defined AL because B33B00 ignores it."
+  ],
+  "FH3": {
+    "metadata": [
+      {
+        "handler": "00cbce38",
+        "FuncInfo": "00df53f8",
+        "unwind_map": "00df53f0",
+        "next_state": -1,
+        "action": "00cbce30",
+        "action_bytes": "8d4dece9d842e6ff"
+      },
+      {
+        "handler": "00cbce18",
+        "FuncInfo": "00df53cc",
+        "unwind_map": "00df53c4",
+        "next_state": -1,
+        "action": "00cbce10",
+        "action_bytes": "8d4dece9f842e6ff"
+      }
+    ],
+    "unwind_action": "Both action bodies LEA ECX,[EBP-14h]; JMP B21110. State0 armed after cached-logical capture, disarmed before normal leave.",
+    "source_boundary": "Actual B21110 cleanup on C++ exception; noexcept destructor terminates on a second C++ exception. No original frame/SEH claim.",
+    "valid_domain": "Skipped entry leaves native guard fields unwritten; disabled-entry/enabled-exit transitions unsupported rather than repaired. Enabled-entry/disabled-exit retains resulting nesting/lock state."
+  },
+  "existing_interfaces": "Existing D3D9StateCache shader methods are projected and remain unchanged. Both additional raw interfaces recorded as fragments, not duplicate original functions. No callback forwarding adapter or original EXE address call.",
+  "ghidra_mutations": "None. Full live=PE bodies and handlers read via identity-verifying bsp wrappers; no returning-tail gap found. Current old names and full comments archived. Root owns any annotation/save/export changes.",
+  "validation": {
+    "seed_verification": "8/8 native ranges match disk, verified before configure",
+    "build": "./scripts/build.ps1 passed; strict MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "call_gate": "tools/verify_report_calls.py passed:4 direct native CALL rows checked,0 failed. Four actual COM indirect sites and FH3 action metadata recorded separately.",
+    "fixture": "One manifested /MD executable links actual built bsp_core.lib. Two complete copied original binders compared against source using ten-call transition sequence each; source-only COM exceptions tested for both.",
+    "original_bindings": "Per binder: two CALL rel32 operands rebind actual guard bridges; three absolute global operands rebind borrowed actual fixture synchronization; one FH3 handler literal rebinds fail-fast probe handler. All remaining bytes retained; no original EXE address calls.",
+    "fixture_result": "PASS: actual renderer/logical cache identities, equivalent COM/null paths, callback device/cache changes, failed/positive HRESULT ignored, current counter wrap/reload, real tracked guard and exit-mode transition match. Source-only throwing COM retains cache/provider writes, skips counter increment and releases guard.",
+    "fixture_limits": "COM providers are explicitly scripted raw vtable slots, not a real D3D9 device. Actual Win32 guard calls run and providers are measured. Original FH3 handler is fail-fast relocated; only original normal paths execute. Source-only C++ exception result is not original exception equivalence.",
+    "fixture_stdout": "native_renderer_shader_binding_probe.cpp\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nLOADED_RUNTIME|msvcp140.dll|C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll|\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll|014c\nUNLOADED_RUNTIME|vcruntime140_1.dll\nLOADED_RUNTIME|kernel32.dll|C:\\WINDOWS\\System32\\KERNEL32.DLL|\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll|014c\nLOADED_RUNTIME|ntdll.dll|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPROVIDER_ADDRESS|EnterCriticalSection|76f943e0\nLOADED_PROVIDER|EnterCriticalSection|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPROVIDER_ADDRESS|LeaveCriticalSection|76f93460\nLOADED_PROVIDER|LeaveCriticalSection|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPASS: two complete original/source shader binders, ten-call transition trace each, real guard/current cache/device/counter behavior, source-only C++ exception cleanup\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#include \"bsp/native_renderer_shader_binding.hpp\"\n#include \"bsp/random_threads.hpp\"\n#include \"native_renderer_shader_binding_reference.hpp\"\n#include <Windows.h>\n#include <excpt.h>\n#include <array>\n#include <cstdint>\n#include <cstdio>\n#include <cstring>\n#include <stdexcept>\n#include <vector>\n\nnamespace {\nusing Word=std::uint32_t;\nusing Entry=void (__fastcall*)(void*,Word,void*);\nusing Source=void (*)(void*,void*,bsp::NativeRendererSynchronizationGlobals&);\nbsp::NativeRendererSynchronizationGlobals globals;\nvoid require(bool ok,const char* message) { if(!ok) throw std::runtime_error(message); }\nWord address(const void* p) { return reinterpret_cast<Word>(p); }\nvoid* pointer(Word bits) { return reinterpret_cast<void*>(bits); }\nWord load(const void* p,Word offset=0) { Word result; std::memcpy(&result,static_cast<const unsigned char*>(p)+offset,4); return result; }\nvoid store(void* p,Word offset,Word value) { std::memcpy(static_cast<unsigned char*>(p)+offset,&value,4); }\nstd::uint8_t __fastcall enter_original(void* renderer) { return bsp::enter_native_renderer_optional_guard_00b33ad0(renderer,globals); }\nvoid __fastcall leave_original(void* renderer,Word,Word ignored) { bsp::leave_native_renderer_optional_guard_00b33b00(renderer,ignored,globals); }\n[[noreturn]] EXCEPTION_DISPOSITION __cdecl unexpected_original_seh(EXCEPTION_RECORD*,void*,CONTEXT*,void*) {\n    TerminateProcess(GetCurrentProcess(),42); __assume(0);\n}\nclass Original {\n    void* code_; std::size_t size_;\npublic:\n    template<std::size_t N> explicit Original(const unsigned char (&data)[N]):\n        code_(VirtualAlloc(nullptr,N,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)),size_(N) {\n        require(code_!=nullptr,\"VirtualAlloc\"); std::memcpy(code_,data,N);\n    }\n    ~Original() { VirtualFree(code_,0,MEM_RELEASE); }\n    template<class F> void call(std::size_t offset,F function) {\n        auto* p=static_cast<unsigned char*>(code_); require(p[offset]==0xe8,\"CALL relocation\");\n        const Word displacement=static_cast<Word>(reinterpret_cast<std::uintptr_t>(function)-reinterpret_cast<std::uintptr_t>(p+offset+5));\n        std::memcpy(p+offset+1,&displacement,4);\n    }\n    void absolute(Word offset,Word expected,Word replacement) {\n        require(load(code_,offset)==expected,\"absolute relocation\"); store(code_,offset,replacement);\n    }\n    void finish(Word original_handler) {\n        call(0x2b,&enter_original); call(0xca,&leave_original);\n        absolute(9,original_handler,reinterpret_cast<Word>(&unexpected_original_seh));\n        for(Word offset:{0x1au,0x83u,0xb4u}) absolute(offset,0x0108d6dc,reinterpret_cast<Word>(&globals.mode_00));\n        DWORD old; require(VirtualProtect(code_,size_,PAGE_EXECUTE_READ,&old)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,size_)!=0,\"FlushInstructionCache\");\n    }\n    Entry entry() const { return reinterpret_cast<Entry>(code_); }\n};\nstruct Fixture;\nstruct Device { Word* table; Fixture* fixture; Word id; };\nstruct Event { Word device,shader,cache,counter,mode,nesting,depth; bool operator==(const Event&) const=default; };\nstruct Snapshot { Word cache,device,counter,mode,observed,nesting,depth; std::vector<Event> events; bool operator==(const Snapshot&) const=default; };\nstruct Fixture {\n    alignas(4) std::array<unsigned char,0x1bd0> renderer;\n    bsp::TrackedCriticalSection lock{};\n    std::array<std::array<Word,3>,5> logical{};\n    std::array<Word,2> shader_tokens{0x33333333,0x44444444};\n    std::array<Word,108> table{};\n    Device first{table.data(),this,1},second{table.data(),this,2};\n    Word cache_offset,counter_offset;\n    unsigned calls=0;\n    bool throwing=false;\n    std::vector<Event> events;\n    explicit Fixture(bool vertex):cache_offset(vertex?0x1770u:0x176cu),counter_offset(vertex?0x1bc0u:0x1bbcu) {\n        renderer.fill(0xa5); InitializeCriticalSection(&lock.native); lock.depth=0;\n        store(raw(),4,address(&lock)); store(raw(),cache_offset,0); store(raw(),counter_offset,0); store(raw(),0x1a10,address(&first));\n        for(auto& row:logical) row={0x11223344,0x55667788,0};\n        logical[0][2]=address(shader_tokens.data()); logical[1][2]=logical[0][2]; logical[2][2]=address(shader_tokens.data()+1);\n        globals.mode_00=1; globals.observed_mode_01=1; globals.preserved_02[0]=0x65; globals.preserved_02[1]=0x76; globals.nesting_04=0;\n    }\n    ~Fixture() {\n        while(lock.native.RecursionCount>0) LeaveCriticalSection(&lock.native);\n        DeleteCriticalSection(&lock.native);\n    }\n    void* raw() { return renderer.data(); }\n    void* owner(unsigned i) { return logical[i].data(); }\n    Word cache_id() {\n        const Word cached=load(raw(),cache_offset); if(cached==0) return 0;\n        for(Word i=0;i<logical.size();++i) if(cached==address(owner(i))) return i+1;\n        throw std::runtime_error(\"unknown logical cache identity\");\n    }\n    Word shader_id(void* shader) { if(!shader) return 0; if(shader==shader_tokens.data()) return 1; require(shader==shader_tokens.data()+1,\"shader identity\"); return 2; }\n    void guards() {\n        for(Word i=0;i<renderer.size();++i) {\n            if((i>=4&&i<8)||(i>=cache_offset&&i<cache_offset+4)||(i>=counter_offset&&i<counter_offset+4)||(i>=0x1a10&&i<0x1a14)) continue;\n            require(renderer[i]==0xa5,\"unrelated renderer bytes\");\n        }\n        for(const auto& row:logical) require(row[0]==0x11223344 && row[1]==0x55667788,\"borrowed logical header/refcounts\");\n        require(globals.preserved_02[0]==0x65 && globals.preserved_02[1]==0x76,\"synchronization padding\");\n    }\n};\nstd::int32_t __stdcall set_shader(Device* device,void* shader) {\n    auto& f=*device->fixture; ++f.calls;\n    require(globals.mode_00==1 && globals.nesting_04==1 && f.lock.depth==1 && f.lock.native.RecursionCount==1,\"guard surrounds COM\");\n    f.events.push_back({device->id,f.shader_id(shader),f.cache_id(),load(f.raw(),f.counter_offset),globals.mode_00,globals.nesting_04,static_cast<Word>(f.lock.depth)});\n    if(f.throwing) { store(f.raw(),f.counter_offset,123); throw std::runtime_error(\"scripted COM exception\"); }\n    if(f.calls==1) {\n        require(device->id==1 && f.cache_id()==1 && f.shader_id(shader)==1,\"initial cache publication/device capture\");\n        store(f.raw(),f.cache_offset,address(f.owner(1))); store(f.raw(),0x1a10,address(&f.second)); store(f.raw(),f.counter_offset,0xffffffffu);\n        return static_cast<std::int32_t>(0x80004005u);\n    }\n    require(device->id==2,\"reload current device\");\n    if(f.calls==2) { require(f.cache_id()==3 && f.shader_id(shader)==2,\"second shader publication\"); store(f.raw(),f.counter_offset,10); return 0; }\n    if(f.calls==3) { require(f.cache_id()==0 && shader==nullptr,\"null transition\"); store(f.raw(),f.counter_offset,20); return 1; }\n    if(f.calls==4) { require(f.cache_id()==4 && shader==nullptr,\"nonnull logical with null COM still binds\"); store(f.raw(),f.counter_offset,30); return static_cast<std::int32_t>(0x80004005u); }\n    require(f.calls==5 && f.cache_id()==0 && shader==nullptr,\"null transition from logical null COM\");\n    store(f.raw(),f.counter_offset,40); globals.mode_00=0; return 0;\n}\nSnapshot scenario(Entry original,Source source,bool native,bool vertex) {\n    Fixture f(vertex); f.table[(vertex?0x170:0x1ac)/4]=reinterpret_cast<Word>(&set_shader);\n    auto bind=[&](void* shader) { if(native) original(f.raw(),0,shader); else source(f.raw(),shader,globals); };\n    globals.mode_00=0; bind(nullptr); require(f.calls==0 && globals.nesting_04==0,\"disabled null-null guard\"); globals.mode_00=1;\n    bind(nullptr); require(f.calls==0 && f.cache_id()==0 && globals.nesting_04==0 && f.lock.depth==0,\"enabled null-null skip\");\n    bind(f.owner(0)); require(f.calls==1 && f.cache_id()==2 && load(f.raw(),f.counter_offset)==0,\"HRESULT ignored/current counter wraps/cache mutation retained\");\n    bind(f.owner(0)); require(f.calls==1 && f.cache_id()==2,\"equivalent COM retains old logical identity\");\n    bind(f.owner(2)); require(f.calls==2 && load(f.raw(),f.counter_offset)==11,\"current counter reload\");\n    bind(nullptr); require(f.calls==3 && load(f.raw(),f.counter_offset)==21,\"positive HRESULT ignored\");\n    bind(nullptr); require(f.calls==3 && load(f.raw(),f.counter_offset)==21,\"second null-null skip\");\n    bind(f.owner(3)); require(f.calls==4 && f.cache_id()==4 && load(f.raw(),f.counter_offset)==31,\"null COM on nonnull logical\");\n    bind(f.owner(4)); require(f.calls==4 && f.cache_id()==4,\"equal null COM retains logical identity\");\n    bind(nullptr); require(f.calls==5 && load(f.raw(),f.counter_offset)==41,\"returning COM final current count\");\n    require(globals.mode_00==0 && globals.nesting_04==1 && f.lock.depth==1,\"current-mode exit skips leave\");\n    f.guards(); Snapshot result{f.cache_id(),static_cast<Device*>(pointer(load(f.raw(),0x1a10)))->id,load(f.raw(),f.counter_offset),globals.mode_00,globals.observed_mode_01,globals.nesting_04,static_cast<Word>(f.lock.depth),f.events};\n    globals.mode_00=1; bsp::leave_native_renderer_optional_guard_00b33b00(f.raw(),0,globals);\n    require(globals.nesting_04==0 && f.lock.depth==0,\"fixture releases retained real guard\"); return result;\n}\nvoid source_exception(Source source,bool vertex) {\n    Fixture f(vertex); f.throwing=true; f.table[(vertex?0x170:0x1ac)/4]=reinterpret_cast<Word>(&set_shader);\n    bool caught=false; try { source(f.raw(),f.owner(0),globals); } catch(const std::runtime_error&) { caught=true; }\n    require(caught && f.calls==1 && globals.nesting_04==0 && f.lock.depth==0,\"source C++ guard cleanup\");\n    require(f.cache_id()==1 && load(f.raw(),f.counter_offset)==123,\"throw retains cache/provider writes without increment or rollback\"); f.guards();\n}\nvoid module_record(const wchar_t* name,HMODULE module,const char* category) {\n    if(!module) { std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name); return; }\n    wchar_t reported[1024],canonical[1024]; const DWORD n=GetModuleFileNameW(module,reported,1024); require(n&&n<1024,\"module path\");\n    HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr); require(file!=INVALID_HANDLE_VALUE,\"module file\");\n    const DWORD m=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED); CloseHandle(file); require(m&&m<1024,\"canonical module file\");\n    const auto* data=reinterpret_cast<const unsigned char*>(module); const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(data); const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(data+dos->e_lfanew);\n    require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded x86 machine\"); std::printf(\"%s|%ls|%ls|%ls|%04x\\n\",category,name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n}\nvoid provider_record(const wchar_t* role,void* function) {\n    HMODULE module{}; require(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,reinterpret_cast<LPCWSTR>(function),&module)!=0,\"Win32 provider module\");\n    std::printf(\"PROVIDER_ADDRESS|%ls|%08x\\n\",role,address(function)); module_record(role,module,\"LOADED_PROVIDER\");\n}\n} // namespace\nint main() {\n    try {\n        Original vertex(original_00b21d10),pixel(original_00b21c20); vertex.finish(0x00cbce38); pixel.finish(0x00cbce18);\n        require(scenario(vertex.entry(),&bsp::bind_native_renderer_vertex_shader_00b21d10,true,true)==scenario(vertex.entry(),&bsp::bind_native_renderer_vertex_shader_00b21d10,false,true),\"vertex original/source\");\n        require(scenario(pixel.entry(),&bsp::bind_native_renderer_pixel_shader_00b21c20,true,false)==scenario(pixel.entry(),&bsp::bind_native_renderer_pixel_shader_00b21c20,false,false),\"pixel original/source\");\n        source_exception(&bsp::bind_native_renderer_vertex_shader_00b21d10,true); source_exception(&bsp::bind_native_renderer_pixel_shader_00b21c20,false);\n        for(const auto* name:{L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\",L\"kernel32.dll\",L\"ntdll.dll\"}) module_record(name,GetModuleHandleW(name),\"LOADED_RUNTIME\");\n        provider_record(L\"EnterCriticalSection\",reinterpret_cast<void*>(&::EnterCriticalSection)); provider_record(L\"LeaveCriticalSection\",reinterpret_cast<void*>(&::LeaveCriticalSection));\n        std::puts(\"PASS: two complete original/source shader binders, ten-call transition trace each, real guard/current cache/device/counter behavior, source-only C++ exception cleanup\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header": "#pragma once\ninline constexpr unsigned char original_00b21d10[] = {0x64,0xa1,0x00,0x00,0x00,0x00,0x6a,0xff,0x68,0x38,0xce,0xcb,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x83,0xec,0x08,0x80,0x3d,0xdc,0xd6,0x08,0x01,0x00,0x56,0x57,0x8b,0xf1,0x74,0x11,0x8b,0xfe,0x89,0x7c,0x24,0x0c,0xe8,0x90,0x1d,0x01,0x00,0x88,0x44,0x24,0x08,0xeb,0x04,0x8b,0x7c,0x24,0x0c,0x8b,0x8e,0x70,0x17,0x00,0x00,0x85,0xc9,0x8b,0x44,0x24,0x20,0xc7,0x44,0x24,0x18,0x00,0x00,0x00,0x00,0x74,0x0c,0x85,0xc0,0x74,0x08,0x8b,0x51,0x08,0x3b,0x50,0x08,0x74,0x56,0x85,0xc0,0x89,0x86,0x70,0x17,0x00,0x00,0x74,0x17,0x8b,0x8e,0x10,0x1a,0x00,0x00,0x8b,0x40,0x08,0x8b,0x11,0x50,0x51,0x8b,0x8a,0x70,0x01,0x00,0x00,0xff,0xd1,0xeb,0x2e,0x85,0xc9,0x75,0x17,0x38,0x0d,0xdc,0xd6,0x08,0x01,0xc7,0x44,0x24,0x18,0xff,0xff,0xff,0xff,0x74,0x3e,0x8b,0x54,0x24,0x08,0x52,0xeb,0x30,0x8b,0x86,0x10,0x1a,0x00,0x00,0x8b,0x08,0x8b,0x91,0x70,0x01,0x00,0x00,0x6a,0x00,0x50,0xff,0xd2,0x83,0x86,0xc0,0x1b,0x00,0x00,0x01,0x80,0x3d,0xdc,0xd6,0x08,0x01,0x00,0xc7,0x44,0x24,0x18,0xff,0xff,0xff,0xff,0x74,0x0c,0x8b,0x44,0x24,0x08,0x50,0x8b,0xcf,0xe8,0x21,0x1d,0x01,0x00,0x8b,0x4c,0x24,0x10,0x5f,0x5e,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x14,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b21c20[] = {0x64,0xa1,0x00,0x00,0x00,0x00,0x6a,0xff,0x68,0x18,0xce,0xcb,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x83,0xec,0x08,0x80,0x3d,0xdc,0xd6,0x08,0x01,0x00,0x56,0x57,0x8b,0xf1,0x74,0x11,0x8b,0xfe,0x89,0x7c,0x24,0x0c,0xe8,0x80,0x1e,0x01,0x00,0x88,0x44,0x24,0x08,0xeb,0x04,0x8b,0x7c,0x24,0x0c,0x8b,0x8e,0x6c,0x17,0x00,0x00,0x85,0xc9,0x8b,0x44,0x24,0x20,0xc7,0x44,0x24,0x18,0x00,0x00,0x00,0x00,0x74,0x0c,0x85,0xc0,0x74,0x08,0x8b,0x51,0x08,0x3b,0x50,0x08,0x74,0x56,0x85,0xc0,0x89,0x86,0x6c,0x17,0x00,0x00,0x74,0x17,0x8b,0x8e,0x10,0x1a,0x00,0x00,0x8b,0x40,0x08,0x8b,0x11,0x50,0x51,0x8b,0x8a,0xac,0x01,0x00,0x00,0xff,0xd1,0xeb,0x2e,0x85,0xc9,0x75,0x17,0x38,0x0d,0xdc,0xd6,0x08,0x01,0xc7,0x44,0x24,0x18,0xff,0xff,0xff,0xff,0x74,0x3e,0x8b,0x54,0x24,0x08,0x52,0xeb,0x30,0x8b,0x86,0x10,0x1a,0x00,0x00,0x8b,0x08,0x8b,0x91,0xac,0x01,0x00,0x00,0x6a,0x00,0x50,0xff,0xd2,0x83,0x86,0xbc,0x1b,0x00,0x00,0x01,0x80,0x3d,0xdc,0xd6,0x08,0x01,0x00,0xc7,0x44,0x24,0x18,0xff,0xff,0xff,0xff,0x74,0x0c,0x8b,0x44,0x24,0x08,0x50,0x8b,0xcf,0xe8,0x11,0x1e,0x01,0x00,0x8b,0x4c,0x24,0x10,0x5f,0x5e,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x14,0xc2,0x04,0x00};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_renderer_shader_binding_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_shader_binding_probe.obj /Fe:local/native_renderer_shader_binding_probe.exe local/native_renderer_shader_binding_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_shader_binding_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n"
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_archive",
+    "policy": "Copy absent paths only; existing paths require byte equality. All copied bytes checked; no overwrite.",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\include\\bsp\\native_renderer_shader_binding.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\include\\bsp\\native_renderer_shader_binding.hpp",
+        "bytes": 1436,
+        "sha256": "2a719fe1acb5f5ab340abe5ed9dc1bace358b31e39efdcb3b4fa45308b95b686"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\src\\native_renderer_shader_binding.cpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\src\\native_renderer_shader_binding.cpp",
+        "bytes": 3044,
+        "sha256": "2255d49b57cbee28ae641d9653ec3a9916ce0b6007ab4d950f874cbef08d9209"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\docs\\NATIVE_RENDERER_SHADER_BINDING.md",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\docs\\NATIVE_RENDERER_SHADER_BINDING.md",
+        "bytes": 3694,
+        "sha256": "b3f09955b20f1587bb99afc73a768d026462956182d94fdef92bc50b2eacdca1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\cmake\\startup.cmake",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 114798,
+        "sha256": "1d7fa2971348d0c49a119e124297623a8ecd548df33e8e588bce928ee5a8cded"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+        "bytes": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\src\\native_renderer_synchronization_actual.cpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\src\\native_renderer_synchronization_actual.cpp",
+        "bytes": 3242,
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\include\\bsp\\random_threads.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\include\\bsp\\random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_probe.cpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_probe.cpp",
+        "bytes": 12561,
+        "sha256": "efc34b6de317384d4e8d6693b0bdc761f4c5af6513787f62032a496b20c39b74"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_probe.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_probe.exe",
+        "bytes": 23040,
+        "sha256": "1b535f2db5df45d014bc86be515153a1a478c91705aeaf7d7ef8224b35d6ce4d",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_probe.obj",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_probe.obj",
+        "bytes": 92618,
+        "sha256": "42a247a69cb62fc017a9f2ffdd769b80427e9670d60798973d0d80c1a9b038d3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_probe.log",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_probe.log",
+        "bytes": 1080,
+        "sha256": "e972bb89bcbfdff4a87f7f6201c07b3a9917d7377d7de71bb324b7835712aa9f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_reference.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_reference.hpp",
+        "bytes": 2388,
+        "sha256": "af87a04d1a33d8f2531bb0fb547ba8e9ca099662c946be0a1b6e354d131bbf72"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\build_native_renderer_shader_binding_probe.ps1",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\build_native_renderer_shader_binding_probe.ps1",
+        "bytes": 1855,
+        "sha256": "91b3c8476a74b86a26a7507ad516fd1dc1f87abfc2da96cad0a587fb48434972"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\prepare_native_renderer_shader_binding.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\prepare_native_renderer_shader_binding.py",
+        "bytes": 3259,
+        "sha256": "b1297d3065ff96c2d34aac59a05b99a08df3f55b0c7add5ec1afd4bab32c7dd3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\append_native_renderer_shader_source.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\append_native_renderer_shader_source.py",
+        "bytes": 696,
+        "sha256": "d2c37d7a8c811bcfa2e6c34bead06cd4b145466322274d09eb2afa7d1c4577e7"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\finalize_native_renderer_shader_binding.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\finalize_native_renderer_shader_binding.py",
+        "bytes": 13533,
+        "sha256": "d8c832f94657faadd432220a806375bd267545d56e53c62f1a3ba3ecd1cec737"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_spans.json",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_spans.json",
+        "bytes": 5649,
+        "sha256": "130d494a36207589ed4e8d7e2f0442efb55b461bcbcc666e7e04051b70427104"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_old_comments.log",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_old_comments.log",
+        "bytes": 3198,
+        "sha256": "7651f936f7d91cb48d4ca91061e1e191a67fba941e293723e060d7887981a2cc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_build.log",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_build.log",
+        "bytes": 46894,
+        "sha256": "262b5ef4ca4baf87198bf6e12f0c87db4c92b1ec780482382bf018bd4a3e79ca"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_seeds.log",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_tools.json",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_tools.json",
+        "bytes": 1456,
+        "sha256": "82832e32b2a6ed46487467b6523b13f0ce71cac85ff29dabf6906f59ce1dec62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57766248,
+        "sha256": "2eb698037efefc8a112369440e96a7a959987fc4b3797d77010bc1ab253c5fdc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455880,
+        "sha256": "2800d94c7c42ee911b0d0aae564219c4de42ead403fd4837dec4d4a5ef4948e4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72126,
+        "sha256": "dce0b79a679fc882125c329db82316647d239d6e9b83d076888e41978e6519d1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\tools\\bsp.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\scripts\\build.ps1",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00b21d10.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00b21d10.txt",
+        "bytes": 1099,
+        "sha256": "2295b555a8740cbde32c5d097f8eefaac13527b983ced80e0c229a463e1a494f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00b21c20.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00b21c20.txt",
+        "bytes": 1099,
+        "sha256": "0232acf3b9ec96fa310a5fd5591d21a0676eadd8c4d066db3e7d8c62307fc794"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00cbce38.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00cbce38.txt",
+        "bytes": 53,
+        "sha256": "8f239cc0879eba7d7fb121da8bcb8fdf5038f054ffd4b9dbcda687d19a21d3ea"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00df53f8.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00df53f8.txt",
+        "bytes": 183,
+        "sha256": "ae6dc9fc9eedb93aa4a798dc05513cf7dd8147a35adf3dc32283e64f24ba95cf"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00df53f0.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00df53f0.txt",
+        "bytes": 45,
+        "sha256": "0c647f1a6e8d03f78669f58b4bb38476ec0646ee167aaa4c8c108d94942f632d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00cbce30.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00cbce30.txt",
+        "bytes": 45,
+        "sha256": "c59455e61af6e1ba8b94bb247209ecdb2849fb9e32af5d6b8d3e9c5800b2e9e4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00cbce18.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00cbce18.txt",
+        "bytes": 53,
+        "sha256": "f16b87328dd5b34dcf091a452cd1c1b3a2b63cef25764ec8891946aa41def53c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00df53cc.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00df53cc.txt",
+        "bytes": 183,
+        "sha256": "015dce901740505621588056f5debd67d9460d9ef8e696a17c54fd8e7ac7c426"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00df53c4.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00df53c4.txt",
+        "bytes": 45,
+        "sha256": "b21d2c85b16ce81bd26bfa567413c2bffcf06bf100cac28083149507005cf326"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_00cbce10.txt",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_00cbce10.txt",
+        "bytes": 45,
+        "sha256": "5993ca3bfc84180b1ab882962f9fdeef4138c71dba570c889fb77768c78c9fa1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\include\\bsp\\random.hpp",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\include\\bsp\\random.hpp",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-shader-binding\\local\\native_renderer_shader_binding_probe.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\inputs\\local\\native_renderer_shader_binding_probe.exe",
+        "bytes": 23040,
+        "sha256": "1b535f2db5df45d014bc86be515153a1a478c91705aeaf7d7ef8224b35d6ce4d",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "Loaded PE machine, reported module path, and canonical file from a handle opened in same running x86 process. Actual Enter/LeaveCriticalSection addresses mapped to provider modules.",
+    "hash_basis": "Post-run disk file and archived copy hash, not mapped-image hash.",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "role_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "role_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\msvcp140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "pe_machine": "014c",
+        "role_name": "msvcp140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\kernel32.dll",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "pe_machine": "014c",
+        "role_name": "kernel32.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "ntdll.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "actual_Win32_guard_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\providers\\EnterCriticalSection\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "EnterCriticalSection",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c",
+        "observed_function_VA": "76f943e0"
+      },
+      {
+        "role": "actual_Win32_guard_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_renderer_shader_binding_archive\\runtime\\providers\\LeaveCriticalSection\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "LeaveCriticalSection",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c",
+        "observed_function_VA": "76f93460"
+      }
+    ],
+    "checked_but_unloaded": [
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "Original register/private-frame/FH3/SEH identity not reproduced.",
+    "Mode transitions that expose an unwritten native guard record remain outside valid native domain.",
+    "No original exceptional execution or second cleanup-exception injection.",
+    "Scripted COM fixture does not establish real D3D9 shader/device compatibility or gameplay.",
+    "Tool executable archive does not contain every tool dependency; runtime file hashes are separate from mapped-image identity."
+  ]
+}
