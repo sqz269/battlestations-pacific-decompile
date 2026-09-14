@@ -447,3 +447,42 @@ far as the contract above needs - partial, and not annotated by this packet.
 * **`b63d50_degenerate_callers`** - the routine divides by zero on a zero-length row with no
   guard. Establish whether any caller can reach it with an uninitialised or collapsed pose, and
   what a resulting `nan` does downstream in `0042D0D0` -> `00521370` -> the gun command.
+
+## Correction from docs/SCENE_ATTACH_LOCAL_FRAMES.md (packet cc7_scene_attach_local_frames)
+
+This document closed with a **bounded negative result**: no producer of a pose local `entity+74h`
+read at the time introduced scale, with `009259C4` in `BSP_SceneNode_AttachToParents` named as the
+one unread path. That path has now been read, and the answer reverses the conclusion.
+
+- **Was:** "no producer read so far puts scale into a pose local", and the accompanying suggestion
+  that mount bases are orthonormal in practice.
+  **Is:** **shipped data carries scale.** The `.scn` `localframe` statement is parsed at `0046D150`
+  and canonicalised at `0046D168..0046D222` into a **similarity** `s*R + t`: the basis is
+  orthonormalised through `0085DC80`, which removes shear and per-row scale, and then the nine basis
+  elements are multiplied by `s = |authored row 0|` again at `0046D1BF..0046D222` before the buffer
+  is handed to the creator as `localFrame` at `0046D592`/`0046D5A4`. Uniform scale is preserved **by
+  design**. Verified at integration: `0046D1C3 FLD [ESP+14h]` loads the scalar and `0046D1D0`
+  onward multiplies it back into the consecutive basis floats.
+
+- **How much.** A full parse of all 259 shipped `.scn` files - 133,655 `localframe` statements -
+  finds **7,621 with `s` outside `1 +/- 1e-3`**, ranging `0.1586` to `3.0`. By kind: LandFort 7,133,
+  Stationary 421, CommandBuilding 17, **DestroyerGen 7**, Path 2.
+
+- **It reaches guns.** 105 of the scaled LandForts are anti-aircraft emplacements -
+  `'Heavy AA, Japanese 01'` at `s = 0.7069`. Through `asin(y/s)` a true 30 degree pitch reads
+  **45.017 degrees** there, and **35.266 degrees** on the destroyer `'L Hancock'` at `s = 0.866`;
+  above about 45.05 degrees true the extraction saturates at 90 degrees.
+
+- **Was:** the zero-length-row case treated as a hypothetical the search found no path to.
+  **Is:** reachable from shipped data. Two `NavPoint` frames author a zero row 2; `0085DC80`'s zero
+  guard leaves it zero and the cross product then zeroes row 0 as well. No gun sits under either
+  one, so the division by zero is not currently exercised - but the path exists.
+
+- **Note on the inverse itself.** None of this makes `00B63D50` wrong. A similarity keeps its basis
+  rows mutually orthogonal, so the routine still inverts correctly. The defect is downstream, in
+  `0042D0D0` running with `normalize = 0` and `00521370` taking `asin` of the raw `y`, exactly as
+  this document already described.
+
+- **Still open.** 15 dispatch sites push a local stack matrix whose construction was not read; two
+  of them, `00491A30` (a 64-byte-stride matrix array) and `006F3798` (a `+18h` record field), have
+  authored-data shape and are the next step.
