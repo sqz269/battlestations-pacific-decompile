@@ -95,3 +95,7 @@ The Win32 build and both existing CTests pass. Evidence, original bytes, oracle
 relocations, raw results and build records are retained under
 `local/unit_part_collision_ah/`; `reports/native_unit_part_collision_ah.json`
 records the exact scope and hashes.
+
+## Integrated validation
+
+Commit `686a4506eecda8ae61da6d18d19494b307686452` passes the Win32 build and both existing CTests. All 112 comparisons pass against that library. The 120-frame USN01 compatibility run passes its finite trajectory, unchanged Airfield2, avoidance, generic tick, participant, world-list and observer/pending-owner teardown checks. The preserved executable has SHA-256 `a967129008de58eb9eaeec7460b11d9837a403428c0b52a0bbeb2d837644a251`. The mission run does not establish collision-builder admission or gameplay parity. The report references an immutable manifest retaining original bytes, fixture output, linked objects, compilation dependencies and mission artifacts.
