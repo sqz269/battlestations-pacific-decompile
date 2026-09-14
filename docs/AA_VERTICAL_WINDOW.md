@@ -458,9 +458,12 @@ targeted refusals=12058  no_accept=12058  no_settle=1828  no_window=0
 **These are global, not per-category**, so they do not test this packet's category-1 prediction of
 roughly 450 and its falsifier is untouched. What they do show is the idle-domination reading
 generalised: **12058 of 72558 refusals held a target, so 83% of all refusals are idle gun
-instances.** `no_accept` is *identical* to `angle_refusals_targeted` rather than merely close, which
-is exactly right - a refused command is what makes `accepted` false, so the predicates coincide with
-no residual. `no_window = 0` against per-category `arc_blocked` of 222 and 952 satisfies the
+instances.** `no_accept` is *identical* to `angle_refusals_targeted`, but that is **definitional, not a
+confirmation**: `accepted` is the return value of the very call that increments `angle_refusals`, so
+on a targeted tick the two predicates are the same event. An earlier revision of this section
+presented the match as evidence that the reasoning held; it is a tautology and carries no
+information beyond `angle_refusals_targeted`. If the instrumentation is ever trimmed, that is the
+counter to drop. `no_window = 0` against per-category `arc_blocked` of 222 and 952 satisfies the
 `want_fire_no_window <= arc_blocked` self-test, and both are 0 for category 1 as predicted.
 
 ### Ordering constraint on the prescription
@@ -471,3 +474,27 @@ category, including the HEAVYARTILLERY and LIGHTARTILLERYFLAK that are currently
 landing hits on this mission. This is the one ordering in the prescription that is not safe to
 split, and it is the same half-applied failure that made the torpedo solver-speed fix read as a
 regression before its companion steps landed.
+
+### The ceiling that settles the falsifier without another run
+
+`set_bot_fire_target` fires once per gun per director think cycle, and the logged think time is
+2.000 s. The 500-tick run is 25 s, so 12.5 cycles, and 26 assignments over 12.5 cycles is **2.08 AA
+gun-instances holding a target at any moment**. The 3000-tick run agrees independently: 148 over 75
+cycles is **1.97**. So the absolute ceiling on category 1's targeted refusals is `2 x 500 = 1000`,
+and that assumes both guns refuse on *every* tick they hold a target.
+
+**1000 against a column of 10452 is 9.6%**, so **at least 90.4% of AA's `no_window` is idle gun
+instances**. The same ceiling at 3000 ticks gives 6000 against 62952, the same share. This packet's
+falsifier asked whether category 1's targeted refusals could be anywhere near 10452; they cannot
+reach a tenth of it, so the idle-domination reading stands and the global 12058 was correctly not
+treated as a refutation.
+
+The global figure corroborates it. Only three categories took any assignment, so only three can
+contribute targeted refusals at all - PLANEGUN's 41000, TORPEDO's, DEPTHCHARGE's and CATAPULT's are
+idle by construction. With AA capped at 1000, the 12058 is almost entirely HEAVYARTILLERY and
+LIGHTARTILLERYFLAK, which hold targets continuously and have mounts the superstructure genuinely
+blocks - which is also why those are the only two categories with non-zero `arc_blocked`.
+
+**The one genuinely new number is `no_settle = 1828.`** With the 1174 `arc_blocked` (222 + 952) it
+decomposes **3002 targeted-and-accepted ticks that still produced no shot**. That is the thread for
+whoever asks why HEAVYARTILLERY lands 29 shots rather than hundreds.

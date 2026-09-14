@@ -1412,6 +1412,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // refusal here is not automatically a defect: a beam mount cannot train
         // astern, so check the commanded bearing against the platform's windows
         // before reading a non-zero want_fire_no_accept as one.
+        // DEFINITIONAL, not independent evidence: `accepted` is the return of the
+        // same call that increments angle_refusals, so on a targeted tick this is
+        // the same event as angle_refusals_targeted and the two always match. Kept
+        // only so the decomposition below reads completely; it is the counter to
+        // drop first. docs/AA_VERTICAL_WINDOW.md.
         if (have_target && !accepted) ++summary.want_fire_no_accept;
         if (have_target && accepted && !settled) ++summary.want_fire_no_settle;
         if (have_target && accepted && settled && !may_fire_here) {
