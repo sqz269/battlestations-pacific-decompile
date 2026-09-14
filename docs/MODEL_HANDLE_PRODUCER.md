@@ -262,3 +262,74 @@ Two that byte scanning cannot reach and a third that it can:
    resolution is the standing candidate and has never been read.
 3. **A `memcpy` / `REP MOVSD` covering `class+50h`**, still unscanned. The destination would be a
    `LEA` of a *lower* offset than `50h`, so it needs a different scan shape than the ones here.
+
+# The deferred-reference path carries no model (packet `cc7_scene_deferred_model_refs`)
+
+Addresses: `0046AAB0` `BSP_SceneDatabase_ResolveDeferredReferences` (body `0046AAB0`-`0046AC38`,
+107 instructions, read in full), `0046A9F0`, `00925A90`, `00438E10`, `0077D600`.
+Globals `00E19A70`, `00E188A8`, `00E18560`, `00F87574`.
+
+Same contract and caveats: Ghidra read-only, no C++, no tests, `battlestationspacific.exe` only,
+mod artefacts not excluded.
+
+## Answer: no. It resolves names into commands, and touches nothing resource-shaped
+
+The body is short enough to read entirely, and every instruction is accounted for:
+
+```
+0046AAB3  walk the pending list at sceneDb+150h                       ; node+4h is the next link
+0046AAD0  rec = [node+8h] ; EDI = [rec] (the unit) ; EBP = [rec+8h]   ; the target's name,
+0046AAE2      defaulting to the empty string 00E18560 when null
+0046AAE7  scan the global scene-entity list [00E19A70]
+0046AAFA      name = entry->vtable[4h]()
+0046AB03      00438E10 BSP_CString_CompareInsensitive(EBP, name)      ; advance on mismatch
+0046AB23  on a match, ESI = the entity, and one of two arms:
+0046AB2F   A: [rec+0Ch] != 0 -> second name [rec+10h] (same empty default)
+0046AB41      00925A90 BSP_EntityRegistry_FindEntityByName(world[+19CCh], name)
+0046AB55      record = { 00F87574..7Ch (the read-only zero vector), byte 1,
+0046AB84                 the found entity, word [found+174h] }
+0046AB9B   B: else require ESI->vtable[8h]() false, refresh the unit's pose when
+0046ABA8      unit+C8h is clear (00414DB0), and build the record from the unit's own
+0046ABB7      world position unit+FCh / +100h / +104h
+0046AC0B  0077D600 BSP_Entity_IssueCommand(this = EDI, ESI, &record, 1)
+0046AC34  tail-jump to 0046A9F0 BSP_SceneDatabase_ClearPendingReferences
+```
+
+`unit+C8h`, `00414DB0` and `unit+FCh/+100h/+104h` are `kPoseValidByte`, the pose refresh and the
+world-position triple that `include/bsp/plane_flight.hpp` already names, which is what fixes `EDI`
+as a unit and the record as a **world-position command target**. In arm A the position is the
+read-only **zero** vector, so the target is the entity itself rather than a point.
+
+**There is no model handle, no `.MMOD`, no resource call, and no write to any `+50h`.** A scan of
+`0046A000`-`0046B000` for `MOV [reg+50h], reg/imm`, `LEA reg,[reg+50h]` and `MOVSS [reg+50h], xmm`
+in both encodings returns zero in every form — and, per the rule this document opens with, those
+forms are not vacuous here: their image-wide totals are 244, 43, 119 and 89.
+
+## What it does resolve, which is worth having anyway
+
+This is a **second native producer of unit commands**, independent of the Lua bindings, and it runs
+on the instantiate pass of `0046DF00 BSP_SceneFile_Read`. Each pending record is
+`{ unit, target-name, flag, secondary-name }` and becomes one `BSP_Entity_IssueCommand` call. So
+scene-authored orders reach a unit by **name**, resolved late against the scene-entity list, with
+`BSP_EntityRegistry_FindEntityByName` as the second lookup — relevant to the order chain in
+`docs/PILOT_ORDER_BINDINGS.md`, which lists this function as a native command caller without saying
+what it resolves.
+
+## Five negatives now stand
+
+1. No write to `class+50h` in any scanned form or window beyond the null at `0087C6A3`.
+2. No slot-`+20h` dispatch in any of the twenty callers of `BSP_VehicleClass_GetOrCreate`.
+3. No slot-`+20h` dispatch within `60h` bytes of a `unit+538h` load anywhere in `.text`.
+4. No non-vtable reference to any of the five slot-`+20h` implementations.
+5. **The deferred-reference path carries no model.**
+
+The standing limit is unchanged and is still the thing that would overturn (2)-(4): a dispatch whose
+descriptor arrives as a **function parameter**, which byte scanning cannot see.
+
+## Next
+
+The `memcpy` / `REP MOVSD` scan named above is now the only byte-reachable angle left on
+`class+50h`. Beyond it the question needs the call graph, or a different hypothesis entirely — that
+the model reaches the **unit** rather than the class, in which case `class+50h` is a red herring and
+the search should start from `docs/GEOM_MESH_RESOURCE.md`'s decoder and
+`docs/GAME_RESOURCE_PARSER_REGISTRATION.md`'s registration row instead.
