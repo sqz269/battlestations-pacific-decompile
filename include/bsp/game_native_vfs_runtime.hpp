@@ -1,10 +1,12 @@
 #pragma once
 
 #include "bsp/native_path_canonicalizer.hpp"
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace bsp {
@@ -73,6 +75,23 @@ public:
     // full 00738360 search registrations. Archive factory tail follows later.
     void run_phase2_mount_scan_search(const char* current_directory_with_separator);
     bool exists(const char* path);
+    // BDF4C0 mutates the pooled caller name even on a normal false result.
+    // Copy that final spelling back before releasing the complete native frame.
+    // An interrupted native call retains its frame/header in this runtime;
+    // retain this runtime and all borrowed inputs through process exit then.
+    bool resolve_existing(std::string& mutable_name);
+    // Diagnostics cover both existing-name and direct-name resolution.
+    bool has_failed_name_resolution() const noexcept;
+    std::uint32_t name_resolution_failure_site() const noexcept;
+    // BDD6E0 tests the normalized input directly against current mounts.
+    // Unlike candidate resolution, a normal false leaves output unchanged.
+    bool direct_resolve(const std::string& input, std::string& output);
+    // BDD990 traverses actual mounts and builds an actual pooled intrusive
+    // result list. Copy its ordered, deduplicated names before releasing it.
+    std::vector<std::string> enumerate(const char* directory, const char* extension,
+        std::uint32_t flags);
+    // Preserve BDD340's five raw date words, including its all-zero result.
+    std::array<std::uint32_t, 5> file_date(const char* path);
     // Read up to capacity bytes; report the source's actual byte count. A null
     // open returns false; unsupported profiles propagate as source errors.
     bool read(const char* path, void* output, std::uint32_t capacity,
@@ -82,6 +101,10 @@ public:
     // vector. Length, allocation, read, and stream-release failures throw.
     // Partial reads are retried; reaching zero before length is a short read.
     std::optional<std::vector<std::uint8_t>> read_all(const char* path);
+    // Pass the complete original flags to the raw open route. The one-argument
+    // overload retains mode 2; this overload includes descriptor mode 32h.
+    std::optional<std::vector<std::uint8_t>> read_all(const char* path,
+        std::uint32_t flags);
     // Call only after the shared 01090AA0 drain. Remove this bundle's borrowed
     // dispatch bindings and clear its matching VFS publication before teardown.
     void retire_after_shared_drain() noexcept;
