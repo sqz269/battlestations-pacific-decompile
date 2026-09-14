@@ -382,5 +382,12 @@
     "No new runtime unit/scene/model/list owner;no production binding",
     "No native FH3/SEH/callee-internal exceptions or gameplay proof",
     "No game frame claims or executable path admission"
-  ]
+  ],
+  "integration_review_aa": {
+    "direct_rows": 40,
+    "failed": 0,
+    "note": "The integrator defined the incoming owner007F1FE0..007F2280 from verified641-byte listing evidence. All40 direct call rows now pass; the archived worker proof retains its original39/40 result. The4CEE30 FH3 selectorC65B48..C65B51 is now defined and named. No additional caller source or native unwind validation is claimed.",
+    "definitions": "reports/orch6_aa_function_definitions.json",
+    "flow": "reports/orch6_aa_flow_repair.json"
+  }
 }

@@ -129,3 +129,8 @@ function. The report explicitly bounds its raw caller at `007F1FE0..007F2280`
 This missing incoming owner is the sole mechanical check failure.
 Build and controlled fixture evidence do not establish a working unit owner,
 native exception dispatch, actual callee bindings or gameplay equivalence.
+
+
+## Integration review, batch AA
+
+Correction from `docs/ORCH6_RECONSTRUCTION_AA.md`: The integrator defined the incoming owner007F1FE0..007F2280 from verified641-byte listing evidence. All40 direct call rows now pass; the archived worker proof retains its original39/40 result. The4CEE30 FH3 selectorC65B48..C65B51 is now defined and named. No additional caller source or native unwind validation is claimed.

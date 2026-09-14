@@ -2070,5 +2070,12 @@
     "probe_manifest": "local/model_group_review_manifest.json",
     "run": "local/model_group_probe_result.json",
     "build": "local/model_group_build_final.log"
+  },
+  "integration_review_aa": {
+    "direct_rows": 197,
+    "failed": 0,
+    "note": "The integrator verified all197 direct rows, archived the609 manifest hashes, saved confirmed names/evidence and refreshed exports. The24 raw incoming call spans retain their worker-recorded missing function ownership; they are not inferred functions or reconstructed bodies.",
+    "definitions": "reports/orch6_aa_function_definitions.json",
+    "flow": "reports/orch6_aa_flow_repair.json"
   }
 }

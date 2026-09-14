@@ -121,3 +121,8 @@ and exact compiler/header/SDK/library hashes. The integrator must archive
 `model_group_review_manifest.json` inputs and artifacts before worktree
 cleanup. Full game execution, arbitrary application dispatch targets and
 CRT Watson termination are not validated here.
+
+
+## Integration review, batch AA
+
+Correction from `docs/ORCH6_RECONSTRUCTION_AA.md`: The integrator verified all197 direct rows, archived the609 manifest hashes, saved confirmed names/evidence and refreshed exports. The24 raw incoming call spans retain their worker-recorded missing function ownership; they are not inferred functions or reconstructed bodies.

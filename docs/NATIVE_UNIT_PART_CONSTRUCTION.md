@@ -144,3 +144,8 @@ relocations, linked archive dependencies, discovered compiler headers, SDK
 libraries, build commands, native bytes, probe inputs/outputs and tools are
 frozen in the self-contained `local/part_construction_retained` tree with a
 SHA-256 manifest. This is source/fixture evidence, not game validation.
+
+
+## Integration review, batch AA
+
+Correction from `docs/ORCH6_RECONSTRUCTION_AA.md`: The integrator defined C84B64..C84B6D and saved the FH3 selector name. Internal post-free listing gaps were repaired and exports refreshed. Explicit post-free tails were decoded, but Ghidra stored ownership remains truncated for710870,7108E0 and711000; these providers remain required whole bodies. The712B40 internal gap is repaired. All30 direct/tail/caller rows pass. Native unwind remains untested.

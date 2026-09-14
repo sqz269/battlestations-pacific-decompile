@@ -78,7 +78,9 @@ RenderCommandReference*& construct_admitted_point(RenderCommandReference*& outpu
 }
 } // namespace
 
-void* create_point_announcement_0049c940(PointAnnouncementManagerView manager,
+namespace {
+template<class ReadOwner>
+void* create_point_announcement_body(ReadOwner read_owner,
     const std::array<float, 3>& captured_xyz,
     const std::array<float, 3>& secondary_xyz, std::int32_t descriptor,
     PointAnnouncementConstruction& construction) {
@@ -86,13 +88,33 @@ void* create_point_announcement_0049c940(PointAnnouncementManagerView manager,
     void* raw = construction.allocate_00bf681b(0x30);
     if (!raw) return nullptr;
     try {
-        construction.construct_0049c000(raw, manager.owner_08,
+        construction.construct_0049c000(raw, read_owner(),
             captured_xyz, secondary_xyz, descriptor);
     } catch (...) {
         construction.free_00bf65ac(raw); // C63330, state0 -> -1
         throw;
     }
     return raw;
+}
+} // namespace
+
+void* create_point_announcement_0049c940(PointAnnouncementManagerView manager,
+    const std::array<float, 3>& captured_xyz,
+    const std::array<float, 3>& secondary_xyz, std::int32_t descriptor,
+    PointAnnouncementConstruction& construction) {
+    return create_point_announcement_body([&manager]() {
+        return static_cast<void* const volatile&>(manager.owner_08);
+    }, captured_xyz, secondary_xyz, descriptor, construction);
+}
+
+void* create_point_announcement_0049c940(void* actual_manager,
+    const std::array<float, 3>& captured_xyz,
+    const std::array<float, 3>& secondary_xyz, std::int32_t descriptor,
+    PointAnnouncementConstruction& construction) {
+    return create_point_announcement_body([actual_manager]() {
+        return *reinterpret_cast<void* const volatile*>(
+            static_cast<const unsigned char*>(actual_manager) + 8);
+    }, captured_xyz, secondary_xyz, descriptor, construction);
 }
 
 void copy_point_record_xyz_0049c1db(float* actual_record_xyz_08,
