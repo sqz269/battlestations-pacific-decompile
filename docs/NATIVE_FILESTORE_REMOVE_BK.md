@@ -95,3 +95,8 @@ The explicit source interface is not a binary ABI or original FH3 replacement.
 arbitrary EH-frame aliases, SEH, concurrent mutation and gameplay remain outside
 the validated contract. Primary integration/CMake and game validation are
 separate; this packet changed only its four leased source/evidence files.
+
+
+## Correction from docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md
+
+Primary integration at4c83a760 registered this TU and passed the complete Win32 build and both existing CTests. BE7130 now has an explicit ECX-provider/stack-name analysis signature; all71 instructions and previous annotations remain. The CC6D88 handler is now defined. The original worker receipt above predates these changes. See the integration report for current evidence and the separate native ABI/gameplay limits.

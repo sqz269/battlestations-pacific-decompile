@@ -1,0 +1,494 @@
+{
+  "packet": "orch4_native_loading_integration_bl",
+  "entries": [
+    {
+      "address": "00be7130",
+      "name": "BSP_FileStore_RemoveFile",
+      "before_comment": {
+        "address": "00be7130",
+        "function_name": "BSP_FileStore_RemoveFile",
+        "comment": "[BSP reconstruction 00be7130]\nHypothesis, not a recovered symbol. void __thiscall f(provider, const cString *path), RET 4. The stack argument is proven by MOV EDX,[ESP+0x20] at 00be7148 (entry ESP+4) and the RET 0x4 at 00be7207; Ghidra models it as taking the string in ECX, which is wrong because the caller shares one push with 00be80b0 (plain RET, no stack args). It normalizes the path copy via 00bee780, looks it up in the container at provider+0x14 against the end sentinel at provider+0x18 via 00be5e90, erases it via 00be6760 and traces \"cFileStore::RemoveFile: %s removed!\" or \"WARNING: cFileStore::RemoveFile: remove file %s not in store!\"."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body218 bytes; ECX actual 2Ch FileStore; one stack actual eight-byte name header; RET4; no specified semantic result reports/native_filestore_remove_bk.json",
+      "ledger_name_output": "00be7130 -> BSP_FileStore_RemoveFile\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be7130\", \"name\": \"BSP_FileStore_RemoveFile\", \"evidence\": \"Hypothesis, not a recovered symbol. void __thiscall f(provider, const cString *path), RET 4. The stack argument is proven by MOV EDX,[ESP+0x20] at 00be7148 (entry ESP+4) and the RET 0x4 at 00be7207; Ghidra models it as taking the string in ECX, which is wrong because the caller shares one push with 00be80b0 (plain RET, no stack args). It normalizes the path copy via 00bee780, looks it up in the container at provider+0x14 against the end sentinel at provider+0x18 via 00be5e90, erases it via 00be6760 and traces \\\"cFileStore::RemoveFile: %s removed!\\\" or \\\"WARNING: cFileStore::RemoveFile: remove file %s not in store!\\\".\"})\n",
+      "ledger_function_output": "00be7130 function remove_native_file_store_file_00be7130\n",
+      "after_comment": {
+        "address": "00be7130",
+        "function_name": "BSP_FileStore_RemoveFile",
+        "comment": "[BSP reconstruction 00be7130]\nHypothesis, not a recovered symbol. void __thiscall f(provider, const cString *path), RET 4. The stack argument is proven by MOV EDX,[ESP+0x20] at 00be7148 (entry ESP+4) and the RET 0x4 at 00be7207; Ghidra models it as taking the string in ECX, which is wrong because the caller shares one push with 00be80b0 (plain RET, no stack args). It normalizes the path copy via 00bee780, looks it up in the container at provider+0x14 against the end sentinel at provider+0x18 via 00be5e90, erases it via 00be6760 and traces \"cFileStore::RemoveFile: %s removed!\" or \"WARNING: cFileStore::RemoveFile: remove file %s not in store!\".\n\n[BSP reconstruction 00be7130] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body218 bytes; ECX actual 2Ch FileStore; one stack actual eight-byte name header; RET4; no specified semantic result reports/native_filestore_remove_bk.json"
+      }
+    },
+    {
+      "address": "004fb310",
+      "name": "BSP_ReserveNativeLoadingJobPointers",
+      "before_comment": {
+        "address": "004fb310",
+        "function_name": "FUN_004fb310",
+        "comment": ""
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body95 bytes; ECX actual0Ch pointer vector; stack signed capacity; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "004fb310 -> BSP_ReserveNativeLoadingJobPointers\n",
+      "ledger_function_output": "004fb310 function reserve_native_loading_job_pointers_004fb310\n",
+      "after_comment": {
+        "address": "004fb310",
+        "function_name": "BSP_ReserveNativeLoadingJobPointers",
+        "comment": "[BSP reconstruction 004fb310]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body95 bytes; ECX actual0Ch pointer vector; stack signed capacity; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "004fb4b0",
+      "name": "BSP_ResizeNativeLoadingJobPointers",
+      "before_comment": {
+        "address": "004fb4b0",
+        "function_name": "FUN_004fb4b0"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body80 bytes; ECX actual0Ch pointer vector; stack signed count; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "004fb4b0 -> BSP_ResizeNativeLoadingJobPointers\n",
+      "ledger_function_output": "004fb4b0 function resize_native_loading_job_pointers_004fb4b0\n",
+      "after_comment": {
+        "address": "004fb4b0",
+        "function_name": "BSP_ResizeNativeLoadingJobPointers",
+        "comment": "[BSP reconstruction 004fb4b0]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body80 bytes; ECX actual0Ch pointer vector; stack signed count; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "00501670",
+      "name": "BSP_LoadingWorkItems_Erase",
+      "before_comment": {
+        "address": "00501670",
+        "function_name": "BSP_LoadingWorkItems_Erase",
+        "comment": "[BSP reconstruction 00501670]\nECX job+8 workvector; signed index stack;RET4.16-byte record=owned name+0/+4,raw context+8,raw result+C. Left shift copies name/raw words, destroys lastname,decrements count; no raw pointee release or bounds guard.00509190 usesindex0. Original ABI: ECX work vector (job+8); stack signed index; RET4. Vector+0 data,+4 count,+8 capacity;16-byte records.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body166 bytes; ECX actual0Ch work vector; stack signed index; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "00501670 -> BSP_LoadingWorkItems_Erase\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00501670\", \"name\": \"BSP_LoadingWorkItems_Erase\", \"evidence\": \"ECX job+8 workvector; signed index stack;RET4.16-byte record=owned name+0/+4,raw context+8,raw result+C. Left shift copies name/raw words, destroys lastname,decrements count; no raw pointee release or bounds guard.00509190 usesindex0. Original ABI: ECX work vector (job+8); stack signed index; RET4. Vector+0 data,+4 count,+8 capacity;16-byte records.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00501670 function remove_native_loading_work_item_00501670\n",
+      "after_comment": {
+        "address": "00501670",
+        "function_name": "BSP_LoadingWorkItems_Erase",
+        "comment": "[BSP reconstruction 00501670]\nECX job+8 workvector; signed index stack;RET4.16-byte record=owned name+0/+4,raw context+8,raw result+C. Left shift copies name/raw words, destroys lastname,decrements count; no raw pointee release or bounds guard.00509190 usesindex0. Original ABI: ECX work vector (job+8); stack signed index; RET4. Vector+0 data,+4 count,+8 capacity;16-byte records.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00501670] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body166 bytes; ECX actual0Ch work vector; stack signed index; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "005018a0",
+      "name": "BSP_ReserveNativeLoadingWorkItems",
+      "before_comment": {
+        "address": "005018a0",
+        "function_name": "FUN_005018a0",
+        "comment": ""
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body293 bytes; ECX actual0Ch work vector; stack signed capacity; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "005018a0 -> BSP_ReserveNativeLoadingWorkItems\n",
+      "ledger_function_output": "005018a0 function reserve_native_loading_work_items_005018a0\n",
+      "after_comment": {
+        "address": "005018a0",
+        "function_name": "BSP_ReserveNativeLoadingWorkItems",
+        "comment": "[BSP reconstruction 005018a0]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body293 bytes; ECX actual0Ch work vector; stack signed capacity; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "005019d0",
+      "name": "BSP_LoadingWorkItems_Resize",
+      "before_comment": {
+        "address": "005019d0",
+        "function_name": "BSP_LoadingWorkItems_Resize",
+        "comment": "[BSP reconstruction 005019d0]\nECX workvector;target countstack;RET4.16-byte records;grow zeroes fourDWORDs,shrink backwards destroys ownednames only. Rawcontext/result pointees untouched. Allocation helper005018a0 external. Original ABI: ECX work vector; stack signed target count; RET4. Growth zeros four DWORDs per record; shrink destroys names only.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body122 bytes; ECX actual0Ch work vector; stack signed count; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "005019d0 -> BSP_LoadingWorkItems_Resize\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"005019d0\", \"name\": \"BSP_LoadingWorkItems_Resize\", \"evidence\": \"ECX workvector;target countstack;RET4.16-byte records;grow zeroes fourDWORDs,shrink backwards destroys ownednames only. Rawcontext/result pointees untouched. Allocation helper005018a0 external. Original ABI: ECX work vector; stack signed target count; RET4. Growth zeros four DWORDs per record; shrink destroys names only.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "005019d0 function resize_native_loading_work_items_005019d0\n",
+      "after_comment": {
+        "address": "005019d0",
+        "function_name": "BSP_LoadingWorkItems_Resize",
+        "comment": "[BSP reconstruction 005019d0]\nECX workvector;target countstack;RET4.16-byte records;grow zeroes fourDWORDs,shrink backwards destroys ownednames only. Rawcontext/result pointees untouched. Allocation helper005018a0 external. Original ABI: ECX work vector; stack signed target count; RET4. Growth zeros four DWORDs per record; shrink destroys names only.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 005019d0] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body122 bytes; ECX actual0Ch work vector; stack signed count; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "005051a0",
+      "name": "BSP_LoadingJob_DestroyStorage",
+      "before_comment": {
+        "address": "005051a0",
+        "function_name": "BSP_LoadingJob_DestroyStorage",
+        "comment": "[BSP reconstruction 005051a0]\nECX job;RET. Full body005051a0-00505210,initialexporttruncatedatfreecall005051f9. Frees jobname+14/+18,shrinks workvector(job+8) to0 via005019d0,frees storage. No result release,FileBlock release,thread shutdown or object free. Original ABI: ECX job; no stack arguments; RET. Frees job name then shrinks work vector to0 and frees storage. Does not free job object.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body113 bytes; ECX actual24h job; no stack arguments; RET reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "005051a0 -> BSP_LoadingJob_DestroyStorage\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"005051a0\", \"name\": \"BSP_LoadingJob_DestroyStorage\", \"evidence\": \"ECX job;RET. Full body005051a0-00505210,initialexporttruncatedatfreecall005051f9. Frees jobname+14/+18,shrinks workvector(job+8) to0 via005019d0,frees storage. No result release,FileBlock release,thread shutdown or object free. Original ABI: ECX job; no stack arguments; RET. Frees job name then shrinks work vector to0 and frees storage. Does not free job object.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "005051a0 function destroy_native_loading_job_storage_005051a0\n",
+      "after_comment": {
+        "address": "005051a0",
+        "function_name": "BSP_LoadingJob_DestroyStorage",
+        "comment": "[BSP reconstruction 005051a0]\nECX job;RET. Full body005051a0-00505210,initialexporttruncatedatfreecall005051f9. Frees jobname+14/+18,shrinks workvector(job+8) to0 via005019d0,frees storage. No result release,FileBlock release,thread shutdown or object free. Original ABI: ECX job; no stack arguments; RET. Frees job name then shrinks work vector to0 and frees storage. Does not free job object.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 005051a0] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body113 bytes; ECX actual24h job; no stack arguments; RET reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "00505530",
+      "name": "BSP_ConstructNativeLoadingJob",
+      "before_comment": {
+        "address": "00505530",
+        "function_name": "FUN_00505530"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body134 bytes; ECX actual24h job; stack source8h name header; EAX job; RET4 reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "00505530 -> BSP_ConstructNativeLoadingJob\n",
+      "ledger_function_output": "00505530 function construct_native_loading_job_00505530\n",
+      "after_comment": {
+        "address": "00505530",
+        "function_name": "BSP_ConstructNativeLoadingJob",
+        "comment": "[BSP reconstruction 00505530]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body134 bytes; ECX actual24h job; stack source8h name header; EAX job; RET4 reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "005055c0",
+      "name": "BSP_EnqueueNativeLoadingJob",
+      "before_comment": {
+        "address": "005055c0",
+        "function_name": "FUN_005055c0"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body146 bytes; ECX actual20h loader; stack source8h name header; RET4; no promised result reports/native_loading_queue_work_items_bl.json",
+      "ledger_name_output": "005055c0 -> BSP_EnqueueNativeLoadingJob\n",
+      "ledger_function_output": "005055c0 function enqueue_native_loading_job_005055c0\n",
+      "after_comment": {
+        "address": "005055c0",
+        "function_name": "BSP_EnqueueNativeLoadingJob",
+        "comment": "[BSP reconstruction 005055c0]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body146 bytes; ECX actual20h loader; stack source8h name header; RET4; no promised result reports/native_loading_queue_work_items_bl.json"
+      }
+    },
+    {
+      "address": "004fde20",
+      "name": "BSP_LoadingQueue_GetInstance",
+      "before_comment": {
+        "address": "004fde20",
+        "function_name": "BSP_LoadingQueue_GetInstance",
+        "comment": "[BSP reconstruction 004fde20]\nHypothesis, not a recovered symbol. Double-checked singleton accessor with the same shape as 004c1dd0: critical section from 00415350, 20h byte allocation, construction through the already-named BSP_LoadingQueue_Construct 004fdba0, registration with 00bd0c30 and cache in 00e18d4c. Application frame 00737a50 calls it at 00737b84 and passes the result in ECX to BSP_LoadingQueue_Update 00509190. cdecl, no arguments, RET, returns the instance in EAX. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit; no ABI-compatible implementation or runtime validation claim."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body189 bytes; No input, EAX owner, RET; source adds stable references to actual manager and loader publication cells reports/native_loading_queue_owner_bl.json",
+      "ledger_name_output": "004fde20 -> BSP_LoadingQueue_GetInstance\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004fde20\", \"name\": \"BSP_LoadingQueue_GetInstance\", \"evidence\": \"Hypothesis, not a recovered symbol. Double-checked singleton accessor with the same shape as 004c1dd0: critical section from 00415350, 20h byte allocation, construction through the already-named BSP_LoadingQueue_Construct 004fdba0, registration with 00bd0c30 and cache in 00e18d4c. Application frame 00737a50 calls it at 00737b84 and passes the result in ECX to BSP_LoadingQueue_Update 00509190. cdecl, no arguments, RET, returns the instance in EAX. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit; no ABI-compatible implementation or runtime validation claim.\"})\n",
+      "ledger_function_output": "004fde20 function get_native_loading_queue_owner_004fde20\n",
+      "after_comment": {
+        "address": "004fde20",
+        "function_name": "BSP_LoadingQueue_GetInstance",
+        "comment": "[BSP reconstruction 004fde20]\nHypothesis, not a recovered symbol. Double-checked singleton accessor with the same shape as 004c1dd0: critical section from 00415350, 20h byte allocation, construction through the already-named BSP_LoadingQueue_Construct 004fdba0, registration with 00bd0c30 and cache in 00e18d4c. Application frame 00737a50 calls it at 00737b84 and passes the result in ECX to BSP_LoadingQueue_Update 00509190. cdecl, no arguments, RET, returns the instance in EAX. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit; no ABI-compatible implementation or runtime validation claim.\n\n[BSP reconstruction 004fde20] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body189 bytes; No input, EAX owner, RET; source adds stable references to actual manager and loader publication cells reports/native_loading_queue_owner_bl.json"
+      }
+    },
+    {
+      "address": "004fdba0",
+      "name": "BSP_LoadingQueue_Construct",
+      "before_comment": {
+        "address": "004fdba0",
+        "function_name": "BSP_LoadingQueue_Construct",
+        "comment": "[BSP reconstruction 004fdba0]\nECXqueue observed20h-byteprefix,EAXsame,RET. Vtable00ceb198;workerstop+4=0,publishedjob+8=0,queuearray+10/count+14/cap+18=0,thread+1C=0. Creates initiallyunsignaled MANUAL-reset event+0C viaBSP_Event_Create CL1. Original ABI: ECX loading queue with observed20h-byte prefix; no stack args; EAX same queue; RET. Creates initially-unsignaled manual-reset event via CL1.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body89 bytes; ECX actual20h owner, EAX same owner, RET; source adds actual publication reference for EH clear reports/native_loading_queue_owner_bl.json",
+      "ledger_name_output": "004fdba0 -> BSP_LoadingQueue_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004fdba0\", \"name\": \"BSP_LoadingQueue_Construct\", \"evidence\": \"ECXqueue observed20h-byteprefix,EAXsame,RET. Vtable00ceb198;workerstop+4=0,publishedjob+8=0,queuearray+10/count+14/cap+18=0,thread+1C=0. Creates initiallyunsignaled MANUAL-reset event+0C viaBSP_Event_Create CL1. Original ABI: ECX loading queue with observed20h-byte prefix; no stack args; EAX same queue; RET. Creates initially-unsignaled manual-reset event via CL1.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "004fdba0 function construct_native_loading_queue_owner_004fdba0\n",
+      "after_comment": {
+        "address": "004fdba0",
+        "function_name": "BSP_LoadingQueue_Construct",
+        "comment": "[BSP reconstruction 004fdba0]\nECXqueue observed20h-byteprefix,EAXsame,RET. Vtable00ceb198;workerstop+4=0,publishedjob+8=0,queuearray+10/count+14/cap+18=0,thread+1C=0. Creates initiallyunsignaled MANUAL-reset event+0C viaBSP_Event_Create CL1. Original ABI: ECX loading queue with observed20h-byte prefix; no stack args; EAX same queue; RET. Creates initially-unsignaled manual-reset event via CL1.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 004fdba0] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body89 bytes; ECX actual20h owner, EAX same owner, RET; source adds actual publication reference for EH clear reports/native_loading_queue_owner_bl.json"
+      }
+    },
+    {
+      "address": "00504850",
+      "name": "BSP_LoadingQueue_OnFileStoreReady",
+      "before_comment": {
+        "address": "00504850",
+        "function_name": "BSP_LoadingQueue_OnFileStoreReady",
+        "comment": "[BSP reconstruction 00504850]\n[BSP reconstruction 00504850] update\nMissing function definition: separate 19-byte callback entry, complete raw span PE-matched. Ignores both FileStore name arguments; calls 004fde20, takes the current loader +10h array front, stores state 2, RET 8. No origin capture, name matching, retain/release, count check or stop-flag check. The audited state 1 front is retained by ordinary update paths, but other writers/accessor replacement require separate lifetime proof.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: Two stack arguments, unused; RET8. Consistent with FileStore two-name callee-cleanup callback; no ECX origin input.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body19 bytes; Two ignored stacked names, RET8; source adds cells and returns void, not native ABI thunk reports/native_loading_queue_owner_bl.json",
+      "ledger_name_output": "00504850 -> BSP_LoadingQueue_OnFileStoreReady\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00504850\", \"name\": \"BSP_LoadingQueue_OnFileStoreReady\", \"evidence\": \"[BSP reconstruction 00504850] update\\nMissing function definition: separate 19-byte callback entry, complete raw span PE-matched. Ignores both FileStore name arguments; calls 004fde20, takes the current loader +10h array front, stores state 2, RET 8. No origin capture, name matching, retain/release, count check or stop-flag check. The audited state 1 front is retained by ordinary update paths, but other writers/accessor replacement require separate lifetime proof.\\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: Two stack arguments, unused; RET8. Consistent with FileStore two-name callee-cleanup callback; no ECX origin input.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00504850 function native_loading_queue_on_filestore_ready_00504850\n",
+      "after_comment": {
+        "address": "00504850",
+        "function_name": "BSP_LoadingQueue_OnFileStoreReady",
+        "comment": "[BSP reconstruction 00504850]\n[BSP reconstruction 00504850] update\nMissing function definition: separate 19-byte callback entry, complete raw span PE-matched. Ignores both FileStore name arguments; calls 004fde20, takes the current loader +10h array front, stores state 2, RET 8. No origin capture, name matching, retain/release, count check or stop-flag check. The audited state 1 front is retained by ordinary update paths, but other writers/accessor replacement require separate lifetime proof.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: Two stack arguments, unused; RET8. Consistent with FileStore two-name callee-cleanup callback; no ECX origin input.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00504850] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body19 bytes; Two ignored stacked names, RET8; source adds cells and returns void, not native ABI thunk reports/native_loading_queue_owner_bl.json"
+      }
+    },
+    {
+      "address": "00bd1920",
+      "name": "BSP_Event_IsSignaled",
+      "before_comment": {
+        "address": "00bd1920",
+        "function_name": "BSP_Event_IsSignaled",
+        "comment": "[BSP reconstruction 00bd1920]\nMissingfunction exact00bd1920-00bd1951;ECXevent,HANDLE+4,RET,AL result. WaitForSingleObject(handle,0):OBJECT0 true,TIMEOUT/ABANDONED false,FAILED GetLastError thenfalse; unexpectedcodes preserveAL. LoadingQueue manualevent+10 uses this asworkbusy query. Original ABI: ECX native event wrapper with HANDLE+4; no stack args; AL Boolean for documented Win32 results; RET. Unexpected result codes retain low EAX byte.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body50 bytes; ECX actual8h event, raw AL status, RET; source returns uint8_t, upper EAX/flags not preserved reports/native_loading_queue_owner_bl.json",
+      "ledger_name_output": "00bd1920 -> BSP_Event_IsSignaled\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bd1920\", \"name\": \"BSP_Event_IsSignaled\", \"evidence\": \"Missingfunction exact00bd1920-00bd1951;ECXevent,HANDLE+4,RET,AL result. WaitForSingleObject(handle,0):OBJECT0 true,TIMEOUT/ABANDONED false,FAILED GetLastError thenfalse; unexpectedcodes preserveAL. LoadingQueue manualevent+10 uses this asworkbusy query. Original ABI: ECX native event wrapper with HANDLE+4; no stack args; AL Boolean for documented Win32 results; RET. Unexpected result codes retain low EAX byte.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bd1920 function poll_native_event_owner_00bd1920\n",
+      "after_comment": {
+        "address": "00bd1920",
+        "function_name": "BSP_Event_IsSignaled",
+        "comment": "[BSP reconstruction 00bd1920]\nMissingfunction exact00bd1920-00bd1951;ECXevent,HANDLE+4,RET,AL result. WaitForSingleObject(handle,0):OBJECT0 true,TIMEOUT/ABANDONED false,FAILED GetLastError thenfalse; unexpectedcodes preserveAL. LoadingQueue manualevent+10 uses this asworkbusy query. Original ABI: ECX native event wrapper with HANDLE+4; no stack args; AL Boolean for documented Win32 results; RET. Unexpected result codes retain low EAX byte.. Evidence: docs/LOADING_QUEUE_WORK_ITEMS.md; reports/loading_queue_work_items_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bd1920] update\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body50 bytes; ECX actual8h event, raw AL status, RET; source returns uint8_t, upper EAX/flags not preserved reports/native_loading_queue_owner_bl.json"
+      }
+    },
+    {
+      "address": "00504e10",
+      "name": "BSP_DestroyNativeLoadingWorkVector",
+      "before_comment": {
+        "address": "00504e10",
+        "function_name": "FUN_00504e10",
+        "comment": ""
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body23 bytes; ECX actual0Ch work-vector header; RET. Private source composition calls5019D0(0), then frees current array; no outer job or resource release. reports/native_loading_queue_flow_bl.json",
+      "ledger_name_output": "00504e10 -> BSP_DestroyNativeLoadingWorkVector\n",
+      "ledger_function_output": "00504e10 function destroy_work_vector\n",
+      "after_comment": {
+        "address": "00504e10",
+        "function_name": "BSP_DestroyNativeLoadingWorkVector",
+        "comment": "[BSP reconstruction 00504e10]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Full body23 bytes; ECX actual0Ch work-vector header; RET. Private source composition calls5019D0(0), then frees current array; no outer job or resource release. reports/native_loading_queue_flow_bl.json"
+      }
+    },
+    {
+      "address": "00c68808",
+      "name": "EH_handler_00c68808",
+      "before_comment": {
+        "address": "00c68808",
+        "function_name": "FUN_00c68808"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c68808 -> EH_handler_00c68808\n",
+      "after_comment": {
+        "address": "00c68808",
+        "function_name": "EH_handler_00c68808",
+        "comment": "[BSP reconstruction 00c68808]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c68833",
+      "name": "EH_handler_00c68833",
+      "before_comment": {
+        "address": "00c68833",
+        "function_name": "FUN_00c68833"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c68833 -> EH_handler_00c68833\n",
+      "after_comment": {
+        "address": "00c68833",
+        "function_name": "EH_handler_00c68833",
+        "comment": "[BSP reconstruction 00c68833]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c68cf7",
+      "name": "EH_handler_00c68cf7",
+      "before_comment": {
+        "address": "00c68cf7",
+        "function_name": "FUN_00c68cf7"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c68cf7 -> EH_handler_00c68cf7\n",
+      "after_comment": {
+        "address": "00c68cf7",
+        "function_name": "EH_handler_00c68cf7",
+        "comment": "[BSP reconstruction 00c68cf7]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c6918b",
+      "name": "EH_handler_00c6918b",
+      "before_comment": {
+        "address": "00c6918b",
+        "function_name": "FUN_00c6918b"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c6918b -> EH_handler_00c6918b\n",
+      "after_comment": {
+        "address": "00c6918b",
+        "function_name": "EH_handler_00c6918b",
+        "comment": "[BSP reconstruction 00c6918b]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c691eb",
+      "name": "EH_handler_00c691eb",
+      "before_comment": {
+        "address": "00c691eb",
+        "function_name": "FUN_00c691eb"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c691eb -> EH_handler_00c691eb\n",
+      "after_comment": {
+        "address": "00c691eb",
+        "function_name": "EH_handler_00c691eb",
+        "comment": "[BSP reconstruction 00c691eb]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c6920b",
+      "name": "EH_handler_00c6920b",
+      "before_comment": {
+        "address": "00c6920b",
+        "function_name": "FUN_00c6920b"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c6920b -> EH_handler_00c6920b\n",
+      "after_comment": {
+        "address": "00c6920b",
+        "function_name": "EH_handler_00c6920b",
+        "comment": "[BSP reconstruction 00c6920b]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00cc6d88",
+      "name": "EH_handler_00cc6d88",
+      "before_comment": {
+        "address": "00cc6d88",
+        "function_name": "FUN_00cc6d88"
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00cc6d88 -> EH_handler_00cc6d88\n",
+      "after_comment": {
+        "address": "00cc6d88",
+        "function_name": "EH_handler_00cc6d88",
+        "comment": "[BSP reconstruction 00cc6d88]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c68828",
+      "name": "Unwind@00c68828",
+      "before_comment": {
+        "address": "00c68828",
+        "function_name": "Unwind@00c68828",
+        "comment": ""
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete11-byte allocation unwind funclet now includes returning-free POP ECX/RET; inherited EBP/native FH3 remains an ABI boundary. Original compiler name preserved.",
+      "ledger_name_output": "00c68828 -> Unwind@00c68828\n",
+      "after_comment": {
+        "address": "00c68828",
+        "function_name": "Unwind@00c68828",
+        "comment": "[BSP reconstruction 00c68828]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete11-byte allocation unwind funclet now includes returning-free POP ECX/RET; inherited EBP/native FH3 remains an ABI boundary. Original compiler name preserved."
+      }
+    },
+    {
+      "address": "00c69200",
+      "name": "Unwind@00c69200",
+      "before_comment": {
+        "address": "00c69200",
+        "function_name": "Unwind@00c69200",
+        "comment": ""
+      },
+      "evidence": "BL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete11-byte allocation unwind funclet now includes returning-free POP ECX/RET; inherited EBP/native FH3 remains an ABI boundary. Original compiler name preserved.",
+      "ledger_name_output": "00c69200 -> Unwind@00c69200\n",
+      "after_comment": {
+        "address": "00c69200",
+        "function_name": "Unwind@00c69200",
+        "comment": "[BSP reconstruction 00c69200]\nBL actual-storage FileStore removal and loading-queue owner/work integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source behavior uses actual storage and current services. Independent listing review, strict Win32 compilation, focused source fixtures and the integrated Win32 build with both existing tests passed. Production loader update/lifetime, FileBlock and actual resource dispatch remain unbound; native binary/FH3/SEH and gameplay parity are not established. See docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md and reports/native_loading_queue_integration_bl.json. Complete11-byte allocation unwind funclet now includes returning-free POP ECX/RET; inherited EBP/native FH3 remains an ABI boundary. Original compiler name preserved."
+      }
+    }
+  ],
+  "source_functions": [
+    {
+      "address": "00be7130",
+      "function": "remove_native_file_store_file_00be7130",
+      "source": "src/native_filestore_remove.cpp",
+      "report": "reports/native_filestore_remove_bk.json",
+      "original_abi": "ECX actual 2Ch FileStore; one stack actual eight-byte name header; RET4; no specified semantic result",
+      "bytes": 218
+    },
+    {
+      "address": "004fb310",
+      "function": "reserve_native_loading_job_pointers_004fb310",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual0Ch pointer vector; stack signed capacity; RET4",
+      "bytes": 95
+    },
+    {
+      "address": "004fb4b0",
+      "function": "resize_native_loading_job_pointers_004fb4b0",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual0Ch pointer vector; stack signed count; RET4",
+      "bytes": 80
+    },
+    {
+      "address": "00501670",
+      "function": "remove_native_loading_work_item_00501670",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual0Ch work vector; stack signed index; RET4",
+      "bytes": 166
+    },
+    {
+      "address": "005018a0",
+      "function": "reserve_native_loading_work_items_005018a0",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual0Ch work vector; stack signed capacity; RET4",
+      "bytes": 293
+    },
+    {
+      "address": "005019d0",
+      "function": "resize_native_loading_work_items_005019d0",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual0Ch work vector; stack signed count; RET4",
+      "bytes": 122
+    },
+    {
+      "address": "005051a0",
+      "function": "destroy_native_loading_job_storage_005051a0",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual24h job; no stack arguments; RET",
+      "bytes": 113
+    },
+    {
+      "address": "00505530",
+      "function": "construct_native_loading_job_00505530",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual24h job; stack source8h name header; EAX job; RET4",
+      "bytes": 134
+    },
+    {
+      "address": "005055c0",
+      "function": "enqueue_native_loading_job_005055c0",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_work_items_bl.json",
+      "original_abi": "ECX actual20h loader; stack source8h name header; RET4; no promised result",
+      "bytes": 146
+    },
+    {
+      "address": "004fde20",
+      "function": "get_native_loading_queue_owner_004fde20",
+      "source": "src/native_loading_queue_owner.cpp",
+      "report": "reports/native_loading_queue_owner_bl.json",
+      "original_abi": "No input, EAX owner, RET; source adds stable references to actual manager and loader publication cells",
+      "bytes": 189
+    },
+    {
+      "address": "004fdba0",
+      "function": "construct_native_loading_queue_owner_004fdba0",
+      "source": "src/native_loading_queue_owner.cpp",
+      "report": "reports/native_loading_queue_owner_bl.json",
+      "original_abi": "ECX actual20h owner, EAX same owner, RET; source adds actual publication reference for EH clear",
+      "bytes": 89
+    },
+    {
+      "address": "00504850",
+      "function": "native_loading_queue_on_filestore_ready_00504850",
+      "source": "src/native_loading_queue_owner.cpp",
+      "report": "reports/native_loading_queue_owner_bl.json",
+      "original_abi": "Two ignored stacked names, RET8; source adds cells and returns void, not native ABI thunk",
+      "bytes": 19
+    },
+    {
+      "address": "00bd1920",
+      "function": "poll_native_event_owner_00bd1920",
+      "source": "src/native_loading_queue_owner.cpp",
+      "report": "reports/native_loading_queue_owner_bl.json",
+      "original_abi": "ECX actual8h event, raw AL status, RET; source returns uint8_t, upper EAX/flags not preserved",
+      "bytes": 50
+    },
+    {
+      "address": "00504e10",
+      "function": "destroy_work_vector",
+      "ghidra_name": "BSP_DestroyNativeLoadingWorkVector",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "report": "reports/native_loading_queue_flow_bl.json",
+      "bytes": 23,
+      "original_abi": "ECX actual0Ch work-vector header; RET. Private source composition calls5019D0(0), then frees current array; no outer job or resource release."
+    }
+  ],
+  "state": "names_and_evidence_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

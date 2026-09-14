@@ -126,3 +126,8 @@ loading, live worker or gameplay validation claim.
 The next production work still needs the actual loader owner/current-front
 callback, update/lifecycle routines, FileBlock behavior and resource dispatch.
 The work-attachment path `504D20/4FE700/5048F0` is outside this packet.
+
+
+## Correction from docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md
+
+Primary integration at4c83a760 registered this TU and passed the complete Win32 build and both existing CTests.4FB310 and5018A0 now own38 and104 reachable instructions through their returning-free continuations. Unreachable3-byte alignment50196D..50196F remains excluded.504E10 andC69200 own their complete10 and5 instructions respectively. Four source FH3 handlers are defined; all31 direct call rows pass. Earlier hole observations and frozen-library fixture evidence above are preserved as historical records.

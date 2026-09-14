@@ -1,0 +1,173 @@
+{
+  "reason": "Restore 504E10 returning-free epilogue membership using supported endpoints; no inline scripts or callee no-return edits.",
+  "entries": [
+    {
+      "address": "00504e10",
+      "end_exclusive": "00504e27",
+      "bytes": 23,
+      "sha256": "123b2c8e322d0fc20e90a67001d3f0310fa5dc7ef419387a705b134105e350b9",
+      "before_documentation": {
+        "hash": "d66c02ce3fbd5d6282313791cafe80a48a09dbbf66dd755d1c4bfd4b2d26e375",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00504e10",
+        "function_name": "FUN_00504e10",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_ownership": [
+        {
+          "address": "00504e10",
+          "mnemonic": "push",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00504e11",
+          "mnemonic": "push",
+          "operands": "0",
+          "owned": true
+        },
+        {
+          "address": "00504e13",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "owned": true
+        },
+        {
+          "address": "00504e15",
+          "mnemonic": "call",
+          "operands": "0x5019d0",
+          "owned": true
+        },
+        {
+          "address": "00504e1a",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]",
+          "owned": true
+        },
+        {
+          "address": "00504e1c",
+          "mnemonic": "push",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00504e1d",
+          "mnemonic": "call",
+          "operands": "0xbf6989",
+          "owned": true
+        },
+        {
+          "address": "00504e22",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "owned": false
+        },
+        {
+          "address": "00504e25",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "owned": false
+        },
+        {
+          "address": "00504e26",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": false
+        }
+      ],
+      "original_abi": "ECX actual 0Ch work-vector header; RET. Calls resize5019D0(0), reloads current data pointer, frees it, ADD ESP4/POP ESI/RET. No semantic return.",
+      "prototype_note": "Corrects unknown zero-input prototype with explicit ECX and unused EDX source view; not a native binary replacement claim.",
+      "after_documentation": {
+        "hash": "83d4e6d066dec83d15aa991f19c19b24ace7a1100be9ab352be37961410bbd74",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00504e10",
+        "function_name": "FUN_00504e10",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "work_vector",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 70.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 10,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00504e1d"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00504e1d (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00504e10"
+      },
+      "result": "{\"success\": true, \"address\": \"00504e10\", \"deleted_function\": \"FUN_00504e10\", \"body_size\": 18, \"message\": \"Function 'FUN_00504e10' deleted at 00504e10\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00504e10",
+        "end_address": "00504e27"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00504e10\", \"end_address\": \"00504e26\", \"bytes_disassembled\": 23, \"message\": \"Successfully disassembled 23 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00504e10",
+        "name": "FUN_00504e10",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00504e10\", \"function_name\": \"FUN_00504e10\", \"entry_point\": \"00504e10\", \"body_size\": 23, \"message\": \"Function created successfully at 00504e10\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00504e10",
+        "prototype": "void __fastcall FUN_00504e10(void* work_vector, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00504e10 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00504e10",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00504e10\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

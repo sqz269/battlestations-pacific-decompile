@@ -140,3 +140,8 @@ dispatcher is installed. Getter/callback wiring must wait for actual
 The update/worker/resource-loading bodies and worker exit lifetime remain
 separate dependencies. This packet is reconstructed and focused fixture
 tested; it is not a binary replacement or game-validated loader.
+
+
+## Correction from docs/NATIVE_LOADING_QUEUE_INTEGRATION_BL.md
+
+Primary integration at4c83a760 registered this TU and passed the complete Win32 build and both existing CTests. Both owner FH3 handler spans are now defined and saved; C68828 retains its full11-byte repaired body. Names/comments and original preimages were preserved. Production loader lifetime remains unbound; the worker fixtures above retain their frozen earlier library.

@@ -11848,8 +11848,8 @@
     },
     {
       "id": "orch4_native_loading_queue_owner_bl",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_focused_actual_storage_fixture_checked",
       "owner": "agent/orch4-loading-owner-bl",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-loading-owner-bl",
       "base_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
@@ -11869,12 +11869,15 @@
       "reasoning_effort": "xhigh",
       "ghidra_mutations": false,
       "contract": "Actual loader owner, current-publication getter/front callback and raw-AL event poll; production lifetime registration remains gated.",
-      "frontier": "reports/native_loading_queue_frontier_bk.json"
+      "frontier": "reports/native_loading_queue_frontier_bk.json",
+      "worker_commit": "de1cb16c93d69da1ba015d79cfefe1600b51820d",
+      "code_revision": "4c83a7605bd150dc8d4380e8ec3951619420ca48",
+      "integration": "reports/native_loading_queue_integration_bl.json"
     },
     {
       "id": "orch4_native_loading_queue_storage_bl",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_focused_actual_storage_fixture_checked",
       "owner": "agent/orch4-loading-storage-bl",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-loading-storage-bl",
       "base_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
@@ -11898,12 +11901,15 @@
       "reasoning_effort": "xhigh",
       "ghidra_mutations": false,
       "contract": "Actual pointer arrays, 10h owning-name work records and 24h jobs; preserve raw result/context and inspect returning-free continuations.",
-      "frontier": "reports/native_loading_queue_frontier_bk.json"
+      "frontier": "reports/native_loading_queue_frontier_bk.json",
+      "worker_commit": "41bb24abfac52e021d62e421abb26c9a00e74037",
+      "code_revision": "4c83a7605bd150dc8d4380e8ec3951619420ca48",
+      "integration": "reports/native_loading_queue_integration_bl.json"
     },
     {
       "id": "orch4_native_fileblock_frontier_bl",
-      "done": false,
-      "state": "in_progress",
+      "done": true,
+      "state": "audited_live_pe_spans_calls_and_ready_contracts",
       "owner": "agent/orch4-filestore-request-bk",
       "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-filestore-request-bk",
       "base_commit": "c2da6ab4d304fa7c9ee5488239312abb15e9feda",
@@ -11916,7 +11922,87 @@
       "reasoning_effort": "xhigh",
       "ghidra_mutations": false,
       "contract": "Read-only FileBlock preparation/construction/deletion and VFS block lifetime dependency audit.",
-      "frontier": "reports/native_loading_queue_frontier_bk.json"
+      "frontier": "reports/native_loading_queue_frontier_bk.json",
+      "worker_commit": "2686c7f4c0a995568ef8e0bd97692b968021bbe2",
+      "report": "reports/native_fileblock_frontier_bl.json"
+    },
+    {
+      "id": "orch4_native_filestore_remove_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_focused_actual_storage_fixture_checked",
+      "worker_commit": "ee981882209a58e76664e14f1d89bec9dddf2f5c",
+      "code_revision": "4c83a7605bd150dc8d4380e8ec3951619420ca48",
+      "integration": "reports/native_loading_queue_integration_bl.json"
+    },
+    {
+      "id": "orch4_native_loading_integration_bl",
+      "done": true,
+      "state": "integrated_independently_reviewed_win32_built_focused_source_fixtures_checked_production_loader_unbound",
+      "owner": "agent/orch4-20260910",
+      "code_revision": "4c83a7605bd150dc8d4380e8ec3951619420ca48",
+      "report": "reports/native_loading_queue_integration_bl.json"
+    },
+    {
+      "id": "orch4_native_loading_thread_lifetime_bl",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-loading-owner-bl",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-loading-owner-bl",
+      "base_commit": "de1cb16c93d69da1ba015d79cfefe1600b51820d",
+      "addresses": [],
+      "files": [
+        "docs/NATIVE_LOADING_THREAD_LIFETIME_BL.md",
+        "reports/native_loading_thread_lifetime_bl.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Read-only actual loader worker stop/wake/join and teardown boundary audit."
+    },
+    {
+      "id": "orch4_native_fileblock_identifier_bm",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-fileblock-identifier-bm",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-fileblock-identifier-bm",
+      "base_commit": "1ada9f4c390d6c1fbc901cc84a59d62e57780ff8",
+      "addresses": [
+        "00bdf950",
+        "00bd20a0"
+      ],
+      "files": [
+        "include/bsp/native_fileblock_identifier.hpp",
+        "src/native_fileblock_identifier.cpp",
+        "docs/NATIVE_FILEBLOCK_IDENTIFIER_BM.md",
+        "reports/native_fileblock_identifier_bm.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Actual identifier and split bodies; native predicate/substring order and aligned-frame EH."
+    },
+    {
+      "id": "orch4_native_fileblock_gate_list_bm",
+      "done": false,
+      "state": "in_progress",
+      "owner": "agent/orch4-fileblock-gate-bm",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-fileblock-gate-bm",
+      "base_commit": "1ada9f4c390d6c1fbc901cc84a59d62e57780ff8",
+      "addresses": [
+        "007f8390",
+        "007fa3a0",
+        "00bdaf40"
+      ],
+      "files": [
+        "include/bsp/native_fileblock_gate_list.hpp",
+        "src/native_fileblock_gate_list.cpp",
+        "docs/NATIVE_FILEBLOCK_GATE_LIST_BM.md",
+        "reports/native_fileblock_gate_list_bm.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "contract": "Actual saved-gate list allocation/current-byte read, count bound, owning error and iterator erasure."
     }
   ],
   "snapshot_after_analysis": {
