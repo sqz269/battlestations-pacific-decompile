@@ -1,0 +1,341 @@
+{
+  "packet": "orch5_native_online_client_leaves",
+  "base_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_client_leaves.cpp",
+  "header": "include/bsp/native_online_client_leaves.hpp",
+  "ghidra_writes": false,
+  "ghidra_saves": false,
+  "functions": [
+    {
+      "address": "00a43180",
+      "inclusive_end": "00a43213",
+      "byte_length": 148,
+      "byte_sha256": "b0472ca78a12b082bf05748ac5ab5261346be5c02aa241b6f96d600819e4b083",
+      "name": "refresh_native_online_client_records_00a43180",
+      "native_abi": "ECX client, RET",
+      "coverage": "complete normal source body; dependent771630 remains explicit unresolved boundary",
+      "no_ghidra_function": true,
+      "matches_installed_executable": true,
+      "binary_drop_in": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a430e0",
+      "inclusive_end": "00a4312b",
+      "byte_length": 76,
+      "byte_sha256": "ff50194f7b2d55fec804be9dd7fedb3b2e62bfb91151b0faa927f71837ece06b",
+      "name": "query_native_online_client_00a430e0",
+      "native_abi": "ECX client; low/high stack DWORDs, RET8; AL return",
+      "coverage": "complete normal source body",
+      "no_ghidra_function": true,
+      "matches_installed_executable": true,
+      "binary_drop_in": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a3e510",
+      "inclusive_end": "00a3e516",
+      "byte_length": 7,
+      "byte_sha256": "8f217e7cdf8a79c180ce3451c7db428895a17a97c08a8b2d3dd0213caa54cb02",
+      "name": "native_online_selected_byte_00a3e510",
+      "native_abi": "ECX raw manager, RET; AL return",
+      "coverage": "complete normal source body",
+      "no_ghidra_function": false,
+      "matches_installed_executable": true,
+      "binary_drop_in": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a3eac0",
+      "inclusive_end": "00a3eac6",
+      "byte_length": 7,
+      "byte_sha256": "51d5a02a37d7350fe179fed72e5afeca6c12e016b0a8559d822f395d07ab17c1",
+      "name": "native_online_active_user_00a3eac0",
+      "native_abi": "ECX raw manager, RET; EAX return",
+      "coverage": "complete normal source body",
+      "no_ghidra_function": false,
+      "matches_installed_executable": true,
+      "binary_drop_in": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a43198",
+      "native": "00a3e510",
+      "function": "00a43180",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    },
+    {
+      "address": "00a431fb",
+      "native": "00771630",
+      "function": "00a43180",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    },
+    {
+      "address": "00a430e7",
+      "native": "00a3eac0",
+      "function": "00a430e0",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    },
+    {
+      "address": "00a430f2",
+      "native": "00a3eac0",
+      "function": "00a430e0",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    },
+    {
+      "address": "00a43110",
+      "native": "00a3eac0",
+      "function": "00a430e0",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    },
+    {
+      "address": "00a43116",
+      "native": "00a4d5e4",
+      "function": "00a430e0",
+      "contract": "Exact direct CALL in retained disk/saved bytes; missing owner listing remains a true audit failure."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00a431e2",
+      "slot": "24",
+      "contract": "Current captured-client vtable, ECX same client, two DWORD arguments, RET8, AL result"
+    }
+  ],
+  "unresolved_dependency": {
+    "address": "00771630",
+    "inclusive_end": "00771796",
+    "byte_length": 359,
+    "source_supplied": false,
+    "native_abi": "ECX current game+1EF0, low/high/fullword stack args, RET12",
+    "observed_behavior": "privilege/friendship checks; session message construction/transmission or voice pair mutation; EH cleanup",
+    "contract": "required genuine native/body source binding, no stub/default",
+    "observed_call_rows": [
+      {
+        "address": "0077165e",
+        "native": "00a3eac0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771664",
+        "native": "00a4d482",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "0077167f",
+        "native": "00a3eac0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771685",
+        "native": "00a4d482",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "007716a3",
+        "native": "00a3eac0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "007716a9",
+        "native": "00a4d47c",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "007716cd",
+        "native": "004254b0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "007716e0",
+        "native": "00a3eb00",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "007716fe",
+        "native": "00a3eb00",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771709",
+        "native": "0076bfe0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771719",
+        "native": "00770af0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771742",
+        "native": "00a3eb00",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "00771753",
+        "native": "00778780",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "0077175a",
+        "native": "007787c0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "0077176f",
+        "native": "00a3eb00",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      },
+      {
+        "address": "0077177b",
+        "native": "004254b0",
+        "function": "00771630",
+        "contract": "Read-only unresolved dependency call; not a source implementation claim."
+      }
+    ]
+  },
+  "evidence_spans": [
+    {
+      "address": "00992a50",
+      "inclusive_end": "00992ab4",
+      "length": 101,
+      "sha256": "952f8a4fce4f2b9d33dae98a93dd604aebbd9c66d767955285ecac5cd8760c71",
+      "saved_bytes_complete_equal": true,
+      "scope": "read-only dependency/producer evidence, not reconstructed here"
+    },
+    {
+      "address": "00992ac0",
+      "inclusive_end": "00992af0",
+      "length": 49,
+      "sha256": "0ee16189d614e05aa80183d9888b334c7d0661470c71bf2acf87620c3abcc5a0",
+      "saved_bytes_complete_equal": true,
+      "scope": "read-only dependency/producer evidence, not reconstructed here"
+    },
+    {
+      "address": "00a47ee0",
+      "inclusive_end": "00a4832c",
+      "length": 1101,
+      "sha256": "f0c0f5939951595ebe627efafc1be7c641c2c55cc94401c7b6a2f5b19308e58b",
+      "saved_bytes_complete_equal": true,
+      "scope": "read-only dependency/producer evidence, not reconstructed here"
+    },
+    {
+      "address": "00771630",
+      "inclusive_end": "00771796",
+      "length": 359,
+      "sha256": "11b25727c2786fd326d3b7f22320ea61212d22d60495bb16d4ca665d0476a0f4",
+      "saved_bytes_complete_equal": true,
+      "scope": "read-only dependency/producer evidence, not reconstructed here"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1",
+    "ctests_passed": 2,
+    "ctests_failed": 0,
+    "fixture": "local/native_online_client_leaves/client_leaves_probe.cpp",
+    "fixture_count": 1,
+    "copied_native_source_cases_passed": 10,
+    "redirected_direct_calls": 6,
+    "compiled_source_three_manager_reads": true,
+    "compiled_object_disassembly": "local/native_online_client_leaves/compiled_source_assembly.txt",
+    "report_call_rows": 22,
+    "report_call_failures": 6,
+    "report_call_failures_retained": "All six owned CALL sites have no Ghidra containing function; sixteen read-only771630 dependency CALLs pass.",
+    "no_real_sdk_or_session_side_effects": true,
+    "no_game_runtime": true,
+    "no_binary_drop_in_claim": true
+  },
+  "local_preimages": {
+    "00a430e0": "PUSH ECX makes the initial SDK output DWORD exactly the incoming client pointer; SDK status ignored; normalize entire resulting DWORD to AL",
+    "00a43180": "PUSH ECX makes retained DWORD exactly incoming client pointer; replace only low byte with raw virtual AL before full-word771630 call",
+    "unknown_stack_preimages_introduced": false
+  },
+  "publication_and_layout_evidence": {
+    "client_creator": "00992a50 allocation2218, call00a47ee0, publication00992a9f at00f8a2fc",
+    "primary_vtable_producer": "00a47f1d stores00d24878",
+    "vtable_slot24": "00d2489c contains00a430e0",
+    "vtable_slot28": "00d248a0 contains00a43180",
+    "participant_producer": "004bb440 sets+08 and stores fifth/sixth stack DWORDs at+80/+84; eight118h player records atgame+748",
+    "existing_projection_not_reinterpreted": "SessionParticipantPools",
+    "raw_manager": "existing NativeOnlineManagerStorage3F0h, byte119 andDWORD11C"
+  },
+  "sdk": {
+    "thunk": "00a4d5e4",
+    "iat": "00ce2714",
+    "dll": "xlive.dll",
+    "ordinal": 5314,
+    "native_stack_bytes": 16,
+    "observed_ghidra_name": "XUserMuteListQuery",
+    "binding": "already-loaded-module GetProcAddress ordinal5314; native query status ignored",
+    "live_sdk_invoked": false
+  },
+  "required_root_definitions": [
+    {
+      "address": "00a43180",
+      "inclusive_end": "00a43213",
+      "status": "no_ghidra_function",
+      "call_sites": [
+        "00a43198",
+        "00a431fb"
+      ]
+    },
+    {
+      "address": "00a430e0",
+      "inclusive_end": "00a4312b",
+      "status": "no_ghidra_function",
+      "call_sites": [
+        "00a430e7",
+        "00a430f2",
+        "00a43110",
+        "00a43116"
+      ]
+    }
+  ],
+  "uncertainties": [
+    "771630 source body and its privilege/friendship/session-message/voice child operations are not supplied.",
+    "Observed primary vtable is tied to992A50/A47EE0; no other2218h client implementation or whole owner is inferred.",
+    "Raw game/client/manager and module storage must remain live across callbacks; no concurrent retirement or unsupported invalid-memory domain is validated.",
+    "Descriptive source names and SDK display name are not recovered export symbols; ordinal/ABI and raw storage evidence are authoritative.",
+    "The source interfaces have explicit publications/dependencies and are not binary register-ABI replacements."
+  ],
+  "commands": [
+    "python tools/bsp.py brief",
+    "python tools/bsp.py lease claim --packet orch5_native_online_client_leaves --addresses 00A43180 00A430E0 00A3E510 00A3EAC0 --files include/bsp/native_online_client_leaves.hpp src/native_online_client_leaves.cpp docs/NATIVE_ONLINE_CLIENT_LEAVES.md reports/native_online_client_leaves.json --ttl 6",
+    "python local/native_online_client_leaves/prepare_reference.py",
+    "python local/native_online_client_leaves/capture_evidence.py",
+    "python tools/ghidra_export.py verify-seeds",
+    "./scripts/build.ps1",
+    "cmd /d /c .\\local\\native_online_client_leaves\\compile_probe.cmd",
+    "cmd /d /c .\\local\\native_online_client_leaves\\build_probe.cmd",
+    "cmd /d /c .\\local\\native_online_client_leaves\\inspect_object.cmd",
+    "python tools/verify_report_calls.py reports/native_online_client_leaves.json",
+    "python local/native_online_client_leaves/finalize_report.py",
+    "python local/native_online_client_leaves/capture_manifest.py"
+  ],
+  "artifact_manifest": {
+    "path": "local/native_online_client_leaves/final_manifest.json",
+    "hash": "external final handoff; self and SHA sidecar excluded to avoid circular hash",
+    "scope": "all source/header/report/ledger and build/probe cpp/inc/bin/obj/exe input/output/commands, actual compiler dependencies/libraries/toolchain, actual mapped runtime files and full original PE/spans"
+  }
+}
