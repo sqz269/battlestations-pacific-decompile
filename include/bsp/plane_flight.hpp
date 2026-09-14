@@ -26,21 +26,34 @@ namespace bsp {
 // which 007CFEB0 seeds with 1.0f from 00D7A24C.
 // ---------------------------------------------------------------------------
 namespace plane_control_off {
-inline constexpr int kLiveRoll = 0x9E4;      // 007CFE92 zero; 0099B476 reads it
+// CORRECTION: +9E4h is YAW and +9ECh is ROLL, not the other way round, and
+// +9F4h is the air brake rather than an unnamed auxiliary. Two independent
+// recoveries agree. docs/PILOT_COMMAND_PATH.md tables the Lua property readers
+// (007D69BA yawInput, 007D69F1 rollInput, 007D6A5F airBrakeInput), which carry
+// the original authored identifiers; docs/PLANE_AI_CONTROL.md reaches the same
+// assignment from the bot's own reads. The latch permutation 007B9770 confirms
+// it a third time. The offsets below were always right - only the names were
+// swapped, and nothing outside this header referenced them, so no behaviour
+// depended on the error.
+inline constexpr int kLiveYaw = 0x9E4;       // 007CFE92 zero; 0099B476 reads it
 inline constexpr int kLivePitch = 0x9E8;     // 007CFE98 zero; 0099B4B2 reads it
-inline constexpr int kLiveYaw = 0x9EC;       // 007CFE9E zero; 0099B494 reads it
+inline constexpr int kLiveRoll = 0x9EC;      // 007CFE9E zero; 0099B494 reads it
 inline constexpr int kLiveThrottle = 0x9F0;  // 007CFEB0 = 1.0f; 0099B456 reads it
-inline constexpr int kLiveAux = 0x9F4;       // 007CFEA4 zero; 0099B4D0 reads it
+inline constexpr int kLiveAirBrake = 0x9F4;  // 007CFEA4 zero; 0099B4D0 reads it
 inline constexpr int kLiveByteF8 = 0x9F8;    // 007CFEAA zero; 007DC860 copies it to ctl+5h
 inline constexpr int kLiveByteF9 = 0x9F9;    // 007DC84F copies it to ctl+4h
 inline constexpr int kLiveByteFA = 0x9FA;    // 007B977D latches it
 
 // The previous-step snapshot 007B9770 writes, read by the rate law 007DA710.
-inline constexpr int kLatchedRoll = 0xBB0;      // 007B9783
-inline constexpr int kLatchedPitch = 0xBB4;     // 007B979C
-inline constexpr int kLatchedYaw = 0xBB8;       // 007B97A8
-inline constexpr int kLatchedThrottle = 0xBBC;  // 007B97BA
-inline constexpr int kLatchedAux = 0xBC0;       // 007B97CC
+// Same correction as the live block above, and the latch is what proves it: it
+// copies +9E4h -> +BB0h straight through, and the Lua readers name +BB0h `yawF`
+// (007D6BB2) against +9E4h `yawInput` (007D69BA). A permutation that preserved
+// the order while swapping two names could not do that.
+inline constexpr int kLatchedYaw = 0xBB0;       // 007B9783, from +9E4h
+inline constexpr int kLatchedPitch = 0xBB4;     // 007B979C, from +9E8h
+inline constexpr int kLatchedRoll = 0xBB8;      // 007B97A8, from +9ECh
+inline constexpr int kLatchedThrottle = 0xBBC;  // 007B97BA, from +9F0h
+inline constexpr int kLatchedAirBrake = 0xBC0;  // 007B97CC, from +9F4h
 inline constexpr int kLatchedByteC8 = 0xBC8;    // 007B978F, from +9F8h
 inline constexpr int kLatchedByteC9 = 0xBC9;    // 007B97B4, from +9FAh
 inline constexpr int kLatchedByteCA = 0xBCA;    // 007B97C0, from +9F9h

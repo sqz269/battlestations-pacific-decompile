@@ -462,9 +462,20 @@ The per-category table is byte-identical to the previous run: `AAMACHINEGUN` 295
 was never going to: the planes fly the heading the mission authored, which does not close on the
 fleet, and no recovered code steers them off it.
 
-What is missing is the plane AI. `docs/PLANE_UNIT_TICK.md` records that nothing in the ledger names
-one. Until it is recovered, aircraft in a reconstructed mission fly straight lines from their
-authored placements, and **gameplay validation of air combat remains unsatisfied.**
+What is missing is the plane AI's *output*, not the AI. **Correction to the two paragraphs this
+replaces, and to the commit that carried them:** they said "nothing in the ledger names one", citing
+`docs/PLANE_UNIT_TICK.md`. That was a stale claim repeated as fact. The AI is
+**`0099ACD0 BSP_PilotBot_Tick`** - it is named `PilotBot`, not `Plane*`, which is the only reason a
+name search missed it, and `docs/PILOT_COMMAND_PATH.md` had recovered its command path on
+2026-09-12. `docs/PLANE_AI_CONTROL.md` now closes the census: the command-block setter `007B8C90`
+has exactly two callers, `00519520` (player) and `0099ACD0` (bot), so subtracting the player, the
+network apply and construction leaves the bot alone.
+
+What is genuinely missing is narrower and better defined. `0099D300 BSP_PilotBot_PlanControls` has
+five axis arms and only the banked-turn yaw blend is recovered; pitch, roll, power and brake are
+unread. And the bot emits nothing without a task, which nothing in the host creates. So aircraft
+still fly straight lines from their authored placements, and **gameplay validation of air combat
+remains unsatisfied** - but the remaining work is four arms and a task producer, not a search.
 
 **The integration step is the host's own, not recovered code.** `007DB680` is an accumulator pass:
 it leaves four accumulators for `007D8470` to fold and the caller applies them. The
@@ -473,8 +484,9 @@ for native behaviour.
 
 ### Follow-up packets
 
-1. **`plane_ai`** - the steering. Nothing in the ledger names one; it is what stands between a
-   reconstructed mission and any air combat at all.
+1. **`pilot_bot_plan_controls`** - the four unread axis arms of `0099D300`, and whatever creates the
+   task without which `0099ACD0` emits nothing. This is what stands between a reconstructed mission
+   and any air combat at all.
 2. **`plane_pose_integration`** - the pose is read at spawn but never updated afterwards, so a
    plane's orientation is frozen at its authored value for the whole mission. A turning plane needs
    the angular half of the flight law folded back into `pose_row0/1/2`.
