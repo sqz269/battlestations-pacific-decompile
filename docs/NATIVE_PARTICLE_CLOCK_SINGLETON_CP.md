@@ -60,3 +60,7 @@ installed-game or shader-value observation.
 EH, source/provider, and generated-object evidence. The pre-existing typed
 full-function ledger record remains; this packet is a raw-storage interface
 upgrade with **zero new body/byte credit**.
+
+## Primary integration validation
+
+Exact source `f4e629edab9b2e3ce1fdd905521d5ee8a830765e` passed MSVC Win32 Release and both existing math CTests with 2597 unchanged tracked build inputs and a clean tree before/after. Primary native/source/generated review passed. The CP/CQ source probe exercised actual registration, lock depth, singleton fast return, payload publication, actual sink dispatch and callback-shrunk traversal. No allocation preimage read, injected failure, native parent execution or full mixed-owner shutdown was tested. Native state 0 arms at 004DE4FC before the second publication CMP at 004DE500. Source state store is at +69h after CMP +66h. C++ source-call cleanup is retained; asynchronous hardware faults, original private FH3 frames and native CRT identity are outside this source-interface claim. Existing typed full-function credit remains; this is one raw interface upgrade with zero new body/byte credit.
