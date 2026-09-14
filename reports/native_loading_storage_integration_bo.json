@@ -2,7 +2,7 @@
   "packet": "orch4_native_loading_storage_integration_bo",
   "status": "six_source_bodies_integrated_independently_reviewed_win32_build_and_four_source_probe_modes_passed",
   "previous_goal_turn": "progress: BN publication 3d315760 verified before BO integration",
-  "code_revision": "994e06289522017335e3438a0e499523a8777462",
+  "code_revision": "2a6b82646733f7cdc0d915d09ca9505754f03d63",
   "reviewed_main_base": "3d315760f10a078bc072f8a3943f94b75e9875f6",
   "worker_commits": {
     "native_resource_cache_insert": "cc37da945881695a5e8f6d04503284d71ac9ccf1",
@@ -62,20 +62,21 @@
   "native_bytes": 2019,
   "source_instruction_boundaries": 698,
   "source_manifest": {
-    "path": "local/native_loading_storage_bo_source_994e06289522.json",
-    "files": 2584,
-    "sha256": "aba43c17a7a6ff41acc99260ad4f3e92fb89e3bec7ee5ea88ced0d5e84ddcfcd"
+    "path": "local/native_loading_storage_bo_source_2a6b82646733.json",
+    "files": 2586,
+    "sha256": "4ba976b9c443ece02daa129209db224361c27636562201bb5cd3ede1092abf8f"
   },
   "primary_build": {
     "command": "./scripts/build.ps1",
     "platform": "MSVC Win32",
     "configuration": "Release",
     "passed": true,
-    "registered_translation_units": 3,
+    "registered_bo_translation_units": 3,
+    "incoming_graphics_pool_translation_units": 1,
     "existing_math_ctests_passed": 2,
-    "log": "local/native_loading_storage_bo_build.log",
-    "sha256": "42af3d64e85cc3552a07f4132a733e04a81044aa8d8f5bff6d76317b768ef2ce",
-    "core_sha256": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444"
+    "log": "local/native_loading_storage_bo_combined_build.log",
+    "sha256": "404cdf045ae982846505fe34c3dc194f893105dfc12c342a7a618a1750599acd",
+    "core_sha256": "5a6b8f53b7cea576e4d6357601c57a2fd92fc51280e7f1880d4bd17598224cad"
   },
   "primary_fixture_reruns": {
     "receipt": "local/native_loading_storage_primary_probes_bo.json",
@@ -1404,5 +1405,38 @@
     "No game mission was run for BO. The earlier BK runtime run is historical and does not prove these currently unbound source paths."
   ],
   "game_validated": false,
-  "goal_complete": false
+  "goal_complete": false,
+  "first_source_validation": {
+    "code_revision": "994e06289522017335e3438a0e499523a8777462",
+    "reviewed_main_base": "3d315760f10a078bc072f8a3943f94b75e9875f6",
+    "source_manifest": {
+      "path": "local/native_loading_storage_bo_source_994e06289522.json",
+      "files": 2584,
+      "sha256": "aba43c17a7a6ff41acc99260ad4f3e92fb89e3bec7ee5ea88ced0d5e84ddcfcd"
+    },
+    "primary_build": {
+      "command": "./scripts/build.ps1",
+      "platform": "MSVC Win32",
+      "configuration": "Release",
+      "passed": true,
+      "registered_translation_units": 3,
+      "existing_math_ctests_passed": 2,
+      "log": "local/native_loading_storage_bo_build.log",
+      "sha256": "42af3d64e85cc3552a07f4132a733e04a81044aa8d8f5bff6d76317b768ef2ce",
+      "core_sha256": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444"
+    }
+  },
+  "reviewed_incoming_main": "042bf827c2ec623e4a62819f78c2ea9f5b5d22aa",
+  "incoming_main_review": {
+    "commit": "042bf827c2ec623e4a62819f78c2ea9f5b5d22aa",
+    "source": "src/native_graphics_pool_lifetime.cpp",
+    "source_review": "Read complete 177-line source, 66-line header and 89-line contract; verified live B48480 construction publication/capacity/cleanup schedule.",
+    "source_behavior": "Five actual 38h allocator/critical-section/table pool profiles, live table copy after allocation, empty-slab compaction with moved slot-index rewrite, explicit destruction and six distinct static storage bindings.",
+    "call_rows_checked": 43,
+    "failures": 0,
+    "call_receipt": "local/native_loading_storage_bo_incoming_graphics_calls.log",
+    "call_receipt_sha256": "3aa1a8ef2440ad92766bba44f9c5eaee996193f9009b8323847bae4c5ef36b7f",
+    "other_owner_evidence": "Incoming report retains 31 native-body fixture comparisons and its separate 120-frame USN01 compatibility runs. Primary did not rerun those; owner explicitly excludes production graphics pool binding/gameplay fidelity.",
+    "merge_scope": "Automatic clean merge; incoming registration and all three BO registrations occur once; native-data-placement include remains last. Combined Win32 build and both math tests pass."
+  }
 }
