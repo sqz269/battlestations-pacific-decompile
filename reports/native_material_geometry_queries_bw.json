@@ -31,7 +31,10 @@
       "decorated_symbol": "?get_native_logical_vertex_base_00b48d50@bsp@@YIIPBX@Z",
       "original_abi": "ECX actual logical vertex stream; EAX DWORD; RET",
       "field": "ECX+70 DWORD",
-      "direct_call_sites": ["00b44aab", "00b44ad1"],
+      "direct_call_sites": [
+        "00b44aab",
+        "00b44ad1"
+      ],
       "pe_file_offset": 7638352,
       "coff_section": 6,
       "coff_file_offset": 587,
@@ -50,7 +53,9 @@
       "decorated_symbol": "?get_native_logical_index_base_00b48de0@bsp@@YIIPBX@Z",
       "original_abi": "ECX actual logical index stream; EAX DWORD; RET",
       "field": "ECX+20 DWORD",
-      "direct_call_sites": ["00b44a8d"],
+      "direct_call_sites": [
+        "00b44a8d"
+      ],
       "pe_file_offset": 7638496,
       "coff_section": 5,
       "coff_file_offset": 583,
@@ -69,7 +74,10 @@
       "decorated_symbol": "?get_native_draw_section_instance_count_00b855a0@bsp@@YIIPBX@Z",
       "original_abi": "ECX actual draw section; EAX DWORD; RET",
       "field": "ECX+1C DWORD",
-      "direct_call_sites": ["00b4478e", "00b447e3"],
+      "direct_call_sites": [
+        "00b4478e",
+        "00b447e3"
+      ],
       "pe_file_offset": 7886240,
       "coff_section": 4,
       "coff_file_offset": 579,
@@ -88,7 +96,9 @@
       "decorated_symbol": "?get_native_draw_section_indexed_byte_00b855f0@bsp@@YIEPBX@Z",
       "original_abi": "ECX actual draw section; AL byte with EAX[31:8] unchanged; RET",
       "field": "ECX+58 byte",
-      "direct_call_sites": ["00b44abe"],
+      "direct_call_sites": [
+        "00b44abe"
+      ],
       "pe_file_offset": 7886320,
       "coff_section": 3,
       "coff_file_offset": 575,
@@ -106,5 +116,178 @@
     "game_validated": false,
     "visual_render_validated": false,
     "drop_in_binary_replacement_claimed": false
+  },
+  "tested_commit": "90170e87d99ee857d938207bd6fe0e0527629435",
+  "native_body_credit": 4,
+  "native_bytes_credit": 16,
+  "primary_integration": {
+    "worker_commit": "96b2da6c20453cab93b71f70ff402e5e1b2e842a",
+    "root_source_commit": "90170e87d99ee857d938207bd6fe0e0527629435",
+    "source_header_unchanged": true,
+    "primary_complete_source_and_native_review": true,
+    "blocking_findings": [],
+    "generated_code": [
+      {
+        "address": "00b48d50",
+        "symbol": "?get_native_logical_vertex_base_00b48d50@bsp@@YIIPBX@Z",
+        "object_sha256": "ad656e383896b0e55cf20a375f0ee852396a0760112e06fc8ed0a2b4449430bc",
+        "bytes": 4,
+        "hex": "8b4170c3",
+        "relocations": [],
+        "primary_worker_PE_live_identical": true
+      },
+      {
+        "address": "00b48de0",
+        "symbol": "?get_native_logical_index_base_00b48de0@bsp@@YIIPBX@Z",
+        "object_sha256": "ad656e383896b0e55cf20a375f0ee852396a0760112e06fc8ed0a2b4449430bc",
+        "bytes": 4,
+        "hex": "8b4120c3",
+        "relocations": [],
+        "primary_worker_PE_live_identical": true
+      },
+      {
+        "address": "00b855a0",
+        "symbol": "?get_native_draw_section_instance_count_00b855a0@bsp@@YIIPBX@Z",
+        "object_sha256": "ad656e383896b0e55cf20a375f0ee852396a0760112e06fc8ed0a2b4449430bc",
+        "bytes": 4,
+        "hex": "8b411cc3",
+        "relocations": [],
+        "primary_worker_PE_live_identical": true
+      },
+      {
+        "address": "00b855f0",
+        "symbol": "?get_native_draw_section_indexed_byte_00b855f0@bsp@@YIEPBX@Z",
+        "object_sha256": "ad656e383896b0e55cf20a375f0ee852396a0760112e06fc8ed0a2b4449430bc",
+        "bytes": 4,
+        "hex": "8a4158c3",
+        "relocations": [],
+        "primary_worker_PE_live_identical": true
+      }
+    ],
+    "validation": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "exact_commit": "90170e87d99ee857d938207bd6fe0e0527629435",
+      "tracked_build_inputs": 2569,
+      "clean_before_after": true,
+      "all_build_input_hashes_preserved": true,
+      "new_tests": 0,
+      "new_native_fixture": false,
+      "raw_entries_executed": false,
+      "game_validated": false
+    }
+  },
+  "call_steps": [
+    {
+      "address": "00b44aab",
+      "native": "00b48d50",
+      "function": "00b44750"
+    },
+    {
+      "address": "00b44ad1",
+      "native": "00b48d50",
+      "function": "00b44750"
+    },
+    {
+      "address": "00b44a8d",
+      "native": "00b48de0",
+      "function": "00b44750"
+    },
+    {
+      "address": "00b4478e",
+      "native": "00b855a0",
+      "function": "00b44750"
+    },
+    {
+      "address": "00b447e3",
+      "native": "00b855a0",
+      "function": "00b44750"
+    },
+    {
+      "address": "00b44abe",
+      "native": "00b855f0",
+      "function": "00b44750"
+    }
+  ],
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
+  "primary_call_audit": {
+    "direct_rows": 6,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/bwx-call-audit-native_material_geometry_queries_bw.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/bwx-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b48d50",
+      "00b48de0",
+      "00b855a0",
+      "00b855f0"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_thiscall_signatures": true
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_geometry_queries.obj": "ad656e383896b0e55cf20a375f0ee852396a0760112e06fc8ed0a2b4449430bc",
+    "build/win32/bsp_core.dir/Release/native_renderer_shader_binding.obj": "12e464df583a2cb0ad475ea74d4a31e5491fe5c3dbd4b8327e481976aaa943f5",
+    "local/annotate_bwx.py": "86b262d4c4967368ffdccf09736e351cf8813642c89f7fc805e081f884466eb8",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_bwx.py": "443c296b4a911d8da0bebb60a79f3af7d1cf3316057bfa4684e39cce0b8d85c2",
+    "local/bwx-annotation.log": "6304480c791ceb8dc24de52178a2bde63d6e27a31ecfca02badd9e9bf7a61246",
+    "local/bwx-call-audit-native_material_geometry_queries_bw.log": "72564f81f5a943df75531a6e854fda38e49378f5691acf9c7ae72c72f2368dcd",
+    "local/bwx-call-audit-native_renderer_shader_binding_bx.log": "0807be6454d9d8bd7be4b50d10486510a8d54425897ab60f827772ed096c1300",
+    "local/bwx-comments-after.json": "f99e7f5c10e26c43b847d64315abf1cef5985fdb21125a20901619a2ac43594a",
+    "local/bwx-comments-before.json": "42bc41e20ec13462778cfae626eae5ebf66f7866917adad4af2a78389131ecb5",
+    "local/bwx-export-refresh.log": "986a8c8e91e0f3da40817b618ba4eab76abcaa9ad1abb6ea68de37a57e90c21b",
+    "local/bwx-final-build-stamp.json": "b66417d99c5b733f6a5782d4e56f495485e607136fd26c643e50d30a9bee2d86",
+    "local/bwx-final-combined-build.log": "0fa2bc592a59371b3ea166deb93d1e274bf852b0582843cd965b24a8d0167ee1",
+    "local/bwx-function-records.json": "e0835fe05570a9138287d63ac5d462b300244519e2f9259ee2a2b477092dad55",
+    "local/bwx-generated-bind_native_renderer_pixel_shader_00b21c20.asm": "92e5967769702a7b342a0ffdec6588dcd2f817b308a61eb4bed61f4f297d7d27",
+    "local/bwx-generated-bind_native_renderer_vertex_shader_00b21d10.asm": "454855e6eda61b9f1236cfb9f6bd60fed40eeb33959e4ddd3fc0041e2ba80deb",
+    "local/bwx-generated-pixel_body.asm": "36af24d3ddb075f7dfebf44535c9bf3f24031b6bb3134db7b547d14fbc976357",
+    "local/bwx-generated-vertex_body.asm": "210d5049798e7d2f4970265f3239f6cec2d55f52398837ad8dcf21a8618195c4",
+    "local/bwx-geometry-object-review.json": "fd4296ffa430b6a25c676fec6b8202014a644ff3dcdad77cc95797474b72b72c",
+    "local/bwx-ghidra-annotation-record.json": "9577c337dc83f82b9c68fa7a17730be0ddd3a914a1f9542fe005ba93c303460d",
+    "local/bwx-ledger-before.json": "a7721a0f9355d1f248ace026dbcf6b7a2bb9be83074be0b98abc66c8de47b09b",
+    "local/bwx-live-00b21c20.txt": "0232acf3b9ec96fa310a5fd5591d21a0676eadd8c4d066db3e7d8c62307fc794",
+    "local/bwx-live-00b21d10.txt": "2295b555a8740cbde32c5d097f8eefaac13527b983ced80e0c229a463e1a494f",
+    "local/bwx-live-00b48d50.txt": "dada471cded0bc0c4dc5b5d5fbb1c8107b176d19135df64f18d897bf88e00f17",
+    "local/bwx-live-00b48de0.txt": "7ea7a4ba4bd1ee39bd3d4c479a324be7c8522e65243e7f794e7bd4da0cb0b6a3",
+    "local/bwx-live-00b855a0.txt": "7774214282d9d367faad05c37f953d423a0d02b23d922064a3d6dd83ce7b7526",
+    "local/bwx-live-00b855f0.txt": "cd7348072b65d31ad89cfd6c4fb1f10ad65181579579dd80c75a17e0cce7879b",
+    "local/bwx-live-00cbce10.txt": "ecda6759fb7851376976ef3e0ca3b63c2a09bd4ba118f1cd4a7aa9f94afa6159",
+    "local/bwx-live-00cbce30.txt": "5c2ad20d3ad74fb7804428faa3c829b29183537544c4f0ee1df57d83addd7d9b",
+    "local/bwx-live-00df53c4.txt": "c99ac5d9d64efa17dcc68526295939f78f744918096e9e51d2deee5fddf65b56",
+    "local/bwx-live-00df53f0.txt": "8e48b9f1b664ba14f7557b3a2e1f56f038eb7166e3417052395845d2f22a5466",
+    "local/bwx-native-00b21c20.txt": "ba314d61e8d5894b4c59a70baba23c73759059ee3b98c1214f6e3cd5afb42831",
+    "local/bwx-native-00b21d10.txt": "8d85192a502a4ff1429a129fba72ed86f3ebc845bf68b8997d57f04981b3e043",
+    "local/bwx-shader-object-review.json": "71022fcaa918350b00fb3a968b07c2e5a8d51d5e2721bc07a54385bc8a9387be",
+    "local/finish_bwx.py": "a0046b95eacb8c625192c8b15e2001e1cc696bf76832a4e91d4a39edcd1b7c07",
+    "local/prepare_bwx.py": "1e9b2bd2ad344af31f269ca687a30d0de6d704e68c8d4ce3bd916ab3c0cfb3cd",
+    "local/review_bwx_objects.py": "3278ca41413156ae3696132ec59e4f8a615eee97a66b54e1c977183449e70911",
+    "local/seal_bwx.py": "6c62ab8d6c1e34b4808cb11cd605eb31f482800ea8d362b3dac92e32a82640e8"
+  },
+  "sealed_attempt": {
+    "tested_commit": "90170e87d99ee857d938207bd6fe0e0527629435",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bwx-validated-attempt-90170e87.zip",
+    "sha256": "ddb5f3887c54f5e8dbc74fcba76f68caea3dce5fed4fe7fd9187e99e1f24640d",
+    "payload_members": 2638,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "a37f70d10ae10490c76d20f8462ed69fd544a0e86f38eaeb637537ed27235a53",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2569
   }
 }
