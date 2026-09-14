@@ -31,6 +31,19 @@ void pilot_seed_plan_slots_0099b450(PilotPlanSlot slots[5], const float live[5])
     }
 }
 
+void pilot_reset_plan_0099b450(PilotPlanState& plan, PilotPlanSlot slots[5],
+                               const float live[5]) noexcept {
+    pilot_seed_plan_slots_0099b450(slots, live);
+    // 0099B4F7-0099B580, the rest of the reset. The two targets are zeroed with
+    // the XORPS at 0099B4E8; the four constants are read from .rdata.
+    plan.pitch_target_2bc = 0.0f;   // 0099B517
+    plan.bank_target_2c4 = 0.0f;    // 0099B509
+    plan.bank_limit_2c8 = 20.0f;    // 0099B55E, 00CE3930
+    plan.turn_scale_2e8 = 1.0f;     // 0099B52C, 00D7A24C
+    plan.heading_mode_2cc = 1;      // 0099B548
+    plan.pitch_mode_2d0 = 2;        // 0099B54E
+}
+
 float pilot_slew_axis_0099bb40(const PilotPlanSlot& slot, float a, float b) noexcept {
     // 0099BB43..0099BB69.
     const float delta = slot.desired - slot.current;

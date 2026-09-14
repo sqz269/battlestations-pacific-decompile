@@ -289,10 +289,8 @@ struct GameUnitSlot {
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
     float plane_class_turn_roll{0.0f};       // desc+25Ch TurnRoll
-    // plan+2BCh. The pitch target, which the arm's floor can only raise. The
-    // header that called +2BCh a bank target was wrong; packet cc7-pitchroll
-    // settled it on the gate (task+2D0h) and the terminating store (+29Ch).
-    float plan_pitch_target_2bc{0.0f};
+    // The plan's non-slot fields, reset by 0099B450 on every think.
+    bsp::PilotPlanState plan_state;
     // The range to the commanded target the first time the yaw arm planned for
     // this unit, and the last. Two numbers, so the run can say whether an
     // ordered aircraft actually closed on what it was ordered at.
@@ -2232,8 +2230,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
                         const bsp::PlaneBodyAcceleration body =
                             bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        // 007D8470 returns a BODY-frame acceleration - its own
+                        // name says so, and free_flight_world_up_acceleration in
+                        // the same header rotates the result back "through the
+                        // transpose of ctl+0B0h" to get a world quantity. This
+                        // loop used to add it straight to a world velocity.
+                        //
+                        // That was invisible for the whole history of this
+                        // reconstruction, because nothing ever rotated a plane
+                        // and the two frames agree at the identity. The first
+                        // run in which a bot actually turned showed it at once:
+                        // the planes accelerated to 636 m/s and flew off. A
+                        // frame error that only a working control law can
+                        // expose is worth the note.
+                        //
+                        // world = M^T * body, with M's rows the pose rows.
+                        float world_accel[3] = {0.0f, 0.0f, 0.0f};
+                        for (int c = 0; c < 3; ++c) {
+                            for (int r = 0; r < 3; ++r) {
+                                world_accel[c] += rows[r][c] * body.total[r];
+                            }
+                        }
                         for (int i = 0; i < 3; ++i) {
-                            unit_.plane_world_velocity[i] += body.total[i] * step;
+                            unit_.plane_world_velocity[i] += world_accel[i] * step;
                             unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                         }
                         // The 3D step length. The seed no longer lies along
@@ -2313,7 +2332,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             live[bsp::kPilotSlotRoll] = unit_.plane_live_controls[2];
                             live[bsp::kPilotSlotThrottle] = unit_.plane_live_throttle;
                             live[bsp::kPilotSlotAirBrake] = unit_.plane_live_air_brake;
-                            bsp::pilot_seed_plan_slots_0099b450(unit_.plan_slots, live);
+                            // The full plan reset, not just the slots: plan+2BCh
+                            // is zeroed every think, which is what keeps the
+                            // pitch floor from ratcheting.
+                            bsp::pilot_reset_plan_0099b450(unit_.plan_state,
+                                unit_.plan_slots, live);
 
                             // 0099D300's yaw arm. It writes `desired` only when
                             // the unit has a commanded target; every other slot
@@ -2489,7 +2512,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // arm, so the measured angle is the live pitch, which is
                         // what the native's own `else` branch at 0099DD54 uses.
                         pin.held_pitch = unit_.plane_pitch_angle_c64;
-                        pin.pitch_target = unit_.plan_pitch_target_2bc;
+                        pin.pitch_target = unit_.plan_state.pitch_target_2bc;
                         pin.heading_error = term.heading_error;
                         pin.control_authority = control_authority(
                             unit_.plane_world_velocity[0] * unit_.motion.pose_row2[0] +
@@ -2510,7 +2533,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bsp::PilotBotPitchResult pitch =
                             bsp::pilot_pitch_demand_0099e490(pin);
-                        unit_.plan_pitch_target_2bc = pitch.floored_target;
+                        unit_.plan_state.pitch_target_2bc = pitch.floored_target;
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                             bsp::plan_pitch_0099e68d(pitch.demand);
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741

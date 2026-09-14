@@ -73,6 +73,27 @@ enum PilotCommandIndex {
 // reordering once, here.
 void pilot_seed_plan_slots_0099b450(PilotPlanSlot slots[5], const float live[5]) noexcept;
 
+// The non-slot fields 0099B450 also resets. It is a **full reset of the plan
+// object**, not just of the slot array, and that is load-bearing rather than
+// tidy: plan+2BCh, the pitch target, is zeroed on every think, so the pitch
+// arm's floor raises it from zero each pass instead of ratcheting. A
+// reimplementation that treats the target as persistent state gets a bot that
+// climbs away, which is what this one did until the reset was found.
+//
+// docs/PILOT_PLAN_SLOT_PIPELINE.md lists all sixteen fields; these are the six
+// this reconstruction models.
+struct PilotPlanState {
+    float pitch_target_2bc = 0.0f;   // 0099B517, zeroed
+    float bank_target_2c4 = 0.0f;    // 0099B509, zeroed
+    float bank_limit_2c8 = 20.0f;    // 0099B55E, 00CE3930
+    float turn_scale_2e8 = 1.0f;     // 0099B52C, 00D7A24C
+    int heading_mode_2cc = 1;        // 0099B548 - the heading arm then sets 2
+    int pitch_mode_2d0 = 2;          // 0099B54E - the pitch law's gate, non-zero
+};
+
+void pilot_reset_plan_0099b450(PilotPlanState& plan, PilotPlanSlot slots[5],
+                               const float live[5]) noexcept;
+
 // 0099BB40, `float __thiscall(slot, float a, float b)`, RET 8, body
 // 0099BB40-0099BBF6. Reads `current` and `desired` only; writes nothing back and
 // never touches `active`. `a` and `b` are used only as the product, so the
