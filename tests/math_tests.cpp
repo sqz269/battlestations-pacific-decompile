@@ -3388,6 +3388,49 @@ int main() {
               "orthogonal rows are a precondition the branch-free routine never checks");
     }
 
+    {
+        // 007DB680's free-flight arm: what holds a plane up. Lift is
+        // min(clamp((1 + aoa) * qq, -2, 2) * AccelCheatMul, ctl+90h) * 9.81 along
+        // body up and gravity is AccelCheatMul * 9.81 along world down, so above
+        // q == 1 - forward speed 1.8 * StallSpd - the two are the same number and
+        // cancel. The installed Fighter row's StallSpd is 17.5 (desc+184h), which
+        // puts the threshold at 31.5 m/s against a 141.666672 spawn airspeed.
+        // XDrag and YDrag are left at zero: the installed values were not read,
+        // and at zero body vertical velocity the damping term is zero either way.
+        bsp::PlaneFreeFlightClass fighter;
+        fighter.stall_spd = 17.5f;
+        const bsp::PlaneFreeFlightTuning tuning;  // the PlaneGlobals.lua defaults
+        bsp::PlaneFreeFlightState level;
+        level.forward_speed = 141.666672f;
+        level.body_velocity[2] = 141.666672f;
+        level.world_velocity[2] = 141.666672f;
+        level.world_altitude = 500.0f;  // below Ceiling, so no ceiling push
+
+        const float level_accel =
+            bsp::free_flight_world_up_acceleration(level, fighter, tuning, 1.0f / 30.0f);
+
+        bsp::PlaneFreeFlightState stalled = level;
+        stalled.forward_speed = 20.0f;  // under 1.8 * 17.5 == 31.5
+        stalled.body_velocity[2] = 20.0f;
+        stalled.world_velocity[2] = 20.0f;
+        const float stalled_accel =
+            bsp::free_flight_world_up_acceleration(stalled, fighter, tuning, 1.0f / 30.0f);
+
+        // The self-correction: sinking makes ctl+40h negative, aoa is -vy / vz,
+        // so the same airspeed now produces more lift than gravity takes away.
+        bsp::PlaneFreeFlightState sinking = level;
+        sinking.body_velocity[1] = -10.0f;
+        sinking.world_velocity[1] = -10.0f;
+        const float sinking_accel =
+            bsp::free_flight_world_up_acceleration(sinking, fighter, tuning, 1.0f / 30.0f);
+
+        check(std::fabs(level_accel) < 1.0e-4f && stalled_accel < -8.0f && sinking_accel > 1.0f,
+              "007DB680: lift cancels gravity exactly at and above 1.8 * StallSpd, the plane "
+              "sinks below it, and a downward perturbation raises the angle of attack until "
+              "lift exceeds gravity again - the flight model needs no authored data beyond "
+              "StallSpd and the Dynamics/* rows");
+    }
+
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
