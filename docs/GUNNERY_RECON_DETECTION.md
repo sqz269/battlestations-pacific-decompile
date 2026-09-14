@@ -318,6 +318,12 @@ so the field is the **square** of the script's `ReconModifier`, defaulting to `1
 * The two short circuits, the accumulate/reset split, and the publish to `payload[+0Ch]`.
 * The full composition in §6, including that the drain runs once over the flattened list.
 * The `ReconModifier` producer, keyed on the string at `00D1AAF4`.
+* `m74` and `m78` default to `1.0f`, written by `00444D20`, and both are settable by name from
+  Lua: the binding rows at `00E0C248`..`00E0C264` pair `008B2320`/`008B24A0` with
+  `"SimplifiedReconMultiplier"` (`00D0F8E4`, stored at `008B243C` into `+74h`) and
+  `008B25F0`/`008B2770` with `"SimplifiedSonarMultiplier"` (`00D0F8A4`, stored at `008B270C`
+  into `+78h`). Taken from `docs/WEATHER_CONFIG.md`, whose own correction note carries those
+  instruction addresses; not re-derived from the listing here.
 * The `1Ch` row layout, from the writer `008085C0`..`00808A6A`.
 
 **Assumed, or inherited from an existing contract**
@@ -328,8 +334,6 @@ so the field is the **square** of the script's `ReconModifier`, defaulting to `1
   no instruction proves it. `GunneryReconContact::observer_party_mismatch` reports the case.
 * `00922DC0` is a surface/submerged test. `00922C80`'s body was read far enough to rule out a party
   or visibility test, not far enough to state the exact predicate.
-* `00444D20` forcing `m74` to `1.0f`, and no shipped script setting `m78`. Inherited from the
-  surviving header's comment; **not verified in this pass**.
 * `008E6430(0Ch, observer)` returning a gameplay environment modifier. The category constant `0Ch`
   is read directly; the callee's meaning is a contract from the gameplay-modifier packet.
 * `00805AF0` / `00805B3D` / `0080695C` / `00807647` / `008085AA` / `00438B10` bodies, reused from
