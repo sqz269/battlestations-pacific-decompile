@@ -1,0 +1,366 @@
+{
+ "packet": "cc7_recon_slot_object",
+ "owner": "agent/cc7-recon-slot",
+ "document": "docs/RECON_SLOT_OBJECT.md",
+ "summary": "The producer of the recon slot object and of [recon+DE8h]. 008053C0 lazily allocates a 12A0h object per party into the three-entry table at 00F874BC and constructs it with 008050E0; 008073C0 clears, fills and drains the enemy triple at +0DE4h within one call, so the field a consumer reads holds only records whose detection level is 2. The element is a 0Ch node {prev, next, payload} whose payload is the 1Ch entry record with the unit at +4h.",
+ "evidence_kind": "static, read-only Ghidra and disk-byte reading. No Ghidra mutation. No run-time evidence: bsp_game.exe builds no recon slot object, which is the gap this packet scopes. The sensor row values quoted in the effect prediction are inherited from docs/SENSOR_TABLE_DATA.md, read from the installed (modded, BSPRM/AlterBSP) arcade table scripts/datatables/classtables/arcade/reconclasses.lua, mtime 2024-07-13 08:26.",
+ "routines": [
+  {
+   "address": "008053c0",
+   "name": "BSP_Recon_EnsureSlot",
+   "body": "008053c0-00805423",
+   "coverage": "complete",
+   "role": "lazy per-party accessor: reads 00F874BC[party], allocates 12A0h and constructs on miss, returns the slot in EAX on both paths"
+  },
+  {
+   "address": "008050e0",
+   "name": "BSP_Recon_ConstructSlot",
+   "body": "008050e0-0080522c",
+   "coverage": "complete",
+   "role": "the sole producer of the slot layout: two vptrs, four 61h x 0Ch arrays at +34h/+4C0h/+94Ch/+0E14h, five {count, head, tail} triples at +0DD8h..+0E10h, the party index at +28h, the time at +2Ch and the publish-dirty byte at +25h"
+  },
+  {
+   "address": "00804e10",
+   "name": "BSP_ReconList_CopyAppend",
+   "body": "00804e10-00804e6d",
+   "coverage": "complete",
+   "role": "the producer of the list and node shapes and the routine that publishes the enemy triple; writes head/tail/count through ECX, so the absolute offset +0DE8h never appears in its encoding"
+  },
+  {
+   "address": "00793670",
+   "name": "BSP_Recon_EnemyContactIndexOf",
+   "body": "00793670-007936bb",
+   "coverage": "complete",
+   "role": "__thiscall int(ReconSlot*, Unit*), RET 4: returns the ordinal of a unit in the published enemy chain or -1; proves node->payload->unit is what a consumer wants"
+  },
+  {
+   "address": "008073c0",
+   "name": "BSP_Recon_RebuildSlotLists",
+   "body": "008073c0-008079a5",
+   "coverage": "partial: 008073D0-0080757F and 00807615-008076F3 read instruction by instruction for this packet; 00807581-00807610 and 008076F9-008079A5 inherited from docs/RECON_SLOT_LISTS.md section 3"
+  },
+  {
+   "address": "00864fe0",
+   "name": "BSP_UnitGunneryAi_Tick",
+   "body": "00864fe0-008658b8",
+   "coverage": "partial: 008651EE-00865264 only, the contact-list walk. Ghidra's stored body is truncated over this region; read with disasm-raw over the disk bytes",
+   "role": "consumer: resolves the owning unit's party slot and walks the enemy chain into the candidate scorer"
+  },
+  {
+   "address": "009f5d30",
+   "name": "BSP_AutoTarget_ScanPartyList",
+   "body": "009f5d30-009f5db0",
+   "coverage": "partial: 009F5D3A-009F5D66 only, the same walk",
+   "role": "consumer: identical head/payload/unit chase"
+  },
+  {
+   "address": "007a84d0",
+   "name": "BSP_Recon_PublishedListCursor",
+   "body": "007a84d0-007a85f0",
+   "coverage": "partial: 007A84D0-007A853F read; 007A8540 to the end not read. The name is a hypothesis from the read prefix only",
+   "role": "resolves the active player's cached slot at [game+18CCh+i*4]+30h, picks the first non-empty published triple (own before enemy) and asks 00793670 for a position"
+  },
+  {
+   "address": "00862cd0",
+   "name": "FUN_00862cd0",
+   "body": "00862cd0-00863240",
+   "coverage": "partial: the head of the body only, enough for the negative result",
+   "role": "NEGATIVE RESULT: not a contact-list consumer. Touches no recon slot, no +0DE8h and no 008053C0; it updates one engagement record's accuracy from the 00E19994 table. The milestone-2s label 'the engagement list 00862CD0' is the host method name update_target_records_00862cd0, not a claim about the native"
+  }
+ ],
+ "native_call_sites": [
+  {
+   "step": "allocate the slot",
+   "function": "008053c0",
+   "address": "008053e9",
+   "native": "00bf681b",
+   "note": "operator new, size pushed at 008053E4 PUSH 12A0h - the only size evidence"
+  },
+  {
+   "step": "construct the slot",
+   "function": "008053c0",
+   "address": "00805404",
+   "native": "008050e0",
+   "note": "party index pushed at 00805401; the pointer is stored to 00F874BC[party] at 0080540D"
+  },
+  {
+   "step": "clear the own triple",
+   "function": "008073c0",
+   "address": "008073ea",
+   "native": "008042b0",
+   "note": "ECX = ESI+0DD8h from 008073D0"
+  },
+  {
+   "step": "clear the enemy triple",
+   "function": "008073c0",
+   "address": "008073f5",
+   "native": "008042b0",
+   "note": "ECX = ESI+0DE4h from 008073EF; this is one of the five writers of +0DE8h and it addresses the field through ECX, not through a disp32"
+  },
+  {
+   "step": "splice a relation array into the carry-over array",
+   "function": "008073c0",
+   "address": "0080743f",
+   "native": "00804150",
+   "note": "first of the three per-bucket splices, ECX = ESI+0E14h+i*0Ch"
+  },
+  {
+   "step": "the scanned class id singleton",
+   "function": "008073c0",
+   "address": "008074b0",
+   "native": "00806480",
+   "note": "[result+4h] is the id array, [result+8h] the count; 008074B8 MOV EBX,[EDX+EDI*4] takes the class id that becomes the bucket subscript"
+  },
+  {
+   "step": "add or refresh a unit in its class bucket",
+   "function": "008073c0",
+   "address": "00807500",
+   "native": "008065b0",
+   "note": "class id pushed at 008074FD PUSH EBX, unit at 008074FC PUSH EDI"
+  },
+  {
+   "step": "retire the carry-over bucket",
+   "function": "008073c0",
+   "address": "00807513",
+   "native": "00805430",
+   "note": "class id pushed at 00807510"
+  },
+  {
+   "step": "own triple takes every own bucket (the observer list)",
+   "function": "008073c0",
+   "address": "0080753a",
+   "native": "00804e10",
+   "note": "ECX = ESI+0DD8h, source ESI+34h+i*0Ch, 97 iterations from 0080752C MOV EBP,61h"
+  },
+  {
+   "step": "sensor pass over the enemy buckets",
+   "function": "008073c0",
+   "address": "00807556",
+   "native": "00806840",
+   "note": "source ESI+4C0h+i*0Ch, observers ESI+0DD8h, 97 iterations"
+  },
+  {
+   "step": "sensor pass over the neutral buckets",
+   "function": "008073c0",
+   "address": "00807574",
+   "native": "00806840",
+   "note": "source ESI+94Ch+i*0Ch, observers ESI+0DD8h, 97 iterations"
+  },
+  {
+   "step": "publish: enemy triple takes every enemy bucket",
+   "function": "008073c0",
+   "address": "00807627",
+   "native": "00804e10",
+   "note": "ECX = ESI+0DE4h from 00807621, source ESI+4C0h+i*0Ch, 97 iterations from 0080761B LEA EBX,[EBP+61h]. This is the producer of [recon+DE8h]"
+  },
+  {
+   "step": "drain: allocate a copy node for a level-1 record",
+   "function": "008073c0",
+   "address": "00807656",
+   "native": "00bf681b",
+   "note": "operator new(0Ch) at 00807654 PUSH 0Ch, cleanup 0080765B ADD ESP,4; the node is appended to the unknown triple at +0DFCh/+0E00h/+0E04h"
+  },
+  {
+   "step": "cadence: the 3-second countdown rebuild",
+   "function": "008079b0",
+   "address": "00807a08",
+   "native": "008073c0",
+   "note": "one of exactly four call sites of the rebuild (ghidra xrefs, four rows, under the 25-row cap)"
+  },
+  {
+   "step": "cadence: mission scene load",
+   "function": "004dfb70",
+   "address": "004e059b",
+   "native": "008073c0",
+   "note": "after 004E0537's for(i=0;i<3;++i) 008053C0(i) creates all three slots"
+  },
+  {
+   "step": "cadence: in-game interface applied",
+   "function": "004c9ca0",
+   "address": "004c9e82",
+   "native": "008073c0",
+   "note": "the local player's slot"
+  },
+  {
+   "step": "cadence: plane placed on a launch spot",
+   "function": "007c5f60",
+   "address": "007c631c",
+   "native": "008073c0",
+   "note": "the active player's slot"
+  },
+  {
+   "step": "consumer: find a unit's ordinal in the published enemy chain",
+   "function": "007a84d0",
+   "address": "007a85de",
+   "native": "00793670",
+   "note": "sole caller of 00793670 (ghidra xrefs, one row)"
+  },
+  {
+   "step": "consumer: the gunnery sweep resolves its party slot",
+   "function": "00864fe0",
+   "address": "00865201",
+   "native": "008053c0",
+   "note": "ECX = [EDI+54h] at 008651FE, then 00865206 MOV EAX,[EAX+0DE8h]. Read with disasm-raw: Ghidra's stored body for 00864FE0 is truncated over this region"
+  },
+  {
+   "step": "consumer: score the contact",
+   "function": "00864fe0",
+   "address": "00865237",
+   "native": "00863990",
+   "note": "arguments 0086522A-00865231: &distance, node->payload->unit (00865224/00865227), category; ECX = the pass object"
+  },
+  {
+   "step": "consumer: the AI suppression test",
+   "function": "00864fe0",
+   "address": "00865248",
+   "native": "00862440",
+   "note": "ECX = [ESP+20h], the contact"
+  },
+  {
+   "step": "consumer: the visibility cache",
+   "function": "00864fe0",
+   "address": "0086525d",
+   "native": "00864d90",
+   "note": "contact pushed at 0086525C, ECX = [EBX+68h]"
+  },
+  {
+   "step": "consumer: the auto-target scan resolves its party slot",
+   "function": "009f5d30",
+   "address": "009f5d3a",
+   "native": "008053c0",
+   "note": "followed by 009F5D4E MOV EDI,[EAX+0DE8h], 009F5D60 MOV ECX,[EDI+8], 009F5D63 MOV ESI,[ECX+4]"
+  }
+ ],
+ "slot_layout": {
+  "size": "0x12a0",
+  "producer": "008050e0",
+  "size_evidence": "008053E4 PUSH 12A0h, and 0xE14 + 0x61*0x0C == 0x12A0 exactly",
+  "fields": [
+   {"offset": "+0h", "what": "vptr 00D08E94"},
+   {"offset": "+14h", "what": "vptr 00D08E88, second base"},
+   {"offset": "+24h", "what": "contents-changed byte"},
+   {"offset": "+25h", "what": "publish-dirty byte, set to 1 at construction"},
+   {"offset": "+28h", "what": "the party index, param_2 of 008050E0. NOT the winning observer pointer"},
+   {"offset": "+2Ch", "what": "float, time of this rebuild, DAT_00F876A4 at construction"},
+   {"offset": "+30h", "what": "float, seconds since the last rebuild, the sensor dt"},
+   {"offset": "+34h", "what": "array A, 61h lists of 0Ch, relation own"},
+   {"offset": "+4C0h", "what": "array B, relation enemy"},
+   {"offset": "+94Ch", "what": "array C, relation neutral"},
+   {"offset": "+0DD8h", "what": "triple 0, own - also the observer list 00806840 is given"},
+   {"offset": "+0DE4h", "what": "triple 1, enemy: +0DE4h count, +0DE8h head, +0DECh tail"},
+   {"offset": "+0DF0h", "what": "triple 2, neutral"},
+   {"offset": "+0DFCh", "what": "triple 3, unknown: +0DFCh count, +0E00h head, +0E04h tail, proven at 00807671-0080769B"},
+   {"offset": "+0E08h", "what": "triple 4, the union, never published"},
+   {"offset": "+0E14h", "what": "array D, carry-over; the object ends on its last byte"}
+  ]
+ },
+ "list_and_node_layout": {
+  "producer": "00804e10",
+  "list": {"+0h": "count", "+4h": "head", "+8h": "tail", "size": "0x0c"},
+  "node": {"+0h": "prev", "+4h": "next", "+8h": "payload", "size": "0x0c"},
+  "payload": {"+0h": "vptr 00D08E78", "+4h": "unit", "+8h": "category", "+0Ch": "detection level", "+10h/+14h/+18h": "nested member list", "size": "0x1c"},
+  "confirmations": [
+   "00807671-0080769B builds the same shape by hand at the unknown triple +0DFCh",
+   "007A8500 / 007A8514 read the same shape at the own triple +0DD8h"
+  ]
+ },
+ "de8_writers": [
+  {"writer": "008050e0", "site": "0080519f", "encoding": "89 9e e8 0d 00 00", "effect": "zero at construction"},
+  {"writer": "008042b0", "site": "008073f5", "encoding": "through ECX, no disp32", "effect": "count/head/tail := 0 at the top of every rebuild"},
+  {"writer": "00804e10", "site": "00807627", "encoding": "through ECX, no disp32", "effect": "the publication: one copy node per enemy-bucket record"},
+  {"writer": "inlined unlink in 008073c0", "site": "008076bc", "encoding": "89 96 e8 0d 00 00", "effect": "head := node->next when the drained node was the head"},
+  {"writer": "00806ed0", "site": "008070ff", "encoding": "89 8f e8 0d 00 00", "effect": "teardown in the scalar deleting destructor"}
+ ],
+ "byte_census": {
+  "method": "scan-bytes over .text with the modrm wildcarded, so every base register is covered",
+  "patterns": [
+   {"pattern": "8b ?? e8 0d 00 00", "matches": 16, "meaning": "mov reg,[base+0DE8h]"},
+   {"pattern": "89 ?? e8 0d 00 00", "matches": 4, "meaning": "mov [base+0DE8h],reg"},
+   {"pattern": "8d ?? e4 0d 00 00", "matches": 7, "meaning": "lea reg,[base+0DE4h]"},
+   {"pattern": "bc 74 f8 00", "matches": 6, "meaning": "the slot table 00F874BC, complete census"}
+  ],
+  "trap": "The routine that actually publishes the list appears in NO store row: 00804E10 and 008042B0 write the head as this->[+4h] through ECX. A census of 89 ?? e8 0d 00 00 alone concludes the field has no producer outside the constructor, which is the conclusion docs/GAME_EXECUTABLE.md was left with. The producers are reachable only through the lea ecx,[esi+0DE4h] rows.",
+  "false_positives": ["007d010a in BSP_PlaneUnitInstance_Construct", "004b58a0 in FUN_004b5800"]
+ },
+ "consumers": {
+  "slot_accessor_callers": 15,
+  "of_which_read_de8": 10,
+  "read_de8_list": ["006435d0", "0070c370", "0080a000", "00856bb0", "00864fe0", "008c74b0", "009c1fd0", "009e9190", "009f5d30", "009f7810"],
+  "callers_without_de8": ["004c9ca0", "004dfb70", "006f4d10", "008fff20", "009f1420"],
+  "cached_path_readers": [
+   {"function": "004c3cb0", "read": "004c3d61", "resolution": "[[game+18CCh+i*4]+30h]"},
+   {"function": "005b2d70", "read": "005b31b4", "resolution": "005b319f-005b31b1"},
+   {"function": "007a84d0", "read": "007a852d", "resolution": "007a84ea-007a84fd"}
+  ],
+  "walks_actually_read": ["00864fe0", "009f5d30", "00793670", "007a84d0"],
+  "walks_inferred_from_the_offset_only": ["006435d0", "0070c370", "0080a000", "00856bb0", "008c74b0", "009c1fd0", "009e9190", "009f7810"]
+ },
+ "bucket_and_side": {
+  "bucket": "one {count, head, tail} list; its index is the vehicle class id. 61h = 97 buckets per array, addressed as base + i*0Ch (00807529 LEA EDI,[ESI+34h] / 0080753F ADD EDI,0Ch). Nothing hashes.",
+  "occupied": "24 of 97: the twenty-two scanned ids from 00806480's first vector plus the aggregates 18h and 1Ah the grouping creates. The largest scanned id is 46h.",
+  "why_97": "NOT ESTABLISHED. No producer of the world registry's class table was read.",
+  "sides": "three slots, subscript = party index; 0 and 1 belligerent, 2 neutral. Slot 2 classifies nothing as enemy, so its enemy triple is always empty.",
+  "observers": "the slot's own triple at +0DD8h, filled at 0080753A before any grouping and passed as the second argument to 00806840 at 00807556 and 00807574. The pass is |own| x |enemy| row evaluations per rebuild."
+ },
+ "host_prescription": [
+  {"step": 0, "native": "00807a08", "address": "00807a08", "what": "every 3 s of sim time, for each of the three slots. Not per frame: +30h is the sensor dt"},
+  {"step": 1, "native": "008042b0", "address": "008073ea", "what": "elapsed = now - last_refresh (008073D6); last_refresh = now (008073E1); contents_changed = false (008073E6); then clear all five triples, this being the first of the five 008042B0 calls"},
+  {"step": 2, "native": "00804150", "address": "0080743f", "what": "splice A, B, C into D for all 97 buckets"},
+  {"step": 3, "native": "008065b0", "address": "00807500", "what": "for each scanned class id, walk the world class list, apply recon_unit_gate_passes_008074d5 and IsKindOf(2), add or refresh into A/B/C by recon_relation_for_008065ff; then retire D[classId] at 00807513"},
+  {"step": 4, "native": "00804e10", "address": "0080753a", "what": "own triple := copy of every A bucket. This is the observer list"},
+  {"step": 5, "native": "00806840", "address": "00807556", "what": "per enemy record: best gain over observers via recon_evaluate_sensor_row_008048a0, then recon_detection_accumulate_00805af0, recon_detection_level_00805b3d, recon_effective_level_0080695c into entry->level"},
+  {"step": 6, "native": "00804e10", "address": "00807627", "what": "PUBLISH: enemy triple := copy of every B bucket"},
+  {"step": 7, "native": "00bf681b", "address": "00807656", "what": "drain by recon_triple_filter_00807647(level): level 1 copied to unknown and removed, level 0 removed, level 2 kept"}
+ ],
+ "host_prescription_note": "bsp/recon_slot_lists.hpp already declares the whole rebuild as a pure-virtual host interface and bsp/fixed_step_countdown.hpp already declares the slot table, count, size and offsets. No new header is published by this packet. The only constants found here that no header carries are the {count, head, tail} / {prev, next, payload} strides and the 1Ch record's field offsets; they belong next to kReconTripleOffsets in bsp/recon_slot_lists.hpp, which this packet does not own. recon_contact_count_008053c0 and recon_contact(int) keep their signatures, so src/unit_gunnery_pass.cpp:394 needs no change.",
+ "standin_corrections": [
+  {
+   "target": "src/game_hosts_gunnery.cpp:738 recon_contact_count_008053c0",
+   "was": "every live, visible, IsKindOf(ship base) unit whose side differs from the owner's",
+   "is": "party 2 is neutral, not enemy: recon_relation_for_008065ff sends every party-2 unit to array C, never to B, so a side != own_side test over-admits them. Independent of rule (c). Magnitude depends on the mission's party-2 population and may be zero",
+   "evidence": "008065FF-0080672B, reproduced in include/bsp/recon_slot_lists.hpp recon_relation_for_008065ff"
+  },
+  {
+   "target": "src/game_hosts_gunnery.cpp:738 recon_contact_count_008053c0",
+   "was": "units only",
+   "is": "the enemy triple holds both the individual plane and land-vehicle records and their 18h/1Ah aggregates: the grouping does not remove the member records from B. The Lua publish 00805D90 drops the members, but that exclusion is script-side and does not apply to +0DE8h",
+   "evidence": "00807581-00807610 grouping, then 00807615-00807632 copying every B bucket including the member classes"
+  }
+ ],
+ "effect_prediction": {
+  "mechanism": "Almost every authored Gain is 1, stored as +8h = 0.5; the rebuild period is 3 s, so one pass contributes 1.5, clamped to cap - current. A vision row's MaxLevel 2 maps to a cap of 1.0f and the identify threshold is 0.5f, so a fresh record saturates to identified in ONE pass. Rule (c) therefore degenerates to a hard range test, with no ramp.",
+  "gating_distance": "the vision row, Dist = 4000 m arcade (this installation, GameMode = 0), measured horizontally, times sqrt(rangeScale)",
+  "radar_does_not_qualify": "the radar ship's Surface->Surface radar row has Dist 6000 but MaxLevel 1, a cap of 0.25f, and 0.25 is blip not identified (recon_detection_level_00805b3d: < 0.5 is blip). A 4000-6000 m contact is copied into unknown and REMOVED from enemy, so the gunnery sweep never sees it.",
+  "prediction": "candidates should be exactly ZERO while the fleets are more than about 4 km apart, then jump to near the stand-in's value once the gap closes, because a task force is a formation a few hundred metres across and the admission envelope is the union over all own-party observers. The run total should fall by roughly the fraction of the run spent beyond the ring, not by a fraction reflecting how many units exist. recon_sweeps does not move: the sweep still runs, its inner loop just has nothing to iterate.",
+  "honest_bound_for_usn02": "docs/GAME_EXECUTABLE.md milestone 2s records the nearest enemy pair at 1854 m at 25 s, already well inside 4000 m, so on that mission the closing happens early and the zero stretch is short. The prediction for that run is that candidates moves COMPARATIVELY LITTLE - a reduction concentrated in the opening seconds plus whatever stragglers stay outside the ring.",
+  "falsifier": "log, per sweep, the contact count together with the minimum own-to-enemy horizontal distance. The prediction is wrong if the count is a smooth function of time rather than a step at the 4000 m crossing; it is wrong the other way if the count stays at zero after the fleets close, which would mean the observer side of 00806840 finds no rows. A run total alone cannot distinguish 'the filter works' from 'the filter admits nothing'."
+ },
+ "corrections": [
+  {
+   "target": "the packet brief for cc7_recon_slot_object",
+   "was": "[slot+28h] is the winning observer pointer, written by 00805AF0",
+   "is": "[slot+28h] is the party index, written once at construction by 008050E0 (param_1[10] = param_2). The winning observer pointer is 00805AF0's fourth native argument and lands in the unit's detection record at unit+1E8h+party*34h, +28h. Two different +28h fields on two different objects",
+   "evidence": "008050E0 read in full; docs/RECON_SLOT_LISTS.md section 2 already tabulates both"
+  },
+  {
+   "target": "docs/GUNNERY_RECON_DETECTION.md line 245",
+   "was": "'four 97 x 0Ch bucket arrays' followed by three offsets",
+   "is": "four arrays and four offsets: A +34h, B +4C0h, C +94Ch, D +0E14h. The sentence lists only three. The count of four is right; the list is short one entry",
+   "evidence": "008050E0's fourth _eh_vector_constructor_iterator_ call on param_1+0x385 with the same {0Ch, 61h, 00804E00} triplet; 0xE14 + 0x61*0x0C == 0x12A0"
+  },
+  {
+   "target": "docs/GUNNERY_RECON_DETECTION.md line 247",
+   "was": "'four flat {count, head, tail} lists'",
+   "is": "five. +0E08h is zeroed by the same run of fifteen dword stores in 008050E0 as the four published ones; 00806B10 simply never publishes it",
+   "evidence": "008050E0 param_1[0x376]..param_1[0x384]; docs/RECON_SLOT_LISTS.md section 2 already lists all five"
+  }
+ ],
+ "not_reached": [
+  {"item": "the eight unexamined +0DE8h walks (006435D0, 0070C370, 0080A000, 00856BB0, 008C74B0, 009C1FD0, 009E9190, 009F7810)", "reason": "identified by the byte census plus membership in the 008053C0 caller list; their bodies were not read, so 'they walk the same chain the same way' is an inference from the offset"},
+  {"item": "007A84D0 beyond 007A853F", "reason": "the read prefix was enough to prove its ECX is a recon slot and to name 00793670's caller; the tail and the routine's purpose are unread"},
+  {"item": "00804E70, the 1Ch record constructor", "reason": "the layout is inherited from docs/RECON_SLOT_LISTS.md section 2; this packet read the consumers' use of +4h and the drain's use of +0Ch only"},
+  {"item": "008042B0's body", "reason": "only its call sites and ECX setup were read; the clear semantics are inherited"},
+  {"item": "the origin of 61h", "reason": "no producer of the world registry's class table at [game+19CCh]+18h+id*0Ch was read; a lea/mov census on 19CCh returns 278 sites, too broad for this packet"},
+  {"item": "run-time evidence", "reason": "bsp_game.exe builds no recon slot object and reaches neither 008073C0 nor 00806840. Checklist rule 6 does not apply: the executable cannot reach this path until the prescription in section 6 is implemented"}
+ ]
+}
