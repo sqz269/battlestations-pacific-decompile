@@ -1,0 +1,268 @@
+{
+  "subject": "actual renderer Lua-cache singleton owner",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "source_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "parent": {
+    "function": "00b32410",
+    "allocation_site": "00b327fb",
+    "allocation_bytes": 1228,
+    "pointer": "discarded by parent"
+  },
+  "layout": {
+    "bytes": 1228,
+    "vtable_offset": 0,
+    "lua_offset": 4,
+    "lua_bytes": 1224
+  },
+  "functions": [
+    {
+      "address": "00b1ba30",
+      "end_inclusive": "00b1bac0",
+      "bytes": 145,
+      "abi": "ECX=this; EAX=this; RET",
+      "name": "BSP_RendererLuaBase_Construct",
+      "writes": [
+        "this+00=00d5e5a4",
+        "00f8d434=this"
+      ],
+      "calls": [
+        "00415350 first manager",
+        "EnterCriticalSection via [00ce2218]",
+        "00415350 second manager",
+        "00bd0c30 current publication",
+        "LeaveCriticalSection via [00ce2210]"
+      ],
+      "ordering": "capture first manager+10 section and depth+18; publish; second getter; reload current 00f8d434; register; release captured section",
+      "fh3": "handler 00cbc850; state 1 after guard acquisition"
+    },
+    {
+      "address": "00b1bb90",
+      "end_inclusive": "00b1bbeb",
+      "bytes": 92,
+      "abi": "ECX=this; EAX=this; RET",
+      "name": "BSP_RendererLuaOwner_Construct",
+      "writes": [
+        "this+00=00d5e5a8",
+        "Lua owner constructor at this+04"
+      ],
+      "calls": [
+        "00b1ba30",
+        "00b66bd0 ECX=this+04",
+        "00b6a020 ECX=this+04 stack mask=1"
+      ],
+      "fh3": "handler 00cbc893; state 0 after base; state 1 after Lua construction"
+    },
+    {
+      "address": "00b1bad0",
+      "end_inclusive": "00b1bb68",
+      "bytes": 153,
+      "abi": "ECX=this; RET",
+      "name": "BSP_RendererLuaBase_Destruct",
+      "writes": [
+        "this+00=00d5e5a4",
+        "00f8d434=0",
+        "this+00=00ce3818"
+      ],
+      "calls": [
+        "00415350 first manager",
+        "EnterCriticalSection via [00ce2218]",
+        "00415350 second manager",
+        "00bcfca0 current publication",
+        "LeaveCriticalSection via [00ce2210]"
+      ],
+      "fh3": "handler 00cbc870; guard state 1 during unregister"
+    },
+    {
+      "address": "00b1bb70",
+      "end_inclusive": "00b1bb8b",
+      "bytes": 28,
+      "abi": "ECX=this; stack flags DWORD with low-byte bit test; EAX=this; RET4",
+      "name": "CG_scalar_deleting_dtor_00b1bb70",
+      "calls": [
+        "00b1bad0",
+        "00bf65ac iff flags bit 0"
+      ]
+    },
+    {
+      "address": "00b1bbf0",
+      "end_inclusive": "00b1bc41",
+      "bytes": 82,
+      "abi": "ECX=this; RET",
+      "name": "BSP_RendererLuaOwner_Destruct",
+      "writes": [
+        "this+00=00d5e5a8"
+      ],
+      "calls": [
+        "00b669a0 ECX=this+04",
+        "00b1bad0 ECX=this"
+      ],
+      "fh3": "handler 00cbc8a8; base cleanup armed during Lua close"
+    },
+    {
+      "address": "00b1bc50",
+      "end_inclusive": "00b1bc6b",
+      "bytes": 28,
+      "abi": "ECX=this; stack flags DWORD with low-byte bit test; EAX=this; RET4",
+      "name": "CG_scalar_deleting_dtor_00b1bc50",
+      "calls": [
+        "00b1bbf0",
+        "00bf65ac iff flags bit 0"
+      ]
+    }
+  ],
+  "source_interfaces": [
+    "include/bsp/native_renderer_lua_owner.hpp",
+    "src/native_renderer_lua_owner.cpp"
+  ],
+  "constraints": [
+    "actual 01090aa0 manager publication",
+    "distinct actual 00f8d434 owner publication",
+    "existing native Lua construction and bootstrap providers",
+    "preserve untouched Lua slot preimages"
+  ],
+  "uncertainties": [
+    "source C++ exception scopes do not reproduce FH3/SEH identity",
+    "no original binary callable ABI",
+    "vtable DWORDs are not callable C++ vtables",
+    "game startup and singleton drain unvalidated"
+  ],
+  "validation": {
+    "build": "strict scripts/build.ps1 Release passed after seed generation",
+    "native_seeds": "8 of 8 live Ghidra versus disk matches",
+    "ctest": "reconstructed_math and native_math_differential passed",
+    "runtime": "not run"
+  },
+  "artifact_manifest": {
+    "algorithm": "SHA-256",
+    "source_and_build_inputs": [
+      {
+        "path": "include/bsp/native_renderer_lua_owner.hpp",
+        "bytes": 2251,
+        "sha256": "79dbf1f5898bbb0811e5987691aa1de12f4bfe077cb5780e56bc1548e0002d34"
+      },
+      {
+        "path": "src/native_renderer_lua_owner.cpp",
+        "bytes": 3757,
+        "sha256": "c5cade7bc0a41d156254a4882a1f4e7a2f6eeb79fa10fb7ff5aeb1806deb1008"
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "bytes": 7409,
+        "sha256": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf"
+      },
+      {
+        "path": "src/native_lua_objects.cpp",
+        "bytes": 12954,
+        "sha256": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e"
+      },
+      {
+        "path": "include/bsp/native_lua_bootstrap.hpp",
+        "bytes": 1658,
+        "sha256": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c"
+      },
+      {
+        "path": "src/native_lua_bootstrap.cpp",
+        "bytes": 2985,
+        "sha256": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "bytes": 2344,
+        "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094"
+      },
+      {
+        "path": "src/sound_lifetime_access.cpp",
+        "bytes": 2380,
+        "sha256": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a"
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "src/native_singleton_removal_reorder.cpp",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 112641,
+        "sha256": "f8af4d84fa06bc09bdbb7143932d42139652af2d3df47aafcabd12cfbfe6403d"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "local/seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 18975,
+        "sha256": "f748c73f9c92dd95f383d27a9ab9a7ef343e07739a3a42d2db0b6e046e2611d4"
+      }
+    ],
+    "build_outputs": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_lua_owner.obj",
+        "bytes": 10259,
+        "sha256": "a62c4d32920427d573255ddcca1d1ace510ac381d2a5875bb5666f662cc6cb40"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 57548146,
+        "sha256": "3e8f79550fba28a238ac0ef3e8fd80af8df48b75607ca5d7d604f86211be54cc"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455720,
+        "sha256": "1256fdfc9e75378ba4b6a9c4f10dcba6e7f45a0d526f6a7311f8b36c6327d045"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2044416,
+        "sha256": "daf5ff721e8dc17bb9f22ebd7bfa247776c674bce4ed3ae2a65db2555c438611"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "9c4e508603a4059139209b6655fbdb4e8b53eb9bdfeafd49967f094f9702ec60"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 530944,
+        "sha256": "63f6b73e4ff8bc83a48b1bc24b74165a3d09b7bb24f21cf9f657d00314845ff7"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "c7987076a7654a2a6046dc0da8a8c880e359713fd3b2c81fb19c90a3d05bc339"
+      }
+    ],
+    "original_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  }
+}
