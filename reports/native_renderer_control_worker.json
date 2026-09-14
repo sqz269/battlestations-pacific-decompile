@@ -1,0 +1,2960 @@
+{
+  "packet": "orch5_native_renderer_control_worker",
+  "base_commit": "a602d7cd",
+  "utc": "2026-09-14T06:22:15.828263+00:00",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutations": false,
+    "verification": "bsp.py ghidra proto/bytes/export/disasm target-verified; Capstone resolved FMUL ST1,ST0 operand ambiguity"
+  },
+  "original_binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752
+  },
+  "original_spans": [
+    {
+      "address": "00b33da0",
+      "length": 111,
+      "sha256": "078c7e8b53c377ad39280b155415522ff1ae12636b82e03904ba9e83f2b38432",
+      "matches_live": true,
+      "hex": "0f57c0568bf1578d7e14c706f0f1d500c6460400c6460500c7460800000000c7070000000032c9f30f1105e4d60801e89cdb090032c989460ce892db0900576a045668203cb3006a006a00894610ff153822ce006afe50894608ff15a022ce008b460850ff15cc22ce005f8bc65ec3"
+    },
+    {
+      "address": "00b33b50",
+      "length": 98,
+      "sha256": "3d7498deae37a0bc9cc66e51f05bf74244e57cfe8a063451e633478105c20945",
+      "matches_live": true,
+      "hex": "568bf18b4e0cc706f0f1d500c64605018b018b5004ffd28b46086aff50ff15b022ce008b4e0851ff155c22ce00c74608000000008b4e0c85c9740f8b118b026a01ffd0c7460c000000008b4e1085c9740f8b118b026a01ffd0c74610000000005ec3"
+    },
+    {
+      "address": "00b33c00",
+      "length": 30,
+      "sha256": "946b0728b8be36453b688c221e135c92cbf7b821dc1eba2247c6d5d45d2e13fc",
+      "matches_live": true,
+      "hex": "568bf1e848fffffff644240801740956e897290c0083c4048bc65ec20400"
+    },
+    {
+      "address": "00b33c20",
+      "length": 352,
+      "sha256": "c92b627c84c0567ac3a36be1f0bb79c514ffdbcc532dca1059288d9d602bfcb3",
+      "matches_live": true,
+      "hex": "558bec83e4f883ec1c53568b75088b4e0c8b018b500857ffd2807e05000f85350100008b3d3022ce008b1d4421ce0090807e04000f84000100008d9b000000008b0db00a09018b018b40208d54241852ffd0df6c2418df6c2420def9d95c2414d9442414dd05a047ce00dcc9d9c9d95c2414d9442414d825e4d60801d95c240cd9eed944240cdff1ddd87608f30f1044240ceb0ef30f100508a2d700f30f5c44240c8b4e1885c9f30f11442410d9442410db46187d06d8057839ce00defadff1ddd8766af30f10442414f30f1105e4d608018b461c85c074058b4e20ffd08b0d94d3f800e817c5feff84c074168d49006a0affd78b0d94d3f800e801c5feff84c075ed8b0d94d3f800e8f2c4feff84c0751e8b0d94d3f8008b118b420cffd08b0d94d3f8008b118b4214ffd0eb02ffd3807e04000f8506ffffff8b4e108b118b4204ffd08b4e0c8b118b4208ffd0807e05000f84d8feffff6a00ff15c822ce00"
+    },
+    {
+      "address": "00bee080",
+      "length": 91,
+      "sha256": "7ac0b0553597e9b8251bae171dc0635b8f28eb9403e8bb28217ff3505075a5a5",
+      "matches_live": true,
+      "hex": "83ec08568bf1807e690074228b4424108b4e208b562489088b4e288950048b562c89480889500c5e83c408c204008d44240450ff157022ce008b4424108b4c24048b54240889088b4e608950048b566489480889500c5e83c408c2"
+    },
+    {
+      "address": "00ce47a0",
+      "length": 8,
+      "sha256": "139107fd63d004e94cb64abb75361dd8490810c6709a9311896ca17496f5ecde",
+      "matches_live": true,
+      "hex": "0000000000408f40"
+    },
+    {
+      "address": "00ce3978",
+      "length": 4,
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "matches_live": true,
+      "hex": "0000804f"
+    },
+    {
+      "address": "00d7a208",
+      "length": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "matches_live": true,
+      "hex": "00000080"
+    },
+    {
+      "address": "00d6821c",
+      "length": 16,
+      "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+      "matches_live": true,
+      "hex": "b019bd001019bd00c017bd006019bd00"
+    },
+    {
+      "address": "00d68d50",
+      "length": 40,
+      "sha256": "8d034220783cf8f2302087c227f8c6a6804eb09cbb5c7ff28db4b1438a9736c7",
+      "matches_live": true,
+      "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe00"
+    },
+    {
+      "address": "00d5f0a8",
+      "length": 28,
+      "sha256": "758a95da68defbe65e5e12f107041b1e21a9be46601288a0b4de7835f21d130b",
+      "matches_live": true,
+      "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b200"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b33da0",
+      "name": "construct_native_renderer_control_worker_00b33da0",
+      "source": "src/native_renderer_control_worker.cpp",
+      "status": "reconstructed_actual_normal_body",
+      "original_abi": "ECX raw owner; worker ctor/destructor RET, scalar RET4; clock ECX/EDXunused/output stack RET4; thread Win32 stackowner normal ExitThread"
+    },
+    {
+      "address": "00b33b50",
+      "name": "destroy_native_renderer_control_worker_00b33b50",
+      "source": "src/native_renderer_control_worker.cpp",
+      "status": "reconstructed_actual_normal_body",
+      "original_abi": "ECX raw owner; worker ctor/destructor RET, scalar RET4; clock ECX/EDXunused/output stack RET4; thread Win32 stackowner normal ExitThread"
+    },
+    {
+      "address": "00b33c00",
+      "name": "delete_native_renderer_control_worker_00b33c00",
+      "source": "src/native_renderer_control_worker.cpp",
+      "status": "reconstructed_actual_normal_body",
+      "original_abi": "ECX raw owner; worker ctor/destructor RET, scalar RET4; clock ECX/EDXunused/output stack RET4; thread Win32 stackowner normal ExitThread"
+    },
+    {
+      "address": "00b33c20",
+      "name": "native_renderer_control_worker_thread_00b33c20",
+      "source": "src/native_renderer_control_worker.cpp",
+      "status": "reconstructed_with_required_actual_EndFrame_provider",
+      "original_abi": "ECX raw owner; worker ctor/destructor RET, scalar RET4; clock ECX/EDXunused/output stack RET4; thread Win32 stackowner normal ExitThread"
+    },
+    {
+      "address": "00bee080",
+      "name": "sample_native_frame_clock_00bee080",
+      "source": "src/native_renderer_control_worker.cpp",
+      "status": "reconstructed_actual_normal_body",
+      "original_abi": "ECX raw owner; worker ctor/destructor RET, scalar RET4; clock ECX/EDXunused/output stack RET4; thread Win32 stackowner normal ExitThread"
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00b33da0",
+      "address": "00b33dcf",
+      "native": "00bd1970"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dd9",
+      "native": "00bd1970"
+    },
+    {
+      "function": "00b33c00",
+      "address": "00b33c03",
+      "native": "00b33b50"
+    },
+    {
+      "function": "00b33c00",
+      "address": "00b33c10",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d04",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d1a",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d29",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dee",
+      "native": "IAT CE2238 CreateThread"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dfa",
+      "native": "IAT CE22A0 SetThreadPriority"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33e04",
+      "native": "IAT CE22CC ResumeThread"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b65",
+      "native": "D6821C+04 -> BD1910 signal"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b6d",
+      "native": "IAT CE22B0 WaitForSingleObject"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b77",
+      "native": "IAT CE225C CloseHandle"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b91",
+      "native": "D6821C+00 -> BD19B0 scalar delete"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33ba7",
+      "native": "D6821C+00 -> BD19B0 scalar delete"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33c37",
+      "native": "D6821C+08 -> BD17C0 wait"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33c70",
+      "native": "D68D50+20 -> BEE080 sample"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33cfc",
+      "native": "current callback1C, ECX current context20"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d12",
+      "native": "EDI captured IAT CE2230 Sleep"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d3d",
+      "native": "D5F0A8+0C -> B2B200 BeginFrame"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d4a",
+      "native": "D5F0A8+14 -> B2F4A0 -> B2D8E0 required EndFrame"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d4e",
+      "native": "EBX captured IAT CE2144 SwitchToThread"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d62",
+      "native": "D6821C+04 -> BD1910 signal"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d6c",
+      "native": "D6821C+08 -> BD17C0 wait"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d7a",
+      "native": "IAT CE22C8 ExitThread"
+    },
+    {
+      "function": "00bee080",
+      "address": "00bee0b3",
+      "native": "IAT CE2270 QueryPerformanceCounter"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_renderer_control_worker.hpp": "7db9b84665fd94510d4b44c2af61ff649ca69c5542bdafebb84a91e703925db1",
+    "src/native_renderer_control_worker.cpp": "12c24aeacca3ac950c5ce5d4ee5ed6f4dcc33517038a501adeec865bf8f94930",
+    "docs/NATIVE_RENDERER_CONTROL_WORKER.md": "58d71d4e93b0b1cfa8e149983aafedf343b4dada2581c6ac6fb9e6876acf6b5d"
+  },
+  "validation": {
+    "status": "actual_worker_lifetime_and_clock_build_fixture_checked_EndFrame_required",
+    "build_command": "./scripts/build.ps1",
+    "build_exit": 0,
+    "configured_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "seed_matches": 8,
+    "seed_ranges": 8,
+    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_control_worker.json",
+    "direct_calls_checked": 7,
+    "call_check_failures": 0,
+    "indirect_calls_recorded": 19,
+    "fixture_command": "cmd /d /c local\\native_renderer_control_probe.cmd",
+    "fixture_build_exit": 0,
+    "fixture_exit": 0,
+    "fixture_compile_flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /Bv /showIncludes",
+    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
+    "fixture_stdout": "PASS original/source timing16 cases and raw clock; real worker create/sample/yield/stop/join/delete; immutable binding",
+    "original_timing_cases": 16,
+    "original_clock_branches": [
+      "fixed raw pair copy",
+      "real QueryPerformanceCounter"
+    ],
+    "active_renderer_Begin_End_executed": false,
+    "forced_QPC_or_CreateThread_failure_tested": false,
+    "immutable_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\manifest.json",
+    "immutable_manifest_sha256": "d56a399e6258503e47060ea5b78fbee8c41a4518173d6a13c8d66cfe5b15b043"
+  },
+  "limits": [
+    "B2F4A0/B2D8E0 actual EndFrame remains required external provider; no no-op/default provider or game-host projection supplied.",
+    "Full actual clock construction/publication and existing begin-frame dependency contexts remain borrowed application services.",
+    "One immutable process-context pointer; caller retains the context, publication cells and providers through all worker joins. No owner map, teardown or rebinding.",
+    "Missing reached providers/unsupported observed profiles throw source contract errors; C++ exceptions escaping Win32 thread entry are outside the returning worker domain.",
+    "Native constructor has no local event rollback; null Win32 handles/results are retained. Destructor can wait forever if inner run remains set; it does not force run0 or bypass busy state.",
+    "Volatile native field ordering is retained; arbitrary concurrent mutation and C++ data-race equivalence are not proved.",
+    "Original114-byte timing and91-byte raw sample executed by focused fixture; entire original352-byte thread was not executed. Active renderer Begin/End path, QPC/CreateThread failure, native FH3/SEH and gameplay remain unvalidated."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "fixture_pe": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_probe.exe",
+    "size": 119808,
+    "sha256": "0717a3cee26c3f8680239841e3d1545345e99dcf27f0a8d0ed7e32b0a30e1996",
+    "machine": "x86",
+    "timestamp": 1789366965,
+    "image_base": "00400000",
+    "entry_point": "00414230",
+    "sections": [
+      {
+        "name": ".text",
+        "rva": "00001000",
+        "virtual_size": 84640,
+        "raw_size": 84992,
+        "raw_offset": 1024,
+        "raw_sha256": "0709c8340ad77be8284e7d65457aea2a785d8b2a9188bf124834d705c5b848c2"
+      },
+      {
+        "name": ".rdata",
+        "rva": "00016000",
+        "virtual_size": 28732,
+        "raw_size": 29184,
+        "raw_offset": 86016,
+        "raw_sha256": "268f02bbbf3d40809bb1d7ad36b4eabb6b77bc422cbd54456af77b5632258753"
+      },
+      {
+        "name": ".data",
+        "rva": "0001e000",
+        "virtual_size": 952,
+        "raw_size": 1024,
+        "raw_offset": 115200,
+        "raw_sha256": "92fae82c7af2743ad6723c9888da8700963abf18ee54f2fa669d30de470f23dc"
+      },
+      {
+        "name": ".rsrc",
+        "rva": "0001f000",
+        "virtual_size": 480,
+        "raw_size": 512,
+        "raw_offset": 116224,
+        "raw_sha256": "fc46ed777303e6008e6911eeac4bad392620129356d9204373372e12263ab34d"
+      },
+      {
+        "name": ".reloc",
+        "rva": "00020000",
+        "virtual_size": 2936,
+        "raw_size": 3072,
+        "raw_offset": 116736,
+        "raw_sha256": "8aba0d64518f4418e0838f53d34dd2144ce85b74b710196fdc12b5dfa738c61e"
+      }
+    ],
+    "imported_dlls": [
+      "USER32.dll",
+      "MSVCP140.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll"
+    ],
+    "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\WTypesbase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 14187,
+      "sha256": "e5277f89186f786ae0923c9d7689a16d91dbeff7fad36a86b08671416e4b679d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e5277f89186f_WTypesbase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6423,
+      "sha256": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e984e20681fd_apiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apisetcconv.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2162,
+      "sha256": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1093683104f9_apisetcconv.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\basetsd.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11448,
+      "sha256": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d35b73f885d7_basetsd.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+      "kind": "fixture_compile_header",
+      "bytes": 164262,
+      "sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\df78083ee8e7_d3d9.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9caps.h",
+      "kind": "fixture_compile_header",
+      "bytes": 25308,
+      "sha256": "ce1d3698749e228cb952651ddfe03f75915f0d322c6d88ae01b9139102624a4f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ce1d3698749e_d3d9caps.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9types.h",
+      "kind": "fixture_compile_header",
+      "bytes": 91050,
+      "sha256": "ce75dc368d5f37506ada4c32062a96ab4d4894fead5d21ad5844fc9f0a2e62c2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ce75dc368d5f_d3d9types.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\driverspecs.h",
+      "kind": "fixture_compile_header",
+      "bytes": 41698,
+      "sha256": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9cf7e9e1c9b5_driverspecs.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\guiddef.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5083,
+      "sha256": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0c08463fbc5a_guiddef.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\kernelspecs.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11879,
+      "sha256": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e844c7726c42_kernelspecs.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ktmtypes.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7849,
+      "sha256": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\68d2848d00ae_ktmtypes.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\minwindef.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6876,
+      "sha256": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a9cf08be8407_minwindef.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\poppack.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a50d0ef5cfe9_poppack.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack1.h",
+      "kind": "fixture_compile_header",
+      "bytes": 918,
+      "sha256": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dee27f2712b9_pshpack1.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack2.h",
+      "kind": "fixture_compile_header",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\971d19074639_pshpack2.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack4.h",
+      "kind": "fixture_compile_header",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1cb4d07a218e_pshpack4.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack8.h",
+      "kind": "fixture_compile_header",
+      "bytes": 918,
+      "sha256": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\47f3972a1211_pshpack8.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5189,
+      "sha256": "063bd35df91c85b029064abe19d635d985e414c9733c60ee8ca8ce937c98d6d5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\063bd35df91c_rpc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcasync.h",
+      "kind": "fixture_compile_header",
+      "bytes": 19693,
+      "sha256": "5e91801cee17b175a397cc56ff08790783d4fcdbc8d52fe7bb7461ccfa369a85",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5e91801cee17_rpcasync.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcdce.h",
+      "kind": "fixture_compile_header",
+      "bytes": 89430,
+      "sha256": "991883893134c8ecbe6af8335df0781bfb779c11684b3367def514136241b866",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\991883893134_rpcdce.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcdcep.h",
+      "kind": "fixture_compile_header",
+      "bytes": 32196,
+      "sha256": "df032ed7952b84113857284d86e7365b158cc57f955a5c0580e57e96c6df5ba2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\df032ed7952b_rpcdcep.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcndr.h",
+      "kind": "fixture_compile_header",
+      "bytes": 81583,
+      "sha256": "7eeaaa2b4a5972b44a03086884eeb4338d2b0790e3dbc3cb858cbab5fa813978",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7eeaaa2b4a59_rpcndr.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcnterr.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17723,
+      "sha256": "9d94281cbd9272e02a39b51e19367df2a87f3756b85b5c848bee38828e0cdc23",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9d94281cbd92_rpcnterr.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcsal.h",
+      "kind": "fixture_compile_header",
+      "bytes": 30696,
+      "sha256": "c15959eb632ab0f27d2bcb3b6873cd2873bdd5669069409d936ef993dcb1c108",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c15959eb632a_rpcsal.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdkddkver.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11565,
+      "sha256": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2472140e0a4d_sdkddkver.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdv_driverspecs.h",
+      "kind": "fixture_compile_header",
+      "bytes": 554,
+      "sha256": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\99fd81f94641_sdv_driverspecs.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings.h",
+      "kind": "fixture_compile_header",
+      "bytes": 48804,
+      "sha256": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3b83b1cd3b4f_specstrings.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_strict.h",
+      "kind": "fixture_compile_header",
+      "bytes": 67448,
+      "sha256": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\49b12898b42b_specstrings_strict.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_undef.h",
+      "kind": "fixture_compile_header",
+      "bytes": 13106,
+      "sha256": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6aba76eabbec_specstrings_undef.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\stralign.h",
+      "kind": "fixture_compile_header",
+      "bytes": 16784,
+      "sha256": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f7d2f48b6a91_stralign.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\tvout.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4128,
+      "sha256": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8c359d2dff89_tvout.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winapifamily.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11292,
+      "sha256": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\bda507d14f2e_winapifamily.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\windef.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7362,
+      "sha256": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\040535b19a60_windef.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winerror.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1622697,
+      "sha256": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\607a0b5fb2ce_winerror.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winpackagefamily.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3699,
+      "sha256": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8f74e2548960_winpackagefamily.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\wnnc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4001,
+      "sha256": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fb3aaeef324b_wnnc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\wtypes.h",
+      "kind": "fixture_compile_header",
+      "bytes": 23996,
+      "sha256": "71417094369493700ce385e32c63002ed651dd70b5d7f7d8a6f64c9e9a0939db",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\714170943694_wtypes.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt.h",
+      "kind": "fixture_compile_header",
+      "bytes": 127273,
+      "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\822e503b81dd_corecrt.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_malloc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7405,
+      "sha256": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\44bd1bb518e7_corecrt_malloc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_math.h",
+      "kind": "fixture_compile_header",
+      "bytes": 39299,
+      "sha256": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ca2f0f25b2e0_corecrt_math.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memcpy_s.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3692,
+      "sha256": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\359f3ce9e84b_corecrt_memcpy_s.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memory.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3527,
+      "sha256": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\18ca52041657_corecrt_memory.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_search.h",
+      "kind": "fixture_compile_header",
+      "bytes": 10959,
+      "sha256": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fe06c4dd27c3_corecrt_search.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_share.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1005,
+      "sha256": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\08e7a7eb0b0c_corecrt_share.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_startup.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5276,
+      "sha256": "2e2e27515bfe462435f5222022e5afdc84a50f093f87ade27db8afcaea202cb7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2e2e27515bfe_corecrt_startup.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_stdio_config.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5009,
+      "sha256": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a7e100624320_corecrt_stdio_config.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_terminate.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1223,
+      "sha256": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c8dc9a2497bc_corecrt_terminate.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wconio.h",
+      "kind": "fixture_compile_header",
+      "bytes": 13310,
+      "sha256": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6cfdcfd9e1ec_corecrt_wconio.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wctype.h",
+      "kind": "fixture_compile_header",
+      "bytes": 10605,
+      "sha256": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b622b24cbda8_corecrt_wctype.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wdirect.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1495,
+      "sha256": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b8477593983d_corecrt_wdirect.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wio.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7427,
+      "sha256": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e6a08ad4c75e_corecrt_wio.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wprocess.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3980,
+      "sha256": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e75c5cdf2440_corecrt_wprocess.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdio.h",
+      "kind": "fixture_compile_header",
+      "bytes": 75265,
+      "sha256": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a10bbf4667b3_corecrt_wstdio.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdlib.h",
+      "kind": "fixture_compile_header",
+      "bytes": 16790,
+      "sha256": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\98b62ac5fb42_corecrt_wstdlib.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstring.h",
+      "kind": "fixture_compile_header",
+      "bytes": 20015,
+      "sha256": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c485f918d43f_corecrt_wstring.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wtime.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7205,
+      "sha256": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4e487fddafbc_corecrt_wtime.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\crtdbg.h",
+      "kind": "fixture_compile_header",
+      "bytes": 32615,
+      "sha256": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d9ebd063f024_crtdbg.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\ctype.h",
+      "kind": "fixture_compile_header",
+      "bytes": 12981,
+      "sha256": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6a10e9f0505b_ctype.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\errno.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3835,
+      "sha256": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c64e8df96f05_errno.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\float.h",
+      "kind": "fixture_compile_header",
+      "bytes": 15397,
+      "sha256": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0fbf87532c05_float.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\locale.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5109,
+      "sha256": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\877aa49e1f22_locale.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\malloc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5079,
+      "sha256": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8acfe0c7a33a_malloc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\math.h",
+      "kind": "fixture_compile_header",
+      "bytes": 505,
+      "sha256": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fb747990091c_math.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\process.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11893,
+      "sha256": "c11858d0260086e5a61cf0c02d3533ebec6d4ec6133c18967d8b8cfe8231f490",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c11858d02600_process.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\share.h",
+      "kind": "fixture_compile_header",
+      "bytes": 312,
+      "sha256": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f706b5df86d1_share.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stddef.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1413,
+      "sha256": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3f1f7eeefad2_stddef.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h",
+      "kind": "fixture_compile_header",
+      "bytes": 81489,
+      "sha256": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\06cbab3a5013_stdio.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdlib.h",
+      "kind": "fixture_compile_header",
+      "bytes": 43968,
+      "sha256": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1576fdb40eb2_stdlib.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\string.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17395,
+      "sha256": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\39767b2e1963_string.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\stat.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6856,
+      "sha256": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2b720dd0426c_stat.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\types.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1280,
+      "sha256": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dfb9ebc7d527_types.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\time.h",
+      "kind": "fixture_compile_header",
+      "bytes": 19166,
+      "sha256": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b775fe03a328_time.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\wchar.h",
+      "kind": "fixture_compile_header",
+      "bytes": 18447,
+      "sha256": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\802dc6f33d12_wchar.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\PropIdl.h",
+      "kind": "fixture_compile_header",
+      "bytes": 45197,
+      "sha256": "07200a21ea1247b97a91f2e28991c2de475b03cf890155a4de3d0990a2b70066",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\07200a21ea12_PropIdl.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\PropIdlBase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 39269,
+      "sha256": "637483de9f1d2d3d40c966e8daa9ed238a4469cb07fe168bac7c685e0cf1e1fd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\637483de9f1d_PropIdlBase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Unknwn.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17672,
+      "sha256": "d0bbc6a30fa025fa3e5c198c68c638dec855b27b3ec34c9d404a95f890dd6a53",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d0bbc6a30fa0_Unknwn.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Unknwnbase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17732,
+      "sha256": "7fc28ae112c678a18567387fdbb43c615af6253429c9c1a8037cd0861f7568b6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7fc28ae112c6_Unknwnbase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinBase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 271704,
+      "sha256": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ec538199f5eb_WinBase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinNls.h",
+      "kind": "fixture_compile_header",
+      "bytes": 129219,
+      "sha256": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e47861762a4b_WinNls.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinUser.h",
+      "kind": "fixture_compile_header",
+      "bytes": 428754,
+      "sha256": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\89910113eb8d_WinUser.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Windows.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7511,
+      "sha256": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b337d661d03a_Windows.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\apiquery2.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1549,
+      "sha256": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\56c61c2ee306_apiquery2.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\cguid.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6063,
+      "sha256": "36eaed76fe65e7dc5382761439bc9f22a66701d0259001943bfbe35f257aa6e2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\36eaed76fe65_cguid.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\combaseapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 42146,
+      "sha256": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4b33bdf8cad7_combaseapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\coml2api.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6867,
+      "sha256": "73b81b7fefef903c28a3c2eab09cc52139ede97c38d8fe0e3f46faddb106a65e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\73b81b7fefef_coml2api.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 8161,
+      "sha256": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a0e727e696f3_consoleapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi2.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11697,
+      "sha256": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f2134e1d2c01_consoleapi2.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi3.h",
+      "kind": "fixture_compile_header",
+      "bytes": 8574,
+      "sha256": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0a00bf6ca901_consoleapi3.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\datetimeapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3964,
+      "sha256": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a4325c76b9bc_datetimeapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\debugapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3591,
+      "sha256": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d63f6c4aad97_debugapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\enclaveapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3502,
+      "sha256": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9467c4bc6400_enclaveapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\errhandlingapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6566,
+      "sha256": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b73cccce6dac_errhandlingapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fibersapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2582,
+      "sha256": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f8eeadc28f8e_fibersapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 40460,
+      "sha256": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f8927178c75d_fileapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapifromapp.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4111,
+      "sha256": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d07110e7f798_fileapifromapp.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\handleapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2578,
+      "sha256": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c967fdf1a98e_handleapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\heapapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5317,
+      "sha256": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\22b606b0a409_heapapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ime_cmodes.h",
+      "kind": "fixture_compile_header",
+      "bytes": 833,
+      "sha256": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\27904e900938_ime_cmodes.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\imm.h",
+      "kind": "fixture_compile_header",
+      "bytes": 28873,
+      "sha256": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\942d0b80eb7d_imm.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\interlockedapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2604,
+      "sha256": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4b0d3bc138ea_interlockedapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ioapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4791,
+      "sha256": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7c3f659f98b3_ioapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1307,
+      "sha256": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\08ddff85ec80_jobapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi2.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2976,
+      "sha256": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a8f9591dc2b0_jobapi2.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\libloaderapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 15518,
+      "sha256": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8ad0ba5600d6_libloaderapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mcx.h",
+      "kind": "fixture_compile_header",
+      "bytes": 24640,
+      "sha256": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4ee416b2d24e_mcx.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\memoryapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 33539,
+      "sha256": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\58edcc2090c4_memoryapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\minwinbase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 13973,
+      "sha256": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7d1408f4b8ee_minwinbase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\msxml.h",
+      "kind": "fixture_compile_header",
+      "bytes": 447870,
+      "sha256": "001de8d9f111a4449dffbd9c2640f92eb329ff43fff9e6b46c1a10a6bcddc16b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\001de8d9f111_msxml.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namedpipeapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5539,
+      "sha256": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\37062eba19e3_namedpipeapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namespaceapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1974,
+      "sha256": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3257ad8af53c_namespaceapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\oaidl.h",
+      "kind": "fixture_compile_header",
+      "bytes": 215603,
+      "sha256": "6432dc84174c12d5d3764b83fb4a21c5aed38b6a839c968133eca2920ee702fb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6432dc84174c_oaidl.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objbase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 10226,
+      "sha256": "14d465a8f602f2394c5455f67f129756fc525b26ad9c3099d3f6d943cafb5007",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\14d465a8f602_objbase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objidl.h",
+      "kind": "fixture_compile_header",
+      "bytes": 524407,
+      "sha256": "6728b27fad8860be3a481ee33ae5bb8bda6acd5d692f79646fb7ef0c4cb03f0b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6728b27fad88_objidl.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objidlbase.h",
+      "kind": "fixture_compile_header",
+      "bytes": 277656,
+      "sha256": "677379339246e36e9dfa9325ae41fe790579ea474f4d05f688cde2e8ac521bd6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\677379339246_objidlbase.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\oleidl.h",
+      "kind": "fixture_compile_header",
+      "bytes": 149619,
+      "sha256": "d9e6028b3447ad94b01d0676047355d8eebf6ff11afa8529904dfc11b941359d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d9e6028b3447_oleidl.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processenv.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7427,
+      "sha256": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c10dd3bd48a2_processenv.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processthreadsapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 37180,
+      "sha256": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\436ae4cbb017_processthreadsapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processtopologyapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2081,
+      "sha256": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4507a5e0c4f4_processtopologyapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\profileapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1413,
+      "sha256": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\cfa8e3626dba_profileapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\realtimeapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3149,
+      "sha256": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\00c874b981a1_realtimeapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\reason.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5042,
+      "sha256": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\30540eb35daa_reason.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\rpcnsi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 15272,
+      "sha256": "f49466a31875d34a6e5c02f301d81b7a78f25cb947f3d6e6ea712ab356b42c8e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f49466a31875_rpcnsi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\rpcnsip.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1563,
+      "sha256": "7c8138b43e028724e0fd143be29c40de5b5650a3e0f87356662a77dbad186712",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7c8138b43e02_rpcnsip.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securityappcontainer.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1470,
+      "sha256": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\85cc13ed7028_securityappcontainer.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securitybaseapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 36514,
+      "sha256": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a443b4183d3e_securitybaseapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\servprov.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7998,
+      "sha256": "5f25310cfbfb07bfb737b37c04bb74cd6c713505fdb9c8c4954f76bccd86dea4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5f25310cfbfb_servprov.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\stringapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3941,
+      "sha256": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\624c82fb7351_stringapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\synchapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 15696,
+      "sha256": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d962588974e5_synchapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\sysinfoapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 19345,
+      "sha256": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\077088cb53ec_sysinfoapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\systemtopologyapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2319,
+      "sha256": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8bfd1a78cc30_systemtopologyapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoolapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7148,
+      "sha256": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e91d7dee4d22_threadpoolapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoollegacyapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2824,
+      "sha256": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\87c1630abf7d_threadpoollegacyapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\timezoneapi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5462,
+      "sha256": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\621c0252a8a8_timezoneapi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\urlmon.h",
+      "kind": "fixture_compile_header",
+      "bytes": 410523,
+      "sha256": "a69ff621172bda7dcbd26b92f209e0bd7a7b00bad74e2ef375c2b6a8ec8b6f2f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a69ff621172b_urlmon.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\utilapiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2482,
+      "sha256": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a8e0f6001c78_utilapiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\verrsrc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6705,
+      "sha256": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ff9bee8ee5b7_verrsrc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincon.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1129,
+      "sha256": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\98e33720f9ec_wincon.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincontypes.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4610,
+      "sha256": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\209e79fdbbb3_wincontypes.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wingdi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 244023,
+      "sha256": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\96f3528cabc7_wingdi.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnetwk.h",
+      "kind": "fixture_compile_header",
+      "bytes": 27073,
+      "sha256": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7c7412df502f_winnetwk.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+      "kind": "fixture_compile_header",
+      "bytes": 876258,
+      "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\bc603675b330_winnt.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winreg.h",
+      "kind": "fixture_compile_header",
+      "bytes": 42295,
+      "sha256": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\bff833e8d092_winreg.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winsvc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 59863,
+      "sha256": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8108fe3f0999_winsvc.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winver.h",
+      "kind": "fixture_compile_header",
+      "bytes": 8809,
+      "sha256": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c60e137e7ff8_winver.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wow64apiset.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5421,
+      "sha256": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6b14e2b59ae5_wow64apiset.h"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+      "kind": "linker_library_searched",
+      "bytes": 299244,
+      "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ccd3dad2a72a_ucrt.lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\AdvAPI32.Lib",
+      "kind": "linker_library_searched",
+      "bytes": 192644,
+      "sha256": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b3c77049c3e3_AdvAPI32.Lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\Ole32.Lib",
+      "kind": "linker_library_searched",
+      "bytes": 108518,
+      "sha256": "037effd2a291e69b7a6b310ca52c95dd7baed17b9bcd718967324e89730dfcc8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\037effd2a291_Ole32.Lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\User32.Lib",
+      "kind": "linker_library_searched",
+      "bytes": 179898,
+      "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ab26e29a6f06_User32.Lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\Uuid.Lib",
+      "kind": "linker_library_searched",
+      "bytes": 8973686,
+      "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c67dde91ba59_Uuid.Lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\d3d9.lib",
+      "kind": "linker_library_searched",
+      "bytes": 5692,
+      "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f7efc12189fc_d3d9.lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+      "kind": "linker_library_searched",
+      "bytes": 329914,
+      "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0916cf9c9041_kernel32.Lib"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\shell32.lib",
+      "kind": "linker_library_searched",
+      "bytes": 280164,
+      "sha256": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\140aa220a74b_shell32.lib"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\1033\\clui.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 629600,
+      "sha256": "d97a83494b8690624ef84e3dc3137338a25e4710843884ecd6e59dd574ba2825",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d97a83494b86_clui.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 3131704,
+      "sha256": "37b06f075d24eb9ff01047a5747383309dcf78397ddb6de0c64144cb192e6b3a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\37b06f075d24_c1.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 11055928,
+      "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fe5610a0ed19_c1xx.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 8720696,
+      "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\03befd4b4a8d_c2.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "kind": "fixture_toolchain",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\33ee095d6568_cl.exe"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "kind": "fixture_toolchain",
+      "bytes": 3208544,
+      "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b00f360e3739_link.exe"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdb140.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 378720,
+      "sha256": "558b54f4881fd2a85c48c44928291bcd38a3fe132a552adfd76e5398ad1c112c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\558b54f4881f_mspdb140.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdbcore.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 1295200,
+      "sha256": "a379f567de6445671a67e642094341aca2db4593339e35676fead96f1b44ce76",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a379f567de64_mspdbcore.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\mspdbsrv.exe",
+      "kind": "fixture_toolchain",
+      "bytes": 154976,
+      "sha256": "9e001c64bde12b87770b4fa406e2dc107b3701bbbd24968843df738623de8b4e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9e001c64bde1_mspdbsrv.exe"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\msvcp140.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 618944,
+      "sha256": "8aaaaaff6680d8288c247268392c9690e25cd16d19c3a8d0445ff899c1b826d4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8aaaaaff6680_msvcp140.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\vcruntime140.dll",
+      "kind": "fixture_toolchain",
+      "bytes": 123248,
+      "sha256": "9e973b0b908a30fa3cd24236a5367a70870b986c04142954e2f8579eeea15134",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9e973b0b908a_vcruntime140.dll"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_bit_utils.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 15192,
+      "sha256": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\16e211c59fcb___msvc_bit_utils.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_chrono.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 35524,
+      "sha256": "df8e81fac522c76af4e06e41443784e78cf67995f7923918f883c00659e5defb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\df8e81fac522___msvc_chrono.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_doom_core.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2756,
+      "sha256": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\06f0d5fece0f___msvc_doom_core.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_iter_core.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 19874,
+      "sha256": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\31f6c2917917___msvc_iter_core.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_ostream.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 37506,
+      "sha256": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8994a3365024___msvc_ostream.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_sanitizer_annotate_container.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 11024,
+      "sha256": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\061c14cd379f___msvc_sanitizer_annotate_container.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_string_view.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 90494,
+      "sha256": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0f17b9360bd7___msvc_string_view.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_system_error_abi.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1224,
+      "sha256": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c5c46618a13b___msvc_system_error_abi.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_threads_core.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3281,
+      "sha256": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\50430177a6be___msvc_threads_core.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\__msvc_xlocinfo_types.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1207,
+      "sha256": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1ee04bf81213___msvc_xlocinfo_types.hpp"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ammintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 16119,
+      "sha256": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d53a3e438038_ammintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\array",
+      "kind": "fixture_compile_header",
+      "bytes": 28800,
+      "sha256": "823bff850876472cb1d3209ca745a0f1c4c9caf09a26720f096d7336cbe1d16f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\823bff850876_array"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\atomic",
+      "kind": "fixture_compile_header",
+      "bytes": 125169,
+      "sha256": "2f24fbb8dceb9dccc86f9a61493301ae3aa99ee572e2c4227428992a32e713f4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2f24fbb8dceb_atomic"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cctype",
+      "kind": "fixture_compile_header",
+      "bytes": 1113,
+      "sha256": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d764f74333f8_cctype"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cerrno",
+      "kind": "fixture_compile_header",
+      "bytes": 314,
+      "sha256": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\4c8b39febc5b_cerrno"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cfloat",
+      "kind": "fixture_compile_header",
+      "bytes": 242,
+      "sha256": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\615e244a4222_cfloat"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\climits",
+      "kind": "fixture_compile_header",
+      "bytes": 319,
+      "sha256": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dd0a6215a167_climits"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\clocale",
+      "kind": "fixture_compile_header",
+      "bytes": 744,
+      "sha256": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\95cb0b228d14_clocale"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cmath",
+      "kind": "fixture_compile_header",
+      "bytes": 72317,
+      "sha256": "b8d2e85a83f0b173863dc4dd56eae8b7b8dcd366d3ae103b429f51bf620449cd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b8d2e85a83f0_cmath"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\concurrencysal.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17273,
+      "sha256": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1ea9a2e32a6f_concurrencysal.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\crtdefs.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2581,
+      "sha256": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\82bdcc78bdab_crtdefs.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstddef",
+      "kind": "fixture_compile_header",
+      "bytes": 4015,
+      "sha256": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8388948efa6d_cstddef"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstdint",
+      "kind": "fixture_compile_header",
+      "bytes": 1697,
+      "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ce03526f2948_cstdint"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstdio",
+      "kind": "fixture_compile_header",
+      "bytes": 2511,
+      "sha256": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d13434f976c7_cstdio"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstdlib",
+      "kind": "fixture_compile_header",
+      "bytes": 2532,
+      "sha256": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0a7edd2c3ba9_cstdlib"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstring",
+      "kind": "fixture_compile_header",
+      "bytes": 1532,
+      "sha256": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6f16cc44e550_cstring"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ctime",
+      "kind": "fixture_compile_header",
+      "bytes": 3296,
+      "sha256": "702d79a569a3c18256e7a1318691942c38fed334dd6339c9b91a2f92f4bb1f16",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\702d79a569a3_ctime"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cwchar",
+      "kind": "fixture_compile_header",
+      "bytes": 3044,
+      "sha256": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6395a6c56a62_cwchar"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\eh.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2206,
+      "sha256": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f9809ac3f692_eh.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\emmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 16130,
+      "sha256": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\735efe76e3f5_emmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\exception",
+      "kind": "fixture_compile_header",
+      "bytes": 13765,
+      "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\49c3ebe69f8f_exception"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\excpt.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2493,
+      "sha256": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9532b07eff7b_excpt.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\immintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 121509,
+      "sha256": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a23efe7eceb2_immintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\initializer_list",
+      "kind": "fixture_compile_header",
+      "bytes": 2113,
+      "sha256": "7d15e533e1453ef99e71156c470f7d3b7ece6b7c55527b8b15fe24dabedeb196",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7d15e533e145_initializer_list"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 64899,
+      "sha256": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\80919d795d8c_intrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin0.h",
+      "kind": "fixture_compile_header",
+      "bytes": 543,
+      "sha256": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\bdbbcc2c993b_intrin0.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\intrin0.inl.h",
+      "kind": "fixture_compile_header",
+      "bytes": 20586,
+      "sha256": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6f044368f38b_intrin0.inl.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ios",
+      "kind": "fixture_compile_header",
+      "bytes": 10486,
+      "sha256": "3d0a96d6228a23c017afd63633359edbaddfce430ace5bd0b94031ade44c0186",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3d0a96d6228a_ios"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\iosfwd",
+      "kind": "fixture_compile_header",
+      "bytes": 11546,
+      "sha256": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5bb1f37c08ab_iosfwd"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\iostream",
+      "kind": "fixture_compile_header",
+      "bytes": 3102,
+      "sha256": "c305808f31581b9404f56773dbeaa882256b6af366b63071cdcc061e7e556c1f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c305808f3158_iostream"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\istream",
+      "kind": "fixture_compile_header",
+      "bytes": 35008,
+      "sha256": "5cd13c4359146d0e1183cff78b5a7b03eea1d38073b6eb533c5238fe726f79a2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5cd13c435914_istream"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\iterator",
+      "kind": "fixture_compile_header",
+      "bytes": 56587,
+      "sha256": "cab4f393f89858e2f8ee63482b0f9a7fadd5978928aca30b01151b29c72934d3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\cab4f393f898_iterator"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\limits",
+      "kind": "fixture_compile_header",
+      "bytes": 27812,
+      "sha256": "dde4a73958faee94656e0fdc37d73a686aee75f8a5dc6dbc478bed56178f2f2a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dde4a73958fa_limits"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\limits.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1919,
+      "sha256": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2ed583abdb8a_limits.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\list",
+      "kind": "fixture_compile_header",
+      "bytes": 75439,
+      "sha256": "8e36e6df473f2b6788313afe36a90e17a4e7cf6ffbf8bedcf339e626134e521b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8e36e6df473f_list"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\memory",
+      "kind": "fixture_compile_header",
+      "bytes": 182088,
+      "sha256": "8955101828fe9d46c77e214e50415bac5b1e59697e0f59bc46fa145aa1e8ae4c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8955101828fe_memory"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\memory_resource",
+      "kind": "fixture_compile_header",
+      "bytes": 34291,
+      "sha256": "ead73bf0534f530fac2e2fc59a6bcc20fd9b2964ebab189d47a6d753249cf678",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ead73bf0534f_memory_resource"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mm3dnow.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3202,
+      "sha256": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\da11304a505d_mm3dnow.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6634,
+      "sha256": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d2dce9191fbd_mmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\mutex",
+      "kind": "fixture_compile_header",
+      "bytes": 26514,
+      "sha256": "285d832a2d86213cf51d0636cb3c13397ef586e09a00cdcee81b94207678d889",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\285d832a2d86_mutex"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\new",
+      "kind": "fixture_compile_header",
+      "bytes": 1991,
+      "sha256": "a88db84beaf4d5d201a7a8393d0a41d647072da207a0c7e2ffe0e9997aef0e2a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\a88db84beaf4_new"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\nmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4632,
+      "sha256": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\69ecf1043386_nmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\optional",
+      "kind": "fixture_compile_header",
+      "bytes": 43870,
+      "sha256": "3bfc80a64908f77eaba10ec9a1e2c3b0746dd65e993c8c8d636696ada184f683",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3bfc80a64908_optional"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ostream",
+      "kind": "fixture_compile_header",
+      "bytes": 12858,
+      "sha256": "b0bbc44d49fd863057ca07d7c8bcbea61bf22dd25e7536d13a0e70337bf30027",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b0bbc44d49fd_ostream"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\pmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3208,
+      "sha256": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2fb7131f91e5_pmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ratio",
+      "kind": "fixture_compile_header",
+      "bytes": 11570,
+      "sha256": "c8e56ce57dfa50439b79a0d21df9e57dc87a063f399badc533e66a4460d04758",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c8e56ce57dfa_ratio"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\sal.h",
+      "kind": "fixture_compile_header",
+      "bytes": 213957,
+      "sha256": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\cda06459ca38_sal.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\setjmp.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3810,
+      "sha256": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7e4243ef92ee_setjmp.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\smmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 10000,
+      "sha256": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\2f773512dac1_smmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\stdarg.h",
+      "kind": "fixture_compile_header",
+      "bytes": 554,
+      "sha256": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5d61d0b6734e_stdarg.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\stdexcept",
+      "kind": "fixture_compile_header",
+      "bytes": 5213,
+      "sha256": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e677daf8465d_stdexcept"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\stdint.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4114,
+      "sha256": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\29fb6d4ba5e3_stdint.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\streambuf",
+      "kind": "fixture_compile_header",
+      "bytes": 15129,
+      "sha256": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b8bec573d0d2_streambuf"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\string",
+      "kind": "fixture_compile_header",
+      "bytes": 16455,
+      "sha256": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dafa5ec4d069_string"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\system_error",
+      "kind": "fixture_compile_header",
+      "bytes": 29567,
+      "sha256": "d6d9b5c66e9aeae9e1297ef6cc682033b5d9eaf0f199ce6a103308afd38c5f85",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d6d9b5c66e9a_system_error"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\thread",
+      "kind": "fixture_compile_header",
+      "bytes": 14097,
+      "sha256": "e56bde2e9f035c57bc8e24aa7f08393d2422d21f74090df4fea2b4d03791d730",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e56bde2e9f03_thread"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\tmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4763,
+      "sha256": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\e5981ed52590_tmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\tuple",
+      "kind": "fixture_compile_header",
+      "bytes": 70727,
+      "sha256": "dcabb4e66cfb39d4068fd92a8e181b96405d5cbdb946fbf6ae852b55cce86565",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dcabb4e66cfb_tuple"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\type_traits",
+      "kind": "fixture_compile_header",
+      "bytes": 117009,
+      "sha256": "c04ca6a9f8e48aaa077714c8a34cb52f00216d5de9e0d05065642c19cf41c1d5",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c04ca6a9f8e4_type_traits"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\typeinfo",
+      "kind": "fixture_compile_header",
+      "bytes": 2112,
+      "sha256": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9fe7fd18aaf6_typeinfo"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\unordered_map",
+      "kind": "fixture_compile_header",
+      "bytes": 42235,
+      "sha256": "eca1b2103a93e06baf7c601afa6c049a3ddf3a50a8c6420805f88b024425ed71",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\eca1b2103a93_unordered_map"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\use_ansi.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1330,
+      "sha256": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\f3133ce73105_use_ansi.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\utility",
+      "kind": "fixture_compile_header",
+      "bytes": 47053,
+      "sha256": "70d85f5ad793a8b8891e02d13b7a348423ce195fa144ff612c0bf0755eea64e0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\70d85f5ad793_utility"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vadefs.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7668,
+      "sha256": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\282dcb4af7cd_vadefs.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime.h",
+      "kind": "fixture_compile_header",
+      "bytes": 11444,
+      "sha256": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\8a6e89fe85c6_vcruntime.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_exception.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3143,
+      "sha256": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0dd3dcc67b65_vcruntime_exception.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_new.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5547,
+      "sha256": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5ee35f7b2db5_vcruntime_new.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_new_debug.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1578,
+      "sha256": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c3f552f0f276_vcruntime_new_debug.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_startup.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1272,
+      "sha256": "fb0bcd4cc6af20cedc3ddc02bdddd7e95cde5ede5c5c4aefa720702a2a75557a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fb0bcd4cc6af_vcruntime_startup.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_string.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2959,
+      "sha256": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b05204f6814d_vcruntime_string.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vcruntime_typeinfo.h",
+      "kind": "fixture_compile_header",
+      "bytes": 5313,
+      "sha256": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d6a1a675ad95_vcruntime_typeinfo.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\vector",
+      "kind": "fixture_compile_header",
+      "bytes": 169028,
+      "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b254d6fc2501_vector"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\wmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2615,
+      "sha256": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ccee1d63e178_wmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xatomic.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4862,
+      "sha256": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\7e1abd2855db_xatomic.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xbit_ops.h",
+      "kind": "fixture_compile_header",
+      "bytes": 2743,
+      "sha256": "ce23055e9f7d2fe88d0e4733848c9374db361ab610fa512cbbebb3c01765e0b8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ce23055e9f7d_xbit_ops.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xcall_once.h",
+      "kind": "fixture_compile_header",
+      "bytes": 3896,
+      "sha256": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\1d209e2f8b71_xcall_once.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xerrc.h",
+      "kind": "fixture_compile_header",
+      "bytes": 6445,
+      "sha256": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\41bf5400ac3b_xerrc.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xfacet",
+      "kind": "fixture_compile_header",
+      "bytes": 1473,
+      "sha256": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\71d7bd76e31f_xfacet"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xhash",
+      "kind": "fixture_compile_header",
+      "bytes": 79540,
+      "sha256": "ccb3f3efebeffb8af7a5acadb9b805c87c884b95b64b120fff22382d600fbc2d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ccb3f3efebef_xhash"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xiosbase",
+      "kind": "fixture_compile_header",
+      "bytes": 16541,
+      "sha256": "c065a4de2c93df21a3df510158cd0cd08a45bea61188867026491c35198476e0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\c065a4de2c93_xiosbase"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xkeycheck.h",
+      "kind": "fixture_compile_header",
+      "bytes": 20754,
+      "sha256": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\fdb1dc9ca22f_xkeycheck.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xlocale",
+      "kind": "fixture_compile_header",
+      "bytes": 127795,
+      "sha256": "d9a25c7471ef2c304dee80b1567e385c58f6395901fcc8dddf31e7cf927c1676",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d9a25c7471ef_xlocale"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xlocinfo",
+      "kind": "fixture_compile_header",
+      "bytes": 14513,
+      "sha256": "dbe56d1af1337f6c501e1fae84c6e0b5e7ed5758fd9480e538dbb992df04d82b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\dbe56d1af133_xlocinfo"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xlocnum",
+      "kind": "fixture_compile_header",
+      "bytes": 73151,
+      "sha256": "bc5d777f8743572e650852c78c8a46dab766462684e27953e3c982b05426659c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\bc5d777f8743_xlocnum"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmemory",
+      "kind": "fixture_compile_header",
+      "bytes": 115075,
+      "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\0409c9668d5b_xmemory"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 20078,
+      "sha256": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\6c30762cf69f_xmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xnode_handle.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7078,
+      "sha256": "559b99d9f52414b17923f7f791028ad50e310ebbcfb4ef4bee9d7c5d930c4935",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\559b99d9f524_xnode_handle.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xpolymorphic_allocator.h",
+      "kind": "fixture_compile_header",
+      "bytes": 17150,
+      "sha256": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5d2cce0665bd_xpolymorphic_allocator.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xsmf_control.h",
+      "kind": "fixture_compile_header",
+      "bytes": 7671,
+      "sha256": "b69b98ce04a1d505f2f7fcf8a610664682c3a754d85b4bb2f857f09bce61f3dd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b69b98ce04a1_xsmf_control.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xstring",
+      "kind": "fixture_compile_header",
+      "bytes": 170303,
+      "sha256": "ab80a6b60196246d1c8653e6d55f78e3cbaaf4207860a37cf6996cdc833eea7a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\ab80a6b60196_xstring"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xthreads.h",
+      "kind": "fixture_compile_header",
+      "bytes": 4138,
+      "sha256": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\76a4a9ce1914_xthreads.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xtimec.h",
+      "kind": "fixture_compile_header",
+      "bytes": 1755,
+      "sha256": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\d6a25d6dfaf3_xtimec.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xtr1common",
+      "kind": "fixture_compile_header",
+      "bytes": 8613,
+      "sha256": "cdffecba4f44c22fe4f809c6e4f6eeee628a7331a1b2e4ffd5dba32afcda2dcd",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\cdffecba4f44_xtr1common"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\xutility",
+      "kind": "fixture_compile_header",
+      "bytes": 352139,
+      "sha256": "44344065c26095b03a7228d2c733d41532ae99a56bbadf052baba64d22e39a9d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\44344065c260_xutility"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\yvals.h",
+      "kind": "fixture_compile_header",
+      "bytes": 16953,
+      "sha256": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\9a5c69cc397b_yvals.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\yvals_core.h",
+      "kind": "fixture_compile_header",
+      "bytes": 100570,
+      "sha256": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\10b59d42bde2_yvals_core.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\zmmintrin.h",
+      "kind": "fixture_compile_header",
+      "bytes": 501410,
+      "sha256": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\12c732298b86_zmmintrin.h"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+      "kind": "linker_library_searched",
+      "bytes": 5365666,
+      "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\5043c6d473b6_msvcprt.lib"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+      "kind": "linker_library_searched",
+      "bytes": 8263656,
+      "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\863545158568_msvcrt.lib"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+      "kind": "linker_library_searched",
+      "bytes": 158090,
+      "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3af0bc33f96a_oldnames.lib"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+      "kind": "linker_library_searched",
+      "bytes": 400312,
+      "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\3409bc1818ad_vcruntime.lib"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "kind": "original_installed_PE",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\external\\b682a82c52f8_battlestationspacific.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\CMakeCache.txt",
+      "kind": "validation_artifact",
+      "bytes": 19015,
+      "sha256": "8b5ec0166ac1f8feff846ee142e533a1dfa7ff642675685d4dae2d39dd933974",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\CMakeCache.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Release\\bsp_core.lib",
+      "kind": "linker_library_searched",
+      "bytes": 57574430,
+      "sha256": "648061bd58f88a7c49730aeffd34990f6aa19459bb9405021420d5914020cad4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Release\\bsp_core.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Release\\bsp_lua511.lib",
+      "kind": "linker_library_searched",
+      "bytes": 455880,
+      "sha256": "58fbd500d3da8d8c4b6cf2f546dcce7990e728501724fd186d2516cfcf63f505",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Release\\bsp_lua511.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Release\\bsp_math_tests.exe",
+      "kind": "validation_artifact",
+      "bytes": 530944,
+      "sha256": "9e19178cd67088865ffc2e8e07ef46a2445b8f01e94305cedb5372847abc567d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Release\\bsp_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Release\\bsp_native_math_tests.exe",
+      "kind": "validation_artifact",
+      "bytes": 18432,
+      "sha256": "0070a4120910316980c54b73ecdeb01c8767fbc05272bcd85b330538ef17bffb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Release\\bsp_native_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Release\\bsp_zlib121.lib",
+      "kind": "linker_library_searched",
+      "bytes": 72126,
+      "sha256": "8199276397c6e5ddc6a723c9c383e08672e95c72bc399525b363d7167a8d8906",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Release\\bsp_zlib121.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\build\\win32\\Testing\\Temporary\\LastTest.log",
+      "kind": "validation_artifact",
+      "bytes": 1801,
+      "sha256": "31a4a99b3b6c3bd211df5f360fd39419c5a3c050c226fb672ebe4fd394968bd7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\build\\win32\\Testing\\Temporary\\LastTest.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\cmake\\startup.cmake",
+      "kind": "production_dependency_or_registration",
+      "bytes": 113688,
+      "sha256": "3c1eaeffda34859f3cfa7f97d0f5fdee54cdce01f44e88910d5f7b2177392953",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\cmake\\startup.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\config\\reconstruction\\00b30000.jsonl",
+      "kind": "production_dependency_or_registration",
+      "bytes": 149304,
+      "sha256": "249b89e0504582059667aa80eac44dd829bf38318b3934b4d230c3fde44b5f86",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\config\\reconstruction\\00b30000.jsonl"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\config\\reconstruction\\00be0000.jsonl",
+      "kind": "production_dependency_or_registration",
+      "bytes": 136903,
+      "sha256": "4c950857f68a38ba2200adf6b79371f6151410a6ae8e341d1e6eccefb064daae",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\config\\reconstruction\\00be0000.jsonl"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\docs\\NATIVE_RENDERER_CONTROL_WORKER.md",
+      "kind": "owned_source",
+      "bytes": 5170,
+      "sha256": "58d71d4e93b0b1cfa8e149983aafedf343b4dada2581c6ac6fb9e6876acf6b5d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\docs\\NATIVE_RENDERER_CONTROL_WORKER.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\allocator_list.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1781,
+      "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\allocator_list.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\camera_projection.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\camera_projection.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\camera_transform.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\camera_transform.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_buffers.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3262,
+      "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_buffers.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_startup.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_startup.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_states.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 15076,
+      "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_states.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_surface_pool.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3168,
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_surface_pool.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_texture2d_pool.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3214,
+      "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_texture2d_pool.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\d3d9_vertex_layout.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1257,
+      "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\d3d9_vertex_layout.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\frame_clock.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\frame_clock.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\game_entry.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\game_entry.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\instance_grouping.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4008,
+      "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\instance_grouping.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\instance_sort.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4479,
+      "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\instance_sort.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\instance_upload.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 6532,
+      "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\instance_upload.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\material_sort_metadata.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3332,
+      "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\material_sort_metadata.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_cube_texture_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_cube_texture_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_diagnostic_sink_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_event_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1759,
+      "sha256": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_event_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_frame_target_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3495,
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_frame_target_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_frame_target_vector.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2285,
+      "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_frame_target_vector.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_hardware_layout_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3988,
+      "sha256": "ac3ee6f74b81efef4450262004533d5e9d8fd19aea1c0d24987841f6667e3ede",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_hardware_layout_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_logical_buffer_device_restore.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2649,
+      "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_logical_buffer_device_restore.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_logical_index_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 6804,
+      "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_logical_index_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_logical_vertex_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 7242,
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_logical_vertex_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_material_pass_states.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 5387,
+      "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_material_pass_states.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_physical_buffer_lock.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1504,
+      "sha256": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_physical_buffer_lock.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_physical_buffer_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_physical_buffer_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_render_context.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4898,
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_render_context.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_render_resource_container_removal.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2497,
+      "sha256": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_render_resource_container_removal.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_begin_frame.hpp",
+      "kind": "production_dependency_or_registration",
+      "bytes": 4198,
+      "sha256": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_begin_frame.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_cache_clear.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3907,
+      "sha256": "f4da4a96a07b5dfb72fae59a7159520e996154350ffe8fe3fd01b4e5f67d2748",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_cache_clear.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_control_worker.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4696,
+      "sha256": "7db9b84665fd94510d4b44c2af61ff649ca69c5542bdafebb84a91e703925db1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_control_worker.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_index_binding.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2927,
+      "sha256": "86aa477085b1dce3d029177714ac26a752199e6300dc979331810a8a97563135",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_index_binding.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_material_state_binding.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2965,
+      "sha256": "68bb8fbe9fd8a6b51fa75ed3f320cfecb34db64309307b5e96025f3b186a91f2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_material_state_binding.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_stop_pipeline.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2966,
+      "sha256": "2acbc73f5b1885e169110a551754244d8cc1419db4b2e7866405a31ca7a6813b",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_stop_pipeline.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_synchronization_actual.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_synchronization_actual.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_texture_binding.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3102,
+      "sha256": "745b9102600bbdec5c1d350c7dd5f9db69c3b7cb1bf15e465721c25cd38ea762",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_texture_binding.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_texture_name_notification.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2292,
+      "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_texture_name_notification.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_vertex_binding.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3860,
+      "sha256": "b24ad3f9666a0bc4cb70dbf086522d942110a3619f706a48a07817f498218ccc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_vertex_binding.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_renderer_vertex_layout_binding.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1675,
+      "sha256": "ebf9d62dea25edfdeb5703b110533afd1ab9d71f975fb313f847701e48169939",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_renderer_vertex_layout_binding.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_resource_support.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1488,
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_resource_support.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_retained_memory_owners.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_retained_memory_owners.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_string.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_string.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_surface_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4977,
+      "sha256": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_surface_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_texture_2d_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_texture_2d_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\native_volume_texture_owner.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 2610,
+      "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\native_volume_texture_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\random.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\random.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\random_threads.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\random_threads.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\render_command_queue.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\render_command_queue.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\render_tail.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\render_tail.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\singleton_lifetime.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\singleton_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\storage_pool.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\storage_pool.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\system_time_constants.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\system_time_constants.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\include\\bsp\\vertex_declaration.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1462,
+      "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\include\\bsp\\vertex_declaration.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00b33b50.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 483,
+      "sha256": "93493ac71118149de5a15ccd884dbad537a9ff5b798b6856f5a3462e06290222",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00b33b50.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00b33c00.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 146,
+      "sha256": "54b4e2c06ce1e4fe61c5f11aef3a49002983d5053a7888f6b88b267614779063",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00b33c00.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00b33c20.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 1694,
+      "sha256": "454f416b579aa90d6bfacec4543b1e0d086b93930d1d69726244234bbf927cdb",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00b33c20.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00b33da0.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 535,
+      "sha256": "49b42674fdac42864b16951e0acb7c9f05fe2c2bd3df9addb37df8820f8045ea",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00b33da0.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00bee080.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 442,
+      "sha256": "bbb1997efc05ccb66cb38528a7cae6ec10515c4f7f71a0782e63ec37658fad19",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00bee080.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00ce3978.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 29,
+      "sha256": "39d05326afb8963677e7d1b050237f9ec31bc30c6a6e1aead1e3cc108b374aa9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00ce3978.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00ce47a0.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 45,
+      "sha256": "5705982f7ffb1f32a1924b5a0b5d55b0af47e7b1039ee5683494bc7e7034df77",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00ce47a0.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00d5f0a8.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 138,
+      "sha256": "047f69371f56f13756e0de41454a31974cdd0d1840c4e0040c8bf5242fec8df9",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00d5f0a8.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00d6821c.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 77,
+      "sha256": "65b789477dc10546472209abfc9d1b6b3c984c906f143912561bc69ba27f8fb1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00d6821c.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00d68d50.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 199,
+      "sha256": "6f1652f31533a32286c8596329223309ddcaa990e65616a2374590e29d0319c2",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00d68d50.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_live_00d7a208.txt",
+      "kind": "target_verified_live_memory_query",
+      "bytes": 29,
+      "sha256": "ba68cff97bdc11933009685d62b197e076c39e448f996361833d006885827a9d",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_live_00d7a208.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_original_reference.hpp",
+      "kind": "fixture_compile_header",
+      "bytes": 1106,
+      "sha256": "eb0f156f554b6ad9bfe2a5b935f67f89f2099f6179540ccea98906dfb844204a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_original_reference.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_original_spans.json",
+      "kind": "validation_artifact",
+      "bytes": 3581,
+      "sha256": "6f7aed0356c220be93e794823e181959c0b257d654c1519ad139b4bfe93b54f6",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\control_original_spans.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_build.log",
+      "kind": "validation_artifact",
+      "bytes": 46206,
+      "sha256": "87bdd8fb5282eadfebcf7ed9398a7ac2cff3daa2cb1124cfaea5b9021a405456",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_build.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_calls.log",
+      "kind": "validation_artifact",
+      "bytes": 1771,
+      "sha256": "65b4351fed2172365fb741605a337f783e65045cf1c52e5373f744602331182f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_calls.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_fixture.log",
+      "kind": "validation_artifact",
+      "bytes": 120,
+      "sha256": "9a6e62e579ad8eb0837f4d8eb6b975505e001ebfc46054af62c7ebeebb65e20f",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_fixture.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_fixture_build.log",
+      "kind": "validation_artifact",
+      "bytes": 48227,
+      "sha256": "e2daa282d9658381832c492f21bf7c3e0ebacce19f4e75e0717089129dcfdcc7",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_fixture_build.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_probe.cmd",
+      "kind": "validation_artifact",
+      "bytes": 568,
+      "sha256": "dd4d81b981c7ddc4c1c988dcc0294b76192753bab3b5dfcaca95c7a9708f91b4",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_probe.cmd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_probe.cpp",
+      "kind": "validation_artifact",
+      "bytes": 8659,
+      "sha256": "cc4b97f78b05b3376103cd46984ece3c287f9718fc35b009d50e88aacd7604a1",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_probe.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_probe.exe",
+      "kind": "validation_artifact",
+      "bytes": 119808,
+      "sha256": "0717a3cee26c3f8680239841e3d1545345e99dcf27f0a8d0ed7e32b0a30e1996",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_probe.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_probe.obj",
+      "kind": "validation_artifact",
+      "bytes": 78596,
+      "sha256": "c8418f6c8dbaa2ec12c68fa21fede96e845985448ca5a9d6746dd9a6adc8690a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_probe.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\native_renderer_control_seeds.log",
+      "kind": "validation_artifact",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\native_renderer_control_seeds.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\seed_reference.hpp",
+      "kind": "validation_artifact",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\local\\seed_reference.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\src\\native_event_owner.cpp",
+      "kind": "production_dependency_or_registration",
+      "bytes": 1741,
+      "sha256": "be104dd9cb118b99190ffc106368aa0d94add12db5c3e5300f949914eec98724",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_event_owner.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\src\\native_renderer_begin_frame.cpp",
+      "kind": "production_dependency_or_registration",
+      "bytes": 8155,
+      "sha256": "941cac2c7156a8e4a88455b35be66d8f872f7a9e9a30b134a93787ebd799e41e",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_renderer_begin_frame.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\src\\native_renderer_control_worker.cpp",
+      "kind": "owned_source",
+      "bytes": 9080,
+      "sha256": "12c24aeacca3ac950c5ce5d4ee5ed6f4dcc33517038a501adeec865bf8f94930",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_renderer_control_worker.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\src\\native_renderer_stop_pipeline.cpp",
+      "kind": "production_dependency_or_registration",
+      "bytes": 4823,
+      "sha256": "169e182a68df17af62d96c3bd865c4fce49cb8b36c1b95d8e299eb592e713392",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_renderer_stop_pipeline.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\src\\native_renderer_synchronization_actual.cpp",
+      "kind": "production_dependency_or_registration",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+      "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_renderer_synchronization_actual.cpp"
+    }
+  ]
+}
