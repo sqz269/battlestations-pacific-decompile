@@ -1,0 +1,119 @@
+{
+  "packet": "orch3_native_material_constant_metadata_ce",
+  "status": "source_reconstructed_release_build_ctest_coff_verified",
+  "source_parent_commit": "234b8f5d4803ba4a11ba2b2c454d445188a1fd39",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 5,
+  "proposed_native_bytes": 28,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64021,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b17390",
+      "inclusive_end": "00b17396",
+      "bytes": 7,
+      "native_bytes_hex": "8d8180000000c3",
+      "native_sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+      "ghidra_name": "BSP_Material_GetParameterTable",
+      "cpp_symbol": "get_native_material_parameter_table_00b17390",
+      "direct_builder_calls": ["00b423d2"],
+      "original_abi": "ECX actual material; EAX address of material+80h; plain RET",
+      "source_signature": "void* const* __fastcall get_native_material_parameter_table_00b17390(const NativeMaterialStorage*) noexcept",
+      "storage_contract": "LEA of actual parameter array; no pointer load or ownership operation"
+    },
+    {
+      "address": "00b47900",
+      "inclusive_end": "00b47903",
+      "bytes": 4,
+      "native_bytes_hex": "8b4110c3",
+      "native_sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "ghidra_name": "BSP_VertexDeclaration_GetElementCount",
+      "cpp_symbol": "get_native_vertex_declaration_element_count_00b47900",
+      "direct_builder_calls": ["00b4296a"],
+      "original_abi": "ECX actual vertex declaration; EAX DWORD+10h; plain RET",
+      "source_signature": "uint32_t __fastcall get_native_vertex_declaration_element_count_00b47900(const void*) noexcept",
+      "storage_contract": "Current raw DWORD, with native 32-bit pattern and no address or count validation"
+    },
+    {
+      "address": "00b5b880",
+      "inclusive_end": "00b5b883",
+      "bytes": 4,
+      "native_bytes_hex": "8b4104c3",
+      "native_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "ghidra_name": "BSP_ShaderConstant_GetRegisterCount",
+      "cpp_symbol": "get_native_shader_constant_register_count_00b5b880",
+      "direct_builder_calls": ["00b42442"],
+      "original_abi": "ECX actual shader metadata; EAX DWORD+04h; plain RET",
+      "source_signature": "uint32_t __fastcall get_native_shader_constant_register_count_00b5b880(const void*) noexcept",
+      "storage_contract": "RegisterCount at+04h, not Rows at+08h; no validation"
+    },
+    {
+      "address": "00b75e50",
+      "inclusive_end": "00b75e55",
+      "bytes": 6,
+      "native_bytes_hex": "a1fc000901c3",
+      "native_sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+      "ghidra_name": "BSP_Optimized3dNodeAnimator_GetTypeId",
+      "cpp_symbol": "get_native_optimized_animator_type_id_00b75e50",
+      "direct_builder_calls": ["00b42794"],
+      "original_abi": "No arguments; EAX CURRENT DWORD from absolute global cell 010900FC; plain RET",
+      "source_signature": "uint32_t __fastcall get_native_optimized_animator_type_id_00b75e50(const volatile uint32_t& actual_type_id_cell_010900fc) noexcept",
+      "source_abi": "ECX borrowed address of the SAME real 010900FC cell; EAX CURRENT DWORD; plain RET; new ABI",
+      "storage_contract": "Live cell reference, not a copied type ID, pointer-value snapshot, or callback"
+    },
+    {
+      "address": "00b7aab0",
+      "inclusive_end": "00b7aab6",
+      "bytes": 7,
+      "native_bytes_hex": "8b8174010000c3",
+      "native_sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b",
+      "ghidra_name": "BSP_Light_GetShadowMapOwner",
+      "cpp_symbol": "get_native_light_shadow_map_owner_00b7aab0",
+      "direct_builder_calls": ["00b4311a"],
+      "original_abi": "ECX actual light; EAX borrowed owner DWORD+174h; plain RET",
+      "source_signature": "void* __fastcall get_native_light_shadow_map_owner_00b7aab0(const void*) noexcept",
+      "storage_contract": "Current raw owner pointer; no retain, null repair, or typed-owner projection"
+    }
+  ],
+  "provider_sha256": {
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "include/bsp/native_material_parameters.hpp": "f7f512b1d9be499f1d5d750460a2a51f15628ae5bb30dd9242b675a2dae9e2a3",
+    "src/native_material_parameters.cpp": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b",
+    "include/bsp/material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
+    "src/material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4",
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8",
+    "include/bsp/mesh_decode_bindings.hpp": "1be8f4525bfbd464e4c7fdacc5722d348d02a9e4102329b6cb970e2c8f2afa68"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_constant_metadata.hpp": "ecdeb705ed7c422eb80e106fcc02d5b1f6577f284df5c3dab7ee84fcaccce348",
+    "src/native_material_constant_metadata.cpp": "f511ee8c4e015b85c10de497adac9991e53204363bd694e29e1f12dc3419439e",
+    "cmake/startup.cmake": "d246046711447a4811ccd5161043d7d4d416d518fc2e1f80b1f8d934b48f239e"
+  },
+  "generated_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_material_constant_metadata.obj",
+    "sha256": "a938200860601f3a262d0752faa3a65af8fba993f5d63c369fb9114b81084edf",
+    "machine": "i386",
+    "sections": [
+      {"address": "00b17390", "section": 8, "bytes_hex": "8d8180000000c3", "relocations": 0, "entire_comdat_equals_native": true},
+      {"address": "00b47900", "section": 11, "bytes_hex": "8b4110c3", "relocations": 0, "entire_comdat_equals_native": true},
+      {"address": "00b5b880", "section": 10, "bytes_hex": "8b4104c3", "relocations": 0, "entire_comdat_equals_native": true},
+      {"address": "00b75e50", "section": 9, "bytes_hex": "8b01c3", "relocations": 0, "entire_comdat_equals_native": false, "reason": "The new ECX live-cell reference replaces the original absolute-address instruction."},
+      {"address": "00b7aab0", "section": 7, "bytes_hex": "8b8174010000c3", "relocations": 0, "entire_comdat_equals_native": true}
+    ]
+  },
+  "validation": {
+    "original_pe_spans_equal_live_ghidra_bytes": true,
+    "all_five_direct_call_sites_verified_in_00b42350_listing": true,
+    "coff_method": "dumpbin /DISASM:BYTES, /HEADERS, /SYMBOLS and section-data/relocation assertions in ignored local/output/verify-ce-coff.py",
+    "scripts_build_ps1_release": "passed",
+    "ctest": "1/1 reconstructed_math passed"
+  },
+  "limitations": "Native source getters and COFF review are not a complete actual-storage B42350 composition, original B75E50 binary ABI, or game validation."
+}
