@@ -1,0 +1,469 @@
+{
+  "packet": "orch4_native_loading_queue_owner_bl",
+  "generated_utc": "2026-09-14T06:07:01.893647+00:00",
+  "baseline_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
+  "audit_dependency_commit": "c2da6ab4",
+  "owned_functions": [
+    "004fdba0",
+    "004fde20",
+    "00504850",
+    "00bd1920"
+  ],
+  "owned_files": [
+    "include/bsp/native_loading_queue_owner.hpp",
+    "src/native_loading_queue_owner.cpp",
+    "docs/NATIVE_LOADING_QUEUE_OWNER_BL.md",
+    "reports/native_loading_queue_owner_bl.json"
+  ],
+  "status": "source_entries_implemented_strict_compiled_focused_fixture_tested_production_lifecycle_blocked",
+  "evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra bytes query calls Client.verify before reading; autostart disabled.",
+    "spans": [
+      {
+        "address": "004fde20",
+        "inclusive_end": "004fdedc",
+        "byte_count": 189,
+        "sha256": "31f7c22b4c2a90490f79f0a62a3e685ac51097326553a91af70398c789f05490",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter",
+        "evidence_log": "local/owner_bl/004fde20.txt",
+        "native_abi": "No input, EAX owner, RET; source adds stable references to actual manager and loader publication cells",
+        "source_status": "reconstructed_new_cpp_interface_strict_win32_compiled_focused_fixture_tested"
+      },
+      {
+        "address": "004fdba0",
+        "inclusive_end": "004fdbf8",
+        "byte_count": 89,
+        "sha256": "d793f9eb7b5998be6333c6a9c52c1381004bc110f1d5cc694f5929873e61f170",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor",
+        "evidence_log": "local/owner_bl/004fdba0.txt",
+        "native_abi": "ECX actual20h owner, EAX same owner, RET; source adds actual publication reference for EH clear",
+        "source_status": "reconstructed_new_cpp_interface_strict_win32_compiled_focused_fixture_tested"
+      },
+      {
+        "address": "00504850",
+        "inclusive_end": "00504862",
+        "byte_count": 19,
+        "sha256": "78313f12a61614220bc80c3c3eb43959a79039ca4ab99466bbc12521b2b089b2",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "current_front_callback",
+        "evidence_log": "local/owner_bl/00504850.txt",
+        "native_abi": "Two ignored stacked names, RET8; source adds cells and returns void, not native ABI thunk",
+        "source_status": "reconstructed_new_cpp_interface_strict_win32_compiled_focused_fixture_tested"
+      },
+      {
+        "address": "00bd1920",
+        "inclusive_end": "00bd1951",
+        "byte_count": 50,
+        "sha256": "c29ec792958f4b95eaa0fc84c30bf85fe7bb071a5c57559df467433030ea1718",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "raw_al_poll",
+        "evidence_log": "local/owner_bl/00bd1920.txt",
+        "native_abi": "ECX actual8h event, raw AL status, RET; source returns uint8_t, upper EAX/flags not preserved",
+        "source_status": "reconstructed_new_cpp_interface_strict_win32_compiled_focused_fixture_tested"
+      },
+      {
+        "address": "004f93a0",
+        "inclusive_end": "004f93b0",
+        "byte_count": 17,
+        "sha256": "bdaea14417fb32ce59b1992019e0aab02c8b0f2c74a0e5d7a641a20a6d223827",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor_base_cleanup_dependency",
+        "evidence_log": "local/owner_bl/004f93a0.txt"
+      },
+      {
+        "address": "00c68800",
+        "inclusive_end": "00c68807",
+        "byte_count": 8,
+        "sha256": "a8c10e3b34cbfd6f4c53e6061a97f9f4a71404977e7eb25ea30cc13675a1d912",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor_unwind_funclet",
+        "evidence_log": "local/owner_bl/00c68800.txt"
+      },
+      {
+        "address": "00c68808",
+        "inclusive_end": "00c68811",
+        "byte_count": 10,
+        "sha256": "d7a9e9a23747e93cea4daecb334ea47a183bc73febb8bf124e5fbab05d5bc891",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor_handler",
+        "evidence_log": "local/owner_bl/00c68808.txt"
+      },
+      {
+        "address": "00c68820",
+        "inclusive_end": "00c68827",
+        "byte_count": 8,
+        "sha256": "170b3a7e7ccadfd423b77b9e826e3008a95e1bc652f8bcd1d20c0f53e91077f7",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter_guard_unwind_funclet",
+        "evidence_log": "local/owner_bl/00c68820.txt"
+      },
+      {
+        "address": "00c68828",
+        "inclusive_end": "00c68832",
+        "byte_count": 11,
+        "sha256": "78f1acaefa19705083133d5470cefc732e20df8baf74d8031552b32864079042",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter_allocation_unwind_funclet_with_missing_return_tail",
+        "evidence_log": "local/owner_bl/00c68828.txt"
+      },
+      {
+        "address": "00c68833",
+        "inclusive_end": "00c6883c",
+        "byte_count": 10,
+        "sha256": "2ea7997f772909a9deb0d0fbfc87eb0ea45cb1b99af13011713ee8353f33b76b",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter_handler",
+        "evidence_log": "local/owner_bl/00c68833.txt"
+      },
+      {
+        "address": "00d91978",
+        "inclusive_end": "00d9197f",
+        "byte_count": 8,
+        "sha256": "47e488832dec3c92848711a5de84591cf223179c96930cb2c3e52a8c1d73677f",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor_unwind_map",
+        "evidence_log": "local/owner_bl/00d91978.txt"
+      },
+      {
+        "address": "00d91980",
+        "inclusive_end": "00d919a3",
+        "byte_count": 36,
+        "sha256": "b28e17c816e550813e164ed9de0eb526d6b97cf9a992fe6a8d4605b87f0ea8a2",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "constructor_FuncInfo",
+        "evidence_log": "local/owner_bl/00d91980.txt"
+      },
+      {
+        "address": "00d919a4",
+        "inclusive_end": "00d919b3",
+        "byte_count": 16,
+        "sha256": "268f4c02a574e466b99739fc26d27cb62e7e0bf330a5172c7b0b13880a15968c",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter_unwind_map",
+        "evidence_log": "local/owner_bl/00d919a4.txt"
+      },
+      {
+        "address": "00d919b4",
+        "inclusive_end": "00d919d7",
+        "byte_count": 36,
+        "sha256": "607e5c6b8b507693e592e0a2ae323d67e86fe5c23004c3f266b5513a1b94e75f",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "getter_FuncInfo",
+        "evidence_log": "local/owner_bl/00d919b4.txt"
+      },
+      {
+        "address": "00ceb198",
+        "inclusive_end": "00ceb19b",
+        "byte_count": 4,
+        "sha256": "6509dd690c6f4f39a3c64e7a91a27e5c9cb1edf0f38c007e71dfa47ae1c6c8d0",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "owner_delete_slot",
+        "evidence_log": "local/owner_bl/00ceb198.txt"
+      },
+      {
+        "address": "00d6821c",
+        "inclusive_end": "00d6822f",
+        "byte_count": 20,
+        "sha256": "94cea7a486ef65c7e8c86e9845299faf4d8b8e19a3e11ec1142bd25be4581a5b",
+        "installed_pe_matches_live_ghidra": true,
+        "role": "event_slots",
+        "evidence_log": "local/owner_bl/00d6821c.txt"
+      }
+    ]
+  },
+  "direct_call_rows": [
+    {
+      "address": "004fde46",
+      "native": "00415350",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fde7c",
+      "native": "00bf681b",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fde93",
+      "native": "004fdba0",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdea6",
+      "native": "00415350",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdeb4",
+      "native": "00bd0c30",
+      "function": "004fde20",
+      "kind": "call"
+    },
+    {
+      "address": "004fdbd2",
+      "native": "00bd1970",
+      "function": "004fdba0",
+      "kind": "call"
+    },
+    {
+      "address": "00504850",
+      "native": "004fde20",
+      "function": "00504850",
+      "kind": "call"
+    },
+    {
+      "address": "00c6882c",
+      "native": "00bf65ac",
+      "function": "00c68828",
+      "kind": "call"
+    },
+    {
+      "address": "00c68803",
+      "native": "004f93a0",
+      "function": "00c68800",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c68823",
+      "native": "00411ee0",
+      "function": "00c68820",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_call_rows": [
+    {
+      "address": "004fde5f",
+      "iat_slot": "00ce2218",
+      "provider": "EnterCriticalSection",
+      "verification": "complete original listing and exact live/PE normal-body span"
+    },
+    {
+      "address": "004fdec2",
+      "iat_slot": "00ce2210",
+      "provider": "LeaveCriticalSection",
+      "verification": "complete original listing and exact live/PE normal-body span"
+    },
+    {
+      "address": "00bd1926",
+      "iat_slot": "00ce22b0",
+      "provider": "WaitForSingleObject",
+      "verification": "complete original listing and exact live/PE normal-body span"
+    },
+    {
+      "address": "00bd1949",
+      "iat_slot": "00ce2258",
+      "provider": "GetLastError",
+      "verification": "complete original listing and exact live/PE normal-body span"
+    }
+  ],
+  "storage": {
+    "native_bytes": 32,
+    "profile": "00ceb198",
+    "deleting_slot": "0050ace0",
+    "fields": {
+      "00": "table identity",
+      "04": "worker stop DWORD",
+      "08": "worker job pointer",
+      "0c": "actual event owner pointer",
+      "10": "actual raw job-pointer array",
+      "14": "signed count",
+      "18": "capacity",
+      "1c": "thread HANDLE"
+    },
+    "private_globals": false,
+    "projected_owner": false
+  },
+  "current_reads": [
+    "Fast return captures initialE18D4C",
+    "Slow capture first415350 manager+10 section",
+    "Enter/increment captured section before recheckE18D4C",
+    "Allocate20h and construct only when recheck is null",
+    "Publish constructor result before second415350",
+    "Read currentE18D4C only after second415350 for actualBD0C30",
+    "Decrement/leave initially captured section",
+    "Slow return rereadsE18D4C after Leave",
+    "504850 rereads loader/array/front, ignores both names/count/stop"
+  ],
+  "eh": {
+    "constructor": {
+      "handler": "00c68808",
+      "func_info": "00d91980",
+      "unwind_map": "00d91978",
+      "state0": {
+        "next_state": -1,
+        "funclet": "00c68800",
+        "action": "4F93A0 clears currentE18D4C unconditionally, then stamps captured this CE3818"
+      }
+    },
+    "getter": {
+      "handler": "00c68833",
+      "func_info": "00d919b4",
+      "unwind_map": "00d919a4",
+      "state0": {
+        "next_state": -1,
+        "funclet": "00c68820",
+        "action": "411EE0 on saved guard [EBP-14h]"
+      },
+      "state1": {
+        "next_state": 0,
+        "funclet": "00c68828",
+        "action": "BF65AC frees saved allocation [EBP-18h], POP ECX/RET"
+      }
+    },
+    "source_boundary": "Synchronous C++ catch/cleanup/rethrow, not original FH3/SEH or hardware-fault/register/spill-alias identity",
+    "retained_on_registration_failure": "Current publication, outer allocation, event and any already-written registration storage remain; no rollback or replacement deleting owner"
+  },
+  "needed_ghidra_repairs": [
+    {
+      "range": "00c68831..00c68832",
+      "parent": "00c68828",
+      "actual_body_end": "00c68830",
+      "decoded": "POP ECX; RET",
+      "status": "both addresses have no containing function; no mutation"
+    },
+    {
+      "address": "00c68808",
+      "decoded": "MOV EAX,D91980; JMP BF6B43",
+      "status": "handler no containing function"
+    },
+    {
+      "address": "00c68833",
+      "decoded": "MOV EAX,D919B4; JMP BF6B43",
+      "status": "handler no containing function"
+    },
+    {
+      "address": "004f93a0",
+      "status": "FUN_004f93a0 name remains; constructor base cleanup evidence now available, no annotation performed"
+    }
+  ],
+  "validation": {
+    "normal_and_eh_spans": {
+      "count": 16,
+      "all_installed_live_match": true
+    },
+    "direct_calls": {
+      "checked": 10,
+      "failed": 0,
+      "tool": "python tools/verify_report_calls.py reports/native_loading_queue_owner_bl.json"
+    },
+    "strict_tu_compile": {
+      "passed": true,
+      "flags": "/std:c++17 /W4 /WX /fp:strict /EHsc /MD /O2 /c",
+      "log": "local/owner_bl/strict_compile.log"
+    },
+    "actual_provider_smoke": {
+      "passed": true,
+      "log": "local/owner_bl/strict_compile.log",
+      "scope": "raw manager register/fast getter,20h layout, actual manual reset event, current-front callback, failed poll; fixture manually cleans its own allocations"
+    },
+    "instrumented_source_schedule_fixture": {
+      "passed": true,
+      "log": "local/owner_bl/schedule_compile.log",
+      "scope": "initialization timing; manager mutation; publication before registration and afterLeave; Enter publication recheck; constructor cleanup; registration failure retention;8 raw AL statuses",
+      "production_hooks_added": false
+    },
+    "frozen_library": {
+      "sourceBefore": "F475861ACA75F2C839F8B45F23147C759BE3DB14628EE1D8D8C890507ED11188",
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "sha256": "F475861ACA75F2C839F8B45F23147C759BE3DB14628EE1D8D8C890507ED11188",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-loading-owner-bl\\local\\owner_bl\\bsp_core.frozen.lib",
+      "sourceAfter": "F475861ACA75F2C839F8B45F23147C759BE3DB14628EE1D8D8C890507ED11188"
+    },
+    "worker_baseline_build": "scripts/build.ps1 started, interrupted at primary direction; new TU not registered in baseline CMake, no build verdict",
+    "integrated_build": "primary responsibility after source registration",
+    "original_instruction_execution": false,
+    "binary_abi_replacement": false,
+    "gameplay": false
+  },
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_loading_queue_owner.hpp",
+      "sha256": "0d90e546031d90a1fbb48918a7dabfd5f5c05167c58d27a0144b0bf722d2e71d",
+      "byte_count": 3618
+    },
+    {
+      "path": "src/native_loading_queue_owner.cpp",
+      "sha256": "2997044ef5a95f8ebd8cf5a1c0ecba1cd1b535790d1b7de074cc0eefe5936d15",
+      "byte_count": 5771
+    },
+    {
+      "path": "docs/NATIVE_LOADING_QUEUE_OWNER_BL.md",
+      "sha256": "1d5b47df325fd91066a1044eeb9e097aaecfa2f28f5b27d462c010c633ce9f74",
+      "byte_count": 8919
+    }
+  ],
+  "ignored_fixture_artifacts": [
+    {
+      "path": "local/owner_bl/smoke.cpp",
+      "sha256": "d8879e07583e0ed21dd2ecb18a4580d6b595bbd408e1f7a6b5d99a763e745e36",
+      "byte_count": 2534
+    },
+    {
+      "path": "local/owner_bl/schedule_probe.cpp",
+      "sha256": "2b72a4ef080c9a5a087f1714ba5d34a15d36157d94f23122a6264eca6cd26481",
+      "byte_count": 6824
+    },
+    {
+      "path": "local/owner_bl/strict_compile.ps1",
+      "sha256": "a9fa5d70115926e960a7a60744607cdc6d2a6f2d73a216810e724e0197adfe89",
+      "byte_count": 1892
+    },
+    {
+      "path": "local/owner_bl/collect_evidence.py",
+      "sha256": "41e715ceaf525cdf89d0fa85f7ddbf132ae41bc7565c59f7a5f64a9ed8ad8bf8",
+      "byte_count": 2529
+    },
+    {
+      "path": "local/owner_bl/owner_bl_probe.exe",
+      "sha256": "d4c8459de3d66f33069795598c43355a283e4db2d55ea94c40750186f08af785",
+      "byte_count": 20480
+    },
+    {
+      "path": "local/owner_bl/owner_bl_schedule_probe.exe",
+      "sha256": "666269cba2ac7c37a1c41944b87d73542ccb254c7ade417cc8c6641533125c56",
+      "byte_count": 16896
+    },
+    {
+      "path": "local/owner_bl/native_loading_queue_owner.obj",
+      "sha256": "a9aa1737921447c944c0bb06034c068a3870b70d2ae8497c8b05233f168e8d67",
+      "byte_count": 6607
+    }
+  ],
+  "production_dependencies": [
+    "Actual509FD0/50ACE0/5092E0 lifecycle and deletion dispatch",
+    "Full509190 queue update and actual work-storage/job ownership",
+    "FileBlock and resource-loading/release providers",
+    "Actual worker resource entry and proven worker exit/lifetime domain"
+  ],
+  "limitations": [
+    "No production getter/callback registration or deleting dispatcher",
+    "No loader destructor/rollback/thread/shutdown policy invented",
+    "No CMake/shared runtime/config/ledger changes",
+    "No Ghidra mutation, scripts enabled, restart, no-return change or bridge dry-run clear",
+    "Native upperEAX/flags and original callableABI/FH3/SEH are not source equivalence",
+    "Volatile preserves reads but does not establish C++ cross-thread atomic publication",
+    "Frozen library is an identified existing artifact, not a fresh integrated provider rebuild"
+  ],
+  "final_membership_recheck": {
+    "primary_repair_report": "reports/native_loading_queue_owner_cleanup_bl.json",
+    "address": "00c68828",
+    "inclusive_end": "00c68832",
+    "instructions": 5,
+    "byte_count": 11,
+    "continuation_00c68831_and_00c68832_owned": true,
+    "analysis_signature": "void __cdecl Unwind@00c68828(void)",
+    "native_abi_caveat": "Native inherited EBP/FH3 state not represented by parser-safe view",
+    "status": "Primary repaired independently after initial inspection; verified live by worker, supersedes initial needed repair at C68831..32",
+    "worker_ghidra_mutation": false
+  }
+}
