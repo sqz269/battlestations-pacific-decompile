@@ -37,3 +37,7 @@ gameplay validation.
 `./scripts/build.ps1` completed the Win32 Release build and its existing
 `reconstructed_math` CTest (1/1). Dumpbin and direct COFF reads show two
 four-byte COMDATs identical to the PE bodies, each with zero relocations.
+
+## Primary integration validation
+
+Exact source `3a92529df59b7dbfa8ae1f6e7a82f648570f323c` passed MSVC Win32 Release and both existing math CTests with 2601 unchanged tracked inputs and a clean tree before/after. Both complete4-byte COMDATs equal installed/live body and worker objects, zero relocations: MOV EAX,[ECX+1Ch/20h]; RET. Public raw wrappers preserve actual pointer storage and original register/stack behavior. No additional runtime probe was needed for these exact native leaves. Existing full-function body credit remains unchanged.

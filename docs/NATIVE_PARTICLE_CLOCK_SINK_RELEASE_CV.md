@@ -23,3 +23,7 @@ The extra IAT-cell argument is a new source ABI. Concrete nonempty particle
 sink destruction, the full clock shutdown chain, original private EH/CRT
 identity and gameplay validation remain separate boundaries. The CU read-only
 audit records the remaining container destructor and EH dependencies.
+
+## Primary integration validation
+
+Exact source `3a92529df59b7dbfa8ae1f6e7a82f648570f323c` passed MSVC Win32 Release and both existing math CTests with 2601 unchanged tracked inputs and a clean tree before/after. Complete27-byte generated body equals all original31 bytes after replacing the six-byte absolute CALL[00CE2220] at+9 with two-byte CALL[EDX]. Zero relocations. Sink stack capture+1, sink+4 address+5, actual current IAT call+9, result test+Bh, current profile/slot reload+Fh/+11h, actual sink ECX+13h, no-argument slot0 call+15h, RET4+18h. One focused raw source probe passed the real Win32 decrement and fixture slot0 call only on zero; concrete particle-owner destruction, native parent execution and full clock shutdown remain untested. Existing full-function body credit remains unchanged.

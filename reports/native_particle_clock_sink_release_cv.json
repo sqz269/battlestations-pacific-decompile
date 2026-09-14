@@ -1,6 +1,6 @@
 {
   "packet": "orch3_particle_clock_sink_release_cv",
-  "status": "raw_source_native_reviewed_build_pending",
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
   "source_parent_commit": "e8e5af0f0d5be9663f9a98e2925808ce55aa7298",
   "target": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -76,13 +76,151 @@
     "expected_code_transformation": "Replace six-byte CALL[00CE2220] at native+9 by two-byte CALL[EDX]; all other bytes identical. Source EDX borrows current IAT cell address; original sink stack slot and RET4 unchanged."
   },
   "validation": {
-    "build_pending": true,
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "3a92529df59b7dbfa8ae1f6e7a82f648570f323c",
+    "tracked_build_inputs": 2601,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
     "new_repository_tests": 0,
-    "game_validated": false
+    "new_local_focused_probes": 1,
+    "native_parent_bytes_executed": false,
+    "game_validated": false,
+    "source_raw_entry_executed": true,
+    "source_probe": {
+      "exit_code": 0,
+      "log": "local/ctcv-probe-run.log",
+      "source": "local/ctcv_probe.cpp",
+      "source_sha256": "3c91a8386daf7250bd73adaf18ef394d0a432393518f1bd99e944d59bd12c044",
+      "executable": "local/ctcv_probe.exe",
+      "executable_sha256": "f0cc41153b9de0eed9bb5e3b04cb0d86a70bdd5e2c5aa47fbfef063e85f9cd80",
+      "core_library_sha256": "f082d3ef01d27fb0a0e293b0225e3d4364c78b62ba7cdb083472cfcc109e9c16",
+      "branches": [
+        "Concrete Win32 decrement from2 to1 skips slot0",
+        "Concrete Win32 decrement from1 to0 invokes actual profile slot0 once with no stack arguments"
+      ],
+      "limits": [
+        "Local fixture slot increments a counter; concrete native particle destruction was not executed.",
+        "No native parent-byte execution, full clock shutdown or gameplay validation."
+      ]
+    }
   },
   "limits": [
     "Additional source EDX IAT-cell argument is not the original binary ABI.",
     "No host C++ virtual projection or stand-in sink is substituted for the actual profile call.",
     "Concrete native sink destruction, full particle clock shutdown and gameplay remain unvalidated."
-  ]
+  ],
+  "tested_commit": "3a92529df59b7dbfa8ae1f6e7a82f648570f323c",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CT_worker_review": true,
+    "independent_CV_worker_review": false,
+    "blocking_source_findings": [],
+    "CT": "Both complete4-byte COMDATs equal installed/live body and worker objects, zero relocations: MOV EAX,[ECX+1Ch/20h]; RET. Public raw wrappers preserve actual pointer storage and original register/stack behavior.",
+    "CV": "Complete27-byte generated body equals all original31 bytes after replacing the six-byte absolute CALL[00CE2220] at+9 with two-byte CALL[EDX]. Zero relocations. Sink stack capture+1, sink+4 address+5, actual current IAT call+9, result test+Bh, current profile/slot reload+Fh/+11h, actual sink ECX+13h, no-argument slot0 call+15h, RET4+18h.",
+    "source_boundary": "CV adds a borrowed current IAT-cell address in EDX; it is not the original binary entry. Concrete sink destruction and full clock shutdown remain separate. CT leaves retain existing private-helper full-body credit."
+  },
+  "generated_code": [
+    {
+      "module": "native_particle_clock_sink_release",
+      "stem": "release_native_particle_clock_sink_004ddb40",
+      "symbol": "?release_native_particle_clock_sink_004ddb40@bsp@@YIXPAXADS6GJPCJ@Z0@Z",
+      "section_offset": 0,
+      "bytes": 27,
+      "sha256": "62bc99e9675c8cb78ee62dcf439e0cc0bafed599b29474d1b13f8fa62595ac9e",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_clock_sink_release.obj",
+      "object_sha256": "289089790534b863719d44534f32950147e165263f56c0ba8d57b3064a3fb2aa",
+      "relocations": [],
+      "listing": "local/ctcv-generated-release_native_particle_clock_sink_004ddb40.asm",
+      "primary_worker_code_and_relocation_identity": false,
+      "whole_native_code_identity": false,
+      "explicit_native_transformation_identity": true,
+      "transformation": "Replace native+9 CALL[00CE2220] six bytes with CALL[EDX] two bytes; all remaining bytes identical."
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 0,
+    "indirect_rows": 2,
+    "failed": 0,
+    "log": "local/ctcv-call-audit-native_particle_clock_sink_release_cv.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/ctcv-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "004ddb40"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "004ddb40": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_particle_clock_sink_release.obj": "289089790534b863719d44534f32950147e165263f56c0ba8d57b3064a3fb2aa",
+    "build/win32/bsp_core.dir/Release/native_surface_dimensions.obj": "0a50a6323bbec8954c456feaa54ed3f2adf76ffbce5886162b30349ec203d859",
+    "local/adapt_ctcv_publish.py": "3efe71f54b52e818b91201620cf027f77fddd75ae1a7ea17b58e867fbeef59a1",
+    "local/adapt_ctcv_seal.py": "4a9db47c8d318f23d400a23d5a4daa966a45152c9f5cb8c49c691ef61167e584",
+    "local/annotate_ctcv.py": "f1ccb9fbf506928655e5a3a9d902e0037df0642d9ddd74d1e84575f9b3aa0d3f",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_ctcv.py": "c8b01ec1ad5e1787681707b7088cbd2aeaa7839250232a6acb4c4c10f678ed7b",
+    "local/ctcv-annotation.log": "9f2a85635eb5260f2d18ecc128b325714b5f3d43f294b5976511c50fc58b9943",
+    "local/ctcv-call-audit-native_particle_clock_sink_release_cv.log": "0fae3ba5454c7c743025864dc46df6a19befb7bd668f716a14529a787389f4ee",
+    "local/ctcv-call-audit-native_surface_dimensions_ct.log": "ce89f257659349432350afab79a13c19752a253274312b432e30826dc3f1c6e1",
+    "local/ctcv-comments-after.json": "dd1da055bbe0697ac189417dcc4d4278b6751c51318f5beee43d64dcd85de01c",
+    "local/ctcv-comments-before.json": "1caf3f0a1bbd2ef93c44d38a4428d46deed5bb0a442ec3360a158851e578459d",
+    "local/ctcv-export-refresh.log": "b22923efa61dcd7e09ccefe3f7343d5251c6576486fdb2a3898b6a54452a94aa",
+    "local/ctcv-final-build-stamp.json": "b4efbb2545e612fc148d8506a5d2386958f61eefe848ac03ed7c23d58405d208",
+    "local/ctcv-final-combined-build.log": "39dcbe6021e382e0053fd6cf934e871f9dac1a5b76c1787714b3f186894c96f4",
+    "local/ctcv-function-records.json": "b74c6e445d64b72a42010417575309792e7dfdf290f9660bd41bc26288ee5fb2",
+    "local/ctcv-generated-get_native_surface_height_00b3cd20.asm": "bd1b86818cf20327bc11d509d3e329aaede31db081b5e29d41054814f2eb231d",
+    "local/ctcv-generated-get_native_surface_width_00b3cd10.asm": "430450c1783c03df3e9bf1b3499a12af0dab647743460575c23eb4d506082a82",
+    "local/ctcv-generated-release_native_particle_clock_sink_004ddb40.asm": "34ec682bd927a9ce27e0ccf050135677ec18c49f0c0e2c53135dcbcba2e16aa5",
+    "local/ctcv-ghidra-annotation-record.json": "0eda90f247ce671b39f3e6a77cba539aeea5acf1fa024345d49d87969242155a",
+    "local/ctcv-ledger-before.json": "516318925a737b3aaaa8721f76c2f1eb2c9a7bc4a161f23de176796b431bfdfc",
+    "local/ctcv-object-review.json": "a592b28f044ced74f0256d82c037da3192fe700d2168bb76077cf44430e89fb4",
+    "local/ctcv-primary-live-surface-spans.json": "b343046405f281a86923f04aee0b4a3d76b36e4fc2d7d7c1da60d12c3efe5c85",
+    "local/ctcv-primary-review.json": "6cc1b6032f596807a88077853f274c081aa5d5bc2eed553b116c25468067c8d8",
+    "local/ctcv-probe-build.cmd": "2b755ee76cc4961f41ca41c397ab72bb5b9c9e2d383d58702ac1375e9a6ccda6",
+    "local/ctcv-probe-run.log": "6b2a283e208190f2f6560cc8fb4400536d7754e675c8b82a3fa7dc1c94960c8e",
+    "local/ctcv-source-probe.json": "1fd4e15a736a5c1f74e18dad223a298ab5a93b87a20982595a3fc91f380a51dc",
+    "local/ctcv-worker/ct-build-retry.log": "27869ee96355c2db2f379b8524d30bc15ca8ab173316532ee3d7cc1a3cc86d40",
+    "local/ctcv-worker/ct-commit-message.txt": "9081bae381d9bbe3e85d7fc7bee3aa4fbd347d4cae1725939970c57b5849bc6d",
+    "local/ctcv-worker/ct-surface-dimensions-dumpbin.txt": "de5cfcc5dc759edd3634986fd92dc5fc26ff47b414f2dccd4fefd9d774d63a28",
+    "local/ctcv-worker/cu-particle-clock-shutdown-audit.json": "e9073e093df762c7c250566e5c75d60ba1d260d18df18186f1acaac1aa4be887",
+    "local/ctcv-worker/cu-particle-clock-shutdown-audit.md": "6666a575a042b7dea00ff6d47b14b67085acbcaa9b31706a2e31047f7e34677b",
+    "local/ctcv-worker/native_surface_dimensions_ct.json": "45358a0f447647c68e8c972db306039ac1f3cceebab3fa18eb3d7aba98f6e565",
+    "local/ctcv_probe.cpp": "3c91a8386daf7250bd73adaf18ef394d0a432393518f1bd99e944d59bd12c044",
+    "local/ctcv_probe.exe": "f0cc41153b9de0eed9bb5e3b04cb0d86a70bdd5e2c5aa47fbfef063e85f9cd80",
+    "local/ctcv_probe.obj": "124c7dd03ae7d49f738a80a687f867f6c9a0e0aaeb890d2512ac7e8226c236eb",
+    "local/finish_ctcv.py": "a939cf0349a17ac71ad0e2e1fa08699989a9fbfdfc70cef857cb7ef449778b71",
+    "local/prepare_cu_audit.py": "8aad85eb0c2ed4038a48fbecf71e08ce8e6029bd2e791bb955c6d16d26e51048",
+    "local/prepare_cv.py": "fb43fb8d4710655fa025ab7f3660f8d3385040383fb3d7d809bf3a1ccc042e50",
+    "local/publish_ctcv.py": "a13d74e19cacd73aca5306068b5a347ec5e12535752d61f4df99d05e861c4663",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_ctcv_objects.py": "41696479e048df6f753c76a969299e55ddb2f4857f767856581da474f7f9eeec",
+    "local/seal_ctcv.py": "96544cfb40c4e7bc9f29012fc217e38a63bc7ee6c8167c1a2a8c6fd79718afb3"
+  },
+  "sealed_attempt": {
+    "tested_commit": "3a92529df59b7dbfa8ae1f6e7a82f648570f323c",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ctcv-validated-attempt-3a92529d.zip",
+    "sha256": "0f822870e91ed91d57db3b437da634633cd710573ef1912200eb270af6cf6ce1",
+    "payload_members": 2664,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "f082d3ef01d27fb0a0e293b0225e3d4364c78b62ba7cdb083472cfcc109e9c16",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2601
+  }
 }
