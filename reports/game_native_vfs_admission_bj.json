@@ -1,0 +1,103 @@
+{
+  "packet": "orch4_game_native_vfs_admission_bj",
+  "status": "integrated_win32_built_native_vfs_frontend_two_frames_and_shared_drain_validated",
+  "utc": "2026-09-14T04:50:19.751987+00:00",
+  "code_revision": "8e68604bdc4860c5ef250ed147dc4dd8afeaa5a1",
+  "concurrent_main_reviewed": "31fac55a86b4f832d594d2c8d988276fdd22a68c",
+  "source_manifest": {
+    "files": 2537,
+    "path": "local/game_native_vfs_admission_bj_source_manifest.json",
+    "sha256": "b2160a5d2b1017fccb4273cab564a8dbd69bf88312f756ffd32a9fa10ed328f1",
+    "verification": "git diff of source/build inputs against code revision passed with repository line-ending normalization; manifest hashes actual working bytes"
+  },
+  "worker_commits": {
+    "application": "2cccac2e3ab42c6cd9f2b91262da71509c1699b0",
+    "operations": "fe226d996756d198e331ca431883bcbc898d8297",
+    "entry": "c3c11f22"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "restart_verified": true,
+    "live_and_snapshot_function_count_at_verification": 63967,
+    "mutation": false,
+    "existing_BDD6E0_name": "BSP_VFS_ResolveInMounts",
+    "existing_BDD6E0_body": "00bdd6e0-00bdd847",
+    "new_original_ABI_claim": false
+  },
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed",
+    "earlier_success": {
+      "code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59",
+      "result": "local/native_vfs_admission_bj/run_20260913_214406_563_68304/result.json",
+      "exit_code": 0
+    },
+    "ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "permanent_tests_added": false,
+    "native_data_handoff": "own suspended child, four bands, verified original PE, retained through host teardown",
+    "successful_run": {
+      "RunDirectory": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214954_141_70384",
+      "Log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214954_141_70384\\startup.log",
+      "ExitCode": 0,
+      "TimedOut": false,
+      "NativeDataMapped": true,
+      "VfsReady": true,
+      "OriginalExeUnchanged": true,
+      "LiveOptionsAndSavesUnchanged": true,
+      "PrivateRuntimeHashes": {
+        "xlive.dll": "79DA26AB6B2DC25936C3354087DE0BA41DA1A8B62924972E9100C29B95D34385",
+        "msidcrl40.dll": "623CB6CA98E566357ABBD0E76B15713921E1D7E1144C0C4F589A0407C7EFF1EE"
+      }
+    },
+    "observed_summaries": [
+      "frames_presented=2 loop_finished=1 exit_code=0",
+      "summary vfs_ready=1 loose_mounts=3/3 package_scans=2",
+      "locale_keys=6856 locale_files=1",
+      "fonts_loaded=6 font_resource_opens=19",
+      "gui_resources=9 pages=5/5",
+      "factories=4 parsers=2 pak_registry=1 pak_lock=1",
+      "sound after raw singleton drain: started=0 samples=0 resources=0 classes=0"
+    ],
+    "initial_default_runtime_failure": {
+      "result": "local/native_vfs_admission_bj/run_20260913_214021_528_6508/result.json",
+      "exit_code_hex": "c0000005",
+      "stage": "after settings load, before sound-startup completion",
+      "installed_xlive_sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "cause": "installed xlive.dll+319049 attempts MOV [EDI],EDX writing 90909090 at rebuilt image base+640F5E, outside image size1F8000; owned debugger captured child and parent C0000005",
+      "debug_receipt": "local/native_vfs_admission_bj/run_20260913_214632_093_75656/debug_receipt.json",
+      "debugger_limit": "first-chance debugger-only invalid handle was explicitly continued; AV first and second chance propagated; debugger wrapper exit0 is not game success"
+    },
+    "strict_worker_fixtures": "reports/game_native_vfs_application_bj.json and reports/game_native_vfs_operations_bj.json retain their separate source/core identities"
+  },
+  "artifacts": {
+    "build/win32/Release/bsp_core.lib": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03",
+    "build/win32/Release/bsp_game.exe": "1a99e917f3b48ea9e72f3d084728fd3fa6d79a1d2b6978d68e051dc9993f3148",
+    "build/win32/bsp_game.map": "783e17bc165d48a78694dc2d286cfd3bf2b6225885318ecc55bcd5ddb07c145e",
+    "local/game_native_vfs_admission_bj_final_build.log": "98ed13d93951b0838770a947fa65992b1f8213e763200ec2480b5422eec62f59",
+    "local/game_native_vfs_admission_bj_map_build.log": "7724a5f7cd07f0b329a4a752ae95b4554084c0d6babf4fd08a4849b21fc67477",
+    "local/game_native_vfs_admission_bj_publish_build.log": "2a92d63281988b9708872fa6c5f9ee245f90fd4dc9af3cd6054bc9c47fe46a05",
+    "local/native_vfs_admission_bj/run_20260913_214954_141_70384/result.json": "1504611249402dfc3e2fdc6cf897a07afe558309569f1893b005e4e0227d4fcd",
+    "local/native_vfs_admission_bj/run_20260913_214954_141_70384/startup.log": "b5a6f0f6382c6d61fd8bf8c35add3e4a85e6ed550b3ef3b4eab4d66d0cdbc0e2",
+    "local/run_game_native_vfs_admission_bj.ps1": "094e8ffab6e50f572530b0629058e743e5b4c68171de0b49dc401124cc3e89df",
+    "local/game_native_vfs_admission_bj_review.json": "42638682b1376b6d5b194a4b12577995e2d233716e743f3016a1da86ea756f7e",
+    "local/game_entry_handoff_bj_review.json": "66d57c5673479e8ce8738e5aa6435a33c5688aa74acbba6bf6be4170a4fe139e",
+    "local/native_vfs_consumer_bypass_bj.json": "3533c382a85ad7500c9942110c59c327066dea359ec56e850abeaf37c4d03aff",
+    "local/game_native_vfs_admission_bj_source_manifest.json": "b2160a5d2b1017fccb4273cab564a8dbd69bf88312f756ffd32a9fa10ed328f1",
+    "local/native_vfs_admission_bj/run_20260913_214632_093_75656/debug_receipt.json": "b3be3262bdff0f7298d0b145b027d4ad1558cf434ba27a657a1eb6631f60e6b9",
+    "local/native_vfs_admission_bj/run_20260913_214632_093_75656/debug_result.json": "51b020fc0b734fe66860bcc3c005cda48180ee5a5e8570cb04c43f3d09a2519b",
+    "local/debug_native_vfs_bj.py": "43b685e2d4e96901ca3a9d31f3929e4b250ffc440e8874f9c22d8774c5daec24"
+  },
+  "limits": [
+    "two frontend frames are not gameplay validation",
+    "archive payload fixture not exercised",
+    "native pending-I/O consumers not admitted",
+    "interrupted native frame terminal policy source-reviewed only",
+    "legacy enumeration adapter deduplicates preexisting output without native duplicate logging for those preexisting entries",
+    "zero-byte complete carrier source reviewed, not exercised by this installed-content run",
+    "resource-manager and parser hosts retain separate reconstruction boundaries",
+    "runtime deployment must select compatible dependencies; installed DLL was preserved"
+  ]
+}

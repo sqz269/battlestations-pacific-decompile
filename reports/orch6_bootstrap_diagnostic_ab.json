@@ -1,0 +1,82 @@
+{
+  "scope": "Source-only startup failure diagnostics; no native reconstruction or ABI claim",
+  "source": "src/game_native_data_bootstrap.cpp",
+  "integrated_vector_commit": "193f5bf5f36402f039b6d0e848b950ee3b2e676d",
+  "initial_runtime": "local/part_vector_ab/runtime_initial_failure.json",
+  "initial_runtime_exit": 2,
+  "console_observations_provenance": "Transcribed from captured exec PTY output; addresses also represented in hexadecimal for review",
+  "console_observations": [
+    {
+      "executable_sha256": "65028f9f68b629320d7a3cfa9559eafe4e65b0b735aeaedf4ea620e5fe2ed0aa",
+      "address": "00cf0000",
+      "allocation_error": 487,
+      "query_error": 0,
+      "parent_pid": 78304,
+      "child_pid": 14236,
+      "initial_esp": "00cfffcc",
+      "allocation_base": "00c00000",
+      "region_base": "00cf0000",
+      "region_bytes": 53248,
+      "state": 8192,
+      "protection": 0,
+      "type": 131072
+    },
+    {
+      "executable_sha256": "7b25f5755bd463c2af1fa569c82f4f430cd08630729ad6e717c17b360138e998",
+      "address": "00d10000",
+      "allocation_error": 487,
+      "query_error": 0,
+      "parent_pid": 76796,
+      "child_pid": 20376,
+      "initial_esp": 19921496,
+      "parent_aslr_flags": 1,
+      "child_aslr_flags": 1,
+      "allocation_base": "00d10000",
+      "region_base": "00d10000",
+      "region_bytes": 131072,
+      "state": 4096,
+      "protection": 4,
+      "type": 131072
+    }
+  ],
+  "image_collision_probe": "local/part_vector_ab/native_band_full_args.txt",
+  "image_collision": {
+    "child_pid": 63388,
+    "image_base": "00d50000",
+    "overlaps": [
+      "00d50000",
+      "00d60000"
+    ],
+    "parent_aslr_flags": 1,
+    "child_aslr_flags": 1,
+    "exit": 4
+  },
+  "verification": {
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "build_log": "local/orch6_bootstrap_diagnostic_build3_ab.log"
+  },
+  "behavior": "Only the failure message gains captured diagnostics; reservations, resume, rollback, termination and mapping protocol remain unchanged",
+  "runtime_status": "Initial integrated builds failed before the mission log; final integrated build completed one 120-frame USN01 compatibility run. Reliable startup remains unproved.",
+  "follow_up": "Shared native-data entry owner must establish reliable child address placement; no worker dispatched",
+  "limits": [
+    "Queried ASLR flags do not establish a placement fix.",
+    "Successful standalone reservations are not a full application launch.",
+    "The initial stack and rebuilt image were observed overlapping required data bands in separate launches."
+  ],
+  "final_closeout": {
+    "compiled_commit": "f6d65fd8e450039d575b1bff7379b17a95e743b1",
+    "exe_sha256": "d6aadec418c7086f4c0446e1ccfbbdb4e6d1473823385645671efbb12c94b3e1",
+    "exit": 0,
+    "seconds": 10.122311115264893,
+    "trajectory_audit": {
+      "rows": 18557,
+      "nonfinite_rows": 0,
+      "nonfinite_units": [],
+      "airfield_samples": 241,
+      "airfield_unchanged": true
+    },
+    "manifest": "local\\part_vector_closeout_ab\\manifest.json",
+    "manifest_sha256": "b6daadc2237a94f0e015fde4f64bddfe3bb1d9423cb7dd5cadc5622e0df336f2"
+  }
+}

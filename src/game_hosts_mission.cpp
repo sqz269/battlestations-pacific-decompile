@@ -1146,16 +1146,16 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     // this process takes.
     std::string text;
     {
-        VfsProviderManager* manager = vfs.manager();
+        auto* manager = vfs.ready() ? &vfs.context() : nullptr;
         std::string resolved = scene_path;
         if (manager == nullptr
-            || !resolve_existing_resource_00bdf4c0_fragment(manager->context(),
+            || !resolve_existing_resource_00bdf4c0_fragment(*manager,
                 vfs.search_registrations(), resolved)) {
             log.notef("scene %s not resolved through the mounts", scene_path.c_str());
             log.unimplemented("SetPendingScene::load_scene_header_pass", "0046df00");
             return;
         }
-        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(manager->context(),
+        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager,
             resolved, 2);
         log.implemented("SceneFileReader::read_scene_file", "008d9cf0");
         if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {

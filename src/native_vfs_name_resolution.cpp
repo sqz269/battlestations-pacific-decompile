@@ -584,6 +584,26 @@ void log_native_vfs_resolved_name_00bdeb40(void* manager, const void* original,
     U site{};
     log_resolved_name(manager, original, resolved, context, builder, site);
 }
+bool resolve_native_vfs_direct_name_00bdd6e0(void* manager, const void* input,
+    void* output, NativeVfsNameResolutionContext& context,
+    NativeVfsNameResolutionAcquired& acquired) {
+    auto& s = *acquired.impl_;
+    require(s.phase == NativeVfsNameResolutionPhase::fresh,
+        "native VFS direct resolution cannot replay its frame");
+    require(context.device.lookup.device == &context.device,
+        "native VFS direct resolution requires one actual device/lookup domain");
+    s.manager = manager; s.output = output; s.context = &context;
+    s.phase = NativeVfsNameResolutionPhase::candidates;
+    try {
+        const bool found = direct_resolution(s, input, output);
+        s.phase = NativeVfsNameResolutionPhase::complete;
+        return found;
+    } catch (...) {
+        if (!s.failure) s.failure = s.site;
+        s.phase = NativeVfsNameResolutionPhase::failed;
+        throw;
+    }
+}
 bool resolve_native_vfs_existing_name_00bdf4c0(void* manager, void* name,
     NativeVfsNameResolutionContext& context, NativeVfsNameResolutionAcquired& acquired) {
     auto& s = *acquired.impl_;

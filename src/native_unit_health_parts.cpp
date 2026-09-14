@@ -1,7 +1,13 @@
 #include "bsp/native_unit_health_parts.hpp"
+#include "bsp/native_unit_part_vector.hpp"
 #include <cstring>
 
 namespace bsp {
+void NativeUnitHealthPartsBindings::call_0087b460(void* vector,
+    std::uint32_t count, std::uint32_t fill) {
+    resize_native_unit_part_pointers_0087b460(vector,count,fill);
+}
+
 namespace {
 std::uint32_t address(const void* p) noexcept
 {

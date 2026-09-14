@@ -16,266 +16,122 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/resource_lookup.hpp"
-#include "bsp/vfs_mount_registration.hpp"
+#include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/vfs_search_defaults.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp::game {
-namespace {
-
-const char* create_status_name(VfsProviderCreateStatus status) {
-    switch (status) {
-        case VfsProviderCreateStatus::created: return "created";
-        case VfsProviderCreateStatus::declined: return "declined";
-        case VfsProviderCreateStatus::failed: break;
-    }
-    return "failed";
+GameVfsHost::GameVfsHost(GameHostLog& log, GameSingletonHost& singletons,
+    GameNativeReadOnlyData& data, const std::filesystem::path& original_executable,
+    bool hardware_probe_commit)
+    : log_(log), hardware_probe_commit_(hardware_probe_commit),
+      native_(std::make_unique<GameNativeVfsApplication>(log, singletons, data,
+          original_executable)) {
+    consumer_context_.native_access = this;
 }
-
-const char* scan_disposition_name(PackageScanDisposition disposition) {
-    switch (disposition) {
-        case PackageScanDisposition::already_mounted: return "already_mounted";
-        case PackageScanDisposition::mounted: return "mounted";
-        case PackageScanDisposition::declined: return "declined";
-        case PackageScanDisposition::failed: break;
-    }
-    return "failed";
-}
-
-}  // namespace
-
-// ---------------------------------------------------------------------------
-// GameVfsHost
-// ---------------------------------------------------------------------------
-
-GameVfsHost::GameVfsHost(GameHostLog& log, bool cached_load, bool hardware_probe_commit)
-    : log_(log), cached_load_(cached_load), hardware_probe_commit_(hardware_probe_commit) {}
-
 GameVfsHost::~GameVfsHost() = default;
 
-bool GameVfsHost::provider_manager_installed() {
-    // DAT_0109ceec at 0073d604. One process, one Init pass, so the gate is always open.
-    return manager_ != nullptr;
+GameNativeVfsRuntime& GameVfsHost::active_runtime() {
+    if (native_operation_failed_)
+        throw std::logic_error("Native VFS has an interrupted operation; process retention is required");
+    return native_->runtime();
 }
 
-void GameVfsHost::probe_hardware_0073c3b0() {
-    // 0073d610, inside the DAT_0109ceec first-time gate and before the VFS exists.
-    // Milestone 2c runs it: the four stored registry values and their all-four
-    // gate through bsp::probe_hardware_0073c3b0, then the comparison, message and
-    // write-back of bsp::run_hardware_probe_tail_0073c3b0.
-    hardware_probe_ = std::make_unique<GameHardwareProbe>(log_, hardware_probe_commit_);
-    hardware_probe_->run();
-    log_.implemented("Phase 2 probe_hardware", "0073c3b0");
-}
-
-const GameHardwareProbeSummary& GameVfsHost::hardware_probe() const noexcept {
-    static const GameHardwareProbeSummary kNotRun{};
-    return hardware_probe_ != nullptr ? hardware_probe_->summary() : kNotRun;
-}
-
-std::size_t GameVfsHost::registered_parsers() const noexcept {
-    return resource_manager_ != nullptr ? resource_manager_->parsers.size() : 0u;
-}
-
-void GameVfsHost::construct_provider_manager_00beda60() {
-    // 0073d615..0073d637: malloc(0A0h) then 00beda60. The reconstructed manager owns the
-    // physical factory the native constructor registers for itself.
-    factories_ = std::make_shared<VfsProviderFactories>();
-    manager_ = std::make_unique<VfsProviderManager>(factories_);
-    log_.implemented("Phase 2 construct_provider_manager", "00beda60");
-}
-
-void GameVfsHost::install_manager_handlers(std::uint32_t handler_90h,
-    std::uint32_t handler_8ch) {
-    // manager+90h and manager+8Ch at 0073d642 / 0073d652. Both targets are a single C3
-    // followed by INT3 padding, so storing them cannot change behaviour and the
-    // reconstructed manager carries no handler slots. Recorded with the two addresses.
-    log_.implemented("Phase 2 install_manager_handlers", "0073d642");
-    log_.notef("manager handlers +90h=%08x +8Ch=%08x (both verified RET)", handler_90h,
-        handler_8ch);
-}
-
-VfsStartupObject GameVfsHost::file_store_factory_004fc150() {
-    // The FileStore factory singleton. VfsProviderFactories holds it; the token identifies
-    // the call site, it is never dereferenced.
-    log_.implemented("Phase 2 file_store_factory", "004fc150");
-    return &factory_tokens_[0];
-}
-
-VfsStartupObject GameVfsHost::mpkg_factory_00736a90() {
-    log_.implemented("Phase 2 mpkg_factory", "00736a90");
-    return &factory_tokens_[1];
-}
-
-VfsStartupObject GameVfsHost::mpak_factory_00736b60() {
-    // 00736b60 is the same lazy double-checked singleton as the mpkg factory
-    // 00736a90: an 8-byte object with primary vtable 00cfea20 at +0 and the
-    // lifetime sub-object vtable 00cfea1c at +4, cached at DAT_010904d4. The one
-    // behavioural difference is slot 1, the Create 00bb83a0, which matches the
-    // ".mpak" suffix and builds a 0x44-byte provider; that body is packet
-    // `mpak_provider_create` and is not reconstructed, so the factory exists and
-    // is registered but creates nothing.
-    log_.implemented("Factory tail mpak_factory", "00736b60");
-    log_.notef("mpak factory singleton cache=%08lx vtable=%08lx extension=%s "
-        "(Create 00bb83a0 unimplemented)",
-        static_cast<unsigned long>(kMpakProviderFactory_00736b60.cache_global),
-        static_cast<unsigned long>(kMpakProviderFactory_00736b60.primary_vtable),
-        kMpakArchiveExtension);
-    return &factory_tokens_[2];
-}
-
-void GameVfsHost::register_provider_factory_00be0660(VfsStartupObject factory) {
-    // 00be0660 is a plain std::list::push_back onto the list at manager+30h/+34h:
-    // no deduplication, no reference count, no ownership. The order is the call
-    // order, which is physical, FileStore, MPKG, then MPAK from the factory tail.
-    // VfsProviderFactories already holds the first three, so the append is
-    // recorded against this list and only the MPAK entry is new.
-    vfs_register_provider_factory_00be0660(registered_factories_, factory);
-    if (factory == &factory_tokens_[2]) {
-        log_.implemented("Factory tail register_provider_factory", "00be0660");
-        return;
+void GameVfsHost::phase2(VfsStartupState& state) {
+    state.first_time_block_ran = !core_ready_;
+    if (state.first_time_block_ran) {
+        hardware_probe_ = std::make_unique<GameHardwareProbe>(log_, hardware_probe_commit_);
+        hardware_probe_->run();
+        invoke_native([&] { native_->initialize_core(); });
+        core_ready_ = true;
+        factories_registered_ = 3; // physical, FileStore, MPKG completed
+        state.factories_registered += 2; // explicit phase-2 registrations
+        char buffer[0x100]{};
+        const DWORD length = GetCurrentDirectoryA(0xfa, buffer);
+        if (!length || length >= 0xfa)
+            throw std::runtime_error("Phase-2 current directory exceeds native buffer");
+        std::string root(buffer, length);
+        root.push_back('\\');
+        for (const auto& mount : kVfsStartupMounts) {
+            GameMountRecord record;
+            record.system_path = mount.system_path == VfsStartupSystemPath::current_directory
+                ? root : mount.system_path_literal;
+            record.virtual_path = mount.virtual_path;
+            record.priority = mount.priority;
+            record.ownership = mount.ownership;
+            record.device_id = mount.device_id;
+            void* provider = invoke_native([&] { return active_runtime().mount(record.system_path.c_str(),
+                record.virtual_path.c_str(), static_cast<std::uint32_t>(record.priority),
+                record.ownership, static_cast<std::uint32_t>(record.device_id)); });
+            record.status = provider ? "created" : "failed";
+            mounts_.push_back(std::move(record));
+            ++state.mounts_requested;
+        }
+        invoke_native([&] { active_runtime().scan_phase2_packages(); });
+        ++package_scans_completed_;
+        invoke_native([&] { active_runtime().scan_phase2_packages(); });
+        ++package_scans_completed_;
     }
-    log_.implemented("Phase 2 register_provider_factory", "00be0660");
+    invoke_native([&] { active_runtime().register_phase2_search_defaults(); });
+    log_.implemented("Phase 2 actual VFS mount/scan/search", "0073d604");
+    log_.notef("native VFS loose mounts=%zu fresh package scans=%zu; package entry counts unrecorded",
+        mounts_.size(), package_scans_completed_);
 }
-
-std::string GameVfsHost::current_directory_with_separator() {
-    // 0073d68d..0073d6b1: GetCurrentDirectoryA(0FAh, buf) then _strcat_s(buf, 100h, "\").
-    char buffer[0x100] = {};
-    const DWORD length = GetCurrentDirectoryA(0xFA, buffer);
-    std::string path(buffer, length);
-    if (path.empty() || path.back() != '\\') path.push_back('\\');
-    log_.implemented("Phase 2 current_directory", "0073d697");
-    log_.notef("mount system path %s", path.c_str());
-    return path;
-}
-
-void GameVfsHost::mount_system_path_00be1890(const std::string& system_path,
-    const std::string& virtual_path, std::int32_t priority, std::uint8_t ownership,
-    std::int32_t device_id) {
-    GameMountRecord record;
-    record.system_path = system_path;
-    record.virtual_path = virtual_path;
-    record.priority = priority;
-    record.ownership = ownership;
-    record.device_id = device_id;
-    if (manager_ == nullptr) {
-        record.error = "no provider manager";
-        mounts_.push_back(record);
-        return;
-    }
-    std::shared_ptr<VfsProviderIdentity> identity;
-    std::string error;
-    const VfsProviderCreateStatus status = manager_->mount_system_path_00be1890_fragment(
-        system_path, virtual_path, priority, ownership, device_id, identity, error);
-    record.status = create_status_name(status);
-    record.error = error;
-    mounts_.push_back(record);
-    log_.implemented("Phase 2 mount_system_path", "00be1890");
-    log_.notef("mount %s -> \"%s\" priority=%d ownership=%u device=%d %s%s%s",
-        system_path.c_str(), virtual_path.c_str(), priority,
-        static_cast<unsigned>(ownership), device_id, record.status,
-        error.empty() ? "" : " error=", error.c_str());
-}
-
-PackageScanCallbacks GameVfsHost::package_scan_callbacks() {
-    PackageScanCallbacks callbacks;
-    callbacks.enumerate = [this](const std::string& directory, const std::string& extension,
-        std::uint32_t flags, std::vector<std::string>& output, std::string& error) {
-        return enumerate_resources_00bdd990_fragment(manager_->context(), directory,
-            extension, flags, output, error);
-    };
-    callbacks.already_mounted = [this](const std::string& system_name) {
-        return manager_->find_system_name_00bdb120(system_name) != nullptr;
-    };
-    callbacks.mount = [this](const std::string& system_name, const std::string& virtual_path,
-        std::int32_t priority, std::uint8_t ownership, std::int32_t device_id,
-        std::string& error) {
-        GameMountRecord record;
-        record.system_path = system_name;
-        record.virtual_path = virtual_path;
-        record.priority = priority;
-        record.ownership = ownership;
-        record.device_id = device_id;
-        record.from_package_scan = true;
-        std::shared_ptr<VfsProviderIdentity> identity;
-        const VfsProviderCreateStatus status = manager_->mount_system_path_00be1890_fragment(
-            system_name, virtual_path, priority, ownership, device_id, identity, error);
-        record.status = create_status_name(status);
-        record.error = error;
-        mounts_.push_back(record);
-        return status == VfsProviderCreateStatus::created ? PackageMountStatus::mounted
-            : status == VfsProviderCreateStatus::declined ? PackageMountStatus::declined
-            : PackageMountStatus::failed;
-    };
-    return callbacks;
-}
-
-void GameVfsHost::mount_packages_0073cb10() {
-    // 0073d881 and 0073d888 call this twice with the same ECX. Each pass queries
-    // (".", "mpkg", 0) afresh, so the second sees what the first mounted.
-    const int pass = scan_pass_;
-    if (manager_ == nullptr || pass >= static_cast<int>(scans_.size())) {
-        log_.unimplemented("Phase 2 mount_packages", "0073cb10");
-        return;
-    }
-    ++scan_pass_;
-    const bool complete = scan_packages_0073cb10_fragment(package_scan_callbacks(),
-        scans_[static_cast<std::size_t>(pass)]);
-    const PackageScanPass& report = scans_[static_cast<std::size_t>(pass)];
-    log_.implemented("Phase 2 mount_packages", "0073cb10");
-    log_.notef("package scan %d enumerated=%d entries=%zu complete=%d%s%s", pass + 1,
-        report.enumerated ? 1 : 0, report.entries.size(), complete ? 1 : 0,
-        report.error.empty() ? "" : " error=", report.error.c_str());
-    for (const PackageScanEntry& entry : report.entries) {
-        log_.notef("  package %s priority=%d %s%s%s", entry.system_name.c_str(),
-            entry.priority, scan_disposition_name(entry.disposition),
-            entry.error.empty() ? "" : " error=", entry.error.c_str());
-    }
-}
-
-void GameVfsHost::register_resource_search_paths_00738360() {
-    // 0073d894, the JNZ target of the gate: it runs on every Init pass. The reconstruction
-    // covers the texture and shaderfx groups only; see docs/VFS_SEARCH_REGISTRATION.md.
-    search_registrations_ = make_asset_search_registrations_00738360_fragment();
-    log_.implemented("Phase 2 register_resource_search_paths", "00738360");
-    log_.notef("search registrations groups=%zu extension_prefixes=%zu",
-        search_registrations_.groups.size(), search_registrations_.extension_prefixes.size());
-}
-
-VfsStartupObject GameVfsHost::pak_archive_registry_00736c30() {
-    // The same lazy shape over DAT_010904d8: operator new(0x1c), constructor
-    // 00bb4fb0, lifetime sub-object at instance+8h rather than +4h. +0Ch is the
-    // 0x64 every PAK provider copies into provider+18h.
-    pak_registry_ = pak_archive_registry_state_00bb4fb0();
-    log_.implemented("Factory tail pak_archive_registry", "00736c30");
-    log_.notef("pak archive registry cache=%08lx enabled=%d provider_limit=%d",
-        static_cast<unsigned long>(kPakArchiveRegistry_00736c30.cache_global),
-        pak_registry_.enabled_04, pak_registry_.provider_limit_0c);
-    return &pak_registry_;
-}
-
-void GameVfsHost::set_manager_pak_registry_00bd9230(VfsStartupObject registry) {
-    // manager+88h, the provider policy slot.
-    set_file_manager_provider_policy_00bd9230(manager_knobs_, registry);
-    pak_registry_published_ = manager_knobs_.provider_policy == registry && registry != nullptr;
-    log_.implemented("Factory tail set_manager_pak_registry", "00bd9230");
-}
-
-void GameVfsHost::set_manager_cached_load_00bd9f90(bool cached_load) {
-    // manager+78h receives the cachedload byte DAT_00e1ae76, parsed from the command line at
-    // 0073d94a. The reconstructed manager has no cached-load slot, so the flag is carried
-    // here and reported; it reaches no provider in this milestone.
+void GameVfsHost::factory_tail(VfsStartupState& state, bool cached_load) {
+    invoke_native([&] { active_runtime().register_archive_factory_tail(cached_load); });
     cached_load_ = cached_load;
-    log_.implemented("Factory tail set_manager_cached_load", "00bd9f90");
-    log_.notef("cachedload=%d", cached_load ? 1 : 0);
+    archive_tail_ready_ = true;
+    factories_registered_ = 4;
+    ++state.factories_registered;
+    log_.implemented("Factory tail actual MPAK registry/cache/lock", "0073d94f");
 }
-
-void GameVfsHost::create_pak_registry_lock_00bb40b0() {
-    // One process-wide lock published into DAT_010904e0: a CRITICAL_SECTION plus
-    // the depth counter at +18h that 00bd1860 initialises.
-    const bool created = create_shared_lock_00bb40b0(pak_lock_, pak_lock_storage_);
-    log_.implemented("Factory tail create_pak_registry_lock", "00bb40b0");
-    log_.notef("pak registry lock published=%d", created ? 1 : 0);
+void GameVfsHost::phase6(VfsStartupState& state) {
+    auto manager = resource_manager_004c1400();
+    state.animation_channels_parser_registered = register_type_parser_00b80a50(
+        manager, animation_channels_parser_00736dd0());
+    manager = resource_manager_004c1400();
+    state.bone_parser_registered = register_type_parser_00b80a50(manager, bone_parser_00736ea0());
+}
+const GameHardwareProbeSummary& GameVfsHost::hardware_probe() const noexcept {
+    static const GameHardwareProbeSummary not_run{};
+    return hardware_probe_ ? hardware_probe_->summary() : not_run;
+}
+std::size_t GameVfsHost::registered_parsers() const noexcept {
+    return resource_manager_ ? resource_manager_->parsers.size() : 0;
+}
+std::uint32_t GameVfsHost::failure_site() const noexcept {
+    if (!core_ready_) return 0;
+    return native_->runtime().name_resolution_failure_site();
+}
+bool GameVfsHost::exists(const std::string& name) {
+    if (!core_ready_) return false;
+    return invoke_native([&] { return active_runtime().exists(name.c_str()); });
+}
+bool GameVfsHost::resolve_existing(std::string& name) {
+    if (!core_ready_) return false;
+    return invoke_native([&] { return active_runtime().resolve_existing(name); });
+}
+bool GameVfsHost::direct_resolve(const std::string& name, std::string& output) {
+    if (!core_ready_) return false;
+    return invoke_native([&] { return active_runtime().direct_resolve(name, output); });
+}
+VfsMemoryOpen GameVfsHost::open(const std::string& name, std::uint32_t flags) {
+    VfsMemoryOpen result;
+    if (flags != 2 && flags != 0x32)
+        return {false, {}, "Production VFS consumers require read-existing flags 2 or 0x32."};
+    auto bytes = invoke_native([&] { return active_runtime().read_all(name.c_str(), flags); });
+    if (!bytes) return result;
+    result.provider_opened = true;
+    result.stream = std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes->data(), bytes->size()));
+    return result;
+}
+std::vector<std::string> GameVfsHost::enumerate(const std::string& directory,
+    const std::string& extension, std::uint32_t flags) {
+    return invoke_native([&] { return active_runtime().enumerate(directory.c_str(), extension.c_str(), flags); });
+}
+std::array<std::uint32_t, 5> GameVfsHost::file_date(const std::string& name) {
+    return invoke_native([&] { return active_runtime().file_date(name.c_str()); });
 }
 
 VfsStartupObject GameVfsHost::resource_manager_004c1400() {
@@ -326,29 +182,24 @@ bool GameVfsHost::register_type_parser_00b80a50(VfsStartupObject manager,
     return registered;
 }
 
-bool GameVfsHost::exists(const std::string& requested) {
-    if (manager_ == nullptr) return false;
-    return exists_resource_00bdd440_fragment(manager_->context(), requested);
-}
-
 GameVfsProbeResult GameVfsHost::resolve_and_read(const std::string& requested) {
     GameVfsProbeResult result;
     result.requested = requested;
-    if (manager_ == nullptr) {
+    if (!ready()) {
         result.error = "no provider manager";
         return result;
     }
     std::string name = requested;
     // 00bdf4c0: normalize, try the mounts directly, then the search candidates.
-    if (!resolve_existing_resource_00bdf4c0_fragment(manager_->context(),
-            search_registrations_, name)) {
+    if (!resolve_existing_resource_00bdf4c0_fragment(context(),
+            unused_registrations_, name)) {
         result.error = "no mounted provider resolves " + requested;
         return result;
     }
     result.resolved_ok = true;
     result.resolved = name;
     // 00bdf310 with flags 2, the read-only mode the startup opens use.
-    VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(manager_->context(),
+    VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(context(),
         name, 2);
     if (!opened.provider_opened || !opened.stream) {
         result.error = opened.error.empty() ? "resolved but no provider opened " + name
@@ -372,22 +223,6 @@ const GameVfsProbeResult& GameVfsHost::probe(const std::string& requested) {
         result.opened ? 1 : 0, static_cast<long long>(result.bytes),
         result.error.empty() ? "" : " error=", result.error.c_str());
     return result;
-}
-
-std::size_t GameVfsHost::package_entries_enumerated() const noexcept {
-    std::size_t total = 0;
-    for (const PackageScanPass& pass : scans_) total += pass.entries.size();
-    return total;
-}
-
-std::size_t GameVfsHost::package_entries_mounted() const noexcept {
-    std::size_t total = 0;
-    for (const PackageScanPass& pass : scans_) {
-        for (const PackageScanEntry& entry : pass.entries) {
-            if (entry.disposition == PackageScanDisposition::mounted) ++total;
-        }
-    }
-    return total;
 }
 
 // ---------------------------------------------------------------------------
