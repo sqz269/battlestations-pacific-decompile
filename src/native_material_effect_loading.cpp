@@ -165,7 +165,7 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
     NativeMaterialEffectLoadingContext& c, NativeMaterialEffectLoadAcquired& a) {
     (void)ignored;
     require(a.phase == NativeMaterialEffectLoadPhase::not_started && !a.creator &&
-        !a.raw_slot && !a.programs && !a.fallback,
+        !a.raw_slot && !a.programs && !a.fallback && !a.construction,
         "effect load requires a fresh retained caller frame");
     auto& strings = require_domain(c);
     a.phase = NativeMaterialEffectLoadPhase::names;
@@ -189,21 +189,17 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
             // Host continuation allocation precedes acquiring native storage;
             // its failure therefore cannot hide an already-created effect.
             a.programs = std::make_unique<NativeMaterialEffectProgramOperation>();
+            a.construction = std::make_unique<NativeMaterialEffectConstructionFrame>();
             a.phase = NativeMaterialEffectLoadPhase::allocation;
             a.native_site = 0x00b2ed2c;
             a.raw_slot = ::operator new(sizeof(NativeMaterialEffectStorage));
             a.phase = NativeMaterialEffectLoadPhase::constructor;
             a.native_site = 0x00b2ed43;
-            try {
-                a.creator = initialize_native_material_effect_00b407a0(a.raw_slot, c.construction);
-            } catch (...) {
-                // Native state4 raw allocation cleanup only. The constructor
-                // owns its member-name/base unwind; no completed effect exists.
-                auto* slot = a.raw_slot;
-                a.raw_slot = nullptr;
-                ::operator delete(slot);
-                throw;
-            }
+            // Source construction can retain a live B319B0 child and its
+            // argument storage. Preserve the raw allocation with that frame;
+            // native FH3 state4 cleanup is not safe source-frame retirement.
+            a.creator = initialize_native_material_effect_00b407a0(a.raw_slot,
+                c.construction, *a.construction);
             a.constructor_complete = true;
             a.raw_slot = nullptr; // Completed creator is now the acquisition.
             a.phase = NativeMaterialEffectLoadPhase::programs;

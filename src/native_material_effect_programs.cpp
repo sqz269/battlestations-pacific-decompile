@@ -1,4 +1,5 @@
 #include "bsp/native_material_effect_programs.hpp"
+#include "bsp/native_material_compiler_providers.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
@@ -260,27 +261,50 @@ std::uint8_t load_native_material_effect_programs_00b45ee0(NativeMaterialEffectS
 }
 } // namespace
 
-void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
-    void* const volatile& current_renderer) {
+namespace {
+void prune_disabled_groups(NativeMaterialPassBaseStorage& pass) {
     if (!enabled(pass, 0x1b)) remove_group(pass, {0x13, 0x14, 0xab});
     if (!enabled(pass, 0xce)) remove_group(pass, {0xcf, 0xd0, 0xd1});
     if (!enabled(pass, 0x0f)) remove_group(pass, {0x19, 0x18});
     if (!enabled(pass, 7)) remove_group(pass, {0x17, 0x0e});
     if (!enabled(pass, 0x34)) remove_group(pass, {0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x35});
     if (!enabled(pass, 0x1c)) remove_group(pass, {0x23, 0x8c});
+}
+void prune_after_capabilities(NativeMaterialPassBaseStorage& pass, std::uint8_t capability) {
+    remove_native_material_render_state_00b5ee00(&pass, capability ? 0x9a : 0xb5);
+    remove_group(pass, {0x80, 0x81, 0x82, 0x83, 0x89, 0x8e, 0x8d,
+        0x92, 0x91, 0x93, 0x94, 0x8b, 0x8f});
+}
+} // namespace
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
+    void* const volatile& current_renderer) {
+    prune_disabled_groups(pass);
     auto* renderer = current_renderer;
     require(renderer != nullptr, "B5F160 requires current callable renderer+104");
     const auto* table = *static_cast<const std::uintptr_t* const*>(renderer);
     using Caps = const std::uint8_t* (__thiscall*)(void*);
     const auto* caps = reinterpret_cast<Caps>(table[0x104 / 4])(renderer);
     require(caps != nullptr, "renderer+104 must return actual readable capabilities");
-    remove_native_material_render_state_00b5ee00(&pass, caps[0x3d] ? 0x9a : 0xb5);
-    remove_group(pass, {0x80, 0x81, 0x82, 0x83, 0x89, 0x8e, 0x8d,
-        0x92, 0x91, 0x93, 0x94, 0x8b, 0x8f});
+    prune_after_capabilities(pass, caps[0x3d]);
+}
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
+    void* const volatile& current_renderer, const volatile std::uint32_t* profile) {
+    prune_disabled_groups(pass);
+    void* const renderer = current_renderer; // B5F325
+    require(renderer != nullptr, "B5F160 requires the current actual renderer");
+    const auto captured_profile = *static_cast<const volatile std::uint32_t*>(renderer);
+    require(captured_profile == 0x00d5f0a8 && profile,
+        "B5F160 requires the actual D5F0A8 profile domain");
+    const auto target = profile[0x104 / 4]; // B5F32D; never replace a mutated slot.
+    require(target == 0x00b1ff50, "B5F160 current renderer+104 target is unreconstructed");
+    const void* const caps = get_native_compiler_renderer_capabilities_00b1ff50(renderer);
+    const auto capability = static_cast<const volatile std::uint8_t*>(caps)[0x3d];
+    prune_after_capabilities(pass, capability);
 }
 void finalize_native_material_pass_00b5f6a0(NativeMaterialPassBaseStorage& pass,
     NativeMaterialEffectProgramsContext& context, NativeMaterialProgramChild& child) {
-    prune_native_material_pass_states_00b5f160(pass, context.current_renderer_00f8d394);
+    prune_native_material_pass_states_00b5f160(pass, context.current_renderer_00f8d394,
+        context.actual_renderer_profile_00d5f0a8);
     auto* render = pass.render_18;
     auto* third = static_cast<NativeMaterialStateOwnerStorage*>(nullptr);
     auto* result = context.children.cache_render_00b26500(context.current_renderer_00f8d394, render, child);

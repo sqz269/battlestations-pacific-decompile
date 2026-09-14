@@ -1,4 +1,6 @@
 #include "bsp/native_material_effect_owner.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>
@@ -84,6 +86,96 @@ void initialize_base(NativeMaterialEffectBaseStorage& storage,NativeMaterialEffe
 }
 } // namespace
 
+NativeMaterialEffectConstructionFrame::NativeMaterialEffectConstructionFrame() = default;
+NativeMaterialEffectConstructionFrame::~NativeMaterialEffectConstructionFrame() {
+    if (phase == Phase::running || phase == Phase::failed) std::terminate();
+}
+NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
+    void* slot, NativeMaterialEffectConstructionAccess& access,
+    NativeMaterialEffectConstructionFrame& a) {
+    using Phase = NativeMaterialEffectConstructionFrame::Phase;
+    require_storage(slot);
+    if (a.phase != Phase::fresh) throw std::logic_error("actual effect construction requires a fresh retained frame");
+    a.phase = Phase::running;
+    a.storage = static_cast<NativeMaterialEffectBaseStorage*>(slot);
+    try {
+        auto& storage = *::new(slot) NativeMaterialEffectBaseStorage;
+        storage.vtable_00 = reference_table;
+        storage.references_04.store(1, std::memory_order_relaxed);
+        storage.vtable_00 = base_table;
+        a.exception_state = 0;
+        storage.texture_count_38 = 0;
+        storage.textures_0c.fill(nullptr);
+        // The native vector constructor initializes the eleven headers, then
+        // B18DCC clears exactly their 58h bytes again.
+        a.native_site = 0x00b18dbf;
+        std::memset(static_cast<void*>(storage.names_3c.data()), 0, sizeof(storage.names_3c));
+        a.exception_state = 1;
+        storage.name_count_94 = 0;
+        std::memset(static_cast<void*>(storage.names_3c.data()), 0, sizeof(storage.names_3c));
+        storage.retained_count_a8 = 0;
+        ::new (&storage.name_b8) NativeString;
+        a.exception_state = 2;
+        a.native_site = 0x00b18dfb;
+        resize_native_string_header_0041dd40(&a.temporary, access.strings, 9, true);
+        a.temporary_live = true;
+        if (a.temporary.data()) std::memcpy(a.temporary.data(), "error.tga", a.temporary.length() + 1u);
+        a.texture = std::make_unique<NativeTextureCacheAcquired>();
+        a.native_site = 0x00b18e1e;
+        a.captured_renderer = access.current_renderer_00f8d394; // B18E1E
+        a.native_site = 0x00b18e24;
+        if (!a.captured_renderer) throw std::logic_error("B18D60 requires the current actual renderer");
+        a.captured_profile = *static_cast<const volatile std::uint32_t*>(a.captured_renderer);
+        const auto* profile = access.actual_renderer_profile_00d5f0a8;
+        a.native_site = 0x00b18e26;
+        if (a.captured_profile != 0x00d5f0a8 || !profile)
+            throw std::logic_error("B18D60 requires the actual D5F0A8 profile domain");
+        a.captured_target = profile[0x64 / 4]; // B18E26
+        a.exception_state = 3;
+        a.native_site = 0x00b18e34;
+        if (a.captured_target != 0x00b319b0)
+            throw std::logic_error("B18D60 current renderer+64 target is unreconstructed");
+        auto* cache = access.actual_texture_cache;
+        if (!cache || &cache->strings != &access.strings ||
+            reinterpret_cast<const volatile void*>(&cache->textures.current_renderer_00f8d394) !=
+            reinterpret_cast<const volatile void*>(&access.current_renderer_00f8d394))
+            throw std::logic_error("B18D60 requires the same actual texture cache, strings and renderer publication");
+        void* const acquired = load_native_renderer_texture_00b319b0(a.captured_renderer,
+            &a.temporary, 0, *cache, a.texture.get());
+        storage.fallback_98 = acquired; // B18E36, before reloading the temporary.
+        a.fallback_published = true;
+        char* const data = a.temporary.data();
+        a.exception_state = 2;
+        if (data) {
+            const auto size = a.temporary.length() + 1u;
+            a.native_site = 0x00b18e5b;
+            access.strings.release(data, size);
+        }
+        a.temporary_live = false; // Actual stale header bytes are preserved.
+        const auto serial = access.next_serial_00f8d3a8;
+        storage.serial_c0 = serial;
+        storage.byte_08 = 0;
+        storage.dirty_b4 = 0;
+        access.next_serial_00f8d3a8 = serial + 1u;
+        a.phase = Phase::complete;
+        return &storage;
+    } catch (...) { a.phase = Phase::failed; throw; }
+}
+NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
+    void* slot, NativeMaterialEffectConstructionAccess& access,
+    NativeMaterialEffectConstructionFrame& a) {
+    require_storage(slot);
+    if (a.phase != NativeMaterialEffectConstructionFrame::Phase::fresh)
+        throw std::logic_error("actual derived effect construction requires a fresh retained frame");
+    auto* storage = ::new(slot) NativeMaterialEffectStorage;
+    initialize_native_material_effect_base_00b18d60(&storage->base, access, a);
+    storage->descriptor_c4 = nullptr;
+    storage->retained_138 = nullptr;
+    storage->byte_13c = 0;
+    storage->base.vtable_00 = effect_table;
+    storage->words_140.fill(0);
+    return storage;
+}
 NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
     void* slot,NativeMaterialEffectConstructionAccess& access) {
     require_storage(slot);

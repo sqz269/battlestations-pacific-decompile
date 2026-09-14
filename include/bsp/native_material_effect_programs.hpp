@@ -66,6 +66,8 @@ struct NativeMaterialEffectProgramsContext {
     void* const volatile& current_manager_00f8bbf0;
     void* const volatile& current_vfs_0109ceec;
     const volatile std::uint8_t& load_variants_0108d6f0;
+    // Borrow the actual mutable D5F0A8 profile, not a host callable table.
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8{};
 };
 
 // Full B5F160, ECX actual pass, RET: six conditional render-state groups,
@@ -73,6 +75,13 @@ struct NativeMaterialEffectProgramsContext {
 // removals. Requires the actual renderer binding, not a copied caps snapshot.
 void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage&,
     void* const volatile& current_renderer_00f8d394);
+// Actual numeric-profile route used by B5F6A0/B17DD0. After the same six
+// groups, capture current renderer, its profile and current+104 target once;
+// dispatch the substantive B1FF50 provider and read its returned byte+3D.
+// Unsupported targets fail at that call, preserving all prior removals.
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage&,
+    void* const volatile& current_renderer_00f8d394,
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8);
 // B5F6A0, ECX pass, RET: prune then publish actual cache results18/1C/20,
 // reloading renderer and next input around each call. Required child state is
 // retained by the caller on error; successful earlier substitutions remain.
