@@ -146,11 +146,15 @@ struct GunneryReconTarget {
 // ---------------------------------------------------------------------------
 
 struct GunneryReconEnvironment {
-    // [game+21C4h]+74h, the Lua `SimplifiedReconMultiplier`. 00444D20 forces
-    // 1.0f; only a mission script changes it. 008048A0 squares it.
+    // [game+21C4h]+74h, the Lua `SimplifiedReconMultiplier`. 00444D20 writes
+    // 1.0f as the default; the Lua binding rows at 00E0C248..00E0C264 pair the
+    // setter 008B24A0 (storing at 008B243C) with the name at 00D0F8E4, so a
+    // mission script can change it. 008048A0 squares it.
     float simplified_recon_multiplier{1.0f};
 
-    // [game+21C4h]+78h, `SimplifiedSonarMultiplier`. No shipped script sets it.
+    // [game+21C4h]+78h, `SimplifiedSonarMultiplier`. Same story: 00444D20
+    // writes 1.0f, 008B2770/008B270C is the Lua setter. 008048A0 squares it
+    // too, but only for a submerged submarine.
     float simplified_sonar_multiplier{1.0f};
 
     // The raw-type mask. The rebuild passes 0FFh (008068E0), so all three of

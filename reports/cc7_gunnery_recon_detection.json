@@ -213,7 +213,7 @@
     },
     {
       "address": "00444d20",
-      "what": "claimed by the surviving header to force the recon multiplier to 1.0f. NOT verified in this pass; a targeted disassembly found no store to +74h in the first 60 bytes and the search was not extended. Treat as inherited, unproven."
+      "what": "writes 1.0f to BOTH +74h and +78h of the tuning block as their defaults. Resolved after this packet's first commit, from docs/WEATHER_CONFIG.md's own correction note rather than from 00444D20's body: the Lua binding rows at 00E0C248..00E0C264 pair 008B2320/008B24A0 with \"SimplifiedReconMultiplier\" (00D0F8E4, stored at 008B243C into +74h) and 008B25F0/008B2770 with \"SimplifiedSonarMultiplier\" (00D0F8A4, stored at 008B270C into +78h). So both are script-settable by name, and the earlier 'no shipped script sets +78h' phrasing is dropped as unsupported. Not leased, not annotated."
     }
   ],
   "run_time_evidence": "None. Every instruction-level claim in this pass comes from the PE on disk via tools/bsp.py disasm-raw, plus the four Ghidra listings the predecessor spilled to local/output/ before the reboot, plus docs/SENSOR_TABLES.md for the writer-derived row layout. No live decompilation was used to form a claim. The Ghidra bridge turned out to be back up (tools/verify_report_calls.py reached the live listing), but Ghidra was left read-only: no annotation, no rename, no snapshot.",
