@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_material_compiler_runtime",
+  "status": "complete_cached_source_route_real_provider_fixture_passed",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "production_changes_owned": false,
+    "new_reconstruction_rows": 0,
+    "new_numeric_call_contract_rows": 0,
+    "document": "docs/NATIVE_MATERIAL_COMPILER_RUNTIME.md",
+    "fixture": "local/verification/material_compiler_runtime/compiler_runtime_probe.cpp"
+  },
+  "dependencies": {
+    "base_commit": "c43ceba8793189d3157b1045053193f00d80a887",
+    "approved_correction_original_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24",
+    "approved_correction_local_commit": "eaea5c5da684c94e1ebd439fabbe34883247c574",
+    "correction_changed_files": [
+      "src/native_material_program_compiler_actual.cpp"
+    ],
+    "correction_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\src\\native_material_program_compiler_actual.cpp",
+      "bytes": 26412,
+      "sha256": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111"
+    },
+    "api_changed": false,
+    "prior_frozen_archive_unchanged": true,
+    "prior_manifest_sha256": "bc7ce48a8051ed465afa3d8b698106217b732c68d97eb30947b298c578353df7",
+    "existing_actual_call_contract_report": "reports/native_material_program_compiler_actual.json",
+    "existing_provider_call_contract_report": "reports/native_material_compiler_providers.json"
+  },
+  "coverage": {
+    "source_route": "complete cached B3C3A0 wrapper, existing canonical prefix, exact B3B536 continuation through B3C390 and normal original-order builder/name cleanup",
+    "same_frame_identity": true,
+    "parent_entry_replayed": false,
+    "original_machine_execution": "Only original B3B280 empty-list branch; no whole-parent differential execution",
+    "shared_boundaries": [
+      "existing source child providers",
+      "real installed D3DX9_40 reflection",
+      "real D3D9 HAL and COM shader creation",
+      "existing B319B0 ResourceLoadEventHost child interface with substantive stable-platform adapter"
+    ]
+  },
+  "fixture_inputs": {
+    "cache_vertex_source": "float4x4 cViewProjMat; float4 main(float4 p:POSITION0):POSITION0{return mul(p,cViewProjMat);}",
+    "cache_pixel_source": "float4 Tint; float4 main():COLOR0{return Tint;}",
+    "cache_profiles": [
+      "vs_3_0",
+      "ps_3_0"
+    ],
+    "cache_compile_flags": "00001400",
+    "cache_blobs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\cache_input_vs.bin",
+        "bytes": 240,
+        "sha256": "49a35ea02909a4a3ee9977e6f5a627c2ac5dc8f8724815304dab2cee0f68762a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\cache_input_ps.bin",
+        "bytes": 156,
+        "sha256": "3c73b4e97f86abaea061f5342626d2fdc5d91ece73856faaf6524bcd53f6b867"
+      }
+    ],
+    "input_role": "Real D3DXCompileShader creates fixture cache inputs only; actual compiler continuation still performs lookups, reflection, native COM creation and registrations itself.",
+    "actual_descriptors": "B43700-produced descriptors with one root state7=0 and one mode state7=1, empty sampler lists",
+    "actual_white_texture": "Canonical B3F930-produced texture owner with real 1x1 A8R8G8B8 white COM texture, actual native alias/record/cache producers",
+    "actual_system_registry": "B5BF70-produced 52-row registry in same raw string pool domain",
+    "stack_preimages": {
+      "root": "7B2954AA",
+      "mode": "192EF0C3",
+      "origin": "Explicit fixture-entry inputs observed unchanged by executing original copied empty B3B280, then passed to corresponding source contexts",
+      "consumed": false,
+      "whole_original_parent_capture": false
+    }
+  },
+  "observed_effects": [
+    "Returned actual pass has raw references=1 and same canonical parent/builder/local_name/tail identity.",
+    "Persistent texture child is attached before B44B10 invokes B319B0; actual cached white owner references changes 1 to 2 and exact pointer becomes pass+84.",
+    "Both actual shader wrappers have references=1 after native slot retains and temporary releases; both COM and both wrapper temporary releases are recorded.",
+    "GetFunction byte-for-byte readback from both resulting COM shaders equals actual cache inputs.",
+    "VS actual reflection contains semantic5/register0/count4; PS actual reflection contains one Tint material constant with semantic37h.",
+    "Root and mode B34920 each process one row; mode state7=1 overrides root state7=0.",
+    "Both B3B280 calls complete and all 16 unused sampler slots are pruned.",
+    "Cache cursor advances 0 to 2; one retained raw BECB20 cursor operation completes; canonical owner domain contains nine identities.",
+    "Normal canonical compiler operation and tail phase complete; no acknowledge/disarm or fake retirement is used."
+  ],
+  "validation": {
+    "seed_command": "python tools/ghidra_export.py verify-seeds *> local/verification/material_compiler_runtime/seeds.json",
+    "seeds": 8,
+    "seed_matches": 8,
+    "build_command": "./scripts/build.ps1 *> local/verification/material_compiler_runtime/build.log",
+    "build": "fresh strict MSVC Win32 Release passed",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "probe_compile_command": "cmd /c local\\verification\\material_compiler_runtime\\build_probe.cmd *> local/verification/material_compiler_runtime/probe_build.log",
+    "probe_exact_driver": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /Bv /c /std:c++17 /EHsc /MD /O2 /Oy- /W4 /WX /fp:strict /I include /sourceDependencies local\\verification\\material_compiler_runtime\\compiler_dependencies.json src\\native_material_program_compiler_actual.cpp /Folocal\\verification\\material_compiler_runtime\\native_material_program_compiler_actual.obj\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /Bv /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I \"J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\build\\win32\\_deps\\dxsdk_d3dx-src\\build\\native\\include\" /sourceDependencies local\\verification\\material_compiler_runtime\\probe_dependencies.json local\\verification\\material_compiler_runtime\\compiler_runtime_probe.cpp local\\verification\\material_compiler_runtime\\native_material_program_compiler_actual.obj build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /Folocal\\verification\\material_compiler_runtime\\compiler_runtime_probe.obj /Felocal\\verification\\material_compiler_runtime\\compiler_runtime_probe.exe /link /MANIFEST:EMBED /INCREMENTAL:NO /OPT:REF /MAP:local\\verification\\material_compiler_runtime\\compiler_runtime_probe.map kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib d3d9.lib\nexit /b %errorlevel%\n\n",
+    "probe_run_command": "./local/verification/material_compiler_runtime/compiler_runtime_probe.exe *> local/verification/material_compiler_runtime/probe_run.log",
+    "probe_exit_code": 0,
+    "probe_flags": [
+      "/MD",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/link /MANIFEST:EMBED"
+    ],
+    "final_link": "Explicit freshly compiled corrected actual compiler object followed by current fresh tree libraries; map identifies actual compiler object as defining provider.",
+    "fresh_libraries": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 58423090,
+        "sha256": "a25b40e1ae58e164c71b503a7044c0b5baab991199782ca0769f04367c101373"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455720,
+        "sha256": "5ded697bc591deaf33211ee093962c37ef1613870b252c25ab88c44c29e10717"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72086,
+        "sha256": "aa087557958410682b01e4b46db09fa95009ac906ba85be39653849a86125cae"
+      }
+    ],
+    "final_fixture_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\compiler_runtime_probe.cpp",
+        "bytes": 23426,
+        "sha256": "39a9c24a69cd4be9f312444779b138d73d1e7db2b49eca5c891dfdb1130cbbe3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\compiler_runtime_probe.exe",
+        "bytes": 451072,
+        "sha256": "3e3ee595ea1ff78a5b617072c41be77d8c05c01e1211952febef99e991fd3d78"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\compiler_runtime_probe.obj",
+        "bytes": 364203,
+        "sha256": "07fce88fb06f6830003389edf07fdd59097e86b7b488b0ed176245c0a3d3d328"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\native_material_program_compiler_actual.obj",
+        "bytes": 203712,
+        "sha256": "732b61726a827257b5e91130ffb87bcdfaece904797ef6f412017021a376bdc8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\compiler_runtime_probe.map",
+        "bytes": 783102,
+        "sha256": "a96e772dba87bbdf141160d78558ecde73407a3cf8e9dc81845bc1d1993979ce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\probe_dependencies.json",
+        "bytes": 55469,
+        "sha256": "ed595d5c880347004ca49dc475515595a5fecd5b6c63ffb6f53abd25c321e3a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\compiler_dependencies.json",
+        "bytes": 48590,
+        "sha256": "c7460267f084b932c024e627da75575cd07c52c5e2fe097b36f836526647c6d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\probe_build.log",
+        "bytes": 2570,
+        "sha256": "04d24f38286489195f9d6a8f344f8bc1d9e2b7635a8f9e0c72e9bc34d3da7bc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\probe_run.log",
+        "bytes": 4972,
+        "sha256": "57b0315f7eb71933a4a92d0de97deae48ccd5230e643a148612f945b08a6a0a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\build.log",
+        "bytes": 47199,
+        "sha256": "293aae191acc4ef3efe232f241f55715244af64fae2a4ebf4405027071a5f2dd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\seeds.json",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      }
+    ],
+    "run_lines": [
+      "READY cache=2 registry=52 white=04595A50 refs=1 canonical=1",
+      "REFLECTION VS semantic5 register0/count4; PS Tint material1; root/mode state7=0/1 ->1; samplerrows0; native residues=7B2954AA/192EF0C3 unconsumed",
+      "PASS full source B3C3A0/B3B3C0 cached route pass=08EC2A38 refs=1 shaderrefs=1/1 cachecursor=2 canonical=9",
+      "LIMIT source-only full path; real D3DX/COM and existing source child providers shared; empty sampler lists consume no release residue; no original FH3, teardown or game claim"
+    ],
+    "loaded_module_count": 80,
+    "initial_c43_result": "Initial passing c43 log/executable preserved separately as probe_c43_initial_run.log and compiler_runtime_c43_initial_probe.exe. Initial source was later extended; no complete exact-source closure is claimed for that initial result."
+  },
+  "original_evidence": {
+    "provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-runtime\\local\\verification\\material_compiler_runtime\\inputs\\provenance.json",
+      "bytes": 7657,
+      "sha256": "41036ef26e056f753bcf7c9194210a4e2e8be42cfbe6ca3123c773fb050aee03"
+    },
+    "spans": [
+      {
+        "name": "renderer",
+        "address": "00D5F0A8",
+        "bytes": 324,
+        "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+        "live_equals_pe": true
+      },
+      {
+        "name": "physical",
+        "address": "00D691B0",
+        "bytes": 104,
+        "sha256": "36ecdfe82292725bddca54aee4e9730228381f3c721cafc2619fe5dacfd29fde",
+        "live_equals_pe": true
+      },
+      {
+        "name": "texture",
+        "address": "00D61948",
+        "bytes": 64,
+        "sha256": "09d9f4bb95106b475519c558ee9d58307a2408c7cc2a263d812364d5af1ba930",
+        "live_equals_pe": true
+      },
+      {
+        "name": "surface",
+        "address": "00D619A0",
+        "bytes": 32,
+        "sha256": "7db2ee0d5b1106b2d3ba4592b1802c0d26bcc75cd9986170cdeb5a38db93069b",
+        "live_equals_pe": true
+      },
+      {
+        "name": "states",
+        "address": "00D61A2C",
+        "bytes": 24,
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813",
+        "live_equals_pe": true
+      },
+      {
+        "name": "pass",
+        "address": "00D61BE8",
+        "bytes": 20,
+        "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+        "live_equals_pe": true
+      },
+      {
+        "name": "shaders",
+        "address": "00D62A60",
+        "bytes": 32,
+        "sha256": "54c8f8d0c4187359598abaf986fb4a9a709696b281d4f62f6966d9eb68e7a8bd",
+        "live_equals_pe": true
+      },
+      {
+        "name": "reflection",
+        "address": "00D61810",
+        "bytes": 16,
+        "sha256": "1f9662a6387649697ffae3f2bdf0dc07e8578c514ca1277f04b5a545b0d3e480",
+        "live_equals_pe": true
+      },
+      {
+        "name": "batch",
+        "address": "00D5E5AC",
+        "bytes": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+        "live_equals_pe": true
+      },
+      {
+        "name": "backing",
+        "address": "00D15AD8",
+        "bytes": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_equals_pe": true
+      },
+      {
+        "name": "memory",
+        "address": "00D642C0",
+        "bytes": 32,
+        "sha256": "18d686f1b5f06ee2390bd8ab9716522ad8b6610aac1573109fc0ae0e46680f54",
+        "live_equals_pe": true
+      },
+      {
+        "name": "mesh",
+        "address": "00D62D60",
+        "bytes": 8,
+        "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745",
+        "live_equals_pe": true
+      },
+      {
+        "name": "section",
+        "address": "00D63194",
+        "bytes": 8,
+        "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da",
+        "live_equals_pe": true
+      },
+      {
+        "name": "date",
+        "address": "00D683B0",
+        "bytes": 12,
+        "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+        "live_equals_pe": true
+      },
+      {
+        "name": "open",
+        "address": "00D6838C",
+        "bytes": 12,
+        "sha256": "1fffca665242207f66f0be08fa14b97fce903b3ae9e361f2bf92c2f4b79fbb43",
+        "live_equals_pe": true
+      },
+      {
+        "name": "exists",
+        "address": "00D68398",
+        "bytes": 12,
+        "sha256": "0703f71503cbe18b931e1da3187d5fce5c2807cb030cd0ff5dc03bbb638bb33a",
+        "live_equals_pe": true
+      },
+      {
+        "name": "name_probe",
+        "address": "00D683E8",
+        "bytes": 12,
+        "sha256": "1b9578b85e08f1cb9e4f85c3f5b1cb7dbd64daa75839adc5bf833767656da9e8",
+        "live_equals_pe": true
+      },
+      {
+        "name": "secondary",
+        "address": "00CE7D24",
+        "bytes": 16,
+        "sha256": "ca319ead624f18b92ed6e9a4399c36d33435d78e2afe010d8e5ce814aa1a2738",
+        "live_equals_pe": true
+      },
+      {
+        "name": "default",
+        "address": "00CE3C5C",
+        "bytes": 8,
+        "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+        "live_equals_pe": true
+      },
+      {
+        "name": "registry",
+        "address": "00D5F088",
+        "bytes": 20,
+        "sha256": "744d4f63ee4562f3ec7aaf2fd4fa4495edc15a5f3092e6ad6d52363645069566",
+        "live_equals_pe": true
+      },
+      {
+        "name": "descriptor_append",
+        "address": "00B3B280",
+        "bytes": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "live_equals_pe": true
+      }
+    ],
+    "live_equals_installed_pe": true,
+    "span_count": 21,
+    "span_bytes": 1086,
+    "read_only": true,
+    "ghidra_mutations": false
+  },
+  "ownership_and_boundaries": {
+    "canonical_domain": "One metadata registry, actual state/pass/compiled-shader/COM-wrapper owners, actual raw pool storage, current renderer publication and persistent context graph. Metadata registration does not mutate actual bytes or retain.",
+    "failures": "World and all acquired operations remain allocated through process exit on success or caught failure; no acquired effects rolled back or forgotten.",
+    "shutdown": "Completed pass and owner domains intentionally held to process exit; no native terminal retirement or teardown validation.",
+    "platform_frontier": "B319B0 still publishes ResourceLoadEventHost*. Concrete fixture adapter forwards to real XLive ordinal5030 and retained raw BECB20 with stable actual platform/profile. Arbitrary raw0109CF04 replacement timing through this old host interface remains unproved.",
+    "cold_domains": "VFS type IDs, retry/postload and cold resolution callbacks remain explicitly unbound and unreached; no default-return provider is installed."
+  },
+  "limits": [
+    "No original complete B3B3C0/FH3/SEH execution or whole-parent native/source differential result.",
+    "No generated-source branch, cold VFS/diagnostic output or cold texture resolution.",
+    "No nonempty sampler-list composition or consumed arbitrary private-stack/release residue proof.",
+    "No arbitrary raw platform publication replacement timing proof.",
+    "No terminal shutdown, drawing, gameplay or reset validation."
+  ],
+  "closure": {
+    "state": "awaiting immutable final archive after evidence commit",
+    "report_excluded_to_avoid_self_hash": true,
+    "freeze_command": "python local/verification/material_compiler_runtime/freeze.py *> local/verification/material_compiler_runtime_freeze.log",
+    "freeze_driver_log_outside_archive": "local/verification/material_compiler_runtime_freeze.log"
+  }
+}
