@@ -609,6 +609,21 @@ void GameGunneryHost::Impl::build_guns() {
         }
     }
 
+    // The ordnance inventory 007EEC50's AttackFeasibilityInputs need, handed to
+    // the units host because the script-order host owns those inputs and cannot
+    // see the guns. Aggregated over the unit's guns exactly as the 007ED7E0
+    // family aggregates over the weapon controller's slots - the union of the
+    // answer sets, since the family asks "does any slot carry kind N".
+    // docs/ORDNANCE_KIND_IDENTITY.md. Stored at load, not at report time,
+    // because the mission script issues its orders during luaStageInit.
+    {
+        std::vector<std::uint64_t> masks(count, 0u);
+        for (const GameGunRow& gun : guns) {
+            if (gun.unit_index < masks.size()) masks[gun.unit_index] |= gun.ordnance.mask;
+        }
+        for (std::size_t i = 0; i < count; ++i) units.store_unit_ordnance(i, masks[i]);
+    }
+
     // 00956C20: the twelve category lists at unit+394h, the all-guns list at
     // unit+424h and the ranges at unit+430h, over the device list this process
     // built. Run through the reconstruction's own sequence.

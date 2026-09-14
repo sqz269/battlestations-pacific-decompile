@@ -43,7 +43,8 @@ public:
     virtual void call_004e6480(void* model) = 0;
     virtual void* call_007103a0(void* list) = 0; // 30h circular sentinel; ECX unused
     virtual void* call_007103c0(void* list) = 0; // same allocation, distinct native entry
-    virtual void call_00713380(void* model) = 0;
+    // Concrete default: full actual group-row producer and source CRT domain.
+    virtual void call_00713380(void* model);
     virtual const char* call_unit_10(std::uint32_t entry, void* unit) = 0;
     virtual void call_00b6f960(NativeNodeStorage* render_root,
         const NativeString& name) = 0; // canonical node.name_54; RET4

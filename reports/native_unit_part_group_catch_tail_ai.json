@@ -1,0 +1,10 @@
+{
+  "address": "0071315e",
+  "stored_end": "00713173",
+  "decoded_tail_start": "00713174",
+  "decoded_tail_end": "0071317f",
+  "attempted_command": "python tools/ghidra_flow_repair.py 0071315e --tail-end 00713180 --apply --record reports/native_unit_part_group_catch_tail_ai.json",
+  "result": "refused before mutation: explicit tail must follow a fully decoded RET",
+  "reason": "Tail ends with a noreturn rethrow CALL at71317B, not RET. Existing function retained; no recreate, new synthetic function or no-return flag edit.",
+  "source_scope": "Unexecuted original exception tail, outside claimed native FH3/fault evidence."
+}
