@@ -1,0 +1,90 @@
+{
+  "packet": "orch3_native_model_stream_queries_cf",
+  "status": "source_reconstructed_release_build_ctest_full_coff_verified",
+  "source_parent_commit": "234b8f5d4803ba4a11ba2b2c454d445188a1fd39",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 3,
+  "proposed_native_bytes": 36,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64026,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b61e10",
+      "inclusive_end": "00b61e1c",
+      "bytes": 13,
+      "native_bytes_hex": "8b442404c1e005034150c20400",
+      "native_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+      "ghidra_name": "BSP_LogicalVertexStream_GetDecodeRecord",
+      "cpp_symbol": "get_native_stream_decode_record_00b61e10",
+      "direct_builder_calls": ["00b429cf"],
+      "original_abi": "ECX actual stream, index DWORD at [ESP+4], EAX address, RET4",
+      "source_signature": "const void* __fastcall get_native_stream_decode_record_00b61e10(const void* actual_stream, uint32_t ignored_edx, uint32_t element_index) noexcept",
+      "source_abi": "ECX stream, EDX ignored DWORD, stack index, EAX borrowed record address, RET4",
+      "storage_contract": "EAX=(index<<5)+current [stream+50h] with DWORD wrap; no bounds or null-backing repair"
+    },
+    {
+      "address": "00b8ff00",
+      "inclusive_end": "00b8ff06",
+      "bytes": 7,
+      "native_bytes_hex": "8b8188010000c3",
+      "native_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "ghidra_name": "BSP_Model_GetBoneCount",
+      "cpp_symbol": "get_native_model_bone_count_00b8ff00",
+      "direct_builder_calls": ["00b426a8"],
+      "original_abi": "ECX actual model, EAX DWORD+188h, plain RET",
+      "source_signature": "int32_t __fastcall get_native_model_bone_count_00b8ff00(const void* actual_model) noexcept",
+      "storage_contract": "Raw signed count bit pattern; direct builder uses signed JLE; no validation"
+    },
+    {
+      "address": "00b90620",
+      "inclusive_end": "00b9062f",
+      "bytes": 16,
+      "native_bytes_hex": "8b81840100008b4c24048b0488c20400",
+      "native_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "ghidra_name": "BSP_Model_GetBoneNode",
+      "cpp_symbol": "get_native_model_bone_node_00b90620",
+      "direct_builder_calls": ["00b426d5"],
+      "original_abi": "ECX actual model, index DWORD at [ESP+4], EAX borrowed node, RET4",
+      "source_signature": "void* __fastcall get_native_model_bone_node_00b90620(const void* actual_model, uint32_t ignored_edx, uint32_t bone_index) noexcept",
+      "source_abi": "ECX model, EDX ignored DWORD, stack index, EAX borrowed node, RET4",
+      "storage_contract": "Current [model+184h] table and unchecked DWORD-scaled index; no table/slot validation or retain"
+    }
+  ],
+  "provider_sha256": {
+    "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+    "include/bsp/mesh_buffers.hpp": "93b99ea7c5d734071aaf95c92fec2014227bed1d9a1d8f235971cb3640d46c92",
+    "include/bsp/mesh_decode_bindings.hpp": "1be8f4525bfbd464e4c7fdacc5722d348d02a9e4102329b6cb970e2c8f2afa68",
+    "src/mesh_decode_bindings.cpp": "4944ba1a4282b6eb9daf94a60fdfda0d7d1a76d2b7c2ec4f801bbbd05cef2f8f",
+    "include/bsp/material_constant_builder.hpp": "ef706244ac9754271543afc20edc053f6c0e8614080eedf63b6be9015e63c271",
+    "src/material_constant_builder.cpp": "a717d879f7f52246268eecf96a5c2112722b9b9a8e0ab80d2115f2a0da07d9a4"
+  },
+  "source_sha256": {
+    "include/bsp/native_model_stream_queries.hpp": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514",
+    "src/native_model_stream_queries.cpp": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed",
+    "cmake/startup.cmake": "3a816f0cfe42bdebb6ca66d0a33a03069887b9d7a79109fb4e8b8894502e0de7"
+  },
+  "generated_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_model_stream_queries.obj",
+    "sha256": "4faf64e45d74844e756ac11d06ec6112d53237477d9f96b551911ee741bff42",
+    "machine": "i386",
+    "sections": [
+      {"address": "00b61e10", "section": 5, "bytes_hex": "8b442404c1e005034150c20400", "relocations": 0, "entire_comdat_equals_native": true},
+      {"address": "00b8ff00", "section": 3, "bytes_hex": "8b8188010000c3", "relocations": 0, "entire_comdat_equals_native": true},
+      {"address": "00b90620", "section": 4, "bytes_hex": "8b81840100008b4c24048b0488c20400", "relocations": 0, "entire_comdat_equals_native": true}
+    ]
+  },
+  "validation": {
+    "original_pe_spans_equal_live_ghidra_bytes": true,
+    "all_three_direct_call_sites_verified_in_00b42350_listing": true,
+    "coff_method": "dumpbin /DISASM:BYTES, /HEADERS, /SYMBOLS and section-data/relocation assertions in ignored local/output/verify-cf-coff.py",
+    "scripts_build_ps1_release": "passed",
+    "ctest": "1/1 reconstructed_math passed"
+  },
+  "limitations": "Three source interfaces retain raw leaf behavior; indexed free functions require an ignored EDX input. No complete actual-storage B42350 builder or game validation is implied."
+}
