@@ -8385,3 +8385,41 @@ torpedo fires should be treated as open rather than as answered by this section.
 - **Negative result worth keeping.** `00862CD0` is **not** a contact-list consumer. It updates an
   engagement record's accuracy from the `00E19994` table; the name in the milestone 2s notes is the
   host method's, not a native contact walk.
+
+## Correction from docs/AA_VERTICAL_WINDOW.md (packet cc7_aa_vertical_window)
+
+**`no_window` is not a per-target refusal.** It is a per-gun-per-tick tally the host keeps with no
+target gate at all, so a large value says nothing about whether a target was refused. The proof is
+arithmetic: on the 500-mission-frame `IJN01` run, PLANEGUN logs `no_window = 41000` with **zero**
+assignments, and 82 guns x 500 ticks is exactly 41000. Likewise `angle_sets + refusals` is exactly
+`606 x 3000`. AAMACHINEGUN's 10452 against 295 guns x 500 ticks means it **accepts 92.9% of its
+gun-ticks**, not that it refuses its targets.
+
+Any reading of these two columns as evidence that a category is being refused - including the one in
+this document's own account of the torpedo and AA investigations - is wrong. `arc_blocked` is the
+column that counts a firing-window refusal.
+
+**Why AA fires nothing on IJN01: the targets, not the AA path.** All 31 enemy aircraft report
+`moved 0.00` - they never fly - and the closest one ever comes **2950 m** from an AA-carrying ship
+against a **960 m** derived AA range. No AA gun can reach an aircraft on this mission, and that is a
+consequence of the planes not moving rather than a defect in the AA bot.
+
+The AA path itself was read and is sound: category 1 splits at `0072C6A0` into `AAGunnerBot`
+(tick `00902920`) when `00922E90(gun,0Fh) == 0` and `TailGunnerBot` (`008FFA20`) otherwise, and both
+arms are live on this mission - 273 ship mounts and 22 aircraft tail guns. The authored windows do
+not refuse either: of 2335 windows across 1916 AA platforms, `MinVertAngle` is -5 degrees on 1720
+and `MaxVertAngle` is 80 to 90 degrees on 2235, and all 78 AA devices author
+`HorzRotSpeed = VertRotSpeed = 4.0`, so the rate gates cannot refuse.
+
+**Correction to a claim in `docs/TORPEDO_LAUNCH_ACCURACY.md`'s framing.** `009031CF` is the flak
+bot and calls `00901C20`, **not** `008FBB00`. A census of `009030C0..00903417` finds no
+`CALL 008FBB00` at all; that call belongs to the torpedo bot, at `0090025E`.
+
+**The AA bot carries no ballistic term.** Whole-body censuses of `00902920` (552 instructions) and
+`00901C20` (421) find no `FSQRT`, no `00CF9058` and no `00CEB5A8`. The host adds the artillery
+gravity pre-estimate and `00955630` for category 1 at `src/game_hosts_gunnery.cpp:1239`, which the
+native does not, and it never halves a negative vertical as `00902F6C` does through `00D7A280`.
+
+**The residual 7.1% is idle guns, not targeted ones.** A platform with no `RestAngles` leaves the
+`FLT_MAX` sentinel that `0085AD00` returns on at `0085AD56`; 36 of 1916 platforms are in that state,
+and the host defaults them to `0.0f` and commands that angle every tick.
