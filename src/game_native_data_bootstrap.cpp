@@ -301,13 +301,38 @@ void GameNativeDataBootstrapChild::reserve_and_resume() {
         void* const address=reinterpret_cast<void*>(first_band+i*band_bytes);
         void* const got=VirtualAllocEx(as_handle(process_),address,band_bytes,MEM_RESERVE,PAGE_NOACCESS);
         if (got!=address) {
+            const DWORD allocation_error=GetLastError();
+            MEMORY_BASIC_INFORMATION actual{};
+            const SIZE_T queried=VirtualQueryEx(as_handle(process_),address,&actual,sizeof(actual));
+            const DWORD query_error=queried ? ERROR_SUCCESS : GetLastError();
+            CONTEXT context{};
+            context.ContextFlags=CONTEXT_CONTROL;
+            const BOOL context_read=GetThreadContext(as_handle(thread_),&context);
+            PROCESS_MITIGATION_ASLR_POLICY parent_aslr{}, child_aslr{};
+            GetProcessMitigationPolicy(GetCurrentProcess(),ProcessASLRPolicy,&parent_aslr,sizeof(parent_aslr));
+            GetProcessMitigationPolicy(as_handle(process_),ProcessASLRPolicy,&child_aslr,sizeof(child_aslr));
             if (got) VirtualFreeEx(as_handle(process_),got,0,MEM_RELEASE);
             for (auto& band:owned) if (band) {
                 if (exact_reservation(as_handle(process_),reinterpret_cast<std::uintptr_t>(band)))
                     VirtualFreeEx(as_handle(process_),band,0,MEM_RELEASE);
                 band=nullptr;
             }
-            throw std::runtime_error("Required native-data band is occupied in suspended child");
+            throw std::runtime_error("Cannot reserve native-data band in suspended child: address=" +
+                std::to_string(reinterpret_cast<std::uintptr_t>(address)) +
+                " returned=" + std::to_string(reinterpret_cast<std::uintptr_t>(got)) +
+                " allocation_error=" + std::to_string(allocation_error) +
+                " query_error=" + std::to_string(query_error) +
+                " parent_pid=" + std::to_string(GetCurrentProcessId()) +
+                " child_pid=" + std::to_string(process_id_) +
+                " initial_esp=" + std::to_string(context_read ? context.Esp : 0) +
+                " parent_aslr_flags=" + std::to_string(parent_aslr.Flags) +
+                " child_aslr_flags=" + std::to_string(child_aslr.Flags) +
+                " allocation_base=" + std::to_string(reinterpret_cast<std::uintptr_t>(actual.AllocationBase)) +
+                " region_base=" + std::to_string(reinterpret_cast<std::uintptr_t>(actual.BaseAddress)) +
+                " region_bytes=" + std::to_string(actual.RegionSize) +
+                " state=" + std::to_string(actual.State) +
+                " protection=" + std::to_string(actual.Protect) +
+                " type=" + std::to_string(actual.Type));
         }
         owned[i]=got;
     }

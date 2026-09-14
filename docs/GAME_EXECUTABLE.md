@@ -8289,3 +8289,69 @@ ordering - `docs/GAME_EXECUTABLE.md`'s own step 8.7 note and `src/unit_gunnery_p
 both say the two arms append unsorted and are therefore tried first, so a gun prefers the
 director's target over a nearer recon contact. Whether the native code really orders it that way,
 and whether 481 water impacts and 376 expiries are faithful, needs its own packet.
+
+## Correction from the cc7 assignment-provenance run
+
+The section above ("Correction from docs/SHIP_SUB_ENTITY_LIST.md") ends by saying of the 71 torpedo
+guns: "step 8.7 hands it the director's own target. The stub was the only thing standing in the
+way." **That last sentence is wrong**, and this section records both the measurement that disproved
+it and a separate defect the same measurement exposed.
+
+### The defect: every gun was engaging its own ship
+
+Wiring the sub-entity slot took the 3200-frame USN02 run to 1003 shots but only 141 impacts, a 14%
+hit rate against the 69% of the pre-wiring control. Instrumenting the assignment path to record
+where each assignment came from and at what fraction of the gun's own reach gave:
+
+```
+source arm=4097 recon=892 arm_mean_reach=0.207 recon_mean_reach=0.585
+```
+
+Step 8.7's targets were **closer** than the recon sweep's, not farther, which refuted the standing
+hypothesis that guns were engaging beyond effective range. The per-gun table said what they were
+actually shooting at: `Kortenaer -> Kortenaer`, `Ushio -> Ushio`, `Sazanami -> Sazanami`.
+
+The cause is a misattribution in `src/game_hosts_gunnery.cpp`. Its
+`director_command_target_0071ebf0()` was sourced from the ship-AI row's `brain_target_name`, which
+comes from `goal_vector.raw_target_0b20` - **`brain+0B20h`, the navigation goal vector's target**,
+sitting beside the goal position at `brain+0B2Ch..0B34h`. That names whatever the ship is steering
+toward, frequently itself. The native `0071EBF0` answers with the newest **queued command's**
+target, an order's target, which is a different field entirely. The fire-target arm was and is
+correctly sourced from `row.fire_target`, "the entity `00835860` last received".
+
+Nothing downstream catches it: `00863990..00863A73` applies the category mask `008633D0`, an owner
+`vtable[5Ch](5)` test, the per-category range at `owner+category*4+430h` and a plane penalty, and
+**no party or self test** - the reconstruction matches the native here. The native never meets the
+case because a queued command's target is an enemy.
+
+### After the fix
+
+With the command arm no longer sourced from the goal vector (this run queues no orders, so the
+faithful answer is no command target):
+
+| counter | control, pre-wiring | wired, self-targeting | fixed |
+| --- | --- | --- | --- |
+| shots | 234 | 1003 | **227** |
+| entity impacts | 162 (69.2%) | 141 (14.1%) | **163 (71.8%)** |
+| water / expired | 53 / 7 | 481 / 376 | **51 / 2** |
+| arc_blocks | 5941 | 69865 | **6035** |
+| first shot | 35.60 s | 0.05 s | **35.60 s** |
+| deaths, damage | 2, 14762.6 | 3, 13086.3 | **2, 14826.4** |
+| assigns arm / recon | - | 4097 / 892 | **1494 / 612** |
+| arm mean reach | - | 0.207 | **0.803** |
+
+Targets are now enemies (`Kortenaer -> Murasame`), and step 8.7 delivers 1494 assignments at 80% of
+a gun's reach that it could not deliver before the slot was wired. The hit rate is slightly better
+than the control and the damage slightly higher, on seven fewer shells.
+
+### What is still not explained
+
+**Category 7 torpedo: 71 guns, 0 assigns, 0 shots.** The sub-entity wiring did not fix it. Step 8.7
+now reaches categories 2, 3 and 6 with 1494 assignments and category 7 with none, so
+`score_candidate_00863990` refuses the fire target for that category specifically; `no_window` and
+`arc_blocked` are both 0 for it, so no candidate reaches a torpedo gun at all. The category range is
+not the obvious culprit - `category_engagement_range_00956d63` takes the maximum gun range in the
+category, and `Electra`'s nearest enemy closes to 637 m. The remaining candidates are the category
+mask `mask[7]` and the authored rank row for category 7, neither read here. That is a packet of its
+own, `torpedo_category_admission`, and until it is done the milestone's explanation of why no
+torpedo fires should be treated as open rather than as answered by this section.

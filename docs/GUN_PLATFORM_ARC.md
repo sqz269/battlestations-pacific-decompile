@@ -235,3 +235,27 @@ evidence in this packet and none is claimed.
 `0072D2C0`, called `BSP_Gun_SetFireRequest` above, is named `BSP_Gun_SetTriggerHeld` in the ledger
 and in Ghidra: `__thiscall(gun)(char wantFire)`, body `0072D2C0-0072D3A8`, gun vtable slot `1E8h`,
 the trigger every gun bot drives. The behaviour described above is unchanged.
+
+## Correction from docs/GUN_MOUNT_POSITIONS.md (packet cc7_gun_mount_positions)
+
+- **Was:** the vtable table describes slot `1E0h` as the muzzle **origin** - base `006E3DC0` "copies
+  three floats; the unmodified muzzle origin", and the sub-type `27h` override `006FE160` as
+  offsetting "the origin by `descriptor+D0h` around a ring ... This is how a salvo mount spreads its
+  barrels."
+  **Is:** slot `1E0h` carries the shot **direction**, not a position, and `006FE160` spreads a
+  per-barrel **cone** rather than a set of origins. Its radius `class+0D0h` is the Lua key
+  `MultiBulletConeAngle`. The arithmetic reconstructed in `src/gun_platform_arc.cpp` is correct; only
+  the name and the surrounding prose are wrong, so no code change follows from this.
+  **Evidence:** the slot's only dispatch in `.text` is `0072FE74`, established by an exhaustive byte
+  scan of every call encoding, and it receives `0072F830`'s third argument, which is row 2 of the
+  mount node matrix - a direction, not a point.
+
+- **Where the origin actually comes from.** `muzzleWorld = TransformAffinePoint(
+  class->muzzleOffsets[gun+44Ch], gun[+3CCh]->worldMatrix)` at `007307A0`/`007307D3`. `gun+3CCh` is
+  chosen once at `0072EE65` as the first non-null of the model nodes named `"barrel"` (`00CF70C4`)
+  and `"base"` (`00CFACD8`) and the model's own first node; the offsets are a vector of `0Ch`-byte
+  triples at `class+98h` that `007325A0` copies verbatim from the model's `"fire"` node group. The
+  spread across a battery is per-barrel through `gun+44Ch`, which advances `(i+1) % gun+448h` per
+  shot. With no offsets the fallback at `00730899` fires from `gun+3BCh`'s world translation, and
+  that is the only case in which a battery shares one origin - a property of the data, not a rule of
+  the engine.
