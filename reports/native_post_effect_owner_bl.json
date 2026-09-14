@@ -1,7 +1,7 @@
 {
   "packet": "orch3_post_effect_owner_bl",
   "created_utc": "2026-09-14T04:27:23.293408+00:00",
-  "status": "source_reconstructed_initial_build_passed_combined_integration_pending",
+  "status": "reconstructed_combined_build_tested_concrete_provider_domain",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -294,5 +294,12 @@
     "Direct destruction while a canonical companion remains bound is outside the contract; bound owners retire through their actual-zero terminal.",
     "Inherited RenderCommandReference terminal is noexcept. Direct C++ cleanup projection does not establish native FH3/SEH through that terminal.",
     "No unrestricted alias/profile mutation, concurrent lifetime mutation, hardware-fault, original replacement ABI, startup or gameplay proof."
-  ]
+  ],
+  "combined_integration_bk": {
+    "tested_commit": "b4f36b1b405b659e5b17da00cc11c7424a902e68",
+    "report": "reports/native_render_resources_bk_validation.json",
+    "both_ctests_passed": true,
+    "new_native_fixture": false,
+    "provider_modules_integrated": true
+  }
 }
