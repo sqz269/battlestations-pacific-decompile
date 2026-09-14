@@ -1012,3 +1012,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_compiler_providers.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_program_compiler_actual.cpp)
+
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_renderer_debug_records24.cpp)
+
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_renderer_debug_records24_leaves.cpp)
