@@ -565,6 +565,7 @@ void GameGunneryHost::Impl::build_guns() {
                     | bsp::kGunArcFlagFire);
             }
             gun.arcs.push_back(seed);
+            bool traverses = false;
             for (int w = 1; w <= windows && w <= kMaxWindowScan; ++w) {
                 char wkey[40];
                 auto wmake = [&wkey, p, w](const char* leaf) {
@@ -580,9 +581,23 @@ void GameGunneryHost::Impl::build_guns() {
                 arc.max_horz = flat_scaled(type_id, wmake("maxh"), kAngleScale, 0.0f);
                 arc.min_vert = flat_scaled(type_id, wmake("minv"), kAngleScale, 0.0f);
                 arc.max_vert = flat_scaled(type_id, wmake("maxv"), kAngleScale, 0.0f);
+                if (arc.min_horz != 0.0f || arc.max_horz != 0.0f ||
+                    arc.min_vert != 0.0f || arc.max_vert != 0.0f) {
+                    traverses = true;
+                }
                 bsp::gun_add_authored_arc_007f6b10(gun.arcs, arc);
             }
-            if (gun.arcs.size() <= 1 && windows > 0) continue;
+            // The guard below drops a gun whose authored windows produced no arc
+            // beyond the seed, on the reading that the arc data failed. That is
+            // right for a weapon that traverses and wrong for one that does not.
+            // A BOMBPLATFORM authors exactly one window with all four bounds at
+            // zero - measured: every one of the 81 guns this used to drop in
+            // USN01 was category 0Ah, each with `arcs=1 windows=1` and a window
+            // of minh=maxh=minv=maxv=0 - and 007F6B10 correctly declines to add
+            // a zero-span arc, so the seed alone IS the complete answer for it.
+            // Distinguishing on the authored data rather than on the category
+            // keeps this a statement about what the data says.
+            if (gun.arcs.size() <= 1 && windows > 0 && traverses) continue;
             done("Gunnery::add_authored_arc_007f6b10", 0x007f6b10u);
 
             gun.angles.horz = gun.rest_horz;
