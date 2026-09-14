@@ -127,4 +127,52 @@ struct PlaneControlAxes {
 };
 void seed_plan_slots_0099b450(const PlaneControlAxes& live, PlanSlot slots[kPlanSlotCount]);
 
+// ---------------------------------------------------------------------------
+// 0099D300 BSP_PilotBot_PlanControls, two of the five axis arms.
+// docs/PILOT_BOT_PLAN_CONTROLS.md, "The axis arms read from the listing", carries the
+// evidence. These are the arms' *laws*; the scratch quantities they consume are passed in
+// because this packet did not trace them to named inputs. A host that cannot supply them
+// must refuse, not substitute a guess.
+
+// The per-tick attitude quantities the arms share, all formed at 0099D46E-0099D510.
+struct PilotBotFrame {
+    float bank = 0.0f;        // unit+C68h, 0099D4B7
+    float pitch = 0.0f;       // unit+C64h, 0099D4BF
+    float sin_bank = 0.0f;    // [ESP+20h], 0099D4FA FSIN
+    float cos_bank = 0.0f;    // [ESP+30h], 0099D504 FCOS
+    float cos_pitch = 0.0f;   // [ESP+2Ch], 0099D50E FCOS
+    float abs_bank = 0.0f;    // [ESP+1Ch], 0099D4D1 AND EAX,7FFFFFFFh
+};
+
+// The plane half of the game-tuning singleton, 0042E740 + 538h (EBX at 0099D487).
+struct PilotBotTuning {
+    float blend_x0 = 0.0f;  // +7Ch, 0099E8C2
+    float blend_x1 = 0.0f;  // +80h, 0099E8B2
+    float rate = 0.0f;      // +9Ch, 0099E850 / 0099E91E; divides both yaw terms
+};
+
+// The three scratch slots the yaw arm consumes. Each has been located to its reaching
+// definitions (see the doc) but not resolved to a named quantity, so they are inputs here.
+struct PilotBotYawScratch {
+    float base_num = 0.0f;   // [ESP+6Ch] at 0099E82B; defs 0099DDD0 (=0), 0099DF87
+    float base_gain = 0.0f;  // [ESP+38h] at 0099E81A; defs 0099DD9D (=0), 0099E027
+    float turn_num = 0.0f;   // [ESP+10h] at 0099E8F6; defs 0099E3CB (=0), 0099E6D2/E6E8/E729
+};
+
+// 0099E81A-0099EA46. Returns the value stored to the yaw slot's `desired` (task+284h).
+// The caller must have established that the arm runs at all: it is reached only through
+// 0099E75E's `JNZ` on a non-zero task+2D4h.
+float plan_yaw_0099e81a(const PilotBotFrame& frame, const PilotBotTuning& tuning,
+                        const PilotBotYawScratch& scratch, float yaw_spd);
+
+// 0099E68D-0099E752. The pitch arm's terminal law: a plain saturation of its demand.
+// `demand` is [ESP+44h], formed at 0099E664-0099E689 from x87-stack values this packet did
+// not trace; it is an input for the same reason.
+float plan_pitch_0099e68d(float demand);
+
+// 0099E996-0099EA2B. After an axis writes `desired`, the bot folds the size of the change
+// into the re-plan interval at task+2ECh. The caller picks `reference` the way 0099E996 does:
+// the slot's `desired` when its active byte is set, otherwise its `prev`.
+float axis_urgency_0099e996(float urgency, float reference, float committed);
+
 }  // namespace bsp

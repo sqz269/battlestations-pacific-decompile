@@ -142,4 +142,66 @@ void seed_plan_slots_0099b450(const PlaneControlAxes& live, PlanSlot slots[kPlan
     slots[brake].current = slots[brake].desired = live.air_brake;  // 0099B4D0, unit+9F4h
 }
 
+namespace {
+
+// 00415620 BSP_Math_ClampFloatByRef / 00415690 BSP_Math_ClampInPlace.
+float clamp_unit(float v) noexcept { return v < -1.0f ? -1.0f : (v > 1.0f ? 1.0f : v); }
+
+// 00415510 BSP_Math_MinFloatByRef.
+float min_float(float a, float b) noexcept { return a < b ? a : b; }
+
+// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x). The project already treats this
+// routine as a host hook with this parameter order (include/bsp/ship_ai_attackmove_substates.hpp,
+// include/bsp/plane_flight.hpp); this packet did not re-read its body, only its RET 14h and its
+// two saturating exits at 004190B9 and 004190CC.
+float interpolate_clamped(float x0, float y0, float x1, float y1, float x) noexcept {
+    if (x <= x0) return y0;
+    if (x >= x1) return y1;
+    const float span = x1 - x0;
+    return span == 0.0f ? y1 : y0 + (y1 - y0) * ((x - x0) / span);
+}
+
+}  // namespace
+
+float plan_yaw_0099e81a(const PilotBotFrame& frame, const PilotBotTuning& tuning,
+                        const PilotBotYawScratch& scratch, float yaw_spd) {
+    // 0099E81A-0099E884. The base term is zero unless its gain is strictly positive
+    // (0099E820 COMISS / 0099E829 JBE, with 0099E823 having already stored the zero).
+    float base = 0.0f;
+    if (scratch.base_gain > 0.0f) {
+        // 0099E843 FMUL [ESP+30h] is cos(bank), not sin; 0099E850 FMUL [EBX+9Ch].
+        const float denom = yaw_spd * frame.cos_bank * tuning.rate;
+        base = clamp_unit(scratch.base_num / denom) * scratch.base_gain;  // 0099E86C, 0099E875
+    }
+
+    // 0099E888-0099E95C. When the turn numerator is not positive the whole second block is
+    // skipped and the turn term stays at the zero stored by 0099E891 — note that the base
+    // term is then *not* scaled by (1 - t), because the blend lives inside the skipped block.
+    float sum = base;
+    if (scratch.turn_num > 0.0f) {
+        const float t = min_float(  // 0099E8E7
+            1.0f, interpolate_clamped(tuning.blend_x0, 0.0f, tuning.blend_x1, 3.0f,
+                                      frame.abs_bank));      // 0099E8C8, 3.0f at 00CE3854
+        const float denom = yaw_spd * frame.sin_bank * tuning.rate;  // 0099E908, 0099E91E
+        const float turn = clamp_unit(scratch.turn_num / denom);     // 0099E939
+        sum = t * turn + (1.0f - t) * base;                          // 0099E94A-0099E96C
+    }
+    return clamp_unit(sum);  // 0099E98D, bounds -1.0f (00D7A260) and 1.0f (00D7A24C)
+}
+
+float plan_pitch_0099e68d(float demand) {
+    // 0099E693 JBE routes demand > 1 to the +1 store; 0099E6F6/0099E6F9 route demand < -1 to
+    // the -1 store (XMM4 = 00D7A260); otherwise 0099E72F falls through with XMM0 still holding
+    // the demand loaded at 0099E68D. The three paths converge on the one store at 0099E739.
+    return clamp_unit(demand);
+}
+
+float axis_urgency_0099e996(float urgency, float reference, float committed) {
+    const float d = reference - committed;          // 0099E9BF FSUB
+    const float mag = d > 0.0f ? d : -d;            // 0099E9D5 JBE / 0099E9DF, XMM4 = -0.0f
+    if (mag > 0.2f) return 0.1f;                    // 00CE3D10, then 00E0E2F4
+    if (mag > 0.08f) return min_float(urgency, 0.16f);  // 00D05B50, then 00E0E2F0 via 00415510
+    return urgency;                                 // 0099EA17 JBE leaves it alone
+}
+
 }  // namespace bsp
