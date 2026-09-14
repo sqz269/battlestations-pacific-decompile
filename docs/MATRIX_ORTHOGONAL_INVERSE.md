@@ -8,12 +8,20 @@ but not annotated: `00414E10`, `00414DB0`, `0042D0D0`, `00521370`, `0042CF10`, `
 Report: `reports/cc7_matrix_orthogonal_inverse.json`. Packet `cc7_matrix_orthogonal_inverse`,
 read-only Ghidra pass (no renames, comments, prototypes, function creation or saves).
 
-**This packet publishes no new module.** `00B63D50` is already reconstructed as
-`derive_pose_affine_inverse_00b63d50` (`include/bsp/pose_derived.hpp`, `src/pose_derived.cpp`,
-packet `orch3_pose_derived_i`), and an independent re-reading of the listing agrees with that
-contract in every particular - see "Agreement with the existing reconstruction". The new artefacts
-are this document, the report, and one regression case in `tests/math_tests.cpp` that pins a claim
-which had no standing automated coverage.
+**This packet publishes no new module, deliberately.** The arithmetic derived below is already
+implemented **bit-exactly** by `derive_pose_affine_inverse_00b63d50` (`include/bsp/pose_derived.hpp`,
+`src/pose_derived.cpp`, packet `orch3_pose_derived_i`), which is a `__declspec(naked)` x86 replica
+preserving the native register and stack schedule, every `float32` spill and the x87 intermediates.
+An independent re-reading of the listing agrees with its contract in every particular - see
+"Agreement with the existing reconstruction".
+
+A portable C++ rule for the same routine was written during this packet and then removed. The
+reason is worth recording: this project targets Win32 x86 only (`AGENTS.md`, "Target MSVC Win32"),
+so a second, portable implementation would have had no caller, would not have been exercised by
+anything, and would have been free to drift away from the naked kernel that the codebase actually
+uses. Repointing the round-trip check at `derive_pose_affine_inverse_00b63d50` instead gives
+standing coverage to the implementation that ships - which had none. The new artefacts are
+therefore this document, the report, and one regression case in `tests/math_tests.cpp`.
 
 `BSP_Matrix_BuildOrthogonalScaledAffineInverse` is a hypothesis, not a recovered symbol. Every
 other descriptive name used below is the existing ledger name for that address and carries the
