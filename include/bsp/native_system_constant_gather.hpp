@@ -45,6 +45,8 @@ struct NativeSystemConstantGatherFrame {
 // Accepted current profiles: timer D68D50/+1C=BEE070, shadow D5B5D8/+08=A8FCF0,
 // and texture D61948/+3C=B3CE50/+40=B3CE60. Other targets fail at dispatch;
 // no numeric game address is called as a host function pointer.
+// Each dispatch uses its one original owner-profile capture and reads the
+// selected borrowed table at the reached slot; it never reloads owner[0].
 // Original private stack aliases, CRT/FH3/hardware-fault ABI and game validation
 // remain outside this new source interface. Raw storage extents must be valid.
 void __fastcall gather_native_system_constants_00b46a70(void* actual_scene,
