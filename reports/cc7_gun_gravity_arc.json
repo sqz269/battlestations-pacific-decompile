@@ -1,0 +1,182 @@
+{
+  "packet": "cc7_gun_gravity_arc",
+  "owner": "agent/cc7-gun-gravity-arc",
+  "date": "2026-09-13",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": ["docs/GUN_GRAVITY_ARC.md"],
+  "sources": ["include/bsp/gun_gravity_arc.hpp", "src/gun_gravity_arc.cpp"],
+
+  "answer": "00955630 is a single closed-form, drag-free parabola solve. It computes the world yaw first (atan2 of the floored-normalized delta) and writes it through argument 6 before touching the pitch. With R = sqrt(dx*dx + dz*dz), h = aim.y - muzzle.y, v = muzzleSpeed and the immediate g = 9.81 at 00CF9058, it forms k = g*R*R/(2*v*v) (009556AE..009556C4) and D = R*R - 4*k*(k + h) (009556C8..009556EE, the 4.0 is the double at 00D7A328). FCOMIP/JBE at 009556F8 takes the success path on 0.0 <= D, so a NaN discriminant also solves. On success FSUBR at 00955728 picks the MINUS root, tan(pitch) = (R - sqrt(D)) / (2*k) - the low flat trajectory; the high root is unreachable in this build. On D < 0 the pitch is the float pi/4 at 00CEB5A8 and AL is 0, but the common tail still runs, so both outputs are always valid wrapped angles. The tail rebuilds a world direction from the pair (004B4D80), and only when ECX is non-NULL transforms it into the mount's cached affine inverse at mount+110h (0042D0D0, normalize = 0) and re-extracts the pair (00521370). The yaw is then negated against the float -0.0f at 00D7A208 and both angles wrapped into (-pi, pi] by 00605070 - unconditionally, world-frame case included. There is no drag, no air density, no time of flight, no iteration and no per-weapon or per-world gravity input.",
+
+  "verification": {
+    "second_pass": "This report is the second pass over the pre-reboot analysis. It was carried out entirely offline, from exports/bsp/functions/<addr>/assembly.txt, from tools/bsp.py disasm-raw over the PE bytes, and from the PE's own .rdata (local/read_consts.py) - deliberately independent of Ghidra's function database. Nothing in the pre-reboot derivation had to be corrected; two omissions were filled in (see corrections).",
+    "call_site_enumeration": "The six call sites are not a call-graph result. local/find_calls.py swept every E8/E9 rel32 in .text for a target of 00955630 and found exactly six, matching the doc's table. The call graph lists only four containing functions because 00959C20 holds two sites and 006DEFA8 lies in undefined code.",
+    "verify_report_calls": "PASSED against live Ghidra: 'reports/cc7_gun_gravity_arc.json: 23 call rows checked, 0 failed', exit 0. The packet brief stated the bridge was down after the reboot; it was in fact reachable (tools/bsp.py ghidra count returns live 63954, matching the snapshot), so the gate is a genuine live pass and not a fallback. Ghidra was still used read-only throughout - no renames, comments, prototypes, function creation or saves. Independently of that gate, every address/native row was also checked by decoding the CALL rel32 at the site from the PE on disk (local/check_sites.py, 24 rows including the undefined-region site, 0 mismatches), and every containing function was taken from tools/bsp.py lookup.",
+    "undefined_routines": ["006def30"],
+    "undefined_region_note": "006DEFA8's call site is inside no Ghidra function. FUN_006DEEC0's body ends at 006DEEE9 and its only recorded callee is 00927F10; the next defined function starts at 006DEFF0. The routine that actually contains the call starts at 006DEF30 (PUSH ECX; PUSH EBX; MOV EBX,[ESP+0Ch]) and ends at 006DEFEA (RET 4), read by disasm-raw. Its row is under undefined_region_steps with site/callee keys so the mechanical gate does not fail on a genuinely undefined region.",
+    "runtime": "None. Rule 6 of docs/WORKER_VERIFICATION_CHECKLIST.md does not apply yet: bsp_game.exe does not reach this reconstruction. It will apply to the wiring packet (follow-up 1)."
+  },
+
+  "routines": [
+    {"address": "00955630", "name": "BSP_Gun_SolveGravityArc",
+     "abi": "__fastcall(void* mount /*ECX, may be NULL*/, const float3* aimPoint /*EDX*/)(const float3* muzzlePos, float muzzleSpeed, float* outPitch, float* outYaw) -> bool, RET 10h",
+     "body": "00955630-0095581f",
+     "abi_evidence": "The argument count is the RET immediate, not the pushes: 0095581F RET 0x10 pops four stack dwords. The frame balances exactly - SUB ESP,0x20 plus PUSH EBX/EBP/ESI/EDI (0x30) against POP EDI/ESI/EBP/EBX plus ADD ESP,0x20 (0x30) - so [ESP+34h/38h/3Ch/40h] are those four arguments for the body. ECX is read into ESI at 00955646 and EDX is dereferenced at 00955637 before either is written, which makes it __fastcall with six parameters.",
+     "coverage": "complete: every instruction in 00955630..0095581F is accounted for in docs/GUN_GRAVITY_ARC.md",
+     "reconstruction": "solve_gun_gravity_arc_00955630"},
+
+    {"address": "0042b260", "name": "BSP_Geometry_NormalizeVectorWithFloor",
+     "abi": "__fastcall(float3*), RET", "body": "0042b260-0042b2e9",
+     "coverage": "complete: lenSq is (y*y + x*x) + z*z spilled to a float at 0042B296; FCOMI against the double 1e-10 at 00CE3820 with JBE selects the fixed 1e-5 at 00CE3C70, otherwise sqrt; the three components are divided in place",
+     "reconstruction": "normalize_with_floor_0042b260 - a deliberate re-projection, not a duplicate. normalize_camera_basis_0042b260 (src/camera_decomposition.cpp) already covers this address but is a __declspec(naked) inline-assembly replica, x86-MSVC-only; this module publishes a portable rule. See the table in docs/GUN_GRAVITY_ARC.md"},
+
+    {"address": "004b4d80", "name": "BSP_Lighting_DirectionFromAngles",
+     "abi": "__fastcall(float3* out)(float pitch, float yaw) -> float3* in EAX, RET 8", "body": "004b4d80-004b4df0",
+     "coverage": "complete: out.y = sin(pitch) at 004B4DD7, out.x = sin(yaw)*cos(pitch) at 004B4DE0, out.z = cos(yaw)*cos(pitch) at 004B4DEA; every FSIN/FCOS result is spilled to a float slot before the two products",
+     "reconstruction": "direction_from_angles_004b4d80"},
+
+    {"address": "0042d0d0", "name": "BSP_Vector3f_TransformDirectionOptionalNormalize",
+     "abi": "__fastcall(float3* out, const float3* v)(const float* m, int normalize) -> float3*, RET 8", "body": "0042d0d0-0042d188",
+     "coverage": "partial: only the normalize == 0 branch, which is the one 009557C7 takes (it pushes 0). The branch is identical to the published transform_effect_direction_0042d0d0_no_normalize in src/material_effect_plane.cpp; the normalize != 0 branch was not read",
+     "reconstruction": "transform_direction_0042d0d0"},
+
+    {"address": "00521370", "name": "BSP_Direction_ToPitchYaw",
+     "abi": "__fastcall(const float3* dir /*ECX*/, float* outVert /*EDX*/)(float* outHorz), RET 4", "body": "00521370-005213c2",
+     "coverage": "complete: its own clamp of dir.y against the double -1.0 at 00D7A250 and FLD1 (00521374..00521394), then *outVert = 0042CF10(clamped) and *outHorz = 00BF701A(dir.x, dir.z). The stack balances only because 0042CF10 cleans its own argument (RET 4), which was checked in that body",
+     "reconstruction": "clamp_to_unit_00521374 plus asin_clamped_0042cf10"},
+
+    {"address": "0042cf10", "name": "BSP_Geometry_AsinClamped",
+     "abi": "__cdecl-shaped(float) with callee cleanup, RET 4", "body": "0042cf10-0042cf9c",
+     "coverage": "complete: COMISS against the float 1.0 at 00D7A24C returns the float pi/2 at 00CE3C64; COMISS against the float -1.0 at 00D7A260 returns -pi/2 at 00CE3CCC; otherwise the half-angle identity 2*atan(x / (sqrt(1 - x*x) + 1.0)) with the double 1.0 at 00D7A210 and the numerator taken from the double-widened argument saved by 0042CF4B. A NaN fails both COMISS tests and propagates through the identity",
+     "reconstruction": "asin_clamped_0042cf10 - a deliberate re-projection, not a duplicate, for the same reason as 0042B260: camera_asin_clamped_0042cf10 (src/camera_position_modes.cpp) is a __declspec(naked) asm replica. The existing ledger evidence for 0042CF10 already states this arithmetic, so this pass established nothing new there and added no ledger record for it"},
+
+    {"address": "00605070", "name": "ship_ai_firepower_wrap_angle_00605070",
+     "abi": "__thiscall(float*), RET", "body": "00605070-006050bd",
+     "coverage": "complete: fmod against the double 2pi at 00CE3828, then +2pi when x <= -pi (00CE3D18) else -2pi when x > pi (00CE3D28); the result lands in (-pi, pi]",
+     "reconstruction": "reused from src/ship_ai_bearing_rating.cpp, not re-written here"},
+
+    {"address": "00b63d50", "name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+     "abi": "__fastcall(float* dest /*ECX*/, const float* src /*EDX*/), RET", "body": "00b63d50-00b63f09",
+     "coverage": "partial: entry convention and exit stores only (ECX+0Ch/1Ch/2Ch/38h/3Ch). Its 145-instruction interior was NOT read and the existing ledger name is taken on trust - see assumptions",
+     "reconstruction": "none; the reconstruction takes the three inverse basis rows as an explicit input instead"},
+
+    {"address": "00414db0", "name": "BSP_EntityPose_RefreshWorldMatrix",
+     "abi": "__thiscall(entity), RET", "body": "not re-derived",
+     "coverage": "partial: only its two final stores, +0C8h = 1 and +10Ch = 0, which are what force 009557AA's MOV byte ptr [ESI+10Ch],1 to come after the call",
+     "reconstruction": "none"}
+  ],
+
+  "host_steps": [
+    {"step": "006DF520 step 8, the bot muzzle solution tick", "address": "006dfad4", "native": "00955630",
+     "function": "006df520", "method": "solve_gun_gravity_arc_00955630; ECX = [[bot+50h]+3Ch], EDX = &[ESP+34h] (the led aim point from step 6), arg3 = 00427EB0(muzzle node), arg4 = [[[gun+3F8h]+34h]+50h]"},
+    {"step": "00959C20 gun aim message, kind 3", "address": "0095a0aa", "native": "00955630",
+     "function": "00959c20", "method": "solve_gun_gravity_arc_00955630; ECX = EBP, EDX = &[ESP+50h], arg3 = ESI+0FCh (the device's own world position)"},
+    {"step": "00959C20 gun aim message, kind 5", "address": "0095a4e3", "native": "00955630",
+     "function": "00959c20", "method": "solve_gun_gravity_arc_00955630; ECX = EBP, EDX = &[ESP+50h], arg3 = 00427EB0(ESI)"},
+    {"step": "00547480 gun aim", "address": "005476eb", "native": "00955630",
+     "function": "00547480", "method": "solve_gun_gravity_arc_00955630; ECX = EDI, EDX = &[ESP+4Ch], arg3 = 00427EB0(ESI). Branches on AL immediately (TEST AL,AL). No doc and no reconstruction for the caller - follow-up 4"},
+    {"step": "0085B7D0 world-frame solve with a NULL mount", "address": "0085b8de", "native": "00955630",
+     "function": "0085b7d0", "method": "solve_gun_gravity_arc_00955630 with mount_frame = nullptr; XOR ECX,ECX at 0085B8C5 makes the mount NULL deliberately and PUSH 0F87574h at 0085B8D9 passes the static float3 at 00F87574 as arg3, so the aim point is already a relative delta. 00F87574 is in .data past the raw size, i.e. zero-initialised. Follow-up 4"},
+
+    {"step": "00955630 horizontal distance, sqrt(dx*dx + dz*dz)", "address": "00955671", "native": "00bf7030",
+     "function": "00955630", "method": "_CIsqrt, argument and result in ST0"},
+    {"step": "00955630 normalize the delta in place before the yaw", "address": "0095568e", "native": "0042b260",
+     "function": "00955630", "method": "normalize_with_floor_0042b260; R and dy are copied out first, at 00955682 and 0095568A, because this call destroys the delta"},
+    {"step": "00955630 world yaw, written before the pitch solve", "address": "0095569b", "native": "00bf701a",
+     "function": "00955630", "method": "_CIatan2(ST1 = d.x, ST0 = d.z); the result goes straight to *outYaw at 009556AC and the failure path never rewrites it"},
+    {"step": "00955630 sqrt of the discriminant", "address": "0095571b", "native": "00bf7030",
+     "function": "00955630", "method": "_CIsqrt; reached only when 0.0 <= D"},
+    {"step": "00955630 pitch = atan(tangent)", "address": "0095573c", "native": "00bf8490",
+     "function": "00955630", "method": "_CIatan - its inner 00BF84E8 does FLD1 then FPATAN at 00BF84FD, which is atan(x), NOT asin"},
+    {"step": "00955630 rebuild a world direction from the pair", "address": "00955765", "native": "004b4d80",
+     "function": "00955630", "method": "direction_from_angles_004b4d80(pitch, yaw); runs on the failure path too"},
+    {"step": "00955630 refresh the mount world matrix before inverting it", "address": "00955799", "native": "00414db0",
+     "function": "00955630", "method": "guarded by CMP byte ptr [ESI+10Ch],0 at 0095578E; not modelled - the reconstruction takes the inverse basis rows as input"},
+    {"step": "00955630 build the cached affine inverse at mount+110h", "address": "009557b1", "native": "00b63d50",
+     "function": "00955630", "method": "ECX = ESI+110h, EDX = ESI+0CCh; not modelled, interior unread"},
+    {"step": "00955630 world direction to mount-local", "address": "009557c7", "native": "0042d0d0",
+     "function": "00955630", "method": "transform_direction_0042d0d0; PUSH 0 at 009557B6 selects the no-normalize branch"},
+    {"step": "00955630 local direction back to a pitch/yaw pair", "address": "009557f3", "native": "00521370",
+     "function": "00955630", "method": "clamp_to_unit_00521374 then asin_clamped_0042cf10 for EDX (= outPitch), atan2 for the stack argument (= outYaw)"},
+    {"step": "00955630 wrap the pitch into (-pi, pi]", "address": "0095580a", "native": "00605070",
+     "function": "00955630", "method": "ship_ai_firepower_wrap_angle_00605070; unconditional"},
+    {"step": "00955630 wrap the yaw into (-pi, pi]", "address": "00955811", "native": "00605070",
+     "function": "00955630", "method": "ship_ai_firepower_wrap_angle_00605070; unconditional, and after the unconditional negate at 009557F8"},
+
+    {"step": "00521370 vertical angle from the clamped y", "address": "005213a0", "native": "0042cf10",
+     "function": "00521370", "method": "asin_clamped_0042cf10; RET 4, which is what balances 00521370's frame"},
+    {"step": "00521370 horizontal angle from x and z", "address": "005213ac", "native": "00bf701a",
+     "function": "00521370", "method": "_CIatan2(ST1 = dir.x, ST0 = dir.z), the same operand order as 0095569B"},
+    {"step": "0042cf10 sqrt(1 - x*x) inside the half-angle identity", "address": "0042cf64", "native": "00bf7030",
+     "function": "0042cf10", "method": "asin_clamped_0042cf10"},
+    {"step": "0042cf10 atan of the half-angle quotient", "address": "0042cf82", "native": "00bf8490",
+     "function": "0042cf10", "method": "asin_clamped_0042cf10; the result is doubled at 0042CF8F"},
+    {"step": "0042b260 length from the squared sum", "address": "0042b2aa", "native": "00bf7030",
+     "function": "0042b260", "method": "normalize_with_floor_0042b260; skipped for the 1e-5 floor branch"},
+    {"step": "00605070 fmod against 2pi", "address": "0060507c", "native": "00bf857a",
+     "function": "00605070", "method": "reused from src/ship_ai_bearing_rating.cpp"}
+  ],
+
+  "undefined_region_steps": [
+    {"step": "006DEF30 second bot aim-and-fire path", "site": "006defa8", "callee": "00955630",
+     "containing_routine": "006def30-006defea, RET 4, no Ghidra function",
+     "method": "__thiscall(bot)(target): ECX -> ESI is the bot and the stack argument -> EBX the target. TEST AL,AL at 006DEFAD gates 0085A8B0([ESI+58h], pitch, yaw) at 006DEFC8 and then gun->vtable[1D4h](target) at 006DEFDD. Invisible to the call graph and to tools/verify_report_calls.py - follow-up 5"}
+  ],
+
+  "constants": [
+    {"address": "00cf9058", "width": "double", "bytes": "00 00 00 60 b8 9e 23 40", "value": "9.8100004196166992",
+     "meaning": "gravity, read by 009556B2 FMUL. The float literal 9.81f widened; an immediate in .rdata shared with the projectile integrator at 006E65D6, not a field, not per-weapon and not per-world"},
+    {"address": "00d7a328", "width": "double", "bytes": "00 00 00 00 00 00 10 40", "value": "4.0",
+     "meaning": "the 4 of 4*k*(k + h), read by 009556E4 FMUL"},
+    {"address": "00ceb5a8", "width": "float", "bytes": "db 0f 49 3f", "value": "0.785398185",
+     "meaning": "pi/4, the failure-path pitch written at 0095570C - the same constant 006DF520 step 6 clamps its pre-estimate to"},
+    {"address": "00d7a208", "width": "float", "bytes": "00 00 00 80", "value": "-0.0",
+     "meaning": "009557F8's SUBSS base, so *outYaw = -0.0f - *outYaw, an exact negation for every value including both zeros"},
+    {"address": "00d7a250", "width": "double", "bytes": "00 00 00 00 00 00 f0 bf", "value": "-1.0",
+     "meaning": "00521370's own lower clamp bound; the upper bound is FLD1"},
+    {"address": "00ce3828", "width": "double", "value": "6.2831854820251465", "meaning": "2pi, 00605070's fmod divisor"},
+    {"address": "00ce3d18", "width": "double", "value": "-3.1415927410125732", "meaning": "-pi, 00605070's lower wrap test"},
+    {"address": "00ce3d28", "width": "double", "value": "3.1415927410125732", "meaning": "+pi, 00605070's upper wrap test"},
+    {"address": "00ce3820", "width": "double", "value": "1e-10", "meaning": "0042B260's squared-length floor"},
+    {"address": "00ce3c70", "width": "double", "value": "1e-05", "meaning": "0042B260's substitute divisor below that floor"},
+    {"address": "00d7a24c", "width": "float", "value": "1.0", "meaning": "0042CF10's upper early-out test"},
+    {"address": "00ce3c64", "width": "float", "value": "1.57079637", "meaning": "+pi/2, 0042CF10's upper early-out result"},
+    {"address": "00d7a260", "width": "float", "value": "-1.0", "meaning": "0042CF10's lower early-out test"},
+    {"address": "00ce3ccc", "width": "float", "value": "-1.57079637", "meaning": "-pi/2, 0042CF10's lower early-out result"},
+    {"address": "00d7a210", "width": "double", "value": "1.0", "meaning": "the 1 of x / (sqrt(1 - x*x) + 1) in 0042CF10"},
+    {"address": "00f87574", "width": "float3", "value": "zero-initialised",
+     "meaning": "the static muzzle position 0085B8DE pushes. It lies in .data past the section's raw size, so the image has no initialiser for it; the producer 006DEEF0..006DEF20 copies all three of its floats into ECX+84h..8Ch, which is what proves it is a float3 and not a lone float"}
+  ],
+
+  "corrections": [
+    {"what": "docs/GUN_GRAVITY_ARC.md and reports/cc7_gun_gravity_arc.json omitted 0042CF10",
+     "was": "The address list, the host-step table and the proven/assumed section named 004B4D80, 00521370, 00605070, 0042B260 and 0042D0D0 as the bodies read in full, but not 0042CF10 - which src/gun_gravity_arc.cpp reconstructs in full as asin_clamped_0042cf10 and which introduces five constants (00D7A24C, 00CE3C64, 00D7A260, 00CE3CCC, 00D7A210) that appeared nowhere in the doc.",
+     "is": "0042CF10 and its five constants are now in the doc's address line, in the frame-handling section and in the proven list, and 0042CF10 has its own routine row and constant rows here.",
+     "evidence": "0042CF10..0042CF9C read by disasm-raw; COMISS 00D7A24C / FLD 00CE3C64 at 0042CF19..0042CF22, COMISS 00D7A260 / FLD 00CE3CCC at 0042CF2E..0042CF3B, FADD qword 00D7A210 at 0042CF71, FDIVR qword [ESP] (the double-widened argument saved at 0042CF4B) at 0042CF77, CALL 00BF8490 at 0042CF82, FADD ST0,ST0 at 0042CF8F, RET 4 at 0042CF9C."},
+    {"what": "include/bsp/gun_gravity_arc.hpp include comment",
+     "was": "#include \"bsp/gun_bot_ticks.hpp\" // GunAimAngles, kGunBotGravity, kGunBotQuarterPi",
+     "is": "GunAimAngles and kGunBotHorzAngleNegateBase come from bsp/bot_fire_target.hpp, which gun_bot_ticks.hpp includes at line 20; only kGunBotGravity and kGunBotQuarterPi are declared in gun_bot_ticks.hpp (lines 159 and 160). The comment now says so.",
+     "evidence": "include/bsp/bot_fire_target.hpp:150 and :259; include/bsp/gun_bot_ticks.hpp:20, :159, :160."},
+    {"what": "include/bsp/projectile_impact.hpp:27 carries the wrong value for 00CF9058",
+     "was": "kProjectileGravity = 9.8103800773621, attributed to 00CF9058",
+     "is": "The eight bytes at 00CF9058 are 00 00 00 60 b8 9e 23 40 = 9.8100004196166992. include/bsp/gun_bot_ticks.hpp:159 kGunBotGravity = 9.81000042f is the correct reading of the same address.",
+     "evidence": "PE .rdata read at file offset for VA 00CF9058. NOT FIXED HERE: that file is not leased to this packet. Follow-up 6."}
+  ],
+
+  "assumptions": [
+    "00B63D50 really computes the affine inverse of mount+0CCh. Its entry convention and its exit stores were read; its 145-instruction interior was not, and the existing ledger name is taken on trust. If it is not a true inverse, every mount-local pair this routine returns is wrong by whatever it actually computes - follow-up 3.",
+    "mount+110h is a similarity transform, so a unit world direction stays unit through 0042D0D0 (called with normalize = 0) and 00521370 only clamps y. A mount matrix with non-uniform scale would distort the recovered pitch; no such mount was looked for.",
+    "The parameter names mount, aimPoint, muzzlePos, muzzleSpeed, outPitch, outYaw describe how the six call sites use the slots. They are not recovered identifiers, and neither is BSP_Gun_SolveGravityArc.",
+    "The reconstruction preserves the x87 evaluation order and the float round trips of k, k + h, D, sqrt(D) and the tangent, but not the 53-bit x87 intermediate precision: Win32 MSVC evaluates double expressions at 64 bits. This is a bounded implementation - reconstructed and build-tested, not ABI-compatible and not game-validated."
+  ],
+
+  "ledger": [
+    {"address": "00955630", "name": "BSP_Gun_SolveGravityArc", "action": "append-evidence",
+     "note": "The name was already recorded by packet cc2_gun_bot_ticks; this packet appends the recovered expression and the second-pass re-derivation. No name was replaced."}
+  ],
+
+  "build": "./scripts/build.ps1, strict Win32 /W4 /WX /fp:strict",
+  "tests": "no new test added; the existing suite was run unchanged"
+}
