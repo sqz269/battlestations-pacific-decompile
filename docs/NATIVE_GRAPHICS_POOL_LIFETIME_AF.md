@@ -15,7 +15,7 @@ allocator list, slab table, lock or slot ownership is introduced.
 | Pool kind | Constructor | Destructor | Trim virtual zero | Vtable | Slot bytes / index offset / free-count offset |
 | --- | --- | --- | --- | --- | --- |
 | Vertex declarations | 00B48480 | 00B47DF0 | 00B47ED0 | 00D61D08 | D4 / D0 / 1AC0 |
-| Hardware vertex layouts | 00B486A0 | 00B47F70 | 00B48050 | 00D61D0C | 44 / 40 / 8C0 |
+| Base vertex layouts (40h objects) | 00B486A0 | 00B47F70 | 00B48050 | 00D61D0C | 44 / 40 / 8C0 |
 | Physical buffers | 00B4AB80 | 00B4A190 | 00B4A270 | 00D61D60 | 30 / 2C / 640 |
 | Logical vertex buffers | 00B4ADA0 | 00B4A310 | 00B4A3F0 | 00D61D64 | 78 / 74 / F40 |
 | Logical index buffers | 00B4AFC0 | 00B4A490 | 00B4A570 | 00D61D68 | 28 / 24 / 540 |
@@ -24,6 +24,11 @@ All sizes and offsets in the table are hexadecimal. The original member ABI is
 ECX = pool, RET with no stack arguments; constructors return this in EAX. These
 are descriptive hypotheses and new C++ interfaces, not recovered symbols or
 drop-in binary ABI replacements.
+
+The `hardware_layout` profile here is the base 40h layout pool at 0108FD70.
+The D3D9-derived 44h owner uses the separate 0108FE9C pool, 48h slots and
+00B604D0/00B60270 lifetime; it is not allocated by this profile. The AG numbering
+fixture uses that existing derived pool for actual D3D9 vertex declarations.
 
 The constructor publishes the base allocator-list links and concrete vtable,
 initializes the Win32 critical section at +0C, zeroes recursion +24 and the
