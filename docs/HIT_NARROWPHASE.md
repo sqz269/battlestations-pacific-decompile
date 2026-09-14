@@ -323,3 +323,36 @@ passes the singleton from `0042E630 BSP_SpatialIndex_GetSingleton` in ECX.
 3. `0098B130`, the widened query `0072CDD0` falls back to;
 4. the nine unread callers above;
 5. `0084F020` and `0047A6A0`, the two `WorstPart` callers.
+
+## Correction from docs/HIT_HULL_SEGMENT.md (packet cc7_hit_shape_hull_segment)
+
+- **Was:** the open-items list asks for "the shape `vtable[0]` implementation that writes a real hull
+  segment index into `record+34h`", and the shape table records that all three known shapes store
+  `-1`. The three-shape table is correct; the conclusion that no producer exists is not.
+  **Is:** a real producer exists. It is the unit-part collision shape, vtable `00CFD768` slot 0 =
+  `00724510`, which tail-calls `00723E90`. At `00723F5F..00723F6C`:
+
+  ```
+  00723f5f  MOV ECX,[ESI+4]     ; ESI = the 2Ch-byte geometry element 00723D60 selected
+  00723f62  MOV [EAX+30h],ECX   ; record+30h = element+4h, the kind
+  00723f65  MOV EDX,[ESI+8]
+  00723f68  MOV [EAX+38h],ESI   ; record+38h = the element pointer
+  00723f6c  MOV [EAX+34h],EDX   ; record+34h = element+8h, the segment index
+  ```
+
+  Both `+30h` and `+34h` come from authored geometry data, not from immediates, which is why no
+  immediate byte scan finds them. Verified at integration by reading the same listing range.
+
+- **Closes open item 2.** `+38h` was `contract: unread`; `00723F68` shows it is the address of the
+  geometry element the hit was taken against.
+
+- **`+3Ch`/`+40h`/`+44h` stands as written here.** The part-hit array producer is `006D2E30`, which
+  publishes its `operator new` buffer to `[ESI+3Ch]`, indexes `[ESI+3Ch] + [ESI+40h]*10h` and bumps
+  `[ESI+40h]`. The document that was wrong is the ledger evidence on `00925050
+  BSP_HitRecord_Assign`, which said the array is reallocated at `dest+44h`; `00925124 MOV
+  [ESI+3Ch],EBP` says otherwise. That record now carries an appended correction.
+
+- **Still open:** no writer of `element+4h` or `element+8h` was found, so the geometry loader that
+  authors the segment indices stays unattributed. Recorded as a negative result, not as absence of
+  evidence. The executable still reports `part=0` because it never creates a unit-part collision
+  shape, so none of this has run-time evidence yet.
