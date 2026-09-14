@@ -182,6 +182,9 @@ struct GameUnitsSummary {
     // into the live control axes. Both stay 0 while no plane is ticked.
     unsigned long long pilot_thinks{0};
     unsigned long long pilot_commits{0};
+    // 0099D300's yaw arm writing a `desired` - only for a plane with a commanded
+    // target, so 0 means no aircraft was ever ordered at anything.
+    unsigned long long pilot_yaw_plans{0};
     unsigned long long plane_pose_rotations{0};
     double plane_heading_change{0.0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
