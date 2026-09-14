@@ -1,0 +1,490 @@
+{
+  "packet": "orch3_string_prefix_integration_bq",
+  "status": "independently_reviewed_combined_build_and_source_probe_passed_sealed",
+  "completed_utc": "2026-09-14T06:50:42.886318+00:00",
+  "tested_commit": "dae81c7bbfb50c9b9675a7e42c6938f2d629c2da",
+  "commits": {
+    "worker_commit": "5a89873e437d1ce9a9deb5dc40c53f279f8e5b33",
+    "root_cherry_pick": "7d9a680444e0b5cb6406148b6dec51c232b02928",
+    "root_adoption_commit": "dae81c7bbfb50c9b9675a7e42c6938f2d629c2da"
+  },
+  "worker_report": "reports/native_string_prefix_raw_bq.json",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "credit_note": "Three existing raw-header bodies gain actual raw-pool overloads and B4E840 adopts the raw prefix context. Existing function records are extended; historical source/native fixtures retain their original scopes.",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_rehashed": true,
+    "verification": "Every live read used the bounded target-verifying BSP CLI. Worker made no Ghidra/ledger writes."
+  },
+  "native_spans": [
+    {
+      "name": "assignment",
+      "address": "00425f40",
+      "inclusive_end": "00425f74",
+      "bytes": 53,
+      "sha256": "863fb05c6a1e9f951802154da43330c913e9e154bfdbd3b1e9d29e0ed979e8f4",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "concatenation",
+      "address": "004261a0",
+      "inclusive_end": "00426245",
+      "bytes": 166,
+      "sha256": "025e33b4d97cbfa811c37a521873d3b3686165e85b854529726afaf9e01fa6b6",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "prefix",
+      "address": "0043c130",
+      "inclusive_end": "0043c1b5",
+      "bytes": 134,
+      "sha256": "e7c7a3dbf9b0d3917fb4e046611c1b56ca7a97e2056afdc81a857c6424eb0f31",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "concat_EH",
+      "address": "00c5e830",
+      "inclusive_end": "00c5e852",
+      "bytes": 35,
+      "sha256": "d7f75d6518a596f780a21088f56f92c33952b845d88b4b9531e8f05f39b4fd26",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "prefix_EH",
+      "address": "00c5f350",
+      "inclusive_end": "00c5f37a",
+      "bytes": 43,
+      "sha256": "8979df3d9598aa5e160f8a8c6339032da3ccdabdb663e08e4bfa841e65f7a1fe",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "concat_FuncInfo_map",
+      "address": "00d84d48",
+      "inclusive_end": "00d84d73",
+      "bytes": 44,
+      "sha256": "4694b8f7e74639b3d29df5cadc8b37aeff853157e143e059ff75b1e3c0557d8d",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "prefix_FuncInfo_map",
+      "address": "00d85bcc",
+      "inclusive_end": "00d85bff",
+      "bytes": 52,
+      "sha256": "b114ae2eee2fd720f34c2fa3a8e086f1fe4d90ea3b24654c4a14f96417f8bad1",
+      "PE_live_equal": true,
+      "primary_rechecked_live_PE_equal": true
+    }
+  ],
+  "source_pin_checks": {
+    "source_sha256": {
+      "count": 4,
+      "exact_matches": 4,
+      "line_ending_only_differences": {}
+    },
+    "provider_sha256": {
+      "count": 8,
+      "exact_matches": 8,
+      "line_ending_only_differences": {}
+    }
+  },
+  "source_sha256": {
+    "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+    "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+    "src/native_instance_collection.cpp": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+    "src/native_post_effect_construction.cpp": "e4fe53202b14f7c5de5ec73e3ad04d5542b456f07b21db564453e87056a22f8b"
+  },
+  "review": {
+    "reviewer": "primary integrator, independent of worker author",
+    "complete_source_header_deltas_reviewed": true,
+    "complete_three_native_listings_reviewed": true,
+    "volatile_access_helpers_reviewed": true,
+    "logical_cleanup_maps_reviewed": true,
+    "complete_generated_raw_sections_and_parser_reviewed": true,
+    "source_probe_and_build_recipe_reviewed": true,
+    "blocking_source_findings": [],
+    "observations": [
+      "Assignment identity skips all actual-header access; after resize use current source test and destination-count/source-data/destination-data order.",
+      "Concat initial copy reads count/output-data/left-data. Append captures right length and old output length, then uses current data after resize; raw memmove supports backward overlap.",
+      "Prefix construction precedes caller cleanup. Concat failure cleans its own output; prefix caller cleans only the temporary. After success, capture temporary.data before output ownership and prefix disarm.",
+      "Normal prefix getter/return uses captured data and current length+1 without clearing the temporary header. Failure there destroys output once and never retries prefix return.",
+      "One real owned backing allocation supports borrowed overlapping assignment headers; they do not add separate pool returns.",
+      "Compiler moves concat pointer comparison after output clears and EH state write before right-length load. Captured-pointer/ordinary C++ behavior is preserved; hardware-fault and private-frame timing are excluded."
+    ]
+  },
+  "generated_code": [
+    {
+      "source_name": "assign_native_string_header_00425f40",
+      "legacy_symbol": "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+      "legacy_section_bytes": 67,
+      "legacy_section_sha256": "755b2760cb456bf110eeaeeec09255f8dbf3c4d3677dda88dae1ba79475e8c8d",
+      "legacy_section_byte_identity": true,
+      "legacy_symbolic_relocations_equal": true,
+      "legacy_relocation_count": 2,
+      "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+      "before_object_sha256": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+      "after_object_sha256": "0eddd7c859112419e7cad6067873aab99328397da9f2130051028ccd3bc678af",
+      "raw_symbol": "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+      "raw_section_bytes": 67,
+      "raw_section_sha256": "755b2760cb456bf110eeaeeec09255f8dbf3c4d3677dda88dae1ba79475e8c8d",
+      "raw_relocations": [
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 54,
+          "type": 20,
+          "symbol": "_memmove"
+        }
+      ],
+      "raw_listing": "local/bq-assign_native_string_header_00425f40.asm"
+    },
+    {
+      "source_name": "concatenate_native_string_headers_004261a0",
+      "legacy_symbol": "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAVNativeStringStorage@1@@Z",
+      "legacy_section_bytes": 219,
+      "legacy_section_sha256": "54325f79a46c01e470d923af86cd0af795711934b392159b0434b4cf44b96138",
+      "legacy_section_byte_identity": true,
+      "legacy_symbolic_relocations_equal": true,
+      "legacy_relocation_count": 8,
+      "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+      "before_object_sha256": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+      "after_object_sha256": "0eddd7c859112419e7cad6067873aab99328397da9f2130051028ccd3bc678af",
+      "raw_symbol": "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAUNativeStringRawPoolContext@1@@Z",
+      "raw_section_bytes": 219,
+      "raw_section_sha256": "648af63c05e93d24d4f4aef2e13fadfae6766375b86fdb1f37ba9c47603ee4a9",
+      "raw_relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 22,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 75,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 104,
+          "type": 20,
+          "symbol": "_memmove"
+        },
+        {
+          "offset": 140,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 163,
+          "type": 20,
+          "symbol": "_memmove"
+        },
+        {
+          "offset": 197,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 209,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "raw_listing": "local/bq-concatenate_native_string_headers_004261a0.asm"
+    },
+    {
+      "source_name": "prefix_native_string_header_0043c130",
+      "legacy_symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAVActualNativeStringPoolStorage@1@@Z",
+      "legacy_section_bytes": 133,
+      "legacy_section_sha256": "0e9e22733db55798a7a91b673b91706a8288b77522a5e6d41e8b6189e551bd4a",
+      "legacy_section_byte_identity": true,
+      "legacy_symbolic_relocations_equal": true,
+      "legacy_relocation_count": 5,
+      "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+      "before_object_sha256": "851d8e9fa7ae51766d4b44d674b445ef5b17fdeffd0bf7ab134d69d99eabbebe",
+      "after_object_sha256": "7a09789da7abeadd72eba49993ca760d8f57c623d4a19d0a237265443a624764",
+      "raw_symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAUNativeStringRawPoolContext@1@@Z",
+      "raw_section_bytes": 226,
+      "raw_section_sha256": "5cf27c0da940fc2a91911c8d7dcb75ca07ea8ef61b419466042335786400da15",
+      "raw_relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 55,
+          "type": 20,
+          "symbol": "?construct_native_string_cstring_0041e870@bsp@@YAPAXPAXPBDAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 89,
+          "type": 20,
+          "symbol": "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 127,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        },
+        {
+          "offset": 143,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+        },
+        {
+          "offset": 186,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 204,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 216,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "raw_listing": "local/bq-prefix_native_string_header_0043c130.asm"
+    }
+  ],
+  "constructor_adoption": {
+    "tested_commit": "dae81c7bbfb50c9b9675a7e42c6938f2d629c2da",
+    "before_tested_commit": "fb6d43da11fa65b13c48f86140bc8feb6c08bdff",
+    "before_object_sha256": "819b3922f1f73f2ec6ac79f842de256a3fa34815132dc5de7f920eda3a467fd6",
+    "after_object_sha256": "2b350675fb23fbdeee813e489dc4f6f1238c0296adcd470028e0b9d51923454a",
+    "section_bytes": 5025,
+    "before_section_sha256": "d89c11f25d3dc5474e7d6bda5ac90bd9368271359c11a265416ed2e585f5083f",
+    "after_section_sha256": "4c56f60ecd98d36f60482261c08a5afd780e625fc2eda8035b4493094f93e0bf",
+    "code_byte_changes": [
+      {
+        "offset": 2607,
+        "before": 72,
+        "after": 68
+      }
+    ],
+    "relocation_changes": [
+      {
+        "before": {
+          "offset": 2616,
+          "type": 20,
+          "symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAVActualNativeStringPoolStorage@1@@Z"
+        },
+        "after": {
+          "offset": 2616,
+          "type": 20,
+          "symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAUNativeStringRawPoolContext@1@@Z"
+        }
+      }
+    ],
+    "limitation": "Static constructor change inspection only; raw helper probe does not execute the constructor."
+  },
+  "constructor_adoption_review": "Primary inspected the changed instruction: PUSH [ESI+44h] replaces PUSH [ESI+48h] at object A2D. The single symbolic call relocation changes typed prefix to raw prefix. The remaining5025-byte constructor section and all other relocations are identical.",
+  "ghidra": {
+    "existing_names_retained": true,
+    "original_thiscall_fastcall_signatures_saved": true,
+    "prior_comments_preserved": true,
+    "readback_passed": true,
+    "exports_force_refreshed": true,
+    "annotation_record": "local/bq-ghidra-annotation-record.json",
+    "handler_definitions": "reports/native_string_prefix_eh_bq.json",
+    "EH_body_credit": 0
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests_configured": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "tracked_build_inputs": 2555,
+    "all_build_input_hashes_preserved": true,
+    "clean_tree_before_and_after": true,
+    "worker_ctests_passed": 1,
+    "worker_ctests_configured": 1,
+    "call_audit": {
+      "checked": 15,
+      "failed": 0
+    },
+    "primary_source_probe": {
+      "tested_commit": "dae81c7bbfb50c9b9675a7e42c6938f2d629c2da",
+      "exit_code": 0,
+      "run_line": "PASS raw real-pool prefix, backward assignment, right/output concat alias, explicit returns and pool shutdown",
+      "embedded_manifest_verified": true,
+      "manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "input_pins": {
+        "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+        "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+        "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "src/native_instance_collection.cpp": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+        "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+        "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "build/win32/Release/bsp_core.lib": "a22aa8f7864ffa823a0c91f238a96ffd1627dd261c171d2a7fd196f651655acf",
+        "build/win32/Release/bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "build/win32/Release/bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "local/bq_probe.cpp": "2e02c591c97bdbbad5cb9147d668d5e180b79cc6489764d1d66733a56471e1a2",
+        "local/run_bq_probe.ps1": "56b98ed06814039287ed5a800d40e68456356b7ec650e14f67ad02ad631f224c"
+      },
+      "source_probe_sha256": "2e02c591c97bdbbad5cb9147d668d5e180b79cc6489764d1d66733a56471e1a2",
+      "executable_sha256": "26daba4117f3a20a039fa45c7b1b6fad856225f5bb2646be49e8b2a05197efc2",
+      "compiler": "MSVC Win32 /O2 /EHsc /MD /W4 /WX /fp:strict; embedded asInvoker manifest",
+      "scope": "One real prepublished-pool source trajectory; no cleanup exception injection or original-byte execution."
+    },
+    "constructor_executed": false,
+    "new_native_fixture": false,
+    "injected_cleanup_failure": false,
+    "abi_compatible": false,
+    "native_FH3_SEH_verified": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Secondary cleanup failure propagates the newer C++ exception. No native FH3/double-exception equivalence or injected cleanup failure is claimed.",
+    "Valid headers/data, existing zero-byte-copy omission and exclusions for private EH-frame aliases, invalid pointers, hardware faults and asynchronous state observation remain.",
+    "The real-pool probe uses an already-published pool and a null unused manager. Lazy manager/pool creation and shutdown/recreation are unexecuted.",
+    "BO now uses the raw prefix helper; other renderer callable+48 binding, material-factory internal acquired-identity, provider materialization, terminal noexcept, external-quiescence and parent-construction limits remain.",
+    "Legacy typed overloads retain their previous domains. Their code/relocation identity preserves a static comparison, not new execution coverage.",
+    "The post-effect constructor and running renderer/game were not executed. BR20h construction is separate active work, excluded from this tested source."
+  ],
+  "libraries": {
+    "bsp_core.lib": "a22aa8f7864ffa823a0c91f238a96ffd1627dd261c171d2a7fd196f651655acf",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_instance_collection.obj": "7a09789da7abeadd72eba49993ca760d8f57c623d4a19d0a237265443a624764",
+    "build/win32/bsp_core.dir/Release/native_physical_file_date.obj": "0eddd7c859112419e7cad6067873aab99328397da9f2130051028ccd3bc678af",
+    "build/win32/bsp_core.dir/Release/native_post_effect_construction.obj": "2b350675fb23fbdeee813e489dc4f6f1238c0296adcd470028e0b9d51923454a",
+    "local/annotate_bq.py": "6908ddd42217080114acc2d1eb2e429e9dcc0f8f091ec916ae9798a9d1fa6c22",
+    "local/bq-adoption-commit.txt": "4490e740291573a4ed32e54b86218d3454fe0894b3537fd5819d2ae724c164d5",
+    "local/bq-annotation.log": "96576c8e1efd49257716479bb0621b9f0b39dd6b14aa92f609c3e587570c976a",
+    "local/bq-assign_native_string_header_00425f40.asm": "bdf2531351486ce5c608c1c85e229b3cfc67c083296c9559ebbe8f7649d809a6",
+    "local/bq-before-native_instance_collection.obj": "851d8e9fa7ae51766d4b44d674b445ef5b17fdeffd0bf7ab134d69d99eabbebe",
+    "local/bq-before-native_physical_file_date.obj": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+    "local/bq-before-native_post_effect_construction.obj": "819b3922f1f73f2ec6ac79f842de256a3fa34815132dc5de7f920eda3a467fd6",
+    "local/bq-bo-adoption-object-review.json": "71cdd9a51540655e3e10c92a026a67bea5df1dfc746693b680e2191c2b15bab2",
+    "local/bq-comments-after.json": "3ed49a802f15938e6adac0248fcdddf74950965ad6bbd3b01dfe28c77d92a98a",
+    "local/bq-comments-before.json": "599d102c2bdfb147bcbe79b40176766ca3ba79e9fc3ab72db1a9a4827fdb2599",
+    "local/bq-concat-handler-definition.json": "1a945201ffbb36edd70c7297291db7395c0fbc37b9957b822d7998b88782869a",
+    "local/bq-concatenate_native_string_headers_004261a0.asm": "6e3a9194da52aff1339dc2133710ee5ef5f9350dc152bd160567f9d6d3643ee1",
+    "local/bq-export-refresh.log": "c407e00a86549081763323ec7538573f235af8c0f9938abd680d823e289fb080",
+    "local/bq-final-build-stamp.json": "2cc0b420f69ee73350e4a9cb2251aa886d7334293296b10dc81c7ae26bdd6b34",
+    "local/bq-final-combined-build.log": "dbde2c97fcf68ad3a6f79fcefe073f5a66ff9756831be8aeee27e401b99a0a8a",
+    "local/bq-function-records.json": "cd667e08c45bde706f9dc24326c923458d3f527e07ab4c276905e35a6c6690df",
+    "local/bq-ghidra-annotation-record.json": "f122d0b7ba1f3709e6d074396118b547793c009041ac3241bb843eed66811eff",
+    "local/bq-integration-commits.json": "f00a0b54b9bb9456033d710266fbd8fbe798f915f8ad3bcd9201c87ff29cd275",
+    "local/bq-ledger-before.json": "ea7a36e0fda770e6e3d9af90fea43b457397e9a2ec35ba1141bf026ccdb9fac1",
+    "local/bq-native-spans.json": "2a725294319c9e760dcf3c8d3e6ced97849944f8f68278e566532de806e19ecc",
+    "local/bq-object-review.json": "4d5ca7bf01e89cea2fd2854e44a16da0fe929f12b9f245dc707dde0a47ce8986",
+    "local/bq-prefix-admission.md": "52c166f260513680473cfc7446e39b815216c1a75bbee23c0d1711bb4d6550c5",
+    "local/bq-prefix-handler-definition.json": "cefc49dba459ed7bfdba526bc3737b14a518cb1dea6ef391a305ba94c5f12211",
+    "local/bq-prefix_native_string_header_0043c130.asm": "1e2016ef50d90c6b7a95c42191506f6a5cd614887d37790e86e4ecbf5fb1b341",
+    "local/bq-primary-call-audit.log": "9dead9f1b13b42c81cf07a9df1d1af97d2aae967d06eb60455df83452f546ed3",
+    "local/bq-primary-live-00425f40.txt": "36c60321b14ea70c17a80e53dfa03619d071ecf4bca6589ea394ed9615d0d531",
+    "local/bq-primary-live-004261a0.txt": "6109984ce7444f642acb329d1e17fd2ef972b4ec53d554cec33d4e69233bfca0",
+    "local/bq-primary-live-0043c130.txt": "0b55047c19cf48f1aa82e860ee9cb548151838571b1dd40732eb3cae8212c91c",
+    "local/bq-primary-live-00c5e830.txt": "600f3057465097b89d0b80536d28832618609b66d32db7dd382a220d62bcc916",
+    "local/bq-primary-live-00c5f350.txt": "b63db64d460ada2e10a502e446b85b0f8f30acb9fb82f12a7b20c5811ad42a01",
+    "local/bq-primary-live-00d84d48.txt": "158c4d5fd009aeea310bf7c69861b19300e3a8dcdda1aa589498205ff2d9eaf2",
+    "local/bq-primary-live-00d85bcc.txt": "64d00dad3d027049617d8c8369f348d29e96a7cf92a6ca06e0bda676b7cae8c0",
+    "local/bq-primary-probe-result.json": "bffb89c7baac620c4987d7ea335bb6fd1d0395dca3d339e1f2ff3d39a6bba7e4",
+    "local/bq-primary-review-notes.md": "be0788c48cac69189eb312e307de67619e8671fbc2e8233f9fd7e5e769441ecd",
+    "local/bq-probe-build.cmd": "5a34caf30a8c652a167d44d2fd98c60f780e319fd51e566820fffc0fd35f3f6a",
+    "local/bq-probe-build.log": "bd5aaa417c757ca929b4b16dc0c590eed855501616c7d3be160ba98daf9c27ed",
+    "local/bq-probe-inputs-after.json": "7feb7fd493b9a5e5e80f7006cb9747367f698ac185acd072447d96b3c71c1d1f",
+    "local/bq-probe-inputs-before.json": "7feb7fd493b9a5e5e80f7006cb9747367f698ac185acd072447d96b3c71c1d1f",
+    "local/bq-probe-run.log": "a4be1c7a3bc1dfa865df8cb74293dc3c8a946d2b4f8e29b0a69ed8e48a4a2452",
+    "local/bq-source-pins.json": "76efd1968e1d85b6528de9f31e66414dae2d674ff819f3d6fc86d39b883f2448",
+    "local/bq-worker/bq-assign_native_string_header_00425f40.asm": "bdf2531351486ce5c608c1c85e229b3cfc67c083296c9559ebbe8f7649d809a6",
+    "local/bq-worker/bq-before-native_instance_collection.obj": "851d8e9fa7ae51766d4b44d674b445ef5b17fdeffd0bf7ab134d69d99eabbebe",
+    "local/bq-worker/bq-before-native_physical_file_date.obj": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+    "local/bq-worker/bq-before-provider-pins.json": "e82bfe7d610726e5e562709586c49a99f8bb272575db79e108c42a7c858640aa",
+    "local/bq-worker/bq-build-retry.log": "7018444281d18b56997d7487a8bd506ce39b82550e15a1e87ab2558038d546d0",
+    "local/bq-worker/bq-build.log": "1d23bf2feeae2942322457ca80372a4df5d36d9b73de6a25c99d6cba7d414190",
+    "local/bq-worker/bq-call-audit.log": "9dead9f1b13b42c81cf07a9df1d1af97d2aae967d06eb60455df83452f546ed3",
+    "local/bq-worker/bq-commit-message.txt": "1d3a330b4f12a9aca397e4158cfa8ee54e90cf41e232e072456f7163195fb000",
+    "local/bq-worker/bq-concatenate_native_string_headers_004261a0.asm": "6e3a9194da52aff1339dc2133710ee5ef5f9350dc152bd160567f9d6d3643ee1",
+    "local/bq-worker/bq-live-assign.txt": "36c60321b14ea70c17a80e53dfa03619d071ecf4bca6589ea394ed9615d0d531",
+    "local/bq-worker/bq-live-concat-eh.txt": "600f3057465097b89d0b80536d28832618609b66d32db7dd382a220d62bcc916",
+    "local/bq-worker/bq-live-concat-map.txt": "158c4d5fd009aeea310bf7c69861b19300e3a8dcdda1aa589498205ff2d9eaf2",
+    "local/bq-worker/bq-live-concat.txt": "6109984ce7444f642acb329d1e17fd2ef972b4ec53d554cec33d4e69233bfca0",
+    "local/bq-worker/bq-live-prefix-eh.txt": "b63db64d460ada2e10a502e446b85b0f8f30acb9fb82f12a7b20c5811ad42a01",
+    "local/bq-worker/bq-live-prefix-map.txt": "64d00dad3d027049617d8c8369f348d29e96a7cf92a6ca06e0bda676b7cae8c0",
+    "local/bq-worker/bq-live-prefix.txt": "0b55047c19cf48f1aa82e860ee9cb548151838571b1dd40732eb3cae8212c91c",
+    "local/bq-worker/bq-object-review.json": "7357cfcde949e1a1d0230e8605dad4e800b647d262232c0f31c7865802ee4304",
+    "local/bq-worker/bq-prefix_native_string_header_0043c130.asm": "1e2016ef50d90c6b7a95c42191506f6a5cd614887d37790e86e4ecbf5fb1b341",
+    "local/bq-worker/bq-probe-attempt-1-build.log": "9716d4d3864797314af3349eac8efa8226d4c062b0e8b2e2a16e4640086dd8c7",
+    "local/bq-worker/bq-probe-attempt-1-inputs.json": "40b713e9a5a73ad8fdf08c12147aa09fb57622c8e72faf2f7bfcd336217607fb",
+    "local/bq-worker/bq-probe-attempt-1-run.ps1": "cf9cc423da7af28b505d43a2a70bfcb6935935ed781643df7e3edfcda3128bba",
+    "local/bq-worker/bq-probe-build.cmd": "57ae605c062171cffa3c2adb42e173c1c3254b90dd9d61cbd761ccac72505772",
+    "local/bq-worker/bq-probe-build.log": "bd5aaa417c757ca929b4b16dc0c590eed855501616c7d3be160ba98daf9c27ed",
+    "local/bq-worker/bq-probe-inputs-after.json": "119b8f9f7ff87ddbd0c1f6aac9efb442165f4700aefcf3f574224a551059d484",
+    "local/bq-worker/bq-probe-inputs-before.json": "119b8f9f7ff87ddbd0c1f6aac9efb442165f4700aefcf3f574224a551059d484",
+    "local/bq-worker/bq-probe-run.log": "a4be1c7a3bc1dfa865df8cb74293dc3c8a946d2b4f8e29b0a69ed8e48a4a2452",
+    "local/bq-worker/bq-report-pin-summary.json": "f234b0809f574d568d873ac31abe9dbecbc2e7dbf4b7cb84832c519668f57fea",
+    "local/bq-worker/bq-retry-source-before.json": "429d284ca47b418e9b796bec805e891732ba0be1a6ab38221584f0483707224c",
+    "local/bq-worker/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/bq-worker/bq_probe.cpp": "2e02c591c97bdbbad5cb9147d668d5e180b79cc6489764d1d66733a56471e1a2",
+    "local/bq-worker/bq_probe.exe": "ad26772007045fbab941168c2981313b38197932fc6edf7cc5ab9e8f17d49a98",
+    "local/bq-worker/bq_probe.obj": "576b5203b39ae12a123e50e1df9634e16fe6f83bdd60bc9edeeb4c0b1cc17446",
+    "local/bq-worker/run_bq_probe.ps1": "5ccb32f2609be7665f5c5e699653647c9f9a69a497c174e59aa39a30520ab353",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/bq_probe.cpp": "2e02c591c97bdbbad5cb9147d668d5e180b79cc6489764d1d66733a56471e1a2",
+    "local/bq_probe.exe": "26daba4117f3a20a039fa45c7b1b6fad856225f5bb2646be49e8b2a05197efc2",
+    "local/bq_probe.obj": "cd4f5d605edfd1e3ff5e50e84bb20e984a194aa1d767f73e4d64e46f1ad57f35",
+    "local/build_final_bq.py": "6ce3d628dceb0f3c2e925015b3eca93cb15f94087eb00465ccb7b965626bfe84",
+    "local/check_bq_probe_and_adoption.py": "f1b64754b37b4ca4293424a81c36cee083f9cefb4f3e406fd5719ce7fed73d14",
+    "local/prepare_bq.py": "a7d8ad86ebdae964ddf72e9187b9ed1372c1cc82a3e564dbe0bd78ebe78d8ac6",
+    "local/record_bq.py": "1a2be7785ed9c4985f9c1eb9c7a4e10f6e54d90199b9ea3626e9b1c7e0aa6f9d",
+    "local/record_bq_eh.py": "20d7e217a49b011cfbcc921394a0a439f43a3090dc02d20116e8e69ebfe55eef",
+    "local/run_bq_probe.ps1": "56b98ed06814039287ed5a800d40e68456356b7ec650e14f67ad02ad631f224c",
+    "reports/native_string_prefix_eh_bq.json": "a1ef958654a88e835562122d07819b1f09385e7198213fbba4b34ff033661aaf",
+    "reports/native_string_prefix_raw_bq.json": "a63a87ef4f8a26d137cf58b8f72a04f1903921af1bc21dcff062e2a84739ffe9"
+  },
+  "sealed_attempt": {
+    "tested_commit": "dae81c7bbfb50c9b9675a7e42c6938f2d629c2da",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bq-validated-attempt-dae81c7b.zip",
+    "sha256": "31567e712dba175bf48a7647f4ec3af9f0d77e26f8ae074bfdba6aa82496c64e",
+    "payload_members": 2674,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "a22aa8f7864ffa823a0c91f238a96ffd1627dd261c171d2a7fd196f651655acf",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2555
+  }
+}
