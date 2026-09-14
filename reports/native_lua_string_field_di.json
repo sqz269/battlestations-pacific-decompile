@@ -1,6 +1,6 @@
 {
   "packet": "orch3_native_lua_string_field_di",
-  "status": "source_implemented_pending_object_review",
+  "status": "source_and_generated_code_reviewed_worker_build_and_one_existing_ctest_passed_pending_exact_combined_commit_validation",
   "base_commit": "e4fb53cd952b67c2a0e332f34e247937ff56cb0d",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
@@ -21,10 +21,30 @@
     "empty_byte": "0108FF2C is virtual zero-fill in installed PE and live byte00; explicit address binding, not an on-disk byte snapshot"
   },
   "call_steps": [
-    {"address":"00b674cd","native":"00a672f0","function":"00b674c0","hex":"e81efeefff"},
-    {"address":"00b674ec","native":"00a67a10","function":"00b674c0","hex":"e81f05f0ff"},
-    {"address":"00b6750b","native":"00a67a10","function":"00b674c0","hex":"e80005f0ff"},
-    {"address":"00b67518","native":"00a67e10","function":"00b674c0","hex":"e8f308f0ff"}
+    {
+      "address": "00b674cd",
+      "native": "00a672f0",
+      "function": "00b674c0",
+      "hex": "e81efeefff"
+    },
+    {
+      "address": "00b674ec",
+      "native": "00a67a10",
+      "function": "00b674c0",
+      "hex": "e81f05f0ff"
+    },
+    {
+      "address": "00b6750b",
+      "native": "00a67a10",
+      "function": "00b674c0",
+      "hex": "e80005f0ff"
+    },
+    {
+      "address": "00b67518",
+      "native": "00a67e10",
+      "function": "00b674c0",
+      "hex": "e8f308f0ff"
+    }
   ],
   "source_schedule": [
     "Capture original ECX object. Load current object.owner and owner.state; call checkstack(state,2), ignoring return.",
@@ -33,14 +53,49 @@
     "Read current object.owner, then current object.index, then captured owner's current state; call settable. No kind gate, tracking change, or cleanup."
   ],
   "source_sha256": {
-    "include/bsp/native_lua_string_field.hpp":"da0e602a777486fdd2b72bf4c0d00cf02e37859739883a6b1d29fba841b0000a",
-    "src/native_lua_string_field.cpp":"4fadc8f8b9dabd267d91fad108675df6e4f917500f69707455f00546ee849722"
+    "include/bsp/native_lua_string_field.hpp": "da0e602a777486fdd2b72bf4c0d00cf02e37859739883a6b1d29fba841b0000a",
+    "src/native_lua_string_field.cpp": "5a1fc36e914b32c2abe59a6d7469427e453444325ee89508175ba2122fd98da3",
+    "docs/NATIVE_LUA_STRING_FIELD_DI.md": "28a8d6edd02d4d5fdc1e00d6de9703f4958ff727e18765524bfccdfeddc526cd",
+    "cmake/startup.cmake": "90986284ecb41c0d297617901741376b8040a802b3a06392643a35f2d8052e0f"
   },
   "provider_sha256": {
-    "include/bsp/native_lua_objects.hpp":"bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
-    "src/native_lua_objects.cpp":"c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
-    "include/bsp/native_string.hpp":"80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
-    "cmake/lua.cmake":"50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060"
+    "include/bsp/native_lua_objects.hpp": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+    "src/native_lua_objects.cpp": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060"
   },
-  "limits": "Source uses linked stock Lua5.1.1 C ABI, not native game's register ABI. Source/private frame and Lua error transport are not original EH/game validation. B1B830 is outside this packet."
+  "limits": "Source uses linked stock Lua5.1.1 C ABI, not native game's register ABI. Source/private frame and Lua error transport are not original EH/game validation. B1B830 is outside this packet.",
+  "primary_preintegration_review": {
+    "worker_source_sha256_rechecked": false,
+    "stale_draft_source_pin": {
+      "src/native_lua_string_field.cpp": {
+        "draft_sha256": "4fadc8f8b9dabd267d91fad108675df6e4f917500f69707455f00546ee849722",
+        "current_sha256": "5a1fc36e914b32c2abe59a6d7469427e453444325ee89508175ba2122fd98da3"
+      }
+    },
+    "provider_sha256_rechecked": true,
+    "artifact_sha256": {
+      "build/win32/bsp_core.dir/Release/native_lua_string_field.obj": "da5b0ea46f136e81b9d6c7767271eb02273fc18800af34b8a25a26ae6f9c0841",
+      "local/di-build.log": "657b3bdf7b848c7cf83bafc01acf94c345544f68a46cbcbab277065a2d475550",
+      "local/di-build-final.log": "8014b8f2864fa8fbc65bb4eb0cc6c55ae3d4b0a3b37d882cd35e904d920c34df",
+      "local/di-object-disasm.txt": "85082c521c9dc2883afe2e61f5477e2fefb865baecb5de66bced2a88e37027a4",
+      "local/di-object-relocs.txt": "8cd41662543f27c94f5347ec09be859f3b2144d9371204ecab95503b0b2c0ae1",
+      "local/di-object-symbols.txt": "97752352512b10d9ed9e563a7c7aba24bf461abd0e5a97a69b994054a63a5574"
+    },
+    "adapter_bytes": 23,
+    "body_bytes": 99,
+    "review": [
+      "Full adapter forwards original value/key slot addresses, EDX binding and ECX object, RET8.",
+      "Body checkstack+0x0F precedes original key slot dereference+0x17; length+0x19 then data+0x1B then null CMOVE+0x20 precede current owner+0x24/state+0x28; first push+0x2C.",
+      "Original value slot dereference+0x34 occurs after first push; length+0x36/data+0x38/null CMOVE+0x3D precede owner+0x41/state+0x45 and second push+0x49.",
+      "Final owner+0x4E/index+0x50/state+0x54 precede settable+0x58; four concrete Lua relocations+0x10,+0x2D,+0x4A,+0x59.",
+      "No EH, tracking edit, fixed globals index or invented checkstack failure branch."
+    ],
+    "primary_review_passed": true,
+    "worker_build_existing_ctest_passed": 1,
+    "exact_committed_combined_build_pending": true,
+    "source_entry_executed": false,
+    "native_entry_executed": false,
+    "game_validated": false
+  }
 }
