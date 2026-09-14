@@ -103,7 +103,8 @@ struct OwnedValue {
     NativeStringStorage* strings;
     ~OwnedValue() noexcept { destroy(kind,value,strings); }
 };
-void resize(Kind kind, void* header, Word requested, const void* value, NativeStringStorage* strings) {
+void resize(Kind kind, void* header, Word requested, const void* value, NativeStringStorage* strings,
+    NativeCheckedDwordPublication publication = NativeCheckedDwordPublication::begin_capacity_end) {
     const Word old_size=size(header,kind);
     if (requested==old_size) return;
     const Word captured_end=read(header,8);
@@ -154,9 +155,11 @@ void resize(Kind kind, void* header, Word requested, const void* value, NativeSt
     }
     // The scalar DWORD instantiations publish begin first; descriptors and
     // owning nested/string instantiations publish it after capacity and end.
-    if (kind==Kind::word) write(header,4,address(fresh));
+    const bool begin_first = kind==Kind::word &&
+        publication==NativeCheckedDwordPublication::begin_capacity_end;
+    if (begin_first) write(header,4,address(fresh));
     write(header,12,address(fresh)+bytes);write(header,8,address(fresh)+final_size*width(kind));
-    if (kind!=Kind::word) write(header,4,address(fresh));
+    if (!begin_first) write(header,4,address(fresh));
 }
 } // namespace
 
@@ -165,6 +168,10 @@ void resize_native_input_settings_descriptors_006a0db0(void* header, Word count,
 }
 void resize_native_input_settings_words_00492210(void* header, Word count, Word value) {
     resize(Kind::word,header,count,&value,nullptr);
+}
+void resize_native_checked_dword_storage(void* header, Word count, Word value,
+    NativeCheckedDwordPublication publication) {
+    resize(Kind::word,header,count,&value,nullptr,publication);
 }
 void resize_native_input_settings_bits_0049df50(void* header, Word count, Word value) {
     const Word old=read(header,0);if (count==old) return;

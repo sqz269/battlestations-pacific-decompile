@@ -942,5 +942,11 @@
     "All native fixture callees are explicit bridges; original callee bodies retained but not executed",
     "Native FH3/SEH faults and constructor internal cleanup untested",
     "No runtime scene admission/frame log, native unit owner binding, binary replacement or gameplay validation"
-  ]
+  ],
+  "part_vector_provider_ab": {
+    "address": "0087b460",
+    "default_provider": "resize_native_unit_part_pointers_0087b460",
+    "report": "reports/native_unit_part_vector.json",
+    "limits": "Valid owned raw10h vector; allocation callbacks must not structurally mutate it. Other operations remain required."
+  }
 }

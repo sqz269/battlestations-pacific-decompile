@@ -144,3 +144,8 @@ retained under `local/health_parts_*` for root archival before worktree cleanup.
 The production owning runtime still must supply actual class/vector/model and
 provider bindings. No frame log, runtime scene admission, drop-in ABI, native
 exception equivalence or gameplay validation is claimed.
+
+
+## Part-vector provider, batch AB
+
+Correction from `docs/NATIVE_UNIT_PART_VECTOR.md`: The0087B460 operation now has a concrete default using the shared actual10h checked-vector provider. Its source storage must be valid and consistently owned; allocation callbacks must not structurally mutate the vector. Existing equivalent ownership-domain overrides remain supported, so the previously retained injected-provider evidence remains scoped as recorded. This supplies one default operation, not runtime admission of the whole initializer.

@@ -1,0 +1,487 @@
+{
+  "packet": "orch6_unit_part_vector_ab",
+  "address": "0087b460",
+  "source": "src/native_unit_part_vector.cpp",
+  "coverage": "Complete resize/end-insertion provider for valid consistently owned storage; no general malformed-range or middle-insertion contract",
+  "body_inclusive": [
+    "0087b460",
+    "0087b512"
+  ],
+  "bytes": 179,
+  "native_abi": "ECX raw10h header; stack unsigned count and DWORD fill; RET8; new C++ interface",
+  "layout": "opaque0 retained, begin4/end8/capacityC; DWORD pointer slots",
+  "calls": [
+    {
+      "address": "0087b49b",
+      "native": "00bf6713",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087b4ac",
+      "native": "0087af40",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087b4d1",
+      "native": "00bf6713",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087b4de",
+      "native": "00bf6713",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087b4f4",
+      "native": "00bf6713",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087b504",
+      "native": "008792c0",
+      "function": "0087b460"
+    },
+    {
+      "address": "0087afa4",
+      "native": "0087a7e0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b005",
+      "native": "00876a80",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b02a",
+      "native": "008776b0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b03a",
+      "native": "00878bb0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b052",
+      "native": "008776b0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b074",
+      "native": "00bf65ac",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b0a5",
+      "native": "00bf65ac",
+      "function": "0087b0a1"
+    },
+    {
+      "address": "0087b0d8",
+      "native": "008793c0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b0fb",
+      "native": "00878bb0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b111",
+      "native": "008780f0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b142",
+      "native": "008793c0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b150",
+      "native": "008786c0",
+      "function": "0087af40"
+    },
+    {
+      "address": "0087b160",
+      "native": "008780f0",
+      "function": "0087af40"
+    },
+    {
+      "address": "008792d3",
+      "native": "00bf6713",
+      "function": "008792c0"
+    },
+    {
+      "address": "00876a91",
+      "native": "00bf681b",
+      "function": "00876a80"
+    },
+    {
+      "address": "00876ab9",
+      "native": "00bf6340",
+      "function": "00876a80"
+    },
+    {
+      "address": "00876ad0",
+      "native": "00bf6885",
+      "function": "00876a80"
+    },
+    {
+      "address": "00878bd4",
+      "native": "00878190",
+      "function": "00878bb0"
+    },
+    {
+      "address": "008793dc",
+      "native": "008776b0",
+      "function": "008793c0"
+    },
+    {
+      "address": "0087bd4f",
+      "native": "0087b460",
+      "function": "0087bcc0"
+    }
+  ],
+  "equivalence": [
+    {
+      "left": "0087b460",
+      "right": "00492210",
+      "kind": "resize wrapper",
+      "bytes": 179,
+      "operand_differences": [
+        {
+          "offset": 60,
+          "kind": "call",
+          "left": "0xbf6713",
+          "right": "0xbf6713"
+        },
+        {
+          "offset": 77,
+          "kind": "call",
+          "left": "0x87af40",
+          "right": "0x441860"
+        },
+        {
+          "offset": 114,
+          "kind": "call",
+          "left": "0xbf6713",
+          "right": "0xbf6713"
+        },
+        {
+          "offset": 127,
+          "kind": "call",
+          "left": "0xbf6713",
+          "right": "0xbf6713"
+        },
+        {
+          "offset": 149,
+          "kind": "call",
+          "left": "0xbf6713",
+          "right": "0xbf6713"
+        },
+        {
+          "offset": 165,
+          "kind": "call",
+          "left": "0x8792c0",
+          "right": "0x4685a0"
+        }
+      ],
+      "unchanged_bytes": 155
+    },
+    {
+      "left": "0087a7e0",
+      "right": "00bd0590",
+      "kind": "length-error transport",
+      "bytes": 105,
+      "operand_differences": [
+        {
+          "offset": 3,
+          "kind": "push",
+          "left": "0xc96718",
+          "right": "0xcc5478"
+        },
+        {
+          "offset": 57,
+          "kind": "call",
+          "left": "0x408720",
+          "right": "0x408720"
+        },
+        {
+          "offset": 78,
+          "kind": "call",
+          "left": "0x411700",
+          "right": "0x411700"
+        },
+        {
+          "offset": 101,
+          "kind": "call",
+          "left": "0xbf6885",
+          "right": "0xbf6885"
+        }
+      ],
+      "unchanged_bytes": 89
+    },
+    {
+      "left": "00876a80",
+      "right": "00bcfeb0",
+      "kind": "pointer allocator",
+      "bytes": 85,
+      "operand_differences": [
+        {
+          "offset": 18,
+          "kind": "call",
+          "left": "0xbf681b",
+          "right": "0xbf681b"
+        },
+        {
+          "offset": 58,
+          "kind": "call",
+          "left": "0xbf6340",
+          "right": "0xbf6340"
+        },
+        {
+          "offset": 81,
+          "kind": "call",
+          "left": "0xbf6885",
+          "right": "0xbf6885"
+        }
+      ],
+      "unchanged_bytes": 73
+    }
+  ],
+  "spans": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0087b460",
+        "length": 179,
+        "sha256": "a93f14bbe1d8a966bb8b749074f3b8b5aea7a8e9e73629677d61ab41c3bafce2",
+        "hex": "83ec085355568bf18b4e0485c957750433c0eb088b46082bc1c1f8028b5c241c3bc3733785c9750433ffeb088b7e082bf9c1ff028b6e083bcd7605e873b237008d442420502bdf5355568bcee88ffaffff5f5e5d5b83c408c2080085c9744a8b6e088bc52bc1c1f8023bd8733c3bcd7605e83db237008b7e043b7e087605e830b23700897c24148d3c9f3b7e0877053b7e047305e81ab23700555657568d4c2420518bcee8b7ddffff5f5e5d5b83c408c20800",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0087af40",
+        "length": 571,
+        "sha256": "79887f4e483619f15327645cd9eb1d01b41591e55937e3b263e65b4f1bdac534",
+        "hex": "558bec6aff687067c90064a100000000506489250000000083ec0c8b451453568bf18b08894d148b4e0485c9578965f0750433ffeb088b7e0c2bf9c1ff028b551085d20f84df01000085c9750433c0eb088b46082bc1c1f802bbffffff3f2bd83bda7305e837f8ffff85c9750433c0eb088b46082bc1c1f80203c23bf80f83f30000008bc7d1e8bbffffff3f2bd83bdf730433ffeb0203f885c9750433c0eb088b46082bc1c1f80203c23bf8731385c9750433c0eb088b46082bc1c1f8028d3c1033d28bcfe876baffff8b5d0c8b4e04c645e8008b55e8528b55105256508bd38945ecc745fc00000000e881c6ffff8b55108d4d145152508bcee871dbffff8b5608c64514008b4d14518b4d105156508bcbe859c6ffff8b4e0485c9750433c0eb088b46082bc1c1f8028b5d1003d885c9740951e833b5370083c4048b45ec8d14b88d0c9889560c894e088946048b4df464890d000000005f5e5b8be55dc210008b55ec52e802b5370083c4046a006a00e8cfb737008b5e088b7d0c8bc32bc7c1f8023bc273658d04950000000089450c03c75053578bcee8e3e2ffff8b46088bd08d4d14518b4d102bd7c1fa022bca51508bcec745fc02000000e8b0daffff8b450c0146088b76088d4d14512bf05657e8dacfffff83c40c8b4df464890d000000005f5e5b8be55dc210008d0c9500000000538bc32bc153894d0c508bce894510e879e2ffff8b5510535257894608e86bd5ffff8b4d0c8d45145003cf5157e88bcfffff83c4188b4df45f5e64890d000000005b8be55dc21000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008792c0",
+        "length": 99,
+        "sha256": "af9ed94456c2e4df2090dfedec97c95948e2096ea7e0c7169b970147a9780061",
+        "hex": "558b6c240c85ed56578bf974063b6c241c7405e83bd437008b7424188b4424203bf074308b4f088bd12bd0c1fa023bc1538d1c96741a8bd62bd08d9b000000008b28892c0283c0043bc175f48b6c2418895f085b8b4424105f8970045e89285dc21400",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00876a80",
+        "length": 85,
+        "sha256": "f22f6a302229a3dd6440b1e38ae08bc91851db49a158e758771b1a12bd13932c",
+        "hex": "83ec1085c9771633c98d148d0000000052e885fd370083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e882f8370068c03ce0008d4c240851c744240c3c92d600e8b0fd3700",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008776b0",
+        "length": 38,
+        "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+        "hex": "3bca8b442404741b568da4240000000085c074048b31893083c10483c0043bca75ee5ec21000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00878bb0",
+        "length": 50,
+        "sha256": "e9811018315105bb83ce7e869fe2931f797f90f60e12f12e9f94498fb9d1b38f",
+        "hex": "518b542410568b742410578b7c2410c6442408008b442408508b44241c5251508bd68bcfe8b7f5ffff8d04b75f5e59c20c00",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00878190",
+        "length": 38,
+        "sha256": "240e117dee314b7d4acc124791688150e9666c57c81bf8373dab968dceee7234",
+        "hex": "85d2761f8b442404568da4240000000085c974048b30893183ea0183c10485d277ee5ec21000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008793c0",
+        "length": 37,
+        "sha256": "7531b3c8ce87c2e5a93f375b52b0429fc1895ead1fd744b4c9890d2124ac8a22",
+        "hex": "518b542410c60424008b0424508b442414528b542414518b4c241450e8cfe2ffff59c20c00",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008780f0",
+        "length": 30,
+        "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+        "hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008786c0",
+        "length": 53,
+        "sha256": "f4f066678d7c88e6d00da09e85117b927f19c68c70fde72608361392ac68dc22",
+        "hex": "8b4c24088b5424048bc12bc2c1f80203c003c0568b742410578bf88bc62bc73bd1740f2bf18b79fc83e9043bca893c0e75f35f5ec3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00492210",
+        "length": 179,
+        "sha256": "1e28c1d05aebce48d2d5cfe33f3d68ebd26bc84dc5394b1b1fd1f94ce567c44e",
+        "hex": "83ec085355568bf18b4e0485c957750433c0eb088b46082bc1c1f8028b5c241c3bc3733785c9750433ffeb088b7e082bf9c1ff028b6e083bcd7605e8c34476008d442420502bdf5355568bcee8fff5faff5f5e5d5b83c408c2080085c9744a8b6e088bc52bc1c1f8023bd8733c3bcd7605e88d4476008b7e043b7e087605e880447600897c24148d3c9f3b7e0877053b7e047305e86a447600555657568d4c2420518bcee8e762fdff5f5e5d5b83c408c20800",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0087a7e0",
+        "length": 105,
+        "sha256": "ba0badedf3ee73c5e7c2a5cef145ba0f0c3d8bfe9f307e0125401f4a123b2168",
+        "hex": "6aff681867c90064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e803dfb8ff8d0424508d4c2420c744245000000000e8ce6eb9ff68983fd8008d4c242051c74424246092d600e83cc03700",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bd0590",
+        "length": 105,
+        "sha256": "867e54dad740442bfe261cae2e65739d00a71fa4051273401505d399b436cde9",
+        "hex": "6aff687854cc0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8538183ff8d0424508d4c2420c744245000000000e81e1184ff68983fd8008d4c242051c74424246092d600e88c620200",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bcfeb0",
+        "length": 85,
+        "sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+        "hex": "83ec1085c9771633c98d148d0000000052e85569020083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e85264020068c03ce0008d4c240851c744240c3c92d600e880690200",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00c96770",
+        "length": 10,
+        "sha256": "230b5b39caf5813f5dd561f37922847f48c7618faa395588c56966f327b31304",
+        "hex": "b8a88adc00e9c903f6ff",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "composition": {
+    "shared_provider": "src/native_input_settings_vector_storage.cpp",
+    "publication": "New pointer specialization: capacity/end/begin. Existing DWORD entry retains begin/capacity/end.",
+    "health_parts": "NativeUnitHealthPartsBindings::call_0087b460 now has a concrete canonical default. Existing compatible ownership-domain overrides remain supported."
+  },
+  "validation": {
+    "win32": "passed",
+    "ctests": "2/2 passed",
+    "native_source_cases": 8,
+    "existing_dword_regression_cases": 8,
+    "source_length_error": true,
+    "whole_cloned_bodies": 10,
+    "whole_cloned_bytes": 1180,
+    "production_codegen": "Shared resize: old begin440/capacity445/end452. Pointer capacity48C -> end452 -> begin459. Specialized wrapper pushes policy1; health default calls concrete pointer provider.",
+    "new_repository_tests": 0,
+    "mechanical_call_rows": 26
+  },
+  "limits": [
+    "Valid consistently owned10h checked-vector storage only. Allocation callbacks can throw but must not structurally mutate the vector.",
+    "General middle insertion, malformed iterator continuation, arbitrary overlapping allocations/private argument aliases and hardware-fault timing are not provided by shared source storage.",
+    "Full original wrapper/insertion/erase and seven supporting bodies are cloned; all executed allocations/frees use the existing source CRT domain. Unreached native error edges stop the fixture instead of simulating original exceptions.",
+    "Native FH3/SEH, original CRT/new-handler state and native RTTI transport remain unproved. Source length-error ownership is the existing canonical service.",
+    "No runtime unit initialization admission or gameplay validation is claimed. Remaining health/parts operations still need complete providers and actual bindings.",
+    "0087B0B1..0087B0B5 rethrow is decoded but lacks containing function ownership; Catch_All@0087B0A1 currently ends at0087B0A9. Its26 checked call peers are body-attributed."
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "0087b0b1",
+      "end_inclusive": "0087b0b5",
+      "target": "00bf6885",
+      "no_ghidra_function": true,
+      "containing_catch_prefix": "0087b0a1",
+      "evidence": "Decoded post-free rethrow; existing Catch_All body remains truncated. Native EH not executed."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\part_vector_ab\\manifest.json",
+      "bytes": 175247,
+      "sha256": "daffe9a4b04b3c37cf406291d72afc56c6495f7b2b2276461172ae176e768dca"
+    },
+    "relocations": [
+      {
+        "address": "00876a80",
+        "bytes": 85,
+        "relocated_call_operands": 3,
+        "unchanged_bytes": 73,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "008776b0",
+        "bytes": 38,
+        "relocated_call_operands": 0,
+        "unchanged_bytes": 38,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "008780f0",
+        "bytes": 30,
+        "relocated_call_operands": 0,
+        "unchanged_bytes": 30,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "00878190",
+        "bytes": 38,
+        "relocated_call_operands": 0,
+        "unchanged_bytes": 38,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "008786c0",
+        "bytes": 53,
+        "relocated_call_operands": 0,
+        "unchanged_bytes": 53,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "00878bb0",
+        "bytes": 50,
+        "relocated_call_operands": 1,
+        "unchanged_bytes": 46,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "008792c0",
+        "bytes": 99,
+        "relocated_call_operands": 1,
+        "unchanged_bytes": 95,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "008793c0",
+        "bytes": 37,
+        "relocated_call_operands": 1,
+        "unchanged_bytes": 33,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "0087af40",
+        "bytes": 571,
+        "relocated_call_operands": 14,
+        "unchanged_bytes": 515,
+        "instruction_replacements": 0
+      },
+      {
+        "address": "0087b460",
+        "bytes": 179,
+        "relocated_call_operands": 6,
+        "unchanged_bytes": 155,
+        "instruction_replacements": 0
+      }
+    ],
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\part_vector_ab\\probe.exe",
+      "bytes": 24576,
+      "sha256": "53650caca69eb05fcca2efdcd456839694a64a76292543e70148ae0d55335fcb"
+    },
+    "retained_inputs": 365,
+    "artifacts": 157,
+    "native_seed_matches": 8,
+    "annotations": 14,
+    "call_checks": "26 passed; one decoded rethrow explicitly outside stored function ownership"
+  }
+}

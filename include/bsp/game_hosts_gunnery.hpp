@@ -220,6 +220,17 @@ struct GameGunnerySummary {
     unsigned long long gun_slot_rejects{0};
     unsigned long long assigns{0};
     unsigned long long clears{0};
+    // Diagnostic provenance for step 8.8's choice. docs/GUNNERY_CANDIDATE_ORDER.md
+    // proves the walk runs order[count-1] down to order[0], so step 8.7's unsorted
+    // appends are tried BEFORE the recon sweep's ranked inserts. These separate the
+    // two sources so a run can say which one a gun actually took and at what
+    // fraction of its own reach, instead of inferring it from totals.
+    unsigned long long assigns_from_arm{0};     // the director's fire/command target
+    unsigned long long assigns_from_recon{0};   // the ranked recon sweep
+    double arm_reach_fraction_sum{0.0};         // distance / max_range at assignment
+    double recon_reach_fraction_sum{0.0};
+    unsigned long long arm_assigns_beyond_half{0};   // fraction > 0.5
+    unsigned long long recon_assigns_beyond_half{0};
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
     unsigned long long aim_steps{0};

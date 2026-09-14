@@ -11,6 +11,12 @@ namespace bsp {
 void resize_native_input_settings_descriptors_006a0db0(void*, std::uint32_t,
     std::array<std::uint32_t,5>);
 void resize_native_input_settings_words_00492210(void*, std::uint32_t, std::uint32_t);
+// Shared DWORD storage mechanics. Pointer specializations publish begin last;
+// the existing00492210 DWORD specialization publishes begin first. Other
+// contracts and source allocation/exception boundaries below are unchanged.
+enum class NativeCheckedDwordPublication { begin_capacity_end, capacity_end_begin };
+void resize_native_checked_dword_storage(void*, std::uint32_t, std::uint32_t,
+    NativeCheckedDwordPublication);
 // Actual14h packed-bit storage: bit count0, opaque4, word begin8/endC/capacity10.
 // Only the low byte of the fill value is boolean. Shrink masks unused high bits.
 void resize_native_input_settings_bits_0049df50(void*, std::uint32_t, std::uint32_t);
