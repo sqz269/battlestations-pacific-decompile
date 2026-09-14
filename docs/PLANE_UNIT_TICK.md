@@ -106,8 +106,16 @@ The dispatch listing, read directly:
 007ceca0  JNZ 007cecbf              ; no arm: the commit below is skipped too
 007cecaf  CALL 007cba50             ; surface arm
 007cecb4  LEA ECX,[ESI+364h]        ; unit+674h
-007cecba  CALL 0085dc80             ; commit this step's pose
+007cecba  CALL 0085dc80             ; re-orthonormalise the pose basis (NOT a commit)
 ```
+
+**Correction.** That last line read "commit this step's pose", and a packet was written on the
+strength of it before the body was read. `0085DC80` is `BSP_Matrix_OrthonormalizeBasisRows`, a
+general Gram-Schmidt over one row-major 4x4's three basis rows, called from 54 sites across the
+binary and already named in the ledger. It takes only the matrix pointer in `ECX` - no step, no
+velocity, no control axis - and on an already-orthonormal basis it does nothing at all. It cannot
+turn a plane; it is the tidy-up that keeps a basis from drifting. `docs/PLANE_POSE_COMMIT.md` has
+the rule and the evidence.
 
 The free-flight gate is not opaque. `00D06130+38h` and `00CFFFE8+38h` (the two `unit+72Ch`
 vtables, base-plane and recon-plane) both hold `0074E210`, whose four instructions on disk are
