@@ -94,47 +94,473 @@
     "058"
   ],
   "field_producers": [
-    {"offset": "010","producer_function": null,"publication_site": null,"producer_family": "BK explicit zero; nonzero writer unresolved","profile": "unresolved","concrete_source_provider": "none admitted","limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."},
-    {"offset": "018","producer_function": "00b107f0","publication_site": "00b10e8b","producer_family": "inline refcounted constructor in B107F0","profile": "00d5e18c","current_zero_slot": "00bd30e0","deleting_slot": "00b10160","concrete_source_provider": "missing concrete derived owner families","limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.","allocation_bytes_hex": "220h","initializer": "00b544f0","allocation_site": "00b10e5f","initializer_call_site": "00b10eb9"},
-    {"offset": "01c","producer_function": "00b107f0","publication_site": "00b10eee","producer_family": "inline refcounted constructor in B107F0","profile": "00d5e1a0","current_zero_slot": "00bd30e0","deleting_slot": "00b10180","concrete_source_provider": "missing concrete derived owner families","limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.","allocation_bytes_hex": "90h","initializer": "00b546f0","allocation_site": "00b10ec3","initializer_call_site": "00b10f20"},
-    {"offset": "020","producer_function": "00b107f0","publication_site": "00b10f5a","producer_family": "00b50d40; allocation 250h","profile": "00d61fe0","current_zero_slot": "00bd30e0","deleting_slot": "00b50fe0","concrete_source_provider": "missing B50D40/B51090 and terminal family","limitations": "Constructor writes count1/profile; initializer B51090 runs after publication."},
-    {"offset": "024","producer_function": "00b107f0","publication_site": "00b10fa2","producer_family": "inline refcounted constructor in B107F0","profile": "00d5e1b4","current_zero_slot": "00bd30e0","deleting_slot": "00b101a0","concrete_source_provider": "missing concrete derived owner families","limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.","allocation_bytes_hex": "224h","initializer": "00b54940","allocation_site": "00b10f70","initializer_call_site": "00b10fae"},
-    {"offset": "028","producer_function": "00b107f0","publication_site": "00b10fe4","producer_family": "00b54e70; allocation 43Ch","profile": "00d62150","current_zero_slot": "00bd30e0","deleting_slot": "00b54f70","concrete_source_provider": "missing B54E70/B54F90 and terminal family","limitations": "Do not infer allocation size from last initialized field: both callers allocate 43Ch, not 28h."},
-    {"offset": "02c","producer_function": "00b107f0","publication_site": "00b11e2f","producer_family": "00b54e70; allocation 43Ch","profile": "00d62150","current_zero_slot": "00bd30e0","deleting_slot": "00b54f70","concrete_source_provider": "missing B54E70/B54F90 and terminal family","limitations": "Do not infer allocation size from last initialized field: both callers allocate 43Ch, not 28h."},
-    {"offset": "030","producer_function": "00b107f0","publication_site": "00b11e76","producer_family": "00b4f0c0; allocation 26Ch","profile": "00d61f1c","current_zero_slot": "00bd30e0","deleting_slot": "00b4f540","concrete_source_provider": "missing B4F0C0 and terminal family","limitations": "Caller allocates 26Ch, not 260h; later branch can release and clear this field."},
-    {"offset": "038","producer_function": "00b107f0","publication_site": "00b10a41","producer_family": "00b4e020; allocation 18h (24 bytes)","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family","limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."},
-    {"offset": "03c","producer_function": "00b107f0","publication_site": "00b10a7f","producer_family": "00b4e020; allocation 18h (24 bytes)","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family","limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."},
-    {"offset": "040","producer_function": "00b107f0","publication_site": "00b10a95","producer_family": "retained alias of current service+04C","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "same missing 18h owner family","limitations": "Identity comparison, publish new, increment new, decrement old; not the immediately preceding +03C constructor result."},
-    {"offset": "044","producer_function": "00b107f0","publication_site": "00b10b20","producer_family": "00b4e020; allocation 18h (24 bytes)","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family","limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."},
-    {"offset": "048","producer_function": "00b107f0","publication_site": "00b10b5c","producer_family": "00b4e020; allocation 18h (24 bytes)","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family","limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."},
-    {"offset": "04c","producer_function": "00b107f0","publication_site": "00b10a00","producer_family": "00b4e020; allocation 18h (24 bytes)","profile": "00d61eb8","current_zero_slot": "00bd30e0","deleting_slot": "00b4e410","concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family","limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."},
-    {"offset": "050","producer_function": "00b107f0","publication_site": "00b10adb","producer_family": "00b2a7c0 registered render target factory","profile": "00d619a0","current_zero_slot": "00bd30e0","deleting_slot": "00b3f5b0","concrete_source_provider": "native_surface_owner.hpp/.cpp; factory has only d3d9_resources append fragment","limitations": "Full B2A7C0 creation/retry/accounting composition is unreconstructed; a named factory is not a resolved provider."},
-    {"offset": "054","producer_function": "00b107f0","publication_site": "00b10b90","producer_family": "current renderer virtual+88 -> B2A070 -> B3F7B0","profile": "00d61948","current_zero_slot": "00bd30e0","deleting_slot": "00b3f590","concrete_source_provider": "native_texture_2d_owner.hpp/.cpp for lifetime; missing B2A070/B3F7B0 factory composition","limitations": "B3F7B0 writes D61948 at B3F7E3; B2A070 returns its constructor result. Current renderer D5F0A8/+88 supplies this domain."},
-    {"offset": "058","producer_function": "00b107f0","publication_site": "00b10baf","producer_family": "retained alias of current service+050","profile": "00d619a0","current_zero_slot": "00bd30e0","deleting_slot": "00b3f5b0","concrete_source_provider": "native_surface_owner.hpp/.cpp","limitations": "Identity comparison and retain/release at assignment; not an alias of +05C."},
-    {"offset": "05c","producer_function": "00b107f0","publication_site": "00b10ba0","producer_family": "current +054 virtual+30 -> B3FD80","profile": "00d619a0 (surface result; producer closure open)","current_zero_slot": "00bd30e0","deleting_slot": "00b3f5b0","concrete_source_provider": "native_surface_owner.hpp/.cpp; B3FD80 accessor missing","limitations": "D61948/+30 is B3FD80, but its full result/retain contract was not recovered in this packet; surface domain remains conditional, not admitted by name alone."},
-    {"offset": "060","producer_function": "00b107f0","publication_site": "00b10c1d","producer_family": "inline refcounted constructor in B107F0","profile": "00d5e164","current_zero_slot": "00bd30e0","deleting_slot": "00b10120","concrete_source_provider": "missing concrete derived owner families","limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.","allocation_bytes_hex": "20h","initializer": "00b540b0","allocation_site": "00b10bd6","initializer_call_site": "00b10c20"},
-    {"offset": "064","producer_function": "00b107f0","publication_site": "00b10c5b","producer_family": "inline refcounted constructor in B107F0","profile": "00d5e178","current_zero_slot": "00bd30e0","deleting_slot": "00b10140","concrete_source_provider": "missing concrete derived owner families","limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.","allocation_bytes_hex": "20h","initializer": "00b542d0","allocation_site": "00b10c27","initializer_call_site": "00b10c88"},
-    {"offset": "068","producer_function": "00b107f0","publication_site": "00b10ce2","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "06c","producer_function": "00b107f0","publication_site": "00b10dc8","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "070","producer_function": "00b107f0","publication_site": "00b11563","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "074","producer_function": "00b107f0","publication_site": "00b11908","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "078","producer_function": null,"publication_site": null,"producer_family": "BK explicit zero; nonzero writer unresolved","profile": "unresolved","concrete_source_provider": "none admitted","limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."},
-    {"offset": "07c","producer_function": null,"publication_site": null,"producer_family": "BK explicit zero; nonzero writer unresolved","profile": "unresolved","concrete_source_provider": "none admitted","limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."},
-    {"offset": "080","producer_function": "00b107f0","publication_site": "00b1107a","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "1c8","producer_function": "00b107f0","publication_site": "00b11eda","producer_family": "00b1fbb0 frame-target constructor","profile": "00d5e600","current_zero_slot": "00bd30e0","deleting_slot": "00b1fcf0","concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)","limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."},
-    {"offset": "1cc","producer_function": "00b107f0","publication_site": "00b11db0","producer_family": "00b1fbb0 frame-target constructor","profile": "00d5e600","current_zero_slot": "00bd30e0","deleting_slot": "00b1fcf0","concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)","limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."},
-    {"offset": "1d0","producer_function": null,"publication_site": null,"producer_family": "BK explicit zero; nonzero writer unresolved","profile": "unresolved","concrete_source_provider": "none admitted","limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."},
-    {"offset": "1d4","producer_function": "00b107f0","publication_site": "00b1089a","producer_family": "00b1fbb0 frame-target constructor","profile": "00d5e600","current_zero_slot": "00bd30e0","deleting_slot": "00b1fcf0","concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)","limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."},
-    {"offset": "650","producer_function": "00b107f0","publication_site": "00b11f4d","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "654","producer_function": "00b107f0","publication_site": "00b12cf9","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "658","producer_function": "00b107f0","publication_site": "00b1210f","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "65c","producer_function": "00b107f0","publication_site": "00b12500","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "660","producer_function": "00b107f0","publication_site": "00b12fb1","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "664","producer_function": "00b107f0","publication_site": "00b129d9","producer_family": "00b4e470; allocation 20h (32 bytes)","profile": "00d61ec0","current_zero_slot": "00bd30e0","deleting_slot": "00b4e430","concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper","limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."},
-    {"offset": "66c","producer_function": "00b0fd70","publication_site": "00b0fdb3","producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0","profile": "returned cache owner current profile; not universally D61948","current_zero_slot": "current profile slot0","deleting_slot": "current profile slot4","concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile","limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.","producer_call_site": "00b0fdb0"},
-    {"offset": "670","producer_function": "00b0fdc0","publication_site": "00b0fe03","producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0","profile": "returned cache owner current profile; not universally D61948","current_zero_slot": "current profile slot0","deleting_slot": "current profile slot4","concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile","limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.","producer_call_site": "00b0fe00"},
-    {"offset": "674","producer_function": "00b0fe10","publication_site": "00b0fe53","producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0","profile": "returned cache owner current profile; not universally D61948","current_zero_slot": "current profile slot0","deleting_slot": "current profile slot4","concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile","limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.","producer_call_site": "00b0fe50"},
-    {"offset": "678","producer_function": "00b0fe60","publication_site": "00b0fea3","producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0","profile": "returned cache owner current profile; not universally D61948","current_zero_slot": "current profile slot0","deleting_slot": "current profile slot4","concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile","limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.","producer_call_site": "00b0fea0"}
+    {
+      "offset": "010",
+      "producer_function": null,
+      "publication_site": null,
+      "producer_family": "BK explicit zero; nonzero writer unresolved",
+      "profile": "unresolved",
+      "concrete_source_provider": "none admitted",
+      "limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."
+    },
+    {
+      "offset": "018",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10e8b",
+      "producer_family": "inline refcounted constructor in B107F0",
+      "profile": "00d5e18c",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b10160",
+      "concrete_source_provider": "missing concrete derived owner families",
+      "limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.",
+      "allocation_bytes_hex": "220h",
+      "initializer": "00b544f0",
+      "allocation_site": "00b10e5f",
+      "initializer_call_site": "00b10eb9"
+    },
+    {
+      "offset": "01c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10eee",
+      "producer_family": "inline refcounted constructor in B107F0",
+      "profile": "00d5e1a0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b10180",
+      "concrete_source_provider": "missing concrete derived owner families",
+      "limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.",
+      "allocation_bytes_hex": "90h",
+      "initializer": "00b546f0",
+      "allocation_site": "00b10ec3",
+      "initializer_call_site": "00b10f20"
+    },
+    {
+      "offset": "020",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10f5a",
+      "producer_family": "00b50d40; allocation 250h",
+      "profile": "00d61fe0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b50fe0",
+      "concrete_source_provider": "missing B50D40/B51090 and terminal family",
+      "limitations": "Constructor writes count1/profile; initializer B51090 runs after publication."
+    },
+    {
+      "offset": "024",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10fa2",
+      "producer_family": "inline refcounted constructor in B107F0",
+      "profile": "00d5e1b4",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b101a0",
+      "concrete_source_provider": "missing concrete derived owner families",
+      "limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.",
+      "allocation_bytes_hex": "224h",
+      "initializer": "00b54940",
+      "allocation_site": "00b10f70",
+      "initializer_call_site": "00b10fae"
+    },
+    {
+      "offset": "028",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10fe4",
+      "producer_family": "00b54e70; allocation 43Ch",
+      "profile": "00d62150",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b54f70",
+      "concrete_source_provider": "missing B54E70/B54F90 and terminal family",
+      "limitations": "Do not infer allocation size from last initialized field: both callers allocate 43Ch, not 28h."
+    },
+    {
+      "offset": "02c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11e2f",
+      "producer_family": "00b54e70; allocation 43Ch",
+      "profile": "00d62150",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b54f70",
+      "concrete_source_provider": "missing B54E70/B54F90 and terminal family",
+      "limitations": "Do not infer allocation size from last initialized field: both callers allocate 43Ch, not 28h."
+    },
+    {
+      "offset": "030",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11e76",
+      "producer_family": "00b4f0c0; allocation 26Ch",
+      "profile": "00d61f1c",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4f540",
+      "concrete_source_provider": "missing B4F0C0 and terminal family",
+      "limitations": "Caller allocates 26Ch, not 260h; later branch can release and clear this field."
+    },
+    {
+      "offset": "038",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10a41",
+      "producer_family": "00b4e020; allocation 18h (24 bytes)",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family",
+      "limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."
+    },
+    {
+      "offset": "03c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10a7f",
+      "producer_family": "00b4e020; allocation 18h (24 bytes)",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family",
+      "limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."
+    },
+    {
+      "offset": "040",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10a95",
+      "producer_family": "retained alias of current service+04C",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "same missing 18h owner family",
+      "limitations": "Identity comparison, publish new, increment new, decrement old; not the immediately preceding +03C constructor result."
+    },
+    {
+      "offset": "044",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10b20",
+      "producer_family": "00b4e020; allocation 18h (24 bytes)",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family",
+      "limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."
+    },
+    {
+      "offset": "048",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10b5c",
+      "producer_family": "00b4e020; allocation 18h (24 bytes)",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family",
+      "limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."
+    },
+    {
+      "offset": "04c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10a00",
+      "producer_family": "00b4e020; allocation 18h (24 bytes)",
+      "profile": "00d61eb8",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e410",
+      "concrete_source_provider": "missing: B4E020/B4E140/B4E410 owner family",
+      "limitations": "B4E020 constructor body examined for profile/member production; destructor children not closed."
+    },
+    {
+      "offset": "050",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10adb",
+      "producer_family": "00b2a7c0 registered render target factory",
+      "profile": "00d619a0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b3f5b0",
+      "concrete_source_provider": "native_surface_owner.hpp/.cpp; factory has only d3d9_resources append fragment",
+      "limitations": "Full B2A7C0 creation/retry/accounting composition is unreconstructed; a named factory is not a resolved provider."
+    },
+    {
+      "offset": "054",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10b90",
+      "producer_family": "current renderer virtual+88 -> B2A070 -> B3F7B0",
+      "profile": "00d61948",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b3f590",
+      "concrete_source_provider": "native_texture_2d_owner.hpp/.cpp for lifetime; missing B2A070/B3F7B0 factory composition",
+      "limitations": "B3F7B0 writes D61948 at B3F7E3; B2A070 returns its constructor result. Current renderer D5F0A8/+88 supplies this domain."
+    },
+    {
+      "offset": "058",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10baf",
+      "producer_family": "retained alias of current service+050",
+      "profile": "00d619a0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b3f5b0",
+      "concrete_source_provider": "native_surface_owner.hpp/.cpp",
+      "limitations": "Identity comparison and retain/release at assignment; not an alias of +05C."
+    },
+    {
+      "offset": "05c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10ba0",
+      "producer_family": "current +054 virtual+30 -> B3FD80",
+      "profile": "00d619a0 (surface result; producer closure open)",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b3f5b0",
+      "concrete_source_provider": "native_surface_owner.hpp/.cpp; B3FD80 accessor missing",
+      "limitations": "D61948/+30 is B3FD80, but its full result/retain contract was not recovered in this packet; surface domain remains conditional, not admitted by name alone."
+    },
+    {
+      "offset": "060",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10c1d",
+      "producer_family": "inline refcounted constructor in B107F0",
+      "profile": "00d5e164",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b10120",
+      "concrete_source_provider": "missing concrete derived owner families",
+      "limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.",
+      "allocation_bytes_hex": "20h",
+      "initializer": "00b540b0",
+      "allocation_site": "00b10bd6",
+      "initializer_call_site": "00b10c20"
+    },
+    {
+      "offset": "064",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10c5b",
+      "producer_family": "inline refcounted constructor in B107F0",
+      "profile": "00d5e178",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b10140",
+      "concrete_source_provider": "missing concrete derived owner families",
+      "limitations": "Only inline allocation/count/profile writes and initializer call sites recovered; initializer and terminal bodies remain dependencies.",
+      "allocation_bytes_hex": "20h",
+      "initializer": "00b542d0",
+      "allocation_site": "00b10c27",
+      "initializer_call_site": "00b10c88"
+    },
+    {
+      "offset": "068",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10ce2",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "06c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b10dc8",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "070",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11563",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "074",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11908",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "078",
+      "producer_function": null,
+      "publication_site": null,
+      "producer_family": "BK explicit zero; nonzero writer unresolved",
+      "profile": "unresolved",
+      "concrete_source_provider": "none admitted",
+      "limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."
+    },
+    {
+      "offset": "07c",
+      "producer_function": null,
+      "publication_site": null,
+      "producer_family": "BK explicit zero; nonzero writer unresolved",
+      "profile": "unresolved",
+      "concrete_source_provider": "none admitted",
+      "limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."
+    },
+    {
+      "offset": "080",
+      "producer_function": "00b107f0",
+      "publication_site": "00b1107a",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "1c8",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11eda",
+      "producer_family": "00b1fbb0 frame-target constructor",
+      "profile": "00d5e600",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b1fcf0",
+      "concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)",
+      "limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."
+    },
+    {
+      "offset": "1cc",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11db0",
+      "producer_family": "00b1fbb0 frame-target constructor",
+      "profile": "00d5e600",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b1fcf0",
+      "concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)",
+      "limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."
+    },
+    {
+      "offset": "1d0",
+      "producer_function": null,
+      "publication_site": null,
+      "producer_family": "BK explicit zero; nonzero writer unresolved",
+      "profile": "unresolved",
+      "concrete_source_provider": "none admitted",
+      "limitations": "Bounded register-store searches do not prove absence of stores via aliases, other opcodes, other regions or runtime callbacks."
+    },
+    {
+      "offset": "1d4",
+      "producer_function": "00b107f0",
+      "publication_site": "00b1089a",
+      "producer_family": "00b1fbb0 frame-target constructor",
+      "profile": "00d5e600",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b1fcf0",
+      "concrete_source_provider": "native_frame_target_owner.hpp/.cpp (constructor and terminal)",
+      "limitations": "Existing concrete lifetime requires actual frame context and current surface ownership. +1D4 occurs twice in bulk cleanup; preserve both visits."
+    },
+    {
+      "offset": "650",
+      "producer_function": "00b107f0",
+      "publication_site": "00b11f4d",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "654",
+      "producer_function": "00b107f0",
+      "publication_site": "00b12cf9",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "658",
+      "producer_function": "00b107f0",
+      "publication_site": "00b1210f",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "65c",
+      "producer_function": "00b107f0",
+      "publication_site": "00b12500",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "660",
+      "producer_function": "00b107f0",
+      "publication_site": "00b12fb1",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "664",
+      "producer_function": "00b107f0",
+      "publication_site": "00b129d9",
+      "producer_family": "00b4e470; allocation 20h (32 bytes)",
+      "profile": "00d61ec0",
+      "current_zero_slot": "00bd30e0",
+      "deleting_slot": "00b4e430",
+      "concrete_source_provider": "missing: 20h owner constructor, B4E1F0 destructor, B4E430 wrapper",
+      "limitations": "Distinct from 24h/36-byte D61EC8 auxiliary. Existing material/frame/node/CRT children can support a concrete terminal packet; full construction/FH3 composition remains missing."
+    },
+    {
+      "offset": "66c",
+      "producer_function": "00b0fd70",
+      "publication_site": "00b0fdb3",
+      "producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0",
+      "profile": "returned cache owner current profile; not universally D61948",
+      "current_zero_slot": "current profile slot0",
+      "deleting_slot": "current profile slot4",
+      "concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile",
+      "limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.",
+      "producer_call_site": "00b0fdb0"
+    },
+    {
+      "offset": "670",
+      "producer_function": "00b0fdc0",
+      "publication_site": "00b0fe03",
+      "producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0",
+      "profile": "returned cache owner current profile; not universally D61948",
+      "current_zero_slot": "current profile slot0",
+      "deleting_slot": "current profile slot4",
+      "concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile",
+      "limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.",
+      "producer_call_site": "00b0fe00"
+    },
+    {
+      "offset": "674",
+      "producer_function": "00b0fe10",
+      "publication_site": "00b0fe53",
+      "producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0",
+      "profile": "returned cache owner current profile; not universally D61948",
+      "current_zero_slot": "current profile slot0",
+      "deleting_slot": "current profile slot4",
+      "concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile",
+      "limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.",
+      "producer_call_site": "00b0fe50"
+    },
+    {
+      "offset": "678",
+      "producer_function": "00b0fe60",
+      "publication_site": "00b0fea3",
+      "producer_family": "current renderer virtual+64(name,0), D5F0A8 -> B319B0",
+      "profile": "returned cache owner current profile; not universally D61948",
+      "current_zero_slot": "current profile slot0",
+      "deleting_slot": "current profile slot4",
+      "concrete_source_provider": "native_texture_loading_cache.cpp (B319B0); typed owner depends on actual returned profile",
+      "limitations": "Setter is named but not reconstructed. Release old, clear, reload current renderer, call virtual+64, publish. Native input is not restricted here to 2D textures.",
+      "producer_call_site": "00b0fea0"
+    }
   ],
   "field_070": {
     "construction_preimage": "B14A10 does not write +70. B0F020 only establishes base/publication/lock/registration. App 0073D410 allocator sequence contains no zero fill; BF681B uses malloc and retry/throw, not calloc.",
@@ -245,177 +671,1163 @@
     "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
   },
   "call_steps": [
-    {"address": "00b0f6e9","function": "00b0f6e0","instruction": "call 0xb52270","native": "00b52270"},
-    {"address": "00b0f701","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f70d","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f720","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f72c","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f73f","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f74b","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f75b","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f767","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f777","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f783","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f793","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f79f","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f7b2","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f7be","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f7d4","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f7e0","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f7f6","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f802","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f818","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f824","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f837","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f843","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f853","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f85f","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f86f","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f87b","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f88b","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f897","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f8a7","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f8b3","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f8c3","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f8cf","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f8df","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f8eb","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f8fe","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f90a","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f920","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f92c","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f942","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f94e","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f964","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f970","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f983","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f98f","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f99f","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f9ab","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f9be","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f9ca","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f9dd","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0f9e9","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0f9f9","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa05","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fa15","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa21","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fa31","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa3d","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fa4d","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa59","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fa6c","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa78","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fa8b","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fa97","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0faa7","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fab3","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fac3","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0facf","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fae2","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0faee","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fb01","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fb0d","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fb20","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fb2c","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fb42","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fb4e","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fb64","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fb70","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fb86","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fb92","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fba5","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fbb1","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fbc1","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fbcd","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fbdd","function": "00b0f6e0","instruction": "call ebp","native": "00ce2220+captured_IAT","contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes","kind": "indirect"},
-    {"address": "00b0fbe9","function": "00b0f6e0","instruction": "call eax","native": "captured_owner+vtable00","contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return","kind": "indirect"},
-    {"address": "00b0fc00","native": "00b0f6e0","function": "00b0fc00","kind": "tail_jump"},
-    {"address": "0073dee4","native": "00bf681b","function": "0073d410","contract": "cdecl allocation(6ACh); ADD ESP,4 at 73DEE9; no intervening zero fill before constructor"},
-    {"address": "0073df01","native": "00b14a10","function": "0073d410","contract": "ECX allocator result; constructor receiver, not a no-argument global loader"},
-    {"address": "00b10891","native": "00b1fbb0","function": "00b107f0"},
-    {"address": "00b109ee","native": "00b4e020","function": "00b107f0"},
-    {"address": "00b10a2f","native": "00b4e020","function": "00b107f0"},
-    {"address": "00b10a70","native": "00b4e020","function": "00b107f0"},
-    {"address": "00b10ad4","native": "00b2a7c0","function": "00b107f0"},
-    {"address": "00b10b0e","native": "00b4e020","function": "00b107f0"},
-    {"address": "00b10b53","native": "00b4e020","function": "00b107f0"},
-    {"address": "00b10bd6","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10c20","native": "00b540b0","function": "00b107f0"},
-    {"address": "00b10c27","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10c88","native": "00b542d0","function": "00b107f0"},
-    {"address": "00b10cd4","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b10dba","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b10e5f","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10eb9","native": "00b544f0","function": "00b107f0"},
-    {"address": "00b10ec3","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10f20","native": "00b546f0","function": "00b107f0"},
-    {"address": "00b10f2a","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10f47","native": "00b50d40","function": "00b107f0"},
-    {"address": "00b10f66","native": "00b51090","function": "00b107f0"},
-    {"address": "00b10f70","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10fae","native": "00b54940","function": "00b107f0"},
-    {"address": "00b10fb8","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b10fd5","native": "00b54e70","function": "00b107f0"},
-    {"address": "00b1106c","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b1150c","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b11535","native": "0041e870","function": "00b107f0"},
-    {"address": "00b11555","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b118fa","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b11d9d","native": "00b1fbb0","function": "00b107f0"},
-    {"address": "00b11dea","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b11e07","native": "00b54e70","function": "00b107f0"},
-    {"address": "00b11e3b","native": "00b54f90","function": "00b107f0"},
-    {"address": "00b11e45","native": "00bf681b","function": "00b107f0"},
-    {"address": "00b11e62","native": "00b4f0c0","function": "00b107f0"},
-    {"address": "00b11ec5","native": "00b1fbb0","function": "00b107f0"},
-    {"address": "00b11f3f","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b120fe","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b12151","native": "00b4cba0","function": "00b107f0"},
-    {"address": "00b12158","native": "00b189f0","function": "00b107f0"},
-    {"address": "00b124ef","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b1254b","native": "00b4cba0","function": "00b107f0"},
-    {"address": "00b12552","native": "00b189f0","function": "00b107f0"},
-    {"address": "00b129c9","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b12ce8","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b12fa3","native": "00b4e470","function": "00b107f0"},
-    {"address": "00b10b8e","native": "renderer+vtable88","function": "00b107f0","kind": "indirect","resolved_profile": "00d5f0a8","resolved_target": "00b2a070","contract": "ECX current renderer; five DWORD stack arguments; B2A070 RET14h"},
-    {"address": "00b10b9e","native": "service_054+vtable30","function": "00b107f0","kind": "indirect","resolved_profile": "00d61948","resolved_target": "00b3fd80","contract": "Two zero arguments; accessor contract not closed"},
-    {"address": "00b0fdb0","native": "renderer+vtable64","function": "00b0fd70","kind": "indirect","resolved_profile": "00d5f0a8","resolved_target": "00b319b0","contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"},
-    {"address": "00b0fe00","native": "renderer+vtable64","function": "00b0fdc0","kind": "indirect","resolved_profile": "00d5f0a8","resolved_target": "00b319b0","contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"},
-    {"address": "00b0fe50","native": "renderer+vtable64","function": "00b0fe10","kind": "indirect","resolved_profile": "00d5f0a8","resolved_target": "00b319b0","contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"},
-    {"address": "00b0fea0","native": "renderer+vtable64","function": "00b0fe60","kind": "indirect","resolved_profile": "00d5f0a8","resolved_target": "00b319b0","contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"},
-    {"address": "00b2a206","native": "00b3f2b0","function": "00b2a070"},
-    {"address": "00b2a226","native": "00b3f7b0","function": "00b2a070"},
-    {"address": "00b3f7dc","native": "00b33fc0","function": "00b3f7b0"},
-    {"address": "00b4e433","native": "00b4e1f0","function": "00b4e430"},
-    {"address": "00b4e440","native": "00bf65ac","function": "00b4e430"},
-    {"address": "00b4e245","native": "00b6dfa0","function": "00b4e1f0"},
-    {"address": "00b4e254","native": "00b6dfa0","function": "00b4e1f0"},
-    {"address": "00b4e264","native": "00bf65ac","function": "00b4e1f0"},
-    {"address": "00b4e295","native": "00bd30f0","function": "00b4e1f0"},
-    {"address": "00b4e4c1","native": "00bf681b","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e4d8","native": "00b1fbb0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e58a","native": "00b73b60","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e59e","native": "00b73d70","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e5b9","native": "00b73bb0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e5d8","native": "00535320","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e5e4","native": "00b18a40","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e5e9","native": "00533fa0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e61f","native": "00b864c0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e627","native": "00b865a0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e62f","native": "00b73c60","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e639","native": "00b74eb0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e66f","native": "00b75030","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e6c3","native": "00b75170","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e6cd","native": "00b71930","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e701","native": "00b71a80","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e739","native": "00bf681b","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e750","native": "00b1f850","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e790","native": "00b1f940","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e799","native": "00b71990","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e7bb","native": "00bf681b","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"},
-    {"address": "00b4e7ec","native": "00b51bd0","function": "00b4e470","contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"}
+    {
+      "address": "00b0f6e9",
+      "function": "00b0f6e0",
+      "instruction": "call 0xb52270",
+      "native": "00b52270"
+    },
+    {
+      "address": "00b0f701",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f70d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f720",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f72c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f73f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f74b",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f75b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f767",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f777",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f783",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f793",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f79f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f7b2",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f7be",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f7d4",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f7e0",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f7f6",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f802",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f818",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f824",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f837",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f843",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f853",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f85f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f86f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f87b",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f88b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f897",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8a7",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8b3",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8c3",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8cf",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8df",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8eb",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f8fe",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f90a",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f920",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f92c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f942",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f94e",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f964",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f970",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f983",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f98f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f99f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9ab",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9be",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9ca",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9dd",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9e9",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0f9f9",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa05",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa15",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa21",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa31",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa3d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa4d",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa59",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa6c",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa78",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa8b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fa97",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0faa7",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fab3",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fac3",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0facf",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fae2",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0faee",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb01",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb0d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb20",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb2c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb42",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb4e",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb64",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb70",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb86",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fb92",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fba5",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fbb1",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fbc1",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fbcd",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fbdd",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fbe9",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return",
+      "kind": "indirect"
+    },
+    {
+      "address": "00b0fc00",
+      "native": "00b0f6e0",
+      "function": "00b0fc00",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0073dee4",
+      "native": "00bf681b",
+      "function": "0073d410",
+      "contract": "cdecl allocation(6ACh); ADD ESP,4 at 73DEE9; no intervening zero fill before constructor"
+    },
+    {
+      "address": "0073df01",
+      "native": "00b14a10",
+      "function": "0073d410",
+      "contract": "ECX allocator result; constructor receiver, not a no-argument global loader"
+    },
+    {
+      "address": "00b10891",
+      "native": "00b1fbb0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b109ee",
+      "native": "00b4e020",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10a2f",
+      "native": "00b4e020",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10a70",
+      "native": "00b4e020",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10ad4",
+      "native": "00b2a7c0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10b0e",
+      "native": "00b4e020",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10b53",
+      "native": "00b4e020",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10bd6",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10c20",
+      "native": "00b540b0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10c27",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10c88",
+      "native": "00b542d0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10cd4",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10dba",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10e5f",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10eb9",
+      "native": "00b544f0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10ec3",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10f20",
+      "native": "00b546f0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10f2a",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10f47",
+      "native": "00b50d40",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10f66",
+      "native": "00b51090",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10f70",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10fae",
+      "native": "00b54940",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10fb8",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10fd5",
+      "native": "00b54e70",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b1106c",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b1150c",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11535",
+      "native": "0041e870",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11555",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b118fa",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11d9d",
+      "native": "00b1fbb0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11dea",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11e07",
+      "native": "00b54e70",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11e3b",
+      "native": "00b54f90",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11e45",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11e62",
+      "native": "00b4f0c0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11ec5",
+      "native": "00b1fbb0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11f3f",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b120fe",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b12151",
+      "native": "00b4cba0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b12158",
+      "native": "00b189f0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b124ef",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b1254b",
+      "native": "00b4cba0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b12552",
+      "native": "00b189f0",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b129c9",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b12ce8",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b12fa3",
+      "native": "00b4e470",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b10b8e",
+      "native": "renderer+vtable88",
+      "function": "00b107f0",
+      "kind": "indirect",
+      "resolved_profile": "00d5f0a8",
+      "resolved_target": "00b2a070",
+      "contract": "ECX current renderer; five DWORD stack arguments; B2A070 RET14h"
+    },
+    {
+      "address": "00b10b9e",
+      "native": "service_054+vtable30",
+      "function": "00b107f0",
+      "kind": "indirect",
+      "resolved_profile": "00d61948",
+      "resolved_target": "00b3fd80",
+      "contract": "Two zero arguments; accessor contract not closed"
+    },
+    {
+      "address": "00b0fdb0",
+      "native": "renderer+vtable64",
+      "function": "00b0fd70",
+      "kind": "indirect",
+      "resolved_profile": "00d5f0a8",
+      "resolved_target": "00b319b0",
+      "contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"
+    },
+    {
+      "address": "00b0fe00",
+      "native": "renderer+vtable64",
+      "function": "00b0fdc0",
+      "kind": "indirect",
+      "resolved_profile": "00d5f0a8",
+      "resolved_target": "00b319b0",
+      "contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"
+    },
+    {
+      "address": "00b0fe50",
+      "native": "renderer+vtable64",
+      "function": "00b0fe10",
+      "kind": "indirect",
+      "resolved_profile": "00d5f0a8",
+      "resolved_target": "00b319b0",
+      "contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"
+    },
+    {
+      "address": "00b0fea0",
+      "native": "renderer+vtable64",
+      "function": "00b0fe60",
+      "kind": "indirect",
+      "resolved_profile": "00d5f0a8",
+      "resolved_target": "00b319b0",
+      "contract": "name header and flags0; B319B0 consumes8 bytes; setter RET4"
+    },
+    {
+      "address": "00b2a206",
+      "native": "00b3f2b0",
+      "function": "00b2a070"
+    },
+    {
+      "address": "00b2a226",
+      "native": "00b3f7b0",
+      "function": "00b2a070"
+    },
+    {
+      "address": "00b3f7dc",
+      "native": "00b33fc0",
+      "function": "00b3f7b0"
+    },
+    {
+      "address": "00b4e433",
+      "native": "00b4e1f0",
+      "function": "00b4e430"
+    },
+    {
+      "address": "00b4e440",
+      "native": "00bf65ac",
+      "function": "00b4e430"
+    },
+    {
+      "address": "00b4e245",
+      "native": "00b6dfa0",
+      "function": "00b4e1f0"
+    },
+    {
+      "address": "00b4e254",
+      "native": "00b6dfa0",
+      "function": "00b4e1f0"
+    },
+    {
+      "address": "00b4e264",
+      "native": "00bf65ac",
+      "function": "00b4e1f0"
+    },
+    {
+      "address": "00b4e295",
+      "native": "00bd30f0",
+      "function": "00b4e1f0"
+    },
+    {
+      "address": "00b4e4c1",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e4d8",
+      "native": "00b1fbb0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e58a",
+      "native": "00b73b60",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e59e",
+      "native": "00b73d70",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e5b9",
+      "native": "00b73bb0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e5d8",
+      "native": "00535320",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e5e4",
+      "native": "00b18a40",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e5e9",
+      "native": "00533fa0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e61f",
+      "native": "00b864c0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e627",
+      "native": "00b865a0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e62f",
+      "native": "00b73c60",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e639",
+      "native": "00b74eb0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e66f",
+      "native": "00b75030",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e6c3",
+      "native": "00b75170",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e6cd",
+      "native": "00b71930",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e701",
+      "native": "00b71a80",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e739",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e750",
+      "native": "00b1f850",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e790",
+      "native": "00b1f940",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e799",
+      "native": "00b71990",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e7bb",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    },
+    {
+      "address": "00b4e7ec",
+      "native": "00b51bd0",
+      "function": "00b4e470",
+      "contract": "Native dependency edge; body-specific source availability must be checked before naming a new interface"
+    }
   ],
   "call_audit_scope": "All85 bulk call rows reused plus selected producer/terminal edges; indirect rows explicitly labeled. Mechanical verifier skips indirect numeric-target proof; profile bytes/register provenance are separate evidence. No fullB107F0/B4E470 call-closure credit.",
   "uncertainty": [
@@ -438,18 +1850,166 @@
     "native_image_hash_rechecked": true
   },
   "followups": [
-    {"priority": 1,"addresses": ["00b4e1f0","00b4e430","00b4e470","00b51bd0"],"packet": "20h D61EC0 owner lifetime and producer closure","contract": "Use concrete material/frame/node/CRT domains and canonical actual-owner binding. Repair owned listing gaps separately under integrator lock before complete saved-analysis claim. Recover exact original count1 typed construction and constructor EH ownership; do not substitute24h D61EC8."},
-    {"priority": 2,"addresses": ["00b4e020","00b4e140","00b4e410"],"packet": "18h D61EB8 owner lifetime","contract": "Resolve actual surface/texture children and retain paths first; sixDWORD constructor ABI; cover fields+38/+3C/+40/+44/+48/+4C."},
-    {"priority": 3,"addresses": ["00b10120","00b10140","00b10160","00b10180","00b101a0","00b50fe0","00b54f70","00b4f540"],"packet": "Split derived owner families by independent child closures","contract": "Inline producers D5E164/178/18C/1A0/1B4; named initializers are missing source. B54E70 callers allocate43Ch and B4F0C0 caller26Ch; do not size objects from last field written."},
-    {"priority": 4,"addresses": ["00b2a070","00b3f7b0","00b2a7c0","00b3fd80"],"packet": "Complete factory and surface accessor ownership","contract": "Reuse existing typed2D/surface/pool/registry providers; append-only fragment is insufficient for factory ownership."},
-    {"priority": 5,"addresses": ["00b0fd70","00b0fdc0","00b0fe10","00b0fe60","00b0feb0"],"packet": "Remap setters and material/cache lifetime closure","contract": "Use current renderer/profile/IAT and exact captured pointer release, recover non2D domains as needed; track slot2 separately from67C slot3."}
+    {
+      "priority": 1,
+      "addresses": [
+        "00b4e1f0",
+        "00b4e430",
+        "00b4e470",
+        "00b51bd0"
+      ],
+      "packet": "20h D61EC0 owner lifetime and producer closure",
+      "contract": "Use concrete material/frame/node/CRT domains and canonical actual-owner binding. Repair owned listing gaps separately under integrator lock before complete saved-analysis claim. Recover exact original count1 typed construction and constructor EH ownership; do not substitute24h D61EC8."
+    },
+    {
+      "priority": 2,
+      "addresses": [
+        "00b4e020",
+        "00b4e140",
+        "00b4e410"
+      ],
+      "packet": "18h D61EB8 owner lifetime",
+      "contract": "Resolve actual surface/texture children and retain paths first; sixDWORD constructor ABI; cover fields+38/+3C/+40/+44/+48/+4C."
+    },
+    {
+      "priority": 3,
+      "addresses": [
+        "00b10120",
+        "00b10140",
+        "00b10160",
+        "00b10180",
+        "00b101a0",
+        "00b50fe0",
+        "00b54f70",
+        "00b4f540"
+      ],
+      "packet": "Split derived owner families by independent child closures",
+      "contract": "Inline producers D5E164/178/18C/1A0/1B4; named initializers are missing source. B54E70 callers allocate43Ch and B4F0C0 caller26Ch; do not size objects from last field written."
+    },
+    {
+      "priority": 4,
+      "addresses": [
+        "00b2a070",
+        "00b3f7b0",
+        "00b2a7c0",
+        "00b3fd80"
+      ],
+      "packet": "Complete factory and surface accessor ownership",
+      "contract": "Reuse existing typed2D/surface/pool/registry providers; append-only fragment is insufficient for factory ownership."
+    },
+    {
+      "priority": 5,
+      "addresses": [
+        "00b0fd70",
+        "00b0fdc0",
+        "00b0fe10",
+        "00b0fe60",
+        "00b0feb0"
+      ],
+      "packet": "Remap setters and material/cache lifetime closure",
+      "contract": "Use current renderer/profile/IAT and exact captured pointer release, recover non2D domains as needed; track slot2 separately from67C slot3."
+    }
   ],
   "native_spans": [
-    {"function": "00b0f6e0","inclusive_end": "00b0fbf8","bytes": 1305,"sha256": "c984babdef3c4d0de1a029f4a699aa1a653e856c70374f7d2ff191031f28d0db","coverage": "disk byte pin only; see scoped analysis coverage"},
-    {"function": "00b0fc00","inclusive_end": "00b0fc04","bytes": 5,"sha256": "bd7c6f6aa9c2a3cce9285dca4e86c700598380da4eec745bbc77d8959c632887","coverage": "disk byte pin only; see scoped analysis coverage"},
-    {"function": "00b107f0","inclusive_end": "00b13028","bytes": 10297,"sha256": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14","coverage": "disk byte pin only; see scoped analysis coverage"},
-    {"function": "00b4e470","inclusive_end": "00b4e83d","bytes": 974,"sha256": "e364bf0f52b153a846b2e4d5c4e36ebba296f55466424e33704d6194f334080b","coverage": "disk byte pin only; see scoped analysis coverage"},
-    {"function": "00b4e1f0","inclusive_end": "00b4e2ac","bytes": 189,"sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb","coverage": "disk byte pin only; see scoped analysis coverage"},
-    {"function": "00b4e430","inclusive_end": "00b4e44d","bytes": 30,"sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee","coverage": "disk byte pin only; see scoped analysis coverage"}
-  ]
+    {
+      "function": "00b0f6e0",
+      "inclusive_end": "00b0fbf8",
+      "bytes": 1305,
+      "sha256": "c984babdef3c4d0de1a029f4a699aa1a653e856c70374f7d2ff191031f28d0db",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    },
+    {
+      "function": "00b0fc00",
+      "inclusive_end": "00b0fc04",
+      "bytes": 5,
+      "sha256": "bd7c6f6aa9c2a3cce9285dca4e86c700598380da4eec745bbc77d8959c632887",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    },
+    {
+      "function": "00b107f0",
+      "inclusive_end": "00b13028",
+      "bytes": 10297,
+      "sha256": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    },
+    {
+      "function": "00b4e470",
+      "inclusive_end": "00b4e83d",
+      "bytes": 974,
+      "sha256": "e364bf0f52b153a846b2e4d5c4e36ebba296f55466424e33704d6194f334080b",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    },
+    {
+      "function": "00b4e1f0",
+      "inclusive_end": "00b4e2ac",
+      "bytes": 189,
+      "sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    },
+    {
+      "function": "00b4e430",
+      "inclusive_end": "00b4e44d",
+      "bytes": 30,
+      "sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee",
+      "coverage": "disk byte pin only; see scoped analysis coverage"
+    }
+  ],
+  "primary_integration_review": {
+    "reviewed_worker_commit": "7e8b6bb3b5e09678de121ef5645052e2d8a7261c",
+    "worker_report_sha256": "55337cbeacfb36ee4bd7e04cf1b2403bea69c986a6578ba5c3ca392bdd36391a",
+    "reviewer": "primary integrator",
+    "unresolved_fields": [
+      "010",
+      "078",
+      "07c",
+      "1d0"
+    ],
+    "live_PE_spot_checks": [
+      {
+        "address": "00b10816",
+        "bytes": 30,
+        "sha256": "dcad859d056d539a2d4ecf878ddaebed22ba2d36cdda812cab73743f2eddd0f4",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b10904",
+        "bytes": 8,
+        "sha256": "436b5bbe91dcdb018054582612ba9a9ad4fe5e988c8bce9e777b8ec25712850c",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b1150a",
+        "bytes": 100,
+        "sha256": "f0f219c8655db2754c1b6cae21546d77f1c7f972ad4a26b7eff7941c1aa24580",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b12142",
+        "bytes": 30,
+        "sha256": "893330547451ba75f8496c05f903fb97f81c814955f65344af5a84004d71d6ef",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b1253c",
+        "bytes": 30,
+        "sha256": "0b13946c37f9c91015aae7dea48a26507ef4db96e8efc2366c8c9e78897b0f64",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00d61ec0",
+        "bytes": 16,
+        "sha256": "4a5ad77eb3198d489fa57df9bd17bb66bcc99f419038915446a5f41066fc693c",
+        "live_PE_equal": true
+      }
+    ],
+    "call_audit": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\reports\\native_render_resource_member_producers_bm.json: 81 call rows checked, 0 failed",
+    "source_pins_verified": 17,
+    "findings": [],
+    "scope": "Reviewed the document, field matrix, coverage and +70/+67C claims; all37 publication stores and stated numeric profile words checked against disk, scoped live spot checks, six native span pins, source pins and mechanical call audit. This does not independently recover all producer bodies or prove the90 indirect targets.",
+    "source_body_credit": 0,
+    "build_required": false,
+    "fixture_tested": false,
+    "gameplay_validated": false,
+    "publication_store_count": 37
+  }
 }
