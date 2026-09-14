@@ -32,7 +32,7 @@ Four returning-free tails were repaired (B8EBC0, B8B2C0, CC2980, CC2AA0), both p
 
 ## Validation and limits
 
-Strict standalone MSVC Win32 compilation (`/O2 /fp:strict /W4 /WX /EHsc`) and one controlled-child fixture pass. Project registration/build is pending release of the shared `cmake/startup.cmake` lease; the integration receipt will record the final build revision and results.
+Strict standalone MSVC Win32 compilation (`/O2 /fp:strict /W4 /WX /EHsc`) and one controlled-child fixture pass. The baseline `scripts/build.ps1` and both existing CTests also pass; that CMake build excludes this new module. Its source object is compiled separately and linked into the paired fixture. Project registration/integrated build is pending release of the shared `cmake/startup.cmake` lease. The source commit and exact standalone artifacts are retained in the integration receipt and ignored `local/native_camera_group_resource_cc/standalone/`; they are copies of the original successful run, not a claimed rerun.
 
 The fixture executes all twelve copied ordinary bodies with 30 direct and 9 absolute relocations. It compares constructors, current three-cell predicates, GroupParams payload skipping, camera scalar bit patterns, repeated/case-insensitive TargetName assignment, unknown children and scalar flags2 destruction. Eleven paired payloads include finite positive/negative values, signed zero/infinities, the smallest positive subnormal and a quiet NaN. Both paths use the same host `_CIatan` and existing concrete read/string/pool dependencies. Only the copied GroupParams parser's profile immediate is rebound to a fixture table with copied B8E580 at slot20, then restored for normalized comparison. Original EH paths are guarded out.
 

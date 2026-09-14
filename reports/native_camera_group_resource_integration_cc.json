@@ -1,0 +1,155 @@
+{
+  "packet": "orch4_native_camera_group_resource_cc",
+  "state": "source_and_standalone_fixture_complete_project_registration_pending",
+  "source_commit": "b9ff6b52d810028cef64d08e1b75c3e562cebe2a",
+  "ordinary_bodies": 12,
+  "instruction_owners": 302,
+  "preserved_live_comments": 21,
+  "source_inputs": 2671,
+  "source_manifest": {
+    "path": "local/native_camera_group_resource_cc/standalone/source_manifest.json",
+    "sha256": "ada92b1ba85571d4151142589bb899513f1d0b23a9b6911d988695605437abfa",
+    "bytes": 289316
+  },
+  "baseline_project_build": "Passed; two existing CTests. New module is not yet registered.",
+  "standalone_fixture": "Passed with explicit new-source object plus baseline libraries; exact artifacts retained under standalone/.",
+  "startup_registry_lease": [
+    {
+      "id": "cc7:cc7_rate_wire",
+      "owner": "cc7",
+      "packet": "cc7_rate_wire",
+      "addresses": [
+        "007d9c80",
+        "007da710",
+        "0085e4d0"
+      ],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_control_rate.hpp",
+        "src/game_hosts_units.cpp",
+        "src/plane_control_rate.cpp"
+      ],
+      "claimed": "2026-09-14T21:01:36+00:00",
+      "expires": "2026-09-15T02:09:52+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+      "note": ""
+    }
+  ],
+  "main_integration": "Pending source registration, review of pinned incoming main and integrated build/fixture validation. No main publication claimed.",
+  "incoming_main_observed": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
+  "incoming_review": "CMake normalized registrations only: no removals/duplicates; three additions: native_resource_instance_lifecycle.cpp, native_resource_instance_publication.cpp, plane_control_rate.cpp. Remaining production sources/docs not yet reviewed.",
+  "evidence_limits": [
+    "Source ABI includes explicit context. Original register/stack ABI, FH3/SEH/private frame aliasing and hardware faults are not replaced.",
+    "Original normal paths share existing concrete allocation, strings/pool, structured node/stream and reference dependencies. Original EH handlers are guarded out.",
+    "BF8490 is relocated to the same host _CIatan as source. Native CPU/MXCSR/control-word selection, special/error handling and original CRT identity remain unproven.",
+    "Original GroupParams parser profile immediate is rebound to a fixture table whose current slot20 executes copied B8E580; restored after return for normalized comparison. Source captures actual native profile/current slot20.",
+    "Type token cells are borrowed and reread. Fixture values exercise the three-cell schedule, not native startup token registration.",
+    "Fixture pools are preconstructed; lazy pool recreation, allocation failures, native parser failure allocation retention and all callback-driven mutation schedules are not newly exercised.",
+    "Fixture manually cleans the resource container after real item slot deletion; complete resource-container destruction, Mesh/SkinedMesh/MatrixIndexedMesh/animation bodies, executable admission and gameplay remain open."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/baseline_build.log",
+      "sha256": "5afab5c6eb603473d6bda5f30cdf0c9862890bc1df977989e464707c3e7eca80",
+      "bytes": 2460
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/compile.log",
+      "sha256": "65c39cff0c93fe4b9ac8750c1259ccdd09119a4937c3b8e9a6c41174f3e96651",
+      "bytes": 45
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/probe.log",
+      "sha256": "ffc41012b60e5ce44ea91ccd84356f64d716ec858fdad26549ac625ecd8a3984",
+      "bytes": 1108
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/child_probe.log",
+      "sha256": "0a8f5a633ffb32806128a339127ed470b5aa5db6c291bf4ed9904bf5876a6f54",
+      "bytes": 1061
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/probe.cpp",
+      "sha256": "1e2327499fdedde21f22ce4231fc545ee852bb1a3384698ebc9d85150eb34b8e",
+      "bytes": 25426
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/probe.exe",
+      "sha256": "f6d93b240152356339726eedf2a2b73a9844ed80d5b1a34900c346910a229c5b",
+      "bytes": 375808
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/probe.map",
+      "sha256": "5b42dc098b57761251864c5646bfc9eed9f935b04e3e933949c508d3260f82d9",
+      "bytes": 602960
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/probe.obj",
+      "sha256": "e74ab6a36e9f2ee5256b03e3a79c42dbda77e482c5e50e2250eab13f05c271f7",
+      "bytes": 287318
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/compile.cmd",
+      "sha256": "faa5dce11a034836fa5210ff7dfc3d29a7727b3426cf7dfc220bc19be883ad77",
+      "bytes": 1006
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/original_bodies.hpp",
+      "sha256": "18a8c25964534fe720707509e38519e6905056252a90348002109387de9c231c",
+      "bytes": 5291
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/original_bodies.json",
+      "sha256": "e76a1ce70270d683f4d13d236a4720aa29d1ed232a7019bb88d37e69c2d9f06b",
+      "bytes": 3039
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/native_camera_group_resource.obj",
+      "sha256": "473b5830d22a302d05c26a1252fef13d25a84182dd517d07240401f1d1b980b2",
+      "bytes": 33467
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/bsp_core.lib",
+      "sha256": "43507fa616f1fecc95ad7c84f7e291aed2c86b3725b9c4c679ffc62f4d02673d",
+      "bytes": 58727814
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/baseline_bsp_game.exe",
+      "sha256": "7162f4782085a4b892d583f75e647af8c80e758c67668c333abd3b199d2a0f15",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/source_manifest.json",
+      "sha256": "ada92b1ba85571d4151142589bb899513f1d0b23a9b6911d988695605437abfa",
+      "bytes": 289316
+    },
+    {
+      "path": "local/native_camera_group_resource_cc/standalone/libraries.json",
+      "sha256": "f2b0511d5ddfe1232f36027412d07a77ea0acb05e855a213a61ff62338d33894",
+      "bytes": 1417
+    },
+    {
+      "path": "reports/native_camera_group_resource_flow_cc.json",
+      "sha256": "3fce279099f526063a6e3cccb40945ed51a083aee43e4eacf81efd5eec3047c8",
+      "bytes": 32571
+    },
+    {
+      "path": "reports/native_camera_group_resource_annotations_cc.json",
+      "sha256": "fd32430788f8872ab339ca211f9631f9aafb01077053b63f373ca3b9316ec703",
+      "bytes": 190879
+    }
+  ]
+}
