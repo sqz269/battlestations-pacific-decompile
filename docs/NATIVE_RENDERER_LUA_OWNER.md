@@ -18,14 +18,28 @@ saved binary listing show the following native sequence:
 | `00B1BBF0..00B1BC41` | ECX owner; RET | Set derived vtable, close the embedded Lua owner at `+4` through `00B669A0`, then call base destructor. |
 | `00B1BB70..00B1BB8B`, `00B1BC50..00B1BC6B` | ECX owner, stack low-byte flags, EAX original pointer, RET 4 | Call respective destructor; if flag bit 0 is set, free original allocation through CRT free `00BF65AC`. |
 
-The native constructors/destructors use FH3/SEH frames. `00B1BB90` arms
-cleanup state 0 after the base returns and state 1 after `00B66BD0`; the
-corresponding source `try` scopes close Lua and then unregister the base if
-opening throws. `00B1BA30` arms its captured guard state after section entry;
-`00B1BAD0` similarly holds that guard through unregister and publication
-clearing. `00B1BBF0` arms base cleanup during Lua close. C++ catch and RAII
-preserve this normal exception order but do not reproduce native FH3 stack maps,
-SEH hardware-fault behavior, register-spill aliases, or original callable ABIs.
+The native constructors/destructors use FH3/SEH frames. Their handler stubs
+load these `FuncInfo` records; each map entry is `(toState, action)`. The first
+three records have `maxState=2` and map transitions `0 -> -1`, `1 -> 0`;
+`00B1BBF0` has `maxState=1` and transition `0 -> -1`:
+
+| Entry | Handler / FuncInfo / unwind map | State 0 action | State 1 action |
+| --- | --- | --- | --- |
+| `00B1BA30` | `00CBC850 / 00DF4C18 / 00DF4C08` | `00CBC840` loads the saved owner and jumps to `00412430` (write `00CE3818`) | `00CBC848` loads the captured guard and jumps to `00411EE0` (depth decrement and leave) |
+| `00B1BAD0` | `00CBC870 / 00DF4C4C / 00DF4C3C` | `00CBC860` -> `00412430` | `00CBC868` -> `00411EE0` |
+| `00B1BB90` | `00CBC893 / 00DF4C80 / 00DF4C70` | `00CBC880` -> `00B1BAD0` | `00CBC888` adjusts the saved owner by `+4` -> `00B669A0` |
+| `00B1BBF0` | `00CBC8A8 / 00DF4CAC / 00DF4CA4` | `00CBC8A0` -> `00B1BAD0` | none |
+
+For the base constructor, state 0 is armed at `00B1BA50` **before** the first
+`00415350` call; state 1 is armed at `00B1BA81` after section entry. The base
+destructor similarly arms state 0 before its first getter and state 1 after
+entry. Source cleanup guards call the established raw `00411EE0` and
+`00412430` providers in reverse state order when a C++ exception escapes.
+The derived constructor closes Lua and then destructs the base if open throws;
+the derived destructor destructs the base if Lua close throws. A second C++
+exception escaping a cleanup terminates rather than replacing the in-flight
+exception. Native FH3 stack maps, SEH hardware-fault behavior, register-spill
+aliases, and original callable ABIs are still outside this source interface.
 
 `NativeRendererLuaOwnerStorage` stores only the vtable DWORD and the native
 `NativeLuaStateStorage` at `+4`, with static size/offset checks. Existing raw
@@ -38,7 +52,14 @@ original preservation behavior. The parent renderer allocation remains in
 
 The source passed strict Win32 `scripts/build.ps1`, eight native seed matches,
 and the existing `reconstructed_math` and `native_math_differential` CTests.
-These tests do not execute the new owner. The new context interface is
+The follow-up owner fixture covers the additional source exception path; see
+the report for its scope. Its Win32 probe uses the actual raw manager and real
+Lua5.1.1 state with explicit fixture-only fundamentals/DoFile callbacks. It
+checks normal lifetime, current-publication unregister, and an injected string
+allocation failure during Lua open. This does not execute the original game
+body or inject a manager-getter, registration, or cleanup-throw failure. Those
+exception edges are established from the native map and source guard order.
+The new context interface is
 not a binary replacement, and no game startup, singleton drain, or renderer
 script behavior has been validated here. Ghidra functions remain unrenamed in
 this read-only worker session; the address/name ledger gives proposed names

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "bsp/native_lua_bootstrap.hpp"
-#include "bsp/sound_lifetime_access.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -35,6 +34,8 @@ NativeRendererLuaOwnerStorage* construct_native_renderer_lua_owner_00b1bb90(
 
 // B1BAD0/B1BBF0: ECX owner, plain RET, no semantic result. The base dtor
 // unregisters the current publication, which need not still equal this.
+// Normal C++ unwind invokes actual 411EE0 and 412430 cleanup providers;
+// an exception escaping a cleanup during another unwind terminates.
 void destroy_native_renderer_lua_base_00b1bad0(
     NativeRendererLuaOwnerStorage&, NativeRendererLuaOwnerContext&);
 void destroy_native_renderer_lua_owner_00b1bbf0(

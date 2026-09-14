@@ -34,7 +34,7 @@
         "LeaveCriticalSection via [00ce2210]"
       ],
       "ordering": "capture first manager+10 section and depth+18; publish; second getter; reload current 00f8d434; register; release captured section",
-      "fh3": "handler 00cbc850; state 1 after guard acquisition"
+      "fh3": "handler 00cbc850; FuncInfo 00df4c18; map 00df4c08; state 0 -> 00cbc840 -> 00412430 before first getter; state 1 -> 00cbc848 -> 00411ee0 after guard acquisition"
     },
     {
       "address": "00b1bb90",
@@ -51,7 +51,7 @@
         "00b66bd0 ECX=this+04",
         "00b6a020 ECX=this+04 stack mask=1"
       ],
-      "fh3": "handler 00cbc893; state 0 after base; state 1 after Lua construction"
+      "fh3": "handler 00cbc893; FuncInfo 00df4c80; map 00df4c70; state 0 -> 00cbc880 -> 00b1bad0 after base; state 1 -> 00cbc888 -> 00b669a0 on this+4 after Lua construction"
     },
     {
       "address": "00b1bad0",
@@ -71,7 +71,7 @@
         "00bcfca0 current publication",
         "LeaveCriticalSection via [00ce2210]"
       ],
-      "fh3": "handler 00cbc870; guard state 1 during unregister"
+      "fh3": "handler 00cbc870; FuncInfo 00df4c4c; map 00df4c3c; state 0 -> 00cbc860 -> 00412430 before first getter; state 1 -> 00cbc868 -> 00411ee0 during unregister"
     },
     {
       "address": "00b1bb70",
@@ -97,7 +97,7 @@
         "00b669a0 ECX=this+04",
         "00b1bad0 ECX=this"
       ],
-      "fh3": "handler 00cbc8a8; base cleanup armed during Lua close"
+      "fh3": "handler 00cbc8a8; FuncInfo 00df4cac; map 00df4ca4; state 0 -> 00cbc8a0 -> 00b1bad0 during Lua close"
     },
     {
       "address": "00b1bc50",
@@ -122,29 +122,43 @@
     "preserve untouched Lua slot preimages"
   ],
   "uncertainties": [
-    "source C++ exception scopes do not reproduce FH3/SEH identity",
+    "source noexcept cleanup guards preserve normal C++ unwind order but do not reproduce FH3/SEH identity or hardware-fault behavior",
+    "cleanup-throw during another C++ unwind terminates; source CRT and native unwind exception identity remain distinct",
     "no original binary callable ABI",
     "vtable DWORDs are not callable C++ vtables",
     "game startup and singleton drain unvalidated"
   ],
   "validation": {
-    "build": "strict scripts/build.ps1 Release passed after seed generation",
+    "build": "strict scripts/build.ps1 Release passed with corrected FH3 cleanup",
     "native_seeds": "8 of 8 live Ghidra versus disk matches",
     "ctest": "reconstructed_math and native_math_differential passed",
-    "runtime": "not run"
+    "runtime": "not run",
+    "owner_fixture": "standalone MSVC Win32 source probe passed: actual raw manager, real Lua, normal/current publication and injected open failure",
+    "numeric_calls": "tools/verify_report_calls.py checked 15 direct call rows, 0 failures",
+    "fixture_boundaries": "fixture-only fundamentals, DoFile and string storage; manager getter/registration failure, cleanup-throw termination and game execution not exercised"
   },
   "artifact_manifest": {
     "algorithm": "SHA-256",
     "source_and_build_inputs": [
       {
         "path": "include/bsp/native_renderer_lua_owner.hpp",
-        "bytes": 2251,
-        "sha256": "79dbf1f5898bbb0811e5987691aa1de12f4bfe077cb5780e56bc1548e0002d34"
+        "bytes": 2352,
+        "sha256": "0c4a9a175c954a3bc7513e056aae5f624fecd6f8c562062749db25ec7ecd644b"
       },
       {
         "path": "src/native_renderer_lua_owner.cpp",
-        "bytes": 3757,
-        "sha256": "c5cade7bc0a41d156254a4882a1f4e7a2f6eeb79fa10fb7ff5aeb1806deb1008"
+        "bytes": 6785,
+        "sha256": "10d513a30dec5c8355f4c787f8a3205dee278d039a8fe5605c791d837dbd648a"
+      },
+      {
+        "path": "tests/native_renderer_lua_owner_fixture.cpp",
+        "bytes": 7114,
+        "sha256": "6518fee6549eacf15344d1e37631fb09472644fb7629eb99aa6c880e7b92ed92"
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_LUA_OWNER.md",
+        "bytes": 5295,
+        "sha256": "40bebe86681c6b97c883c73602c07e9dff2c64f1b6bdaf7d6cfac49237db6cee"
       },
       {
         "path": "include/bsp/native_lua_objects.hpp",
@@ -167,14 +181,14 @@
         "sha256": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a"
       },
       {
-        "path": "include/bsp/sound_lifetime_access.hpp",
-        "bytes": 2344,
-        "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094"
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8019,
+        "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
       },
       {
-        "path": "src/sound_lifetime_access.cpp",
-        "bytes": 2380,
-        "sha256": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a"
+        "path": "src/native_string.cpp",
+        "bytes": 8311,
+        "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
       },
       {
         "path": "include/bsp/native_singleton_publication.hpp",
@@ -187,9 +201,19 @@
         "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
       },
       {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
         "path": "src/native_singleton_vector_registration_wrappers.cpp",
         "bytes": 4283,
         "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "include/bsp/native_singleton_removal_reorder.hpp",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
       },
       {
         "path": "src/native_singleton_removal_reorder.cpp",
@@ -197,9 +221,44 @@
         "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
       },
       {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "bytes": 1471,
+        "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "bytes": 3472,
+        "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "bytes": 2361,
+        "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "bytes": 4563,
+        "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
         "path": "src/singleton_lifetime.cpp",
         "bytes": 13257,
         "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 8217,
+        "sha256": "f267bb3634b5e096bc2c6a92d67b4d701a4fa7c318e2f302a12430b8c27eeb1a"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 14735,
+        "sha256": "c45031d3e9c8d1559d28a0560a1fcd45dc097170276b0a4847794c33fc2c3a53"
       },
       {
         "path": "cmake/startup.cmake",
@@ -210,6 +269,21 @@
         "path": "scripts/build.ps1",
         "bytes": 1657,
         "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "tools/verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "path": "config/names/00b10000.jsonl",
+        "bytes": 210072,
+        "sha256": "15fde8f3e47a3de1a760b07c9d1c35b0c7ebcb14188aae59310fa782372e2501"
+      },
+      {
+        "path": "config/reconstruction/00b10000.jsonl",
+        "bytes": 169985,
+        "sha256": "82cdb39839560f6ae25a77a4bb7adea53c33cb92e4329ef3e9858f1dc961a88a"
       },
       {
         "path": "local/seed_reference.hpp",
@@ -225,13 +299,13 @@
     "build_outputs": [
       {
         "path": "build/win32/bsp_core.dir/Release/native_renderer_lua_owner.obj",
-        "bytes": 10259,
-        "sha256": "a62c4d32920427d573255ddcca1d1ace510ac381d2a5875bb5666f662cc6cb40"
+        "bytes": 15193,
+        "sha256": "8d8b5796e9074440befc4b89637568935720b20b92e355c0c195f8903ff935c6"
       },
       {
         "path": "build/win32/Release/bsp_core.lib",
-        "bytes": 57548146,
-        "sha256": "3e8f79550fba28a238ac0ef3e8fd80af8df48b75607ca5d7d604f86211be54cc"
+        "bytes": 57553080,
+        "sha256": "5680da3bbd1c23e125c836c713efd7a56a2cbaaf63a9e880c2217a593413f529"
       },
       {
         "path": "build/win32/Release/bsp_lua511.lib",
@@ -241,7 +315,7 @@
       {
         "path": "build/win32/Release/bsp_game.exe",
         "bytes": 2044416,
-        "sha256": "daf5ff721e8dc17bb9f22ebd7bfa247776c674bce4ed3ae2a65db2555c438611"
+        "sha256": "2fd3a1c560d7baa3e55731972adb1d58b6309aad1f96372f7ee4b26302dc8988"
       },
       {
         "path": "build/win32/Release/xlive_stub.dll",
@@ -251,12 +325,49 @@
       {
         "path": "build/win32/Release/bsp_math_tests.exe",
         "bytes": 530944,
-        "sha256": "63f6b73e4ff8bc83a48b1bc24b74165a3d09b7bb24f21cf9f657d00314845ff7"
+        "sha256": "d876e4a67db8ce2ac0f1f06f1ebaf3f652814054785dcbc6b9aea28a5d9b8d48"
       },
       {
         "path": "build/win32/Release/bsp_native_math_tests.exe",
         "bytes": 18432,
-        "sha256": "c7987076a7654a2a6046dc0da8a8c880e359713fd3b2c81fb19c90a3d05bc339"
+        "sha256": "1e40c68b6cc1ef5273eaec9eecfce586ed3153bd2c79b724e8ff1ce018bc3744"
+      },
+      {
+        "path": "local/output/native_renderer_lua_owner_fixture.obj",
+        "bytes": 36934,
+        "sha256": "d1dfe125c5b15ce148931a65dc05bc26c7bc2aad6b620c71d4500ed876886ec0"
+      },
+      {
+        "path": "local/output/native_renderer_lua_probe.exe",
+        "bytes": 241152,
+        "sha256": "505f5c76df25d0f6da8edad5fe7161a696a2d96e67bf455b9e0dd026c6625e47"
+      }
+    ],
+    "runtime_modules": [
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2044416,
+        "sha256": "2fd3a1c560d7baa3e55731972adb1d58b6309aad1f96372f7ee4b26302dc8988"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "9c4e508603a4059139209b6655fbdb4e8b53eb9bdfeafd49967f094f9702ec60"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 530944,
+        "sha256": "d876e4a67db8ce2ac0f1f06f1ebaf3f652814054785dcbc6b9aea28a5d9b8d48"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "1e40c68b6cc1ef5273eaec9eecfce586ed3153bd2c79b724e8ff1ce018bc3744"
+      },
+      {
+        "path": "local/output/native_renderer_lua_probe.exe",
+        "bytes": 241152,
+        "sha256": "505f5c76df25d0f6da8edad5fe7161a696a2d96e67bf455b9e0dd026c6625e47"
       }
     ],
     "original_binary": {
@@ -264,5 +375,169 @@
       "bytes": 12223752,
       "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
     }
+  },
+  "call_sites": [
+    {
+      "function": "00b1ba30",
+      "address": "00b1ba5e",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1ba30",
+      "address": "00b1ba8c",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1ba30",
+      "address": "00b1ba9a",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00b1bb90",
+      "address": "00b1bbae",
+      "native": "00b1ba30"
+    },
+    {
+      "function": "00b1bb90",
+      "address": "00b1bbc6",
+      "native": "00b66bd0"
+    },
+    {
+      "function": "00b1bb90",
+      "address": "00b1bbd4",
+      "native": "00b6a020"
+    },
+    {
+      "function": "00b1bad0",
+      "address": "00b1bafe",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1bad0",
+      "address": "00b1bb26",
+      "native": "00415350"
+    },
+    {
+      "function": "00b1bad0",
+      "address": "00b1bb34",
+      "native": "00bcfca0"
+    },
+    {
+      "function": "00b1bb70",
+      "address": "00b1bb73",
+      "native": "00b1bad0"
+    },
+    {
+      "function": "00b1bb70",
+      "address": "00b1bb80",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b1bbf0",
+      "address": "00b1bc1e",
+      "native": "00b669a0"
+    },
+    {
+      "function": "00b1bbf0",
+      "address": "00b1bc2d",
+      "native": "00b1bad0"
+    },
+    {
+      "function": "00b1bc50",
+      "address": "00b1bc53",
+      "native": "00b1bbf0"
+    },
+    {
+      "function": "00b1bc50",
+      "address": "00b1bc60",
+      "native": "00bf65ac"
+    }
+  ],
+  "fh3_unwind_maps": [
+    {
+      "owner": "00b1ba30",
+      "handler": "00cbc850",
+      "func_info": "00df4c18",
+      "unwind_map": "00df4c08",
+      "max_state": 2,
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "funclet": "00cbc840",
+          "target": "00412430"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "funclet": "00cbc848",
+          "target": "00411ee0"
+        }
+      ]
+    },
+    {
+      "owner": "00b1bad0",
+      "handler": "00cbc870",
+      "func_info": "00df4c4c",
+      "unwind_map": "00df4c3c",
+      "max_state": 2,
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "funclet": "00cbc860",
+          "target": "00412430"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "funclet": "00cbc868",
+          "target": "00411ee0"
+        }
+      ]
+    },
+    {
+      "owner": "00b1bb90",
+      "handler": "00cbc893",
+      "func_info": "00df4c80",
+      "unwind_map": "00df4c70",
+      "max_state": 2,
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "funclet": "00cbc880",
+          "target": "00b1bad0"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "funclet": "00cbc888",
+          "target": "00b669a0",
+          "ecx_adjust": 4
+        }
+      ]
+    },
+    {
+      "owner": "00b1bbf0",
+      "handler": "00cbc8a8",
+      "func_info": "00df4cac",
+      "unwind_map": "00df4ca4",
+      "max_state": 1,
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "funclet": "00cbc8a0",
+          "target": "00b1bad0"
+        }
+      ]
+    }
+  ],
+  "fixture_build": {
+    "environment": "Launch-VsDevShell.ps1 -Arch x86 -HostArch amd64 -SkipAutomaticLocation",
+    "command": "cl.exe /nologo /std:c++17 /EHsc /MD /O2 /Iinclude /Fo:local/output/native_renderer_lua_owner_fixture.obj /Fe:local/output/native_renderer_lua_probe.exe tests/native_renderer_lua_owner_fixture.cpp /link /MANIFEST:EMBED /MACHINE:X86 build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib d3d9.lib user32.lib gdi32.lib ole32.lib advapi32.lib shell32.lib",
+    "run": "local/output/native_renderer_lua_probe.exe",
+    "result": "renderer Lua owner fixture passed"
   }
 }
