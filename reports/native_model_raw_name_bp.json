@@ -1,0 +1,65 @@
+{
+  "packet": "orch3_model_raw_name_bp",
+  "created_utc": "2026-09-14T05:44:25.964350+00:00",
+  "base_commit": "7390b7b8dc204cb41b860b0ceacb3823da98ac57",
+  "status": "source_extension_combined_build_pending",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "routine": {
+    "address": "00b75030",
+    "end_exclusive": "00b750b4",
+    "bytes": 132,
+    "instructions": 27,
+    "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+    "live_PE_equal": true,
+    "original_abi": "ECX actual188h model pool slot; stack actual8h name header pointer; EAX captured allocation; RET4",
+    "source_abi": "New overload takes stable NativeModelOwner companion, unchanged actual name-header address and actual NativeNodeRawConstants references"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_sha256": {
+    "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+    "src/native_model_owner.cpp": "dbf4b654edfd6fba6a674953c78722addc46643dbfcf5888b1fe2dbfe2009d79",
+    "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+  },
+  "original_interface": {
+    "source_body_unchanged": true,
+    "normalized_body_sha256": "c8f02cad98c22a351452823540f21cc2f1af36cb0b336ed1999c18a0a8d17da0",
+    "before_object_sha256": "906049ee18a3571a14a3fa6c6d5f1eec7f575e5e8d341d7233716c116099a095"
+  },
+  "call_steps": [
+    {
+      "function": "00b75030",
+      "address": "00b75038",
+      "native": "00b6f5a0",
+      "source": "construct_native_node_00b6f5a0 actual-header/raw-context overload"
+    }
+  ],
+  "contract": [
+    "Require prepared owner and raw name runtime before native writes. Reject nonnull actual_names adapter and different bound-cell identities.",
+    "B6F5A0 receives original header identity and persistent raw pool context; no copied temporary header or release-noexcept adapter.",
+    "Node/model use the same actual CE4970 and CE4ADC cells; continuation reads CE4ADC before profile publication and preserves all native tail/pose stores.",
+    "Node-construction failure consumes only its existing cleanup, then model host tail/scene association end; caller owns physical pool slot.",
+    "Keep environment.actual_names null through destruction so existing B750C0/finish_node routes to the same raw runtime. Canonical reference callback stays noexcept."
+  ],
+  "validation": {
+    "build": "pending",
+    "focused_source_probe": "pending",
+    "new_native_fixture": false
+  },
+  "limits": [
+    "Existing raw-node materialization transient writes, asynchronous/fault-time observation and native FH3/CRT exception identity remain outside its contract.",
+    "Direct raw cleanup can propagate C++ failures; this source routing change does not establish original native exception equivalence.",
+    "Historical model native-byte fixture evidence applies to its recorded interface/domain, not automatically to this raw overload.",
+    "Prefix43C130 inherited nonthrowing nested-cleanup admission remains separate. No parent-constructor/gameplay proof."
+  ]
+}
