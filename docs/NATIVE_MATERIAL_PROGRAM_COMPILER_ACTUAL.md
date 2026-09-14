@@ -150,3 +150,28 @@ Initial flag capture around private mask initialization and pixel cache versus
 private-size staging remain within the documented private-scratch timing limit.
 The correction's checks and final frozen closure are recorded separately from
 upstream evidence in the report; whole compiler/B44B10 execution remains open.
+
+
+## Combined-library validation (2026-09-14)
+
+Root source b0a4ddb4 integrates the corrected actual compiler and its concrete
+stream/capability/pass-construction providers. The retained cached compiler
+fixture now executes the CMake-built bsp_core.lib member without a separately
+compiled compiler-object override; its map, library and object hashes are
+retained. Real HAL VS/PS bytecode readback, D3DX reflection, state override,
+nine canonical owners and hot white.tga acquisition passed. The effect remains
+scalar compiler input; the borrowed zeroed platform receiver takes its
+online-null guard. This does not establish their full construction.
+
+The retained provider fixture also passed two original/source stream writes
+using original physical WriteFile and three capability-pointer cases. The
+strict Win32 build, both CTests, eight native seeds, 130 numeric call rows and
+39 live/PE spans totaling5,904 bytes passed. Another23 indirect rows retain
+explicit contracts rather than mechanical numeric-call proof. Five Ghidra
+annotations were saved/read back, including two newly named stream functions.
+
+Worker validation and its independent repeated explicit-object recipe remain
+historical evidence; parent_integration records the combined-library result.
+This fixture executes empty sampler lists only. Original complete compiler
+and FH3/private aliases, cold source/VFS execution, full effect/platform
+construction, teardown, drawing and game validation remain unproved.

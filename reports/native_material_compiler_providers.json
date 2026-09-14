@@ -1055,5 +1055,66 @@
   ],
   "definition_journal": "reports/native_material_compiler_providers_definition.json",
   "ghidra_mutation": "Only explicitly authorized exact BE40D0..BE40EE half-open definition through official write-lock/save tool; prior/after retained; force export",
-  "annotation_handoff": "Primary may append evidence to existing B3B3C0/B44B10/B1FF50 names; proposed BE4460 BSP_Stream_WriteLengthPrefixedString and BE40D0 BSP_Stream_WriteDword. Worker made only authorized BE40D0 function definition."
+  "annotation_handoff": "Primary may append evidence to existing B3B3C0/B44B10/B1FF50 names; proposed BE4460 BSP_Stream_WriteLengthPrefixedString and BE40D0 BSP_Stream_WriteDword. Worker made only authorized BE40D0 function definition.",
+  "parent_integration": {
+    "source_commit": "b0a4ddb438a7df6df8583577d69138c035d48e9f",
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_matched": 8,
+    "numeric_rows": 130,
+    "numeric_failures": 0,
+    "indirect_rows_not_mechanically_proved": 23,
+    "fresh_live_PE_spans": 39,
+    "fresh_live_PE_bytes": 5904,
+    "cached_runtime": {
+      "source_commit": "b0a4ddb438a7df6df8583577d69138c035d48e9f",
+      "build_exit": 0,
+      "run_exit": 0,
+      "inputs_before_after": {
+        "library": "0cde700a0d1bfde56e87398664939de88b6db1fc6ca3a5dbad7f0e6dbe2c4a3d",
+        "compiler_object": "174f6f04cdfa588e2b0478d700cd7aa4a2e40829a3658f934a8032b6ac09ff16",
+        "compiler_source": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111"
+      },
+      "executed_compiler_source": "CMake-produced bsp_core.lib member; no explicit compiler TU override",
+      "map_members": [
+        "0001:00011c70       ?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00412c70 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:00012bb9       __catch$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$0 00413bb9 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004cb00       __unwindfunclet$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$8 0044db00 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004cb12       __unwindfunclet$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$2 0044db12 f   bsp_core:native_material_program_compiler_actual.obj",
+        "0001:0004cb1f       __ehhandler$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 0044db1f f   bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00017a0c       __catchsym$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z$13 00467a0c     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00017a1c       __tryblocktable$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00467a1c     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00017a30       __unwindtable$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00467a30     bsp_core:native_material_program_compiler_actual.obj",
+        "0002:00017a50       __ehfuncinfo$?continue_material_pass_00b3b3c0@NativeMaterialProgramCompilerActual@bsp@@UAEPAUNativeMaterialPassStorage@2@AAUNativeMaterialProgramCompilerFrame@2@W4NativeMaterialProgramCompilerResume@2@AAV?$unique_ptr@VNativeMaterialProgramChildFrame@bsp@@U?$default_delete@VNativeMaterialProgramChildFrame@bsp@@@std@@@std@@@Z 00467a50     bsp_core:native_material_program_compiler_actual.obj"
+      ],
+      "fixture_executable_sha256": "8435ec34dc16818cd5372d42a9803414d9d93929cd0b248864b9b6875501df00",
+      "scope": "Full cached source B3C3A0/B3B3C0 with actual D3DX/HAL shaders, reflection, state override, owners and hot white acquisition. Original bytes cover only empty B3B280; scalar effect input and online-null borrowed platform receiver do not prove their complete construction. No cold source branch, nonempty samplers, teardown/FH3/drawing/game."
+    },
+    "provider_fixture": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "combined_library_sha256": "0cde700a0d1bfde56e87398664939de88b6db1fc6ca3a5dbad7f0e6dbe2c4a3d",
+      "scope": "Two original/source stream cache writes using actual native physical WriteFile and three raw capability pointer cases; full compiler factory linked, compiler/pass construction execution belongs to separate runtime fixture."
+    },
+    "independent_runtime_review_sha256": "3e16e1d4c2500e0f744c74a567f2972645c223a3836c9d5df01f2679625a02f6",
+    "saved_annotations": 5,
+    "new_descriptive_names": 2,
+    "limits": [
+      "Original whole compiler/FH3/private aliases",
+      "Cold source-compilation and VFS route",
+      "Nonempty samplers in this fixture",
+      "Full platform/effect construction",
+      "Teardown/drawing/game"
+    ],
+    "checkpoint": {
+      "path": "local/checkpoints/b0a4ddb4/native-material-compiler-wave/validation.json",
+      "sha256": "0b75c7e56833c0571595d69a35e058ca15854818d25d1bfb93c51de778ee7bb5",
+      "source_commit": "b0a4ddb438a7df6df8583577d69138c035d48e9f",
+      "artifacts": 5021,
+      "runtime_module_observations": 95,
+      "unique_runtime_modules": 82
+    },
+    "source_manifest_sha256": "d14e3d47df2961e6cf343448d1b821c0c12661f76b6245bffa09f874be682d05",
+    "annotation_journal": "local/ghidra-annotations-20260914T204059Z.json"
+  }
 }
