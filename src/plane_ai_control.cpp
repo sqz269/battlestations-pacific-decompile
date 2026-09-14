@@ -150,15 +150,20 @@ float clamp_unit(float v) noexcept { return v < -1.0f ? -1.0f : (v > 1.0f ? 1.0f
 // 00415510 BSP_Math_MinFloatByRef.
 float min_float(float a, float b) noexcept { return a < b ? a : b; }
 
-// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x). The project already treats this
-// routine as a host hook with this parameter order (include/bsp/ship_ai_attackmove_substates.hpp,
-// include/bsp/plane_flight.hpp); this packet did not re-read its body, only its RET 14h and its
-// two saturating exits at 004190B9 and 004190CC.
+// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), body read at 00419010-004190CC.
+// Two details that an x-side clamp gets wrong, both now taken from the listing:
+//   * 0041901E-00419030: when x1 == x0 it returns **y0** outright, whatever x is. The test is
+//     the MSVC exact-equality idiom (FUCOMIP / LAHF / TEST AH,44h / JP), and equality falls
+//     through to FLD [ESP+8].
+//   * 00419063-004190CC: the interpolated value is clamped between the two **y** endpoints in
+//     whichever order they come, not by the x range. That is what makes a descending pair
+//     (y0 = 1, y1 = 0, as in yaw_base_gain_0099dffb) behave.
 float interpolate_clamped(float x0, float y0, float x1, float y1, float x) noexcept {
-    if (x <= x0) return y0;
-    if (x >= x1) return y1;
-    const float span = x1 - x0;
-    return span == 0.0f ? y1 : y0 + (y1 - y0) * ((x - x0) / span);
+    if (x1 == x0) return y0;  // 00419026 JP not taken
+    const float v = y0 + (y1 - y0) * ((x - x0) / (x1 - x0));  // 00419033-0041905F
+    const float lo = y0 < y1 ? y0 : y1;
+    const float hi = y0 < y1 ? y1 : y0;
+    return v < lo ? lo : (v > hi ? hi : v);
 }
 
 }  // namespace
@@ -271,15 +276,25 @@ float bomb_load_factor_007c0f40(const PlaneBombLoadFactor& in) {
 
 float plane_speed_factor_007d9a70(const PlaneSpeedFactor& in) {
     // 007D9AA9: x0 = 3.0f (00CE3854), y0 = 0, x1 = 6.0f (00CE6630), y1 = 0.25f (00CE3868).
-    const float a = interpolate_clamped(3.0f, 0.0f, 6.0f, 0.25f, in.altitude_term);
-    const float ratio = in.forward_speed / in.max_speed;  // 007D9ABC FDIV
-    // 007D9AF0: the two x-endpoints are the runtime globals named in the header.
-    const float c = interpolate_clamped(in.ratio_x0, 0.0f, in.ratio_x1, 1.0f, ratio);
-    const float v = c + in.extra * 0.6f;  // 007D9B02 FMUL 00CEFF98, 007D9B08 FADD
+    const float a = interpolate_clamped(3.0f, 0.0f, 6.0f, 0.25f, in.free_flight_scalar);
+    // 007D9AB4/007D9ABC. Kept for fidelity: nothing consumes it in this build, because the
+    // interpolation below is degenerate, but the native still performs the divide.
+    const float ratio = in.forward_speed / in.max_speed;
+    // 007D9AF0: x0 = [00F8731C] and x1 = [00F87320], and nothing in the image writes either,
+    // so both are 0.0f and 00419010's x1 == x0 path returns y0. `c` is a constant zero here.
+    const float c = interpolate_clamped(0.0f, 0.0f, 0.0f, 1.0f, ratio);
+    const float v = c + in.dyn_c0 * 0.6f;  // 007D9B02 FMUL 00CEFF98, 007D9B08 FADD
     // 007D9B1C picks `a` when it is the larger; otherwise 007D9B55-007D9B68 caps at 1.0f.
     const float result = a > v ? a : min_float(v, 1.0f);
     // 007D9B3F squares the result (FMUL ST0), 007D9B45 multiplies in the bomb-load factor.
     return in.bomb_load * result * result;
+}
+
+float bomb_load_fraction_006e4130(const BombLoadFraction& in) {
+    if (in.single && in.capacity == 0) return 0.0f;  // 006E4134 / 006E413D FLDZ
+    const int numerator = in.single ? in.remaining + in.pending : in.remaining;  // 006E414E
+    // 006E415C / 006E3720 FIDIV: an integer divide of an integer-converted numerator.
+    return static_cast<float>(numerator) / static_cast<float>(in.capacity);
 }
 
 }  // namespace bsp
