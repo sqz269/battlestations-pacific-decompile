@@ -1,0 +1,323 @@
+{
+  "packet": "orch5_native_effect_registry_destroy",
+  "status": "complete_actual_source_strict_win32_build_and_two_ctests_passed",
+  "source_base": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+  "dependency_commit": "8e1bdea084a82e0cb764a67757c83128dc4b8ff6",
+  "dependency_merge_commit": "203f311f1df3354d664abac2ac3691c4a00b01a6",
+  "owned_addresses": [
+    "00b31750",
+    "00b317c0",
+    "00b32010",
+    "00b320f0",
+    "00b32200"
+  ],
+  "owned_files": [
+    "include/bsp/native_effect_registry_destroy.hpp",
+    "src/native_effect_registry_destroy.cpp",
+    "docs/NATIVE_EFFECT_REGISTRY_DESTROY.md",
+    "reports/native_effect_registry_destroy.json"
+  ],
+  "functions": [
+    {
+      "address": "00b31750",
+      "end_inclusive": "00b317b9",
+      "length": 106,
+      "cpp_symbol": "clear_native_effect_registry_00b31750",
+      "source": "src/native_effect_registry_destroy.cpp",
+      "header": "include/bsp/native_effect_registry_destroy.hpp",
+      "coverage": "complete_actual_storage_with_existing_concrete_providers",
+      "old_name": "BSP_MaterialEffectCache_Clear",
+      "ghidra_name": "BSP_MaterialEffectCache_Clear",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX actual registry; RET; current reverse clear",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "module": "native_effect_registry_destroy"
+    },
+    {
+      "address": "00b317c0",
+      "end_inclusive": "00b317d6",
+      "length": 23,
+      "cpp_symbol": "destroy_native_effect_record_array_00b317c0",
+      "source": "src/native_effect_registry_destroy.cpp",
+      "header": "include/bsp/native_effect_registry_destroy.hpp",
+      "coverage": "complete_actual_storage_with_existing_concrete_providers",
+      "old_name": "FUN_00b317c0",
+      "ghidra_name": "FUN_00b317c0",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX actual0Ch header; RET; resize0/free current pointer",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "module": "native_effect_registry_destroy"
+    },
+    {
+      "address": "00b32010",
+      "end_inclusive": "00b3202e",
+      "length": 31,
+      "cpp_symbol": "release_native_cached_effect_00b32010",
+      "source": "src/native_effect_registry_destroy.cpp",
+      "header": "include/bsp/native_effect_registry_destroy.hpp",
+      "coverage": "complete_actual_storage_with_existing_concrete_providers",
+      "old_name": "BSP_MaterialEffectRegistry_Release",
+      "ghidra_name": "BSP_MaterialEffectRegistry_Release",
+      "name_is_hypothesis": true,
+      "original_abi": "Incoming ECX unused; stack nonnull actual effect; RET4",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "module": "native_effect_registry_destroy"
+    },
+    {
+      "address": "00b320f0",
+      "end_inclusive": "00b3214e",
+      "length": 95,
+      "cpp_symbol": "destroy_native_effect_registry_00b320f0",
+      "source": "src/native_effect_registry_destroy.cpp",
+      "header": "include/bsp/native_effect_registry_destroy.hpp",
+      "coverage": "complete_actual_storage_with_existing_concrete_providers",
+      "old_name": "BSP_MaterialEffectCache_Destroy",
+      "ghidra_name": "BSP_MaterialEffectCache_Destroy",
+      "name_is_hypothesis": true,
+      "original_abi": "ECX actual registry; RET; FH3 state0 current-array cleanup",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "module": "native_effect_registry_destroy"
+    },
+    {
+      "address": "00b32200",
+      "end_inclusive": "00b32204",
+      "length": 5,
+      "cpp_symbol": "destroy_native_effect_registry_thunk_00b32200",
+      "source": "src/native_effect_registry_destroy.cpp",
+      "header": "include/bsp/native_effect_registry_destroy.hpp",
+      "coverage": "complete_actual_storage_with_existing_concrete_providers",
+      "old_name": "FUN_00b32200",
+      "ghidra_name": "FUN_00b32200",
+      "name_is_hypothesis": true,
+      "original_abi": "JMP B320F0; same ECX/stack",
+      "ledger_kind": "function",
+      "new_native_body": true,
+      "module": "native_effect_registry_destroy"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b3211b",
+      "native": "00b31750",
+      "function": "00b320f0"
+    },
+    {
+      "address": "00b3212f",
+      "native": "00b30410",
+      "function": "00b320f0"
+    },
+    {
+      "address": "00b32137",
+      "native": "00bf6989",
+      "function": "00b320f0"
+    },
+    {
+      "address": "00b317c5",
+      "native": "00b30410",
+      "function": "00b317c0"
+    },
+    {
+      "address": "00b317cd",
+      "native": "00bf6989",
+      "function": "00b317c0"
+    },
+    {
+      "address": "00b32200",
+      "native": "00b320f0",
+      "function": "00b32200",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b31772",
+      "native": "eax",
+      "function": "00b31750",
+      "binding": "current effect D5E534 or D61A00 +0C -> substantive A82250"
+    },
+    {
+      "address": "00b3178c",
+      "native": "edx",
+      "function": "00b31750",
+      "binding": "current registry D5F04C or D5F074 +10 -> B32010"
+    },
+    {
+      "address": "00b3179f",
+      "native": "00b2fa10",
+      "function": "00b31750"
+    },
+    {
+      "address": "00b317b3",
+      "native": "00b30410",
+      "function": "00b31750"
+    },
+    {
+      "address": "00b32019",
+      "native": "dword ptr [0xce2220]",
+      "function": "00b32010",
+      "binding": "IAT CE2220 InterlockedDecrement(captured actual effect+04)"
+    },
+    {
+      "address": "00b32029",
+      "native": "eax",
+      "function": "00b32010",
+      "binding": "current effect virtual0 -> canonical actual terminal; observed BD30E0"
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "00b320f0",
+      "length": 95,
+      "sha256": "b80ce87cdcb612f9e99a3efa85df6ea1f38f701c318646ddef5098605f19d82a",
+      "pe_raw_offset": 7545072,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b317c0",
+      "length": 23,
+      "sha256": "5d7462531657cf6414f7d94d084715d8841dd6816f15d877c457043828b573e8",
+      "pe_raw_offset": 7542720,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b32200",
+      "length": 5,
+      "sha256": "d3f38227a4af7193ccdffdf7c2201957cc9a667664950878de86c5a348aa6380",
+      "pe_raw_offset": 7545344,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b31750",
+      "length": 106,
+      "sha256": "6ef5f4f46fb07b7292bf2ddc37220293a2ca1f79c939fe98d176d6d3d87a79f4",
+      "pe_raw_offset": 7542608,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b32010",
+      "length": 31,
+      "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "pe_raw_offset": 7544848,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00d5f04c",
+      "length": 20,
+      "sha256": "c5aaa989416b6d1f242c8ec1f961f5d815cf935798153956b15368f36088cfc1",
+      "pe_raw_offset": 9826380,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00d5f074",
+      "length": 20,
+      "sha256": "b3bc8f1479371092926cb91c5953196dcc56f8b506fbd5dab4ee226a084e9853",
+      "pe_raw_offset": 9826420,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00d5e534",
+      "length": 16,
+      "sha256": "728451ec192bccf1dfa28134d1d155cfdee9bfcc3861e10e185455d5a77ef5f5",
+      "pe_raw_offset": 9823540,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00d61a00",
+      "length": 16,
+      "sha256": "c9e5406bf547453ab304ffc6985da4a66071f5dd1eb22e6624a99f9dc2fc91a5",
+      "pe_raw_offset": 9837056,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00cbdcc0",
+      "length": 21,
+      "sha256": "ffb3fef7ab4a76ba75c0b01f55a88bc5da10f2efd635450d56769f53f6164bf2",
+      "pe_raw_offset": 9166016,
+      "live_equals_disk": true
+    },
+    {
+      "address": "00df6658",
+      "length": 44,
+      "sha256": "50d31cbc10d9250c160b998568a528639c1535814e2fef77e7a2bf605605143a",
+      "pe_raw_offset": 10446424,
+      "live_equals_disk": true
+    }
+  ],
+  "dependencies": {
+    "00b30410": "resize_native_effect_records_00b30410 from original dependency commit; source reused unchanged",
+    "00b2fa10": "existing actual effect-record destruction on same actual string pool",
+    "00bf6989": "same actual c.free_array_00bf6989 used by record reserve B2FFE0",
+    "00a82250": "existing substantive native_resource_zero_accounted_size_00a82250",
+    "actual_effect_terminal": "existing NativeMaterialEffectLoadOwners::actual_owners canonical +04 companion, real current-profile scalar destruction"
+  },
+  "seh": {
+    "handler": "00cbdccb",
+    "func_info": "00df6660",
+    "max_state": 1,
+    "unwind_map": "00df6658",
+    "action": "00cbdcc0",
+    "action_body": "MOV ECX,[EBP-10]; ADD ECX,4; JMP B317C0",
+    "arms_after": "D5F04C publication before B31750",
+    "disarms_before": "B30410 resize0/current free normal tail",
+    "preserves_current_array_cleanup": true,
+    "full_native_fh3_not_claimed": true
+  },
+  "annotation_boundary": {
+    "worker_read_only": true,
+    "initial_b320f0_body_end": "00b3213b",
+    "initial_b317c0_body_end": "00b317d1",
+    "full_disk_live_b320f0_end": "00b3214e",
+    "full_disk_live_b317c0_end": "00b317d6",
+    "returning_free_sites": [
+      "00b32137",
+      "00b317cd"
+    ],
+    "evidence_sent_to_root_for_repair": true,
+    "no_x87_in_owned_bodies": true
+  },
+  "limits": [
+    "No new destructor runtime fixture; dependency fixture covers B30340/B316C0/B31730, while B30410 has build/static evidence only",
+    "No new manager, owner map, reference count, allocation domain or opaque/success callback",
+    "Actual canonical terminal remains nonthrowing and validates bound current profiles",
+    "Current array cleanup does not roll back accounting/reference effects or repair retained failed loader operations",
+    "Parent FH3/SEH, original caller ABI, asynchronous faults, unrestricted callbacks/concurrency and gameplay unproved"
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "configuration": "MSVC Win32 Release",
+      "log": "local/native_effect_registry_destroy_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2
+    },
+    "seed_verification": {
+      "passed": 8,
+      "all_live_equals_disk": true,
+      "log": "local/native_effect_registry_destroy_seeds.log"
+    },
+    "call_verification": {
+      "direct_tail_checked": 8,
+      "failed": 0,
+      "indirect_recorded": 4,
+      "indirect_verifier_does_not_check": true,
+      "log": "local/native_effect_registry_destroy_calls.log"
+    },
+    "new_tests_added": 0,
+    "new_destructor_runtime_fixture": false,
+    "dependency_fixture_attribution": "8e1bdea fixture covers B30340/B316C0/B31730 and source resource-cache cleanup failures. B30410 has build/static evidence only. Not a runtime test of this packet.",
+    "dependency_evidence": "local/effect_destroy_dependency_evidence.json"
+  },
+  "immutable_evidence": {
+    "directory": "local/immutable/native_effect_registry_destroy_20260914T071627Z",
+    "manifest": "local/immutable/native_effect_registry_destroy_20260914T071627Z/manifest.json",
+    "manifest_sha256": "df3f67af4f2763c20e657894f2e03e9017b6a31f1ec7abe8907ee38dc807f3bf",
+    "artifact_count": 443,
+    "all_frozen_hashes_reverified": true
+  }
+}
