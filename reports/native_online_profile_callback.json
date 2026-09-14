@@ -1,0 +1,464 @@
+{
+  "packet": "orch5_native_online_profile_callback",
+  "tested_base": "f65515dc3ee4edb0189ade925132a1d32462086f",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_profile_callback.cpp",
+  "header": "include/bsp/native_online_profile_callback.hpp",
+  "documentation": "docs/NATIVE_ONLINE_PROFILE_CALLBACK.md",
+  "ghidra_writes": false,
+  "status": "complete_normal_bodies_actual_storage_build_and_fake_pool_fixture_tested",
+  "functions": [
+    {
+      "address": "00737d60",
+      "inclusive_end": "00737df3",
+      "last_instruction": "00737df3",
+      "last_instruction_length": 1,
+      "byte_length": 148,
+      "byte_sha256": "7661405c6d38f178f7e7f542acd1baf5223e5103a3f3223eed0245caeded603a",
+      "matches_disk": true,
+      "entrypoint": "apply_native_online_profile_name_00737d60",
+      "coverage": "complete normal body",
+      "original_abi": "incoming ECX ignored; no stack args; RET"
+    },
+    {
+      "address": "00a3eae0",
+      "inclusive_end": "00a3eaf0",
+      "last_instruction": "00a3eaf0",
+      "last_instruction_length": 1,
+      "byte_length": 17,
+      "byte_sha256": "bb5fe90da9a4bf1af4fe1862b20bfdb2265a307559b53a6624f81fbed6e81873",
+      "matches_disk": true,
+      "entrypoint": "selected_native_online_name_00a3eae0",
+      "coverage": "complete normal body",
+      "original_abi": "ECX actual manager; EAX name pointer; RET"
+    },
+    {
+      "address": "007f9340",
+      "inclusive_end": "007f93e1",
+      "last_instruction": "007f93df",
+      "last_instruction_length": 3,
+      "byte_length": 162,
+      "byte_sha256": "0676af3d0f07c08dd884c9d98c21c6672dc202f27561766d8e357b68e0c3d03c",
+      "matches_disk": true,
+      "entrypoint": "set_native_profile_display_name_007f9340",
+      "coverage": "complete normal body",
+      "original_abi": "ECX actual profile; one source header pointer; RET4"
+    },
+    {
+      "address": "007f9290",
+      "inclusive_end": "007f9331",
+      "last_instruction": "007f932f",
+      "last_instruction_length": 3,
+      "byte_length": 162,
+      "byte_sha256": "9bcb234413aa36e1563af75aa111ef3f621d12de00d0d677c7f9ac33607262ff",
+      "matches_disk": true,
+      "entrypoint": "set_native_profile_name_007f9290",
+      "coverage": "complete normal body",
+      "original_abi": "ECX actual profile; one source header pointer; RET4"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00737d7e",
+      "native": "00a3eae0",
+      "function": "00737d60",
+      "operation": "selected manager name pointer"
+    },
+    {
+      "address": "00737d88",
+      "native": "0041e870",
+      "function": "00737d60",
+      "operation": "construct actual native temporary"
+    },
+    {
+      "address": "00737da5",
+      "native": "007f9340",
+      "function": "00737d60",
+      "operation": "first game+650 display setter"
+    },
+    {
+      "address": "00737dba",
+      "native": "007f9290",
+      "function": "00737d60",
+      "operation": "independently reloaded game+650 base setter"
+    },
+    {
+      "address": "00737dd9",
+      "native": "00419cc0",
+      "function": "00737d60",
+      "operation": "pool getter for temporary return"
+    },
+    {
+      "address": "00737de0",
+      "native": "00bd1510",
+      "function": "00737d60",
+      "operation": "return temporary length+1"
+    },
+    {
+      "address": "007f935a",
+      "native": "0041dd40",
+      "function": "007f9340",
+      "operation": "resize actual profile+50 header"
+    },
+    {
+      "address": "007f936f",
+      "native": "00bf7680",
+      "function": "007f9340",
+      "operation": "overlap-safe 00BF7680 copy of current destination length from current source"
+    },
+    {
+      "address": "007f938a",
+      "native": "00469840",
+      "function": "007f9340",
+      "operation": "construct 31-byte preferred-name substring"
+    },
+    {
+      "address": "007f93d0",
+      "native": "00419cc0",
+      "function": "007f9340",
+      "operation": "pool getter for substring return"
+    },
+    {
+      "address": "007f93d7",
+      "native": "00bd1510",
+      "function": "007f9340",
+      "operation": "return substring length+1"
+    },
+    {
+      "address": "007f92aa",
+      "native": "0041dd40",
+      "function": "007f9290",
+      "operation": "resize actual profile+3C header"
+    },
+    {
+      "address": "007f92bf",
+      "native": "00bf7680",
+      "function": "007f9290",
+      "operation": "overlap-safe 00BF7680 copy of current destination length from current source"
+    },
+    {
+      "address": "007f92dc",
+      "native": "00469840",
+      "function": "007f9290",
+      "operation": "construct 31-byte preferred-name substring"
+    },
+    {
+      "address": "007f9320",
+      "native": "00419cc0",
+      "function": "007f9290",
+      "operation": "pool getter for substring return"
+    },
+    {
+      "address": "007f9327",
+      "native": "00bd1510",
+      "function": "007f9290",
+      "operation": "return substring length+1"
+    }
+  ],
+  "no_function_calls": [
+    "00a3eae0"
+  ],
+  "producer_evidence": [
+    {
+      "address": "0073dc70",
+      "observation": "startup pushes 00735520 and 00735510 for A40DF0; manager+20/+24 context slots"
+    },
+    {
+      "address": "0073dc87",
+      "observation": "startup overwrites current F8ABE8 manager+18 with 00737D60"
+    },
+    {
+      "address": "00737d78",
+      "observation": "callback reloads F8ABE8 for selected-name leaf"
+    },
+    {
+      "address": "00737d8d",
+      "observation": "first E188A8 reload for display setter profile+650"
+    },
+    {
+      "address": "00737dae",
+      "observation": "second E188A8 reload for base setter profile+650"
+    },
+    {
+      "address": "007f939e",
+      "observation": "display setter reloads E188A8 after substring before mirror+1FF0"
+    },
+    {
+      "address": "007f92f0",
+      "observation": "base setter reloads E188A8 after substring before mirror+1FF0"
+    }
+  ],
+  "uncertainty": "Descriptive names are hypotheses. Requires live actual manager/game/profile publications and readable selected name. Native SEH faults, arbitrary asynchronous retirement and exception-domain identity remain outside this source interface. Profile owner construction/destruction is external. No binary ABI or game validation.",
+  "validation": {
+    "strict_sources": {
+      "command": "cmd /c local\\build_native_online_notification_leaves_probe.cmd (vcvarsall x86; /W4 /WX /MD /showIncludes compiles both sources)",
+      "exit_code": 0,
+      "stdout": "native notification leaves: fake SDK/Win32 calls passed"
+    },
+    "full_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "stdout_tail": "bsp_core.lib and bsp_game.exe built; reconstructed_math CTest 1/1 passed"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_online_profile_callback.json",
+      "exit_code": 0,
+      "stdout_tail": "16 call rows checked, 0 failed"
+    },
+    "fake_calls_probe": {
+      "command": "cmd /c local\\build_native_online_notification_leaves_probe.cmd",
+      "exit_code": 0,
+      "stdout": "native notification leaves: fake SDK/Win32 calls passed",
+      "effects": "fake pool and SDK/Win32 recorder, publication switch between profile setters; no external SDK/network/installer/update process"
+    },
+    "game_validated": false,
+    "native_entry_abi_compatible": false
+  },
+  "artifact_manifest": {
+    "source": {
+      "path": "src/native_online_profile_callback.cpp",
+      "bytes": 4959,
+      "sha256": "fe80c95862a10b959ac69dca311093ff73712f2bc68c07eb8d891cbbb76b09bd"
+    },
+    "header": {
+      "path": "include/bsp/native_online_profile_callback.hpp",
+      "bytes": 2802,
+      "sha256": "6f9fba80c3d96b71d438deb49902f4b66455d8177505777416e2d795b73b730b"
+    },
+    "documentation": {
+      "path": "docs/NATIVE_ONLINE_PROFILE_CALLBACK.md",
+      "bytes": 2684,
+      "sha256": "100221cea9471e35ebe693b0471087885976d1882077495ec9beb7051fed3971"
+    },
+    "report": {
+      "path": "reports/native_online_profile_callback.json",
+      "sha256": "self-reference omitted; commit object closes report bytes"
+    },
+    "shared_source_registry": {
+      "path": "cmake/startup.cmake",
+      "entry": "src/native_online_profile_callback.cpp"
+    },
+    "source_function_spans": "four rows above, each matching installed PE",
+    "fixture_cpp": {
+      "path": "local/native_online_notification_leaves_probe.cpp",
+      "bytes": 7804,
+      "sha256": "b0f2d67574ca3b669bb9662e8330849bdde4dcc6dd7fff4ddf9f400c672ddb5e"
+    },
+    "fixture_cmd": {
+      "path": "local/build_native_online_notification_leaves_probe.cmd",
+      "bytes": 1242,
+      "sha256": "90186fd85734b032d73d57b7615c68ce1a5ef4fe3333be047f292c56aaf2fed2"
+    },
+    "strict_objects": [
+      {
+        "path": "local/native_online_notification_leaves_strict.obj",
+        "bytes": 59740,
+        "sha256": "74c30f5dd41c728e33b1ed3684530e721e0eee22faa781f2f4b6ef2ab8c826ba"
+      },
+      {
+        "path": "local/native_online_profile_callback_strict.obj",
+        "bytes": 7492,
+        "sha256": "c35762337c4dec10eb4ada0efdeeb55ab82304b9225e4287a04d251cdbe79a84"
+      }
+    ],
+    "fixture_exe": {
+      "path": "local/native_online_notification_leaves_probe.exe",
+      "bytes": 27648,
+      "sha256": "3fa3ef1477de2b6cb46e9c6e80041a3eb1e753a070fd09ef85565ec629aa46bc"
+    },
+    "link_dependencies": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 57245378,
+        "sha256": "0019f29143471e87063f25d9a7825dd0d126745bd4343838c5828d29bd210572"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455944,
+        "sha256": "7003d5b77990dd4ba0a9bf1a2eb9981b374db84c938e2dc43b3986a1159d1bf1"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 72166,
+        "sha256": "97e9dac03eb81d7dae5f975f4d21c7fa60667f6209cf55e7a9f33801eeb04b29"
+      },
+      {
+        "system_import_libraries": "user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+      }
+    ],
+    "toolchain": {
+      "compiler": "MSVC cl 19.51.36244.0 Hostx64/x86",
+      "compiler_path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+      "sdk": "Windows SDK 10.0.26100.0",
+      "runtime": "/MD",
+      "strict_flags": "/W4 /WX /std:c++17 /showIncludes",
+      "link_flags": "/MACHINE:X86 /MANIFEST:EMBED"
+    },
+    "fixture_pe": {
+      "machine": "0x014c",
+      "format": "PE32",
+      "subsystem": "console",
+      "embedded_manifest": true,
+      "imports": [
+        "KERNEL32.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll"
+      ]
+    },
+    "repo_header_inputs": [
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/native_online_notification_leaves.hpp",
+        "bytes": 4836,
+        "sha256": "1202b9a3b4af85c1f782477ef18fdbb3a410a76a4d67b4442533f99270135af3"
+      },
+      {
+        "path": "include/bsp/native_online_notifications.hpp",
+        "bytes": 2261,
+        "sha256": "ebdc2ad2b07aa53b7f033f32982c61908fc8d9abe19961a1585fc1ee2623b821"
+      },
+      {
+        "path": "include/bsp/native_online_profile_callback.hpp",
+        "bytes": 2802,
+        "sha256": "6f9fba80c3d96b71d438deb49902f4b66455d8177505777416e2d795b73b730b"
+      },
+      {
+        "path": "include/bsp/native_online_signin.hpp",
+        "bytes": 3787,
+        "sha256": "dc33352baf10ad9226b7e2dc4fa4e464d86462bff77c7759a9dc7a640c625a2f"
+      },
+      {
+        "path": "include/bsp/native_pooled_string_substring.hpp",
+        "bytes": 1557,
+        "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8019,
+        "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/platform_loop.hpp",
+        "bytes": 765,
+        "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/session_polls.hpp",
+        "bytes": 17632,
+        "sha256": "e94d324b25881c433e4d0af8fc0171bc9d295c53620c226e8d32b6754759db72"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/xlive_library.hpp",
+        "bytes": 1849,
+        "sha256": "d399cfc4119e83d3770adc026fbe804c995472f5e2801d79890c61b0c2df591a"
+      },
+      {
+        "path": "include/bsp/xlive_notifications.hpp",
+        "bytes": 2720,
+        "sha256": "6dd05099f7423f719f52ee9ff471767e0176fafbf47e6edf1fe66c059a52b496"
+      },
+      {
+        "path": "include/bsp/xlive_types.hpp",
+        "bytes": 525,
+        "sha256": "f80ce72b3bddd2054b22035d071577dbd2b1212806b309cb2c384fd23449fb95"
+      },
+      {
+        "path": "include/bsp/xlive_updates.hpp",
+        "bytes": 3815,
+        "sha256": "d51e4f4389dcdf872ec5353c1011570d3e8d048893c88876179c8df1d54149f5"
+      }
+    ],
+    "fixture_input_closure": {
+      "cpp": [
+        "src/native_online_notification_leaves.cpp",
+        "src/native_online_profile_callback.cpp",
+        "local/native_online_notification_leaves_probe.cpp"
+      ],
+      "hpp_count": 23,
+      "inc": [],
+      "bin": [],
+      "compiled_library": "build/win32/Release/bsp_core.lib SHA256 above closes compiled dependency",
+      "system_headers": "MSVC 14.51.36231 and Windows SDK 10.0.26100.0 via vcvarsall x86; /showIncludes logs under local/"
+    },
+    "include_logs": [
+      {
+        "path": "local/native_online_notification_leaves_source_includes.txt",
+        "bytes": 36049,
+        "sha256": "5b89450eb75231ad3ce9c1f97be27237dac254c4b07e4b5f3da047512a1ecb9b"
+      },
+      {
+        "path": "local/native_online_profile_callback_source_includes.txt",
+        "bytes": 12149,
+        "sha256": "a7606051e0986211c3498b50309acbae20fbae3e385ccf095e61318fdf174385"
+      },
+      {
+        "path": "local/native_online_notification_leaves_fixture_includes.txt",
+        "bytes": 34380,
+        "sha256": "b5290fc2d5bce16fdbd5b7f7b7d9d8e479652adde88586990544b0d95029590c"
+      }
+    ]
+  },
+  "ghidra_integrator_actions": "Worker made zero Ghidra writes. Preserve comments, record old values, annotate four addresses and producer slot evidence under write lock, then refresh exports."
+}

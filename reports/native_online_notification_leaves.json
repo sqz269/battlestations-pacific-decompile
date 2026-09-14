@@ -1,0 +1,494 @@
+{
+  "packet": "orch5_native_online_notification_leaves",
+  "tested_base": "5eb0e80001128cde0ac0cdc55d601d6798fd5a38",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_notification_leaves.cpp",
+  "header": "include/bsp/native_online_notification_leaves.hpp",
+  "documentation": "docs/NATIVE_ONLINE_NOTIFICATION_LEAVES.md",
+  "ghidra_writes": false,
+  "status": "complete_normal_bodies_actual_storage_and_raw_callback_binding_build_and_fake_calls_tested",
+  "functions": [
+    {
+      "address": "00a3e600",
+      "inclusive_end": "00a3e689",
+      "last_instruction": "00a3e687",
+      "last_instruction_length": 3,
+      "byte_length": 138,
+      "byte_sha256": "98a6ede310eb57247fba99b1b08c4d76c9dc205797404ec8db897195f6d544b8",
+      "matches_disk": true,
+      "entrypoint": "refresh_native_online_profile_name_00a3e600",
+      "name_hypothesis": "BSP_XLiveManager_RefreshProfileName_Provisional",
+      "coverage": "complete normal body",
+      "original_abi": "ECX=captured actual 3F0h manager; mask byte in stack DWORD; RET4",
+      "evidence": "A3E606 bit0 gate, A3E61F name SDK, A3E635..A3E65A case-sensitive compare, A3E668 128-byte copy, A3E66A live +11C test, A3E674 live +18 target, A3E67B ECX0 indirect call"
+    },
+    {
+      "address": "00a3fde0",
+      "inclusive_end": "00a3ff1a",
+      "last_instruction": "00a3ff18",
+      "last_instruction_length": 3,
+      "byte_length": 315,
+      "byte_sha256": "3f2c63ca5cbeb2d42d5b01f34998cf2c89f9dc70b28c2364937ff3c556d20b83",
+      "matches_disk": true,
+      "entrypoint": "system_native_online_update_path_00a3fde0",
+      "name_hypothesis": "BSP_XLiveSystem_GetSystemUpdatePath",
+      "coverage": "complete normal body",
+      "original_abi": "actual eight-byte output string header pointer on stack; ECX unused; RET4; AL bool",
+      "evidence": "HKLM ApplicationDir ANSI query at 20019h and 400h buffer, successful REG_SZ assignment, explicit key close, unconditional 25-byte executable suffix append without separator; return indicates directory assignment"
+    },
+    {
+      "address": "00a3ff20",
+      "inclusive_end": "00a4001b",
+      "last_instruction": "00a40019",
+      "last_instruction_length": 3,
+      "byte_length": 252,
+      "byte_sha256": "f8b9a53c0da0c9883aaf414b6ad95d1547a2d4bcdb5a25c8d73f11b58d580085",
+      "matches_disk": true,
+      "entrypoint": "title_native_online_update_path_00a3ff20",
+      "name_hypothesis": "BSP_XLiveSystem_GetTitleUpdatePath",
+      "coverage": "complete normal body",
+      "original_abi": "actual eight-byte output string header pointer on stack; ECX unused; RET4; AL bool",
+      "evidence": "Zero 218h object and set cbSize; signed HRESULT and type0 gate; 16-bit path at +10; low-byte narrow temporary then output resize/copy; temporary native-pool return"
+    },
+    {
+      "address": "00a3e560",
+      "inclusive_end": "00a3e5c9",
+      "last_instruction": "00a3e5c7",
+      "last_instruction_length": 3,
+      "byte_length": 106,
+      "byte_sha256": "93213405c16190e9dbdac156ec6982494548cdac9c3d5cc7aacd90299327d17c",
+      "matches_disk": true,
+      "entrypoint": "launch_native_online_update_00a3e560",
+      "name_hypothesis": "BSP_XLiveSystem_LaunchUpdate",
+      "coverage": "complete normal body",
+      "original_abi": "two C-string pointers on stack; ECX unused; RET8; EAX bool",
+      "evidence": "Null executable returns zero; 3Ch zeroed SHELLEXECUTEINFOA, mask400h, verb open, file and parameters, show5, ShellExecuteExA; no wait or exit"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a3e61f",
+      "native": "00a4d566",
+      "function": "00a3e600",
+      "operation": "XUserGetName ordinal 5263, user0, scratch128, capacity128"
+    },
+    {
+      "address": "00a3e67d",
+      "native": "00737d60",
+      "function": "00a3e600",
+      "operation": "indirect current manager+18; normal raw profile callback 00737D60, incoming ECX zero"
+    },
+    {
+      "address": "00a3fe1b",
+      "native": "00ce2010+iat",
+      "function": "00a3fde0",
+      "operation": "RegOpenKeyExA, five stdcall slots; HKLM/access20019h"
+    },
+    {
+      "address": "00a3fe4e",
+      "native": "00ce200c+iat",
+      "function": "00a3fde0",
+      "operation": "RegQueryValueExA, six stdcall slots; ApplicationDir/400h bytes"
+    },
+    {
+      "address": "00a3fe66",
+      "native": "0041e350",
+      "function": "00a3fde0",
+      "operation": "assign ANSI C string into actual output header"
+    },
+    {
+      "address": "00a3fe75",
+      "native": "00ce2008+iat",
+      "function": "00a3fde0",
+      "operation": "RegCloseKey even if query fails"
+    },
+    {
+      "address": "00a3fe8b",
+      "native": "0041dd40",
+      "function": "00a3fde0",
+      "operation": "resize fresh suffix header to 25 bytes"
+    },
+    {
+      "address": "00a3fea6",
+      "native": "00bf7680",
+      "function": "00a3fde0",
+      "operation": "copy 26 literal bytes including NUL; ADD ESP,0Ch at A3FEAB"
+    },
+    {
+      "address": "00a3fec3",
+      "native": "0041dd40",
+      "function": "00a3fde0",
+      "operation": "resize actual output for suffix append"
+    },
+    {
+      "address": "00a3fed0",
+      "native": "00bf7680",
+      "function": "00a3fde0",
+      "operation": "copy 25 suffix bytes; ADD ESP,0Ch at A3FED5"
+    },
+    {
+      "address": "00a3fef0",
+      "native": "00419cc0",
+      "function": "00a3fde0",
+      "operation": "actual sized-pool getter for suffix return"
+    },
+    {
+      "address": "00a3fef7",
+      "native": "00bd1510",
+      "function": "00a3fde0",
+      "operation": "actual sized-pool return for suffix buffer"
+    },
+    {
+      "address": "00a3ff47",
+      "native": "00bf79f0",
+      "function": "00a3ff20",
+      "operation": "zero 218h SDK object; ADD ESP,0Ch at A3FF4C"
+    },
+    {
+      "address": "00a3ff5c",
+      "native": "00a4d59c",
+      "function": "00a3ff20",
+      "operation": "XLiveGetUpdateInformation ordinal 5022, one pointer"
+    },
+    {
+      "address": "00a3ff80",
+      "native": "00436630",
+      "function": "00a3ff20",
+      "operation": "construct actual native narrow string from 16-bit path+10"
+    },
+    {
+      "address": "00a3ffac",
+      "native": "0041dd40",
+      "function": "00a3ff20",
+      "operation": "resize actual output to temporary length"
+    },
+    {
+      "address": "00a3ffbd",
+      "native": "00bf7680",
+      "function": "00a3ff20",
+      "operation": "copy native narrow temporary into output; ADD ESP,0Ch at A3FFC2"
+    },
+    {
+      "address": "00a3ffdb",
+      "native": "00419cc0",
+      "function": "00a3ff20",
+      "operation": "actual sized-pool getter for temporary return"
+    },
+    {
+      "address": "00a3ffe2",
+      "native": "00bd1510",
+      "function": "00a3ff20",
+      "operation": "actual sized-pool return for temporary buffer"
+    },
+    {
+      "address": "00a3e57e",
+      "native": "00bf79f0",
+      "function": "00a3e560",
+      "operation": "zero 3Ch SHELLEXECUTEINFOA; ADD ESP,0Ch at A3E587"
+    },
+    {
+      "address": "00a3e5b7",
+      "native": "00ce22f4+iat",
+      "function": "00a3e560",
+      "operation": "ShellExecuteExA one pointer argument"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "address": "0073dc87",
+      "observation": "startup overwrites current F8ABE8 manager+18 with 00737D60; 00735510/+20 and 00735520/+24 are distinct slots"
+    },
+    {
+      "address": "00a401e0",
+      "observation": "raw notification drain calls A3E600 with captured manager; outer body owned by integrator"
+    }
+  ],
+  "uncertainty": "Names are descriptive hypotheses. Requires valid NUL-terminated SDK/registry output and live manager, borrowed module and actual pool. Does not emulate hardware faults, native SEH, or arbitrary callback targets. C++ entry points are not binary ABI replacements; no game validation or real SDK/update launch was performed.",
+  "validation": {
+    "strict_source": {
+      "command": "cmd /c local\\build_native_online_notification_leaves_probe.cmd (vcvarsall x86; /W4 /WX /MD /showIncludes)",
+      "exit_code": 0,
+      "stdout": "fake SDK/Win32 calls passed"
+    },
+    "full_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "stdout_tail": "bsp_core.lib and bsp_game.exe built; reconstructed_math CTest 1/1 passed"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_online_notification_leaves.json",
+      "exit_code": 0,
+      "stdout_tail": "17 call rows checked, 0 failed; 5 callback/IAT rows marked indirect"
+    },
+    "fake_calls_probe": {
+      "command": "cmd /c local\\build_native_online_notification_leaves_probe.cmd",
+      "exit_code": 0,
+      "stdout": "native_online_notification_leaves.cpp; native_online_notification_leaves_probe.cpp; native notification leaves: fake SDK/Win32 calls passed",
+      "effects": "recording SDK/registry/ShellExecute and filled malloc storage; no real SDK, network, registry access or process launch; raw callback exercised with fake pool and game publication switch; raw callback exercised with fake pool and game publication switch"
+    },
+    "game_validated": false,
+    "native_entry_abi_compatible": false
+  },
+  "artifact_manifest": {
+    "source": {
+      "path": "src/native_online_notification_leaves.cpp",
+      "bytes": 7745,
+      "sha256": "6ee1c969b0c4c96d0e4e5981ad21f0a195cbf6f0fc619707e16eb6183c0c4026"
+    },
+    "header": {
+      "path": "include/bsp/native_online_notification_leaves.hpp",
+      "bytes": 4836,
+      "sha256": "1202b9a3b4af85c1f782477ef18fdbb3a410a76a4d67b4442533f99270135af3"
+    },
+    "documentation": {
+      "path": "docs/NATIVE_ONLINE_NOTIFICATION_LEAVES.md",
+      "bytes": 4345,
+      "sha256": "d845c113ff3b65bf73c19fc7abade667f8ab9da6bb81dab5c42f690a23baa712"
+    },
+    "report": {
+      "path": "reports/native_online_notification_leaves.json",
+      "sha256": "self-reference omitted; commit object closes report bytes"
+    },
+    "shared_source_registry": {
+      "path": "cmake/startup.cmake",
+      "line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_online_notification_leaves.cpp)"
+    },
+    "fixture_cpp": {
+      "path": "local/native_online_notification_leaves_probe.cpp",
+      "bytes": 7804,
+      "sha256": "b0f2d67574ca3b669bb9662e8330849bdde4dcc6dd7fff4ddf9f400c672ddb5e"
+    },
+    "fixture_cmd": {
+      "path": "local/build_native_online_notification_leaves_probe.cmd",
+      "bytes": 1242,
+      "sha256": "90186fd85734b032d73d57b7615c68ce1a5ef4fe3333be047f292c56aaf2fed2"
+    },
+    "strict_obj": {
+      "path": "local/native_online_notification_leaves_strict.obj",
+      "bytes": 59740,
+      "sha256": "74c30f5dd41c728e33b1ed3684530e721e0eee22faa781f2f4b6ef2ab8c826ba"
+    },
+    "fixture_exe": {
+      "path": "local/native_online_notification_leaves_probe.exe",
+      "bytes": 27648,
+      "sha256": "3fa3ef1477de2b6cb46e9c6e80041a3eb1e753a070fd09ef85565ec629aa46bc"
+    },
+    "link_dependencies": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 57245378,
+        "sha256": "0019f29143471e87063f25d9a7825dd0d126745bd4343838c5828d29bd210572"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455944,
+        "sha256": "7003d5b77990dd4ba0a9bf1a2eb9981b374db84c938e2dc43b3986a1159d1bf1"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 72166,
+        "sha256": "97e9dac03eb81d7dae5f975f4d21c7fa60667f6209cf55e7a9f33801eeb04b29"
+      },
+      {
+        "system_import_libraries": "user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+      }
+    ],
+    "toolchain": {
+      "compiler": "MSVC cl 19.51.36244.0 Hostx64/x86",
+      "compiler_path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+      "sdk": "Windows SDK 10.0.26100.0",
+      "runtime": "/MD",
+      "strict_flags": "/W4 /WX /std:c++17 /showIncludes",
+      "link_flags": "/MACHINE:X86 /MANIFEST:EMBED"
+    },
+    "fixture_pe": {
+      "machine": "0x014c",
+      "format": "PE32",
+      "subsystem": "console",
+      "embedded_manifest": true,
+      "imports": [
+        "KERNEL32.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll"
+      ]
+    },
+    "source_function_spans": "four address/start/end/byte length/SHA256 rows above; all bytes match installed PE",
+    "repo_header_inputs": [
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/native_online_notification_leaves.hpp",
+        "bytes": 4836,
+        "sha256": "1202b9a3b4af85c1f782477ef18fdbb3a410a76a4d67b4442533f99270135af3"
+      },
+      {
+        "path": "include/bsp/native_online_notifications.hpp",
+        "bytes": 2261,
+        "sha256": "ebdc2ad2b07aa53b7f033f32982c61908fc8d9abe19961a1585fc1ee2623b821"
+      },
+      {
+        "path": "include/bsp/native_online_profile_callback.hpp",
+        "bytes": 2802,
+        "sha256": "6f9fba80c3d96b71d438deb49902f4b66455d8177505777416e2d795b73b730b"
+      },
+      {
+        "path": "include/bsp/native_online_signin.hpp",
+        "bytes": 3787,
+        "sha256": "dc33352baf10ad9226b7e2dc4fa4e464d86462bff77c7759a9dc7a640c625a2f"
+      },
+      {
+        "path": "include/bsp/native_pooled_string_substring.hpp",
+        "bytes": 1557,
+        "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8019,
+        "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/platform_loop.hpp",
+        "bytes": 765,
+        "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/session_polls.hpp",
+        "bytes": 17632,
+        "sha256": "e94d324b25881c433e4d0af8fc0171bc9d295c53620c226e8d32b6754759db72"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/xlive_library.hpp",
+        "bytes": 1849,
+        "sha256": "d399cfc4119e83d3770adc026fbe804c995472f5e2801d79890c61b0c2df591a"
+      },
+      {
+        "path": "include/bsp/xlive_notifications.hpp",
+        "bytes": 2720,
+        "sha256": "6dd05099f7423f719f52ee9ff471767e0176fafbf47e6edf1fe66c059a52b496"
+      },
+      {
+        "path": "include/bsp/xlive_types.hpp",
+        "bytes": 525,
+        "sha256": "f80ce72b3bddd2054b22035d071577dbd2b1212806b309cb2c384fd23449fb95"
+      },
+      {
+        "path": "include/bsp/xlive_updates.hpp",
+        "bytes": 3815,
+        "sha256": "d51e4f4389dcdf872ec5353c1011570d3e8d048893c88876179c8df1d54149f5"
+      }
+    ],
+    "fixture_input_closure": {
+      "cpp": [
+        "src/native_online_notification_leaves.cpp",
+        "src/native_online_profile_callback.cpp",
+        "local/native_online_notification_leaves_probe.cpp"
+      ],
+      "hpp_count": 23,
+      "inc": [],
+      "bin": [],
+      "compiled_library": "build/win32/Release/bsp_core.lib SHA256 above closes compiled dependency",
+      "system_headers": "MSVC 14.51.36231 and Windows SDK 10.0.26100.0 via vcvarsall x86; /showIncludes logs under local/"
+    },
+    "include_logs": [
+      {
+        "path": "local/native_online_notification_leaves_source_includes.txt",
+        "bytes": 36049,
+        "sha256": "5b89450eb75231ad3ce9c1f97be27237dac254c4b07e4b5f3da047512a1ecb9b"
+      },
+      {
+        "path": "local/native_online_profile_callback_source_includes.txt",
+        "bytes": 12149,
+        "sha256": "a7606051e0986211c3498b50309acbae20fbae3e385ccf095e61318fdf174385"
+      },
+      {
+        "path": "local/native_online_notification_leaves_fixture_includes.txt",
+        "bytes": 34380,
+        "sha256": "b5290fc2d5bce16fdbd5b7f7b7d9d8e479652adde88586990544b0d95029590c"
+      }
+    ],
+    "strict_objects": [
+      {
+        "path": "local/native_online_notification_leaves_strict.obj",
+        "bytes": 59740,
+        "sha256": "74c30f5dd41c728e33b1ed3684530e721e0eee22faa781f2f4b6ef2ab8c826ba"
+      },
+      {
+        "path": "local/native_online_profile_callback_strict.obj",
+        "bytes": 7492,
+        "sha256": "c35762337c4dec10eb4ada0efdeeb55ab82304b9225e4287a04d251cdbe79a84"
+      }
+    ],
+    "profile_dependency": {
+      "path": "src/native_online_profile_callback.cpp",
+      "bytes": 4959,
+      "sha256": "fe80c95862a10b959ac69dca311093ff73712f2bc68c07eb8d891cbbb76b09bd"
+    },
+    "profile_header": {
+      "path": "include/bsp/native_online_profile_callback.hpp",
+      "bytes": 2802,
+      "sha256": "6f9fba80c3d96b71d438deb49902f4b66455d8177505777416e2d795b73b730b"
+    }
+  },
+  "ghidra_integrator_actions": "Worker made zero Ghidra writes by instruction. Integrator should preserve existing comments, record old values, and append actual-storage evidence/name decisions for four addresses under write lock; refresh affected exports."
+}
