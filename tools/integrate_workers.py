@@ -158,12 +158,36 @@ def duplicate_definitions(tree):
     collide once a translation unit includes both (MissionGroup, VehicleClassKindRow)."""
     import re
     where = {}
-    pattern = re.compile(r'^(?:struct|class|enum class|enum|union)\s+(\w+)\s*(?::|\{)|^inline\s+constexpr\s+[\w:<>]+\s+(k\w+)\b', re.M)
+    # A spelling such as kUnit in two different offset namespaces is legal.
+    # Track namespace braces while skipping class/function/initializer bodies;
+    # this remains a lightweight preflight, not a replacement for compilation.
+    literals = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'', re.S)
+    pattern = re.compile(
+        r'\bnamespace\s*(?P<namespace>[A-Za-z_]\w*(?:::\w+)*)?\s*\{'
+        r'|^(?:struct|class|enum class|enum|union)\s+(?P<type>\w+)\s*(?:final\s*)?(?P<open>[:{])'
+        r'|^inline\s+constexpr\s+[\w:<>]+\s+(?P<constant>k\w+)\b'
+        r'|(?P<brace>[{}])', re.M)
     for header in sorted((tree / 'include/bsp').glob('*.hpp')):
         text = header.read_text(encoding='utf-8', errors='replace')
+        text = literals.sub(lambda m: ''.join('\n' if c == '\n' else ' ' for c in m[0]), text)
+        scopes = []
         for m in pattern.finditer(text):
-            name = m.group(1) or m.group(2)
-            where.setdefault(name, set()).add(header.name)
+            if m[0].startswith('namespace'):
+                # An anonymous namespace has translation-unit-local identity.
+                scopes.append(m['namespace'])
+                continue
+            if m['brace']:
+                if m['brace'] == '{':
+                    scopes.append(None)
+                elif scopes:
+                    scopes.pop()
+                continue
+            name = m['type'] or m['constant']
+            if all(scope is not None for scope in scopes):
+                qualified = '::'.join([*scopes, name])
+                where.setdefault(qualified, set()).add(header.name)
+            if m['open'] == '{':
+                scopes.append(None)
     return {name: sorted(files) for name, files in where.items() if len(files) > 1}
 
 

@@ -1,0 +1,720 @@
+{
+  "packet": "orch6_model_numbering_runtime_ag",
+  "source": "src/native_model_numbering.cpp",
+  "entries": [
+    {
+      "address": "00711510",
+      "name": "set_native_section_numbering_00711510",
+      "ghidra_name": "BSP_DrawSection_SetNumbering",
+      "bytes": 1296,
+      "status": "complete_normal_source_caller_real_d3d9_fixture_checked"
+    },
+    {
+      "address": "00711a20",
+      "name": "set_native_node_numbering_00711a20",
+      "ghidra_name": "BSP_SceneNode_SetNumberingRecursive",
+      "bytes": 440,
+      "status": "complete_normal_source_caller_real_d3d9_fixture_checked"
+    },
+    {
+      "address": "00711be0",
+      "name": "set_native_model_numbering_00711be0",
+      "ghidra_name": "BSP_ModelInstance_SetNumbering",
+      "bytes": 21,
+      "status": "complete_normal_source_caller_real_d3d9_fixture_checked"
+    }
+  ],
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "address": "00711510",
+      "bytes": 1296,
+      "sha256": "0d00fe71e221c4df02b51e50208a1c21c74e6543070839a0a2d0cd6b80005b16",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00711a20",
+      "bytes": 440,
+      "sha256": "c5a13ef0fba44c35e826ac4cd7415cb7183d540c58950e6ad0092798ecb65add",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00711be0",
+      "bytes": 21,
+      "sha256": "d2aedc036649e522e83dab63641aa66e0f08be864dafc1c48b6dc059e4e1667f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61cc0",
+      "bytes": 72,
+      "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61d1c",
+      "bytes": 12,
+      "sha256": "64cde7f82ed2673083aeea7cbc7e753ad5338e8ba188f0c63a048e39c697b478",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61d6c",
+      "bytes": 52,
+      "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f0a8",
+      "bytes": 100,
+      "sha256": "dab04f08084a60143678d89bcc6e4ea3c2a0deeb83b88bc1f2949713bcd7432f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61e10",
+      "bytes": 36,
+      "sha256": "797cffe6e5a5f88fd251f853006ced781f96229c71934604a2c5a83014ff9ba6",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61e34",
+      "bytes": 36,
+      "sha256": "0ce96f1496942ff87525bc114a4ba34656127d397a8e80aaf35b1bebc26234ad",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61e7c",
+      "bytes": 36,
+      "sha256": "d74f853720d97ef5f568b327d488040b9a2cb5924c65cdc72197ae3f31597be1",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61de0",
+      "bytes": 48,
+      "sha256": "98dbcef2871dde5ee8076f3ca571cda1dcec2d3bd2d185c16704e3e06eaf7380",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d62de8",
+      "bytes": 16,
+      "sha256": "329a1561b2cee804a15510f20bc68db50c1a813a2e191fdac8340795bf4340bc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f060",
+      "bytes": 20,
+      "sha256": "dd1dd7962c61107be4820d2ead6e6933e3d541b4e60e3c1e361e0a80993a8eee",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f024",
+      "bytes": 20,
+      "sha256": "62ffb477cee43645e971bc6c428cfcb98569f6dcaaff2a68e7f218937fd12509",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d62af4",
+      "bytes": 8,
+      "sha256": "22b7c729f31369c6714abc3492f15e0c4a38dfebf2876592c310c8d2d2f26a94",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5e520",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d",
+      "live_disk_equal": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "0071155d",
+      "native": "00b33e40",
+      "function": "00711510"
+    },
+    {
+      "address": "00711571",
+      "native": "00bf9440",
+      "function": "00711510"
+    },
+    {
+      "address": "0071159d",
+      "native": "00b33e40",
+      "function": "00711510"
+    },
+    {
+      "address": "007115b5",
+      "native": "00bf9440",
+      "function": "00711510"
+    },
+    {
+      "address": "00711643",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "0071167a",
+      "native": "0041dd20",
+      "function": "00711510"
+    },
+    {
+      "address": "0071169d",
+      "native": "00710630",
+      "function": "00711510"
+    },
+    {
+      "address": "007116d3",
+      "native": "00aefb20",
+      "function": "00711510"
+    },
+    {
+      "address": "007116e1",
+      "native": "00b189f0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071171c",
+      "native": "004768d0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711740",
+      "native": "0070fdb0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071177e",
+      "native": "007100a0",
+      "function": "00711510"
+    },
+    {
+      "address": "007117a0",
+      "native": "00476180",
+      "function": "00711510"
+    },
+    {
+      "address": "00711829",
+      "native": "00b73bb0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711849",
+      "native": "00b865a0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071188c",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "007118a1",
+      "native": "00711370",
+      "function": "00711510"
+    },
+    {
+      "address": "007118b9",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "007118ce",
+      "native": "004261a0",
+      "function": "00711510"
+    },
+    {
+      "address": "007118e7",
+      "native": "004261a0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711907",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071190e",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071192e",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711935",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "00711955",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071195c",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071197c",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711983",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071199c",
+      "native": "00aefb20",
+      "function": "00711510"
+    },
+    {
+      "address": "007119fd",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711a04",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "00711a34",
+      "native": "00b74310",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a5a",
+      "native": "00b74650",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a73",
+      "native": "00b74640",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a7e",
+      "native": "00b72b40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a93",
+      "native": "00b732c0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a9e",
+      "native": "00b172d0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711ab6",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711ae0",
+      "native": "00b33e40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711af4",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b16",
+      "native": "00b33e40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b2a",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b54",
+      "native": "00b732c0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b5d",
+      "native": "00711510",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b67",
+      "native": "00b72b40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b85",
+      "native": "00b74650",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bb2",
+      "native": "00b6da70",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bc6",
+      "native": "00711a20",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bed",
+      "native": "00711a20",
+      "function": "00711be0"
+    },
+    {
+      "address": "0087bf43",
+      "native": "00711be0",
+      "function": "0087bcc0"
+    },
+    {
+      "address": "00507e54",
+      "native": "00711be0",
+      "function": "005072c0"
+    },
+    {
+      "address": "00876222",
+      "native": "00711be0",
+      "function": "008761e0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "passed": true,
+    "caller_comparisons": 25,
+    "section_invocations": 42,
+    "type_leaf_calls": 51,
+    "canonical_retirements": 90,
+    "real_d3d9_hal": true,
+    "native_fh3_tested": false,
+    "buffer_rows": [
+      {
+        "mode": 0,
+        "number": 0,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "35371867c7cc1af4596d2d1b508fd6605358f99e6c38e1eda009800254799e3a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 1,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "6e8bfc5ee0269b199da55c2a187891890d0bb1526ee7f55fc65f0c84930a353a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 9,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "e9191e5b32d6def001e1af5538a470be9302bd4d26ad9b71cf50877fe2b452a9",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 10,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "b4c1a227f9c5ff442d3d848e4aa8694ee49bbe4c35e638b3052b44ade37a29b0",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 99,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "c57660f342dacf7d2cdd0cfb6a7958ee6f47f633a5599a8d1c47de322e311056",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 100,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "99f21fb7571ad7ec2f9955760a634b3c95613906ac3626eded5113ef427b88d1",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 105,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "d1ccdf6beb5ca4b7fd9cd44af8a3255a2b168c21fe678697ee3e36b962813c11",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 0,
+        "number": 999,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "2ba76a6ad3da2aa7bff0d8cad7007bb7eb81c97e897283573b0e2a71bb86625d",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 0,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "35371867c7cc1af4596d2d1b508fd6605358f99e6c38e1eda009800254799e3a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 1,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "6e8bfc5ee0269b199da55c2a187891890d0bb1526ee7f55fc65f0c84930a353a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 9,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "e9191e5b32d6def001e1af5538a470be9302bd4d26ad9b71cf50877fe2b452a9",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 10,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "b4c1a227f9c5ff442d3d848e4aa8694ee49bbe4c35e638b3052b44ade37a29b0",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 99,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "c57660f342dacf7d2cdd0cfb6a7958ee6f47f633a5599a8d1c47de322e311056",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 100,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "99f21fb7571ad7ec2f9955760a634b3c95613906ac3626eded5113ef427b88d1",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 105,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "d1ccdf6beb5ca4b7fd9cd44af8a3255a2b168c21fe678697ee3e36b962813c11",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 1,
+        "number": 999,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "2ba76a6ad3da2aa7bff0d8cad7007bb7eb81c97e897283573b0e2a71bb86625d",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 0,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "35371867c7cc1af4596d2d1b508fd6605358f99e6c38e1eda009800254799e3a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 1,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "6e8bfc5ee0269b199da55c2a187891890d0bb1526ee7f55fc65f0c84930a353a",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 9,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "e9191e5b32d6def001e1af5538a470be9302bd4d26ad9b71cf50877fe2b452a9",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 10,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "b4c1a227f9c5ff442d3d848e4aa8694ee49bbe4c35e638b3052b44ade37a29b0",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 99,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "c57660f342dacf7d2cdd0cfb6a7958ee6f47f633a5599a8d1c47de322e311056",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 100,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "99f21fb7571ad7ec2f9955760a634b3c95613906ac3626eded5113ef427b88d1",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 105,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "d1ccdf6beb5ca4b7fd9cd44af8a3255a2b168c21fe678697ee3e36b962813c11",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 999,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "2ba76a6ad3da2aa7bff0d8cad7007bb7eb81c97e897283573b0e2a71bb86625d",
+        "original_loop_equal": true
+      },
+      {
+        "mode": 2,
+        "number": 4294967295,
+        "vertices": 10,
+        "bytes": 440,
+        "sha256": "2ba76a6ad3da2aa7bff0d8cad7007bb7eb81c97e897283573b0e2a71bb86625d",
+        "original_loop_equal": true
+      }
+    ],
+    "existing_native_reference_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\model_numbering_ae\\manifest.json",
+      "bytes": 267595,
+      "sha256": "0f4ad6168bbc4af2dfe353f7f29da0a885fb8ca50df318b8f5b588db4fe8f8eb"
+    },
+    "input_scope": "Ten retained AE vertices; original UVtype3 path, CW027F, same native atlas bounds. Eight numbers across section/node/model APIs plus unsignedFFFFFFFF clamp.",
+    "topology": "Borrowed D62DE8 root with geometry; empty child then sibling sharing the same mesh. Actual ModelTypeBootstrap initialization and 006EF860 type leaf; raw model160/holder0C wrapper.",
+    "graphics": "Hidden64x64 real D3D9 HAL device with software vertex processing; actual current38 declaration cache,5C vertex factory,mapping,current24/current40 hardware layout and COM GetDeclaration.",
+    "ownership": "AF actual CPU declaration/logical/physical pool startup; existing hardware/material/parameter/mesh/section pool and tree lifecycles; same canonical owner registry, material terminal and declaration-cache destructor.",
+    "alias_correction": "A recursive second update may reuse the first retired raw slot. Retirement is checked from actual canonical unbind events, not raw address absence.",
+    "cleanup": "All canonical owners and renderer stream arrays empty; real hardware tree CRT shutdown confirmed after main returns.",
+    "execution_scope": "Reconstructed complete source callers run. Original machine code provides vertex-loop reference outputs; original complete caller bodies and native FH3 do not execute in this fixture."
+  },
+  "boundaries": [
+    "Borrowed initialized renderer prefix and empty VFS fixture tree; full native renderer/window/resource startup is not exercised.",
+    "Texture named-base construction and actual retain/release are exercised. Texture/effect external creator references stay alive; complete texture/effect/cache lifecycles are not claimed.",
+    "Model descriptor setup/type leaf and numbering traversal are real source. Model-node/effect/atlas inputs are fixture storage; game model loading and atlas construction are not tested.",
+    "Only observed D62DE8 model current0C and initialized UVtype3 layout are admitted; other node classes, native FH3, allocation faults, unmasked FP and gameplay/render parity remain unproved.",
+    "The reconstructed mission runtime is not yet connected to this full numbering service composition."
+  ],
+  "archived_setup": {
+    "path": "local/model_numbering_runtime_ag/text_layout_probe.cpp",
+    "sha256": "dd536630252e2d6d3ae3ff4b45627efec880d3bcb43d3b392deac9ba21690f58",
+    "original": "../battlestations-pacific-decompile-orch5-20260911/local/text-native-workers/renderer/local/text_layout_probe.cpp"
+  },
+  "source_commit": "042bf827c2ec623e4a62819f78c2ea9f5b5d22aa",
+  "worker_dispatches": 0,
+  "fixture_profile_audit": [
+    {
+      "table": "00d61cc0",
+      "fixture_array": "types",
+      "dwords_checked": 18,
+      "match": true
+    },
+    {
+      "table": "00d61d1c",
+      "fixture_array": "decl_profile",
+      "dwords_checked": 2,
+      "match": true
+    },
+    {
+      "table": "00d61d6c",
+      "fixture_array": "logicalProfile",
+      "dwords_checked": 13,
+      "match": true
+    },
+    {
+      "table": "00d5f0a8",
+      "fixture_array": "rendererProfile",
+      "dwords_checked": 25,
+      "match": true
+    },
+    {
+      "table": "00d61e10",
+      "fixture_array": "index_physical",
+      "dwords_checked": 9,
+      "match": true
+    },
+    {
+      "table": "00d61e34",
+      "fixture_array": "privateProfile",
+      "dwords_checked": 9,
+      "match": true
+    },
+    {
+      "table": "00d61e7c",
+      "fixture_array": "pooledProfile",
+      "dwords_checked": 9,
+      "match": true
+    },
+    {
+      "table": "00d61de0",
+      "fixture_array": "index_profile",
+      "dwords_checked": 12,
+      "match": true
+    },
+    {
+      "table": "00d5f060",
+      "fixture_array": "registry_profile",
+      "dwords_checked": 5,
+      "match": true
+    },
+    {
+      "table": "00d5f024",
+      "fixture_array": "base_registry_profile",
+      "dwords_checked": 5,
+      "match": true
+    },
+    {
+      "table": "00d62af4",
+      "fixture_array": "hardware_profile",
+      "dwords_checked": 2,
+      "match": true
+    },
+    {
+      "table": "00d5e520",
+      "fixture_array": "material_profile",
+      "dwords_checked": 2,
+      "match": true
+    },
+    {
+      "table": "00d62de8",
+      "slot": 12,
+      "source_type_dispatch": "ModelTypeBootstrap::is_type_006ef860",
+      "match": true
+    }
+  ],
+  "integration_repairs": {
+    "real_collision": "Two incompatible bsp::PilotCommandBlock definitions. The older plane_ai_control projection is now PlaneAiCommandProjection; algorithms and members are unchanged.",
+    "false_positives": "Integration preflight now qualifies names by namespace and excludes local/anonymous scopes instead of rejecting unrelated offset constants.",
+    "check": "local/model_numbering_runtime_ag/integration_name_audit.json",
+    "compiler_check": "MSVC /Zs combined six affected headers, including both distinct pilot projections; passed.",
+    "files": [
+      "tools/integrate_workers.py",
+      "include/bsp/plane_ai_control.hpp",
+      "src/plane_ai_control.cpp"
+    ]
+  }
+}
