@@ -142,6 +142,112 @@ void scale_bias(float* local, const void* record) noexcept {
         fstp dword ptr [edx + 8]
     }
 }
+void scale_bias_normal(float* local, const void* record) noexcept {
+    // 0070FFDF loads lane0 first; operand order matters for NaN payloads.
+    __asm {
+        mov ecx, record
+        mov edx, local
+        fld dword ptr [edx]
+        fmul dword ptr [ecx]
+        fadd dword ptr [ecx + 10h]
+        fstp dword ptr [edx]
+        fld dword ptr [ecx + 4]
+        fmul dword ptr [edx + 4]
+        fadd dword ptr [ecx + 14h]
+        fstp dword ptr [edx + 4]
+        fld dword ptr [ecx + 8]
+        fmul dword ptr [edx + 8]
+        fadd dword ptr [ecx + 18h]
+        fstp dword ptr [edx + 8]
+    }
+}
+void scale_bias_uv(float* local, const void* record) noexcept {
+    __asm {
+        mov ecx, record
+        mov edx, local
+        fld dword ptr [ecx]
+        fmul dword ptr [edx]
+        fadd dword ptr [ecx + 10h]
+        fstp dword ptr [edx]
+        fld dword ptr [ecx + 4]
+        fmul dword ptr [edx + 4]
+        fadd dword ptr [ecx + 14h]
+        fstp dword ptr [edx + 4]
+    }
+}
+void copy_float2_x87(const void* input, float* output) noexcept {
+    __asm {
+        mov ecx, input
+        mov eax, output
+        fld dword ptr [ecx]
+        fstp dword ptr [eax]
+        fld dword ptr [ecx + 4]
+        fstp dword ptr [eax + 4]
+    }
+}
+void float_colour(void* stream, std::uint32_t vertex_base, void* output) noexcept {
+    const double multiplier = 255.0;
+    std::uint16_t saved_control, trunc_control;
+    std::int32_t converted;
+    std::uint32_t packed;
+    __asm {
+        mov ecx, stream
+        mov edx, vertex_base
+        lea edi, packed
+        mov eax, dword ptr [ecx + 38h]
+        fnstcw saved_control
+        fld dword ptr [eax + edx]
+        fld multiplier
+        movzx eax, saved_control
+        or eax, 0c00h
+        mov trunc_control, ax
+        fmul st(1), st(0)
+        fxch st(1)
+        fldcw trunc_control
+        fistp converted
+        mov eax, converted
+        mov byte ptr [edi + 2], al
+        mov eax, dword ptr [ecx + 3ch]
+        fldcw saved_control
+        fld dword ptr [eax + edx]
+        fnstcw saved_control
+        fmul st(0), st(1)
+        movzx eax, saved_control
+        or eax, 0c00h
+        mov trunc_control, ax
+        fldcw trunc_control
+        fistp converted
+        mov eax, converted
+        mov byte ptr [edi + 1], al
+        mov eax, dword ptr [ecx + 40h]
+        fldcw saved_control
+        mov ecx, dword ptr [ecx + 44h]
+        fld dword ptr [eax + edx]
+        fnstcw saved_control
+        fmul st(0), st(1)
+        movzx eax, saved_control
+        or eax, 0c00h
+        mov trunc_control, ax
+        fldcw trunc_control
+        fistp converted
+        mov eax, converted
+        mov byte ptr [edi], al
+        fldcw saved_control
+        fmul dword ptr [ecx + edx]
+        fnstcw saved_control
+        movzx eax, saved_control
+        or eax, 0c00h
+        mov trunc_control, ax
+        fldcw trunc_control
+        fistp converted
+        mov eax, converted
+        mov byte ptr [edi + 3], al
+        mov ecx, packed
+        mov eax, output
+        fldcw saved_control
+        mov dword ptr [eax], ecx
+    }
+}
 } // namespace
 
 NativeD3dx9Float16Import::NativeD3dx9Float16Import(HMODULE module) {
@@ -221,5 +327,78 @@ bool read_native_vertex_position_004768d0(void* stream, std::uint32_t index,
     scale_bias(local, bytes(record));
     copy_float3_x87(local, output);
     return true;
+}
+
+bool read_native_vertex_normal_0070fdb0(void* stream, std::uint32_t index,
+    float (&output)[3], const NativeD3dx9Float16Import& half_import) {
+    if (word(stream, 0x50) == 0) {
+        const auto address = word(stream, 0x0c) * index + word(stream, 0x1c) + word(stream, 0x08);
+        copy_float3_x87(bytes(address), output);
+        return true;
+    }
+    const auto type = word(stream, 0x20);
+    switch (type) {
+    case 2: case 4: case 5: case 7: case 8: case 10: case 12: case 13: case 16: break;
+    default: return false;
+    }
+    const auto relative = word(stream, 0x0c) * index + word(stream, 0x1c);
+    const auto* input = bytes(word(stream, 0x08) + (type == 13 ? relative * 4u : relative));
+    float local[3];
+    switch (type) {
+    case 2: std::memcpy(local, input, sizeof(local)); break;
+    case 4: case 8: normalized_byte3(input, local); break;
+    case 5: byte3(input, local); break;
+    case 7: short3(input, local); break;
+    case 10: normalized_short3(input, local, false); break;
+    case 12: normalized_short3(input, local, true); break;
+    case 13: unpack_native_position_9bit_00475f80(word(input, 0), local); break;
+    case 16: half_import.convert(local, reinterpret_cast<const std::uint16_t*>(input), 3); break;
+    }
+    const auto element_index = word(stream, 0x24);
+    const auto current_records = word(stream, 0x50);
+    scale_bias_normal(local, bytes((element_index << 5) + current_records));
+    copy_float3_x87(local, output);
+    return true;
+}
+
+bool read_native_vertex_uv_007100a0(void* stream, std::uint32_t index,
+    float (&output)[2], const NativeD3dx9Float16Import& half_import) {
+    if (word(stream, 0x50) == 0) {
+        const auto address = word(stream, 0x0c) * index + word(stream, 0x28) + word(stream, 0x08);
+        copy_float2_x87(bytes(address), output);
+        return true;
+    }
+    const auto type = word(stream, 0x2c);
+    switch (type) {
+    case 1: case 6: case 9: case 11: case 15: break;
+    default: return false;
+    }
+    const auto address = word(stream, 0x0c) * index + word(stream, 0x28) + word(stream, 0x08);
+    const auto* input = bytes(address);
+    float local[3]; // Native short formats read and convert the third lane too.
+    switch (type) {
+    case 1: std::memcpy(local, input, 2 * sizeof(float)); break;
+    case 6: short3(input, local); break;
+    case 9: normalized_short3(input, local, false); break;
+    case 11: normalized_short3(input, local, true); break;
+    case 15: half_import.convert(local, reinterpret_cast<const std::uint16_t*>(input), 2); break;
+    }
+    const auto element_index = word(stream, 0x30);
+    const auto current_records = word(stream, 0x50);
+    scale_bias_uv(local, bytes((element_index << 5) + current_records));
+    copy_float2_x87(local, output);
+    return true;
+}
+
+void read_native_vertex_colour_00476180(void* stream, std::uint32_t index,
+    std::uint32_t& output) {
+    const auto vertex_base = word(stream, 0x0c) * index + word(stream, 0x08);
+    const auto packed_offset = word(stream, 0x34);
+    if (static_cast<std::int32_t>(packed_offset) >= 0) {
+        const auto value = word(bytes(vertex_base + packed_offset), 0);
+        std::memcpy(&output, &value, sizeof(value));
+        return;
+    }
+    float_colour(stream, vertex_base, &output);
 }
 } // namespace bsp

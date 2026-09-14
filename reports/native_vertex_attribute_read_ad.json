@@ -1,0 +1,848 @@
+{
+  "packet": "orch6_vertex_attributes_ad",
+  "source": "src/native_vertex_position_read.cpp",
+  "entries": [
+    {
+      "address": "0070fdb0",
+      "name": "read_native_vertex_normal_0070fdb0",
+      "bytes": 679,
+      "end": "00710056",
+      "kind": "fragment",
+      "status": "partial_projection_all_initialized_native_formats_original_byte_fixture_tested",
+      "types": [
+        2,
+        4,
+        5,
+        7,
+        8,
+        10,
+        12,
+        13,
+        16
+      ]
+    },
+    {
+      "address": "007100a0",
+      "name": "read_native_vertex_uv_007100a0",
+      "bytes": 455,
+      "end": "00710266",
+      "kind": "fragment",
+      "status": "partial_projection_all_initialized_native_formats_original_byte_fixture_tested",
+      "types": [
+        1,
+        6,
+        9,
+        11,
+        15
+      ]
+    },
+    {
+      "address": "00476180",
+      "name": "read_native_vertex_colour_00476180",
+      "bytes": 239,
+      "end": "0047626e",
+      "kind": "function",
+      "status": "reconstructed_valid_backing_masked_fp_original_byte_fixture_tested"
+    }
+  ],
+  "original_abi": "ECX actual logical stream; stack output/index; EAX output pointer; RET8. Source APIs use a new C++ ABI.",
+  "storage": "Borrowed existing raw logical stream, actual mapped pointer/stride/decode records; no new owner or copied vertex array",
+  "producer": {
+    "address": "00b61e20",
+    "normal_semantic": 3,
+    "normal_fields": [
+      "1c",
+      "20",
+      "24"
+    ],
+    "uv_semantic": 5,
+    "uv_fields": [
+      "28",
+      "2c",
+      "30"
+    ],
+    "packed_colour_semantic": 10,
+    "packed_colour_bytes": 4,
+    "packed_colour_offset": "34",
+    "separate_colour_offsets": [
+      "38",
+      "3c",
+      "40",
+      "44"
+    ],
+    "separate_colour_offset_producer": "unresolved; base constructor initializes to ffffffff"
+  },
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "functions": {
+      "7404976": 679,
+      "7405728": 455,
+      "4678016": 239,
+      "4679888": 625,
+      "4677504": 100,
+      "10797742": 6
+    },
+    "spans": [
+      {
+        "address": "0070fdb0",
+        "bytes": 679,
+        "sha256": "cbfc95c1a9bdcb4f83a2147b5c077e32172247334e25c418c99021bea631e4ec",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "007100a0",
+        "bytes": 455,
+        "sha256": "2c799d974d9b46a62036d8fab51983a10111a4101bd2d375b47a996fd89451cc",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "00476180",
+        "bytes": 239,
+        "sha256": "84ca38a7345adf6cc60f272f05293522b233e5b24f1cae276ebc50ab4515b42d",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "004768d0",
+        "bytes": 625,
+        "sha256": "460dd72cf9ae570f80a6934db04bffe34b2d9aa8bd8277772cedbe14f87772d4",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "00475f80",
+        "bytes": 100,
+        "sha256": "9a1839fbedc3e8ab053b1b7e0374b7492421380ba29cc8a9e7ae690c856e5869",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "00a4c2ae",
+        "bytes": 6,
+        "sha256": "c6ca4c940aad8875164f64d5f7f40489d7865289c9f2e9bd05d12fe5d026e586",
+        "live_disk_equal": true,
+        "kind": "function"
+      },
+      {
+        "address": "00710058",
+        "bytes": 60,
+        "sha256": "ae7134a06591e4fad7bd3154b8e0c4f47f06c551ae368c3681d3398d40a637ae",
+        "live_disk_equal": true,
+        "kind": "table"
+      },
+      {
+        "address": "00710268",
+        "bytes": 24,
+        "sha256": "d316db1559333bf27361edd0b31d8e9fc3915e1c21fc041430e5387fdcecb265",
+        "live_disk_equal": true,
+        "kind": "table"
+      },
+      {
+        "address": "00710280",
+        "bytes": 15,
+        "sha256": "6926c75ccfb66a0cf9919d5eb5796692f3833de8b4c3859893002a74ac4664c6",
+        "live_disk_equal": true,
+        "kind": "table"
+      },
+      {
+        "address": "00476b44",
+        "bytes": 36,
+        "sha256": "f114b47ecd9d338236fcfc6f362fa1d9e63f9848c318a8787c6171b41cae9143",
+        "live_disk_equal": true,
+        "kind": "table"
+      },
+      {
+        "address": "00476b68",
+        "bytes": 15,
+        "sha256": "c9331ea497cb82a25a2523c538eb7d517a7a33a3dca052fe22fc7cefb6dd5bf8",
+        "live_disk_equal": true,
+        "kind": "table"
+      },
+      {
+        "address": "00ce4b48",
+        "bytes": 8,
+        "sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+        "live_disk_equal": true,
+        "kind": "data/import"
+      },
+      {
+        "address": "00ce5f98",
+        "bytes": 8,
+        "sha256": "75e608c1c57cc9e7679fdff48a0856d15c62e670e71e548f91b729099dd5b4bb",
+        "live_disk_equal": true,
+        "kind": "data/import"
+      },
+      {
+        "address": "00ce5f90",
+        "bytes": 8,
+        "sha256": "568946b73185be9212f78a92db515c48fc38a91b32e7afc953f7e8e4acdb4a0e",
+        "live_disk_equal": true,
+        "kind": "data/import"
+      },
+      {
+        "address": "00ce3978",
+        "bytes": 4,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "live_disk_equal": true,
+        "kind": "data/import"
+      },
+      {
+        "address": "00ce23e4",
+        "bytes": 4,
+        "sha256": "32f53df59010b93601031cfc2a0cb187a809d7039232fa2417b92545de6f66db",
+        "live_disk_equal": true,
+        "kind": "data/import"
+      }
+    ],
+    "patches": [
+      {
+        "address": 7405010,
+        "target": 7405656,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405120,
+        "target": 13519688,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405174,
+        "target": 13519688,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405397,
+        "target": 13524888,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405499,
+        "target": 13524880,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405762,
+        "target": 7406208,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405769,
+        "target": 7406184,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405952,
+        "target": 13524888,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7406054,
+        "target": 13524880,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4678069,
+        "target": 13519688,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4679922,
+        "target": 4680552,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4679929,
+        "target": 4680516,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4680032,
+        "target": 13519688,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4680255,
+        "target": 13524888,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4680357,
+        "target": 13524880,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4677530,
+        "target": 13515128,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4677565,
+        "target": 13515128,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 4677594,
+        "target": 13515128,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 10797744,
+        "target": 13509604,
+        "kind": "absolute memory operand"
+      },
+      {
+        "address": 7405656,
+        "target": 7405014,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405660,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405664,
+        "target": 7405169,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405668,
+        "target": 7405065,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405672,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405676,
+        "target": 7405258,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405680,
+        "target": 7405115,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405684,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405688,
+        "target": 7405324,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405692,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405696,
+        "target": 7405429,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405700,
+        "target": 7405223,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405704,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405708,
+        "target": 7405532,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7405712,
+        "target": 7405505,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406184,
+        "target": 7405773,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406188,
+        "target": 7405813,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406192,
+        "target": 7405879,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406196,
+        "target": 7405984,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406200,
+        "target": 7406060,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 7406204,
+        "target": 7406087,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680516,
+        "target": 4679933,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680520,
+        "target": 4679984,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680524,
+        "target": 4680116,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680528,
+        "target": 4680027,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680532,
+        "target": 4680182,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680536,
+        "target": 4680287,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680540,
+        "target": 4680081,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680544,
+        "target": 4680363,
+        "kind": "jump-table target"
+      },
+      {
+        "address": 4680548,
+        "target": 4680390,
+        "kind": "jump-table target"
+      }
+    ],
+    "constants": {
+      "13519688": 8,
+      "13524888": 8,
+      "13524880": 8,
+      "13515128": 4,
+      "13509604": 4
+    },
+    "calls": [
+      {
+        "address": "0070fec0",
+        "native": "00475f80",
+        "function": "0070fdb0"
+      },
+      {
+        "address": "0070ffd7",
+        "native": "00a4c2ae",
+        "function": "0070fdb0"
+      },
+      {
+        "address": "00710202",
+        "native": "00a4c2ae",
+        "function": "007100a0"
+      },
+      {
+        "address": "004769aa",
+        "native": "00475f80",
+        "function": "004768d0"
+      },
+      {
+        "address": "00476ac1",
+        "native": "00a4c2ae",
+        "function": "004768d0"
+      },
+      {
+        "address": "00711740",
+        "native": "0070fdb0",
+        "function": "00711510"
+      },
+      {
+        "address": "0073f8ec",
+        "native": "0070fdb0",
+        "function": "0073f6e0"
+      },
+      {
+        "address": "0073f923",
+        "native": "0070fdb0",
+        "function": "0073f6e0"
+      },
+      {
+        "address": "0073f95a",
+        "native": "0070fdb0",
+        "function": "0073f6e0"
+      },
+      {
+        "address": "00ae4355",
+        "native": "0070fdb0",
+        "function": "00ae41c0"
+      },
+      {
+        "address": "0071177e",
+        "native": "007100a0",
+        "function": "00711510"
+      },
+      {
+        "address": "00abdcca",
+        "native": "007100a0",
+        "function": "00abced0"
+      },
+      {
+        "address": "00ae43a0",
+        "native": "007100a0",
+        "function": "00ae41c0"
+      },
+      {
+        "address": "007117a0",
+        "native": "00476180",
+        "function": "00711510"
+      },
+      {
+        "address": "0047831f",
+        "native": "00476180",
+        "function": "00477710"
+      },
+      {
+        "address": "004785bb",
+        "native": "00476180",
+        "function": "00477710"
+      },
+      {
+        "address": "00ae43ee",
+        "native": "00476180",
+        "function": "00ae41c0"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "0070fec0",
+      "native": "00475f80",
+      "function": "0070fdb0"
+    },
+    {
+      "address": "0070ffd7",
+      "native": "00a4c2ae",
+      "function": "0070fdb0"
+    },
+    {
+      "address": "00710202",
+      "native": "00a4c2ae",
+      "function": "007100a0"
+    },
+    {
+      "address": "004769aa",
+      "native": "00475f80",
+      "function": "004768d0"
+    },
+    {
+      "address": "00476ac1",
+      "native": "00a4c2ae",
+      "function": "004768d0"
+    },
+    {
+      "address": "00711740",
+      "native": "0070fdb0",
+      "function": "00711510"
+    },
+    {
+      "address": "0073f8ec",
+      "native": "0070fdb0",
+      "function": "0073f6e0"
+    },
+    {
+      "address": "0073f923",
+      "native": "0070fdb0",
+      "function": "0073f6e0"
+    },
+    {
+      "address": "0073f95a",
+      "native": "0070fdb0",
+      "function": "0073f6e0"
+    },
+    {
+      "address": "00ae4355",
+      "native": "0070fdb0",
+      "function": "00ae41c0"
+    },
+    {
+      "address": "0071177e",
+      "native": "007100a0",
+      "function": "00711510"
+    },
+    {
+      "address": "00abdcca",
+      "native": "007100a0",
+      "function": "00abced0"
+    },
+    {
+      "address": "00ae43a0",
+      "native": "007100a0",
+      "function": "00ae41c0"
+    },
+    {
+      "address": "007117a0",
+      "native": "00476180",
+      "function": "00711510"
+    },
+    {
+      "address": "0047831f",
+      "native": "00476180",
+      "function": "00477710"
+    },
+    {
+      "address": "004785bb",
+      "native": "00476180",
+      "function": "00477710"
+    },
+    {
+      "address": "00ae43ee",
+      "native": "00476180",
+      "function": "00ae41c0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "verification": {
+    "result_comparisons": 272,
+    "new_reader_comparisons": 200,
+    "position_regression_comparisons": 72,
+    "result_images": 544,
+    "source_only_unsupported_checks": 2,
+    "fp_status_mask": "3a7f",
+    "actual_half_import": {
+      "path": "C:\\Windows\\SysWOW64\\d3dx9_40.dll",
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+      "bytes": 4379984,
+      "export_rva": "001fde04",
+      "runtime_export": "59f5de04"
+    }
+  },
+  "build": {
+    "win32": true,
+    "existing_ctests_passed": 2,
+    "log": "local/vertex_attributes_ad_build.txt"
+  },
+  "limits": [
+    "Normal and UV reject native uninitialized-scratch formats; these are explicitly partial projections outside the initialized domain.",
+    "Separate float-colour offset production is unresolved; only valid supplied offsets are tested.",
+    "No unmasked floating exception or memory-fault delivery claim.",
+    "No native ABI replacement, complete numbering setter, runtime unit binding or gameplay/render parity claim."
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\vertex_attributes_ad\\manifest.json",
+      "bytes": 108038,
+      "sha256": "cb63481270b8db5e93e28a748c15a1d7e2e1879fcbe47866639d019ec0202950"
+    },
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\vertex_attributes_ad\\probe.exe",
+      "bytes": 24576,
+      "sha256": "fd689b927cc453cbe28a5fe2dcd3c6b5bb5b9e853e7f71cf59a44207d781431c"
+    },
+    "production_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_vertex_position_read.obj",
+      "bytes": 20239,
+      "sha256": "bd6afa8b124db2a2782ed52b3a7b873d26d24af55b16643b86ac6d58d272ab6e"
+    },
+    "retained_inputs": 210,
+    "artifacts": 111,
+    "native_seed_matches": 8,
+    "saved_annotations": 4,
+    "unique_direct_call_rows": 17,
+    "mechanical_call_checks": 34,
+    "call_check_note": "The verifier traverses 17 unique rows in both native evidence and the top-level call list; all pass."
+  },
+  "integration": {
+    "compiled_commit": "687ffdb238e51675e3533dc6e99acaab93e10418",
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "runtime": {
+      "compiled_commit": "687ffdb238e51675e3533dc6e99acaab93e10418",
+      "run_commit": "687ffdb238e51675e3533dc6e99acaab93e10418",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_687ffdb2.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ad.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ad.csv"
+      ],
+      "exe_sha256": "5c8ef5f6c3c5ccbfae2127cf25201971094ab84e462df44dc2b2da5ec3e98306",
+      "preserved_executable": "local\\orch6_combined_687ffdb2.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "79cb6c63897d4aeac41b67e372f25194ff091b9f0b1ce840df93d43df04ac275",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 9.871610164642334,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "production_object_identical_to_fixture": true,
+    "fixture_proof_unchanged": true,
+    "closeout_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\vertex_attributes_closeout_ad\\687ffdb2\\manifest.json",
+      "bytes": 39034,
+      "sha256": "c16fc63aeea6c72765f312155ac8441bcd14a44b27e1e69089f584cc78fa1043"
+    },
+    "retained_closeout_artifacts": 93,
+    "workers_dispatched": 0,
+    "runtime_scope": "120-frame USN01 compatibility; execution of the new attribute readers is not established"
+  }
+}
