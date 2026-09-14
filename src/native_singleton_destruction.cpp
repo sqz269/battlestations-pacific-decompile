@@ -25,6 +25,7 @@
 #include "bsp/native_gameplay_effect_destruction.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
 #include "bsp/native_resource_registry_scalar_delete.hpp"
+#include "bsp/native_resource_manager_lifetime.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -44,6 +45,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d63128:
+    case 0x00d63084: case 0x00d63094: case 0x00d630a4:
+    case 0x00d630b4: case 0x00d630c4: case 0x00d630d4:
+        if (bindings.resource_manager != nullptr) {
+            delete_native_resource_registered_owner(profile, owner, flags, *bindings.resource_manager);
+            return;
+        }
+        break;
     case 0x00ce3818:
         delete_native_singleton_base_00412440(owner, nullptr, flags);
         return;

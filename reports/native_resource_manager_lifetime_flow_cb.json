@@ -1,0 +1,720 @@
+{
+  "packet": "orch4_native_resource_manager_lifetime_cb",
+  "entries": [
+    {
+      "address": "00b7ff20",
+      "before_documentation": {
+        "hash": "7755a08a8cdc438db7359c409c26b422858562fde74a6c77facd4885fdf2c7ab",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7ff20",
+        "function_name": "BSP_ResourceNameTree_DestroySubtree",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7ff20]\nECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. If non-sentinel recursively destroy right subtree, save left link, teardown key data via00419cc0/00bd1510, free current node via00bf65ac, then iterate left until sentinel. Never read mapped slot+14, decrement resource references, or invoke mapped-value methods. Full PE-matched body00b7ff20-00b7ff71. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 17,
+            "name": "LAB_00b7ff31"
+          },
+          {
+            "relative_offset": 59,
+            "name": "LAB_00b7ff5b"
+          },
+          {
+            "relative_offset": 76,
+            "name": "LAB_00b7ff6c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00b7ff20",
+        "function_name": "BSP_ResourceNameTree_DestroySubtree",
+        "comment": "[BSP reconstruction 00b7ff20]\nECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. If non-sentinel recursively destroy right subtree, save left link, teardown key data via00419cc0/00bd1510, free current node via00bf65ac, then iterate left until sentinel. Never read mapped slot+14, decrement resource references, or invoke mapped-value methods. Full PE-matched body00b7ff20-00b7ff71. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7ff20",
+        "function_name": "BSP_ResourceNameTree_DestroySubtree",
+        "comment": "[BSP reconstruction 00b7ff20]\nECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. If non-sentinel recursively destroy right subtree, save left link, teardown key data via00419cc0/00bd1510, free current node via00bf65ac, then iterate left until sentinel. Never read mapped slot+14, decrement resource references, or invoke mapped-value methods. Full PE-matched body00b7ff20-00b7ff71. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b80e90",
+      "before_documentation": {
+        "hash": "bce22acb740ffeab27ec278c4d32c0a0ff8a0969072aef3a906589b7d2a2beb8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80e90",
+        "function_name": "FUN_00b80e90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_comment": {
+        "address": "00b80e90",
+        "function_name": "FUN_00b80e90"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b80e90",
+        "function_name": "FUN_00b80e90",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b80ed0",
+      "before_documentation": {
+        "hash": "bce22acb740ffeab27ec278c4d32c0a0ff8a0969072aef3a906589b7d2a2beb8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80ed0",
+        "function_name": "FUN_00b80ed0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "undefined1[8]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "before_comment": {
+        "address": "00b80ed0",
+        "function_name": "FUN_00b80ed0"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b80ed0",
+        "function_name": "FUN_00b80ed0",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b81150",
+      "before_documentation": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b81150",
+        "function_name": "BSP_ResourceManager_ScalarDeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b81150]\nECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Call00b80f10; free manager through00bf65ac iff flags bit0, then return original manager pointer. Concrete manager vtable00d63128 slot+0 selects this wrapper. Full PE-matched body00b81150-00b8116d. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b81168"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00b81150",
+        "function_name": "BSP_ResourceManager_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b81150]\nECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Call00b80f10; free manager through00bf65ac iff flags bit0, then return original manager pointer. Concrete manager vtable00d63128 slot+0 selects this wrapper. Full PE-matched body00b81150-00b8116d. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b81150",
+        "function_name": "BSP_ResourceManager_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b81150]\nECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Call00b80f10; free manager through00bf65ac iff flags bit0, then return original manager pointer. Concrete manager vtable00d63128 slot+0 selects this wrapper. Full PE-matched body00b81150-00b8116d. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00c64f48",
+      "before_documentation": {
+        "hash": "6b928312442a8310afffb4fb7e8e00b3c603345dec67a1179f7c0445f1fd7838",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c64f48",
+        "function_name": "Unwind@00c64f48",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00c64f48",
+        "function_name": "Unwind@00c64f48"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00c64f48",
+        "function_name": "Unwind@00c64f48",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b7d290",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7d290",
+        "function_name": "BSP_DefaultResourceFactory_ScalarDelete_00b7d290",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cc20f8",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc20f8",
+        "function_name": "BSP_ResourceParserErase_EH_00cc20f8",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cc221e",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc221e",
+        "function_name": "BSP_ResourceManagerDestroy_EH_00cc221e",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cc224e",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc224e",
+        "function_name": "BSP_ResourceManagerConstruct_EH_00cc224e",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00c64f53",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00c64f53",
+        "function_name": "BSP_ResourceManagerSingleton_EH_00c64f53",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7ff5c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7ff5c (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7ff20"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7ff20\", \"deleted_function\": \"BSP_ResourceNameTree_DestroySubtree\", \"body_size\": 71, \"message\": \"Function 'BSP_ResourceNameTree_DestroySubtree' deleted at 00b7ff20\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7ff20",
+        "end_address": "00b7ff72"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7ff20\", \"end_address\": \"00b7ff71\", \"bytes_disassembled\": 82, \"message\": \"Successfully disassembled 82 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7ff20",
+        "name": "BSP_ResourceNameTree_DestroySubtree",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7ff20\", \"function_name\": \"BSP_ResourceNameTree_DestroySubtree\", \"entry_point\": \"00b7ff20\", \"body_size\": 82, \"message\": \"Function created successfully at 00b7ff20\", \"warnings\": [\"Function name 'BSP_ResourceNameTree_DestroySubtree' \\u2014 main part 'ResourceNameTree_DestroySubtree' is not PascalCase. Expected: ResourcenametreeDestroysubtree\", \"Function name 'BSP_ResourceNameTree_DestroySubtree' \\u2014 main part 'ResourceNameTree_DestroySubtree' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceNameTree_DestroySubtree' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7ff20",
+        "new_name": "BSP_ResourceNameTree_DestroySubtree"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7ff20 from 'BSP_ResourceNameTree_DestroySubtree' to 'BSP_ResourceNameTree_DestroySubtree'\", \"warnings\": [\"Function name 'BSP_ResourceNameTree_DestroySubtree' \\u2014 main part 'ResourceNameTree_DestroySubtree' is not PascalCase. Expected: ResourcenametreeDestroysubtree\", \"Function name 'BSP_ResourceNameTree_DestroySubtree' \\u2014 main part 'ResourceNameTree_DestroySubtree' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceNameTree_DestroySubtree' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7ff20",
+        "comment": "[BSP reconstruction 00b7ff20]\nECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. If non-sentinel recursively destroy right subtree, save left link, teardown key data via00419cc0/00bd1510, free current node via00bf65ac, then iterate left until sentinel. Never read mapped slot+14, decrement resource references, or invoke mapped-value methods. Full PE-matched body00b7ff20-00b7ff71. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree forwarded to recursive calls; stack node; RET4; no meaningful result. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7ff20\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b80eaf"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b80eaf (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b80e90"
+      },
+      "result": "{\"success\": true, \"address\": \"00b80e90\", \"deleted_function\": \"FUN_00b80e90\", \"body_size\": 36, \"message\": \"Function 'FUN_00b80e90' deleted at 00b80e90\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b80e90",
+        "end_address": "00b80ec4"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b80e90\", \"end_address\": \"00b80ec3\", \"bytes_disassembled\": 52, \"message\": \"Successfully disassembled 52 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b80e90",
+        "name": "FUN_00b80e90",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b80e90\", \"function_name\": \"FUN_00b80e90\", \"entry_point\": \"00b80e90\", \"body_size\": 52, \"message\": \"Function created successfully at 00b80e90\"}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b80e90",
+        "new_name": "FUN_00b80e90"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b80e90 from 'FUN_00b80e90' to 'FUN_00b80e90'\"}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b80e90",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b80e90\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b80eef"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b80eef (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b80ed0"
+      },
+      "result": "{\"success\": true, \"address\": \"00b80ed0\", \"deleted_function\": \"FUN_00b80ed0\", \"body_size\": 36, \"message\": \"Function 'FUN_00b80ed0' deleted at 00b80ed0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b80ed0",
+        "end_address": "00b80f04"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b80ed0\", \"end_address\": \"00b80f03\", \"bytes_disassembled\": 52, \"message\": \"Successfully disassembled 52 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b80ed0",
+        "name": "FUN_00b80ed0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b80ed0\", \"function_name\": \"FUN_00b80ed0\", \"entry_point\": \"00b80ed0\", \"body_size\": 52, \"message\": \"Function created successfully at 00b80ed0\"}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b80ed0",
+        "new_name": "FUN_00b80ed0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b80ed0 from 'FUN_00b80ed0' to 'FUN_00b80ed0'\"}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b80ed0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b80ed0\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b81160"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b81160 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b81150"
+      },
+      "result": "{\"success\": true, \"address\": \"00b81150\", \"deleted_function\": \"BSP_ResourceManager_ScalarDeletingDestructor\", \"body_size\": 27, \"message\": \"Function 'BSP_ResourceManager_ScalarDeletingDestructor' deleted at 00b81150\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b81150",
+        "end_address": "00b8116e"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b81150\", \"end_address\": \"00b8116d\", \"bytes_disassembled\": 30, \"message\": \"Successfully disassembled 30 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b81150",
+        "name": "BSP_ResourceManager_ScalarDeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b81150\", \"function_name\": \"BSP_ResourceManager_ScalarDeletingDestructor\", \"entry_point\": \"00b81150\", \"body_size\": 30, \"message\": \"Function created successfully at 00b81150\", \"warnings\": [\"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' \\u2014 main part 'ResourceManager_ScalarDeletingDestructor' is not PascalCase. Expected: ResourcemanagerScalardeletingdestructor\", \"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' \\u2014 main part 'ResourceManager_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b81150",
+        "new_name": "BSP_ResourceManager_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b81150 from 'BSP_ResourceManager_ScalarDeletingDestructor' to 'BSP_ResourceManager_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' \\u2014 main part 'ResourceManager_ScalarDeletingDestructor' is not PascalCase. Expected: ResourcemanagerScalardeletingdestructor\", \"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' \\u2014 main part 'ResourceManager_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManager_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b81150",
+        "comment": "[BSP reconstruction 00b81150]\nECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Call00b80f10; free manager through00bf65ac iff flags bit0, then return original manager pointer. Concrete manager vtable00d63128 slot+0 selects this wrapper. Full PE-matched body00b81150-00b8116d. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX manager; stack deleting flags byte; RET4; EAX original manager pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b81150\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00c64f4c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00c64f4c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c64f48"
+      },
+      "result": "{\"success\": true, \"address\": \"00c64f48\", \"deleted_function\": \"Unwind@00c64f48\", \"body_size\": 9, \"message\": \"Function 'Unwind@00c64f48' deleted at 00c64f48\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c64f48",
+        "end_address": "00c64f53"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c64f48\", \"end_address\": \"00c64f52\", \"bytes_disassembled\": 11, \"message\": \"Successfully disassembled 11 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c64f48",
+        "name": "Unwind@00c64f48",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c64f48\", \"function_name\": \"Unwind@00c64f48\", \"entry_point\": \"00c64f48\", \"body_size\": 11, \"message\": \"Function created successfully at 00c64f48\", \"warnings\": [\"Function name 'Unwind@00c64f48' \\u2014 main part 'Unwind@00c64f48' is not PascalCase. Expected: Unwind@00c64f48\", \"Function name 'Unwind@00c64f48' does not start with a recognized verb. First word 'Unwind@00c64f48' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00c64f48",
+        "new_name": "Unwind@00c64f48"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00c64f48 from 'Unwind@00c64f48' to 'Unwind@00c64f48'\", \"warnings\": [\"Function name 'Unwind@00c64f48' \\u2014 main part 'Unwind@00c64f48' is not PascalCase. Expected: Unwind@00c64f48\", \"Function name 'Unwind@00c64f48' does not start with a recognized verb. First word 'Unwind@00c64f48' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00c64f48",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00c64f48\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7d290",
+        "end_address": "00b7d2af"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7d290\", \"end_address\": \"00b7d2ae\", \"bytes_disassembled\": 31, \"message\": \"Successfully disassembled 31 byte(s)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7d2a1"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7d2a1 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7d290",
+        "name": "BSP_DefaultResourceFactory_ScalarDelete_00b7d290",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7d290\", \"function_name\": \"BSP_DefaultResourceFactory_ScalarDelete_00b7d290\", \"entry_point\": \"00b7d290\", \"body_size\": 31, \"message\": \"Function created successfully at 00b7d290\", \"warnings\": [\"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' \\u2014 main part 'DefaultResourceFactory_ScalarDelete_00b7d290' is not PascalCase. Expected: DefaultresourcefactoryScalardelete00b7d290\", \"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' \\u2014 main part 'DefaultResourceFactory_ScalarDelete_00b7d290' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' does not start with a recognized verb. First word 'Default' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7d290",
+        "new_name": "BSP_DefaultResourceFactory_ScalarDelete_00b7d290"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7d290 from 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' to 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290'\", \"warnings\": [\"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' \\u2014 main part 'DefaultResourceFactory_ScalarDelete_00b7d290' is not PascalCase. Expected: DefaultresourcefactoryScalardelete00b7d290\", \"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' \\u2014 main part 'DefaultResourceFactory_ScalarDelete_00b7d290' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_DefaultResourceFactory_ScalarDelete_00b7d290' does not start with a recognized verb. First word 'Default' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7d290",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7d290\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc20f8",
+        "end_address": "00cc2102"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc20f8\", \"end_address\": \"00cc2101\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc20f8",
+        "name": "BSP_ResourceParserErase_EH_00cc20f8",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc20f8\", \"function_name\": \"BSP_ResourceParserErase_EH_00cc20f8\", \"entry_point\": \"00cc20f8\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc20f8\", \"warnings\": [\"Function name 'BSP_ResourceParserErase_EH_00cc20f8' \\u2014 main part 'ResourceParserErase_EH_00cc20f8' is not PascalCase. Expected: ResourceparsereraseEh00cc20f8\", \"Function name 'BSP_ResourceParserErase_EH_00cc20f8' \\u2014 main part 'ResourceParserErase_EH_00cc20f8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceParserErase_EH_00cc20f8' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc20f8",
+        "new_name": "BSP_ResourceParserErase_EH_00cc20f8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc20f8 from 'BSP_ResourceParserErase_EH_00cc20f8' to 'BSP_ResourceParserErase_EH_00cc20f8'\", \"warnings\": [\"Function name 'BSP_ResourceParserErase_EH_00cc20f8' \\u2014 main part 'ResourceParserErase_EH_00cc20f8' is not PascalCase. Expected: ResourceparsereraseEh00cc20f8\", \"Function name 'BSP_ResourceParserErase_EH_00cc20f8' \\u2014 main part 'ResourceParserErase_EH_00cc20f8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceParserErase_EH_00cc20f8' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc20f8",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc20f8\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc221e",
+        "end_address": "00cc2228"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc221e\", \"end_address\": \"00cc2227\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc221e",
+        "name": "BSP_ResourceManagerDestroy_EH_00cc221e",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc221e\", \"function_name\": \"BSP_ResourceManagerDestroy_EH_00cc221e\", \"entry_point\": \"00cc221e\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc221e\", \"warnings\": [\"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' \\u2014 main part 'ResourceManagerDestroy_EH_00cc221e' is not PascalCase. Expected: ResourcemanagerdestroyEh00cc221e\", \"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' \\u2014 main part 'ResourceManagerDestroy_EH_00cc221e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc221e",
+        "new_name": "BSP_ResourceManagerDestroy_EH_00cc221e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc221e from 'BSP_ResourceManagerDestroy_EH_00cc221e' to 'BSP_ResourceManagerDestroy_EH_00cc221e'\", \"warnings\": [\"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' \\u2014 main part 'ResourceManagerDestroy_EH_00cc221e' is not PascalCase. Expected: ResourcemanagerdestroyEh00cc221e\", \"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' \\u2014 main part 'ResourceManagerDestroy_EH_00cc221e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerDestroy_EH_00cc221e' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc221e",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc221e\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc224e",
+        "end_address": "00cc2258"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc224e\", \"end_address\": \"00cc2257\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc224e",
+        "name": "BSP_ResourceManagerConstruct_EH_00cc224e",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc224e\", \"function_name\": \"BSP_ResourceManagerConstruct_EH_00cc224e\", \"entry_point\": \"00cc224e\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc224e\", \"warnings\": [\"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' \\u2014 main part 'ResourceManagerConstruct_EH_00cc224e' is not PascalCase. Expected: ResourcemanagerconstructEh00cc224e\", \"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' \\u2014 main part 'ResourceManagerConstruct_EH_00cc224e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc224e",
+        "new_name": "BSP_ResourceManagerConstruct_EH_00cc224e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc224e from 'BSP_ResourceManagerConstruct_EH_00cc224e' to 'BSP_ResourceManagerConstruct_EH_00cc224e'\", \"warnings\": [\"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' \\u2014 main part 'ResourceManagerConstruct_EH_00cc224e' is not PascalCase. Expected: ResourcemanagerconstructEh00cc224e\", \"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' \\u2014 main part 'ResourceManagerConstruct_EH_00cc224e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerConstruct_EH_00cc224e' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc224e",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc224e\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c64f53",
+        "end_address": "00c64f5d"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c64f53\", \"end_address\": \"00c64f5c\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c64f53",
+        "name": "BSP_ResourceManagerSingleton_EH_00c64f53",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c64f53\", \"function_name\": \"BSP_ResourceManagerSingleton_EH_00c64f53\", \"entry_point\": \"00c64f53\", \"body_size\": 10, \"message\": \"Function created successfully at 00c64f53\", \"warnings\": [\"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' \\u2014 main part 'ResourceManagerSingleton_EH_00c64f53' is not PascalCase. Expected: ResourcemanagersingletonEh00c64f53\", \"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' \\u2014 main part 'ResourceManagerSingleton_EH_00c64f53' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00c64f53",
+        "new_name": "BSP_ResourceManagerSingleton_EH_00c64f53"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00c64f53 from 'BSP_ResourceManagerSingleton_EH_00c64f53' to 'BSP_ResourceManagerSingleton_EH_00c64f53'\", \"warnings\": [\"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' \\u2014 main part 'ResourceManagerSingleton_EH_00c64f53' is not PascalCase. Expected: ResourcemanagersingletonEh00c64f53\", \"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' \\u2014 main part 'ResourceManagerSingleton_EH_00c64f53' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceManagerSingleton_EH_00c64f53' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00c64f53",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00c64f53\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "excluded_unreachable_alignment": [
+    "00b8057f",
+    "00b8064f",
+    "00b7ca2d"
+  ],
+  "reference_alignment_not_owned": "00b7cb7d",
+  "saved": true
+}
