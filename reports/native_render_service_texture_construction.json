@@ -433,7 +433,7 @@
   },
   "source_sha256": {
     "include/bsp/native_render_service_texture_construction.hpp": "700e0fecf55236b51fb73ea236c6c02117f798c9d473e3b8d8caee21b35b7794",
-    "src/native_render_service_texture_construction.cpp": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df"
+    "src/native_render_service_texture_construction.cpp": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b"
   },
   "provider_sha256": {
     "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
@@ -532,5 +532,32 @@
     "current_library_only_replays_passed": 3,
     "own_module_validation": "bounded_original_byte_fixture",
     "game_validated": false
+  },
+  "producer_atomic_lifetime_correction_bl": {
+    "native_site": "00b52578",
+    "was": "raw volatile uint32 store of1, without beginning the atomic lifetime required by canonical RenderCommandReference",
+    "is": "placement construction std::atomic<int32_t>(1) at the same actual+04 native write; sizeof/alignof both4",
+    "previous_source_sha256": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df",
+    "source_sha256": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b",
+    "generated_code": {
+      "function_symbol": "?construct_native_render_service_textures_00b52550@bsp@@YAPAXPAXAAUNativeRenderServiceTextureConstructionContext@1@AAUNativeRenderServiceTextureConstructionAcquired@1@@Z",
+      "generated_function_section_bytes": 1141,
+      "generated_function_section_sha256": "69dd90f332a930da6cf6c1af2f486a701c2c83dddf00425a1b88f446ececec87",
+      "before_after_function_bytes_equal": true,
+      "before_after_symbolic_relocations_equal": true,
+      "relocation_count": 35,
+      "count1_instruction_offset": 120,
+      "count1_instruction": "C7 47 04 01 00 00 00 / MOV DWORD PTR [EDI+4],1",
+      "count1_stores_to_actual_plus04": 1,
+      "count0_stores_to_actual_plus04": 0,
+      "native_site": "00b52578",
+      "sequence": "object+6F CEB130; +75 save receiver; +78 count1; +7F D62074; surrounding function bytes unchanged",
+      "object_sha256": "ab1e471f52d62addd9f0766358c3c38dee2c144aabb382a4fa435aa9d7209755",
+      "disassembly_sha256": "22c75a33f565fac6713569cee82b03d56c514d9b5a31b176a293810004d6db41",
+      "limitation": "Whole COFF object differs because compiler emits additional standard atomic/placement-new COMDATs; no whole-object identity claim or new native fixture."
+    },
+    "verification": "Full scripts/build.ps1 PASS; configured reconstructed_math 1/1 PASS. No new fixture/test. Earlier constructor fixtures remain pinned to their historical source/commits.",
+    "remaining_scope": "MSVC Win32 existing raw-owner and stdcall Interlocked interoperability, not portable aliasing/native ABI proof",
+    "call_audit": "Both current reports pass; B52550 report39 rows checked,0 failed. See local/bl-final-call-audit.log."
   }
 }

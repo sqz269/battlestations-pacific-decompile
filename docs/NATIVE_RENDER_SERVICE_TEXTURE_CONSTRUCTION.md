@@ -24,6 +24,14 @@ raw 8-byte string headers at offsets 0/C/14/1C of one retained 24h region. Offse
 holds the saved owner. B52655 and B526F1 overwrite the FIRST released name length
 with saved height, after capturing the next width entry and before invoking it.
 
+BL's producer lifetime correction replaces only the B52578 raw count1 write
+with placement construction of `std::atomic<std::int32_t>(1)` at actual+04.
+This begins the lifetime required by canonical companions at the same native
+write, without an earlier default count0 or a post-constructor reset. Static
+size/alignment checks require four bytes. Its separate build/object evidence is
+recorded in the report; historical fixture evidence remains pinned to its own
+earlier source. The owner must provide aligned unused storage as before.
+
 | Load site | Current literal | Resize length | Published texture | Subsequent result |
 | --- | --- | --- | --- | --- |
 | B52616 | D620A0 `kosz_01.tga` | 11 | +18 | unsigned width/height -> +1C; zero +30 |
