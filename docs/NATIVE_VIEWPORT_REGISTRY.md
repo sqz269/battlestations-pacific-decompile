@@ -60,10 +60,7 @@ ADD ESP,4 at B1F90B. The approved design retains the separately reviewed
 construction, publication, renderer-borrow and native-reference evidence.
 No new native body or original ABI compatibility follows from this host API.
 
-Build and focused source fixture results are pending. The intended external
-fixture checks stable views across flags0 destruction and same-address reuse,
-nonterminal/terminal count transitions, token cancellation and explicit host
-quiescence. Its manually prepared owner is fixture setup, not producer or
+Exact combined source `9cb8a3e1b3093187bb9151270567d0b16ef7dbff` passed strict MSVC Win32 compilation, both existing CTests, eight native seed comparisons and the external source lifecycle fixture. The fixture checked stable views across flags0 destruction and same-address reuse, nonterminal/terminal count transitions, token cancellation and explicit host quiescence. See `reports/native_cockpit_admission_bh_validation.json` for the current-library pins and immutable archive. Its manually prepared owner is fixture setup, not producer or
 original-binary evidence. Existing native differential checks remain separate.
 
 Mutations are serialized and all storage/runtime addresses are stable. Callbacks

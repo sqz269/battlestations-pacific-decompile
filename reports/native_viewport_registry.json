@@ -1,6 +1,6 @@
 {
   "packet": "orch3_viewport_registry_impl_bh",
-  "status": "host_registry_implemented_verification_pending",
+  "status": "host_registry_strict_build_and_current_library_source_fixture_passed",
   "coverage": "Host actual-identity registration and retirement; no new native body",
   "design": "docs/NATIVE_COCKPIT_VIEWPORT_LIFETIME_BH.md",
   "source_files": [
@@ -14,8 +14,18 @@
   "new_native_bodies": 0,
   "new_native_bytes": 0,
   "native_calls": [
-    {"address": "00b1f8f9", "native": "00bd30f0", "function": "00b1f8f0", "role": "Existing base-destructor call after concrete profile store"},
-    {"address": "00b1f906", "native": "00bf65ac", "function": "00b1f8f0", "role": "Existing conditional physical free, followed by ADD ESP,4"}
+    {
+      "address": "00b1f8f9",
+      "native": "00bd30f0",
+      "function": "00b1f8f0",
+      "role": "Existing base-destructor call after concrete profile store"
+    },
+    {
+      "address": "00b1f906",
+      "native": "00bf65ac",
+      "function": "00b1f8f0",
+      "role": "Existing conditional physical free, followed by ADD ESP,4"
+    }
   ],
   "native_abi": "B1F8F0 ECX actual owner, stacked flags, EAX original address, RET4; host API is a new C++ ABI",
   "native_extent": "00B1F8F0..00B1F913 inclusive, 36 bytes; no added native call attributed to registry hook",
@@ -30,11 +40,13 @@
     "native_ownership": "No count, allocation shape, renderer+1904, release order or physical free timing change"
   },
   "verification": {
-    "build": "pending",
-    "external_source_fixture": "pending",
+    "build": "PASS exact combined MSVC Win32 source; two existing CTests and eight seeds",
+    "external_source_fixture": "PASS stable host views, flags0 retirement, address reuse, terminal release and cancelled failure",
     "repository_tests_added": 0,
     "new_native_differential_evidence": false,
-    "game_validated": false
+    "game_validated": false,
+    "combined_validation_report": "reports/native_cockpit_admission_bh_validation.json",
+    "tested_commit": "9cb8a3e1b3093187bb9151270567d0b16ef7dbff"
   },
   "limitations": [
     "No cockpit construction block, first-viewport camera admission or helper constructor composition yet",
