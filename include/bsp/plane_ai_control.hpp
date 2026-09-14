@@ -286,4 +286,28 @@ struct BombLoadFraction {
 };
 float bomb_load_fraction_006e4130(const BombLoadFraction& in);
 
+// ---------------------------------------------------------------------------
+// The task's three target fields (packet cc7_pilot_bot_task_inputs).
+
+// The pilot bot's target/mode pairs, all set by the bot state machine.
+namespace pilot_task_off {
+inline constexpr int kBankTargetLimited = 0x2BC;  // the slewed bank target, 0099DD4E
+inline constexpr int kSpeedTarget = 0x2B4;        // read at 0099D8C6
+inline constexpr int kHeadingTarget = 0x2C0;      // read at 0099DEAF; valid when mode 2CCh == 2
+inline constexpr int kRollMode = 0x2CC;           // 0, 1 or 2; 2 means "hold kHeadingTarget"
+inline constexpr int kPitchMode = 0x2D0;          // 0, 1 or 2; 2 means "hold unit+C84h"
+inline constexpr int kSpeedMode = 0x2D8;          // 0 or 1; 1 means "hold kSpeedTarget"
+}  // namespace pilot_task_off
+
+// 0099D8C1-0099D8EB. The speed-hold arm, corrected: the quantity compared against the speed
+// target is the **constant** 0.001f (00D7A23C, loaded at 0099D7A7 on both entry paths), not a
+// computed demand. So this is the full-stop case — when a speed hold is pending and the target
+// is below 0.001f, the bot commands idle power and full air brake, then clears the mode.
+struct SpeedHoldResult {
+    bool fired = false;
+    float power = 0.0f;      // 0099D8CF stores the same 0.001f constant
+    float air_brake = 0.0f;  // 0099D8DD stores 1.0f (00D7A24C)
+};
+SpeedHoldResult speed_hold_0099d8c1(int speed_mode, float speed_target);
+
 }  // namespace bsp

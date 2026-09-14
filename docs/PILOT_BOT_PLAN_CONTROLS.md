@@ -1021,3 +1021,136 @@ field, is not excluded.
 
 The pitch demand's bank-target arm, the speed-hold trigger `XMM0` at `0099D8C6`, and the producers
 of `task+2B4h`/`+2C0h`/`+2D8h`.
+
+# The task's three target fields (packet `cc7_pilot_bot_task_inputs`)
+
+Addresses: `0099D7A7`, `0099D8C1`-`0099D8EB`, `0099DCA4`-`0099DD64`, `009A1A20`, `009A3826`-`009A3852`,
+`009ACFC0`, `00438AA0`, `007C4810`. Constants `00CEC730`, `00D7A23C`, `00D1F3D8`.
+
+Ghidra read-only. **Exported, reconstructed, build-tested**; `reconstructed_math` still passes, no
+new tests. Not fixture-tested, not game-validated. The scans cover `battlestationspacific.exe` only
+and this installation carries mod artefacts, so a loaded module writing these fields is not excluded.
+
+All three standing items close, and one of them **corrects** an arm this document already published.
+
+## The task carries three target/mode pairs, all set by the bot state machine
+
+Byte scans for `[reg+2B4h]`, `[reg+2C0h]`, `[reg+2CCh]` and `[reg+2D8h]` over `00990000`-`009B0000`:
+
+| target | mode word | mode meaning | consumer |
+| --- | --- | --- | --- |
+| `+2B4h` speed | `+2D8h` | `1` = hold | the speed-hold arm `0099D8C1` |
+| `+2C0h` heading | `+2CCh` | `2` = hold | the yaw base term `0099DE8A` |
+| `unit+C84h` bank | `+2D0h` | `2` = hold | the bank-target arm `0099DCE0`, slewed through `+2BCh` |
+
+`+2CCh` takes `0`, `1` and `2`; `+2D8h` takes `0` and `1`. The mode words are the same ones the
+stick override clears (`0099D6C6`, `0099D688`, `0099D64A`), so a pilot input cancels both the axis
+*and* its target.
+
+## `task+2C0h` — seven producers, each pairing a heading with mode 2
+
+Every one of the seven `+2C0h` writes is immediately followed by `+2CCh = 2`, with no other
+instruction between the pair on any of them:
+
+```
+009A384C / 009A3852   BSP_BotStateDepthChargeAttackRun_Tick
+009A3ED3 / 009A3ED9   FUN_009A3CF0
+009A42B3 / 009A42C0   BSP_BotStateDepthChargeAim_Tick
+009A7324 / 009A732A   FUN_009A71E0
+009AC40D / 009AC41B   (MOVSS form)
+009ACFD3 / 009ACFD9   FUN_009ACFC0
+009AD566 / 009AD56C   FUN_009AD480
+```
+
+The object is confirmed by a getter rather than by inference: **`009A1A20`** is
+`if (this->+2CCh == 2) return this->+2C0h;` — the *same* gate the yaw base term uses at
+`0099DE8A`, on the same two offsets. The bot is reached from a state's owner block, as
+`[[ESI]+18h]` at `009A3845` and `[[ECX+4]+18h]` at `009ACFD0`.
+
+Two of the seven were read in full:
+
+* **`009ACFC0`**, the simplest: `bot->+2C0h = owner[+B8h]` — a heading copied straight out.
+* **`009A3826`-`009A384C`**, in the depth-charge attack run:
+  ```
+  009A3820  offset = <computed> * 0.5235987901687622   ; 00CEC730, a double
+  009A3826  store it to [EDI+20h]
+  009A383A  CALL 00438AA0 BSP_Math_AddWrappedAngle(base, offset)
+  009A384C  bot->+2C0h = the result
+  ```
+  So the heading target is a base bearing plus a bounded lateral offset. The scale is
+  **30.0000008 degrees**, not pi/6 exactly: the stored double is `0.5235987901687622` where pi/6 is
+  `0.5235987755982988`, so it is the float-rounded pi/6 widened to double — a detail that matters
+  only if someone tries to match it bit-for-bit.
+
+**Not established**: what mode `1` of `+2CCh` means (set at `0099E264`, `009A23F7`, `009A3B8D`) and
+which consumer reads it. Also a scan false positive worth recording: `009A4F07` and `009A5133`
+write `00D1F6D8` — a pointer — to a `+2CCh` on a *different* object.
+
+## The speed-hold trigger is a constant, and the arm was published wrongly
+
+The previous section described `0099D8C1` as "full air brake when the quantity in `XMM0` exceeds
+the target at `task+2B4h`", with `XMM0`'s provenance untraced. **`XMM0` is the constant `0.001f`.**
+
+```
+0099D79F  ECX = task+2D8h
+0099D7A5  TEST ECX,ECX
+0099D7A7  MOVSS XMM0,[00D7A23C]        ; 0.001f
+0099D7AF  JNZ  0099D8C1                ; entry path 1
+...
+0099D7C5  JBE  0099D8C1                ; entry path 2
+...
+0099D8C1  CMP  ECX,1
+0099D8C6  COMISS XMM0,[ESI+2B4h]       ; 0.001f vs the speed target
+0099D8CD  JBE  0099D924                ; skip unless 0.001f > target
+0099D8CF  power     = XMM0             ; the same constant
+0099D8DD  air brake = 1.0f
+0099D8EB  task+2D8h = 0
+```
+
+`0099D8C1` is reachable only through those two jumps, and neither path writes `XMM0` in between —
+the x87 work at `0099D7B5`-`0099D7C3` touches no SSE register. So the arm is the **full-stop case**:
+when a speed hold is pending and the target is **below** `0.001f`, command idle power and full air
+brake. It is not a general speed controller, and the corrected rule is `speed_hold_0099d8c1` in
+`src/plane_ai_control.cpp`.
+
+## The bank-target arm, `0099DCA4`-`0099DD64`
+
+The pitch demand's `[ESP+1Ch]` is frame slot `[ESP+14h]` at the read — `0099E51C SUB ESP,8` is
+live there, which the reaching-definition walker reports alongside each result and which is easy to
+get wrong by eye. Its three reaching definitions are all in this block:
+
+```
+0099DCAC  [ESP+14h] = 0                            ; default
+0099DCB2  JZ  0099DD94                             ; task+2D0h == 0 -> nothing
+0099DCB8  if (task+2D0h == 2 && unit->vtable[38h]() > [00D1F3D8]) task+2D0h = 1
+0099DCE0  if (task+2D0h == 2) {
+0099DCFA      [ESP+14h] = unit+C84h                ; the held bank
+0099DD2C      t = 007C4810([00CEDF5C], class+18Ch, [00CE398C], unit->vtable[38h]())
+0099DD35      inc = InterpolateClamped(..., t)
+0099DD42      sum = inc + [ESP+14h]
+0099DD4C      if ([ESP+10h] > sum) { task+2BCh = sum ; [ESP+14h] = [ESP+10h] }
+          } else [ESP+14h] = [ESP+10h]             ; 0099DD54
+```
+
+So `task+2BCh` is a **slew-limited bank target** and `unit+C84h` is the held bank. The demand then
+subtracts `cos(pitch) · SlideRatio · YawSpd · tuning+A0h · <factor>` from it at `0099E53D`.
+
+**Not established**: `[ESP+10h]`, the alternative target, and `007C4810`. So the demand's shape is
+now complete but its two endpoints are not, and I have not implemented it.
+
+## Carried forward from the integration-tail packet that did not run
+
+`007D8470` has three `MOVSS [ESP+24h]` stores — `007D8816`, `007D8822`, `007D8921` — which are
+**stack locals, not controller fields**. A naive `+24h` grep in that function yields false positives
+for anyone looking for the angular-velocity write, which `docs/PLANE_ANGULAR_VELOCITY.md` shows is
+at `007D9C80` rather than anywhere in `007D8470`.
+
+## Wiring contract
+
+A host that drives the pilot bot must set the pairs together: a heading target is only read when
+`+2CCh` is `2`, a speed target only when `+2D8h` is `1`, and the stick override clears both the axis
+and its mode. The heading itself comes from the bot state machine (`docs/BOT_TASK_STATES.md`
+territory), not from authored data, so it is runtime state like `dyn+C0h` — but unlike `dyn+C0h` it
+is state a host that runs its own bot states already owns.
+
+`speed_hold_0099d8c1` is wirable now. The bank-target arm is not, on two named inputs.
