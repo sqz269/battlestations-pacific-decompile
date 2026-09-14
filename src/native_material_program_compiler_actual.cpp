@@ -56,13 +56,17 @@ void literal(Frame& a, U index, const char* value, U length, U address, bool cap
     resize_native_string_header_0041dd40(&t.name, a.context->strings, length, true);
     t.live = true;
     char* data = read<char*>(&t.name, 4);
-    const U size = read<U>(&t.name);
+    // Every literal captures its data before copying. Repeated shadow names
+    // keep this pointer in EBX through lookup, but reload length on release.
+    t.captured_data = data;
     if (capture) {
         t.captured = true;
-        t.captured_data = data;
-        t.captured_length = size;
+        t.captured_length = read<U>(&t.name);
+        if (data) std::memcpy(data, value, static_cast<std::size_t>(t.captured_length) + 1);
+    } else if (data) {
+        const U size = read<U>(&t.name);
+        std::memcpy(data, value, static_cast<std::size_t>(size) + 1);
     }
-    if (data) std::memcpy(data, value, static_cast<std::size_t>(size) + 1);
 }
 void concat(Frame& a, U index, U suffix, U address) {
     auto& t = a.names[index];
@@ -79,8 +83,10 @@ void release_name(Frame& a, U index, U address) {
     // Some native temporaries retain their pre-call data/length in registers;
     // others reload length/data immediately before their normal pool return.
     char* data = t.captured ? t.captured_data : read<char*>(&t.name, 4);
-    const U length = t.captured ? t.captured_length : read<U>(&t.name);
-    if (data) a.context->strings.release(data, length + 1u);
+    if (data) {
+        const U length = t.captured ? t.captured_length : read<U>(&t.name);
+        a.context->strings.release(data, length + 1u);
+    }
     t.live = false; // The native header itself deliberately remains stale.
 }
 NativeMaterialPassStorage* finish(Frame& a, bool failure, U failure_site = 0x00b3b6ea) {
@@ -101,7 +107,8 @@ NativeMaterialPassStorage* finish(Frame& a, bool failure, U failure_site = 0x00b
 void clear_array(Frame& a, NativeShaderDescriptorArray& rows, U stride, I minimum,
     U allocate_site, U free_site, U completion_site) {
     a.array_header = &rows;
-    if (read<I>(&rows, 8) < 0 && read<I>(&rows, 8) < minimum) {
+    const I capacity = read<I>(&rows, 8);
+    if (capacity < 0 && capacity < minimum) {
         const U bytes = static_cast<U>(minimum) * stride;
         site(a, allocate_site); a.array_native_site = allocate_site;
         auto* fresh = static_cast<char*>(allocate(bytes));
@@ -119,8 +126,9 @@ void clear_array(Frame& a, NativeShaderDescriptorArray& rows, U stride, I minimu
         put<I>(&rows, 8, minimum);
         a.array_allocation = nullptr;
     }
-    if (read<I>(&rows, 4) < 0) {
-        U offset = read<U>(&rows, 4) * stride;
+    const I count = read<I>(&rows, 4);
+    if (count < 0) {
+        U offset = static_cast<U>(count) * stride;
         do {
             void* destination = reinterpret_cast<void*>(read<U>(&rows) + offset);
             if (destination) {
@@ -153,6 +161,15 @@ void reflect(Frame& a, bool pixel, const void* bytecode, U address) {
     // Reload current pass metadata at the exact native call site.
     auto* owner = read<NativeCompiledShaderStorage*>(a.pass, pixel ? 0x74u : 0x70u);
     reflect_native_compiled_shader_00b3aea0(static_cast<const U*>(bytecode), *owner,
+        a.context->reflection, operation);
+}
+void reflect_cached(Frame& a, bool pixel, const void* row, U address) {
+    site(a, address);
+    auto& operation = child(a.reflections[pixel ? 1 : 0]);
+    // B3B84A/B3BDB5 capture metadata before loading the cache row bytecode.
+    auto* owner = read<NativeCompiledShaderStorage*>(a.pass, pixel ? 0x74u : 0x70u);
+    const auto* bytecode = read<const U*>(row, 8);
+    reflect_native_compiled_shader_00b3aea0(bytecode, *owner,
         a.context->reflection, operation);
 }
 void require_stream_entry(void* stream, U slot, U target, const Context& c) {
@@ -209,13 +226,22 @@ void cached_shader(Frame& a, bool pixel) {
     a.exception_state = 0;
     release_name(a, suffix, pixel ? 0x00b3bda5 : 0x00b3b83a);
     // Native missing cache row is dereferenced; it is not a compiler-null return.
-    reflect(a, pixel, read<void*>(row, 8), pixel ? 0x00b3bdbf : 0x00b3b854);
+    reflect_cached(a, pixel, row, pixel ? 0x00b3bdbf : 0x00b3b854);
     site(a, pixel ? 0x00b3bdca : 0x00b3b85f);
     auto* device = static_cast<IDirect3DDevice9*>(get_native_renderer_device_00b1fef0(c.actual_renderer_00f8d394));
+    // The native COM table is captured before the current row code reload.
+    const auto* table = read<const volatile U*>(device);
     const DWORD* code = read<const DWORD*>(row, 8);
     site(a, pixel ? 0x00b3bde1 : 0x00b3b876);
-    if (pixel) (void)device->CreatePixelShader(code, &a.pixel_shader);
-    else (void)device->CreateVertexShader(code, &a.vertex_shader);
+    if (pixel) {
+        using Create = HRESULT (STDMETHODCALLTYPE*)(IDirect3DDevice9*, const DWORD*, IDirect3DPixelShader9**);
+        const auto create = reinterpret_cast<Create>(table[0x1a8 / 4]);
+        (void)create(device, code, &a.pixel_shader);
+    } else {
+        using Create = HRESULT (STDMETHODCALLTYPE*)(IDirect3DDevice9*, const DWORD*, IDirect3DVertexShader9**);
+        const auto create = reinterpret_cast<Create>(table[0x16c / 4]);
+        (void)create(device, code, &a.vertex_shader);
+    }
 }
 void construct_shader_owner(Frame& a, bool pixel) {
     auto& c = *a.context;
@@ -271,15 +297,15 @@ void shadow_index(Frame& a, bool texture) {
     release_name(a, first, texture ? 0x00b3c1fc : 0x00b3c105);
     if (!found) return;
     literal(a, second, value, length, texture ? 0x00b3c222 : 0x00b3c12b, false);
-    // EBX captures only the data pointer; length is freshly read at release.
-    a.names[second].captured_data = read<char*>(&a.names[second].name, 4);
+    // literal retained EBX's pre-copy data pointer; length stays current.
     const U base_count = base_pixel_count(a);
     auto& lookup = child(a.lookups[texture ? 7 : 5]);
     site(a, texture ? 0x00b3c27d : 0x00b3c180);
     const U ordinal = find_native_sampler_ordinal_00b347e0(descriptor(a, 0x74),
         &a.names[second].name, lookup);
     put<U>(a.pass, texture ? 0x7cu : 0x78u, ordinal + base_count);
-    a.names[second].captured_length = read<U>(&a.names[second].name);
+    if (a.names[second].captured_data)
+        a.names[second].captured_length = read<U>(&a.names[second].name);
     a.names[second].captured = true;
     release_name(a, second, texture ? 0x00b3c29a : 0x00b3c19d);
 }
@@ -320,7 +346,8 @@ void final_states(Frame& a) {
     }
     shadow_index(a, false);
     shadow_index(a, true);
-    if (read<U>(a.pass, 0x78) != 0xffffffffu) {
+    const U first_shadow_sampler = read<U>(a.pass, 0x78);
+    if (first_shadow_sampler != 0xffffffffu) {
         const bool linear = read<std::uint8_t>(&b, 0xaa) != 0;
         const U addresses[2][5] = {{0x00b3c309, 0x00b3c318, 0x00b3c327, 0x00b3c336, 0x00b3c345},
                                   {0x00b3c2c8, 0x00b3c2d7, 0x00b3c2e6, 0x00b3c2f5, 0x00b3c345}};
@@ -328,7 +355,8 @@ void final_states(Frame& a) {
         const U values[] = {linear ? 2u : 1u, linear ? 2u : 1u, 0, 3, 3};
         for (U i = 0; i < 5; ++i) {
             site(a, addresses[linear ? 1 : 0][i]);
-            set_native_material_sampler_state_00b5ed60(a.pass, read<U>(a.pass, 0x78), states[i], values[i]);
+            const U sampler = i == 0 ? first_shadow_sampler : read<U>(a.pass, 0x78);
+            set_native_material_sampler_state_00b5ed60(a.pass, sampler, states[i], values[i]);
         }
     }
 }
