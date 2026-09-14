@@ -1,0 +1,187 @@
+{
+  "reason": "BH exact byte string helpers, physical adoption and missing-file callback binding",
+  "entries": [
+    {
+      "address": "00531030",
+      "name": "BSP_NativeString_ConstructByte",
+      "before": "Function: FUN_00531030 at 00531030\nSignature: undefined FUN_00531030(void)\nEntry: 00531030\nBody: 00531030 - 005310a9",
+      "before_comment": {
+        "address": "00531030",
+        "function_name": "FUN_00531030"
+      },
+      "prototype": "void* __thiscall BSP_NativeString_ConstructByte(unsigned int byte_word)",
+      "prototype_apply": "Successfully set prototype for function at 00531030 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead.",
+      "after": "Function: BSP_NativeString_ConstructByte at 00531030\nSignature: void * __thiscall BSP_NativeString_ConstructByte(void * this, uint byte_word)\nEntry: 00531030\nBody: 00531030 - 005310a9",
+      "after_comment": {
+        "address": "00531030",
+        "function_name": "BSP_NativeString_ConstructByte",
+        "comment": "[BSP reconstruction 00531030]\nHypothesis, not a recovered symbol. BH source integration: docs/NATIVE_VFS_HANDOFF_BH_INTEGRATION.md; reports/native_vfs_handoff_bh_validation.json. Complete00531030/0054AA70 bodies122/147 bytes,45/51 saved owned instructions,10 direct helper CALLs plusBF4835 adoption verified against live Ghidra and installed PE. ECX actual8h header, stack DWORD low byte, RET4; constructor returns header, append has no semantic result. Source retains getter/header reload order and captured temporary cleanup; BF7680 overlap branch supports memmove for append. Physical backslash uses0054AA70; star remains its inline cstring path. Native zero-count copy is omitted in valid-memory source domain. Generic0041DD40 resize overlap limits, arbitrary private-stack aliasing, FH3, ABI replacement and gameplay remain excluded."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0054aa70",
+      "name": "BSP_NativeString_AppendByte",
+      "before": "Function: FUN_0054aa70 at 0054aa70\nSignature: undefined FUN_0054aa70(void)\nEntry: 0054aa70\nBody: 0054aa70 - 0054ab02",
+      "before_comment": {
+        "address": "0054aa70",
+        "function_name": "FUN_0054aa70"
+      },
+      "prototype": "void __thiscall BSP_NativeString_AppendByte(unsigned int byte_word)",
+      "prototype_apply": "Successfully set prototype for function at 0054aa70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead.",
+      "after": "Function: BSP_NativeString_AppendByte at 0054aa70\nSignature: void __thiscall BSP_NativeString_AppendByte(void * this, uint byte_word)\nEntry: 0054aa70\nBody: 0054aa70 - 0054ab02",
+      "after_comment": {
+        "address": "0054aa70",
+        "function_name": "BSP_NativeString_AppendByte",
+        "comment": "[BSP reconstruction 0054aa70]\nHypothesis, not a recovered symbol. BH source integration: docs/NATIVE_VFS_HANDOFF_BH_INTEGRATION.md; reports/native_vfs_handoff_bh_validation.json. Complete00531030/0054AA70 bodies122/147 bytes,45/51 saved owned instructions,10 direct helper CALLs plusBF4835 adoption verified against live Ghidra and installed PE. ECX actual8h header, stack DWORD low byte, RET4; constructor returns header, append has no semantic result. Source retains getter/header reload order and captured temporary cleanup; BF7680 overlap branch supports memmove for append. Physical backslash uses0054AA70; star remains its inline cstring path. Native zero-count copy is omitted in valid-memory source domain. Generic0041DD40 resize overlap limits, arbitrary private-stack aliasing, FH3, ABI replacement and gameplay remain excluded."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00bf47e0",
+      "name": "BSP_PhysicalDirectory_EnumerateNames",
+      "before": "Function: BSP_PhysicalDirectory_EnumerateNames at 00bf47e0\nSignature: void __thiscall BSP_PhysicalDirectory_EnumerateNames(void * this, void * directory, void * extension, uint flags, void * output)\nEntry: 00bf47e0\nBody: 00bf47e0 - 00bf4b6f",
+      "before_comment": {
+        "address": "00bf47e0",
+        "function_name": "BSP_PhysicalDirectory_EnumerateNames",
+        "comment": "[BSP reconstruction 00bf47e0]\nECX physical provider; stack directory,extension,flags,output_vector; no semantic return; RET10h Construct OS path using provider+1C, ensure trailing backslash, append star; Win32 order, dot-prefix skip, file-only strict-length case-insensitive suffix and MidwayDL_Content exclusion; low flag byte controls depth-first recursion. Bounded host implementation in src/physical_directory.cpp; ASCII canonical names and nonempty built-path guards explicit. Installed nonrecursive script enumeration passes; recursive/error cases source-reviewed only. docs/PROVIDER_ENUMERATION.md.\n\n[BSP reconstruction 00bf47e0] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX physical provider; RET10h. Actual+1C path method, FindFirst/Next/Close, skip dot names, extension suffix filter, MidwayDL_Content exclusion, low-flag recursion through captured+14, canonical joined names and actual vector append. One-byte append helper getter schedule remains outside source fidelity claim. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.\n\n[BSP reconstruction 00bf47e0] update\nBG final evidence correction: prior primary count5822 and worker205-byte BE1130 envelope omitted24 reachable epilogue bytes after00BE11F8. Saved callback body is now229 live/disk-matching bytes through RET8 at00BE1212..1214,80 owned instructions. Final16-root envelope total5831 owned instructions and799 direct CALLs. Prior names, comments, labels, propagated variable names/storage and callee no-return flags retained. This corrects analysis boundaries; source already performed vector cleanup and return. See reports/native_vfs_phase2_bg_body_repair.json and reports/native_vfs_phase2_bg_validation.json."
+      },
+      "after": "Function: BSP_PhysicalDirectory_EnumerateNames at 00bf47e0\nSignature: void __thiscall BSP_PhysicalDirectory_EnumerateNames(void * this, void * directory, void * extension, uint flags, void * output)\nEntry: 00bf47e0\nBody: 00bf47e0 - 00bf4b6f",
+      "after_comment": {
+        "address": "00bf47e0",
+        "function_name": "BSP_PhysicalDirectory_EnumerateNames",
+        "comment": "[BSP reconstruction 00bf47e0]\nECX physical provider; stack directory,extension,flags,output_vector; no semantic return; RET10h Construct OS path using provider+1C, ensure trailing backslash, append star; Win32 order, dot-prefix skip, file-only strict-length case-insensitive suffix and MidwayDL_Content exclusion; low flag byte controls depth-first recursion. Bounded host implementation in src/physical_directory.cpp; ASCII canonical names and nonempty built-path guards explicit. Installed nonrecursive script enumeration passes; recursive/error cases source-reviewed only. docs/PROVIDER_ENUMERATION.md.\n\n[BSP reconstruction 00bf47e0] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX physical provider; RET10h. Actual+1C path method, FindFirst/Next/Close, skip dot names, extension suffix filter, MidwayDL_Content exclusion, low-flag recursion through captured+14, canonical joined names and actual vector append. One-byte append helper getter schedule remains outside source fidelity claim. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.\n\n[BSP reconstruction 00bf47e0] update\nBG final evidence correction: prior primary count5822 and worker205-byte BE1130 envelope omitted24 reachable epilogue bytes after00BE11F8. Saved callback body is now229 live/disk-matching bytes through RET8 at00BE1212..1214,80 owned instructions. Final16-root envelope total5831 owned instructions and799 direct CALLs. Prior names, comments, labels, propagated variable names/storage and callee no-return flags retained. This corrects analysis boundaries; source already performed vector cleanup and return. See reports/native_vfs_phase2_bg_body_repair.json and reports/native_vfs_phase2_bg_validation.json.\n\n[BSP reconstruction 00bf47e0] update\nHypothesis, not a recovered symbol. BH source integration: docs/NATIVE_VFS_HANDOFF_BH_INTEGRATION.md; reports/native_vfs_handoff_bh_validation.json. Complete00531030/0054AA70 bodies122/147 bytes,45/51 saved owned instructions,10 direct helper CALLs plusBF4835 adoption verified against live Ghidra and installed PE. ECX actual8h header, stack DWORD low byte, RET4; constructor returns header, append has no semantic result. Source retains getter/header reload order and captured temporary cleanup; BF7680 overlap branch supports memmove for append. Physical backslash uses0054AA70; star remains its inline cstring path. Native zero-count copy is omitted in valid-memory source domain. Generic0041DD40 resize overlap limits, arbitrary private-stack aliasing, FH3, ABI replacement and gameplay remain excluded."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00bdf310",
+      "name": "BSP_VFS_OpenResource",
+      "before": "Function: BSP_VFS_OpenResource at 00bdf310\nSignature: undefined BSP_VFS_OpenResource(void)\nEntry: 00bdf310\nBody: 00bdf310 - 00bdf4b4",
+      "before_comment": {
+        "address": "00bdf310",
+        "function_name": "BSP_VFS_OpenResource",
+        "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json."
+      },
+      "after": "Function: BSP_VFS_OpenResource at 00bdf310\nSignature: undefined BSP_VFS_OpenResource(void)\nEntry: 00bdf310\nBody: 00bdf310 - 00bdf4b4",
+      "after_comment": {
+        "address": "00bdf310",
+        "function_name": "BSP_VFS_OpenResource",
+        "comment": "[BSP reconstruction 00bdf310]\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native stream tracking 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md.\n\n[BSP reconstruction 00bdf310] update\nECX manager, name and flags stack, RET8, EAX stream. Copies and normalizes name with 00bee690, applies only first alias via 00bdca80, then traverses supplied mounts with callback 00bda690. Read-only flags=2 projection returns the first provider-open result even when later host buffering fails; provider failure alone continues. Native opened-resource logging 00bde9c0, diagnostic callback, counters and intrusive lifetime are omitted. docs/MOUNTED_RESOURCE_STREAMS.md; seven raw spans match disk, not whole-image identity. Follow-up establishes 00bde9c0 as gated name logging, not a retained stream registry or cache selection mechanism. Bounded synchronous mounted/FileStore host integration now accepts exact flags2 and32h and forwards original mode to inspected providers. Five native startup script selections pass installed disk-byte/cache checks, alongside separate diagnostic font priming. Preserve exact-name open-before-duplicate behavior; host memory ownership/failure guards differ native. docs/STARTUP_SCRIPT_PRELOAD.md; docs/MOUNTED_RESOURCE_STREAMS.md. ECX manager; stack logical_path,flags; EAX stream/null; RET8 Normalize copy, one alias, current mounted traversal; no reentry/source pinning guard. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json | Complete actual-storage consumer at 00bdf310; source src/native_vfs_open_route.cpp; explicit callable original-ABI provider/stream/failure dependencies and required BDE9C0 service, no new owners. Eight original-instruction compositions match full arena, actual string-pool prefix, return and service events. Win32 Release build and configured CTest pass; 37 direct report call rows verified. Qualified D6838C visitor/current BDA690 and BD9040 slots. Not native provider I/O, original FH3 unwind, binary ABI or game validation. reports/native_vfs_open_route.json; docs/NATIVE_VFS_OPEN_ROUTE.md. | Hypothesis, not a recovered symbol. NativeLuaVfsDispatch preserves captured table versus current owner loads; NativeVfsRuntimeBindings composes original readable numeric manager/provider/physical and memory stream profiles with reconstructed methods, without changing owner vtable words or refcounts. Combined Win32 build, prior original-instruction Lua regressions, and seeded actual-record physical/FileStore Lua composition pass; installed scripts read through real HANDLEs, nested duplicate overrides execute MCPP, canonical shutdown clears publications and counters. Tree population/type registration, archive bindings, arbitrary slot mutation, original SEH/ABI and game execution remain excluded. docs/NATIVE_LUA_VFS_BINDING.md; reports/native_lua_vfs_binding.json.\n\n[BSP reconstruction 00bdf310] update\nBH missing-file correction: nativeBDF423 reloads0109CEEC, BDF429 captures manager+90 and BDF432 calls EDX. In a numeric-table composition that captured00530620 is a code identity, not executable source. NativeVfsRuntimeBindings now dispatches exactly00530620 to existing confirmed one-byte RET source ignore_native_vfs_mount_failure_00530620; unknown targets remain explicit errors. The unbound original-ABI callable path is retained. See docs/NATIVE_VFS_OPEN_FAILURE_BH.md and reports/native_vfs_open_failure_bh.json. This corrects the actual missing-read access violation observed by the combined BH fixture; no original code mapping or new no-op body is invented."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00531030",
+        "prototype": "void* __thiscall BSP_NativeString_ConstructByte(unsigned int byte_word)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00531030 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0054aa70",
+        "prototype": "void __thiscall BSP_NativeString_AppendByte(unsigned int byte_word)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 0054aa70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "native_envelopes": [
+    {
+      "address": "00531030",
+      "bytes": 122,
+      "sha256": "1ee19077aa6c9e7e114d55fbede11f2c147f4c2433c385ad995ed2229e70a8fa",
+      "instructions": 45,
+      "saved_instruction_owners_verified": true,
+      "live_disk_equal": true
+    },
+    {
+      "address": "0054aa70",
+      "bytes": 147,
+      "sha256": "bdc2da219594ab2e9be6d67a17b2068a3962515eeb3d0db93ab49dd107770f84",
+      "instructions": 51,
+      "saved_instruction_owners_verified": true,
+      "live_disk_equal": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00531030",
+      "address": "00531041",
+      "native": "00419cc0",
+      "role": "allocation getter after header clear"
+    },
+    {
+      "function": "00531030",
+      "address": "0053104c",
+      "native": "00bd1120",
+      "role": "fixed size2 flag1 allocation"
+    },
+    {
+      "function": "00531030",
+      "address": "00531060",
+      "native": "00bf7680",
+      "role": "zero-count preserve branch"
+    },
+    {
+      "function": "00531030",
+      "address": "00531081",
+      "native": "00419cc0",
+      "role": "nonnull current-header return getter"
+    },
+    {
+      "function": "00531030",
+      "address": "00531088",
+      "native": "00bd1510",
+      "role": "captured pointer/current length+1 flag1 return"
+    },
+    {
+      "function": "0054aa70",
+      "address": "0054aa96",
+      "native": "00531030",
+      "role": "stack temporary construction"
+    },
+    {
+      "function": "0054aa70",
+      "address": "0054aaba",
+      "native": "0041dd40",
+      "role": "resize old destination length plus captured temporary length preserve1"
+    },
+    {
+      "function": "0054aa70",
+      "address": "0054aac7",
+      "native": "00bf7680",
+      "role": "captured temporary copy to reloaded destination data+old length"
+    },
+    {
+      "function": "0054aa70",
+      "address": "0054aae3",
+      "native": "00419cc0",
+      "role": "captured nonnull temporary return getter"
+    },
+    {
+      "function": "0054aa70",
+      "address": "0054aaea",
+      "native": "00bd1510",
+      "role": "captured temporary pointer/length+1 flag1 return"
+    }
+  ],
+  "exports_refreshed": [
+    "00531030",
+    "0054aa70",
+    "00bf47e0",
+    "00bdf310"
+  ],
+  "saved": true
+}

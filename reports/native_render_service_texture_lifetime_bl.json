@@ -441,7 +441,7 @@
   ],
   "ownership": "Persistent CCh companion binds in same canonical registry after successful B52550, no allocation/count initialization/retain; final zero alone owns real deletion; native retirement and external host quiescence remain separate. Member terminal lookup verifies exact captured+4 and performs no extra decrement. Raw cleanup does not release later references after failure. Companion constructor itself allocates nothing; supplied transactional registry bind can allocate. B52550 begins atomic lifetime at the original count1 write, never during companion binding.",
   "source_sha256": {
-    "include/bsp/native_render_service_texture_lifetime.hpp": "cdf4f43902ec7e9a647f5e6b155950d9cc4889ad56bc34e5eb91cab454d5d239",
+    "include/bsp/native_render_service_texture_lifetime.hpp": "3870f9d60bb4343198af56a624a8c73b5125855df41286cfe2aec48fb6baa41c",
     "src/native_render_service_texture_lifetime.cpp": "cc4859375d7cf743f4d48baf60d3dacf9d36184142ea035875375212580ec597",
     "include/bsp/native_render_service_texture_construction.hpp": "700e0fecf55236b51fb73ea236c6c02117f798c9d473e3b8d8caee21b35b7794",
     "src/native_render_service_texture_construction.cpp": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b",
@@ -568,5 +568,10 @@
       "Future B4E840 source producer must begin atomic lifetime at its count1 write; this lifetime provider does not manufacture a missing constructor.",
       "Separately prepared root provider is not present or linked/tested in this worker checkout."
     ]
+  },
+  "integration_header_clarification": {
+    "previous_sha256": "cdf4f43902ec7e9a647f5e6b155950d9cc4889ad56bc34e5eb91cab454d5d239",
+    "current_sha256": "3870f9d60bb4343198af56a624a8c73b5125855df41286cfe2aec48fb6baa41c",
+    "scope": "Comment only: companion introduces no allocation except the supplied registry call; bind can allocate metadata."
   }
 }

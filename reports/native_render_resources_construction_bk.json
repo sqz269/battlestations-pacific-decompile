@@ -1032,5 +1032,11 @@
     "Host binding failure after successful helper construction preserves live helper/block and does not offer ordinary automatic recovery.",
     "Block must survive failed helper construction until native retirement and separate host-quiescent reset; helper companions are discarded only after their recorded native retirement and ended borrows.",
     "Actual startup wiring and derived service destruction remain outside this owned packet; no CMake/main/Ghidra/ledger edits."
-  ]
+  ],
+  "integration_dependency_correction_bl": {
+    "source": "src/native_render_service_texture_construction.cpp",
+    "prior_worker_pin": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df",
+    "current_pin": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b",
+    "evidence": "B52550 begins the actual atomic lifetime at its original count1 write; unchanged1141byte function section and35 symbolic relocations. See reports/native_render_service_texture_lifetime_bl.json. Worker source_sha256 pins above remain historical."
+  }
 }

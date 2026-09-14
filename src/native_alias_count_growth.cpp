@@ -29,11 +29,12 @@ NativeAliasListLengthError::~NativeAliasListLengthError() noexcept {
     destroy_native_legacy_logic_error_00411780(storage_);
 }
 
-void grow_native_alias_list_count_004ce780(void* actual_owner, std::uint32_t increment) {
+namespace {
+void grow_count(void* actual_owner, std::uint32_t increment, std::uint32_t bound) {
     auto& count = *reinterpret_cast<volatile std::uint32_t*>(
         static_cast<unsigned char*>(actual_owner) + 8);
     const std::uint32_t initial_count = count;
-    if (std::uint32_t{0x1fffffff} - initial_count < increment) {
+    if (bound - initial_count < increment) {
         NativeLegacySboStringStorage temporary;
         temporary.capacity_18 = 15;
         temporary.length_14 = 0;
@@ -44,6 +45,15 @@ void grow_native_alias_list_count_004ce780(void* actual_owner, std::uint32_t inc
         throw NativeAliasListLengthError{temporary};
     }
     count = initial_count + increment;
+}
+} // namespace
+
+void grow_native_alias_list_count_004ce780(void* actual_owner, std::uint32_t increment) {
+    grow_count(actual_owner, increment, 0x1fffffff);
+}
+
+void grow_native_unit_registry_count_004cee30(void* actual_owner, std::uint32_t increment) {
+    grow_count(actual_owner, increment, 0x3fffffff);
 }
 
 } // namespace bsp

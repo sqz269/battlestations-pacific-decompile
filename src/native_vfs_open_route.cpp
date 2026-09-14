@@ -211,7 +211,10 @@ void* open_native_vfs_resource_00bdf310(void* manager, const void* name,
             evaluate_diagnostic_name(name); // Original caller name, not alias.
             auto* current_manager = context.physical.manager_0109ceec;
             auto* selected = pointer(current_manager, 0x90); // field, not vtable
-            reinterpret_cast<Failure>(selected)(current_manager, selected);
+            if(context.native_bindings)
+                context.native_bindings->open_failure_entry(
+                    reinterpret_cast<std::uintptr_t>(selected),current_manager);
+            else reinterpret_cast<Failure>(selected)(current_manager, selected);
         } else if (result) {
             if (flags & 1u) {
                 put(manager, 0x24, word(manager, 0x24) + 1u);

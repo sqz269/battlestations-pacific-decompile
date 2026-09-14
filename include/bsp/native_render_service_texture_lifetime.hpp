@@ -39,8 +39,8 @@ void* delete_native_render_service_textures_00b52840(void* actual_owner,
 
 // Caller-prepared, address-stable host companion. Bind only after successful
 // B52550, before usable publication, in the SAME canonical registry. Binding
-// itself does not allocate, initialize the actual +04 atomic, retain or release.
-// The registry's transactional bind may allocate host metadata; callers needing
+// introduces no allocation except the registry call, and never initializes the
+// actual +04 atomic, retains or releases. Transactional bind may allocate; callers needing
 // allocation-free binding must prepare that provider's capacity separately.
 // The caller must supply an already live aligned +04 atomic in the established
 // MSVC raw-owner domain (B52550 begins it at its original B52578 count1 write).

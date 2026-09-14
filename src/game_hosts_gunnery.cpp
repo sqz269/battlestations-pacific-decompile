@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/gun_gravity_arc.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -1138,12 +1139,34 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float flight = cosine > 0.0f ? distance / (gun.muzzle_speed * cosine)
                                                    : 0.0f;
                 for (int i = 0; i < 3; ++i) lead[i] = at[i] + v[i] * flight;
+                // Step 8, 006DFAD4: the recovered solve 00955630 replaces the
+                // pre-estimate for the FINAL elevation. The pre-estimate above
+                // still sets the time-of-flight push-out, which is what step 6
+                // uses it for. docs/GUN_GRAVITY_ARC.md:
+                //   k = g*R^2 / 2v^2,  D = R^2 - 4k(k + h),
+                //   tan(pitch) = (R - sqrt(D)) / 2k          the low flat root
+                // R is the HORIZONTAL distance and h the height difference, not
+                // the slant range the pre-estimate used.
+                bsp::GunGravityArcQuery arc_query;
+                arc_query.aim_point = {lead[0], lead[1], lead[2]};
+                arc_query.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+                arc_query.muzzle_speed = gun.muzzle_speed;
+                // mount_frame == nullptr is 0085B8DE's deliberate world-frame
+                // path: the pair comes back without the local-frame round trip.
+                arc_query.mount_frame = nullptr;
+                const bsp::GunGravityArcSolution arc =
+                    bsp::solve_gun_gravity_arc_00955630(arc_query);
+                arc_solved = arc_solved && arc.solved;
+                // angles.vert is *outPitch, the elevation above horizontal, and
+                // the 009557F8 negate applies to *outYaw only. want_vert below
+                // is asin(direct line) + pitch, so what belongs in `pitch` is
+                // the superelevation above the direct line, not the total.
                 const float led[3] = {lead[0] - muzzle[0], lead[1] - muzzle[1],
                     lead[2] - muzzle[2]};
-                const float led_distance = length3(led);
-                const float led_s = led_distance * kGravity / speed_squared;
-                arc_solved = arc_solved && led_s <= 1.0f;
-                pitch = std::min(std::asin(std::min(led_s, 1.0f)) * 0.5f, kQuarterPi);
+                const float led_horizontal =
+                    std::sqrt(led[0] * led[0] + led[2] * led[2]);
+                const float direct_line = std::atan2(led[1], led_horizontal);
+                pitch = arc.angles.vert - direct_line;
                 record("GunBot::ballistic_arc_00955630", 0x00955630u);
                 done("GunBot::gravity_pre_estimate_006df8bf", 0x006df8bfu);
             }

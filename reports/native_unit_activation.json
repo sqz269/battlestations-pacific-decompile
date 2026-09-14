@@ -1,0 +1,393 @@
+{
+  "packet": "orch6_unit_activation_aa",
+  "base_commit": "51a1a931a5255bb775b6f8bc94f6724d5007a488",
+  "status": "complete_normal_caller_and_canonical_count_growth_native_byte_fixture_tested_required_providers",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "worker_mutations": [],
+    "annotation_owner": "root"
+  },
+  "routines": [
+    {
+      "address": "0077f0e0",
+      "end_inclusive": "0077f24c",
+      "bytes": 365,
+      "name": "activate_native_unit_0077f0e0",
+      "source": "src/native_unit_activation.cpp",
+      "coverage": "complete normal caller, all holder branches;complete required providers",
+      "abi": "ECXunit;preservesEBX/ESI/EDI;bareRET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004cee30",
+      "end_inclusive": "004ceec2",
+      "bytes": 147,
+      "name": "grow_native_unit_registry_count_004cee30",
+      "source": "src/native_alias_count_growth.cpp",
+      "coverage": "complete new bound through existing canonical count/exception implementation",
+      "abi": "ECXactual list;stackincrement;RET4;nativeFH3transport differs",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0077f103",
+      "native": "004c2220",
+      "function": "0077f0e0",
+      "contract": "Whole0C-byte node allocation; stack next,previous,&unit; RET0C/EAX node."
+    },
+    {
+      "address": "0077f111",
+      "native": "004cee30",
+      "function": "0077f0e0",
+      "contract": "Canonical complete3FFFFFFF bounded count growth; ECXlist;increment1;RET4."
+    },
+    {
+      "address": "0077f11f",
+      "native": "009277e0",
+      "function": "0077f0e0",
+      "contract": "Whole race inheritance and activation thunk;ECXunit;bareRET."
+    },
+    {
+      "address": "0077f164",
+      "native": "009238a0",
+      "function": "0077f0e0",
+      "contract": "Construct saved entity LuaObject in caller stack;ECXunit;stackfresh;RET4."
+    },
+    {
+      "address": "0077f16d",
+      "native": "004425c0",
+      "function": "0077f0e0",
+      "contract": "Construct14-byte reader from SAME by-value14-byte LuaObject; consumes argument;RET14."
+    },
+    {
+      "address": "0077f176",
+      "native": "00441a20",
+      "function": "0077f0e0",
+      "contract": "Destroy same reader;ECXreader;RET."
+    },
+    {
+      "address": "0077f1b4",
+      "native": "unit+vtable144",
+      "function": "0077f0e0",
+      "contract": "Captured current table entry before saved side stores;ECXunit;stack saved+10C;RET4."
+    },
+    {
+      "address": "0077f1d7",
+      "native": "0048e9f0",
+      "function": "0077f0e0",
+      "contract": "Whole pooled-string hash existence;captured bag;OwnerPlayer;RET4/AL."
+    },
+    {
+      "address": "0077f1e7",
+      "native": "008f2260",
+      "function": "0077f0e0",
+      "contract": "Whole hierarchical property find;SAME captured bag;OwnerPlayer;RET4/EAX."
+    },
+    {
+      "address": "0077f201",
+      "native": "unit+vtable144",
+      "function": "0077f0e0",
+      "contract": "Fresh table;ECXunit;stack raw OwnerPlayer payload or9;RET4."
+    },
+    {
+      "address": "0077f211",
+      "native": "008f2260",
+      "function": "0077f0e0",
+      "contract": "Whole find on freshly reloaded holder+8;Invincible;RET4/EAX."
+    },
+    {
+      "address": "0077f244",
+      "native": "unit+vtablef4",
+      "function": "0077f0e0",
+      "contract": "Fresh table selected after conversion;float through FLD/FSTP;RET4."
+    },
+    {
+      "address": "004cee7c",
+      "native": "00408720",
+      "function": "004cee30",
+      "contract": "Assign16 literal bytes into initialized temporary SBO."
+    },
+    {
+      "address": "004cee91",
+      "native": "00411700",
+      "function": "004cee30",
+      "contract": "Construct logic-error from temporary."
+    },
+    {
+      "address": "004ceea8",
+      "native": "00bf6885",
+      "function": "004cee30",
+      "contract": "Throw native length-error type D83F98;source uses owning NativeAliasListLengthError."
+    },
+    {
+      "address": "00c65b43",
+      "native": "004072d0",
+      "function": "00c65b40",
+      "kind": "tail_jump",
+      "contract": "Destroy completed temporary at EBP-50, one armed FH3state."
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "0087bcdc",
+      "native": "0077f0e0",
+      "function": "0087bcc0",
+      "function_end_inclusive": "0087bf73",
+      "evidence": "local/activation_site_0087bcdc_setup.txt"
+    },
+    {
+      "address": "007420b3",
+      "native": "0077f0e0",
+      "function": "007420b0",
+      "function_end_inclusive": "00742178",
+      "evidence": "local/activation_site_007420b3_setup.txt"
+    },
+    {
+      "address": "007b3943",
+      "native": "0077f0e0",
+      "function": "007b3940",
+      "function_end_inclusive": "007b395b",
+      "evidence": "local/activation_site_007b3943_setup.txt"
+    },
+    {
+      "address": "0084d179",
+      "native": "0077f0e0",
+      "function": "0084d170",
+      "function_end_inclusive": "0084d47b",
+      "evidence": "local/activation_site_0084d179_setup.txt"
+    },
+    {
+      "address": "006e2e87",
+      "native": "0077f0e0",
+      "function": "006e2e10",
+      "function_end_inclusive": "006e3254",
+      "evidence": "local/activation_site_006e2e87_setup.txt"
+    },
+    {
+      "address": "007f1ffc",
+      "native": "0077f0e0",
+      "no_ghidra_function": true,
+      "raw_function_start": "007f1fe0",
+      "evidence": "local/activation_site_007f1ffc_proto.txt",
+      "raw_function_end_inclusive": "007f2280",
+      "raw_bytes": 641,
+      "raw_boundary_evidence": "local/activation_incoming_raw_007f1fe0.txt;RET7F2280,padding2281,nextentry2290"
+    },
+    {
+      "address": "004d58e3",
+      "native": "004cee30",
+      "function": "004d56e0",
+      "function_end_inclusive": "004d5bc3",
+      "evidence": "local/activation_site_004d58e3_setup.txt"
+    },
+    {
+      "address": "004d5907",
+      "native": "004cee30",
+      "function": "004d56e0",
+      "function_end_inclusive": "004d5bc3",
+      "evidence": "local/activation_site_004d5907_setup.txt"
+    },
+    {
+      "address": "004d5965",
+      "native": "004cee30",
+      "function": "004d56e0",
+      "function_end_inclusive": "004d5bc3",
+      "evidence": "local/activation_site_004d5965_setup.txt"
+    },
+    {
+      "address": "0077f111",
+      "native": "004cee30",
+      "function": "0077f0e0",
+      "function_end_inclusive": "0077f24c",
+      "evidence": "local/activation_site_0077f111_setup.txt"
+    },
+    {
+      "address": "00664a52",
+      "native": "004cee30",
+      "function": "006649d0",
+      "function_end_inclusive": "00664ae3",
+      "evidence": "local/activation_site_00664a52_setup.txt"
+    },
+    {
+      "address": "0066a9e4",
+      "native": "004cee30",
+      "function": "0066a8a0",
+      "function_end_inclusive": "0066af82",
+      "evidence": "local/activation_site_0066a9e4_setup.txt"
+    },
+    {
+      "address": "0066aa9e",
+      "native": "004cee30",
+      "function": "0066a8a0",
+      "function_end_inclusive": "0066af82",
+      "evidence": "local/activation_site_0066aa9e_setup.txt"
+    },
+    {
+      "address": "0066ab48",
+      "native": "004cee30",
+      "function": "0066a8a0",
+      "function_end_inclusive": "0066af82",
+      "evidence": "local/activation_site_0066ab48_setup.txt"
+    },
+    {
+      "address": "0066aecc",
+      "native": "004cee30",
+      "function": "0066a8a0",
+      "function_end_inclusive": "0066af82",
+      "evidence": "local/activation_site_0066aecc_setup.txt"
+    },
+    {
+      "address": "00a2d979",
+      "native": "004cee30",
+      "function": "00a2d8e0",
+      "function_end_inclusive": "00a2d9cb",
+      "evidence": "local/activation_site_00a2d979_setup.txt"
+    },
+    {
+      "address": "00a2d9b6",
+      "native": "004cee30",
+      "function": "00a2d8e0",
+      "function_end_inclusive": "00a2d9cb",
+      "evidence": "local/activation_site_00a2d9b6_setup.txt"
+    },
+    {
+      "address": "00a13ca5",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a13ca5_setup.txt"
+    },
+    {
+      "address": "00a13e56",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a13e56_setup.txt"
+    },
+    {
+      "address": "00a14008",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a14008_setup.txt"
+    },
+    {
+      "address": "00a141b8",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a141b8_setup.txt"
+    },
+    {
+      "address": "00a14368",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a14368_setup.txt"
+    },
+    {
+      "address": "00a14640",
+      "native": "004cee30",
+      "function": "00a13b60",
+      "function_end_inclusive": "00a14d9f",
+      "evidence": "local/activation_site_00a14640_setup.txt"
+    },
+    {
+      "address": "00a2e312",
+      "native": "004cee30",
+      "function": "00a2e260",
+      "function_end_inclusive": "00a2e49e",
+      "evidence": "local/activation_site_00a2e312_setup.txt"
+    },
+    {
+      "address": "00a22aa1",
+      "native": "004cee30",
+      "function": "00a22920",
+      "function_end_inclusive": "00a22d0a",
+      "evidence": "local/activation_site_00a22aa1_setup.txt"
+    },
+    {
+      "address": "00a2df70",
+      "native": "004cee30",
+      "function": "00a2def0",
+      "function_end_inclusive": "00a2df94",
+      "evidence": "local/activation_site_00a2df70_setup.txt"
+    },
+    {
+      "address": "00a2e572",
+      "native": "004cee30",
+      "function": "00a2e4c0",
+      "function_end_inclusive": "00a2e6fe",
+      "evidence": "local/activation_site_00a2e572_setup.txt"
+    }
+  ],
+  "raw_supporting_frames": [
+    {
+      "address": "00c65b48",
+      "end_inclusive": "00c65b51",
+      "no_ghidra_function": true,
+      "operation": "MOVEAX,D8E50C;JMPBF6B43",
+      "evidence": "local/activation_00c65b40.bin"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "STL_xlen_throw_004cee30 inferred unconditional throw",
+      "is": "Returning checked count increment at owner+8 with unsigned3FFFFFFF-count predicate",
+      "evidence": "4CEEAD..4CEEC2 and complete count-equivalence audit;0flow gaps."
+    },
+    {
+      "was": "MISSION_LOAD_HOSTS claims77F0E0 only reads listF87198",
+      "is": "4C2220 produces node(next,previous,payload);77F116 writes captured sentinel.previous,77F11D previous.next after checked count growth",
+      "evidence": "complete77F0E0/4C2220 listing"
+    },
+    {
+      "was": "Earlier holder+4 refs interpretation",
+      "is": "Kind1bag,kind2saved,kind3Lua saved index",
+      "evidence": "77F13E..152 branch chain,existingNativeUnitScenePropertyHolderView"
+    }
+  ],
+  "borrowed_storage": {
+    "unit": "NativeUnitObserverAlias;actual side54,holderC0,roles188[9],word28C,tick294,marker304",
+    "list": "actualF87194 owner opaque0/sentinel4/count8;view count must alias exact actualowner+8;node from4C2220next0/previous4/payload8",
+    "field_producers": [
+      "00925CE0 side54=2/holderC0=null and existing prefix/pose owner",
+      "0077EED0 word28C/tick294 initialized0",
+      "0077F193..1C4 restored fields producer;opaque names retain saved schema uncertainty",
+      "004C2220 list node writes",
+      "009278A0 role180 then unit virtual148 owns role188 update"
+    ],
+    "saved_schema_limit": "Saved offsets are exact borrowed storage, opaque except established side/roles; upstream saved-record allocation/parser is not implemented."
+  },
+  "validation": {
+    "build": "PASSReleaseWin32 scripts/build.ps1",
+    "ctest": "PASSexisting reconstructed_math/native_math_differential",
+    "seeds": "PASSall8live/disk",
+    "fixture": "PASS6completeoriginal365-bytecaller cases and distinct old/new source exception bounds",
+    "native_count": "original147-byte4CEE30 normal path executed;nativeFH3throwpath notexecuted",
+    "codegen": "local/activation_production_disasm.txt and activation_count_production_disasm.txt;volatile ordering andx87 reviewed",
+    "proof_manifest": "local/activation_review_manifest.json",
+    "mechanical_calls": "39 passed;7F1FFC unowned raw incoming body remains root listing-repair item",
+    "codegen_offsets": {
+      "production_saved": "side read11C;entry126;side store12F;word read134/store139;FLD14D/FSTP14F;role read156/call15F;DWORD copy167/16D",
+      "production_invincible": "CVTSI2SS22C orMOVSS23A;table24A/entry24D;FLD253/FSTP256;floatcall26C"
+    }
+  },
+  "limitations": [
+    "Complete4C2220,9277E0,9238A0,4425C0,441A20,48E9F0,8F2260 and current virtual144/F4 providers required;no stubs/defaults",
+    "No new runtime unit/scene/model/list owner;no production binding",
+    "No native FH3/SEH/callee-internal exceptions or gameplay proof",
+    "No game frame claims or executable path admission"
+  ],
+  "integration_review_aa": {
+    "direct_rows": 40,
+    "failed": 0,
+    "note": "The integrator defined the incoming owner007F1FE0..007F2280 from verified641-byte listing evidence. All40 direct call rows now pass; the archived worker proof retains its original39/40 result. The4CEE30 FH3 selectorC65B48..C65B51 is now defined and named. No additional caller source or native unwind validation is claimed.",
+    "definitions": "reports/orch6_aa_function_definitions.json",
+    "flow": "reports/orch6_aa_flow_repair.json"
+  }
+}
