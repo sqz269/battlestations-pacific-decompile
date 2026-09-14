@@ -600,3 +600,34 @@ and the correct condition is stricter.
 - **Aliasing is not a risk here.** The arc's `0095579E LEA EDX,[ESI+0CCh]` and
   `009557A4 LEA ECX,[ESI+110h]` are 68 bytes apart with 64-byte matrices, so they do not even
   partially overlap, and none of the 71 direct call sites passes the same expression for both.
+
+## Correction from docs/SCENE_ATTACH_LOCAL_FRAMES.md (packet cc7_scene_attach_local_frames)
+
+The section above recorded that the arc's real precondition is an **orthonormal** mount basis, and
+that whether any shipped mount violates it was "a bounded negative result and not a proof". It is
+now proven, and the answer is that shipped data **does** violate it.
+
+The `.scn` `localframe` statement canonicalises to a similarity `s*R + t` - the basis is
+orthonormalised by `0085DC80` and then multiplied by `s = |authored row 0|` again at
+`0046D1BF..0046D222` - so a uniform scale reaches `entity+74h` by design. Of 133,655 `localframe`
+statements across the 259 shipped `.scn` files, **7,621 carry `s` outside `1 +/- 1e-3`**, from
+`0.1586` to `3.0`.
+
+**This is a live accuracy defect, not a theoretical one.** 105 of the scaled placements are
+anti-aircraft LandFort emplacements at `s = 0.7069`, and 7 are `DestroyerGen` placements including
+`'L Hancock'` at `s = 0.866`. Because `0042D0D0` runs with `normalize = 0` and `00521370` takes
+`asin` of the raw `y`, the extracted pitch is `asin(y/s)`:
+
+| placement | `s` | true 30 degree pitch reads as |
+| --- | --- | --- |
+| `'Heavy AA, Japanese 01'` LandFort, 105 of them | 0.7069 | **45.017 degrees** |
+| `'L Hancock'` DestroyerGen | 0.866 | **35.266 degrees** |
+
+and above roughly 45.05 degrees true the extraction saturates at 90 degrees.
+
+So every gun mounted under one of those 7,621 scaled frames aims high, and an AA emplacement - the
+case where elevation matters most - is the worst affected. The reconstruction does not reach this
+path yet, because `src/game_hosts_gunnery.cpp` gives every gun one shared hull origin and no model
+node transforms, so no mount frame is built at all. The follow-up is therefore joint: real mount
+positions (`docs/GUN_MOUNT_POSITIONS.md`) and the scale handling must land together, or the arc will
+be wrong in a new way rather than an old one.
