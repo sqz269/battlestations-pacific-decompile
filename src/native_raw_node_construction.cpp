@@ -51,7 +51,6 @@ void* construct_native_raw_child_node_00bea250(void* node, void* parent,
     volatile unsigned state = 0;
     volatile bool normal_return = false;
     std::uint32_t temporary[2];
-    temporary[1] = 0; // BEA296 initializes only the data word before BF0510.
     __try {
         put(node, 4, 1);
         put(node, 0, 0x00d68bb4u);

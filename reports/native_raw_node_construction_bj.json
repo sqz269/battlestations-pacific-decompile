@@ -1303,5 +1303,13 @@
         "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
       }
     ]
+  },
+  "integration_correction": {
+    "reason": "Removed unnecessary temporary[1]=0: BEA296 writes EH state0, not the temporary data word. Actual provider initializes both output words before normal return; caller temporary cleanup is unarmed until return.",
+    "review": "local/native-raw-node-construction-review-bk-worker-delivery",
+    "delivered_commit": "12e4b52bea921dcbc12138cb43765fc3d77d26a7",
+    "delivered_source_sha256": "028866788e8792ed1cd7c91e2820dc5e36147c0aafa45330e2df249cf38469c9",
+    "corrected_source_sha256": "1ba76d0e062504d65c78bf64e0321cb04ee508c0ec034e941b8fcf99e7f00181",
+    "validation": "Original compiler and validation entries describe the retained worker delivery. Corrected combined candidate requires fresh root build and acceptance; no runtime parity claim."
   }
 }
