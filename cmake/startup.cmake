@@ -974,3 +974,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_de
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_sampler_cache_entry.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_platform_load_messages.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_light_environment_queries.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_system_constant_gather.cpp)

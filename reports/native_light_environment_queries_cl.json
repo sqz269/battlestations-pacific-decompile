@@ -1,0 +1,108 @@
+{
+  "packet": "orch3_light_environment_leaves_cl",
+  "status": "source_build_native_comdat_equality_reviewed_pending_primary_integration",
+  "source_parent_commit": "5472ae5a876db505f37f5784be4530e05a53f5aa",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 3,
+  "raw_interface_bytes": 22,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_function_count": 64029
+  },
+  "routines": [
+    {
+      "address": "00b7aa20",
+      "inclusive_end": "00b7aa23",
+      "bytes": 4,
+      "original_name": "BSP_LightEnvironment_GetAmbientColor",
+      "cpp_symbol": "get_native_light_environment_ambient_00b7aa20",
+      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
+      "original_abi": "ECX actual environment; EAX=ECX+18h; plain RET",
+      "caller": "00b46a70 at 00b46f66; environment loaded from current lighting+10h",
+      "native_bytes_hex": "8d4118c3",
+      "native_sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair"
+    },
+    {
+      "address": "00b7aa30",
+      "inclusive_end": "00b7aa33",
+      "bytes": 4,
+      "original_name": "BSP_LightEnvironment_GetMode3AmbientColor",
+      "cpp_symbol": "get_native_light_environment_mode3_ambient_00b7aa30",
+      "source_signature": "const void* __fastcall (const void* actual_environment) noexcept",
+      "original_abi": "ECX actual environment; EAX=ECX+28h; plain RET",
+      "caller": "00b46a70 at 00b46f0b; mode3 branch",
+      "native_bytes_hex": "8d4128c3",
+      "native_sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+      "storage_contract": "LEA-only borrowed address; no owner/color read, range check, or null repair"
+    },
+    {
+      "address": "00b7aa40",
+      "inclusive_end": "00b7aa4d",
+      "bytes": 14,
+      "original_name": "BSP_LightEnvironment_GetAmbientCubeFace",
+      "cpp_symbol": "get_native_light_environment_cube_face_00b7aa40",
+      "source_signature": "const void* __fastcall (const void* actual_environment, void* unused_edx, uint32_t index) noexcept",
+      "original_abi": "ECX actual environment; one stack DWORD index; EAX=ECX+38h+(index<<4) modulo32; RET4",
+      "caller": "00b46a70 at 00b47055; caller pushes indices 0..5 and copies four DWORDs from each returned address",
+      "native_bytes_hex": "8b442404c1e0048d440838c20400",
+      "native_sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+      "storage_contract": "Unchecked wrapped address arithmetic, no pointer dereference; explicit unused EDX reserves original stack argument slot"
+    }
+  ],
+  "typed_predecessor_sha256": {
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8"
+  },
+  "source_sha256": {
+    "include/bsp/native_light_environment_queries.hpp": "0b77527ee3c746423c83c0d6299dcd5cf59d8ff47970d733d75386d19ededb85",
+    "src/native_light_environment_queries.cpp": "6a9d96926536f31922ffd73d57f1f100128b032befc895a298e0b4a60fa8dc50",
+    "cmake/startup.cmake": "10d9eafdb90fe401cadce9515e74c6829805f4cbec6a5e69e34f7fa5531e5710"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_light_environment_queries.obj",
+    "sha256": "e9cc4e76a19e9a1a79859fea2ad595fdaeb64f3f5d9fd04b7d53123fa23d8f5f",
+    "format": "MSVC Win32 COFF, machine 014C, six sections",
+    "function_comdats": [
+      {
+        "coff_section": 3,
+        "address": "00b7aa20",
+        "bytes": 4,
+        "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+        "relocations": 0,
+        "equals_complete_original_pe_body": true
+      },
+      {
+        "coff_section": 4,
+        "address": "00b7aa40",
+        "bytes": 14,
+        "sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+        "relocations": 0,
+        "equals_complete_original_pe_body": true
+      },
+      {
+        "coff_section": 5,
+        "address": "00b7aa30",
+        "bytes": 4,
+        "sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+        "relocations": 0,
+        "equals_complete_original_pe_body": true
+      }
+    ]
+  },
+  "validation": {
+    "installed_pe": "whole installed PE SHA-256 verified; all three complete span bytes and SHA-256 verified",
+    "live_ghidra": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe live body ranges and exact bytes match PE; B46A70 sole live caller of each",
+    "direct_caller_sites": "B46F0B, B46F66 and B47055 verified against original B46A70 assembly; actual ECX environment and stack index/RET4 order reviewed",
+    "source_provider_hashes": "all five pinned source/CMake/typed-predecessor SHA-256 values verified",
+    "generated": "three complete function COMDATs equal original PE bytes, with zero relocations; dumpbin disassembly, section headers and object hash reviewed",
+    "build": "./scripts/build.ps1 passed, Win32 Release bsp_game linked",
+    "ctest": "existing reconstructed_math 1/1 passed (0.08 sec)",
+    "new_tests": 0
+  },
+  "limits": "Raw address leaf bodies only. Existing typed full-function ledger entries remain; this is zero new native body/byte credit. No whole B46A70 source, game ABI or gameplay validation."
+}
