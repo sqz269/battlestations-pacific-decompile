@@ -112,3 +112,22 @@ term is `m * RollAccel`, and the three are symmetric:
 Caught by packet `cc7_plane_control_targets`, which read the same span independently and against
 the decompiler's `local_10 = local_44 * *(float *)(iVar1 + 0x1bc)`. There is nothing anomalous here
 to explain, and the paragraph inviting someone to look for intent is withdrawn.
+
+## Correction: `007C0F40` is the bomb-load factor
+
+This doc named it `BSP_Plane_PartDamageAuthorityScale` and said so provisionally, on the strength of
+the `1.0f` default and the segment's keywords. It is the **bomb-load factor**, and this repository
+already had it: `include/bsp/plane_ai_control.hpp:243-250` records `007C0F40` as `1.0f` unless a
+weapon slot still carries bomb-class ordnance, then interpolated toward a class field, with turbo
+scaling the result. `2Ah` is the general-bomb class id the projectile tables use
+(`docs/ORDNANCE_KIND_IDENTITY.md`), which is exactly what the `vtable[210h](2Ah, 0)` test at
+`007C0F72` asks each slot.
+
+So the term `007D9A70` multiplies into a plane's rotation authority is **how much bomb load it is
+still carrying**: a loaded bomber turns less sharply than one that has dropped. That is a real
+gameplay behaviour, and reading it as damage would have put the dependency on the wrong event.
+
+The `1.0f` default at `007C0F41` and the empty-list guard at `007C0F4F` stand as read; only the name
+and the reading of `2Ah` change. Worth noting how it was caught: not by reading the arithmetic, but
+by another packet quoting a header this one had not checked. The provisional flag did its job, and
+a search of the repository before naming would have done it sooner.
