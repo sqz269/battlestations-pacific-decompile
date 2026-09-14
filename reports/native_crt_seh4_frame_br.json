@@ -1,0 +1,971 @@
+{
+  "packet": "orch2_native_crt_seh4_frame_br",
+  "base": "27f97f574388ff576d57a25acd213560ec2ad434",
+  "status": "discovery_complete_custom_frame_contracts_handler_dependencies_open",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "provenance": [
+    {
+      "label": "lock",
+      "commit": "01fc5c40538266cd29f1ab33e479401c70603be1",
+      "report": "reports/native_crt_lock_init_frontier_bp.json",
+      "whole_inventory_verified": 80,
+      "size_sha256_sha512_and_exact_path_set": true
+    },
+    {
+      "label": "watson",
+      "commit": "ed185cb2dfdf1ba045dbf30ebfd47f083eeece80",
+      "report": "reports/native_crt_watson_frontier_bl.json",
+      "whole_inventory_verified": 135,
+      "size_sha256_sha512_and_exact_path_set": true
+    }
+  ],
+  "new_spans": [
+    {
+      "address": "00c07c00",
+      "length": 69,
+      "kind": "complete function",
+      "live_pe_equal": true,
+      "size": 69,
+      "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+      "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+    },
+    {
+      "address": "00c07c45",
+      "length": 20,
+      "kind": "complete function",
+      "live_pe_equal": true,
+      "size": 20,
+      "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+      "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+    },
+    {
+      "address": "00c07c90",
+      "length": 406,
+      "kind": "complete function",
+      "live_pe_equal": true,
+      "size": 406,
+      "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69",
+      "sha512": "5ff44cfae05f8b28d5bcb01a0b0c8e71fac37b29baa0a8769f8bebdc14cd46e1330d8e13eb8aac40ba592aa8791db605ab76de0c5029e66f40b04c4516aed41b"
+    },
+    {
+      "address": "00e15590",
+      "length": 8,
+      "kind": "actual native data",
+      "live_pe_equal": true,
+      "size": 8,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    {
+      "address": "00d6a618",
+      "length": 4,
+      "kind": "actual native data",
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "256994de839356d7b15264febd889470a16108bb1a3b065bba4e44ad4c6d49d7",
+      "sha512": "35059e6f79a3be3591dbb6d1aaa2eff50c660c3b5a9c79fb2f0ebe0727c6389436c2b04fed25aa0eff29685fb9bb7fcd119ea6f503543bcb7f2c70206d42a715"
+    }
+  ],
+  "reused_spans": [
+    {
+      "address": "00c17653",
+      "length": 197,
+      "kind": "complete original caller with omitted SEH4 paths",
+      "current_installed_pe_equal": true,
+      "fresh_live_capture": false,
+      "artifact": "pinned_lock/00c17653_pe.bin",
+      "size": 197,
+      "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+      "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+    },
+    {
+      "address": "00e037b8",
+      "length": 28,
+      "kind": "C17653 scope table",
+      "current_installed_pe_equal": true,
+      "fresh_live_capture": false,
+      "artifact": "pinned_lock/00e037b8_pe.bin",
+      "size": 28,
+      "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+      "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+    },
+    {
+      "address": "00bfe120",
+      "length": 15,
+      "kind": "complete security-cookie check",
+      "current_installed_pe_equal": true,
+      "fresh_live_capture": false,
+      "artifact": "pinned_watson/00bfe120_pe.bin",
+      "size": 15,
+      "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+    }
+  ],
+  "owned_functions": [
+    {
+      "address": "00c07c00",
+      "name": "__SEH_prolog4",
+      "length": 69,
+      "end_exclusive": "00c07c45",
+      "original_abi": "Custom compiler prolog. Entry S=ESP: [S] helper continuation R, [S+4] raw scope T, [S+8] local byte count N. Not normal cdecl cleanup. Incoming EBP saved by overwriting N at F=S+8.",
+      "return_state": {
+        "EBP": "F=S+8",
+        "ESP": "P=F-N-20h",
+        "EAX": "F-10h",
+        "ECX_EDX": "unchanged",
+        "EBX_ESI_EDI": "values unchanged and saved below allocated locals",
+        "FS_0": "F-10h"
+      },
+      "flags": "Final arithmetic flags are XOR(C,F): CF/OF0, ZF/SF/PF from C XOR F, AF undefined; no later flag-changing instruction.",
+      "schedule": [
+        "Push actual C07C90, then old FS:[0].",
+        "Read N, save old EBP over N, set EBP=F, SUB ESP,N.",
+        "Push EBX, ESI, EDI.",
+        "Read actual E15590 once. XOR scope slot with C; XOR EAX,F; push C XOR F.",
+        "Store P at F-18h, push copied helper return R.",
+        "Read encoded scope into EAX; write trylevel -2 at F-4, encoded scope at F-8.",
+        "LEA EAX,F-10h; write FS:[0]; RET through copied R."
+      ],
+      "absent_operations": [
+        "No stack probe, local zero-fill, size check or cookie validation.",
+        "No complement E15594 read.",
+        "No guessed callback or exception translation."
+      ],
+      "source_readiness": "Complete instruction evidence; ordinary C++ interface not established. Requires explicit compiler-frame entry, matching scope layout, actual canonical cookie and complete actual C07C90 handler domain."
+    },
+    {
+      "address": "00c07c45",
+      "name": "__SEH_epilog4",
+      "length": 20,
+      "end_exclusive": "00c07c59",
+      "original_abi": "Custom frame epilog. Entry EBP=F and ESP=P-4, with helper continuation at top and cookie at P, followed by saved EDI/ESI/EBX.",
+      "schedule": [
+        "Load old link at F-10h into ECX and publish to FS:[0] before popping stack.",
+        "POP ECX captures helper continuation.",
+        "First POP EDI discards cookie; second POP EDI restores EDI.",
+        "POP ESI; POP EBX; MOV ESP,EBP; POP EBP.",
+        "PUSH ECX; RET transfers to helper continuation with ESP=F+4."
+      ],
+      "return_state": {
+        "ESP": "F+4 points at enclosing-function original return word",
+        "EAX": "unchanged",
+        "ECX": "helper continuation",
+        "EBP_EBX_ESI_EDI": "restored",
+        "FS_0": "previous registration link"
+      },
+      "flags": "Arithmetic flags unchanged through MOV/POP/PUSH/RET.",
+      "cookie_check": false,
+      "direct_callees": [],
+      "indirect_callees": [],
+      "source_readiness": "Complete20B instruction-level source candidate with no absolute cookie/handler reference. Must retain actual native frame and thread FS-chain preconditions; no ordinary C++ caller or initialized-owner readiness follows."
+    },
+    {
+      "address": "00c07c90",
+      "name": "__except_handler4",
+      "length": 406,
+      "end_exclusive": "00c07e26",
+      "original_abi": "Native exception handler: stack exception record ESP+4, registration ESP+8, context ESP+Ch; body does not read fourth dispatcher argument. Normal plainRET, EAX disposition, EBX/EBP/ESI/EDI restored. Positive-filter path instead tail-jumps transfer helper.",
+      "frame_decode": "scope=[registration+8] XOR actualE15590; F=registration+10h.",
+      "cookie_validation": "If scope[0]!=-2, check (F+scope[1]) XOR [F+scope[0]] via ECX BFE120. Always check (F+scope[3]) XOR [F+scope[2]]. Repeat on exact retained exit/transfer branches.",
+      "dispatch": "flags&66h==0 publishes local exception/context pair into registration-4; follows three-DWORD scope records from trylevel. Filter ECX/EDX helper result<0 selects0, ==0 advances, >0 selects unwind/transfer.",
+      "selected_handler": "Optional E06D7363 actual exception destructor after nonnull and real IsNonwritable guard; global unwind; conditional local unwind; publish selected scope enclosing level; recheck cookies; JMP actual transfer helper.",
+      "unwind": "flags&66h!=0 and trylevel!=-2 calls actual local unwind to -2, then rechecks cookies.",
+      "source_readiness": "Not source-ready: actual checker/failure, filter, transfer/NLG, global/local unwind, image-guard and destructor dependencies remain."
+    }
+  ],
+  "frame_map": [
+    {
+      "relative": "F+4",
+      "value": "enclosing-function original return address"
+    },
+    {
+      "relative": "F",
+      "value": "incoming EBP"
+    },
+    {
+      "relative": "F-4",
+      "value": "trylevel -2 initially"
+    },
+    {
+      "relative": "F-8",
+      "value": "scope T XOR actual cookie C"
+    },
+    {
+      "relative": "F-Ch",
+      "value": "actual handler C07C90"
+    },
+    {
+      "relative": "F-10h",
+      "value": "previous FS:[0]; registration address"
+    },
+    {
+      "relative": "F-14h",
+      "value": "handler exception-pointer pair slot; not initialized by prolog"
+    },
+    {
+      "relative": "F-18h",
+      "value": "saved ESP=P"
+    },
+    {
+      "relative": "F-N-14h",
+      "value": "saved EBX"
+    },
+    {
+      "relative": "F-N-18h",
+      "value": "saved ESI"
+    },
+    {
+      "relative": "F-N-1Ch",
+      "value": "saved EDI"
+    },
+    {
+      "relative": "F-N-20h",
+      "value": "cookie C XOR F; P"
+    }
+  ],
+  "frame_map_qualification": "Nonoverlapping map presumes a valid compiler frame with fixed bookkeeping space (N>=8); actual C17653 N=14h is verified. Native body adds no check. Any aliases follow the exact ordered memory writes.",
+  "caller_binding": {
+    "entry": "00c17653",
+    "complete_bytes": 197,
+    "N": "14h",
+    "scope": "00e037b8",
+    "P": "F-34h",
+    "scope_dwords": [
+      "fffffffe",
+      "00000000",
+      "ffffffcc",
+      "00000000",
+      "fffffffe",
+      "00c176d9",
+      "00c176f0"
+    ],
+    "cookie_equation": "F XOR [F-34h] = F XOR (C XOR F) = actual C",
+    "exception_pair": "handler writes registration-4 = F-14h; filter reads that exact slot.",
+    "handler_restore": "C176F0 restores ESP from F-18h = P.",
+    "scope_status": "Full wrapper and omitted exception path reused from BP; no recapture or source implementation."
+  },
+  "calls": [
+    {
+      "caller": "00c07c90",
+      "address": "00c07cc3",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07cd3",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07d19",
+      "native": "00c0dcb6"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07d4a",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07d5a",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07d8f",
+      "native": "00c16dd0"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07daf",
+      "native": "00c0dce6"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07dc7",
+      "native": "00c0dd00"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07de6",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07df6",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07e00",
+      "native": "00c0dccd",
+      "kind": "tail_jump"
+    },
+    {
+      "caller": "00c07c90",
+      "address": "00c07e1c",
+      "native": "00c0dd00"
+    },
+    {
+      "caller": "00c17653",
+      "address": "00c1765a",
+      "native": "00c07c00",
+      "provenance": "reused complete BP caller span"
+    },
+    {
+      "caller": "00c17653",
+      "address": "00c17712",
+      "native": "00c07c45",
+      "provenance": "reused complete BP caller span"
+    },
+    {
+      "caller": "00bfe120",
+      "address": "00bfe12a",
+      "native": "00c185a4",
+      "kind": "tail_jump",
+      "provenance": "reused complete BL cookie-check span"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "caller": "00c07c90",
+      "site": "00c07da2",
+      "mnemonic": "call",
+      "operand": "dword ptr [0xd6a618]",
+      "actual_word": "00d6a618",
+      "current_pe_live_target": "00c06ac8",
+      "guard": "Record.code E06D7363, nonnull actual word, then C16DD0(&actualword)!=0; actual word reloaded for call.",
+      "arguments": "cdecl exception_record,1; caller ADD ESP,8.",
+      "provider_supplied": false,
+      "qualification": "PE read-only section and current database value do not replace runtime guard or canonical exception destructor owner."
+    }
+  ],
+  "actual_destructor_pointer": {
+    "word": "00d6a618",
+    "value": "00c06ac8",
+    "pe_section_writable": false,
+    "qualification": "Current PE/live database identity only; handler reloads the pointer after the real IsNonwritableInCurrentImage guard."
+  },
+  "listing_coverage": [
+    {
+      "address": "00c07c00",
+      "complete_bytes": 69,
+      "raw_instruction_count": 21,
+      "listed_instruction_count": 21,
+      "omitted_instruction_addresses": []
+    },
+    {
+      "address": "00c07c45",
+      "complete_bytes": 20,
+      "raw_instruction_count": 11,
+      "listed_instruction_count": 11,
+      "omitted_instruction_addresses": []
+    },
+    {
+      "address": "00c07c90",
+      "complete_bytes": 406,
+      "raw_instruction_count": 125,
+      "listed_instruction_count": 125,
+      "omitted_instruction_addresses": []
+    }
+  ],
+  "listing_qualifications": [
+    {
+      "site": "00c1768e",
+      "kind": "reused omitted instruction",
+      "instruction": "ADD ESP,14h after Watson call if it returns; full bytes retained, no listing repair."
+    },
+    {
+      "span": "00c176d9..00c17707",
+      "kind": "reused omitted filter/handler",
+      "instruction": "C0000017 filter, ESP restore, conditional indirect SetLastError(8), result0; retained scope-table owner."
+    },
+    {
+      "site": "00bfe128",
+      "kind": "listing abbreviation",
+      "instruction": "Complete pinned bytes are F3 C3 (REPZ RET); live listing displays RET."
+    },
+    {
+      "site": "00c07e00",
+      "kind": "tail transfer",
+      "instruction": "JMP C0DCCD, not a CALL or normal handler return; checker row uses tail_jump."
+    }
+  ],
+  "providers": [
+    {
+      "address": "00bfe120",
+      "name": "__security_check_cookie",
+      "source_ready": false,
+      "evidence": "Pinned complete15B, ECX input, actual E15590 comparison; F3C3 on equality, mismatch tail C185A4.",
+      "missing": "Actual cookie-domain binding and full C185A4 canonical context/record/debugger/failure-state ownership."
+    },
+    {
+      "address": "00c0dcb6",
+      "name": "_EH4_CallFilterFunc",
+      "source_ready": false,
+      "identified_body_bytes": 23,
+      "observed_call_abi": "ECX filter address, EDX frame F; EAX signed result.",
+      "missing": "Complete helper/indirect filter-frame transfer contract not expanded; no exact source found."
+    },
+    {
+      "address": "00c0dccd",
+      "name": "_EH4_TransferToHandler",
+      "source_ready": false,
+      "identified_body_bytes": 25,
+      "observed_call_abi": "ECX handler, EDX frame F; reached by C07E00 tail JMP with dispatcher stack still present.",
+      "missing": "Complete native continuation and NLG provider contract not expanded; no exact source found."
+    },
+    {
+      "address": "00c0dce6",
+      "name": "_EH4_GlobalUnwind",
+      "source_ready": false,
+      "identified_body_bytes": 26,
+      "observed_call_abi": "ECX registration.",
+      "missing": "Complete helper and actual RtlUnwind domain not expanded; no exact source found."
+    },
+    {
+      "address": "00c0dd00",
+      "name": "_EH4_LocalUnwind",
+      "source_ready": false,
+      "identified_body_bytes": 23,
+      "observed_call_abi": "ECX registration; EDX selected level or -2; entry ESP+4 frame F, ESP+8 address of actual E15590; caller expects callee cleanup of8.",
+      "missing": "Complete helper and C0DBC4 native local-unwind provider not expanded; no exact source found."
+    },
+    {
+      "address": "00c16dd0",
+      "name": "__IsNonwritableInCurrentImage",
+      "source_ready": false,
+      "observed_call_abi": "cdecl pointer to actual D6A618 pointer word; caller removes4; EAX tested.",
+      "missing": "Native image/section owner with C16D50/C16D80 providers not expanded; no exact source found."
+    },
+    {
+      "address": "00c06ac8",
+      "name": "___DestructExceptionObject",
+      "source_ready": false,
+      "observed_call_abi": "Actual guarded indirect target at D6A618; cdecl exception-record pointer and DWORD1, caller removes8.",
+      "missing": "Member destructor, terminate and own native frame dependencies not expanded; no exact source found."
+    }
+  ],
+  "existing_source": {
+    "address": "00c1815e",
+    "source": "src/native_crt_cookie_initialization.cpp",
+    "header": "include/bsp/native_crt_cookie_initialization.hpp",
+    "status": "Complete qualified borrowed actual-cookie/complement initialization source exists; no canonical process word owner or BFE120/C185A4 failure provider.",
+    "source_snapshots_retained": true,
+    "native_frame_domain_supplied": false
+  },
+  "next_bounded_packet": {
+    "kind": "dependency_discovery",
+    "addresses": [
+      "00c0dcb6",
+      "00c0dccd",
+      "00c0dce6",
+      "00c0dd00"
+    ],
+    "identified_physical_bytes": 97,
+    "need": "New unconflicted ownership, complete register/stack/continuation/unwind contracts and exact dependency bodies as necessary. Current size/prototype evidence alone is not source readiness."
+  },
+  "validation": {
+    "fresh_complete_functions": 3,
+    "fresh_function_bytes": 495,
+    "fresh_data_bytes": 12,
+    "reused_spans": 3,
+    "direct_call_and_tail_rows": 15,
+    "qualified_indirect_sites": 1,
+    "fresh_listing_omitted_instructions": 0,
+    "ghidra_mutated": false,
+    "source_implemented": false,
+    "build_run": false,
+    "tests_added_or_run": false,
+    "runtime_experiment": false,
+    "pushed": false
+  },
+  "limitations": [
+    "Discovery only; no original/native handler, exception, unwind, FS-chain runtime or gameplay validation.",
+    "Current PE/live database data is not a running-process state observation.",
+    "No host SEH, host CRT cookie, fabricated state or callback replaces actual native ownership.",
+    "Named helper prototypes/call-graph entries do not establish full indirect-provider closure.",
+    "No active reader funclet or BF7C6E/BF7CB9/BF05D0/BF0700 ownership or mutation."
+  ],
+  "local_inventory": {
+    "directory": "local/native_crt_seh4_frame_br",
+    "files": 75,
+    "bytes": 238091,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass, independent chunked second pass, exact whole-local path set checked. Committed report outside local avoids self-hash reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_seh4_frame_br/00bfe120_lookup.txt",
+        "size": 775,
+        "sha256": "b415491f8db49457bd79b19e32f08ddb6e418df7a4b105de3e2635fd17c113f0",
+        "sha512": "dce5df4702b2e4950874e6dd385c443081661c792b1c898d3d8e4e46e833a5c374398140db780e9c89e7bb6d08b85bc7972122ecfb0c22c6118477245aec9b33"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c06ac8_lookup.txt",
+        "size": 438,
+        "sha256": "f28c3199c964ea4b86524d42d1047bdaa4769ce07cdff793222dc5a2def331cd",
+        "sha512": "c78c73c436ab8ee5249a7e3038109ffccefa6931975c7482f57fbe17e6051187dba3d966fbec55ba7a520edacb89249330aad30ae382d72a10cc1f628c912451"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_asm.txt",
+        "size": 688,
+        "sha256": "ea847dfc9470fd7c7fbace0afdb29fbc22aeccfea8286fdf5992be460c4df95f",
+        "sha512": "d44bfa829f1f80d45bc5e56b2897df2a0797b533ad342485d57df195a537f9e3490fa4bb28c28ba90149285e8164854291a478eb11f722c355ff8f7c662d3342"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_asm_0.txt",
+        "size": 688,
+        "sha256": "ea847dfc9470fd7c7fbace0afdb29fbc22aeccfea8286fdf5992be460c4df95f",
+        "sha512": "d44bfa829f1f80d45bc5e56b2897df2a0797b533ad342485d57df195a537f9e3490fa4bb28c28ba90149285e8164854291a478eb11f722c355ff8f7c662d3342"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_bytes.txt",
+        "size": 341,
+        "sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+        "sha512": "a8c0e45b8eba7097ba419bc03114faf49f6ef5d1c657a8477cc5300c2a9e3676f671fa64a6bf496f4fd1a48eb36270bce4476bd0b5f977d07106a432c61d2d04"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_live.bin",
+        "size": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+        "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_lookup.txt",
+        "size": 583,
+        "sha256": "ec8c31865d39bbd5b0d80db273e31e02862b8b0a58327bcc6f0cf16454056064",
+        "sha512": "390b56d495d74153830aee5db8def6d2b9d51b1d4158c6b60f0e68cfae688dc9ebf81c0d1787daf686b2fc9da83ff41fc7fae9f2e0021c65f410b31aefc4f2db"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_pe.bin",
+        "size": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+        "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_proto.txt",
+        "size": 281,
+        "sha256": "b3ee05af0fb4599fa2ea30464ff3b488cf9bae7ec20090af47ac7c7bf95dc88c",
+        "sha512": "207abb2dfcf091d91fd0a067ec1a5299980103793693f7203a0eb79d6806fa9e9e81d0a7bd3c7c8c0a04a4e2a3f3d0690a1c513254ddf61b3b7f969ffd9b14f3"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_raw.txt",
+        "size": 749,
+        "sha256": "d4e161c3a08102def5152d6139a81bf02ba4805545efa0dffef5d15b4857d828",
+        "sha512": "87bcf1fd896e92c6a81da6174d14e070258b7a7aa5435c1cb73cad1f9c11bbfad96dd6ed2bec291bd40ddc7e6ce2954dd11b546db3e76921dea41444c756e1ab"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c00_raw_complete.txt",
+        "size": 1161,
+        "sha256": "9a49c8900d39e19771872e04a20cfa3800220cd3a72f62952b027db551fb5fb1",
+        "sha512": "2b2c8379e64a10dc06914630ab2e6993854f7c5b2b8e24d2908ef08dd3e05c8cc0aca935bf128dc54ef1cbe058e8755f706e946cb760c4e64f65f60bda5032b6"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_asm.txt",
+        "size": 264,
+        "sha256": "bb3d19186d2325319ade4626956b55c0dc716df01103e651317ed162eeafa85a",
+        "sha512": "c62f01868ffc6e691c300c32a287bb9ff6154f1c4ca7027af5e5e866532b8c5c3b474b607d295dc5fb49989125312b2f37f2d3fba19a553954727766d281b9d8"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_asm_0.txt",
+        "size": 264,
+        "sha256": "bb3d19186d2325319ade4626956b55c0dc716df01103e651317ed162eeafa85a",
+        "sha512": "c62f01868ffc6e691c300c32a287bb9ff6154f1c4ca7027af5e5e866532b8c5c3b474b607d295dc5fb49989125312b2f37f2d3fba19a553954727766d281b9d8"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_bytes.txt",
+        "size": 106,
+        "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+        "sha512": "86ade397d58d400b507ae99477d1549333f3978dfdd89dfa6273ac130ed1ab7a11ad7282eaf63880d68fad16679db974f0490bc3b05a5483052fc2a504762886"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_live.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_lookup.txt",
+        "size": 603,
+        "sha256": "7f24e52ebdecc0eb66b9a506486717a208e1278f93278a3e080c33fff6e8ccaf",
+        "sha512": "b336597084db9ddfa5656077b1bdd3a2fab39f48c13b54eddc4276db12a9a8a62fd995f49ca8fc5e2a622d3222a1c71374e398ea90cb04b30a68f71882616d00"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_pe.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_proto.txt",
+        "size": 281,
+        "sha256": "f0f473eb058ecf8d769b53213e181bb3162c3f07c59438d552e1a71cf0bf7534",
+        "sha512": "49edfeac9023755e8e4b5014b3c70df37ef7dcf4eb5e3c78e7de3dc7572ca918dfbad06c8cb36edbdbd0c3a1cffdac67adbde4ec14d7e688db7bb2e33011e622"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_raw.txt",
+        "size": 325,
+        "sha256": "5e2bb9fe8f54c406e9e2201912bd3d8bd11b175d2212b8e4f8da640ae37907d1",
+        "sha512": "c65751e3865a231eb27da4f39530d184d7ffaadd4e53a341b35933ad4a9b94b89645e0bace6d4240c66ffa7e56e138344b769d01426b0f5a9ff2955d5152fccf"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c45_raw_complete.txt",
+        "size": 507,
+        "sha256": "6fe9b065771fb338a46e75b0ee0b0f0eb28c5b58cc28d3bdd5a9148595e651c4",
+        "sha512": "81fbff9e15db856b7560eeabfebe0111dc720485f98b0f1596b7a6e72c6bc117b265874f8136e073bb8763c937aca5c87f5f3145badd8b0db92e63d2f1754415"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_asm.txt",
+        "size": 4171,
+        "sha256": "fd884341a75986597dbab7bacb808b74f78c551e9cda943f2e1114c1ab013e03",
+        "sha512": "321c71c6f1182fefa0f5ae95023a2a016901f2caf6621c74feb7491cf1642755352297b3d8aa547ff6cf1bf878bbc2c9683e4518999cb31f6bbf2c253a6e53dc"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_asm_0.txt",
+        "size": 1610,
+        "sha256": "2453f0fe0b3c80d9609d3ad602ec8c51ea66ef6fd115fcdda40755d599028083",
+        "sha512": "533d408acd7734b0c40ffc3226821230436eadcf1d7c69611437528ed1390214f2cc4f8ebf34ec6b517820533de48b45b77666e342645b37c143c8ec7b110118"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_asm_45.txt",
+        "size": 1439,
+        "sha256": "dacd38fdfb31ad7f354ba677c309ee0fcc40aa3c83a9721d5b768670b871d8bd",
+        "sha512": "1efea9ec911dcd7dab5ca471dbf69e9963ae6d5df1db5f969b68e69f464ead0aaad77b17d4c50b99c059f5acd048ee12cbee27ac840545bbfdcfd57b76a24831"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_asm_90.txt",
+        "size": 1118,
+        "sha256": "06d4f7a27f969ef62c86da21e6ab521672ea598baadcc02c73414eea882c1389",
+        "sha512": "b80840c11d35a74d08b9da1fca6b1c210d56fb08e4f9a8b76a4f607c0e53d0a3d94bae2532acc0932652ab4e97c2238ff9195ba2613aa44ad6f3aaed2bfcb435"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_bytes.txt",
+        "size": 1962,
+        "sha256": "5be1c97b81ca9c57b32cf5096c9830d94583eb55f30360ec78a8c7370d77ddb7",
+        "sha512": "8d3a2e4da54415560518074564222b01d6a0cb8ab13c341b69f5411033dcf24d838f2f3e79225fb3708713644d715a848caa8b7e0abc82fac3e76181cad7ac32"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_live.bin",
+        "size": 406,
+        "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69",
+        "sha512": "5ff44cfae05f8b28d5bcb01a0b0c8e71fac37b29baa0a8769f8bebdc14cd46e1330d8e13eb8aac40ba592aa8791db605ab76de0c5029e66f40b04c4516aed41b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_lookup.txt",
+        "size": 439,
+        "sha256": "25ccfba674baf7568b084e17713e45ac6676864e9ce5db66581b10b6a3c45c18",
+        "sha512": "01d76d399f29bc02f8b1c56563df584cd5ccaef0f74c4c57909a75087704bad9fb5a705f1e157a4e9920facda9600285aff20e6c2a9db86189655b6bb82b4d88"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_pe.bin",
+        "size": 406,
+        "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69",
+        "sha512": "5ff44cfae05f8b28d5bcb01a0b0c8e71fac37b29baa0a8769f8bebdc14cd46e1330d8e13eb8aac40ba592aa8791db605ab76de0c5029e66f40b04c4516aed41b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_proto.txt",
+        "size": 293,
+        "sha256": "500f44866421b5348dd94f8a9539cb4d70209eff2f6dea142d66cc8466cb4852",
+        "sha512": "4ecfb59190843455b2362399df7b76a051605268f70dd506c3296a1563ab8c1c13c28fc07788e9ada2331088148d7d6a16bf73ba70fec726746fc124c2605480"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_raw_complete.txt",
+        "size": 6744,
+        "sha256": "105d671865c68f45a917cb6526f4c10a4830fb406d4d9d59091a538ee3cad294",
+        "sha512": "463285fc2836ebf2329e0ad2c0db5fbda43d21161e3ebed834ff0fa198d8736f3f5b1e9430c95da74a9e615aaa73f10aa751f8cc251686ee17e7490a7832f359"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c07c90_xrefs.txt",
+        "size": 157,
+        "sha256": "f74fd3beea8a2218c0abb01bde8851439a3dc075c89851efb352246498006523",
+        "sha512": "e3f094212d591792d09bed61931560b00f72368c3ce5be60bbe4e5c362eaf621372fbd1aa1f876c5980c03382f8473a82dc9fa7cff5370cea200b490d526a89c"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c0dcb6_lookup.txt",
+        "size": 277,
+        "sha256": "ba60c0a1192421dce1ed2c02b5de27980e66b163b61372570ef63109c698b00f",
+        "sha512": "efc881bd58d28449e225f75b702f1b3bf40b08dcddc4c1bea586708660270af5b83579369a9c741037d2319b24a973529c027d0f0260501622aad5027819390b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c0dccd_lookup.txt",
+        "size": 301,
+        "sha256": "a06e9713882bd82e21cd7ddbda01812403303dfae3c9d24398c2abb97b1fea04",
+        "sha512": "fc0a979b134ad078c7c7a9b192676b17288fe5a23bdcc2755661fcac1ed5e763b977b0cc8cf558ae832785fb460114ab9a0b571c9a68fcf4583e86a7bb5bad15"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c0dce6_lookup.txt",
+        "size": 293,
+        "sha256": "133a6c87fd11869632d8708d1f4c414db4fa141cfabf0a96f6c36bf1a262163c",
+        "sha512": "f5ab5f83a8aa9f3874fb1f2ec7ce1e7994e198ff67e823b97d429dbd478af5a20d175e8572170b40e3f1c28e3c9c051329c2428eb907d474180ea51ded2280ea"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c0dd00_lookup.txt",
+        "size": 298,
+        "sha256": "9b8b0ee211e375921e20d734780dacc17f79f159bab58e5a0fd2a9a65950bb1c",
+        "sha512": "5106799f49496c588bde3684adea4472a6fff765ee1e85df07baef0250f4727a62e6a31ffa42c458cb4b3a756ea4b4a493afc46d2f047de727f6e6dd4342c4a7"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c16dd0_lookup.txt",
+        "size": 422,
+        "sha256": "0b581942bd93ea02b59dc7f9b4f229cec786392058bb6f9564abb6c3e0dbeec7",
+        "sha512": "85aa8b0e87b348442d5122efd5fcfd308b53be7738dd3003193ef4e77e38de611a0ef7034f06be6bfc4056d22885708dba2bf64aaf355f55a705ae384e149155"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00c1815e_lookup.txt",
+        "size": 1064,
+        "sha256": "92e0a1ee65a0492c4ce5531d8988981cb99ee5753c4b7fdb00d31c36a0f7ca89",
+        "sha512": "dd0c854d87d1a78fd66ff440e1753bce05efcacb911d6d3a28fa4049907942798d30e279ddec6b17af83b97a30e48334b1c1609b475b194fd1cc85472b3be90d"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00d6a618_bytes.txt",
+        "size": 29,
+        "sha256": "16fa975245fe0777f016f7af9f14626f2985ecbe388b122e8a0d26da3dd36219",
+        "sha512": "69318641ad66967200bedd3f354c8a4155e18a1ede8977a535950682cf0728c49ea591ed5456a85a4c938eb5e078651ceeea373c8fccc2b0c6a26aa966a17876"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00d6a618_live.bin",
+        "size": 4,
+        "sha256": "256994de839356d7b15264febd889470a16108bb1a3b065bba4e44ad4c6d49d7",
+        "sha512": "35059e6f79a3be3591dbb6d1aaa2eff50c660c3b5a9c79fb2f0ebe0727c6389436c2b04fed25aa0eff29685fb9bb7fcd119ea6f503543bcb7f2c70206d42a715"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00d6a618_pe.bin",
+        "size": 4,
+        "sha256": "256994de839356d7b15264febd889470a16108bb1a3b065bba4e44ad4c6d49d7",
+        "sha512": "35059e6f79a3be3591dbb6d1aaa2eff50c660c3b5a9c79fb2f0ebe0727c6389436c2b04fed25aa0eff29685fb9bb7fcd119ea6f503543bcb7f2c70206d42a715"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00d6a618_xrefs.txt",
+        "size": 291,
+        "sha256": "cb5f6741269b11bedd5dd3869e4efa0ca4f51bf56eb7627bf11d430eb2df9acb",
+        "sha512": "1e6900b9398701d3b3b1ffeab9855d52e20f2ab127391d4cc83ecbab55afb74550d05b64ae278fff134c3c305d12e1e2bbbb8bd914b38c56fefe6dca797d6374"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00e15590_bytes.txt",
+        "size": 45,
+        "sha256": "96c8259d56d47d1d905d95d3ef21787fa4f6815f1c9ab529a36365688de4741e",
+        "sha512": "970c69dbfc5cfee9a7dc8fd0b857cd0647eeb1d0c8666e573b9c13f9fffd09daa773cbfde57d72e6859b58b1babfbcfdf4306f9884c6cf3b15247bea5139df49"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00e15590_live.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00e15590_pe.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/00e15590_xrefs.txt",
+        "size": 1107,
+        "sha256": "9790bbdd48522c2f50df9aa2ef015a687b8dae0ce539dccc01c77d10bfcea56b",
+        "sha512": "3041117f21a1c3f3710f29971978796e0116ceb7e152199cc914f545744ef8c588698c709b6c8ff77c2f048212bd391df593e11b9662b9d84fc57aeaec078743"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/capture.py",
+        "size": 8725,
+        "sha256": "36b492c59125efcae32ecc09c146e1afa5d2821a3b1e30e932642a15367265a8",
+        "sha512": "b0ab8687b2818ed96b5bd1cd73ec942f137b56103f5f8ee35c619477903cc3acdfc2f311075c26f1c82a57fc1b19885d6d6ebb9f7f9758ee897f1be37bb59863"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/capture_summary.json",
+        "size": 7266,
+        "sha256": "b2205ca090bf03d22bd285f799d8a357325bca2dc44b4039aaa715351ffc1030",
+        "sha512": "6acc1920471b12166cc55481a52425a4d123caacadd94f935ef2021ca7744ecba33bfdfecb4c6ee81da0d1ee62e208e08f73cb217d533b3af6ae3620c57c45c7"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/commit_message.txt",
+        "size": 371,
+        "sha256": "9aba4b30079379b3e6ae1b9b42ed20881310d1adef9dc625da9df30b62016d6d",
+        "sha512": "30d20afe405ebf89b509d8cfc40ba96989b8f892993742c312721a4f3089241d951219ccbdb2000fc478479fc4c3b20ec6a0a1648f4db355bb91937ad85a65fd"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/inventory.py",
+        "size": 2021,
+        "sha256": "5de2c51b8c489ddba4ba30dfd4306ee134d513365c74d452e02503414d1b178d",
+        "sha512": "bf5bc94242a0442c7d99fe9d0d99ff6f531c1dee6004dec21a84012fad92edfa603b4eae47867667e445f4f204cdb364746859bf83a3f1cdaa251caf304d57d7"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/next_helpers_proto.txt",
+        "size": 1234,
+        "sha256": "854754e2bd6692f77fccc45ed686415b9f9b0649f0cf084e5e782278e925e6fa",
+        "sha512": "b990f1f9e35f5ddd36e69b6d6abc42f1baad750e915226e5facb2841b7b7fcd0160fdbd9c803ca77b5975579d4a705679fddee3b81c596b18e1ee46abd5f4c5b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_asm.txt",
+        "size": 1423,
+        "sha256": "0a8c74f6d9c33f1ccab7920b468ea78aba0f470176a93d7552337f3803db63c7",
+        "sha512": "4453d4b669a0868450c87705772f6534ccdcd8aaaacc66c23d5bc11fad608d80d2fd834f467231f90c84a4008294d9c5f2d9460f42ea27bc0e5b7906a9faa924"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_bytes.txt",
+        "size": 957,
+        "sha256": "940f1dea04c8318f84ca044076f73e26616da7aa73db46072c3777cf21ae9328",
+        "sha512": "e794efb859c8688fd955040812903c9b03621216ef94f982eed2d70e6ffff3235c2855817d4b9b93941c04ba76dd9a157dea53873b38a24cf225d27e4143180e"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_decompile.txt",
+        "size": 1378,
+        "sha256": "0db823bbf07ed270d1a64d585ea077515985216ef1f81625a152d0761f98531f",
+        "sha512": "7dce977596ff9e016a0799fbbe1da1593beb58555da67e12283daa2eb8e636457f4d7fbf078c956e08c9b6ea0dfa451660bcf0e9840d7c8ec9bde1eb93a8e2de"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_live.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_pe.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_proto.txt",
+        "size": 329,
+        "sha256": "e17fbbec8256d05e0b93014e043b7172ccd346267deac8e79895e73edee2aeb4",
+        "sha512": "6cb316182b6b54d642006a99d9e3318db46d8afe699cfe9ca375f62dfd6b1ac8e5f0c5fbc1942e240e0e73d42c8b4e0419ea5ff5aff5c24d59dae6a7c0c768b5"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c17653_raw.txt",
+        "size": 1952,
+        "sha256": "1a174293f483efe89d803b95807ca2a5b6dc175e53abb4507735e7d41788f24c",
+        "sha512": "ea846c7e560e73717c70c4c420882e6ed6bb5bd2805c38cf102ff61eafb9cc089541e157263aaf848c36edde7ff29ee23e9cf6e1294a66849e9696fd287ad0ee"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c1768e_watson_return.txt",
+        "size": 82,
+        "sha256": "6f5a2eca1409f6cbbadb223cd4660a0b41df2b576061664a2c80ce687c0e3412",
+        "sha512": "a24af739d55a34183c2be178b20b27ea732352bf3260980073c6bb5b932af608b835a2fe87f6f04506e92ea7f99a9d76f130a1facdc7cdcf0fbcd41e6235cdc7"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00c176d9_exception_tail.txt",
+        "size": 542,
+        "sha256": "7d656cc72f632b2901f33ab2d47f728100e4755411148134612fe202bb022495",
+        "sha512": "19dd21cad5278f999cc060b602d93af4d2f250c97e92cc750b065bd4404109d6f59dd88871541187033787c3e78aa6709649d2f7a213becfa6b4c6d5fdb42abf"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00e037b8_bytes.txt",
+        "size": 138,
+        "sha256": "ddb0c1b00186c6e315e0493e6c493f2c0ea4e524391cf662a3575d68b6a05493",
+        "sha512": "adfbbceda4964261e034f8f501c5abd8cb8414a449c6f2a351347600708c7a3a4f762702954faaa856b7de722cc1da6981bebde25b9cab4dbeef81c9eb0d0901"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00e037b8_live.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock/00e037b8_pe.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_lock_report.json",
+        "size": 56439,
+        "sha256": "7db29a0c93dce2d34bdd67b6e2d83048c3448d0d33fdb4e8e6f15ef8fa2fc939",
+        "sha512": "562f6f888839004aefa53beda374b3b097f66e3879e0f4035cf307ac015929165204b6efbd62a195372644a3f018f8c869d65514b5cc12c9a6456ab4b71f6c11"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_watson/00bfe120_asm.txt",
+        "size": 113,
+        "sha256": "2eccdee49d402162cd3a6d4d210802a084ecda59e430bb0b0354407ed9a1fbd5",
+        "sha512": "3f9fa8e08b08b386659a5b9964c2ea8f7e13bdf070727e67f1043f15ebfaaa8d55766118475fc19ccb8c7a6fc56873124e13f0cc243ffab95dc76f581060f8ad"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_watson/00bfe120_bytes_0000.txt",
+        "size": 73,
+        "sha256": "950886c16217a425a3b6d3e268e661e7c7215cbac24aa7316b36f98f94911e66",
+        "sha512": "99ecba8a45cfff6e25b17c1a8baff64d89c90025e349b93936044a026b7d7a884a971923c1de337a701fe973f14c8bc2868d12cb9a65d2b1325b6ea695446403"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_watson/00bfe120_live.bin",
+        "size": 15,
+        "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+        "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_watson/00bfe120_pe.bin",
+        "size": 15,
+        "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+        "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/pinned_watson_report.json",
+        "size": 95086,
+        "sha256": "7f2271fc61aec5c8cd02a34d8d87d9f052ba37ef9ef125b186f5e0a2286123d5",
+        "sha512": "19ed96cc66d549d767ffed7ddf1467fab72a7eb5c2ade61eb9793c639f1592e2ce7df79272009fb676f0e04b8bebf6208bf9de9a1ce4c57b3a208d64241bc556"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/report.py",
+        "size": 11950,
+        "sha256": "e0d265c6c3bca1893b09abc9dbb1bcf85563eb4cf4d06c43b64a18606b20ca37",
+        "sha512": "a3727f107d629846acf1ed595805838803576d28b7e6ea01302ac420e609e5dae3c7ff49f9a992a1e68c75031fb1d8a4aa337232123c1ae2880643110ecd73db"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/source/docs/NATIVE_CRT_SEH4_FRAME_BR.md",
+        "size": 11743,
+        "sha256": "b5ecae68739761ca7c757757349d69e5d0bbc510aa9d246413edd94eb68f3df5",
+        "sha512": "63fc88e5641af406e16aa8e697b86ce90b45c68966d6b727e34c6eabb679e407b03a4d1cecca437106c45e0eedd8e79e58744ac142ce0c0771e711c824830e51"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/source/include/bsp/native_crt_cookie_initialization.hpp",
+        "size": 1913,
+        "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+        "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/source/src/native_crt_cookie_initialization.cpp",
+        "size": 2651,
+        "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+        "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/source_availability_scan.txt",
+        "size": 13,
+        "sha256": "4fa76b808b0441857562232acabf29490555d9e389f4509f2b240b0a5b5e3812",
+        "sha512": "de765b463cc6060494b4f0a0cf79280143b2780b2332a90bfb865a9eb9c8bfd1e9397269439102c7bf656e2fe25befe6b10ba86391930eaced9d4ce15a23a398"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/source_availability_scan_complete.txt",
+        "size": 13,
+        "sha256": "4fa76b808b0441857562232acabf29490555d9e389f4509f2b240b0a5b5e3812",
+        "sha512": "de765b463cc6060494b4f0a0cf79280143b2780b2332a90bfb865a9eb9c8bfd1e9397269439102c7bf656e2fe25befe6b10ba86391930eaced9d4ce15a23a398"
+      },
+      {
+        "path": "local/native_crt_seh4_frame_br/verify_calls.txt",
+        "size": 71,
+        "sha256": "ce636bebaeb24341d8b6541d89ca31f0a50dc19d946c048127a00cbe3a678d18",
+        "sha512": "d0e0b73cc31ac47081cd50a4d7a199a0850eac51d3a9eff880664922692cfe31bafcac1b606c72cc75721c66c486c6fc35911d3656e8fb6eb2193e4f6b46f85f"
+      }
+    ]
+  }
+}
