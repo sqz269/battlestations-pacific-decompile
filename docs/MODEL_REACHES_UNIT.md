@@ -190,3 +190,80 @@ the `INT3` padding that actually bounds the code** — neither alone is sound.
   `contract: unread` in `docs/COLLISION_SHAPES.md`.
 * Whether `00727A90`'s return is the type `shape+24h` expects. **Not taken this packet** — still
   consistent by size only, and still worth proving before anything is wired.
+
+# A null `class+50h` is handled, not assumed (packet `cc7_class50_final`)
+
+Addresses: `0087BCC0` `BSP_UnitInstance_InitHealthAndParts` (232 instructions; the relevant window
+`0087BDF5`-`0087BF73` read from the listing), `0087BE02`, `0087BF5B`, `00711BE0`.
+
+Ghidra read-only. **Exported / read only** — no C++, no tests. Mod-artefact caveat carried.
+
+## The guard
+
+The live reader of `class+50h` tests it for null **before** using it, and skips everything:
+
+```
+0087BDF5  EAX = unit[+354h]              ; the class descriptor, kUnitOffDescriptor
+0087BDFB  EDI = EAX[+50h]                ; the model handle
+0087BDFE  XOR EBX,EBX
+0087BE00  CMP EDI,EBX
+0087BE02  JZ  0087BF5B                   ; <-- null -> straight to the tail
+...
+0087BE15  PUSH 1ACh                      ; a part instance is 1ACh bytes; the push is shared
+0087BE1C  operator new                   ;    by both arms of the 0087BE1A branch
+0087BE3A  EBX = [EDI]                    ; the model's vtable - never reached when EDI is null
+0087BE52  CALL [EBX]                     ; EDI->vtable[8h]()  -> node+160h
+0087BE58  CALL 007135C0 BSP_UnitPartInstance_Construct
+...
+0087BF3C  00711BE0(unit[+360h], EDI)     ; the normal path publishes the collision-node list
+0087BF5B  unit[+360h] = 0                ; the null path clears it and returns
+```
+
+So with a null `class+50h` the function **sets `unit+360h` to zero and returns**. No part instance
+is allocated, `BSP_UnitPartInstance_Construct` never runs, `node+160h` is never set, `BuildShapes`
+has no records to copy, no `UnitPartCollisionShape` is built, and the narrowphase has no element to
+name.
+
+## What that proves
+
+`part=0 fires=0 floods=0` is **the native behaviour when `class+50h` is null**, not a
+reconstruction defect. The executable does not assume the model is there; it tests and degrades.
+
+Stated exactly, because the conditional matters:
+
+* **Proved:** if `class+50h` is null, the native code builds no parts and clears `unit+360h`.
+* **Established earlier:** nothing in this image writes `class+50h` in any of the scanned forms
+  beyond the null at `0087C6A3`; `0082FE30`, which reads it thirteen times, is dead code; and
+  `0070F6B0`, the constructor that would take a decoded mesh into `shape+24h`, is referenced
+  nowhere.
+* **Therefore:** in the reconstructed host, where the field is null, a zero `part` count is
+  **faithful** — it is what this executable does with a null model handle.
+* **Not proved:** that the field is null in the *shipped game* at runtime. It cannot be, or ships
+  would have no parts. The writer remains unfound, and that now blocks only making `part`
+  non-zero — it no longer blocks the faithfulness claim.
+
+## The block-copy angle, narrowed but not closed
+
+The last byte-reachable form named in `docs/MODEL_HANDLE_PRODUCER.md`. Control first, per the rule
+that document opens with: **628 `REP MOVSD` and 43 `REP MOVSB` image-wide**, so the scan is not
+vacuous.
+
+| window | `REP MOVSD` | `REP MOVSB` |
+| --- | --- | --- |
+| `0087C000`-`0087D000`, around `BSP_DamageableClass_ConstructBase` | **0** | **0** |
+| `00949000`-`00970000`, the vehicle-class region | 13 | 0 |
+| `00700000`-`00760000`, the model and part-collision region | 26 | 0 |
+| `004F0000`-`004F2000`, the scene unit creators | 1 | 0 |
+
+The class base constructor's own region performs **no block copy at all**. The 13 sites in the wider
+vehicle-class region have **not** had their destinations traced, so the `memcpy` hypothesis is
+**narrowed, not eliminated** — each would need its `EDI` followed. SIB-indexed writes and
+write-then-alias remain unexcluded as before.
+
+## Where this leaves part damage
+
+`docs/PART_DAMAGE_WIRING_PLAN.md` can record the zero as **proved faithful** rather than inferred.
+Its remaining question is no longer "why is `part` zero" — that is answered — but "what populates
+`class+50h` in the shipped game", which is a smaller and better-posed question, and one that byte
+scanning has now largely exhausted.
+
