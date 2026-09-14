@@ -1,0 +1,295 @@
+{
+  "packet": "orch5_native_online_signin_ui",
+  "tested_base": "5eb0e80001128cde0ac0cdc55d601d6798fd5a38",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_signin_ui.cpp",
+  "header": "include/bsp/native_online_signin_ui.hpp",
+  "documentation": "docs/NATIVE_ONLINE_SIGNIN_UI.md",
+  "status": "actual_storage_complete_normal_bodies_win32_build_and_focused_fixture_passed",
+  "routines": [
+    {
+      "address": "00a40510",
+      "inclusive_end": "00a4099f",
+      "byte_length": 1168,
+      "name": "pump_native_online_signin_ui_00a40510",
+      "name_hypothesis": "BSP_XLiveSystem_PumpSigninUi",
+      "coverage": "complete normal body; native SEH and hardware faults not reproduced",
+      "original_abi": "ECX=captured 3F0h manager; RET",
+      "source_abi": "explicit C++ context over actual manager and borrowed providers"
+    },
+    {
+      "address": "00a40020",
+      "inclusive_end": "00a4010c",
+      "byte_length": 237,
+      "name": "reset_native_online_signin_state_00a40020",
+      "name_hypothesis": "BSP_XenonSystemManager_ResetSignInState",
+      "coverage": "complete normal body; invalid-vector CRT failure represented by exception",
+      "original_abi": "ECX=manager; RET",
+      "source_abi": "explicit C++ manager and current callback binding"
+    },
+    {
+      "address": "00a3e700",
+      "inclusive_end": "00a3e71b",
+      "byte_length": 28,
+      "name": "reset_native_online_ui_slots_00a3e700",
+      "name_hypothesis": "BSP_XLiveSystem_ResetUiSlots",
+      "coverage": "complete",
+      "original_abi": "ECX=manager; RET",
+      "source_abi": "explicit C++ manager"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00a40510",
+      "end_inclusive": "00a4099f",
+      "bytes": 1168,
+      "sha256": "c41cdd67d0674b0c458abc96b5c3904a05e4b6c31799c8efcf7d956a93a76281",
+      "ghidra_head_tail_match_disk": true
+    },
+    {
+      "address": "00a40020",
+      "end_inclusive": "00a4010c",
+      "bytes": 237,
+      "sha256": "fd44824c7ccee5487a19f43dd1ebbd36a113bdcdf3c376dc17de8cb391cf2dbc",
+      "ghidra_head_tail_match_disk": true
+    },
+    {
+      "address": "00a3e700",
+      "end_inclusive": "00a3e71b",
+      "bytes": 28,
+      "sha256": "27a9db06512e977570704bb80ebc333b8deb078c214d3b81cc29592edb393a2a",
+      "ghidra_head_tail_match_disk": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a4055e",
+      "native": "004254b0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a405c0",
+      "native": "0041e870",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a405dd",
+      "native": "00a9fad0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a405ee",
+      "native": "0041dd20",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a405fc",
+      "native": "0041e870",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40619",
+      "native": "00a9fad0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4062a",
+      "native": "0041dd20",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40638",
+      "native": "0041e870",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40655",
+      "native": "00a9fad0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40666",
+      "native": "0041dd20",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40674",
+      "native": "0041e870",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40691",
+      "native": "00a9fad0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a406a2",
+      "native": "0041dd20",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4072a",
+      "native": "00a4d5c0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40747",
+      "native": "004254b0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4075b",
+      "native": "00436430",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4076c",
+      "native": "00436430",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4077c",
+      "native": "00436430",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40790",
+      "native": "00436430",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a407be",
+      "native": "00a3e700",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a407f0",
+      "native": "00a4d42e",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4087a",
+      "native": "00a4d5ba",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40889",
+      "native": "00a40020",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a4090f",
+      "native": "00a4d560",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40937",
+      "native": "00a3ed10",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40987",
+      "native": "004254b0",
+      "function": "00a40510"
+    },
+    {
+      "address": "00a40093",
+      "native": "00bf6713",
+      "function": "00a40020"
+    },
+    {
+      "address": "00a400a6",
+      "native": "00bf6713",
+      "function": "00a40020"
+    },
+    {
+      "address": "00a400d0",
+      "native": "00bf67a7",
+      "function": "00a40020"
+    },
+    {
+      "address": "00a400ee",
+      "native": "004254b0",
+      "function": "00a40020"
+    },
+    {
+      "address": "00a4003a",
+      "native": "indirect manager+20",
+      "function": "00a40020",
+      "contract": "ECX=0 when both captured callback and current manager+8C are nonzero"
+    }
+  ],
+  "providers": {
+    "localization": "Current LocaleTextResolver with current LocaleTables and LocaleTextRuntimeHost, appended into actual wide header via 004C53E0; four literal keys",
+    "strings": "NativeStringRawPoolContext and ActualNativeStringPoolStorage, key 0041E870/0041DD20 and wide 00436430",
+    "sdk_ordinals": {
+      "XShowMessageBoxUI": 5266,
+      "XGetOverlappedResult": 1083,
+      "XShowSigninUI": 5260,
+      "XUserGetSigninInfo": 5267,
+      "XStorageBuildServerPath": 5344
+    },
+    "storage_path": "same captured manager through build_native_online_storage_path_00a3ed10",
+    "callback": "NativeOnlineSigninCalls::call_callback20, current manager+20 identity, incoming ECX zero"
+  },
+  "ghidra_write_policy": "read_only; root to update three old projected comments and refresh exports",
+  "testing": {
+    "strict_win32_build": {
+      "command": "./scripts/build.ps1 *> local/signin_ui_build_after_seeds.log",
+      "exit_code": 0,
+      "configuration": "MSVC 19.51.36244.0 Release Win32 /W4 /WX /fp:strict",
+      "stdout_tail": "2/2 native_math_differential Passed; 100% tests passed, 0 failed",
+      "log": "local/signin_ui_build_after_seeds.log"
+    },
+    "seed_reference": {
+      "command": "python tools/ghidra_export.py verify-seeds > local/signin_ui_verify_seeds.log",
+      "exit_code": 0,
+      "generated_input": "local/seed_reference.hpp",
+      "log": "local/signin_ui_verify_seeds.log"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_online_signin_ui.json",
+      "exit_code": 0,
+      "stdout": "30 direct call rows checked, 0 failed; one manager+20 indirect call recorded",
+      "log": "local/signin_ui_verify_calls.log"
+    },
+    "focused_fixture": {
+      "command": "local\\signin_ui_probe.cmd",
+      "exit_code": 0,
+      "stdout": "native online sign-in UI raw-state fixture passed",
+      "log": "local/signin_ui_probe_run.log",
+      "source": "local/signin_ui_probe.cpp",
+      "runner": "local/signin_ui_probe.cmd",
+      "object": "local/signin_ui_probe.obj",
+      "executable": "local/signin_ui_probe.exe",
+      "scope": "pending overlap/choice, partial SDK info, storage manager identity, callback mutation and vector reset; fake external calls only",
+      "linked_library_search_log": "local/signin_ui_probe_run.log",
+      "compiler_flags": [
+        "/MD",
+        "/EHsc",
+        "/std:c++17",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/showIncludes"
+      ],
+      "linker_flags": [
+        "/MANIFEST:EMBED",
+        "/MACHINE:X86",
+        "/OPT:REF",
+        "/VERBOSE:LIB"
+      ]
+    },
+    "pe": {
+      "fixture_machine": "0x14c",
+      "fixture_embedded_manifest_id": 1,
+      "rebuild_game_machine": "0x14c",
+      "rebuild_game_embedded_manifest_id": 1,
+      "game_runtime_validation": false
+    },
+    "manifest": "local/signin_ui_verification_manifest.json"
+  }
+}

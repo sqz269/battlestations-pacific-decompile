@@ -219,6 +219,7 @@ target_sources(bsp_core PRIVATE src/font_geometry.cpp src/font_layout.cpp src/fo
 target_sources(bsp_core PRIVATE src/font_shader.cpp src/font_resources.cpp src/material_textures.cpp)
 target_sources(bsp_core PRIVATE src/material_parameter_bindings.cpp src/effect_cache.cpp)
 target_sources(bsp_core PRIVATE src/win32_window.cpp)
+target_sources(bsp_core PRIVATE src/native_online_signin_ui.cpp)
 target_compile_features(bsp_core PUBLIC cxx_std_17)
 target_compile_options(bsp_core PRIVATE /W4 /WX /fp:strict)
 target_link_libraries(bsp_core PUBLIC user32 d3d9 PRIVATE bsp_lua511 bsp_d3dx_headers bsp_zlib121)
