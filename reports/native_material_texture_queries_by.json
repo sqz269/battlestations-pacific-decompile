@@ -1,0 +1,60 @@
+{
+  "packet": "orch3_native_material_texture_queries_by",
+  "status": "source_reconstructed_release_build_ctest_coff_verified",
+  "source_parent_commit": "f597d55ebf91b6c1e671bf1c29f95984a153248d",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 56,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64015,
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b17320",
+      "inclusive_end": "00b17326",
+      "bytes": 7,
+      "native_sha256": "b6072d4fcefdd088e536843289a7c138f74a202b7213f420ff155a3cb220ec2e",
+      "current_ghidra_name": "BSP_Material_GetWord104",
+      "cpp_symbol": "get_native_material_word_104_00b17320",
+      "original_abi": "ECX material; EAX raw DWORD+104h; plain RET",
+      "caller": "00b43442 in BSP_MaterialPass_ApplyStateAndDraw",
+      "object": "seven-byte standalone .text$mn COMDAT, 8b8104010000c3, zero relocations; exact installed PE bytes"
+    },
+    {
+      "address": "00b17d90",
+      "inclusive_end": "00b17dc0",
+      "bytes": 49,
+      "native_sha256": "c54d6769cf94eeab47078b3a800bc340475c1dd8ca0c6373fafd0c49847f913e",
+      "cpp_symbol": "select_native_material_effect_texture_00b17d90",
+      "original_abi": "ECX effect owner; signed index at [ESP+4]; EAX pointer; preserves ESI; RET4",
+      "source_abi": "ECX actual owner; EDX address of current IAT cell; signed index at [ESP+4]; RET4",
+      "caller": "00b434d0 in BSP_MaterialPass_ApplyStateAndDraw",
+      "object": "45-byte standalone .text$mn COMDAT, zero relocations; signed compare, raw indexed read, fallback CALL [EDX], post-call owner+98h reload, RET4"
+    }
+  ],
+  "import": {
+    "iat_address": "00ce221c",
+    "installed_pe_import": "KERNEL32.dll!InterlockedIncrement",
+    "access": "live cell target read only on fallback; no pointer snapshot"
+  },
+  "behavior": {
+    "direct_hit": "non-null raw owner+0Ch+index*4 pointer returned with no retain",
+    "fallback": "capture owner+98h, increment captured+4, reload owner+98h after return",
+    "negative_index": "signed comparison and original raw address calculation retained",
+    "null_fallback": "no repair or substitute; native fault behavior retained"
+  },
+  "verification": {
+    "ghidra": "live project/program checked; listing, decompile, and caller xrefs inspected without metadata edits",
+    "installed_pe": "SHA-256 and both native span hashes verified; import directory maps CE221C to InterlockedIncrement",
+    "release_build": "scripts/build.ps1 passed with MSVC Win32 Release",
+    "existing_ctest": "reconstructed_math 1/1 passed",
+    "object_inspection": "dumpbin /DISASM:BYTES and /HEADERS checked both COMDATs and relocation counts",
+    "game_runtime": "not tested"
+  },
+  "limitations": "New EDX IAT-cell input is not the original binary ABI; renderer lifetime and gameplay behavior are not validated."
+}
