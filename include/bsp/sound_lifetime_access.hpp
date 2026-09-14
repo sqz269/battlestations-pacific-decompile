@@ -32,6 +32,11 @@ public:
     SoundLifetimeAccess(void* volatile& actual_publication) noexcept : actual_(&actual_publication) {}
     SoundLifetimeManagerView get_manager_00415350() const;
     bool uses_actual_storage() const noexcept { return actual_ != nullptr; }
+    // Compare borrowed storage identity without loading or creating a manager.
+    // Copies of a view share a domain; raw and semantic views never do.
+    bool borrows_same_domain(SoundLifetimeAccess other) const noexcept {
+        return semantic_ == other.semantic_ && actual_ == other.actual_;
+    }
 private:
     SingletonLifetimeDomain* semantic_{};
     void* volatile* actual_{};
