@@ -103,3 +103,7 @@ oracle. Unit health's Numbering provider must bind these same live services;
 runtime admission, gameplay and rendering parity remain unproved. Exact call
 rows, artifacts and integration results are in
 `reports/native_model_numbering_ae.json`.
+
+## Integrated compatibility validation
+
+Combined commit `755470a9b91d3a573067f04086af84eae09b4336` passes the Win32 build and both existing CTests. Its preserved executable has SHA-256 `0223562b72049b99c307d722eb941948617eda10e7d4363266c7e3f0196fdfd9`. The existing 120-frame USN01 check exits successfully in 10.451 seconds, with 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 10,080 generic ticks, 420 world-list nodes and the existing observer/pending-owner teardown checks. The production numbering object remains byte-identical to the native fixture object. This mission check establishes compatibility of the combined build; execution of these numbering callers through a complete model-numbering owner is not established. The report retains separate immutable native-fixture and integration manifests. No workers were dispatched for this closeout.
