@@ -936,3 +936,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_en
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_filestore_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpkg_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_provider_enumeration_bindings.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_string_byte_append.cpp)
