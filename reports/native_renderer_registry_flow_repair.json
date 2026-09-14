@@ -1,0 +1,67 @@
+{
+ "repairs": [
+  {
+   "function": "00b58320",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T06:16:09Z",
+   "decompile_lines_before": 37,
+   "gaps": [
+    {
+     "site": "00b5835b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b58360",
+     "gap_end_exclusive": "00b583bb",
+     "bytes": 91,
+     "after_call": true,
+     "sha256": "8fae292f72895f2797e690a1b7d0858877dc3c62a0658bf925b549a13464a132"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b5835b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b58360",
+      "gap_end_exclusive": "00b583bb",
+      "bytes": 91,
+      "after_call": true,
+      "sha256": "8fae292f72895f2797e690a1b7d0858877dc3c62a0658bf925b549a13464a132"
+     },
+     "clear": "Success: Cleared flow override at 00b5835b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 91 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b5835b",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b5835b (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b58377",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b58377 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b58393",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b58393 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b583bb",
+   "explicit_body_sha256": "6613f883c9fc411ae5b4019090b31b5b54d0af7a10ed4a3e63b8e832ddf6489a",
+   "body_before": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b5835f",
+   "decompile_lines_after": 46,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b5835f",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

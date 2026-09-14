@@ -1,0 +1,172 @@
+{
+ "events": [
+  {
+   "recreate": "00b58320",
+   "previous": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b5835f",
+   "plate": "[BSP reconstruction 00b58320]\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b58320"
+   },
+   "result": {
+    "success": true,
+    "address": "00b58320",
+    "deleted_function": "BSP_ShaderStateDefinitions_Destroy",
+    "body_size": 64,
+    "message": "Function 'BSP_ShaderStateDefinitions_Destroy' deleted at 00b58320"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b58320",
+    "end_address": "00b583bb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b58320",
+    "end_address": "00b583ba",
+    "bytes_disassembled": 155,
+    "message": "Successfully disassembled 155 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b58320",
+    "disassemble_first": false,
+    "name": "BSP_ShaderStateDefinitions_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b58320",
+    "function_name": "BSP_ShaderStateDefinitions_Destroy",
+    "entry_point": "00b58320",
+    "body_size": 64,
+    "message": "Function created successfully at 00b58320",
+    "warnings": [
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' \u2014 main part 'ShaderStateDefinitions_Destroy' is not PascalCase. Expected: ShaderstatedefinitionsDestroy",
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' \u2014 main part 'ShaderStateDefinitions_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b58320",
+    "comment": "[BSP reconstruction 00b58320]\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b58320",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b58320",
+   "end": "00b583bb",
+   "name": "BSP_ShaderStateDefinitions_Destroy",
+   "after": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b5835f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00b58320",
+   "previous": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b5835f",
+   "plate": "[BSP reconstruction 00b58320]\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json.\n\n[BSP reconstruction 00b58320] update\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json. | Hypothesis, not a recovered symbol. Actual raw renderer registry binding review: reuse full body through shared actual01090AA0 manager, current0108FE90/0108FE94 publication, captured first+10 section and+18 depth, second getter/current-slot register or unregister. Existing literal tables and array cleanup retained. System operation failures retain owner and frame, so parent renderer allocation cleanup remains uncomposed. docs/NATIVE_RENDERER_REGISTRY_BINDINGS.md; reports/native_renderer_registry_bindings.json. Original caller ABI/FH3/SEH and gameplay unvalidated."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b58320"
+   },
+   "result": {
+    "success": true,
+    "address": "00b58320",
+    "deleted_function": "BSP_ShaderStateDefinitions_Destroy",
+    "body_size": 64,
+    "message": "Function 'BSP_ShaderStateDefinitions_Destroy' deleted at 00b58320"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b58320",
+    "end_address": "00b583bb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b58320",
+    "end_address": "00b583ba",
+    "bytes_disassembled": 155,
+    "message": "Successfully disassembled 155 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b58320",
+    "disassemble_first": false,
+    "name": "BSP_ShaderStateDefinitions_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b58320",
+    "function_name": "BSP_ShaderStateDefinitions_Destroy",
+    "entry_point": "00b58320",
+    "body_size": 155,
+    "message": "Function created successfully at 00b58320",
+    "warnings": [
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' \u2014 main part 'ShaderStateDefinitions_Destroy' is not PascalCase. Expected: ShaderstatedefinitionsDestroy",
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' \u2014 main part 'ShaderStateDefinitions_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShaderStateDefinitions_Destroy' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b58320",
+    "comment": "[BSP reconstruction 00b58320]\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json.\n\n[BSP reconstruction 00b58320] update\nDescriptive hypothesis, not a recovered symbol. Full155-byte D62260 profile, cleanup arrays1C/10/04 then base. Three-state unwind covers remaining sampler/render/base. Stored body endsB5835F; verified91-byte disk tail throughB583BA fixture-executed. docs/NATIVE_SHADER_STATE_DEFINITIONS.md; reports/native_shader_state_definitions.json. | Hypothesis, not a recovered symbol. Actual raw renderer registry binding review: reuse full body through shared actual01090AA0 manager, current0108FE90/0108FE94 publication, captured first+10 section and+18 depth, second getter/current-slot register or unregister. Existing literal tables and array cleanup retained. System operation failures retain owner and frame, so parent renderer allocation cleanup remains uncomposed. docs/NATIVE_RENDERER_REGISTRY_BINDINGS.md; reports/native_renderer_registry_bindings.json. Original caller ABI/FH3/SEH and gameplay unvalidated."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b58320",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b58320",
+   "end": "00b583bb",
+   "name": "BSP_ShaderStateDefinitions_Destroy",
+   "after": "Function: BSP_ShaderStateDefinitions_Destroy at 00b58320\nSignature: undefined BSP_ShaderStateDefinitions_Destroy(void)\nEntry: 00b58320\nBody: 00b58320 - 00b583ba"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

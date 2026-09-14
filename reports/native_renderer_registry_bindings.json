@@ -3983,36 +3983,38 @@
       "address": "00b5672c",
       "native": "dword ptr [00ce2210]",
       "function": "00b566b0"
+    },
+    {
+      "address": "00b5836f",
+      "native": "00b57930",
+      "function": "00b58320",
+      "root_evidence": "Live/disk155-byte span verified before locked stored-body restoration; full saved listing verified afterward."
+    },
+    {
+      "address": "00b58377",
+      "native": "00bf6989",
+      "function": "00b58320",
+      "root_evidence": "Live/disk155-byte span verified before locked stored-body restoration; full saved listing verified afterward."
+    },
+    {
+      "address": "00b5838b",
+      "native": "00b57930",
+      "function": "00b58320",
+      "root_evidence": "Live/disk155-byte span verified before locked stored-body restoration; full saved listing verified afterward."
+    },
+    {
+      "address": "00b58393",
+      "native": "00bf6989",
+      "function": "00b58320",
+      "root_evidence": "Live/disk155-byte span verified before locked stored-body restoration; full saved listing verified afterward."
+    },
+    {
+      "address": "00b583a5",
+      "native": "00b566b0",
+      "function": "00b58320",
+      "root_evidence": "Live/disk155-byte span verified before locked stored-body restoration; full saved listing verified afterward."
     }
   ],
-  "raw_tail_sites": [
-    {
-      "site": "00b5836f",
-      "target": "00b57930",
-      "body": "00b58320"
-    },
-    {
-      "site": "00b58377",
-      "target": "00bf6989",
-      "body": "00b58320"
-    },
-    {
-      "site": "00b5838b",
-      "target": "00b57930",
-      "body": "00b58320"
-    },
-    {
-      "site": "00b58393",
-      "target": "00bf6989",
-      "body": "00b58320"
-    },
-    {
-      "site": "00b583a5",
-      "target": "00b566b0",
-      "body": "00b58320"
-    }
-  ],
-  "raw_tail_limit": "B58320 saved listing stops after BF6989 at B5835B. Five tail sites verified by exact relative-call decoding of installed PE; live bytes B58320+163 read independently. These sites are not claimed live function/listing verified.",
   "actual_contract": {
     "manager": "borrowed mutable actual01090AA0; existing SoundLifetimeAccess raw getter ->00415350 -> raw BD0960; second manager getter before volatile current publication load; BD0C30/BCFCA0 concrete providers",
     "publication_cells": [
@@ -4032,34 +4034,6 @@
     "src/native_shader_state_definitions.cpp": "056de7f46f488143822d17abd59969778e5d58f8063572abb0b0e9c1c50fad18",
     "include/bsp/native_system_constant_registry.hpp": "fec543d76d108bddf4e80a729b57832871c269c00f0ac19570acc8c1429b94c1",
     "src/native_system_constant_registry.cpp": "5f19eb793fc880579e8ab7655f5a3f0154e775109b5f0c3213baecc474640b23"
-  },
-  "validation": {
-    "status": "complete_normal_raw_binding_build_and_focused_fixture_tested",
-    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_registry_bindings.json",
-    "call_check_rows": 753,
-    "call_check_failures": 0,
-    "indirect_iat_rows": 8,
-    "raw_tail_sites_verified_by_disk_rel32": 5,
-    "seed_command": "python tools/ghidra_export.py verify-seeds",
-    "seed_matches": 8,
-    "seed_ranges": 8,
-    "build_command": "./scripts/build.ps1",
-    "build_exit": 0,
-    "configured_ctests": [
-      "reconstructed_math",
-      "native_math_differential"
-    ],
-    "ctests_passed": 2,
-    "fixture_command": "cmd /d /c local\\native_renderer_registry_probe.cmd",
-    "fixture_compile_flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /Bv /showIncludes",
-    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
-    "fixture_build_exit": 0,
-    "fixture_exit": 0,
-    "retained_failure_fixture_exit": 0,
-    "fixture_stdout": "PASS raw registries: full 31/13/18 and 52 rows, same manager/pool, current-slot unregister, captured depth",
-    "retained_failure_fixture_stdout": "PASS raw failure guards: state cleanup, retained system owner, terminal refusal",
-    "immutable_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-registry-bindings\\local\\immutable\\native_renderer_registry_20260914T060409Z\\manifest.json",
-    "immutable_manifest_sha256": "9e49ec11726438a32231ec71b094a5434203f0ed691add07f3b6599deebe081a"
   },
   "limits": [
     "New source C++ provider interfaces are not original register/stack ABI, FH3 private handlers, SEH/hardware-fault or static CRT throw identity; no game/runtime rendering validation.",
@@ -6553,5 +6527,124 @@
       "sha256": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a",
       "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-registry-bindings\\local\\immutable\\native_renderer_registry_20260914T060409Z\\src\\sound_lifetime_access.cpp"
     }
-  ]
+  ],
+  "worker_raw_tail_sites": [
+    {
+      "site": "00b5836f",
+      "target": "00b57930",
+      "body": "00b58320"
+    },
+    {
+      "site": "00b58377",
+      "target": "00bf6989",
+      "body": "00b58320"
+    },
+    {
+      "site": "00b5838b",
+      "target": "00b57930",
+      "body": "00b58320"
+    },
+    {
+      "site": "00b58393",
+      "target": "00bf6989",
+      "body": "00b58320"
+    },
+    {
+      "site": "00b583a5",
+      "target": "00b566b0",
+      "body": "00b58320"
+    }
+  ],
+  "worker_raw_tail_limit": "B58320 saved listing stops after BF6989 at B5835B. Five tail sites verified by exact relative-call decoding of installed PE; live bytes B58320+163 read independently. These sites are not claimed live function/listing verified.",
+  "raw_tail_sites": [],
+  "root_body_repair_record": "reports/native_renderer_registry_function_definitions.json",
+  "integrated_validation": {
+    "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+    "checkpoint": {
+      "path": "local/checkpoints/038b2942/native-renderer-registry-default/validation.json",
+      "sha256": "25a74aa90b41f54c4e06177d3c009c552b44747202ae7969ec8cd7d8cfe4a01a",
+      "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+      "artifacts": 3240
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "fixture_modes": [
+      "normal raw lifetime",
+      "retained failure guard"
+    ],
+    "existing_bodies_with_raw_binding": 12,
+    "new_normal_bodies": 0,
+    "direct_call_rows_checked": 758,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 12,
+    "repaired_stored_function_bodies": 1,
+    "call_site_return_overrides_cleared": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_validation": {
+    "status": "complete_normal_raw_binding_build_and_focused_fixture_tested",
+    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_registry_bindings.json",
+    "call_check_rows": 753,
+    "call_check_failures": 0,
+    "indirect_iat_rows": 8,
+    "raw_tail_sites_verified_by_disk_rel32": 5,
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_matches": 8,
+    "seed_ranges": 8,
+    "build_command": "./scripts/build.ps1",
+    "build_exit": 0,
+    "configured_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "fixture_command": "cmd /d /c local\\native_renderer_registry_probe.cmd",
+    "fixture_compile_flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /Bv /showIncludes",
+    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
+    "fixture_build_exit": 0,
+    "fixture_exit": 0,
+    "retained_failure_fixture_exit": 0,
+    "fixture_stdout": "PASS raw registries: full 31/13/18 and 52 rows, same manager/pool, current-slot unregister, captured depth",
+    "retained_failure_fixture_stdout": "PASS raw failure guards: state cleanup, retained system owner, terminal refusal",
+    "immutable_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-registry-bindings\\local\\immutable\\native_renderer_registry_20260914T060409Z\\manifest.json",
+    "immutable_manifest_sha256": "9e49ec11726438a32231ec71b094a5434203f0ed691add07f3b6599deebe081a"
+  },
+  "validation": {
+    "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+    "checkpoint": {
+      "path": "local/checkpoints/038b2942/native-renderer-registry-default/validation.json",
+      "sha256": "25a74aa90b41f54c4e06177d3c009c552b44747202ae7969ec8cd7d8cfe4a01a",
+      "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+      "artifacts": 3240
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "fixture_modes": [
+      "normal raw lifetime",
+      "retained failure guard"
+    ],
+    "existing_bodies_with_raw_binding": 12,
+    "new_normal_bodies": 0,
+    "direct_call_rows_checked": 758,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 12,
+    "repaired_stored_function_bodies": 1,
+    "call_site_return_overrides_cleared": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "original_source_comparison_claimed": false
+  },
+  "root_ghidra_writes": true,
+  "root_ghidra_saves": true,
+  "root_repair_sequence": [
+    "First recreation retained the old CALL_RETURN truncation; five added call checks failed",
+    "Verified full155-byte span; cleared three erroneous free-call overrides using the explicit native RET tail bound",
+    "Recreated the stored body again, preserving name and plate comments;758 direct calls passed;12 annotation readbacks passed"
+  ],
+  "root_flow_repair_record": "reports/native_renderer_registry_flow_repair.json"
 }

@@ -51,10 +51,10 @@ construction and destruction are the supported integration domain.
 Evidence is recorded in `reports/native_renderer_registry_bindings.json`.
 The twelve complete original spans were rechecked against the installed PE.
 Live wrapper queries verified the existing BSP project/program and base
-instruction ordering. `B58320` has a saved listing gap after the first free;
+instruction ordering. At the worker snapshot, `B58320` had a saved listing gap after the first free;
 its five subsequent calls through the base destructor and return at `B583BA`
 are pinned by original PE bytes and independently read live memory, rather than
-claimed as saved function-body call-graph verification. No Ghidra mutation was
+claimed as saved function-body call-graph verification. No worker Ghidra mutation was
 performed. Existing names remain descriptive reconstruction hypotheses.
 
 The focused local fixture links the registered production library, runs the
@@ -67,3 +67,7 @@ Build, fixture, original PE and toolchain hashes and immutable artifact paths
 are recorded in the report. New source provider interfaces do not reproduce
 the original private FH3 maps, register/stack ABI, static CRT throw identities,
 SEH/hardware-fault behavior, or gameplay/rendering validation.
+
+Integrated validation at `038b2942b68e3041cfacf73a33ce36a55f2c419a`: the strict Win32 build and both CTests pass. The existing raw-manager fixture passes its normal and retained-failure modes against the exact integrated library, with actual loaded runtime paths captured. These are source lifetime checks; no original/source differential comparison is claimed for this migration.
+
+The root verified the entire155-byte B58320 span against live Ghidra and the installed PE. Recreating the function alone left five call failures. Clearing its three erroneous CALL_RETURN overrides and then recreating the stored body restored all five tail calls. All758 numeric direct call rows and12 saved annotation readbacks pass, with prior names/comments retained. `local/checkpoints/038b2942/native-renderer-registry-default/validation.json` freezes 3240 artifacts and references the345-artifact worker archive. Twelve existing bodies now accept the actual manager; this packet adds no new normal bodies. The parent system-constant failure cleanup, full renderer/application composition, original ABI/FH3/SEH and gameplay remain unvalidated.

@@ -637,7 +637,7 @@
       "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
     ]
   },
-  "latest_integration": "raw_online_client_integration",
+  "latest_integration": "raw_renderer_registry_integration",
   "raw_online_procedural_integration": {
     "validated_code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
     "checkpoint": {
@@ -962,6 +962,50 @@
       "Whole2218h client, raw game construction and application adoption not supplied",
       "SDK tests use deterministic providers; no live account/session/voice operations",
       "Source interfaces are not original ABI replacements; no game validation"
+    ],
+    "publication_branch": "agent/orch5-20260911",
+    "main_integration_claimed": false
+  },
+  "raw_renderer_registry_integration": {
+    "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+    "checkpoint": {
+      "path": "local/checkpoints/038b2942/native-renderer-registry-default/validation.json",
+      "sha256": "25a74aa90b41f54c4e06177d3c009c552b44747202ae7969ec8cd7d8cfe4a01a",
+      "code_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+      "artifacts": 3240
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "fixture_modes": [
+      "normal raw lifetime",
+      "retained failure guard"
+    ],
+    "existing_bodies_with_raw_binding": 12,
+    "new_normal_bodies": 0,
+    "direct_call_rows_checked": 758,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 12,
+    "repaired_stored_function_bodies": 1,
+    "call_site_return_overrides_cleared": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "registered_sources": [
+      "native_shader_state_definitions",
+      "native_system_constant_registry"
+    ],
+    "worker_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\compiler-path-workers\\raw-renderer-registry-bindings\\manifest.json",
+      "sha256": "19d908128224e5b512dd87cc4329b3475faa2eb4f749a605428d126e51052a07",
+      "artifacts": 345,
+      "worker_commit": "e4aa2bff88cad4504d4c0d8f3218e0c2555ed9d2"
+    },
+    "limits": [
+      "Failed system operations retain owners and cannot compose with renderer parent allocation cleanup",
+      "Full renderer/application adoption not supplied",
+      "Fixture checks source actual-manager behavior; original instruction and call evidence are separate",
+      "Original ABI/FH3/SEH and gameplay remain unvalidated"
     ],
     "publication_branch": "agent/orch5-20260911",
     "main_integration_claimed": false
