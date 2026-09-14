@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -21,7 +21,13 @@ NativeResourceSupportStorage* construct_native_resource_support_00b61d50(
 
 // 00B3E730: no native arguments; EAX published owner; RET. Both references must
 // identify the application's actual 0108FEDC slot and shared 01090AA0 domain.
-// Its destroy_registered callback must dispatch this owner's actual deleter.
+// The manager's terminal dispatch must call this owner's actual deleter.
+// The borrowed AA0 publication/domain must outlive registration and teardown.
+NativeResourceSupportStorage* resource_support_singleton_00b3e730(
+    NativeResourceSupportStorage* volatile& actual_published_0108fedc,
+    SoundLifetimeAccess actual_lifetime);
+
+// Preserve the existing semantic-domain interface and aggregate conversions.
 NativeResourceSupportStorage* resource_support_singleton_00b3e730(
     NativeResourceSupportStorage* volatile& actual_published_0108fedc,
     SingletonLifetimeDomain& actual_lifetime);
