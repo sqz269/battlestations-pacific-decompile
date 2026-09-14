@@ -105,3 +105,88 @@ three hard-coded shapes writing kind `0Ah` and index `-1`. The native equivalent
 supplies `hit+30h`/`hit+34h`. So the wiring contract is now a **constructor call with a mesh**,
 not a field write on a class descriptor — a different shape of fix from the one
 `docs/PART_DAMAGE_WIRING_PLAN.md` assumed.
+
+# The shape records come in through a virtual call (packet `cc7_part_shape_record_producer`)
+
+Addresses: `007135C0` `BSP_UnitPartInstance_Construct`, `0087BCC0`
+`BSP_UnitInstance_InitHealthAndParts`, `00712E74`-`00712EE8`, `00712C80`. Constant `00CED9E0`.
+
+Ghidra **read-only**. **Exported / read only** — no C++, no tests. Mod-artefact caveat carried.
+
+## The gate
+
+`docs/COLLISION_SHAPES.md` records the shape records as living in the vector at
+`[node+160h] + 3Ch`, producer `contract: unread`. `node+160h` is **not built by the node**: it is a
+**constructor argument**, and the argument is the result of a virtual call.
+
+```
+0087BDF5  EAX = unit[+354h]
+0087BDFB  EDI = EAX[+50h]                       ; the record source
+0087BE3C  EAX = unit->vtable[190h]              ; called with a float from 00CED9E0
+0087BE4B  CALL EAX
+0087BE4D  EDX = [[EDI]+8h]                      ; EBX was [EDI], then ADD EBX,8
+0087BE4F  PUSH EAX                              ; the vtable[190h] result   -> arg3
+0087BE52  CALL EDX                              ; EDI->vtable[8h]()
+0087BE54  PUSH EAX                              ; its result               -> arg2
+0087BE55  PUSH ESI                              ; the unit                 -> arg1
+0087BE58  CALL 007135C0
+```
+
+and in the constructor, with the frame walked rather than guessed — `PUSH -1` / handler /
+`FS:[0]` (12), `SUB ESP,0Ch` (12), `PUSH EBX/EBP/ESI` (12), `PUSH EDI` (4) puts entry `ESP` 40
+bytes above:
+
+```
+007135ED  EDI = [ESP+2Ch]   = [S+4]  = arg1     ; the unit
+007135F1  node+4Ch  = arg1
+007135F4  EAX = [ESP+30h]   = [S+8]  = arg2
+00713604  node+160h = arg2                      ; <- the record source
+0071360A  node+164h = arg1
+```
+
+**So `node+160h` is `unit[+354h][+50h]->vtable[8h]()`.** That call is the producer the collision
+doc marks unread, and it is the part-damage gate.
+
+**Not identified**: what `unit+354h` is, what its `+50h` holds, and what `vtable[8h]` on that object
+does. Those are the next hop and this packet did not take them.
+
+## The second vector is never filled
+
+`node+16Ch`/`+170h`/`+174h` — the `10h`-byte-element vector — is zeroed by the constructor at
+`00713610`-`0071361C`. Across the whole part-collision region `00700000`-`00720000` the only other
+write is at `00712EB1`, and that is inside a **teardown loop**:
+
+```
+00712E74  EBP = [ESI+170h]                      ; end
+00712E7E  ADD EDI,4 ; EAX = [EDI]
+00712E87  free(EAX)                             ; 00BF65AC
+00712E90  [EDI] = [EDI+4] = [EDI+8] = 0
+00712E98  ADD EDI,10h                           ; 10h-byte stride, as the doc records
+```
+
+so it frees each element's `+4h` pointer and zeroes the triple. **Nothing in that region ever
+populates it.** (Image-wide, `[reg+16Ch]` has 265 operands with many writes, so the scan is not
+vacuous — but those are other objects at a common offset and were not attributed.)
+
+## Two method corrections, both about function attribution
+
+The lead's caveat — `scan-bytes` and `lookup` report the nearest **preceding** defined function,
+not a container — cost me two mis-attributions in the previous packet. It has a twin that cost one
+here:
+
+**Ghidra's recorded body range can also under-report.** `FUN_00712C80`'s body is
+`00712C80`-`00712D7C`, but the bytes at `00712D7C` continue straight into more code with **no `CC`
+padding**, and the teardown loop at `00712E74`-`00712EE8` is in that continuation. So containment
+cannot be decided from the recorded extent either: `00712EE8` looked like it was outside a function
+when it is really past a short body range.
+
+The working rule from both: **to decide containment, check the recorded body range *and* look for
+the `INT3` padding that actually bounds the code** — neither alone is sound.
+
+## Still open
+
+* `unit+354h`, its `+50h`, and that object's `vtable[8h]` — the gate itself, one hop away.
+* The record decode inside `BSP_UnitPartCollisionNode_BuildShapes`, still
+  `contract: unread` in `docs/COLLISION_SHAPES.md`.
+* Whether `00727A90`'s return is the type `shape+24h` expects. **Not taken this packet** — still
+  consistent by size only, and still worth proving before anything is wired.
