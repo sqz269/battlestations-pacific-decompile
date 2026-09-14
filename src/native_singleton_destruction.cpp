@@ -20,6 +20,7 @@
 #include "bsp/native_pak_registry.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_system_registry_raw_terminal.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 #include "bsp/native_online_manager_lifetime.hpp"
 
@@ -48,6 +49,22 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00ce3818:
         delete_native_singleton_base_00412440(owner, nullptr, flags);
         return;
+    case 0x00d62a3c:
+        if (bindings.system_constant_registry != nullptr) {
+            delete_native_system_constant_registry_00b5df70(
+                static_cast<NativeSystemConstantRegistryStorage*>(owner),
+                *bindings.system_constant_registry, flags);
+            return;
+        }
+        break;
+    case 0x00d626f4:
+        if (bindings.system_constant_registry != nullptr) {
+            delete_native_system_constant_base_00b5bb20(
+                static_cast<NativeSystemConstantRegistryStorage*>(owner),
+                *bindings.system_constant_registry, flags);
+            return;
+        }
+        break;
     case 0x00d0da64:
         if (bindings.actual_effect_publication_00f87664 != nullptr) {
             delete_native_gameplay_effect_manager_008703e0(
