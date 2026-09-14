@@ -964,3 +964,10 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 if(MSVC)
     cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_options bsp_game PRIVATE /BASE:0x30000000 /DYNAMICBASE:NO "/MAP:${CMAKE_BINARY_DIR}/bsp_game.map")
 endif()
+
+# Actual native pending reads, FileStore requests and retained completion.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_vfs_pending_routes.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_physical_pending_io.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_filestore_request.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_filestore_completion.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_filestore_resident_insert.cpp)
