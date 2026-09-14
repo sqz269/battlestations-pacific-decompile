@@ -1,0 +1,828 @@
+{
+  "packet": "orch6_graphics_pool_lifetime_af",
+  "source": "src/native_graphics_pool_lifetime.cpp",
+  "entries": [
+    {
+      "address": "00b48480",
+      "ghidra_name": "BSP_VertexDeclarationPool_Construct",
+      "name": "NativeGraphicsPoolLifetime::initialize",
+      "bytes": 211,
+      "original_abi": "ECX actual 38h pool; RET; constructor returns this in EAX",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "VertexDeclaration"
+    },
+    {
+      "address": "00b47df0",
+      "ghidra_name": "BSP_VertexDeclarationPool_Destroy",
+      "name": "NativeGraphicsPoolLifetime::destroy",
+      "bytes": 138,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "VertexDeclaration"
+    },
+    {
+      "address": "00b47ed0",
+      "ghidra_name": "BSP_VertexDeclarationPool_TrimEmptySlabs",
+      "name": "NativeGraphicsPoolLifetime::trim_empty_slabs",
+      "bytes": 160,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "VertexDeclaration"
+    },
+    {
+      "address": "00b486a0",
+      "ghidra_name": "BSP_HardwareVertexLayoutPool_Construct",
+      "name": "NativeGraphicsPoolLifetime::initialize",
+      "bytes": 211,
+      "original_abi": "ECX actual 38h pool; RET; constructor returns this in EAX",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "HardwareVertexLayout"
+    },
+    {
+      "address": "00b47f70",
+      "ghidra_name": "BSP_HardwareVertexLayoutPool_Destroy",
+      "name": "NativeGraphicsPoolLifetime::destroy",
+      "bytes": 138,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "HardwareVertexLayout"
+    },
+    {
+      "address": "00b48050",
+      "ghidra_name": "BSP_HardwareVertexLayoutPool_TrimEmptySlabs",
+      "name": "NativeGraphicsPoolLifetime::trim_empty_slabs",
+      "bytes": 160,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "HardwareVertexLayout"
+    },
+    {
+      "address": "00b4ab80",
+      "ghidra_name": "BSP_PhysicalBufferPool_Construct",
+      "name": "NativeGraphicsPoolLifetime::initialize",
+      "bytes": 211,
+      "original_abi": "ECX actual 38h pool; RET; constructor returns this in EAX",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalBuffer"
+    },
+    {
+      "address": "00b4a190",
+      "ghidra_name": "BSP_PhysicalBufferPool_Destroy",
+      "name": "NativeGraphicsPoolLifetime::destroy",
+      "bytes": 138,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalBuffer"
+    },
+    {
+      "address": "00b4a270",
+      "ghidra_name": "BSP_PhysicalBufferPool_TrimEmptySlabs",
+      "name": "NativeGraphicsPoolLifetime::trim_empty_slabs",
+      "bytes": 160,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalBuffer"
+    },
+    {
+      "address": "00b4ada0",
+      "ghidra_name": "BSP_LogicalVertexBufferPool_Construct",
+      "name": "NativeGraphicsPoolLifetime::initialize",
+      "bytes": 211,
+      "original_abi": "ECX actual 38h pool; RET; constructor returns this in EAX",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalVertexBuffer"
+    },
+    {
+      "address": "00b4a310",
+      "ghidra_name": "BSP_LogicalVertexBufferPool_Destroy",
+      "name": "NativeGraphicsPoolLifetime::destroy",
+      "bytes": 138,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalVertexBuffer"
+    },
+    {
+      "address": "00b4a3f0",
+      "ghidra_name": "BSP_LogicalVertexBufferPool_TrimEmptySlabs",
+      "name": "NativeGraphicsPoolLifetime::trim_empty_slabs",
+      "bytes": 160,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalVertexBuffer"
+    },
+    {
+      "address": "00b4afc0",
+      "ghidra_name": "BSP_LogicalIndexBufferPool_Construct",
+      "name": "NativeGraphicsPoolLifetime::initialize",
+      "bytes": 211,
+      "original_abi": "ECX actual 38h pool; RET; constructor returns this in EAX",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalIndexBuffer"
+    },
+    {
+      "address": "00b4a490",
+      "ghidra_name": "BSP_LogicalIndexBufferPool_Destroy",
+      "name": "NativeGraphicsPoolLifetime::destroy",
+      "bytes": 138,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalIndexBuffer"
+    },
+    {
+      "address": "00b4a570",
+      "ghidra_name": "BSP_LogicalIndexBufferPool_TrimEmptySlabs",
+      "name": "NativeGraphicsPoolLifetime::trim_empty_slabs",
+      "bytes": 160,
+      "original_abi": "ECX actual 38h pool; RET",
+      "status": "complete_normal_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalIndexBuffer"
+    },
+    {
+      "address": "00cd7be0",
+      "ghidra_name": "BSP_VertexDeclarationPool_StaticInitialize",
+      "name": "initialize_static_native_vertex_declaration_pool_00cd7be0",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fd38",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "VertexDeclaration"
+    },
+    {
+      "address": "00ce0ce0",
+      "ghidra_name": "BSP_VertexDeclarationPool_StaticShutdown",
+      "name": "destroy_static_native_vertex_declaration_pool_00ce0ce0",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fd38",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "VertexDeclaration"
+    },
+    {
+      "address": "00cd7c00",
+      "ghidra_name": "BSP_HardwareVertexLayoutPool_StaticInitialize",
+      "name": "initialize_static_native_hardware_layout_pool_00cd7c00",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fd70",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "HardwareVertexLayout"
+    },
+    {
+      "address": "00ce0cf0",
+      "ghidra_name": "BSP_HardwareVertexLayoutPool_StaticShutdown",
+      "name": "destroy_static_native_hardware_layout_pool_00ce0cf0",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fd70",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "HardwareVertexLayout"
+    },
+    {
+      "address": "00cd7c20",
+      "ghidra_name": "BSP_PhysicalIndexBufferPool_StaticInitialize",
+      "name": "initialize_static_native_physical_index_pool_00cd7c20",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fda8",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalIndexBuffer"
+    },
+    {
+      "address": "00ce0d00",
+      "ghidra_name": "BSP_PhysicalIndexBufferPool_StaticShutdown",
+      "name": "destroy_static_native_physical_index_pool_00ce0d00",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fda8",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalIndexBuffer"
+    },
+    {
+      "address": "00cd7c40",
+      "ghidra_name": "BSP_PhysicalVertexBufferPool_StaticInitialize",
+      "name": "initialize_static_native_physical_vertex_pool_00cd7c40",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fde0",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalVertexBuffer"
+    },
+    {
+      "address": "00ce0d10",
+      "ghidra_name": "BSP_PhysicalVertexBufferPool_StaticShutdown",
+      "name": "destroy_static_native_physical_vertex_pool_00ce0d10",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fde0",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "PhysicalVertexBuffer"
+    },
+    {
+      "address": "00cd7c60",
+      "ghidra_name": "BSP_LogicalVertexBufferPool_StaticInitialize",
+      "name": "initialize_static_native_logical_vertex_pool_00cd7c60",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fe18",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalVertexBuffer"
+    },
+    {
+      "address": "00ce0d20",
+      "ghidra_name": "BSP_LogicalVertexBufferPool_StaticShutdown",
+      "name": "destroy_static_native_logical_vertex_pool_00ce0d20",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fe18",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalVertexBuffer"
+    },
+    {
+      "address": "00cd7c80",
+      "ghidra_name": "BSP_LogicalIndexBufferPool_StaticInitialize",
+      "name": "initialize_static_native_logical_index_pool_00cd7c80",
+      "bytes": 22,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fe50",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalIndexBuffer"
+    },
+    {
+      "address": "00ce0d30",
+      "ghidra_name": "BSP_LogicalIndexBufferPool_StaticShutdown",
+      "name": "destroy_static_native_logical_index_pool_00ce0d30",
+      "bytes": 10,
+      "original_abi": "cdecl no args, RET; initialize returns CRT atexit result in EAX",
+      "global_storage": "0108fe50",
+      "status": "complete_normal_static_lifecycle_build_and_original_byte_fixture_tested",
+      "profile": "LogicalIndexBuffer"
+    }
+  ],
+  "profiles": [
+    {
+      "name": "VertexDeclaration",
+      "constructor": "00b48480",
+      "destructor": "00b47df0",
+      "trim": "00b47ed0",
+      "vtable": "00d61d08",
+      "slot_bytes": 212,
+      "slab_index_offset": 208,
+      "free_count_offset": 6848
+    },
+    {
+      "name": "HardwareVertexLayout",
+      "constructor": "00b486a0",
+      "destructor": "00b47f70",
+      "trim": "00b48050",
+      "vtable": "00d61d0c",
+      "slot_bytes": 68,
+      "slab_index_offset": 64,
+      "free_count_offset": 2240
+    },
+    {
+      "name": "PhysicalBuffer",
+      "constructor": "00b4ab80",
+      "destructor": "00b4a190",
+      "trim": "00b4a270",
+      "vtable": "00d61d60",
+      "slot_bytes": 48,
+      "slab_index_offset": 44,
+      "free_count_offset": 1600
+    },
+    {
+      "name": "LogicalVertexBuffer",
+      "constructor": "00b4ada0",
+      "destructor": "00b4a310",
+      "trim": "00b4a3f0",
+      "vtable": "00d61d64",
+      "slot_bytes": 120,
+      "slab_index_offset": 116,
+      "free_count_offset": 3904
+    },
+    {
+      "name": "LogicalIndexBuffer",
+      "constructor": "00b4afc0",
+      "destructor": "00b4a490",
+      "trim": "00b4a570",
+      "vtable": "00d61d68",
+      "slot_bytes": 40,
+      "slab_index_offset": 36,
+      "free_count_offset": 1344
+    }
+  ],
+  "globals": [
+    {
+      "name": "VertexDeclaration",
+      "address": "0108fd38",
+      "profile_index": 0
+    },
+    {
+      "name": "HardwareVertexLayout",
+      "address": "0108fd70",
+      "profile_index": 1
+    },
+    {
+      "name": "PhysicalIndexBuffer",
+      "address": "0108fda8",
+      "profile_index": 2
+    },
+    {
+      "name": "PhysicalVertexBuffer",
+      "address": "0108fde0",
+      "profile_index": 2
+    },
+    {
+      "name": "LogicalVertexBuffer",
+      "address": "0108fe18",
+      "profile_index": 3
+    },
+    {
+      "name": "LogicalIndexBuffer",
+      "address": "0108fe50",
+      "profile_index": 4
+    }
+  ],
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b48480",
+        "bytes": 211,
+        "sha256": "1b6b7ff42e3cd8195f26605aa7b0a2d1d1f2d6f6702165dbf9fa29dadb779a27",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b486a0",
+        "bytes": 211,
+        "sha256": "60c4575fd4dbf0d6e81661db3771dbbfe66c307bcff39116d2cef00a9be985ac",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4ab80",
+        "bytes": 211,
+        "sha256": "77a5e0ad4d2727eae5fbaad0d25513c277feeb6ede75749c8bed9e1b294e36ee",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4ada0",
+        "bytes": 211,
+        "sha256": "9d977d57d3558f19934423994ac1eb3987215384ce60cfdf2f9f94753d41a563",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4afc0",
+        "bytes": 211,
+        "sha256": "31f7b572a6f18d6cc893aadb5f28ae3e145d8121410e6a2ef1b155c5475ad024",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b47df0",
+        "bytes": 138,
+        "sha256": "0db9f81f9e92d2785502ff2f9ab0795308e432b0823a31f0b8db85e4ac17ccf9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b47f70",
+        "bytes": 138,
+        "sha256": "b9a9f7ffe68221d0255a6b912f4f178858db0841423dc1b7121727f0b6c71583",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a190",
+        "bytes": 138,
+        "sha256": "b7a79536edc83b740f543387b5a2a2d0c2f86edaaffd6f9e43b5ec02a5006b0e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a310",
+        "bytes": 138,
+        "sha256": "7829f0a20c6c7f244dc2cf3c0ed01ec404d1c5a469e70ad9edb5d39f3ed78411",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a490",
+        "bytes": 138,
+        "sha256": "66554bc11910b2850510437fee89179d21bbb071987bee57c9a76a2b63797a44",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b47ed0",
+        "bytes": 160,
+        "sha256": "76c98a9c67be21fac36913fdca741e8b3d92902441464c35eaec80f8c6843f51",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b48050",
+        "bytes": 160,
+        "sha256": "39d6585eb1ba4e7747543d50a0685eef304e846a33bb76990b12bb10af205841",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a270",
+        "bytes": 160,
+        "sha256": "9be038cc2e4772082e85274b5813b2c7a82c3084c0f99dafaf5ae0f405f2b62a",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a3f0",
+        "bytes": 160,
+        "sha256": "d2f925185d39275618d31294f8b00094108dc260fa52b76a788d722da76b7b4e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b4a570",
+        "bytes": 160,
+        "sha256": "b1e71680a356293878286b5a12f158ccb2656bd0065726d42b70e1058ed6d51e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7be0",
+        "bytes": 22,
+        "sha256": "0d0901b669e14d122bcc64451cd2429694d5f9ae125b8ef909c9aff9c80252a2",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7c00",
+        "bytes": 22,
+        "sha256": "d5da8a1b989f9d2ff22e5f2497227bb157ed42cc90afe3b273fc44b5f0d64006",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7c20",
+        "bytes": 22,
+        "sha256": "20a7e79f3e8a475db8de2e27169c966815e7edcf917501d8525e5e48acf59a7a",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7c40",
+        "bytes": 22,
+        "sha256": "3b4a934efd01ffefa1a7185706428451740714d743b0bf42d85cc39345dfc559",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7c60",
+        "bytes": 22,
+        "sha256": "dfcd434822eb07b7d9676cc5be95680497fb0a1c77a487eae68ffa9d1a534e76",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00cd7c80",
+        "bytes": 22,
+        "sha256": "9ed3fd5447016c629c411b27a816b42245c8128ff424b6cd1cb0357d2dc0ce67",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0ce0",
+        "bytes": 10,
+        "sha256": "08ec11e9df437dd1c3df09f9f8e6044053b0f07266450d6a2fd271f98a49ce2d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0cf0",
+        "bytes": 10,
+        "sha256": "eb8d2dbf78d22729365543e6dcfd76040e4f69099a2eac5eb1da2ac4de955d7a",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0d00",
+        "bytes": 10,
+        "sha256": "cfc05f70f6b3501b7b564215ccc40910f7fc046c22fa5bd5b301aeec566e2170",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0d10",
+        "bytes": 10,
+        "sha256": "c39f4750ccea25f5fa9e0d840e02675295f9a0a0d4bfa42a31e7f129382cc6be",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0d20",
+        "bytes": 10,
+        "sha256": "3666e2a33b866674683069a3782f877c86c9b29764ff0050f128ebe0bcf9cbf3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce0d30",
+        "bytes": 10,
+        "sha256": "90da0e7994cccbe0615d33dd1de710022dfb7d06538cfda9a37137a33b629d48",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b48502",
+      "native": "00bf55be",
+      "function": "00b48480",
+      "instruction": "call"
+    },
+    {
+      "address": "00b48534",
+      "native": "00bf6989",
+      "function": "00b48480",
+      "instruction": "call"
+    },
+    {
+      "address": "00b48722",
+      "native": "00bf55be",
+      "function": "00b486a0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b48754",
+      "native": "00bf6989",
+      "function": "00b486a0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4ac02",
+      "native": "00bf55be",
+      "function": "00b4ab80",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4ac34",
+      "native": "00bf6989",
+      "function": "00b4ab80",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4ae22",
+      "native": "00bf55be",
+      "function": "00b4ada0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4ae54",
+      "native": "00bf6989",
+      "function": "00b4ada0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4b042",
+      "native": "00bf55be",
+      "function": "00b4afc0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4b074",
+      "native": "00bf6989",
+      "function": "00b4afc0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b47e08",
+      "native": "00bf65ac",
+      "function": "00b47df0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b47e20",
+      "native": "00bf6989",
+      "function": "00b47df0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b47f88",
+      "native": "00bf65ac",
+      "function": "00b47f70",
+      "instruction": "call"
+    },
+    {
+      "address": "00b47fa0",
+      "native": "00bf6989",
+      "function": "00b47f70",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a1a8",
+      "native": "00bf65ac",
+      "function": "00b4a190",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a1c0",
+      "native": "00bf6989",
+      "function": "00b4a190",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a328",
+      "native": "00bf65ac",
+      "function": "00b4a310",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a340",
+      "native": "00bf6989",
+      "function": "00b4a310",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a4a8",
+      "native": "00bf65ac",
+      "function": "00b4a490",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a4c0",
+      "native": "00bf6989",
+      "function": "00b4a490",
+      "instruction": "call"
+    },
+    {
+      "address": "00b47ef1",
+      "native": "00bf65ac",
+      "function": "00b47ed0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b48071",
+      "native": "00bf65ac",
+      "function": "00b48050",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a291",
+      "native": "00bf65ac",
+      "function": "00b4a270",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a411",
+      "native": "00bf65ac",
+      "function": "00b4a3f0",
+      "instruction": "call"
+    },
+    {
+      "address": "00b4a591",
+      "native": "00bf65ac",
+      "function": "00b4a570",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7be5",
+      "native": "00b48480",
+      "function": "00cd7be0",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7bef",
+      "native": "00bf6ff5",
+      "function": "00cd7be0",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c05",
+      "native": "00b486a0",
+      "function": "00cd7c00",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c0f",
+      "native": "00bf6ff5",
+      "function": "00cd7c00",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c25",
+      "native": "00b4ab80",
+      "function": "00cd7c20",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c2f",
+      "native": "00bf6ff5",
+      "function": "00cd7c20",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c45",
+      "native": "00b4ab80",
+      "function": "00cd7c40",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c4f",
+      "native": "00bf6ff5",
+      "function": "00cd7c40",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c65",
+      "native": "00b4ada0",
+      "function": "00cd7c60",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c6f",
+      "native": "00bf6ff5",
+      "function": "00cd7c60",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c85",
+      "native": "00b4afc0",
+      "function": "00cd7c80",
+      "instruction": "call"
+    },
+    {
+      "address": "00cd7c8f",
+      "native": "00bf6ff5",
+      "function": "00cd7c80",
+      "instruction": "call"
+    },
+    {
+      "address": "00ce0ce5",
+      "native": "00b47df0",
+      "function": "00ce0ce0",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0cf5",
+      "native": "00b47f70",
+      "function": "00ce0cf0",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0d05",
+      "native": "00b4a190",
+      "function": "00ce0d00",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0d15",
+      "native": "00b4a190",
+      "function": "00ce0d10",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0d25",
+      "native": "00b4a310",
+      "function": "00ce0d20",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0d35",
+      "native": "00b4a490",
+      "function": "00ce0d30",
+      "instruction": "jmp",
+      "kind": "tail_jump"
+    }
+  ],
+  "no_ghidra_function": [],
+  "reused": [
+    "Canonical NativeMeshPoolStorage actual 38h layout and AllocatorListDomain shared 00E188B4 list",
+    "singleton_lifetime_allocate/free real malloc/new-handler boundary; actual Win32 critical sections"
+  ],
+  "semantics": [
+    "Publish base list, concrete vtable, initialize critical section, reset table, publish capacity32 before allocating128 bytes.",
+    "Reload live slab count/table after allocation; free old table before publishing replacement. FH3 table/lock/list cleanup order recovered.",
+    "Trim only free_count ==32; swap last slab, decrement live count, rewrite all32 moved slot indices, retry current index.",
+    "First-free scan uses any nonzero 16-bit count; no lock entry or payload destructor.",
+    "Destroy frees all live slabs and table, decrements recursion before each LeaveCriticalSection, deletes lock, publishes base vtable and unlinks.",
+    "Old table/count/capacity/first-free and own old links remain; startup registers actual shutdown and returns failure without rollback."
+  ],
+  "verification": {
+    "passed": true,
+    "profile_scenarios": 25,
+    "static_lifecycles": 6,
+    "comparisons": 31,
+    "retained_slab_images": 60,
+    "native_allocations": 31,
+    "native_frees": 86,
+    "native_lock_leaves": 50,
+    "native_lock_deletes": 31,
+    "native_fh3_tested": false,
+    "d3d9_or_numbering_runtime_tested": false,
+    "body_byte_spans": 27,
+    "direct_call_rows": 43,
+    "declared_oracle_operand_edits": 101,
+    "constructor_and_destructor_variants": "Instruction-normalized identity except concrete vtable and constructor FH3 handler",
+    "oracle": "27 original PE bodies relocated into an isolated mapping; real Win32 imports and existing CRT allocator/free boundary adapters; atexit callback capture returns selected real contract result.",
+    "comparison": "Native fields and complete retained slab bytes; allocation pointers and opaque OS CRITICAL_SECTION internals normalized by identity/operation checks.",
+    "unwind": "Five three-state FH3 chains inspected; actual native exception delivery not executed.",
+    "build": "local/graphics_pool_af/build.txt",
+    "existing_ctests_passed": 2,
+    "seed_byte_checks_passed": 8
+  },
+  "artifacts": {
+    "local/graphics_pool_af/probe.cpp": "852506084f1bf5524045c03fb50459295a1e2b6fbbd6190bf677d163519dfadb",
+    "local/graphics_pool_af/original.hpp": "93a4946dfe78be04c119dafbd17dcdc619e7303acba8e0bbc6451250c692e8cb",
+    "local/graphics_pool_af/probe.exe": "e46d0b7ce692de9f8d58836cac717fe18b3f5e2962fae56e795735414a31952d",
+    "local/graphics_pool_af/probe_result.json": "84a291d691e7eb98c024969c808105910a731735cb6698499c9675cbc2619d80"
+  },
+  "limits": [
+    "New C++ interfaces, not binary ABI/FH3 replacements.",
+    "The pools must be bound to the same actual storage used by existing declaration/buffer factories and the shared allocator list.",
+    "Allocation new-handler mutation and constructor failure cleanup are source/evidence reviewed, not native differential fault-tested.",
+    "No source success fallback for invalid storage, duplicate native initialization or mismatched pool profiles.",
+    "This batch does not compose a D3D9 renderer or execute the full model-numbering caller, and establishes no gameplay/render parity."
+  ]
+}
