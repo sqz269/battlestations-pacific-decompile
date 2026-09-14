@@ -75,3 +75,7 @@ FH3/SEH identity, hardware faults, an allocator returning null, the index's
 deleting destructor, attachment, executable admission and gameplay parity
 remain unproved. Probe cleanup reclaims fixture allocations directly and does
 not claim native owner destruction.
+
+## Integrated validation
+
+Commit `9f0e2bd05d9614c51f1ef863e25b4e5cbb6db0da` passes the Win32 build and both existing CTests. All eight paired original-byte cases and source registration-exception cleanup pass against that exact library. The 120-frame USN01 compatibility run passes finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `fee6f2e5ae388b344a68d0d8f447a86257857dca32a532d52083a095cc1bfa27`. An immutable manifest retains original reference bytes, separate raw constructor images, normalized getter results, linked objects, compilation dependencies and mission artifacts. Spatial admission and gameplay parity remain unproved.
