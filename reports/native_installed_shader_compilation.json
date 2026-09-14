@@ -1,0 +1,563 @@
+{
+  "packet": "orch5_installed_shader_compilation",
+  "created_utc": "2026-09-14T23:17:19.273904+00:00",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "root_commit": "ad598d83d380089f7326a4056aa289ff0f0234ba",
+  "document": "docs/NATIVE_INSTALLED_SHADER_COMPILATION.md",
+  "status": "installed_cache_and_lua_descriptors_through_actual_vfs_owners_to_full_material_compiler_passed",
+  "production_source_modified": false,
+  "cmake_registration": false,
+  "new_repository_tests": 0,
+  "fixture": {
+    "source": "local/native_installed_shader_compilation/installed_shader_probe.cpp",
+    "sha256": "b593a7398a4ce3bc8c45e6872aa4d47e1fdd6030fedb1b28b34bf4639403c8cc",
+    "commands": [
+      "compile_sources.cmd",
+      "compile_fixture.cmd",
+      "link_fixture.cmd",
+      "run_fixture.py 6"
+    ],
+    "compile": "MSVC Win32 /O2 /Oy- /W4 /WX /fp:strict",
+    "link": "MANIFEST:EMBED /BASE:00400000 /DYNAMICBASE:NO /OPT:REF",
+    "result": {
+      "utc": "2026-09-14T23:11:43.565228+00:00",
+      "exit": 0,
+      "executable_sha256": "20da37726bfebf35928b8c46226114b451c138c96bf3271fa317bc6654c501df",
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_installed_shader_compilation\\installed_shader_probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_installed_shader_compilation",
+      "libraries_before_after": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "7a45bb6e460ac6a068fbffeccee28762e892baeee6ef0753f1c4c92dc6333610",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+      },
+      "installed_assets_before_after": {
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+      },
+      "check_lines": [
+        "STAGE controlled child: five native input bands reserved before initial thread",
+        "PASS installed descriptors through actual VFS and Lua: fundamentals657 debug806 dummy114 include3117; generation3 priority23 fields2/1 states2/0 samplers0/0; reads=6 bytes=2258511",
+        "READY cache=1628 registry=52 white=03E220A8 refs=1 canonical=1",
+        "REFLECTION VS cViewProjMat=15/4 cVtxElemScale=77/2 cVtxElemOffset=79/2; PS cElapsedTime=34/1 cVisibility=77/1; material0/0; installed depth states7/14=0; samplerrows0; native residues=7B2954AA/192EF0C3 unconsumed",
+        "PASS full source B3C3A0/B3B3C0 cached route pass=03EBC588 refs=1 shaderrefs=1/1 cachecursor=158 canonical=9",
+        "LIMIT source-only full path; actual installed Lua/cache and real D3DX/COM; explicit region, names, stack preimages, renderer/effect storage and hot white fixture inputs; no canonical effect admission, original FH3, full shutdown, draw or game proof"
+      ],
+      "actual_com_matches_installed_cache": [
+        {
+          "row": 156,
+          "name": "debugshader0F3.vso",
+          "bytes": 432,
+          "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+        },
+        {
+          "row": 157,
+          "name": "debugshader0F3.pso",
+          "bytes": 444,
+          "sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+        }
+      ]
+    }
+  },
+  "routines": [
+    {
+      "entry": "00b3c3a0",
+      "abi": "ECX effect; EDX root descriptor; seven stack arguments; EAX pass; RET1C",
+      "source": "src/native_material_program_compiler.cpp"
+    },
+    {
+      "entry": "00b3b3c0",
+      "abi": "ECX builder; stack effect,root,mode; EAX pass; RET0C",
+      "source": "src/native_material_program_compiler_actual.cpp"
+    },
+    {
+      "entry": "00b43b00",
+      "abi": "ECX descriptor; stack actual name,generation; RET8; no useful return established",
+      "source": "src/native_shader_descriptor_reader.cpp"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b3c3a0",
+      "address": "00b3c3c6",
+      "native": "00b354d0",
+      "role": "actual builder construction"
+    },
+    {
+      "function": "00b3c3a0",
+      "address": "00b3c47b",
+      "native": "00b3b3c0",
+      "role": "complete actual cached compiler"
+    },
+    {
+      "function": "00b3c3a0",
+      "address": "00b3c491",
+      "native": "00b3a7e0",
+      "role": "normal builder cleanup"
+    },
+    {
+      "function": "00b43b00",
+      "address": "00b43b25",
+      "native": "00b66bd0",
+      "role": "actual Lua owner construction"
+    },
+    {
+      "function": "00b43b00",
+      "address": "00b43b3b",
+      "native": "00b6a020",
+      "role": "actual bootstrap including fundamentals"
+    },
+    {
+      "function": "00b43b00",
+      "address": "00b43b4e",
+      "native": "00b69d40",
+      "role": "installed descriptor and DoFile execution"
+    }
+  ],
+  "fresh_byte_evidence": {
+    "inputs": [
+      {
+        "name": "renderer",
+        "start": "00d5f0a8",
+        "bytes": 324,
+        "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "physical",
+        "start": "00d691b0",
+        "bytes": 104,
+        "sha256": "36ecdfe82292725bddca54aee4e9730228381f3c721cafc2619fe5dacfd29fde",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "texture",
+        "start": "00d61948",
+        "bytes": 64,
+        "sha256": "09d9f4bb95106b475519c558ee9d58307a2408c7cc2a263d812364d5af1ba930",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "surface",
+        "start": "00d619a0",
+        "bytes": 32,
+        "sha256": "7db2ee0d5b1106b2d3ba4592b1802c0d26bcc75cd9986170cdeb5a38db93069b",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "states",
+        "start": "00d61a2c",
+        "bytes": 24,
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "pass",
+        "start": "00d61be8",
+        "bytes": 20,
+        "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "shaders",
+        "start": "00d62a60",
+        "bytes": 32,
+        "sha256": "54c8f8d0c4187359598abaf986fb4a9a709696b281d4f62f6966d9eb68e7a8bd",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "reflection",
+        "start": "00d61810",
+        "bytes": 16,
+        "sha256": "1f9662a6387649697ffae3f2bdf0dc07e8578c514ca1277f04b5a545b0d3e480",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "batch",
+        "start": "00d5e5ac",
+        "bytes": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "backing",
+        "start": "00d15ad8",
+        "bytes": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "memory",
+        "start": "00d642c0",
+        "bytes": 32,
+        "sha256": "18d686f1b5f06ee2390bd8ab9716522ad8b6610aac1573109fc0ae0e46680f54",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "mesh",
+        "start": "00d62d60",
+        "bytes": 8,
+        "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "section",
+        "start": "00d63194",
+        "bytes": 8,
+        "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "date",
+        "start": "00d683b0",
+        "bytes": 12,
+        "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "open",
+        "start": "00d6838c",
+        "bytes": 12,
+        "sha256": "1fffca665242207f66f0be08fa14b97fce903b3ae9e361f2bf92c2f4b79fbb43",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "exists",
+        "start": "00d68398",
+        "bytes": 12,
+        "sha256": "0703f71503cbe18b931e1da3187d5fce5c2807cb030cd0ff5dc03bbb638bb33a",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "name_probe",
+        "start": "00d683e8",
+        "bytes": 12,
+        "sha256": "1b9578b85e08f1cb9e4f85c3f5b1cb7dbd64daa75839adc5bf833767656da9e8",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "secondary",
+        "start": "00ce7d24",
+        "bytes": 16,
+        "sha256": "ca319ead624f18b92ed6e9a4399c36d33435d78e2afe010d8e5ce814aa1a2738",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "default",
+        "start": "00ce3c5c",
+        "bytes": 8,
+        "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "registry",
+        "start": "00d5f088",
+        "bytes": 20,
+        "sha256": "744d4f63ee4562f3ec7aaf2fd4fa4495edc15a5f3092e6ad6d52363645069566",
+        "live_equals_installed_pe": true,
+        "role": "actual identity/dispatch profile data"
+      },
+      {
+        "name": "descriptor_append",
+        "start": "00b3b280",
+        "bytes": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "live_equals_installed_pe": true,
+        "role": "executed original empty B3B280 body"
+      }
+    ],
+    "call_spans": [
+      {
+        "start": "00b3c3c6",
+        "bytes": 5,
+        "sha256": "2b6fb8cc9d3496153ea90538bdf1c1316daa09b7c9dc458fd65ec8d5bd01722b",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00b3c47b",
+        "bytes": 5,
+        "sha256": "6b1a741d3640cde6b0b3a812eb621671f38b78c0d36deb8d945f3a33e3417954",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00b3c491",
+        "bytes": 5,
+        "sha256": "3c25297d342df7fbc2d440e8adf4a216f3995aa891443f3ec15ad2097c4a4e49",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00b43b25",
+        "bytes": 5,
+        "sha256": "26a17800bd33210be8e291daefdaeb287797d2ac03f7e9a064d5368dfc8b1bd2",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00b43b3b",
+        "bytes": 5,
+        "sha256": "f793e81211087ec5f84aff35deb7ed235ec0541b9c933dd642179763b7c56e67",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00b43b4e",
+        "bytes": 5,
+        "sha256": "623ea938da27d1f12dbc3d79a2d3c502e35131019df551187553385e3f98e96e",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "profile_count": 20,
+    "profile_bytes": 780,
+    "original_sampler_bytes": 306,
+    "call_span_bytes": 30
+  },
+  "linked_providers": {
+    "compile_native_material_program_00b3c3a0": [
+      "0001:0000a9e0       ?compile_native_material_program_00b3c3a0@bsp@@YAPAUNativeMaterialPassStorage@1@ABUNativeMaterialProgramRequest@1@AAUNativeMaterialProgramCompileContext@1@AAVNativeMaterialProgramCompileOperation@1@@Z 0040b9e0 f   bsp_core:native_material_program_compiler.obj"
+    ],
+    "read_native_shader_descriptor_00b43b00": [
+      "0001:0001b8a0       ?read_native_shader_descriptor_00b43b00@bsp@@YAXAAUNativeShaderDescriptorStorage@1@PBXIAAUNativeShaderDescriptorReadContext@1@AAVNativeShaderDescriptorReadOperation@1@@Z 0041c8a0 f   bsp_core:native_shader_descriptor_reader.obj"
+    ],
+    "native_lua_fundamentals_callback": [
+      "0001:0001c5e0       ?native_lua_fundamentals_callback@bsp@@YAPBUNativeLuaFundamentalsView@1@PAX@Z 0041d5e0 f   bsp_core:native_lua_fundamentals.obj"
+    ],
+    "run_native_lua_file_00b69d40": [
+      "0001:0001ac20       ?run_native_lua_file_00b69d40@bsp@@YAXAAUNativeLuaStateStorage@1@ABVNativeString@1@IAAVNativeStringStorage@1@ABUNativeLuaFileServices@1@@Z 0041bc20 f   bsp_core:native_lua_file_loading.obj"
+    ],
+    "do_native_lua_file_00b69e00": [
+      "0001:0001a850       ?do_native_lua_file_00b69e00@bsp@@YAHPAUlua_State@@AAVNativeStringStorage@1@ABUNativeLuaFileServices@1@@Z 0041b850 f   bsp_core:native_lua_file_loading.obj"
+    ],
+    "append_native_lua_script_overrides_00bdef90": [
+      "0001:0001c810       ?append_native_lua_script_overrides_00bdef90@bsp@@YAXPAXABVNativeString@1@AAUNativeMeshWeightNamesStorage@1@AAVNativeStringStorage@1@AAVNativeLuaVfsDispatch@1@@Z 0041d810 f   bsp_core:native_lua_script_overrides.obj"
+    ],
+    "construct_native_vfs_derived_manager_00beda60": [
+      "0001:0001a1e0       ?construct_native_vfs_derived_manager_00beda60@bsp@@YAPAXPAXAAUNativeVfsManagerLifetimeContext@1@AAUNativePhysicalFactoryContext@1@@Z 0041b1e0 f   bsp_core:native_vfs_derived_manager.obj"
+    ],
+    "mount_native_vfs_system_path_00be1890": [
+      "0001:0001a260       ?mount_native_vfs_system_path_00be1890@bsp@@YAPAXPAXPBX1IIIAAUNativeVfsMountRegistrationContext@1@@Z 0041b260 f   bsp_core:native_vfs_mount_registration.obj"
+    ],
+    "construct_native_shader_state_definitions_00b585a0": [
+      "0001:0001aed0       ?construct_native_shader_state_definitions_00b585a0@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAXACRAU21@VSoundLifetimeAccess@1@AAVNativeStringStorage@1@@Z 0041bed0 f   bsp_core:native_shader_state_definitions.obj"
+    ],
+    "construct_native_system_constant_registry_00b5bf70": [
+      "0001:00013220       ?construct_native_system_constant_registry_00b5bf70@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAXAAUNativeSystemConstantRegistryRawContext@1@@Z 00414220 f   bsp_core:native_system_constant_registry.obj"
+    ],
+    "create_native_shader_binary_cache_00b3a600": [
+      "0001:00005c40       ?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z 00406c40 f   native_shader_binary_cache_load.obj",
+      "0001:00005e08       __catch$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z$0 00406e08 f   native_shader_binary_cache_load.obj",
+      "0001:00057b70       __ehhandler$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z 00458b70 f   native_shader_binary_cache_load.obj",
+      "0002:00018538       __catchsym$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z$13 00474538     native_shader_binary_cache_load.obj",
+      "0002:00018548       __unwindtable$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z 00474548     native_shader_binary_cache_load.obj",
+      "0002:00018558       __tryblocktable$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z 00474558     native_shader_binary_cache_load.obj",
+      "0002:0001856c       __ehfuncinfo$?create_native_shader_binary_cache_00b3a600@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheAcquired@1@@Z 0047456c     native_shader_binary_cache_load.obj"
+    ],
+    "initialize_native_shader_binary_cache_00b38a70": [
+      "0001:00005e40       ?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z 00406e40 f   native_shader_binary_cache_load.obj",
+      "0001:00006023       __catch$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z$0 00407023 f   native_shader_binary_cache_load.obj",
+      "0001:00057ba0       __ehhandler$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z 00458ba0 f   native_shader_binary_cache_load.obj",
+      "0002:000184e0       __catchsym$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z$2 004744e0     native_shader_binary_cache_load.obj",
+      "0002:000184f0       __unwindtable$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z 004744f0     native_shader_binary_cache_load.obj",
+      "0002:00018500       __tryblocktable$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z 00474500     native_shader_binary_cache_load.obj",
+      "0002:00018514       __ehfuncinfo$?initialize_native_shader_binary_cache_00b38a70@bsp@@YAPAUNativeShaderBinaryCacheStorage@1@PAXAAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheConstructionFrame@1@@Z 00474514     native_shader_binary_cache_load.obj"
+    ],
+    "load_native_shader_binary_cache_00b35340": [
+      "0001:00006090       ?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z 00407090 f   native_shader_binary_cache_load.obj",
+      "0001:000065bd       __catch$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z$0 004075bd f   native_shader_binary_cache_load.obj",
+      "0001:00057bc0       __unwindfunclet$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z$2 00458bc0 f   native_shader_binary_cache_load.obj",
+      "0001:00057bcd       __ehhandler$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z 00458bcd f   native_shader_binary_cache_load.obj",
+      "0002:00018480       __catchsym$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z$12 00474480     native_shader_binary_cache_load.obj",
+      "0002:00018490       __tryblocktable$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z 00474490     native_shader_binary_cache_load.obj",
+      "0002:000184a4       __unwindtable$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z 004744a4     native_shader_binary_cache_load.obj",
+      "0002:000184bc       __ehfuncinfo$?load_native_shader_binary_cache_00b35340@bsp@@YAXPAUNativeShaderBinaryCacheStorage@1@AAUNativeShaderBinaryCacheLoadContext@1@AAUNativeShaderBinaryCacheLoadFrame@1@@Z 004744bc     native_shader_binary_cache_load.obj"
+    ]
+  },
+  "getter_linkage": "00884770 source in native_lua_fundamentals_callback from bsp_core:native_lua_fundamentals.obj; no separate getter symbol in final map",
+  "installed_ctab": [
+    {
+      "row": 156,
+      "program": "debugshader0F3.vso",
+      "constants": [
+        {
+          "name": "cViewProjMat",
+          "register_set": 2,
+          "register": 15,
+          "count": 4
+        },
+        {
+          "name": "cVtxElemOffset",
+          "register_set": 2,
+          "register": 79,
+          "count": 2
+        },
+        {
+          "name": "cVtxElemScale",
+          "register_set": 2,
+          "register": 77,
+          "count": 2
+        }
+      ]
+    },
+    {
+      "row": 157,
+      "program": "debugshader0F3.pso",
+      "constants": [
+        {
+          "name": "cElapsedTime",
+          "register_set": 2,
+          "register": 34,
+          "count": 1
+        },
+        {
+          "name": "cVisibility",
+          "register_set": 2,
+          "register": 77,
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "original_code_execution": {
+    "start": "00b3b280",
+    "bytes": 306,
+    "calls": 2,
+    "coverage": "Empty descriptor sampler branch only; release residue preimages remain unconsumed. No relocated or reached original child call."
+  },
+  "observed": {
+    "cache_records": 1628,
+    "cache_bytes": 2250700,
+    "vfs_reads": 6,
+    "vfs_bytes": 2258511,
+    "cache_cursor_after_compilation": 158,
+    "canonical_render_owners": 9,
+    "platform_loading_child_calls": 1,
+    "root_vertex_fields": 2,
+    "root_interpolators": 1,
+    "render_state_rows_root_mode": [
+      2,
+      0
+    ],
+    "sampler_rows_root_mode": [
+      0,
+      0
+    ],
+    "material_constants_vertex_pixel": [
+      0,
+      0
+    ],
+    "constant_bindings_checked": 5,
+    "depth_states": {
+      "7": 0,
+      "14": 0
+    },
+    "normal_builder_cleanup": true,
+    "temporary_shader_references_released": true,
+    "bytecode_comparison": "COM GetFunction equals actual installed rows156/157"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit": 1,
+      "executable_sha256": "c1f74339be83522f191c875e723a1b8c96aab27ecc207ee4e3cb546186c306c9",
+      "boundary": "pre-mapping unrelated MEM_MAPPED reservation"
+    },
+    {
+      "attempt": 2,
+      "exit": 1,
+      "executable_sha256": "1ab3eb2d7f73e9dac6ec3d229839ac9ab6656940b79a865958f23e1b895980a6",
+      "boundary": "pre-mapping unrelated MEM_MAPPED reservation"
+    },
+    {
+      "attempt": 3,
+      "exit": 1,
+      "executable_sha256": "8d9ea582ba99890da7568efa0b11252057ac580e5bc61407700dbcbe6b9a39ce",
+      "boundary": "pre-mapping unrelated MEM_MAPPED reservation"
+    },
+    {
+      "attempt": 4,
+      "exit": 1,
+      "executable_sha256": "c9471db4e7618eb2e20277b3f98e12dfff4bf94f0a773916229c31e22692d147",
+      "boundary": "pre-mapping unrelated MEM_MAPPED reservation"
+    },
+    {
+      "attempt": 5,
+      "exit": 1,
+      "executable_sha256": "b109f592a6349744919965c6566be2a73b705126587d896c37932ca9ac5cc5e2",
+      "boundary": "full compiler returned; inherited synthetic register-zero assertion rejected"
+    },
+    {
+      "attempt": 6,
+      "exit": 0,
+      "executable_sha256": "20da37726bfebf35928b8c46226114b451c138c96bf3271fa317bc6654c501df",
+      "boundary": "all installed-data checks passed"
+    }
+  ],
+  "controlled_child": "Reserve five fresh child bands before initial thread. Child verifies every reservation is exact, untouched MEM_PRIVATE/MEM_RESERVE/PAGE_NOACCESS before releasing only those bands for the existing mapper. No unowned mapping is freed. Reservation collisions remain failure.",
+  "fixture_inputs": [
+    "USA region; PC flag0",
+    "descriptor field/combiner stack preimages; valid installed values overwrite consumed fields",
+    "mode0,generation3,matched debugshader0F3 name and direct installed dummy descriptor path",
+    "scalar effect/renderer storage with actual HAL device",
+    "actual hot white texture/record and canonical owners",
+    "fresh actual VFS manager with zero override suffixes; real override producer takes empty branch"
+  ],
+  "limits": [
+    "New C++ APIs; no original FH3/SEH or incidental-register ABI",
+    "No canonical B46950 admission or native basename discovery",
+    "No cold texture loading, archive startup, source compilation or variants writes",
+    "No complete teardown or whole-cache destructor; successful process retains owners through exit",
+    "No draw or game validation"
+  ],
+  "source_provenance": {
+    "copies": "local/native_installed_shader_compilation/source_inputs.json",
+    "copied_cache_source_status": "unchanged explicit objects from previously reviewed separately leased worker source",
+    "external_root_library_closure": {
+      "path": "local/checkpoints/57f813e3/native-effect-renderer-bridges-wave/validation.json",
+      "sha256": "be24e4db37a9109b3f4b063b93a0a3f026bf76ced11828a6c638094566a2fb8b"
+    },
+    "previous_vfs_validation": {
+      "path": "local/checkpoints/4a4a5172/shader-cache-vfs-construction/validation.json",
+      "sha256": "4a50a5e3591911466b5c4c2a7ed7290b8a95bdfcfea292c448fce32089fc8034"
+    }
+  },
+  "follow_up": "Integrate handed-off cache/secondary sources, then connect canonical effect admission with actual basename and descriptor/request producers.",
+  "immutable_checkpoint": {
+    "path": "local/checkpoints/ad598d83/installed-shader-compilation/validation.json",
+    "sha256": "f8ce0915419de9a5604157405edcafaddac9708591ccdd72f164a0f2d17ab6ee",
+    "artifacts": 1103,
+    "runtime_modules": 80,
+    "root_provider_source_count": 221,
+    "source_manifest_sha256": "31fd658fb7f095f292a36b368326084f31c1f235d5604d7d02bc303b07eb4dba"
+  },
+  "validation": {
+    "live_call_check": "6 checked, 0 failed",
+    "runtime_modules": 80,
+    "root_provider_sources_matching_unchanged_library_closure": 221,
+    "root_build_and_ctest": "not rerun; production source unchanged, existing library/source closure hash verified; fresh explicit Win32 objects and fixture linked and executed"
+  }
+}
