@@ -1,0 +1,59 @@
+{
+  "batch": "orch4_native_resource_parser_registration_bz",
+  "state": "initial_source_build_and_original_fixture_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "1df2a26fcae589accaec96845bf958e6e0ed202c",
+  "code_revision": null,
+  "ordinary_bodies": 10,
+  "ordinary_bytes": 1740,
+  "ordinary_instruction_owners": 634,
+  "support_instruction_owners": 39,
+  "direct_transfer_rows": 49,
+  "indirect_calls": 2,
+  "incoming_main_review": {
+    "pinned_revision": "3b4ddb98f1ef70c706941cd34234766aba24b5ac",
+    "source_review": "Read complete53-line gunnery command-target addition.",
+    "observations": "Host resolves current command rows by authored unit names, caches on row/unit counts and supplies the modeled gunnery command target. This is a projected command-row bridge; native queued-command identity, same-count mutations and gameplay were not certified here. BZ raw registration dependencies unchanged.",
+    "combined_build": "pending",
+    "independently_rerun": false
+  },
+  "validation": {
+    "strict_msvc_win32": true,
+    "existing_ctests": 2,
+    "paired_registration_steps": 10,
+    "paired_pair_cleanup_cases": 2,
+    "original_bodies_loaded": 11,
+    "original_direct_relocations": 39,
+    "normalized_tree_images_match": true,
+    "source_length_failure": true,
+    "native_exception_paths_guarded_out": true,
+    "native_fh3": false,
+    "concrete_parser_getters": false,
+    "game_validated": false,
+    "whole_report_verifier": "49 passed"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_parser_registration_bz.json",
+      "sha256": "a01626633b9b9e8fa13628754bd30d8166ac49eb1cd57e28b57ae9ef593556b4",
+      "bytes": 107193
+    },
+    {
+      "path": "reports/native_resource_parser_registration_annotations_bz.json",
+      "sha256": "b9b5fbcc73ed0361174847bbba2d6d9dd4f667b98e04b804bfe77776530fcc94",
+      "bytes": 121559
+    },
+    {
+      "path": "reports/native_resource_parser_registration_flow_bz.json",
+      "sha256": "23e44a6ffb30328a99a6a5f2967c1e5698e76e42fe4ecb707ca66b2ee22a1e76",
+      "bytes": 9224
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "New source ABI; original FH3/SEH/private spill and hardware faults unproved",
+    "Original error paths guarded out; source count-limit exception checked separately",
+    "Fixture name getters; actual parser singleton/body/manager bootstrap and successful destruction remain open",
+    "No actual executable admission or gameplay claim"
+  ]
+}

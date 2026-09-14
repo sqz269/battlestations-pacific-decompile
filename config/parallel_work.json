@@ -12764,6 +12764,29 @@
         "all_instruction_owners_rechecked": true,
         "previous_ghidra_comments_preserved": 10
       }
+    },
+    {
+      "id": "orch4_native_resource_parser_registration_bz",
+      "state": "reconstructed_source_build_and_original_fixture_checked",
+      "status": "reconstructed_source_build_and_original_fixture_checked",
+      "addresses": [
+        "00b80a50",
+        "00b80290",
+        "00b7fd30",
+        "00b7f610",
+        "00b7f1b0",
+        "00b7f340",
+        "00b7ca80",
+        "00b7d590",
+        "00b7e930",
+        "00b7e950"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "documentation": "docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Actual parser singleton/name/body dispatch and raw manager construction/destruction; then connect actual loader and loading queue stop/join"
     }
   ],
   "snapshot_after_analysis": {
