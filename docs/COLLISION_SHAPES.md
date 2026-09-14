@@ -320,3 +320,24 @@ Open questions, in the order a later packet should take them:
 4. whether `0070F720` can write `record+34h`, the hull segment index, through `00723F80`. The
    earlier doc concluded the blast path cannot produce one; that conclusion rested on the class set
    this packet has now extended, so it is reopened rather than settled.
+
+## Flagged by docs/HIT_HULL_SEGMENT.md (packet cc7_hit_shape_hull_segment) - not resolved
+
+Two readings of `shape+24h` are on the table and this note records the disagreement rather than
+settling it. The field table above calls `+24h` an **owner back-pointer**, and names the calls it
+receives `owner_accept_segment_hit` / `owner_accept_sphere_hit`. Packet cc7_hit_shape_hull_segment
+reads it instead as **the geometry**, on the grounds that `00724517 MOV ECX,[ECX+24h]` makes it the
+receiver of `00723E90`, whose body walks a geometry element list through `00723D60` and reads the
+selected element's `+4h` and `+8h` into the hit record.
+
+What is established either way: `00724517` does load `shape+24h` into `ECX` as the receiver of the
+`00724530` call, and `00723E90` saves that receiver in `ESI` at `00723E9E`. What is not established
+is whether that object is the owning entity that happens to expose geometry, or the geometry
+container itself. Deciding it needs the producer of `shape+24h` at `00711065`/`0071106B`, which
+neither packet read. Until someone reads it, prefer the neutral description "the object `00723E90`
+is invoked on" over either label.
+
+A second item flagged by the same packet: the framing that `node->vtable[0Ch]` allocates the
+part-hit array at `record+3Ch` is off by three frames. The chain is
+`0070F090` -> `0098AAE0` -> `0070F720` -> `00723F80` -> `006D2E30`, and `0070F090` allocates
+nothing; `006D2E30` is the allocator.
