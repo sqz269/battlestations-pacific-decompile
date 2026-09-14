@@ -369,3 +369,188 @@ The entity-attach row in the table above should be read the same way: `00928A00`
 `coverage: complete` in `docs/MISSION_ENTITY_LUA_ATTACH.md` and `src/game_hosts_lua.cpp:1310` builds
 the slot's four fields, so the `log_.unimplemented` call at line 1368 overstates what is missing.
 Packet `cc7_pilot_order_bindings` recovers the five binding bodies.
+
+# The axis arms read from the listing (packet `cc7_pilot_bot_axis_arms`)
+
+Addresses: `0099D300`, `0099D46E`-`0099D510`, `0099E664`-`0099E752` (pitch), `0099E75E`,
+`0099E81A`-`0099EA57` (yaw), `007C18B0`, `00419010`, `00415510`, `00415620`, `00415690`,
+`00438B10`, `00BF701A`. Constants `00CE3854`, `00CE3D10`, `00CE65D0`, `00CE3C64`, `00D05B50`,
+`00D7A208`, `00D7A220`, `00D7A24C`, `00D7A260`, `00E0E2F0`, `00E0E2F4`.
+
+Ghidra read-only. **Exported and reconstructed; build-tested** (`scripts/build.ps1`, and the one
+existing `reconstructed_math` check still passes). Not fixture-tested and not game-validated. No
+new tests were added.
+
+## Method
+
+The function is 1451 instructions, so the arms were read from a full listing dump rather than by
+paging, and the stack slots were resolved with a reaching-definition walk over a CFG built from
+that dump. **ESP is stable** between `0099D3DB PUSH EBP` and `0099EA66 POP EBP`: every `PUSH` or
+`SUB ESP,n` in between opens an argument window that the following `CALL` closes, because every
+callee is callee-clean — verified on the two that matter, `00419010` `RET 14h` (`004190B9`,
+`004190CC`) and `00415690` `RET 4` (`004156DD`, `004156ED`). Displacements inside those windows
+are corrected by the window's own depth before being compared.
+
+## The five plan slots are 12-byte records
+
+`include/bsp/plane_ai_control.hpp` already had `kPlanSlotBase = 0x274` and `kPlanSlotStride = 0x0C`.
+The writes confirm the field order `{ prev, desired, active }`:
+
+| axis | prev | desired | active | arm's store |
+| --- | --- | --- | --- | --- |
+| power | `+274h` | `+278h` | `+27Ch` | `0099DC8F` |
+| yaw | `+280h` | `+284h` | `+288h` | `0099EA3E` |
+| roll | `+28Ch` | `+290h` | `+294h` | `0099D6B7` |
+| pitch | `+298h` | `+29Ch` | `+2A0h` | `0099E739` |
+| air brake | `+2A4h` | `+2A8h` | `+2ACh` | `0099D8DD` |
+
+`0099E9A9` reading `[ESI+280h]` when `[ESI+288h]` is clear is what fixes the order: it is the yaw
+record's own `prev`, one field below its `desired`.
+
+## The per-tick frame, `0099D46E`-`0099D510`
+
+`EBX = BSP_GameTuning_GetSingleton() + 538h` (`0042E740` at `0099D46E`, `ADD EBX,538h` at
+`0099D487`). Then, with `ECX = unit`:
+
+```
+0099d479  s   = unit[+340h] * 0.4              ; 00CE65D0 = 0.4 (double)
+0099d491  [ESP+38h] = max(s, 1.0f)             ; FCOMI/JBE at 0099D497/0099D49B
+0099d4b3  [ESP+28h] = 1.0f / max(s, 1.0f)
+0099d4dc  [ESP+10h] = unit+C64h                ; pitch
+0099d4d6  [ESP+34h] = unit+C68h                ; bank
+0099d4e2  [ESP+1Ch] = |bank|                   ; AND EAX,7FFFFFFFh at 0099D4D1
+0099d4fc  [ESP+20h] = sin(bank)                ; FSIN
+0099d506  [ESP+30h] = cos(bank)                ; FCOS
+0099d510  [ESP+2Ch] = cos(pitch)               ; FCOS
+```
+
+## Five corrections to this document's own yaw section
+
+1. **`[ESP+18h]` is not an unread input.** It is computed in place at `0099E81A`-`0099E884`:
+   `0099E823` stores zero into it, and the block only overwrites it when `[ESP+38h] > 0`. What the
+   earlier reading called `base` and what it called `turn` are the same slot at different times.
+2. **The first term's denominator is `cos(bank)`, not `sin(bank)`.** `0099E843 FMUL [ESP+30h]`, and
+   `[ESP+30h]` is the `FCOS` at `0099D504`. `sin(bank)` is `[ESP+20h]` and belongs to the *second*
+   term (`0099E908`).
+3. **The second term's numerator is not `unit+C64h`.** The reaching definitions of `[ESP+10h]` at
+   `0099E8F6` are `0099E3CB`, `0099E6D2`, `0099E6E8` and `0099E729` — the setup's pitch store at
+   `0099D4DC` does **not** reach the yaw arm on any path. Three of the four are pitch-arm outputs,
+   so the yaw arm is **driven by a pitch-arm side product**, and the two arms are not independent.
+4. **The arm has one live entry.** It is reached only from `0099E75E JNZ 0099E81A` on a non-zero
+   `task+2D4h`. The other edge, `0099E774 JBE 0099E812`, arrives with `ECX` already known zero from
+   `0099E75C TEST ECX,ECX`, and nothing writes `ECX` in between, so `0099E812 TEST ECX,ECX / JZ
+   0099EA57` always exits. That edge writes no yaw at all.
+5. **The blend is asymmetric.** When the turn numerator is not positive, `0099E897 JBE 0099E960`
+   skips the whole second block, and the `(1 - t)` scaling lives *inside* that block — so the base
+   term reaches the final clamp unscaled, not multiplied by `(1 - t)`.
+
+## The yaw arm, `0099E81A`-`0099EA46`
+
+```
+base = 0                                                    ; 0099E823
+if ([ESP+38h] > 0)                                          ; 0099E820 COMISS / 0099E829 JBE
+    base = clamp([ESP+6Ch] / (YawSpd * cos(bank) * tuning[+9Ch]), -1, +1) * [ESP+38h]
+turn_term = 0                                               ; 0099E891
+if ([ESP+10h] > 0) {                                        ; 0099E88E / 0099E897
+    t    = min(1, InterpolateClamped(tuning[+7Ch], 0, tuning[+80h], 3.0f, |bank|))
+    turn = clamp([ESP+10h] / (YawSpd * sin(bank) * tuning[+9Ch]), -1, +1)
+    turn_term = t * turn ; base = (1 - t) * base            ; 0099E94A-0099E95C
+}
+yaw = clamp(turn_term + base, -1, +1)                       ; 0099E96C, 0099E98D
+slot(yaw).desired = yaw ; slot(yaw).active = 1 ; task+2D4h = 0   ; 0099EA3E / EA46 / EA4D
+```
+
+`YawSpd` is `class+1B0h` through `task+2F4h` (`0099E82F`, `0099E8F0`). `3.0f` is `00CE3854`; the
+clamp bounds are `00D7A260` = `-1.0f` and `00D7A24C` = `1.0f`. `00415690` is the in-place clamp,
+`00415620` the by-value one, `00415510` the min.
+
+Implemented as `plan_yaw_0099e81a` in `src/plane_ai_control.cpp`, with the three scratch
+quantities as **parameters**, because they are located but not named (below).
+
+## The pitch arm's terminal law, `0099E68D`-`0099E752`
+
+The earlier reading saw only the `-1` branch. All three paths converge on the single store at
+`0099E739`, and together they are a plain saturation:
+
+| demand `[ESP+44h]` | path | stored to `slot(pitch).desired` |
+| --- | --- | --- |
+| `> 1.0f` | `0099E696` not taken | `+1.0f` (`XMM0 = XMM3` at `0099E6A1`) |
+| `< -1.0f` | `0099E6F9` not taken | `-1.0f` (`XMM0 = XMM4` at `0099E6FE`) |
+| otherwise | `0099E6F9 JBE 0099E72F` | the demand itself, still in `XMM0` from `0099E68D` |
+
+so `slot(pitch).desired = clamp(demand, -1, +1)`, implemented as `plan_pitch_0099e68d`.
+
+Two of the three paths also leave a side quantity in `[ESP+10h]` — the value the yaw arm then
+consumes:
+
+```
+0099e69b  p = sin(bank)^2 * cos(pitch) * class[+1B8h] * class[+1B0h]   ; SlideRatio, YawSpd
+0099e6ba  k = (XMM1 > 0) ? class[+1D8h] : 1.0f                         ; NegativePitchRatio
+0099e6ce  [ESP+10h] = p - k * X
+```
+
+`X` is a live x87 stack value carried from before `0099E69B` — the `FMULP` at `0099E6CC` multiplies
+`k` into whatever `ST(1)` already held. **It was not traced**, so the side product, and therefore
+the yaw arm's turn numerator, is not closed. The `0099E703`-`0099E729` copy of this block under the
+`-1` branch is identical in shape.
+
+## The re-plan interval, `0099E996`-`0099EA2B`
+
+After the store, the size of the change is folded into `task+2ECh`:
+
+```
+ref = slot(yaw).active ? slot(yaw).desired : slot(yaw).prev      ; 0099E996
+d   = |ref - yaw|                                                ; 0099E9BF, 0099E9DF (XMM4 = -0.0f)
+if      (d > 0.2)   task+2ECh = 0.1                              ; 00CE3D10, 00E0E2F4
+else if (d > 0.08)  task+2ECh = min(task+2ECh, 0.16)             ; 00D05B50, 00E0E2F0
+```
+
+`task+2ECh` is a **re-plan interval in seconds**, not an urgency score: `0099D438` seeds it from
+`00E0E2EC` and `0099D45E` forces `0.1` when `unit[+900h]` is `4` or `5`, and `0099E764`/`0099E76A`
+compare it with `0.1` to decide whether to re-plan at all. The same `|Δ|` update appears at
+`0099E7DB`/`0099E7FD` for another axis. Implemented as `axis_urgency_0099e996`.
+
+`00E0E2F0` and `00E0E2F4` are in writable data; they read `0.16f` and `0.1f` in the image on disk,
+but this packet did not establish that nothing writes them at startup.
+
+## `unit+C6Ch` is the heading, and `007C18C1` only reads it
+
+`007C18C1` saves the **previous** value before recomputing the attitude triple. The write is:
+
+```
+007c1a19  FLD  [ESP+70h]                                    ; pushed first, so ST(1) at the call
+007c1a1d  FLD  [ESP+68h]                                    ; ST(0)
+007c1a21  CALL 00BF701A LIBCRT_atan2                        ; which operand is y was not checked
+007c1a32  FST  [ESI+C6Ch]                                   ; the raw heading
+007c1aad  CALL 00438B10 BSP_Math_SubtractWrappedAngle(pi/2, [ESI+C6Ch])   ; 00CE3C64 = 1.5707963f
+007c1aca  FST  [ESI+C6Ch]                                   ; the wrapped heading
+```
+
+`unit+C64h` (pitch) is stored at `007C1966` and `unit+C68h` (bank) at `007C1A94` in the same pass.
+**The two `atan2` operands were not traced** — they come from `[ESP+68h]`/`[ESP+70h]`, filled by the
+matrix work at `007C18F3`-`007C1A14` that this packet did not read — so the heading's derivation is
+recovered only as far as "wrapped `atan2` of two orientation terms".
+
+## What is still unread, named
+
+* **The roll arm (`0099D6B7`), the power arm (`0099DC8F`) and the air-brake arm (`0099D8DD`)** were
+  not read. Only their stores and slot offsets are established here.
+* **The yaw arm's three scratch inputs.** Each is located to its reaching definitions and each has
+  a zero default, but the non-zero producers are unread:
+  | slot | read at | reaching definitions |
+  | --- | --- | --- |
+  | `[ESP+6Ch]` | `0099E82B` | `0099DDD0` (`= 0`), `0099DF87` (a `tuning+34h` blend) |
+  | `[ESP+38h]` | `0099E81A` | `0099DD9D` (`= 0`), `0099E027` |
+  | `[ESP+10h]` | `0099E8F6` | `0099E3CB` (`= 0`), `0099E6D2`, `0099E6E8`, `0099E729` |
+* **The pitch demand `[ESP+44h]`** (`0099E664`-`0099E689`): both of its branches consume a live x87
+  stack value, and `0099E673 FDIVR [ESP+18h]` divides by it. Untraced.
+* **`X` at `0099E6CC`/`0099E723`**, the multiplicand of `NegativePitchRatio`.
+* **The `atan2` operands** for the heading.
+
+## Wiring contract
+
+`plan_pitch_0099e68d` and `axis_urgency_0099e996` are complete laws and can be wired now.
+`plan_yaw_0099e81a` is a complete law **given** its three scratch inputs; a host that cannot supply
+them must refuse the yaw axis rather than pass zeros, because all three have a legitimate zero
+default and zeros would silently produce a plausible centred yaw. The roll, power and air-brake
+axes have no law here at all and must refuse.
