@@ -130,3 +130,7 @@ test cases or workers were added.
 the exact byte, call, ownership, alias and runtime evidence. Upstream model/set
 loading, other unit-part constructor dependencies, game admission and gameplay
 parity remain unproved.
+
+## Integrated validation
+
+Commit `d5863ce911c2f4608678a1f0888b861c9b2a8f1c` passes the Win32 build and both existing CTests. The six paired scenarios pass against that library. The 120-frame USN01 compatibility run passes finite-trajectory, unchanged Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable has SHA-256 `4610501bb153cafedae1f6168b7404afce4eb4801f92601a959da6dac5e367e9`. This does not establish group/collision-builder game admission or gameplay parity. An immutable manifest retains the native references, fixture output, compilation inputs, linked objects and mission artifacts.
