@@ -17,7 +17,7 @@ The existing `00b52550` constructor now begins the counter's `std::atomic<int32_
 
 ## Validation
 
-`./scripts/build.ps1` passed on `b4f36b1b405b659e5b17da00cc11c7424a902e68` with 2540 unchanged tracked build inputs and both existing CTests (`reconstructed_math`, `native_math_differential`). All four scoped call-report audits passed. The constructor and child lifetime source were independently reviewed against the original assembly; the separately authored post-effect canonical terminal composition was also reviewed. The validation report records exact scope and source hashes.
+`./scripts/build.ps1` passed on `86c8afba9953eadfbab78e89d619cc67c454f7fc` with 2547 unchanged tracked build inputs and both existing CTests (`reconstructed_math`, `native_math_differential`). All four scoped call-report audits passed. The constructor and child lifetime source were independently reviewed against the original assembly; the separately authored post-effect canonical terminal composition was also reviewed. The validation report records exact scope and source hashes.
 
 Seven names/comments were saved in the existing BSP Ghidra project, preserving prior comments and the existing `00b52550` signature. Six original `__thiscall` signatures were recovered and read back; all seven exports were force-refreshed. Saved listing repairs restore omitted caller cleanup instructions and the complete texture-helper destructor tail. Three raw EH handler definitions add no reconstruction credit.
 

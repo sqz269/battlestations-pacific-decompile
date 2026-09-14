@@ -1,8 +1,8 @@
 {
   "packet": "orch3_render_resources_integration_bk",
-  "updated_utc": "2026-09-14T04:51:16.721282+00:00",
-  "status": "combined_source_build_and_evidence_validated_pending_publication",
-  "tested_commit": "b4f36b1b405b659e5b17da00cc11c7424a902e68",
+  "updated_utc": "2026-09-14T04:56:16.460805+00:00",
+  "status": "combined_source_build_and_evidence_validated_sealed",
+  "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -110,14 +110,14 @@
     "command": "./scripts/build.ps1",
     "configuration": "MSVC Win32 Release",
     "passed": true,
-    "tracked_build_inputs": 2540,
+    "tracked_build_inputs": 2547,
     "existing_ctests": [
       "reconstructed_math",
       "native_math_differential"
     ],
     "ctests_passed": 2,
     "libraries": {
-      "bsp_core.lib": "6ca55cc03cda730493382558c60c9283f3d35208e6167bcf479ad5794553f058",
+      "bsp_core.lib": "22c4b2a7d096eba366c142bfc084e884a85d899c1765c1b7fc513991b28f626a",
       "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
@@ -200,10 +200,10 @@
       "game_validated": false,
       "new_candidate_native_bodies": 1,
       "new_candidate_native_bytes": 1356,
-      "tested_commit": "b4f36b1b405b659e5b17da00cc11c7424a902e68"
+      "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc"
     },
     "child_lifetime": {
-      "tested_commit": "b4f36b1b405b659e5b17da00cc11c7424a902e68",
+      "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
       "reviewer": "primary integrator independent of child source author",
       "source_sha256": {
         "include/bsp/native_render_service_texture_lifetime.hpp": "3870f9d60bb4343198af56a624a8c73b5125855df41286cfe2aec48fb6baa41c",
@@ -330,8 +330,8 @@
     "The rebuilt game has not been gameplay validated."
   ],
   "artifacts": {
-    "local/bk-source-independent-review.json": "93e0ccbf889adb385ce1aab4ae6b73ac71e959c08c4a6c732f29dafbe61ad525",
-    "local/bk-child-independent-review.json": "1b6422cf3d34974a8fb9b0bc7cab482e409cf22df04f2004c55b8d9d65aba70c",
+    "local/bk-source-independent-review.json": "ce8de5e42157f55d988a75ee2918ec77d2515622a467fe07a969801a45ae7f43",
+    "local/bk-child-independent-review.json": "c7a536d7040fa5363ab481af041b8332ef6a83197574278b62601082a32b804a",
     "local/bk-b52550-independent-coff.json": "fe6bc53274b55d42c621b1d2c704c478592e2414f978aa4b43f7a5f8a84637ca",
     "local/bk-ghidra-annotation-record.json": "9b8b973ae5ef7396082fe2cc2f7e149ba9f7920929ce7bdaf52bb41053cab89d",
     "local/bk-comments-before.json": "1794824b0be90374891a94941451be44d614d2e5597f09a9eaf6d30c93c7ebd4",
@@ -339,7 +339,21 @@
     "local/bk-annotation.log": "1d4e4fccbcfcf75992dac73283373d00ac78e4c738460bf872fe28bc8e9ff475",
     "local/bk-export-refresh.log": "bc6093a8873fc1be4ca83eb86136cf2b52f7e05be0530d075a81f0345a06383a",
     "local/bk-final-call-audit.log": "c44d39f8acd939f33675be4d4badb3d75b2c3d4adc79ac32cce5218ee85b7d8f",
-    "local/bk-final-combined-build.log": "ebc75910da11c63f849ed3182fc17574291264be4c6e35975403352d76bab012",
-    "local/bk-final-build-stamp.json": "254fbc6a8b229edfaac4d4e21a0da84afb7f4d4ade223fdc7262c426ed1d5633"
+    "local/bk-final-combined-build.log": "4f510a716d337b6ce79f5576254bcfd6ab545424539fb6a9f39e1445333134b0",
+    "local/bk-final-build-stamp.json": "b178485d2a1e9bf11fe53728fa4432b58c57c3da4a5e525ede011af8b21f4499"
+  },
+  "sealed_attempt": {
+    "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bk-validated-attempt-86c8afba.zip",
+    "sha256": "7a0abbee7d99dc3a9126ff065849340247de367cadf9e2362970d8da949df44d",
+    "payload_members": 2614,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "22c4b2a7d096eba366c142bfc084e884a85d899c1765c1b7fc513991b28f626a",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2547
   }
 }
