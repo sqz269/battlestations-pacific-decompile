@@ -1,0 +1,748 @@
+{
+  "packet": "orch5_native_renderer_generated_model",
+  "owned_addresses": [
+    "00b4c700",
+    "00535320"
+  ],
+  "published_base": "b078ef14",
+  "dependency": "9246668c226bdad2f63cc3037d06069186145647",
+  "private_original_ancestry_merge": "1d6f5ddaa0f806ebc8d4f6bbc4499bfcf0e52181",
+  "native_input_manifests": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_inputs\\manifest.json",
+      "sha256": "48c017e1adffb9f5a3f22b458f30aa0de452e2f34a01089b00bbbfa77337a88f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_material_eh\\manifest.json",
+      "sha256": "d6efd4dc0f09944af3f2fe08b5a0933340563b9ef9faff98124335eaa9c3da90"
+    }
+  ],
+  "native_identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bodies": [
+    {
+      "address": "00b4c700",
+      "end_inclusive": "00b4c8cd",
+      "bytes": 462,
+      "instructions": 169,
+      "live_equals_pe": true,
+      "sha256": "f0db9d4b323b45ee0e7f9e7670cd95197a538c53217aff5178e42481ec3f605a",
+      "abi": "ECX=model-name NativeString header; EDX=layout-name header. Stack(effect-name header,section kind,vertex count,section primitive count,index count), EAX=constructed model, RET14h."
+    },
+    {
+      "address": "00535320",
+      "end_inclusive": "0053539b",
+      "bytes": 124,
+      "instructions": 43,
+      "live_equals_pe": true,
+      "sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03",
+      "abi": "ECX=effect-name NativeString header, no stack arguments, EAX=constructed material, RET."
+    }
+  ],
+  "source_manifest": [
+    {
+      "path": "include/bsp/native_renderer_generated_model.hpp",
+      "sha256": "514ef56de89eaf299d6d7b23a2207fad5683bbb9fff621c81d260dfefc87f70c"
+    },
+    {
+      "path": "src/native_renderer_generated_model.cpp",
+      "sha256": "e83a0a80fe6bd04b46b20739cc18300816f1e0944f49796ccf81802c4c7bd4b8"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "sha256": "a4909f767db34136c8d42ffd35e5c8a90c5fe9752a9c6e1bb0f835bb2c49e912"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "sha256": "decbdae6286e5ecb7129593d3f13bc66c81efffcb66c439573c4fed7f896ad45"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "sha256": "fa3abf0a4eb939b674f0ea3f76ba3663f530ed2bf8bea9dbb51adc2b7379bac6"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "sha256": "2e2cbc57ee336afe2b27e6b855cd1f99e60bff68912909b68978d39ef4d84db8"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "072d01d118636ce7de1cffd13b144a1d4b555433d3404f33f7c25a17bbd7cfce"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b4c725",
+      "function": "00b4c700",
+      "bytes": "e886870200",
+      "native": "00b74eb0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c73b",
+      "function": "00b4c700",
+      "bytes": "e8f0880200",
+      "native": "00b75030",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c756",
+      "function": "00b4c700",
+      "bytes": "e805740200",
+      "native": "00b73b60",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c76d",
+      "function": "00b4c700",
+      "bytes": "e8fe750200",
+      "native": "00b73d70",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c792",
+      "function": "00b4c700",
+      "bytes": "e8d9890200",
+      "native": "00b75170",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c7e5",
+      "function": "00b4c700",
+      "bytes": "e8c6730200",
+      "native": "00b73bb0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c804",
+      "function": "00b4c700",
+      "bytes": "e8178b9eff",
+      "native": "00535320",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c834",
+      "function": "00b4c700",
+      "bytes": "e837730200",
+      "native": "00b73b70",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c839",
+      "function": "00b4c700",
+      "bytes": "e862779eff",
+      "native": "00533fa0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c85c",
+      "function": "00b4c700",
+      "bytes": "e83f9d0300",
+      "native": "00b865a0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c864",
+      "function": "00b4c700",
+      "bytes": "e8579c0300",
+      "native": "00b864c0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b4c86c",
+      "function": "00b4c700",
+      "bytes": "e8ef730200",
+      "native": "00b73c60",
+      "kind": "direct_call"
+    },
+    {
+      "address": "0053534e",
+      "function": "00535320",
+      "bytes": "e82d345e00",
+      "native": "00b18780",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00535364",
+      "function": "00535320",
+      "bytes": "e897355e00",
+      "native": "00b18900",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00cbfa63",
+      "native": "00b748c0",
+      "function": "00cbfa60",
+      "parent": "00b4c700",
+      "kind": "tail_jump",
+      "role": "constructor_allocation_cleanup"
+    },
+    {
+      "address": "00cbfa6b",
+      "native": "00b72f70",
+      "function": "00cbfa68",
+      "parent": "00b4c700",
+      "kind": "tail_jump",
+      "role": "constructor_allocation_cleanup"
+    },
+    {
+      "address": "00b748c6",
+      "native": "00b74750",
+      "function": "00b748c0",
+      "parent": "00b4c700",
+      "kind": "direct_call",
+      "role": "constructor_allocation_cleanup"
+    },
+    {
+      "address": "00b72f76",
+      "native": "00b72da0",
+      "function": "00b72f70",
+      "parent": "00b4c700",
+      "kind": "direct_call",
+      "role": "constructor_allocation_cleanup"
+    },
+    {
+      "address": "00c6c243",
+      "native": "00b17d70",
+      "function": "00c6c240",
+      "parent": "00535320",
+      "kind": "tail_jump",
+      "role": "constructor_allocation_cleanup"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b4c7a3",
+      "function": "00b4c700",
+      "bytes": "ffd2",
+      "native": "indirect edx",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c7c6",
+      "function": "00b4c700",
+      "bytes": "ffd2",
+      "native": "indirect edx",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c7ce",
+      "function": "00b4c700",
+      "bytes": "ff152022ce00",
+      "native": "indirect dword ptr [0xce2220]",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c7de",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c7ee",
+      "function": "00b4c700",
+      "bytes": "ff152022ce00",
+      "native": "indirect dword ptr [0xce2220]",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c7fe",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c82f",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c87f",
+      "function": "00b4c700",
+      "bytes": "ffd5",
+      "native": "indirect ebp",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c88b",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c891",
+      "function": "00b4c700",
+      "bytes": "ffd5",
+      "native": "indirect ebp",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c89d",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c8a7",
+      "function": "00b4c700",
+      "bytes": "ffd5",
+      "native": "indirect ebp",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00b4c8b3",
+      "function": "00b4c700",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00535345",
+      "function": "00535320",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00535377",
+      "function": "00535320",
+      "bytes": "ff152022ce00",
+      "native": "indirect dword ptr [0xce2220]",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    },
+    {
+      "address": "00535387",
+      "function": "00535320",
+      "bytes": "ffd0",
+      "native": "indirect eax",
+      "kind": "indirect_call",
+      "mechanically_proved": false
+    }
+  ],
+  "caller_proof": [
+    {
+      "address": "00b2bc2a",
+      "native": "00b4c700",
+      "function": "00b2bb90",
+      "kind": "direct_call",
+      "role": "read_only_caller",
+      "following_store_ip": "00b2bc2f",
+      "store": "MOV [EDI+19E4],EAX",
+      "name": "DebugSpheres",
+      "layout": "pf43cc.mvfm",
+      "effect": "debugshader.mshd",
+      "stack_values": [
+        "effect-name8h pointer",
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "address": "00b2b607",
+      "native": "00b4c700",
+      "function": "00b2b580",
+      "kind": "direct_call",
+      "role": "read_only_caller",
+      "following_store_ip": "00b2b60c",
+      "store": "MOV [EDI+19E8],EAX",
+      "name": "2DSprites",
+      "layout": "pf43cc.mvfm",
+      "effect": "debugshader.mshd",
+      "stack_values": [
+        "effect-name8h pointer",
+        4,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "model_return_proof": [
+    {
+      "ip": "00b4c725",
+      "operation": "B74EB0 canonical model pool allocation, incoming requested size184h ignored by actual pool helper"
+    },
+    {
+      "ip": "00b4c72a",
+      "operation": "Save raw allocation to ESP+10"
+    },
+    {
+      "ip": "00b4c73b",
+      "operation": "B75030 ECX=captured raw allocation, stack model-name header"
+    },
+    {
+      "ip": "00b4c740",
+      "operation": "Save B75030 returned actual model EAX to ESP+10"
+    },
+    {
+      "ip": "00b4c8b9",
+      "operation": "Reload saved model EAX"
+    },
+    {
+      "ip": "00b4c8cb",
+      "operation": "RET14h; native caller stores EAX at19E4/19E8. No19E0 writer proved."
+    }
+  ],
+  "frame_states": {
+    "handler": "00cbfa70",
+    "funcinfo": "00df85c4",
+    "map": "00df85b4",
+    "magic": "19930522",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "armed_at": "00b4c732",
+        "disarmed_at": "00b4c752",
+        "funclet": "00cbfa60",
+        "receiver": "ECX=[adjusted EH EBP-14h], saved raw model allocation",
+        "chain": [
+          "00b748c0",
+          "00b74750"
+        ],
+        "domain": "canonical01090054 model pool",
+        "action": "Return allocation only; no complete-model destructor."
+      },
+      {
+        "state": 1,
+        "next": -1,
+        "armed_at": "00b4c761",
+        "disarmed_at": "00b4c789",
+        "funclet": "00cbfa68",
+        "receiver": "ECX=[adjusted EH EBP-10h], saved raw mesh allocation",
+        "chain": [
+          "00b72f70",
+          "00b72da0"
+        ],
+        "domain": "canonical0108FFF8 mesh pool",
+        "action": "Return allocation only; completed model remains retained. No state0 chain."
+      }
+    ],
+    "source_limit": "Native mesh state1 remains armed through first FST; disarm between FST and FSTP. Source uses noexcept recovered mesh ctor and only masked-x87 normal domain. Native unmasked arithmetic faults/SEH/mutable EH spills are not reproduced."
+  },
+  "material_states": {
+    "handler": "00c6c248",
+    "funcinfo": "00d95d44",
+    "map": "00d95d3c",
+    "state": 0,
+    "next": -1,
+    "armed_at": "0053535b",
+    "disarmed_at": "0053536f",
+    "funclet": "00c6c240",
+    "receiver": "ECX=[adjusted EH EBP-10h], captured raw material allocation",
+    "chain": [
+      "00b17d70",
+      "00b17a80"
+    ],
+    "action": "Return only constructor-failed material slot; acquired effect is not released on allocation/constructor failure. Completed material is published to source acquired output before normal effect decrement."
+  },
+  "original_handler_jumps": [
+    {
+      "site": "00cbfa75",
+      "target": "00bf6b43",
+      "evidence": "live=PE",
+      "gate_boundary": "No saved function at CBFA70 in captured snapshot; excluded from function-owner mechanical gate."
+    },
+    {
+      "site": "00c6c24d",
+      "target": "00bf6b43",
+      "evidence": "live=PE",
+      "gate_boundary": "Handler instruction/bytes captured separately; not included among owned body call rows."
+    }
+  ],
+  "controls": {
+    "literal_pair": "B4C778 reads actual D7A260 DWORD BF800000 once via FLD; B4C785 FST second float; B4C78D FSTP first float. Both feed B75170(0,mesh,-1,-1). Source preserves x87 sequence.",
+    "renderer_slots": {
+      "38": "00b317e0",
+      "5c": "00b287c0",
+      "60": "00b288b0",
+      "48": "00b318b0"
+    },
+    "current_receiver_loads": [
+      "00b4c797 before38",
+      "00b4c7a5 before5C",
+      "00b4c819 before60",
+      "00535336 before48"
+    ],
+    "vertex_factory": "vertex_count==0 -> (0,1000h,declaration), else (vertex_count,1,declaration)",
+    "index_factory": "Only index_count!=0; (index_count,1,vertex_count>FFFFh ? 66h:65h), unsigned threshold.",
+    "section_stores": [
+      [
+        "00b4c84a",
+        "+08",
+        "section kind"
+      ],
+      [
+        "00b4c850",
+        "+0C",
+        0
+      ],
+      [
+        "00b4c853",
+        "+10",
+        "vertex count"
+      ],
+      [
+        "00b4c856",
+        "+14",
+        0
+      ],
+      [
+        "00b4c859",
+        "+18",
+        "primitive count"
+      ]
+    ],
+    "section_order": [
+      "B865A0 rebuild layout",
+      "B864C0 set material",
+      "B73C60 append section"
+    ]
+  },
+  "releases": [
+    {
+      "ip": "00b4c7ce",
+      "owner": "captured declaration",
+      "after": "vertex factory returns"
+    },
+    {
+      "ip": "00b4c7ee",
+      "owner": "captured vertex creator",
+      "after": "mesh vertex assignment"
+    },
+    {
+      "ip": "00b4c87f",
+      "owner": "captured nonnull material",
+      "after": "section appended to mesh"
+    },
+    {
+      "ip": "00b4c891",
+      "owner": "captured section",
+      "after": "material creator release"
+    },
+    {
+      "ip": "00b4c8a7",
+      "owner": "captured nonnull mesh",
+      "after": "section creator release"
+    }
+  ],
+  "outstanding_success_ownership": "One returned model creator. Optional index creator remains outstanding after B73B70 retains it; native B4C700 has no balancing index release. Do not add one. Both are explicit in caller acquired state.",
+  "source_contract": {
+    "api": "create_native_renderer_generated_model_00b4c700(model_name,layout_name,effect_name,section_kind,vertex_count,primitive_count,index_count,context,acquired)",
+    "contexts": "NativeInstanceGeometryAccess existing model bookkeeping/geometry/materials/strings plus real declaration cache, index creation, effect cache, concrete GuiTextNativeLayoutServices and actual renderer/AA0 cells. All share canonical raw owners, actual AA8/AA4 name storage, allocator list and child terminal domains.",
+    "borrowed_identity": "Physical owner SoundLifetimeAccess compares actual AA0 cell identity without a getter. Other shared owner/string/renderer/synchronization references are checked. ActualNativeStringPoolStorage must have been constructed against those same AA0/AA8/AA4 cells; its private publication bindings are a caller precondition.",
+    "raw_material": "Shared535320 allocation/constructor/release helper preserves legacy callable-table API; new overload validates numeric D5F0A8+48 and invokes substantive B318B0 with caller-owned effect acquired frame. Null effect is a source-domain error, not successful empty material; native later null+04 fault and intermediate allocation effects are excluded.",
+    "registration": "New canonical mesh/section/material acquired outputs publish completed creators before host metadata allocation/bind. Host failures preserve those actual owners and any companions; no broad rollback. New stream registration takes only actual vertex/index contexts, not unrelated projected mapping. Existing legacy helper failure behavior is unchanged.",
+    "failure": "No enclosing B4C700 rollback of completed model/mesh/material/section/streams. Only two native constructor allocation cleanups compose. Acquired frames are not replayable; effect-child failed frames and required name identities stay alive."
+  },
+  "boundaries": [
+    "Full source B4C700 normal/active-renderer execution is not established by the focused creator-service fixture.",
+    "Cold material route B318B0->B31090->B2EBB0->B45EE0/B46950->B3C3A0 still requires NativeMaterialProgramCompilerTail at B3B3C0 continuation B3B513 or B3B536. No D3DX result conversion, projected cache or successful opaque substitute supplied.",
+    "Original FH3/SEH, unmasked x87 exceptions, native null-allocation/access-fault paths, mutable original caller/frame aliases and game/visual parity unproved.",
+    "Host companion allocation/bind failures are extra source boundaries, not reconstructed original native branches.",
+    "Actual TypeId/scene attachment/model companion contracts remain the existing ones; no GeneratedModelLifetime storage projection introduced.",
+    "Caller19E0 producer remains unidentified."
+  ],
+  "cmake": {
+    "file": "cmake/startup.cmake",
+    "append": "src/native_renderer_generated_model.cpp",
+    "coordination": "Verified unleased; claimed short file-only orch5_native_renderer_generated_model_registration lease until2026-09-14T17:49:09Z; appended one source; released before configure."
+  },
+  "validation": {
+    "status": "strict_win32_eight_seeds_two_ctests_and_focused_actual_creator_source_fixture_passed",
+    "source_commit": "0212603dd3c5b4fb5f8c4a1117906aed16d8714a",
+    "strict_build_exit": 0,
+    "strict_build_log_sha256": "90850243b8ee4552514b8cc65b880f3a18e9dbfc4230323305b12de8808488c6",
+    "seed_count": 8,
+    "seed_verification_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "call_rows_checked": 21,
+    "call_rows_failed": 0,
+    "call_row_attribution": {
+      "owned_body_direct_calls": 14,
+      "constructor_allocation_cleanup_direct_or_tail_calls": 5,
+      "read_only_parent_direct_calls": 2
+    },
+    "indirect_rows_unproved": 16,
+    "call_gate_sha256": "76581f2a2da3b62d812b8201c298fbcd3c00d816756fd8a540724339a0b723b9",
+    "fixture": {
+      "source": "7f525cbdf6be835a85c7627b6c6d8ee33da5227c335c491e01bd8b2ce70259aa",
+      "exe": "de4bf4b9e8d631cf3a24687627728d7a2f7e285ae51fbe4040dc5c62bf2ee86d",
+      "run_log": "0e5c580710d1303226cc93d60e26dbaafb25ed4ad9d6f796ef1a543ca0929e61",
+      "build_log": "00d64c8005c9a25342099e9c234c065f96b8d047579cb6705a32b341fded67f7",
+      "build_command": "81a795e654b11ed1ecdfd806df91cbc3e77581091df5a8381980f1d2d8a8b16d",
+      "exit_code": 0,
+      "md": true,
+      "embedded_manifest": true,
+      "linkage": "Only complete rebuilt bsp_core.lib/bsp_lua511.lib/bsp_zlib121.lib plus platform libraries; no directly compiled production module.",
+      "cases": [
+        "Actual AA0/AA8/AA4 strings, canonical raw mesh/section creators, substantive append/retains and cascading real terminal pool returns.",
+        "Two source-only canonical bind failures retain completed raw mesh and section creators plus companions; explicit substantive terminals retire unregistered companions."
+      ],
+      "linked_generated_model_address": "004066C0",
+      "generated_model_normal_body_executed": false,
+      "raw_material_route_executed": false,
+      "cold_effect_compilation_executed": false,
+      "original_fh3_executed": false,
+      "active_renderer_or_game_executed": false
+    },
+    "source_compiled_x87": {
+      "object": "native_renderer_generated_model.obj",
+      "fld_offset": "285",
+      "fst_pair_plus4_offset": "287",
+      "fstp_pair_offset": "28A",
+      "listing_sha256": "abe001e1ff1e5f52b5b21f81510b6179ed9f034cf1f5dbda0f69beadc5e856de"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_validated_artifacts\\manifest.json",
+      "sha256": "8862fb2fb8562206e737861b603ac048d054508f486689e6ea5bc0c0dd747251",
+      "artifacts": 4423,
+      "bytes": 325978763,
+      "actually_loaded_fixture_modules": 14,
+      "runtime_modules": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_probe.exe",
+          "machine": "014c",
+          "sha256": "de4bf4b9e8d631cf3a24687627728d7a2f7e285ae51fbe4040dc5c62bf2ee86d",
+          "frozen_path": "artifacts\\04375_de4bf4b9e8d6_generated_model_probe.exe",
+          "reported_final_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_probe.exe"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+          "machine": "014c",
+          "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+          "frozen_path": "artifacts\\04410_7e15bd30890e_ntdll.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "machine": "014c",
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "frozen_path": "artifacts\\04411_bafd9e061964_kernel32.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+          "machine": "014c",
+          "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+          "frozen_path": "artifacts\\04412_85ad413ff860_KernelBase.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+          "machine": "014c",
+          "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+          "frozen_path": "artifacts\\04413_a8109618c3bf_apphelp.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "machine": "014c",
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "frozen_path": "artifacts\\04414_60c5a497b52d_ucrtbase.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\user32.dll",
+          "machine": "014c",
+          "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527",
+          "frozen_path": "artifacts\\04415_bff75906f4ab_user32.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\user32.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\win32u.dll",
+          "machine": "014c",
+          "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33",
+          "frozen_path": "artifacts\\04416_718352186893_win32u.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\win32u.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+          "machine": "014c",
+          "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+          "frozen_path": "artifacts\\04417_f0cda2a0cf1f_msvcp140.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\gdi32.dll",
+          "machine": "014c",
+          "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c",
+          "frozen_path": "artifacts\\04418_7c3cb17bc41a_gdi32.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\gdi32full.dll",
+          "machine": "014c",
+          "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806",
+          "frozen_path": "artifacts\\04419_579857a52f8e_gdi32full.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32full.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+          "machine": "014c",
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "frozen_path": "artifacts\\04420_2fa6efc05320_vcruntime140.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\msvcp_win.dll",
+          "machine": "014c",
+          "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a",
+          "frozen_path": "artifacts\\04421_2c3dd2c83037_msvcp_win.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp_win.dll"
+        },
+        {
+          "path": "C:\\Windows\\SysWOW64\\imm32.dll",
+          "machine": "014c",
+          "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02",
+          "frozen_path": "artifacts\\04422_027d404ea547_imm32.dll",
+          "reported_final_path": "\\\\?\\C:\\Windows\\SysWOW64\\imm32.dll"
+        }
+      ],
+      "all_frozen_hashes_verified": true
+    },
+    "limits": [
+      "Full source B4C700 normal/active-renderer execution is not established by the focused creator-service fixture.",
+      "Cold material route B318B0->B31090->B2EBB0->B45EE0/B46950->B3C3A0 still requires NativeMaterialProgramCompilerTail at B3B3C0 continuation B3B513 or B3B536. No D3DX result conversion, projected cache or successful opaque substitute supplied.",
+      "Original FH3/SEH, unmasked x87 exceptions, native null-allocation/access-fault paths, mutable original caller/frame aliases and game/visual parity unproved.",
+      "Host companion allocation/bind failures are extra source boundaries, not reconstructed original native branches.",
+      "Actual TypeId/scene attachment/model companion contracts remain the existing ones; no GeneratedModelLifetime storage projection introduced.",
+      "Caller19E0 producer remains unidentified."
+    ]
+  }
+}
