@@ -230,3 +230,43 @@ Next, and narrow: the `memcpy`/`REP MOVSD` scan is the one byte-reachable form l
 different shape because the destination would be a `LEA` of a lower offset. Then the object at
 `class+50h` itself - what its `vtable[8h]` returns - which decides whether the records it produces
 carry a `GeomMesh` at all.
+
+## CLOSED: the zero is proved faithful, not merely assumed
+
+`docs/MODEL_REACHES_UNIT.md` proves the thing this document has been asserting since it was
+written. **The live reader tests `class+50h` for null and degrades.**
+
+```
+0087bdfb  MOV EDI,[EAX+50h]     ; the model handle off the class descriptor
+0087bdfe  XOR EBX,EBX
+0087be00  CMP EDI,EBX
+0087be02  JZ  0087bf5b          ; -> sets unit+360h = 0 and returns
+```
+
+Verified here directly from the listing. With a null handle no part instance is allocated,
+`BSP_UnitPartInstance_Construct` never runs, `node+160h` is never set, `BuildShapes` has no records
+to copy, no collision shape is built, and the narrowphase has no element to name. Every zero in
+`part=0 fires=0 floods=0` follows from that one branch.
+
+**So the zero is the executable's own behaviour for a null model handle, not a reconstruction
+defect.** The native does not assume the model is present: it tests and degrades.
+
+The conditional is kept explicit, because it matters:
+
+* **Proved.** A null `class+50h` builds no parts and clears `unit+360h`.
+* **Established.** Nothing in this image writes `class+50h` in any scanned form beyond the null at
+  `0087C6A3`; `0082FE30`, which reads it thirteen times, is dead code; and `0070F6B0`, the
+  constructor that would carry a decoded mesh into `shape+24h`, is referenced nowhere.
+* **Therefore.** The zero is faithful *in this host*, where the field is null.
+* **Not proved.** That the field is null in the shipped game - which it cannot be, or ships would
+  have no destructible parts at all.
+
+The consequence is a change of status rather than a change of number: **the missing writer now
+blocks only making `part` non-zero, not the faithfulness of the zero.** This document no longer
+records an open defect; it records a closed question with a remaining feature gap.
+
+The block-copy angle is narrowed, not closed. Control first, per this document's own rule: 628
+`REP MOVSD` and 43 `REP MOVSB` image-wide, so the scan is not vacuous. The class base constructor's
+region holds zero of either. Thirteen `REP MOVSD` sites sit in the wider vehicle-class region with
+their destinations untraced, so the block-copy hypothesis survives, as do SIB-indexed writes and
+write-then-alias.

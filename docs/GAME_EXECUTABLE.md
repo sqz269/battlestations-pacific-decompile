@@ -8423,3 +8423,39 @@ native does not, and it never halves a negative vertical as `00902F6C` does thro
 **The residual 7.1% is idle guns, not targeted ones.** A platform with no `RestAngles` leaves the
 `FLT_MAX` sentinel that `0085AD00` returns on at `0085AD56`; 36 of 1916 platforms are in that state,
 and the host defaults them to `0.0f` and commands that angle every tick.
+
+## The order chain moves a gameplay number
+
+Step 8.7's first arm - the one that expands the director's **command** target and its sub-entities
+into the candidate list - had never run in this reconstruction. `0071EBF0` answered 0 for every
+unit, because until the script-order path was built there were no queued commands to answer with.
+
+With `PilotSetTarget` issuing commands that reach a weapon director, the answer exists, and the arm
+runs. Measured on `USN02` at 3000 mission ticks, against a control built from the same tree with
+only the command-target fill disabled:
+
+| | control | with the arm |
+| --- | --- | --- |
+| `command_targets units_with` | 0 | **14** |
+| `shots` | 729 | **734** |
+| `hull` | 181 | 180 |
+| `attributions` | 181 | 181 |
+| `deaths` | 2 | 2 |
+| `total_damage` | 18490.1 | **18525.6** |
+
+Five more shots and 35.5 more damage, with one hull hit moving to a different target - the
+attribution count is unchanged, so a hit was redistributed rather than added. That is the shape the
+arm should produce: both 8.7 arms append **unsorted**, so their entries sit at the end of the order
+array and are tried first, which changes *which* candidate a gun reaches before its range and
+window tests, not how many guns fire.
+
+This is the first gameplay number this session has moved through the order chain, and it is small
+because it should be. The arm only changes the candidate ordering for units that hold a command
+target - fourteen of them here - and only where the commanded target is within a gun's reach. In
+`USN01` the same arm runs for five aircraft and changes nothing at all, because their nearest enemy
+sits at 10633 m against 800 m guns.
+
+**It is not directed air attack.** No aircraft flies toward anything: the command reaches the
+director and the bot task installs, but `0099ACD0` is unbound and the plan slots that would steer a
+plane are not produced. What moved is ship gunnery preferring a commanded target it could already
+reach.

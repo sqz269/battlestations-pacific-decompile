@@ -175,6 +175,13 @@ struct GameGunneryHost::Impl {
     void attach_passes();
 
     void run_gunnery_pass(std::size_t index, float dt);
+    void refresh_command_targets();
+    // 0071EBF0 per unit, one based; 0 when the unit has no current command
+    // target. Rebuilt only when the command row count or the unit count
+    // changes, which is at load and on a new order, not every tick.
+    std::vector<std::size_t> command_target_by_unit;
+    std::size_t command_rows_resolved{static_cast<std::size_t>(-1)};
+    std::size_t command_targets_resolved{0};
     void run_gun_aim_and_fire(float dt);
     void run_projectiles(float dt);
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
@@ -1099,6 +1106,39 @@ private:
 
 }  // namespace
 
+// The per-unit answer to 0071EBF0, resolved once rather than per unit per tick.
+// A first cut did the name match inside run_gunnery_pass and cost O(commands x
+// units) every unit every tick - 77 units against 83 current commands - which
+// took a 40-second mission past ten minutes. The semantics are unchanged; only
+// the placement is.
+void GameGunneryHost::Impl::refresh_command_targets() {
+    const std::vector<GameCommandRow>& command_rows = units.commands().rows();
+    if (command_rows_resolved == command_rows.size()
+        && command_target_by_unit.size() == units.count()) {
+        return;
+    }
+    command_rows_resolved = command_rows.size();
+    command_target_by_unit.assign(units.count(), 0);
+    std::map<std::string, std::size_t> by_name;
+    for (std::size_t i = 0; i < units.count(); ++i) {
+        const GameUnitRow* row = units.unit_row(i);
+        if (row != nullptr && !row->name.empty()) by_name.emplace(row->name, i + 1);
+    }
+    for (const GameCommandRow& command : command_rows) {
+        if (!command.current || command.target_token.empty()) continue;
+        if (command.unit_index >= command_target_by_unit.size()) continue;
+        const std::map<std::string, std::size_t>::const_iterator found =
+            by_name.find(command.target_token);
+        if (found != by_name.end()) {
+            command_target_by_unit[command.unit_index] = found->second;
+        }
+    }
+    command_targets_resolved = 0;
+    for (std::size_t value : command_target_by_unit) {
+        if (value != 0) ++command_targets_resolved;
+    }
+}
+
 void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
     UnitState& state = unit_state[index];
     if (!state.attached) return;
@@ -1108,6 +1148,16 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
     // 00835860, and 0071EBF0 takes the newest queued command's target.
     state.fire_target = 0;
     state.command_target = 0;
+    // 0071EBF0 answers with the newest QUEUED COMMAND's target. Until now this
+    // host had no queued commands to answer with, so the field stayed 0 and
+    // step 8.7's first arm was always skipped. The script-order path now issues
+    // real commands that reach a weapon director, so the answer exists: take the
+    // unit's current command row and resolve its target by name, exactly as the
+    // fire-target arm below resolves its own.
+    refresh_command_targets();
+    if (index < command_target_by_unit.size()) {
+        state.command_target = command_target_by_unit[index];
+    }
     if (ship_ai != nullptr) {
         const std::vector<GameShipAiRow>& rows = ship_ai->rows();
         if (index < rows.size()) {
@@ -2229,6 +2279,9 @@ void GameGunneryHost::report() {
             "general_bomb=%zu drop_kamikaze=%zu paratrooper=%zu (of %zu units with guns)",
             torpedo, general_bomb, drop_kamikaze, paratrooper, per_unit.size());
     }
+    host.log.notef("summary mission gunnery command_targets units_with=%zu "
+        "(0071EBF0's answer, step 8.7's first arm; 0 means that arm never runs)",
+        host.command_targets_resolved);
     host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
         "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu "
         "base_tick_timers_live=%llu expired=%llu",
