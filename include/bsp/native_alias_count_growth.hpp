@@ -33,4 +33,9 @@ static_assert(sizeof(NativeAliasListLengthError) == 0x28);
 // write the count. This new interface is not a native binary replacement.
 void grow_native_alias_list_count_004ce780(void* actual_owner, std::uint32_t increment);
 
+// 004CEE30..004CEEC2: same complete operation/lifetime, with the native
+// DWORD unit-registry node limit 3FFFFFFF instead of alias-node 1FFFFFFF.
+// Both full bodies and FH3 maps agree after address/bound normalization.
+void grow_native_unit_registry_count_004cee30(void* actual_owner, std::uint32_t increment);
+
 } // namespace bsp
