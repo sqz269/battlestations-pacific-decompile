@@ -14,6 +14,43 @@ struct NativeSystemConstantRegistryStorage {
 static_assert(sizeof(NativeSystemConstantRegistryStorage)==0x10);
 static_assert(offsetof(NativeSystemConstantRegistryStorage,constants_04)==4);
 
+// Borrow the application's actual 0108FE94, 01090AA0, 01090AA8 and 01090AA4
+// cells. The string context supplies the last three; no projected manager,
+// retained operation, lifetime binding, allocator callback or heap frame.
+struct NativeSystemConstantRegistryRawContext {
+    void* volatile& current_registry_0108fe94;
+    NativeStringRawPoolContext& strings;
+};
+
+// B5BF70 raw-owner path. Caller supplies fresh, DWORD-aligned readable/writable
+// 10h storage; this call keeps its own fixed 8h name/20h record scratch. The
+// borrowed cells/providers remain valid through all calls and cleanup. Native
+// array extents must remain valid; the normal literal sequence builds 52 rows.
+// Source C++ exceptions run the recovered 106-state cleanup; this never frees
+// fresh, retains a host operation or retries construction. Parent B32410 owns
+// the later free. Native placement cleanup is a no-op, so unpublished arrays
+// and uncounted partial strings can leak. A base-construction failure can leave
+// the native publication/registration intact. See the raw-constructor report.
+// Profiles are identity DWORDs; this is not the original FH3/SEH callable ABI.
+NativeSystemConstantRegistryStorage* construct_native_system_constant_registry_00b5bf70(
+    void* fresh, NativeSystemConstantRegistryRawContext&);
+NativeSystemConstantRegistryStorage* construct_native_system_constant_base_00b5b9e0(
+    NativeSystemConstantRegistryStorage&, NativeSystemConstantRegistryRawContext&);
+void destroy_native_system_constant_base_00b5ba80(
+    NativeSystemConstantRegistryStorage&, NativeSystemConstantRegistryRawContext&);
+NativeCompiledShaderConstantStorage* construct_native_system_constant_00b5bbc0(
+    void* fresh, const NativeString&, std::uint32_t id, std::uint32_t second,
+    std::uint32_t first, std::uint32_t array_count, NativeStringRawPoolContext&);
+void reserve_native_system_constants_00b5bd10(NativeCompiledShaderConstants&,
+    std::int32_t request, NativeStringRawPoolContext&);
+void append_native_system_constant_00b5bed0(NativeCompiledShaderConstants&,
+    const NativeCompiledShaderConstantStorage&, NativeStringRawPoolContext&);
+// B5BF50's resize-to-zero composition: valid nonnegative current array/count;
+// decrement count before each current-row string release, then free current
+// data. The stale data/capacity fields are intentionally preserved.
+void destroy_native_system_constant_array_00b5bf50(NativeCompiledShaderConstants&,
+    NativeStringRawPoolContext&);
+
 class NativeSystemConstantRegistryLifetimeBinding;
 // Host continuation metadata, not original FH3 state. A failed operation is
 // one-shot and must remain alive with owner, source, binding and string domain.
