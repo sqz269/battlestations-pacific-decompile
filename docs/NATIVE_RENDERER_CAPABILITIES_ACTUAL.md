@@ -122,3 +122,11 @@ map. This is source execution and D3D9 query evidence, not execution of original
 B2C8E0 bytes, a rendered frame, native FH3 dispatch or gameplay validation.
 Immutable source, library, fixture, compiler-input, toolchain, runtime and original
 PE hashes are recorded in the report.
+
+## Integrated validation at 87dad090
+
+Actual raw AA0/AA8/AA4 source execution: ignored COM failure preimages, retained appended rows on post-arm cleanup, registration/return/canonical pool shutdown, real D3D9 S_OK caps and34 formats. Original B2C8E0/FH3 was not executed.
+
+The exact integrated source at `87dad0906ab21f6498d68eebacd8995ea86ddead` passed the strict MSVC Win32 build and both CTests. The existing focused fixture was relinked against that library with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest. Runtime module paths were measured inside the fixture; the capability capture occurs while its real Direct3D9 object remains alive. This adds an ownership overload to existing `native_renderer_gather_capabilities`, with no new native body, byte count or CMake registration. The packet passed 30 numeric direct-call checks.
+
+The combined checkpoint retains 3413 immutable artifacts at `local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json` (SHA-256 `930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3`). It records 13 new entry bodies (713 native bytes), the separate capability ownership overload, 14 saved/read-back annotations, seven completed returning tails, 61 passing call rows and 45 live/PE spans totaling 18,479 bytes including reused/evidence spans. The B22530 RET4 starts at B2258C and ends at B2258E; stored-body ends and return-instruction addresses are recorded separately. Worker evidence remains preserved. Full renderer lifetime, application adoption, original exception identity and gameplay remain incomplete.

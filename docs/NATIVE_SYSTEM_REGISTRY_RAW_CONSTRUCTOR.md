@@ -74,3 +74,12 @@ The actual `NativeSingletonDeletionBindings` / BD0400 finite profile map has no 
 The strict Win32 build and both existing CTests passed. One focused fixture passed seven cases: all 52 normal literals, failed base after registration, initial name-getter failure under state 1, child partial-string cleanup under outer state 2, failed reserve copy under state 7, and failures of the already-disarmed normal record and name returns. It checks actual profile/publication/manager slots, captured section depth, current array count, exact release sizes/order and native outstanding acquisitions. The reserve failure deliberately leaves one 128-byte unpublished buffer and one copied string; normal record/name return failures each leave one string. The fixture frees the supplied owner through the parent-compatible free domain without an operation, including before diagnostically clearing failed-base publication.
 
 The machine-readable report contains source/library/fixture/tool hashes and actually loaded module paths. The fixture uses actual raw manager and pool bodies. Test-only entry hooks inject exceptions and record acquisitions/returns; production has no such hooks. Its partial-string case throws after a real resize returns to establish a concrete partial-header preimage for child cleanup. An initial fixture assertion incorrectly expected unregister to shrink the manager count; it was corrected to require a null slot with unchanged length after review of BCFCA0. No production change resulted from that assertion. This is source cleanup validation, not original FH3 execution, ABI parity or game validation.
+
+## Integration clarification
+
+B5BF50 is a resize-to-zero specialization for constructor-produced arrays with
+nonnegative current count AND capacity. Its source does not implement the
+general B5BE10 negative-count initialization or negative-capacity reserve paths.
+The separately integrated NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL packet now provides
+B5DF00/B5DF70/B5BB20 and canonical raw singleton dispatch; original FH3/SEH,
+private frame aliases and gameplay remain unvalidated.

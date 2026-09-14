@@ -81,3 +81,11 @@ opened in that same process. Machine identity is measured from the loaded image;
 hashes are subsequently measured from disk files and their archive copies, not
 from mapped image memory. Observed tool executables do not constitute every
 toolchain dependency.
+
+## Integrated validation at 87dad090
+
+Seven complete original bodies versus integrated source: 24 reserve/resize/destructor comparisons. Allocation failure remains static evidence.
+
+The exact integrated source at `87dad0906ab21f6498d68eebacd8995ea86ddead` passed the strict MSVC Win32 build and both CTests. The existing focused fixture was relinked against that library with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest. Runtime module paths were measured inside the fixture; the capability capture occurs while its real Direct3D9 object remains alive. The packet passed 11 numeric direct-call checks.
+
+The combined checkpoint retains 3413 immutable artifacts at `local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json` (SHA-256 `930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3`). It records 13 new entry bodies (713 native bytes), the separate capability ownership overload, 14 saved/read-back annotations, seven completed returning tails, 61 passing call rows and 45 live/PE spans totaling 18,479 bytes including reused/evidence spans. The B22530 RET4 starts at B2258C and ends at B2258E; stored-body ends and return-instruction addresses are recorded separately. Worker evidence remains preserved. Full renderer lifetime, application adoption, original exception identity and gameplay remain incomplete.

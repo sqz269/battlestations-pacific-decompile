@@ -45,7 +45,9 @@ void reserve_native_system_constants_00b5bd10(NativeCompiledShaderConstants&,
     std::int32_t request, NativeStringRawPoolContext&);
 void append_native_system_constant_00b5bed0(NativeCompiledShaderConstants&,
     const NativeCompiledShaderConstantStorage&, NativeStringRawPoolContext&);
-// B5BF50's resize-to-zero composition: valid nonnegative current array/count;
+// B5BF50's resize-to-zero composition: valid current array with nonnegative
+// count AND capacity, as produced by this constructor. This is not a general
+// B5BE10 port for negative count/capacity preimages;
 // decrement count before each current-row string release, then free current
 // data. The stale data/capacity fields are intentionally preserved.
 void destroy_native_system_constant_array_00b5bf50(NativeCompiledShaderConstants&,
