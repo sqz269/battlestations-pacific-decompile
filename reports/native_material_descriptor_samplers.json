@@ -1,0 +1,253 @@
+{
+  "base_commit": "c068aeded5c813772096889700d00097dce886f6",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "url": "http://127.0.0.1:8089",
+    "mode": "verified BSP wrappers; read-only Ghidra; no annotations by worker"
+  },
+  "validation": {
+    "seeds": "8 installed/live matches; python tools/ghidra_export.py verify-seeds",
+    "build": "./scripts/build.ps1; default strict MSVC Win32; 2/2 CTests passed",
+    "build_log": "local/descriptor-append-build.log",
+    "fixture_command": "./local/run_descriptor_append_probe.ps1",
+    "fixture_log": "local/descriptor-append-probe.log",
+    "fixture_status": "local/descriptor-append-probe-status.json",
+    "native_normal_body_bytes": 2869,
+    "native_context_bytes": 7326,
+    "scope": "One combined 9-sampler original/source schedule; actual default loader hit/null, all source branches, live descriptor/list/stage/counter mutation, 5 actual pairs, pooled names and actual resource references. Source-only nested failure/replay and guard77. Real Win32/XLive null-online guard domain only.",
+    "original_fixture_boundary": "Relocated bodies share substantive source reserve/string/cache children and an imported atomic ABI bridge. The bridge records the relocated post-release residue for the source input. No independent child/Windows-atomic differential claim."
+  },
+  "call_validation": {
+    "command": "python tools/verify_report_calls.py reports/native_material_descriptor_samplers.json reports/native_sampler_cache_entry.json",
+    "numeric_rows_checked": 26,
+    "failed": 0,
+    "log": "local/descriptor-append-report-calls.log"
+  },
+  "archive": {
+    "directory": "local/archives/native-descriptor-sampler-append-20260914-final",
+    "manifest": "local/archives/native-descriptor-sampler-append-20260914-final/MANIFEST.json",
+    "zip": "local/archives/native-descriptor-sampler-append-20260914-final.zip",
+    "policy": "Frozen after report-call validation; manifest carries source, native evidence, actual compiler dependencies/read logs, selected linker objects/libraries, toolchain binaries and runtime-module files. Manifest SHA is reported in the worker handoff to avoid a self-hash cycle."
+  },
+  "native_context_spans": [
+    {
+      "address": "00b354d0",
+      "bytes": 109,
+      "sha256": "c0ff7519fdcdb321955aa4bd1e0d45ffb1555fbd963f4220d443d7ed94c390d0",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b3b3c0",
+      "bytes": 4049,
+      "sha256": "190350a4fbf442dd6820d2b5caad70f55f4f9b2eb1be3bbb97c5b944a1ed0757",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b57b50",
+      "bytes": 1149,
+      "sha256": "2a72cdf3d77507ffc20c4d678a25be378fc9c4b2a03e172a05275f19f405ae4d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b5f720",
+      "bytes": 622,
+      "sha256": "30f75b11b4212d9b5b3b25a493d8b4e051adf7f92958e64a00e763974421c342",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b44b10",
+      "bytes": 214,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b18d60",
+      "bytes": 304,
+      "sha256": "b7aa3f1e6a7a8f18575d4901439ba841e54aa873fb6a2b236dcc8ee7335ebebc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b44690",
+      "bytes": 188,
+      "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004de4b0",
+      "bytes": 199,
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b1b810",
+      "bytes": 20,
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5f314",
+      "bytes": 16,
+      "sha256": "375cea276b3f63e0845a8f01513848d4d23fd54a5edbe8378c13fd1c401fc8f7",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d621f4",
+      "bytes": 16,
+      "sha256": "e8bc160ead1d1b5de32de811f3eb9191b5b8dd5c01e4f3e98dc084231dbc121d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d61be8",
+      "bytes": 64,
+      "sha256": "3f4a00ea733a638a87c4b3b1fe7a8e1399abe6d111913b24465ac57b0e4c23dd",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce7d08",
+      "bytes": 64,
+      "sha256": "47499ad68d3253371f3b03a6c0a43b8943fab2d73aa25849b3d6a1320e8d7f41",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce3c5c",
+      "bytes": 8,
+      "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df4940",
+      "bytes": 76,
+      "sha256": "1b5184ad633ae594f955deeb53aa80fc1a29272d976a57348ce3644342e91b06",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df4a9c",
+      "bytes": 52,
+      "sha256": "5616393777ec22fc717e740b7ca46c4ef992e6fac649d28e2a25513ba5feedb6",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbc670",
+      "bytes": 50,
+      "sha256": "2ef1d16ed1cb185336849af780f26d7c915f653926c1e337d6806db6b5638b9c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbc750",
+      "bytes": 26,
+      "sha256": "7f000c3e7373f20f37583af5f46f503b9a40cd02c47aa7d4ec3f16a87f352f7a",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbf400",
+      "bytes": 11,
+      "sha256": "b62ccc3936cfad622502028a9feb8cd696d707db86919d853e3557f5d84fd8bc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df7d74",
+      "bytes": 44,
+      "sha256": "cbb8a69f412beb9270298bc6e8c5781565d98a9d188044d58e906dd5a12b0efe",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00c2f1d2",
+      "bytes": 6,
+      "sha256": "3345abb99dbdaca4f5100b722e53846683f6ac8543ce3a688d54b70ed0e54cab",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00be1e39",
+      "bytes": 27,
+      "sha256": "a4e1a80239a40c5e9f5f91b7b2177fbd18ef148e6369894a935000e6dea8c2a0",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d683b0",
+      "bytes": 12,
+      "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+      "live_disk_equal": true
+    }
+  ],
+  "limits": [
+    "Descriptive names are hypotheses; added source interfaces are not native ABI replacements.",
+    "Explicit native initial and post-release scratch preimages are required; installed whole-routine scratch equivalence needs matching captures.",
+    "Persistent source exception state intentionally differs from original FH3; no native exceptional execution is claimed.",
+    "Existing raw device getter and canonical input/online/SDK providers remain explicit dependencies; nonnull cursor path is not fixture-tested.",
+    "Canonical current virtual0 is required on zero; the actual resource fixture retains references and does not exercise terminal destruction.",
+    "No compiler-parent integration, rendered/game behavior, or full source game validation.",
+    "The first in-progress build encountered concurrent CMake regeneration after this worker added its final source registration; the final stable registered build passed."
+  ],
+  "packet": "orch5_native_descriptor_sampler_append",
+  "status": "complete_normal_actual_storage_schedule_with_explicit_provider_and_source_exception_limits",
+  "host_steps": [
+    {
+      "address": "00b3b2ba",
+      "native": "004de4b0",
+      "function": "00b3b280",
+      "contract": "Actual singleton getter, shared raw manager/F8D420."
+    },
+    {
+      "address": "00b3b2c5",
+      "native": "00b1b4d0",
+      "function": "00b3b280",
+      "contract": "ECX captured actual1Ch loader; stack actual name18; RET4."
+    },
+    {
+      "address": "00b3b2df",
+      "native": "00b44cf0",
+      "function": "00b3b280",
+      "contract": "ECX actual pass; stacked current builder8C, captured owner, actual name18; RET0C."
+    },
+    {
+      "address": "00b3b313",
+      "native": "00b18fb0",
+      "function": "00b3b280",
+      "contract": "ECX current builder78 effect; stacked index20/name18; RET8."
+    },
+    {
+      "address": "00b3b328",
+      "native": "00b5f100",
+      "function": "00b3b280",
+      "contract": "ECX actual pass; stacked index/full stage DWORD zero-extended from byte0C; RET8. Leaf copies B-16 local DWORD with only low byte written."
+    },
+    {
+      "address": "00b3b369",
+      "native": "00b5ed60",
+      "function": "00b3b280",
+      "contract": "ECX actual pass; stacked current slot,state,value; RET0C. Reload current list after call."
+    },
+    {
+      "address": "00b3b2ef",
+      "native": "InterlockedDecrement@00ce2220",
+      "function": "00b3b280",
+      "contract": "Actual captured owner+04, stdcall pointer; returned zero gates current virtual0."
+    },
+    {
+      "address": "00b3b2ff",
+      "native": "captured_owner+vtable00",
+      "function": "00b3b280",
+      "contract": "Current owner table slot0 after atomic zero; ECX same captured owner; no stacked arguments."
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b3b280",
+      "bytes": 306,
+      "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+      "live_disk_equal": true,
+      "direct_calls": 6,
+      "name": "append_native_material_descriptor_samplers_00b3b280",
+      "source": "src/native_material_descriptor_samplers.cpp",
+      "coverage": "complete normal schedule in explicit actual-storage/provider domain; source failures retain acquisitions; native FH3 not reproduced"
+    }
+  ],
+  "source_sha256": {
+    "docs/NATIVE_MATERIAL_DESCRIPTOR_SAMPLERS.md": "bc8d90047775dcd3920e07d21ff2a1210496ab256277101faaff451cdf354a6e",
+    "include/bsp/native_material_descriptor_samplers.hpp": "cc57dd5ada01a5971c4d898f459a7a40ca9c2de7a8e3aba433d4d013178e0759",
+    "src/native_material_descriptor_samplers.cpp": "21f41ecb994cd986b7d4daba5e154131688ead43ad2e0b14f0971e8e0d5adec4"
+  }
+}
