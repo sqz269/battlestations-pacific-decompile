@@ -15,7 +15,7 @@ destructor and deleting wrapper reached through its actual D62074 profile.
 | B151C0 | B151C0..B151DD | 30 | retain existing scalar deleting destructor role | Full body; one three-byte listing gap |
 | B0F6E0 | B0F6E0..B0FBF8 | 1305 | BSP_RenderResources_ReleaseTransientMembers | Full 561-instruction body |
 | B52270 | B52270..B522FE | 143 | BSP_RenderServiceTextures_ReleaseAuxiliaryReferences | Full 64-instruction body; auxiliary meanings remain provisional |
-| B52400 | B52400..B52543 | 324 | BSP_RenderServiceTextures_Destroy | Full original body; Ghidra currently ends at B524CB |
+| B52400 | B52400..B52543 | 324 | BSP_RenderServiceTextures_Destroy | Full original body; saved Ghidra body repaired through B52543 |
 | B52840 | B52840..B5285D | 30 | retain existing scalar deleting destructor role | Full body; one three-byte listing gap |
 
 The live BSP CLI verified `bsp`, `/battlestationspacific.exe`, base00400000,
@@ -115,13 +115,20 @@ BD30F0 respectively, each transitioning to the preceding state. Normal code
 disarms each vector before its explicit resize/free. Earlier texture failures
 leave later texture references untouched while this vector/base cleanup runs.
 
-Three listing holes are exactly `ADD ESP,4`: B15021..B15023,
-B151D5..B151D7, B52855..B52857. More seriously, B52400 ends at its first
-returning BF6989 call, and `ghidra flow` incorrectly reports zero gaps because
-the missing fallthrough lies beyond the stored function body. Original bytes
-prove B524CC..B52543 is the continuous 118-byte tail, ending RET before INT3.
-CBC432..CBC43B and CBFF6A..CBFF73 are raw handlers with no Ghidra function.
-All raw ranges use inclusive bounds in the report. No repair was performed.
+The primary repaired and saved the three missing `ADD ESP,4` instructions at
+B15021..B15023, B151D5..B151D7 and B52855..B52857. It also decoded the
+120-byte B524CC..B52543 tail, cleared the verified call-site flow overrides,
+and recreated B52400 through B52543 while preserving its prior default name,
+prototype and plate comment. The resulting 324-byte body has 116 listed
+instructions and no remaining gap under the explicit tail check. The earlier
+118-byte label was an arithmetic error; the inclusive addresses were correct.
+
+CBC432..CBC43B and CBFF6A..CBFF73 are now defined and saved as ten-byte FH3
+routing functions, with default FUN names. No callee no-return flag changed.
+The saved repairs and old states are recorded in
+`reports/native_render_resources_listing_repair_bl.json` and
+`reports/native_render_resources_eh_definition_bl.json`. These repairs receive
+no source reconstruction credit.
 
 ## Ownership limits and next packets
 
@@ -162,11 +169,9 @@ Suggested bounded followups, each with disjoint source ownership:
    refresh exports and then repeat the mechanical call audit. No native body
    reconstruction credit belongs to this packet.
 
-The report retains every numeric call site, including raw-tail calls, rather
-than mislabelling them indirect to satisfy an older verifier. The current
-59e84616 verifier lacks `no_ghidra_function` support; its expected raw-boundary
-failures are reported explicitly: 141 total rows, 35 numeric rows checked,
-26 passed and nine failed at the seven raw-tail calls and two raw-handler
-jumps. The remaining 106 indirect rows are skipped by this verifier and rely
-on the complete listing/provider evidence. This design packet makes no build, runtime,
-native ABI or whole-game cleanup-completion claim.
+The report retains every numeric call site, including the former raw-tail
+calls. After the saved repairs, all 35 numeric call rows pass the mechanical
+verifier. The 106 genuine indirect rows remain outside that verifier and rely
+on the listing and concrete provider evidence. The earlier nine raw-boundary
+failures remain in the report as historical evidence. This design packet
+makes no build, runtime, native ABI or whole-game cleanup-completion claim.

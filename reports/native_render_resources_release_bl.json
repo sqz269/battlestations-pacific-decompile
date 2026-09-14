@@ -3,7 +3,7 @@
   "created_utc": "2026-09-14T03:18:32.276336+00:00",
   "base_commit": "59e84616a3bc5ccc065fdf094738319e88d41004",
   "bk_commit": "2eea9361f82614818242f31f518b3d24ca4285a9",
-  "status": "analysis_only_design_and_dependency_packet",
+  "status": "analysis_only_saved_listing_repaired_no_source_reconstruction",
   "native_body_credit": 0,
   "source_files_added": false,
   "target": {
@@ -87,7 +87,9 @@
         "00b15023"
       ],
       "instruction": "ADD ESP,4",
-      "bytes": "83c404"
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
     },
     {
       "call_site": "00b151d0",
@@ -97,7 +99,9 @@
         "00b151d7"
       ],
       "instruction": "ADD ESP,4",
-      "bytes": "83c404"
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
     },
     {
       "call_site": "00b52850",
@@ -107,7 +111,9 @@
         "00b52857"
       ],
       "instruction": "ADD ESP,4",
-      "bytes": "83c404"
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
     },
     {
       "call_site": "00b524c7",
@@ -117,29 +123,9 @@
         "00b524cc",
         "00b52543"
       ],
-      "evidence": "Full original continuous fallthrough tail118bytes; native RET atB52543 thenINT3; live proto samples have no function; ghidra flow reports0gaps because tail lies outside body"
-    }
-  ],
-  "no_ghidra_function": [
-    {
-      "inclusive_start": "00b524cc",
-      "inclusive_end": "00b52543",
-      "role": "118-byte continuous B52400 tail beyond saved body",
-      "containing_original_entry": "00b52400",
-      "verified_no_function_samples": [
-        "00b524cc",
-        "00b52540"
-      ]
-    },
-    {
-      "inclusive_start": "00cbc432",
-      "inclusive_end": "00cbc43b",
-      "role": "B14F60 FH3 handler; MOV EAX,DF4640; JMP BF6B43"
-    },
-    {
-      "inclusive_start": "00cbff6a",
-      "inclusive_end": "00cbff73",
-      "role": "B52400 FH3 handler; MOV EAX,DF8A94; JMP BF6B43"
+      "evidence": "Full original continuous fallthrough tail120bytes; native RET atB52543 thenINT3; live proto samples have no function; ghidra flow reports0gaps because tail lies outside body; this is the pre-repair observation, superseded by the saved repair report.",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
     }
   ],
   "call_steps": [
@@ -968,49 +954,49 @@
       "function": "00b52400",
       "instruction": "call 0xb521e0",
       "native": "00b521e0",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b524e5",
       "function": "00b52400",
       "instruction": "call 0xbf6989",
       "native": "00bf6989",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b524f8",
       "function": "00b52400",
       "instruction": "call 0xb52170",
       "native": "00b52170",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b52500",
       "function": "00b52400",
       "instruction": "call 0xbf6989",
       "native": "00bf6989",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b52512",
       "function": "00b52400",
       "instruction": "call 0xb52170",
       "native": "00b52170",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b5251a",
       "function": "00b52400",
       "instruction": "call 0xbf6989",
       "native": "00bf6989",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b5252c",
       "function": "00b52400",
       "instruction": "call 0xbd30f0",
       "native": "00bd30f0",
-      "no_ghidra_function": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
     },
     {
       "address": "00b52843",
@@ -1092,14 +1078,14 @@
       "native": "00bf6b43",
       "function": "00cbc432",
       "kind": "tail_jump",
-      "no_ghidra_function": "00cbc432..00cbc43b inclusive"
+      "pre_repair_boundary": "00cbc432..00cbc43b inclusive"
     },
     {
       "address": "00cbff6f",
       "native": "00bf6b43",
       "function": "00cbff6a",
       "kind": "tail_jump",
-      "no_ghidra_function": "00cbff6a..00cbff73 inclusive"
+      "pre_repair_boundary": "00cbff6a..00cbff73 inclusive"
     },
     {
       "address": "00b0fc00",
@@ -1944,7 +1930,13 @@
     }
   ],
   "verification": {
-    "report_call_verifier": {
+    "build": "not run",
+    "fixture": "none added/run",
+    "runtime": "not run",
+    "ghidra_mutations": "Primary saved four flow repairs, one truncated function recreation and two raw handler definitions.",
+    "metadata_edits": false,
+    "source_pins": "18 source-provider pins and3 BK pins match",
+    "before_listing_repair": {
       "command": "python tools/verify_report_calls.py reports/native_render_resources_release_bl.json",
       "exit_code": 1,
       "total_call_rows": 141,
@@ -1966,12 +1958,18 @@
       "expected_failure": "All nine numeric failures are no containing Ghidra function at seven raw tail calls and two raw EH handler jumps; raw inclusive bounds retained. No other reported errors.",
       "log_sha256": "5597b94cb7d4d0219ab22164cb4aad482e18f026028935d89a7dddd3c534c175"
     },
-    "build": "not run",
-    "fixture": "none added/run",
-    "runtime": "not run",
-    "ghidra_mutations": false,
-    "metadata_edits": false,
-    "source_pins": "18 source-provider pins and3 BK pins match"
+    "listing_repair_report": "reports/native_render_resources_listing_repair_bl.json",
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resources_release_bl.json",
+      "exit_code": 0,
+      "total_call_rows": 141,
+      "numeric_rows_checked": 35,
+      "numeric_rows_passed": 35,
+      "failed_rows": 0,
+      "indirect_rows_skipped": 106,
+      "scope": "Current saved containing functions and numeric calls checked; dynamic profile targets remain listing/provider evidence.",
+      "log_sha256": "863d1a09cdca40c4ae1aea5ea0a0c98b956add7565a9a9598c5555bd05b23cf3"
+    }
   },
   "boundaries": [
     "Complete body analysis is not complete concrete ownership closure. Unknown member producers/profiles remain explicit dependencies.",
@@ -1979,5 +1977,31 @@
     "No abstract native stubs, invented defaults, extra retains/releases or constructor changes.",
     "NativeFH3/SEH/CRT exception identity and failure-compatible helper terminal composition remain unproved.",
     "No proposed name was applied; correct library/scalar-deleting roles preserved."
-  ]
+  ],
+  "prior_raw_spans": [
+    {
+      "inclusive_start": "00b524cc",
+      "inclusive_end": "00b52543",
+      "role": "120-byte continuous B52400 tail beyond saved body",
+      "containing_original_entry": "00b52400",
+      "verified_no_function_samples": [
+        "00b524cc",
+        "00b52540"
+      ],
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    },
+    {
+      "inclusive_start": "00cbc432",
+      "inclusive_end": "00cbc43b",
+      "role": "B14F60 FH3 handler; MOV EAX,DF4640; JMP BF6B43",
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    },
+    {
+      "inclusive_start": "00cbff6a",
+      "inclusive_end": "00cbff73",
+      "role": "B52400 FH3 handler; MOV EAX,DF8A94; JMP BF6B43",
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    }
+  ],
+  "no_ghidra_function": []
 }
