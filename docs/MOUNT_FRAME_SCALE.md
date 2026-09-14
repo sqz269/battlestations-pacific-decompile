@@ -487,3 +487,31 @@ as contracts and are not leased. Leased: `00491950`, `00491A30`, `006F3660`, `00
    real per-gun mount frame, using `include/bsp/gun_mount_positions.hpp` for the origin and
    `include/bsp/mount_frame_scale.hpp` for the guard, and decide explicitly whether the
    reconstruction reproduces the native `asin(y/s)` defect or corrects it.
+
+## Correction from integration: `00521370` clamps, it does not fault
+
+Two merged packets disagreed about what `00521370` does at the end of the angle extraction, and
+**both were wrong**. Settled by reading the body:
+
+```
+00521374  FLD   float ptr [ESI+4]        ; the raw y
+00521378  FLD   double ptr [00D7A250]    ; -1.0  (bytes 00 00 00 00 00 00 f0 bf)
+00521380  FCOMI ST0,ST1 / 00521382 JA    ; lower clamp
+00521386  FLD1                           ; +1.0
+0052138a  FCOMI ST0,ST1 / 0052138c JBE   ; upper clamp
+00521394  FSTP  float ptr [ESP+8]
+```
+
+- **`docs/MATRIX_ORTHOGONAL_INVERSE.md` said** "`00521370`'s `FLD1` compares against the constant
+  `-1.0`, so only the lower clamp belongs to it; the upper bound is `0042CF10`'s". Wrong: `FLD1`
+  loads `+1.0` and is the **upper** clamp; the `-1.0` is a separate double at `00D7A250`. Both
+  bounds belong to `00521370`.
+- **`docs/MOUNT_FRAME_SCALE.md` said** that for `s < 1` there is a critical elevation `asin(s)`
+  above which the native `asin` is "a **domain error, not a clamp**". Wrong: the argument is clamped
+  into `[-1, 1]` before the `asin`, so an over-scaled input **saturates at +/-90 degrees**. It does
+  not fault, and no crash should be hunted on this path.
+
+What survives unchanged is the magnitude of the error below saturation: with a uniform mount scale
+`s` the extracted pitch is `asin(sin(true)/s)`, so a true 30 degree pitch still reads 45.017 degrees
+at `s = 0.7069` and 35.266 degrees at `s = 0.866`. Only the behaviour past saturation is corrected -
+it pins at 90 degrees rather than faulting.

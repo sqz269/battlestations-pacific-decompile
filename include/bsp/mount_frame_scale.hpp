@@ -78,12 +78,19 @@ bool mount_frame_arc_is_exact(const MountFrameScale& scale,
 //     reported = asin( sin(true_pitch) / scale )
 //
 // because 0042D0D0 with normalize = 0 hands the arc a y component divided by
-// scale and 00521370 takes asin of it unchanged. Returns a quiet NaN when
-// |sin(true_pitch) / scale| > 1, which is the native domain error, not a
-// clamp: the native code has no clamp either.
+// scale and 00521370 takes asin of it.
+//
+// CORRECTED at integration: 00521370 DOES clamp, so the argument saturates
+// rather than faulting. 00521374 loads the raw y, 00521378 loads the double
+// -1.0 at 00D7A250 and 00521380/00521382 apply the lower bound, then 00521386
+// FLD1 loads +1.0 and 0052138A/0052138C apply the upper bound, before the
+// result is stored at 00521394. So |sin(true_pitch) / scale| > 1 pins the
+// reported pitch at +/-pi/2; it is not a domain error and produces no NaN.
+// An earlier revision of this header claimed the opposite.
 float mount_frame_arc_reported_pitch(float true_pitch_radians, float scale);
 
-// reported - true, in radians. NaN propagates from the function above.
+// reported - true, in radians. Saturates with the function above rather than
+// propagating a NaN.
 float mount_frame_arc_pitch_error(float true_pitch_radians, float scale);
 
 }  // namespace bsp

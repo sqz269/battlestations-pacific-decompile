@@ -71,10 +71,15 @@ float mount_frame_arc_reported_pitch(float true_pitch_radians, float scale) {
     if (!(scale > 0.0f)) {
         return quiet_nan;
     }
-    const float y = std::sin(true_pitch_radians) / scale;
-    if (!(y >= -1.0f && y <= 1.0f)) {
-        return quiet_nan;
-    }
+    // 00521374..00521394 clamps the argument into [-1, 1] before the asin: the
+    // lower bound against the double -1.0 at 00D7A250 (00521378/00521380/
+    // 00521382) and the upper against FLD1 (00521386/0052138A/0052138C). So an
+    // over-scaled mount saturates at +/-pi/2 instead of faulting. An earlier
+    // revision of this file returned a NaN here, on the mistaken reading that
+    // the native code had no clamp.
+    float y = std::sin(true_pitch_radians) / scale;
+    if (y < -1.0f) y = -1.0f;
+    if (y > 1.0f) y = 1.0f;
     return std::asin(y);
 }
 
