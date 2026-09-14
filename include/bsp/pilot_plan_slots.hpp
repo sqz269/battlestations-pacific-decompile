@@ -112,6 +112,21 @@ void pilot_evaluate_plan_slots_0099bc00(const PilotPlanSlot slots[5], float cmd[
 // the whole thing is round-half-up(c * 127) / 127.
 float pilot_quantize_control_axis_007bb6e0(float command) noexcept;
 
+// 0099BF30 BSP_PilotBot_RepairCommandBands runs between the slew and the command
+// block and is the last writer of all five command floats, so it is deliberately
+// NOT reconstructed here - a host that skips it is passing the slew result
+// through, which is an assumption about the plan's state rather than a
+// simplification of the code.
+//
+// The assumption is a good one and docs/PILOT_COMMAND_BAND_REPAIR.md says why:
+// the three control-band tables are constructed EMPTY and the throttle ceiling
+// at plan+258h is constructed 1.0f, and the function returns without writing on
+// both. On a freshly constructed plan it writes nothing at all. But 0099B450
+// does not reset either field - its stores start at plan+26Ch - so they are
+// sticky, and no writer of either was found by a scan that cannot see
+// register-held addresses, SIB or block copies. Treat the pass-through as
+// well-founded, not as proven.
+
 // The rate constant 0099ACD0 passes to 0099BEE0: 00CE3D34, .rdata.
 inline constexpr float kPilotSlewRate = 4.0f;
 // 00D1F39C, the think interval 0099ACD0 gates on. The planner runs at about

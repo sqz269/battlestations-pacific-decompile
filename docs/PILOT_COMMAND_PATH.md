@@ -397,3 +397,31 @@ See `reports/pilot_command_path.json`'s `corrections` block for the machine-read
 - **Was:** line 389: docs/MOTION_DIFFERENTIAL.md reads unit+9C0h as a ship's maximum speed and +9C8h as a radius; the two layouts cannot both hold at the same base
   **Is:** they hold at two different bases: the stride-8 byte record is the plane family's layout and the MaxSpeed float is the class-06 ship family's
   **Evidence:** 00822C20 BSP_UnitInstance_SEntityInit writes the float at 00822C65 and appears in exactly five vtables (00CF9150, 00CFA818, 00CFB7D8, 00CFC470, 00D09718), each a class-06 family vtable + A0h; no plane vtable carries it, while 007CFE4C MOV byte [ESI+9C0h],BL in BSP_PlaneUnitInstance_Construct and the five stride-8 stores in FUN_007CDC70 treat the offset as bytes
+
+## Correction: `0099BF30`'s gates and fallbacks (packet `cc7-bandrepair`)
+
+The paragraph above was written with the arms read but the gate placement and the fallback
+selectors taken together rather than per axis. `docs/PILOT_COMMAND_BAND_REPAIR.md` read the whole
+body, including the tail past `0099C130`, and three statements need replacing.
+
+**The `vtable[38h]` gate is on pitch and roll, not on roll alone, and yaw is ungated.**
+`0099BF99 JZ 0099C047` skips the **pitch** arm on a false predicate; the yaw arm at
+`0099C047`-`0099C0F2` has no gate at all; roll has its **own second, independent** call to the same
+predicate at `0099C103`. The text above has yaw and pitch unconditional with roll gated, which is
+the reverse for pitch and wrong for yaw.
+
+**The fallback selector differs per axis.** Only **yaw** uses the sign of `unit+C68h` (re-read at
+`0099C06D`), giving `±1.1f`. **Pitch** compares `|bank|` against a double `pi/2` at `0099BFBD` and
+picks `+1.1f` or `-1.1f` from that. **Roll** uses the sign of `cmd[2]` itself at `0099C129`, gives
+`±1.0f`, and is **not clamped** afterwards - the other two are.
+
+**The throttle/air-brake arm reads `plan+258h`, not `bot+258h`**, and the condition is
+`ceiling < 1.0f` with the positive branch doing `cmd[3] = min(cmd[3], ceiling)`; only the
+non-positive branch gives `cmd[3] = 0.01f` and `cmd[4] = max(cmd[4], -ceiling)`.
+
+**And the whole function is a no-op on a freshly constructed plan.** The three band tables are
+constructed empty (`0099BDB0` zeroes the count at table`+0C4h`) and `plan+258h` is constructed
+`1.0f` (`0099BE12`), while `0099B940` returns immediately on an empty table and `0099C164` returns
+on `ceiling >= 1.0f`. `0099B450` does not reset either, so they are sticky state - and **no writer
+of either was found**, by a scan that is blind to register-held addresses, SIB and block copies.
+That negative is bounded; it is not a proof that the repair never fires.

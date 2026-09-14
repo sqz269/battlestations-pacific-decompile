@@ -2250,11 +2250,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     //   no-op until a planner exists.
                     // * **0099BF30's band repair**, which runs between the slew
                     //   and the command block and is the LAST WRITER of all five
-                    //   command floats (docs/PILOT_PLAN_SLOT_PIPELINE.md). Its
-                    //   body is unread, so this passes the slew result straight
-                    //   through - which is an assumption, not a recovered
-                    //   behaviour, and is the reason this pipeline is not yet
-                    //   claimed faithful end to end.
+                    //   command floats. Its body has since been read
+                    //   (docs/PILOT_COMMAND_BAND_REPAIR.md) and on a freshly
+                    //   constructed plan it writes NOTHING: the three band
+                    //   tables are constructed empty and the throttle ceiling
+                    //   1.0f, and both guards return early. So the pass-through
+                    //   here is well-founded rather than a placeholder - with
+                    //   the caveat that 0099B450 does not reset either field and
+                    //   no writer of them was found, by a scan blind to SIB and
+                    //   block copies.
                     // * **Eleven of the twelve gates** in
                     //   docs/PILOT_BOT_TICK_GATES.md. This host has no bot
                     //   object, no task vector and no per-slot state to gate on,
