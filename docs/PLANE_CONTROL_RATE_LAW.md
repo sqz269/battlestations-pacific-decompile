@@ -240,3 +240,52 @@ idiom at `007DAB79`-`007DAB8A` from a value not yet traced.
 
 An SSE register trace across `007DAC00`-`007DACC1` to settle the two comparands, then the bound's
 producer. The form above means the remaining work is two register questions rather than a law.
+
+## The polarity, settled
+
+`XMM0` is **zero** and `XMM2` is **the delta** at the `007DAC9B` comparison, both established by
+exclusion rather than by reading the obvious:
+
+* `007DAB40 XORPS XMM0,XMM0` zeroes it, and a scan of every SSE write form - `MOVSS`, `MOVAPS`,
+  `XORPS`, `SUBSS`, `ADDSS`, `MULSS`, `CVTSI2SS`, `DIVSS` with `XMM0` as destination - over the
+  whole span from there to the comparison finds **none**. Every intervening mention is a `COMISS`
+  read.
+* The same scan finds `XMM2`'s last write at `007DAB90 MOVSS XMM2,[ESP+40h]`, which the frame walk
+  resolves to `frame=-36` - the delta this function stored for `ctl+48h` at `007DAB5B`.
+
+So `COMISS XMM0,XMM2` compares **zero against the delta**, and the three-way selection reads:
+
+```
+delta <  0   ->  -1     ; 007DACA4's JBE not taken, 007DACA6 takes ECX = -1
+delta >  0   ->  +1     ; 007DACAF sets 1, 007DACB7's JA keeps it
+delta == 0   ->   0     ; 007DACB9
+```
+
+**`sign = sign(target - current)`** - the natural polarity, so an axis moves toward its target. It
+is worth being explicit that this is the answer a guess would also have given: the value of
+establishing it is not that it differs, but that the law can now be wired without anyone having to
+trust that the obvious reading was right. A polarity assumed is a polarity that fails silently.
+
+## The complete form
+
+```
+delta = target - current                       ; 007DAB52..007DAB75, per axis
+sign  = sign(delta)                            ; 007DAC9B..007DACC1
+new   = clamp(current + sign * factor * step,  ; 007DACC5..007DACD4
+              -|bound|, +|bound|)              ; 007DACE0..007DACFB
+```
+
+with `factor` = `unit+BC4h`, which is 1.0 (set by `BSP_Plane_ReadPropertyBag`, relaxing to 1.0 at
+`0.5 * step`), and the three axes as `ctl+48h` pitch, `ctl+4Ch` yaw (negated at the target), `ctl+50h`
+roll.
+
+## What remains
+
+**The bound.** `frame=-52` and `frame=-56` feed the clamp. `frame=-56` is `|XMM1|` built by the
+`fabs` idiom at `007DAB79`-`007DAB8A`, where `XMM1` traces to `frame=-24` - the product `007DAA7F`
+forms from `PitchAccel +1C0h`. `frame=-52` traces to the delta itself at `007DAB9B`. So the clamp is
+built from an accel-derived term and the delta, which is the shape of an overshoot guard, but the
+exact expression is not traced and is **not** being inferred from that shape.
+
+No pure rule is written yet for this reason: the law is four-fifths established and the clamp is the
+remaining fifth. Everything above is evidence; the clamp would be a guess.
