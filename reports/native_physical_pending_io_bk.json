@@ -1,0 +1,1061 @@
+{
+  "packet": "orch4_native_physical_pending_bk",
+  "timestamp_utc": "2026-09-14T05:10:49.124009+00:00",
+  "status": "complete_source_bodies_strict_compile_real_win32_fixture_passed_callcheck_two_membership_failures_pending_root_repair",
+  "base_commit": "f41379f344567836c84dba35cc77ab6c817aa809",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "evidence_policy": "Every live query uses bsp.py ghidra wrappers with project/program/language/image-base verification. Byte reads <=192 bytes. No Ghidra mutation, save, game code execution or original file changes.",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00bf43b0",
+      "end_inclusive": "00bf46a6",
+      "bytes": 759,
+      "source_function": "submit_native_physical_pending_io_00bf43b0",
+      "coverage": "complete",
+      "original_abi": "ECX provider; stack first header, second header, callback DWORD, flags DWORD; AL acceptance; RET 10h",
+      "original_sha256": "e3d4fe8318b182106310ccbf6a02ca6fc3aa201188d41b43ee18af10591237b7",
+      "live_equals_installed_pe": true,
+      "recorded_incoming_xrefs": [
+        "From 00d69174 [DATA]"
+      ],
+      "ghidra_body_min_max_verified": true,
+      "function_membership_holes": [
+        {
+          "function": "00bf43b0",
+          "start": "00bf4617",
+          "end_inclusive": "00bf4619",
+          "bytes": 3,
+          "role": "ADD ESP,10h after submission ReadFile-error free",
+          "no_ghidra_function": true,
+          "raw_sha256": "317fd76c8ea345536bc4a4698c724edca1ad80847e89a83578406c776bcbcc49",
+          "live_equals_installed_pe": true
+        }
+      ]
+    },
+    {
+      "address": "00bf46b0",
+      "end_inclusive": "00bf47da",
+      "bytes": 299,
+      "source_function": "pump_native_physical_pending_io_00bf46b0",
+      "coverage": "complete",
+      "original_abi": "ECX provider; no stack arguments; RET",
+      "original_sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+      "live_equals_installed_pe": true,
+      "recorded_incoming_xrefs": [
+        "From 00d69190 [DATA]"
+      ],
+      "ghidra_body_min_max_verified": true,
+      "function_membership_holes": [
+        {
+          "function": "00bf46b0",
+          "start": "00bf4793",
+          "end_inclusive": "00bf47c3",
+          "bytes": 49,
+          "role": "returning free continuation; free/clear OVERLAPPED, close handle, erase and jump to count check",
+          "no_ghidra_function": true,
+          "raw_sha256": "9293e589d804cf6c0664b139179238610fcce1e0a228e92e43ccc8ecefe4649a",
+          "live_equals_installed_pe": true
+        }
+      ]
+    },
+    {
+      "address": "00bf4240",
+      "end_inclusive": "00bf429f",
+      "bytes": 96,
+      "source_function": "erase_native_physical_pending_record_00bf4240",
+      "coverage": "complete",
+      "original_abi": "ECX queue; stack signed index; RET 4",
+      "original_sha256": "bc0c95c4ad21d9695b899b5c41da11f7691f380f10fc88735386040e4136d604",
+      "live_equals_installed_pe": true,
+      "recorded_incoming_xrefs": [
+        "From 00bf47b9 [UNCONDITIONAL_CALL]"
+      ],
+      "ghidra_body_min_max_verified": true,
+      "function_membership_holes": []
+    },
+    {
+      "address": "00bf41c0",
+      "end_inclusive": "00bf4239",
+      "bytes": 122,
+      "source_function": "append_native_physical_pending_record_00bf41c0",
+      "coverage": "complete",
+      "original_abi": "ECX queue; stack source record; RET 4",
+      "original_sha256": "2307aff51f323c8137ea95ddc8d9df945cdc3ac802754e28cbf81552b45e6af3",
+      "live_equals_installed_pe": true,
+      "recorded_incoming_xrefs": [
+        "From 00bf466d in BSP_PhysicalDirectory_OpenFileOverlapped [UNCONDITIONAL_CALL]"
+      ],
+      "ghidra_body_min_max_verified": true,
+      "function_membership_holes": []
+    },
+    {
+      "address": "00bf3d00",
+      "end_inclusive": "00bf3d9e",
+      "bytes": 159,
+      "source_function": "assign_native_physical_pending_record_00bf3d00",
+      "coverage": "complete",
+      "original_abi": "ECX destination; stack source record; EAX destination; RET 4",
+      "original_sha256": "55f3b7b479030636e6015ec3c1508dbbca54df6379ee91d307c3d94345e78da4",
+      "live_equals_installed_pe": true,
+      "recorded_incoming_xrefs": [
+        "From 00bf426a in BSP_PhysicalPendingQueue_Erase [UNCONDITIONAL_CALL]"
+      ],
+      "ghidra_body_min_max_verified": true,
+      "function_membership_holes": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf43d4",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4405",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf441e",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call edx",
+      "native": "00bf3970",
+      "semantic_label": "current provider slot1Ch path builder",
+      "contract": "ECX provider; stack output8h,suffix header; EAX output; RET8",
+      "resolved_by": "current D69168+1Ch table word plus BF4410 load",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4440",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2260]",
+      "native": "00ce2260+IAT",
+      "semantic_label": "CreateFileA",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf445b",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "no semantic arguments; EAX current pool; caller has staged three arguments for BD1510",
+      "semantic_label": "existing actual string pool getter",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4462",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX pool; stack block,size,unused1; RET0C",
+      "semantic_label": "existing actual string-pool release",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf446c",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4479",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2258]",
+      "native": "00ce2258+IAT",
+      "semantic_label": "GetLastError",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf4492",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf44ee",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf44fc",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2174]",
+      "native": "00ce2174+IAT",
+      "semantic_label": "GetFileSizeEx",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf4506",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2258]",
+      "native": "00ce2258+IAT",
+      "semantic_label": "GetLastError",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf452d",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4544",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf55be",
+      "native": "00bf55be",
+      "contract": "cdecl bytes; EAX raw storage; JMP BF681B; caller ADD ESP,4",
+      "semantic_label": "shared array allocation service",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf458e",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf681b",
+      "native": "00bf681b",
+      "contract": "cdecl bytes; EAX raw storage; caller releases stack",
+      "semantic_label": "shared scalar allocation service",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf45c4",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf45d9",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2208]",
+      "native": "00ce2208+IAT",
+      "semantic_label": "ReadFile",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf45e8",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce2258]",
+      "native": "00ce2258+IAT",
+      "semantic_label": "GetLastError",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf4608",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4612",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "contract": "cdecl pointer; native JMP CRT free; caller releases stack",
+      "semantic_label": "shared CRT free",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf461b",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call dword ptr [0xce225c]",
+      "native": "00ce225c+IAT",
+      "semantic_label": "CloseHandle",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf462d",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf3880",
+      "native": "00bf3880",
+      "contract": "ECX record; RET",
+      "semantic_label": "existing actual record-name destruction",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf464e",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x425f40",
+      "native": "00425f40",
+      "contract": "ECX destination; stack source; EAX destination; RET4",
+      "semantic_label": "existing actual header assignment",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf465c",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x425f40",
+      "native": "00425f40",
+      "contract": "ECX destination; stack source; EAX destination; RET4",
+      "semantic_label": "existing actual header assignment",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf466d",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf41c0",
+      "native": "00bf41c0",
+      "contract": "ECX queue; stack source; RET4",
+      "semantic_label": "actual pending-record append",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4677",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf468b",
+      "function": "00bf43b0",
+      "function_body_inclusive": [
+        "00bf43b0",
+        "00bf46a6"
+      ],
+      "instruction": "call 0xbf3880",
+      "native": "00bf3880",
+      "contract": "ECX record; RET",
+      "semantic_label": "existing actual record-name destruction",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf46ef",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call dword ptr [0xce2204]",
+      "native": "00ce2204+IAT",
+      "semantic_label": "GetOverlappedResult",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf46f9",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call dword ptr [0xce2258]",
+      "native": "00ce2258+IAT",
+      "semantic_label": "GetLastError",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf4718",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4735",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4748",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0xbefa40",
+      "native": "00befa40",
+      "contract": "ECX aligned bytes; stack original size-low,size-high; EAX stream; RET8",
+      "semantic_label": "existing actual memory stream from copy",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4754",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0x4254b0",
+      "native": "004254b0",
+      "contract": "body004254b0: RET; cdecl argument slots released by caller",
+      "semantic_label": "RET-only diagnostic",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf476d",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call eax",
+      "native": "record+30h callback",
+      "semantic_label": "explicit actual callback target dispatch",
+      "contract": "stack actual stream, first8h header, second8h header; callee removes12 bytes; no caller cleanup; callback remains required binding"
+    },
+    {
+      "address": "00bf4773",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call dword ptr [0xce2220]",
+      "native": "00ce2220+IAT",
+      "semantic_label": "InterlockedDecrement",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf4783",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call eax",
+      "native": "00bd30e0",
+      "semantic_label": "current actual memory-stream zero-reference dispatch",
+      "contract": "ECX stream; no stack arguments; current slot0 then slot4(flag1); no extra decrement",
+      "resolved_by": "D642C0 slot0 and existing memory-owner dispatch"
+    },
+    {
+      "address": "00bf478e",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "contract": "cdecl pointer; native JMP CRT free; caller releases stack",
+      "semantic_label": "shared CRT free",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf479e",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "contract": "cdecl pointer; native JMP CRT free; caller releases stack",
+      "semantic_label": "shared CRT free",
+      "callee_body_inspected": true,
+      "live_containing_function": null,
+      "source_enclosing_body": "00bf46b0..00bf47da inclusive, installed-PE control-flow evidence",
+      "no_ghidra_function": {
+        "start": "00bf4793",
+        "end_inclusive": "00bf47c3"
+      }
+    },
+    {
+      "address": "00bf47b0",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call dword ptr [0xce225c]",
+      "native": "00ce225c+IAT",
+      "semantic_label": "CloseHandle",
+      "contract": "actual PE import; real host Win32 stdcall service; precise operands in complete body listing",
+      "resolved_by": "installed PE import directory and current instruction"
+    },
+    {
+      "address": "00bf47b9",
+      "function": "00bf46b0",
+      "function_body_inclusive": [
+        "00bf46b0",
+        "00bf47da"
+      ],
+      "instruction": "call 0xbf4240",
+      "native": "00bf4240",
+      "contract": "ECX queue; stack signed index; RET4",
+      "semantic_label": "actual queue erase",
+      "callee_body_inspected": true,
+      "live_containing_function": null,
+      "source_enclosing_body": "00bf46b0..00bf47da inclusive, installed-PE control-flow evidence",
+      "no_ghidra_function": {
+        "start": "00bf4793",
+        "end_inclusive": "00bf47c3"
+      }
+    },
+    {
+      "address": "00bf426a",
+      "function": "00bf4240",
+      "function_body_inclusive": [
+        "00bf4240",
+        "00bf429f"
+      ],
+      "instruction": "call 0xbf3d00",
+      "native": "00bf3d00",
+      "contract": "ECX destination; stack source; EAX destination; RET4",
+      "semantic_label": "actual record assignment",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf4292",
+      "function": "00bf4240",
+      "function_body_inclusive": [
+        "00bf4240",
+        "00bf429f"
+      ],
+      "instruction": "call 0xbf3880",
+      "native": "00bf3880",
+      "contract": "ECX record; RET",
+      "semantic_label": "existing actual record-name destruction",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf41f4",
+      "function": "00bf41c0",
+      "function_body_inclusive": [
+        "00bf41c0",
+        "00bf4239"
+      ],
+      "instruction": "call 0xbf3da0",
+      "native": "00bf3da0",
+      "contract": "ECX queue; stack signed capacity; RET4",
+      "semantic_label": "existing actual queue reserve",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf421f",
+      "function": "00bf41c0",
+      "function_body_inclusive": [
+        "00bf41c0",
+        "00bf4239"
+      ],
+      "instruction": "call 0xbf3c10",
+      "native": "00bf3c10",
+      "contract": "ECX destination; stack source; EAX destination; RET4",
+      "semantic_label": "existing actual record copy construction",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf3d43",
+      "function": "00bf3d00",
+      "function_body_inclusive": [
+        "00bf3d00",
+        "00bf3d9e"
+      ],
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX header; stack length,preserve1; RET8",
+      "semantic_label": "existing actual string resize",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf3d59",
+      "function": "00bf3d00",
+      "function_body_inclusive": [
+        "00bf3d00",
+        "00bf3d9e"
+      ],
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl destination,source,count; ADD ESP,0Ch",
+      "semantic_label": "existing overlap-aware memory copy",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf3d72",
+      "function": "00bf3d00",
+      "function_body_inclusive": [
+        "00bf3d00",
+        "00bf3d9e"
+      ],
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX header; stack length,preserve1; RET8",
+      "semantic_label": "existing actual string resize",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00bf3d88",
+      "function": "00bf3d00",
+      "function_body_inclusive": [
+        "00bf3d00",
+        "00bf3d9e"
+      ],
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl destination,source,count; ADD ESP,0Ch",
+      "semantic_label": "existing overlap-aware memory copy",
+      "callee_body_inspected": true
+    }
+  ],
+  "auxiliary_evidence": [
+    {
+      "address": "00d69168",
+      "end_inclusive": "00d69193",
+      "bytes": 44,
+      "sha256": "647f1cb3a32c73e34215133240a985a1726f2d034a1f7a1cad561d589e5617ab",
+      "role": "actual physical profile",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc7b80",
+      "end_inclusive": "00cc7b9b",
+      "bytes": 28,
+      "sha256": "e08d60897d9f55692b3e1fd6f9948f05795de27b18f84467707673807a37e39d",
+      "role": "append state0 unwind action; current queue position, call RET401130; ADD ESP8",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc7b9c",
+      "end_inclusive": "00cc7ba5",
+      "bytes": 10,
+      "sha256": "d5d8bf4663f8fd9e471a049cf55f074945234f9e1ad6a23150e27a135a6006ed",
+      "role": "append FH3 handler: EAX E0290C, JMP BF6B43",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e02904",
+      "end_inclusive": "00e0292f",
+      "bytes": 44,
+      "sha256": "3120c9717a8720616edc865004ad970008d8d6a9cb6d6644fc1c2f92bddc4dc0",
+      "role": "append one-state unwind map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc7bd0",
+      "end_inclusive": "00cc7bd7",
+      "bytes": 8,
+      "sha256": "9c0edb6894a22ad440df1d680a782f4c5638fb8487ac456d1f1515ef4c3d9597",
+      "role": "submission state0 unwind action: local record, tail BF3880",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc7bd8",
+      "end_inclusive": "00cc7be1",
+      "bytes": 10,
+      "sha256": "02831ec5522c59cb941f8d0b82fdef0ec508e4aff2b246ce4f6c10195bf78d43",
+      "role": "submission FH3 handler: EAX E02964, JMP BF6B43",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e0295c",
+      "end_inclusive": "00e02987",
+      "bytes": 44,
+      "sha256": "8b6bbe6099c4408612ce1331b48baa88c7fa36d5a9047ddcc14fec829eebf93f",
+      "role": "submission one-state unwind map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    }
+  ],
+  "source_context": {
+    "physical": "existing NativePhysicalFileDateContext; actual string pool and current provider1Ch path slot",
+    "memory": "existing NativeRetainedMemoryOwnerContext; actual native memory owners and intrusive references",
+    "completion": "required NativePhysicalPendingCompletionDispatch::invoke_00bf476d(native_target_DWORD,actual_stream,first_header,second_header)"
+  },
+  "corrections": [
+    {
+      "was": "older safer PhysicalPendingReads projection uses separately owned request objects and guards positive signed size/actual byte counts",
+      "is": "this packet uses actual provider+14h records and original LOW DWORD arithmetic; no count or size normalization",
+      "evidence": "BF453A..BF4588 and BF473A..BF4748; raw record production BF44B1..BF45C0"
+    },
+    {
+      "was": "assuming ReadFile error frees original staging allocation",
+      "is": "BF4612 frees record+10h aligned pointer; OVERLAPPED remains allocated",
+      "evidence": "BF460D reads ESP+40h with12 bytes of diagnostic arguments still on stack; record base is pre-call ESP+24h"
+    },
+    {
+      "was": "the live prototype min/max extent and full listing implied every instruction belonged to the original function",
+      "is": "BF4617..BF4619 and BF4793..BF47C3 lack function membership; all original bytes/listing instructions are present",
+      "evidence": "guarded live proto queries at hole boundaries and every instruction in the pump tail; original-span byte hashes; retained report checker failuresBF479E andBF47B9"
+    }
+  ],
+  "failure_ownership": [
+    "CreateFile failure rejects after releasing temporary path.",
+    "GetFileSizeEx false rejects only for nonzero GetLastError; closes handle and destroys temporary names.",
+    "ReadFile false except IO_PENDING frees ALIGNED pointer, closes handle and destroys names; leaks OVERLAPPED and can free an interior address.",
+    "Submission state0 exceptions destroy temporary names only; no handle/staging/OVERLAPPED rollback after allocation or accepted read.",
+    "Append construction unwind calls RET-only401130; no added destination rollback beyond existing record copy cleanup.",
+    "Any GetOverlappedResult error removes record without callback; actual byte count is ignored.",
+    "Callback or temporary-stream-release exception exits pump before queued I/O cleanup/erase; no guard added.",
+    "Provider destruction, recursive pumping and nonappend queue mutation during callback are unguarded and excluded from supported integration."
+  ],
+  "validation": {
+    "strict_compile": {
+      "status": "passed",
+      "command": "./local/physical_pending_bk/build_probe.ps1",
+      "flags": "MSVC Win32 /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict"
+    },
+    "real_win32_fixture": {
+      "status": "passed",
+      "source": "local/physical_pending_bk/pending_probe.cpp",
+      "log": "local/physical_pending_bk/probe.log",
+      "link_flags": "/MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO",
+      "cases": [
+        "two rejected flag values",
+        "missing-file rejection",
+        "accepted real unbuffered overlapped files257 and65539 bytes",
+        "callbacks deferred until explicit pump",
+        "callback runs before resource/queue removal",
+        "callback append forces capacity2to4 relocation",
+        "three callbacks in same pump preserving names/order",
+        "retained actual stream payload survives staging and queue cleanup",
+        "memory backing counters return tozero"
+      ],
+      "uses_original_code": false,
+      "uses_nonexecutable_verified_PE_profile_data": true,
+      "library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57741816,
+        "sha256": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03"
+      }
+    },
+    "report_calls": {
+      "status": "failed_due_to_ghidra_function_membership_holes",
+      "command": "python tools/verify_report_calls.py reports/native_physical_pending_io_bk.json",
+      "numeric_rows_checked": 36,
+      "failed": 2,
+      "failed_sites": [
+        "00bf479e",
+        "00bf47b9"
+      ],
+      "explicit_indirect_rows_skipped": 12,
+      "resolved_virtual_targets_unverified": 2,
+      "reason": "raw pump tail00BF4793..00BF47C3 inclusive has no current Ghidra function membership",
+      "log": "local/physical_pending_bk/report_call_check.log",
+      "root_action": "repair justified body membership under root write lock and rerun; worker preserved failing rows and made no mutations"
+    },
+    "full_build": "primary integration responsibility; CMake unchanged by packet",
+    "original_differential": "not performed",
+    "native_abi": "new explicit C++ interfaces; no original binary/FH3 identity claim",
+    "gameplay": "not performed"
+  },
+  "remaining_dependencies": [
+    "primary manager/provider dispatch binding",
+    "primary FileStore callback target resolution",
+    "primary CMake integration and full build",
+    "primary read-only-reviewed Ghidra function membership repair and report checker rerun"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_physical_pending_io.hpp",
+      "bytes": 3988,
+      "sha256": "258d0d7c9a73f89609ad18f987f268b0b846eb940a2d3f3e5bb5bf7e22bff5aa"
+    },
+    {
+      "path": "src/native_physical_pending_io.cpp",
+      "bytes": 10142,
+      "sha256": "996eb258320bc376247cb2964f605d358f16085eea026d72ccf1c6a39ee4f3b9"
+    },
+    {
+      "path": "docs/NATIVE_PHYSICAL_PENDING_IO_BK.md",
+      "bytes": 10775,
+      "sha256": "ac0bab70468a630af5a914508f56563d10846f9a5affe5047129d873a730716e"
+    },
+    {
+      "path": "local/physical_pending_bk/pending_probe.cpp",
+      "bytes": 7558,
+      "sha256": "4b3d2e1d59dcb15e9d866b94691b33b11aeb13ac37f79322167eb8d4d164eb9d"
+    },
+    {
+      "path": "local/physical_pending_bk/build_probe.ps1",
+      "bytes": 1726,
+      "sha256": "5aef52b997d1cf24462ece576f942e8bdf1d2a3e046f3dd018b5c8a09f4d4e05"
+    },
+    {
+      "path": "local/physical_pending_bk/pending_io.obj",
+      "bytes": 19425,
+      "sha256": "6d40504c7a35283f773b29974c418810b5ec1b1325eb383cb3debb5f1954d7b9"
+    },
+    {
+      "path": "local/physical_pending_bk/pending_probe.obj",
+      "bytes": 314326,
+      "sha256": "bf03a01c14cb3d97f7275aea3c54b3a8a4295a1780e439e39811ee5479b178ea"
+    },
+    {
+      "path": "local/physical_pending_bk/pending_probe.exe",
+      "bytes": 70144,
+      "sha256": "4c8394f5f3ff3ba989fdc1238fbe864140580b1b36342a4e538447abe7051871"
+    },
+    {
+      "path": "local/physical_pending_bk/compile.log",
+      "bytes": 32,
+      "sha256": "88206883101a1486919794010b6a9314bea56abdf485b744802e70e668b52d68"
+    },
+    {
+      "path": "local/physical_pending_bk/probe_build.log",
+      "bytes": 19,
+      "sha256": "2cf9fe93aba3c3b3edb3a28c0f798b8b22e86bc251d2b9e4b8bc11dba811f965"
+    },
+    {
+      "path": "local/physical_pending_bk/probe.log",
+      "bytes": 284,
+      "sha256": "4a70e38bb36a522796a45db6f78bf7ee9f88ae2e24a1790dd3b3d4a6e9c466fa"
+    },
+    {
+      "path": "local/physical_pending_bk/report_call_check.log",
+      "bytes": 1404,
+      "sha256": "73673d69a56c47bf4eadf43291e8f5e101d71aefe87a8aed992c3e5c9e0a6536"
+    },
+    {
+      "path": "local/physical_pending_bk/membership_holes.txt",
+      "bytes": 368,
+      "sha256": "c502fad076cd359b78f962d85808cbef669cc2edf8ac3c35a6dfaf3ddc7fe719"
+    }
+  ],
+  "consumed_source_artifacts": [
+    {
+      "path": "include/bsp/native_physical_pending_records.hpp",
+      "bytes": 2404,
+      "sha256": "b8ee2df58fee24f572f705bf274f1a51d69f3405cab60865c5b8c1b9aa17364b"
+    },
+    {
+      "path": "src/native_physical_pending_records.cpp",
+      "bytes": 5405,
+      "sha256": "c6780fd7a6982073d299912775387a62b1a5c040e35d5870a906556e24f9189f"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "bytes": 5010,
+      "sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "bytes": 16185,
+      "sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02"
+    },
+    {
+      "path": "include/bsp/native_memory_stream.hpp",
+      "bytes": 3230,
+      "sha256": "1cd41bf0ec1db15bce03acf9d8ecceae4d8b27fe689dea2a3393327ff7e81c88"
+    },
+    {
+      "path": "src/native_memory_stream.cpp",
+      "bytes": 6507,
+      "sha256": "1b55127245d09d5ad2eedfb3e00d02ecbe1b310e8630f4c24e5490273a119fbd"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    }
+  ],
+  "function_membership_holes": [
+    {
+      "function": "00bf43b0",
+      "start": "00bf4617",
+      "end_inclusive": "00bf4619",
+      "bytes": 3,
+      "role": "ADD ESP,10h after submission ReadFile-error free",
+      "no_ghidra_function": true,
+      "raw_sha256": "317fd76c8ea345536bc4a4698c724edca1ad80847e89a83578406c776bcbcc49",
+      "live_equals_installed_pe": true
+    },
+    {
+      "function": "00bf46b0",
+      "start": "00bf4793",
+      "end_inclusive": "00bf47c3",
+      "bytes": 49,
+      "role": "returning free continuation; free/clear OVERLAPPED, close handle, erase and jump to count check",
+      "no_ghidra_function": true,
+      "raw_sha256": "9293e589d804cf6c0664b139179238610fcce1e0a228e92e43ccc8ecefe4649a",
+      "live_equals_installed_pe": true
+    }
+  ]
+}
