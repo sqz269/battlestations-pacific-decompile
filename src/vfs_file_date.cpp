@@ -1,6 +1,7 @@
 #include "bsp/vfs_file_date.hpp"
 #include "bsp/resource_path.hpp"
 #include "bsp/file_store.hpp"
+#include "bsp/vfs_native_access.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -12,6 +13,7 @@ bool has_vfs_file_date_00bd9f00(const VfsFileDate& date) noexcept {
 
 VfsFileDate query_vfs_file_date_00bdd340(VfsMountContext& context,
     const std::string& name) {
+    if (context.native_access) return context.native_access->file_date(name);
     if (name.find('\0') != std::string::npos)
         throw std::invalid_argument("Unsupported VFS file-date name");
     std::string normalized = name;
