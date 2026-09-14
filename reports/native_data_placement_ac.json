@@ -75,5 +75,7 @@
     "https://learn.microsoft.com/en-us/cpp/build/reference/dynamicbase?view=msvc-170",
     "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute"
   ],
-  "relocation_review": "The initial production link stripped relocations after DYNAMICBASE:NO; the final configuration explicitly preserves them with FIXED:NO and the final PE verification checks the directory and file characteristic."
+  "relocation_review": "The initial production link stripped relocations after DYNAMICBASE:NO; the final configuration explicitly preserves them with FIXED:NO and the final PE verification checks the directory and file characteristic.",
+  "registration": "One cmake_language(DEFER CALL include ...) line, preserved by tools/integrate_workers.py mechanical registry union.",
+  "integration_review": "A concurrent registry merge dropped the initial plain include. The header check caught the restored ASLR/default base, and the registration was corrected before publication."
 }

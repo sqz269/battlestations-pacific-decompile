@@ -9,8 +9,9 @@ initialization allocate more memory. The AB diagnostics recorded the initial
 stack overlapping CF, a private allocation overlapping D1, and a rebuilt image
 overlapping D5/D6. A successful later launch did not remove those failures.
 
-`cmake/native_data_placement.cmake`, included by the existing deferred startup
-registry, now gives only the MSVC Win32 `bsp_game` target `/BASE:0x10000000`,
+`cmake/native_data_placement.cmake`, included through a single `cmake_language(DEFER ...)`
+registration preserved by the registry's mechanical merge, gives
+only the MSVC Win32 `bsp_game` target `/BASE:0x10000000`,
 `/DYNAMICBASE:NO` and `/FIXED:NO`. The rebuilt image starts at 256 MiB, above the entire original
 read-only data range. Its own ASLR opt-in is disabled, including the heap/stack
 randomization associated with that flag. This is an explicit compatibility
