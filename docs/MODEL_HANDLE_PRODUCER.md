@@ -163,3 +163,173 @@ Unchanged from `docs/PART_DAMAGE_WIRING_PLAN.md`: the decoded element list has t
 before `part` can be non-zero, and `src/geom_mesh_resource.cpp` already decodes real `.MMOD`
 payloads but is registered nowhere in the game build. This packet does not move that; it narrows
 where the missing link is and removes two false leads from the search space.
+
+# Continuation: nothing in this image invokes slot `+20h` (packet `cc7_model_handle_producer_2`)
+
+Same contract and caveats as above: Ghidra read-only, no C++, no tests, scans over
+`battlestationspacific.exe` only, mod artefacts not excluded.
+
+## The scanner, checked against itself first
+
+Before using another zero count as evidence, the dispatch scanner was validated on displacements
+where the answer is known:
+
+| slot | `CALL [reg+d]` | `MOV r,[reg+d]` … `CALL r` |
+| --- | --- | --- |
+| `+04h` | 23 | 1498 |
+| `+08h` | 36 | 1219 |
+| `+10h` | 0 | 982 |
+| `+20h` | 0 | 287 |
+| `+5Ch` | 0 | 1963 |
+
+The memory-indirect form is found where it exists (`+04h`, `+08h`) and is genuinely absent at the
+larger displacements — `+5Ch` is the entity class test, which this project has read dozens of call
+sites for, and every one is the load-then-call pair. So the `+20h` zero is a codegen property, not a
+decoder bug, and the 287 is the real population.
+
+## The twenty callers: an exact negative, not a heuristic one
+
+Body extents taken from Ghidra rather than assumed:
+
+```
+0046DF00-0046EF62  0049CF80-0049D389  004F0520-004F05E0  004F05F0-004F06B0
+004F06C0-004F0780  004F0790-004F0850  004F0860-004F0920  004F0930-004F09F0
+004F0A00-004F0AC0  004F0AD0-004F0BDF  004F0FB0-004F10A8  004F10B0-004F1165
+006F3660-006F38DE  00743450-00743B6F  0074C630-0074CC46  00831840-0083468A
+00849A30-00849F64  00896A90-00896CB3  008C8F70-008C9343  00A38200-00A38428
+```
+
+Every one of these bodies lies inside the `entry .. entry+3000h` span that was scanned, so the scan
+covered them completely. Six dispatch sites fall in those spans and **all six lie outside the
+bodies** — `006F53FF` is in `FUN_006F4D10`, `00A39898` in `FUN_00A39870`, `00A3AD27` in
+`FUN_00A3AD10`, `00A3AE6A` in `FUN_00A3ADF0`, and so on.
+
+**None of the twenty functions that obtain a descriptor from `BSP_VehicleClass_GetOrCreate`
+dispatches through slot `+20h`.**
+
+## No dispatch follows a class-descriptor load anywhere in the image
+
+The other way to hold a descriptor is `unit+538h`. Over the whole `.text`:
+
+```
+MOV r32,[reg+538h] sites                                     686
+slot +20h dispatch sites                                     287
+dispatches within 60h bytes after a [reg+538h] load            0
+```
+
+## All five implementations are reached only through a vtable
+
+| implementation | class | referenced from |
+| --- | --- | --- |
+| `0095F500` | base | the vtables, plus the four overrides chaining to it |
+| `0082FE30` | ship family | eight vtables, plus `0075913D` inside the mothership override |
+| `007D3E60` | plane family | vtables only |
+| `00759120` | `MotherShip` | `00D1AEDC` only — MotherShip's vtable `+20h` |
+| `0074DA10` | **`MLandVehicle`** | `00D1AA38` only — `00D1AA18 + 20h`. This names the fourth override |
+
+`0074DA10` was the flagged unknown; it is `MLandVehicle`'s bind override, it has no non-vtable
+reference, and the region `0074D000`-`0074E500` contains no `+50h` write in any scanned form.
+
+## What this adds up to
+
+Four independent negatives — no dispatch in the factory's callers, none after a `+538h` load, none
+in the class region on a descriptor, and no non-vtable reference to any implementation — say that
+**nothing in `battlestationspacific.exe` calls class-descriptor vtable slot `+20h`**. On that
+reading the whole bind-model chain, including the 9.9 KB `0082FE30`, is **unreachable in the
+shipped image**, which is a different and more useful answer than "the producer is hiding": it says
+the model does not arrive through this path at all, and `class+50h` stays at the null that
+`0087C6A3` writes.
+
+**The limits of that claim, stated exactly.** A dispatch whose descriptor arrives as a function
+**parameter** would show neither a `+538h` load nor a factory call nearby, and the `60h` window is a
+heuristic. Nothing here excludes that case, and it is the one form that would overturn the reading.
+Ruling it out means checking the remaining 281 dispatch sites' object types, which byte scanning
+cannot do — it needs the call graph.
+
+## Also negative this pass
+
+`MOV [reg+50h], reg/imm/LEA/MOVSS`, disp8 and disp32, in `004F0000`-`004F2000` (the ten scene
+creators), `0046D000`-`0046F000` (`BSP_SceneFile_Read`) and `0074D000`-`0074E500` (the LandVehicle
+override): **zero in every form and window**.
+
+## The next step, if this is worth continuing
+
+Two that byte scanning cannot reach and a third that it can:
+
+1. **Who, if anyone, calls slot `+20h` with a descriptor passed in as a parameter.** Needs the call
+   graph, not a scan.
+2. **Whether the model arrives without this chain** — the scene database's deferred reference
+   resolution is the standing candidate and has never been read.
+3. **A `memcpy` / `REP MOVSD` covering `class+50h`**, still unscanned. The destination would be a
+   `LEA` of a *lower* offset than `50h`, so it needs a different scan shape than the ones here.
+
+# The deferred-reference path carries no model (packet `cc7_scene_deferred_model_refs`)
+
+Addresses: `0046AAB0` `BSP_SceneDatabase_ResolveDeferredReferences` (body `0046AAB0`-`0046AC38`,
+107 instructions, read in full), `0046A9F0`, `00925A90`, `00438E10`, `0077D600`.
+Globals `00E19A70`, `00E188A8`, `00E18560`, `00F87574`.
+
+Same contract and caveats: Ghidra read-only, no C++, no tests, `battlestationspacific.exe` only,
+mod artefacts not excluded.
+
+## Answer: no. It resolves names into commands, and touches nothing resource-shaped
+
+The body is short enough to read entirely, and every instruction is accounted for:
+
+```
+0046AAB3  walk the pending list at sceneDb+150h                       ; node+4h is the next link
+0046AAD0  rec = [node+8h] ; EDI = [rec] (the unit) ; EBP = [rec+8h]   ; the target's name,
+0046AAE2      defaulting to the empty string 00E18560 when null
+0046AAE7  scan the global scene-entity list [00E19A70]
+0046AAFA      name = entry->vtable[4h]()
+0046AB03      00438E10 BSP_CString_CompareInsensitive(EBP, name)      ; advance on mismatch
+0046AB23  on a match, ESI = the entity, and one of two arms:
+0046AB2F   A: [rec+0Ch] != 0 -> second name [rec+10h] (same empty default)
+0046AB41      00925A90 BSP_EntityRegistry_FindEntityByName(world[+19CCh], name)
+0046AB55      record = { 00F87574..7Ch (the read-only zero vector), byte 1,
+0046AB84                 the found entity, word [found+174h] }
+0046AB9B   B: else require ESI->vtable[8h]() false, refresh the unit's pose when
+0046ABA8      unit+C8h is clear (00414DB0), and build the record from the unit's own
+0046ABB7      world position unit+FCh / +100h / +104h
+0046AC0B  0077D600 BSP_Entity_IssueCommand(this = EDI, ESI, &record, 1)
+0046AC34  tail-jump to 0046A9F0 BSP_SceneDatabase_ClearPendingReferences
+```
+
+`unit+C8h`, `00414DB0` and `unit+FCh/+100h/+104h` are `kPoseValidByte`, the pose refresh and the
+world-position triple that `include/bsp/plane_flight.hpp` already names, which is what fixes `EDI`
+as a unit and the record as a **world-position command target**. In arm A the position is the
+read-only **zero** vector, so the target is the entity itself rather than a point.
+
+**There is no model handle, no `.MMOD`, no resource call, and no write to any `+50h`.** A scan of
+`0046A000`-`0046B000` for `MOV [reg+50h], reg/imm`, `LEA reg,[reg+50h]` and `MOVSS [reg+50h], xmm`
+in both encodings returns zero in every form — and, per the rule this document opens with, those
+forms are not vacuous here: their image-wide totals are 244, 43, 119 and 89.
+
+## What it does resolve, which is worth having anyway
+
+This is a **second native producer of unit commands**, independent of the Lua bindings, and it runs
+on the instantiate pass of `0046DF00 BSP_SceneFile_Read`. Each pending record is
+`{ unit, target-name, flag, secondary-name }` and becomes one `BSP_Entity_IssueCommand` call. So
+scene-authored orders reach a unit by **name**, resolved late against the scene-entity list, with
+`BSP_EntityRegistry_FindEntityByName` as the second lookup — relevant to the order chain in
+`docs/PILOT_ORDER_BINDINGS.md`, which lists this function as a native command caller without saying
+what it resolves.
+
+## Five negatives now stand
+
+1. No write to `class+50h` in any scanned form or window beyond the null at `0087C6A3`.
+2. No slot-`+20h` dispatch in any of the twenty callers of `BSP_VehicleClass_GetOrCreate`.
+3. No slot-`+20h` dispatch within `60h` bytes of a `unit+538h` load anywhere in `.text`.
+4. No non-vtable reference to any of the five slot-`+20h` implementations.
+5. **The deferred-reference path carries no model.**
+
+The standing limit is unchanged and is still the thing that would overturn (2)-(4): a dispatch whose
+descriptor arrives as a **function parameter**, which byte scanning cannot see.
+
+## Next
+
+The `memcpy` / `REP MOVSD` scan named above is now the only byte-reachable angle left on
+`class+50h`. Beyond it the question needs the call graph, or a different hypothesis entirely — that
+the model reaches the **unit** rather than the class, in which case `class+50h` is a red herring and
+the search should start from `docs/GEOM_MESH_RESOURCE.md`'s decoder and
+`docs/GAME_RESOURCE_PARSER_REGISTRATION.md`'s registration row instead.

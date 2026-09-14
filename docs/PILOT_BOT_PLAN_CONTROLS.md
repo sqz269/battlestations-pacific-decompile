@@ -968,8 +968,8 @@ physics pipeline maintains, and it has three producers, all of them runtime:
 | site | function | what it writes |
 | --- | --- | --- |
 | `007DB2A4` | `FUN_007DB1F0` | `FSTP [EAX+0C0h]` with `[EDI+2Ch]`, alongside copying `[EDI+30h/34h/38h]` into a separate 3-float destination — so a `{scalar, vec3}` group is being copied out of a source object |
-| `007DC6C5` | `BSP_PlaneFlight_CoreLaw` | `MOVSS [ECX+0C0h],XMM0`, where a predicate `[eax+72Ch]->vtable[38h]()` answering **true** skips the store entirely (`007DC6BD JNE`), answering false **zeroes** it (`007DC6BF XORPS`), and an earlier `JE` path stores a computed `XMM0` |
-| `007D902F` | `BSP_PlaneDynamics_IntegrateStep`, its tail | a **decay with a floor**: `007D8FFE` loads the previous value, `007D9006 COMISS` compares it, `007D900F JBE` returns **without writing** when it is not above the comparand, and otherwise a subtracted-and-compared value is stored |
+| `007DC6C5` | `BSP_PlaneFlight_CoreLaw` | `MOVSS [ECX+0C0h],XMM0`, where a predicate `[eax+72Ch]->vtable[38h]()` answering **true** skips the store entirely (`007DC6BD JNE`) and answering false **zeroes** it (`007DC6BF XORPS`). ~~an earlier `JE` path stores a computed `XMM0`~~ - **corrected by `docs/PLANE_DYN_TIMED_HOLD.md`: this site stores only zero, on both reaching paths.** `XORPS` at `007DC692` and again at `007DC6BF`; the second exists precisely because the virtual call clobbers volatile `XMM0`. It is a conditional clear, never a set. |
+| `007D902F` | `BSP_PlaneDynamics_IntegrateStep`, its tail | a **decay with a floor**: `007D8FFE` loads the previous value, `007D9006 COMISS` compares it against **`0.0f`** (the `XORPS` at `007D8EF6` - resolved by `docs/PLANE_DYN_TIMED_HOLD.md`), `007D900F JBE` returns **without writing** when it is not above zero, and otherwise the value less the integrator's `step` is stored, clamped at zero |
 
 All three resolve the base the same way — `MOV reg,[ESI+10h]` then `[reg+0C0h]` — which confirms
 the field is on the block `controller+10h` points at, the same dereference `007D9AF9` does.
@@ -985,6 +985,13 @@ integrator.
   against a floor `a ∈ [0, 0.25]` and a cap of `1`, so anything above about `1.67` saturates — and
   it builds from a source object, is zeroed or re-set by a predicate in the core law, and decays in
   the integrator. That is consistent with several readings and I did not pick one.
+* ~~**The comparand at `007D9006`**, and the source object `[EDI+2Ch]`~~ - **both closed by
+  `docs/PLANE_DYN_TIMED_HOLD.md`.** The comparand is `0.0f`; the source object is the **replicated
+  control-state message** (sole caller `007D1360 BSP_Plane_ApplyControlStateMessage`), so
+  `007DB2A4` is a network state restore rather than a physics producer - which also means a
+  networked host has to carry the field on the wire. `dyn+C0h` itself is a **countdown in seconds**,
+  half of a `{direction at dyn+B4h, seconds at dyn+C0h}` pair, and the prior three-writer census
+  missed three more sites. Superseded text follows:
 * **The comparand at `007D9006`** (`XMM0` at the decay), and the source object `[EDI+2Ch]` at
   `007DB2A4`, and the `+72Ch` predicate at `007DC6B6`.
 * The other reads of the same displacement in the plane code (`007D7A93`, `007D83A2`, `007D88CD`,

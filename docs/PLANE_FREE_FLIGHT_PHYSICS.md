@@ -610,3 +610,13 @@ Still not satisfied: directed air attack (the order now reaches the weapon direc
 steps from there to motion are unwired - `0099A170` command to task, `0099ACD0` task to control
 axes, `007C6500` axes to pose), and part damage, fires and floods, which stay at zero for the
 separate model-load reason in `docs/PART_DAMAGE_WIRING_PLAN.md`.
+
+## `dyn+C0h`, the last unsupplied input of the yaw law (packet `cc7_dyn_c0_writers`)
+
+`docs/PLANE_DYN_TIMED_HOLD.md` reads the arithmetic of every writer of `dyn+C0h`. In short: it is
+a **countdown in seconds**, half of a `{direction at dyn+B4h, seconds at dyn+C0h}` group that
+`007D83D0` sets in one call; the core law gates it at `007D81C7`, clears it at `007DC6C5` unless a
+predicate on `unit+72Ch` holds, and `007D902F` decays it by one `step` per tick with a floor of
+zero. There are six writers, not the three previously recorded, and `007DC6C5` only ever stores
+zero. The pure rules are `arm_timed_direction_hold_007d83d0`, `gate_direction_hold_007d81c7`,
+`commit_direction_hold_007dc6c5` and `decay_direction_hold_007d902f` in `src/plane_flight.cpp`.

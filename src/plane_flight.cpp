@@ -428,4 +428,62 @@ float free_flight_world_up_acceleration(const PlaneFreeFlightState& state,
            state.world_to_body[7] * body.total[2];
 }
 
+// ---------------------------------------------------------------------------
+// The dyn+B4h/+C0h timed direction hold. docs/PLANE_DYN_TIMED_HOLD.md carries
+// the listing evidence for each of these four rules.
+// ---------------------------------------------------------------------------
+
+PlaneTimedDirectionHold arm_timed_direction_hold_007d83d0(const float direction[3],
+                                                          float seconds) {
+    // 007D83D7..007D83F7: three x87 copies then one MOVSS, in that order, with
+    // no clamp and no null test on either argument.
+    PlaneTimedDirectionHold hold;
+    hold.direction[0] = direction[0];
+    hold.direction[1] = direction[1];
+    hold.direction[2] = direction[2];
+    hold.seconds = seconds;
+    return hold;
+}
+
+float decay_direction_hold_007d902f(float seconds, float step) {
+    // 007D9006 COMISS against the zero XORPS left in XMM0 at 007D8EF6, then
+    // 007D900F JBE returns without storing. COMISS is unordered-false, so a NaN
+    // also takes the no-store exit; returning the input reproduces that.
+    if (!(seconds > 0.0f)) {
+        return seconds;
+    }
+    // 007D9015 FSUBRP forms seconds - step; 007D9023 FCOMIP compares it against
+    // the same zero and 007D9027 JA selects the zero when the difference went
+    // negative.
+    const float decayed = seconds - step;
+    return (0.0f > decayed) ? 0.0f : decayed;
+}
+
+float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hold) {
+    // 007DC6A8 JZ: with no owner the store still runs, and XMM0 is the zero
+    // from 007DC692. 007DC6BD JNZ: a true predicate jumps past the store.
+    if (owner_present && hold) {
+        return seconds;
+    }
+    return 0.0f;
+}
+
+float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two) {
+    // 007D81B5 CMP ... ,2 / 007D81C2 JNZ: the clear is on the equal path only.
+    return game_state_is_two ? 0.0f : seconds;
+}
+
+float tick_contact_timer_007d81b0(float seconds, float step, bool hold) {
+    // 007D81DE COMISS / 007D81E1 JBE: only strictly positive timers are touched.
+    if (!(seconds > 0.0f)) {
+        return seconds;
+    }
+    // 007D81E3 subtracts the step and stores it; 007D8209 JNZ then skips the
+    // re-arm when the predicate holds. Note the native writes the decremented
+    // value first and overwrites it, so the order below matches the observable
+    // result, not the two stores.
+    const float decayed = seconds - step;
+    return hold ? decayed : kPlaneContactTimerExpired;
+}
+
 }  // namespace bsp
