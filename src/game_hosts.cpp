@@ -1015,7 +1015,7 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
 void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
     if (!vfs_ || !vfs_->requires_process_retention()) return;
     try {
-        log_.notef("native VFS interrupted at %08x; cleanup is unrecovered; retaining application and mapped data until process exit",
+        log_.notef("native VFS interrupted; name-resolution failure site=%08x (0=not recorded); cleanup is unrecovered; retaining application and mapped data until process exit",
             vfs_->failure_site());
         log_.close();
     } catch (...) {
