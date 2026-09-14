@@ -15,8 +15,8 @@ production still require complete providers; this is not game admission.
 
 `004E6480..004E653B` takes ECX=node and returns without stack arguments. It
 copies the current D7A248/D7A244 seed bits through MOVSS, preserving signaling
-NaNs and signed zero without x87 conversion. It clears owner+4C, bounds and
-count fields, allocates eight child-pointer bytes through BF55BE, then initializes
+NaNs and signed zero without x87 conversion. It writes the bounds, clears owner+4C
+and the count fields, allocates eight child-pointer bytes through BF55BE, then initializes
 the intrusive link fields. It leaves the primary table and all other bytes
 untouched. Allocation failure occurs before publishing children+FC or the
 post-allocation link writes; the caller owns the enclosing allocation.
@@ -96,3 +96,5 @@ have a new ABI; native exception/fault delivery and gameplay remain unproved.
 ## Integrated validation
 
 Commit `71166c4b05755047de125713075df87677b031df` passes the Win32 build and both existing CTests. The storage fixture and all six existing AI group/collision scenarios pass against that library; the latter retains its exact previous result hash. The 120-frame USN01 compatibility run passes the finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `f126c8e2d3a65394bd77c316e350a16f2c19321a793bfeb384f1dcfd16549d00`. An immutable manifest retains native references, raw results, linked objects, compilation dependencies and mission artifacts. This is compatibility evidence, not unit-part game admission or gameplay parity.
+
+After merging separately published work, combined commit `3fb57940172d881bb94f310da7be8bbb8d2969d3` passes the build, both CTests and the same 120-frame compatibility checks. Its executable SHA-256 is `d2079f5b2bc72f282bb69be82760d478f0136826d3a289978c6015d75515ad78`. All 20 production objects linked into the storage and group/collision fixtures remain byte-identical to the sealed proof. The additional integration manifest is retained separately.
