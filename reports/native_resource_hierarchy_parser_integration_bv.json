@@ -1,0 +1,237 @@
+{
+  "batch": "orch4_native_resource_hierarchy_parser_integration_bv",
+  "state": "integrated_build_and_actual_service_original_math_fixture_passed",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "53f303008b9025f8b1bad3a4efe51b9de1066e96",
+  "code_revision": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+  "packets": [
+    {
+      "packet": "orch4_native_resource_hierarchy_parser_bv",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "routines": 5,
+      "ordinary_bytes": 1245
+    }
+  ],
+  "new_ordinary_routines": 5,
+  "new_ordinary_bytes": 1245,
+  "ordinary_instruction_starts": 377,
+  "support_instruction_starts": 10,
+  "direct_transfer_rows": 41,
+  "indirect_calls": 0,
+  "incoming_main_review": {
+    "pinned_revision": "1f1738ab6d97f0301b933d21b8cac01a439e5931",
+    "scope": "Raw spatial-index construction/publication and plane speed-factor/interpolation corrections with runtime-only yaw dependency documentation.",
+    "observations": "Incoming code is disjoint from BV dependencies. Spatial publication retains explicit captured-section and no-owner-rollback limits; its native/reference claims were not independently rerun. Plane floating-point projections and the inference that two image globals remain zero were not independently certified; runtime dyn+C0 remains required and unbound here.",
+    "independently_rerun": false,
+    "combined_build": "passed",
+    "merged_revision": "5e8a786760d4485c0e046f839790cfa3cf9bc4e9",
+    "merge": "clean",
+    "borrowed_claims_independently_rerun": false,
+    "subsequent_review": "5e8a7867 adds integrated spatial-publication receipts and recovered plane angular-velocity source. The angular source is a portable arithmetic projection with omitted native matrix-rebuild and controller-update tails; original x87, full-body equivalence and gameplay were not independently certified. Incoming spatial fixtures and compatibility runs remain borrowed claims. No BV dependency changed."
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "original_math_bodies": 2,
+    "paired_cases": 576,
+    "x87_control_modes": 12,
+    "source_exception_fixture": "one after actual Parent read passed",
+    "all_41_direct_transfer_rows": "passed",
+    "all_387_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for10 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_parser_original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "unmasked_x87_faults": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_hierarchy_parser_bv/build.log",
+      "sha256": "c0aca555299cada53b7396bbe88443b0624236140d4097e8c9dff1dd8d064f94",
+      "bytes": 2500
+    },
+    "core_sha256": "b56373c798362a35a10a05e6dcd51c45e9e7d303903bc0f14509bb9eca147a4e",
+    "game_sha256": "57e8e6baa5e075ed5cff3fce644f6df94e5c7208947d472061679b4d8c29e66c"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_hierarchy_parser_bv.json",
+      "sha256": "26b47737fb46f1d2b90d40bd9b26e45ee64fdb19c7b134ef38d8a9850e445a23",
+      "bytes": 64065
+    },
+    {
+      "path": "reports/native_resource_hierarchy_parser_annotations_bv.json",
+      "sha256": "3c848cab45d64f34ec2fd6b926bf0036ce98cd08ed7021550a5a05bd9c45ff05",
+      "bytes": 85001
+    },
+    {
+      "path": "reports/native_resource_hierarchy_parser_definitions_bv.json",
+      "sha256": "59444017e3629523096401a7ceff091d97ac9738ffbbe1171a7627ca63902b3e",
+      "bytes": 3416
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_resource_hierarchy_parser_bv/combined/source_manifest.json",
+    "sha256": "a26b7a499232e2b54f97b8396bbaa0b62f8a5b29f27dbfd9c66e0ba6c79718bd",
+    "bytes": 288975,
+    "files": 2645
+  },
+  "limitations": [
+    "Raw parser integrates existing canonical pool, list, streams, string and pointer-array domains. No production bootstrap or resource load admission added.",
+    "Only two sphere math bodies executed as original-code oracles. Whole native parser/FH3, private native stack aliases and hardware faults remain unproved.",
+    "Native parser leaves an unpublished record on failure. Fixture performs explicit field/slot teardown without attributing rollback to source/native parsing.",
+    "Masked x87 status, control and stack checked; condition codes, FIP/FDP and unmasked faults untested.",
+    "Actual memory family exercised; other streams, allocation failure, raw root/item dispatch, manager/factory/parser owners, B80720, queue shutdown and gameplay remain open."
+  ],
+  "first_source_revision": "165e88626ea0a146fbb457e2e7891679328c618a",
+  "primary_build": {
+    "log": {
+      "path": "local/native_resource_hierarchy_parser_bv/combined_build.log",
+      "sha256": "0025317a8036233b172ef067c37a7fd29943e2ab2a3ee398a2836b1d73e4063a",
+      "bytes": 2490
+    },
+    "core_sha256": "048b7f881d6dcc50f6b23dd8c68b1a663ef8576d6882304a0101e356e3d92a69",
+    "game_sha256": "e37f394b5e97592cc9ffee32f0ff0dc8c69c89354d5b826042bfe24b280640ef",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+    "modes": 1,
+    "passed": true,
+    "controlled_child_exit": 0,
+    "original_math_bodies": 2,
+    "paired_cases": 576,
+    "x87_control_modes": 12,
+    "note": "Actual hierarchy fields/defaults/append/current-resource and one source-failure fixture. Two relocated sphere math bodies; whole native parser/FH3/gameplay remain untested.",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/libraries.json",
+        "sha256": "15040ed0aa2332636dbc9259e40e2b658858462419bceade56968dbc90ac49e4",
+        "bytes": 713
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/probe.cpp",
+        "sha256": "5bdc0727b300973e89a729bbae23aea5362af87ae2eb69c0294ec5ac366039bd",
+        "bytes": 19539
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/originals.hpp",
+        "sha256": "a7cccd5e72d9736a051ddab0b6c142c854376057e6cd6f41b979bcf8e7a725a3",
+        "bytes": 1339
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/originals.json",
+        "sha256": "5dc3779440d668dccab6661ffb3a553b32d611d65bfb403b07ea6f4d411268eb",
+        "bytes": 822
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/compile.cmd",
+        "sha256": "41031e3a965877942e8762dd4085c4404c09c118f8a9252274c67d96128b841b",
+        "bytes": 736
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/probe.obj",
+        "sha256": "01963cc918410858fd35695d35e1b9bc5bfebee3856e1046e8d4508db52beb7a",
+        "bytes": 218684
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/probe.exe",
+        "sha256": "c13f492d960bfdcb6ec03a7fbd6580e4d8b232a0ec4c0d17a0251e2fe575434e",
+        "bytes": 158720
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/probe.log",
+        "sha256": "829ac956ea473457752614e062142fd48da5e331d7e5b221130659dddefeb78c",
+        "bytes": 383
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/child_probe.log",
+        "sha256": "4c88389b5f357cd34fbc19703e0df5e824478a5931a44f09917c13b94825f0c7",
+        "bytes": 344
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/combined/source_manifest.json",
+        "sha256": "a26b7a499232e2b54f97b8396bbaa0b62f8a5b29f27dbfd9c66e0ba6c79718bd",
+        "bytes": 288975
+      }
+    ]
+  },
+  "earlier_combined_fixture": {
+    "source_commit": "0ca54834ca00f0ff9ca08e29111c95aa4e2d9ffa",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/libraries.json",
+        "sha256": "3b5c44b029d5e3877df1a63fd6534e688b3185da8b8dc6b7101a19809e962a84",
+        "bytes": 704
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/probe.cpp",
+        "sha256": "1583d5fc415948b7d0e6f0e3048bc1dbade1371c07597d72a820135f945ea50e",
+        "bytes": 19533
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/originals.hpp",
+        "sha256": "a7cccd5e72d9736a051ddab0b6c142c854376057e6cd6f41b979bcf8e7a725a3",
+        "bytes": 1339
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/originals.json",
+        "sha256": "5dc3779440d668dccab6661ffb3a553b32d611d65bfb403b07ea6f4d411268eb",
+        "bytes": 822
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/compile.cmd",
+        "sha256": "73205bb7305321c5c2f4d1efadd53af1d004922c02ce49355c5bbe3242b053ee",
+        "bytes": 718
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/probe.obj",
+        "sha256": "df20275b273dc267fcb52d8f3aac8a99a50de2385ead9c986c73bd9bb71a4f8b",
+        "bytes": 218677
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/probe.exe",
+        "sha256": "0479127030507501a8f896068a14353779603dab78a645f1325425a55799f013",
+        "bytes": 158720
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/probe.log",
+        "sha256": "4fd11284e2b8a50a5f37511e98f0899d7d668e30d4f18f9a9da2cdfd28086605",
+        "bytes": 383
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/child_probe.log",
+        "sha256": "4c88389b5f357cd34fbc19703e0df5e824478a5931a44f09917c13b94825f0c7",
+        "bytes": 344
+      },
+      {
+        "path": "local/native_resource_hierarchy_parser_bv/final/source_manifest.json",
+        "sha256": "81ad839105508439e655e96c21f4b8c0f8d7342718a9d185fd1567f554a3d38f",
+        "bytes": 288757
+      }
+    ],
+    "build_log": {
+      "path": "local/native_resource_hierarchy_parser_bv/final_build.log",
+      "sha256": "c705e92a2d3972e5162855c8a81c23cf48b59a59c1929ca034a63a587240835d",
+      "bytes": 2546
+    }
+  }
+}

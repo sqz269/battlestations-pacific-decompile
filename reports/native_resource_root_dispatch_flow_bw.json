@@ -1,0 +1,153 @@
+{
+  "reason": "Restore CC1FD8 returning-free epilogue membership using supported endpoints; no inline scripts or callee no-return edits.",
+  "entries": [
+    {
+      "address": "00cc1fd8",
+      "end_exclusive": "00cc1fe3",
+      "bytes": 11,
+      "sha256": "dd06bb80e99d13b48715664d96b3bd1a3acffe6698916a83ae53b24c03cf0d9e",
+      "before_documentation": {
+        "hash": "862d608ec019968a44e0257c541763876c4b86e2398af1602372f09a3e400bb6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc1fd8",
+        "function_name": "Unwind@00cc1fd8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0,
+        "plate_comment": ""
+      },
+      "before_ownership": [
+        {
+          "address": "00cc1fd8",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x2c]",
+          "owned": true
+        },
+        {
+          "address": "00cc1fdb",
+          "mnemonic": "push",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00cc1fdc",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "owned": true
+        },
+        {
+          "address": "00cc1fe1",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "owned": false
+        },
+        {
+          "address": "00cc1fe2",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": false
+        }
+      ],
+      "original_abi": "Compiler unwind action: EBP parent frame, captured allocation at EBP-2Ch; calls BF65AC then POP ECX/RET. No standalone ordinary C++ input ABI.",
+      "prototype_note": "Preserves compiler name and synthetic EBP action; cdecl void analysis view does not model parent-frame ABI.",
+      "after_documentation": {
+        "hash": "bf5af7297e03d6da1ff37798c3d72c252a950830f757421084b774c8f9785405",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc1fd8",
+        "function_name": "Unwind@00cc1fd8",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 5,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00cc1fdc"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00cc1fdc (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cc1fd8"
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1fd8\", \"deleted_function\": \"Unwind@00cc1fd8\", \"body_size\": 9, \"message\": \"Function 'Unwind@00cc1fd8' deleted at 00cc1fd8\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1fd8",
+        "end_address": "00cc1fe3"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1fd8\", \"end_address\": \"00cc1fe2\", \"bytes_disassembled\": 11, \"message\": \"Successfully disassembled 11 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1fd8",
+        "name": "Unwind@00cc1fd8",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1fd8\", \"function_name\": \"Unwind@00cc1fd8\", \"entry_point\": \"00cc1fd8\", \"body_size\": 11, \"message\": \"Function created successfully at 00cc1fd8\", \"warnings\": [\"Function name 'Unwind@00cc1fd8' \\u2014 main part 'Unwind@00cc1fd8' is not PascalCase. Expected: Unwind@00cc1fd8\", \"Function name 'Unwind@00cc1fd8' does not start with a recognized verb. First word 'Unwind@00cc1fd8' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00cc1fd8",
+        "prototype": "void __cdecl BSP_Analysis_CC1FD8(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00cc1fd8 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1fd8",
+        "new_name": "Unwind@00cc1fd8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1fd8 from 'Unwind@00cc1fd8' to 'Unwind@00cc1fd8'\", \"warnings\": [\"Function name 'Unwind@00cc1fd8' \\u2014 main part 'Unwind@00cc1fd8' is not PascalCase. Expected: Unwind@00cc1fd8\", \"Function name 'Unwind@00cc1fd8' does not start with a recognized verb. First word 'Unwind@00cc1fd8' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1fd8",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1fd8\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

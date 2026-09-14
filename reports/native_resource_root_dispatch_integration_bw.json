@@ -1,0 +1,157 @@
+{
+  "batch": "orch4_native_resource_root_dispatch_integration_bw",
+  "state": "integrated_build_and_actual_service_fixture_passed",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "ed5f6a0ee4a3423288fbfa29474036a95bc0f949",
+  "code_revision": "8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3",
+  "packets": [
+    {
+      "packet": "orch4_native_resource_root_dispatch_bw",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "routines": 5,
+      "ordinary_bytes": 841
+    }
+  ],
+  "new_ordinary_routines": 5,
+  "new_ordinary_bytes": 841,
+  "ordinary_instruction_starts": 259,
+  "support_instruction_starts": 13,
+  "direct_transfer_rows": 31,
+  "indirect_calls": 4,
+  "incoming_main_review": {
+    "pinned_revision": "bab5d943e192d8d2ece768f85951c5358570aa95",
+    "scope": "Pilot bot task target evidence and corrected speed-hold scalar projection.",
+    "observations": "Incoming code is disjoint from BW dependencies. The added scalar result reports a full-stop trigger and leaves mode clearing to its caller; COMISS fault/status equivalence and native task/game behavior were not independently certified. The bank-target demand remains incomplete.",
+    "independently_rerun": false,
+    "combined_build": "passed",
+    "merged_revision": "bab5d943e192d8d2ece768f85951c5358570aa95",
+    "merge": "clean",
+    "borrowed_claims_independently_rerun": false
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "source_exception_fixture": "after actual parser read and after actual append passed",
+    "direct_transfer_rows": "31 passed",
+    "instruction_owners": "272 passed",
+    "prior_ghidra_comments": "verified preserved for10 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_dispatch_original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_root_dispatch_bw/build.log",
+      "sha256": "bb91a8e896c32df866f1aa60b0b03e7810a0c7fb0a6320931103bebee57fd48b",
+      "bytes": 2497
+    },
+    "core_sha256": "7223062735eb6f6e9cfff84eb1f1317354b03d8a3bbb006869c99358a97b0707",
+    "game_sha256": "5294287ce5d6c79e0e4405ddb6924cc89b3e2c6e4c9010b37ae5323121a7f66f"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_root_dispatch_bw.json",
+      "sha256": "012eba6f566a0004df663fcedf1046c38f25b155dfc7df310965418d8f56e27f",
+      "bytes": 52514
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_annotations_bw.json",
+      "sha256": "ead0242205289efc77495f7d4a9c2a9c8766e30cd842c9d633b1af17189fb3cc",
+      "bytes": 72049
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_definitions_bw.json",
+      "sha256": "0b0326b7baf90ec8b9c786cfd4c0ad46d3d06377dfadfa0b7166c4d4c45790fe",
+      "bytes": 1796
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_flow_bw.json",
+      "sha256": "f3826721c308a3e4ddcd656c3189781795a28fe2c43b67379535bb4a46b2ef8d",
+      "bytes": 5908
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_resource_root_dispatch_bw/final/source_manifest.json",
+    "sha256": "21638419679b04de32c330d14b6351efbf8d1da32a84b3d9b21de592d21997e9",
+    "bytes": 289207,
+    "files": 2647
+  },
+  "limitations": [
+    "Actual source bodies with explicit current virtual target dispatch; parser, alternate resource and renderer identities require supplied implementations.",
+    "Fixture registered parser is a boundary probe, not native Mesh or other parser production.",
+    "No original dispatcher body oracle, native FH3/SEH runtime, hardware faults, private stack aliases, resource destructor or gameplay fixture.",
+    "Game-resource slotC71BB40 is not a default-resource alias; raw manager registration, parser owners, B80720 and queue shutdown remain incomplete."
+  ],
+  "first_source_revision": "20c695d83cfd258ec2189b225ed771d2c7a0f798",
+  "primary_build": {
+    "log": {
+      "path": "local/native_resource_root_dispatch_bw/final_build.log",
+      "sha256": "d3583f1c65fce93546bcb516e8a17155f3a9b104d644673e914c79d152647c05",
+      "bytes": 2484
+    },
+    "core_sha256": "1bf4dee2f097d9014d2b1deb78bb15f1f7159ccf459ca05417e1e6e44ddc8673",
+    "game_sha256": "aabd54c5341e76cc20675a4e3a1b94983eefd00405d09d5c7d7b4d53ce757922",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3",
+    "passed": true,
+    "controlled_child_exit": 0,
+    "note": "Actual-service nested root/item/hierarchy fixture, two failure boundaries and current resource/renderer mutations. Registered fixture parser is not a native parser body. Original dispatch/FH3/gameplay untested.",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/libraries.json",
+        "sha256": "ba7335f6df1953a1ec011e9c109b3cd550da3f32dc850e61d3184d629b462ff1",
+        "bytes": 695
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/probe.cpp",
+        "sha256": "58704294fc816400fcb4845b775249acb00f07526ddf8cf44571a45ade327155",
+        "bytes": 18187
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/compile.cmd",
+        "sha256": "f84c0f8f75dcf51b10912e99da9b8fb0be3595f7653ea7ee58516b13c81a3b49",
+        "bytes": 700
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/probe.obj",
+        "sha256": "76008f4269ae7c4859002ed97b366d101badcfc7ebea8482b80f7dbd9a7a1666",
+        "bytes": 202533
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/probe.exe",
+        "sha256": "e110218e1b6b3e55bc2b2fc54e7b50041c3dc0b62a429b14366b4643529a5fab",
+        "bytes": 156160
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/probe.log",
+        "sha256": "6c2c59b9121d180221c2ccf503e8687e157706ca3dfed82072ace1449d12ed3f",
+        "bytes": 413
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/child_probe.log",
+        "sha256": "142ff648e0c689d35076bd4041bb4f61416652e3a1d6fda6ae075d90e7725092",
+        "bytes": 374
+      },
+      {
+        "path": "local/native_resource_root_dispatch_bw/final/source_manifest.json",
+        "sha256": "21638419679b04de32c330d14b6351efbf8d1da32a84b3d9b21de592d21997e9",
+        "bytes": 289207
+      }
+    ]
+  }
+}

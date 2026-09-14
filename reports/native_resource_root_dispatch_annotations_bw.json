@@ -1,0 +1,718 @@
+{
+  "source_functions": [
+    {
+      "address": "00b7f430",
+      "function": "dispatch_native_resource_root_00b7f430",
+      "source": "src/native_resource_root_dispatch.cpp",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "original_abi": "ECX manager; stacked root handle; RET4",
+      "bytes": 380
+    },
+    {
+      "address": "00b7e970",
+      "function": "dispatch_native_resource_items_00b7e970",
+      "source": "src/native_resource_root_dispatch.cpp",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "original_abi": "ECX manager; stacked Resource container handle; RET4",
+      "bytes": 366
+    },
+    {
+      "address": "00b87aa0",
+      "function": "append_native_resource_item_00b87aa0",
+      "source": "src/native_resource_root_dispatch.cpp",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "original_abi": "ECX resource; stacked raw item pointer; RET4",
+      "bytes": 59
+    },
+    {
+      "address": "00b1fe40",
+      "function": "begin_native_resource_root_00b1fe40",
+      "source": "src/native_resource_root_dispatch.cpp",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "original_abi": "ECX renderer unused; no stack arguments; RET",
+      "bytes": 1
+    },
+    {
+      "address": "00b28570",
+      "function": "end_native_resource_root_00b28570",
+      "source": "src/native_resource_root_dispatch.cpp",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "original_abi": "ECX renderer unused; no stack arguments; RET; inactive SEH frame",
+      "bytes": 35
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7f430",
+      "name": "BSP_ResourceManager_DispatchRoot",
+      "before_comment": {
+        "address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f430] update\nRegistered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 380 bytes; ECX manager; stacked root handle; RET4; reports/native_resource_root_dispatch_bw.json. Capture current renderer slot50 before control. Ordered Resource/Hierarchy/BoundingBox children; box copies6 words into reloaded current resource. Disarm before release; normal-only current renderer slot54.",
+      "before_documentation": {
+        "hash": "aab96f19d8dc8f88c5af31cc1a06750a7c052103aca2b32619a050121da231b6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f430] update\nRegistered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uStack_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_1c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uStack_14",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uStack_18",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "handle",
+            "type": "void *",
+            "storage": "(unique, 0x10000158, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvVar4",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 67,
+            "name": "LAB_00b7f473"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b7f4ba"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00b7f4ed"
+          },
+          {
+            "relative_offset": 307,
+            "name": "LAB_00b7f563"
+          },
+          {
+            "relative_offset": 316,
+            "name": "LAB_00b7f56c"
+          },
+          {
+            "relative_offset": 348,
+            "name": "LAB_00b7f58c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_ResourceManager_DispatchRoot(void* manager, void* unused_edx, void* handle)",
+      "prototype_result": "Successfully set prototype for function at 00b7f430 with __fastcall calling convention",
+      "ledger_name_output": "00b7f430 -> BSP_ResourceManager_DispatchRoot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7f430\", \"name\": \"BSP_ResourceManager_DispatchRoot\", \"evidence\": \"Registered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7f430 function dispatch_native_resource_root_00b7f430\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f430",
+        "function_name": "BSP_ResourceManager_DispatchRoot",
+        "comment": "[BSP reconstruction 00b7f430]\nECX manager; parent reader-handle pointer stack; RET4. Renderer+50/+54 bracket. Ordered case-insensitive Resource/Hierarchy/BoundingBox tags; unknown skip. BoundingBox copies six words into current resource+28..3C. Reader/parser semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f430] update\nRegistered root host traversal now composes actual parser registry, retained owning wire records, hierarchy Item parser and last root BoundingBox. Begins before control read; ends only after normal traversal. Observed D3D9 table00d5f0a8 hooks00b1fe40/00b28570 have no normal renderer state effect. Native current resource manager+24, virtual item ownership/cache/SEH remain separate. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to parent node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b7f430] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 380 bytes; ECX manager; stacked root handle; RET4; reports/native_resource_root_dispatch_bw.json. Capture current renderer slot50 before control. Ordered Resource/Hierarchy/BoundingBox children; box copies6 words into reloaded current resource. Disarm before release; normal-only current renderer slot54."
+      }
+    },
+    {
+      "address": "00b7e970",
+      "name": "BSP_ResourceManager_DispatchItems",
+      "before_comment": {
+        "address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7e970] update\nVisit Resource children in encounter order; compare counted tag through case-insensitive parser map. Call parser virtual+8 with child handle; unknown allocates8-byte fallback and explicitly skips. Append result through current-resource virtual+Ch before releasing child handle. Host registered Mesh/Note/GroupParams decode actual owning wire payloads and unknown nullopt records explicitly mean skipped, not native fallback objects. Original ABI: ECX manager; stack Resource child-handle pointer; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 366 bytes; ECX manager; stacked Resource container handle; RET4; reports/native_resource_root_dispatch_bw.json. Actual tree manager+8 lower-bound/equivalence/returning CRT checks; current parser slot8, unknown8h fallback plus skip; current manager resource slotC then child release. No completed-item cleanup.",
+      "before_documentation": {
+        "hash": "830eb5e3b3b2c6e7d391ed18f1c03592eff30a823642e7614c99e3384908ad95",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7e970] update\nVisit Resource children in encounter order; compare counted tag through case-insensitive parser map. Call parser virtual+8 with child handle; unknown allocates8-byte fallback and explicitly skips. Append result through current-resource virtual+Ch before releasing child handle. Host registered Mesh/Note/GroupParams decode actual owning wire payloads and unknown nullopt records explicitly mean skipped, not native fallback objects. Original ABI: ECX manager; stack Resource child-handle pointer; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "ppvVar5",
+            "type": "void * *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "query",
+            "type": "int *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "tree",
+            "type": "void *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar8",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pcStack_10",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 58,
+            "name": "LAB_00b7e9aa"
+          },
+          {
+            "relative_offset": 109,
+            "name": "LAB_00b7e9dd"
+          },
+          {
+            "relative_offset": 132,
+            "name": "LAB_00b7e9f4"
+          },
+          {
+            "relative_offset": 154,
+            "name": "LAB_00b7ea0a"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00b7ea0e"
+          },
+          {
+            "relative_offset": 164,
+            "name": "LAB_00b7ea14"
+          },
+          {
+            "relative_offset": 179,
+            "name": "LAB_00b7ea23"
+          },
+          {
+            "relative_offset": 199,
+            "name": "LAB_00b7ea37"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_00b7ea3c"
+          },
+          {
+            "relative_offset": 219,
+            "name": "LAB_00b7ea4b"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00b7ea55"
+          },
+          {
+            "relative_offset": 248,
+            "name": "LAB_00b7ea68"
+          },
+          {
+            "relative_offset": 280,
+            "name": "LAB_00b7ea88"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00b7ea8a"
+          },
+          {
+            "relative_offset": 298,
+            "name": "LAB_00b7ea9a"
+          },
+          {
+            "relative_offset": 346,
+            "name": "LAB_00b7eaca"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_ResourceManager_DispatchItems(void* manager, void* unused_edx, void* handle)",
+      "prototype_result": "Successfully set prototype for function at 00b7e970 with __fastcall calling convention",
+      "ledger_name_output": "00b7e970 -> BSP_ResourceManager_DispatchItems\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7e970\", \"name\": \"BSP_ResourceManager_DispatchItems\", \"evidence\": \"Visit Resource children in encounter order; compare counted tag through case-insensitive parser map. Call parser virtual+8 with child handle; unknown allocates8-byte fallback and explicitly skips. Append result through current-resource virtual+Ch before releasing child handle. Host registered Mesh/Note/GroupParams decode actual owning wire payloads and unknown nullopt records explicitly mean skipped, not native fallback objects. Original ABI: ECX manager; stack Resource child-handle pointer; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7e970 function dispatch_native_resource_items_00b7e970\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7e970",
+        "function_name": "BSP_ResourceManager_DispatchItems",
+        "comment": "[BSP reconstruction 00b7e970]\nECX manager; Resource child-handle pointer stack; RET4. Registered map+8 child-tag lookup; parser virtual+8 returns item. Unknown allocates8-byte ref1 fallback and skips payload. Always current resource+Ch append, then child-handle cleanup; item teardown external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7e970] update\nVisit Resource children in encounter order; compare counted tag through case-insensitive parser map. Call parser virtual+8 with child handle; unknown allocates8-byte fallback and explicitly skips. Append result through current-resource virtual+Ch before releasing child handle. Host registered Mesh/Note/GroupParams decode actual owning wire payloads and unknown nullopt records explicitly mean skipped, not native fallback objects. Original ABI: ECX manager; stack Resource child-handle pointer; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7e970] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 366 bytes; ECX manager; stacked Resource container handle; RET4; reports/native_resource_root_dispatch_bw.json. Actual tree manager+8 lower-bound/equivalence/returning CRT checks; current parser slot8, unknown8h fallback plus skip; current manager resource slotC then child release. No completed-item cleanup."
+      }
+    },
+    {
+      "address": "00b87aa0",
+      "name": "BSP_Resource_AppendRawItem",
+      "before_comment": {
+        "address": "00b87aa0",
+        "function_name": "BSP_Resource_AppendRawItem",
+        "comment": "[BSP reconstruction 00b87aa0]\nECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 59 bytes; ECX resource; stacked raw item pointer; RET4; reports/native_resource_root_dispatch_bw.json. Capacity18 before count14; equality grows wrapped+16/signed minimum16 through B872F0; current count/data then computed-nonnull store and current count increment. No retain.",
+      "before_documentation": {
+        "hash": "d58cda4205d4745dfea3569e8bebdd845a7e970887ca40b07e96c10950ce0f97",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b87aa0",
+        "function_name": "BSP_Resource_AppendRawItem",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b87aa0]\nECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 25,
+            "name": "LAB_00b87ab9"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b87ac1"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00b87ad3"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_Resource_AppendRawItem(void* resource, void* unused_edx, void* item)",
+      "prototype_result": "Successfully set prototype for function at 00b87aa0 with __fastcall calling convention",
+      "ledger_name_output": "00b87aa0 -> BSP_Resource_AppendRawItem\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b87aa0\", \"name\": \"BSP_Resource_AppendRawItem\", \"evidence\": \"ECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00b87aa0 function append_native_resource_item_00b87aa0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b87aa0",
+        "function_name": "BSP_Resource_AppendRawItem",
+        "comment": "[BSP reconstruction 00b87aa0]\nECXresource;item pointer stack;RET4. Raw pointer append vector+10/+14/+18; no AddRef. Allocator/destructor semantics external. Evidence: docs/STRUCTURED_RESOURCE_DISPATCH.md; reports/structured_resource_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b87aa0] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 59 bytes; ECX resource; stacked raw item pointer; RET4; reports/native_resource_root_dispatch_bw.json. Capacity18 before count14; equality grows wrapped+16/signed minimum16 through B872F0; current count/data then computed-nonnull store and current count increment. No retain."
+      }
+    },
+    {
+      "address": "00b1fe40",
+      "name": "BSP_D3D9Renderer_BeginStructuredRoot",
+      "before_comment": {
+        "address": "00b1fe40",
+        "function_name": "BSP_D3D9Renderer_BeginStructuredRoot",
+        "comment": "[BSP reconstruction 00b1fe40]\nRET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 1 bytes; ECX renderer unused; no stack arguments; RET; reports/native_resource_root_dispatch_bw.json. RET only; ECX renderer unused, no stack inputs.",
+      "before_documentation": {
+        "hash": "68ad3fa3cd5f1c61843bd5049f8c2abc368a0f84a18ec4fb25932fa47efcdfaa",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1fe40",
+        "function_name": "BSP_D3D9Renderer_BeginStructuredRoot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b1fe40]\nRET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_D3D9Renderer_BeginStructuredRoot(void* renderer, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b1fe40 with __fastcall calling convention",
+      "ledger_name_output": "00b1fe40 -> BSP_D3D9Renderer_BeginStructuredRoot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b1fe40\", \"name\": \"BSP_D3D9Renderer_BeginStructuredRoot\", \"evidence\": \"RET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b1fe40 function begin_native_resource_root_00b1fe40\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b1fe40",
+        "function_name": "BSP_D3D9Renderer_BeginStructuredRoot",
+        "comment": "[BSP reconstruction 00b1fe40]\nRET only. Concrete D3D9 table00d5f0a8 +50 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b1fe40] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 1 bytes; ECX renderer unused; no stack arguments; RET; reports/native_resource_root_dispatch_bw.json. RET only; ECX renderer unused, no stack inputs."
+      }
+    },
+    {
+      "address": "00b28570",
+      "name": "BSP_D3D9Renderer_EndStructuredRoot",
+      "before_comment": {
+        "address": "00b28570",
+        "function_name": "BSP_D3D9Renderer_EndStructuredRoot",
+        "comment": "[BSP reconstruction 00b28570]\nSEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 35 bytes; ECX renderer unused; no stack arguments; RET; inactive SEH frame; reports/native_resource_root_dispatch_bw.json. Inactive state-1 SEH registration then immediate restoration; no object accesses/services. Normal source no-op does not reproduce private frame.",
+      "before_documentation": {
+        "hash": "bc98f73cb88e4d8437df5dc7e98585dc2208463845267ef6b9f50983f8f3722c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b28570",
+        "function_name": "BSP_D3D9Renderer_EndStructuredRoot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b28570]\nSEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_D3D9Renderer_EndStructuredRoot(void* renderer, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b28570 with __fastcall calling convention",
+      "ledger_name_output": "00b28570 -> BSP_D3D9Renderer_EndStructuredRoot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b28570\", \"name\": \"BSP_D3D9Renderer_EndStructuredRoot\", \"evidence\": \"SEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b28570 function end_native_resource_root_00b28570\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b28570",
+        "function_name": "BSP_D3D9Renderer_EndStructuredRoot",
+        "comment": "[BSP reconstruction 00b28570]\nSEH frame setup immediately followed by restoring prior FS:[0] and stack; RET. No renderer field access or service call. Concrete D3D9 table00d5f0a8 +54 called by00b7f430. Original ABI ECX renderer unused, no stack args, RET. Explicit host RendererRootHooks_00d5f0a8 implements only this normal behavior, not native SEH/async exceptions or ABI. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX renderer unused; no stack arguments; no meaningful return value; RET. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b28570] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Full ordinary span 35 bytes; ECX renderer unused; no stack arguments; RET; inactive SEH frame; reports/native_resource_root_dispatch_bw.json. Inactive state-1 SEH registration then immediate restoration; no object accesses/services. Normal source no-op does not reproduce private frame."
+      }
+    },
+    {
+      "address": "00cc1fe3",
+      "name": "BSP_ResourceDispatch_CompilerExceptionHandler",
+      "before_comment": {
+        "address": "00cc1fe3",
+        "function_name": "BSP_ResourceDispatch_CompilerExceptionHandler",
+        "comment": "[BSP reconstruction 00cc1fe3]\nHypothesis, not a recovered symbol. Complete10B compiler-generated handler CC1FE3-CC1FEC for00b7e970; EAX=00dfb134 exception info (unwind map00dfb124), tail transfer to existing CRT exception handler. Compiler entry ABI, not ordinary callable C++ routine. Byte-matched disk/live evidence: docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md; reports/native_resource_item_frontier_bf.json; reports/native_resource_lifetime_bf_function_definitions.json. Defined and range-verified by integrator 2026-09-13; analysis only, not reconstructed or runtime validated."
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc1fe3 -> BSP_ResourceDispatch_CompilerExceptionHandler\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00cc1fe3\", \"name\": \"BSP_ResourceDispatch_CompilerExceptionHandler\", \"evidence\": \"Hypothesis, not a recovered symbol. Complete10B compiler-generated handler CC1FE3-CC1FEC for00b7e970; EAX=00dfb134 exception info (unwind map00dfb124), tail transfer to existing CRT exception handler. Compiler entry ABI, not ordinary callable C++ routine. Byte-matched disk/live evidence: docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md; reports/native_resource_item_frontier_bf.json; reports/native_resource_lifetime_bf_function_definitions.json. Defined and range-verified by integrator 2026-09-13; analysis only, not reconstructed or runtime validated.\"})\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc1fe3",
+        "function_name": "BSP_ResourceDispatch_CompilerExceptionHandler",
+        "comment": "[BSP reconstruction 00cc1fe3]\nHypothesis, not a recovered symbol. Complete10B compiler-generated handler CC1FE3-CC1FEC for00b7e970; EAX=00dfb134 exception info (unwind map00dfb124), tail transfer to existing CRT exception handler. Compiler entry ABI, not ordinary callable C++ routine. Byte-matched disk/live evidence: docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md; reports/native_resource_item_frontier_bf.json; reports/native_resource_lifetime_bf_function_definitions.json. Defined and range-verified by integrator 2026-09-13; analysis only, not reconstructed or runtime validated.\n\n[BSP reconstruction 00cc1fe3] update\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc2098",
+      "name": "EH_handler_00cc2098",
+      "before_comment": {
+        "address": "00cc2098",
+        "function_name": "FUN_00cc2098"
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2098 -> EH_handler_00cc2098\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2098",
+        "function_name": "EH_handler_00cc2098",
+        "comment": "[BSP reconstruction 00cc2098]\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc1fd0",
+      "name": "Unwind@00cc1fd0",
+      "before_comment": {
+        "address": "00cc1fd0",
+        "function_name": "Unwind@00cc1fd0"
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB124 state0->-1: release active child handle at synthetic EBP-34 via BE9ED0.",
+      "ledger_name_output": "00cc1fd0 -> Unwind@00cc1fd0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc1fd0",
+        "function_name": "Unwind@00cc1fd0",
+        "comment": "[BSP reconstruction 00cc1fd0]\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB124 state0->-1: release active child handle at synthetic EBP-34 via BE9ED0."
+      }
+    },
+    {
+      "address": "00cc1fd8",
+      "name": "Unwind@00cc1fd8",
+      "before_comment": {
+        "address": "00cc1fd8",
+        "function_name": "Unwind@00cc1fd8",
+        "comment": ""
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB124 state1->0: free saved fallback allocation at synthetic EBP-2C via BF65AC; complete five instructions including POP ECX/RET verified.",
+      "ledger_name_output": "00cc1fd8 -> Unwind@00cc1fd8\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc1fd8",
+        "function_name": "Unwind@00cc1fd8",
+        "comment": "[BSP reconstruction 00cc1fd8]\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB124 state1->0: free saved fallback allocation at synthetic EBP-2C via BF65AC; complete five instructions including POP ECX/RET verified."
+      }
+    },
+    {
+      "address": "00cc2090",
+      "name": "Unwind@00cc2090",
+      "before_comment": {
+        "address": "00cc2090",
+        "function_name": "Unwind@00cc2090"
+      },
+      "evidence": "BW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB220 state0->-1: release active root child handle at synthetic EBP+4 via BE9ED0.",
+      "ledger_name_output": "00cc2090 -> Unwind@00cc2090\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2090",
+        "function_name": "Unwind@00cc2090",
+        "comment": "[BSP reconstruction 00cc2090]\nBW actual resource root/item dispatch and base pointer append. Five complete ordinary spans total841bytes; all259 ordinary and13 supporting instruction starts match installed PE and live Ghidra owners. Strict Win32 build and both tests passed. One controlled-child actual memory-stream/reader/root/child/string/pool/fallback/default-resource/hierarchy fixture passes counted map lookup, case-folded/unknown/empty tags, nested hierarchy, current manager resource and renderer reload, empty-root bracketing, parser failure after actual read and failure after actual append. Completed item is not rolled back; refcount1 retained until explicit fixture teardown. The registered fixture parser is a virtual-boundary probe, not native Mesh or other parser production. Root renderer end runs only normally. Existing D5F0A8 hooks have no normal object effect; original inactive SEH frame is excluded. CC1FD8 returning-free epilogue membership repaired without no-return changes; CC2098 handler defined. Original dispatch/FH3/SEH, private stack aliases, hardware faults and gameplay remain untested. Raw manager/parser bootstrap, game resource71BB40, B80720 and queue shutdown remain incomplete. Names are hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_ROOT_DISPATCH_INTEGRATION_BW.md and reports/native_resource_root_dispatch_bw.json. Native unwind evidence. DFB220 state0->-1: release active root child handle at synthetic EBP+4 via BE9ED0."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7f430",
+        "prototype": "void __fastcall BSP_ResourceManager_DispatchRoot(void* manager, void* unused_edx, void* handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7f430 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e970",
+        "prototype": "void __fastcall BSP_ResourceManager_DispatchItems(void* manager, void* unused_edx, void* handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e970 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b87aa0",
+        "prototype": "void __fastcall BSP_Resource_AppendRawItem(void* resource, void* unused_edx, void* item)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b87aa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b1fe40",
+        "prototype": "void __fastcall BSP_D3D9Renderer_BeginStructuredRoot(void* renderer, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b1fe40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b28570",
+        "prototype": "void __fastcall BSP_D3D9Renderer_EndStructuredRoot(void* renderer, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b28570 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

@@ -1,0 +1,103 @@
+{
+  "entries": [
+    {
+      "address": "00cc2000",
+      "func_info": "00dfb168",
+      "bytes": 10,
+      "sha256": "1f5cff4276dc9dbb65ee9fcf24d31efe1be04c81f0cda6d6eef0252477eca76a",
+      "before_owners": [
+        "No function found for 00cc2000",
+        "No function found for 00cc2005"
+      ],
+      "instructions": [
+        [
+          13377536,
+          5,
+          "mov",
+          "eax, 0xdfb168"
+        ],
+        [
+          13377541,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00cc2000 at 00cc2000\nSignature: undefined FUN_00cc2000(void)\nEntry: 00cc2000\nBody: 00cc2000 - 00cc2009",
+        "Function: FUN_00cc2000 at 00cc2000\nSignature: undefined FUN_00cc2000(void)\nEntry: 00cc2000\nBody: 00cc2000 - 00cc2009"
+      ],
+      "complete": true
+    },
+    {
+      "address": "00cc2018",
+      "func_info": "00dfb194",
+      "bytes": 10,
+      "sha256": "2590183120119104445ef0aa053d01c1d50bc3f39bbca193d56cb193ffd4c932",
+      "before_owners": [
+        "No function found for 00cc2018",
+        "No function found for 00cc201d"
+      ],
+      "instructions": [
+        [
+          13377560,
+          5,
+          "mov",
+          "eax, 0xdfb194"
+        ],
+        [
+          13377565,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00cc2018 at 00cc2018\nSignature: undefined FUN_00cc2018(void)\nEntry: 00cc2018\nBody: 00cc2018 - 00cc2021",
+        "Function: FUN_00cc2018 at 00cc2018\nSignature: undefined FUN_00cc2018(void)\nEntry: 00cc2018\nBody: 00cc2018 - 00cc2021"
+      ],
+      "complete": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2000",
+        "end_address": "00cc200a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2000\", \"end_address\": \"00cc2009\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2000",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2000\", \"function_name\": \"FUN_00cc2000\", \"entry_point\": \"00cc2000\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2000\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2018",
+        "end_address": "00cc2022"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2018\", \"end_address\": \"00cc2021\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2018",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2018\", \"function_name\": \"FUN_00cc2018\", \"entry_point\": \"00cc2018\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2018\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

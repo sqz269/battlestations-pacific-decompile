@@ -66,11 +66,45 @@ there. The twelve string immediates were read as evidence of the model *arriving
 evidence of it being *used* - and the distinction is exactly what a byte census of `[class+50h]`
 settles and a list of string literals cannot.
 
-**The real gate is the producer of `class+50h`, and it was searched for and not found.** The packet
-ruled out `009633C0`, `00960230` and `00964020` by inspection, and byte scans for
-`MOV [reg+50h], reg` and for every `CALL [reg+20h]` / `MOV reg,[reg+20h]; CALL reg` form turned up
-no candidate in the vehicle-class code. Neither the writer of that field nor the invoker of vtable
-slot 8 is known. This matches an open item already recorded in `docs/UNIT_PARTS.md`.
+**The real gate is the producer of `class+50h`, and it is still not found.**
+
+~~byte scans for `MOV [reg+50h], reg` and for every `CALL [reg+20h]` form turned up no candidate~~ -
+**two of those negatives were vacuous, and this document published them as evidence.**
+`docs/MODEL_HANDLE_PRODUCER.md` counted the encodings image-wide:
+
+| form | occurrences in `.text` |
+| --- | --- |
+| `MOV [reg+50h], reg` **disp32** | **0** |
+| `MOV [reg+50h], reg` disp8 | 244 |
+| `CALL dword ptr [reg+20h]` | **0** |
+| `MOV r,[reg+20h]` then `CALL r` | 287 |
+
+`50h` is 80, which fits a signed disp8, so MSVC never emits the disp32 form for it; and this
+compiler always emits the load-then-call pair for a virtual. **A scan for either zero row returns
+nothing regardless of what the code does**, so neither could ever have supported a conclusion.
+Confirmed here directly: `scan-bytes '89 ?? 50'` returns hits across the image, `'89 ?? 50 00 00 00'`
+returns none.
+
+**The rule that follows applies to every offset search on this image: count both encodings and check
+the total is non-zero before reading anything into an empty result.** An empty scan is only evidence
+once the pattern is known to occur somewhere.
+
+What *is* settled: `class+50h` is null-initialised at construction (`0087C6A3` in
+`BSP_DamageableClass_ConstructBase`), and nothing writes it in any form or window scanned - `MOV`
+register and immediate in **both** encodings, `LEA` (the out-parameter form, 119 image-wide and none
+in the class region), and `MOVSS`. The earlier exclusion of `00960230` now stands on byte evidence
+rather than inspection: its `00962981` hit is the middle of a field-by-field copy of a ~`5Ch`-byte
+record inside a Lua iteration loop.
+
+Explicitly **not** excluded, and one of these must hold it since the shipped game loads models: a
+`memcpy`/`REP MOVSD` covering the field, a SIB-indexed write (every scan skips those by design), a
+write on an object later aliased to the class, or a window outside the two searched.
+
+Two corrections to this document's own text while we are here: `0082FE30` occupies slot 8 on
+**eight** class vtables, not the five listed above; and the invoker of that slot is also unfound -
+none of the six slot-`+20h` dispatches in the class region is on a descriptor. The cheapest next
+step is the **twenty callers of `BSP_VehicleClass_GetOrCreate`**, listed in
+`docs/MODEL_HANDLE_PRODUCER.md`, of which exactly one has been checked.
 
 What the packet does give is the consumption contract: sixteen descriptor fields mapped from twelve
 named node groups, all of them **point data** rather than mesh data. Worth keeping for whoever
