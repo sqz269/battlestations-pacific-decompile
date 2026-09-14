@@ -1,0 +1,64 @@
+{
+  "packet": "orch4_native_mesh_buffer_fields_cg",
+  "entries": [
+    {
+      "address": "00cc2e38",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2e38",
+        "function_name": "BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2e38",
+        "end_address": "00cc2e42"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2e38\", \"end_address\": \"00cc2e41\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2e38",
+        "name": "BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2e38\", \"function_name\": \"BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38\", \"entry_point\": \"00cc2e38\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2e38\", \"warnings\": [\"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' \\u2014 main part 'MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' is not PascalCase. Expected: MeshvertexstreamreadCompilerexceptionhandler00cc2e38\", \"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' \\u2014 main part 'MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e38",
+        "new_name": "BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e38 from 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' to 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38'\", \"warnings\": [\"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' \\u2014 main part 'MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' is not PascalCase. Expected: MeshvertexstreamreadCompilerexceptionhandler00cc2e38\", \"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' \\u2014 main part 'MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshVertexStreamRead_CompilerExceptionHandler_00cc2e38' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e38",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e38\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}
