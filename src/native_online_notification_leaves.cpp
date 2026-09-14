@@ -1,4 +1,5 @@
 #include "bsp/native_online_notification_leaves.hpp"
+#include "bsp/native_online_profile_callback.hpp"
 #include "bsp/xlive_library.hpp"
 #include "bsp/xlive_updates.hpp"
 
@@ -49,6 +50,11 @@ NativeOnlineNotificationLeafRuntime::NativeOnlineNotificationLeafRuntime(
     const XLiveLibrary& library) : module_(library.module_handle()) {
     if (!module_) throw std::invalid_argument("Native online notification leaves need live XLive");
 }
+NativeOnlineNotificationLeafRuntime::NativeOnlineNotificationLeafRuntime(
+    const XLiveLibrary& library, NativeOnlineProfileCallbackContext& profile_context)
+    : NativeOnlineNotificationLeafRuntime(library) {
+    profile_context_ = &profile_context;
+}
 
 std::uint32_t NativeOnlineNotificationLeafRuntime::user_get_name_00a4d566(
     std::uint32_t user, NativeOnlineName128& output, std::uint32_t capacity) {
@@ -59,9 +65,10 @@ std::uint32_t NativeOnlineNotificationLeafRuntime::user_get_name_00a4d566(
 
 void NativeOnlineNotificationLeafRuntime::call_callback18(std::uint32_t target,
     std::uint32_t incoming_ecx) {
-    if (target != 0x00735520u)
+    if (target != 0x00737d60u || profile_context_ == nullptr)
         throw std::runtime_error("Unbound native online manager callback18 identity");
-    static_cast<void>(ordinal<std::uint32_t>(module_, 5277, incoming_ecx, 0x8001u, 4u));
+    static_cast<void>(incoming_ecx); // 00737D60 ignores incoming ECX.
+    apply_native_online_profile_name_00737d60(*profile_context_);
 }
 
 std::int32_t NativeOnlineNotificationLeafRuntime::get_update_information_00a4d59c(

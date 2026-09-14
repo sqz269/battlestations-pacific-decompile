@@ -12,6 +12,7 @@
 
 namespace bsp {
 class XLiveLibrary;
+struct NativeOnlineProfileCallbackContext;
 
 // The SDK writes this exact 218h Win32 image. In particular path_10 is 260
 // 16-bit units, regardless of the host C++ standard library's wide-string type.
@@ -53,12 +54,16 @@ public:
 
 // Production boundary borrows one already loaded XLive module. It makes actual
 // SDK ordinal and Win32 calls; constructing it does not make a request. The
-// installed callback18 identity 00735520 is the XUserSetContext(0,8001h,4)
-// stub. A different target needs a caller-supplied Calls binding.
+// normal callback18 identity is 00737D60 and needs the actual publications
+// and raw string pool context. The library-only constructor can make SDK
+// requests but cannot execute that callback. 00735510/+20 and 00735520/+24
+// are separate XUserSetContext stubs, not alternate callback18 handlers.
 class NativeOnlineNotificationLeafRuntime final : public NativeOnlineProfileNameCalls,
                                                   public NativeOnlineUpdateCalls {
 public:
     explicit NativeOnlineNotificationLeafRuntime(const XLiveLibrary&);
+    NativeOnlineNotificationLeafRuntime(const XLiveLibrary&,
+        NativeOnlineProfileCallbackContext&);
     std::uint32_t user_get_name_00a4d566(std::uint32_t,
         NativeOnlineName128&, std::uint32_t) override;
     void call_callback18(std::uint32_t, std::uint32_t) override;
@@ -70,6 +75,7 @@ public:
     BOOL shell_execute(SHELLEXECUTEINFOA&) override;
 private:
     void* module_;
+    NativeOnlineProfileCallbackContext* profile_context_{};
 };
 
 // Complete normal A3E600. Original ECX=actual 3F0h manager, mask byte in one

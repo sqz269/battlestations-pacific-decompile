@@ -14,11 +14,14 @@ never launches an updater or makes an SDK/network request.
 | A3FF20 | complete normal | output native string pointer on stack, ECX unused, RET4, AL bool | Zero 218h SDK image, set cbSize, call ordinal 5022. Signed HRESULT>=0 and type+4=0 permit a 00436630 narrow temporary from UTF16 path+10; resize/copy to output, release temporary, return true. Other results leave output untouched by this body. |
 | A3E560 | complete normal | two C-string stack pointers, ECX unused, RET8, EAX bool | Null executable returns false. Otherwise zero 3Ch SHELLEXECUTEINFOA, set cbSize=3Ch, fMask=400h, verb `open`, file/parameters, nShow=5, call ShellExecuteExA, return its boolean. No wait or exit in this helper. |
 
-The production profile callback target is installed at 73DC70/73DC75:
-manager+18 is `00735520`, whose body calls XUserSetContext(ECX, 8001h, 4).
-The runtime checks that identity and forwards ordinal 5277; alternate callback
-targets require a supplied call binding. Manager+20 is the separate
-`00735510` state callback, owned by the sign-in packet. The name SDK may mutate
+The production profile callback target is installed at `0073DC87`:
+manager+18 is `00737D60`, which reads the selected native name from the
+currently published manager and writes actual current-game profile headers and
+the +1FF0 mirror. The runtime needs a borrowed
+`NativeOnlineProfileCallbackContext` to execute it. `00735510` and `00735520`
+are the separate manager+20 and +24 XUserSetContext slots from `00A40DF0`;
+neither is the normal callback18. See `NATIVE_ONLINE_PROFILE_CALLBACK.md`.
+The name SDK may mutate
 the captured manager during its call; comparison, cache copy, state and callback
 reads happen afterward. Query failure can leave scratch partly written but does
 not change the manager. A callback exception happens after the cache copy.
