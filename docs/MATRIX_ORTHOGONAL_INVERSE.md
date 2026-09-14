@@ -5,9 +5,15 @@ constant `00D7A24C` (float `1.0`); the 71 direct call sites listed below; read f
 but not annotated: `00414E10`, `00414DB0`, `0042D0D0`, `00521370`, `0042CF10`, `00D7A250`,
 `00CE3C64`, `00CE3CCC`.
 
-Reconstruction: `include/bsp/matrix_orthogonal_inverse.hpp`, `src/matrix_orthogonal_inverse.cpp`.
 Report: `reports/cc7_matrix_orthogonal_inverse.json`. Packet `cc7_matrix_orthogonal_inverse`,
 read-only Ghidra pass (no renames, comments, prototypes, function creation or saves).
+
+**This packet publishes no new module.** `00B63D50` is already reconstructed as
+`derive_pose_affine_inverse_00b63d50` (`include/bsp/pose_derived.hpp`, `src/pose_derived.cpp`,
+packet `orch3_pose_derived_i`), and an independent re-reading of the listing agrees with that
+contract in every particular - see "Agreement with the existing reconstruction". The new artefacts
+are this document, the report, and one regression case in `tests/math_tests.cpp` that pins a claim
+which had no standing automated coverage.
 
 `BSP_Matrix_BuildOrthogonalScaledAffineInverse` is a hypothesis, not a recovered symbol. Every
 other descriptive name used below is the existing ledger name for that address and carries the
@@ -36,8 +42,12 @@ Three qualifications, all of which matter to the callers:
 
 **This does not make the gun gravity arc's local-frame path unconditionally sound.** It is sound
 only for an orthonormal mount basis, which is a strictly stronger condition than the one
-`docs/GUN_GRAVITY_ARC.md` assumed. See "The gravity arc's round trip" - that section is a
-correction the integrator should fold into that doc.
+`docs/GUN_GRAVITY_ARC.md` assumed - and stronger, too, than the "mutually orthogonal nonzero rows"
+that `00B63D50`'s own contract requires, because a uniform scale satisfies the routine and still
+biases the pitch. See "The gravity arc's round trip", the correction the integrator should fold
+into that doc, and "Does the precondition hold where the arc uses it?" for how far the mount side
+could be traced: no producer read to date puts scale into a pose local, one unread link remains,
+and the arc's call site does not alias.
 
 ## Original ABI
 
@@ -164,13 +174,28 @@ orthonormal case to the plain transpose - but the code always takes the general 
 evidence that the engine's pose matrices were expected to carry non-unit and possibly per-axis
 row scales. A plain transpose would have been three quarters the size.
 
+## Agreement with the existing reconstruction
+
+`include/bsp/pose_derived.hpp` lines 7-14 already state the contract, from packet
+`orch3_pose_derived_i`. This packet re-read the listing without consulting that header first, and
+agrees with all of it: `ECX` destination / `EDX` source / `RET` / no meaningful `EAX`; "an affine
+inverse only for mutually orthogonal nonzero upper basis rows"; all 16 outputs written with the
+last column forced to `(0,0,0,1)`; and `destination == source` generally not an inverse. The
+ledger's one-line summary - "transpose each upper source row divided by squared length, x87
+negative transformed translation" - is exactly what the arithmetic above does.
+
+**No disagreement was found.** Three things this pass adds rather than contradicts: the exhaustive
+71-site call set (the earlier record did not enumerate them), the numerical round trip below, and
+the consequence for the gravity arc.
+
 ## Numerical verification
 
 `local/verify_b63d50.py` re-implements the listing in Python with an explicit `float32` rounding
-at each observed spill, then multiplies. `include/bsp/matrix_orthogonal_inverse.hpp` is the same
-rule in C++ and the case in `tests/math_tests.cpp` is the same round trip. Bases were built
-independently of the routine, from `sin`/`cos` of a yaw/pitch/roll triple composed as
-`Rz * Rx * Ry`, over 18 angle triples x 4 scale regimes, each with a non-zero translation:
+at each observed spill, then multiplies. The case added to `tests/math_tests.cpp` runs the same
+round trip against the **existing** `derive_pose_affine_inverse_00b63d50` - the shipped kernel,
+not a second implementation - and passes at the tolerances below. Bases were built independently
+of the routine, from `sin`/`cos` of a yaw/pitch/roll triple composed as `Rz * Rx * Ry`, over 18
+angle triples x 4 scale regimes, each with a non-zero translation:
 
 | Basis | `max(|M*N - I|, |N*M - I|)` over all 16 entries |
 | --- | --- |
@@ -186,8 +211,82 @@ the `4.8e-6` of the per-axis case is the wider dynamic range of a basis whose ro
 by a factor of six. The identity matrix in gives the identity out, bit-exact, except that the
 translation row is `-0.0f` (the `FCHS` at `00B63E9C` applied to `+0.0`), which compares equal.
 
-The C++ test asserts `< 1.0e-6` for the orthonormal case, `< 1.0e-5` for the per-axis case, and
-that the shear residual exceeds `0.25`. It runs inside the existing `reconstructed_math` test.
+The C++ case asserts `< 1.0e-6` for the orthonormal basis, `< 1.0e-5` for the per-axis-scaled one
+and `> 0.25` for the sheared one, inside the existing `reconstructed_math` test. It is one case,
+and it is justified because there was no standing coverage: `tests/math_tests.cpp` and
+`tests/native_math_tests.cpp` contain no reference to `00b63d50`, `pose_affine_inverse` or
+`pose_derived`, and the ledger's `native_differential_fixture_passed` status refers to a one-off
+fixture run during packet `orch3_pose_derived_i`, not to a standing regression test.
+
+## Does the precondition hold where the arc uses it?
+
+The contract says "an affine inverse **only** for mutually orthogonal nonzero upper basis rows", so
+the arc's soundness turns on whether a gun mount's world basis satisfies that. Two parts, one
+proven and one bounded.
+
+### The composition rule (proven)
+
+`00414DB0` builds `world_child = local_child * world_parent` through `00413920` and never
+normalises. Writing `W` for the parent's world basis and `a_i` for a row of the child's local
+basis, the child's world rows are `a_i W`, and
+
+```
+(a_i W) . (a_j W) = a_i (W W^T) a_j^T = sum_k a_i[k] a_j[k] w_k^2
+```
+
+since `W W^T = diag(w_0^2, w_1^2, w_2^2)` when `W`'s own rows are orthogonal. For that to vanish
+whenever `a_i . a_j = 0`, the `w_k^2` must all be **equal**. So:
+
+* an **orthonormal** ancestor chain preserves the precondition exactly;
+* a **uniformly** scaled ancestor preserves it too - `00B63D50` still returns a true inverse -
+  but the arc's pitch is then wrong by `asin(y/s)`, which is the separate defect below;
+* a **per-axis** scaled ancestor breaks orthogonality for every descendant whose local rotation is
+  not axis-aligned, and then `00B63D50` is not an inverse at all and both angles are wrong.
+
+Scale therefore does not have to be on the mount itself; anywhere in its ancestor chain will do.
+
+### Where scale could enter (bounded survey, negative result)
+
+`entity+74h`, the local matrix, is written wholesale by the vtable slot `88h` setters `00431410`
+and `006E00A0` from a caller-supplied matrix, so the question is what the producers supply.
+`docs/ENTITY_LOCAL_MATRIX.md` "The producers" is that packet's survey of the slot-`88h` call sites,
+and **none of the four introduces scale of any kind**:
+
+| Producer | What reaches `+74h` | Scale? |
+| --- | --- | --- |
+| matrix interpolator `00904600` at `00904AE3` | `((((RotZ * RotY) * RotX) * Translate) * record.base_20h)`, four chained `00413920` - pure rotations and a translation, not an element-wise lerp (`docs/WORLD_TIMED_ATTACHMENTS.md`) | no |
+| spawn/placement at `006E5D03`, no Ghidra function | a stack matrix built from the identity constant `00D7A24C` | no |
+| unit attach `00925CE0` at `009259C4` | identity at `00925DCA` and `00925EA0`, then the creator's `localFrame` | none of its own |
+| ship motion `00825F20` | nothing - it reads `+74h` nine times and writes it never | n/a |
+
+`0042D700 BSP_Matrix_ReturnIdentity4x4` and `0042D770` are identity writers on the same interface.
+
+**The one open link** is the `localFrame`: `009259C1 LEA ECX,[ESI+74h]` / `009259C4 CALL 004134F0`
+inside `BSP_SceneNode_AttachToParents` (`009258F0..009259FA`) copies the matrix the caller pushed
+at `[ESP+14h]` straight into `+74h`, unvalidated. Whatever an attach caller passes lands there, and
+the attach callers were **not enumerated**. So the finding is "no producer read to date puts scale
+into a pose local", not "no producer can".
+
+On the balance of that evidence the arc's mount bases are orthonormal and both the inverse and the
+pitch are correct in practice - but that is a bounded survey resting on another packet's table,
+not a proof, and it is the first follow-up below.
+
+### Zero-length rows
+
+No path to the division by zero was found. `+74h` is the **identity at construction**
+(`00925CE0` writes it at `00925DCA` and again at `00925EA0`, `docs/UNIT_INSTANCE_LAYOUT.md`), so a
+unit's local basis is never observed all-zero, and `00955630` additionally skips the whole
+local-frame path when the mount is NULL (`0095576A TEST ESI,ESI`, `0095578C JZ 009557F8`). This is
+a negative search result over the unit-instance constructor, not a proof over every entity class.
+
+### Aliasing (question (b))
+
+The arc's call site does **not** alias: `0095579E LEA EDX,[ESI+0CCh]` and `009557A4 LEA ECX,
+[ESI+110h]` are 68 bytes apart on the same object and each matrix is 64 bytes, so they do not even
+partially overlap. Nor does any other caller - see "Call sites" below: all 71 direct sites pass
+disjoint operands, and none passes the same expression for both. The `destination == source`
+hazard the contract warns about is real in the code (`00B63E52` writes `dest+10h` before
+`00B63E5E` reads `src+10h`) but is not exercised anywhere in the shipped binary.
 
 ## The gravity arc's round trip
 
@@ -296,13 +395,15 @@ Assumed or out of scope:
 * the caller-side x87 control word. The native inherits `PC`/`RC` from its caller; everything
   above assumes the MSVC default (64-bit mantissa, round to nearest). A caller running in 53-bit
   precision would change the two wide accumulations.
-* the reconstruction's `double` stands in for the native's x87 80-bit in the two squared-length
-  additions and the three-term translation dot product. Products and quotients of `float32`
-  operands are provably identical under either width (`64 >= 2*24+2` and `53 >= 2*24+2`), so
-  those are exact; the chained additions are not covered by that argument and can differ in the
-  last bit at extreme exponents. `src/pose_derived.cpp`'s
-  `derive_pose_affine_inverse_00b63d50` is the bit-exact kernel; this packet's rule is the
-  portable, readable one and is not a binary-compatible replacement.
+* the Python model in `local/verify_b63d50.py` uses Python floats where the native keeps x87
+  80-bit - the two additions inside each squared length and the three-term translation dot
+  product. Products and quotients of `float32` operands are provably identical under either width
+  (`64 >= 2*24+2` and `53 >= 2*24+2`), so those are exact; the chained additions are not covered by
+  that argument and can differ in the last bit at extreme exponents. The C++ case does not have
+  this caveat: it calls the shipped `derive_pose_affine_inverse_00b63d50` kernel itself.
+* the producer survey in "Where scale could enter" is another packet's table
+  (`docs/ENTITY_LOCAL_MATRIX.md`), re-read here but not re-derived, and the attach callers that
+  supply `localFrame` at `009259C4` were not enumerated at all.
 * `BSP_Matrix_BuildOrthogonalScaledAffineInverse` remains a descriptive hypothesis. This packet
   confirms it describes the arithmetic correctly; it is still not a recovered symbol.
 
@@ -325,11 +426,11 @@ far as the contract above needs - partial, and not annotated by this packet.
 
 ## Follow-up packets
 
-* **`mount_basis_orthonormality`** - decide the arc question outright by surveying what writes
-  entity `+74h`, and whether any gun mount's chain carries a scale. `00414DB0`'s callees
-  `00413920` and `004134F0` are already reconstructed, so this is a producer survey, not a
-  new decompile. Until it lands, every mount-local pitch in the arc is correct *modulo* an
-  unverified orthonormality assumption.
+* **`scene_attach_local_frames`** - the one open link above. Enumerate the callers of
+  `BSP_SceneNode_AttachToParents` (`009258F0..009259FA`) and establish what each pushes at
+  `[ESP+14h]` as the `localFrame` copied into `+74h` at `009259C4`. That is the only unread way
+  scale can reach a pose local, and it decides the arc question outright. Everything else in the
+  chain is already read and introduces none.
 * **`b63b30_vs_b63d50`** - `00B63B30` `invert_camera_affine_00b63b30` (`include/bsp/camera_inverse.hpp`)
   is the same family with a different schedule: it copies the source first, uses SSE subtraction
   from negative zero for the translation, and preserves source indices 3/7/11/15 instead of

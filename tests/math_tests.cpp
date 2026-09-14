@@ -107,7 +107,7 @@
 #include "bsp/collision_shapes.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/unit_rudder.hpp"
-#include "bsp/matrix_orthogonal_inverse.hpp"
+#include "bsp/pose_derived.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -3341,15 +3341,17 @@ int main() {
     }
 
     {
-        // 00B63D50 is the one link docs/GUN_GRAVITY_ARC.md left unread, and its
-        // ledger name claims an inverse. The claim is worth pinning because
-        // every gun's commanded pitch and yaw passes through it: the round trip
-        // has to come back to the identity, and it has to do so for a non-unit
-        // scale, which is what separates this routine from a plain transpose.
+        // 00B63D50 is the one link docs/GUN_GRAVITY_ARC.md left unread, and the
+        // claim that it inverts had no standing coverage. It is worth pinning
+        // because every gun's commanded pitch and yaw passes through it: the
+        // round trip has to come back to the identity, and it has to do so for
+        // a non-unit scale, which is what separates this routine from a plain
+        // transpose. The third case is the precondition - a sheared basis is
+        // not inverted, and nothing in the routine says so.
         // docs/MATRIX_ORTHOGONAL_INVERSE.md.
         auto round_trip_deviation = [](const bsp::CameraMatrix& m) {
             bsp::CameraMatrix inverse{};
-            bsp::build_orthogonal_scaled_affine_inverse_00b63d50(inverse, m);
+            bsp::derive_pose_affine_inverse_00b63d50(inverse, m);
             float worst = 0.0f;
             for (int r = 0; r < 4; ++r) {
                 for (int c = 0; c < 4; ++c) {
@@ -3376,15 +3378,14 @@ int main() {
                                        0.0f,       3.0f, 0.0f,        0.0f,
                                        s40 * 1.75f, 0.0f, c40 * 1.75f, 0.0f,
                                        -40.0f,     6.0f, 0.125f,      1.0f};
-        check(round_trip_deviation(rotated) < 1.0e-6f && round_trip_deviation(scaled) < 1.0e-5f,
+        // Rows 0 and 1 at 17 degrees to each other instead of 90.
+        const bsp::CameraMatrix sheared{1.0f, 0.0f, 0.0f, 0.0f, 0.3f, 1.0f, 0.0f, 0.0f,
+                                        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+        check(round_trip_deviation(rotated) < 1.0e-6f && round_trip_deviation(scaled) < 1.0e-5f &&
+                  round_trip_deviation(sheared) > 0.25f,
               "00B63D50: M * inverse(M) is the identity to float tolerance for an orthonormal "
-              "basis and for a per-axis-scaled one");
-        check(bsp::matrix_orthogonal_row_residual(scaled) < 1.0e-6f &&
-                  bsp::matrix_orthogonal_row_residual(bsp::CameraMatrix{
-                      1.0f, 0.0f, 0.0f, 0.0f, 0.3f, 1.0f, 0.0f, 0.0f,
-                      0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}) > 0.25f,
-              "00B63D50 has no guard: the orthogonality its formula assumes is a precondition a "
-              "sheared basis fails, and the routine still returns a non-inverse");
+              "basis and for a per-axis-scaled one, and is not the identity for a sheared one - "
+              "orthogonal rows are a precondition the branch-free routine never checks");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
