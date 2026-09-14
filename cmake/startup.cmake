@@ -951,3 +951,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_string_byte
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_data_bootstrap.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_physical_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_type_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/gunnery_candidate_order.cpp)
