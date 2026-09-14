@@ -229,6 +229,19 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            // The plane rate/accel keys, in the spellings 007D1F70's reader
+            // uses (src/plane_class_fields.cpp:301-311). A ship row has none of
+            // them and reads zero, which is what a caller should see.
+            row.roll_spd = number("RollSpd");
+            row.pitch_spd = number("PitchSpd");
+            row.yaw_spd = number("YawSpd");
+            row.yaw_roll_ratio = number("YawRollRatio");
+            row.slide_ratio = number("SlideRatio");
+            row.roll_accel = number("RollAccel");
+            row.pitch_accel = number("PitchAccel");
+            row.yaw_accel = number("YawAccel");
+            row.negative_pitch_ratio = number("NegativePitchRatio");
+            row.plane_stall_spd = number("StallSpd");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");

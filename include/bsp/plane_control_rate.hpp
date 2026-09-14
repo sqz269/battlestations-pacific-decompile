@@ -73,10 +73,15 @@ struct PlaneRotationFactors {
 };
 
 // One axis's inputs. `accel` is the per-axis acceleration term the law forms
-// before the polynomial - pitch is `class+1C0h * modeFactor` (007DAA7F, the
-// FMUL direction settled from the bytes D8 C9), yaw is `class+1C4h *
-// -modeFactor` (007DAAA1), roll is the pitch product times `class+1BCh`
-// (007DAAB3). Only its magnitude is used.
+// before the polynomial, and the three are symmetric: pitch is
+// `class+1C0h * modeFactor` (007DAA7F, the FMUL direction settled from the bytes
+// D8 C9), yaw is `class+1C4h * -modeFactor` (007DAAA1), roll is
+// `class+1BCh * modeFactor` (007DAAB3). Only the magnitude is used.
+//
+// An earlier revision of this comment gave roll as the PITCH product times
+// class+1BCh and called the asymmetry surprising. That was an arithmetic slip:
+// 007DAA9D's FSTP stores and pops, so ST0 is the mode factor again, not the
+// product. There is no asymmetry to explain.
 struct PlaneControlAxisState {
     float current = 0.0f;
     float target = 0.0f;
@@ -97,5 +102,82 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
                                        const PlaneControlAxisState& axis,
                                        bool floor_from_deflection,
                                        float step) noexcept;
+
+
+// ---------------------------------------------------------------------------
+// The three targets 007DA710 drives the axes toward
+// ---------------------------------------------------------------------------
+//
+// Recovered in docs/PLANE_CONTROL_TARGETS.md (packet cc7_plane_control_targets),
+// which carries the address-by-address evidence. What follows is that doc's
+// result, with the gated terms this host cannot yet supply marked in the inputs
+// rather than dropped silently.
+//
+// Everything the rule reads off the plane is a field of the **unit**, reached
+// through ctl+8h at 007DA72D - not of the flight controller. Only the three
+// axes the law writes are controller-relative. An earlier revision of
+// docs/PLANE_CONTROL_RATE_LAW.md had the whole latched block under a `ctl+`
+// heading, which is wrong by one indirection.
+
+// Class descriptor fields, all from the plane row of vehicleclasses.lua.
+struct PlaneControlClass {
+    float roll_spd = 0.0f;              // +1A8h RollSpd
+    float pitch_spd = 0.0f;             // +1ACh PitchSpd
+    float yaw_spd = 0.0f;               // +1B0h YawSpd
+    float yaw_roll_ratio = 0.0f;        // +1B4h YawRollRatio
+    float slide_ratio = 0.0f;           // +1B8h SlideRatio
+    float roll_accel = 0.0f;            // +1BCh RollAccel
+    float pitch_accel = 0.0f;           // +1C0h PitchAccel
+    float yaw_accel = 0.0f;             // +1C4h YawAccel
+    float negative_pitch_ratio = 0.0f;  // +1D8h NegativePitchRatio
+};
+
+// The unit state the target expressions read.
+struct PlaneControlUnitState {
+    float latched_yaw = 0.0f;    // unit+BB0h, latched from +9E4h by 007B9770
+    float latched_pitch = 0.0f;  // unit+BB4h, from +9E8h
+    float latched_roll = 0.0f;   // unit+BB8h, from +9ECh
+    // unit+BC4h. BSP_Plane_ReadPropertyBag sets it to 1.0f and the rate law
+    // maintains it there, relaxing toward 1.0 by 0.5*step; it multiplies into
+    // the yaw raw product at 007DA94B.
+    float yaw_scale_bc4 = 1.0f;
+    // unit+838h, added to the latched roll at 007DA738 to form the roll base.
+    // NOT identified: no reader in this repository names it for a plane, and
+    // docs/PLANE_CONTROL_TARGETS.md leaves its provenance open. Zero here is a
+    // stand-in, not a recovered default.
+    float roll_base_838 = 0.0f;
+    // unit+C64h pitch angle and unit+C68h bank angle, the two the slide term
+    // and the bank-angle roll factor read through FCOS/FSIN. This host does not
+    // maintain them, so they are zero and the slide term vanishes; that is a
+    // modelling gap, recorded rather than papered over.
+    float pitch_angle_c64 = 0.0f;
+    float bank_angle_c68 = 0.0f;
+    // unit+900h. 6 is the state that engages the bank-angle roll factor; free
+    // flight is 7, so the factor is 1.0 in the air.
+    int flight_state_900 = 7;
+    // ctl+FCh, the controller mode - the one controller field here. 1 is on the
+    // ground and zeroes the roll target at 007DA8E5. 007DC841 zeroes the field
+    // every step, so free flight is 0.
+    int controller_mode_fc = 0;
+    // unit+5Dh out of action, and the spin block it gates (unit+C36h present,
+    // unit+C37h sign, unit+C3Ch the lost-drag timer). Unmodelled here: an
+    // undamaged plane takes none of it.
+    bool out_of_action_5d = false;
+};
+
+// The three targets, and the three acceleration terms the rate law pairs with
+// them. `mode_factor_f1` and `mode_factor_f2` are 007DA380's two float outputs;
+// in free flight both are BSP_PlaneFlight_ControlAuthority's return
+// (docs/PLANE_CONTROL_AUTHORITY.md), which is why one value fills both.
+struct PlaneControlTargets {
+    float target[3] = {0.0f, 0.0f, 0.0f};  // pitch, yaw, roll - the ctl+48h/4Ch/50h order
+    float accel[3] = {0.0f, 0.0f, 0.0f};
+};
+
+PlaneControlTargets plane_control_targets_007da710(const PlaneControlClass& cls,
+                                                   const PlaneControlUnitState& unit,
+                                                   float mode_factor_f1,
+                                                   float mode_factor_f2,
+                                                   bool slide_and_coupling_flag) noexcept;
 
 }  // namespace bsp
