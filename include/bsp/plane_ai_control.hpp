@@ -175,4 +175,59 @@ float plan_pitch_0099e68d(float demand);
 // the slot's `desired` when its active byte is set, otherwise its `prev`.
 float axis_urgency_0099e996(float urgency, float reference, float committed);
 
+// ---------------------------------------------------------------------------
+// The producers of `plan_yaw_0099e81a`'s three scratch inputs (packet
+// cc7_pilot_bot_axis_arms_2). With these the yaw arm is closed apart from two opaque
+// sources named in each struct.
+
+// 0099DE8A-0099DF87. The base numerator: a deadbanded, step-limited heading error.
+// Runs only when task+2CCh == 2; on every other path the numerator stays at the zero
+// stored by 0099DDD0.
+struct PilotBotHeadingTerm {
+    float heading_error = 0.0f;  // 00438B10(task+2C0h, unit->vtable[50h]()), 0099DEB8.
+                                 // The vtable[50h] heading getter was not read.
+    float speed_scale = 0.0f;    // [ESP+28h] = 1 / max(unit[+340h] * 0.4f, 1.0f), 0099D4B3
+    float deadband = 0.0f;       // tuning+3Ch, 0099DEC5
+    float rate_a = 0.0f;         // class+1C8h, 0099DF0F
+    float rate_b = 0.0f;         // class+1ACh, 0099DF1B
+    float rate_scale = 0.0f;     // tuning+38h, 0099DF21
+    float keep = 0.0f;           // tuning+34h, 0099DF54 / 0099DF60
+};
+float yaw_base_numerator_0099de8a(const PilotBotHeadingTerm& in);
+
+// 0099DFFB-0099E027. The base gain: a bank fade, 1 below tuning+7Ch and 0 above tuning+80h.
+// Note the y-endpoints are the reverse of the blend fraction's inside plan_yaw_0099e81a.
+float yaw_base_gain_0099dffb(const PilotBotTuning& tuning, float abs_bank);
+
+// 0099E69B-0099E6D2, and the identical mirror at 0099E703-0099E729. The turn numerator,
+// produced by the pitch arm and consumed by the yaw arm.
+struct PilotBotTurnTerm {
+    float sin_bank = 0.0f;              // [ESP+20h]
+    float cos_bank = 0.0f;              // [ESP+30h]
+    float cos_pitch = 0.0f;             // [ESP+2Ch]
+    float slide_ratio = 0.0f;           // class+1B8h, 0099E6A8
+    float yaw_spd = 0.0f;               // class+1B0h, 0099E6AE
+    float rate_b = 0.0f;                // class+1ACh, 0099E630
+    float negative_pitch_ratio = 0.0f;  // class+1D8h, 0099E6BA
+    float speed_factor = 0.0f;          // R = 007D9A70(unit+AB0h), 0099E5D7. Not read.
+    bool inverted = false;              // sign(cos(bank)) < 0; [ESP+44h] from 0099DDCA
+};
+float yaw_turn_numerator_0099e69b(const PilotBotTurnTerm& in);
+
+// 0099D602-0099D6C6. Before any arm runs, a direct stick input on the unit overrides the
+// axis and cancels its mode word, so the computed arm does not run this tick. The native
+// test is the MSVC exact-equality idiom (UCOMISS / LAHF / TEST AH,44h / JNP), which skips
+// only on an ordered compare equal to zero.
+struct PilotBotStickOverride {
+    float yaw = 0.0f;    // unit+998h, 0099D608 -> slot(yaw),   clears task+2D4h
+    float pitch = 0.0f;  // unit+99Ch, 0099D656 -> slot(pitch), clears task+2D0h
+    float roll = 0.0f;   // unit+9A0h, 0099D694 -> slot(roll),  clears task+2CCh
+};
+// True when the axis is overridden; `out` then receives the clamped value.
+bool stick_override_0099d620(float stick_axis, float* out);
+
+// 0099DC7A-0099DC97. A ceiling on the power axis: when the slot's own previous value is
+// above 0.6f (00CE3D30) the desired power is pinned there.
+float power_ceiling_0099dc7a(float previous_power, float desired, bool* wrote);
+
 }  // namespace bsp
