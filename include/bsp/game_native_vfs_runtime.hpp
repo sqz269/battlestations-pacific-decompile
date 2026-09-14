@@ -13,6 +13,7 @@ struct NativeRetainedMemoryOwnerContext;
 struct NativeStreamTypeIdStorage;
 struct NativeFileAccessLogLifetimeBindings;
 struct SingletonLifetimeCallbacks;
+class NativeVfsEnumerationDuplicateLog;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -36,6 +37,12 @@ struct GameNativeVfsRuntimeInputs {
     const volatile std::uint8_t* actual_mpkg_xor_key_00e144f0;
     const char* actual_mpak_null_pattern_00e17bf0;
     NativeFileAccessLogLifetimeBindings* file_log_lifetime;
+    // Real diagnostic sink and caller-owned readable bytes for the BE1130
+    // enumeration visitor. The original 0109CEF0 starts as zero-filled .data;
+    // this input does not recreate its fixed address or later mutations.
+    // Both inputs are retained through the shared manager drain.
+    NativeVfsEnumerationDuplicateLog* enumeration_duplicates;
+    const char* actual_empty_name_0109cef0;
 };
 
 // Source composition for one raw VFS manager. The caller drains the SAME
@@ -58,6 +65,11 @@ public:
     void* mount(const char* system_path, const char* virtual_path,
         std::uint32_t priority, std::uint32_t flags, std::uint32_t device_id);
     void mount_phase2_loose_paths(const char* current_directory_with_separator);
+    void scan_phase2_packages();
+    void register_phase2_search_defaults();
+    // Original order: three loose mounts, two fresh package scans, then the
+    // full 00738360 search registrations. Archive factory tail follows later.
+    void run_phase2_mount_scan_search(const char* current_directory_with_separator);
     bool exists(const char* path);
     // Read up to capacity bytes; report the source's actual byte count. A null
     // open returns false; unsupported profiles propagate as source errors.
