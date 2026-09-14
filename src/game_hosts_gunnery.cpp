@@ -17,6 +17,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gun_gravity_arc.hpp"
+#include "bsp/bullet_engagement_range.hpp"
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
@@ -436,32 +437,54 @@ void GameGunneryHost::Impl::build_guns() {
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
-            // 00731020 answers with descriptor+60h, which is NOT the authored Lua
-            // `Range`: 006E8770 puts `Range` at +68h and never writes +60h. The
-            // finalise hook 006E9890 derives +60h per class kind, and MTorpedo
-            // overrides it at 00855A90 with
-            //   +60h = WaterTravelSpeed(+0E4h) * FlyTime(+54h) * 0.6
-            // the 0.6 being the double at 00CEFF98 (verified 0.6000000238418579).
-            // No torpedo bullet class in this installation carries `Range`, so the
-            // flattened value above is 0 for every torpedo and category 7's
-            // engagement range collapsed to the 10.0f seed, refusing every
-            // candidate at 00863A34. For gun kinds the native rule round-trips to
-            // `Range`, so only the water-travelling case is applied here.
-            // docs/TORPEDO_CATEGORY_ADMISSION.md.
+            // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
+            // 006E8770 puts `Range` at +68h and never writes +60h. The finalise
+            // hook 006E9890 derives +60h from the class sub-type - artillery
+            // (4..7) keeps `Range`, the gun group (1,2,3,10h) takes FlyTime * V0,
+            // 0Bh takes 240 and everything else 3000 - and MTorpedo overrides it
+            // at 00855A90.
+            //
+            // Only 32 of the 119 bullet classes in this installation author a
+            // `Range` at all. The other 87 were reading 0, which collapsed their
+            // category to category_engagement_range_00956d63's 10.0f seed and made
+            // 00863990 refuse every candidate: on IJN01 that silenced 82 PLANEGUN,
+            // 295 AAMACHINEGUN, 60 FLAK, 12 TORPEDO and 10 DEPTHCHARGE guns.
+            // docs/BULLET_ENGAGEMENT_RANGE.md.
+            //
+            // Unauthored fields are left at the struct's defaults, which are the
+            // constructor's and the reader's, so filling only what the row
+            // authored reproduces native state. `FlyTime` defaults to FLT_MAX.
             if (gun.bullet_class >= 0) {
-                const float water_speed = lua.read_bullet_class_number(
+                bsp::WeaponClassFinaliseInput fin;
+                const std::string bullet_type =
+                    lua.read_bullet_class_string(gun.bullet_class, "Type");
+                fin.sub_type = bsp::weapon_class_sub_type_for_lua_type(bullet_type);
+                fin.range = lua.read_bullet_class_number(
+                    gun.bullet_class, "Range", 0.0f);
+                fin.muzzle_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "V0", 0.0f);
+                fin.fly_time = lua.read_bullet_class_number(
+                    gun.bullet_class, "FlyTime", bsp::kWeaponClassFlyTimeDefault);
+                fin.damage_min = lua.read_bullet_class_number(
+                    gun.bullet_class, "DamageMin", 0.0f);
+                fin.blast_damage_min = lua.read_bullet_class_number(
+                    gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
+                fin.name = lua.read_bullet_class_string(gun.bullet_class, "Name");
+                fin.water_travel_speed = lua.read_bullet_class_number(
                     gun.bullet_class, "WaterTravelSpeed", 0.0f);
-                const float fly_time = lua.read_bullet_class_number(
-                    gun.bullet_class, "FlyTime", 0.0f);
-                if (water_speed > 0.0f && fly_time > 0.0f) {
-                    // 0085786D..00857875 stores WaterTravelSpeed * 00D0C5E0 into
-                    // the torpedo record's +470h, and 00855A90 derives the range
-                    // as that swim speed times FlyTime. Keep both: the swim speed
-                    // is what the round actually travels at once it is in the
-                    // water. docs/TORPEDO_LAUNCH_ACCURACY.md.
-                    gun.water_travel_speed = water_speed;
-                    gun.swim_speed = water_speed * 0.6f;
-                    gun.max_range = gun.swim_speed * fly_time;
+                fin.max_fall = lua.read_bullet_class_number(
+                    gun.bullet_class, "MaxFall", 0.0f);
+                fin.flak_min_range = lua.read_bullet_class_number(
+                    gun.bullet_class, "MinRange", 0.0f);
+                const bsp::WeaponClassFinaliseResult finalised =
+                    bsp::weapon_class_derive_engagement_range(fin);
+                if (finalised.engagement_range > 0.0f) {
+                    gun.max_range = finalised.engagement_range;
+                    ++summary.bullet_ranges_derived;
+                }
+                if (finalised.swim_speed > 0.0f) {
+                    gun.water_travel_speed = fin.water_travel_speed;
+                    gun.swim_speed = finalised.swim_speed;
                     ++summary.torpedo_ranges_derived;
                 }
             }
@@ -2066,8 +2089,9 @@ void GameGunneryHost::report() {
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
     host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
-        "swims_started=%llu snaps=%llu", s.torpedo_ranges_derived,
-        s.torpedo_swims_started, s.torpedo_heading_snaps);
+        "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu",
+        s.torpedo_ranges_derived, s.torpedo_swims_started,
+        s.torpedo_heading_snaps, s.bullet_ranges_derived);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",

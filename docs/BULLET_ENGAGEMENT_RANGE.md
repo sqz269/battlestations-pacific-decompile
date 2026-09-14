@@ -504,3 +504,40 @@ Assumed or partial:
 - Sub-type `5` is **dead** for this installation: no `Artillery` class has both `DamageMin` and
   `Blast.BlastDamageMin` under `75`. 21 classes reach `7` and 11 reach `6`. Worth checking the
   realistic table and a retail installation.
+
+## Integration result
+
+`src/game_hosts_gunnery.cpp` now derives every gun's engagement range through
+`weapon_class_derive_engagement_range` instead of reading the authored `Range`, with a new
+`GameMissionLuaHost::read_bullet_class_string` supplying `Type` and `Name`. Unauthored fields are
+left at the struct's defaults, which are the constructor's and the reader's, so filling only what a
+row authored reproduces native state - `FlyTime` in particular defaults to `FLT_MAX`, not zero.
+
+**USN02, the regression control: byte-identical.** `created=273 entity_impacts=167 water=96
+expired=29 deaths=2 total_damage=16472.1`, and every per-category row unchanged - LIGHTARTILLERY
+618/40, MEDIUMARTILLERY 709/36, LIGHTARTILLERYFLAK 779/152, TORPEDO 2535/45. That is the predicted
+behaviour: the 32 artillery classes that author a `Range` round-trip to it, so the rule is a no-op
+exactly where it should be. `bullet_ranges_derived=458`.
+
+**IJN01: partial.** `bullet_ranges_derived=674`, and **AAMACHINEGUN goes from 0 to 26 assignments**
+across its 295 guns. But PLANEGUN, FLAK, TORPEDO and DEPTHCHARGE remain at zero.
+
+**So the packet's "sufficient, not exclusive" framing was right and the range is not the whole
+story.** What the run adds:
+
+- **AA machine guns are admitted but never fire**: 26 assignments and `no_window = 10452`, so the
+  targets sit outside the guns' vertical windows. That is the same shape of defect the torpedoes
+  had, where the commanded angle rather than the admission was the binding constraint.
+- **The `A7M` fighters are inert.** Seven units, four category-0 guns each, and `shots 0 hits 0
+  dealt 0 taken 0` with a unit `range` column still reading 0 even though 674 guns took a derived
+  range. A plane that never ticks is a larger gap than a missing range, and it is not explained by
+  this packet.
+- FLAK, TORPEDO and DEPTHCHARGE on this mission still take no assignment at all, so each needs its
+  own admission trace rather than being assumed to share the AA cause.
+
+### Follow-up packets
+
+1. **`aa_vertical_window`** - why 26 admitted AA targets produce 10452 window refusals and no shot.
+2. **`plane_unit_tick`** - why the `A7M` units never tick, and what the host must build for a plane
+   to fly and fire.
+3. **`flak_depthcharge_admission`** - trace those two separately; do not assume the AA cause.

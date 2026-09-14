@@ -982,6 +982,31 @@ float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
     return value;
 }
 
+std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* key) {
+    // The string companion of read_bullet_class_number. `Type` is what
+    // 006EA910's case-insensitive name chain switches on to pick a weapon
+    // class, and bsp::weapon_class_sub_type_for_lua_type maps it to the
+    // constructor sub-type that 006E9890 derives the engagement range from.
+    // docs/BULLET_ENGAGEMENT_RANGE.md.
+    std::string value;
+    if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(state_, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
     std::vector<bsp::LuaGlobalEntry> entries;
     if (state_ == nullptr) return entries;
