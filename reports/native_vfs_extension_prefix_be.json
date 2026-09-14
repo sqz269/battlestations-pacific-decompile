@@ -1,0 +1,171 @@
+{
+  "packet": "orch4_native_vfs_extension_prefix_be",
+  "status": "bounded actual-tree source",
+  "source": "src/native_vfs_extension_prefix.cpp",
+  "header": "include/bsp/native_vfs_extension_prefix.hpp",
+  "documentation": "docs/NATIVE_VFS_EXTENSION_PREFIX_BE.md",
+  "program": "/battlestationspacific.exe",
+  "roots": [
+    {
+      "address": "00be1480",
+      "name": "register_native_vfs_extension_prefix_00be1480",
+      "original_abi": "ECX actual manager, stack extension and directory actual8h headers; RET8",
+      "coverage": "valid initialized manager, normalized-pair duplicate suppression, equal-extension multimap insertion and RB repair; 286 disk/live bytes, 85/85 contiguous saved instructions owned",
+      "sha256": "4cd530b60ce4628b8ddf212c352b7f4bef06aa9189fb91aa4ec3f0a07aacc815"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00738360",
+      "address": "0073983a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739909",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "007399d8",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739aa7",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "00739b76",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a52a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a5f9",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073acf6",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ad7b",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae00",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073ae85",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af0a",
+      "native": "00be1480"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b6d5",
+      "native": "00be1480"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be14b5",
+      "native": "00bdc3f0"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be14c8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be14dc",
+      "native": "00bdcbb0"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be14ed",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be14f6",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be153f",
+      "native": "0054aa70"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be154d",
+      "native": "00bdcea0"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be1565",
+      "native": "00be0b90"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be1573",
+      "native": "00489d50"
+    },
+    {
+      "function": "00be1480",
+      "address": "00be1584",
+      "native": "00bdb7c0"
+    }
+  ],
+  "call_scope": {
+    "within_root": 10,
+    "external_direct_00738360_callers": 13,
+    "total": 23
+  },
+  "reused": [
+    "00BDA260 raw 20h tree lower bound",
+    "00BD9860 checked in-order iterator advance",
+    "00BD93E0/00BDA090 raw tree rotations",
+    "detail/native_tree_insert_storage.hpp parameterized RB link",
+    "0041DD40/004BCC00 actual pooled string resize and lowercase",
+    "00489D50 two-string destruction"
+  ],
+  "helpers_inspected_not_claimed": [
+    "00BDC3F0 normalized pair search",
+    "00BDA2C0 extension upper bound",
+    "00BDCBB0 extension-first pair constructor",
+    "00BDCEA0 pair-copy constructor",
+    "00BE0B90 insertion descent",
+    "00BE0370 count/link/RB repair",
+    "00BDF700 20h node constructor"
+  ],
+  "exclusions": [
+    "full 00738360 literal registration body",
+    "empty-directory native out-of-bounds access",
+    "malformed tree/returning validator postconditions",
+    "original FH3/SEH and legacy exception identity",
+    "provider resolution and game execution"
+  ],
+  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 23/23 direct CALL rows verified; 286 disk/live bytes and 85/85 saved instructions owned. No native fixture, archive or game execution.",
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "packet": "orch4_native_data_startup_reservation_bg",
+  "status": "bounded_diagnosis_and_suspended_child_feasibility_only",
+  "documentation": "docs/NATIVE_DATA_STARTUP_RESERVATION_BG.md",
+  "fixed_bands": [
+    "00cf0000",
+    "00d10000",
+    "00d50000",
+    "00d60000"
+  ],
+  "supported_original_executable": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "image_base": "00400000",
+    "size_of_image": "00e2f000",
+    "rdata_rva": "008e2000",
+    "rdata_virtual_size": "00125b24",
+    "executed": false
+  },
+  "source_mapper": {
+    "file": "src/game_native_readonly_data.cpp",
+    "sha256": "aef2cb65721546b6699240b6236ee7856e1298cb5d4fbd32639c8f6db042f581",
+    "reserves_selected_64kb_bands_before_large_executable_file_buffer": true,
+    "occupied_required_band_rejected_without_releasing_its_owner": true,
+    "already_reserved_band_adoption": false,
+    "source_changed_by_this_packet": false
+  },
+  "instrumented_child": {
+    "path": "local/native_data_bg_timing_probe.exe",
+    "machine": "x86",
+    "image_base": "30000000",
+    "size_of_image": "00057000",
+    "executable_tls_directory_present": true,
+    "embedded_manifest_resource_present": true,
+    "dynamic_crt_imports_present": true,
+    "tls_snapshot_captured_before_executable_static_constructor": true,
+    "sample_only_skips_raw_vfs_graph": true,
+    "expect_reserved_skips_raw_vfs_graph": true
+  },
+  "direct_child_samples": [
+    {
+      "log": "local/native_data_bg_timing_samples.log",
+      "starts": 120,
+      "exits_zero": 120,
+      "probe_revision": "intermediate executable not retained",
+      "d10000_committed_private_readwrite_in_static_constructor_and_main": 3,
+      "d10000_equal_to_secondary_get_process_heaps_handle": 3,
+      "tls_instrumented": false
+    },
+    {
+      "log": "local/native_data_bg_tls_samples.log",
+      "starts": 160,
+      "exits_zero": 160,
+      "probe_revision": "intermediate TLS executable not retained",
+      "d10000_committed_private_readwrite_in_tls_static_constructor_and_main": 3,
+      "d10000_equal_to_secondary_get_process_heaps_handle": 3
+    },
+    {
+      "log": "local/native_data_bg_final_samples.log",
+      "starts": 160,
+      "exits_zero": 160,
+      "probe_revision": "hash-pinned final executable",
+      "d10000_committed_private_readwrite_in_tls_static_constructor_and_main": 11,
+      "d10000_equal_to_secondary_get_process_heaps_handle": 11,
+      "collision_region_bytes": 20480
+    }
+  ],
+  "suspended_child_reservation": {
+    "launcher": "local/native_data_bg_suspended.py",
+    "log": "local/native_data_bg_suspended_results.txt",
+    "creation_flags": ["CREATE_SUSPENDED", "CREATE_NO_WINDOW"],
+    "starts": 120,
+    "all_four_bands_mem_free_before_resume": 120,
+    "all_four_fixed_virtual_alloc_ex_reservations_succeeded": 120,
+    "child_exits_zero": 120,
+    "child_zero_exit_requires_d10000_mem_reserve_in_tls": true,
+    "child_zero_exit_requires_all_four_exact_reservation_bases_at_main": true,
+    "read_only_data_adoption_or_graph_run": false
+  },
+  "injected_partial_failure": {
+    "launcher": "local/native_data_bg_rollback.py",
+    "recorded_log": "local/native_data_bg_rollback_result.txt",
+    "rerun_in_resumed_packet": true,
+    "injected_d10000": "MEM_COMMIT|MEM_RESERVE PAGE_READWRITE",
+    "second_reservation_error": 487,
+    "owned_cf0000_released_to_mem_free": true,
+    "competing_d10000_preserved": true,
+    "child_exit": 0
+  },
+  "feasibility": {
+    "controlled_suspended_launcher_can_reserve_before_observed_child_tls": true,
+    "existing_mapper_can_accept_those_reservations": false,
+    "production_requirement": "Explicit launcher-to-child transfer of each exact reservation, with checked origin, complete-set validation, commit/protection, and release of transferred ownership only; handle failed starts and child termination.",
+    "direct_launch_collision_still_possible": true,
+    "measured_120_launches_are_not_a_reliability_guarantee": true,
+    "production_integration_complete": false,
+    "game_validated": false
+  },
+  "artifact_sha256": {
+    "local/native_data_bg_timing_probe.cpp": "d72278f7a5aed9f99640a4db332aa837bd487aee829f9ad940843aaa4550255f",
+    "local/native_data_bg_timing_probe.obj": "8d0be8a89696b0300de7a7d83b6a9d3e6448eaf9731f00ae71f5a31786dab897",
+    "local/native_data_bg_timing_probe.exe": "784a1ebffca5a07000ae6fd0b7fb23ce346c68bdc4bde3199ea32541fbc37f75",
+    "local/native_data_bg_timing_samples.log": "ac52730c32d61d214371c80ee2aa9a46ce006c2f9279f7f67fa0fb79f9cdfafb",
+    "local/native_data_bg_tls_samples.log": "d564301338ce3e2b1d816c9cfdc8bd659f91e97dd764c8339ecf2c0cbea04253",
+    "local/native_data_bg_final_samples.log": "d56cb807bb473a24bde8f05b17a28c8fb0121cceffc784b906805799df289121",
+    "local/native_data_bg_suspended.py": "9aab0976bbc034e59ed22058f17d17050ca791a04967adfbd3f0bf9ead88d0da",
+    "local/native_data_bg_suspended_results.txt": "6d732aad3cc5103f172875ee6b7895df166c85ed72cb8c6f048a316759584692",
+    "local/native_data_bg_rollback.py": "580401d269e560f4a7e093e2b3f9dee1800e66438c4af7ba1ad5bddc0897e4ac",
+    "local/native_data_bg_rollback_result.txt": "ad5ca2ab1a1018ee7d419587cf0adfb32c9c6b2d729f28cd56e22824c58d1c08",
+    "local/generate_native_data_bg_probe.py": "e0c77add49ebe0378c2d72a7c89587982710f0a49b1233891d244715fe4d577f",
+    "local/native_data_bg_audit.py": "a3e291b7001d47463f4a16d7d4941ca93c15849563f5ba257e1893a72fde8b91"
+  },
+  "limits": [
+    "The creator DLL and allocation stack of the secondary process heap were not identified.",
+    "The first two sampling cohorts have logs but their intermediate executable binaries were not retained.",
+    "No finite sample count proves reliable fixed-address availability across hosts or launches.",
+    "The suspended launcher and child check only reservation timing; they do not adopt reservations into GameNativeReadOnlyData or run the complete VFS graph.",
+    "This packet made no production mapper, entrypoint, linker, or original-game changes."
+  ]
+}
