@@ -11,14 +11,14 @@
   ],
   "annotations": "reports/native_string_byte_bh_annotations.json",
   "final_validation": {
-    "source_revision": "2d41900c6dffe86d56bd7fcdd85e9c914c284b33",
-    "code_files": 2517,
+    "source_revision": "0e28ddc89a76801b9bd0d3876bfd8bdb2fab9267",
+    "code_files": 2519,
     "code_manifest": "local/native_vfs_handoff_bh_code_manifest.json",
-    "code_manifest_sha256": "ad530c4861b6a2b9f785cb3c295effceb86f7e558d89bed8ed1b12ff57ba7e6a",
+    "code_manifest_sha256": "7fe8fc781963fa6412845863f6185d49c0feb3297ce90c989d6bdd257028f3c0",
     "core_archive_sha256": "6f964740c341b04fa6e5aaeae998f6a809a0179e9fd8a0ae4b9db59446ba34fd",
-    "game_executable_sha256": "4fcc346162c6d13db899f1fec0c02a03d9f2d4a2ff1690126c6ed898a836d417",
+    "game_executable_sha256": "cfe359ff981561e126bd01c63b099fdc1b3e71a8dae7a6ba68cd76403877b7e9",
     "build_log": "local/native_vfs_handoff_bh_build.log",
-    "build_log_sha256": "31af28ae012636febb37bf5b3d9427093116e4ae2ce0057d82b6f0f099e5ed47",
+    "build_log_sha256": "8fc80bef131ad99059647708a44f39f3ce6c9a339a9336f38927dbcc3a92d6fb",
     "ctests_passed": 2,
     "graph_exit_code": 0,
     "graph_fixture_paths": [
@@ -67,6 +67,7 @@
       "build/win32/bsp_game.dir/Release/pilot_command_path.obj": "0ce1d3ec258a2b5d11d611465acd95a17da0f679002d36dd1f800c21b2b3927e",
       "build/win32/bsp_game.dir/Release/plane_ground_ops.obj": "7dd26414439fbc9cc64336ebd6243e287290db04336e488694e2ff0f9d244716",
       "build/win32/bsp_game.dir/Release/ship_hit_record.obj": "904fe6dfa34d5f167e99285130248051105b9f3191d1e76f80e5d831a13dc5ce",
+      "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj": "b8b14f66798076d0f58eba770093c9fa01777d5ce76b1ed84a4ece4167db7714",
       "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj": "0606099fd2998caacbfacbcab57b7ae6904e168de3f579416f2b32b062ee44fd",
       "build/win32/bsp_game.dir/Release/unit_message_arms.obj": "1adf3f2bc8b7a62c048b56ada44aaa6c6fdab194d46517aed80b6d6c1bf53130",
       "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj": "ce9c0f0daeb9cf1e78b766660266b3ed975ce3a76896563e861ddbb54c077169"
@@ -113,11 +114,11 @@
       "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\byte_bh_preliminary_compile.log": "bd24314c4d4673c37f1499c0846354b8780ee15da84c812420ec7936ae85095f",
       "local/native_vfs_handoff_bh_probe.cpp": "e24d553686092b24383c59399f2b416bff8a114ce6f2def6cc0c0ff69b58cadd",
       "local/run_native_vfs_handoff_bh_probe.ps1": "673dc4c5471a457b9a49c5df6336e77a3498eb744e7d7e93b8c003c948ae792a",
-      "local/native_vfs_handoff_bh_probe.exe": "4d37b475cc33bb1bc741398f52fc1845d7de560b513ba03b212aad090e16ec81",
+      "local/native_vfs_handoff_bh_probe.exe": "67ec1da1f7e679a47571395dd4b8237c5bf94a89af09247fa8c8b50c6fbde09b",
       "local/native_vfs_handoff_bh_probe.log": "7b3796e8a39d8df1cf2b6551bc401fd8d714857e6962330f524669e844ad87d9",
       "local/native_vfs_handoff_bh_child.log": "6a67e2c21fb4b3784dc76ddb6cd3cc5d00fc76b07fe88583037aecf95b86d496",
       "local/native_vfs_handoff_bh_child_error.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "local/native_vfs_handoff_bh_game_objects.rsp": "9f0a1bf1ba6b7a06cc8dd8b921cb507a3b3fc06b89cf18638bb19ce4e1c9dd62",
+      "local/native_vfs_handoff_bh_game_objects.rsp": "d2fc8b80da4abae8b1b4e9e614fad468bacc1daf5b9bbfc1f74f2bd30fc01e31",
       "build/win32/bsp_game.dir/Release/airfield_taxi.obj": "c8a7ed444454d4b4fd5db460615199c99a1b75a0c3677f30f0e1f28a1c1e7eea",
       "build/win32/bsp_game.dir/Release/ai_group_think.obj": "561b8d63b8ab4bf3a6ecc32669dd6b2d5cadc38f1eea4b447578185ce4de7f8f",
       "build/win32/bsp_game.dir/Release/ai_planners.obj": "9922bc63dc7f13c1ae2f492a45c0b269ef59a2c38149d6a3cc3a4419bad369ce",
@@ -154,15 +155,18 @@
       "build/win32/bsp_game.dir/Release/pilot_command_path.obj": "0ce1d3ec258a2b5d11d611465acd95a17da0f679002d36dd1f800c21b2b3927e",
       "build/win32/bsp_game.dir/Release/plane_ground_ops.obj": "7dd26414439fbc9cc64336ebd6243e287290db04336e488694e2ff0f9d244716",
       "build/win32/bsp_game.dir/Release/ship_hit_record.obj": "904fe6dfa34d5f167e99285130248051105b9f3191d1e76f80e5d831a13dc5ce",
+      "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj": "b8b14f66798076d0f58eba770093c9fa01777d5ce76b1ed84a4ece4167db7714",
       "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj": "0606099fd2998caacbfacbcab57b7ae6904e168de3f579416f2b32b062ee44fd",
       "build/win32/bsp_game.dir/Release/unit_message_arms.obj": "1adf3f2bc8b7a62c048b56ada44aaa6c6fdab194d46517aed80b6d6c1bf53130",
       "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj": "ce9c0f0daeb9cf1e78b766660266b3ed975ce3a76896563e861ddbb54c077169",
       "reports/native_string_byte_bh_annotations.json": "a9dfcd881e5d810028a070fe0bea60787716d313bb03434e0d8974fd888a36a8",
       "reports/game_vfs_process_lifetime_bh.json": "d69bc6327ef00e2957efe9ab2e7c8ab2dd1f7443e3a74f4147f02bcdeaa49ebb",
-      "local/native_vfs_bh_concurrent_merge.json": "1c4be5aaaa40b97b54767865e7e1da0d8fe72d049642e55e56397c8e236eadf4",
+      "local/native_vfs_bh_concurrent_merge.json": "17434edb115bf35bce703576c0931b7e9d2453a10bcb62e04afd6e4b0604f3ac",
       "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
       "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
-    }
+    },
+    "focused_probes_source_revision": "2d41900c6dffe86d56bd7fcdd85e9c914c284b33",
+    "final_merge_scope": "Added ship_sub_entity_list only to bsp_game; core archive unchanged. Final source build, both CTests and adopted graph relink/rerun passed at0e28ddc8."
   },
   "native_evidence": {
     "byte_functions": 2,
@@ -654,7 +658,8 @@
   ],
   "concurrent_integrations": [
     "51a1a931",
-    "2ea34b71"
+    "2ea34b71",
+    "ad26ac3d"
   ],
   "game_validated": false,
   "abi_compatible": false

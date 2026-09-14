@@ -1,6 +1,6 @@
 {
   "packet": "orch4_vfs_open_failure_bh",
-  "source_revision": "2d41900c6dffe86d56bd7fcdd85e9c914c284b33",
+  "source_revision": "0e28ddc89a76801b9bd0d3876bfd8bdb2fab9267",
   "integration_report": "reports/native_vfs_handoff_bh_validation.json",
   "observed_before_fix": {
     "exception": "c0000005",
@@ -29,5 +29,19 @@
   "missing_reads_passed": 2,
   "raw_callable_path_preserved": true,
   "unknown_identity_rejected": true,
-  "game_validated": false
+  "game_validated": false,
+  "live_disk_spans": [
+    {
+      "address": "00bdf423",
+      "hex": "8b0decce09018b919000000083c408ffd2",
+      "sha256": "a1f07da5a9c9c7c636b487026b06015b332ad4dfcbb9a549d9a7dc6d60fcf024",
+      "live_read_verified_with": "bsp.py ghidra bytes"
+    },
+    {
+      "address": "00530620",
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_read_verified_with": "bsp.py ghidra bytes"
+    }
+  ]
 }
