@@ -1,0 +1,298 @@
+{
+  "packet": "orch3_post_effect_owner_bl",
+  "created_utc": "2026-09-14T04:27:23.293408+00:00",
+  "status": "source_reconstructed_initial_build_passed_combined_integration_pending",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b4e2f0",
+      "bytes": 217,
+      "sha256": "c706f77c2dd98b3a445aeb7103f9d40d4a69946441bd18ceb23cec25bf830d23",
+      "live_PE_equal": true,
+      "inclusive_end": "00b4e3c8",
+      "source_api": "destroy_native_post_effect_owner_00b4e2f0",
+      "original_abi": "ECX actual24h owner; RET",
+      "listed_instructions": 83,
+      "assembly_sha256": "d70ae71dfaf7670589e25878d4dcd7eda61cd465c9a427b9f21e75b240c7a120",
+      "coverage": "Complete native body in established concrete-provider domain; new source ABI"
+    },
+    {
+      "address": "00b4e450",
+      "bytes": 30,
+      "sha256": "e467f2e7744686977093e44d20435b05e2a7a52b45ba7288b9c1180eb4023a5a",
+      "live_PE_equal": true,
+      "inclusive_end": "00b4e46d",
+      "source_api": "delete_native_post_effect_owner_00b4e450",
+      "original_abi": "ECX actual24h owner; stack flags; EAX original allocation; RET4",
+      "listed_instructions": 11,
+      "assembly_sha256": "9e4fd2901f231fa91be33d89c42e3bba0488e0bfb51104a2a56cd5afca218b3f",
+      "coverage": "Complete native body in established concrete-provider domain; new source ABI"
+    }
+  ],
+  "native_body_credit": 2,
+  "native_bytes_credit": 247,
+  "native_spans": [
+    {
+      "address": "00b4e2f0",
+      "bytes": 217,
+      "sha256": "c706f77c2dd98b3a445aeb7103f9d40d4a69946441bd18ceb23cec25bf830d23",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b4e450",
+      "bytes": 30,
+      "sha256": "e467f2e7744686977093e44d20435b05e2a7a52b45ba7288b9c1180eb4023a5a",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b4e840",
+      "bytes": 948,
+      "sha256": "c1f4708108c23918782936ec5ba979ae4b523e876b201b936ee5e5ba0e1906cb",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00cbfb10",
+      "bytes": 8,
+      "sha256": "b878873737e61b1335d3561cb127f81eec251dad3eab5175e4cf7b5c6da0939a",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00cbfb18",
+      "bytes": 10,
+      "sha256": "8a7af4c8931ae132d178b4ee6f2e744df69bacebe15e8a76cec82b1e218bb43c",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00df86a8",
+      "bytes": 44,
+      "sha256": "65fd2bc773a7300b9a1134048f283f80fbd2a2f1d7413e512821dc00e5fb2d70",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d61ec8",
+      "bytes": 8,
+      "sha256": "1f03e57f813dd5b6ed1e65da98ac29897978967dc97f9a9bb852885be4bbd0d2",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d61d6c",
+      "bytes": 8,
+      "sha256": "0ff32d5c6515055196e4c89d3d8e68bb2aa756070e991e08610b5f42db6381d7",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d5e520",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d5e600",
+      "bytes": 8,
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d5f104",
+      "bytes": 4,
+      "sha256": "2928cfb7cab4a39712fdeb4d6806d47ba1b1669798ffc67542f574883bbf6175",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b4e361",
+      "native": "00b6dfa0",
+      "role": "captured camera unlink/release"
+    },
+    {
+      "address": "00b4e370",
+      "native": "00b6dfa0",
+      "role": "captured render model unlink/release"
+    },
+    {
+      "address": "00b4e380",
+      "native": "00bf65ac",
+      "role": "captured raw command free"
+    },
+    {
+      "address": "00b4e3b1",
+      "native": "00bd30f0",
+      "role": "normal base profile"
+    },
+    {
+      "address": "00b4e453",
+      "native": "00b4e2f0",
+      "role": "complete destructor"
+    },
+    {
+      "address": "00b4e460",
+      "native": "00bf65ac",
+      "role": "actual owner free iff flags bit0"
+    },
+    {
+      "address": "00cbfb13",
+      "native": "00bd30f0",
+      "role": "single base unwind action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbfb1d",
+      "native": "00bf6b43",
+      "role": "FH3 routing only",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b4e8a8",
+      "native": "00b1fbb0",
+      "role": "constructor creates frame target"
+    },
+    {
+      "address": "00b4e941",
+      "native": "00b287c0",
+      "role": "constructor current renderer+5C creates logical vertex stream"
+    },
+    {
+      "address": "00b4e99c",
+      "native": "00535320",
+      "role": "constructor creates material"
+    },
+    {
+      "address": "00b4ea25",
+      "native": "00b75030",
+      "role": "constructor creates render model"
+    },
+    {
+      "address": "00b4eab7",
+      "native": "00b71a80",
+      "role": "constructor creates camera"
+    },
+    {
+      "address": "00b4eba2",
+      "native": "00b51bd0",
+      "role": "constructor initializes raw28h command"
+    },
+    {
+      "address": "00b4e32d",
+      "native": "captured IAT or current vtable indirect",
+      "role": "captured CE2220 stream decrement"
+    },
+    {
+      "address": "00b4e339",
+      "native": "captured IAT or current vtable indirect",
+      "role": "current stream slot0"
+    },
+    {
+      "address": "00b4e349",
+      "native": "captured IAT or current vtable indirect",
+      "role": "same captured decrement material"
+    },
+    {
+      "address": "00b4e355",
+      "native": "captured IAT or current vtable indirect",
+      "role": "current material slot0"
+    },
+    {
+      "address": "00b4e396",
+      "native": "captured IAT or current vtable indirect",
+      "role": "same captured decrement frame"
+    },
+    {
+      "address": "00b4e3a2",
+      "native": "captured IAT or current vtable indirect",
+      "role": "current frame slot0"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_post_effect_owner.hpp": "b23ead881361ba39679b0418f52ffd32e69bdee59932afb6f47399e3c1095e3a",
+    "src/native_post_effect_owner.cpp": "4243e1ed5e55858bf1df2d741d9d8989b0a3bc9599834816211d7f1c9d10053d",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/gui_native_geometry.hpp": "c58b10dadbf6d758c09729908b646a8e6544c76d862a1cde61b0bc713c5d4781",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "include/bsp/native_cockpit_helper_lifetime.hpp": "916ffb8d9eca76945cf942de85958589e150a0996144cc97bb7ad716ce858239",
+    "src/native_cockpit_helper_lifetime.cpp": "6c418bf84029528abe82915e74ef4b61e3ac91bd5beed8cbe9126ce794d1f65f",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "producer_evidence": {
+    "entry": "00b4e840",
+    "inclusive_end": "00b4ebf3",
+    "bytes": 948,
+    "source_implemented": false,
+    "body_credit": 0,
+    "original_abi": "ECX actual24h owner; three stack DWORDs; EAX receiver; RET0C",
+    "publications": {
+      "profile": "00b4e87f",
+      "count_one": "00b4e86e",
+      "frame_08": "00b4e8bd",
+      "stream_18": "00b4e947",
+      "material_14": "00b4e9a5",
+      "model_10": "00b4ea33",
+      "camera_0c": "00b4eac5",
+      "raw_command_1c": "00b4ebab"
+    },
+    "caller_provenance": "CCh auxiliary nonzero producers B52860/B529A0 are documented by the independent child-lifetime packet; no zero-only fallback."
+  },
+  "field_order": [
+    "18 stream",
+    "14 material",
+    "0C camera node",
+    "10 render-model node",
+    "1C raw28h command",
+    "08 frame target",
+    "base profile"
+  ],
+  "concrete_profiles": {
+    "post_effect": "D61EC8 -> BD30E0 -> B4E450",
+    "stream": "D61D6C -> BD30E0 -> B4BF10",
+    "material": "D5E520 -> BD30E0 -> B194B0",
+    "frame": "D5E600 -> BD30E0 -> B1FCF0"
+  },
+  "counter_and_binding": "Existing live atomic at actual+04; no initialization/reset/retain by either companion. Post-effect and submember identities use existing canonical ownership; frame target terminal calls its concrete provider directly.",
+  "cleanup": "CBFB18 -> DF86B0, maxState1/mapDF86A8: state0 -> -1/CBFB10 -> BD30F0. Source catch restores only base, does not visit later members or free actual allocation.",
+  "captured_IAT": "B4E316 loads first stream identity before B4E319 captures current CE2220; same target used at32D/349/396. Each null branch skips its clear; nonnull field clears only after return, overwriting callback writes to that field.",
+  "repaired_listing_reports": [
+    "reports/native_post_effect_flow_repair_bl.json",
+    "reports/native_post_effect_eh_bl.json"
+  ],
+  "verification": {
+    "initial_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "tests_added": 0,
+    "fixture_run": false,
+    "game_validated": false,
+    "original_binary_abi_validated": false,
+    "native_fh3_validated": false,
+    "call_verifier": {
+      "exit_code": 0,
+      "log_sha256": "233c3835798e4a6718bccfd41a8432c58c839e41eed95cf52d8afab76cc3bb2f",
+      "summary": "reports/native_post_effect_owner_bl.json: 14 call rows checked, 0 failed"
+    },
+    "initial_build_log_sha256": "540a2d3976f39bd6c22138842ddc0bca04c3fd281e03daa5cff5add3baa510a6",
+    "initial_build_scope": "Current uncommitted post-effect sources against root dependencies, after exact Win32 LONG IAT correction; final combined commit validation follows."
+  },
+  "boundaries": [
+    "Original B4E840 constructor not reconstructed; source construction-to-binding atomic lifetime remains a producer obligation.",
+    "Current concrete profiles only; matching canonical stream/material companions and real frame/node providers must already exist.",
+    "Registration callback may allocate host metadata; externally stored companions themselves allocate nothing. No whole-binding allocation-freedom claim.",
+    "Registry find is nonmutating; bind is transactional; unbind preserves host companions until retirement notification.",
+    "Direct destruction while a canonical companion remains bound is outside the contract; bound owners retire through their actual-zero terminal.",
+    "Inherited RenderCommandReference terminal is noexcept. Direct C++ cleanup projection does not establish native FH3/SEH through that terminal.",
+    "No unrestricted alias/profile mutation, concurrent lifetime mutation, hardware-fault, original replacement ABI, startup or gameplay proof."
+  ]
+}
