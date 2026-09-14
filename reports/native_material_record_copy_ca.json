@@ -1,9 +1,9 @@
 {
   "packet": "orch3_native_material_record_copy_ca",
-  "status": "source_reconstructed_release_build_ctest_coff_verified",
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
   "source_parent_commit": "d8456ff4a9c3e015daebe26d7a5161d019c73a84",
-  "native_body_credit": 0,
-  "native_bytes_credit": 0,
+  "native_body_credit": 2,
+  "native_bytes_credit": 302,
   "proposed_native_bodies": 2,
   "proposed_native_bytes": 302,
   "target": {
@@ -13,32 +13,6 @@
     "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
     "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
-  "routines": [
-    {
-      "address": "00b13070",
-      "inclusive_end": "00b1317e",
-      "bytes": 271,
-      "native_sha256": "b8043f36c93ebdb808cbe559333da42fca277d4f3c29ac3864d1b70a1e2952f9",
-      "old_ghidra_name": "FUN_00b13070",
-      "cpp_symbol": "construct_native_material_record_00b13070",
-      "original_abi": "ECX destination, stack source, EAX destination, preserves EBX/EBP/ESI/EDI, RET4",
-      "source_abi": "ECX destination, EDX raw pool context, stack source, EAX destination, RET4",
-      "prefix": "DWORD0 then five distinct forward REP MOVSD blocks of 14 DWORDs at +04,+3C,+74,+AC,+E4",
-      "headers": "compare actual addresses before zeroing +11C and +124; current source length at resize and post-resize test; current destination length and both data pointers at memcpy",
-      "cleanup": "arm first +11C only after it completes, before second +124 is zeroed"
-    },
-    {
-      "address": "00b0d230",
-      "inclusive_end": "00b0d24e",
-      "bytes": 31,
-      "native_sha256": "6b567ca16f817bfc0b82393d812857a5ca79ec837b2f57dbcd6ab7dfb2bfc79c",
-      "old_ghidra_name": "FUN_00b0d230",
-      "cpp_symbol": "get_native_material_record_vector_size_00b0d230",
-      "original_abi": "ECX actual vector, EAX signed count, plain RET",
-      "behavior": "begin at +4 null -> zero; otherwise signed32(wrapped end-minus-begin)/300 using original IMUL/SAR/sign correction",
-      "caller": "00b145e0"
-    }
-  ],
   "eh_evidence": {
     "handler_thunk": "00cbc1fe: MOV EAX,00df42b0; JMP 00bf6b43 ___CxxFrameHandler3",
     "funcinfo": "00df42b0: magic 19930522, maxState 1, unwind-map pointer 00df42a8",
@@ -69,14 +43,393 @@
     "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40"
   },
   "validation": {
-    "ghidra_and_pe": "live project/program, original spans, provider spans and EH map read-only verified",
-    "release_build": "scripts/build.ps1 passed with MSVC Win32 Release",
-    "existing_ctest": "reconstructed_math 1/1 passed",
-    "coff_access_order": "constructor arms unwind state only after first helper and before second; header helper compares addresses before zero stores and reloads fields after raw resize; prefix helper has five distinct REP MOVSD blocks",
-    "coff_vector_leaf": "31-byte standalone COMDAT, zero relocations, exact installed PE bytes and SHA-256",
-    "coff_prefix_helper": "90-byte standalone COMDAT, zero relocations, ordered DWORD0 and five REP MOVSD blocks",
-    "local_evidence": "local/output/build-ca.log, coff-ca-disasm.txt, coff-ca-headers.txt, coff-ca-relocs.txt",
-    "game_runtime": "not tested"
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "d25d648421e1e5adc099d3ffa3874cd1c77e556c",
+    "tracked_build_inputs": 2577,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entries_executed": false,
+    "game_validated": false
   },
-  "limitations": "New EDX context and C++ cleanup frame are not the original private FH3 binary frame; native hardware faults and whole-game behavior are unverified."
+  "limitations": "New EDX context and C++ cleanup frame are not the original private FH3 binary frame; native hardware faults and whole-game behavior are unverified.",
+  "functions": [
+    {
+      "address": "00b13070",
+      "inclusive_end": "00b1317e",
+      "bytes": 271,
+      "native_sha256": "b8043f36c93ebdb808cbe559333da42fca277d4f3c29ac3864d1b70a1e2952f9",
+      "old_ghidra_name": "FUN_00b13070",
+      "cpp_symbol": "construct_native_material_record_00b13070",
+      "original_abi": "ECX destination, stack source, EAX destination, preserves EBX/EBP/ESI/EDI, RET4",
+      "source_abi": "ECX destination, EDX raw pool context, stack source, EAX destination, RET4",
+      "prefix": "DWORD0 then five distinct forward REP MOVSD blocks of 14 DWORDs at +04,+3C,+74,+AC,+E4",
+      "headers": "compare actual addresses before zeroing +11C and +124; current source length at resize and post-resize test; current destination length and both data pointers at memcpy",
+      "cleanup": "arm first +11C only after it completes, before second +124 is zeroed",
+      "ghidra_name": "BSP_MaterialRecord_CopyConstruct"
+    },
+    {
+      "address": "00b0d230",
+      "inclusive_end": "00b0d24e",
+      "bytes": 31,
+      "native_sha256": "6b567ca16f817bfc0b82393d812857a5ca79ec837b2f57dbcd6ab7dfb2bfc79c",
+      "old_ghidra_name": "FUN_00b0d230",
+      "cpp_symbol": "get_native_material_record_vector_size_00b0d230",
+      "original_abi": "ECX actual vector, EAX signed count, plain RET",
+      "behavior": "begin at +4 null -> zero; otherwise signed32(wrapped end-minus-begin)/300 using original IMUL/SAR/sign correction",
+      "caller": "00b145e0",
+      "ghidra_name": "BSP_MaterialRecordVector_Size"
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b1310a",
+      "native": "0041dd40",
+      "function": "00b13070"
+    },
+    {
+      "address": "00b1311f",
+      "native": "00bf7680",
+      "function": "00b13070"
+    },
+    {
+      "address": "00b1314a",
+      "native": "0041dd40",
+      "function": "00b13070"
+    },
+    {
+      "address": "00b13160",
+      "native": "00bf7680",
+      "function": "00b13070"
+    }
+  ],
+  "primary_integration": {
+    "worker_commit": "23b76ea5533113968113e00ae606e7e39889b7f1",
+    "cherry_pick": "d9f67c60e09ef1cc1583796029047b7400e45997",
+    "source_header_unchanged": true,
+    "complete_native_source_generated_review": true
+  },
+  "tested_commit": "d25d648421e1e5adc099d3ffa3874cd1c77e556c",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CA_worker_review": true,
+    "independent_CC_worker_review": false,
+    "source_authors": {
+      "CA": "worker 23b76ea5533113968113e00ae606e7e39889b7f1",
+      "CC": "primary integrator"
+    },
+    "constructor_schedule": {
+      "prefix_call": "34h",
+      "first_header_call": "48h",
+      "cleanup_state_zero": "62h",
+      "second_header_call": "70h",
+      "ret4": "8Bh"
+    },
+    "header_schedule": {
+      "compare": "0Bh",
+      "zero_stores": [
+        "21h",
+        "31h"
+      ],
+      "resize_call": "53h",
+      "fresh_source_length": "63h",
+      "destination_length": "77h",
+      "source_data": "85h",
+      "destination_data": "93h",
+      "memmove_call": "A2h"
+    },
+    "fill_schedule": {
+      "source_slot_read": "4Ch",
+      "construct_call": "58h",
+      "count_decrement": "5Dh",
+      "output_advance": "5Eh",
+      "completed_cursor_publication": "3Eh",
+      "catch_section_offset": "78h"
+    },
+    "copy_schedule": {
+      "construct_call": "54h",
+      "output_advance": "59h",
+      "actual_output_argument_write": "68h",
+      "input_advance": "6Ah",
+      "catch_section_offset": "86h",
+      "catch_fresh_slot_read": "89h"
+    },
+    "corrected_tail_schedule": {
+      "captured_count": "01h",
+      "captured_output": "06h",
+      "fill_call": "16h",
+      "captured_count_multiply": "1Dh",
+      "captured_output_add": "23h",
+      "ret16": "27h",
+      "bytes": 42
+    },
+    "EH_scope": "C++ exceptions and concrete raw cleanup providers; no original private FH3 frames or hardware SEH equivalence. Catch suffixes are slices of parent COMDATs, not independent whole functions.",
+    "placement_delete": "Installed/live 00401130 is C3; omitted actual no-op, no separate credit.",
+    "blocking_findings": []
+  },
+  "generated_code": [
+    {
+      "module": "native_material_record_copy",
+      "stem": "construct_native_material_record_00b13070",
+      "symbol": "?construct_native_material_record_00b13070@bsp@@YIPAXPAXAAUNativeStringRawPoolContext@1@PBX@Z",
+      "section_offset": 0,
+      "bytes": 142,
+      "sha256": "df7e36c18590b866acc9dc3114466f00e68a242125b366fc3163189a92cf1aaa",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_copy.obj",
+      "object_sha256": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?construct_native_material_record_00b13070@bsp@@YIPAXPAXAAUNativeStringRawPoolContext@1@PBX@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 53,
+          "type": 20,
+          "symbol": "?copy_prefix_11c@?A0x105b1821@bsp@@YIXPAXPBX@Z"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "symbol": "?construct_header@?A0x105b1821@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@2@@Z"
+        },
+        {
+          "offset": 113,
+          "type": 20,
+          "symbol": "?construct_header@?A0x105b1821@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@2@@Z"
+        }
+      ],
+      "listing": "local/cacc-generated-construct_native_material_record_00b13070.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_copy",
+      "stem": "get_native_material_record_vector_size_00b0d230",
+      "symbol": "?get_native_material_record_vector_size_00b0d230@bsp@@YIHPBX@Z",
+      "section_offset": 0,
+      "bytes": 31,
+      "sha256": "6b567ca16f817bfc0b82393d812857a5ca79ec837b2f57dbcd6ab7dfb2bfc79c",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_copy.obj",
+      "object_sha256": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+      "relocations": [],
+      "listing": "local/cacc-generated-get_native_material_record_vector_size_00b0d230.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_copy",
+      "stem": "copy_prefix_11c",
+      "symbol": "?copy_prefix_11c@?A0x105b1821@bsp@@YIXPAXPBX@Z",
+      "section_offset": 0,
+      "bytes": 90,
+      "sha256": "11efde1b4f93195090411bf67fdaf4c644fb1bc1e88d10f508b231050b2eba03",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_copy.obj",
+      "object_sha256": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+      "relocations": [],
+      "listing": "local/cacc-generated-copy_prefix_11c.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_copy",
+      "stem": "construct_header",
+      "symbol": "?construct_header@?A0x105b1821@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@2@@Z",
+      "section_offset": 0,
+      "bytes": 174,
+      "sha256": "a8dd528e68a06c214ff70c273ce673c10fa42160b229e045cbba85a8bb358cc6",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_copy.obj",
+      "object_sha256": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+      "relocations": [
+        {
+          "offset": 84,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 163,
+          "type": 20,
+          "symbol": "_memmove"
+        }
+      ],
+      "listing": "local/cacc-generated-construct_header.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_copy",
+      "stem": "unwind_first_header",
+      "symbol": "?unwind_first_header@?A0x105b1821@bsp@@YAXPAXAAUNativeStringRawPoolContext@2@@Z",
+      "section_offset": 0,
+      "bytes": 137,
+      "sha256": "33eebf48baa34d10faa375558a21c7ab9962938a77f774d092bd8f921bb7d21b",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_copy.obj",
+      "object_sha256": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__sehtable$?unwind_first_header@?A0x105b1821@bsp@@YAXPAXAAUNativeStringRawPoolContext@2@@Z"
+        },
+        {
+          "offset": 11,
+          "type": 6,
+          "symbol": "__except_handler4_noexcept"
+        },
+        {
+          "offset": 29,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 65,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 119,
+          "type": 6,
+          "symbol": "__imp__terminate"
+        }
+      ],
+      "listing": "local/cacc-generated-unwind_first_header.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 4,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/cacc-call-audit-native_material_record_copy_ca.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cacc-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b13070",
+      "00b0d230"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b13070": "__thiscall",
+      "00b0d230": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_record_copy.obj": "053688395f9bdf053ea76458ae329ea846f7783a2e01ae32a4ba68a8a46f4e7d",
+    "build/win32/bsp_core.dir/Release/native_material_record_ranges.obj": "6a932374a11a2d532ff9d2fb0099e129c01b3201290c67c706398697f0088289",
+    "local/adapt_cacc_seal.py": "1ecf08d24a0b356bafc24c82668d9c9c90ed5bcb3df5984d66b4ed589f1ff828",
+    "local/annotate_cacc.py": "e347d7fefeecfafae5b224f5c9ccec66f5ca8ef79122ea20f92a71846cef9378",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cacc.py": "adbd840c540f8ad279d0a9d179bafb66119d6a0502ffb980b8fd74b09e66e0c3",
+    "local/cacc-annotation.log": "4d05542ab45bd57d0983923cbc898238203ae5ae7e74aeb2c211dd1097da4d9b",
+    "local/cacc-build-attempt-16760881/cacc-final-build-stamp.json": "857a4843739a12621f8c1ee9d8520be8ef7277c0ec6b65f3e7fd5731cd8ef334",
+    "local/cacc-build-attempt-16760881/cacc-final-combined-build.log": "e53a6e52e96ec5d01a53880f44e6d882fbe13f3897bc4dc18d0ce0dac18d8e7e",
+    "local/cacc-ca-provider-source-pin.json": "a72eddc74ebf50ac7e961eb989f57cb56dd05938b927bfd88c5de2c7f329245f",
+    "local/cacc-call-audit-native_material_record_copy_ca.log": "f2286c55496218fca35ebfa1acc18ea7ed7acdac2da042490d9d7dbe91c91b62",
+    "local/cacc-call-audit-native_material_record_ranges_cc.log": "c6411f2e13979643e74c7e51c3a7ebaaa9f2dfed0b4a88d8ff35b2299c59b41f",
+    "local/cacc-call-owner-correction.json": "65d1732604ce51485495adc0b6bb8500a0c2c2cfe26ac6aebdf2efff13dd0b90",
+    "local/cacc-comments-after.json": "21f59ac005cf995134b55e86c0eb4a0caa9d7be69d3dd1d5b40ad53b9bb5340c",
+    "local/cacc-comments-before.json": "b272d29098d02fd571f88f3a2805d9c8176db7b54665e14a3839e40ff72019fd",
+    "local/cacc-export-refresh.log": "027533638179f262d4f239a347512e01d9a354d59e73b687dcb6389c0994b96f",
+    "local/cacc-final-build-stamp.json": "ec45f4bb730129eba232016cf4d2d533561fa0d521457bbbc292c3809700c356",
+    "local/cacc-final-combined-build.log": "91ed3f3e877bb7b22c855c13d36c19244bf141272d25906fae673743c55aa9a0",
+    "local/cacc-function-records.json": "03c576b898e0f6cc984859faa6e981adb6878f5851c5700d0a6124bd3958c92f",
+    "local/cacc-generated-catch-copy_body.asm": "6715b18479b82a9f5a4e2c82d5b0f7ad65b7c066d9d56c99491456eef2cd9b60",
+    "local/cacc-generated-catch-fill_body.asm": "5e4ef89f4f43a9871cd1e56b3095b68f13f6397f47eb0108cee4746282f9e071",
+    "local/cacc-generated-construct_header.asm": "7ccb6063a176194ecf7b99a9e08a5a685b00f0c46b3cc6c7d1f2ddc5ac4e27b2",
+    "local/cacc-generated-construct_native_material_record_00b13070.asm": "6c6476c7a4ce93518b4cc48a694d015f48ce65e794c74284d951480c786be5b8",
+    "local/cacc-generated-copy_body.asm": "c045e017f73cd012baf9da2cb26e046cc769a408e5e92d0ddb1f59ddda4ac603",
+    "local/cacc-generated-copy_construct_native_material_records_00b13920.asm": "ee17072d1f46f72dd4356be23e925f9fdb127381cfceef94c5abf9e75eec4f3d",
+    "local/cacc-generated-copy_prefix_11c.asm": "da7b0985a6364bd9aa388bd0045755acd2e4320b8cc23ce40d5e121af5e68285",
+    "local/cacc-generated-destroy_ascending.asm": "df4196850e0f05cb52edc590e654a20d978ac496736955595456f04e7daefeb0",
+    "local/cacc-generated-destroy_native_material_record_range_00b143a0.asm": "fc7802bc0a0e3d5c72d2ef6cc56fd85b913bef4c56aa228aaff4786d511b1722",
+    "local/cacc-generated-fill_body.asm": "685f59ce78ba995354011fda05fd617fdcd871f85e662fc5015f2fde2ccd5082",
+    "local/cacc-generated-fill_construct_native_material_record_tail_00b14360.asm": "bf2f7264c8d467d424ca9a2782f44db525b33985c49a8a12d55ef1b17d70e2cf",
+    "local/cacc-generated-fill_construct_native_material_records_00b13b00.asm": "2b0df4af1bf2aa8a3d29d6cf5ee7e964f087fbfc878dee7be8bcc2be0d9e33e2",
+    "local/cacc-generated-get_native_material_record_vector_size_00b0d230.asm": "bc4f7ac516a55f12a9b49d5b4dca56a077989202aa755c6b1153f7c34978eaab",
+    "local/cacc-generated-unwind_first_header.asm": "502cd6484c9557586b504aa63bcda99c6b3424fa6b0915cbc55b9bd98883adcc",
+    "local/cacc-ghidra-annotation-record.json": "e409d08c434f4b4b1b7a5d7dbbacafcfac2248451faa0f5ed37c45ab105dcd30",
+    "local/cacc-ghidra-pointer-type-correction.json": "e253d2def550ad03579aa32be48fe1404a360265939d4902794f17e33d45c83e",
+    "local/cacc-ledger-before.json": "e7531b557495160e55dc1a5abac990684ebaa3ca9389e6a3704543d94e48141e",
+    "local/cacc-live-00401130.txt": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8",
+    "local/cacc-live-00b0d230.txt": "eb9029234d791f43d6f34a6f8048cb1fa24dbfeffb7f34312aa88e4de4032cc2",
+    "local/cacc-live-00b13070.txt": "6d13d3fb6dfbf005046827588b968ace4d51c70530f933f7c23f601e63bfc296",
+    "local/cacc-live-00b13920.txt": "cc0a6457db7e8191c074b90d0057a64d619783ca9fb6ec671653d8c6c850063b",
+    "local/cacc-live-00b13b00.txt": "c3447c44318af3d24112f93a887097b0e12a4d63466c87671ba17b9d99fc495f",
+    "local/cacc-live-00b14360.txt": "294da4d59bb6b448d1dd5e3ef8e26975d99cf55026506413715525e5241c4582",
+    "local/cacc-live-00b143a0.txt": "758ea12e4a8228b0c287676c6b2adf175f7077fd912e53bbb290831f112992d8",
+    "local/cacc-live-00cbc1f0.txt": "79a9e5369774c7e1bd86f45e7724934658aec6a1f53c0ae83d8954062ccdc55c",
+    "local/cacc-live-00cbc2f0.txt": "2ae3d393b155b16caa4b2c7d1122bba550eb425a6d60dbd5da48680ebffc7184",
+    "local/cacc-live-00cbc301.txt": "eda308a3be47de3b85189f70768b3ce1300331bb417757e8c6293d6aa5299c51",
+    "local/cacc-live-00cbc330.txt": "ea92667eb75aa90f9553036fa2f054fa55c99ecbf45277d1e2c8a637dea5cba7",
+    "local/cacc-live-00cbc341.txt": "228b874fb0783eab18bb2d47275d81a049e6f27f54c3b312ac18de4652114474",
+    "local/cacc-live-00df42a8.txt": "ac3ae4b7a2aba5a6979bd08316feb26955acda4b303e9748cb1ff76252470328",
+    "local/cacc-live-00df4408.txt": "9c30c32160b7a58a01e41b86dbcc5bfa4ffc19b6f9af97b5ce5af149f614bae3",
+    "local/cacc-live-00df4444.txt": "4214ad21ecb620a868324abe34cc0b49349e2a870a5d5979fac75541f0cb474e",
+    "local/cacc-live-00df4494.txt": "054e0d364e977e6898e06ba7a414c70c813c99a08d6799b623eeabd0758668c0",
+    "local/cacc-live-00df44d0.txt": "51c93f021be1ab3dd648ee0a3ff39654541a2e23d19776ec3dcc1c175eeac02e",
+    "local/cacc-native-00b13920.txt": "20d0ebfaabdae97486f78414749d03fa6741c4fc65f2dadbca203b86417168c1",
+    "local/cacc-native-00b13b00.txt": "641afe3b58cb7c01d19681e2b0279beb40ac99d50de9e79db622761f1a4b5f8e",
+    "local/cacc-native-00b14360.txt": "1ae196226d116c6672bee10de3af565cb7c2f98ef601fecf4d484cb63953efd1",
+    "local/cacc-native-00b143a0.txt": "0f06eb82239a88d32c41d86325d079aae3be6d77daa14bacfd1c702dd7630681",
+    "local/cacc-object-review.json": "95830929c5ffe63ea4b44b9c1f12647456f04f9ae8f00e54f1ab765dac956123",
+    "local/cacc-primary-review.json": "fe5c0bfa5cf0a64e70d0ffbef79264f923b46319b55a6a037be9ceb50dfb0a65",
+    "local/cacc-tail-fix-before/cacc-generated-catch-copy_body.asm": "6715b18479b82a9f5a4e2c82d5b0f7ad65b7c066d9d56c99491456eef2cd9b60",
+    "local/cacc-tail-fix-before/cacc-generated-catch-fill_body.asm": "5e4ef89f4f43a9871cd1e56b3095b68f13f6397f47eb0108cee4746282f9e071",
+    "local/cacc-tail-fix-before/cacc-generated-construct_header.asm": "7ccb6063a176194ecf7b99a9e08a5a685b00f0c46b3cc6c7d1f2ddc5ac4e27b2",
+    "local/cacc-tail-fix-before/cacc-generated-construct_native_material_record_00b13070.asm": "6c6476c7a4ce93518b4cc48a694d015f48ce65e794c74284d951480c786be5b8",
+    "local/cacc-tail-fix-before/cacc-generated-copy_body.asm": "c045e017f73cd012baf9da2cb26e046cc769a408e5e92d0ddb1f59ddda4ac603",
+    "local/cacc-tail-fix-before/cacc-generated-copy_construct_native_material_records_00b13920.asm": "ee17072d1f46f72dd4356be23e925f9fdb127381cfceef94c5abf9e75eec4f3d",
+    "local/cacc-tail-fix-before/cacc-generated-copy_prefix_11c.asm": "da7b0985a6364bd9aa388bd0045755acd2e4320b8cc23ce40d5e121af5e68285",
+    "local/cacc-tail-fix-before/cacc-generated-destroy_ascending.asm": "df4196850e0f05cb52edc590e654a20d978ac496736955595456f04e7daefeb0",
+    "local/cacc-tail-fix-before/cacc-generated-destroy_native_material_record_range_00b143a0.asm": "fc7802bc0a0e3d5c72d2ef6cc56fd85b913bef4c56aa228aaff4786d511b1722",
+    "local/cacc-tail-fix-before/cacc-generated-fill_body.asm": "685f59ce78ba995354011fda05fd617fdcd871f85e662fc5015f2fde2ccd5082",
+    "local/cacc-tail-fix-before/cacc-generated-fill_construct_native_material_record_tail_00b14360.asm": "3a80e2816ca2ee5d946060a1dff09f74e456acbc33dcdef31aa2d89d4aebf62b",
+    "local/cacc-tail-fix-before/cacc-generated-fill_construct_native_material_records_00b13b00.asm": "2b0df4af1bf2aa8a3d29d6cf5ee7e964f087fbfc878dee7be8bcc2be0d9e33e2",
+    "local/cacc-tail-fix-before/cacc-generated-get_native_material_record_vector_size_00b0d230.asm": "bc4f7ac516a55f12a9b49d5b4dca56a077989202aa755c6b1153f7c34978eaab",
+    "local/cacc-tail-fix-before/cacc-generated-unwind_first_header.asm": "502cd6484c9557586b504aa63bcda99c6b3424fa6b0915cbc55b9bd98883adcc",
+    "local/cacc-tail-fix-before/cacc-object-review.json": "ca6703a0a24ab1b9f5b73a5a79942f7079248c3ee2c741435a9eec22cb1dc59a",
+    "local/cacc-tail-fix-before/native_material_record_ranges.cpp": "561aa99d44f20063c69700b3051ab8ccbd7163e38ecd40c0a85738e1d961c4a3",
+    "local/cacc-tail-fix-before/native_material_record_ranges.obj": "6aad6160b80ff68245e01b3d85d9203698c8c2d22dd31a39e04f96d4773fb522",
+    "local/cacc-tail-fix-before/native_material_record_ranges_cc.json": "1cdeabdac1bccd7fb267ac5844a288d760541f59d481125174325c5e9f108ebe",
+    "local/cacc-worker/build-ca.log": "e9e3bbf6bee5e3e002f6ab723531fcba21cb20eb5cf969d6206168a0efc79d5a",
+    "local/cacc-worker/coff-ca-disasm.txt": "a8780419832360465b0ad9b6346c079d3bb971bd66e0400a655441b10844da8c",
+    "local/cacc-worker/coff-ca-headers.txt": "63245de96e2188bb3654eb3fb7716eb4e8c11a1744cc0dfa1c68aa7c09bc2812",
+    "local/cacc-worker/coff-ca-relocs.txt": "cdc26bb98cddf3c47adc3a4cf0276bc16945e5eed227186a494fecf25424635b",
+    "local/cacc-worker/commit-ca.txt": "deffe9fd5cf6f1a68abecf3dffb995a03bc9be53741f83682ddcec66e87116af",
+    "local/correct_cacc_call_owners.py": "4ed4eddb59822d40a218474e70afc9b07bce8fbd5ee6d7f2346251546dd6d05e",
+    "local/finish_cacc.py": "82e190bce12a8f270f39284c1dc1391e337d186f05bbe79f6f181c804791e421",
+    "local/fix_cacc_ghidra_pointer_types.py": "c1b7c6d4fdfd6229f7b8721df1932b9eea05355757313f051c55445311c7bde7",
+    "local/prepare_cacc.py": "04556d77e1102de694a4d7a444bcd4b8dc3f4efd58506f9f1c4f55985cc9ef85",
+    "local/record_cacc_tail_fix.py": "848c2bee62c7761a1336c56a20703287d2c7ed83547c8e42e94d598e01fa874f",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/seal_cacc.py": "bcf7769566670108293a8ab9069e4ac624546c1d933a16b556e183373b26c017"
+  },
+  "sealed_attempt": {
+    "tested_commit": "d25d648421e1e5adc099d3ffa3874cd1c77e556c",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cacc-validated-attempt-d25d6484.zip",
+    "sha256": "80e7fe2b228e8c63ee7276a4235fa0a9050cdf59d6ca48e23769cb8253678a4f",
+    "payload_members": 2695,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "08bf9d84758e472cd258f07d4ca147f45f24430c30c7666d4c3d6d4363f35dbd",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2577
+  }
 }
