@@ -7,7 +7,6 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
-#include <type_traits>
 #include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -16,8 +15,10 @@
 
 namespace bsp {
 static_assert(sizeof(void*) == 4 && sizeof(long) == 4);
-static_assert(std::is_trivially_copyable_v<NativeCockpitHelperStorage>);
 static_assert(offsetof(NativeCockpitHelperStorage, camera_0c) == 0x0c);
+static_assert(offsetof(NativeCockpitHelperStorage, preserved_10) == 0x10);
+static_assert(offsetof(NativeCockpitHelperStorage, preserved_14) == 0x14);
+static_assert(offsetof(NativeCockpitHelperStorage, preserved_1c) == 0x1c);
 static_assert(offsetof(NativeCockpitHelperStorage, preserved_20) == 0x20);
 
 namespace {
@@ -89,10 +90,18 @@ void* construct_native_cockpit_helper_00b3c800(void* actual_helper,
     auto& environment = *attempt.camera_environment_;
     auto& name_pool = environment.nodes.require_raw_name_pool();
 
-    std::array<std::byte, sizeof(NativeCockpitHelperStorage)> preimage;
-    std::memcpy(preimage.data(), actual_helper, preimage.size());
+    // Only these scalar words are preserved by B3C800. The atomic counter is
+    // not a trivially copyable object; establish its lifetime normally and set
+    // its value through store below instead of restoring its representation.
+    std::array<std::uint32_t, 4> preserved;
+    const auto* const raw_bytes = static_cast<const std::byte*>(actual_helper);
+    std::memcpy(preserved.data(), raw_bytes + 0x10, 8);
+    std::memcpy(preserved.data() + 2, raw_bytes + 0x1c, 8);
     auto* const helper = ::new (actual_helper) NativeCockpitHelperStorage;
-    std::memcpy(actual_helper, preimage.data(), preimage.size());
+    helper->preserved_10 = preserved[0];
+    helper->preserved_14 = preserved[1];
+    helper->preserved_1c = preserved[2];
+    helper->preserved_20 = preserved[3];
     helper->profile_00 = 0x00ceb130u;                 // B3C823
     helper->references_04.store(1, std::memory_order_relaxed); // B3C830
     auto state = NativeUnwindState::base;           // B3C83C

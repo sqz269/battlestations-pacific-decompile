@@ -43,9 +43,11 @@ The moved local capability enters executing before native callbacks. The
 canonical static 0108FFB0 pool and environment pool must be the same actual
 owner; no allocation probe or unrelated model-base pool substitutes for it.
 
-Starting the typed 24h helper preserves the allocation representation. Stores
-then follow B3C823..B3C84C: CEB130, count1, state0, D61854, zero +08/+0C/+18.
-The +10/+14/+1C/+20 words retain their raw preimage. D61854 contains
+Starting the typed 24h helper captures and restores only the four untouched
+scalar words +10/+14/+1C/+20. The atomic counter starts its normal typed lifetime
+and is set through its atomic interface; its object representation is not copied.
+Native stores then follow B3C823..B3C84C: CEB130, count1, state0, D61854,
+zero +08/+0C/+18. D61854 contains
 `[BD30E0,B3C6C0]`; D6185C is the literal `CockpitCamera` including NUL.
 
 | Site in B3C800 | Native target | Source composition and argument evidence |

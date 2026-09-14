@@ -255,7 +255,7 @@
   },
   "host_contract": {
     "entry": "Actual helper extent/alignment, table binding and capability validate before moving caller token or first native helper store; executing local attempt precedes callbacks.",
-    "storage": "Actual24h helper lifetime starts with full representation preserved; native writes only profile/count/+08/+0C/+18. +10/+14/+1C/+20 retain raw preimage.",
+    "storage": "Actual 24h helper starts its normal typed lifetime. Only untouched scalar words +10/+14/+1C/+20 are captured/restored; the atomic count is set by its store, with no atomic object-representation copy. Native profile/count/+08/+0C/+18 writes retain their order.",
     "owner_timing": "Persistent camera optional emplaced only after local raw41E870 success; consumes scene credit without native retain.",
     "reference_timing": "After successful BI raw camera using record0, persistent reference emplaced with lifetime credit and fixed block retirement callback before helper+0C publication.",
     "current_camera": "Each later camera operation freshly loads helper+0C, uses canonical find_actual_node and checked dynamic_cast NativeCameraReference, validates host live phase and exact key/runtime, then uses that current owner.",
@@ -467,5 +467,15 @@
     "Separate persistent caller ownership, helper companion success binding/retirement, actual24h allocation policy and external diagnostic recovery remain integration duties.",
     "Semantic frame/cache borrow completion, destructive callback liveness, concurrent mutation, whole B14A10 render-service construction and game behavior are unproved."
   ],
-  "block_implementation_commit": "125e6c93e07a527fb989a48142f546c7b3bb7461"
+  "block_implementation_commit": "125e6c93e07a527fb989a48142f546c7b3bb7461",
+  "integration_corrections": [
+    {
+      "problem": "MSVC rejected the whole NativeCockpitHelperStorage trivially-copyable assertion because it contains std::atomic<int>.",
+      "correction": "Capture/restore exactly the four untouched uint32_t words; establish atomic lifetime and assign its value normally. Added exact preserved-field offsets.",
+      "source": "src/native_cockpit_helper_construction.cpp",
+      "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
+      "worker_source_pins": "Historical worker inputs remain above; this integration source hash supersedes only the worker constructor cpp pin.",
+      "validation": "Combined rebuild and actual-constructor fixture pending."
+    }
+  ]
 }
