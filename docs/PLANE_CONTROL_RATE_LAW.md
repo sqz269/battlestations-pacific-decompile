@@ -600,3 +600,73 @@ this installation's `planeglobals.lua` with the provenance caveat above, and the
 resolved for the free-flight path. What is not yet verified is the rule's **behaviour** - nothing has
 been run, and until a plane under a bot task actually turns toward its target in a mission, this is a
 recovered law and not a validated one.
+
+## Corrections from packet `cc7_plane_control_targets`
+
+Three claims above are wrong, all mine, and all wrong the same way. I read a stack slot's first
+producer and assumed it was still live at a later read, without checking for a write in between.
+`tools/stack_frame_walk.py` exists precisely because a literal `[ESP+N]` names different storage at
+different depths - and I applied that discipline to the offsets while skipping it for the values in
+them. The slots in this function are scratch, reused three and four times each. **A slot's value has
+to be traced from the read backwards to its nearest preceding write, every time.**
+
+### `unit+BC4h` reaches the yaw target, but not the way the section above says
+
+The conclusion stands - `+BC4h` does not multiply the step. The mechanism, the address, the slot and
+the arithmetic in that section are all wrong:
+
+* `007DAA12 FSIN` / `007DAA14 FSTP [ESP+14h]` **overwrites** `frame=-80` with `sin(unit+C68h)`
+  before `007DAA18` reads it. So `frame=-44` holds the sine, not the `+BC4h` value.
+* The `+BC4h` chain ends at `007DA9E3 MOVSS [EDI+0BC4h],XMM0`: it writes the **field** and goes no
+  further.
+* `007DAA4E`'s term is `SlideRatio(class+1B8h) * YawSpd * sin(bank) * cos(pitch)`, and it is
+  **subtracted** at `007DAA56` (`DE E9 FSUBP`), not multiplied in.
+* `+BC4h`'s real consumer is `007DA94B`, through `frame=-56`, 280 bytes earlier - inside the yaw
+  raw product, which is where it does scale the yaw target.
+
+### The roll acceleration term is `f1 * RollAccel`, and the oddity I flagged was my own slip
+
+The section above reports `frame=-16 = PitchAccel * f1 * class+1BCh` and then flags the dependence
+on `PitchAccel` as surprising, worth a second pair of eyes, possibly a shipped bug. It is none of
+those. It is an arithmetic error of mine:
+
+```
+007daa7f  FLD  [EAX+1C0h]    ; stack: f1, PitchAccel        ST0 = PitchAccel
+007daa93  FMUL ST1           ; D8 C9 = FMUL ST(0),ST(1)     ST0 = PitchAccel * f1
+007daa9d  FSTP [ESP+4Ch]     ; frame=-24 = PitchAccel * f1, POP
+                             ; ST0 is now f1 again - not the product
+007daab3  FMUL [EAX+1BCh]    ; ST0 = f1 * RollAccel
+007daab9  FSTP [ESP+54h]     ; frame=-16 = f1 * RollAccel
+```
+
+I tracked the `FSTP` as storing and forgot it pops, so I carried the product forward where the
+listing carries `f1`. The three acceleration terms are perfectly symmetric -
+`f1 * PitchAccel`, `-f2 * YawAccel`, `f1 * RollAccel` - which is what one would expect, and my
+flagged anomaly was an invitation to go looking for intent behind a mistake I had made myself.
+`docs/PLANE_CONTROL_AUTHORITY.md` repeats the same error in its table and is corrected there.
+
+### The latched block is on the unit, not the controller
+
+`007DA72D MOV EDI,[ESI+8]` makes `EDI` the unit, and **every** structure field this function reads -
+`+BB0h`, `+BB4h`, `+BB8h`, `+BC4h`, `+838h`, `+900h`, `+5Dh`, `+C36h`, `+C37h`, `+C3Ch`, `+C64h`,
+`+C68h` - is `EDI`-based. Writing them `ctl+BB0h`, as this doc did throughout, sends a reader to the
+wrong object by one indirection. `include/bsp/plane_flight.hpp` never had this wrong; its comment
+says "the pilot control block, **unit+9E4h**". Only the namespace's name suggests a controller base.
+
+The three axis fields the law WRITES - `+48h`, `+4Ch`, `+50h` - are genuinely `ctl`-relative
+(`ESI`-based), so the two bases really are mixed inside one function, which is how the confusion
+started. It is not an excuse: `007DA72D` is the twelfth instruction.
+
+### Two open items closed by the same packet
+
+The **ground gate**: `007DA8D9 CMP [ESI+FCh],1` / `007DA8E3 JNZ 007DA8EB` zeroes the roll target
+when the mode **is** 1, on the ground. The Ghidra plate comment inherited from packet
+`cc2_plane_flight` has this backwards - "discarded when controller+FCh is not 1" - and is corrected
+in the ledger by this packet.
+
+The **flag**: `007DA9F5 JZ 007DAA7C` gates a block that adds the yaw slide term and the yaw-roll
+coupling. Free flight sets the flag to 1, so in the air both apply. On the ground the flag comes
+from `007DA542`, unread, so whether the coupling is added back onto a roll target `007DA8E5` has
+just zeroed is open.
+
+The three complete target expressions are in **`docs/PLANE_CONTROL_TARGETS.md`**.

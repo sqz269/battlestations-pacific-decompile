@@ -172,6 +172,14 @@ struct GameUnitsSummary {
     // silently zeroed a basis, which the native does not guard either.
     unsigned long long plane_pose_right_reference{0};
     unsigned long long plane_pose_collapsed{0};
+    // 0085E4D0's two outcomes, and what they did to the heading. `rotations`
+    // counts the steps where it wrote a pose at all; it returns false and
+    // writes nothing through the 0085E871 exit when the angular velocity is too
+    // short to normalise. `heading_change` sums |delta atan2(row2.x, row2.z)|
+    // over every free-flight step, so it is the total turning a plane did
+    // rather than the net - a plane that turns and turns back still shows it.
+    unsigned long long plane_pose_rotations{0};
+    double plane_heading_change{0.0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};

@@ -36,9 +36,19 @@ inline constexpr int kTimeScale = 0x340;         // 007C6509, scales the step wh
 inline constexpr int kFixedStepPose = 0x674;     // 007D9F6E / 007D8252, the input
 inline constexpr int kFixedStepPosition = 0x6A4; // 007DA241, = kFixedStepPose + 30h
 inline constexpr int kFlightState = 0x900;       // 007C66AE
-inline constexpr int kLiveRoll = 0x9E4;          // 007C65F0, and the three that follow
+// CORRECTED (packet cc7_plane_control_targets). These three were labelled
+// roll/pitch/yaw in that order, contradicting include/bsp/plane_flight.hpp,
+// which carries an explicit correction note for exactly this swap. The offsets
+// were always right; only the names were wrong, and plane_flight.hpp is the one
+// that is right.
+//
+// The decisive evidence is a pairing neither header could see alone: 007B9770
+// latches +9E4h to unit+BB0h and +9ECh to unit+BB8h, and the rate law 007DA710
+// then multiplies unit+BB0h by YawSpd class+1B0h and unit+BB8h by RollSpd
+// class+1A8h. The class constant that meets each field names it.
+inline constexpr int kLiveYaw = 0x9E4;           // 007C65F0, and the three that follow
 inline constexpr int kLivePitch = 0x9E8;         // 007C6628
-inline constexpr int kLiveYaw = 0x9EC;           // 007C6668 / 007C6695
+inline constexpr int kLiveRoll = 0x9EC;          // 007C6668 / 007C6695
 inline constexpr int kSpecialBlocker = 0x9D4;    // 007C66DD, a pointer
 inline constexpr int kController = 0xAB0;        // 007C66FE, the flight controller
 inline constexpr int kExternalVelocity = 0x810;  // 007DA26B / 007D82BE, added to both arms
