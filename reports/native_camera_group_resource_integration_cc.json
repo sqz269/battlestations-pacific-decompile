@@ -40,7 +40,7 @@
   ],
   "main_integration": "Pending source registration, review of pinned incoming main and integrated build/fixture validation. No main publication claimed.",
   "incoming_main_observed": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
-  "incoming_review": "CMake normalized registrations only: no removals/duplicates; three additions: native_resource_instance_lifecycle.cpp, native_resource_instance_publication.cpp, plane_control_rate.cpp. Remaining production sources/docs not yet reviewed.",
+  "incoming_review": "Production C++ changes reviewed at pinned23f78d03; two plane-control floor mismatches reproduced. Details reports/native_plane_control_review_cd.json. Main merge pending owner corrections/lease release; peer compatibility runs not adopted as native/gameplay proof.",
   "evidence_limits": [
     "Source ABI includes explicit context. Original register/stack ABI, FH3/SEH/private frame aliasing and hardware faults are not replaced.",
     "Original normal paths share existing concrete allocation, strings/pool, structured node/stream and reference dependencies. Original EH handlers are guarded out.",
@@ -151,5 +151,6 @@
       "sha256": "fd32430788f8872ab339ca211f9631f9aafb01077053b63f373ca3b9316ec703",
       "bytes": 190879
     }
-  ]
+  ],
+  "incoming_review_report": "reports/native_plane_control_review_cd.json"
 }

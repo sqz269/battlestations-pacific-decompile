@@ -1,0 +1,697 @@
+{
+  "packet": "orch4_incoming_plane_review_cd",
+  "documentation": "docs/NATIVE_PLANE_CONTROL_REVIEW_CD.md",
+  "reviewed_revision": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
+  "ghidra_mutations": false,
+  "leased_source_mutations": false,
+  "findings": [
+    {
+      "id": "flat_floor_constant",
+      "status": "confirmed_by_original_fragment",
+      "address": "007dac48",
+      "native_constant": "00ce3d30",
+      "native_bits": "3f19999a",
+      "native_value": 0.6000000238418579,
+      "source_bits": "3e19999a",
+      "source_value": 0.15000000596046448,
+      "required_fix": "Use native0.6 default and correct current formula/docs."
+    },
+    {
+      "id": "crossing_floor_interpolation_product",
+      "status": "confirmed_by_original_fragment",
+      "address": "007dac26",
+      "native_instruction": "FMUL ST1",
+      "producer": "007dab36 product,007dab46 FSTP32[ESP+38],007dabe4 FLD32[ESP+38]",
+      "supplied_product": 0.5,
+      "native_floor": 0.75,
+      "source_floor": 1.5,
+      "current": 1,
+      "target": 0,
+      "step": 0.125,
+      "native_candidate_from_fragment": 0.90625,
+      "source_candidate": 0.8125,
+      "required_fix": "Recover and supply the interpolation product in the source contract/caller; preserve native stores; no arbitrary default."
+    }
+  ],
+  "verification": {
+    "compile": "MSVC Win32 /O2 /fp:strict /W4 /WX /EHsc passed",
+    "diagnostic": "Both discrepancies reproduced",
+    "full_original_body_executed": false,
+    "gameplay_validated": false,
+    "arithmetic_fragments": [
+      "007dac48[17]",
+      "007dac08[62]"
+    ],
+    "rebindings": [
+      "Appended RET",
+      "Crossing outward JA redirected to appended RET",
+      "Double1.5 address rebound to identical data"
+    ],
+    "native_exception_paths_executed": false
+  },
+  "native_evidence": {
+    "project": {
+      "project_name": "bsp",
+      "current_folder": "/",
+      "folders": [],
+      "files": [
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "content_type": "Program",
+          "version": 2673,
+          "is_read_only": false,
+          "is_versioned": false
+        }
+      ]
+    },
+    "program": {
+      "name": "battlestationspacific.exe",
+      "path": "/battlestationspacific.exe",
+      "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "executable_format": "Portable Executable (PE)",
+      "language": "x86:LE:32:default",
+      "compiler": "windows",
+      "address_size": 32,
+      "image_base": "00400000",
+      "min_address": "00400000",
+      "max_address": "ffdfffff",
+      "memory_size": 14876380,
+      "function_count": 64075,
+      "symbol_count": 144258,
+      "data_type_count": 795,
+      "creation_date": "Mon May 04 16:56:25 PDT 2026",
+      "memory_block_count": 6,
+      "address_spaces": [
+        {
+          "name": "ram",
+          "start": "00000000",
+          "end": "ffffffff",
+          "size": 4294967296,
+          "addressable_unit_size": 1,
+          "size_bytes": 4294967296,
+          "address_size_bits": 32,
+          "is_default": true
+        }
+      ],
+      "has_multiple_address_spaces": false
+    },
+    "reviewed_main": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
+    "records": [
+      {
+        "address": "007dac48",
+        "bytes": 17,
+        "hex": "f30f104c24140f2fcd7706f30f116c2414",
+        "sha256": "555e19161db7cacd79a696130b48ab3836338bbe7b8f1f65a80662dd848fed47",
+        "instructions": [
+          [
+            8236104,
+            6,
+            "movss",
+            "xmm1, dword ptr [esp + 0x14]"
+          ],
+          [
+            8236110,
+            3,
+            "comiss",
+            "xmm1, xmm5"
+          ],
+          [
+            8236113,
+            2,
+            "ja",
+            "0x7dac59"
+          ],
+          [
+            8236115,
+            6,
+            "movss",
+            "dword ptr [esp + 0x14], xmm5"
+          ]
+        ]
+      },
+      {
+        "address": "007dac08",
+        "bytes": 62,
+        "hex": "f30f114c24388b4c243881e1ffffff7f894c2438d9442438dc0d783dce00d8c9d95c2430d9442430d9442414dff1ddd8771ff30f104c2430f30f114c2414",
+        "sha256": "5465ffd9a7bac63742399b4c3e405fde8ec9518fa83da6bef9594473547d5e23",
+        "instructions": [
+          [
+            8236040,
+            6,
+            "movss",
+            "dword ptr [esp + 0x38], xmm1"
+          ],
+          [
+            8236046,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0x38]"
+          ],
+          [
+            8236050,
+            6,
+            "and",
+            "ecx, 0x7fffffff"
+          ],
+          [
+            8236056,
+            4,
+            "mov",
+            "dword ptr [esp + 0x38], ecx"
+          ],
+          [
+            8236060,
+            4,
+            "fld",
+            "dword ptr [esp + 0x38]"
+          ],
+          [
+            8236064,
+            6,
+            "fmul",
+            "qword ptr [0xce3d78]"
+          ],
+          [
+            8236070,
+            2,
+            "fmul",
+            "st(1)"
+          ],
+          [
+            8236072,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x30]"
+          ],
+          [
+            8236076,
+            4,
+            "fld",
+            "dword ptr [esp + 0x30]"
+          ],
+          [
+            8236080,
+            4,
+            "fld",
+            "dword ptr [esp + 0x14]"
+          ],
+          [
+            8236084,
+            2,
+            "fcompi",
+            "st(1)"
+          ],
+          [
+            8236086,
+            2,
+            "fstp",
+            "st(0)"
+          ],
+          [
+            8236088,
+            2,
+            "ja",
+            "0x7dac59"
+          ],
+          [
+            8236090,
+            6,
+            "movss",
+            "xmm1, dword ptr [esp + 0x30]"
+          ],
+          [
+            8236096,
+            6,
+            "movss",
+            "dword ptr [esp + 0x14], xmm1"
+          ]
+        ]
+      },
+      {
+        "address": "00ce3d30",
+        "bytes": 4,
+        "hex": "9a99193f",
+        "sha256": "8e215ece122cf70ebe3556a0318fa6c395d1766375c3edc080967e4a09592401",
+        "instructions": []
+      },
+      {
+        "address": "00ce3d78",
+        "bytes": 8,
+        "hex": "000000000000f83f",
+        "sha256": "e163f8cb0f7067a7fc78ca859a77f849aea3214f38fb75b884e4a16be725c905",
+        "instructions": []
+      },
+      {
+        "address": "007dabbc",
+        "bytes": 8,
+        "hex": "f30f102d303dce00",
+        "sha256": "20f7683bd64641a169d9a6f43de1b41b0565d78a246d60a5522fb17219cda2b4",
+        "instructions": [
+          [
+            8235964,
+            8,
+            "movss",
+            "xmm5, dword ptr [0xce3d30]"
+          ]
+        ]
+      },
+      {
+        "address": "007dabe4",
+        "bytes": 6,
+        "hex": "d9442438745e",
+        "sha256": "053f892ae8e27832f93425c61a6a39de7111f8d0e0fc7b8bfd553f5fc2fbc981",
+        "instructions": [
+          [
+            8236004,
+            4,
+            "fld",
+            "dword ptr [esp + 0x38]"
+          ],
+          [
+            8236008,
+            2,
+            "je",
+            "0x7dac48"
+          ]
+        ]
+      },
+      {
+        "address": "007dac26",
+        "bytes": 2,
+        "hex": "d8c9",
+        "sha256": "5512d099bd3d8c5e2aba20e9031e5ae2f7cf9e27bc819b2efc4d4e853e465bcb",
+        "instructions": [
+          [
+            8236070,
+            2,
+            "fmul",
+            "st(1)"
+          ]
+        ]
+      },
+      {
+        "address": "007dab36",
+        "bytes": 178,
+        "hex": "d84c2434f30f104c244c0f57c00f2fc8d95c2438f30f102508a2d700d944241cd9c0d86648d95c2440d944245cd9c0d8664cd95c2444d9442418d9c0d86650d95c24487608f30f114c242ceb0d0f28d4f30f5cd1f30f1154242cf30f105424400f2fd07608f30f11542430eb0d0f28ccf30f5ccaf30f114c243084dbd905fc72f800d9442440f30f102d303dce00d9c0decadec9d9442430d80d0073f800dec1d8050473f800d84c242cd95c2414d9442438",
+        "sha256": "0a92d949688f72940d634e38ae5ca8cc84b80db3af226c1861575bc4c741fa2b",
+        "instructions": [
+          [
+            8235830,
+            4,
+            "fmul",
+            "dword ptr [esp + 0x34]"
+          ],
+          [
+            8235834,
+            6,
+            "movss",
+            "xmm1, dword ptr [esp + 0x4c]"
+          ],
+          [
+            8235840,
+            3,
+            "xorps",
+            "xmm0, xmm0"
+          ],
+          [
+            8235843,
+            3,
+            "comiss",
+            "xmm1, xmm0"
+          ],
+          [
+            8235846,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x38]"
+          ],
+          [
+            8235850,
+            8,
+            "movss",
+            "xmm4, dword ptr [0xd7a208]"
+          ],
+          [
+            8235858,
+            4,
+            "fld",
+            "dword ptr [esp + 0x1c]"
+          ],
+          [
+            8235862,
+            2,
+            "fld",
+            "st(0)"
+          ],
+          [
+            8235864,
+            3,
+            "fsub",
+            "dword ptr [esi + 0x48]"
+          ],
+          [
+            8235867,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x40]"
+          ],
+          [
+            8235871,
+            4,
+            "fld",
+            "dword ptr [esp + 0x5c]"
+          ],
+          [
+            8235875,
+            2,
+            "fld",
+            "st(0)"
+          ],
+          [
+            8235877,
+            3,
+            "fsub",
+            "dword ptr [esi + 0x4c]"
+          ],
+          [
+            8235880,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x44]"
+          ],
+          [
+            8235884,
+            4,
+            "fld",
+            "dword ptr [esp + 0x18]"
+          ],
+          [
+            8235888,
+            2,
+            "fld",
+            "st(0)"
+          ],
+          [
+            8235890,
+            3,
+            "fsub",
+            "dword ptr [esi + 0x50]"
+          ],
+          [
+            8235893,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x48]"
+          ],
+          [
+            8235897,
+            2,
+            "jbe",
+            "0x7dab83"
+          ],
+          [
+            8235899,
+            6,
+            "movss",
+            "dword ptr [esp + 0x2c], xmm1"
+          ],
+          [
+            8235905,
+            2,
+            "jmp",
+            "0x7dab90"
+          ],
+          [
+            8235907,
+            3,
+            "movaps",
+            "xmm2, xmm4"
+          ],
+          [
+            8235910,
+            4,
+            "subss",
+            "xmm2, xmm1"
+          ],
+          [
+            8235914,
+            6,
+            "movss",
+            "dword ptr [esp + 0x2c], xmm2"
+          ],
+          [
+            8235920,
+            6,
+            "movss",
+            "xmm2, dword ptr [esp + 0x40]"
+          ],
+          [
+            8235926,
+            3,
+            "comiss",
+            "xmm2, xmm0"
+          ],
+          [
+            8235929,
+            2,
+            "jbe",
+            "0x7daba3"
+          ],
+          [
+            8235931,
+            6,
+            "movss",
+            "dword ptr [esp + 0x30], xmm2"
+          ],
+          [
+            8235937,
+            2,
+            "jmp",
+            "0x7dabb0"
+          ],
+          [
+            8235939,
+            3,
+            "movaps",
+            "xmm1, xmm4"
+          ],
+          [
+            8235942,
+            4,
+            "subss",
+            "xmm1, xmm2"
+          ],
+          [
+            8235946,
+            6,
+            "movss",
+            "dword ptr [esp + 0x30], xmm1"
+          ],
+          [
+            8235952,
+            2,
+            "test",
+            "bl, bl"
+          ],
+          [
+            8235954,
+            6,
+            "fld",
+            "dword ptr [0xf872fc]"
+          ],
+          [
+            8235960,
+            4,
+            "fld",
+            "dword ptr [esp + 0x40]"
+          ],
+          [
+            8235964,
+            8,
+            "movss",
+            "xmm5, dword ptr [0xce3d30]"
+          ],
+          [
+            8235972,
+            2,
+            "fld",
+            "st(0)"
+          ],
+          [
+            8235974,
+            2,
+            "fmulp",
+            "st(2)"
+          ],
+          [
+            8235976,
+            2,
+            "fmulp",
+            "st(1)"
+          ],
+          [
+            8235978,
+            4,
+            "fld",
+            "dword ptr [esp + 0x30]"
+          ],
+          [
+            8235982,
+            6,
+            "fmul",
+            "dword ptr [0xf87300]"
+          ],
+          [
+            8235988,
+            2,
+            "faddp",
+            "st(1)"
+          ],
+          [
+            8235990,
+            6,
+            "fadd",
+            "dword ptr [0xf87304]"
+          ],
+          [
+            8235996,
+            4,
+            "fmul",
+            "dword ptr [esp + 0x2c]"
+          ],
+          [
+            8236000,
+            4,
+            "fstp",
+            "dword ptr [esp + 0x14]"
+          ],
+          [
+            8236004,
+            4,
+            "fld",
+            "dword ptr [esp + 0x38]"
+          ]
+        ],
+        "stack_pointer_unchanged": true
+      }
+    ],
+    "native_flat_floor": 0.6000000238418579,
+    "native_cross_gain": 1.5,
+    "crossing_factor": "DABE4 loads the prior interpolation product; DAC26 FMUL ST1 multiplies the crossing floor by that still-live value. Fixture supplies0.5 directly at this established arithmetic boundary.",
+    "scope": "Two original arithmetic fragments, not a full original007DA710 execution. Append RET to each; relocate crossing gain address and its outward JA to the appended RET. Source comparison uses simple exact binary candidate arithmetic with unchanged clamp interval."
+  },
+  "source_artifacts": [
+    {
+      "path": "local/incoming_camera_group_cc/src/plane_control_rate.cpp",
+      "sha256": "30e4e37c1c50e576b6cb01fc955f78f52fd3f64cc27172dd60088f8eee34af42",
+      "bytes": 7839
+    },
+    {
+      "path": "local/incoming_camera_group_cc/include/bsp/plane_control_rate.hpp",
+      "sha256": "5b0af9250f69714c44158d0c70dcfba7069e3f9bb676f9d083891d661cb75a02",
+      "bytes": 9939
+    },
+    {
+      "path": "local/incoming_camera_group_cc/src/game_hosts_units.cpp",
+      "sha256": "6f9084b4e4261b7662518573e36b2a4b32e89372cace344d3a12a9f6edc9ac00",
+      "bytes": 173111
+    },
+    {
+      "path": "local/incoming_camera_group_cc/src/game_hosts_lua.cpp",
+      "sha256": "d51aa3b7e318ef7120d20bdd31ea89e8a51c6c96be7c82b9e8e1c2d82fcf2f10",
+      "bytes": 97127
+    }
+  ],
+  "diagnostic_artifacts": [
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/evidence.json",
+      "sha256": "2eebcd1b65123c40aff55989e0084ca5a005e2c6030b9d0b45b7a6a032189bba",
+      "bytes": 11079
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/original_floors.hpp",
+      "sha256": "87a4a1e507cb91672ea2459365f4c0079b0f7eec4f2cc21b2eb31e33d7689135",
+      "bytes": 352
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/probe.cpp",
+      "sha256": "dc1616e1605a32ab7645edc7390b04e9b9739698dd3d818804cbb74af2afc130",
+      "bytes": 2978
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/compile.cmd",
+      "sha256": "2f790df254b7350ada5196b797a14f83c070b85fdd487b8058a566074df95503",
+      "bytes": 1058
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/compile.log",
+      "sha256": "7f65c76db153d7b8bbcf7ccf215d1e071247ccdd6919af6a8f843b0170e245b0",
+      "bytes": 35
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/probe.log",
+      "sha256": "9fbc3f4d67d057bb5af5121c2d76efd2ec1254fcc5a6e4148925dc92cc40e63f",
+      "bytes": 349
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/probe.exe",
+      "sha256": "d1796526becc32f05ba0c55094a1c5349104d984017b9b4926530dcf7edf2436",
+      "bytes": 11264
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/probe.obj",
+      "sha256": "4e2a3d84ec470358762f9bbac065f3206bb6603b81804cffbdaa79db0623d3ac",
+      "bytes": 7019
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/plane_control_rate.obj",
+      "sha256": "7b382d3c5db776d06cdd0ef4c181141665aef20397476479d833c91e954af8a4",
+      "bytes": 6568
+    },
+    {
+      "path": "local/incoming_camera_group_cc/plane_floor_probe/probe.map",
+      "sha256": "4b57c5ae82a56cb9f3c5b131d3450b6c4f6cf4c26858b272a696cab33549783b",
+      "bytes": 24532
+    }
+  ],
+  "incoming_source_review": {
+    "cmake_registry": "1003 to1006 entries; no removals/duplicates after path normalization; adds resource_instance_lifecycle,resource_instance_publication,plane_control_rate.",
+    "resource_instance": "All new lifecycle/publication C++ and headers reviewed; borrowed external resource/root services, graph readiness and limited generic-container domains remain explicit. Peer original fixtures not rerun in orch4.",
+    "shared_storage": "raw_pair8byte no-destruction case reviewed; optional selected-set profile slot reader retains legacy fallback.",
+    "lua_tuning": "All new adapter and row fields reviewed; private state, registry references, required DoFile and VFS-backed script reads. Header still contains stale mission-state wording; zero initialization/fallback and absent inputs remain host projections.",
+    "plane_host": "All changed production C++/headers reviewed; live/latched controls remain zero without bot chain; native owner/pitch/base fields unavailable. High-level x87/NaN/native identity is not independently certified.",
+    "documentation": "AP/AQ boundaries and current relevant plane sections reviewed. Historical/corrected plane prose is not accepted as primary proof."
+  },
+  "current_lease_constraints": [
+    {
+      "id": "cc7:cc7_rate_wire",
+      "owner": "cc7",
+      "packet": "cc7_rate_wire",
+      "addresses": [
+        "007d9c80",
+        "007da710",
+        "0085e4d0"
+      ],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_control_rate.hpp",
+        "src/game_hosts_units.cpp",
+        "src/plane_control_rate.cpp"
+      ],
+      "claimed": "2026-09-14T21:01:36+00:00",
+      "expires": "2026-09-15T02:09:52+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+      "note": ""
+    }
+  ],
+  "remaining": [
+    "Obtain lease release or corrected owner revision for affected source.",
+    "Correct both floors and validate reached behavior.",
+    "Complete camera/GroupParams source registration and integrated build before main publication.",
+    "Recheck any newly advanced main revision; do not merge an unreviewed moving ref."
+  ]
+}
