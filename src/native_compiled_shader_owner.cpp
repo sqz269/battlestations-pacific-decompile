@@ -109,8 +109,9 @@ Record* initialize_native_compiled_shader_constant_00b5bb40(void* raw, NativeStr
     record->word_1c = 0x37;
     return record;
 }
-Record* copy_native_compiled_shader_constant_00b38310(void* raw, const Record& source,
-    NativeStringStorage& strings) {
+namespace {
+template<class Strings>
+Record* copy_constant(void* raw, const Record& source, Strings& strings) {
     auto* const destination = ::new(raw) Record;
     for (std::size_t index = 0; index < destination->words_00.size(); ++index)
         destination->words_00[index] = source.words_00[index];
@@ -124,6 +125,15 @@ Record* copy_native_compiled_shader_constant_00b38310(void* raw, const Record& s
     }
     destination->word_1c = source.word_1c;
     return destination;
+}
+} // namespace
+Record* copy_native_compiled_shader_constant_00b38310(void* raw, const Record& source,
+    NativeStringStorage& strings) {
+    return copy_constant(raw, source, strings);
+}
+Record* copy_native_compiled_shader_constant_00b38310(void* raw, const Record& source,
+    NativeStringRawPoolContext& strings) {
+    return copy_constant(raw, source, strings);
 }
 void reserve_native_compiled_shader_constants_00b38390(Array& array, std::int32_t requested,
     NativeStringStorage& strings, Operation& operation) {
