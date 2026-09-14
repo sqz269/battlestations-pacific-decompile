@@ -1,0 +1,141 @@
+{
+  "packet": "orch3_surface_dimensions_ct",
+  "source_base_commit": "f4e629edab9b2e3ce1fdd905521d5ee8a830765e",
+  "credit": {
+    "new_functions": 0,
+    "new_bytes": 0,
+    "kind": "public raw-interface upgrade; existing full-function ledger credit preserved"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_function_count_at_verification": 64042
+  },
+  "functions": [
+    {
+      "address": "00b3cd10",
+      "inclusive_end": "00b3cd13",
+      "bytes": 4,
+      "installed_pe_hex": "8b411cc3",
+      "installed_pe_sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_ghidra_hex": "8b411cc3",
+      "live_ghidra_sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_matches_installed_pe": true,
+      "original_abi": "ECX actual surface; EAX current unsigned DWORD; plain RET",
+      "field_offset": "+1c",
+      "source_signature": "std::uint32_t __fastcall get_native_surface_width_00b3cd10(const void* actual_surface) noexcept",
+      "previous_private_helper": "surface_width_00b3cd10(const void*) in src/native_post_effect_construction.cpp",
+      "direct_call_sites": [],
+      "live_data_xref": "00d619bc",
+      "no_repair": "one unchecked DWORD load; no profile test, pointer normalization or fallback"
+    },
+    {
+      "address": "00b3cd20",
+      "inclusive_end": "00b3cd23",
+      "bytes": 4,
+      "installed_pe_hex": "8b4120c3",
+      "installed_pe_sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_ghidra_hex": "8b4120c3",
+      "live_ghidra_sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_matches_installed_pe": true,
+      "original_abi": "ECX actual surface; EAX current unsigned DWORD; plain RET",
+      "field_offset": "+20",
+      "source_signature": "std::uint32_t __fastcall get_native_surface_height_00b3cd20(const void* actual_surface) noexcept",
+      "previous_private_helper": "surface_height_00b3cd20(const void*) in src/native_post_effect_construction.cpp",
+      "direct_call_sites": [],
+      "live_data_xref": "00d619c0",
+      "no_repair": "one unchecked DWORD load; no profile test, pointer normalization or fallback"
+    }
+  ],
+  "concrete_profile": {
+    "address": "00d619a0",
+    "slot_1c_cell": {
+      "address": "00d619bc",
+      "bytes_hex": "10cdb300",
+      "sha256": "7ab537271af657073a9f3d2ad17782fcd2cb94ff9f9a073c521b41b002598957",
+      "value": "00b3cd10"
+    },
+    "slot_20_cell": {
+      "address": "00d619c0",
+      "bytes_hex": "20cdb300",
+      "sha256": "b78dc3c53cf9e40da1340c0b60c1b3c06abdb2f30ab61441eacbbf60d223ecd2",
+      "value": "00b3cd20"
+    },
+    "eight_byte_cell_span_sha256": "6f9e1b939db1bc8b5c044a73135f5a55d5faa1f04f34fbf85772916f8dea63d6",
+    "live_cells_equal_installed_pe": true,
+    "binding": "caller selects concrete D619A0 actual surface profile; leaves do not inspect profile"
+  },
+  "direct_callers": {
+    "width": [],
+    "height": [],
+    "evidence": "bsp.py callers --limit12 returned 0 each; live Ghidra xrefs only DATA from D619BC and D619C0 respectively"
+  },
+  "known_indirect_consumer": "B4DEF0 post-effect submission uses D619A0 virtual +20/+1C slots; no direct call edge. Its implementation and leased pass/draw path remain outside CT.",
+  "existing_ledger": {
+    "width": {
+      "name": "BSP_D3D9Surface_GetWidth",
+      "source": "src/native_post_effect_construction.cpp",
+      "status": "reconstructed_build_tested_concrete_provider_domain"
+    },
+    "height": {
+      "name": "BSP_D3D9Surface_GetHeight",
+      "source": "src/native_post_effect_construction.cpp",
+      "status": "reconstructed_build_tested_concrete_provider_domain"
+    },
+    "note": "private existing helpers and their full-function records retained; no Ghidra/ledger edits"
+  },
+  "source_and_provider_sha256": {
+    "include/bsp/native_surface_dimensions.hpp": "2ee32eb3aa2ee7ecc69ea80dd1587a8177e86a878194311a1b92cf018d753c29",
+    "src/native_surface_dimensions.cpp": "941dedd74bba9ed4849fe18e15d1dc717196a76e88eca2b1ce0a77b6c8ff0a8c",
+    "include/bsp/native_surface_owner.hpp": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45",
+    "include/bsp/native_post_effect_construction.hpp": "65a3332cee75378284f9376c991c7c6e35cc46dd65d3b222fb0e5fd086715560",
+    "src/native_post_effect_construction.cpp": "e4fe53202b14f7c5de5ec73e3ad04d5542b456f07b21db564453e87056a22f8b",
+    "include/bsp/native_post_effect20_construction.hpp": "e2b63e4869be9a7568d86c7a271589694404a8e6cc0cda204f33991206018c5c",
+    "src/native_post_effect20_construction.cpp": "5add9da3a697b81554d14c57ee8bd8ce1ac904a2717b63aa7e23181ea16a0315",
+    "cmake/startup.cmake": "1ac3655022d36977f4d54254cf3b6f8ba4c226baafaad9d16ebfd9ae85a340cd"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_surface_dimensions.obj",
+    "bytes": 882,
+    "sha256": "470934d8f9f4f2d7930fbda220a15ab6004eeca940ce4cd02358e1cfde8f0440",
+    "dumpbin_evidence": "local/ct-surface-dimensions-dumpbin.txt",
+    "dumpbin_sha256": "de5cfcc5dc759edd3634986fd92dc5fc26ff47b414f2dccd4fefd9d774d63a28",
+    "comdats": [
+      {
+        "function": "get_native_surface_height_00b3cd20",
+        "coff_section": 3,
+        "section_name": ".text$mn",
+        "raw_file_offset": "0x1df",
+        "size": 4,
+        "bytes_hex": "8b4120c3",
+        "relocations": 0,
+        "equals_installed_native": true
+      },
+      {
+        "function": "get_native_surface_width_00b3cd10",
+        "coff_section": 4,
+        "section_name": ".text$mn",
+        "raw_file_offset": "0x1e3",
+        "size": 4,
+        "bytes_hex": "8b411cc3",
+        "relocations": 0,
+        "equals_installed_native": true
+      }
+    ]
+  },
+  "validation": {
+    "win32_build": "./scripts/build.ps1 Win32 Release built bsp_game.exe successfully after final append-only CMake registration",
+    "existing_checks": "reconstructed_math CTest 1/1 passed (0.08 s), invoked by scripts/build.ps1",
+    "pe_live": "both four-byte bodies and D619BC/C0 profile cells matched live Ghidra",
+    "generated_comdats": "two full 4-byte COFF COMDATs equal respective native PE bodies; zero relocations each",
+    "first_build_note": "Initial fresh build overlapped a registration-line move and hit concurrent CMake regeneration; unchanged final source/CMake rerun passed."
+  },
+  "limits": [
+    "Caller supplies actual readable D619A0 NativeSurfaceOwnerStorage, not COM surface or typed projection.",
+    "Unchecked null/foreign storage faults and values are preserved by leaf source.",
+    "Whole game ABI, virtual dispatch composition, renderer/material execution, GPU and gameplay are not validated."
+  ]
+}
