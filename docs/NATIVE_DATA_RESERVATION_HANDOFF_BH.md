@@ -46,6 +46,15 @@ of the child run. The production `bsp_game` entrypoint and CMake registration
 are integration work owned separately. A direct launch remains exposed to the
 pre-TLS heap collision.
 
+The parent re-reads the record after a child process signals. A mapper that
+acknowledged and exited between the first state read and process check remains
+a successful handoff; a final failed state is reported as mapping failure.
+At the deadline the parent atomically changes the observed pending or claimed
+state to failed. If the child's acknowledgement won that race, it re-reads the
+result instead of terminating a successfully mapped child. The child's final
+acknowledgement changes only a still-claimed record, so it cannot overwrite
+the parent's timeout decision.
+
 Strict MSVC Win32 `/W4 /WX /EHsc /MD` translation-unit builds passed. An
 ignored fixed-base Win32 probe with an embedded manifest and TLS callback
 launched eight children through the handoff. All eight completed original-image
@@ -55,7 +64,10 @@ early child exit. An injected `D10000` committed read/write competitor made
 the parent reservation fail; its owned `CF0000` band returned to `MEM_FREE`
 while the competitor remained committed. A separate suspended direct-launch
 child confirmed the original constructor rejects that competitor and rolls
-back `CF0000`. An adapted ignored BG probe completed the full raw VFS manager
+back `CF0000`. A follow-up focused probe passed twelve children that exited
+immediately after mapper acknowledgement, accepted an acknowledgement after
+process exit, and cancelled a delayed child at an atomic zero-millisecond
+deadline. An adapted ignored BG probe completed the full raw VFS manager
 graph under an adopted handoff: four factories, three mounts, disk-equal
 657-byte member read, search groups and shared drain. The exact ignored
 artifacts and hashes are in `reports/native_data_reservation_handoff_bh.json`.
