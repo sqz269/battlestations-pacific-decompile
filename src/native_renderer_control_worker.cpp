@@ -161,7 +161,7 @@ unsigned long __stdcall native_renderer_control_worker_thread_00b33c20(void* raw
     while(!owner.shutdown_05) {
         while(owner.run_04) {
             // Raw storage avoids default ClockTimestamp writes before the
-            // current clock's virtual sample fills its native16h destination.
+            // current clock's virtual sample fills its native 10h destination.
             alignas(ClockTimestamp) std::byte stamp_storage[sizeof(ClockTimestamp)];
             auto& stamp=*reinterpret_cast<ClockTimestamp*>(stamp_storage);
             sample(c,stamp);
