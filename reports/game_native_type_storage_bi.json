@@ -1,0 +1,51 @@
+{
+  "packet": "orch4_game_native_type_storage_bi",
+  "base_revision": "20d1ea03c068bf0a83df81a565401bf15a3074f7",
+  "scope": "Process-owned shared descriptor and guard cells for game-side native type consumers",
+  "source_dependencies": {
+    "include/bsp/light_type_bootstrap.hpp": "7856C5BBB320D6D5E1DD0DF2F4969314CD2D7365134741702E187A901456333F",
+    "include/bsp/native_stream_type_ids.hpp": "FE99F6ED873CDFAE84F3DF91ACA2B1ADE64060D6ABFA35CD2ED6834B2B772222",
+    "src/light_type_bootstrap.cpp": "6384BD3D557E9C9378E9EA54994D3DEFCCCF2814D9918F371FD461CBEED0E6EF",
+    "src/native_stream_type_ids.cpp": "ACFCE0BD756342E1C2A3537D3848FCBA540A4D34CC97827AAE905D323BA6669F"
+  },
+  "new_source_sha256": {
+    "include/bsp/game_native_type_storage.hpp": "4139B3A246190507205499B8A1F324ACA34E10E0C7024BF822D1AEA16870998A",
+    "src/game_native_type_storage.cpp": "DAA1243B41DEC88232FD2D57A12CAE61AD98CC16F5D1073680DD674373FFEE9F",
+    "docs/GAME_NATIVE_TYPE_STORAGE_BI.md": "5C02C38F02FF1BE0DD1FA9D62A06E8B2D2F551F15EBAD06CC2F6FA3ED79F57EB"
+  },
+  "api": {
+    "owner": "bsp::game::GameNativeTypeStorage",
+    "borrowed_views": ["light_types()", "stream_types()"],
+    "crt_entries": [
+      "initialize_memory_00cd8fc0(existing_counter, common_root_bootstrap)",
+      "separate physical-provider pool initializer 00CD9010 (outside this packet)",
+      "initialize_physical_00cd9030(existing_counter, common_root_bootstrap)"
+    ],
+    "reused_native_source_bodies": ["NativeStreamTypeIds::initialize_memory_00cd8fc0", "NativeStreamTypeIds::initialize_physical_00cd9030"],
+    "mixed_light_storage": "rejected before native type writes",
+    "retained_external_contexts": false
+  },
+  "verification": {
+    "compiler": "MSVC 19.51.36244 Win32 /MD /O2 /std:c++17",
+    "probe_source": "local/game_type_storage_probe.cpp (ignored)",
+    "probe_source_sha256": "A189FDD20F304EB1CB697DA30BE5272DE4A910850656E58BB9509EA516034F52",
+    "probe_link": "src/game_native_type_storage.cpp compiled directly and linked with this worktree's Release/bsp_core.lib; /MANIFEST:EMBED",
+    "core_library_sha256": "D19A6F0B0D9054E3D507A6AAAF22D13C27D2753C36DF60DB3521BB61BD900472",
+    "probe_executable_sha256": "56ED4B6E7D0D5B8D2C67F1B2E02003934F57E3F0E6BB12B4591C6B87D0A0BAAB",
+    "probe_result": "PASS shared type storage: root/file/memory/physical 41-44, node/light/directional 45-47, next 48",
+    "probe_checks": [
+      "independent borrowed views reference the same descriptor and guard objects",
+      "memory then physical entries reuse one file and root ID domain",
+      "a mixed common bootstrap is rejected without a guard write or ID consumption",
+      "independent NativeStreamTypeIds and repeated entry calls consume no extra IDs",
+      "clearing the counter publication leaves process-owned guards and IDs intact"
+    ],
+    "scripts_build_ps1": "passed Release Win32 configure, build and reconstructed_math CTest (1/1)",
+    "build_scope": "parent registers src/game_native_type_storage.cpp; this worktree's CMake build does not yet compile that file, while the probe does"
+  },
+  "limits": [
+    "No new native function body or CALL attribution; addresses are source dependency references.",
+    "The proof uses a prepublished counter and does not exercise counter allocation or shared manager drain.",
+    "Physical-provider pool initialization, production CRT admission/order, game startup, and gameplay are not validated by this packet."
+  ]
+}
