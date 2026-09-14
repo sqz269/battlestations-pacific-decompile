@@ -151,7 +151,10 @@ GameNativeDataReservation& GameNativeDataReservation::operator=(GameNativeDataRe
 void GameNativeDataReservation::finish(bool mapped) noexcept {
     if (!handoff_view_) return;
     auto* record=as_record(handoff_view_);
-    InterlockedExchange(&record->state,mapped ? state_mapped : state_failed);
+    // The parent may have cancelled a timed-out handoff. Never overwrite that
+    // decision with a late success acknowledgement.
+    InterlockedCompareExchange(&record->state,
+        mapped ? state_mapped : state_failed,state_claimed);
     UnmapViewOfFile(handoff_view_);
     CloseHandle(as_handle(handoff_handle_));
     handoff_view_=nullptr; handoff_handle_=nullptr;
@@ -324,18 +327,32 @@ void GameNativeDataBootstrapChild::wait_for_mapping(std::uint32_t timeout_ms) {
     if (!resumed_ || !process_) throw std::logic_error("Native-data child was not resumed");
     const ULONGLONG deadline=GetTickCount64()+timeout_ms;
     for (;;) {
-        const LONG state=InterlockedCompareExchange(
-            &as_record(handoff_view_)->state,state_pending,state_pending);
+        auto* const record=as_record(handoff_view_);
+        const LONG state=InterlockedCompareExchange(&record->state,state_pending,state_pending);
         if (state==state_mapped) { mapping_confirmed_=true; return; }
         if (state==state_failed) { fail_child(); throw std::runtime_error("Native-data child rejected the handoff or mapping failed"); }
         if (WaitForSingleObject(as_handle(process_),0)==WAIT_OBJECT_0) {
+            // A fast child can publish the result and exit after the first
+            // state read. Process exit makes this second read final.
+            const LONG final_state=InterlockedCompareExchange(
+                &record->state,state_pending,state_pending);
+            if (final_state==state_mapped) { mapping_confirmed_=true; return; }
+            if (final_state==state_failed)
+                throw std::runtime_error("Native-data child rejected the handoff or mapping failed");
             DWORD code=0;
             GetExitCodeProcess(as_handle(process_),&code);
             throw std::runtime_error("Native-data child exited before mapper handoff completed (exit " +
                 std::to_string(code) + ")");
         }
         const auto now=GetTickCount64();
-        if (now>=deadline) { fail_child(); throw std::runtime_error("Native-data child handoff timed out"); }
+        if (now>=deadline) {
+            // Atomically decide timeout against the child's final ACK. If the
+            // state changed meanwhile, re-evaluate it before terminating.
+            if (InterlockedCompareExchange(&record->state,state_failed,state)!=state)
+                continue;
+            fail_child();
+            throw std::runtime_error("Native-data child handoff timed out");
+        }
         Sleep(static_cast<DWORD>(std::min<ULONGLONG>(10,deadline-now)));
     }
 }
