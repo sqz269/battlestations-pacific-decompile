@@ -1,0 +1,2008 @@
+{
+  "packet": "DP",
+  "status": "complete_native_instruction_source_and_current_image_registration_static_validated",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp",
+  "original_base": "6c44a02505c4fff9faf5e8b2d01a70697cc2f1ba",
+  "provider_merge_head": "3ebf396ab74d048a7378f4d86230dac4c93659ad",
+  "accepted_providers": {
+    "provider_merge_head": "3ebf396ab74d048a7378f4d86230dac4c93659ad",
+    "parents": "b13d3d624a5dd16413c5d0416469ea51700f3163 f229ed9d54744d77e6a99fca3eef53022faf1166",
+    "pins": [
+      {
+        "path": "src/native_crt_canonical_failure.cpp",
+        "accepted_head": "f229ed9d54744d77e6a99fca3eef53022faf1166",
+        "sha256": "6d8bee1d3ba2e0fbfff1fcaca03ca35b8a5f933ff6995419f100e220802dc7ce",
+        "sha512": "53b49e883b21bb2c2bc0f00a489bec48a559a2210ee4393115dbb0d6492419de03bb23b3ec6c623e7fd61969fef865838c6b7de681115d8e2acfdf67aee02c3a"
+      },
+      {
+        "path": "include/bsp/native_crt_canonical_failure.hpp",
+        "accepted_head": "f229ed9d54744d77e6a99fca3eef53022faf1166",
+        "sha256": "79cf028656e03fe079cac7ced740ce5ea8a5a81fc4a8a722850a15c8195c0472",
+        "sha512": "09c5eba78b52836b55581fa355df5105efba4c753ca0f2e1e788df1337b45dc92c860966cad90457a4b4f8fc674392de3e2ae4f6e0e5438231f41c3bf91a5c7f"
+      },
+      {
+        "path": "src/native_crt_nlg_notify.cpp",
+        "accepted_head": "b13d3d624a5dd16413c5d0416469ea51700f3163",
+        "sha256": "b52f0f23d626a281ff25d308c73db5dfdd58d8e8253f740bfe7ab6bb027eae41",
+        "sha512": "a6ef31ba1895e88d6f71d12b8d117719c47c01dbe3d0341e8aca5edc9c7012a5015baf30309c778dfcf74ea60748da64b45f707aa341b7fb27e3652fd8bc2957"
+      },
+      {
+        "path": "include/bsp/native_crt_nlg_notify.hpp",
+        "accepted_head": "b13d3d624a5dd16413c5d0416469ea51700f3163",
+        "sha256": "a7403aaa7a9ae1324f525092790a2200e35e03aa39bb1e85b94f27184ace73cc",
+        "sha512": "47e9bcfa086a7d6a2c91d5d02920dacdbebbf35daa50e8c1cb9f32548b2bb2e91070e30e98f02dcbd7f4a6bdb02a8f9b0a7e8871c3259ad6be2fafdfcb694fea"
+      }
+    ],
+    "ledger_union_exact": true
+  },
+  "original_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "native_functions": [
+    {
+      "address": "00c0dbc4",
+      "end": "00c0dc53",
+      "instructions": 48,
+      "size": 144,
+      "sha256": "cc4b79b99fb3b110db452fb0bd90c3aac9fc2e6f9f898a352ffa5925e007f2a4",
+      "sha512": "239cff0de3659271ee8dfe77b0874e3869a5c5c05b3f513a770b01aeac1c695b55bc4c3ce612ed3cccf4a28ae1a621cf54dbfdcc4a7d7b9515bd2b712f77ab16"
+    },
+    {
+      "address": "00c0dc54",
+      "end": "00c0dc99",
+      "instructions": 21,
+      "size": 70,
+      "sha256": "7b09843c270771434b8a7f5e731034df340859c4919184ce2465848741c55c11",
+      "sha512": "4772ebaaa4bad1906c2a77921d24f6dafab516c79685c519d4621b6f7d07e6ab4a49881dbb81834e433c474fc41c6bddae154e7f108d664b457d27d8348844cd"
+    }
+  ],
+  "native_instruction_count": 69,
+  "native_code_bytes": 214,
+  "full_instruction_and_current_coff_mapping": "local/native_crt_seh4_nested_handler_dp/native_object_audit.json",
+  "direct_calls": [
+    {
+      "caller": "00c0dbc4",
+      "address": "00c0dc32",
+      "native": "00c16879"
+    },
+    {
+      "caller": "00c0dbc4",
+      "address": "00c0dc3f",
+      "native": "00c16898"
+    },
+    {
+      "caller": "00c0dc54",
+      "address": "00c0dc6f",
+      "native": "00bfe120"
+    },
+    {
+      "caller": "00c0dc54",
+      "address": "00c0dc81",
+      "native": "00c0dbc4"
+    }
+  ],
+  "indirect_sites": [],
+  "indirect_dependency": "Published CU C16898 is exact FFD0C3 and calls actual EAX cleanup with inherited EBP; its indirect target/domain remains an actual native caller obligation.",
+  "original_abi": [
+    {
+      "address": "00c0dbc4",
+      "name": "unwind_native_crt_local_scopes_00c0dbc4",
+      "source": "src/native_crt_seh4_nested_handler.cpp",
+      "header": "include/bsp/native_crt_seh4_nested_handler.hpp",
+      "status": "complete_native_instruction_source_strict_win32_static_link_validated",
+      "native_name": "__local_unwind4",
+      "native_size": 144,
+      "original_abi": "Original cdecl three words P/F/T plus actual inherited EBP. Publishes nested N=entryESP-28h via FS:[0] after canonical cookie XOR N; current *P decode reloads, ordered level publication and actual NLG/cleanup calls. Epilog unlinks FS and skips saved EBP.",
+      "evidence": "docs/NATIVE_CRT_SEH4_NESTED_HANDLER_DP.md",
+      "report": "reports/native_crt_seh4_nested_handler_dp.json",
+      "uncertainty": "Compiled source entry addresses and five real symbol relocations replace native code addresses. Actual image SafeSEH membership is statically verified; native frames, scope tables, canonical owner readiness, abnormal paths and gameplay are not executed or claimed validated.",
+      "validation": "Strict MSVC Win32 /W4 /WX /fp:strict, 8 seed comparisons and 2 existing CTests; all214 instruction bytes exact outside5 actual relocation operands; real current compiler/object/archive/provider/link and explicit MASM SafeSEH table evidence. No owned/native exception or game execution."
+    },
+    {
+      "address": "00c0dc54",
+      "name": "handle_native_crt_seh4_nested_unwind_00c0dc54",
+      "source": "src/native_crt_seh4_nested_handler.cpp",
+      "header": "include/bsp/native_crt_seh4_nested_handler.hpp",
+      "status": "complete_native_instruction_source_strict_win32_static_link_validated",
+      "native_name": "BSP_CrtSeh4NestedLocalUnwindHandler",
+      "native_size": 70,
+      "original_abi": "Original cdecl four OS words: EXCEPTION_RECORD*, nested registration R, unused CONTEXT*, dispatcher output. Mask6 returns1 or uses real zero-stack-argument ECX cookie checker preserving EAX=R on equality; inherits R+18 EBP, recursively invokes actual loop and returns3 after fresh R/output reload.",
+      "evidence": "docs/NATIVE_CRT_SEH4_NESTED_HANDLER_DP.md",
+      "report": "reports/native_crt_seh4_nested_handler_dp.json",
+      "uncertainty": "Compiled source entry addresses and five real symbol relocations replace native code addresses. Actual image SafeSEH membership is statically verified; native frames, scope tables, canonical owner readiness, abnormal paths and gameplay are not executed or claimed validated.",
+      "validation": "Strict MSVC Win32 /W4 /WX /fp:strict, 8 seed comparisons and 2 existing CTests; all214 instruction bytes exact outside5 actual relocation operands; real current compiler/object/archive/provider/link and explicit MASM SafeSEH table evidence. No owned/native exception or game execution."
+    }
+  ],
+  "source_inputs": {
+    "src/native_crt_seh4_nested_handler.cpp": {
+      "size": 6752,
+      "sha256": "9dde54c3194b8cf432900252886912a8778f19f3361f21854c319cb383475286",
+      "sha512": "3421def681236c085c7c2c72942b558c978aed4854d29934a71cf6b0af47c294ce5be4a86a98d8b4aab72104a9ddd0675cbece0534f11ef3dd35e7da5ea181d2"
+    },
+    "include/bsp/native_crt_seh4_nested_handler.hpp": {
+      "size": 3034,
+      "sha256": "5b658002b2ac64d9c0c5b28a8175ddf590d1ed983b4ba22069bd48e03fde9aa4",
+      "sha512": "febddd506b362d32d19e15b1da0e26af9486511bf1147f20c17458765f9e0c6cdfb387f69dd8acf458df655adc7b2a06e9e46d900d9d6d82a5bd82e7513d061e"
+    },
+    "src/native_crt_seh4_safe_handler.asm": {
+      "size": 518,
+      "sha256": "d601359eb87666447aa8211e45644164dba2d9f44c192b3d594acb58ff13510c",
+      "sha512": "e3bbea7f4dedfa8eb4d0dd70fa16e49b6dcae4eb65f46e6ec5a6938719d8b63993732fa2026acf051b2336375829fab0d37798da4139d901f0339adce8a001b5"
+    },
+    "cmake/native_crt_seh4_safe_handler.cmake": {
+      "size": 1244,
+      "sha256": "fb917a0db518d207932120528903a2188f91cb51dc8693605146dd8a98107390",
+      "sha512": "c2ab31e9736ce8d3f18b0aa991434917f47154a14c9d70299377c86e229b3020636fb5e021778106ffb2c302273dbef51f64fcb148ef7c0c55beab19183eed29"
+    },
+    "cmake/startup.cmake": {
+      "size": 122562,
+      "sha256": "8958d1842d7aa407ae47bf6f6b1d457c6fbfe458afe10d555a51a83f5748cfc4",
+      "sha512": "b1e71a46039ffbe2743fcc9c51a3df3f8dc7ab18baf7450ae16e631095bf93990219e0ff1f4f8af7d2691d3400fb0ca3fb60c13181d7006d6134a98700465a7e"
+    },
+    "docs/NATIVE_CRT_SEH4_NESTED_HANDLER_DP.md": {
+      "size": 12220,
+      "sha256": "87e3d7259e867e9288e4405f31aa99ca18d6e853a0ee99977d8104890eee5573",
+      "sha512": "7fa06b42e3c3c31cb4ef5486cb09db643262978a1a920e2005dd669a0110cc1bd133e20f291a68209750fdc9dd942e01cc50f342c2312de78911d101b087c094"
+    },
+    "config/names/00c00000.jsonl": {
+      "size": 30470,
+      "sha256": "f67a81bb2273ab1a0550b3146a6ee600afa7d64ae76f6b29290081c501ab1fb7",
+      "sha512": "fc3f391c49d7caca71a20fa4b20f07d3b3f5ee90f31b6ebba7cd0d593fb9270bebff69aaadab0018b2612e4d0591b2ea3991b0a4d3f6706e68fda9b28ee7fd47"
+    },
+    "config/reconstruction/00c00000.jsonl": {
+      "size": 37659,
+      "sha256": "c534801c0a4e20440a9f580588ce29b799b9d50dc475d38f7960e569dd2a74d6",
+      "sha512": "c4b372c3a1ae8f5f369d0397bac539f9c5dd0d56a59e9f6177cdaba1498147575fb3d88e09c4222832339bc089202f923338d62214a0f10956751ecb8bc749da"
+    }
+  },
+  "validation": {
+    "clean_full_build": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp",
+      "utc_start": "2026-09-14T20:12:32.305425+00:00",
+      "utc_end": "2026-09-14T20:21:02.453900+00:00",
+      "returncode": 0
+    },
+    "final_image_build": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp",
+      "utc_start": "2026-09-14T20:28:08.826920+00:00",
+      "utc_end": "2026-09-14T20:28:13.912381+00:00",
+      "returncode": 0
+    },
+    "existing_ctests": 2,
+    "seed_comparisons": 8,
+    "current_cpp_units": 9,
+    "current_unique_archive_members": {
+      "game_native_mutable_crt_data": {
+        "member": "bsp_core.dir\\Release\\game_native_mutable_crt_data.obj",
+        "archive_offset": 47767486,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 122642,
+        "sha256": "865f73acee18c8d5b36486ab6231c96055c297a7258403f45cbe017cd6b9b4b0",
+        "sha512": "6ab2f9cf41f6febc1fd50c0cce3568b43c48d1374335eaafdce2c1aad4bf3971870b6553cb4bd47f2d1b479d16d70f55cda3ab1e1e1fa212b8e727a9158769df"
+      },
+      "game_native_data_bootstrap": {
+        "member": "bsp_core.dir\\Release\\game_native_data_bootstrap.obj",
+        "archive_offset": 47890188,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 161665,
+        "sha256": "40635f6f396a1884f8250e7be1e7339a47c7edc57a3b84d56c47c9a31000472c",
+        "sha512": "3890a30950c2760310d96362784071dfa917af49b0135c0be88e3dda09d66717d3539d8acd0975efb9e3f53c8890a507a89443eaee6a3290de94fc5614ab0e44"
+      },
+      "game_native_readonly_data": {
+        "member": "bsp_core.dir\\Release\\game_native_readonly_data.obj",
+        "archive_offset": 47636896,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 104014,
+        "sha256": "9d37f69c703f2f92377fb795b317964aae06532b51f9daf5a7681ff50c4f02e7",
+        "sha512": "0e8dc80ce9ef7376e3f0f4ea68d13a4cbedb988ccdbbda93f1303c132cf4cda157ba5856211415f42e5ae16f064dac2480662e32cc9e169bcd1a9574b35c5ce2"
+      },
+      "native_crt_cookie_initialization": {
+        "member": "bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+        "archive_offset": 48990432,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 1399,
+        "sha256": "01f3dd40344209e0c6c03543729b52784dae07d97b8b1a5f08aa7e02c4867e75",
+        "sha512": "23a635141cbc9e53647be5c55ded4c73bc0b476ac8f4d48c6b80ede06174c980d15ee198bd8e2ce076c16ec174be676ea7302df4ecebab9d31c6649024cb18b7"
+      },
+      "native_crt_nlg_notify": {
+        "member": "bsp_core.dir\\Release\\native_crt_nlg_notify.obj",
+        "archive_offset": 12722388,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 3581,
+        "sha256": "779ded95e74f9267f9e610e3367623522db33b3dc901917bb03f3d8a45e6b565",
+        "sha512": "db4c154c56ec2a200a336d1dc8fdf3227bca5f486df0e729221ab6bfe5b5a19dd87e9ccc6dab67daf1fdcc3df60d041504ba48f6f7775c6ffcd1aaf35f53b1dd"
+      },
+      "native_crt_local_cleanup_call": {
+        "member": "bsp_core.dir\\Release\\native_crt_local_cleanup_call.obj",
+        "archive_offset": 26884740,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 733,
+        "sha256": "165b854d8ec1bc6f419b8fe0d810beec34777470d90f7fb6580cfd1e7294e3d4",
+        "sha512": "3d00b4acd73e03c20e07c624a8f71c3ad7cd7001ff2342d9f0996d08d84bc020472ffe1143bc6ab3cd28083f23d774be10c07126c9005431cb0c8f9f15ea8d4d"
+      },
+      "native_crt_canonical_failure": {
+        "member": "bsp_core.dir\\Release\\native_crt_canonical_failure.obj",
+        "archive_offset": 12717260,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 5068,
+        "sha256": "9893d228c91c30641c1bcd1241d98eba8d21b3fd7c075ba85fd635424533a6d2",
+        "sha512": "7bdb082cb4ab7d161db08ebc04ad81eaba29bce6c84c96556a66829345f010a7a2bc4c8bfac8836174c5baa7c1e3cdcc405245d5ee280b5c35328a5d39a85660"
+      },
+      "native_crt_memset": {
+        "member": "bsp_core.dir\\Release\\native_crt_memset.obj",
+        "archive_offset": 26881394,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 1428,
+        "sha256": "51bd75ef8f10304616dc8dc2d86d981989fdaf6303f147d5ab2630a084dbe42e",
+        "sha512": "24a74d95aa86f062a5d360e25ea48db96b425c5ce136c23a0d2a566e8671c999b5a26c454f59181ad424bd16755fa2a3812f1f7177e1df64c012310e63fb79df"
+      },
+      "native_crt_seh4_nested_handler": {
+        "member": "bsp_core.dir\\Release\\native_crt_seh4_nested_handler.obj",
+        "archive_offset": 12715768,
+        "unique": true,
+        "exact_object_bytes": true,
+        "size": 1432,
+        "sha256": "34b421816bf66c08bcc2a6be9961c2515cb6367298ed8397fdce50f06668c1de",
+        "sha512": "7bd1e8828f12579c688f6f5e63192ff0220e7542c7414b8ae316a87cada0a96370367893750fa55737ce51b97f0421d3a1ab44f2e7e8d1ef24966b53712e97e4"
+      }
+    },
+    "archive": {
+      "size": 58698764,
+      "sha256": "4f9de661c1e1a676a5981c5a0a15dd4c4355476caee287c341308339be07c3fd",
+      "sha512": "729115829128f0023cec8f1d0d39ab812af2c3d9131afdb8737f7fa01a85ec0e82bed061f0d0424d6ef01aa4a9516a0b7ac961f0c188edeff61a22e49af4fe31"
+    },
+    "linked_function_rows": 581,
+    "linked_code_bytes": 64487,
+    "resolved_relocations": 2496,
+    "unresolved_relocations": 0,
+    "source_build_inputs_unchanged": 2692,
+    "current_cpp_compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+    "current_masm_compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\ml.exe",
+    "masm_command": "ml.exe /c /nologo /safeseh /WX /Fo\"bsp_native_crt_seh4_safe_handler.dir\\Release\\native_crt_seh4_safe_handler.obj\" /D\"CMAKE_INTDIR=\"Release\"\" /W3 /errorReport:prompt  /Ta\"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\src\\native_crt_seh4_safe_handler.asm\""
+  },
+  "compiled_functions": [
+    {
+      "symbol": {
+        "index": 10,
+        "name": "?unwind_native_crt_local_scopes_00c0dbc4@bsp@@YAXPDIPAXI@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2
+      },
+      "section": {
+        "index": 4,
+        "name": ".text$mn",
+        "size": 144,
+        "rawptr": 581,
+        "relptr": 725,
+        "relcount": 3
+      },
+      "code": {
+        "size": 144,
+        "sha256": "19ff183f2851bf44e45f9730aa7153368c26e9a97b67fdc6bad39ca9f8e14ed2",
+        "sha512": "b042a6c3af9d2d8c5b552d1101d28f3ae7b850c1cd6da1810fa562e69eef588ae108a0cc6737c1387b5b1556ed3dc9d15fb1f2c4d7f119ab7383ce1b984ebd47"
+      },
+      "relocations": [
+        {
+          "offset": 21,
+          "kind": 6,
+          "symbol": "?handle_native_crt_seh4_nested_unwind_00c0dc54@bsp@@YA?AW4_EXCEPTION_DISPOSITION@@PAU_EXCEPTION_RECORD@@PAXPAU_CONTEXT@@1@Z",
+          "addend": 0
+        },
+        {
+          "offset": 111,
+          "kind": 20,
+          "symbol": "?notify_native_crt_nlg_00c16879@bsp@@YGXI@Z",
+          "addend": 0
+        },
+        {
+          "offset": 124,
+          "kind": 20,
+          "symbol": "?call_native_crt_cleanup_00c16898@bsp@@YAXXZ",
+          "addend": 0
+        }
+      ]
+    },
+    {
+      "symbol": {
+        "index": 11,
+        "name": "?handle_native_crt_seh4_nested_unwind_00c0dc54@bsp@@YA?AW4_EXCEPTION_DISPOSITION@@PAU_EXCEPTION_RECORD@@PAXPAU_CONTEXT@@1@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2
+      },
+      "section": {
+        "index": 3,
+        "name": ".text$mn",
+        "size": 70,
+        "rawptr": 491,
+        "relptr": 561,
+        "relcount": 2
+      },
+      "code": {
+        "size": 70,
+        "sha256": "0d40eb0232d805dad8bf7dafc83a68b1d0a023616af07cdd75ebb531a38fa6a5",
+        "sha512": "fa3f6531b887323f9d17b5219e0c80a790b44c06d7d5032f9817fb3435ce9553c1b0e4b7880a8ccb1b8e505cef0bc2d2cfb474bd4a4877ef86a38ff36b4932ba"
+      },
+      "relocations": [
+        {
+          "offset": 28,
+          "kind": 20,
+          "symbol": "?check_native_crt_canonical_cookie_00bfe120@bsp@@YAXXZ",
+          "addend": 0
+        },
+        {
+          "offset": 46,
+          "kind": 20,
+          "symbol": "?unwind_native_crt_local_scopes_00c0dbc4@bsp@@YAXPDIPAXI@Z",
+          "addend": 0
+        }
+      ]
+    }
+  ],
+  "owned_writable_sections": [],
+  "owned_other_data_definitions": [],
+  "safe_seh": {
+    "original": {
+      "table_va": "00d7cd50",
+      "count": 7240,
+      "index": 4,
+      "cell": "00d7cd60",
+      "handler_rva": "0080dc54",
+      "handler_va": "00c0dc54"
+    },
+    "initial_root_image": {
+      "path": "local/native_crt_seh4_nested_handler_dp/historical_root_6c44_game.exe",
+      "size": 2168832,
+      "sha256": "6cae4a42ac0258af21d9578de1e33dd5009c9a37ebdaddab567d582121b4b6d0",
+      "sha512": "0134b6b61cd1aee052190703b5f68b74ceb805f5267805f4353accbd3f4a4a2774f04a3bb4f0b2c151aecce778f3b97c54848955394fcbe804dc1a0a6dcc01c3"
+    },
+    "game": {
+      "table_va": "0x101e4aa8",
+      "count": 932,
+      "index": 0,
+      "handler_rva": "0xa6460",
+      "handler_va": "0x100a6460",
+      "handler_map": {
+        "va": 269116512,
+        "owner": "f   bsp_core:native_crt_seh4_nested_handler.obj"
+      },
+      "table": {
+        "size": 3728,
+        "sha256": "d09fcc449656cf3a084047617b9041841a2100238680bf95a54c2fcd27c9f8f0",
+        "sha512": "6c346ae70beb621ff612b82fb526d20200a628fa6f8e94e55b11adf2bc5cc21baa1ccd6d704a5849bcb1661f2428027f62d1a63f5a5151cc68c641e2c0efc3d3"
+      }
+    },
+    "forced": {
+      "va": "0x10007160",
+      "count": 10,
+      "index": 0,
+      "handler_rva": "0x1020",
+      "handler_va": "0x10001020",
+      "size": 40,
+      "sha256": "3b0993c9bc893eb8df08c36f58c964213b1b6b2712bc8e0b9441f4395aa9342d",
+      "sha512": "f38baefd7b251459b9d84f74ac1125acf4611b97bfd6385cc08ee799471713eaa853f9d028740ad55ea810bfc2f57a4eee2ed6ca712c1cf514cc79be79bcaa27"
+    },
+    "metadata": {
+      "path": "build\\win32\\bsp_native_crt_seh4_safe_handler.dir\\Release\\native_crt_seh4_safe_handler.obj",
+      "object": {
+        "size": 754,
+        "sha256": "d7a3eeb637f1a1c9e18148d0f787744a160078f7ddeb06858ef74016f80c1598",
+        "sha512": "71e8c4bbd5a689ec9f50f68f6d0a6c0f6d7c368f4803a4a3abe9dce498be5b5975a9dbea992792a9671597f8a1e97882d9dde784827a31ff93ed82cb69dfab50"
+      },
+      "sections": [
+        {
+          "index": 1,
+          "name": ".text$mn",
+          "size": 0,
+          "rawptr": 0,
+          "relptr": 0,
+          "relcount": 0
+        },
+        {
+          "index": 2,
+          "name": ".data",
+          "size": 0,
+          "rawptr": 0,
+          "relptr": 0,
+          "relcount": 0
+        },
+        {
+          "index": 3,
+          "name": ".debug$S",
+          "size": 244,
+          "rawptr": 180,
+          "relptr": 0,
+          "relcount": 0
+        },
+        {
+          "index": 4,
+          "name": ".sxdata",
+          "size": 4,
+          "rawptr": 424,
+          "relptr": 0,
+          "relcount": 0
+        }
+      ],
+      "safe_handler_symbol_index": 10,
+      "handler_symbol": {
+        "index": 10,
+        "name": "?handle_native_crt_seh4_nested_unwind_00c0dc54@bsp@@YA?AW4_EXCEPTION_DISPOSITION@@PAU_EXCEPTION_RECORD@@PAXPAU_CONTEXT@@1@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2
+      },
+      "feature_symbols": [
+        {
+          "index": 1,
+          "name": "@feat.00",
+          "value": 17,
+          "section": -1,
+          "type": 0,
+          "storage": 3
+        }
+      ]
+    },
+    "base_relocations": {
+      "handler_push_operand_rva": "0xa64c5",
+      "handler_push_type": 3,
+      "fixed_cookie_operand_rva": "0xa64d1",
+      "fixed_cookie_operand_has_relocation": false
+    },
+    "admission": "Actual linked table membership and explicit real-handler archive extraction are proved. OS exception execution, valid native frames and gameplay are not proved."
+  },
+  "saved_analysis": {
+    "function_definition": "definition_record.json",
+    "preserved_library_name": "__local_unwind4",
+    "handler_name": "BSP_CrtSeh4NestedLocalUnwindHandler",
+    "handler_name_confidence": "provisional descriptive name",
+    "comments_preserved": true,
+    "saved_readback_exported_snapshotted_indexed": true,
+    "flow_properties": "Unknown: supported query rejected because bridge inline scripts are disabled; no settings/flow/prototype change."
+  },
+  "artifacts": {
+    "native_contract.json": {
+      "size": 14731,
+      "sha256": "f5d669a91b8145e3206621d134ba3c6eda5265aad1f32001ee5bf98f1ee3dbb2",
+      "sha512": "23c692309044759f861e6331c64bbef15cb837a6ef83dde44b7d9fb5950e3794fee97ec5937923ed1330feddd60de9fc37ae66282a28e30fb6e6d71a0378d858"
+    },
+    "native_object_audit.json": {
+      "size": 32976,
+      "sha256": "8e5f6b7d6ac271f05edd38849b537760d1701c0e691090bd99e5a43d4811b0d8",
+      "sha512": "4bc17fdbe0271782f2d9c412e271f3d7464b6aa4f230987397e20d71da9f2a4ab64ea91d7ade459fa4560200a415412fc3a9a403584942da886fef2b10e18d35"
+    },
+    "compiler_input_audit.json": {
+      "size": 3150845,
+      "sha256": "adc1abe860e18a083e828433838c014c8a0e59662594fcfdc80470d2c4b1c9ce",
+      "sha512": "8f97b7f95a5c44d21243565ce06037e83cb7e5fa3289bde48ca9f5217175d5fd91eb3c05b1c859ea08f51a22885bca8c63ef2392e7e44dc4a7400df8029447d7"
+    },
+    "current_linked_final/compiler_binding_review.json": {
+      "size": 802308,
+      "sha256": "ec2c76ccc9db90c9d639dcd2b029c0e47e845ec787e7e592aff6a55c993edb95",
+      "sha512": "a0b1b698839062896fdf960978736f2564e83ee73d63d8ad49cc8e331cee24418310d2ac9c4386a757c438de10f7ce5f2fcd71129d5f130ee0f3ed5ed4e189e0"
+    },
+    "forced_registration_audit.json": {
+      "size": 2252,
+      "sha256": "741576cb67a50444b7f1d2d5cc689fa9651a1939a56856ad2e42ad789208055e",
+      "sha512": "158ffc2ee7af932472946c5139e9681dcaf952d55873435f6cada9d88fc0bdc2c30bb2fa396bbfc9f865365b3334b534dd91c63534d1614e6daaa0afa4972ca0"
+    },
+    "prior_evidence_manifest.json": {
+      "size": 10144,
+      "sha256": "bd7ef78b5bddf0c626f2c1d68ad7e87f60208e71352539fd83b31bab1a00c7a0",
+      "sha512": "e44b072ccd37dc78b42e52ea990f2c621590dd8fc2074bfc1a88bac8bdb8bf26c63358442f378ceec0661b7bd67a4b04e510c4c02aa8bef71958a904d3f12beb"
+    },
+    "pe_preflight_data.json": {
+      "size": 198226,
+      "sha256": "b63639ca508a514b6527399459cad8a57210ea2d2d0376b7d6c72ea5e9c55571",
+      "sha512": "ac0fb9054877fe6bd6c4ad1aec1b4c71b9bc7d34789ad6e9b52e089fca1aeff36e29e999c80f5c1e86fc1195125a085a17952da6838d1e8609c93c2119007135"
+    },
+    "definition_record.json": {
+      "size": 7193,
+      "sha256": "92b85ac3603a748e647155ac8adc8aab39d13f04283b1e7f5d46ebedc485cbc3",
+      "sha512": "f9884e665cfaeedc8ba5719485f3a0594a3979599d072572ab199e696d70d432881c2a04f0aa3937dd389891fc8377101bcb3442832126a26ce0cf169731f35c"
+    },
+    "annotation_prior_values.json": {
+      "size": 2065,
+      "sha256": "11da7aaa86630ef4f78e8a8ad6cce28cf5525caeb6c7f7d93744a77163aff7ed",
+      "sha512": "6031a7b6863cfca8705654f90c6201a5d63d8716823ea4b9aacb496d8106a186c260b1cad93b2fbba413833babea72182149f12ab2e80156f502de460d53db64"
+    },
+    "annotations_readback.stdout.txt": {
+      "size": 1887,
+      "sha256": "c18094565fcf671248e703876f6a1d6802bef283447c02a0f5837a51a6debf5f",
+      "sha512": "ef9409acc14bda0347ce3a9325b89b9fe2133a224cd623595092f1f8ede16470a9a22d2bb442d194196c7732f5e338041f301db9119eda02db8d7c3cc0d0a23f"
+    },
+    "export_final.stdout.txt": {
+      "size": 250,
+      "sha256": "97ff5fe29fe7fdd4b55404475902b17bff3fc6500939a0a2cc58ef72956f5209",
+      "sha512": "70d2c220085c5a142672ef98dd7d9029d6c82acf7e069a8f357f74dca69061c3842d5271a510abc811e537724278341d7303da2d6d52ef0ca097e1d87d9c22af"
+    },
+    "snapshot_final.stdout.txt": {
+      "size": 294,
+      "sha256": "c6d8daf73a30778d172bf934f5e7edef26ae2b945a87edceac7f05694d3a346c",
+      "sha512": "3bcc0e62dda3535f7c8e194416c634f5423f9051ea1a0acdbcba79ee620f0b98bed0bba8b0c92755c18052f6dbf7c8821a6b98cbc4672229ac6dd03a85e2dccc"
+    },
+    "index_final.stdout.txt": {
+      "size": 16,
+      "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51",
+      "sha512": "0b4c8a0998e247408e5c6b23c08a23baf9ab9c7c18c019ee89a4bf937b12bbac69bf87a50ba724f26ae29d746770bd163c2931fba670d68774efe481c532674a"
+    },
+    "call_check_02.stdout.txt": {
+      "size": 93,
+      "sha256": "1222d5646c18041a53f5aa6f3603c1ae4f9b3699c7fd95582a2105bac3ce10b4",
+      "sha512": "3409403736205f9d954563c9b7eec536f2746f71f441c0701a787ef2880a0c32523556513558f5a8fd99b88d0bbfb3d5f417f55874b276a1cd42c6b41e2efbe3"
+    },
+    "provider_merge_check.json": {
+      "size": 1709,
+      "sha256": "1a3f81e59ab63acbfca1904b5f85749d7e1a6d8d3b5774ef9c66872695c1101b",
+      "sha512": "c2c6d87c862d9a33b33021c0c2646b7e99403ef3a0b17ab68818b7d4a3966ab5f9b903766a3e895d9378b3979fc5b753a97491b939e3b786656871d2ec49f24f"
+    },
+    "owned_function_records.json": {
+      "size": 2833,
+      "sha256": "62750eaf8bef679848cdeb1f5b94a3d588b8b95c2ce89eb1cb63648c2b01a655",
+      "sha512": "c76dc2849c6c89efe050b62917ad681830b650298fac62dd9a4bbff4f879b53042999223198a7933dcbf6f0e6ac30521b62e1926bb6e69f963797fe9bb8e50ad"
+    },
+    "metadata_diagnostic.json": {
+      "size": 1208,
+      "sha256": "c276035ec30d92f3b472debb44603ed2b894e93448bc87f1eaa5fe106efcab96",
+      "sha512": "d79bb0ccaf6a5b6a661c6d5c50ee578a6ba300b2ff5c9bd66a01ffbcc64efdc1690c4d17455727fa780c89e42904fd0b5b162c04f4a9daeb3d1da62508a4ffa8"
+    },
+    "metadata_diagnostic.stdout.txt": {
+      "size": 1840521,
+      "sha256": "3030d88219d74387689c40b1a6a49c2e6e2feec755155b7329429ef7c51ca4c4",
+      "sha512": "15837a11f42b185c0de7da4386598dbe6ef8599fc2f4f7e7ec83c280d458b9db8014f54f44442c41f40fe1003337f0b341e11990ede9a68a1e8659670b96afe8"
+    },
+    "static_link.json": {
+      "size": 3938,
+      "sha256": "afbad1514fe7d09d6c28429ffd1cf96cb5b92cb0f88ee0324f0c9fe99855ba8a",
+      "sha512": "1cf7864d2f9c513bf40ca958cc1811e7a35cfcfb5a414e85042d2b4d96c8b87cb067b78eddc46a7a7d4e3630a62a24ca45c6448bbef5752a56fef1699e67bc74"
+    },
+    "input_guard_settled.json": {
+      "size": 800933,
+      "sha256": "5f5d3638f855f7e3ec45c7152276d1ba3e0140d87ff63a42bf21ef761b37c0f5",
+      "sha512": "43326c6a8f40a055dafa602d2440c3bff303c203201de3ace46818bd0b54436876cc047570b8bf68983f424d1555c62d6e254dcb715d9908774170a9fe50b8fa"
+    },
+    "seeds_final.stdout.txt": {
+      "size": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+    },
+    "build_03.json": {
+      "size": 354,
+      "sha256": "e00fa5c043dd7e0ecd9c6e54bd9db9719f619470cc73c511920b0fffd74a832a",
+      "sha512": "83a95fabf00d4fed27bd40098ab8f9e8b6302271e8a148d7fe59f2d750e545e196d77b35a3fe1aefaf7c8a087b549849d13547c33ce41c5a2174f23fe76e6c71"
+    },
+    "build_04.json": {
+      "size": 354,
+      "sha256": "db51898e202a82e193b1193e27c823051df6667cb6691dbfe83579f267ba6a6a",
+      "sha512": "b488342092b6a100c7dfb2927e67931a9e5355bf224d509934f285aa7ae09257cff2c58e6e5e01481702bcd0d8a34fb90368b809c2ca5457fb4792abd8b9f115"
+    },
+    "build_05.json": {
+      "size": 354,
+      "sha256": "30337a88eae5edd67da1be6c84dce9e14cf6dff514fd933bd799863dcf7fb76b",
+      "sha512": "9b843caa256e9f26ec6e72f29b8b2be876c655bc70bf83b6cd895113c7c20bd32c4407d80733520e69dd43d4041092eb644c4e787eb5698a507ee122aaa9a012"
+    }
+  },
+  "command_attempts": [
+    {
+      "path": "add_records.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/add_function_records.py"
+      ],
+      "size": 334,
+      "sha256": "c1b3986c45ac42df5950b4f765167b97ea3f8a741a17376210ee30e81ec88a03",
+      "sha512": "69007e3939ba74e9345641a34b78abeba1baccfe81fc55243d66d2d6c44a950f1cfa3a9580136c4cb3a34c9a107036b3ae01f921076825f7ac4516cbbcc74238"
+    },
+    {
+      "path": "annotate.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/ghidra_annotate.py",
+        "--apply",
+        "--addresses",
+        "00c0dbc4",
+        "00c0dc54"
+      ],
+      "size": 354,
+      "sha256": "269e4f4cffa88cd1d003d0b922c7ad299d0c69a22b98d5d347d95eb9daf79905",
+      "sha512": "c90aa9e3a5b84cc385f3fcfa1373e11da09163994e85be1dd86bf5e071f31922daa3404754b75f8dba7df2ba635be3fb2fef0bd88e6ce3338a3a4ad28e36c15e"
+    },
+    {
+      "path": "annotations_readback.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "comments",
+        "00c0dbc4",
+        "00c0dc54"
+      ],
+      "size": 338,
+      "sha256": "d6cac17c9c49d7698591fa1c99ba2fe521609bcf989fce3b34d2d843f73fe478",
+      "sha512": "08d519169a6708f8b793a833a2adf76744dc222b3f02bc8e5b9d6d4b1f6711f898ed6bd4f1469b4b28f70b84a037c7f903f8047e54e362d716b8ae07f3275e5c"
+    },
+    {
+      "path": "build_01.json",
+      "returncode": 1,
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "size": 354,
+      "sha256": "4961711c8b8db847fb2b12279035584c4708cbe3fa4277edbb739994827d8a30",
+      "sha512": "1c83842839729117a8a30cc57a7f512e822825989013d02c94fdd521dd777dfb49eb2c847ef7c992cc541e614786c0362b77daa74c95e9de6e693418accab793"
+    },
+    {
+      "path": "build_02.json",
+      "returncode": 0,
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "size": 354,
+      "sha256": "f31724100ec54335ae2ee00b98ee12c2f1005e0cddc07d132e07d5aa9b9a2977",
+      "sha512": "e2e1096f114ac8ce4d0d27bd19a87c8dd40c3ba4f54a4000767c03a8dc7b4202b8903f10c0f4c46f2055aa0dbce974c21e31751bea373dce9f02bb3ce4945d75"
+    },
+    {
+      "path": "build_03.json",
+      "returncode": 0,
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "size": 354,
+      "sha256": "e00fa5c043dd7e0ecd9c6e54bd9db9719f619470cc73c511920b0fffd74a832a",
+      "sha512": "83a95fabf00d4fed27bd40098ab8f9e8b6302271e8a148d7fe59f2d750e545e196d77b35a3fe1aefaf7c8a087b549849d13547c33ce41c5a2174f23fe76e6c71"
+    },
+    {
+      "path": "build_04.json",
+      "returncode": 0,
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "size": 354,
+      "sha256": "db51898e202a82e193b1193e27c823051df6667cb6691dbfe83579f267ba6a6a",
+      "sha512": "b488342092b6a100c7dfb2927e67931a9e5355bf224d509934f285aa7ae09257cff2c58e6e5e01481702bcd0d8a34fb90368b809c2ca5457fb4792abd8b9f115"
+    },
+    {
+      "path": "build_05.json",
+      "returncode": 0,
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "size": 354,
+      "sha256": "30337a88eae5edd67da1be6c84dce9e14cf6dff514fd933bd799863dcf7fb76b",
+      "sha512": "9b843caa256e9f26ec6e72f29b8b2be876c655bc70bf83b6cd895113c7c20bd32c4407d80733520e69dd43d4041092eb644c4e787eb5698a507ee122aaa9a012"
+    },
+    {
+      "path": "bytes_before.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00c0dc4c",
+        "--length",
+        "112"
+      ],
+      "size": 347,
+      "sha256": "828bba8f20d37bdf8114347bee0275316fd15cadca3ffc1dcbc8b644d3f107b4",
+      "sha512": "ee5ecb5162c3bb1d81ca93f3e106c0c57973c4922f51bffe680ea9a8b6eba64b6b877c6d3c760673e35ef8a67ead6ad3ff81cbb3dffca86bda5a5136c7e9de25"
+    },
+    {
+      "path": "call_check.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/verify_report_calls.py",
+        "local/native_crt_seh4_nested_handler_dp/native_contract.json"
+      ],
+      "size": 357,
+      "sha256": "2c6ffd7c11254b63b57417c7b6527a8cb0883327013dbf2b0dc07e9fa7ef1280",
+      "sha512": "4c3ed7d8fa1e940f1d710f64feb405c6dd5355b914ad6fa0d16c4ee3af13cb313b7c2f6a0fe24de3606608b4186c45edb5457160b47f0cd3093278cfac51b015"
+    },
+    {
+      "path": "call_check_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/verify_report_calls.py",
+        "local/native_crt_seh4_nested_handler_dp/native_contract.json"
+      ],
+      "size": 357,
+      "sha256": "bee4254da894468615092188199c8bf5758bd05f6b8022bbd283952406ee90f0",
+      "sha512": "efd994535f2bbbf284f40deeb77fb9b66339a825396722b5ec217d0d591f5b96fb10c6e077a6ee9d49606261cfc975a40740a21f4d417ffc30af73d2a6fb7497"
+    },
+    {
+      "path": "caller_eh4_wrapper.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00c0dd00",
+        "--lines",
+        "17"
+      ],
+      "size": 346,
+      "sha256": "3f06b231c3817ee4849000436ef2ef07cd9fe8b9a6fbd5cf7ceb76bf57d4e338",
+      "sha512": "4f5b2a02a41a3c3dbad494700977a40904c570c86ee269de12a6cf5b7790a9b324babdc175323a76638caefd7b9f21f304dc51209f29ec179545b0e1d4d02091"
+    },
+    {
+      "path": "caller_loop_wrapper.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00c0dc9a",
+        "--lines",
+        "18"
+      ],
+      "size": 346,
+      "sha256": "b7249da6d8e49ad84c6f5a88ea3e04284539e315a7379bbef1c6c396283bd51e",
+      "sha512": "8774755626ed3600c43f6ee7485f3d832b46d2a5a168bac28f169e791f6fb41bddc5bb3646b94cd94d25851c5b55f2be9ec9d4501e2405c11274708114720606"
+    },
+    {
+      "path": "checker_lookup.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00bfe120",
+        "--limit",
+        "6"
+      ],
+      "size": 330,
+      "sha256": "ee607bfd81872f241e12d13e9d98cde9c2df2335281b7e2ee72f8da72be5caa9",
+      "sha512": "9836280c308c9759e700b49825ae15066630f34f9ec5c7b5496e23bd5b52516d4e0ed5eef73bfa1386bbc5898796df19d2a743ef15e8e19e06def5f5b92ee925"
+    },
+    {
+      "path": "clean_before_build03.json",
+      "returncode": 0,
+      "argv": [
+        "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+        "--build",
+        "build/win32",
+        "--config",
+        "Release",
+        "--target",
+        "clean"
+      ],
+      "size": 463,
+      "sha256": "2a885610126d2a67323f98b7bdd40aae617f1fbdbfcd45563fa95c98d389c39c",
+      "sha512": "aa55c1da016b3ac877c530ad381805540ba0d660ab6cb1a96ae76b110f68379c6b77fa98f6c2cbcc2e18b91e8a29f333ad9365058f7c89afad6e07cedce93f9b"
+    },
+    {
+      "path": "cleanup_lookup.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00c16898",
+        "--limit",
+        "6"
+      ],
+      "size": 330,
+      "sha256": "e53d1a99b1be651b1f61f52aedcee1b01095ca6fc1d919fa2eb95b628d4c187a",
+      "sha512": "fcda18f300282cd16485e90f1a22677565f5948c40ea1c5afe2907ba5139e114265b62b3bd077e978691d86a246e0dbf3b78f8317b9861c05992887cd9ff3c0b"
+    },
+    {
+      "path": "comments_before.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "comments",
+        "00c0dc54"
+      ],
+      "size": 321,
+      "sha256": "e26ad0d408a63e44767882ce8e31d5a3e784c2cd0bec9599f280f86637afec8c",
+      "sha512": "29078b4d66e42850e6234ee4e3d6abfa14623432a26c8a0416c1e910da43e380e192667934a0d1313f0876a33c82392bc053088e056326db561f921b34e32257"
+    },
+    {
+      "path": "commit_provider_merge.json",
+      "returncode": 0,
+      "argv": [
+        "git",
+        "commit",
+        "-F",
+        "local/native_crt_seh4_nested_handler_dp/provider_merge_message.txt"
+      ],
+      "size": 349,
+      "sha256": "9804c562ec99ea06b27f1e5580dec3b2f8b798af4b0db45f991d8d977e9bb84d",
+      "sha512": "3d6a2ed4dd9223928e79de2db81d89399bedd2157955cd45db6913a04e61200195a995c296f4630f077dac6c47d2555f2d7637c3ae40678b38c0b67af1d95bda"
+    },
+    {
+      "path": "compiler_input_check.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "a3586e525a5d2ac47a10430cb464ac6840a15e0e415e9c182a217286bb8c68e6",
+      "sha512": "4aa88050e3a5905bc39b1b5ae1563b69175b2d6e910dfd03ba2d2b4d9f1ab40af67bb30832a2dc2aaf7ebac7b0c93150b5e71535bf065f60e235cba3f31d9ea6"
+    },
+    {
+      "path": "compiler_input_check_02.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "8ab2aa3c30a29db62c3afd9b454ca88239e12dd09668accae46586468d85466d",
+      "sha512": "34617a2a41a27c45321928143d98486c0923fda01028ae218068856b70d7f1f6d7a3d7d6b0f255fe60c4113b0b5de11734adb1520b9be08135ed22293f8bdf79"
+    },
+    {
+      "path": "compiler_input_check_03.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "c70280ac725eb66281321578ef34091cb5ed21649957f2132afabbf084dbadd2",
+      "sha512": "116a77013afe3ecde4552aadecbc44ffd6eb03f27f3c379d53bd080dfc72978e598bac5fb66df8cbb18a933c534d529a08783c85a0e4e27724bd125fe9a91a99"
+    },
+    {
+      "path": "compiler_input_check_complete.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "27f286b98be915efd7c5b763480bbdc3ab0b447b62e5af9b2cfb0a6098331f81",
+      "sha512": "bd568324755656df51fc69d02f4c6eac1418027e61de800a043539688e8e5945dd4ed74013806bf3fd527a869eddef02e147e27ca8da9f383951d884789ee736"
+    },
+    {
+      "path": "compiler_input_check_final.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "08bd00c4604d05a5db6610c305150b1966d753042c67e5875be16b3c446e708a",
+      "sha512": "0c0db5044ad070cddfe023961bc7e47c5df7154959beaec0dc908acf1511cef4a17156538d811b615a02b70a0aa02e0df5e4ab34a90d5ed25048c53b73494e6a"
+    },
+    {
+      "path": "compiler_input_check_pass.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_compiler_inputs.py"
+      ],
+      "size": 335,
+      "sha256": "8e6205f43747598aa8dfab05253cad2b87fd7979e5c3c4672f5e50f9aa8a5c3f",
+      "sha512": "ce0c3893feb0685dc0ea83d051ee4c670793e6a340264cdd1cc2d2df6f3000956bbc9c5404a98a338a5f2dabfd8ac3b2efdd5f4ec3d0e2c40ebd6effbbf36b24"
+    },
+    {
+      "path": "dataxref_bytes.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00d7cd50",
+        "--length",
+        "32"
+      ],
+      "size": 346,
+      "sha256": "f76346fd12d2b952d1f81180461a128ffd270d14a8d3bbf6aaa0443df847e939",
+      "sha512": "21e50b3ae9e0f9db1e7e57195832cdf3d2750262e927f99feab5c2c80b286feaf8bc27e8025f203aa513ccd6b2c59da230993f5b8d6a1690c342a7a9785bbdcd"
+    },
+    {
+      "path": "define_handler.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/define_handler.py"
+      ],
+      "size": 328,
+      "sha256": "a4dd3fa4e902072968ed2dd4dcd1a085bc9d7864a73cede894cd03804d706aaa",
+      "sha512": "e1c63a885d106c8f1f79bb888c7f6b3ae17d9b5142e3ee8914370036a7f860f5a8a40020a29f48b05f4eee2512c590603b63075578d4ecdfec4f7b6f66abc2c2"
+    },
+    {
+      "path": "define_handler_02.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/define_handler.py"
+      ],
+      "size": 328,
+      "sha256": "6e87b4919d5d774dd98f6c57e58b8f2e628a1860656b29e516a0be6773cb2e36",
+      "sha512": "201bf047bc343f10d04085d022673c73ea9ac5ad00cb066060301de35dc56dae29dd36ced3b6279a60bd24b01bb72e10a34f1072e5d9330aba2d3937e627b5d7"
+    },
+    {
+      "path": "define_handler_03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/define_handler.py"
+      ],
+      "size": 328,
+      "sha256": "e0b3a5d557f78cc3cbe958029b2c102274d8684dbe250ec0df2145a8d9f87359",
+      "sha512": "dd11f8f07ed28332211b653277fcc9e54ea96083c736c9f680a7c27a2b718b58674673047b8080a0679c6558efa40ef3215678d7e6529ed74548cc3cdd3cff7c"
+    },
+    {
+      "path": "docs_before.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "docs-for",
+        "00c0dc54",
+        "--limit",
+        "8"
+      ],
+      "size": 332,
+      "sha256": "5dfdaafc5d2fcc82d4177fb9bb221b4390b9ae41993b366ff7c801fe434df872",
+      "sha512": "47d7b6c0bd85686203a8f6af670996396a39c4f65f85e435d889b79aab28e16c3ff1ee3fea2bf5d1fcc5f5b95e71634c50c1aa2912e8f7453ac3c8570c234dbb"
+    },
+    {
+      "path": "export_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "export",
+        "00c0dbc4",
+        "00c0dc54",
+        "--force"
+      ],
+      "size": 352,
+      "sha256": "89609c5fa26047c73b4132a7b939fca0eb54108cd83a39507d7f45b6546be6fd",
+      "sha512": "21af8a9fcc14cc15a1b2f41740317d6e9f16651f4a2654ac71be3c712d70a7b6f9146c3d53479323a6fc50cdaa4800cfe046e36653bd94526a59d851f6832fb6"
+    },
+    {
+      "path": "flow_before.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "flow-properties",
+        "00c0dc54",
+        "00c0dc6f",
+        "00c0dc81",
+        "00c0dc99",
+        "--output",
+        "local/native_crt_seh4_nested_handler_dp/flow_before_data.json"
+      ],
+      "size": 466,
+      "sha256": "a7e1b6d456caa9a6d060ccde8806644d5b40737b48296b3c5d18818467eaf198",
+      "sha512": "21510fca4ef0f5fc9954264e4fef96c85c5bfbf3e5f6b417092dbb7b8b18eb17c09e0230ac95480543ce42a1beb3a86195e38831098f675ed28898f4a41cc166"
+    },
+    {
+      "path": "forced_registration_check.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_forced_registration.py"
+      ],
+      "size": 339,
+      "sha256": "7cf5b3c0de3cc5e985ce982b1ba3f93e17ba3844126570871924648e5a9537f5",
+      "sha512": "a5e29b9d59b6e9650b896c4a164a99dd324ccb6d234a2ba6fe811c27b30d66a5ea960918e2e174885c496a87ab1ea24631b8e8e871157de86410f7cf40afd8c4"
+    },
+    {
+      "path": "forced_registration_check_complete.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_forced_registration.py"
+      ],
+      "size": 339,
+      "sha256": "782449629ef55fee5befc4dfacc57620ae4c43430ad698a6682e617fd55dc2f7",
+      "sha512": "b79ad5836f474792618791c7ebd3461ea526eabeb0c74228a538119898d8b6949f4fd327a0a11e29753b6f97664094339c6e58aa77474bf0b6e134c9448fe318"
+    },
+    {
+      "path": "guard_settled_run.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "settled"
+      ],
+      "size": 350,
+      "sha256": "bddf9dbfce23b85549c8956146e85cb5e8e60a50a2173798a59c10d6b39f6069",
+      "sha512": "e367d38f7d74537058bd12b813c43526f618c719aa15067d1d284875544b2bcd57091321d41ad8405c5f00fe724027ed71381545ccbcd715d77081e808b4a0c4"
+    },
+    {
+      "path": "handler_callees_after.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "callees",
+        "00c0dc54",
+        "--limit",
+        "10"
+      ],
+      "size": 347,
+      "sha256": "f5a71646d495da56f71287fe1bccbedc9a2dd17088487982618d3063ed42b392",
+      "sha512": "cf2b11b53914cc46a9a62ec0ce7f23555d456a638cc0b1cd143b17751f99330643ceaa668c19b9b5689852280832e4ea67bc008d001ec5c3824310f7e9978e84"
+    },
+    {
+      "path": "handler_listing_after.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00c0dc54",
+        "--lines",
+        "35"
+      ],
+      "size": 346,
+      "sha256": "383d395dfe08007c6ba22704842ffb19734c51a9af94e282fbb908fdc35cb1ab",
+      "sha512": "1a64d3518b0ab4fcc5b278f756dcdf511ad9cf17e982384a1792dfdf9cf0e134143ea5ab38f0372b2cae6befd4f562251c4699b22a79ccb3a82263e13de49aae"
+    },
+    {
+      "path": "handler_proto_after.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00c0dc54"
+      ],
+      "size": 318,
+      "sha256": "a6bb11a4539de3fa04e6f2e16100e6db4bf924d71d62042da7a55a31a0a4f81c",
+      "sha512": "097f871d3edf2fab0281c1c2718d57a8f380cdc6d4606df215155c8f83a6e63cffbee2315a5c539448740f01dea1b7ac8c58a3ccd27850214dbce10455f84925"
+    },
+    {
+      "path": "index_before.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "index",
+        "--if-stale"
+      ],
+      "size": 305,
+      "sha256": "823008222dbe0becb6748251acf6c8350af7baffc553367132e159bd0c4291b1",
+      "sha512": "2b4338f0f9e65c77fd47d0607284a1b402775d99cc5425f2361073b9f263fad8ee4561b3079e0f89f018e9efd812c82c8f8afece0a87d23e0773517fef57b5fe"
+    },
+    {
+      "path": "index_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "index",
+        "--if-stale"
+      ],
+      "size": 305,
+      "sha256": "78b3eac1adc2a597e06f33496af38f898be1fca550f4338d65613befda950d4d",
+      "sha512": "841b3c5b9f12acf49b20b763261a20a54b176c66c1a31c287a805bbe4d4aca46de6ef237fc6f905fb46305dd56391e3dc261fa5ed01dffdfb13dd142d6a31aac"
+    },
+    {
+      "path": "input_guard_after_build02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build02_after"
+      ],
+      "size": 356,
+      "sha256": "a8fc34a575da5df7efa2da859263b0d23b2d541f810aae3972e589d11e42ece2",
+      "sha512": "7026c698015e6b4550c27bef6578e40f2479dd72fb4f8483570febfbd8d52ab83ce964c01859c990597cda0f916b9b73e5b8ba312361439e4b8e790080be83f4"
+    },
+    {
+      "path": "input_guard_after_build03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build03_after"
+      ],
+      "size": 356,
+      "sha256": "99d557d030be2c80bee8747e56c2be9835abd2049e467e02cab8218110b3c5bb",
+      "sha512": "916a8fdb3212962b56d786c62560fc1fb88fc8631de997a624d59013edf74d4fa8b4446b1b355d3705c026df3effb1c5b3bba94e98a8c1d0e147c6cd255f8b31"
+    },
+    {
+      "path": "input_guard_after_build04.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build04_after"
+      ],
+      "size": 356,
+      "sha256": "a0aaba6ea1a583e25ee98783c1fac385b578c946d1d72d8f7514e71584961901",
+      "sha512": "345b95683e3d7ef501393dcf4fe6f1409a62f21b65208559149705731768facf7718b3c33b875c94ce1f6a5725662e1b6704eb6d3c1c3a277879f9ca3ce38448"
+    },
+    {
+      "path": "input_guard_before_build02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build02_before"
+      ],
+      "size": 357,
+      "sha256": "c15b2266634156195294669ab9ee5d2ef9475d6aa2e9eb6b9c94ec1ce9639d1e",
+      "sha512": "b3825baa6b0b2b5c281df6d6a4de8d1699d0896941281509b149313412067a64f738863576f0d67c5159c39bf64dd4618ab2261711056010f76cba188d2edc0d"
+    },
+    {
+      "path": "input_guard_before_build03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build03_before"
+      ],
+      "size": 357,
+      "sha256": "66a3d1dc8e997344eb5799ff9cff4cfdbe8380e272e6070a7f5776b2db2962ac",
+      "sha512": "e3082405b79b96521788cb38f2bade3e7f2e939d2c0eb7d679f2e2b92f0baa670283b767184a869387e2b8bb2fed118666a57f8d5e9d24ae667762220375f399"
+    },
+    {
+      "path": "input_guard_before_build04.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build04_before"
+      ],
+      "size": 357,
+      "sha256": "32ae599f23b59f54da316cc24e0f3b6235a4af921417145c7f2ed5bbbb5defa2",
+      "sha512": "12075a96b415628e4e0aeda19645a154c49a9b14d6f547de16a71084e0de9180d921c141395f968814d277bf126f36bb9a3e54fe50078ba6c753c2ff126627ad"
+    },
+    {
+      "path": "input_guard_during_build.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "build01"
+      ],
+      "size": 350,
+      "sha256": "6031415f836ffaca3a9ee4a6aa9eff448d8a034408b407dfe017137926d02cf0",
+      "sha512": "40b58b83a574e923468413e7fc6c0d8f48af616b3fca25132d9982438e3ea3589cd0ca533d2d783b4d61d3ab25f517c352c44b4eb68297dcb84d44337c1e5424"
+    },
+    {
+      "path": "input_guard_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/guard_current_inputs.py",
+        "final"
+      ],
+      "size": 348,
+      "sha256": "6f23a21c5e11f99f4fdd08258af81989694a7df56fd91cde10a7b9b9be8fd4cd",
+      "sha512": "d678b5b01d6b06b53c957931f204f8cc084bd7945d68c09c4900abacc13548d65976357af23f30f93dfcaaf469caecf451209f2905656d173bd781e8f0c67913"
+    },
+    {
+      "path": "integrate_dj.json",
+      "returncode": 0,
+      "argv": [
+        "git",
+        "merge",
+        "--ff-only",
+        "b13d3d624a5dd16413c5d0416469ea51700f3163"
+      ],
+      "size": 329,
+      "sha256": "e95e6ca6474aa9ba865a4deceae4f374d6af151ddf96b745d286586d6d30ce4a",
+      "sha512": "7ea8fd236e00c4b1c4f366172b02753d11f65dbb02a072c6c6be9df946ea6b74f4db6b952ceb45654d83eb439241783cf88ec28ab1da6cfac9c7121f8c9eeed1"
+    },
+    {
+      "path": "integrate_dk.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lease",
+        "check",
+        "cmake/startup.cmake"
+      ],
+      "size": 328,
+      "sha256": "09386af82fdb4f8152db62c836cff159230f979f57c0a7baaf3e9b69234f3475",
+      "sha512": "f22b9ba0073b888ff0ab3b6a0fc5c767ed16e7d5658ea130f725c26b97181e4b2efdfb90631013c4d101cf3dd7a1d7be187bf277e0fcb45b9cb949c7b67ac4c3"
+    },
+    {
+      "path": "lease_dk.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lease",
+        "claim",
+        "--packet",
+        "orch2_dp_accepted_dk_provider",
+        "--addresses",
+        "00bf65bb",
+        "00bfe120",
+        "00c185a4",
+        "00c04ef3",
+        "--files",
+        "src/native_crt_canonical_failure.cpp",
+        "include/bsp/native_crt_canonical_failure.hpp",
+        "docs/NATIVE_CRT_CANONICAL_FAILURE_DK.md",
+        "reports/native_crt_canonical_failure_dk.json",
+        "--ttl",
+        "2"
+      ],
+      "size": 682,
+      "sha256": "4ba291b0d0c64437100c5d868dc644366b0c76adfd645c923b28cbdde5a2dbbe",
+      "sha512": "26f07af99067af3b465f77bc678a1b6ebd9409b9d1db7697f50b428c6f5cec355bd351312e80d2fc629689e37721a47129978e7eeaeaa2825ea0874f74ef7a0d"
+    },
+    {
+      "path": "lease_dk_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lease",
+        "claim",
+        "--packet",
+        "orch2_dp_accepted_dk_provider",
+        "--addresses",
+        "00bf65bb",
+        "00bfe120",
+        "00c185a4",
+        "00c04ef3",
+        "--files",
+        "src/native_crt_canonical_failure.cpp",
+        "include/bsp/native_crt_canonical_failure.hpp",
+        "docs/NATIVE_CRT_CANONICAL_FAILURE_DK.md",
+        "reports/native_crt_canonical_failure_dk.json",
+        "--ttl",
+        "2"
+      ],
+      "size": 682,
+      "sha256": "e6459ae0ac7f34955e7f9e12197c4909ce9c49f579620066e833439ef7783f3b",
+      "sha512": "71f3206cdaa794f8f54f64037df4580850f25f579f86531c43bd4b7f75050de50f599c43a98c9cfbf5a4fa7f3cba7ee98370e00a41966212e57fca6708cb4aba"
+    },
+    {
+      "path": "linked_provider_check.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/compiler_audit.py",
+        "--worktree",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp",
+        "--output",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/current_linked",
+        "--probe-exe",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.exe",
+        "--probe-map",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.map",
+        "--probe-object",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.obj"
+      ],
+      "size": 1088,
+      "sha256": "d41da36c65d897855e33de1c023bc1f4bc0ff9d7c42237c958e9962b9429a3b5",
+      "sha512": "44c65b5d85b2f5617d53c806f80a973ee5c80af213481ff7eae31f50d227efe3d9a3067840e8a564e7ad18e67d5603ddd9c944018033f29bd8f4398de6f44580"
+    },
+    {
+      "path": "linked_provider_check_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/compiler_audit.py",
+        "--worktree",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp",
+        "--output",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/current_linked_final",
+        "--probe-exe",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.exe",
+        "--probe-map",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.map",
+        "--probe-object",
+        "J:/PROG/battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp/local/native_crt_seh4_nested_handler_dp/static_link_probe.obj"
+      ],
+      "size": 1094,
+      "sha256": "79de16105a6b166e3a35230da051eb96b3ff7247f1e05902056f1669487fd3c4",
+      "sha512": "86716d37e10cf25f802c380e6121fa588ab44a7876812637b57de49aa95c070ca83446bfae2cb7e60f4d74b72d5d2c7aec8d7b15bb65f7b40224f8a24859731b"
+    },
+    {
+      "path": "listing_before.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00c0dc54",
+        "--lines",
+        "35"
+      ],
+      "size": 346,
+      "sha256": "16e09da7f94e3802ddefa233f0510f86e7d6f73560e54049de68fc423118cdad",
+      "sha512": "0ba59b50f5d145d88e08f18ede5079ad6e9f1d0513917a624f2793eca0e92dadf0372d5e01f634ad38364fd5f3050453795ee1e71242dff273008462bce6cc51"
+    },
+    {
+      "path": "lookup_before.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00c0dc54",
+        "--limit",
+        "8"
+      ],
+      "size": 330,
+      "sha256": "a47150863d11f7b10baef994d87fff3861b1b464d1fb59684ebf912de9dd7c7b",
+      "sha512": "9fd73f0bfeb3b236c98ec4af1828ff0619b65a9daa91423abdba92568111a507ef448814f31f59a2a48a02e3ba812843714f086906b0244353dc7c0fad42c06e"
+    },
+    {
+      "path": "lookup_indexed.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00c0dc54",
+        "--limit",
+        "8"
+      ],
+      "size": 330,
+      "sha256": "bd910f6b1ed8bb86203fa1ba8e8f70a230a28007a43487afa252dc533bc0977d",
+      "sha512": "86bb06259be4f17d6ea03f336b0a009470181c14e91763bdd1094d6454e55fa585c3044a49eeba1519a286f610199a737e50eb47a1def5a9e4f02e2a53fe3e4f"
+    },
+    {
+      "path": "loop_bytes.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00c0dbc4",
+        "--length",
+        "144"
+      ],
+      "size": 347,
+      "sha256": "ebbfa46dd8514650b45a8e33073b28e8201bcbf97167bcdd41e2dd0e846bdf62",
+      "sha512": "e5fb70adf824a063b01f864c92fa58f6ef664f3a1e53adc1ea667c35db8bf9489a4f7c797ba3b3383fde84c121fe0b3047027872d85e6fe980a4798295ef9d0a"
+    },
+    {
+      "path": "loop_callers_after.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "callers",
+        "00c0dbc4",
+        "--limit",
+        "10"
+      ],
+      "size": 347,
+      "sha256": "64014b1502260c04a9db5f799cb8ef5acfe839cf1ce2645e1479d65d8613057b",
+      "sha512": "ed052d25da7796376766b1b90f70c086343992a8cf1288b9145155868f387e935f5d722262c1b0e36d1e94ed59c5ab59c3ee77165e75a36661991b22ee68bfe5"
+    },
+    {
+      "path": "loop_listing.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00c0dbc4",
+        "--lines",
+        "55"
+      ],
+      "size": 346,
+      "sha256": "720f447ecc5fb877537005c178dec7829e8e6f0d29a195677144998f563d5c01",
+      "sha512": "b6f38988247a43d09221947e374b083589dd75c0bb02bfe2efb68a4dda2313abb95d2f8f67d09244bbfa394dd432fee46b94289f9290a998bb14536d6149087c"
+    },
+    {
+      "path": "loop_lookup.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00c0dbc4",
+        "--limit",
+        "6"
+      ],
+      "size": 330,
+      "sha256": "394f48c0ef477eeaa3d5ecc0ac48ee5ada25482d9282d695a1c2d0f46e159f28",
+      "sha512": "1c5a95939f89baf1444667846b201eb9986c2091517b3fe82b61caa1e44e0c9d9b1883dcb747f8eaf5063a8b14f3684de7debbc1767a512d546240d770f1d212"
+    },
+    {
+      "path": "loop_xrefs.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00c0dbc4",
+        "--limit",
+        "20"
+      ],
+      "size": 345,
+      "sha256": "c0b0318e7e68b82bcb1fa1cfa071637fd1c402ded86762b5a0ada38a3afa600c",
+      "sha512": "ed24ef7561cad13587fa144485fc19f843466c77d37690c48ffaeec9adb580f6576b38991800572c85824ee085c17d2b13eb704230395c0c9e1771010b216d1a"
+    },
+    {
+      "path": "metadata_diagnostic.json",
+      "returncode": 0,
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe",
+        "build/win32/bsp_native_crt_seh4_safe_handler.vcxproj",
+        "/t:Rebuild",
+        "/p:Configuration=Release",
+        "/p:Platform=Win32",
+        "/v:diagnostic",
+        "/nologo"
+      ],
+      "size": 1208,
+      "sha256": "c276035ec30d92f3b472debb44603ed2b894e93448bc87f1eaa5fe106efcab96",
+      "sha512": "d79bb0ccaf6a5b6a661c6d5c50ee578a6ba300b2ff5c9bd66a01ffbcc64efdc1690c4d17455727fa780c89e42904fd0b5b162c04f4a9daeb3d1da62508a4ffa8"
+    },
+    {
+      "path": "metadata_diagnostic_run.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/metadata_diagnostic.py"
+      ],
+      "size": 333,
+      "sha256": "98e343f8c2ef76de70d16daa1b9731100bb74bcf9b89a8589c9c3462c186c354",
+      "sha512": "867f4dfffa26768594511dbf6729a08246343c540bd46f52cc45e0434673f8ba66859939e31f625b39c262563b03f197e8a105b9363cbe17b37382ac96fcf35a"
+    },
+    {
+      "path": "name_handler.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ledger",
+        "add-name",
+        "00c0dc54",
+        "BSP_CrtSeh4NestedLocalUnwindHandler",
+        "--evidence",
+        "DP: complete 70-byte/21-instruction native handler C0DC54-C0DC99, original PE equals live. Previously undefined listing; explicit bounded disassembly/definition saved, adjacent functions and bytes unchanged. Descriptive name is provisional. Native cdecl OS four-word entry tests ExceptionFlags mask6, returns ContinueSearch1 or checks ECX=R.cookie XOR R through no-extra-argument BFE120 preserving EAX=R on equality, inherits R+18 EBP, recursively invokes complete C0DBC4 with R+14/+10/+C, restores EBP and reloads current R/output before returning CollidedUnwind3. Canonical cookie/failure/FS/frame owner and real image SafeSEH publication are required. See docs/NATIVE_CRT_SEH4_NESTED_HANDLER_DP.md and report."
+      ],
+      "size": 1105,
+      "sha256": "d9e5d3525b268efae39b3e7f9f564f1727178ac9367e1060dd1863e7c099bfdb",
+      "sha512": "a2e5f1ecdc7f0da0e51c08b110c8455101869185385035902c3d63d02e80d82bb1d9fe251099f126538edcaea7bfb3e55ea5640a2494a2b245d041f48a0f87d7"
+    },
+    {
+      "path": "name_loop.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ledger",
+        "add-name",
+        "00c0dbc4",
+        "__local_unwind4",
+        "--append-evidence",
+        "--evidence",
+        "DP: preserve correct CRT library name. Fresh complete 144-byte/48-instruction PE/live body; native cdecl three stack words P/F/T plus inherited EBP. Nested registration N=entryESP-28h publishes fixed canonical cookie XOR N before FS link; scope decode reloads current *P independently. Unsigned scope loop publishes enclosing level before filter test, calls actual NLG then reloads cleanup before actual CU call; epilog unlinks FS first and skips saved EBP. Native C0DC54 handler and no-extra-argument canonical BFE120/failure providers plus process-lifetime canonical state and image SafeSEH admission remain essential. See docs/NATIVE_CRT_SEH4_NESTED_HANDLER_DP.md and report."
+      ],
+      "size": 1077,
+      "sha256": "895151e5dd803998c653d7ed2cc8d734e237d07538bc7bb1483bb35c3a7fc1b5",
+      "sha512": "2ec940f3e4b5b894ea5e10cb62f3834bfc2a1df3dabeff0d816378ae389c0254942983335031cc13b131b187c77c068901881954e0f565594f8764acae52d626"
+    },
+    {
+      "path": "native_contract_check.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/prepare_native_contract.py"
+      ],
+      "size": 337,
+      "sha256": "9a56570c69d6ce7dafaa9cf60b1ccef4a932cad9902f947dab3e4f19e3144b8e",
+      "sha512": "3a1c55762f0bb98845339d488c90f3a74f0a84878fa288cb3ce69eb7c80f0bf0528e1c57aa2cb5bbde8d95b86fdf31642b7555ef17b6122db5adb075fed2ccf4"
+    },
+    {
+      "path": "native_contract_check_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/prepare_native_contract.py"
+      ],
+      "size": 337,
+      "sha256": "7507af5b6df0d1e3bc22e55a25bca9dd2337a7b07b55ac716c997c9e7070c145",
+      "sha512": "94b172aef7eea9f5738617f3c7442323b379671ca7549003497737904cd0f7e85d65cdc1a390b1e4e3bc9ed31a7f754c789a55e7acd9701c3c669c4745596f9b"
+    },
+    {
+      "path": "native_contract_check_build03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/prepare_native_contract.py"
+      ],
+      "size": 337,
+      "sha256": "d2e3ff1b22f5ba57a3d9c13312bf8b3ffc1eebf9c6ada7d69986f5755db93f4d",
+      "sha512": "68484132e1fd0e76d19da3a0b9ad99251c8d5fb89630a70ecafec942f7093a04c977350e927f4704a3fb355644e741fcf90a041df65a5b88ab40f971fe110329"
+    },
+    {
+      "path": "native_contract_check_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/prepare_native_contract.py"
+      ],
+      "size": 337,
+      "sha256": "fb1012c23293fa74420c45fb4f88d6a6a2b22e57a4c23eaa20fae831f011fa43",
+      "sha512": "a8c2db0b26860dfa3e9738044e62d10052cd14d49a2c0a4cb51753936ac200e8c84dd82fcedd4bea4cd117e25613671a7d2735cdd3ae84d0889fe05554457064"
+    },
+    {
+      "path": "native_object_check.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_native_object.py",
+        "--asm-object",
+        "build/win32/bsp_native_crt_seh4_safe_handler.dir/Release/native_crt_seh4_safe_handler.obj"
+      ],
+      "size": 452,
+      "sha256": "1e065a76fa0db6e4f736c98c6992dbcf7fb52ac1be723978fa27a1efa2ff56f0",
+      "sha512": "ab776c986bb33af092dcc1cd57ce7010978a6fe0fd5a89d33787385fa1ab46f75b16416863f95b1f85ea7d05b87ac7229f39c3be2d575176cd34d3480489d90c"
+    },
+    {
+      "path": "native_object_check_02.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_native_object.py",
+        "--asm-object",
+        "build/win32/bsp_native_crt_seh4_safe_handler.dir/Release/native_crt_seh4_safe_handler.obj"
+      ],
+      "size": 452,
+      "sha256": "3ee93e54ff51c4352aa7ebd39f7a46e1f8c8c4b5e47afc7c8e867d50de927176",
+      "sha512": "9c9b30f76c095a9fa5de396c14937cd9078c9fffe16db7194d1456a577da01fe271feeafb0306a8c3a0f16183e90bb0db12d08da8776e79e896d3db0bad98729"
+    },
+    {
+      "path": "native_object_check_03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_native_object.py",
+        "--asm-object",
+        "build/win32/bsp_native_crt_seh4_safe_handler.dir/Release/native_crt_seh4_safe_handler.obj"
+      ],
+      "size": 452,
+      "sha256": "adb8170b488d2d5938df45572f6ccb96d3679a6742801fff8c16b9996cab8989",
+      "sha512": "8db535e1adc88edc70e0dd31f677d7ce2f785f8a5b9b0e9d55292e1d889f7edd4b316fb586c1125ee7c66bb918d53273b41b3da988727db7b04c53ac54fe9458"
+    },
+    {
+      "path": "native_object_check_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/audit_native_object.py",
+        "--asm-object",
+        "build/win32/bsp_native_crt_seh4_safe_handler.dir/Release/native_crt_seh4_safe_handler.obj"
+      ],
+      "size": 452,
+      "sha256": "14d82c4622aebc59e1789418647665f644a1a8cf125ab4b6ed081f1cb65824d3",
+      "sha512": "dd192ada23c91eaf9d77b1dd6055fe3d96041109cf9eae1d16c1ee522879b949d6035cf56663b9d1fe467aba28564cab9425a61c6c9565b38cdcb602792ebac8"
+    },
+    {
+      "path": "pe_check_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/pe_preflight.py"
+      ],
+      "size": 326,
+      "sha256": "e976cc6b288f1436307fb8ec1861a5ae450a4df4fcb26e96e2939c5bc53db8e1",
+      "sha512": "e4d137be1cea7b0bc63354eb15e9bd1479b78dbb3678f9fa44d486cd1d282e1a122f22cb795b7b81193ced6ee912a6e11041c5c02ae6cd370f40c187ad0dec94"
+    },
+    {
+      "path": "pe_preflight.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/pe_preflight.py"
+      ],
+      "size": 326,
+      "sha256": "c1725e5527c07518bbbc44042cd000cfdbec03c5263efe891f1184cbafda1173",
+      "sha512": "01540ef058919dcfd93b8a125472b23937fcf0b780e1b45b1238cde5d65637dcd387b602481167a0fbed0e74587cdf54f0ee74ccb3f9fbd00172cb3d843cd719"
+    },
+    {
+      "path": "prepare_link_audit.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/prepare_audit_driver.py"
+      ],
+      "size": 334,
+      "sha256": "da8775a64f9698e789cde47d33d1ee707491abb4353badc06627a9ac50a3dcfa",
+      "sha512": "187b63b253bb6f99ca3a4a4d098dff567363a090454f8f13ec030ea4182a551c74b6e69641e8d3cdb0588e05117093e0254d3a4583272e3b05d0bdb258510a0c"
+    },
+    {
+      "path": "proto_before.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00c0dbc4",
+        "00c0dc54",
+        "00c0dc9a",
+        "00c0dcb6"
+      ],
+      "size": 369,
+      "sha256": "c25feaa48924be5aa3e083119dc2a387e5fd7bbae329688f3264951c4412e723",
+      "sha512": "9730e2ae92bdf172ceaf2f8c8dcbb60834fd7e45bf0365c1894ef8c237d2fc5528c485630fbab2f10672a74ebd30c153007093f147d04da69eae404c3610727b"
+    },
+    {
+      "path": "provenance_retention.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/retain_prior_evidence.py"
+      ],
+      "size": 335,
+      "sha256": "1b9cfa80d59398dfe2dd4b9805c9262fd7c4eab038866976c6084a93c79bdb89",
+      "sha512": "9af280aae6e479a297fd8d45db7633cc6ace4a0da98f4bf1418e0ed8ebb3cae73c1232c00da79f319ad11c697f3be23fcfa5fda81e2a45b0ec85f64e068525a3"
+    },
+    {
+      "path": "provenance_retention_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/retain_prior_evidence.py"
+      ],
+      "size": 335,
+      "sha256": "9a0a2001a616a83dfcc0016e9b5a9f43a011d8a18d267f1e6a7f6baa6c58b8c9",
+      "sha512": "bdd7b0d834505d9b8e1cd6d7cf9241ad1cde5f3ef81dbe48b71a87eda1ae2b42b9352f161072d305fddd71c08628562ff845220fe5a8a1e513fd3bae4d50cc13"
+    },
+    {
+      "path": "provider_union_check.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/check_and_restore_provider_merge.py"
+      ],
+      "size": 346,
+      "sha256": "ad1520241aab7315c0d0a966faae94c99b4a9e49dab63f4a41f6a3536a610d3b",
+      "sha512": "d4e4533ab1b242d8fc530f89a603209916d33d43db68cefc944242ad873677aaf12a89520053770950f1f29c6364022bfb502f9f6ac0fda3929b78e99aad2c76"
+    },
+    {
+      "path": "provider_union_check_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/check_and_restore_provider_merge.py"
+      ],
+      "size": 346,
+      "sha256": "1684cf6cc8c3586ade819bcc9114605111dbbc0b8f2cc5e08f72adfab064b112",
+      "sha512": "2f37c4c95f74d37b0aa16f4f414ddae7c490144d32b1c5176c8f40ff98b708dd16bb775e71a9cddf9cc8a3898c004ed14b5d400346c8401fc1bc850bdcd0f301"
+    },
+    {
+      "path": "raw_before.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "disasm-raw",
+        "00c0dc54",
+        "--length",
+        "70"
+      ],
+      "size": 336,
+      "sha256": "d0b9bbfe04ab5bc9c275805f4875134402018d3e2aac173f502ccc313141c4c3",
+      "sha512": "4a2c1e3ab1dcff8f3fb14863c6b826095e3562615c82245d80dfcfccb96540b88a2eb07c5fb068bd1554200bbbaac1349f00a2029374f587c36e07ead7325794"
+    },
+    {
+      "path": "rejected_build_retention.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/retain_rejected_build02.py"
+      ],
+      "size": 337,
+      "sha256": "c82e8b65948d4bfa4cbcd625c66fdce2ec8fbed20700b4175d274c678f5fadb9",
+      "sha512": "f35d1ea12128b4bb575188a713b0180954b6f4b93e569f759e879c2de7ee30d0e7f5882845785cbb25a046a39997183278f82da330605484d1ce6273727750bb"
+    },
+    {
+      "path": "release_dk_provider.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lease",
+        "release",
+        "--packet",
+        "orch2_dp_accepted_dk_provider"
+      ],
+      "size": 357,
+      "sha256": "51740e9511a1f9f1efa65a3f21eef2ec3d6c9d3b5d9ce3a7283db00fad802117",
+      "sha512": "f881f098d75b862dc087d3203f58b7a248ab041f5a5d17145acbd4e1b8fd54784ba727d1d7dddbb68a50b30d7ad7527db3e17499d4b08ff7d71677a426e0f24c"
+    },
+    {
+      "path": "retain_pre_anchor.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/retain_pre_anchor.py"
+      ],
+      "size": 331,
+      "sha256": "37932555b5e4e3826ca109395049090041d0e8b53566f78758808dccc8d6a85b",
+      "sha512": "3336ffb6cf8761251f56d98d1afd6310313c5e6b40bf264e79f22bb1c6eecf61829cd0c565fc0db6e4c9ba93681eab68b7c9630b62042e8c87e762c3e18a2174"
+    },
+    {
+      "path": "retain_pre_ml.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/retain_pre_ml.py"
+      ],
+      "size": 327,
+      "sha256": "9a801c86e6ad32b2c0ca2d8513010928d999ebf27ceadd551bdb4b59b214f583",
+      "sha512": "66cc9477de11f0975e5db82acac622d93cac761ed54f8e352b94e27c8576a838610f34c810f975e28a0c8e566642d85870fdd652e94344543215458f331088c7"
+    },
+    {
+      "path": "seeds_before_build.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/ghidra_export.py",
+        "verify-seeds"
+      ],
+      "size": 303,
+      "sha256": "dcb947274f2f03f51e296c5715ac5805bf2f095cf69511451dcafee5326fb38d",
+      "sha512": "b9085f5f2d910b0e916c64e94e7ca34603a89e2995e0eb80f76685da9c28e0ab7803235549d9ac7497564d005fba93a765b822e2b82c9983e1b09a1b13c60139"
+    },
+    {
+      "path": "seeds_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/ghidra_export.py",
+        "verify-seeds"
+      ],
+      "size": 303,
+      "sha256": "5880444d666596ae89e7471597ac619f180eef2f891e55a29f2bef9949b3f637",
+      "sha512": "c445b53d8df607c5896e92ac2579cbb02105e94508438a80acec5881c97f83c747d40b22e673cb119ad16d8cf9d4df3de1f9b4d99ea61048e16b799f5faff555"
+    },
+    {
+      "path": "snapshot_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "snapshot"
+      ],
+      "size": 289,
+      "sha256": "3d36c281d2dafb7c0b3963fddb0b1590db5c185890715ea52f53f410e2aa4043",
+      "sha512": "3a9ebab9a16e6ad013cf2978456deb54d1fe0575abb0bbad18fe63d428378b86782e9104a7093d6c2c6566da0ecd7fa95f2e497a594d74e2d1c08e3615e18477"
+    },
+    {
+      "path": "static_link.json",
+      "returncode": 0,
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "/nologo",
+        "/Bv",
+        "/MD",
+        "/O2",
+        "/EHsc",
+        "/std:c++20",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\local\\native_crt_seh4_nested_handler_dp\\static_link_probe.cpp",
+        "/FoJ:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\local\\native_crt_seh4_nested_handler_dp\\static_link_probe.obj",
+        "/FeJ:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\local\\native_crt_seh4_nested_handler_dp\\static_link_probe.exe",
+        "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\build\\win32\\bsp_native_crt_seh4_safe_handler.dir\\Release\\native_crt_seh4_safe_handler.obj",
+        "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\build\\win32\\Release\\bsp_core.lib",
+        "kernel32.lib",
+        "user32.lib",
+        "advapi32.lib",
+        "shell32.lib",
+        "/link",
+        "/MANIFEST:EMBED",
+        "/BASE:0x10000000",
+        "/DYNAMICBASE:NO",
+        "/FIXED:NO",
+        "/MAP:J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-nested-handler-dp\\local\\native_crt_seh4_nested_handler_dp\\static_link_probe.map",
+        "/INCLUDE:?handle_native_crt_seh4_nested_unwind_00c0dc54@bsp@@YA?AW4_EXCEPTION_DISPOSITION@@PAU_EXCEPTION_RECORD@@PAXPAU_CONTEXT@@1@Z",
+        "/INCLUDE:?initialize@GameNativeCanonicalDataOwner@game@bsp@@SAABV123@ABVpath@filesystem@std@@PBUGameNativeDataSpan@23@I$$QAVGameNativeDataReservation@23@@Z"
+      ],
+      "size": 3938,
+      "sha256": "afbad1514fe7d09d6c28429ffd1cf96cb5b92cb0f88ee0324f0c9fe99855ba8a",
+      "sha512": "1cf7864d2f9c513bf40ca958cc1811e7a35cfcfb5a414e85042d2b4d96c8b87cb067b78eddc46a7a7d4e3630a62a24ca45c6448bbef5752a56fef1699e67bc74"
+    },
+    {
+      "path": "static_link_build.json",
+      "returncode": 1,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/build_static_link.py"
+      ],
+      "size": 331,
+      "sha256": "06b80122677c62684841683d392e1517b66864ec98e11740a37bdb3c8f00fc15",
+      "sha512": "288a9f10a7a94b15f94e84bae34347e998c1b70226f14fbf676513c4d479569eb056f96ea6f986f7e1ca22bc72f58e74748b105aab49d62ab9cd0dfd9d323f12"
+    },
+    {
+      "path": "static_link_build_02.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/build_static_link.py"
+      ],
+      "size": 331,
+      "sha256": "a183601a58047776ed8ed411900d5d2cd761b268ecac108854ecc3d332cba4d9",
+      "sha512": "f681246314036f6482c68ef8dc4d20054e9897d44c8d4d47e7f3461563f1e479c7d9f13d6d2e7fd307354b69c7f3a2d10646f86e490a774617bb79243f99e46a"
+    },
+    {
+      "path": "static_link_build_03.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/build_static_link.py"
+      ],
+      "size": 331,
+      "sha256": "a6dc9178f857e6b8d5e8d79aee5b63ccbbb19988018ec5a42f6b3775e09f221b",
+      "sha512": "adf8a6d48c53262e01a9b4802e80f2d8fa3bd30cfa6fdf19f77c2461bbe9f32992901813f7788358deee566abe24ce673333561bf5c022f1887000076ffbe950"
+    },
+    {
+      "path": "static_link_build_final.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "-B",
+        "local/native_crt_seh4_nested_handler_dp/build_static_link.py"
+      ],
+      "size": 331,
+      "sha256": "80e720d54731e0d3032581b8c91edf157dddfdae540c4c5fedfe335784fb6f51",
+      "sha512": "feea15ed508d78dbc84c5362fcb7e34ac718588da8d15cea4a9741891e206787b7d5b190c13c4e9294f9e49ba6364b25d56d39dcf705969ad777957fc07eb6e6"
+    },
+    {
+      "path": "xrefs_before.json",
+      "returncode": 0,
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00c0dc54",
+        "--limit",
+        "30"
+      ],
+      "size": 345,
+      "sha256": "c3b392adf6a434917777f18ef987ff1287bc0eba7500bd1cf1c2d67073cc310f",
+      "sha512": "c608b9682005d2811a8da9f6d2fd4cac3380611d77814e5e589b5b4c1021dbe99b9c35421cfbade2b40c47165c718eae5ceb2c1474e89193e18b124318a46d48"
+    }
+  ],
+  "corrections": [
+    "Before configure, shell-expanded startup CMake variable text was retained and corrected.",
+    "Provider lease refusal was mistakenly followed by local exact accepted-provider merge; parent was notified, writes paused, root released scope, fresh lease obtained, exact structured registry/ledger union verified. No DK source/Ghidra edits.",
+    "Strict build01 C4733/C2220 retained. Scoped diagnostic suppression surrounds only deliberate FS-writing loop; actual SafeSEH proof is mandatory and all mitigation flags preserved.",
+    "Build02 byte audit rejected B8 immediate from MSVC bare numeric bracket spelling; exact A1 absolute-load bytes now match native. Rejected object/archive/game/MAP/source/tlogs retained.",
+    "Failed compile left one stale aggregate write record. Clean full build03 yields one current command/read/write match for every checked source; no stale record is silently accepted.",
+    "Explicit metadata object alone did not extract archived handler; that link state is retained. Explicit actual-symbol /INCLUDE now roots the member in both images.",
+    "Normal MASM logs mix encodings and lack a command tlog. One metadata-only diagnostic rebuild captured actual ML invocation with an explicit Windows environment allowlist, followed by final image relinks.",
+    "Tracking-log symbol/base operands are quoted and case-normalized. Generated project exact-case symbol plus current COFF/MAP and normalized tracking arguments are checked.",
+    "An overbroad assertion expected linked memset although checker-to-GS-reporter never calls Watson/memset. Those complete current archive sources are now correctly labeled available but not reached.",
+    "Preflight/guard receipt output-name collisions and narrow helper path/quoting/assertion mistakes are retained. Final distinct pe_preflight_data and input_guard_settled records supply the accepted evidence."
+  ],
+  "limitations": [
+    "Raw native register/stack/FS interfaces, not ordinary portable C++ APIs. The original loop skips saved EBP and preserves actual cleanup effects; abnormal/fault/nonlocal effects are not repaired.",
+    "Actual same-domain canonical DD cookie/NLG/reporter owner and startup readiness, current scope-cookie pointer and actual native compiler frames remain prerequisites.",
+    "The old CT extra-context checker cannot bind this original no-stack-argument edge. DP uses accepted DK canonical checker preserving EAX on equality; actual returned mismatch-report continuation is retained.",
+    "Directly reached canonical failure closure is checker/GS reporter/hook. Watson/memset availability does not create a reached dependency here.",
+    "C0DC9A/C0DCCD/C0DD00 wrappers and full SEH4 prolog/dispatcher/C17653 closure are outside this packet.",
+    "Existing CTests execute existing math checks only. No owned handler, cleanup, unwind, NLG, cookie-failure, termination, owner mapping, forced image or game path is executed.",
+    "This is an isolated DP build based on accepted DJ/DK over6c44; it is not a claim about the independently published root11850 integration build."
+  ],
+  "freeze_policy": "Final local inventory_pass1/2 enumerate the entire payload plus all current external source/compiler/build artifacts twice with SHA256/SHA512. Only the two self-manifests and the final pinned handoff are excluded to avoid self-reference. Final clean commit/report/seal pins are in handoff.json."
+}
