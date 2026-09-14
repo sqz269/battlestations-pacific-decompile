@@ -460,5 +460,31 @@
     "Native invalid pointers, address wrap into invalid buffers and zero-byte CRT call effects are not made safe or proven equivalent.",
     "The existing allocation service ordinarily throws instead of returning null; explicit native null branch retained but not fixture-forced.",
     "No insertion, resource manager, factory/resource lifetime, CMake registration, shared ledgers, production glue or integrated game validation."
-  ]
+  ],
+  "primary_repaired_transfers": [
+    {
+      "address": "00b7f722",
+      "native": "00bf6885",
+      "function": "00b7f712",
+      "kind": "call",
+      "instruction": "CALL 0xbf6885",
+      "evidence": "Primary repaired catch membership/defined handler; original decoded-only worker row retained as historical evidence."
+    },
+    {
+      "address": "00cc20e6",
+      "native": "00bf6b43",
+      "function": "00cc20e1",
+      "kind": "tail_jump",
+      "instruction": "JMP 0xbf6b43",
+      "evidence": "Primary repaired catch membership/defined handler; original decoded-only worker row retained as historical evidence."
+    }
+  ],
+  "primary_flow_resolution": {
+    "catch_report": "reports/native_resource_cache_catch_flow_bn.json",
+    "handler_report": "reports/native_cache_block_function_definitions_bn.json",
+    "worker_preimage": "local\\native_resource_cache_node_bn_worker_preimage.json",
+    "worker_preimage_sha256": "00c8d3a799a72b07e0deb561222c4754b80fca45657b36cca54a008d8eaf44d9",
+    "source_changed": false,
+    "current_supported_rows": 8
+  }
 }

@@ -104,3 +104,7 @@ The APIs carry additional source services and differ from original stack/SEH
 ABI. Valid raw backing memory and current CRT behavior remain caller
 requirements. Arbitrary aliases of the original stack/register spill locals,
 concurrent mutation, native exception equivalence and gameplay are unproved.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BN integration](NATIVE_CACHE_BLOCK_INTEGRATION_BN.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI analysis views and preserved comments, then refreshed exports. The node catch membership and two FH3 handler definitions are complete; earlier worker observations remain historical evidence. The package report now exposes all seven direct calls to the whole-report verifier. Fixture libraries remain pinned to BL; complete production loading, native FH3 identity and gameplay remain unproved.

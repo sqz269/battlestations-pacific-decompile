@@ -112,3 +112,7 @@ No permanent tests, CMake/shared metadata edits, full integration build, ABI
 replacement or gameplay result is claimed. Primary owns those next actions.
 Arbitrary original stack/register-spill aliases, concurrency and native
 exception identity remain outside the source proof.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BN integration](NATIVE_CACHE_BLOCK_INTEGRATION_BN.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI analysis views and preserved comments, then refreshed exports. The node catch membership and two FH3 handler definitions are complete; earlier worker observations remain historical evidence. The package report now exposes all seven direct calls to the whole-report verifier. Fixture libraries remain pinned to BL; complete production loading, native FH3 identity and gameplay remain unproved.

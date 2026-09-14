@@ -35,31 +35,38 @@
       "direct_calls": [
         {
           "address": "00bb56a3",
-          "target": "00bf9440"
+          "native": "00bf9440",
+          "function": "00bb5670"
         },
         {
           "address": "00bb56c9",
-          "target": "0041e870"
+          "native": "0041e870",
+          "function": "00bb5670"
         },
         {
           "address": "00bb56da",
-          "target": "004261a0"
+          "native": "004261a0",
+          "function": "00bb5670"
         },
         {
           "address": "00bb56fa",
-          "target": "00419cc0"
+          "native": "00419cc0",
+          "function": "00bb5670"
         },
         {
           "address": "00bb5701",
-          "target": "00bd1510"
+          "native": "00bd1510",
+          "function": "00bb5670"
         },
         {
           "address": "00bb5731",
-          "target": "0041dd40"
+          "native": "0041dd40",
+          "function": "00bb5670"
         },
         {
           "address": "00bb5746",
-          "target": "00bf7680"
+          "native": "00bf7680",
+          "function": "00bb5670"
         }
       ],
       "source_file": "src/native_pak_registry_block_helpers.cpp",
@@ -367,5 +374,14 @@
     "No native hardware-FH3/SEH or unsupported raw-pool failure equivalence claim.",
     "The existing string dependency domain requires valid supported buffers; it omits zero-byte copies and does not establish all native overlapping memcpy behavior.",
     "No projected manager, registry callback implementation, ledger/CMake/runtime mutation or complete game build was added by this worker."
-  ]
+  ],
+  "primary_call_schema_correction": {
+    "original_whole_report_rows": 0,
+    "corrected_direct_rows": 7,
+    "source_changed": false,
+    "ghidra_changed": false,
+    "worker_preimage": "local/native_pak_block_helpers_bn_worker_preimage.json",
+    "worker_preimage_sha256": "94fc6614ef7b3b23ea54c5140e11b6579a8ff9b41b530fb26cce57407d8a432b",
+    "reason": "Use address/native/function fields so the whole-report verifier checks each recorded native CALL."
+  }
 }

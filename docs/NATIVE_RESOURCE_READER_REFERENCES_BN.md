@@ -108,3 +108,7 @@ No permanent test was added. The worker did not run a repository build that
 omits this unregistered translation unit; the primary owns integration and
 the combined build. This is source and fixture validation, not execution of
 the original four bodies, game-resource destruction or gameplay validation.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BN integration](NATIVE_CACHE_BLOCK_INTEGRATION_BN.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI analysis views and preserved comments, then refreshed exports. The node catch membership and two FH3 handler definitions are complete; earlier worker observations remain historical evidence. The package report now exposes all seven direct calls to the whole-report verifier. Fixture libraries remain pinned to BL; complete production loading, native FH3 identity and gameplay remain unproved.

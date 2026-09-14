@@ -105,3 +105,7 @@ unsupported overlap, bound allocator, and noexcept release remain explicit
 boundaries. Hardware SEH, raw-pool getter exceptions, native ABI/FH3 transport,
 complete observer integration and gameplay have not been validated. CMake,
 shared ledgers, runtime composition and Ghidra annotation are integrator work.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BN integration](NATIVE_CACHE_BLOCK_INTEGRATION_BN.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI analysis views and preserved comments, then refreshed exports. The node catch membership and two FH3 handler definitions are complete; earlier worker observations remain historical evidence. The package report now exposes all seven direct calls to the whole-report verifier. Fixture libraries remain pinned to BL; complete production loading, native FH3 identity and gameplay remain unproved.
