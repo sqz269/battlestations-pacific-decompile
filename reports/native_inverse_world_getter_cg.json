@@ -22,11 +22,26 @@
     "cpp_symbol": "get_native_node_inverse_world_00b6e0d0",
     "source_signature": "void* __fastcall get_native_node_inverse_world_00b6e0d0(void* actual_node)",
     "original_abi": "ECX actual node, EAX actual node+60h cache address, preserves ESI, plain RET",
-    "direct_builder_calls": ["00b4283a", "00b42f13"],
+    "direct_builder_calls": [
+      "00b4283a",
+      "00b42f13"
+    ],
     "original_calls": [
-      {"site": "00b6e0e1", "target": "00b6db70", "source_symbol": "refresh_native_camera_world_00b6db70"},
-      {"site": "00b6e0f0", "target": "00b63b30", "source_symbol": "invert_native_camera_scaled_affine_00b63b30"},
-      {"site": "00b6e0f9", "target": "004134f0", "source_symbol": "copy_native_camera_matrix_004134f0"}
+      {
+        "site": "00b6e0e1",
+        "target": "00b6db70",
+        "source_symbol": "refresh_native_camera_world_00b6db70"
+      },
+      {
+        "site": "00b6e0f0",
+        "target": "00b63b30",
+        "source_symbol": "invert_native_camera_scaled_affine_00b63b30"
+      },
+      {
+        "site": "00b6e0f9",
+        "target": "004134f0",
+        "source_symbol": "copy_native_camera_matrix_004134f0"
+      }
     ],
     "storage_contract": "Capture one flags DWORD+5C; cache hit returns actual+60; on miss optionally refresh when captured bit2 clear, invert current world+F0 into 40h stack scratch, copy into actual+60, OR current flags DWORD with8 after calls; no typed cache or repair"
   },
@@ -63,9 +78,21 @@
     "section_bytes_hex": "83ec40568bf18b465ca8087525a8027505e8000000008d96f00000008d4c2404e800000000508d4e60e800000000834e5c088d46605e83c440c3",
     "whole_comdat_matches_native_except_call_displacements": true,
     "relocations": [
-      {"offset": "12", "type": "REL32", "target_symbol": "refresh_native_camera_world_00b6db70"},
-      {"offset": "21", "type": "REL32", "target_symbol": "invert_native_camera_scaled_affine_00b63b30"},
-      {"offset": "2a", "type": "REL32", "target_symbol": "copy_native_camera_matrix_004134f0"}
+      {
+        "offset": "12",
+        "type": "REL32",
+        "target_symbol": "refresh_native_camera_world_00b6db70"
+      },
+      {
+        "offset": "21",
+        "type": "REL32",
+        "target_symbol": "invert_native_camera_scaled_affine_00b63b30"
+      },
+      {
+        "offset": "2a",
+        "type": "REL32",
+        "target_symbol": "copy_native_camera_matrix_004134f0"
+      }
     ]
   },
   "validation": {
@@ -76,5 +103,39 @@
     "scripts_build_ps1_release": "passed",
     "ctest": "1/1 reconstructed_math passed"
   },
-  "limits": "Raw source/interface upgrade only; existing typed full-function record remains. No added native EH frame, full builder composition, or game validation."
+  "limits": "Raw source/interface upgrade only; existing typed full-function record remains. No added native EH frame, full builder composition, or game validation.",
+  "primary_integration": {
+    "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+    "worker_source_commit": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+    "worker_final_commit": "9e4354598167e590d7a232263da28f3b15175323",
+    "strict_win32_build": true,
+    "seed_matches": 8,
+    "ctests_passed": 2,
+    "numeric_call_rows": 32,
+    "numeric_call_failures": 0,
+    "live_PE_spans": 52,
+    "live_PE_bytes": 12295,
+    "full_native_source_bank_variants": 2,
+    "compared_bank_bytes_per_variant": 8192,
+    "original_fixture_bodies": 27,
+    "original_fixture_bytes": 6704,
+    "saved_read_back_annotations": 17,
+    "new_descriptive_names": 4,
+    "annotation_journal": "local/ghidra-annotations-20260914T194348Z.json",
+    "independent_review_sha256": "0ba6dbf95bdbe56c296148a4a3a39bd2966dcf540070c10fb71891a1a47ec17f",
+    "checkpoint": {
+      "path": "local/checkpoints/7da09ce9/native-material-constant-build-wave/validation.json",
+      "sha256": "40e2d9986cf8c3e53cf84d715a1d9aa87081c7df36d8dde6639c4359e8e69b76",
+      "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+      "artifacts": 3516,
+      "runtime_modules": 7
+    },
+    "scope": "Full B42350 original/source fallback and optimized bank comparison plus actual texture-source providers and source retained-failure/replay guard. Shared source B48CE0, host memmove and host invalid-parameter boundaries.",
+    "limitations": [
+      "Nonempty renderer/shadow binding remains unexecuted.",
+      "Full compiler/pass/debug parent and game behavior remain unvalidated.",
+      "Original private stack/register ABI, FH3/SEH and injected cleanup exceptions are not claimed.",
+      "Worker frozen6336f486 predates primary fixes; final checkpoint covers7da09ce9."
+    ]
+  }
 }

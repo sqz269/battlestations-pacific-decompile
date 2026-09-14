@@ -543,7 +543,7 @@
     ],
     "change": "Read shader+7C count before shader+78 base once at initial search; after each match reload current shader, count, base and end before advancing current descriptor. Remove extra initial base read and unspecified function argument ordering.",
     "public_API_changed": false,
-    "validation": "Combined-library validation follows this correction; frozen worker fixture describes6336f486."
+    "validation": "Final combined7da09ce9 passed strict Win32 build, both CTests and full native/source bank fixture. All findings resolved and independently verified; checkpoint includes exact review and validation inputs."
   },
   "primary_full_listing_review_corrections": {
     "reviewer_worktree": "orch5-constant-build-review",
@@ -566,6 +566,40 @@
         "change": "Preserve FLD decode.y then MOVSS live one then FSTP scale.y, with the float remaining in ST0 across the live constant read."
       }
     ],
-    "validation": "Corrected combined build/full-bank fixture and final annotation/checkpoint follow; earlier8b2e79df annotations remain historical."
+    "validation": "Final combined7da09ce9 passed strict Win32 build, both CTests and full native/source bank fixture. All findings resolved and independently verified; checkpoint includes exact review and validation inputs."
+  },
+  "primary_integration": {
+    "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+    "worker_source_commit": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+    "worker_final_commit": "9e4354598167e590d7a232263da28f3b15175323",
+    "strict_win32_build": true,
+    "seed_matches": 8,
+    "ctests_passed": 2,
+    "numeric_call_rows": 32,
+    "numeric_call_failures": 0,
+    "live_PE_spans": 52,
+    "live_PE_bytes": 12295,
+    "full_native_source_bank_variants": 2,
+    "compared_bank_bytes_per_variant": 8192,
+    "original_fixture_bodies": 27,
+    "original_fixture_bytes": 6704,
+    "saved_read_back_annotations": 17,
+    "new_descriptive_names": 4,
+    "annotation_journal": "local/ghidra-annotations-20260914T194348Z.json",
+    "independent_review_sha256": "0ba6dbf95bdbe56c296148a4a3a39bd2966dcf540070c10fb71891a1a47ec17f",
+    "checkpoint": {
+      "path": "local/checkpoints/7da09ce9/native-material-constant-build-wave/validation.json",
+      "sha256": "40e2d9986cf8c3e53cf84d715a1d9aa87081c7df36d8dde6639c4359e8e69b76",
+      "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+      "artifacts": 3516,
+      "runtime_modules": 7
+    },
+    "scope": "Full B42350 original/source fallback and optimized bank comparison plus actual texture-source providers and source retained-failure/replay guard. Shared source B48CE0, host memmove and host invalid-parameter boundaries.",
+    "limitations": [
+      "Nonempty renderer/shadow binding remains unexecuted.",
+      "Full compiler/pass/debug parent and game behavior remain unvalidated.",
+      "Original private stack/register ABI, FH3/SEH and injected cleanup exceptions are not claimed.",
+      "Worker frozen6336f486 predates primary fixes; final checkpoint covers7da09ce9."
+    ]
   }
 }

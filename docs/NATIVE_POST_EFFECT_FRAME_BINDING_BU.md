@@ -45,3 +45,11 @@ and atomic import identities are recorded in
 generated-code inspection are the planned checks. No new test or native fixture
 is introduced for this routine assignment. Setter execution, final-zero runtime
 disposal, injected failures, SEH and gameplay remain unvalidated here.
+
+## Primary integration at7da09ce9
+
+The combined library passes strict MSVC Win32 compilation, eight native seeds, both CTests and32 numeric call rows. Fresh Ghidra and installed-PE captures match52 spans/12295 bytes. Independent review of all1125 native body lines resolved descriptor count/base capture, world-flag versus width ordering, and the live-one read between decoded component1 FLD/FSTP. Seventeen names/comments were saved and read back, including four new descriptive names; previous comments were preserved.
+
+The existing full original/source fixture compares both4096-byte banks in fallback and optimized skinning variants. It executes27 original bodies/6704 bytes, with shared source B48CE0 and host memmove/invalid-parameter boundaries. Actual texture-source providers and source retained-failure/replay checks also pass. Nonempty renderer/shadow binding, full compiler/pass/debug parents, private ABI/FH3/SEH and game execution remain unvalidated. Worker source6336f486 remains historical; final corrected source is7da09ce9.
+
+Immutable checkpoint: local/checkpoints/7da09ce9/native-material-constant-build-wave/validation.json; SHA256 40e2d9986cf8c3e53cf84d715a1d9aa87081c7df36d8dde6639c4359e8e69b76; 3516 artifacts and7 actual mapped runtime modules. It retains source/build/probe/native-byte/annotation/review inputs and outputs, compiler dependencies, searched libraries and tool/runtime closure.
