@@ -41,6 +41,15 @@ void* create_point_announcement_0049c940(PointAnnouncementManagerView,
     const std::array<float, 3>& secondary_xyz, std::int32_t descriptor,
     PointAnnouncementConstruction&);
 
+// Same complete wrapper over the actual native manager address. Its +08
+// field is read only AFTER successful allocation; negative descriptor and
+// null allocation may return with a null manager without dereferencing it.
+// This overload adds no manager owner, registry, validation or fallback.
+void* create_point_announcement_0049c940(void* actual_manager,
+    const std::array<float, 3>& captured_xyz,
+    const std::array<float, 3>& secondary_xyz, std::int32_t descriptor,
+    PointAnnouncementConstruction&);
+
 // ONLY 0049C1DB..0049C1F3 inside 0049C000, not the full constructor.
 // actual_record_xyz_08 is the existing selected record's writable XYZ storage,
 // after its native vector validation/reload. Ordered x87 FLD/FSTP copies retain
