@@ -92,6 +92,15 @@ struct GameBulletClassRow {
     float blast_damage_max{0.0f};// "Blast.BlastDamageMax"
     float blast_range{0.0f};     // "Blast.BlastRange"
     float mass{0.0f};            // "Mass"
+    // MTorpedo only. 008566B0 reads "WaterTravelSpeed" into classDesc+0E4h, and
+    // it is a different quantity from V0 at +50h: the torpedo bot's intercept
+    // solver takes +0E4h at 0090022B while the AA flak bot's call at 009031CF
+    // takes +50h, so the choice is deliberate. The swim speed is that value
+    // scaled by the double at 00D0C5E0 (0.5999994277954102), stored into the
+    // torpedo record's +470h at 0085786D..00857875.
+    // docs/TORPEDO_LAUNCH_ACCURACY.md.
+    float water_travel_speed{0.0f};   // "WaterTravelSpeed", classDesc+0E4h
+    float swim_speed{0.0f};           // record+470h = WaterTravelSpeed * 0.6
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -127,6 +136,8 @@ struct GameGunRow {
     int bullet_class{-1};
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
+    float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0
+    float swim_speed{0.0f};           // record+470h, WaterTravelSpeed * 0.6
     std::vector<bsp::GunFiringArc> arcs;   // platform+3Ch, from `Windows`
     float rest_horz{0.0f};            // "RestAngles[1]", platform+94h
     float rest_vert{0.0f};            // "RestAngles[2]", platform+90h
@@ -166,6 +177,7 @@ struct GameProjectileRow {
     float position[3]{};
     float life{0.0f};
     bool alive{false};
+    bool swimming{false};             // past the water crossing, on the swim
 };
 
 // Per unit, what the chain did to it and what it did with its guns.
@@ -235,6 +247,8 @@ struct GameGunnerySummary {
     // than the authored `Range`. Zero here means the Bullets table was not
     // reachable and category 7 is still refused on the 10.0f seed.
     unsigned long long torpedo_ranges_derived{0};
+    unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
+    unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
     unsigned long long aim_steps{0};

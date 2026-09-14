@@ -357,3 +357,55 @@ every downward water crossing.
    host's use of `008FDAF0` for category 7.
 4. **`torpedo_record_init`** — bound `00857834`'s enclosing routine, name it, and record the
    full record layout around `+470h`..`+4A0h`.
+
+## Integration result: the torpedoes hit
+
+All four prescriptions from section 7 are implemented in `src/game_hosts_gunnery.cpp`, plus the
+recovered heading snap as a new pure rule in `include/bsp/gun_heading_snap.hpp` /
+`src/gun_heading_snap.cpp`. Measured on the 3200-frame USN02 line.
+
+| counter | range fix only | all four |
+| --- | --- | --- |
+| category 7 shots | 16 | **45** |
+| category 7 `arc_blocked` | 40017 | **6657** |
+| category 7 `no_window` | 37734 | **20812** |
+| `swims_started` | 0 | **45** |
+| `snaps` | - | **79515** |
+| total shots | 241 | **273** |
+| entity impacts | 163 | **167** |
+| total damage | 14871.6 | **16472.1** |
+| water / expired | 63 / 5 | 96 / 29 |
+
+**The four extra impacts are torpedoes, not shells.** Gun shots rose by only three across
+categories 2, 3 and 6 (225 -> 228), while the per-unit table attributes the new hits precisely:
+`Java` 28 -> 30 hits and 1970 -> 2807 damage taken, `Houston` 0 -> 2 hits and 0 -> 820. That is
+about 415 damage per hit against a gun-shell average of 91, and `Houston` is a cruiser with no
+torpedo tubes that had previously taken nothing at all.
+
+### What each prescription did, measured separately
+
+- **(5) The swim phase** was the precondition: before it, `src/game_hosts_gunnery.cpp` killed every
+  projectile crossing `y = 0` downward and 12 of 16 launches ended as `water`. The round now levels
+  onto the surface plane at the swim speed. Gravity is disabled through the flight state's own
+  `class_disables_gravity` flag (`classDesc+20h`) rather than by stepping the round outside the
+  recovered `projectile_flight_step`, so the swim still runs through the reconstructed rule. The
+  life bound uses the swim speed too, which is the only way it lands on `FlyTime` as `00855A90`
+  intends.
+- **(2) The solver speed** alone made things *worse*, and the intermediate run is worth recording:
+  correcting `V0` (13 m/s) to `WaterTravelSpeed` (51.444) quadrupled the lead distance and pushed
+  the commanded heading outside the firing window far more often, taking launches from 16 down to
+  **1** and `arc_blocked` up to 53884.
+- **(3) The zero vertical** was not the binding constraint: on its own it moved `arc_blocked` only
+  from 53884 to 51587 and launches stayed at 1.
+- **(4) The heading snap** was. `arc_blocked` fell from 51587 to **6657** and launches went to 45.
+  The native does not refuse a heading outside a window - `0085AB50` -> `007F6190` snaps it up to
+  `pi/4` onto the nearest firing-window edge and fires along that edge, abandoning the shot only
+  through the `FLT_MAX` sentinel at `00D7A278`. The host had been handing the raw heading to
+  `gun_set_target_angles_0085aba0`, which refuses outright.
+
+### Still open
+
+`water = 96` and `expired = 29` say most torpedoes still miss, which is expected against a
+manoeuvring destroyer - section 6's bound put the ceiling at roughly 7% of aspects at 637 m. 45
+launches and 4 hits is 8.9%, inside that bound, so nothing here says the remaining misses are a
+defect. `deaths` is unchanged at 2.

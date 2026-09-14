@@ -17,6 +17,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gun_gravity_arc.hpp"
+#include "bsp/gun_heading_snap.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -453,7 +454,14 @@ void GameGunneryHost::Impl::build_guns() {
                 const float fly_time = lua.read_bullet_class_number(
                     gun.bullet_class, "FlyTime", 0.0f);
                 if (water_speed > 0.0f && fly_time > 0.0f) {
-                    gun.max_range = water_speed * fly_time * 0.6f;
+                    // 0085786D..00857875 stores WaterTravelSpeed * 00D0C5E0 into
+                    // the torpedo record's +470h, and 00855A90 derives the range
+                    // as that swim speed times FlyTime. Keep both: the swim speed
+                    // is what the round actually travels at once it is in the
+                    // water. docs/TORPEDO_LAUNCH_ACCURACY.md.
+                    gun.water_travel_speed = water_speed;
+                    gun.swim_speed = water_speed * 0.6f;
+                    gun.max_range = gun.swim_speed * fly_time;
                     ++summary.torpedo_ranges_derived;
                 }
             }
@@ -466,6 +474,8 @@ void GameGunneryHost::Impl::build_guns() {
                 b.found = true;
                 b.muzzle_speed = gun.muzzle_speed;
                 b.range = gun.max_range;
+                b.water_travel_speed = gun.water_travel_speed;
+                b.swim_speed = gun.swim_speed;
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
                 b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
                 b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
@@ -1186,9 +1196,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                 // The torpedo bot runs its own intercept solver and its round
                 // does not fall, so no gravity term is added.
-                if (gun.muzzle_speed > 0.0f
+                // 0090022B loads [[gun+3F8h]+34h]+0E4h, WaterTravelSpeed, for
+                // the torpedo bot's solver, while the AA flak bot's call at
+                // 009031CF takes +50h (V0) - the choice is deliberate and the
+                // host had been passing V0. For the Mark 15 that is 13 against
+                // 51.444, and at 13 m/s the quadratic's leading coefficient
+                // turns positive and no aspect has a solution against an 18.78
+                // m/s destroyer, so the solver answered nothing on every launch.
+                // docs/TORPEDO_LAUNCH_ACCURACY.md.
+                const float solver_speed = gun.water_travel_speed > 0.0f
+                    ? gun.water_travel_speed : gun.muzzle_speed;
+                if (solver_speed > 0.0f
                     && bsp::torpedo_intercept_point_008fbb00(shooter, at,
-                        gun.muzzle_speed, v, lead)) {
+                        solver_speed, v, lead)) {
                     done("GunBot::intercept_point_008fbb00", 0x008fbb00u);
                 } else {
                     lead = at;
@@ -1259,6 +1279,37 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float vertical = std::max(-1.0f,
                     std::min(1.0f, dot3(unit_delta, up)));
                 want_vert = std::asin(vertical) + pitch;
+                if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
+                    // 008FFF20 step 8 at 00900380 does NOT refuse a heading that
+                    // falls outside a firing window: 0085AB50 -> 007F6190 snaps
+                    // it up to pi/4 onto the nearest window edge and fires along
+                    // that edge, abandoning the shot only when no window's
+                    // horizontal bounds hold the heading at all or the snap
+                    // exceeds the limit. The host had been handing the raw
+                    // heading to gun_set_target_angles_0085aba0, which refuses
+                    // outright, so a torpedo mount almost never opened a launch
+                    // window. docs/TORPEDO_LAUNCH_ACCURACY.md.
+                    const bsp::GunPlatformArcs snap_arcs{gun.arcs.data(),
+                        gun.arcs.size()};
+                    const float snapped = bsp::gun_snap_heading_to_fire_window_007f6190(
+                        snap_arcs, want_horz, kQuarterPi);
+                    if (bsp::gun_heading_snap_failed(snapped)) {
+                        have_target = false;          // 00900392..009003A2
+                    } else {
+                        want_horz = snapped;
+                        ++summary.torpedo_heading_snaps;
+                    }
+                    done("GunBot::snap_heading_to_fire_window_007f6190", 0x007f6190u);
+                    // 009003DD commands a hard 0.0f vertical for the torpedo bot.
+                    // Every torpedo platform in this installation's
+                    // vehicleclasses.lua authors its one window with
+                    // MinVertAngle == MaxVertAngle == 0, so any computed
+                    // depression is refused outright by
+                    // gun_set_target_angles_0085aba0 and the mount never opens a
+                    // launch window. docs/TORPEDO_LAUNCH_ACCURACY.md.
+                    want_vert = 0.0f;
+                }
+
                 done("GunBot::angles_from_world_direction_008fdaf0", 0x008fdaf0u);
             }
             if (!arc_solved) {
@@ -1581,6 +1632,39 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // behind it: open sea is height zero.
         if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
             ++summary.water_crossings;
+            // A torpedo does not die at the surface: it enters its swim. The
+            // round's record carries a swim speed at +470h, written at
+            // 0085786D..00857875 as WaterTravelSpeed * the double at 00D0C5E0
+            // (0.5999994277954102), and 00855A90 derives the engagement range as
+            // that speed times FlyTime - so the authored range only makes sense
+            // if the round actually travels at it underwater. Before this, every
+            // torpedo was killed on the frame it touched the sea and 12 of 16
+            // launches ended as `water`. docs/TORPEDO_LAUNCH_ACCURACY.md.
+            const GameBulletClassRow* const entry = bullet(shot.bullet_class);
+            const float swim = entry != nullptr ? entry->swim_speed : 0.0f;
+            if (swim > 0.0f && !shot.swimming) {
+                shot.swimming = true;
+                // Level the round onto the surface plane at the swim speed,
+                // keeping the heading the launch gave it. Gravity is turned off
+                // through the flight state's own classDesc[+20h] flag rather
+                // than by stepping the round outside the recovered
+                // projectile_flight_step, so the swim still runs through the
+                // reconstructed rule.
+                shot.flight.class_disables_gravity = true;
+                const float vx = shot.flight.velocity.x;
+                const float vz = shot.flight.velocity.z;
+                const float horizontal = std::sqrt(vx * vx + vz * vz);
+                if (horizontal > 0.0f) {
+                    shot.flight.velocity.x = vx / horizontal * swim;
+                    shot.flight.velocity.z = vz / horizontal * swim;
+                }
+                shot.flight.velocity.y = 0.0f;
+                shot.position[1] = 0.0f;
+                shot.flight.local_position.y = 0.0f;
+                shot.flight.snapshot_current.y = 0.0f;
+                ++summary.torpedo_swims_started;
+                continue;
+            }
             ++summary.impacts_static;
             done("Projectile::water_crossing_0078d1b0", 0x0078d1b0u);
             shot.alive = false;
@@ -1588,8 +1672,13 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         const GameBulletClassRow* row = bullet(shot.bullet_class);
         const float range = row != nullptr ? row->range : 0.0f;
-        const float speed = row != nullptr && row->muzzle_speed > 0.0f
-            ? row->muzzle_speed : 1.0f;
+        // Once swimming, the round travels at the swim speed, which is the
+        // speed 00855A90's range was derived against (swim * FlyTime), so the
+        // life bound only lands on FlyTime if the same speed is used here.
+        const float cruise = shot.swimming && row != nullptr && row->swim_speed > 0.0f
+            ? row->swim_speed
+            : (row != nullptr && row->muzzle_speed > 0.0f ? row->muzzle_speed : 1.0f);
+        const float speed = cruise;
         if (range > 0.0f && shot.life * speed > range) {
             ++summary.expired;
             shot.alive = false;
@@ -1976,8 +2065,9 @@ void GameGunneryHost::report() {
         s.assigns_from_arm ? s.arm_reach_fraction_sum / double(s.assigns_from_arm) : 0.0,
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
-    host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu",
-        s.torpedo_ranges_derived);
+    host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
+        "swims_started=%llu snaps=%llu", s.torpedo_ranges_derived,
+        s.torpedo_swims_started, s.torpedo_heading_snaps);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",
