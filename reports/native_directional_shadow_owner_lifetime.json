@@ -1,0 +1,1199 @@
+{
+  "packet": "orch3_native_directional_shadow_owner_lifetime_du",
+  "base_commit": "1971cf077797e63b4c7fb7e961293977a7694176",
+  "status": "complete_source_build_tested_generated_order_reviewed_with_explicit_provider_and_abi_limits",
+  "source": "src/native_directional_shadow_owner_lifetime.cpp",
+  "header": "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+  "documentation": "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md",
+  "normal_body_count": 3,
+  "normal_body_bytes": 550,
+  "unwind_action_count": 1,
+  "unwind_action_bytes": 8,
+  "native_bytes": 558,
+  "routines": [
+    {
+      "address": "00a8dec0",
+      "end_inclusive": "00a8e086",
+      "native_bytes": 455,
+      "coverage": "complete",
+      "source_function": "destroy_native_directional_shadow_owner_00a8dec0",
+      "original_metadata": {
+        "address": "00a8dec0",
+        "proto": "00a8dec0 FUN_00a8dec0  undefined FUN_00a8dec0(void)  body 00a8dec0 - 00a8e086\n",
+        "comments": "[\n {\n  \"address\": \"00a8dec0\",\n  \"annotation\": {\n   \"address\": \"00a8dec0\",\n   \"function_name\": \"FUN_00a8dec0\"\n  }\n }\n]\n",
+        "xrefs": "From 00cb6553 in Unwind@00cb6550 [UNCONDITIONAL_CALL]\nFrom 00a8e163 in CG_scalar_deleting_dtor_00a8e160 [UNCONDITIONAL_CALL]\nFrom 00a8fcd3 in CG_scalar_deleting_dtor_00a8fcd0 [UNCONDITIONAL_CALL]\n"
+      },
+      "native_hex": "6aff68d863cb0064a1000000005064892500000000515355568bf15789742410c70674b5d5008bbe040500008b2d2022ce0033db3bfb895c241c74188d470450ffd585c075088b178b028bcfffd0899e040500008b7e103bfb74158d4f0451ffd585c075088b178b028bcfffd0895e108b7e143bfb74158d4f0451ffd585c075088b178b028bcfffd0895e148b7e183bfb74158d4f0451ffd585c075088b178b028bcfffd0895e188b7e1c3bfb74158d4f0451ffd585c075088b178b028bcfffd0895e1c8b4e2053e8033a0e008b4e203bcb7408e807000e00895e208b4e2453e8eb390e008b4e243bcb7408e8efff0d00895e248b4e2853e8d3390e008b4e283bcb7408e8d7ff0d00895e288b4e2c53e8bb390e008b4e2c3bcb7408e8bfff0d00895e2c8bbe840300003bfb74188d4f0451ffd585c075088b178b028bcfffd0899e840300008d9ef0040000bd040000008b3b85ff741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c30483ed0175d68bbe0005000085ff74208d4f0451ff152022ce0085c075088b178b028bcfffd0c78600050000000000008bcec744241cffffffffe87c5014008b4c24145f5e5d5b64890d0000000083c410c3",
+      "native_sha256": "b449ab693f8fa225a4c85d4b65dc996e7f46f8b0b085b7c959bb6eed56bb8550",
+      "installed_pe_offset": 6872768,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00a8fcd0",
+      "end_inclusive": "00a8fced",
+      "native_bytes": 30,
+      "coverage": "complete",
+      "source_function": "delete_native_directional_shadow_owner_00a8fcd0",
+      "original_metadata": {
+        "address": "00a8fcd0",
+        "proto": "00a8fcd0 CG_scalar_deleting_dtor_00a8fcd0  undefined CG_scalar_deleting_dtor_00a8fcd0(void)  body 00a8fcd0 - 00a8fced\n",
+        "comments": "[\n {\n  \"address\": \"00a8fcd0\",\n  \"annotation\": {\n   \"address\": \"00a8fcd0\",\n   \"function_name\": \"CG_scalar_deleting_dtor_00a8fcd0\"\n  }\n }\n]\n",
+        "xrefs": "From 00d5b5dc [DATA]\n"
+      },
+      "native_hex": "568bf1e8e8e1fffff644240801740956e8c768160083c4048bc65ec20400",
+      "native_sha256": "6681dcd6540bf390c3d5a85a339cbc5dbcb137c39e9c6f608cfcb142622097bf",
+      "installed_pe_offset": 6880464,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00b7bdf0",
+      "end_inclusive": "00b7be30",
+      "native_bytes": 65,
+      "coverage": "complete",
+      "source_function": "set_native_directional_light_shadow_owner_00b7bdf0",
+      "original_metadata": {
+        "address": "00b7bdf0",
+        "proto": "00b7bdf0 FUN_00b7bdf0  undefined FUN_00b7bdf0(void)  body 00b7bdf0 - 00b7be30\n",
+        "comments": "[\n {\n  \"address\": \"00b7bdf0\",\n  \"annotation\": {\n   \"address\": \"00b7bdf0\",\n   \"function_name\": \"FUN_00b7bdf0\"\n  }\n }\n]\n",
+        "xrefs": "From 00ba1ef7 in FUN_00ba1400 [UNCONDITIONAL_CALL]\nFrom 004df3d6 in BSP_Game_ConstructWorld [UNCONDITIONAL_CALL]\nFrom 00504657 in FUN_00504130 [UNCONDITIONAL_CALL]\nFrom 005ab359 in BSP_HudMapScreen_Register [UNCONDITIONAL_CALL]\nFrom 0067f39b in FUN_0067f080 [UNCONDITIONAL_CALL]\n"
+      },
+      "native_hex": "8b442404568bb1740100003bf0742e85c0898174010000740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "native_sha256": "487ef62dcfdc3741edc8e55d6b622c86dc79ecf884bd61ef6fee82bb52f090fb",
+      "installed_pe_offset": 7847408,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00cb63d0",
+      "end_inclusive": "00cb63d7",
+      "native_bytes": 8,
+      "coverage": "complete action",
+      "source_function": "unwind_native_directional_shadow_base_00cb63d0",
+      "original_metadata": {
+        "address": "00cb63d0",
+        "proto": "00cb63d0 Unwind@00cb63d0  undefined Unwind@00cb63d0(void)  body 00cb63d0 - 00cb63d7\n",
+        "comments": "[\n {\n  \"address\": \"00cb63d0\",\n  \"annotation\": {\n   \"address\": \"00cb63d0\",\n   \"function_name\": \"Unwind@00cb63d0\"\n  }\n }\n]\n",
+        "xrefs": "From 00dec620 [DATA]\n"
+      },
+      "native_hex": "8b4df0e918cdf1ff",
+      "native_sha256": "0317f439d6dc14f70e4ea2b83f7c450e7fc33c658a965ea88cce2ba56ced180e",
+      "installed_pe_offset": 9135056,
+      "fresh_live_installed_identity": true
+    }
+  ],
+  "original_abi": {
+    "setter": "ECX actual light; [entry ESP+4] replacement pointer captured first; ESI preserved; RET4; no semantic EAX result established; no local EH frame.",
+    "factory": "ECX borrowed actual light, no public stack argument, EAX actual owner or null, RET. World XOR DL,DL is not consumed by the reviewed factory/open constructor argument forwarding.",
+    "constructors": "ECX actual storage, public stacked borrowed light pointer, original EAX=this/RET4 recorded by prior discovery report; only prefixes freshly reviewed here.",
+    "complete_destructor": "ECX actual 508h owner, no public stack arguments, RET; EBX/EBP/ESI/EDI preserved, FH3 state0 base-only unwind.",
+    "deleting_destructors": "ECX owner, public DWORD flags slot with low-byte bit0 test, preserve original identity in ESI, call complete destructor then BF65AC only on bit0. Returning free tail ADD ESP,4; EAX=original; RET4.",
+    "slot0": "BD30E0 takes ECX owner and no flags; null returns. Otherwise capture current profile, load current slot+04, push1, call terminal. It does not decrement."
+  },
+  "source_abi": "Explicit raw owner/light, borrowed actual provider context; A8FCD0 borrows actual public flags word and reads low byte after normal destruction. CB63D0 source receives owner explicitly instead of consuming native EBP-10h. Not drop-in original ABI.",
+  "call_steps": [
+    {
+      "address": "00a8df00",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 504; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df0c",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 504; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df0e"
+    },
+    {
+      "address": "00a8df1f",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 10; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df2b",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 10; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df2d"
+    },
+    {
+      "address": "00a8df3b",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 14; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df47",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 14; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df49"
+    },
+    {
+      "address": "00a8df57",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 18; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df63",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 18; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df65"
+    },
+    {
+      "address": "00a8df73",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 1c; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df7f",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 1c; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df81"
+    },
+    {
+      "address": "00a8dff2",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 384; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8dffe",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 384; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e000"
+    },
+    {
+      "address": "00a8e01b",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 4f0,4f4,4f8,4fc in ascending four-entry loop; stdcall one pointer, RET4; fresh current import cell only after nonnull field",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "[00ce2220]"
+    },
+    {
+      "address": "00a8e02b",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 4f0,4f4,4f8,4fc in ascending four-entry loop; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e02d"
+    },
+    {
+      "address": "00a8e049",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 500; stdcall one pointer, RET4; fresh current import cell only after nonnull field",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "[00ce2220]"
+    },
+    {
+      "address": "00a8e059",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 500; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e05b"
+    },
+    {
+      "address": "00a8df88",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+20 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8df94",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+20 at 00a8df8d; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8df99"
+    },
+    {
+      "address": "00a8dfa0",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+24 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfac",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+24 at 00a8dfa5; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfb1"
+    },
+    {
+      "address": "00a8dfb8",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+28 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfc4",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+28 at 00a8dfbd; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfc9"
+    },
+    {
+      "address": "00a8dfd0",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+2c camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfdc",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+2c at 00a8dfd5; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfe1"
+    },
+    {
+      "address": "00a8e06f",
+      "native": "00bd30f0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "ECX captured owner after state0 disarm; no arguments, RET; stamp CEB130 only"
+    },
+    {
+      "address": "00a8fcd3",
+      "native": "00a8dec0",
+      "function": "00a8fcd0",
+      "kind": "call",
+      "contract": "ECX captured owner, no stacked arguments, RET"
+    },
+    {
+      "address": "00a8fce0",
+      "native": "00bf65ac",
+      "function": "00a8fcd0",
+      "kind": "call",
+      "contract": "Only normal destruction and late flags low-byte bit0; push original owner; cdecl ADD ESP,4 at A8FCE5; EAX original, RET4 afterward"
+    },
+    {
+      "address": "00b7be0d",
+      "native": "00ce221c+IAT",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "After publication retain nonnull captured incoming+4 using current import callable; stdcall one pointer/RET4",
+      "import_cell": "00ce221c",
+      "external_symbol": "InterlockedIncrement",
+      "external_address": "EXTERNAL:0000015c"
+    },
+    {
+      "address": "00b7be1b",
+      "native": "00ce2220+IAT",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "After retain callback decrement captured old+4 using current import callable; stdcall one pointer/RET4",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d"
+    },
+    {
+      "address": "00b7be2b",
+      "native": "00bd30e0",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "Only final zero: current old profile/current slot0; ECX old, no stacked flags, RET",
+      "resolved_indirect": true
+    },
+    {
+      "address": "00cb63d3",
+      "native": "00bd30f0",
+      "function": "00cb63d0",
+      "kind": "tail_jump",
+      "contract": "ECX from native [EBP-10h]; base-only state0 action, no unvisited-member cleanup or allocation free"
+    },
+    {
+      "address": "00ba1ef7",
+      "native": "00b7bdf0",
+      "function": "00ba1400",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "004df3d6",
+      "native": "00b7bdf0",
+      "function": "004de610",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00504657",
+      "native": "00b7bdf0",
+      "function": "00504130",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "005ab359",
+      "native": "00b7bdf0",
+      "function": "005ab190",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "0067f39b",
+      "native": "00b7bdf0",
+      "function": "0067f080",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00a8e163",
+      "native": "00a8dec0",
+      "function": "00a8e160",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00cb6553",
+      "native": "00a8dec0",
+      "function": "00cb6550",
+      "kind": "tail_jump",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    }
+  ],
+  "concrete_bd30e0_targets": [
+    {
+      "address": "00bd30eb",
+      "native": "00a8fcd0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5b5d8",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b1f8f0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5e5f8",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b3f590",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d61948",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b1fcf0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5e600",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    }
+  ],
+  "destructor_contract": {
+    "profile_entry": "00a8dee0 stamps D5B574 before payload release",
+    "iat_timing": "00a8deec captures current CE2220 into EBP once, before state0/first release. This captured callable serves five viewport releases and fallback+384, across camera callbacks. Target-group loop at A8E01B and final group at A8E049 each load current CE2220 afresh.",
+    "intrusive_release_order": [
+      {
+        "field": "504",
+        "decrement": "00a8df00",
+        "slot0": "00a8df0c",
+        "clear": "00a8df0e"
+      },
+      {
+        "field": "10",
+        "decrement": "00a8df1f",
+        "slot0": "00a8df2b",
+        "clear": "00a8df2d"
+      },
+      {
+        "field": "14",
+        "decrement": "00a8df3b",
+        "slot0": "00a8df47",
+        "clear": "00a8df49"
+      },
+      {
+        "field": "18",
+        "decrement": "00a8df57",
+        "slot0": "00a8df63",
+        "clear": "00a8df65"
+      },
+      {
+        "field": "1c",
+        "decrement": "00a8df73",
+        "slot0": "00a8df7f",
+        "clear": "00a8df81"
+      },
+      {
+        "field": "384",
+        "decrement": "00a8dff2",
+        "slot0": "00a8dffe",
+        "clear": "00a8e000"
+      },
+      {
+        "field": "4f0,4f4,4f8,4fc in ascending four-entry loop",
+        "decrement": "00a8e01b",
+        "slot0": "00a8e02b",
+        "clear": "00a8e02d"
+      },
+      {
+        "field": "500",
+        "decrement": "00a8e049",
+        "slot0": "00a8e059",
+        "clear": "00a8e05b"
+      }
+    ],
+    "camera_order": [
+      {
+        "field": "20",
+        "clear_viewport_call": "00a8df88",
+        "reload": "00a8df8d",
+        "unlink_release_call": "00a8df94",
+        "field_zero": "00a8df99"
+      },
+      {
+        "field": "24",
+        "clear_viewport_call": "00a8dfa0",
+        "reload": "00a8dfa5",
+        "unlink_release_call": "00a8dfac",
+        "field_zero": "00a8dfb1"
+      },
+      {
+        "field": "28",
+        "clear_viewport_call": "00a8dfb8",
+        "reload": "00a8dfbd",
+        "unlink_release_call": "00a8dfc4",
+        "field_zero": "00a8dfc9"
+      },
+      {
+        "field": "2c",
+        "clear_viewport_call": "00a8dfd0",
+        "reload": "00a8dfd5",
+        "unlink_release_call": "00a8dfdc",
+        "field_zero": "00a8dfe1"
+      }
+    ],
+    "camera_contract": "B71990(actual current camera,null) executes unconditionally. Only then reload this field; if nonnull call B6DFA0 on the reloaded identity and clear after return. Do not skip initial null or cache the first camera across its callback. Resolve canonical existing companions independently at the two actual read points.",
+    "child_zero_contract": "For each captured intrusive owner, after its count becomes zero, load its current profile/current slot0. BD30E0 performs another current profile/+04 load before flags1 terminal dispatch. Clear containing field only after normal callback return.",
+    "eh": {
+      "handler": "00cb63d8",
+      "funcinfo": "00dec624",
+      "max_state": 1,
+      "map": "00dec61c",
+      "state0_next": -1,
+      "action": "00cb63d0: MOV ECX,[EBP-10]; JMP BD30F0",
+      "state0_armed": "00a8def6",
+      "normal_disarm": "00a8e067",
+      "normal_base_call": "00a8e06f",
+      "meaning": "A throwing payload release restores only CEB130 via existing BD30F0. It does not replay completed destructors, finish unvisited fields or free the508h allocation. A8FCD0 free runs only after normal A8DEC0 return."
+    },
+    "untouched": "No destructor release of borrowed+0c, transient+30 or copied+34; do not invent it. +30 omitted release was recorded by prior report and current full destructor confirms no access."
+  },
+  "setter_contract": {
+    "sequence": [
+      "B7BDF0 captures stack replacement before saving ESI; B7BDF5 captures old light+174.",
+      "B7BDFB compares identities; equal returns without counts/profile reads or callbacks.",
+      "B7BE01 publishes incoming before any intrusive operation; nonnull incoming retains through current CE221C at B7BE0D.",
+      "Captured nonnull old decrements through current CE2220 at B7BE1B.",
+      "Only zero reads CURRENT old profile at B7BE25, CURRENT slot0 at B7BE27, invokes at B7BE2B with ECX=old and no stacked flags.",
+      "No second light-slot write, post-terminal clear, rollback, guard retain or owner fabrication."
+    ],
+    "reentrancy": "A callback may replace light+174 again; outer call uses captured old and must not restore/clear the current slot afterwards. Keep storage/providers valid at each native read. No new prohibition on supported synchronous callback replacement; concurrent unsynchronized mutation is outside existing source domain.",
+    "exceptions": "The body has no cleanup state. Any supported callback exception leaves all completed writes/count changes intact. A source diagnostic is not native exception parity and must not create rollback or owner destruction."
+  },
+  "producer_evidence": {
+    "world_owner_function": "004de610",
+    "world_sites": {
+      "light_input": "004df3c0 loads game+19f8 into ECX",
+      "factory": "004df3c8",
+      "published_light_reload": "004df3cd reloads game+19f8",
+      "capture_owner": "004df3d3 EDI=EAX",
+      "setter_argument": "004df3d5 PUSH EDI",
+      "setter": "004df3d6",
+      "creator_decrement": "004df3e5 via captured CE2220",
+      "creator_zero_current_slot0": "004df3f1"
+    },
+    "world_limit": "World unconditionally forms EDI+4 and decrements after factory/setter; factory-null is not repaired here. Authored follow-up optionally writes scene+a84 to current light shadow+08. No semantic name for +08 is added.",
+    "factory_sites": [
+      {
+        "site": "00a8fd4e",
+        "target": "00bf681b",
+        "contract": "allocate508h"
+      },
+      {
+        "site": "00a8fd69",
+        "target": "00a8fa30",
+        "contract": "ECX raw result; stacked captured light"
+      }
+    ],
+    "derived_sites": [
+      {
+        "site": "00a8fa57",
+        "target": "00a8e2e0",
+        "contract": "forwards light pointer into base constructor"
+      },
+      {
+        "site": "00a8fa6a",
+        "write": "[this]=00d5b5d8"
+      }
+    ],
+    "base_prefix": {
+      "reference_one": "00a8e30d [this+04]=1",
+      "base_profile": "00a8e317 [this]=00d5b574",
+      "borrowed_light": "00a8e37d [this+0c]=stack light",
+      "copied_word": "00a8e380 reads light+a4, 00a8e388 stores owner+34"
+    },
+    "profiles": {
+      "final": {
+        "address": "00d5b5d8",
+        "slot0": "00bd30e0",
+        "slot4": "00a8fcd0",
+        "slot8": "00a8fcf0",
+        "slotC": "00a8fd10"
+      },
+      "base": {
+        "address": "00d5b574",
+        "slot0": "00bd30e0",
+        "slot4": "00a8e160"
+      }
+    },
+    "narrow_domain": "Factory-established final D5B5D8 is sufficient for the proposed setter terminal domain. D5B574/A8E160 was also concretely proved; it need not be reconstructed for publication of fully constructed final owners. Unknown current profiles are not silently mapped to this destructor."
+  },
+  "source_cleanup": {
+    "state0": "Armed after base stamp, captured+504 and current CE2220 read; normal disarm immediately before BD30F0. Ordinary source C++ unwind and source binding diagnostics restore only base; no retry, unfinished cleanup or free.",
+    "flags": "Borrowed actual word storage read as one low byte after complete destructor normal return. Incoming identity retained for returned EAX semantics.",
+    "camera": "Independently nonallocating exact-key attachments.find_actual_node and checked NativeCameraReference at each actual native field read. No second map, retain, registration, allocation or default owner.",
+    "reentrancy": "Captured outgoing/current publication semantics retained. Context/provider/actual storage and canonical companions survive callbacks; no extra ban on supported synchronous replacement."
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fresh_live_pe_evidence_bytes": 1021,
+  "incoming_calls": {
+    "count": 8,
+    "setter": 5,
+    "destructor": 3,
+    "artifact": "local/du-caller-contexts.json",
+    "complete_containing_listing_instructions": 6406,
+    "sites": [
+      {
+        "site": "00ba1ef7",
+        "callee": "00b7bdf0",
+        "containing_function": "00ba1400",
+        "kind": "call"
+      },
+      {
+        "site": "004df3d6",
+        "callee": "00b7bdf0",
+        "containing_function": "004de610",
+        "kind": "call"
+      },
+      {
+        "site": "00504657",
+        "callee": "00b7bdf0",
+        "containing_function": "00504130",
+        "kind": "call"
+      },
+      {
+        "site": "005ab359",
+        "callee": "00b7bdf0",
+        "containing_function": "005ab190",
+        "kind": "call"
+      },
+      {
+        "site": "0067f39b",
+        "callee": "00b7bdf0",
+        "containing_function": "0067f080",
+        "kind": "call"
+      },
+      {
+        "site": "00a8e163",
+        "callee": "00a8dec0",
+        "containing_function": "00a8e160",
+        "kind": "call"
+      },
+      {
+        "site": "00a8fcd3",
+        "callee": "00a8dec0",
+        "containing_function": "00a8fcd0",
+        "kind": "call"
+      },
+      {
+        "site": "00cb6553",
+        "callee": "00a8dec0",
+        "containing_function": "00cb6550",
+        "kind": "tail_jump"
+      }
+    ]
+  },
+  "source_sha256": {
+    "include/bsp/native_directional_shadow_owner_lifetime.hpp": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+    "src/native_directional_shadow_owner_lifetime.cpp": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+    "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md": "9a1609982e7479bf18d9f60556bd8f1a9cd3874ad454eb2d57a205c13571c877",
+    "cmake/startup.cmake": "35603daeb15bf84c7f06e459147489e92105013f7e22433cf00e8152f411f4ed"
+  },
+  "provider_pins": [
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 80,
+          "text": "GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;"
+        },
+        {
+          "line": 133,
+          "text": "void release_zero_references() noexcept override;"
+        },
+        {
+          "line": 169,
+          "text": "void release_zero_references() noexcept override;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 117,
+          "text": "void set_native_camera_viewport_00b71990(NativeCameraOwner&, NativeViewportOwner*);"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_camera_reference.hpp",
+      "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 41,
+          "text": "void release_zero_references() noexcept override;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 51,
+          "text": "void destroy_native_frame_target_owner_00b1fc00("
+        },
+        {
+          "line": 56,
+          "text": "NativeFrameTargetOwnerStorage* delete_native_frame_target_owner_00b1fcf0("
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": []
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 16,
+          "text": "void invoke_native_ref_counted_delete_00bd30e0(void*, NativeRefCountedDeleteCalls&);"
+        },
+        {
+          "line": 20,
+          "text": "void __fastcall destroy_native_ref_counted_base_00bd30f0(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_owner_texture_release.hpp",
+      "sha256": "b42b42f25a916289d5398c8ca4b69cb226604c809092df9d13b937c50e9bc8c0",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": []
+    },
+    {
+      "path": "include/bsp/native_shader_shadow_source.hpp",
+      "sha256": "45094ffbe1aca7e24030223cbcd994848edc238e0863d1129c3ad402b77c7d9e",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": []
+    },
+    {
+      "path": "include/bsp/native_shadow_texture_access.hpp",
+      "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": []
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 43,
+          "text": "void destroy_native_texture_2d_00b3f2e0("
+        },
+        {
+          "line": 49,
+          "text": "void* delete_native_texture_2d_00b3f590(void* actual_owner,"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_viewport_owner.hpp",
+      "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 104,
+          "text": "NativeViewportOwner* delete_native_viewport_owner_00b1f8f0("
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 21,
+          "text": "virtual void release_zero_references() noexcept = 0;"
+        },
+        {
+          "line": 42,
+          "text": "void release_zero_references() noexcept override;"
+        },
+        {
+          "line": 51,
+          "text": "void release_zero_references() noexcept override;"
+        },
+        {
+          "line": 109,
+          "text": "void unlink_and_release_render_model_00b6dfa0(RenderCommandModelLifetime&) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 20,
+          "text": "void singleton_lifetime_free(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 114,
+          "text": "GeneratedModelNodeLifetime* GeneratedModelLifetimeRuntime::find_actual_node(std::uint32_t key) const noexcept {"
+        },
+        {
+          "line": 145,
+          "text": "void GeneratedModelGeometryReference::release_zero_references() noexcept { delete this; }"
+        },
+        {
+          "line": 162,
+          "text": "void GeneratedModelLifetime::release_zero_references() noexcept {"
+        }
+      ]
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 368,
+          "text": "void set_native_camera_viewport_00b71990(NativeCameraOwner& owner, NativeViewportOwner* value) {"
+        }
+      ]
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 76,
+          "text": "void NativeCameraReference::release_zero_references() noexcept {"
+        }
+      ]
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 132,
+          "text": "void destroy_native_frame_target_owner_00b1fc00("
+        },
+        {
+          "line": 144,
+          "text": "singleton_lifetime_free(pointer(word(address(&owner, 0x1c))));"
+        },
+        {
+          "line": 149,
+          "text": "NativeFrameTargetOwnerStorage* delete_native_frame_target_owner_00b1fcf0("
+        },
+        {
+          "line": 153,
+          "text": "destroy_native_frame_target_owner_00b1fc00(owner, context);"
+        },
+        {
+          "line": 154,
+          "text": "if ((flags & 1u) != 0) singleton_lifetime_free(original_address);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 4,
+          "text": "void invoke_native_ref_counted_delete_00bd30e0(void* owner,"
+        },
+        {
+          "line": 14,
+          "text": "__declspec(naked) void __fastcall destroy_native_ref_counted_base_00bd30f0(void*) noexcept {"
+        },
+        {
+          "line": 23,
+          "text": "jmp destroy_native_ref_counted_base_00bd30f0"
+        }
+      ]
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 205,
+          "text": "void destroy_native_texture_2d_00b3f2e0(void* owner, NativeTexture2DOwnerContext& context) {"
+        },
+        {
+          "line": 257,
+          "text": "void* delete_native_texture_2d_00b3f590(void* owner,"
+        },
+        {
+          "line": 259,
+          "text": "destroy_native_texture_2d_00b3f2e0(owner, context);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 98,
+          "text": "singleton_lifetime_free(storage);"
+        },
+        {
+          "line": 121,
+          "text": "if (owner) (void)delete_native_viewport_owner_00b1f8f0(owner, 1);"
+        },
+        {
+          "line": 123,
+          "text": "NativeViewportOwner* delete_native_viewport_owner_00b1f8f0("
+        },
+        {
+          "line": 130,
+          "text": "if ((flags & 1u) != 0) singleton_lifetime_free(owner);"
+        }
+      ]
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 29,
+          "text": "reference.release_zero_references();"
+        },
+        {
+          "line": 41,
+          "text": "void RenderCommandBatch::release_zero_references() noexcept { delete this; }"
+        },
+        {
+          "line": 47,
+          "text": "void RenderCommandContext::release_zero_references() noexcept {"
+        },
+        {
+          "line": 102,
+          "text": "void unlink_and_release_render_model_00b6dfa0(RenderCommandModelLifetime& lifetime) noexcept {"
+        },
+        {
+          "line": 142,
+          "text": "unlink_and_release_render_model_00b6dfa0(lifetimes.for_model(*model));"
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "review": "existing concrete provider source/header contract; no new full-body credit",
+      "anchors": [
+        {
+          "line": 65,
+          "text": "void singleton_lifetime_free(void* pointer) noexcept {"
+        },
+        {
+          "line": 99,
+          "text": "singleton_lifetime_free(owned_section_);"
+        },
+        {
+          "line": 101,
+          "text": "singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "line": 181,
+          "text": "singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "line": 293,
+          "text": "singleton_lifetime_free(slots_.begin);"
+        },
+        {
+          "line": 307,
+          "text": "singleton_lifetime_free(owned_section_);"
+        },
+        {
+          "line": 330,
+          "text": "singleton_lifetime_free(storage);"
+        },
+        {
+          "line": 339,
+          "text": "singleton_lifetime_free(manager);"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "local/dt-shadow-owner-replacement-admission.json",
+      "sha256": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa"
+    },
+    {
+      "path": "local/dt-shadow-owner-replacement-admission.md",
+      "sha256": "922ceb49899857b476265f0792b6372a9e75980cdbb3206a8ef16b3ec9f173ad"
+    },
+    {
+      "path": "local/du-native-evidence.json",
+      "sha256": "ab9ad65e8d2bab37258a4b1c304dc52eda2628c78ed10373664a1caf66c34596"
+    },
+    {
+      "path": "local/du-caller-contexts.json",
+      "sha256": "53e5d381b84bb83bd1096045fb3c2b7eb4fa13a841681ff2ce1d20bbaa3a81be"
+    },
+    {
+      "path": "local/du-a8dec0-disasm.txt",
+      "sha256": "083ed6ee3ab29e96df97dfddb727b265baa0c9ca9eceed303279f6b2f82dfc60"
+    },
+    {
+      "path": "local/du-seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/du-capture-evidence.py",
+      "sha256": "2aee26d60e95405c3acb2ba9ecf1c174c18140b6ca85befa90b889a92a775822"
+    },
+    {
+      "path": "local/du-capture-callers.py",
+      "sha256": "835776ad07dbd8dd5cfb29dfd9d8c67e27855c7964545a7515e9d9ed499a0c86"
+    },
+    {
+      "path": "local/du-build-input-pins.json",
+      "sha256": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52"
+    },
+    {
+      "path": "local/du-build-attempt1-input-pins.json",
+      "sha256": "665343c58c22211c8ada9e4ed52c9c4b48d4d79e8ba060249faa2ffbe7c301b5"
+    },
+    {
+      "path": "local/du-build-attempt1.log",
+      "sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4"
+    },
+    {
+      "path": "local/du-build.log",
+      "sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49"
+    },
+    {
+      "path": "local/du-report-calls.log",
+      "sha256": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795"
+    },
+    {
+      "path": "local/du-import-call-evidence.json",
+      "sha256": "7c6f3e6eb89a782ab419073514c449e5098832a04c001b7fbea0d9df5a0e1896"
+    },
+    {
+      "path": "local/du-object-disassembly.txt",
+      "sha256": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608"
+    },
+    {
+      "path": "local/du-generated-tools.json",
+      "sha256": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4"
+    },
+    {
+      "path": "local/du-generated-order.json",
+      "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f"
+    },
+    {
+      "path": "local/du-generated-evidence.py",
+      "sha256": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d"
+    },
+    {
+      "path": "local/du-write-report.py",
+      "sha256": "6f4418f27db7959231451d1b23ab6251240280be364c22acd005cb1f778edc4a"
+    }
+  ],
+  "checks": {
+    "build": "PASS: scripts/build.ps1 MSVC Win32 Release completed after necessary class-forward-declaration correction; initial attempt exit1, incremental correction retry exit0 (session83571)",
+    "existing_ctests": "PASS 2/2 existing reconstructed_math and native_math_differential; no new tests",
+    "seeds": "PASS 8/8 installed/live byte matches; no shadow-owner runtime fixture",
+    "numeric_calls": "PASS 32 numeric rows, 0 failed; 19 direct and 13 resolved-indirect rows, including four possible BD30E0 terminals; indirect target semantics rely on current table/provider evidence. Ten external IAT rows separately match installed call bytes.",
+    "generated_order": "PASS: 14 complete COFF sections pinned; 21 focused instruction checks plus full pertinent body/helper schedule review. Native/source whole-body byte identity is not claimed.",
+    "new_tests": 0,
+    "worker_fixture": "No shadow-owner fixture run; root owns any focused callback-mutation probe",
+    "gameplay": "not run"
+  },
+  "corrections": [
+    {
+      "was": "Ghidra A8FCD0 listing omits A8FCE5 ADD ESP,4 and decompiler reports extraout_EAX after free",
+      "is": "Complete native body includes cdecl stack cleanup then MOV EAX,ESI; RET4 returns captured original identity",
+      "evidence": "Fresh installed/live 30-byte span; no worker Ghidra edits"
+    }
+  ],
+  "limits": [
+    "Constructors/factory A8FD30/A8FA30/A8E2E0 and A8E160 base deleting wrapper are not implemented or credited here.",
+    "Supported terminal profiles are exactly D5B5D8 shadow, D5E5F8 viewport, D61948 texture2D, D5E600 frame target with actual bound current table words. Unknown profiles/slots/companions fail explicitly; D5B574 is only a destruction stamp.",
+    "Parent IAT contexts project parent sites only. Existing camera/viewport/frame-target children use their established direct Win32 intrusive helpers; arbitrary game-IAT replacement inside children is not newly modeled.",
+    "Raw storage must be initialized, valid at every access and compatible with existing pools/shared CRT disposal. No dummy owner, copied count, substitute allocator, second camera registry or arbitrary successful terminal callback is added.",
+    "Canonical companions and providers must survive callbacks/deferred queue ownership. Existing B6DFA0 and camera terminal noexcept restrictions remain; child operations are not claimed allocation-free.",
+    "Source binding diagnostics have source C++ base-only cleanup effects; native hardware-fault, arbitrary FH3/SEH, foreign unwind, invalid backing, concurrency, ABI equivalence and gameplay remain unproved.",
+    "No new repository tests, worker runtime fixture, Ghidra mutation or ledger edit. Root owns metadata/integration and exact combined validation.",
+    "MSVC optimizes the source normal disarm before known-noexcept BD30F0; generated state0 cleanup still only restores base. Source value-argument setter ABI also permits compiler parameter loads differing from native stack-instruction order without an intervening callback. No raw FH3/SEH or original instruction identity is claimed."
+  ],
+  "coordination": {
+    "owned_addresses": [
+      "00a8dec0",
+      "00a8fcd0",
+      "00b7bdf0",
+      "00cb63d0"
+    ],
+    "owned_files": [
+      "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+      "src/native_directional_shadow_owner_lifetime.cpp",
+      "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md",
+      "reports/native_directional_shadow_owner_lifetime.json"
+    ],
+    "registry_append": "Exactly one appended cmake/startup.cmake target_sources line; shared registry not leased",
+    "lease": "Release after final owned-file commit; shared coordination registry records authoritative state."
+  },
+  "build_attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 1,
+      "log": "local/du-build-attempt1.log",
+      "log_sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4",
+      "input_pins": "local/du-build-attempt1-input-pins.json",
+      "reason": "MSVC /WX C4099: forward declaration used struct, existing NativeNodeDestructionRuntime is class. Only that header keyword changed; source body unchanged."
+    },
+    {
+      "attempt": 2,
+      "exit_code": 0,
+      "log": "local/du-build.log",
+      "log_sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49",
+      "input_pins": "local/du-build-input-pins.json",
+      "ctests_passed": 2,
+      "reason": "Necessary incremental retry after fixing build error; no additional behavior or tests introduced."
+    }
+  ],
+  "generated_evidence": {
+    "path": "local/du-generated-order.json",
+    "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f",
+    "object_sha256": "81697367ea632e11d8350f319aa3eea4f4baf460d47d896d898d54bf92edb7cb",
+    "scope": "Complete COFF sections, relocations and critical generated order, not native ABI or byte identity."
+  }
+}
