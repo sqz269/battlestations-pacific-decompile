@@ -1,0 +1,549 @@
+{
+  "packet": "EF",
+  "status": "complete_native_register_transfer_build_and_static_link_validated_not_runtime_validated",
+  "base": "11850a0d23d2508b8bb40462d04316998319c3fa",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef",
+  "owned_address": "00c0dccd",
+  "owned_end": "00c0dce5",
+  "owned_bytes": 25,
+  "owned_instructions": 11,
+  "source": "src/native_crt_seh4_handler_transfer.cpp",
+  "header": "include/bsp/native_crt_seh4_handler_transfer.hpp",
+  "documentation": "docs/NATIVE_CRT_SEH4_HANDLER_TRANSFER_EF.md",
+  "original": {
+    "status": "PASS",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "spans": [
+      {
+        "label": "transfer",
+        "address": "00c0dccd",
+        "size": 25,
+        "sha256": "5fa38b84f52552c73e887cfc46b00472d838cf7ec88658e8d8f7472e0518ec02",
+        "sha512": "66d2bd209d80aaf7ecac36947b6635971e69596e655e07e849caea07dc4de5b365fd8adcb5cedec5e53657b514356063916076c86b07e1bda33d88ae9c16ff81",
+        "instructions": [
+          {
+            "address": "00c0dccd",
+            "bytes": "8bea",
+            "mnemonic": "mov",
+            "operands": "ebp, edx"
+          },
+          {
+            "address": "00c0dccf",
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "00c0dcd1",
+            "bytes": "8bc1",
+            "mnemonic": "mov",
+            "operands": "eax, ecx"
+          },
+          {
+            "address": "00c0dcd3",
+            "bytes": "6a01",
+            "mnemonic": "push",
+            "operands": "1"
+          },
+          {
+            "address": "00c0dcd5",
+            "bytes": "e89f8b0000",
+            "mnemonic": "call",
+            "operands": "0xc16879"
+          },
+          {
+            "address": "00c0dcda",
+            "bytes": "33c0",
+            "mnemonic": "xor",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00c0dcdc",
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operands": "ebx, ebx"
+          },
+          {
+            "address": "00c0dcde",
+            "bytes": "33c9",
+            "mnemonic": "xor",
+            "operands": "ecx, ecx"
+          },
+          {
+            "address": "00c0dce0",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "00c0dce2",
+            "bytes": "33ff",
+            "mnemonic": "xor",
+            "operands": "edi, edi"
+          },
+          {
+            "address": "00c0dce4",
+            "bytes": "ffe6",
+            "mnemonic": "jmp",
+            "operands": "esi"
+          }
+        ]
+      },
+      {
+        "label": "nlg",
+        "address": "00c16879",
+        "size": 31,
+        "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+        "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1",
+        "instructions": [
+          {
+            "address": "00c16879",
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "address": "00c1687a",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c1687b",
+            "bytes": "bb3068e100",
+            "mnemonic": "mov",
+            "operands": "ebx, 0xe16830"
+          },
+          {
+            "address": "00c16880",
+            "bytes": "8b4c240c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c16884",
+            "bytes": "894b08",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebx + 8], ecx"
+          },
+          {
+            "address": "00c16887",
+            "bytes": "894304",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebx + 4], eax"
+          },
+          {
+            "address": "00c1688a",
+            "bytes": "896b0c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebx + 0xc], ebp"
+          },
+          {
+            "address": "00c1688d",
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "address": "00c1688e",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c1688f",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00c16890",
+            "bytes": "58",
+            "mnemonic": "pop",
+            "operands": "eax"
+          },
+          {
+            "address": "00c16891",
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c16892",
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "address": "00c16893",
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "address": "00c16894",
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "address": "00c16895",
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      {
+        "label": "caller",
+        "address": "00c07dfb",
+        "size": 10,
+        "sha256": "163eab162d4cd08116761eef5f03054a593e42ec47edbcefeb99e8d19e7407c4",
+        "sha512": "b9f2658a8a3fa935e2ee108dbe8d1f0978ef21c951a129f45ab6692075abfa0e15328ab8ce61c454d9418a5c1f204f9feb3d1d38405d7a4fc95e2faca7340b69",
+        "instructions": [
+          {
+            "address": "00c07dfb",
+            "bytes": "8b4b08",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebx + 8]"
+          },
+          {
+            "address": "00c07dfe",
+            "bytes": "8bd7",
+            "mnemonic": "mov",
+            "operands": "edx, edi"
+          },
+          {
+            "address": "00c07e00",
+            "bytes": "e9c85e0000",
+            "mnemonic": "jmp",
+            "operands": "0xc0dccd"
+          }
+        ]
+      }
+    ],
+    "bytes_compared": 66,
+    "owned_bytes": 25,
+    "owned_instructions": 11,
+    "caller_xref_qualification": "Ghidra xref labels C07E00 UNCONDITIONAL_CALL, but PE/live opcode E9 and actual listing establish JMP; no return address or stack arguments are added.",
+    "abi": {
+      "entry": "ECX=handler H; EDX=frame F; ESP=S inherited from dispatcher JMP, not ordinary C++ call.",
+      "nlg": "EBP=F, ESI=H, EAX=H; PUSH1 lowers ESP toS-4; CALL lowers toS-8. DJ RET4 restores S; all other registers/flags survive DJ normal return.",
+      "transfer": "Final JMP ESI with EAX/EBX/ECX/EDX/EDI=0; ESI=H; EBP=F; ESP=S. Native handler alone determines future continuation/frame/stack actions.",
+      "flags": "Final XOR EDI,EDI makes CF/OF/SF=0,ZF/PF=1,AF undefined; DF and non-arithmetic flags unchanged. No saved nonvolatile registers, RET or no-return annotation."
+    },
+    "execution": "No native/game/handler/NLG execution."
+  },
+  "native_pair_bytes": 56,
+  "native_pair_relocations": 1,
+  "current_compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+  "compiler_unit_count": 6,
+  "complete_read_input_count": 234,
+  "protected_build_inputs": 2700,
+  "strict_build_returncode": 0,
+  "seeds": 8,
+  "existing_ctests": [
+    "reconstructed_math",
+    "native_math_differential"
+  ],
+  "linked_summary": {
+    "native": [
+      {
+        "symbol": "?transfer_native_crt_seh4_handler_00c0dccd@bsp@@YIXPAX0@Z",
+        "native": {
+          "size": 25,
+          "sha256": "5fa38b84f52552c73e887cfc46b00472d838cf7ec88658e8d8f7472e0518ec02",
+          "sha512": "66d2bd209d80aaf7ecac36947b6635971e69596e655e07e849caea07dc4de5b365fd8adcb5cedec5e53657b514356063916076c86b07e1bda33d88ae9c16ff81"
+        },
+        "coff": {
+          "size": 25,
+          "sha256": "ed900ef146f5594776c645dff6c8ad8f1dccf42eac0b36b5ce8ab353bd8bf6ce",
+          "sha512": "168b98186a835585fe44f62bb65ebe359e946cba2a40b9d0d2689b6359574e16a7522041698fe645078a9f07379d9b08c2bb5c4cde5b88a0eecb4d52a5e9726c"
+        },
+        "relocations": [
+          [
+            9,
+            20,
+            "notify_native_crt_nlg_00c16879"
+          ]
+        ],
+        "linked": {
+          "stem": "native_crt_seh4_handler_transfer",
+          "symbol": "?transfer_native_crt_seh4_handler_00c0dccd@bsp@@YIXPAX0@Z",
+          "image": "forced",
+          "va": "0x10001020",
+          "code": {
+            "size": 25,
+            "sha256": "f727c7aedd61c53d493ae8d3cb7a211df116c6c4267b59d30506c7714bb7529b",
+            "sha512": "fdebb5d33e293212ce038dbdc17c4b58d1d0ba18169bc33ed7eb159ac8809fb361578da94aef1f71e39e2ce02d5235d0bc1681d2fd7092923286c0fe1b5745f7"
+          },
+          "relocations": [
+            {
+              "offset": 9,
+              "kind": 20,
+              "symbol": "?notify_native_crt_nlg_00c16879@bsp@@YGXI@Z",
+              "target_va": "0x10003070"
+            }
+          ]
+        },
+        "ordinary_game_symbol_absent": true
+      },
+      {
+        "symbol": "?notify_native_crt_nlg_00c16879@bsp@@YGXI@Z",
+        "native": {
+          "size": 31,
+          "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+          "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+        },
+        "coff": {
+          "size": 31,
+          "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+          "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+        },
+        "relocations": [],
+        "linked": {
+          "stem": "native_crt_nlg_notify",
+          "symbol": "?notify_native_crt_nlg_00c16879@bsp@@YGXI@Z",
+          "image": "forced",
+          "va": "0x10003070",
+          "code": {
+            "size": 31,
+            "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+            "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+          },
+          "relocations": []
+        },
+        "ordinary_game_symbol_absent": true
+      }
+    ],
+    "current_unique_archive_members": {
+      "native_crt_seh4_handler_transfer": {
+        "archive_name": "bsp_core.dir\\Release\\native_crt_seh4_handler_transfer.obj",
+        "offset": 12732892,
+        "size": 852,
+        "sha256": "cdc4fa89c51bece1a0201885335c695c5a8372e894e49de86c83deb9aacce6c4",
+        "sha512": "3621a36c67fd9c9fcb658da5c816bba86a41dd88aeb2adf76e0f810eecaa211c2d981876be52e3ee9fa832ee1c7504968a503d562057b1249193217a375ed72c"
+      },
+      "native_crt_nlg_notify": {
+        "archive_name": "bsp_core.dir\\Release\\native_crt_nlg_notify.obj",
+        "offset": 12738940,
+        "size": 3589,
+        "sha256": "3df31876dcc2337d965d8f5222ceef17244244b20d88c9186620ce7725521b50",
+        "sha512": "92f10d8d744a2a67e6ccb9a5b7a7fb8a0607a1273fbe59ac4456d5589771bc03551282a4476789e86fc04ffdbe267905179ccf286bae6a439a5715c2ab9da9bf"
+      },
+      "game_native_mutable_crt_data": {
+        "archive_name": "bsp_core.dir\\Release\\game_native_mutable_crt_data.obj",
+        "offset": 47884280,
+        "size": 122650,
+        "sha256": "93d50e3ff9e88da470db28bc973fb8cfea8550ba80aed2b9aca2bf8a3d654c66",
+        "sha512": "b00a23a28a64603aeecd87d5107f6bccf81712f4518944489461a9828bd556ffdeaf17aca17f4d2d96174303130297812d1277d7c439451906c7538f46e77c5f"
+      },
+      "game_native_readonly_data": {
+        "archive_name": "bsp_core.dir\\Release\\game_native_readonly_data.obj",
+        "offset": 47753674,
+        "size": 104022,
+        "sha256": "a76b05aa32fee357c63941192d65338b6fd55e46cd83c04d67b6e99534e0440a",
+        "sha512": "1c380c59a6633f811f96d6ead476cbb6dac64e04511ba7208995bedfe486058c32acc1c9b0ed892a20ec18d30b5656df292f9096714fc311c85486be6cd3aa2e"
+      },
+      "game_native_data_bootstrap": {
+        "archive_name": "bsp_core.dir\\Release\\game_native_data_bootstrap.obj",
+        "offset": 48006990,
+        "size": 161673,
+        "sha256": "2846207a036ec9141b2fc7353cc00034b2265418107e1def6b10b94724c70516",
+        "sha512": "524c3c2283d0455b13252642a5580a1ca8cdc93e679ad835fde513f28892437f33e801a0809a155f890ba934f6123b8f6e87d90ab9ee2051ef58d1b7a43dc198"
+      },
+      "native_crt_cookie_initialization": {
+        "archive_name": "bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+        "offset": 49125458,
+        "size": 1407,
+        "sha256": "f44fe70fe0ac40ffca2bd0cf9f491dc93e5260e96e00912e74e3df66e3d5feb4",
+        "sha512": "c119db997e51e9a95464dc23d0823537141fd9baf23807670ab045206cd96d8774cd9efb98c7a2b5158d8ca9bcb7a518afb87911d59d206cf12dfd3795f84bd3"
+      }
+    },
+    "archive": {
+      "size": 58835902,
+      "sha256": "8f4c6af7cc392249f5bce462ab06b50de906d4201c72a76553f720ca07141db0",
+      "sha512": "77d236d0060a7119ecd4801779aa69460cfdf702d92015f6c5e54ac3537d12c54afbb52268d0a99c2cf484e78364a2b7fafa06bdbe1699b03789d75397ed25e0"
+    },
+    "linked_row_count": 274,
+    "linked_byte_count": 28841,
+    "resolved_relocations": 1311,
+    "unresolved_relocations": 0,
+    "ef_no_extra_writable_state": true,
+    "images": {
+      "game": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\build\\win32\\Release\\bsp_game.exe",
+        "size": 2168832,
+        "sha256": "1b78fa60889c2f9cbc003e2c14768d2e2039473f3079c1fd583e531db7582c84",
+        "sha512": "b44d8c789fb532f811fc87851d5430c3cd10058631e9aa2d4b45ffb136c156130daa708e29a6a4c7a335b4cc3a233ef8dd880976d5387351edf039bb58f62948"
+      },
+      "forced": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\local\\native_crt_seh4_handler_transfer_ef\\static_link_probe.exe",
+        "size": 33280,
+        "sha256": "0f31675c1c2ea93064fa6b460322dc7337efb34f06c4109feb56ac073db87f2e",
+        "sha512": "52caa7dd8b7d2e47b82f76d5aa2061942cc372006a1cd8201dc19a0657042aa745df9ba665a4a79f920e6d777e651d46338c35ef8e472357ac2571f7becbc354"
+      }
+    }
+  },
+  "source_pins": {
+    "src/native_crt_seh4_handler_transfer.cpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\src\\native_crt_seh4_handler_transfer.cpp",
+      "size": 1173,
+      "sha256": "5f1cd7aa8c714d972c247155ebb8b8ab5ed48e85213a345b389ba03acf21dd3d",
+      "sha512": "62d7addf17876ed3b060d646cb247ac604c4fc3153e73ecaa494dfbbc407ae941384a0352ffbc4e7779e13eeab41ad824b13af63123b05193b8f7f404e90a3d1"
+    },
+    "include/bsp/native_crt_seh4_handler_transfer.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\include\\bsp\\native_crt_seh4_handler_transfer.hpp",
+      "size": 1370,
+      "sha256": "098c18b1c348a0db9fb68e29f2893dc51df121dcc9343b0d8e73b7c5a4d606e4",
+      "sha512": "e6db526cbbdbdd64f6341346403df26178edf150edda7280cff3b08f2396e092e6a02f5ad33ececf424c34b8864d841ae47ec53c66c6a61f994f0276a6548956"
+    },
+    "docs/NATIVE_CRT_SEH4_HANDLER_TRANSFER_EF.md": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\docs\\NATIVE_CRT_SEH4_HANDLER_TRANSFER_EF.md",
+      "size": 5165,
+      "sha256": "8c3a104ede966422fe6b4a8d1729132d5d3c11f1e499efb8bb07284256bd6204",
+      "sha512": "9bf0073869250e570ed55860d4f5337d2da110f09848512806909786d07b19ded8a04a8cc649eac032e34fddaa3bfe375507e262deca228a6acd76ef230e634c"
+    },
+    "cmake/startup.cmake": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\cmake\\startup.cmake",
+      "size": 123537,
+      "sha256": "9faa2eb2499dfa9fb0d4fb152a428df7abb98c6f2860cdbd630f84ab8f657987",
+      "sha512": "bd53963d52452ca7d9c88d23b1b2964bb36b1c9c222357280600b6404e5ccae753d8bc67c5c432b3b46a9b9cdd6bd85dc189e50d3e5d4c4ed6c4c3d315dfd738"
+    }
+  },
+  "current_compile_toolchain": {
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe": {
+      "copy": "actual_toolchain/cl.exe",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1.dll": {
+      "copy": "actual_toolchain/c1.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1.dll",
+      "size": 3734840,
+      "sha256": "a27ae108def6aaf96d0f0ba76ffe8d63fbe09c59e92ce24a3ce3dda7402fd3db",
+      "sha512": "d83942e8b371e3397eb2ee46616e54e1b8427b2db98ea4259f02cb086c9454d0b2a2b6fcefd96ae024604ca421f7d4881d1b1199536bb64b9aa9c78320cf79b1"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll": {
+      "copy": "actual_toolchain/c1xx.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+      "size": 13321528,
+      "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2",
+      "sha512": "d355195dd6a84159d8e4348db441042f73d8b3c51afadf9ebd8433b6dfbf706c43d0ef2522cb88657f43971331e7609af9665d49ce4da1938f0137091d5e90ff"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll": {
+      "copy": "actual_toolchain/c2.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+      "size": 10542392,
+      "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0",
+      "sha512": "090a11d6c45de407c8a9e217ee0c15222c5caa0cff2122d2e9a86cb0784f2e16bd0e07dee97ac4ea648d729cbaec94293f952a1d6cdcbed9b3696f7fd8f1df8c"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe": {
+      "copy": "actual_toolchain/link.exe",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "size": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "sha512": "d776e7d4f15344ea5a447e82c1b16be097c371fdb116ee6806eaa4ba2af483bd6155e10fd2d81e576a1bcbb01dd8e695e7da827bc6951a4359f8c34103a46f3a"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdb140.dll": {
+      "copy": "actual_toolchain/mspdb140.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\mspdb140.dll",
+      "size": 386872,
+      "sha256": "e4a77d56915522b874b682f5e33af3b40bee20b3e58e4efb139d84f05e1b22b9",
+      "sha512": "13895b5780846a5bc57d79196b701bbbc250e1e52d47f8e085810458b3e296dc83f05cc11938aa2d5776ffb2370076e23b3bf3d92e3e67e17ac3df04a719e087"
+    },
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\1033\\clui.dll": {
+      "copy": "actual_toolchain/clui.dll",
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\1033\\clui.dll",
+      "size": 630072,
+      "sha256": "23f3df83f28342595d8126d830fc07c80e2dca5b5ef9fccac6590b2036bcb5a5",
+      "sha512": "7427fec3fab1df7627ea74a50cc1ae6dfeeff6466fefbb075c6ef4eeab908bd4e72779512e79610fb901c8b4cb11014b671c1e2fe8a53743892764f89cc2d5a0"
+    }
+  },
+  "static_link_libraries": [
+    "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\build\\win32\\Release\\bsp_core.lib",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\kernel32.lib",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\user32.lib",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\advapi32.lib",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\um\\x86\\shell32.lib",
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\MSVCRT.lib",
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\OLDNAMES.lib",
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib"
+  ],
+  "saved_annotations_preserve_original": true,
+  "annotation_prior_values": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-handler-transfer-ef\\local\\native_crt_seh4_handler_transfer_ef\\annotation_prior_values.json",
+    "size": 1505,
+    "sha256": "de31c8934f5890c02555ca04f80120d9925ee9a72ce2aeb9cfa9a729a3ed42e2",
+    "sha512": "73317a1aa2856aafd8c91caaa0d4286ab7cc78981d41e1c79929d43a739c588fff3c11b5d1df3059b81a2b8138b56bdd60ae6ae1280e6f0e5da046e7c0a76cbd"
+  },
+  "exports": {
+    "metadata.json": {
+      "copy": "refreshed_exports/metadata.json",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0dccd\\metadata.json",
+      "size": 220,
+      "sha256": "7c0a183aaf2a14bd50729ef2a19dc65a85aac88e3f8439f485cd845a75ccc075",
+      "sha512": "6030a35294ddc47ae9ca148101070eaed9904849484e309636f3ad8242864d0f40f83ba001135fe7a3446312ecf178f4b881c0d1be5f0acd892b6d5eb532afe8"
+    },
+    "decompiled.c": {
+      "copy": "refreshed_exports/decompiled.c",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0dccd\\decompiled.c",
+      "size": 1595,
+      "sha256": "5e2a4ed1be2ae9e73f399ef70143ffcfc53dd06415d53ccc7765e7167154e2a9",
+      "sha512": "bf35a6a194f7c2a753ea3a1a583684a698dd03f6b8849ee34b383c0b71b4d4c63530621a40f99dad2305b12048efb88294ed3d9b206f2d19e6206bae1a7ab024"
+    },
+    "assembly.txt": {
+      "copy": "refreshed_exports/assembly.txt",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0dccd\\assembly.txt",
+      "size": 250,
+      "sha256": "07c6f7fe01015cf4830cd5e0e713ed9c4a09fa9262114adb25af5a96d9857b03",
+      "sha512": "dc9d7484663ece3d8d6784a3ebb3867f6574f23df0a2a61cf26ac9f136e098df3d095eadd9af10d7630523716d5e0271e73fde1f5d08f731bc2b607adffc2f49"
+    }
+  },
+  "retained_attempts": [
+    {
+      "attempt": "lookup_01 and docs_for_01",
+      "cause": "Fresh supported worktree had no local index. Complete stderr retained; supported bsp index built before retry."
+    },
+    {
+      "attempt": "Read nonexistent DJ build_static_link.py",
+      "cause": "Get-Content failed because the accepted DJ helper is static_audit.py. Read only; no frozen write."
+    },
+    {
+      "attempt": "Initial documentation patch",
+      "cause": "apply_patch verification failed: expected ordinary game placement line did not exist. No edit applied; corrected patch is retained in source history and this record."
+    },
+    {
+      "attempt": "retain_report_01",
+      "cause": "Reviewer assumed UTF16 BOM for every game link read log. One custom log is UTF8; complete error and rejected script retained. Decoder now detects BOM and otherwise reads UTF8-sig; current C++ tlog binding remains exact."
+    },
+    {
+      "attempt": "Retention read-count label qualification",
+      "cause": "Broad game-target read-log capture included CL and linker records. Renamed report field to actual_game_target_read_record_count and preserved original report/builder. All copied inputs remain retained; no source/build/native behavior changes."
+    }
+  ],
+  "limitations": [
+    "Original register/native-frame transfer only. The original caller JMP preserves its dispatcher stack; declaration alone cannot establish actual inherited EBP, handler frame or continuation. No ordinary C++ callback or noreturn policy is substituted.",
+    "Published DD actual canonical pages/process lifetime and real DJ31 are prerequisites. Source/header equality to base11850 and current linked providers do not replay or relabel historical DD runtime evidence.",
+    "Ordinary game omits EF and NLG symbols. Forced artifact proves current linked bodies/provider availability only and is never executed. No owned transfer/NLG/handler/exception/unwind/original game/forced-image execution.",
+    "Existing two math CTests and eight seed comparisons do not exercise this transfer. Native caller/handler integration, OS/debugger behavior and gameplay remain unvalidated.",
+    "C07E00 xref is labeled UNCONDITIONAL_CALL while original PE/live opcode is E9 JMP. No caller flow, no-return property, prototype or adjacent metadata is changed.",
+    "This branch predates root exporter-name fix. A forced current snapshot preceded final export; final metadata, saved annotations and decompilation all retain correct _EH4_TransferToHandler name.",
+    "C16DD0 helper is separate readiness work after source commit; no image helper/frame/global ownership is invented or included in EF source."
+  ],
+  "local_evidence": "local/native_crt_seh4_handler_transfer_ef",
+  "inventory_contract": "All recursive local payload including failures, complete copied source/compiler inputs and consumed external files is hashed SHA256/SHA512 twice after source commit; final source HEAD and whole-inventory pins are in local handoff, avoiding report/self hash recursion.",
+  "actual_game_target_read_record_count": 10435,
+  "actual_game_target_read_qualification": "The retained game-target *read*.tlog set includes both C++ and linker read records. Count10435 is all retained records, including repeats; it is not a linker-only input count. Their game_link_inputs directory is a historical capture alias. Six core compiler units and the selected object/archive/linked provider proof remain separately enumerated."
+}
