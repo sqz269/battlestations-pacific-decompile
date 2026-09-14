@@ -1,0 +1,61 @@
+{
+  "packet": "orch5_native_online_storage_requests",
+  "tested_base": "1e03c8fd646fe3999c445eec95cd4c0f9b9f5505",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_storage_requests.cpp",
+  "header": "include/bsp/native_online_storage_requests.hpp",
+  "status": "complete_normal_bodies_raw_owner_registered_win32_build_tested",
+  "routines": [
+    {
+      "address": "00a3ed10",
+      "inclusive_end": "00a3ed59",
+      "byte_length": 74,
+      "name": "build_native_online_storage_path_00a3ed10",
+      "name_hypothesis": "BSP_XLiveSystem_BuildStoragePath",
+      "coverage": "complete normal body",
+      "original_abi": "ECX=captured 3F0h manager; RET; no stack arguments",
+      "source_abi": "Win32 C++ explicit raw owner and checked stdcall ordinal 5344; not a binary replacement"
+    },
+    {
+      "address": "00a3f4a0",
+      "inclusive_end": "00a3f4fa",
+      "byte_length": 91,
+      "name": "request_native_online_storage_upload_00a3f4a0",
+      "name_hypothesis": "BSP_XLiveSystem_RequestUploadStorage",
+      "coverage": "complete normal body; empty diagnostic call omitted",
+      "original_abi": "ECX=captured 3F0h manager; two DWORD stack arguments; RET 8",
+      "source_abi": "Win32 C++ explicit raw owner, two DWORDs, SDK and matching allocation pair; not a binary replacement"
+    },
+    {
+      "address": "00a3f500",
+      "inclusive_end": "00a3f52f",
+      "byte_length": 48,
+      "name": "request_native_online_storage_download_00a3f500",
+      "name_hypothesis": "BSP_XLiveSystem_RequestDownloadStorage",
+      "coverage": "complete normal body; empty diagnostic call omitted",
+      "original_abi": "ECX=captured 3F0h manager; RET; no stack arguments",
+      "source_abi": "Win32 C++ explicit raw owner, SDK and matching allocation pair; not a binary replacement"
+    }
+  ],
+  "calls": [
+    {"address":"00a3ed44","native":"00a4d578","function":"00a3ed10","operation":"XStorageBuildServerPath ordinal 5344, seven DWORD slots"},
+    {"address":"00a3f4e8","native":"00a3ef20","function":"00a3f4a0","operation":"actual raw upload body with captured ECX owner"},
+    {"address":"00a3f4f2","native":"004254b0","function":"00a3f4a0","operation":"empty DropRateWrite diagnostic"},
+    {"address":"00a3f51f","native":"00a3ed60","function":"00a3f500","operation":"actual raw download body with captured ECX owner"},
+    {"address":"00a3f529","native":"004254b0","function":"00a3f500","operation":"empty DropRateRead diagnostic"}
+  ],
+  "upstream_evidence": [
+    {"address":"00a40937","native":"00a3ed10","function":"00a40510","role":"UI pump path request after successful user info and indexed state-2 check; this body is separate"},
+    {"address":"00a46b2a","native":"00a3f500","function":"00a46930","role":"reload F8ABE8 owner after selected-user sign-in and XUID checks; this body is separate"},
+    {"address":"00a48e53","role":"live xref into A3F4A0 from no containing Ghidra function; do not attribute to A48450 or assert owner provenance","raw_window_address":"00a48e51","raw_window_end_inclusive":"00a48e57","raw_window_bytes":"52 52 e8 48 66 ff ff","containing_function":null,"enclosing_start":null,"enclosing_end_inclusive":null}
+  ],
+  "corrections": [
+    {"was":"cached callers index attributes A48E53 call to A48450","is":"live Ghidra proto reports no containing function at A48E53; A48450 ends A488CF","evidence":"live xrefs A3F4A0 and proto A48E53/A48450; raw callsite window A48E51..A48E57"}
+  ],
+  "validation": "MSVC Win32 Release default scripts/build.ps1 exit 0: inherited native_online_storage.cpp and native_online_storage_requests.cpp compiled into bsp_core.lib, bsp_game.exe linked, reconstructed_math CTest 1/1 passed. Prior strict standalone /W4 /WX compile and in-memory fake-SDK fixture passed. Live report call-site checks: inherited 18/18, requests 7/7. Optional native differential CTest not configured in this worktree because local/seed_reference.hpp is absent.",
+  "game_validated": false,
+  "uncertainty": "No enclosing body or ECX provenance is established for upstream A48E53. This packet does not repair that listing, implement the UI pump, or make an actual XLive request. Caller must preserve the actual owner, loaded module, path and matching heap through pending transfer completion."
+}
