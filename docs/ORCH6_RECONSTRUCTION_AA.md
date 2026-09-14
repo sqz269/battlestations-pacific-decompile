@@ -16,7 +16,7 @@ required; the full game reconstruction is unfinished.
 | Unit-part construction | Complete356-byte caller, borrowed canonical fields and descending cleanup. Three native/source comparisons and six source exception states pass; native FH3 is untested. |
 | Unit group-state / announcement wrapper | Complete196-byte transition composes canonical pose/group routines. Existing121-byte announcement wrapper accepts actual managers with guarded late+08 access. Seven caller pairs, two null-manager variants, source cleanup and old-view parity pass. |
 
-All280 direct call rows pass mechanical checking. Seven indirect worker sites
+All280 direct call rows pass mechanical checking. Six indirect worker sites
 remain explicit dispatch contracts. The activation caller's missing641-byte
 enclosing body and two10-byte FH3 selectors were defined from live/disk evidence.
 Nine names/comments were saved with previous values retained;14 affected exports
