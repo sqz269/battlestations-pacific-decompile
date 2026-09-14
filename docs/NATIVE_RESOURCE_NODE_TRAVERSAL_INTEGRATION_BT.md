@@ -23,3 +23,5 @@ manifest, final-library fixture and full build results when complete. Incoming
 main work is reviewed separately from BT's evidence and remains subject to its
 own stated limits. Production raw resource loading and queue shutdown remain
 incomplete.
+
+Final code revision `7a75e190ea90b929838738d8be7646ba9e6e5ba2` includes reviewed main `ec3b1f8bf2c833d72244a68a20b6bb3adc6b0c31`. The combined Win32 build and both existing tests passed. The traversal fixture passed linked to copied, hash-verified libraries from this revision; its manifest records 2635 exact build inputs. The audit verifies all 203 ordinary and 16 EH-support instruction starts, 18 direct transfers, two indirect sites and 13 preserved Ghidra annotations. The fixture includes a source exception injection; native original-body, FH3/SEH and game validation remain unperformed. Incoming unit-part compatibility and pilot floating-point claims were not independently certified by BT.
