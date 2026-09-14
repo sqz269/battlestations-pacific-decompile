@@ -6,7 +6,8 @@ namespace bsp {
 class NativeMaterialParameterPool;
 struct NativeStringRawPoolContext;
 
-// Complete B88320-B8833F. Original ECX=88h record, stack flags, RET4,
+// Complete B88320-B8833F. Original ECX=84h payload in an 88h pool slot,
+// stack flags, RET4,
 // EAX=the original record. This source interface borrows the actual string
 // context and initialized 109022C hierarchy pool explicitly.
 void* cleanup_native_hierarchy_record_00b88320(

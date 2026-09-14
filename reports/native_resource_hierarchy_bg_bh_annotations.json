@@ -1,0 +1,207 @@
+{
+  "status": "source_integrated_and_ghidra_annotations_saved_read_back",
+  "source_bodies": 12,
+  "source_body_bytes": 647,
+  "source_coverage": "Complete bodies within individually documented source interface/provider domains; math raw register/stack entry preserved, context-bearing scalar and lifetime interfaces are not drop-in ABI replacements.",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "candidate_validation_at_capture": "pending; exact future candidate requires its own strict build, two existing CTests, six established regression families and supplemental BH source proof",
+  "functions": [
+    {
+      "address": "00b88320",
+      "old_name": "FUN_00b88320",
+      "name": "BSP_HierarchyItem_CleanupFlags",
+      "original_bytes": 32,
+      "old_proto": "00b88320 FUN_00b88320  undefined FUN_00b88320(void)  body 00b88320 - 00b8833f",
+      "old_comment": "",
+      "added_evidence": "BG/BH source evidence: Complete32B: ECX actual84h payload in88h slot, stack flags, RET4, EAX original pointer. Always B88180 fields cleanup; only flags&1 returns through B17AF0 to actual109022C pool. No local FH3. Worker4876b34b strict build only; new context-bearing source, not native exception/game validation. See reports/native_resource_hierarchy_cleanup.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "05cdb383231bd8ee7cfe8def65b1b1872ac8f34119b87db21279831ae51a68cf"
+    },
+    {
+      "address": "00b87ae0",
+      "old_name": "BSP_Resource_AppendHierarchyItem",
+      "name": "BSP_Resource_AppendHierarchyItem",
+      "original_bytes": 59,
+      "old_proto": "00b87ae0 BSP_Resource_AppendHierarchyItem  undefined BSP_Resource_AppendHierarchyItem(void)  body 00b87ae0 - 00b87b1a",
+      "old_comment": "[BSP reconstruction 00b87ae0]\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete59B: raw resource array+1Ch/count+20h/capacity+24h; grow only when count==capacity by wrapping+16 with signed minimum16 through actual B87350. Reload data/count, write raw pointer unless computed slot is zero, reload/increment count. No AddRef, null guard or rollback. Worker e0c5832e strict build and two existing CTests; new source interface. See reports/native_resource_hierarchy_append.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "25d96253e2e3c72b91a1281f8b0dfc6e4d29466e66aa0fab88c6c4fea28af17d"
+    },
+    {
+      "address": "00715bf0",
+      "old_name": "BSP_StructuredNode_HasRemaining",
+      "name": "BSP_StructuredNode_HasRemaining",
+      "original_bytes": 21,
+      "old_proto": "00715bf0 BSP_StructuredNode_HasRemaining  undefined BSP_StructuredNode_HasRemaining(void)  body 00715bf0 - 00715c04",
+      "old_comment": "[BSP reconstruction 00715bf0]\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete21B: ECX valid wrapper, load contained node; null node false, otherwise DWORD node+20h!=0. No wrapper-null, attachment or sign check. No CALL instructions; previous report native-name field was metadata, not an indirect call. Worker b307150c strict build and two CTests; C++ bool interface, no native/runtime claim. See reports/native_structured_node_predicate.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "e7baedcf787655b5f888a06fabcb4d6ae18e3e7c0a014895e0b277f9716a388d"
+    },
+    {
+      "address": "00b7d160",
+      "old_name": "BSP_Sphere_ToAxisAlignedBounds",
+      "name": "BSP_Sphere_ToAxisAlignedBounds",
+      "original_bytes": 191,
+      "old_proto": "00b7d160 BSP_Sphere_ToAxisAlignedBounds  undefined BSP_Sphere_ToAxisAlignedBounds(void)  body 00b7d160 - 00b7d21e",
+      "old_comment": "[BSP reconstruction 00b7d160]\n[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.",
+      "added_evidence": "BG/BH source evidence: Complete191B raw leaf: ECX output24h, EDX sphere16h, EAX original output, RET. Preserve every original x87/SSE center/radius store/reload and output order. Worker fb127ba9 compiler section equals all191 original PE/live bytes, unique archive member checked. Typed structured_hierarchy.cpp helper remains a separate fragment. No original-vs-source execution or exception-context identity claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "021a867b232b9c917254ab8e2898de5057d2b898a7eb90693723a81e608f4d99"
+    },
+    {
+      "address": "00b7d220",
+      "old_name": "BSP_Bounds_SetFromSphere",
+      "name": "BSP_Bounds_SetFromSphere",
+      "original_bytes": 62,
+      "old_proto": "00b7d220 BSP_Bounds_SetFromSphere  undefined BSP_Bounds_SetFromSphere(void)  body 00b7d220 - 00b7d25d",
+      "old_comment": "[BSP reconstruction 00b7d220]\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+      "added_evidence": "BG/BH source evidence: Complete62B: ECX output, stack sphere pointer, RET4, EAX original output, ESI preserved. B7D160 writes private24h temporary, then six ordered FLD/FSTP copies. Worker fb127ba9 section has58 identical bytes and only4-byte CALLrel32 relocation to reconstructed leaf. C++ ignored EDX parameter arranges original entry inputs; no installation/gameplay claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "4f4ba615a167f3a9bcfa07ca66608efc5b2d78560437ebd1ac80dfcb0582b9ac"
+    },
+    {
+      "address": "00be9df0",
+      "old_name": "BSP_StructuredNode_Destroy",
+      "name": "BSP_StructuredNode_Destroy",
+      "original_bytes": 134,
+      "old_proto": "00be9df0 BSP_StructuredNode_Destroy  undefined BSP_StructuredNode_Destroy(void)  body 00be9df0 - 00be9e75",
+      "old_comment": "[BSP reconstruction 00be9df0]\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete134B: stamp D68BB4; only attached reader path debits nonnull parent+20h by FULL node+1Ch, reloads reader, decrements reader+60h and clears node+8. No seek or remaining clear. Actual raw string pool destroys name+10h, then BD30F0 stamps CEB130; source finally also stamps on unwind. Worker886af674 strict build, two CTests, one source-only deliberately invalid-pool fault check. Native FH3 and asynchronous fault identity unclaimed. See reports/native_raw_node_destruction_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "55a7f93590b45b851856be8631b6fb66f20b101a28ed020a301dea342c3d7fdf"
+    },
+    {
+      "address": "00be9a00",
+      "old_name": "BSP_StructuredNode_ReadU32",
+      "name": "BSP_StructuredNode_ReadU32",
+      "original_bytes": 15,
+      "old_proto": "00be9a00 BSP_StructuredNode_ReadU32  undefined BSP_StructuredNode_ReadU32(void)  body 00be9a00 - 00be9a0e",
+      "old_comment": "[BSP reconstruction 00be9a00]\nBSP reconstruction hypothesis: Dereference wrapper; pass node+20 budget to00bf0280 with ECX=node+8 reader. Preserve callee EAX unchanged. Underlying slot+34 reads4 bytes and debits actual count. No signedness conversion or validation. ABI: ECX node wrapper; EAX raw DWORD result; no stack arguments; plain RET. Evidence: docs/STRUCTURED_HIERARCHY_VALUES.md; reports/structured_hierarchy_values_audit.json. Full native span matches installed PE; not a native ABI replacement. Original ABI: ECX node wrapper; EAX raw DWORD result; no stack arguments; plain RET.. Evidence: docs/STRUCTURED_HIERARCHY_VALUES.md; reports/structured_hierarchy_values_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete15B: ECX actual node wrapper; node=[ECX], reader=node+8, budget=&node+20h; call BF0280; EAX DWORD, RET. No null/attachment/readiness guard. Worker e37775a4 implements qualified context-bearing source and real existing memory/physical providers; original ABI and exact native stack-address parity unclaimed. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "c5efdef8229749ba8767ea09c5378bd7843a952a903cd196b69adbd33e4e142a"
+    },
+    {
+      "address": "00be99d0",
+      "old_name": "BSP_StructuredReader_ReadFloat",
+      "name": "BSP_StructuredNode_ReadFloat",
+      "original_bytes": 15,
+      "old_proto": "00be99d0 BSP_StructuredReader_ReadFloat  undefined BSP_StructuredReader_ReadFloat(void)  body 00be99d0 - 00be99de",
+      "old_comment": "[BSP reconstruction 00be99d0]\n[BSP reconstruction 00be99d0] update\nComplete 15-byte float adapter. Let node=*handle; pass ECX=[node+8] wrapper and stack &node+20h accounting dword to 00bf02c0. Actual underlying stream requires another dereference in that callee. No independent cursor, endian conversion, validation, ownership or error handling.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX reader-handle-wrapper pointer; no stack arguments; RET; result x87 ST0.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+      "added_evidence": "BG/BH source evidence: Complete15B: ECX actual NODE wrapper, node=[ECX], reader=node+8, budget=&node+20h; call BF02C0; ST0 float, RET. Prior descriptive name BSP_StructuredReader_ReadFloat obscured that ECX is the node wrapper. Worker e37775a4 qualified context-bearing source preserves raw loads and x87 return; no native ABI or exact caller-stack-address claim. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "c21dbe32db3828bf4f7d3f89a88168f05019e76d6b750a79b4381a0b3eddb37e"
+    },
+    {
+      "address": "00bf0280",
+      "old_name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+      "name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+      "original_bytes": 27,
+      "old_proto": "00bf0280 BSP_StreamReader_ReadDwordSlot34AndDebit  undefined BSP_StreamReader_ReadDwordSlot34AndDebit(void)  body 00bf0280 - 00bf029a",
+      "old_comment": "[BSP reconstruction 00bf0280]\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete27B: ECX actual reader, stack budget pointer, RET4. Read current stream slot34 using nonnull actual-count local initially seeded with reader address; preserve scalar EAX and subtract actual count from budget modulo DWORD with no status/retry/readiness check. Worker e37775a4 qualified source; one real-memory one-byte source probe preserves pointer-derived upper24 bits and budget0->FFFFFFFF, not original stack-address differential. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "bfd2fb3bc9778bfbc49c146cd0443e7d7f6f1d952a82f379f09d7145e9b8e4b1"
+    },
+    {
+      "address": "00bf02c0",
+      "old_name": "BSP_StreamWrapper_ReadFloatAndAccount",
+      "name": "BSP_StreamWrapper_ReadFloatAndAccount",
+      "original_bytes": 39,
+      "old_proto": "00bf02c0 BSP_StreamWrapper_ReadFloatAndAccount  undefined BSP_StreamWrapper_ReadFloatAndAccount(void)  body 00bf02c0 - 00bf02e6",
+      "old_comment": "[BSP reconstruction 00bf02c0]\n[BSP reconstruction 00bf02c0] update\nComplete 39-byte numeric adapter. Dereference wrapper to actual stream; call virtual +44h with NONNULL local actual-count pointer; FSTP/FLD through float32; subtract reported actual count from caller accounting dword. No pre-read budget clamp, four-byte check, retry or underflow guard. Actual-count local is not initialized before virtual call. Known scalar target 00be4360 seeds reused read-buffer bytes with the nonnull pointer value on short read; existing null-count font adapter is not malformed-input parity.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX wrapper whose first dword points to stream; one accounting-dword pointer stack argument; RET 4; x87 ST0.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+      "added_evidence": "BG/BH source evidence: Complete39B: ECX reader, stack budget pointer, RET4. Current stream slot44 receives nonnull uninitialized count local. After return FSTP32, load budget, FLD32, load count and wrapping debit, returning ST0. Worker e37775a4 retains that schedule through explicit context-bearing source frames. No native caller-stack/FH3/gameplay claim. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "87cc1d4d5c4bec9d2fb58ab597737934855444a7dce544a943be8fc3460b27e2"
+    },
+    {
+      "address": "00be42e0",
+      "old_name": "BSP_Stream_ReadDwordSlot34",
+      "name": "BSP_Stream_ReadDwordSlot34",
+      "original_bytes": 26,
+      "old_proto": "00be42e0 BSP_Stream_ReadDwordSlot34  undefined BSP_Stream_ReadDwordSlot34(void)  body 00be42e0 - 00be42f9",
+      "old_comment": "[BSP reconstruction 00be42e0]\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+      "added_evidence": "BG/BH source evidence: Complete26B: ECX stream, optional actual-count pointer argument, RET4, EAX scalar. Reuse incoming pointer ARGUMENT SLOT as4-byte destination; pass original pointer unchanged to current slot24. Short-read unwritten bytes retain pointer address bits, null pointer seeds zero. Source e37775a4 reloads verified current D642C0/BEF590 or D691B0/BF5030 profile/slot and calls existing real provider; arbitrary profiles and native numeric callable vtables unclaimed. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "ce771780e92b1cbc3e5544ac910c7283464f11eeac4b5b11fc0be5f12256440e"
+    },
+    {
+      "address": "00be4360",
+      "old_name": "BSP_Stream_ReadFloat",
+      "name": "BSP_Stream_ReadFloat",
+      "original_bytes": 26,
+      "old_proto": "00be4360 BSP_Stream_ReadFloat  undefined BSP_Stream_ReadFloat(void)  body 00be4360 - 00be4379",
+      "old_comment": "[BSP reconstruction 00be4360]\nECX stream, optionalactualpointer stack,RET4/x87ST0. One4byte read intoargumentslot thenFLDfloat; callerfontstoresfloat. Typednull-actualfragment includesFLTstore boundary; specialFPstatus/control unverified.",
+      "added_evidence": "BG/BH source evidence: Complete26B: same argument-slot-as-buffer and optional actual pointer forwarding as BE42E0, but FLD32 returns scalar in ST0. Short tails keep original pointer word, x87 exceptions/status are not replaced by memcpy semantics. Worker e37775a4 source dispatch qualifies actual D642C0/BEF590 and D691B0/BF5030 profiles; physical-failure runtime and original-vs-source stack parity untested. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+      "preserved_comment": true,
+      "current_comment_sha256": "132dca9b2c9656c29ee3100ae55166f31ef8060c96f83e82c644eaf048f51880"
+    }
+  ],
+  "files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\metadata-before.json",
+      "sha256": "bb69a9548629ed52ad62ed211bf070a9ffca85f1c8df4614141c806379916f4a",
+      "bytes": 5147
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\annotations-prepared.json",
+      "sha256": "5990efb89b6aa9fb5298b45f4183be10db3ab37b4e2bc7a76f815f4768df5645",
+      "bytes": 19525
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\annotations-apply.log",
+      "sha256": "1d4e6496aa1fce10692ed66e0f9ba9648e235671629a069e3dc39c7154d3e8ac",
+      "bytes": 667
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\ghidra-annotations-20260914T003041Z.json",
+      "sha256": "d6b21dd1886802cf6a195abca1f4f8ab65265127ea691a4f857551a6fbeef217",
+      "bytes": 26865
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\comments-after.json",
+      "sha256": "5ccf7badac203a1663be85eeeea4d5cea74863fa7d0d1d7d237fbb8057b0a7e8",
+      "bytes": 25713
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\export-after.log",
+      "sha256": "6e7440001772e6c47dd91fe154419e72136874953b6d03e12408368ceab889fd",
+      "bytes": 1299
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\merge-record.json",
+      "sha256": "fd095d38f1613c20803fd55e926b5f83a1d141b433a548e42c9fb2f904f3d38d",
+      "bytes": 12711
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\bh_integration\\predicate-corrected-call-check.log",
+      "sha256": "9dfecf40112f86392acf76b2c8ffaf1b9c367aac843c9ec2ed18c0891c747ddd",
+      "bytes": 78
+    }
+  ],
+  "corrections": [
+    {
+      "path": "include/bsp/native_resource_hierarchy_cleanup.hpp and docs/NATIVE_RESOURCE_HIERARCHY_CLEANUP.md",
+      "was": "88h record",
+      "evidence": "Existing hierarchy field and pool producer reconstruction; cleanup accepts payload pointer.",
+      "is": "84h payload in88h pool slot"
+    },
+    {
+      "path": "reports/native_structured_node_predicate.json",
+      "was": "native label on a non-CALL function metadata row",
+      "evidence": "Complete21B leaf has no CALL instructions; corrected call checker emits no indirect row.",
+      "is": "ghidra_name metadata; zero CALLS"
+    }
+  ],
+  "uncertainty": "No game/runtime validation, original-vs-source execution or native FH3/asynchronous-fault identity is established by these metadata writes. Existing worker fixtures/builds retain their original scope; full B7EB90 producer remains incomplete.",
+  "failure_history": [
+    {
+      "path": "local/bh_integration/finish-metadata.log",
+      "sha256": "d9ddaaa2eb225118dc47d6a7ba7acf6ceaa9f048422f29b8683c2b77992032b0",
+      "reason": "First metadata finalizer accepted only DEFER CALL; existing cleanup uses valid DEFER DIRECTORY CMAKE_SOURCE_DIR CALL. Corrected check accepts exactly the two existing deferred forms without editing the registration."
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 # Native hierarchy record cleanup
 
 `B88320-B8833F` is a complete 32-byte scalar cleanup wrapper. The live Ghidra
-body and installed PE bytes agree (`568bf1e858fefffff644240801740b56b92c020901e8b6f7f8ff8bc65ec20400`). Entry ECX holds the original 88h hierarchy
-record and the single stack DWORD holds flags. The routine saves the record in
+body and installed PE bytes agree (`568bf1e858fefffff644240801740b56b92c020901e8b6f7f8ff8bc65ec20400`). Entry ECX holds the original 84h hierarchy
+payload in an 88h pool slot, and the single stack DWORD holds flags. The routine saves the record in
 ESI, calls `B88180` to destroy its fields, tests flags bit 0, and only when set
 passes the record on the stack with ECX=`109022C` to `B17AF0`. It returns the
 original record in EAX and consumes the flags with RET4. It has no direct live
