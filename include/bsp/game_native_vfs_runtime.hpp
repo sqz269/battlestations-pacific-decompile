@@ -18,6 +18,7 @@ struct NativeStreamTypeIdStorage;
 struct NativeFileAccessLogLifetimeBindings;
 struct SingletonLifetimeCallbacks;
 class NativeVfsEnumerationDuplicateLog;
+class NativeFileStoreCompletionDispatch;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -47,6 +48,10 @@ struct GameNativeVfsRuntimeInputs {
     // Both inputs are retained through the shared manager drain.
     NativeVfsEnumerationDuplicateLog* enumeration_duplicates;
     const char* actual_empty_name_0109cef0;
+    // Optional borrowed source dispatcher for original FileStore completion
+    // callback identities. Retain it through all pending reads and shared drain.
+    // Production loading-queue binding is a separate reconstruction packet.
+    NativeFileStoreCompletionDispatch* filestore_completions{};
 };
 
 // Source composition for one raw VFS manager. The caller drains the SAME
@@ -75,6 +80,13 @@ public:
     // full 00738360 search registrations. Archive factory tail follows later.
     void run_phase2_mount_scan_search(const char* current_directory_with_separator);
     bool exists(const char* path);
+    // BDB0B0 visits the live mount tree and dispatches each current provider+28.
+    void pump_pending();
+    // Request through BE7CD0 against the CURRENT existing factory cache.
+    // Requires a bound completion dispatcher and a previously created FileStore.
+    // Resolve/request frames are retained together if a nested call fails.
+    bool request_file_store(const char* path, std::uint32_t native_callback);
+    std::uint32_t file_store_request_failure_site() const noexcept;
     // BDF4C0 mutates the pooled caller name even on a normal false result.
     // Copy that final spelling back before releasing the complete native frame.
     // An interrupted native call retains its frame/header in this runtime;

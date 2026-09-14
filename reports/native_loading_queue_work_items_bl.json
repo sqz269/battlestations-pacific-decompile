@@ -1,0 +1,696 @@
+{
+  "packet": "orch4_native_loading_queue_storage_bl",
+  "baseline": "96d910d50a2e98317bb45227d830544ef1727a3d",
+  "utc": "2026-09-14T06:06:06.670152+00:00",
+  "ghidra": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every byte/prototype batch used bsp.py ghidra; Client.verify checks project, program path, language and image base. BSP_GHIDRA_AUTOSTART=0; no writes/scripts/restarts."
+  },
+  "binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004fb310",
+      "inclusive_end": "004fb36e",
+      "byte_count": 95,
+      "sha256": "73bf7a06be0e5e8edf583f8eb2a24aff9d594c31e62dabcaf2af8f4138aeb203",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/004fb310_bytes.txt",
+      "evidence_sha256": "400176b400563024e66fff9b00e55a930760032184e5c1b8b11cb9305b5c222e",
+      "source_function": "reserve_native_loading_job_pointers_004fb310",
+      "native_abi": "ECX actual0Ch pointer vector; stack signed capacity; RET4",
+      "native_eh_registration": "no local native EH state",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "004fb4b0",
+      "inclusive_end": "004fb4ff",
+      "byte_count": 80,
+      "sha256": "ca7c1b8344b5b00f8ec3157c40f171415fd785dafbdbf2d4b020885e1385d2cc",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/004fb4b0_bytes.txt",
+      "evidence_sha256": "e84c3229f81d6b437481168bdba2c2e62d23216c058b3d05ac8f0945876582d6",
+      "source_function": "resize_native_loading_job_pointers_004fb4b0",
+      "native_abi": "ECX actual0Ch pointer vector; stack signed count; RET4",
+      "native_eh_registration": "no local native EH state",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "00501670",
+      "inclusive_end": "00501715",
+      "byte_count": 166,
+      "sha256": "b9528caf2a1653d56afc94a55d3af5faa48f60f876b1f411aa0c344db4d5b3bc",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/00501670_bytes.txt",
+      "evidence_sha256": "20827f2122c2c9f0d8bb25cb31906bb1ba70939fd8e27222f2b415842aaadeba",
+      "source_function": "remove_native_loading_work_item_00501670",
+      "native_abi": "ECX actual0Ch work vector; stack signed index; RET4",
+      "native_eh_registration": "no local native EH state",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "005018a0",
+      "inclusive_end": "005019c4",
+      "byte_count": 293,
+      "sha256": "14aff6ce51df37f3a955256f200a53abd09ce961b2ed51651092f83c802c2ea3",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/005018a0_bytes.txt",
+      "evidence_sha256": "aae2e9bcf72542fbb9faa8b009e440caa3cb6579aee90e1413d1c829e27c1591",
+      "source_function": "reserve_native_loading_work_items_005018a0",
+      "native_abi": "ECX actual0Ch work vector; stack signed capacity; RET4",
+      "native_eh_registration": "00c68cf7",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "005019d0",
+      "inclusive_end": "00501a49",
+      "byte_count": 122,
+      "sha256": "e19e44e49996eea35d8f391061ae60c2d93a50e3f5f2ef787a21e05a266f3bcd",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/005019d0_bytes.txt",
+      "evidence_sha256": "60940f910176a5bdd17bd578c1c09a5b40c39ca6b947247e1e0d58e2981cabf3",
+      "source_function": "resize_native_loading_work_items_005019d0",
+      "native_abi": "ECX actual0Ch work vector; stack signed count; RET4",
+      "native_eh_registration": "no local native EH state",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "005051a0",
+      "inclusive_end": "00505210",
+      "byte_count": 113,
+      "sha256": "a501f968d120503fac610950af697b81d06966f89175da99bb07e59dfdf3d6b3",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/005051a0_bytes.txt",
+      "evidence_sha256": "e0ed9b1e12a53d9c3bc52d8c2e2faae52b8a88a5dfe8ef64e85e3ff9af513f46",
+      "source_function": "destroy_native_loading_job_storage_005051a0",
+      "native_abi": "ECX actual24h job; no stack arguments; RET",
+      "native_eh_registration": "00c6918b",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "00505530",
+      "inclusive_end": "005055b5",
+      "byte_count": 134,
+      "sha256": "253764de968672f1e8b731c0b369fdc06f1d2943608eda32e0ad464660a10984",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/00505530_bytes.txt",
+      "evidence_sha256": "4647078589bc34aa22fd41d12d7e0652e4b49ec8efeffbbf8d243a8fe559d76d",
+      "source_function": "construct_native_loading_job_00505530",
+      "native_abi": "ECX actual24h job; stack source8h name header; EAX job; RET4",
+      "native_eh_registration": "00c691eb",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    },
+    {
+      "address": "005055c0",
+      "inclusive_end": "00505651",
+      "byte_count": 146,
+      "sha256": "90e858c1f4fbc20733066b3b31d137af9e03d1fda90e0af7d4cf3cf22b71d5d4",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "complete normal body including decoded returning-free continuation",
+      "evidence_log": "local/loading_storage_bl/005055c0_bytes.txt",
+      "evidence_sha256": "f5e6eb6f8b94da0091829e5a1e5d7705a3d329df3f3a117ae418b0675606a664",
+      "source_function": "enqueue_native_loading_job_005055c0",
+      "native_abi": "ECX actual20h loader; stack source8h name header; RET4; no promised result",
+      "native_eh_registration": "00c6920b",
+      "source": "src/native_loading_queue_work_items.cpp",
+      "source_status": "implemented_strict_win32_fixture_passed_pending_integrator_registration"
+    }
+  ],
+  "dependency_and_eh_spans": [
+    {
+      "address": "00504e10",
+      "inclusive_end": "00504e26",
+      "byte_count": 23,
+      "sha256": "123b2c8e322d0fc20e90a67001d3f0310fa5dc7ef419387a705b134105e350b9",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "EH work-vector destruction dependency; composed privately from005019D0 andfree",
+      "evidence_log": "local/loading_storage_bl/00504e10_bytes.txt",
+      "evidence_sha256": "668518288ade811f5786699416b21e160678ca315639f5f9d6560dbf39efa09a"
+    },
+    {
+      "address": "00401130",
+      "inclusive_end": "00401130",
+      "byte_count": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "placement-delete dependency; RET no-op",
+      "evidence_log": "local/loading_storage_bl/00401130_bytes.txt",
+      "evidence_sha256": "fbb20bd3152b50cc9e9d4a7228f92446a3cbd174a0110c70fd16dc0a72ad6e0d"
+    },
+    {
+      "address": "00c68ce0",
+      "inclusive_end": "00c68cf6",
+      "byte_count": 23,
+      "sha256": "787ce492d39eca411c15d02f16aac04ec7db6a794f4a5db0b3c7b77f4ec310bb",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "reserve unwind funclet",
+      "evidence_log": "local/loading_storage_bl/00c68ce0_bytes.txt",
+      "evidence_sha256": "0163f26f81e90751729954f5600066e479e07a68795ec0620301d19462ebde9c"
+    },
+    {
+      "address": "00c68cf7",
+      "inclusive_end": "00c68d00",
+      "byte_count": 10,
+      "sha256": "71d733784967b796dbf58cbf10cebadb9e41eb1c87d7d0648270bd86ac312c62",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "reserve FH3 registration stub",
+      "evidence_log": "local/loading_storage_bl/00c68cf7_bytes.txt",
+      "evidence_sha256": "818e5b33713860bbdd3a8ba4fead9333ec59e202ec19aeb19c42c90c1a183617"
+    },
+    {
+      "address": "00d91fb8",
+      "inclusive_end": "00d91fbf",
+      "byte_count": 8,
+      "sha256": "bea2e6f1ef97d129d717e61adfc1485410a0234c2931b05c22604a5831bb7577",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "reserve unwind map",
+      "evidence_log": "local/loading_storage_bl/00d91fb8_bytes.txt",
+      "evidence_sha256": "60468f812446ff451b5b9b746c55199cd33251d9374d8ee5c38a8da57298affd"
+    },
+    {
+      "address": "00d91fc0",
+      "inclusive_end": "00d91fe3",
+      "byte_count": 36,
+      "sha256": "6eff0e837970b61cf830e0953daf1c9ac13ea1b6e02fc21c0a5437f96d9862ce",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "reserve FH3 FuncInfo",
+      "evidence_log": "local/loading_storage_bl/00d91fc0_bytes.txt",
+      "evidence_sha256": "4569946864404903283f25dcf55d78b45bff60f2c6154ff3cdbe647cdbd5c99b"
+    },
+    {
+      "address": "00c69180",
+      "inclusive_end": "00c6918a",
+      "byte_count": 11,
+      "sha256": "1327a07be77c48f31388b05264566b5804d8ffd992b2f3b00da362916a67c827",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job destructor unwind funclet",
+      "evidence_log": "local/loading_storage_bl/00c69180_bytes.txt",
+      "evidence_sha256": "22fd07b8c9fb6633ce16f1c95b9705a155ef9f78506219a35f6952e2a5db67ad"
+    },
+    {
+      "address": "00c6918b",
+      "inclusive_end": "00c69194",
+      "byte_count": 10,
+      "sha256": "c154af572b1aef871bfeb5d04d4b55aa592905bc77e1bbae107129bb9407dcf0",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job destructor FH3 registration stub",
+      "evidence_log": "local/loading_storage_bl/00c6918b_bytes.txt",
+      "evidence_sha256": "3d057ec2e3cbcabac6cbcb534757059625e7d99b6868a059701c48cc29abeeed"
+    },
+    {
+      "address": "00d92598",
+      "inclusive_end": "00d9259f",
+      "byte_count": 8,
+      "sha256": "450a2f9a0739bd91d3d442ab3db2298cb270bb2d2e13a518c36796d2ea21e279",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job destructor unwind map",
+      "evidence_log": "local/loading_storage_bl/00d92598_bytes.txt",
+      "evidence_sha256": "f60a9893655a79b1fcc900f9d14d17fc96172bc6699a6f33d63122986ec6b4be"
+    },
+    {
+      "address": "00d925a0",
+      "inclusive_end": "00d925c3",
+      "byte_count": 36,
+      "sha256": "3df9777e5d14539842fe8260700568d04cb09e2a84dee3931484b27e28aec1a7",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job destructor FH3 FuncInfo",
+      "evidence_log": "local/loading_storage_bl/00d925a0_bytes.txt",
+      "evidence_sha256": "29c748c6cf6d175e6ac0c1e96e301788c2940d2a383562d09930ab56359b0617"
+    },
+    {
+      "address": "00c691e0",
+      "inclusive_end": "00c691ea",
+      "byte_count": 11,
+      "sha256": "d82c16d9b31ec4013197ba0f1af16ca325a43ccd912deb39f9bd8cf2aa8bf348",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job constructor unwind funclet",
+      "evidence_log": "local/loading_storage_bl/00c691e0_bytes.txt",
+      "evidence_sha256": "311cba6a6e6a5f965e31779b71281a3f5e4b74306bc637b4848bd2aa84f55323"
+    },
+    {
+      "address": "00c691eb",
+      "inclusive_end": "00c691f4",
+      "byte_count": 10,
+      "sha256": "fc3a749b0b3363a94f59b67aec9851720e9a5220088a3d2159c8918b2fdb36d6",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job constructor FH3 registration stub",
+      "evidence_log": "local/loading_storage_bl/00c691eb_bytes.txt",
+      "evidence_sha256": "91acdad6bcdb6711bc0d4de6d4e5622d383c996ad6b970059e6b64168dd56f7f"
+    },
+    {
+      "address": "00d92650",
+      "inclusive_end": "00d92657",
+      "byte_count": 8,
+      "sha256": "91be1e26a3431eddad79d1840e10dad59671c90921e837c1b7ae11a08ea0d45e",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job constructor unwind map",
+      "evidence_log": "local/loading_storage_bl/00d92650_bytes.txt",
+      "evidence_sha256": "68290a5a4f22a16576e35f9d5f988dc47ae2551fe372e6abe20e5bbefb10312f"
+    },
+    {
+      "address": "00d92658",
+      "inclusive_end": "00d9267b",
+      "byte_count": 36,
+      "sha256": "62e5b16d52864a7c3dee6f6e4726b06fc858b9ae4dec934211fb3673e915315b",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "job constructor FH3 FuncInfo",
+      "evidence_log": "local/loading_storage_bl/00d92658_bytes.txt",
+      "evidence_sha256": "c966eceb03cf8db47c8f16fcc5a02d01da873f516afa48273301490410c11721"
+    },
+    {
+      "address": "00c69200",
+      "inclusive_end": "00c6920a",
+      "byte_count": 11,
+      "sha256": "a8a4c97f54352a5176644a613e3d2c569d5729c24e06b6b93bab97e91dbbb868",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "enqueue unwind funclet with decoded post-freePOP ECX/RET",
+      "evidence_log": "local/loading_storage_bl/00c69200_bytes.txt",
+      "evidence_sha256": "1721df4aec784ae77b338f1fc5f35a46e1883b22193d4c9464c144e97c559d60"
+    },
+    {
+      "address": "00c6920b",
+      "inclusive_end": "00c69214",
+      "byte_count": 10,
+      "sha256": "a906e6f3c677de2c361b87b58c52c9f5ef943a2307e9336b152b76e2459fa1d3",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "enqueue FH3 registration stub",
+      "evidence_log": "local/loading_storage_bl/00c6920b_bytes.txt",
+      "evidence_sha256": "e998cabda6f0d259a8f94071d54355a3c8ca32a2782c947c691712abcef64622"
+    },
+    {
+      "address": "00d9267c",
+      "inclusive_end": "00d92683",
+      "byte_count": 8,
+      "sha256": "27e4d45d5b3e695da24fe0f566605518fb610b9b777426f6640b111bb8de2235",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "enqueue unwind map",
+      "evidence_log": "local/loading_storage_bl/00d9267c_bytes.txt",
+      "evidence_sha256": "960d24482f99ccdfb677d42962095ee7f91bbeef1fb2f74d82912e95ef8b5cee"
+    },
+    {
+      "address": "00d92684",
+      "inclusive_end": "00d926a7",
+      "byte_count": 36,
+      "sha256": "ba12e9a28771092f6362d196d2f46c7335b253711f788dfa63540b2318ed1636",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "enqueue FH3 FuncInfo",
+      "evidence_log": "local/loading_storage_bl/00d92684_bytes.txt",
+      "evidence_sha256": "9856b63db2ff0869731e1fd351e7e6fd5a259226bc244153fd5655c12e2db7a0"
+    },
+    {
+      "address": "004fb361",
+      "inclusive_end": "004fb369",
+      "byte_count": 9,
+      "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "normal-body returning-free membership hole",
+      "evidence_log": "local/loading_storage_bl/004fb361_bytes.txt",
+      "evidence_sha256": "5bc354ebc10978caa7d63b985d384734007991ccd62c59c7c0942b6d9914594f"
+    },
+    {
+      "address": "005019a4",
+      "inclusive_end": "005019b2",
+      "byte_count": 15,
+      "sha256": "a8e474af32f7a80c0044bfeb749f375d39a7421afd0d6ffe5ba317444ba2e19c",
+      "installed_pe_matches_live_ghidra": true,
+      "role": "normal-body returning-free membership hole",
+      "evidence_log": "local/loading_storage_bl/005019a4_bytes.txt",
+      "evidence_sha256": "8761f43371025c84d7190eef9c28f23af600cb1cbab84f5f24e6cc14ede18185"
+    }
+  ],
+  "direct_calls": [
+    {
+      "address": "004fb330",
+      "native": "00bf55be",
+      "function": "004fb310"
+    },
+    {
+      "address": "004fb35c",
+      "native": "00bf6989",
+      "function": "004fb310"
+    },
+    {
+      "address": "004fb4be",
+      "native": "004fb310",
+      "function": "004fb4b0"
+    },
+    {
+      "address": "005016a2",
+      "native": "0041dd40",
+      "function": "00501670"
+    },
+    {
+      "address": "005016b7",
+      "native": "00bf7680",
+      "function": "00501670"
+    },
+    {
+      "address": "00501701",
+      "native": "00419cc0",
+      "function": "00501670"
+    },
+    {
+      "address": "00501708",
+      "native": "00bd1510",
+      "function": "00501670"
+    },
+    {
+      "address": "005018de",
+      "native": "00bf55be",
+      "function": "005018a0"
+    },
+    {
+      "address": "00501921",
+      "native": "0041dd40",
+      "function": "005018a0"
+    },
+    {
+      "address": "00501936",
+      "native": "00bf7680",
+      "function": "005018a0"
+    },
+    {
+      "address": "00501985",
+      "native": "00419cc0",
+      "function": "005018a0"
+    },
+    {
+      "address": "0050198c",
+      "native": "00bd1510",
+      "function": "005018a0"
+    },
+    {
+      "address": "0050199f",
+      "native": "00bf6989",
+      "function": "005018a0"
+    },
+    {
+      "address": "005019df",
+      "native": "005018a0",
+      "function": "005019d0"
+    },
+    {
+      "address": "00501a30",
+      "native": "00419cc0",
+      "function": "005019d0"
+    },
+    {
+      "address": "00501a37",
+      "native": "00bd1510",
+      "function": "005019d0"
+    },
+    {
+      "address": "005051d6",
+      "native": "00419cc0",
+      "function": "005051a0"
+    },
+    {
+      "address": "005051dd",
+      "native": "00bd1510",
+      "function": "005051a0"
+    },
+    {
+      "address": "005051f1",
+      "native": "005019d0",
+      "function": "005051a0"
+    },
+    {
+      "address": "005051f9",
+      "native": "00bf6989",
+      "function": "005051a0"
+    },
+    {
+      "address": "0050557c",
+      "native": "0041dd40",
+      "function": "00505530"
+    },
+    {
+      "address": "00505591",
+      "native": "00bf7680",
+      "function": "00505530"
+    },
+    {
+      "address": "005055dc",
+      "native": "00bf681b",
+      "function": "005055c0"
+    },
+    {
+      "address": "005055fb",
+      "native": "00505530",
+      "function": "005055c0"
+    },
+    {
+      "address": "00505628",
+      "native": "004fb310",
+      "function": "005055c0"
+    },
+    {
+      "address": "00504e15",
+      "native": "005019d0",
+      "function": "00504e10",
+      "kind": "call"
+    },
+    {
+      "address": "00504e1d",
+      "native": "00bf6989",
+      "function": "00504e10",
+      "kind": "call"
+    },
+    {
+      "address": "00c68cee",
+      "native": "00401130",
+      "function": "00c68ce0",
+      "kind": "call"
+    },
+    {
+      "address": "00c69186",
+      "native": "00504e10",
+      "function": "00c69180",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c691e6",
+      "native": "00504e10",
+      "function": "00c691e0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c69204",
+      "native": "00bf65ac",
+      "function": "00c69200",
+      "kind": "call"
+    }
+  ],
+  "eh_func_infos": [
+    {
+      "parent": "005018a0",
+      "func_info": "00d91fc0",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00d91fb8",
+      "state0_to": -1,
+      "state0_action": "00c68ce0",
+      "try_blocks": 0,
+      "eh_flags": 1
+    },
+    {
+      "parent": "005051a0",
+      "func_info": "00d925a0",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00d92598",
+      "state0_to": -1,
+      "state0_action": "00c69180",
+      "try_blocks": 0,
+      "eh_flags": 1
+    },
+    {
+      "parent": "00505530",
+      "func_info": "00d92658",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00d92650",
+      "state0_to": -1,
+      "state0_action": "00c691e0",
+      "try_blocks": 0,
+      "eh_flags": 1
+    },
+    {
+      "parent": "005055c0",
+      "func_info": "00d92684",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00d9267c",
+      "state0_to": -1,
+      "state0_action": "00c69200",
+      "try_blocks": 0,
+      "eh_flags": 1
+    }
+  ],
+  "decoded_membership": {
+    "observation": "004fb361 ?  ?  body ?\n004fb369 ?  ?  body ?\n005019a4 ?  ?  body ?\n005019b2 ?  ?  body ?\n00504e22 FUN_00504e10  void __fastcall FUN_00504e10(void * work_vector, void * unused_edx)  body 00504e10 - 00504e26\n00504e26 FUN_00504e10  void __fastcall FUN_00504e10(void * work_vector, void * unused_edx)  body 00504e10 - 00504e26\n00c69209 ?  ?  body ?\n00c6920a ?  ?  body ?\n",
+    "historical": "Initial00504E22/00504E26 absent; integrator repaired saved function before final observation.",
+    "pending_integrator_repair": [
+      "004fb361..004fb369",
+      "005019a4..005019b2"
+    ],
+    "other_boundary": "00C69209..00C6920A decoded after returning free are outside saved unwind funclet body; no worker repair."
+  },
+  "layout": {
+    "loader_size": "20h",
+    "loader_queue": "pointer+10,count+14,capacity+18",
+    "vector": "pointer+0,signed count+4,signed capacity+8",
+    "work_record": "10h: owning name length+0/data+4; raw context+8/result+0C",
+    "job": "24h: state DWORD+0,stop BYTE+4,untouched+5..7,work vector+8,name+14/+18,raw callback+1C,raw FileBlock+20"
+  },
+  "allocation_and_unwind": [
+    "Pointer reserve clamps requested capacity to1, allocates capacity*4 DWORD-wrap bytes, copies current slots, frees current old array, publishes pointer then capacity.",
+    "Work reserve allocates capacity*16 DWORD-wrap bytes, deep-copies names and copies raw payload; native state0 cleanup only calls no-op placement-delete401130. Failure does not destroy earlier copies or free replacement. After copy, destroys old names in forward order, frees old array, publishes pointer then capacity.",
+    "Work resize clears four DWORDs in newly added records. Shrink decrements current count before each tail string return; remove shifts string/raw fields, destroys the last name, then decrements current count.",
+    "Job constructor initializes state/stop-byte/work vector, then name. Its state0 cleanup destroys the work vector only; package header is not a completed member. Callback/FileBlock writes follow name copy.",
+    "Job storage destructor releases package name first with work-vector cleanup active; disables that cleanup before normal work resize0/free. No package-header clearing, outer free or resource/FileBlock destruction.",
+    "Enqueue allocates24h; ctor failure frees that outer block after ctor work-vector unwind. Cleanup is disabled before capacity growth. Pointer reserve failure leaves the newly constructed job allocated; enqueue owns no resource callback cleanup."
+  ],
+  "source_dependencies": [
+    {
+      "entries": [
+        "0041dd40",
+        "00419cc0",
+        "00bd1120",
+        "00bd1510"
+      ],
+      "source": [
+        "src/native_string.cpp",
+        "src/native_string_pool_owner.cpp",
+        "src/native_string_pool_storage.cpp"
+      ],
+      "contract": "actual native header and raw string pool publications, no throwing-release suppression"
+    },
+    {
+      "entries": [
+        "00bf55be",
+        "00bf681b",
+        "00bf6989",
+        "00bf65ac"
+      ],
+      "source": [
+        "src/singleton_lifetime.cpp"
+      ],
+      "contract": "existing malloc/new-handler/free service; actual Win32 byte counts; host CRT identity boundary"
+    },
+    {
+      "entries": [
+        "00bf7680"
+      ],
+      "source": [
+        "src/native_loading_queue_work_items.cpp"
+      ],
+      "contract": "existing backward-overlap behavior composed with std::memmove; zero count omitted for C++ validity"
+    },
+    {
+      "entries": [
+        "00504e10"
+      ],
+      "source": [
+        "src/native_loading_queue_work_items.cpp"
+      ],
+      "contract": "private work-vector unwind composition resize005019D0(vector,0), then free current pointer; no separate public owner/ledger claim"
+    },
+    {
+      "entries": [
+        "00401130"
+      ],
+      "source": [
+        "src/native_loading_queue_work_items.cpp"
+      ],
+      "contract": "placement-delete RET no-op requires no source cleanup"
+    }
+  ],
+  "validation": {
+    "strict_compile": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /permissive- /MD /O2; actual new TU and ignored fixture",
+    "fixture": "PASS actual Win32 storage: all8 APIs, real constructed8AD4A0h string pool, untouched job padding, raw payload, name deep copies, enqueue growth, pointer and work resize, middle remove, destruction, initial reserve allocation failure",
+    "fixture_files": [
+      "local/loading_storage_bl/storage_probe.cpp",
+      "local/loading_storage_bl/run_probe.cmd",
+      "local/loading_storage_bl/probe_build.log"
+    ],
+    "frozen_library": {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-orch4-loading-storage-bl\\local\\loading_storage_bl\\bsp_core_frozen.lib",
+      "sha256": "F475861ACA75F2C839F8B45F23147C759BE3DB14628EE1D8D8C890507ED11188",
+      "utc": "2026-09-14T06:01:23.8928426Z",
+      "lock": "source opened FileShare.Read to exclude writers during copy and hash"
+    },
+    "span_count": 28,
+    "span_bytes": 1469,
+    "span_validation": "Every recorded span live Ghidra == installed PE",
+    "direct_call_rows": 31,
+    "direct_call_verifier": "PASS: python tools/verify_report_calls.py reports/native_loading_queue_work_items_bl.json; 31 call rows checked, 0 failed",
+    "source_link_registration": "Integrator owns CMake/shared runtime; worker TU compiled and linked explicitly against frozen library",
+    "limits": [
+      "No original x86 differential execution",
+      "No C++ throwing-string-getter/reentrant-mutation fixture; cleanup state scheduling established from assembly and FH3 tables",
+      "No native binary/FH3/SEH ABI identity claim",
+      "No live loading queue, resource loading, FileBlock or gameplay validation"
+    ],
+    "artifact_hashes": [
+      {
+        "path": "include/bsp/native_loading_queue_work_items.hpp",
+        "sha256": "b1d288578a3221bb4b64a6aff6f7b798c16f3ca1cf705d94dc7341203fc69ce8"
+      },
+      {
+        "path": "src/native_loading_queue_work_items.cpp",
+        "sha256": "31c0e78ee4050eee92d51f55da559eab5ac6defa87ae2d7fcef2def15b335738"
+      },
+      {
+        "path": "local/loading_storage_bl/storage_probe.cpp",
+        "sha256": "99f195c84c8a7a6775c0475579c1400a839c850b746133a5a990d6dce7b724b2"
+      },
+      {
+        "path": "local/loading_storage_bl/run_probe.cmd",
+        "sha256": "58f31a0494bcac21fe6d655925d90082c293a8281a7617b55610ba341fc676e0"
+      },
+      {
+        "path": "local/loading_storage_bl/probe_build.log",
+        "sha256": "810170357d5b881cd370b234429f8304cf5b8d379718f42c901e7bbc4b28f8d2"
+      },
+      {
+        "path": "local/loading_storage_bl/storage_probe.exe",
+        "sha256": "989963e80f77395858892d84d0ef1f35be01959f6787fa859c186ec469e59fed"
+      },
+      {
+        "path": "local/loading_storage_bl/native_loading_queue_work_items.obj",
+        "sha256": "580a49d7efb0ddb8b7833b8ef98987149651d39eae64b0731a14dfcab6892e6c"
+      },
+      {
+        "path": "local/loading_storage_bl/call_verification.log",
+        "sha256": "caadf53e6266c4fd4a3275e6e6bc93033d4e467e1c5427d738eb92e1874d326c"
+      }
+    ],
+    "repository_build": "scripts/build.ps1 was started, then the verified worktree-specific cmake process tree was stopped after integrator confirmed no base-only worker build needed. Worker CMake lacks new TU; strict new-TU fixture is passing and integrator owns the registered build."
+  },
+  "production_boundaries": [
+    "Loader owner publication/callback/event belongs to independent owner packet",
+    "Loader state machine/lifecycle/resource release/FileBlock/worker dispatch are not implemented here",
+    "Work attach504D20/4FE700/5048F0 remains outside this packet",
+    "No CMake/shared runtime/ledger/config modifications in worker commit"
+  ]
+}

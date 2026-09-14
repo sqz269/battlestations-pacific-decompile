@@ -39,6 +39,9 @@ bool open_resource_pending_00bdda10_fragment(VfsMountContext& context,
     const std::string& first_name, const std::string& second_name,
     PhysicalReadCallback callback, std::uint32_t flags, DWORD& error) {
     error = ERROR_SUCCESS;
+    // This projected callback/report contract has no raw native adapter.
+    // Production native pending I/O uses its actual manager and DWORD callback.
+    if (context.native_access) { error = ERROR_NOT_SUPPORTED; return false; }
     if (!valid_string(first_name) || !valid_string(second_name) || !callback) {
         error = ERROR_INVALID_PARAMETER;
         return false;
@@ -71,6 +74,11 @@ bool open_resource_pending_00bdda10_fragment(VfsMountContext& context,
 bool pump_pending_resources_00bdb0b0_fragment(VfsMountContext& context,
     VfsPendingPumpReport& report, DWORD& error) {
     error = ERROR_SUCCESS;
+    if (context.native_access) {
+        report = {};
+        report.first_error = error = ERROR_NOT_SUPPORTED;
+        return false;
+    }
     if (pumping_manager) { error = ERROR_BUSY; return false; }
     report = {};
     for (const auto& mount : context.mounts) {

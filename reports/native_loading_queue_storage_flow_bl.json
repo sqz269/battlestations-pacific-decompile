@@ -1,0 +1,1184 @@
+{
+  "reason": "Restore decoded returning-free function membership through supported bridge endpoints; preserve original evidence. No script execution or callee no-return changes.",
+  "entries": [
+    {
+      "address": "004fb310",
+      "end_exclusive": "004fb36f",
+      "sha256": "73bf7a06be0e5e8edf583f8eb2a24aff9d594c31e62dabcaf2af8f4138aeb203",
+      "bytes": 95,
+      "before_documentation": {
+        "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004fb310",
+        "function_name": "FUN_004fb310",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_004fb322"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_004fb343"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_004fb34e"
+          },
+          {
+            "relative_offset": 73,
+            "name": "LAB_004fb359"
+          },
+          {
+            "relative_offset": 90,
+            "name": "LAB_004fb36a"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_ownership": [
+        {
+          "address": "004fb310",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "004fb311",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "004fb312",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb316",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "004fb319",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb31b",
+          "mnemonic": "jge",
+          "owned": true
+        },
+        {
+          "address": "004fb31d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb322",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "004fb325",
+          "mnemonic": "jge",
+          "owned": true
+        },
+        {
+          "address": "004fb327",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "004fb32e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "004fb32f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "004fb330",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "004fb335",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb337",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "004fb339",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "004fb33c",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "004fb33f",
+          "mnemonic": "jle",
+          "owned": true
+        },
+        {
+          "address": "004fb341",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb343",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "004fb345",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "004fb347",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb349",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb34c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb34e",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "004fb351",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "004fb354",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "004fb357",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "004fb359",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "004fb35b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "004fb35c",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "004fb361",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "004fb364",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "004fb366",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "004fb369",
+          "mnemonic": "pop",
+          "owned": false
+        },
+        {
+          "address": "004fb36a",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "004fb36b",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "004fb36c",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "d34def5c979b943b20e077cee63e8dd0ec65769091fc8f0ce4400279d24df817",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004fb310",
+        "function_name": "FUN_004fb310",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "vector",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "requested_capacity",
+            "type": "int"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_004fb322"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_004fb343"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_004fb34e"
+          },
+          {
+            "relative_offset": 73,
+            "name": "LAB_004fb359"
+          },
+          {
+            "relative_offset": 90,
+            "name": "LAB_004fb36a"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 38,
+      "prior_evidence_preserved": true
+    },
+    {
+      "address": "005018a0",
+      "end_exclusive": "005019c5",
+      "sha256": "14aff6ce51df37f3a955256f200a53abd09ce961b2ed51651092f83c802c2ea3",
+      "bytes": 293,
+      "before_documentation": {
+        "hash": "2b0140bdeb17c0bb99bf31d5e6a904a2d1e39e7437206dc140572db96c0fc1f7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "005018a0",
+        "function_name": "FUN_005018a0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "uint *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 42,
+            "name": "LAB_005018ca"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_005018f7"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_0050193e"
+          },
+          {
+            "relative_offset": 174,
+            "name": "LAB_0050194e"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00501962"
+          },
+          {
+            "relative_offset": 208,
+            "name": "LAB_00501970"
+          },
+          {
+            "relative_offset": 241,
+            "name": "LAB_00501991"
+          },
+          {
+            "relative_offset": 252,
+            "name": "LAB_0050199c"
+          },
+          {
+            "relative_offset": 275,
+            "name": "LAB_005019b3"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_ownership": [
+        {
+          "address": "005018a0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018a6",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018a8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018ad",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018ae",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018b5",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "005018b8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018bd",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "005018c1",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018c2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018c4",
+          "mnemonic": "jge",
+          "owned": true
+        },
+        {
+          "address": "005018c6",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018ca",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018ce",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "005018d1",
+          "mnemonic": "jge",
+          "owned": true
+        },
+        {
+          "address": "005018d7",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018d8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018d9",
+          "mnemonic": "shl",
+          "owned": true
+        },
+        {
+          "address": "005018dc",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018dd",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "005018de",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "005018e3",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "005018e5",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "005018e8",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "005018eb",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018ed",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018f1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018f5",
+          "mnemonic": "jle",
+          "owned": true
+        },
+        {
+          "address": "005018f7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005018f9",
+          "mnemonic": "shl",
+          "owned": true
+        },
+        {
+          "address": "005018fc",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "005018ff",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501903",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00501905",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00501907",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050190b",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "0050190d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050190f",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501911",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00501913",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501915",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501918",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "0050191a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050191c",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "0050191e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "0050191f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501921",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00501926",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00501929",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "0050192b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050192d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501930",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501931",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501934",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501935",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501936",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "0050193b",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "0050193e",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501941",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501944",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501947",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050194b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050194e",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501951",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00501954",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050195c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501960",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "00501962",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00501964",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00501967",
+          "mnemonic": "jle",
+          "owned": true
+        },
+        {
+          "address": "00501969",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "0050196b",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "0050196d",
+          "mnemonic": "lea",
+          "owned": false
+        },
+        {
+          "address": "00501970",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501972",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00501976",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501978",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "0050197a",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "0050197c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050197e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501980",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501983",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501984",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00501985",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "0050198a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050198c",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00501991",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501994",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00501997",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "0050199a",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "0050199c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "0050199e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "0050199f",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "005019a4",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "005019a8",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "005019ab",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "005019ad",
+          "mnemonic": "pop",
+          "owned": false
+        },
+        {
+          "address": "005019ae",
+          "mnemonic": "pop",
+          "owned": false
+        },
+        {
+          "address": "005019af",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "005019b2",
+          "mnemonic": "pop",
+          "owned": false
+        },
+        {
+          "address": "005019b3",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005019b7",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "005019b8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "005019bf",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "005019c2",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "43d7cf18bc185b866661d74ab513113ec96173a885e839603650042d0d1f4f2f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "005018a0",
+        "function_name": "FUN_005018a0",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "vector",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "requested_capacity",
+            "type": "int"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar5",
+            "type": "uint *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6c00, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 42,
+            "name": "LAB_005018ca"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_005018f7"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_0050193e"
+          },
+          {
+            "relative_offset": 174,
+            "name": "LAB_0050194e"
+          },
+          {
+            "relative_offset": 194,
+            "name": "LAB_00501962"
+          },
+          {
+            "relative_offset": 208,
+            "name": "LAB_00501970"
+          },
+          {
+            "relative_offset": 241,
+            "name": "LAB_00501991"
+          },
+          {
+            "relative_offset": 252,
+            "name": "LAB_0050199c"
+          },
+          {
+            "relative_offset": 275,
+            "name": "LAB_005019b3"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 104,
+      "prior_evidence_preserved": true,
+      "padding_note": "Unreachable compiler LEA ECX,[ECX] at50196D..50196F was and remains outside function; all reached instructions verified."
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "004fb35c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 004fb35c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004fb310"
+      },
+      "result": "{\"success\": true, \"address\": \"004fb310\", \"deleted_function\": \"FUN_004fb310\", \"body_size\": 86, \"message\": \"Function 'FUN_004fb310' deleted at 004fb310\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004fb310",
+        "end_address": "004fb36f"
+      },
+      "result": "{\"success\": true, \"start_address\": \"004fb310\", \"end_address\": \"004fb36e\", \"bytes_disassembled\": 95, \"message\": \"Successfully disassembled 95 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004fb310",
+        "name": "FUN_004fb310",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"004fb310\", \"function_name\": \"FUN_004fb310\", \"entry_point\": \"004fb310\", \"body_size\": 95, \"message\": \"Function created successfully at 004fb310\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004fb310",
+        "prototype": "void __fastcall FUN_004fb310(void* vector, void* unused_edx, int requested_capacity)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004fb310 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "004fb310",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 004fb310\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0050199f"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0050199f (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "005018a0"
+      },
+      "result": "{\"success\": true, \"address\": \"005018a0\", \"deleted_function\": \"FUN_005018a0\", \"body_size\": 275, \"message\": \"Function 'FUN_005018a0' deleted at 005018a0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "005018a0",
+        "end_address": "005019c5"
+      },
+      "result": "{\"success\": true, \"start_address\": \"005018a0\", \"end_address\": \"005019c4\", \"bytes_disassembled\": 293, \"message\": \"Successfully disassembled 293 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "005018a0",
+        "name": "FUN_005018a0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"005018a0\", \"function_name\": \"FUN_005018a0\", \"entry_point\": \"005018a0\", \"body_size\": 290, \"message\": \"Function created successfully at 005018a0\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005018a0",
+        "prototype": "void __fastcall FUN_005018a0(void* vector, void* unused_edx, int requested_capacity)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005018a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "005018a0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 005018a0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

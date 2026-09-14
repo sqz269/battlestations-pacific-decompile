@@ -9,6 +9,7 @@
 #include "bsp/native_vfs_date_route.hpp"
 #include "bsp/native_vfs_device_route.hpp"
 #include "bsp/native_vfs_lookup_leaves.hpp"
+#include "bsp/native_vfs_pending_routes.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
@@ -53,6 +54,9 @@ std::uint32_t lookup_visitor_slot(const void* visitor, std::uint32_t offset,
     case 0x00d683f4:
         if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
         profile = context.device->actual_device_profile_00d683f4; break;
+    case 0x00d68478:
+        if (!context.pending) throw std::invalid_argument("Native VFS pending route is not bound");
+        profile = context.pending->actual_pending_profile_00d68478; break;
     default: throw std::invalid_argument("Unimplemented native VFS lookup visitor identity");
     }
     return word(profile, offset);
@@ -65,6 +69,9 @@ void dispatch_lookup_visit(void* visitor, const void* payload, const void* name,
     case 0x00bdbc70:
         if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
         read_native_vfs_device_provider_00bdbc70(visitor, payload, name, *context.device); return;
+    case 0x00bdc1e0:
+        if (!context.pending) throw std::invalid_argument("Native VFS pending route is not bound");
+        read_native_vfs_pending_provider_00bdc1e0(visitor, payload, name, *context.pending); return;
     default: throw std::invalid_argument("Unimplemented current VFS lookup visitor call slot");
     }
 }
@@ -73,6 +80,7 @@ std::uint8_t dispatch_lookup_stop(const void* visitor, NativeVfsLookupRouteConte
     case 0x00bd90f0: return read_native_vfs_exists_result_00bd90f0(visitor);
     case 0x00bdb5d0: return read_native_vfs_name_probe_result_00bdb5d0(visitor);
     case 0x00bdb670: return read_native_vfs_device_result_00bdb670(visitor);
+    case 0x00bdc1d0: return read_native_vfs_pending_result_00bdc1d0(visitor);
     default: throw std::invalid_argument("Unimplemented current VFS lookup visitor stop slot");
     }
 }

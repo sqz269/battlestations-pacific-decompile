@@ -329,15 +329,15 @@ private:
 // ApplicationFrameHost for 00737a50. Milestone 2c turns six of its methods concrete: the
 // game-state field *(00e188a8)+5D4h becomes a real read over the slot the drain advances,
 // the four profiler methods run the reconstructed counter pair, and the front-end branch
-// of the game update runs. The VFS tick and the loading queue are still the unimplemented
-// policy, and so is the rest of GGame::OnMove.
+// of the game update runs. The VFS tick pumps the actual native provider graph.
+// The loading queue and the rest of GGame::OnMove retain their explicit boundaries.
 class GameFrameHost final : public ApplicationFrameHost {
 public:
     GameFrameHost(GameHostLog& log, FrameClock& clock, Win32PlatformState& platform,
         PlatformLoopState& loop, GameStateSlot& game_state, GameFrameProfiler* profiler,
-        GameMenuHost* menu)
+        GameMenuHost* menu, GameVfsHost& vfs)
         : log_(log), clock_(clock), platform_(platform), loop_(loop),
-          game_state_(game_state), profiler_(profiler), menu_(menu) {}
+          game_state_(game_state), profiler_(profiler), menu_(menu), vfs_(vfs) {}
 
     void profiler_set_frame_slot_color(std::uint32_t argb) override;
     void profiler_begin_frame_slot() override;
@@ -368,6 +368,7 @@ private:
     GameStateSlot& game_state_;
     GameFrameProfiler* profiler_{};
     GameMenuHost* menu_{};
+    GameVfsHost& vfs_;
     unsigned long long frame_index_{};
     bool global_exit_{};
 };

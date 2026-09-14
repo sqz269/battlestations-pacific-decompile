@@ -101,11 +101,15 @@ std::size_t GameVfsHost::registered_parsers() const noexcept {
 }
 std::uint32_t GameVfsHost::failure_site() const noexcept {
     if (!core_ready_) return 0;
-    return native_->runtime().name_resolution_failure_site();
+    const auto request_site = native_->runtime().file_store_request_failure_site();
+    return request_site ? request_site : native_->runtime().name_resolution_failure_site();
 }
 bool GameVfsHost::exists(const std::string& name) {
     if (!core_ready_) return false;
     return invoke_native([&] { return active_runtime().exists(name.c_str()); });
+}
+void GameVfsHost::pump_pending() {
+    invoke_native([&] { active_runtime().pump_pending(); });
 }
 bool GameVfsHost::resolve_existing(std::string& name) {
     if (!core_ready_) return false;

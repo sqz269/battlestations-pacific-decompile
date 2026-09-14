@@ -1,0 +1,2155 @@
+{
+  "packet": "orch4_native_fileblock_frontier_bl",
+  "generated_utc": "2026-09-14T06:09:19.746759+00:00",
+  "worker_base_commit": "c2da6ab4d304fa7c9ee5488239312abb15e9feda",
+  "primary_semantic_audit_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
+  "primary_hash_capture_commit": "955d78dc65227ca4b9f49993f3ee4cec9674bc6a",
+  "primary_hash_capture_dirty_files": [
+    "?? reports/native_filestore_remove_prototype_bl.json",
+    "?? reports/native_loading_queue_eh_definitions_bl.json",
+    "?? reports/native_loading_queue_flow_bl.json",
+    "?? reports/native_loading_queue_integration_bl.json",
+    "?? reports/native_loading_queue_owner_cleanup_bl.json"
+  ],
+  "snapshot_limit": "Primary integration continues independently; exact source hashes are historical capture, not a claim about later commits/builds.",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Every live batch uses bsp.py ghidra wrappers, which verify configured project/program. disasm-raw only decodes installed bytes, separately matched to live Ghidra bytes here.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "read_only_audit": true,
+  "routines": [
+    {
+      "address": "00504790",
+      "inclusive_end": "0050484b",
+      "ghidra_min_start": "00504790",
+      "ghidra_max_inclusive_end": "0050484b",
+      "byte_count": 188,
+      "sha256": "1c5e11921a0ecb02e79e7a65b7d8ce210ea303e0aa468193a2b0e7f9298d7b4c",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual24h loader job; RET",
+      "source_status": "missing: alloc1Ch, substring(start13,count=nameLength-18), construct flag1, publish job+20",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00504790.txt",
+      "evidence_sha256": "d03a7e7ee0a40c86e7ec4e467e88fe34c699f7e699808b8ebd7531845a4ccffe"
+    },
+    {
+      "address": "00506bf0",
+      "inclusive_end": "00506c72",
+      "ghidra_min_start": "00506bf0",
+      "ghidra_max_inclusive_end": "00506c72",
+      "byte_count": 131,
+      "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual20h loader; RET",
+      "source_status": "missing retirement; scope here is captured job FileBlock+20 virtual04(flags1), clear only after return",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00506bf0.txt",
+      "evidence_sha256": "8f2f35bc53fe7ef5ec0031df0d352986c27319f0e83b4bb4bb5e152011512557"
+    },
+    {
+      "address": "00be0a30",
+      "inclusive_end": "00be0ada",
+      "ghidra_min_start": "00be0a30",
+      "ghidra_max_inclusive_end": "00be0ada",
+      "byte_count": 171,
+      "sha256": "81ab91212b2b6a54b8bc5752481109b794e1b6927c60d1cb5d25165628a81155",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual1Ch FileBlock; stack(name header,flag DWORD); EAX owner; RET8",
+      "source_status": "missing complete constructor; present embedded-string fragment is insufficient",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00be0a30.txt",
+      "evidence_sha256": "89d05e26ec49cc6b724299b62319edf685b11cde496395070d0e18a9348bc559"
+    },
+    {
+      "address": "00bdf950",
+      "inclusive_end": "00bdfd7f",
+      "ghidra_min_start": "00bdf950",
+      "ghidra_max_inclusive_end": "00bdfd7f",
+      "byte_count": 1072,
+      "sha256": "23f1be0a8d018d432c5bdde27ff48c82a841097fce6cda0622fc2ae435651982",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual FileBlock; no stack arguments; RET; no stable result contract",
+      "source_status": "missing identifier body",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bdf950.txt",
+      "evidence_sha256": "aa57223c8bfb1af7228d2a05f1f59eb99fcccbd048327a70358faf4a07b35666"
+    },
+    {
+      "address": "00bd20a0",
+      "inclusive_end": "00bd216c",
+      "ghidra_min_start": "00bd20a0",
+      "ghidra_max_inclusive_end": "00bd216c",
+      "byte_count": 205,
+      "sha256": "22a2f5a63465655e7fc4e37c4c7c3acc452bc917a68880420c7bac296dd9c548",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX source header; DL delimiter; stack actual0Ch destination vector; RET4",
+      "source_status": "missing split helper; append/substring/vector source exists",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd20a0.txt",
+      "evidence_sha256": "84f2285fff05206ad412438869855f7eee5956e6a949b2e88b0384b60a80efe0"
+    },
+    {
+      "address": "00be0980",
+      "inclusive_end": "00be0a28",
+      "ghidra_min_start": "00be0980",
+      "ghidra_max_inclusive_end": "00be0a28",
+      "byte_count": 169,
+      "sha256": "e48a9ab2164469feefef20df977beed69de6e13ebebe2b2ea1915695e4d5fffe",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX captured actual manager; stack(name header,gate byte in DWORD slot); RET8",
+      "source_status": "missing paired block entry",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00be0980.txt",
+      "evidence_sha256": "1af6dd0c05423865eee9d0cf9902707a4f9f37d3a4a4fe45273eda61a3b9d468"
+    },
+    {
+      "address": "00bdc9b0",
+      "inclusive_end": "00bdca74",
+      "ghidra_min_start": "00bdc9b0",
+      "ghidra_max_inclusive_end": "00bdca74",
+      "byte_count": 197,
+      "sha256": "5180222dc5039a2d96794a6446a84b5b8b88c34531c3ed5103128559eceb185e",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX captured actual manager; stack explicit name header; RET4",
+      "source_status": "missing paired block exit",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bdc9b0.txt",
+      "evidence_sha256": "bd36d06aab5ba08dc8b949ae08a9b2b28f1da69d606defab7f21b3057af7a859"
+    },
+    {
+      "address": "00bdcb30",
+      "inclusive_end": "00bdcbab",
+      "ghidra_min_start": "00bdcb30",
+      "ghidra_max_inclusive_end": "00bdcbab",
+      "byte_count": 124,
+      "sha256": "92e7646b0a310b15c90134a788d6be6a178ba4468ae98ebf5127b158ecfe528a",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual1Ch FileBlock; no stack arguments; RET",
+      "source_status": "missing destructor; reload CURRENT0109CEEC",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bdcb30.txt",
+      "evidence_sha256": "bd40c14b926ebbd249c95bddc5e0eb8745a11e905dede69f458c1068124760bc"
+    },
+    {
+      "address": "00bdebe0",
+      "inclusive_end": "00bdebfd",
+      "ghidra_min_start": "00bdebe0",
+      "ghidra_max_inclusive_end": "00bdebfd",
+      "byte_count": 30,
+      "sha256": "1accffb7af988c5ca55165dcef27450014a2962a92708aa4d93aba33f95b41d9",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX FileBlock; flags DWORD stack; EAX captured owner; RET4",
+      "source_status": "missing scalar destructor; optional free after normal destroy only, no ref decrement",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bdebe0.txt",
+      "evidence_sha256": "86def1ba259fc29128445c25211f1c6f2522fc06fe44b8244cfaf908ff0ef9af"
+    },
+    {
+      "address": "007f8390",
+      "inclusive_end": "007f83c2",
+      "ghidra_min_start": "007f8390",
+      "ghidra_max_inclusive_end": "007f83c2",
+      "byte_count": 51,
+      "sha256": "cd19feb87fb999c62b5873e5e93b81280c7f4f61d719bba7cc2d9157fd39f4f8",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C",
+      "source_status": "missing node producer",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/007f8390.txt",
+      "evidence_sha256": "f45f4845bbc154c0271b03d8f35b401f3b699116f660595975e770a25b493e28"
+    },
+    {
+      "address": "007fa3a0",
+      "inclusive_end": "007fa430",
+      "ghidra_min_start": "007fa3a0",
+      "ghidra_max_inclusive_end": "007fa430",
+      "byte_count": 145,
+      "sha256": "f52151d5752d51e293bec13a22e1018bb57f280ff22413929c2fcaf8a11a9145",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual list; unsigned increment stack; EAX new count; RET4 or native length_error",
+      "source_status": "missing checked UINT32_MAX count growth",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/007fa3a0.txt",
+      "evidence_sha256": "209fa9192f2b340f4b3cf19c3a8534d61ab4c09cc52bbf867d55698cb8954b20"
+    },
+    {
+      "address": "00bdaf40",
+      "inclusive_end": "00bdaf9d",
+      "ghidra_min_start": "00bdaf40",
+      "ghidra_max_inclusive_end": "00bdaf9d",
+      "byte_count": 94,
+      "sha256": "87ebfe3ac176c4601e85078bbd7959f7eaa2087138eb74b5afc565de489279f0",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C",
+      "source_status": "missing gate-node erase; post-free membership hole",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bdaf40.txt",
+      "evidence_sha256": "29c2d66d50508af7effddf1b11732b978598ddb3234a35cd78280f28b909f929"
+    },
+    {
+      "address": "00bb5670",
+      "inclusive_end": "00bb5760",
+      "ghidra_min_start": "00bb5670",
+      "ghidra_max_inclusive_end": "00bb5760",
+      "byte_count": 241,
+      "sha256": "6247435f6dd9d337501858133225fddcb34490d517d3d3f8561d9936849c1d64",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX output actual8h header; EDX input header; EAX output; RET, no stack arguments",
+      "source_status": "missing .mpak name producer",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bb5670.txt",
+      "evidence_sha256": "f65044f873495f26b993b9248137d7cd8545f9e3b3c79937c906c58efa3480af"
+    },
+    {
+      "address": "00bb5770",
+      "inclusive_end": "00bb590a",
+      "ghidra_min_start": "00bb5770",
+      "ghidra_max_inclusive_end": "00bb590a",
+      "byte_count": 411,
+      "sha256": "34f69e837c9101905b47f8508a7bd7e0ad838ebefa4ea87025a2ef97eaec6718",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual PakRegistry; one stack name header; RET4",
+      "source_status": "missing D64190+08 block-entry observer",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bb5770.txt",
+      "evidence_sha256": "40fd3724cf696beab5bd2010686c057ee429623088d3f117c1f73fd9539f2ab2"
+    },
+    {
+      "address": "00bb5910",
+      "inclusive_end": "00bb5ab0",
+      "ghidra_min_start": "00bb5910",
+      "ghidra_max_inclusive_end": "00bb5ab0",
+      "byte_count": 417,
+      "sha256": "2761f2f31af96453ec9e33e7400afa3b991acd784f885f8ef7f2dbdd13baa6cf",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual PakRegistry; one stack name header; RET4",
+      "source_status": "missing D64190+0C block-exit observer",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bb5910.txt",
+      "evidence_sha256": "a5134b88648ae7385e9b83f6f6252c0595c98ff02baa5e005198d99fdcdf7bb9"
+    },
+    {
+      "address": "00bd9200",
+      "inclusive_end": "00bd920e",
+      "ghidra_min_start": "00bd9200",
+      "ghidra_max_inclusive_end": "00bd920e",
+      "byte_count": 15,
+      "sha256": "7df78aa885350660ad63a28b457298fa6e7808d68d8d479b61b4898c27840eb4",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual VFS; RET; decrement DWORD+1C then byte+20=(signed count>0)",
+      "source_status": "missing manager leaf",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd9200.txt",
+      "evidence_sha256": "e26ca3274ab62b24322488ec7df786f67d208de6235ed2c042e3ddd76dfccb24"
+    },
+    {
+      "address": "00bd9210",
+      "inclusive_end": "00bd9219",
+      "ghidra_min_start": "00bd9210",
+      "ghidra_max_inclusive_end": "00bd9219",
+      "byte_count": 10,
+      "sha256": "0f17c8cc2abd8887b7d48235ea79d6988fa447600d82263153032399570cfac0",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual VFS; byte in stack DWORD; RET4; write+20",
+      "source_status": "missing manager leaf",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd9210.txt",
+      "evidence_sha256": "8a35234393187380ea15f8f4a5ef5be2683860e991cafbc33be19b8f8d64aa34"
+    },
+    {
+      "address": "00bd9220",
+      "inclusive_end": "00bd922a",
+      "ghidra_min_start": "00bd9220",
+      "ghidra_max_inclusive_end": "00bd922a",
+      "byte_count": 11,
+      "sha256": "fcf311d43d0c45ac9259462fb1d5e0d121123505c3fd1734b3100bd8649d503c",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual VFS; RET; byte+20=(signed DWORD+1C>0)",
+      "source_status": "missing manager leaf",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd9220.txt",
+      "evidence_sha256": "0cfe6880773f5cb0fbe85b8674ffdf57cd7011942ed56251899ec51a3356f4f9"
+    },
+    {
+      "address": "00bd9fa0",
+      "inclusive_end": "00bd9fab",
+      "ghidra_min_start": "00bd9fa0",
+      "ghidra_max_inclusive_end": "00bd9fab",
+      "byte_count": 12,
+      "sha256": "a2ee6f94a4e6c564286a0b7a59b3c9cf08ed11ff8ce0b5eae2a2d0ff036470f2",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual VFS; RET; increment DWORD+1C and write byte+20=1",
+      "source_status": "missing manager leaf",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd9fa0.txt",
+      "evidence_sha256": "4007bb3a88c606c56bf349393de0e08a795562a355bf6b43369d833478de6a40"
+    },
+    {
+      "address": "00be0750",
+      "inclusive_end": "00be0915",
+      "ghidra_min_start": "00be0750",
+      "ghidra_max_inclusive_end": "00be0915",
+      "byte_count": 454,
+      "sha256": "2a1e941a23daf6f58398c60e576c4a54a71d38766c50d6fd1cc6e009fa6e7db7",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual VFS; stack(system name,mount prefix); AL success; RET8",
+      "source_status": "missing name-based unmount; existing actual iterator/tree/canonicalizer dependencies",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00be0750.txt",
+      "evidence_sha256": "3fb634e9470b573cad9ef32aae2aef5070b96165c18764da9e6c856407faeac7"
+    },
+    {
+      "address": "00bd30e0",
+      "inclusive_end": "00bd30ed",
+      "ghidra_min_start": "00bd30e0",
+      "ghidra_max_inclusive_end": "00bd30ed",
+      "byte_count": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual refcounted owner; RET; nonnull invokes CURRENT virtual04(flags1)",
+      "source_status": "existing complete source with explicit deletion dispatch",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd30e0.txt",
+      "evidence_sha256": "c3d0c3f64439671435f3354fe7f5efe45d228cef1dbaa7165c291fef8b5a6318"
+    },
+    {
+      "address": "00bd30f0",
+      "inclusive_end": "00bd30f6",
+      "ghidra_min_start": "00bd30f0",
+      "ghidra_max_inclusive_end": "00bd30f6",
+      "byte_count": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual owner; RET; stamp CEB130 only",
+      "source_status": "existing actual base cleanup",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00bd30f0.txt",
+      "evidence_sha256": "155fe51eee7c1c49f81ad6e3a5d6b4e49e2a84f8c206340eaa87f31946738a47"
+    },
+    {
+      "address": "0041dd20",
+      "inclusive_end": "0041dd3c",
+      "ghidra_min_start": "0041dd20",
+      "ghidra_max_inclusive_end": "0041dd3c",
+      "byte_count": 29,
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual string header; RET; existing storage cleanup",
+      "source_status": "existing actual string unwind target",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/0041dd20.txt",
+      "evidence_sha256": "4e948533b12bc73c39f049699a00dfbf126df026a7c283413a330368f9de7630"
+    },
+    {
+      "address": "00cc6740",
+      "inclusive_end": "00cc6747",
+      "ghidra_min_start": "00cc6740",
+      "ghidra_max_inclusive_end": "00cc6747",
+      "byte_count": 8,
+      "sha256": "f4eae7b68bbce436e611c18e7799ac9defa50bb2218bdcdb8a81a94cb90d9237",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; reload [EBP-10] owner; tail BD30F0",
+      "source_status": "constructor state0 unwind action",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00cc6740.txt",
+      "evidence_sha256": "2cdf9f50f09a59fd2b79533541c4bcdd435b8ad813cdcdf481a0dbc395246033"
+    },
+    {
+      "address": "00cc6748",
+      "inclusive_end": "00cc6752",
+      "ghidra_min_start": "00cc6748",
+      "ghidra_max_inclusive_end": "00cc6752",
+      "byte_count": 11,
+      "sha256": "651a1cf0c0d80e03ce0674e1154462abca25c4b381fe26098b4aed698705ee93",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; reload [EBP-10]+14; tail41DD20",
+      "source_status": "constructor state1 unwind action",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00cc6748.txt",
+      "evidence_sha256": "fd267ae174d7258208a187ca3d8424085d7f0bef959d838f86f06fd5bdfc0173"
+    },
+    {
+      "address": "00cc6210",
+      "inclusive_end": "00cc6217",
+      "ghidra_min_start": "00cc6210",
+      "ghidra_max_inclusive_end": "00cc6217",
+      "byte_count": 8,
+      "sha256": "547ce0be3a1879e394336088312c3661036c832c69d9c03e20190a0726b47dff",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; reload [EBP-10] owner; tail BD30F0",
+      "source_status": "destructor state0 unwind action",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00cc6210.txt",
+      "evidence_sha256": "351f1a616ddcb0044e77c27969e4eceffb508dc67ce6fa89aabc9c1a41a060ee"
+    },
+    {
+      "address": "00cc6218",
+      "inclusive_end": "00cc6222",
+      "ghidra_min_start": "00cc6218",
+      "ghidra_max_inclusive_end": "00cc6222",
+      "byte_count": 11,
+      "sha256": "0846c07295400052f4746c3870385fc0aac000e483905cda913a00ca02c40160",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; reload [EBP-10]+14; tail41DD20",
+      "source_status": "destructor state1 unwind action",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00cc6218.txt",
+      "evidence_sha256": "145a84789f482a2a4b205a8294143bfdf0a8fdb7c4867f98a8538671ea649778"
+    },
+    {
+      "address": "00c68f90",
+      "inclusive_end": "00c68f9a",
+      "ghidra_min_start": "00c68f90",
+      "ghidra_max_inclusive_end": "00c68f98",
+      "byte_count": 11,
+      "sha256": "f5b0831cb7b5369874a9202b5988a14cb56774fe06c22a29c683362fd0f7b876",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; free allocation [EBP-18]; POP ECX; RET",
+      "source_status": "prepare state0 unwind action; final two bytes outside current Ghidra body",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00c68f90.txt",
+      "evidence_sha256": "f1af513a3e39e5e795e89a3d97d775b3d0e089a8fda0a5a2a88846cb43b960d1"
+    },
+    {
+      "address": "00c68f9b",
+      "inclusive_end": "00c68fb3",
+      "ghidra_min_start": "00c68f9b",
+      "ghidra_max_inclusive_end": "00c68fb3",
+      "byte_count": 25,
+      "sha256": "6cc254d32621b81f41dce05dced2b40f57bdff49e54fcde8bbab941a30cca913",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "EH frame EBP; test/clear bit0 [EBP-1C], tail41DD20 on [EBP-14], else RET",
+      "source_status": "prepare temporary unwind action",
+      "coverage": "Read-only frontier evidence; no source implementation in this packet",
+      "evidence_log": "local/fileblock_frontier_evidence/00c68f9b.txt",
+      "evidence_sha256": "7e32d1f990afe6d9b48eb8af6dafe84b4bbf50942c4b6930f722cd677a843268"
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": "005047c7",
+      "native": "00bf681b",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00bf681b"
+    },
+    {
+      "address": "005047ee",
+      "native": "00469840",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00469840"
+    },
+    {
+      "address": "00504805",
+      "native": "00be0a30",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00be0a30"
+    },
+    {
+      "address": "0050482e",
+      "native": "00419cc0",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00504835",
+      "native": "00bd1510",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00506c11",
+      "native": "004fc150",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x004fc150"
+    },
+    {
+      "address": "00506c1c",
+      "native": "00be80b0",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00be80b0"
+    },
+    {
+      "address": "00506c23",
+      "native": "00be7130",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00be7130"
+    },
+    {
+      "address": "00506c33",
+      "native": "005051a0",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x005051a0"
+    },
+    {
+      "address": "00506c39",
+      "native": "00bf65ac",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00be0a8a",
+      "native": "0041dd40",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00be0a9f",
+      "native": "00bf7680",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00be0aae",
+      "native": "00bdf950",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00bdf950"
+    },
+    {
+      "address": "00be0abf",
+      "native": "00be0980",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00be0980"
+    },
+    {
+      "address": "00bdf9a4",
+      "native": "00bf9a50",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf9a50"
+    },
+    {
+      "address": "00bdf9e4",
+      "native": "00bd20a0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd20a0"
+    },
+    {
+      "address": "00bdfa0a",
+      "native": "0041e350",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041e350"
+    },
+    {
+      "address": "00bdfa36",
+      "native": "00bf8417",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf8417"
+    },
+    {
+      "address": "00bdfa4f",
+      "native": "0041e870",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00bdfa65",
+      "native": "00426060",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00426060"
+    },
+    {
+      "address": "00bdfa7b",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x004261a0"
+    },
+    {
+      "address": "00bdfa98",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bdfaa8",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bdfacc",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfad3",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfaf0",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfaf7",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfb1a",
+      "native": "0041e870",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00bdfb34",
+      "native": "00531030",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00531030"
+    },
+    {
+      "address": "00bdfb4a",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x004261a0"
+    },
+    {
+      "address": "00bdfb67",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bdfb77",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bdfb9b",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfba2",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfbbf",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfbc6",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfbe3",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfbea",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfc1e",
+      "native": "00bf8417",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf8417"
+    },
+    {
+      "address": "00bdfc46",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bdfc56",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bdfc71",
+      "native": "0054aa70",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0054aa70"
+    },
+    {
+      "address": "00bdfc86",
+      "native": "00469840",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00469840"
+    },
+    {
+      "address": "00bdfc9c",
+      "native": "00469840",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00469840"
+    },
+    {
+      "address": "00bdfcaf",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x004261a0"
+    },
+    {
+      "address": "00bdfcc6",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bdfcda",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bdfcf9",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfd00",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfd1d",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfd24",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfd41",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdfd48",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdfd5b",
+      "native": "00427110",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00427110"
+    },
+    {
+      "address": "00bdfd65",
+      "native": "00bf6989",
+      "function": "00bdf950",
+      "function_inclusive_end": "00bdfd7f",
+      "instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "00bd210d",
+      "native": "00469840",
+      "function": "00bd20a0",
+      "function_inclusive_end": "00bd216c",
+      "instruction": "CALL 0x00469840"
+    },
+    {
+      "address": "00bd211f",
+      "native": "004cdc20",
+      "function": "00bd20a0",
+      "function_inclusive_end": "00bd216c",
+      "instruction": "CALL 0x004cdc20"
+    },
+    {
+      "address": "00bd213f",
+      "native": "00419cc0",
+      "function": "00bd20a0",
+      "function_inclusive_end": "00bd216c",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bd2146",
+      "native": "00bd1510",
+      "function": "00bd20a0",
+      "function_inclusive_end": "00bd216c",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00be099a",
+      "native": "007f8390",
+      "function": "00be0980",
+      "function_inclusive_end": "00be0a28",
+      "instruction": "CALL 0x007f8390"
+    },
+    {
+      "address": "00be09a5",
+      "native": "007fa3a0",
+      "function": "00be0980",
+      "function_inclusive_end": "00be0a28",
+      "instruction": "CALL 0x007fa3a0"
+    },
+    {
+      "address": "00be09e6",
+      "native": "0041dd40",
+      "function": "00be0980",
+      "function_inclusive_end": "00be0a28",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00be09fb",
+      "native": "00bf7680",
+      "function": "00be0980",
+      "function_inclusive_end": "00be0a28",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00be0a1a",
+      "native": "004254b0",
+      "function": "00be0980",
+      "function_inclusive_end": "00be0a28",
+      "instruction": "CALL 0x004254b0"
+    },
+    {
+      "address": "00bdc9e9",
+      "native": "0041dd40",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bdc9fe",
+      "native": "00bf7680",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bdca22",
+      "native": "004254b0",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x004254b0"
+    },
+    {
+      "address": "00bdca3a",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00bdca44",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00bdca59",
+      "native": "00bf6713",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00bdca67",
+      "native": "00bdaf40",
+      "function": "00bdc9b0",
+      "function_inclusive_end": "00bdca74",
+      "instruction": "CALL 0x00bdaf40"
+    },
+    {
+      "address": "00bdcb66",
+      "native": "00bdc9b0",
+      "function": "00bdcb30",
+      "function_inclusive_end": "00bdcbab",
+      "instruction": "CALL 0x00bdc9b0"
+    },
+    {
+      "address": "00bdcb80",
+      "native": "00419cc0",
+      "function": "00bdcb30",
+      "function_inclusive_end": "00bdcbab",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bdcb87",
+      "native": "00bd1510",
+      "function": "00bdcb30",
+      "function_inclusive_end": "00bdcbab",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bdcb96",
+      "native": "00bd30f0",
+      "function": "00bdcb30",
+      "function_inclusive_end": "00bdcbab",
+      "instruction": "CALL 0x00bd30f0"
+    },
+    {
+      "address": "00bdebe3",
+      "native": "00bdcb30",
+      "function": "00bdebe0",
+      "function_inclusive_end": "00bdebfd",
+      "instruction": "CALL 0x00bdcb30"
+    },
+    {
+      "address": "00bdebf0",
+      "native": "00bf65ac",
+      "function": "00bdebe0",
+      "function_inclusive_end": "00bdebfd",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "007f8392",
+      "native": "00bf681b",
+      "function": "007f8390",
+      "function_inclusive_end": "007f83c2",
+      "instruction": "CALL 0x00bf681b"
+    },
+    {
+      "address": "007fa3ea",
+      "native": "00408720",
+      "function": "007fa3a0",
+      "function_inclusive_end": "007fa430",
+      "instruction": "CALL 0x00408720"
+    },
+    {
+      "address": "007fa3ff",
+      "native": "00411700",
+      "function": "007fa3a0",
+      "function_inclusive_end": "007fa430",
+      "instruction": "CALL 0x00411700"
+    },
+    {
+      "address": "007fa416",
+      "native": "00bf6885",
+      "function": "007fa3a0",
+      "function_inclusive_end": "007fa430",
+      "instruction": "CALL 0x00bf6885"
+    },
+    {
+      "address": "00bdaf59",
+      "native": "00bf6713",
+      "function": "00bdaf40",
+      "function_inclusive_end": "00bdaf9d",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00bdaf63",
+      "native": "00bf6713",
+      "function": "00bdaf40",
+      "function_inclusive_end": "00bdaf9d",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00bdaf7f",
+      "native": "00bf65ac",
+      "function": "00bdaf40",
+      "function_inclusive_end": "00bdaf9d",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00bb56a3",
+      "native": "00bf9440",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x00bf9440"
+    },
+    {
+      "address": "00bb56c9",
+      "native": "0041e870",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00bb56da",
+      "native": "004261a0",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x004261a0"
+    },
+    {
+      "address": "00bb56fa",
+      "native": "00419cc0",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb5701",
+      "native": "00bd1510",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bb5731",
+      "native": "0041dd40",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bb5746",
+      "native": "00bf7680",
+      "function": "00bb5670",
+      "function_inclusive_end": "00bb5760",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bb5795",
+      "native": "00bb5670",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bb5670"
+    },
+    {
+      "address": "00bb57a7",
+      "native": "00bd9210",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd9210"
+    },
+    {
+      "address": "00bb57b7",
+      "native": "00bdf4c0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bdf4c0"
+    },
+    {
+      "address": "00bb57d9",
+      "native": "0041dd40",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bb57f3",
+      "native": "00bf7680",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bb580e",
+      "native": "00bdd850",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bdd850"
+    },
+    {
+      "address": "00bb5824",
+      "native": "0041e870",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00bb5842",
+      "native": "00be1890",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00be1890"
+    },
+    {
+      "address": "00bb5860",
+      "native": "00bb46f0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bb46f0"
+    },
+    {
+      "address": "00bb588c",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb5893",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bb589e",
+      "native": "00bd9fa0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd9fa0"
+    },
+    {
+      "address": "00bb58ba",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb58c1",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bb58cc",
+      "native": "00bd9220",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd9220"
+    },
+    {
+      "address": "00bb58eb",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb58f2",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "function_inclusive_end": "00bb590a",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bb5934",
+      "native": "00bb5670",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bb5670"
+    },
+    {
+      "address": "00bb594c",
+      "native": "00bdf4c0",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bdf4c0"
+    },
+    {
+      "address": "00bb5992",
+      "native": "00bf7fbf",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bf7fbf"
+    },
+    {
+      "address": "00bb59f5",
+      "native": "0041dd40",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00bb5a10",
+      "native": "00bf7680",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00bb5a2e",
+      "native": "00be0750",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00be0750"
+    },
+    {
+      "address": "00bb5a4d",
+      "native": "00419cc0",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb5a54",
+      "native": "00bd1510",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00bb5a64",
+      "native": "00bd9200",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bd9200"
+    },
+    {
+      "address": "00bb5a73",
+      "native": "00bd9220",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bd9220"
+    },
+    {
+      "address": "00bb5a94",
+      "native": "00419cc0",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00bb5a9b",
+      "native": "00bd1510",
+      "function": "00bb5910",
+      "function_inclusive_end": "00bb5ab0",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00be0776",
+      "native": "00bee390",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bee390"
+    },
+    {
+      "address": "00be078c",
+      "native": "00584110",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00584110"
+    },
+    {
+      "address": "00be07ae",
+      "native": "00bf6713",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be07bf",
+      "native": "00bf6713",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be07c9",
+      "native": "00bf6713",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be07fe",
+      "native": "00bf7fbf",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf7fbf"
+    },
+    {
+      "address": "00be0814",
+      "native": "00bf6713",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be0842",
+      "native": "00bf7fbf",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf7fbf"
+    },
+    {
+      "address": "00be0857",
+      "native": "00bd97e0",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bd97e0"
+    },
+    {
+      "address": "00be086e",
+      "native": "00bf6713",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be0895",
+      "native": "00be0080",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00be0080"
+    },
+    {
+      "address": "00be08b5",
+      "native": "00419cc0",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00be08bc",
+      "native": "00bd1510",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00be08f3",
+      "native": "00419cc0",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00be08fa",
+      "native": "00bd1510",
+      "function": "00be0750",
+      "function_inclusive_end": "00be0915",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "0041dd30",
+      "native": "00419cc0",
+      "function": "0041dd20",
+      "function_inclusive_end": "0041dd3c",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "0041dd37",
+      "native": "00bd1510",
+      "function": "0041dd20",
+      "function_inclusive_end": "0041dd3c",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00cc6743",
+      "native": "00bd30f0",
+      "function": "00cc6740",
+      "function_inclusive_end": "00cc6747",
+      "instruction": "JMP 0x00bd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc674e",
+      "native": "0041dd20",
+      "function": "00cc6748",
+      "function_inclusive_end": "00cc6752",
+      "instruction": "JMP 0x0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc6213",
+      "native": "00bd30f0",
+      "function": "00cc6210",
+      "function_inclusive_end": "00cc6217",
+      "instruction": "JMP 0x00bd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc621e",
+      "native": "0041dd20",
+      "function": "00cc6218",
+      "function_inclusive_end": "00cc6222",
+      "instruction": "JMP 0x0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c68f94",
+      "native": "00bf65ac",
+      "function": "00c68f90",
+      "function_inclusive_end": "00c68f98",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00c68fae",
+      "native": "0041dd20",
+      "function": "00c68f9b",
+      "function_inclusive_end": "00c68fb3",
+      "instruction": "JMP 0x0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_instructions": [
+    {
+      "site": "00506c07",
+      "function": "00506bf0",
+      "instruction": "CALL EAX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00be09d2",
+      "function": "00be0980",
+      "instruction": "CALL EDX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00bdc9d3",
+      "function": "00bdc9b0",
+      "instruction": "CALL EDX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00bdc9de",
+      "function": "00bdc9b0",
+      "instruction": "CALL EAX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00be087a",
+      "function": "00be0750",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00be088a",
+      "function": "00be0750",
+      "instruction": "CALL EDX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    },
+    {
+      "site": "00bd30eb",
+      "function": "00bd30e0",
+      "instruction": "CALL EDX",
+      "scope": "Indirect target/ABI audited separately; not direct-target verifier evidence"
+    }
+  ],
+  "data_spans": [
+    {
+      "start": "00cc6753",
+      "inclusive_end": "00cc675c",
+      "byte_count": 10,
+      "sha256": "05ca9e44674cd8838dd36eb103ffdd3e17b8ebb2dc584bcc60a0ce048d4e9e40",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "constructor FH3 thunk; no Ghidra function"
+    },
+    {
+      "start": "00cc6223",
+      "inclusive_end": "00cc622c",
+      "byte_count": 10,
+      "sha256": "e765ae920343103209ddf54e211476c757ab872e0aa88902d9a008f0a81af2eb",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "destructor FH3 thunk; no Ghidra function"
+    },
+    {
+      "start": "00c68fb4",
+      "inclusive_end": "00c68fbd",
+      "byte_count": 10,
+      "sha256": "2661a4a098ceeb1e4923321a9ee4e11dc578aaab86745a75bd66e30ffa245ac7",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "prepare FH3 thunk; no Ghidra function"
+    },
+    {
+      "start": "00e00db0",
+      "inclusive_end": "00e00dd3",
+      "byte_count": 36,
+      "sha256": "db192c77c20ef9030017dfb2cde0259e78b92b743b81a0ca5c434c282f17f060",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "constructor FH3 FuncInfo"
+    },
+    {
+      "start": "00e00da0",
+      "inclusive_end": "00e00daf",
+      "byte_count": 16,
+      "sha256": "edfe70e10a37b76c4f6e3d87cbe32275afda85b43d036396e346028464e75a12",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "constructor unwind map"
+    },
+    {
+      "start": "00e00650",
+      "inclusive_end": "00e00673",
+      "byte_count": 36,
+      "sha256": "db6b8021a1aebb7ad68ed54447919c883773256131e135c11910560771aa935d",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "destructor FH3 FuncInfo"
+    },
+    {
+      "start": "00e00640",
+      "inclusive_end": "00e0064f",
+      "byte_count": 16,
+      "sha256": "9ed76e313fe3817176b6ea7abb1b8f477c30ee74eed12190cec04c955d66473d",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "destructor unwind map"
+    },
+    {
+      "start": "00d922d0",
+      "inclusive_end": "00d922f3",
+      "byte_count": 36,
+      "sha256": "b89316557d3ec63bb56983c53c8d0434af34f1881078e5485244bdc228994299",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "prepare FH3 FuncInfo"
+    },
+    {
+      "start": "00d922b8",
+      "inclusive_end": "00d922cf",
+      "byte_count": 24,
+      "sha256": "06b96514b5393ec1e01a06bde1aa2cca8482a38988d70366ffccd2bf4efacc3d",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "prepare unwind map"
+    },
+    {
+      "start": "00d68494",
+      "inclusive_end": "00d6849b",
+      "byte_count": 8,
+      "sha256": "47ed2e5466dafd132438d0b38631b75028d165f40c20934d5939e3b4317c1af5",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "FileBlock profile slots0=BD30E0,4=BDEBE0"
+    },
+    {
+      "start": "00d64190",
+      "inclusive_end": "00d6419f",
+      "byte_count": 16,
+      "sha256": "b3fcd7210a244010aeb08d14cc42d60e4f95ecca08d5a2954f9aa37be975aa55",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "actual PakRegistry primary profile; observer slots8=BB5770,C=BB5910"
+    },
+    {
+      "start": "00d68520",
+      "inclusive_end": "00d6852f",
+      "byte_count": 16,
+      "sha256": "003e1065bd1e1d0ff97f9f4d291c9a20392328ac4ac4d9dcf184715e349f90ff",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "identifier invalid-byte set"
+    },
+    {
+      "start": "00d68530",
+      "inclusive_end": "00d6853f",
+      "byte_count": 16,
+      "sha256": "f8afd2ee31143effdd24a634a281f485453017b9bd3580b273b6ae7028acc231",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "entry diagnostic bytes"
+    },
+    {
+      "start": "00d68484",
+      "inclusive_end": "00d68493",
+      "byte_count": 16,
+      "sha256": "871d8a8b00118fd9ed624aed91784ce55357340621c37696ce7767efc7bfa2f3",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "exit diagnostic bytes"
+    },
+    {
+      "start": "00ceba84",
+      "inclusive_end": "00ceba8b",
+      "byte_count": 8,
+      "sha256": "af892e622de83e7b7c4208d3d3d21f5300b9afc61a99071edefbba5cc44bec10",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "case-sensitive .mpak substring"
+    },
+    {
+      "start": "00ce3a70",
+      "inclusive_end": "00ce3a73",
+      "byte_count": 4,
+      "sha256": "c245aff91259378234ae88c46d0e6a690a75034a5fc42bd61f2e3d03c9158b33",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "dot mount prefix"
+    },
+    {
+      "start": "00ce7898",
+      "inclusive_end": "00ce789b",
+      "byte_count": 4,
+      "sha256": "bce941d196c26696f1f5d701d21a8a9e414e81d6e15a48f3663313e3cd7cc4b9",
+      "installed_pe_matches_live_ghidra": true,
+      "purpose": "slash trim set"
+    }
+  ],
+  "decoded_membership_holes": [
+    {
+      "start": "00bdfd6a",
+      "inclusive_end": "00bdfd6c",
+      "intended_parent": "00bdf950",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4 after token backing free",
+      "evidence_sha256": "58ce9ff921accd2ff56bf0c75571bdc75c94d3b5483b2d7994eb774898e71eed",
+      "scope": "Endpoints rechecked; original decoded continuation documented; no repair"
+    },
+    {
+      "start": "00bdaf84",
+      "inclusive_end": "00bdaf8a",
+      "intended_parent": "00bdaf40",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4 then decrement list+8",
+      "evidence_sha256": "3de68af4952930331b41c9077f444257536fdfcb89909b99dab95baffd830631",
+      "scope": "Endpoints rechecked; original decoded continuation documented; no repair"
+    },
+    {
+      "start": "00bdebf5",
+      "inclusive_end": "00bdebf7",
+      "intended_parent": "00bdebe0",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4 after optional outer free",
+      "evidence_sha256": "0c0253de6f64b066bcd504a37a978bd60b47f48b551bbdfbb616ab113caefd3b",
+      "scope": "Endpoints rechecked; original decoded continuation documented; no repair"
+    },
+    {
+      "start": "00c68f99",
+      "inclusive_end": "00c68f9a",
+      "intended_parent": "00c68f90",
+      "no_ghidra_function": true,
+      "decoded_continuation": "POP ECX; RET after allocation free",
+      "evidence_sha256": "ea9b0df4ee113264a349d14e6e135f597cc28b96625d592224a2bdd71263c344",
+      "scope": "Endpoints rechecked; original decoded continuation documented; no repair"
+    },
+    {
+      "start": "00506c3e",
+      "inclusive_end": "00506c46",
+      "intended_parent": "00506bf0",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4; clear captured job front cell",
+      "evidence_sha256": "9ed67e49ba02d326e3a3bc678b612fc8eab112e9fbc81ac66631c66edd0a73c7",
+      "scope": "Endpoints rechecked; original decoded continuation documented; no repair"
+    }
+  ],
+  "ready_and_dependent_packets": [
+    {
+      "packet": "native_fileblock_identifier",
+      "addresses": [
+        "00bdf950",
+        "00bd20a0"
+      ],
+      "source_files": [
+        "include/bsp/native_fileblock_identifier.hpp",
+        "src/native_fileblock_identifier.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_FILEBLOCK_IDENTIFIER_BL.md",
+        "reports/native_fileblock_identifier_bl.json"
+      ],
+      "readiness": "ready",
+      "contract": "Complete actual identifier and split bodies. Reuse actual NativeStringStorage and NativeStringVectorStorage; preserve native atol predicate, abbreviation/fallback and EH cleanup. No replacement algorithm or length clamp.",
+      "suggested_model": "gpt-6-astra",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "00bdf950: unleased\n00bd20a0: unleased\ninclude/bsp/native_fileblock_identifier.hpp: unleased\nsrc/native_fileblock_identifier.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    },
+    {
+      "packet": "native_fileblock_gate_list",
+      "addresses": [
+        "007f8390",
+        "007fa3a0",
+        "00bdaf40"
+      ],
+      "source_files": [
+        "include/bsp/native_fileblock_gate_list.hpp",
+        "src/native_fileblock_gate_list.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_FILEBLOCK_GATE_LIST_BL.md",
+        "reports/native_fileblock_gate_list_bl.json"
+      ],
+      "readiness": "ready",
+      "contract": "Actual0Ch nodes and manager+7Ch list. Preserve allocation-before-count-check, gate-byte read after allocation, UINT32_MAX bound, owning native length-error transport and post-free decrement. No observer/state implementation in this independent helper packet.",
+      "suggested_model": "gpt-6-astra",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "007f8390: unleased\n007fa3a0: unleased\n00bdaf40: unleased\ninclude/bsp/native_fileblock_gate_list.hpp: unleased\nsrc/native_fileblock_gate_list.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    },
+    {
+      "packet": "native_vfs_unmount_name",
+      "addresses": [
+        "00be0750"
+      ],
+      "source_files": [
+        "include/bsp/native_vfs_unmount_name.hpp",
+        "src/native_vfs_unmount_name.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_VFS_UNMOUNT_NAME_BL.md",
+        "reports/native_vfs_unmount_name_bl.json"
+      ],
+      "readiness": "ready with explicit actual-provider zero-ref dispatch",
+      "contract": "Actual manager+3Ch tree; two actual input headers, stable canonical local/iterator; first matching payload system name + canonical mount prefix. InterlockedDecrement captured provider+4, current virtual0 at zero, then existing BE0080 erase. No preflight zero-ref callback, clone map or shadow owner.",
+      "suggested_model": "gpt-5.6-sol",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "00be0750: unleased\ninclude/bsp/native_vfs_unmount_name.hpp: unleased\nsrc/native_vfs_unmount_name.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    },
+    {
+      "packet": "native_pak_registry_block_callbacks",
+      "addresses": [
+        "00bb5670",
+        "00bb5770",
+        "00bb5910",
+        "00bd9200",
+        "00bd9210",
+        "00bd9220",
+        "00bd9fa0"
+      ],
+      "source_files": [
+        "include/bsp/native_pak_registry_block_callbacks.hpp",
+        "src/native_pak_registry_block_callbacks.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_PAK_REGISTRY_BLOCK_CALLBACKS_BL.md",
+        "reports/native_pak_registry_block_callbacks_bl.json"
+      ],
+      "readiness": "dependent on actual unmount_name and current VFS dispatch composition",
+      "contract": "Actual1Ch PakRegistry vector/ordinal, actual CURRENT0109CEEC per leaf/call, .mpak producer and source bodies for both observer slots. Retained invocation owns mutable name headers across nested BDF4C0 acquired state. Use existing actual resolver/device/mount/registry reserve; no private registry or projected mount context.",
+      "suggested_model": "gpt-6-astra",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "00bb5670: unleased\n00bb5770: unleased\n00bb5910: unleased\n00bd9200: unleased\n00bd9210: unleased\n00bd9220: unleased\n00bd9fa0: unleased\ninclude/bsp/native_pak_registry_block_callbacks.hpp: unleased\nsrc/native_pak_registry_block_callbacks.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    },
+    {
+      "packet": "native_vfs_fileblock_scope",
+      "addresses": [
+        "00be0980",
+        "00bdc9b0"
+      ],
+      "source_files": [
+        "include/bsp/native_vfs_fileblock_scope.hpp",
+        "src/native_vfs_fileblock_scope.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_VFS_FILEBLOCK_SCOPE_BL.md",
+        "reports/native_vfs_fileblock_scope_bl.json"
+      ],
+      "readiness": "dependent on gate_list and concrete observer source dispatch",
+      "contract": "Borrow captured actual A0h manager for each entry/exit call; mutate real +C/+14/+79/+7C state in original callback order. Bind current actual observer profile/slot; no tracing-only callback. Preserve partial state if provider/observer throws.",
+      "suggested_model": "gpt-5.6-sol",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "00be0980: unleased\n00bdc9b0: unleased\ninclude/bsp/native_vfs_fileblock_scope.hpp: unleased\nsrc/native_vfs_fileblock_scope.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    },
+    {
+      "packet": "native_fileblock_owner",
+      "addresses": [
+        "00be0a30",
+        "00bdcb30",
+        "00bdebe0",
+        "00504790"
+      ],
+      "source_files": [
+        "include/bsp/native_fileblock.hpp",
+        "src/native_fileblock.cpp"
+      ],
+      "artifact_files": [
+        "docs/NATIVE_FILEBLOCK_OWNER_BL.md",
+        "reports/native_fileblock_owner_bl.json"
+      ],
+      "readiness": "dependent on identifier and complete VFS scope/observer source domain",
+      "contract": "Own actual1Ch allocation with stable retained preparation frame and native name header; stamp original profiles; CURRENT manager at constructor entry and destructor exit. No captured-manager RAII policy. Preserve name/base unwind, caller allocation cleanup, current virtual04 deletion and job+20 publication/clear ordering.",
+      "suggested_model": "gpt-6-astra",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "lease_observation": "00be0a30: unleased\n00bdcb30: unleased\n00bdebe0: unleased\n00504790: unleased\ninclude/bsp/native_fileblock.hpp: unleased\nsrc/native_fileblock.cpp: unleased",
+      "scope": "Future source packet; recheck/claim leases at dispatch. Primary alone edits runtime/CMake/shared metadata."
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "byte_count": 31401,
+      "sha256": "396fe6ae5031ccc3f6bcf6e3adecea70b743944286fae9e5f308a89710358aa7"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "byte_count": 6814,
+      "sha256": "17635a12484e362a98bce57ab0777da440f4d7d9926038c8f53080942bf2fd4d"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "byte_count": 14832,
+      "sha256": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b"
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "byte_count": 5963,
+      "sha256": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f"
+    },
+    {
+      "path": "src/native_vfs_manager_lifetime.cpp",
+      "byte_count": 9884,
+      "sha256": "78211679dc5a22bf5094d848b7b0b15012ac9d234ea982ff386cdcbdb110cd6b"
+    },
+    {
+      "path": "include/bsp/native_vfs_manager_lifetime.hpp",
+      "byte_count": 3262,
+      "sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d"
+    },
+    {
+      "path": "src/native_vfs_sequence_lifetime.cpp",
+      "byte_count": 7231,
+      "sha256": "3b2c87cd48ce2c75f485434e0a9a7c679743f7f51014e918395e76e4f40f5fe6"
+    },
+    {
+      "path": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "byte_count": 3289,
+      "sha256": "c2f8fdb899fcadecd189845c1a740a9c78f640568a7ba757cc56e8a77961e2d9"
+    },
+    {
+      "path": "src/native_pak_registry.cpp",
+      "byte_count": 6689,
+      "sha256": "24c26d6f1bb6739aa0fb1813e1353e09e5e64b68f02a178ba87882123833b4cf"
+    },
+    {
+      "path": "include/bsp/native_pak_registry.hpp",
+      "byte_count": 3427,
+      "sha256": "953dc1c0a5d2e8e9812fd54e1d1b0c9951477db4258fb9f8fb238fa4ff8e1943"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "byte_count": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "byte_count": 1226,
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_string_vector.cpp",
+      "byte_count": 3468,
+      "sha256": "4cf86be660ed334e7d7db5072ac6dccce8edfbb02bc3e39dd7437dddd7f995ba"
+    },
+    {
+      "path": "include/bsp/native_string_vector.hpp",
+      "byte_count": 1820,
+      "sha256": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "byte_count": 2025,
+      "sha256": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43"
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "byte_count": 1694,
+      "sha256": "78f5a43d626bb1e93bbb9e5d16249830fe5d00a8ef384619269d957c7bbcafd9"
+    },
+    {
+      "path": "src/native_vfs_mount_tree.cpp",
+      "byte_count": 12527,
+      "sha256": "88d62a7a98ee32bfc29604d88fecc4e10885a011902991a13c509c515fe5589a"
+    },
+    {
+      "path": "include/bsp/native_vfs_mount_tree.hpp",
+      "byte_count": 2976,
+      "sha256": "e5d614d77eef2e989358f043ed15a88ad63de4723658d064d795d15ad52b33b8"
+    },
+    {
+      "path": "src/native_vfs_mount_registration.cpp",
+      "byte_count": 5328,
+      "sha256": "c36a0b13398f2a0cc59a77e2398f79e8255de003a0752e4af07955a2c3876b36"
+    },
+    {
+      "path": "include/bsp/native_vfs_mount_registration.hpp",
+      "byte_count": 2710,
+      "sha256": "9ac489cc8194ce3a13cf9b98c46183bb771dd7ca1b6ac7cb395faced2ef7bb1d"
+    },
+    {
+      "path": "src/native_path_canonicalizer.cpp",
+      "byte_count": 7192,
+      "sha256": "bb8e033c5cc3f31dabb8134955d0181591b5440709eb7dfc4662861f9cbf81ef"
+    },
+    {
+      "path": "include/bsp/native_path_canonicalizer.hpp",
+      "byte_count": 3822,
+      "sha256": "d3dd375922e191bbf368b4ebb43e899fc811e89e36f91365b96cc19aab61c8eb"
+    },
+    {
+      "path": "src/native_vfs_lookup_routes.cpp",
+      "byte_count": 14608,
+      "sha256": "e50285d46eb3a2eb3d3f21c28ee7d1ef1133c0b4c581152c726a4991bff57a9f"
+    },
+    {
+      "path": "include/bsp/native_vfs_lookup_routes.hpp",
+      "byte_count": 4493,
+      "sha256": "238e323fdd16363e5bf88ab4f7375cebc50bfcd6f02ae35269866e7387d7671e"
+    },
+    {
+      "path": "src/native_filestore_remove.cpp",
+      "byte_count": 2264,
+      "sha256": "3471dccfe6eb681af7fe3d39c61a4908b13ab806344ccdd17a91fa219044aaad"
+    },
+    {
+      "path": "include/bsp/native_filestore_remove.hpp",
+      "byte_count": 1427,
+      "sha256": "9d2cf7fe7aa894de9cd9b1d7897c36d0f85580e3698e7507cf6aa4acfc94c08c"
+    }
+  ],
+  "native_eh": {
+    "constructor": {
+      "handler": "00cc6753",
+      "handler_no_ghidra_function": true,
+      "func_info": "00e00db0",
+      "unwind_map": "00e00da0",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc6748",
+          "effect": "destroy current FileBlock+14 string via41DD20"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc6740",
+          "effect": "stamp base viaBD30F0"
+        }
+      ],
+      "try_count": 0,
+      "no_compensating_vfs_leave": true
+    },
+    "destructor": {
+      "handler": "00cc6223",
+      "handler_no_ghidra_function": true,
+      "func_info": "00e00650",
+      "unwind_map": "00e00640",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc6218",
+          "effect": "destroy current FileBlock+14 string via41DD20"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc6210",
+          "effect": "stamp base viaBD30F0"
+        }
+      ],
+      "try_count": 0,
+      "no_exit_retry": true,
+      "scalar_outer_free": "Only after BDcb30 returns normally; destructor throw skips BDEBF0 free"
+    },
+    "preparation": {
+      "handler": "00c68fb4",
+      "handler_no_ghidra_function": true,
+      "func_info": "00d922d0",
+      "unwind_map": "00d922b8",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c68f90",
+          "effect": "free captured raw allocation [EBP-18], missing decoded POP/RET tail"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00c68f9b",
+          "effect": "test/clear temporary bit and destroy substring header [EBP-14]"
+        },
+        {
+          "state": 2,
+          "next": -1,
+          "action": "00c68f9b",
+          "effect": "same temporary action; encoded map entry, not an invented extra normal-body state"
+        }
+      ]
+    },
+    "remaining": "Identifier/split, list growth, observer/name helper and unmount native handler/funclet closures remain next-packet work; their names/normal body alone do not prove unwind equivalence."
+  },
+  "material_contracts": [
+    "FileBlock allocation is 1Ch=28 bytes; older FILE_BLOCK_SETUP.md says28h incorrectly. Real +0 profileD68494, +4 refcount1, +8/+C/+10 zero, owning name+14/+18.",
+    "Preparation uses source job name substring(start13,count=storedLength-18), passes flag1; stores EAX to job+20 before releasing temporary. No prefix/minimum-length validation or fallback object.",
+    "Retirement captures current job FileBlock, current slot+4 target, passes1 and clears job+20 only after successful return. Scalar destructor itself does not decrement refs.",
+    "Constructor and destructor each reload CURRENT0109CEEC at their own VFS call; entry/exit retain their captured receiver across observer dispatch. Observer bodies separately reload current publication at every visible manager call.",
+    "Entry links saved gate node and ANDs gate before observer, then depth increment/name copy. Exit observer runs first, then clear name/decrement depth, restore saved gate and erase node. Exit never restores previous name.",
+    "Actual VFS construction/destruction already owns +7Ch list/head; do not create a sidecar gate stack or typed VfsProviderManager projection.",
+    "Runtime+88 is actual PakRegistry profileD64190. Slots+8/+C are missing BB5770/BB5910 mount/unmount operations, not optional tracing no-ops.",
+    "BB5670 uses first case-sensitive strstr(.mpak) occurrence and compares its position with storedLength-5; an earlier occurrence causes append even when a later suffix matches. Result/source identity branch follows native stores.",
+    "BB5770 temporarily clears current manager+20, resolves mutable name and on success selects device, increments captured registry ordinal, mounts under dot, appends returned raw provider (even null on returning failure path), then increments current manager+1C/sets+20. Finish recomputes current+20 from signed+1C.",
+    "BB5910 ignores resolution Boolean, removes all matching registry vector entries without releasing them, unmounts once under dot, and decrements current manager+1C/registry ordinal only on unmount success. Finish recomputes current+20.",
+    "BE0750 uses first matching actual mount-tree node; decrements captured provider refcount and dispatches current virtual0 at zero before erasing node. Existing tree erase owns node/key, not provider.",
+    "Stable acquired preparation/observer frames must own actual allocations and native mutable locals borrowed by nested BDF4C0 acquired frames. Unknown provider boundaries must retain outer state or terminate before unwind; successful native-EH cleanup may only run when its boundary is modeled.",
+    "BB5670 length4/no .mpak match leaves the input unchanged because both the not-found position and length-5 equal FFFFFFFF; preserve 32-bit comparison rather than replacing it with ends_with."
+  ],
+  "existing_dependencies": [
+    {
+      "entries": [
+        "0041dd40",
+        "0041dd20",
+        "0041e350",
+        "0041e870",
+        "00426060",
+        "004261a0",
+        "00469840",
+        "00531030",
+        "0054aa70"
+      ],
+      "source": "Actual NativeString/native header operations; allocator/CRT/current pool boundaries remain explicit."
+    },
+    {
+      "entries": [
+        "00427110",
+        "004cdc20"
+      ],
+      "source": "native_string_vector actual0Ch vector and8h elements; bare-RET reserve/append unwind is not rollback."
+    },
+    {
+      "entries": [
+        "00408720",
+        "00411700",
+        "00411940",
+        "00411780"
+      ],
+      "source": "Existing actual legacy SBO/exception storage plus NativeAliasListLengthError host transport; 7FA3A0 still needs its own UINT32_MAX predicate and EAX result."
+    },
+    {
+      "entries": [
+        "007f82f0",
+        "007f8310",
+        "007f8770"
+      ],
+      "source": "Actual VFS gate-list head allocation/destruction already used by native_vfs_manager_lifetime."
+    },
+    {
+      "entries": [
+        "00bdd850",
+        "00bdf4c0",
+        "00be1890",
+        "00bb46f0"
+      ],
+      "source": "Actual device selection/resolution/mount and registry reserve; source signatures/providers change native ABI and have explicit acquired/failure boundaries."
+    },
+    {
+      "entries": [
+        "00bee390",
+        "00584110",
+        "00bd97e0",
+        "00be0080"
+      ],
+      "source": "Actual canonicalizer/trim/mount iterator/erase support independent BE0750; original zero-ref provider dispatch must be added explicitly."
+    },
+    {
+      "entries": [
+        "00bd30e0",
+        "00bd30f0"
+      ],
+      "source": "Existing reference-base source; BD30E0 needs concrete current virtual04 source dispatcher. NativeVfsRuntimeBindings already routes finite known provider scalar destructors."
+    },
+    {
+      "entries": [
+        "00be7130"
+      ],
+      "source": "Parent reports completed commit ee981882; native_filestore_remove files observed in primary. This packet does not claim/edit its addresses/files."
+    }
+  ],
+  "known_unknowns": [
+    "No normal-entry/exit balanced guarantee under exceptions, reentrancy or publication replacement. Source provider/CRT exceptions and native hardware-FH3 equivalence differ.",
+    "Observer nested resolver/mount frames need stable borrowed native headers and application failure publication; do not reuse VfsMountContext or create a private PakRegistry.",
+    "Normal decoded post-free tails remain outside current Ghidra function membership; old FILE_BLOCK_LIFETIME.md membership claim atBDAF84 is stale.",
+    "No production FileBlock source or observer binding is added by this audit. Loader owner/work storage have separate active workers; native loader callback/resource/thread lifetime still require their own integration."
+  ],
+  "validation": {
+    "build": "none: docs/report-only",
+    "fixtures": "none",
+    "original_executable_run": false,
+    "ghidra_mutation": false,
+    "native_abi_replacement_claim": false,
+    "gameplay_claim": false,
+    "calls_check": {
+      "tool": "python tools/verify_report_calls.py reports/native_fileblock_frontier_bl.json",
+      "checked_direct_and_tail_rows": 143,
+      "failures": 0,
+      "scope": "Live containing-function and exact instruction targets. Indirect dispatch semantics and ABI require their separate original listing evidence."
+    }
+  },
+  "doc_sha256": "7c9dec595688187e5373bfdce717b151eb23ee239289d48f57aa1050b5fd9a3d",
+  "proposed_actual_storage_interfaces": {
+    "NativeFileBlockContext": "Borrow actual volatile0109CEEC publication cell, actual NativeStringStorage, and complete source VFS entry/exit domain. Constructor accepts caller-supplied raw1Ch storage; source ABI differs.",
+    "NativeFileBlockPreparationAcquired": "Own captured loader allocation and stable substring header until normal publication to actual job+20. Track constructing/published/native-EH-complete/unknown-failure phases. Preserve native cleanup exactly once; retain unknown failure rather than automatically leaving VFS or freeing borrowed native locals.",
+    "NativePakRegistryBlockInvocation": "Own mutable .mpak/device-selection/dot actual8h headers and nested NativeVfsNameResolutionAcquired frame. Context/source service references and header addresses stay valid across retained failures.",
+    "deletion": "Capture actual block and current virtual+4 target at506C07; dispatch BDEBE0 source flags1. Clear actual job+20 only after normal return. FileBlock destructor reloads current manager, does not retain construction manager or decrement refs.",
+    "scope": "Proposals only: no API declarations, implementation, stubs or migration of other FileBlock callers in this packet."
+  },
+  "named_but_incomplete_source_entries": [
+    "00bdf950",
+    "00bd20a0",
+    "007f8390",
+    "007fa3a0",
+    "00bdaf40",
+    "00be0750",
+    "00bb5670",
+    "00bb5770",
+    "00bb5910",
+    "00bd9200",
+    "00bd9210",
+    "00bd9220",
+    "00bd9fa0",
+    "00be0980",
+    "00bdc9b0",
+    "00be0a30",
+    "00bdcb30",
+    "00bdebe0",
+    "00504790",
+    "00506bf0"
+  ],
+  "finalized_utc": "2026-09-14T06:12:44.620608+00:00"
+}

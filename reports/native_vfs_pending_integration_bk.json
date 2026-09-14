@@ -1,0 +1,189 @@
+{
+  "packet": "orch4_native_vfs_pending_integration_bk",
+  "validation_runs": [
+    {
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b",
+      "utc": "2026-09-14T05:42:20.818121+00:00",
+      "result": {
+        "RunDirectory": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_mission_bk\\run_20260913_223523_142_81272",
+        "Log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_mission_bk\\run_20260913_223523_142_81272\\startup.log",
+        "ExitCode": 0,
+        "TimedOut": false,
+        "NativeDataMapped": true,
+        "VfsReady": true,
+        "OriginalExeUnchanged": true,
+        "LiveOptionsAndSavesUnchanged": true,
+        "PrivateRuntimeHashes": {
+          "msidcrl40.dll": "623CB6CA98E566357ABBD0E76B15713921E1D7E1144C0C4F589A0407C7EFF1EE",
+          "xlive.dll": "79DA26AB6B2DC25936C3354087DE0BA41DA1A8B62924972E9100C29B95D34385"
+        }
+      },
+      "result_path": "local/native_vfs_mission_bk/run_20260913_223523_142_81272/result.json",
+      "log_path": "local/native_vfs_mission_bk/run_20260913_223523_142_81272/startup.log",
+      "build_log": "local/native_vfs_pending_integration_bk_build.log",
+      "source_manifest": {
+        "path": "local/native_vfs_pending_bk_source_66e434fbbe6d.json",
+        "sha256": "8fbdf66d67a6ee3c50157062c7023439f8eaf4b46fbac2285a00e62e14cc9a6a",
+        "files": 2547,
+        "normalization": "Git diff validates normalized repository contents; manifest hashes actual working bytes"
+      },
+      "observed": [
+        "frames_presented=360 loop_finished=1 exit_code=0",
+        "summary vfs_ready=1 loose_mounts=3/3 package_scans=2",
+        "summary mission frames requested=120 ran=120 simulated=120",
+        "ApplicationFrameHost::tick_vfs_providers                 00bdb0b0             concrete      calls=360",
+        "sound after raw singleton drain: started=0 samples=0 resources=0 classes=0"
+      ],
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "artifacts": {
+        "local/native_vfs_pending_integration_bk_build.log": "f4b5b7ab83a196756ee058972840e8e7047f6522d4adae5dac0f4aa173a3618c",
+        "local/native_vfs_mission_bk/run_20260913_223523_142_81272/result.json": "93621b3e103b972ad816d238a58a9b826393aedcc7169bd675d57e4f290a802f",
+        "local/native_vfs_mission_bk/run_20260913_223523_142_81272/startup.log": "1d1abaf64562acd215f7a5560f86b1e9e6fd8a77bc1e594eaf1889757dd09fc5",
+        "local/native_vfs_pending_bk_source_66e434fbbe6d.json": "8fbdf66d67a6ee3c50157062c7023439f8eaf4b46fbac2285a00e62e14cc9a6a",
+        "build/win32/Release/bsp_core.lib": "1a088170564a55b88d45e790c13536a44582af2bcd9961e69cc45d132f1290c0",
+        "build/win32/Release/bsp_game.exe": "1df7ea1c371aab0fe41da3e42bd0ad5099ec1cb2718621f1ba99d913833262cc",
+        "build/win32/bsp_game.map": "fa63bc46f43375834729e9c54f05730c8651f73bae049ec4bbeaa3c4d02ad9ce",
+        "reports/native_filestore_completion_review_bk.json": "2611b4714bdc6f1ca3c7add8980d2362ca762b51a15b69df00444f16776d87ed"
+      }
+    },
+    {
+      "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d",
+      "utc": "2026-09-14T05:53:02.620040+00:00",
+      "result": {
+        "RunDirectory": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_mission_bk\\run_20260913_224544_907_59616",
+        "Log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_mission_bk\\run_20260913_224544_907_59616\\startup.log",
+        "ExitCode": 0,
+        "TimedOut": false,
+        "NativeDataMapped": true,
+        "VfsReady": true,
+        "OriginalExeUnchanged": true,
+        "LiveOptionsAndSavesUnchanged": true,
+        "PrivateRuntimeHashes": {
+          "msidcrl40.dll": "623CB6CA98E566357ABBD0E76B15713921E1D7E1144C0C4F589A0407C7EFF1EE",
+          "xlive.dll": "79DA26AB6B2DC25936C3354087DE0BA41DA1A8B62924972E9100C29B95D34385"
+        }
+      },
+      "result_path": "local/native_vfs_mission_bk/run_20260913_224544_907_59616/result.json",
+      "log_path": "local/native_vfs_mission_bk/run_20260913_224544_907_59616/startup.log",
+      "build_log": "local/native_vfs_pending_integration_bk_combined_build.log",
+      "source_manifest": {
+        "path": "local/native_vfs_pending_bk_source_96d910d50a2e.json",
+        "sha256": "5de8afd0521532a10f77a16a4be6743ef23b033fa1e586e47d048173c11c127a",
+        "files": 2552,
+        "normalization": "Git diff validates normalized repository contents; manifest hashes actual working bytes"
+      },
+      "observed": [
+        "frames_presented=360 loop_finished=1 exit_code=0",
+        "summary vfs_ready=1 loose_mounts=3/3 package_scans=2",
+        "summary mission frames requested=120 ran=120 simulated=120",
+        "ApplicationFrameHost::tick_vfs_providers                 00bdb0b0             concrete      calls=360",
+        "sound after raw singleton drain: started=0 samples=0 resources=0 classes=0"
+      ],
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "artifacts": {
+        "local/native_vfs_pending_integration_bk_combined_build.log": "1cf257874018f7385ede55e6250d30f25b4dd04482a05f5a8da24101cc058de3",
+        "local/native_vfs_mission_bk/run_20260913_224544_907_59616/result.json": "1bd87c16dba3f4c1a9fb9740d6f44cb46077782b62ef11aa7e59ee7567646dc7",
+        "local/native_vfs_mission_bk/run_20260913_224544_907_59616/startup.log": "ece7b770e5b9d97e7ad56280fd2ea8e5ead4079b57b80cb9ab0589c2bb3354bc",
+        "local/native_vfs_pending_bk_source_96d910d50a2e.json": "5de8afd0521532a10f77a16a4be6743ef23b033fa1e586e47d048173c11c127a",
+        "build/win32/Release/bsp_core.lib": "f475861aca75f2c839f8b45f23147c759be3db14628ee1d8d8c890507ed11188",
+        "build/win32/Release/bsp_game.exe": "9c0ea3e6a2967442fea0ed35bfbd4ff5a867e2ba0380964988a89db44a6e1d1e",
+        "build/win32/bsp_game.map": "766c162e72d5163832bad86014342d144da4fd974131bfa89bb58dd368970f5a",
+        "reports/native_filestore_completion_review_bk.json": "2611b4714bdc6f1ca3c7add8980d2362ca762b51a15b69df00444f16776d87ed"
+      }
+    }
+  ],
+  "status": "integrated_win32_built_native_pump_360_frames_mission120_and_combined_actual_storage_fixture_passed",
+  "code_revision": "96d910d50a2e98317bb45227d830544ef1727a3d",
+  "source_manifest": {
+    "path": "local/native_vfs_pending_bk_source_96d910d50a2e.json",
+    "sha256": "5de8afd0521532a10f77a16a4be6743ef23b033fa1e586e47d048173c11c127a",
+    "files": 2552,
+    "normalization": "Git diff validates normalized repository contents; manifest hashes actual working bytes"
+  },
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "workers": {
+    "routes": "af26d6b12444f7ab852190cb1876c79002951491",
+    "physical": "faa5a58711ecf586393084852b8ae05d3b5c5ae1",
+    "request": "21581aad90ce0ecd1a1f11dcd0063ebf2470c32e",
+    "resident_insert": "70bcd18b4e7c87db96693edd5ed6f78d90110a28",
+    "completion_review": "4e7f22c2923b00d1a898416358da6d8a22a264ba"
+  },
+  "reports": [
+    "reports/native_vfs_pending_routes_bk.json",
+    "reports/native_physical_pending_io_bk.json",
+    "reports/native_filestore_request_bk.json",
+    "reports/native_filestore_resident_insert_bk.json",
+    "reports/native_filestore_completion_review_bk.json"
+  ],
+  "independent_corrections": [
+    "BE7760 captured head across returning CRT",
+    "BE78B0 staggered owner/node captures",
+    "MPKG/MPAK default pending slots bound",
+    "737B79 current publication reload"
+  ],
+  "original_leaf_evidence": {
+    "BB9D30": "32 c0 c2 10 00",
+    "BB9D40": "c3",
+    "MPKG_table": "00d64390+0c=00bb9d30,+28=00bb9d40",
+    "MPAK_table": "00d641f8+0c=00bb79e0,+28=00bb79f0"
+  },
+  "ghidra_repairs": [
+    "reports/native_physical_pending_flow_bk.json",
+    "reports/native_filestore_pending_catch_body_bk.json",
+    "reports/native_vfs_pending_eh_definitions_bk.json"
+  ],
+  "call_checks": {
+    "routes": 21,
+    "physical": 36,
+    "request": 69,
+    "resident_insert": 21,
+    "completion": 38,
+    "failed": 0,
+    "indirect_imports": "separate listing evidence, not counted as direct rows"
+  },
+  "initial_baseline": {
+    "code_revision": "f41379f344567836c84dba35cc77ab6c817aa809",
+    "result": "local/native_vfs_mission_bk/run_20260913_215700_148_56556/result.json",
+    "pump": "unimplemented",
+    "frames": 360,
+    "mission_frames": 120
+  },
+  "permanent_tests_added": false,
+  "limits": [
+    "production loading-manager4FDE20/509190 and final callback504850 remain unbound",
+    "production frame run pumps existing providers without asserting asynchronous gameplay requests",
+    "combined request/completion fixture uses controlled resolver/final callback services and pins its earlier frozen library",
+    "native binary ABI/FH3, hardware-fault cleanup, private-stack aliasing and throwing pool-getter parity are unproved",
+    "authentic archive payload loading and complete gameplay/visual fidelity remain unvalidated",
+    "original ReadFile-error aligned-pointer free/OVERLAPPED leak preserved and not fault-injected"
+  ],
+  "concurrent_main_review": {
+    "pinned_main": "8cd145e06e0de3e8a0119dbcba48fe528fbef323",
+    "combined_source_revision": "96d910d50a2e98317bb45227d830544ef1727a3d",
+    "source_changes": "Reviewed incoming placement, startup diagnostics, gunnery and sensor additions; all five native pending/FileStore units and incoming registrations retained.",
+    "image_policy": {
+      "image_base": "0x10000000",
+      "dynamic_base": false,
+      "relocations_stripped": false,
+      "map_retained": true
+    },
+    "runner": "local/run_game_native_vfs_pending_combined_bk.ps1",
+    "runner_sha256": "c88861d58fc5fc559e9d5c50ad9af080e228a7f1be32efd6b43c748218b3c552",
+    "runner_change": "Only the two pinned image-base literals changed from 0x30000000 to 0x10000000. The old runner first rejected the new base before launching; that preflight was not a game failure.",
+    "diagnostic_limit": "Incoming game_hosts_gunnery.cpp records arm entity membership before unit_gunnery_pass.cpp applies candidate capacity admission. At capacity a recon-selected entity can be labeled arm. Target assignment is unaffected; these counters are not exact candidate provenance proof."
+  },
+  "ghidra_annotations": {
+    "report": "reports/native_vfs_pending_annotations_bk.json",
+    "sha256": "5289f14b23ee279c534ae98ebea89f539f214d20c9a51de393d0015ba83703ca",
+    "source_functions": 40,
+    "profile_bindings": 1,
+    "fh3_evidence_handlers": 5,
+    "previous_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "snapshot": "bsp snapshot observed unchanged total 63976 after annotation, skipped redundant export and rebuilt local index."
+  }
+}

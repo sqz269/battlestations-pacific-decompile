@@ -6,6 +6,7 @@ namespace bsp {
 struct NativePhysicalFileDateContext;
 class ActualNativeStringPoolStorage;
 struct NativeVfsDeviceRouteContext;
+struct NativeVfsPendingRouteContext;
 
 // Bind actual profile storage for the original stack-visitor identities.
 // Each reached virtual call rereads the current visitor identity and table word.
@@ -15,6 +16,7 @@ struct NativeVfsLookupRouteContext {
     const void* actual_exists_profile_00d68398;
     const void* actual_name_probe_profile_00d683e8;
     NativeVfsDeviceRouteContext* device{}; // Optional D683F4 profile/source binding.
+    NativeVfsPendingRouteContext* pending{}; // Optional D68478 profile/source binding.
 };
 
 // Invoke the already captured original provider+10h target on actual storage.
@@ -53,8 +55,8 @@ void reset_native_vfs_name_probe_base_00bd8fe0(void* actual_visitor) noexcept;
 void destroy_native_vfs_name_probe_visitor_00bdb5e0(void* actual_visitor,
     ActualNativeStringPoolStorage&);
 
-// Full BDD0A0 (672 bytes), qualified implementation for D68398/E8 and F4
-// when the optional device route binding is supplied.
+// Full BDD0A0 (672 bytes), qualified implementation for D68398/E8 and F4/478
+// when the corresponding optional device/pending route binding is supplied.
 // ECX captured manager; stack name/visitor; RET8; no specified result.
 // Existing actual tree layout/traversal/EH ordering; no tree population.
 // Unknown identities/current slots are explicit invalid_argument SOURCE
