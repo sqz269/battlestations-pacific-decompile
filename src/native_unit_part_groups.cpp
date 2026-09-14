@@ -30,8 +30,7 @@ void empty_row(void* row) noexcept {
     write(row, 4, 0); write(row, 8, 0); write(row, 12, 0);
 }
 void clear_rows(Word first, Word last) noexcept {
-    for (; first != last; first += 16)
-        clear_native_singleton_storage_00bd0220(pointer(first), nullptr);
+    destroy_native_part_group_row_range_00711f70(pointer(first), pointer(last));
 }
 struct CompletedName {
     NativeLegacySboStringStorage& value;
@@ -43,6 +42,12 @@ void release_temporary(NativeLegacySboStringStorage& value) noexcept {
     if (read(&value, 0x18) >= 16) singleton_lifetime_free(pointer(read(&value, 4)));
 }
 } // namespace
+
+void destroy_native_part_group_row_range_00711f70(void* first, void* last) noexcept {
+    const Word end = address(last);
+    for (Word row = address(first); row != end; row += 16)
+        clear_native_singleton_storage_00bd0220(pointer(row), nullptr);
+}
 
 NativeLegacySboStringStorage& copy_native_part_record_name_00711c30(
     const void* record, NativeLegacySboStringStorage& destination) {

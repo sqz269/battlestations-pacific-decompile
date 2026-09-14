@@ -1,8 +1,30 @@
 #include "bsp/native_unit_part_construction.hpp"
 #include "bsp/native_unit_part_groups.hpp"
+#include "bsp/native_unit_part_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
 
 namespace bsp {
+void* NativeUnitPartConstructionBindings::call_007103a0(void*) {
+    return buy_native_unit_part_list_sentinel_007103a0();
+}
+void* NativeUnitPartConstructionBindings::call_007103c0(void*) {
+    return buy_native_unit_part_shape_sentinel_007103c0();
+}
+void NativeUnitPartConstructionBindings::call_004e6570(void* model) noexcept {
+    destroy_native_collision_node_base_004e6570(model);
+}
+void NativeUnitPartConstructionBindings::call_00712b40(void* groups) noexcept {
+    destroy_native_unit_part_group_rows_00712b40(groups);
+}
+void NativeUnitPartConstructionBindings::call_00710f90(void* list) noexcept {
+    destroy_native_unit_part_list_00710870(list);
+}
+void NativeUnitPartConstructionBindings::call_00710fc0(void* list) noexcept {
+    destroy_native_unit_part_shape_list_007108e0(list);
+}
+void NativeUnitPartConstructionBindings::call_00711000(NativeRenderPointerArrayStorage& entries) noexcept {
+    destroy_native_instance_entry_pointers_00b1d1d0(entries);
+}
 void NativeUnitPartConstructionBindings::call_00713380(void* model) {
     build_native_unit_part_groups_00713380(model);
 }
