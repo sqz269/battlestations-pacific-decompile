@@ -1,0 +1,461 @@
+{
+  "packet": "orch3_string_prefix_raw_bq",
+  "status": "raw_overloads_build_and_focused_real_pool_source_probe_passed",
+  "base_commit": "dc6d5a2823513660be55b775b05e7f56b93de726",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "source_parent_commit": "dc6d5a2823513660be55b775b05e7f56b93de726",
+  "credit_note": "Three already-reconstructed bodies totaling353bytes; this packet only extends their raw context source interface.",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_rehashed": true,
+    "verification": "Every live read used the bounded target-verifying BSP CLI. Worker made no Ghidra/ledger writes."
+  },
+  "routines": [
+    {
+      "address": "00425f40",
+      "inclusive_end": "00425f74",
+      "bytes": 53,
+      "instructions": 24,
+      "gaps": 0,
+      "original_abi": "ECX destination; stack source; EAX captured destination; RET4; ESI/EDI preserved.",
+      "source_name": "assign_native_string_header_00425f40",
+      "coverage": "complete actual-header/raw-pool overload"
+    },
+    {
+      "address": "004261a0",
+      "inclusive_end": "00426245",
+      "bytes": 166,
+      "instructions": 63,
+      "gaps": 0,
+      "original_abi": "ECX left; stack output,right; EAX output; RET8; EBX/EBP/ESI/EDI preserved.",
+      "source_name": "concatenate_native_string_headers_004261a0",
+      "coverage": "complete clear/copy/append and owned-output cleanup schedule in ordinary C++ domain"
+    },
+    {
+      "address": "0043c130",
+      "inclusive_end": "0043c1b5",
+      "bytes": 134,
+      "instructions": 38,
+      "gaps": 0,
+      "original_abi": "ECX output8h,EDX prefix C-string; stack right8h; EAX output; RET4; ESI preserved.",
+      "source_name": "prefix_native_string_header_0043c130",
+      "coverage": "complete prefix/concat/current raw return and logical2-state cleanup schedule"
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "assignment",
+      "address": "00425f40",
+      "inclusive_end": "00425f74",
+      "bytes": 53,
+      "sha256": "863fb05c6a1e9f951802154da43330c913e9e154bfdbd3b1e9d29e0ed979e8f4",
+      "PE_live_equal": true
+    },
+    {
+      "name": "concatenation",
+      "address": "004261a0",
+      "inclusive_end": "00426245",
+      "bytes": 166,
+      "sha256": "025e33b4d97cbfa811c37a521873d3b3686165e85b854529726afaf9e01fa6b6",
+      "PE_live_equal": true
+    },
+    {
+      "name": "prefix",
+      "address": "0043c130",
+      "inclusive_end": "0043c1b5",
+      "bytes": 134,
+      "sha256": "e7c7a3dbf9b0d3917fb4e046611c1b56ca7a97e2056afdc81a857c6424eb0f31",
+      "PE_live_equal": true
+    },
+    {
+      "name": "concat_EH",
+      "address": "00c5e830",
+      "inclusive_end": "00c5e852",
+      "bytes": 35,
+      "sha256": "d7f75d6518a596f780a21088f56f92c33952b845d88b4b9531e8f05f39b4fd26",
+      "PE_live_equal": true
+    },
+    {
+      "name": "prefix_EH",
+      "address": "00c5f350",
+      "inclusive_end": "00c5f37a",
+      "bytes": 43,
+      "sha256": "8979df3d9598aa5e160f8a8c6339032da3ccdabdb663e08e4bfa841e65f7a1fe",
+      "PE_live_equal": true
+    },
+    {
+      "name": "concat_FuncInfo_map",
+      "address": "00d84d48",
+      "inclusive_end": "00d84d73",
+      "bytes": 44,
+      "sha256": "4694b8f7e74639b3d29df5cadc8b37aeff853157e143e059ff75b1e3c0557d8d",
+      "PE_live_equal": true
+    },
+    {
+      "name": "prefix_FuncInfo_map",
+      "address": "00d85bcc",
+      "inclusive_end": "00d85bff",
+      "bytes": 52,
+      "sha256": "b114ae2eee2fd720f34c2fa3a8e086f1fe4d90ea3b24654c4a14f96417f8bad1",
+      "PE_live_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00425f51",
+      "native": "0041dd40",
+      "function": "00425f40",
+      "contract": "ECX captured destination; stack captured source.length,preserve1; RET8. Reread source.length after return."
+    },
+    {
+      "address": "00425f66",
+      "native": "00bf7680",
+      "function": "00425f40",
+      "contract": "Load destination.length,source.data,destination.data in that order; copy3 stack words, ADD ESP,0Ch at425F6B; overlap-safe source memmove."
+    },
+    {
+      "address": "004261da",
+      "native": "0041dd40",
+      "function": "004261a0",
+      "contract": "ECX output; stack current left.length,preserve1; RET8. Output-owned bit remains0."
+    },
+    {
+      "address": "004261ee",
+      "native": "00bf7680",
+      "function": "004261a0",
+      "contract": "Load output.length,output.data,left.data in that order; ADD ESP,0Ch at4261F3; bit0 still clear."
+    },
+    {
+      "address": "00426217",
+      "native": "0041dd40",
+      "function": "004261a0",
+      "contract": "ECX output; stack old_length+captured_right_length moduloDWORD,preserve1; RET8. Output cleanup now owned."
+    },
+    {
+      "address": "00426227",
+      "native": "00bf7680",
+      "function": "004261a0",
+      "contract": "Load current right.data then output.data; captured old length/count; ADD ESP,0Ch at42622C; overlap-safe memmove."
+    },
+    {
+      "address": "0043c15c",
+      "native": "0041e870",
+      "function": "0043c130",
+      "contract": "ECX private8h prefix header; stack original EDX prefix; RET4. Parent cleanup remains unarmed until successful construction."
+    },
+    {
+      "address": "0043c171",
+      "native": "004261a0",
+      "function": "0043c130",
+      "contract": "ECX completed prefix header; stack output/right; RET8. Prefix state1, output-owned bit0."
+    },
+    {
+      "address": "0043c196",
+      "native": "00419cc0",
+      "function": "0043c130",
+      "contract": "No semantic native arguments; EAX current raw pool. Captured prefix.data and length+1 remain on caller stack; output-owned bit1, prefix disarmed."
+    },
+    {
+      "address": "0043c19d",
+      "native": "00bd1510",
+      "function": "0043c130",
+      "contract": "ECX pool; stack captured data,size,unused1; RET0Ch. Normal header remains unchanged; no retry after failure."
+    },
+    {
+      "address": "00c5e843",
+      "native": "0041dd20",
+      "function": "00c5e830",
+      "contract": "State0->-1; test/clear bit1 first; ECX output from EBP+4; RET in callee.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5e84e",
+      "native": "00bf6b43",
+      "function": "00c5e849",
+      "contract": "Raw10byte FH3 route MOV EAX,D84D50/JMP BF6B43; primary separately defined after worker read.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5f353",
+      "native": "0041dd20",
+      "function": "00c5f350",
+      "contract": "State1->0; ECX private prefix EBP-14; output-owned remains0.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5f36b",
+      "native": "0041dd20",
+      "function": "00c5f358",
+      "contract": "State0->-1; test/clear output-owned bit1; ECX captured output EBP-18.",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5f376",
+      "native": "00bf6b43",
+      "function": "00c5f371",
+      "contract": "Raw10byte FH3 route MOV EAX,D85BDC/JMP BF6B43; primary separately defined after worker read.",
+      "kind": "tail_jump"
+    }
+  ],
+  "EH": [
+    {
+      "function": "004261a0",
+      "info": "00d84d50",
+      "map": "00d84d48",
+      "max_state": 1,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00c5e830"
+        }
+      ],
+      "handler_bounds": [
+        "00c5e849",
+        "00c5e852"
+      ],
+      "initial_state": "state0 before initial clear/copy, but output-owned bit remains0; capture right.length before bit1",
+      "source_policy": "Initial copy/capture outside catch. Append catch consumes output cleanup once; newer cleanup exception replaces the earlier exception; no retry."
+    },
+    {
+      "function": "0043c130",
+      "info": "00d85bdc",
+      "map": "00d85bcc",
+      "max_state": 2,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00c5f358"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "funclet": "00c5f350"
+        }
+      ],
+      "handler_bounds": [
+        "00c5f371",
+        "00c5f37a"
+      ],
+      "source_policy": "Raw CString construction outside parent cleanup. State1 concat failure cleans temporary only. Capture temporary.data then arm output/disarm prefix. Normal cleanup failure cleans output only, no prefix retry. Newer secondary cleanup exception propagates; remaining branch has no owned action."
+    }
+  ],
+  "raw_handler_status": "Both exact10byte handlers were undefined during initial worker inspection, then separately defined/saved by primary; final call audit uses their live definitions. Zero body credit.",
+  "load_order": {
+    "assignment": [
+      "identity check",
+      "captured source.length",
+      "raw resize preserve1",
+      "current source.length nonzero",
+      "destination.length",
+      "source.data",
+      "destination.data",
+      "memmove"
+    ],
+    "concat_initial": [
+      "identity comparison before source-level output clear",
+      "output.length=0",
+      "output.data=0",
+      "current left.length",
+      "raw resize preserve1",
+      "current left.length nonzero",
+      "output.length",
+      "output.data",
+      "left.data",
+      "memmove"
+    ],
+    "concat_append": [
+      "capture right.length before ownership",
+      "capture output.length",
+      "raw resize moduloDWORD sum preserve1",
+      "current right.data",
+      "current output.data",
+      "memmove captured count at captured old-length offset"
+    ],
+    "prefix_normal": [
+      "raw private8h CString construction",
+      "concat under state1/bit0",
+      "capture prefix.data",
+      "arm output bit1",
+      "disarm prefix/state0",
+      "if nonnull capture prefix.length+1",
+      "raw current419CC0",
+      "BD1510 captured data/size without clearing header"
+    ]
+  },
+  "source_sha256": {
+    "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+    "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+    "src/native_instance_collection.cpp": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f"
+  },
+  "provider_sha256": {
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "before_provider_pins": {
+    "include/bsp/native_physical_file_date.hpp": {
+      "base_blob_sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+      "parent_current_sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788"
+    },
+    "src/native_physical_file_date.cpp": {
+      "base_blob_sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+      "parent_current_sha256": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02"
+    },
+    "include/bsp/native_instance_collection.hpp": {
+      "base_blob_sha256": "3ac226fbdc3f51e073720c23234816ded5d7b10e6a7911243639367a830075e6",
+      "parent_current_sha256": "3ac226fbdc3f51e073720c23234816ded5d7b10e6a7911243639367a830075e6"
+    },
+    "src/native_instance_collection.cpp": {
+      "base_blob_sha256": "f3b8e1da4eaf39b44f3bd41b9109b3d996fb8dee6a0609b984f2224bc8622fc8",
+      "parent_current_sha256": "069a083a942d7b3390b0b9bf1ae7340b92c87e0218650e520215a4acc5c3ec09"
+    }
+  },
+  "generated_code": {
+    "legacy": [
+      {
+        "source_name": "assign_native_string_header_00425f40",
+        "legacy_symbol": "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+        "legacy_section_bytes": 67,
+        "legacy_section_sha256": "755b2760cb456bf110eeaeeec09255f8dbf3c4d3677dda88dae1ba79475e8c8d",
+        "legacy_section_byte_identity": true,
+        "legacy_symbolic_relocations_equal": true,
+        "legacy_relocation_count": 2,
+        "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+        "before_object_sha256": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+        "after_object_sha256": "af42e39f3398ad4022ef1ebf8552cbef2724e40bc1b520439e231ab29a92e3bf",
+        "raw_symbol": "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "raw_section_bytes": 67,
+        "raw_section_sha256": "755b2760cb456bf110eeaeeec09255f8dbf3c4d3677dda88dae1ba79475e8c8d",
+        "raw_listing": "local/bq-assign_native_string_header_00425f40.asm",
+        "raw_relocation_count": 2
+      },
+      {
+        "source_name": "concatenate_native_string_headers_004261a0",
+        "legacy_symbol": "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAVNativeStringStorage@1@@Z",
+        "legacy_section_bytes": 219,
+        "legacy_section_sha256": "54325f79a46c01e470d923af86cd0af795711934b392159b0434b4cf44b96138",
+        "legacy_section_byte_identity": true,
+        "legacy_symbolic_relocations_equal": true,
+        "legacy_relocation_count": 8,
+        "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+        "before_object_sha256": "34d8ca1f966f722b73be258a24362d07aa3596d2b43fd2db7211dd9dca8a6448",
+        "after_object_sha256": "af42e39f3398ad4022ef1ebf8552cbef2724e40bc1b520439e231ab29a92e3bf",
+        "raw_symbol": "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAUNativeStringRawPoolContext@1@@Z",
+        "raw_section_bytes": 219,
+        "raw_section_sha256": "648af63c05e93d24d4f4aef2e13fadfae6766375b86fdb1f37ba9c47603ee4a9",
+        "raw_listing": "local/bq-concatenate_native_string_headers_004261a0.asm",
+        "raw_relocation_count": 8
+      },
+      {
+        "source_name": "prefix_native_string_header_0043c130",
+        "legacy_symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAVActualNativeStringPoolStorage@1@@Z",
+        "legacy_section_bytes": 133,
+        "legacy_section_sha256": "0e9e22733db55798a7a91b673b91706a8288b77522a5e6d41e8b6189e551bd4a",
+        "legacy_section_byte_identity": true,
+        "legacy_symbolic_relocations_equal": true,
+        "legacy_relocation_count": 5,
+        "normalization": "Only anonymous namespace path hash in symbolic relocation names",
+        "before_object_sha256": "851d8e9fa7ae51766d4b44d674b445ef5b17fdeffd0bf7ab134d69d99eabbebe",
+        "after_object_sha256": "ac41c4e390027318a30f4a06a480924487da05f6fc33db8d48cc31d082237f9e",
+        "raw_symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAUNativeStringRawPoolContext@1@@Z",
+        "raw_section_bytes": 226,
+        "raw_section_sha256": "5cf27c0da940fc2a91911c8d7dcb75ca07ea8ef61b419466042335786400da15",
+        "raw_listing": "local/bq-prefix_native_string_header_0043c130.asm",
+        "raw_relocation_count": 9
+      }
+    ],
+    "parser": "J:\\PROG\\battlestations-pacific-decompile-orch3-string-prefix-raw-bq\\local\\bq_object_review.py",
+    "parser_sha256": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "detailed_evidence": "J:\\PROG\\battlestations-pacific-decompile-orch3-string-prefix-raw-bq\\local\\bq-object-review.json",
+    "detailed_evidence_sha256": "7357cfcde949e1a1d0230e8605dad4e800b647d262232c0f31c7865802ee4304",
+    "reviewed_current_load_order": true,
+    "compiler_reorderings": [
+      "Raw concat CMP output/left appears after clears; captured pointer identities unchanged.",
+      "Raw concat compiler EH-state store object0072 precedes right.length read0079; source/native owned cleanup arms after that read. /EHsc hardware-fault/private-frame observations excluded."
+    ]
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-string-prefix-raw-bq\\local\\bq-build-retry.log",
+    "build_log_sha256": "7018444281d18b56997d7487a8bd506ce39b82550e15a1e87ab2558038d546d0",
+    "configured_ctest": 1,
+    "passed_ctest": 1,
+    "ctest_names": [
+      "reconstructed_math"
+    ],
+    "retry_source_before_sha256": "429d284ca47b418e9b796bec805e891732ba0be1a6ab38221584f0483707224c",
+    "source_inputs_unchanged": true,
+    "initial_build_failure": "C2061 missing NativeStringRawPoolContext forward declaration; corrected before successful retry.",
+    "initial_build_log_sha256": "1d23bf2feeae2942322457ca80372a4df5d36d9b73de6a25c99d6cba7d414190",
+    "source_probe": {
+      "command": "./local/run_bq_probe.ps1",
+      "exit_code": 0,
+      "run_line": "PASS raw real-pool prefix, backward assignment, right/output concat alias, explicit returns and pool shutdown",
+      "manifest_embedded": true,
+      "manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "before_after_inputs_equal": true,
+      "input_count": 15,
+      "inputs_sha256": "119b8f9f7ff87ddbd0c1f6aac9efb442165f4700aefcf3f574224a551059d484",
+      "artifact_sha256": {
+        "local/bq_probe.cpp": "2e02c591c97bdbbad5cb9147d668d5e180b79cc6489764d1d66733a56471e1a2",
+        "local/run_bq_probe.ps1": "5ccb32f2609be7665f5c5e699653647c9f9a69a497c174e59aa39a30520ab353",
+        "local/bq-probe-build.log": "bd5aaa417c757ca929b4b16dc0c590eed855501616c7d3be160ba98daf9c27ed",
+        "local/bq-probe-run.log": "a4be1c7a3bc1dfa865df8cb74293dc3c8a946d2b4f8e29b0a69ed8e48a4a2452",
+        "local/bq_probe.exe": "ad26772007045fbab941168c2981313b38197932fc6edf7cc5ab9e8f17d49a98",
+        "local/bq_probe.obj": "576b5203b39ae12a123e50e1df9634e16fe6f83bdd60bc9edeeb4c0b1cc17446"
+      },
+      "current_libraries_sha256": {
+        "bsp_core.lib": "af7f36e88b29ca9c53e669c50dd27d57e6d29695768232d26dbb449f3676cb77",
+        "bsp_lua511.lib": "c2d48c9589642ec28d4f2fac2493e47aa1eb2d01a2fe2bc8ac20e5c6367c6a53",
+        "bsp_zlib121.lib": "54b825ae3104e13d7fa624a9b98e8e15db3636da413624b290429d3004d73ff1"
+      },
+      "initial_attempt": "Link failed for4 existing XLive Windows imports; preserved recipe/log/pins. Added advapi32/shell32 only; no source change.",
+      "preserved_attempt_sha256": {
+        "local/bq-probe-attempt-1-run.ps1": "cf9cc423da7af28b505d43a2a70bfcb6935935ed781643df7e3edfcda3128bba",
+        "local/bq-probe-attempt-1-build.log": "9716d4d3864797314af3349eac8efa8226d4c062b0e8b2e2a16e4640086dd8c7",
+        "local/bq-probe-attempt-1-inputs.json": "40b713e9a5a73ad8fdf08c12147aa09fb57622c8e72faf2f7bfcd336217607fb"
+      },
+      "scope": "One source trajectory using a real prepublished native pool, raw getters/returns, backward assignment overlap and right/output concat alias. Manager cell remains null and unused. No stubs or cleanup-exception injection."
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_string_prefix_raw_bq.json",
+      "checked_direct_or_tail_rows": 15,
+      "failed": 0,
+      "exit_code": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-string-prefix-raw-bq\\local\\bq-call-audit.log",
+      "log_sha256": "9dead9f1b13b42c81cf07a9df1d1af97d2aae967d06eb60455df83452f546ed3"
+    },
+    "native_differential_fixture": false,
+    "injected_cleanup_failure": false,
+    "game_validation": false
+  },
+  "uncertainties": [
+    "Existing typed overloads keep their prior nonthrowing cleanup/nonoverlap domains; only the new raw overloads select raw getter propagation and memmove.",
+    "A secondary cleanup failure propagates the newer exception rather than claiming native FH3 or terminate-on-double-failure equivalence. No injected cleanup-failure trajectory was executed.",
+    "Private stack/EH spill aliases, invalid storage, hardware faults and asynchronous observation of compiler EH-state placement are outside the supported source domain.",
+    "The source-only pool probe does not exercise lazy pool/manager creation, shutdown-recreation or a running renderer/game. BO raw-prefix caller adoption belongs to primary."
+  ],
+  "review": {
+    "primary_review": "All source/header deltas and three generated raw sections reviewed; no blocking source finding reported.",
+    "resolved": [
+      "Forward declaration added after first compiler failure",
+      "Compiler pointer comparison/EH-state reorderings explicitly limited",
+      "One backing owner retained for borrowed overlap headers"
+    ]
+  },
+  "created_utc": "2026-09-14T06:41:16.494064+00:00"
+}

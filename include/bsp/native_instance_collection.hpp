@@ -6,6 +6,7 @@
 namespace bsp {
 struct CameraAxesCrtAccess;
 class ActualNativeStringPoolStorage;
+struct NativeStringRawPoolContext;
 class NativeRenderActualOwners;
 struct NativeInstanceGeometryAccess;
 struct NativeInstanceGeometryAcquired;
@@ -76,4 +77,13 @@ void append_native_render_batch_entry_00b51cb0(NativeRenderBatchStorage&, void*)
 // cleanup throws; this interface admits nonthrowing current pool cleanup.
 void* prefix_native_string_header_0043c130(void* output, const char* prefix,
     const void* right, ActualNativeStringPoolStorage&);
+// Same actual-header body through the existing raw pool getter/return path.
+// Prefix construction is outside caller cleanup; concat owns its own output
+// failure. After concat returns, capture prefix.data, arm output ownership and
+// disarm prefix cleanup BEFORE the normal return/getter. Failure there destroys
+// output once and never retries prefix return. Private EH-frame aliases and
+// native FH3 are not claimed. A secondary cleanup failure propagates the newer
+// exception; no hidden noexcept adapter, manager, rollback or retry is added.
+void* prefix_native_string_header_0043c130(void* output, const char* prefix,
+    const void* right, NativeStringRawPoolContext&);
 } // namespace bsp

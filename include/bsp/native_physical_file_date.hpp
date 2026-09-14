@@ -25,6 +25,19 @@ void* concatenate_native_string_headers_004261a0(const void* left, void* output,
 // 425F40: ECX destination, stack source, RET4; preserves identity.
 void* assign_native_string_header_00425f40(void* destination, const void* source,
     NativeStringStorage&);
+// Actual-pool overloads retain the original header identities and current
+// reloads. Assignment reads count, source.data, destination.data after resize;
+// concatenation's initial copy reads count, output.data, left.data instead.
+// BF7680 permits overlap: these paths use memmove, not the older typed helper.
+// Concatenation clears output even when it aliases left, and does not own it
+// during initial resize/copy. Append failure consumes one raw output cleanup;
+// a cleanup failure propagates the newer exception without retry. This source
+// policy does not claim native FH3/double-exception or private-frame alias parity.
+// Valid actual headers/data and the existing zero-byte-copy omission apply.
+void* assign_native_string_header_00425f40(void* destination, const void* source,
+    NativeStringRawPoolContext&);
+void* concatenate_native_string_headers_004261a0(const void* left, void* output,
+    const void* right, NativeStringRawPoolContext&);
 // 41E350: nullable source, preserve=false, copies current length, RET4.
 void* assign_native_string_cstring_0041e350(void* destination, const char* source,
     NativeStringStorage&);
