@@ -1,0 +1,374 @@
+{
+  "packet": "cc7_mount_frame_scale",
+  "owner": "agent/cc7-mount-frame-scale",
+  "docs": [
+    "docs/MOUNT_FRAME_SCALE.md"
+  ],
+  "sources": [
+    "include/bsp/mount_frame_scale.hpp",
+    "src/mount_frame_scale.cpp"
+  ],
+  "subject": "The 18 vtable +98h dispatch sites docs/SCENE_ATTACH_LOCAL_FRAMES.md could not close: what each one pushes as the pose local frame, and whether it can carry a scale, a shear or a zero row. Closes all 18. Establishes that the .scn localframe remains the only AUTHORING source of scale but is no longer the only path, that shipClass+6ECh (00491A30) is orthonormal by construction, and that the capture-point garrison respawn (006F3798) reproduces the scaled world matrix of adopted MLandFort entities - the kind carrying 7,075 of the 7,621 scaled localframe statements in this installation.",
+  "reuses": [
+    "docs/MATRIX_ORTHOGONAL_INVERSE.md for 00B63D50's branch-free N[i][j] = M[j][i]/|row j|^2 and its orthogonal-and-non-zero precondition",
+    "docs/GUN_GRAVITY_ARC.md for 00955630 -> 0042D0D0 with normalize = 0 and 00521370's asin of the raw y",
+    "docs/SCENE_ATTACH_LOCAL_FRAMES.md for the 009258F0 argument roles, the +98h dispatch census, 0085DC80 as the Gram-Schmidt orthonormaliser and the .scn s*R + t canonicalisation",
+    "docs/GUN_MOUNT_POSITIONS.md for gun+3CCh, the node names 'barrel'/'base' and the node world matrix at node+0F0h",
+    "docs/ENTITY_CLASS_IDS.md rows 198/199/240/241 for kinds 1Bh MLandFort, 1Ch MCommandBuilding, 45h MAirfield, 46h MShipyard",
+    "docs/ENTITY_LOCAL_MATRIX.md and docs/POSE_REFRESH.md for entity+0CCh as the world matrix and +0C8h as its valid byte",
+    "include/bsp/gun_gravity_arc.hpp for GunGravityArcMountFrame, the three basis rows reused by the published rules"
+  ],
+  "answer": "All 18 open dispatch sites are closed. Eleven push a literal identity (007F48BA, 00484C7D, 00487F16, 0048C819, 00498A61, 0049BD9D, 007A5EB3, 007AB672, 0089AB8E, 00A32433, 009362FE), two are verbatim 16-dword REP MOVSD forwarders of their own matrix parameter (004EA6FB, 004EA80B), one pushes an orthonormal frame built from model geometry (00491A30), one propagates an existing pose local basis unchanged (004B21B3), two propagate a scale an earlier producer put there (006AF842 savegame restore, 006F3798 garrison respawn), and one builds its own basis that is orthogonal but unit only when its heading pair is normalised (0082197D). The .scn localframe is therefore still the only AUTHORING source of scale, but not the only path: three sites carry an existing scale into a new pose local and none multiplies a fresh one in. 00491A30 indexes shipClass+6ECh, a std::vector<Matrix44> with a 40h stride filled only by BSP_ShipClass_BindModelData_Provisional's 'idle' marker loop (00831430-008316FD), whose basis goes through 0085DC80 at 008316E0 and is pushed at 008316ED with NO re-multiply by a scale - unlike the .scn parser at 0046D1BF-0046D222 - so it is a pure rotation always. 006F3798 pushes record+18h of a 64h-stride array at this+778h; the producer 006F5CC0 copies the adopted entity's WORLD matrix at entity+0CCh verbatim with 004134F0 after forcing 00414DB0, and 006F3660 hands it back as a local frame under the world root with arg1 = 0, which is exactly scale-preserving. The three adopted kinds are 1Bh MLandFort, 45h MAirfield, 46h MShipyard; in this installation LandFort carries 7,075 of the 7,621 scaled localframe statements including all 105 'Heavy AA, Japanese' emplacements at s = 0.7069, while Airfield (254) and Shipyard (241) carry none. The model-node question is left at the boundary: node+0F0h is written by no caller of BSP_Matrix_Multiply4x4 and by none of the six ADD reg,0F0h encodings in .text, all five of which are consumers - so the producer is inside the peer-owned model subsystem and the safe assumption is that a mount node CAN scale independently.",
+  "installation": {
+    "note": "This installation is modded (BSPRM/AlterBSP) and was read READ-ONLY.",
+    "scn_files": 259,
+    "scn_mtimes": "258 files between 2024-07-13 and 2025-06-02; exactly one at 2026-05-09, the local modification date",
+    "parser_failures": [
+      "universe/scenes/missions/ijn/ESMP/10_san_jose.scn - malformed float token '1.-'",
+      "universe/scenes/missions/usn/LOMP/10_san_jose.scn - same",
+      "their rows are excluded, so every count is a lower bound"
+    ]
+  },
+  "shipped_data": {
+    "script": "local/cc7/scan_garrison.py",
+    "scn_with_command_building": 105,
+    "landfort_localframes": 72008,
+    "landfort_scaled": 7075,
+    "airfield_localframes": 254,
+    "airfield_scaled": 0,
+    "shipyard_localframes": 241,
+    "shipyard_scaled": 0,
+    "scaled_landforts_in_a_command_building_file": 4893,
+    "gun_named_scaled_landforts": 108,
+    "gun_named_histogram": "0.7069 x 91, 0.7068 x 7 ('Heavy AA, Japanese', 105 total), 0.8156 x 7 and 0.8634 x 3 ('Medium Bunker 03, Concrete')"
+  },
+  "dispatch_sites": [
+    {
+      "address": "004ea6fb",
+      "native": "indirect: vtable slot +98h",
+      "function": "004ea650",
+      "pushes": "[ESP+18h]",
+      "construction": "004EA6C3 MOV ESI,[ESP+6Ch]; MOV ECX,10h; LEA EDI,[ESP+18h]; REP MOVSD - its own matrix parameter",
+      "verdict": "forwarder",
+      "coverage": "complete"
+    },
+    {
+      "address": "004ea80b",
+      "native": "indirect: vtable slot +98h",
+      "function": "004ea760",
+      "pushes": "[ESP+18h]",
+      "construction": "004EA7D3-004EA7E0, the same four instructions",
+      "verdict": "forwarder",
+      "coverage": "complete"
+    },
+    {
+      "address": "006af842",
+      "native": "indirect: vtable slot +98h",
+      "function": "006af780",
+      "pushes": "[ESP+20h]",
+      "construction": "006AF81C CALL 00BD6830 with the descriptor pair {7, [ESP+28h]} and the terminator {0, 00CF82A4 'localFrame'}; the reader is built over _savedata/_entities by 009238A0 and 004425C0",
+      "verdict": "can carry scale - savegame round-trip",
+      "coverage": "partial: the serialiser that writes the savegame localFrame key was not read"
+    },
+    {
+      "address": "0082197d",
+      "native": "indirect: vtable slot +98h",
+      "function": "008206f0",
+      "pushes": "[ESP+0C0h]",
+      "construction": "00821810-00821940. row1 = (0,1,0) from 00E0B68C; row2 = ([ESP+28h], 0, [ESP+34h]); row0 = x87 cross(row1,row2); f3/f7/f11 = 0; translation = [ESP+4Ch]+index*0Ch; f15 = 1.0. The heading pair is normalised at 00821035-0082109C with an explicit ZERO substitution at 0082105F-00821064 when the length is not positive.",
+      "verdict": "orthogonal always; unit iff the heading pair is unit; two zero rows on the degenerate branch",
+      "coverage": "partial: [ESP+34h] is written twice (0082109C and 00821771) and the reaching definition at 008217E3 was not settled"
+    },
+    {
+      "address": "007f48ba",
+      "native": "indirect: vtable slot +98h",
+      "function": "007f4580",
+      "pushes": "[ESP+64h]",
+      "construction": "007F481D XORPS XMM0,XMM0; 007F4820 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 007F4830-007F48A5",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "004b21b3",
+      "native": "indirect: vtable slot +98h",
+      "function": "004b2030",
+      "pushes": "[ESP+2Ch]",
+      "construction": "004B20DC LEA ESI,[EBX+74h]; MOV ECX,10h; LEA EDI,[ESP+2Ch]; REP MOVSD - the source entity's pose local. When [EBX+3Ch] is zero the translation row alone is re-expressed through 00B63D50's cached inverse at node+110h (004B214C-004B215F) and 00439820; the basis is never touched.",
+      "verdict": "propagation - carries the source entity's scale",
+      "coverage": "complete"
+    },
+    {
+      "address": "00484c7d",
+      "native": "indirect: vtable slot +98h",
+      "function": "00484bc0",
+      "pushes": "[ESP+4]",
+      "construction": "00484BF1 XORPS XMM0,XMM0; 00484BF4 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 00484C0A-00484C64",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "00487f16",
+      "native": "indirect: vtable slot +98h",
+      "function": "00487a70",
+      "pushes": "[ESP+44h]",
+      "construction": "00487E81 XORPS XMM0,XMM0; 00487E88 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 00487E9D-00487EFA. The body writes XMM0/XMM1 from entity fields earlier (00487CDC, 00487CEF, 00487CFF, 00487DA0, 00487DC9); the zero/one pair is the last write before the fill.",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "0048c819",
+      "native": "indirect: vtable slot +98h",
+      "function": "0048c6a0",
+      "pushes": "[ESP+28h]",
+      "construction": "0048C78E XORPS XMM0,XMM0; 0048C791 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 0048C7A8-0048C802",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "00498a61",
+      "native": "indirect: vtable slot +98h",
+      "function": "00498790",
+      "pushes": "[ESP+38h]",
+      "construction": "004989D7 XORPS XMM0,XMM0; 004989DA MOVSS XMM1,[00D7A24C]; 16 MOVSS at 004989F1-00498A4B",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "0049bd9d",
+      "native": "indirect: vtable slot +98h",
+      "function": "0049b1f0",
+      "pushes": "[ESP+60h]",
+      "construction": "0049BCF3 XORPS XMM0,XMM0; 0049BCFA MOVSS XMM1,[00D7A24C]; 16 MOVSS at 0049BD0F-0049BD81. The body writes XMM0/XMM1 from entity fields earlier (0049BBA2, 0049BBB3, 0049BC4F, 0049BC78).",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "007a5eb3",
+      "native": "indirect: vtable slot +98h",
+      "function": "007a5a00",
+      "pushes": "[ESP+34h]",
+      "construction": "007A5E34 XORPS XMM0,XMM0; 007A5E37 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 007A5E47-007A5EA1. The body writes XMM0 from [EBP+94h/98h/9Ch] earlier (007A5C5F, 007A5C6D, 007A5C7B).",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "007ab672",
+      "native": "indirect: vtable slot +98h",
+      "function": "no_ghidra_function",
+      "pushes": "[ESP+1Ch]",
+      "construction": "007AB5E4 xorps xmm0,xmm0; 007AB5E7 movss xmm1,[00D7A24C]; 16 movss at 007AB607-007AB661",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "0089ab8e",
+      "native": "indirect: vtable slot +98h",
+      "function": "0089a8b0",
+      "pushes": "[ESP+44h]",
+      "construction": "0089AAF9 XORPS XMM0,XMM0; 0089AAFC MOVSS XMM1,[00D7A24C]; 16 MOVSS at 0089AB11-0089AB6E",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "00a32433",
+      "native": "indirect: vtable slot +98h",
+      "function": "00a32350",
+      "pushes": "[ESP+8]",
+      "construction": "00A323A2 XORPS XMM0,XMM0; 00A323A5 MOVSS XMM1,[00D7A24C]; 16 MOVSS at 00A323BA-00A32414",
+      "verdict": "identity",
+      "coverage": "complete"
+    },
+    {
+      "address": "00491a30",
+      "native": "indirect: vtable slot +98h",
+      "function": "00491950",
+      "pushes": "param_2 * 40h + [[this+20h]+538h]+6F0h",
+      "construction": "00491A15-00491A27. The bound check at 00491A00-00491A0E shifts (last - first) right by 6, so the stride is 40h. Producer: BSP_ShipClass_BindModelData_Provisional's 'idle' loop, 00831430-008316FD, orthonormalised at 008316E0 and pushed at 008316ED with no scale re-multiply.",
+      "verdict": "orthonormal - cannot carry scale",
+      "coverage": "complete for the frame question; the factory vectors at this+44h/+54h were not traced"
+    },
+    {
+      "address": "006f3798",
+      "native": "indirect: vtable slot +98h",
+      "function": "006f3660",
+      "pushes": "[this+778h] + EDI + 18h",
+      "construction": "006F3772-006F3789, record stride 64h (006F506A ADD EDI,64h in FUN_006F4D10). Producer: 006F5CC0 at 006F5E24-006F5E2F copies the adopted entity's world matrix at entity+0CCh verbatim with BSP_Matrix_Copy4x4X87 after forcing 00414DB0 at 006F5E1D, and push_backs at 006F5E85-006F5E92. arg1 = 0, arg2 = the world root, so the copy is scale-preserving.",
+      "verdict": "can carry scale - the adopted entity's world matrix",
+      "coverage": "complete"
+    },
+    {
+      "address": "009362fe",
+      "native": "indirect: vtable slot +98h",
+      "function": "00935d30",
+      "pushes": "[ESP+78h], pushed at 00936257",
+      "construction": "00936240 XORPS XMM0,XMM0; 00936243 MOVSS XMM1,[00D7A24C]; 00936253 LEA ECX,[ESP+78h]; 00936257 PUSH ECX; 16 MOVSS at 00936258-009362DC. The third push is 171 bytes back from the call, outside the merged packet's 160-byte window.",
+      "verdict": "identity",
+      "coverage": "complete"
+    }
+  ],
+  "producer_steps": [
+    {
+      "address": "008316e0",
+      "native": "0085dc80",
+      "function": "0082fe30",
+      "role": "Gram-Schmidt orthonormaliser applied to the 'idle' marker basis at [ESP+88h]. Read as a contract from docs/SCENE_ATTACH_LOCAL_FRAMES.md; its tail confirms all three basis rows leave unit length."
+    },
+    {
+      "address": "008316f3",
+      "native": "0082ca40",
+      "function": "0082fe30",
+      "role": "std::vector<Matrix44>::push_back on the vector object at shipClass+6ECh. Stride 40h, proven by the two >> 6 shifts inside the callee."
+    },
+    {
+      "address": "008316ab",
+      "native": "004f9b30",
+      "function": "0082fe30",
+      "role": "BSP_Vector3f_Cross - row 1 of the idle frame"
+    },
+    {
+      "address": "006f5e1f",
+      "native": "00414db0",
+      "function": "006f5cc0",
+      "role": "force the adopted entity's world matrix current before capturing it"
+    },
+    {
+      "address": "006f5e2f",
+      "native": "004134f0",
+      "function": "006f5cc0",
+      "role": "BSP_Matrix_Copy4x4X87 - 64 bytes from entity+0CCh into record+18h, verbatim"
+    },
+    {
+      "address": "006f5e3a",
+      "native": "008f41f0",
+      "function": "006f5cc0",
+      "role": "BSP_ScenePropertyBag_Clone into record+58h"
+    },
+    {
+      "address": "006f5e4d",
+      "native": "008f2260",
+      "function": "006f5cc0",
+      "role": "BSP_ScenePropertyBag_Find('MinLevel', 00CFB24C) -> record+5Ch, the value 006F3660 compares against this+770h"
+    },
+    {
+      "address": "006f5e70",
+      "native": "008f2260",
+      "function": "006f5cc0",
+      "role": "BSP_ScenePropertyBag_Find('LevelX', 00CFB244) -> record+60h"
+    },
+    {
+      "address": "006f5e92",
+      "native": "006f4b30",
+      "function": "006f5cc0",
+      "role": "push_back of the 64h-byte garrison record into the array at this+778h"
+    },
+    {
+      "address": "006f3736",
+      "native": "00964790",
+      "function": "006f3660",
+      "role": "BSP_VehicleClass_GetOrCreate for the respawned garrison entity"
+    },
+    {
+      "address": "006f37b0",
+      "native": "008f2260",
+      "function": "006f3660",
+      "role": "BSP_ScenePropertyBag_Find('Party', 00CE5804) on the cloned bag at record+58h, after the re-attach"
+    },
+    {
+      "address": "006af7b3",
+      "native": "004425c0",
+      "function": "006af780",
+      "role": "BSP_LuaReader_Construct over the savegame table; 006AF7AA CALL 009238A0 supplies the _savedata/_entities root"
+    },
+    {
+      "address": "006af81c",
+      "native": "00bd6830",
+      "function": "006af780",
+      "role": "Lua table-to-struct reader; the descriptor list ends {0, 00CF82A4 'localFrame'} and the type-7 target is the matrix at [ESP+20h]"
+    },
+    {
+      "address": "004b20fa",
+      "native": "00414db0",
+      "function": "004b2030",
+      "role": "refresh the source entity's world before reading its translation at +0FCh/+100h/+104h"
+    },
+    {
+      "address": "004b215f",
+      "native": "00b63d50",
+      "function": "004b2030",
+      "role": "the cached affine inverse at node+110h from node+0CCh, valid byte +10Ch. Independent confirmation of include/bsp/gun_gravity_arc.hpp's +110h claim."
+    },
+    {
+      "address": "004b2175",
+      "native": "00439820",
+      "function": "004b2030",
+      "role": "transform the world translation into the new parent's frame using that inverse; the basis rows are not touched"
+    },
+    {
+      "address": "00821035",
+      "native": "00bf7030",
+      "function": "008206f0",
+      "role": "CRT square root of x*x + z*z; 00821052 FLD1/FDIVRP takes the reciprocal and 0082105F-00821064 substitutes ZERO when the length is not positive"
+    }
+  ],
+  "contract_reads": [
+    {
+      "address": "00414db0",
+      "claim": "world(+0CCh) = local(+74h) * parent(+3Ch)->world(+0CCh) via BSP_Matrix_Multiply4x4, copied with BSP_Matrix_Copy4x4X87, +0C8h set and +10Ch cleared. No normalisation anywhere on the path.",
+      "leased": false
+    },
+    {
+      "address": "0072aac4",
+      "claim": "BSP_PointEffect_SetRelativeMatrix composes a relative matrix with the model node world at node+0F0h using BSP_Matrix_Multiply4x4 - a consumer, and another unnormalised composition.",
+      "leased": false
+    },
+    {
+      "address": "007301d1",
+      "claim": "BSP_Gun_Fire copies 10h dwords from (gun+3CCh)+0F0h as the muzzle frame. Established in docs/GUN_MOUNT_POSITIONS.md; quoted here only to fix the offset.",
+      "leased": false
+    }
+  ],
+  "model_node_boundary": {
+    "owner": "peer orchestrator - the model/scene/resource system",
+    "not_leased": ["0071ad50", "00719fa0", "node+0F0h producer (not located)"],
+    "established_here": "node+0F0h is written by none of the 149 callers of BSP_Matrix_Multiply4x4, and the six ADD reg,0F0h encodings in .text (81 C0/C1/C2/C3/C6/C7 F0 00 00 00) yield only consumers: 007301D1 (BSP_Gun_Fire), 0072AAC4 (BSP_PointEffect_SetRelativeMatrix), 0070F752 (BSP_UnitPartCollisionShape_TestSphere), 00707B85 and 0072556B. The producer uses a different addressing form and lives inside the peer's subsystem.",
+    "follow_up_must_answer": [
+      "where node+0F0h is written and whether it multiplies by a parent world the way 00414DB0 does",
+      "whether a model node's own local matrix can be a non-similarity (per-axis scale or shear) rather than the similarity the .scn parser is restricted to",
+      "whether the model instance at [[gun+360h]+160h] carries a whole-model scale applied at the root of the node hierarchy, which would multiply with the .scn s rather than replace it"
+    ]
+  },
+  "published_rules": {
+    "header": "include/bsp/mount_frame_scale.hpp",
+    "source": "src/mount_frame_scale.cpp",
+    "cmake": "cmake/startup.cmake, one appended target_sources line",
+    "why": "The packet found a genuine pure rule with no native counterpart: 00B63D50's precondition has no guard in the binary, and the arc's scale error has never been published as a function. mount_frame_scale, mount_frame_is_invertible_by_00b63d50, mount_frame_arc_is_exact and mount_frame_arc_reported_pitch are explicit-input predicates a future host calls before handing a frame to the inverse or the arc.",
+    "validation": "Build-tested (scripts/build.ps1, bsp_core and bsp_game, existing ctest reconstructed_math passed). The formula reproduces both figures docs/SCENE_ATTACH_LOCAL_FRAMES.md derived independently: 45.017 degrees for a true 30 at s = 0.7069 and 35.266 degrees at s = 0.866.",
+    "new_prediction": "For s < 1 there is a critical elevation asin(s) above which sin(true)/s leaves [-1,1] and 00521370's asin is a domain error, not a clamp: 44.98 degrees at s = 0.7069, 9.13 degrees at the shipped minimum s = 0.1586. Arithmetic on the published formula, NOT an observed native failure - bsp_game.exe does not reach 00955630, so checklist rule 6 does not apply.",
+    "tests_added": 0,
+    "tests_rationale": "AGENTS.md defaults to none. The formula's only risk is the direction of the division, and that is pinned by two independently published figures quoted in the doc."
+  },
+  "corrections": [],
+  "ghidra": {
+    "mode": "read-only",
+    "mutations": "none - no renames, comments, prototypes, function creation or saves",
+    "leased": ["00491950", "00491a30", "006f3660", "006f3798", "006f5cc0", "006af780"],
+    "read_as_contract_not_leased": ["00b63d50", "00955630", "0042d0d0", "0046cf40", "0085dc80", "009258f0", "00924280", "00414db0", "0082fe30", "0071ad50"]
+  },
+  "no_ghidra_function": [
+    {
+      "address": "007ab590",
+      "end_inclusive": "007ab7c5",
+      "end_exclusive": "007ab7c6",
+      "final_instruction": "007AB7C3 RET 4 (C2 04 00), followed by INT3 padding",
+      "entry": "007AB590 SUB ESP,8Ch, immediately after the INT3 run ending at 007AB58F",
+      "method": "tools/bsp.py disasm-raw over the disk bytes. Ghidra's FUN_007AB230 ends at 007AB32C and the next function starts at 007AB7D0, so 007AB330-007AB7CF is unclaimed.",
+      "contains": "007ab672"
+    }
+  ],
+  "unclosed": [
+    "FUN_008206F0: which of the two writes to [ESP+34h] (0082109C, the normalisation, and 00821771, the affine-transform result) reaches 008217E3 on each of the two paths into 0082180A. If the second does, 0082197D carries a non-uniform scale from shipped LandingPoint geometry.",
+    "The model-node world matrix producer - peer territory, see model_node_boundary.",
+    "The savegame serialiser that writes the _savedata localFrame key read at 006AF81C.",
+    "The factory vectors at FUN_00491950's this+44h and this+54h, which would name the 'idle' actor kinds instead of inferring them from the marker name and the camera-LOD consumer."
+  ]
+}
