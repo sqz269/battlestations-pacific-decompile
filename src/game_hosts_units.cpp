@@ -13,6 +13,9 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/plane_advance_pose.hpp"
+#include "bsp/plane_angular_velocity.hpp"
+#include "bsp/plane_control_rate.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -254,6 +257,18 @@ struct GameUnitSlot {
     float plane_world_velocity[3]{0.0f, 0.0f, 0.0f};
     float plane_lost_drag_timer_c3c{0.0f};
     bool plane_velocity_seeded{false};
+    // The controller's body angular velocity, ctl+48h pitch, +4Ch yaw, +50h
+    // roll. 007DA710 writes these three and 007D9C80 rotates them into world
+    // for 0085E4D0 to turn the pose with; plane_angular_velocity.hpp records
+    // the same offsets as kAngularBody, recovered from the other end.
+    //
+    // Nothing writes them yet. 007DA710 drives each toward a target built from
+    // the latched control inputs at ctl+BB0h/BB4h/BB8h, and no path from a bot
+    // task to those latches is reconstructed, so every target is zero, the law
+    // holds the axis at zero, and no plane turns. That is the open link, not a
+    // simplification: docs/PLANE_CONTROL_RATE_LAW.md and
+    // docs/PLANE_BOT_CONTROL_WRITEBACK.md.
+    float plane_body_angular[3]{0.0f, 0.0f, 0.0f};
     // The union of this unit's guns' projectile descriptor answer sets, stored
     // by the gunnery host at load. docs/ORDNANCE_KIND_IDENTITY.md.
     std::uint64_t ordnance_mask{0};
@@ -2114,8 +2129,86 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float* const wv = unit_.plane_world_velocity;
                         owner_.summary.plane_distance_moved +=
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
+                        advance_pose_0085e4d0(step);
                         owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
+                    // 007D9C80 then 0085E4D0, the two steps that turn a plane.
+                    // The controller's body angular velocity goes to world
+                    // through the live pose - 0042D0D0 is a row-vector product,
+                    // so with the pose rows being the body axes in world this
+                    // is w[0]*row0 + w[1]*row1 + w[2]*row2 - and 0085E4D0 then
+                    // rotates the pose about that world axis.
+                    //
+                    // It does nothing at all today, and that is the honest
+                    // state rather than a hedge: plane_body_angular is never
+                    // written, so `w` is the zero vector, 0085E4D0 takes its
+                    // 0085E871 exit without writing a pose, and the counter
+                    // below stays at zero to say so. The link this is waiting
+                    // on is a path from an installed bot task to the latched
+                    // control inputs at ctl+BB0h/BB4h/BB8h; 007DA710 turns
+                    // those into this angular velocity and is reconstructed
+                    // (bsp::plane_control_axis_step_007da710), the path to them
+                    // is not.
+                    void advance_pose_0085e4d0(float step) {
+                        bsp::AdvanceMatrix live{};
+                        const float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                live.m[r * 4 + c] = rows[r][c];
+                            }
+                            live.m[r * 4 + 3] = 0.0f;
+                            live.m[12 + r] = unit_.motion.position[r];
+                        }
+                        live.m[15] = 1.0f;
+
+                        bsp::ControllerVelocities vel;
+                        for (int i = 0; i < 3; ++i) {
+                            vel.angular_body[i] = unit_.plane_body_angular[i];
+                        }
+                        bsp::body_to_world_007d9c80(vel, live);
+
+                        // 00F87574, the eye the look-at is built around. It is
+                        // the zero vector - twelve zero bytes in the
+                        // uninitialised part of .data, and three docs already
+                        // name it so - which puts the look-at's forward exactly
+                        // on the normalised axis. It stays a parameter because
+                        // nothing proves no one writes it.
+                        static const float eye_00f87574[3] = {0.0f, 0.0f, 0.0f};
+                        bsp::NativeAdvanceMatrixOps ops;
+                        bsp::AdvanceMatrix rotated{};
+                        if (!bsp::rotate_about_axis_0085e4d0(rotated, live,
+                                vel.angular_world, step, eye_00f87574, ops)) {
+                            return;
+                        }
+                        const float before = heading_of(rows[2]);
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                const_cast<float*>(rows[r])[c] = rotated.m[r * 4 + c];
+                            }
+                        }
+                        ++owner_.summary.plane_pose_rotations;
+                        // atan2's branch cut, wrapped out. Without this a plane
+                        // that turns past +-pi books a spurious 2*pi: a probe
+                        // that injected a known 0.2 rad/s about body Y read
+                        // 219 rad where 100 was owed, and the 119 was twenty
+                        // planes crossing the cut roughly once each.
+                        double delta = static_cast<double>(heading_of(rows[2]) - before);
+                        while (delta > kPi) {
+                            delta -= 2.0 * kPi;
+                        }
+                        while (delta < -kPi) {
+                            delta += 2.0 * kPi;
+                        }
+                        owner_.summary.plane_heading_change += std::fabs(delta);
+                    }
+
+                    static float heading_of(const float forward[3]) {
+                        return static_cast<float>(std::atan2(
+                            static_cast<double>(forward[0]),
+                            static_cast<double>(forward[2])));
+                    }
+
                     void ground_roll_007cbfa0(float) override {
                         ++owner_.summary.plane_arm_ground_roll;
                     }
@@ -3102,10 +3195,13 @@ void GameUnitsHost::report() {
         host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
         host.summary.plane_arm_none);
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
-        "pose_right_reference=%llu pose_collapsed=%llu",
+        "pose_right_reference=%llu pose_collapsed=%llu "
+        "pose_rotations=%llu heading_change=%.3f rad",
         host.summary.plane_distance_moved,
         host.summary.plane_pose_right_reference,
-        host.summary.plane_pose_collapsed);
+        host.summary.plane_pose_collapsed,
+        host.summary.plane_pose_rotations,
+        host.summary.plane_heading_change);
     host.commands.report();
 }
 
