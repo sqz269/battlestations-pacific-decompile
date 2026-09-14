@@ -1356,6 +1356,13 @@ void GameUnitsHost::bind_observer_runtime(GameObserverRuntime& runtime) {
 
 void GameUnitsHost::load_gameplay_settings_0083b5e0() {
     Impl& host = *impl_;
+    // 007E2A20, the plane half of the same settings load. It is independent of
+    // 0083B5E0 - a different singleton, its own two scripts, its own global -
+    // and it runs before the rudder-curve guard because that guard is about
+    // ShipGlobals and says nothing about whether the plane block is filled.
+    // Idempotent: a second call re-runs the scripts and rewrites the block with
+    // the same values.
+    host.lua.load_plane_globals_007e2a20();
     if (host.rudder_curve_loaded) return;
     // 0083b5e0's head: run Scripts\datatables\ShipGlobals.lua and take the
     // `ShipGlobals` global. Then the fragment 0083ce56..0083d10d, which is what
