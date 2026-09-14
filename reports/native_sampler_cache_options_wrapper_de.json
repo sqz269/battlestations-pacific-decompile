@@ -1,0 +1,165 @@
+{
+  "packet": "orch3_sampler_options_wrapper_de",
+  "base_commit": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+  "status": "source_implemented_win32_build_and_existing_ctest_passed_pending_primary_review",
+  "address": "00b1b400",
+  "inclusive_end": "00b1b4c0",
+  "native_bytes": 193,
+  "original_abi": "__thiscall ECX complete actual1Ch loader; public stack name/options pointers, EAX resource, RET8",
+  "source_abi": "__fastcall ECX same actual loader, EDX new NativeSamplerOptionsWrapperContext; original public name/options stack words and RET8 retained by naked adapter",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "primary_evidence": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/de-sampler-name-options-evidence.json",
+    "primary_evidence_sha256": "8026f96a39411edd63834ff279b1c231d8e2ad877066fa231f2f65450c61a67b"
+  },
+  "native_spans": [
+    {
+      "address": "00b1b400",
+      "bytes": 193,
+      "sha256": "3ea4ec8e1febb9ed4a0102ea5d6435ac0236a46399655c6f780e3d4f8030d5b4",
+      "live_installed_identity": true,
+      "hex": "6aff6838c7cb0064a100000000506489250000000083ec085356578b7c242433f68d44240c3bc78bd9c744240c000000008974241074288b076a01508d4c2414e8fb2890ff39378b74241074128b4c240c8b5704515256e824c20d0083c40c8d4c240cc744241c00000000e890179aff8b4424286a016a01508d4c2418518d4b04e86af0ffff85f68bf8c744241cffffffff74178b54240c6a0183c2015256e81ce88fff8bc8e865600b008b4c24148bc75f5e5b64890d0000000083c414c20800"
+    },
+    {
+      "address": "00cbc730",
+      "bytes": 18,
+      "sha256": "31368c26234db665437f14d4cd0e234284014c69afe3d757906f683bad9b7d41",
+      "live_installed_identity": true,
+      "hex": "8d4dece9e81576ffb8784adf00e901a4f3ff"
+    },
+    {
+      "address": "00df4a70",
+      "bytes": 44,
+      "sha256": "c4e4e6c972dd6be3b596e5308c0c69e7e4b1390918a3ece05acd697ede898802",
+      "live_installed_identity": true,
+      "hex": "ffffffff30c7cb002205931901000000704adf00000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b1b440",
+      "native": "0041dd40",
+      "function": "00b1b400",
+      "hex": "e8fb2890ff"
+    },
+    {
+      "address": "00b1b457",
+      "native": "00bf7680",
+      "function": "00b1b400",
+      "hex": "e824c20d00"
+    },
+    {
+      "address": "00b1b46b",
+      "native": "004bcc00",
+      "function": "00b1b400",
+      "hex": "e890179aff"
+    },
+    {
+      "address": "00b1b481",
+      "native": "00b1a4f0",
+      "function": "00b1b400",
+      "hex": "e86af0ffff"
+    },
+    {
+      "address": "00b1b49f",
+      "native": "00419cc0",
+      "function": "00b1b400",
+      "hex": "e81ce88fff"
+    },
+    {
+      "address": "00b1b4a6",
+      "native": "00bd1510",
+      "function": "00b1b400",
+      "hex": "e865600b00"
+    }
+  ],
+  "source_schedule": [
+    "Capture public name, initialize captured data zero and compare temp/name identity before two temporary-header zero stores.",
+    "On distinct names, current input length drives 41DD40; reread input length before capturing temporary data; nonempty path copies current temporary length from current source data into captured destination.",
+    "Arm state0 only after completed copy; lowercase temporary, then load original public options slot and invoke concrete B1A4F0 on complete owner+4 with temporary/options/1/1.",
+    "Capture cache result; disarm state before normal return of captured temporary data using current length+1 and current actual pool. Return captured result."
+  ],
+  "source_exception_contract": "After state0 arm, source C++ exceptions call concrete 41DD20 on current temporary header and retain failed B1A4F0 child diagnostics. Before arm, initial copy failure has no automatic cleanup. No resource release or child acknowledgement is invented.",
+  "native_unwind": {
+    "handler": "00cbc738",
+    "function_info": "00df4a78",
+    "map": "00df4a70",
+    "state0_action": "00cbc730",
+    "action_target": "0041dd20"
+  },
+  "source_sha256": {
+    "include/bsp/native_sampler_cache_options_wrapper.hpp": "aac6a8dafc4fb48d766029356ed39e9f83e2e6590fedaa2127282298825ffc64",
+    "src/native_sampler_cache_options_wrapper.cpp": "8515254e1725e15b188bfd85b9658fc65263254d935ba8fd72168f08ced04c2a",
+    "docs/NATIVE_SAMPLER_CACHE_OPTIONS_WRAPPER_DE.md": "42afe07b9c2ef1cb8bbf427af79dd32c9116de36badc3f4ea48a69cabfa24652",
+    "cmake/startup.cmake": "87595b805e5739559891f7719c89a69dfa3d608a4988a7938cee210c5a978a5b"
+  },
+  "provider_sha256": {
+    "include/bsp/native_sampler_cache_entry.hpp": "ac7b94006be653f7e9d3e14a818f2927c2bedc5b0b7fe3d49ba05e47e3fe7e1a",
+    "src/native_sampler_cache_entry.cpp": "862cc2d6488db4a822e2b0667604c3c61513bb82f3d4ad05c82e2d729bbc6249",
+    "include/bsp/native_sampler_cache_operation.hpp": "b7fb8d3b6d8b3949c3fda86542209eaf1c81f0f1bdb8c330f73285e7c202744b",
+    "src/native_sampler_cache_operation.cpp": "a8db75abee67fc46898a45cbe873b38e0ddb40e0d512c4475847b240332ef038",
+    "include/bsp/native_sampler_loader_context.hpp": "475a5154e7a16cac2fcc2ecb6da719c98b4fee86322316f0c3fcce0137c7cc6b",
+    "src/native_sampler_loader_context.cpp": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb",
+    "include/bsp/native_platform_load_messages.hpp": "a3ba0bcfa359c351acb648ac9b4e35b82d304367d6e8b8b77faa9973a2d73106",
+    "src/native_platform_load_messages.cpp": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_resource_cache_leaves.hpp": "a3998606653bdcc1b71b78cbe0ceef12ff35cb4693e0468b798d14e9aa82ffec",
+    "src/native_resource_cache_leaves.cpp": "8a1eaf9a6423a88492d654a539f99fa436ac263b92b646cdf146f3081b877e61"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_sampler_cache_options_wrapper.obj",
+    "sha256": "aa7eb45e18d3e014c57b9626c2983dfe21256539f5e5e877fdffc3953e319707",
+    "adapter_bytes": 23,
+    "artifact_sha256": {
+      "local/de-sampler-options-wrapper-de-disasm.txt": "b3448cb57865b23269f30c3b3167cec8a910fbce31dbc3c41b5189d23b1fadb3",
+      "local/de-sampler-options-wrapper-de-relocs.txt": "b9abe7dbdbfad68fe1c7dc6815cf5d098f53e88dda8c2f9fef41ddde93ec6a39",
+      "local/de-sampler-options-wrapper-de-symbols.txt": "9219ab5f5bb4ca11cdf01652353abef9f9bbd0cb29088ca85e8f3f78bf399c7e"
+    },
+    "review": [
+      "adapter LEA options public slot, LEA name public slot, push EDX/ECX, call body, RET8",
+      "private body compare identity +0x55 before header zero stores +0x6A/+0x70",
+      "source length reread +0xA9 before temporary data capture +0xAB",
+      "state0 arm +0xD1 before lowercase call +0xDC; original options-slot value dereference +0xE7 after lowercase",
+      "concrete cache call +0x138 with owner+4 and flags1/1, then state disarm +0x146",
+      "captured data EDI tested +0x14A; current temporary length +0x14E; actual pool release +0x161; retained cache result reload +0x166",
+      "private catch starts +0x185, tests arm byte +0x188, and only if armed calls current-header destructor +0x1A6; child optional is retained",
+      "operation destructor/acknowledgment helpers emit explicit unresolved-child and temporary-obligation termination checks"
+    ],
+    "key_relocations": {
+      "adapter_to_body_REL32": "0000000D",
+      "resize_REL32": "0000009F",
+      "host_memmove_REL32": "000000C6",
+      "lowercase_REL32": "000000DD",
+      "cache_REL32": "00000139",
+      "actual_pool_release_REL32": "00000162",
+      "current_header_destroy_REL32": "000001A7",
+      "body_EH_handler_DIR32": "00000006"
+    },
+    "equality_limit": "New EDX source context and persistent host frame change body/COMDAT; no native byte equality or FH3 identity claim."
+  },
+  "validation": {
+    "build_command": "powershell -File scripts/build.ps1",
+    "win32_build_passed": true,
+    "incremental_rebuild_after_compare_barrier_passed": true,
+    "existing_ctest": "reconstructed_math 1/1 passed on final source",
+    "report_calls_command": "python tools/verify_report_calls.py reports/native_sampler_cache_options_wrapper_de.json",
+    "report_call_rows_checked": 6,
+    "report_call_failures": 0,
+    "live_installed_spans_checked": 3,
+    "live_installed_span_mismatches": 0,
+    "git_diff_check_passed": true,
+    "new_repository_tests": 0
+  },
+  "limits": [
+    "Actual cache/platform/pool/registry/profile and canonical-owner source contracts are required and provided by the pinned orch5 base; this wrapper does not construct substitutes.",
+    "Temporary header resides in a persistent source frame rather than native EBP-14h. Native FH3/SEH, hardware faults, exact CRT/IAT exception identity and game execution remain unproven.",
+    "A source failure retains its child/partial-header diagnostic obligations until the caller explicitly resolves them; no automatic acknowledgement or rollback is performed."
+  ],
+  "source_copy_domain": "Original BF7680 is native _memcpy; this source follows orch5 std::memmove host CRT, compared only on valid nonoverlapping ranges."
+}
